@@ -2,121 +2,120 @@
 <!-- This file contains common definitions for the Reko solution. -->
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Target Name="CollectRekoFilenames" AfterTargets="Build">
-   <ItemGroup>
-    <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
-    <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
-    <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
-    <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
-    <Architectures Include="$(SolutionDir)Arch\M68k.Design\$(OutDir)Reko.Arch.M68k.Design.*" />
-    <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
-    <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
-    <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
-    <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
-    <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
-    <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
-    <Architectures Include="$(SolutionDir)Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
-    <Architectures Include="$(SolutionDir)Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
-    <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
-    <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
-    <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
 
-    <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
-    <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows_CE.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
-    <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
+    <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.dll" />
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.pdb" />
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\x64\$(Configuration)\ArmNative.dll" />
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\x64\$(Configuration)\ArmNative.pdb" />
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(OS)' == 'Unix'">
+      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
+    </ItemGroup>
 
-     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
+    <ItemGroup>
+      <Architectures Include="$(SolutionDir)Arch\Alpha\bin\$(Configuration)\Reko.Arch.Alpha.*" />
+      <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(Configuration)\Reko.Arch.Arm.*" />
+      <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(Configuration)\Reko.Arch.Avr.*" />
+      <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(Configuration)\Reko.Arch.M68k.*" />
+      <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
+      <Architectures Include="$(SolutionDir)Arch\Mips\bin\$(Configuration)\Reko.Arch.Mips.*" />
+      <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(Configuration)\Reko.Arch.Mos6502.*" />
+      <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(Configuration)\Reko.Arch.Pdp11.*" />
+      <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(Configuration)\Reko.Arch.PowerPC.*" />
+      <Architectures Include="$(SolutionDir)Arch\RiscV\bin\$(Configuration)\Reko.Arch.RiscV.*" />
+      <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(Configuration)\Reko.Arch.Sparc.*" />
+      <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(Configuration)\Reko.Arch.SuperH.*" />
+      <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(Configuration)\Reko.Arch.Tlcs.*" />
+      <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(Configuration)\Reko.Arch.Vax.*" />
+      <Architectures Include="$(SolutionDir)Arch\X86\bin\$(Configuration)\Reko.Arch.X86.*" />
+      <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />
+      <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\Reko.Arch.Xtensa.*" />
+      <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\Reko.Arch.Z80.*" />
+      <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
+      <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows_CE.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
+      <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
+      <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
+      <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
 
-    <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\$(OutDir)Reko.Assemblers.Pdp11.*" />
-    <Assemblers Include="$(SolutionDir)Assemblers\x86\$(OutDir)Reko.Assemblers.x86.*" />
+      <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
 
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\$(OutDir)Reko.ImageLoaders.Dol.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
-    <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
+      <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\bin\$(Configuration)\Reko.Assemblers.Pdp11.*" />
+      <Assemblers Include="$(SolutionDir)Assemblers\x86\bin\$(Configuration)\Reko.Assemblers.x86.*" />
 
-    <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
-    <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\$(OutDir)Reko.Environments.AmigaOS.Design.*" />
-    <Environments Include="$(SolutionDir)Environments\AtariTOS\$(OutDir)Reko.Environments.AtariTOS.*" />
-    <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
-    <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
-    <Environments Include="$(SolutionDir)Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />
-    <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
-    <Environments Include="$(SolutionDir)Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
-    <Environments Include="$(SolutionDir)Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
-    <Environments Include="$(SolutionDir)Environments\NeoGeo\$(OutDir)Reko.Environments.NeoGeo.*" />
-    <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
-    <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
-    <Environments Include="$(SolutionDir)Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />
-    <Environments Include="$(SolutionDir)Environments\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
-    <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
-    <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
-    <Environments Include="$(SolutionDir)Environments\Wii\$(OutDir)Reko.Environments.Wii.*" />
-    <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
-    <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\bin\$(Configuration)\Reko.ImageLoaders.MzExe.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(Configuration)\Reko.ImageLoaders.BinHex.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(Configuration)\Reko.ImageLoaders.Dol.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\bin\$(Configuration)\Reko.ImageLoaders.Elf.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\bin\$(Configuration)\Reko.ImageLoaders.Hunk.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\bin\$(Configuration)\Reko.ImageLoaders.IntelHex.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\bin\$(Configuration)\Reko.ImageLoaders.LLVM.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\bin\$(Configuration)\Reko.ImageLoaders.MachO.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(Configuration)\Reko.ImageLoaders.OdbgScript.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(Configuration)\Reko.ImageLoaders.VmsExe.*" />
 
-    <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
-    
-    <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
-    <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
-    
-   <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-  </ItemGroup>
-  <!-- We're forced to do this because the VC++ and the VC# teams apparently
+      <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(Configuration)\Reko.Environments.AmigaOS.*" />
+      <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\bin\$(Configuration)\Reko.Environments.AmigaOS.Design.*" />
+      <Environments Include="$(SolutionDir)Environments\AtariTOS\bin\$(Configuration)\Reko.Environments.AtariTOS.*" />
+      <Environments Include="$(SolutionDir)Environments\C64\bin\$(Configuration)\Reko.Environments.C64.*" />
+      <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(Configuration)\Reko.Environments.Cpm.*" />
+      <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(Configuration)\Reko.Environments.Dreamcast.*" />
+      <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(Configuration)\Reko.Environments.MacOS.*" />
+      <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(Configuration)\Reko.Environments.Msdos.*" />
+      <Environments Include="$(SolutionDir)Environments\Msdos.Design\bin\$(Configuration)\Reko.Environments.Msdos.Design.*" />
+      <Environments Include="$(SolutionDir)Environments\NeoGeo\bin\$(Configuration)\Reko.Environments.NeoGeo.*" />
+      <Environments Include="$(SolutionDir)Environments\Ps3\bin\$(Configuration)\Reko.Environments.Ps3.*" />
+      <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(Configuration)\Reko.Environments.RiscOS.*" />
+      <Environments Include="$(SolutionDir)Environments\RT11\bin\$(Configuration)\Reko.Environments.RT11.*" />
+      <Environments Include="$(SolutionDir)Environments\SegaGenesis\bin\$(Configuration)\Reko.Environments.SegaGenesis.*" />
+      <Environments Include="$(SolutionDir)Environments\SysV\bin\$(Configuration)\Reko.Environments.SysV.*" />
+      <Environments Include="$(SolutionDir)Environments\Trs80\bin\$(Configuration)\Reko.Environments.Trs80.*" />
+      <Environments Include="$(SolutionDir)Environments\Wii\bin\$(Configuration)\Reko.Environments.Wii.*" />
+      <Environments Include="$(SolutionDir)Environments\Windows\bin\$(Configuration)\Reko.Environments.Windows.*" />
+      <Environments Include="$(SolutionDir)Environments\ZX81\bin\$(Configuration)\Reko.Environments.ZX81.*" />
+
+      <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\bin\$(Configuration)\Reko.Symbols.LGSymLoader.*" />
+
+      <Libraries Include="$(SolutionDir)Libraries\Libc\bin\$(Configuration)\Reko.Libraries.Libc.*" />
+      <Libraries Include="$(SolutionDir)Libraries\Python\bin\$(Configuration)\Reko.Libraries.Python.*" />
+
+      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+      
+    </ItemGroup>
+    <!-- We're forced to do this because the VC++ and the VC# teams apparently
       couldn't agree on the name of the i386 platform. The VC++ team call it
       Win32 and the C# team call it x86... Thanks Microsoft.
   -->
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <NativeFiles Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.dll" />
-    <NativeFiles Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.pdb" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <NativeFiles Include="$(SolutionDir)Arch\ArmNative\bin\x64\$(Configuration)\ArmNative.dll" />
-    <NativeFiles Include="$(SolutionDir)Arch\ArmNative\bin\x64\$(Configuration)\ArmNative.pdb" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <ExternalAssemblies Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
-  </ItemGroup>
 
-    <Message Importance="high" Text="****** FFFFFFFFUUUUU... @(Architectures) ****"/>
-    <Message Importance="high" Text="****** GAGAGAGAGAGA ... @(ImageLoaders) ****"/>
-    <Message Importance="high" Text="****** GAGAGAGAGAGA ... @(NativeFiles) ****"/>
-  </Target>
 
 </Project>
