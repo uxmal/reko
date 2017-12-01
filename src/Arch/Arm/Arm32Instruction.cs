@@ -436,6 +436,7 @@ namespace Reko.Arch.Arm
             this.nInstr = nInstr;
             nInstr.GetInfo(out info);
             this.Address = Address.Ptr32((uint)info.LinearAddress);
+            this.Length = (int) info.Length;
         }
 
         //$REVIEW: is this really needed? nInstr is a ComInstance object,

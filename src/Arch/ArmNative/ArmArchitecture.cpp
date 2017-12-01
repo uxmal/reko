@@ -36,7 +36,9 @@ ArmArchitecture::ArmArchitecture()
 
 STDMETHODIMP ArmArchitecture::QueryInterface(REFIID riid, void ** ppvObject)
 {
-	if (riid == IID_INativeArchitecture || riid == IID_IUnknown)
+	if (riid == IID_INativeArchitecture ||
+		riid == IID_IAgileObject ||
+		riid == IID_IUnknown)
 	{
 		AddRef();
 		*ppvObject = static_cast<INativeArchitecture *>(this);
@@ -56,7 +58,9 @@ void STDMETHODCALLTYPE ArmArchitecture::GetAllRegisters(int * pcRegs, const Nati
 INativeDisassembler * STDMETHODCALLTYPE ArmArchitecture::CreateDisassembler(
 	const uint8_t * bytes, int length, int offset, uint64_t uAddr)
 {
-	return new Arm32Disassembler(bytes + offset, length - offset, offset, uAddr);
+	auto dasm = new Arm32Disassembler(bytes + offset, length - offset, offset, uAddr);
+	dasm->AddRef();
+	return dasm;
 }
 
 INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(

@@ -28,12 +28,14 @@
 NativeInstruction::NativeInstruction(cs_insn * instr, NativeInstructionInfo info) :
 	instr(instr), info(info)
 {
+	AddRef();
 }
 
 NativeInstruction::~NativeInstruction()
 {
 	if (instr != nullptr)
 		cs_free(instr, 1);
+	Dump("Destroying instruction");
 }
 
 static const GUID IID_INativeInstruction =

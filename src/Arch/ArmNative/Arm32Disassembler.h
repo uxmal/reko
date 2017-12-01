@@ -21,6 +21,7 @@ class Arm32Disassembler : public ComBase, public INativeDisassembler
 {
 public:
 	Arm32Disassembler(const uint8_t * bytes, size_t length, int offset, uint64_t uAddr);
+	~Arm32Disassembler();
 
 	STDMETHODIMP QueryInterface(REFIID iid, void ** ppvItf) override;
 	STDMETHODIMP_(ULONG) AddRef() override { return  ComBase::AddRef(); }

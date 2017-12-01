@@ -33,12 +33,19 @@ Arm32Disassembler::Arm32Disassembler(const uint8_t * bytes, size_t length, int o
 	ec = cs_option(this->hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 }
 
+Arm32Disassembler::~Arm32Disassembler()
+{
+	Dump("Destroying Arm32Disassembler");
+}
+
 static const IID IID_INativeDisassembler = 
 	{ 0x10475e6b, 0xd167, 0x4db3, { 0xb2, 0x11, 0x61, 0xf, 0x60, 0x73, 0xa3, 0x13 } };
 
 HRESULT STDAPICALLTYPE Arm32Disassembler::QueryInterface(REFIID iid, void ** ppvOut)
 {
-	if (iid == IID_INativeDisassembler || iid == IID_IUnknown)
+	if (iid == IID_INativeDisassembler ||
+		iid == IID_IAgileObject ||
+		iid == IID_IUnknown)
 	{
 		AddRef();
 		*ppvOut = static_cast<INativeDisassembler *>(this);
