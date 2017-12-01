@@ -40,7 +40,4 @@ public:
 		INativeRewriterHost * host) override;
 public:
 	static const NativeRegister aRegs[];
-
-private:
-	int cRef;
 };

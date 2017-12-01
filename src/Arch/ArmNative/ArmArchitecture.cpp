@@ -56,7 +56,7 @@ void STDMETHODCALLTYPE ArmArchitecture::GetAllRegisters(int * pcRegs, const Nati
 INativeDisassembler * STDMETHODCALLTYPE ArmArchitecture::CreateDisassembler(
 	const uint8_t * bytes, int length, int offset, uint64_t uAddr)
 {
-	return new Arm32Disassembler(bytes, length, offset, uAddr);
+	return new Arm32Disassembler(bytes + offset, length - offset, offset, uAddr);
 }
 
 INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(
@@ -68,7 +68,7 @@ INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(
 	INativeTypeFactory * typeFactory,
 	INativeRewriterHost * host)
 {
-	return new ArmRewriter(rawBytes, length-offset, address, m, typeFactory, host);
+	return new ArmRewriter(rawBytes + offset, length-offset, address, m, typeFactory, host);
 }
 
 const NativeRegister ArmArchitecture::aRegs[] = {
