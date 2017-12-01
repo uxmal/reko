@@ -435,8 +435,11 @@ namespace Reko.Arch.Arm
         {
             this.nInstr = nInstr;
             nInstr.GetInfo(out info);
+            this.Address = Address.Ptr32((uint)info.LinearAddress);
         }
 
+        //$REVIEW: is this really needed? nInstr is a ComInstance object,
+        // provided by the CLR, and probably has its own finalizer.
         ~Arm32Instruction()
         {
             Marshal.ReleaseComObject(nInstr);
