@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(SolutionDir)Drivers\Common.items" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -140,126 +141,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\AtariTOS\atariTOS.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_bdos_services.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml">
-      <SubType>Designer</SubType>
-    </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml">
-      <SubType>Designer</SubType>
-    </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows_CE.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\lp32.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\linux-syscalls-i386.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\sysvcharacteristics.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Trs80\Trs80Rom.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
-    <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
-  </ItemGroup>
+
+  <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />
+
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
-  <Target Name="AfterBuild">
-    <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.dll" />
-      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.pdb" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\x64\$(Configuration)\ArmNative.dll" />
-      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\x64\$(Configuration)\ArmNative.pdb" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(OS)' == 'Unix'">
-      <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
-    </ItemGroup>
-    <ItemGroup>
-      <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
-      <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
-      <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
-      <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
-      <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
-      <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
-      <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
-      <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
-      <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
-      <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
-      <Architectures Include="$(SolutionDir)Arch\SuperH\$(OutDir)Reko.Arch.SuperH.*" />
-      <Architectures Include="$(SolutionDir)Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
-      <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
-      <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
-      <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
-      <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\$(OutDir)Reko.ImageLoaders.Dol.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
-      <Environments Include="$(SolutionDir)Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
-      <Environments Include="$(SolutionDir)Environments\AtariTOS\$(OutDir)Reko.Environments.AtariTOS.*" />
-      <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
-      <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
-      <Environments Include="$(SolutionDir)Environments\Dreamcast\$(OutDir)Reko.Environments.Dreamcast.*" />
-      <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
-      <Environments Include="$(SolutionDir)Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
-      <Environments Include="$(SolutionDir)Environments\NeoGeo\$(OutDir)Reko.Environments.NeoGeo.*" />
-      <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
-      <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
-      <Environments Include="$(SolutionDir)Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />
-      <Environments Include="$(SolutionDir)Environments\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
-      <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
-      <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
-      <Environments Include="$(SolutionDir)Environments\Wii\$(OutDir)Reko.Environments.Wii.*" />
-      <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
-      <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
-      <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\$(OutDir)Reko.Symbols.LGSymLoader.*" />
-      <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
-      <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
-      <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(OS)' == 'Unix'">
-      <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
-    </ItemGroup>
-    <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
-    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
-    <Copy SourceFiles="@(ImageLoaders)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Architectures to $(TargetDir)" />
-    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
-    <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
-    <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />
-    <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />
-    <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
-    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-  </Target>
 </Project>
