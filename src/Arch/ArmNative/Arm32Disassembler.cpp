@@ -61,6 +61,8 @@ INativeInstruction * Arm32Disassembler::NextInstruction()
 		auto info = NativeInstructionInfo{
 			uAddr, 4, static_cast<uint32_t>(InstructionClass::Invalid), ARM_INS_INVALID
 		};
+		this->uAddr += 4;
+		this->length -= 4;
 		return new NativeInstruction(instr, info);
 	}
 	else
