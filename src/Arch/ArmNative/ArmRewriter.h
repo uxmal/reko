@@ -163,7 +163,7 @@ private:
 	static const int type_sizes[];
 	static int s_count;			//$DEBUG: tracking number of "live" objects 
 
-#if _DEBUG || !MONODEVELOP
+#if (_DEBUG || DEBUG) && !MONODEVELOP
 	void EmitUnitTest();
 	static int opcode_seen[];
 #else

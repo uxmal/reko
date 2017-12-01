@@ -873,7 +873,7 @@ void ArmRewriter::RewriteSwp(BaseType type)
 	m.Assign(dst, m.Fn(intrinsic));
 }
 
-#if _DEBUG && !MONODEVELOP
+#if (_DEBUG || DEBUG) && !MONODEVELOP
 void ArmRewriter::EmitUnitTest()
 {
 	if (opcode_seen[instr->id])
