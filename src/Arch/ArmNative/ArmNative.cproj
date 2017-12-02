@@ -48,7 +48,7 @@
     <Compile Include="ArmRewriter.cpp" />
     <Compile Include="ArmRewriter.Vector.cpp" />
     <Compile Include="ComBase.cpp" />
-    <Compile Include="dllmain.cpp">
+    <Compile Include="dllmain.cpp" />
     <Compile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>

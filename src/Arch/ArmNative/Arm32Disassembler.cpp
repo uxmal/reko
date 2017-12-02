@@ -59,7 +59,7 @@ INativeInstruction * Arm32Disassembler::NextInstruction()
 {
 	if (length == 0)
 	{
-		return false;
+		return nullptr;
 	}
 	uint64_t uAddr = this->uAddr;
 	auto instr = cs_malloc(hcapstone);

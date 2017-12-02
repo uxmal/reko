@@ -29,9 +29,14 @@
 #define STDAPICALLTYPE
 #define STDMETHODCALLTYPE
 #define STDMETHODIMP int
+#define STDMETHODIMP_(type) type
 #define STDMETHOD(name) HRESULT STDMETHODCALLTYPE name
 #define STDMETHOD_(type,name) type STDMETHODCALLTYPE name
 #define DLLEXPORT
+
+#include "guiddef.h"
+DEFINE_GUID(IID_IAgileObject, 0x94ea2b94, 0xe9cc, 0x49e0, 0xc0,0xff, 0xee,0x64,0xca,0x8f,0x5b,0x90);
+DEFINE_GUID(IID_IUnknown, 0x00000000, 0x0000, 0x0000, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46);
 
 typedef unsigned long UINT;
 typedef int INT;
@@ -50,26 +55,12 @@ typedef wchar_t WCHAR;
 typedef WCHAR TCHAR;
 typedef WCHAR OLECHAR;
 
-typedef struct _GUID {
-DWORD Data1;
-WORD  Data2;
-WORD  Data3;
-BYTE  Data4[8];
-
-} GUID;
-
-inline bool operator == (const GUID & a, const GUID & b) {
-	return memcmp(&a, &b, sizeof(a));
-}
-
 typedef GUID IID;
 typedef IID* LPIID;
 
 typedef /*[ptr]*/ void* HWND;
 typedef /*[ptr]*/ void* HMENU;
 typedef /*[ptr]*/ void* HANDLE;
-typedef /*[ref]*/ GUID & REFGUID;
-typedef /*[ref]*/ IID & REFIID;
 
 typedef int HRESULT;
 
@@ -80,8 +71,6 @@ struct IUnknown {
      virtual ULONG AddRef() = 0;
      virtual ULONG Release() = 0;
 };
-
-extern IID IID_IUnknown;
 
 #define S_OK    0
 #define S_FALSE 1
