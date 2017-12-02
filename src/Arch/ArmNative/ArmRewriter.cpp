@@ -19,10 +19,10 @@
 #include "stdafx.h"
 #include "reko.h"
 
+#include "functions.h"
 #include "ComBase.h"
 #include "ArmRewriter.h"
 
-void Dump(const char * fmt, ...);
 
 ArmRewriter::ArmRewriter(
 	const uint8_t * rawBytes,
@@ -47,10 +47,6 @@ ArmRewriter::ArmRewriter(
 	this->instr = cs_malloc(hcapstone);
 	++s_count;
 }
-
-// {12506D0F-1C67-4828-9601-96F8ED4D162D}
-static const IID IID_INativeRewriter =
-{ 0x12506d0f, 0x1c67, 0x4828,{ 0x96, 0x1, 0x96, 0xf8, 0xed, 0x4d, 0x16, 0x2d } };
 
 
 STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)

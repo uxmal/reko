@@ -1,4 +1,3 @@
-#pragma once
 /*
 * Copyright (C) 1999-2017 John Källén.
 *
@@ -17,16 +16,16 @@
 * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-class ArmArchitecture : public ComBase, public INativeArchitecture
+class ThumbArchitecture : public ComBase, public INativeArchitecture
 {
 public:
-	ArmArchitecture();
+	ThumbArchitecture();
 
-	virtual STDMETHODIMP QueryInterface(REFIID riid, void ** ppvObject) override;
+	virtual STDMETHODIMP QueryInterface(REFIID riid, void ** ppvObject);
 	virtual STDMETHODIMP_(ULONG) AddRef(void) override { return ComBase::AddRef(); }
-	virtual STDMETHODIMP_(ULONG) Release(void) override{ return ComBase::Release(); }
+	virtual STDMETHODIMP_(ULONG) Release(void) override { return ComBase::Release(); }
 
-    STDMETHODIMP_(void) GetAllRegisters(int * pcRegs, const NativeRegister * * ppRegs) override;
+	STDMETHODIMP_(void) GetAllRegisters(int * pcRegs, const NativeRegister * * ppRegs) override;
 	STDMETHODIMP_(INativeDisassembler *) CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr) override;
 	STDMETHODIMP_(INativeRewriter *) CreateRewriter(
 		const uint8_t * rawBytes,
