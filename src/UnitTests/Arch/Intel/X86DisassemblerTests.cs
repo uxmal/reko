@@ -899,6 +899,12 @@ movzx	ax,byte ptr [bp+04]
             AssertCode16("out\tdx,al", 0xEE);
             AssertCode16("out\tdx,ax", 0xEF);
         }
+
+        [Test]
+        public void X86dis_x64_push()
+        {
+            AssertCode64("push\tr15", 0x41, 0x57);
+        }
     }
 }
 
