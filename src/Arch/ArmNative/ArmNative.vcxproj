@@ -213,6 +213,7 @@
     <ClCompile Include="ThumbRewriter.Alu.cpp" />
     <ClCompile Include="ThumbRewriter.Control.cpp" />
     <ClCompile Include="ThumbRewriter.cpp" />
+    <ClCompile Include="ThumbRewriter.System.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
