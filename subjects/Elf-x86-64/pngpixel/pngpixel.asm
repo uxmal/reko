@@ -342,8 +342,8 @@ l0000000000400EC1:
 print_pixel proc
 	push	rbp
 	mov	rbp,rsp
-	push	rbp
-	push	rsp
+	push	r13
+	push	r12
 	push	rbx
 	sub	rsp,58
 	mov	[rbp-58],rdi
@@ -445,8 +445,8 @@ l00000000004012E9:
 l00000000004012EE:
 	add	rsp,58
 	pop	rbx
-	pop	rsp
-	pop	rbp
+	pop	r12
+	pop	r13
 	pop	rbp
 	ret
 
@@ -861,11 +861,11 @@ l0000000000401777:
 
 ;; __libc_csu_init: 0000000000401780
 __libc_csu_init proc
-	push	rdi
-	push	rsi
+	push	r15
+	push	r14
 	mov	r15d,edi
-	push	rbp
-	push	rsp
+	push	r13
+	push	r12
 	lea	r12,[rip+0020066E]                                     ; 0000000000601E00
 	push	rbp
 	lea	rbp,[rip+0020066E]                                     ; 0000000000601E08
@@ -896,10 +896,10 @@ l00000000004017D6:
 	add	rsp,08
 	pop	rbx
 	pop	rbp
-	pop	rsp
-	pop	rbp
-	pop	rsi
-	pop	rdi
+	pop	r12
+	pop	r13
+	pop	r14
+	pop	r15
 	ret
 00000000004017E5                90 66 2E 0F 1F 84 00 00 00 00 00      .f.........
 

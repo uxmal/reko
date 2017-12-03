@@ -186,13 +186,13 @@ main proc
 
 ;; __libc_csu_init: 0000000000400550
 __libc_csu_init proc
-	push	rdi
+	push	r15
 	mov	r15d,edi
-	push	rsi
+	push	r14
 	mov	r14,rsi
-	push	rbp
+	push	r13
 	mov	r13,rdx
-	push	rsp
+	push	r12
 	lea	r12,[rip+002008A8]                                     ; 0000000000600E10
 	push	rbp
 	lea	rbp,[rip+002008A8]                                     ; 0000000000600E18
@@ -221,10 +221,10 @@ l00000000004005A6:
 	add	rsp,08
 	pop	rbx
 	pop	rbp
-	pop	rsp
-	pop	rbp
-	pop	rsi
-	pop	rdi
+	pop	r12
+	pop	r13
+	pop	r14
+	pop	r15
 	ret
 00000000004005B5                66 66 2E 0F 1F 84 00 00 00 00 00      ff.........
 

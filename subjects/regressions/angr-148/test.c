@@ -132,33 +132,33 @@ void main()
 	return;
 }
 
-// 0000000000400550: void __libc_csu_init(Register word64 rsi, Register word32 edi)
-void __libc_csu_init(word64 rsi, word32 edi)
+// 0000000000400550: void __libc_csu_init(Register word32 edi, Stack word64 qwArg00, Stack word64 qwArg08, Stack word64 qwArg10)
+void __libc_csu_init(word32 edi, word64 qwArg00, word64 qwArg08, word64 qwArg10)
 {
 	_init();
 	if (0x0000000000600E18 - 0x0000000000600E10 >> 0x03 != 0x00)
 	{
 		do
 		{
-			word64 rsp_71;
-			word64 rdi_72;
-			word32 r15d_73;
-			word32 edi_74;
-			word64 r15_75;
-			word64 rsi_76;
-			word64 r14_77;
-			word64 rbp_78;
-			word64 r13_79;
-			word64 rdx_80;
-			word64 r12_81;
-			word64 rbx_82;
-			byte SCZO_83;
-			word32 ebx_84;
-			byte SZO_85;
-			byte C_86;
-			byte Z_87;
+			word64 rsp_75;
+			word64 r15_76;
+			word32 r15d_77;
+			word32 edi_78;
+			word64 r14_79;
+			word64 rsi_80;
+			word64 r13_81;
+			word64 rdx_82;
+			word64 r12_83;
+			word64 rbp_84;
+			word64 rbx_85;
+			byte SCZO_86;
+			word32 ebx_87;
+			byte SZO_88;
+			byte C_89;
+			byte Z_90;
+			word64 rdi_91;
 			globals->u600E10();
-		} while (rbx_82 + 0x01 != rbp_78);
+		} while (rbx_85 + 0x01 != rbp_84);
 	}
 	return;
 }
