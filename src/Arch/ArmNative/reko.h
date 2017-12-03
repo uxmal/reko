@@ -77,15 +77,20 @@ enum class ConditionCode
 
 enum class RtlClass
 {
-	Linear = 1,
-	Transfer = 2,
-	Conditional = 4,
-	Delay = 8,
-	Annul = 16,
-	Invalid = 32,
+	Linear = 1,         // non-transfer instruction, e.g. ALU operation.
+	Transfer = 2,       // transfer instruction.
+	Conditional = 4,    // Instruction is gated on a condition.
+	Call = 8,           // Instruction saves its continuation.
+	Delay = 16,         // Next instruction is in the delay slot and may be executed.
+	Annul = 32,         // Next instruction is annulled (see SPARC architecture)
+	Terminates = 64,    // Instruction terminates execution (e.g. x86 and ARM HLT)
+	Invalid = 128,      // Invalid instruction
+
 	ConditionalTransfer = Conditional | Transfer,
 };
-
+inline RtlClass operator|(RtlClass a, RtlClass b) {
+	return static_cast<RtlClass>(static_cast<int>(a) | static_cast<int>(b));
+}
 
 // The C++ side never really looks at the objects in the Rtl tree being 
 // built, so we can represent them as an opaque handle.
@@ -136,6 +141,9 @@ public:
 	virtual HExpr STDAPICALLTYPE UMul(HExpr a, HExpr b) = 0;
 	virtual HExpr STDAPICALLTYPE Xor(HExpr a, HExpr b) = 0;
 
+	virtual HExpr STDAPICALLTYPE Eq0(HExpr e) = 0;
+	virtual HExpr STDAPICALLTYPE Ne0(HExpr e) = 0;
+
 	virtual HExpr STDAPICALLTYPE Byte(uint8_t) = 0;
 	virtual HExpr STDAPICALLTYPE Int16(int16_t) = 0;
 	virtual HExpr STDAPICALLTYPE Int32(int32_t) = 0;
@@ -174,7 +182,7 @@ public:
 
 // {12506D0F-1C67-4828-9601-96F8ED4D162D}
 const IID IID_INativeRewriter =
-{ 0x12506d0f, 0x1c67, 0x4828,{ 0x96, 0x1, 0x96, 0xf8, 0xed, 0x4d, 0x16, 0x2d } };
+	{ 0x12506d0f, 0x1c67, 0x4828,{ 0x96, 0x1, 0x96, 0xf8, 0xed, 0x4d, 0x16, 0x2d } };
 
 class INativeRewriter : public IUnknown
 {

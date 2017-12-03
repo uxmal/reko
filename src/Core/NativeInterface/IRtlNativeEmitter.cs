@@ -77,6 +77,9 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr UMul(HExpr a, HExpr b);
         [PreserveSig] HExpr Xor(HExpr a, HExpr b);
 
+        [PreserveSig] HExpr Eq0(HExpr e);
+    	[PreserveSig] HExpr Ne0(HExpr e);
+
         [PreserveSig] HExpr Byte(byte b);
         [PreserveSig] HExpr Int16(short s);
         [PreserveSig] HExpr Int32(int i);

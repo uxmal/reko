@@ -320,9 +320,14 @@ namespace Reko.Core.NativeInterface
         }
 
 
-
-
-
+        public HExpr Eq0(HExpr e)
+        {
+            return MapToHandle(m.Eq0(GetExpression(e)));
+        }
+        public HExpr Ne0(HExpr e)
+        {
+            return MapToHandle(m.Ne0(GetExpression(e)));
+        }
 
 
         public HExpr Byte(byte b)
