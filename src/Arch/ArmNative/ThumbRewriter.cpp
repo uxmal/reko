@@ -80,7 +80,6 @@ STDMETHODIMP ThumbRewriter::Next()
 	// Most instructions are linear.
 	rtlClass = RtlClass::Linear;
 	return S_FALSE;
-
 }
 
 

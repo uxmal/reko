@@ -33,11 +33,6 @@ ThumbArchitecture::ThumbArchitecture()
 }
 
 
-// 09FFCC1F-60C8-4058-92C2-C90DAF115250
-static const IID IID_INativeArchitecture =
-{ 0x09FFCC1F, 0x60C8, 0x4058,{ 0x92, 0xC2, 0xc9, 0x0D, 0xAF, 0x11, 0x52, 0x50 } };
-
-
 STDMETHODIMP ThumbArchitecture::QueryInterface(REFIID riid, void ** ppvObject)
 {
 	if (riid == IID_INativeArchitecture ||

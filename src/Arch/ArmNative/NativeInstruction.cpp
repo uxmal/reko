@@ -38,9 +38,6 @@ NativeInstruction::~NativeInstruction()
 	Dump("Destroying instruction");
 }
 
-static const GUID IID_INativeInstruction =
-{ 0x2caf9227, 0x76d6, 0x4ded, { 0xbc, 0x74, 0xb9, 0x58, 0x1, 0xe1, 0x52, 0x4e } };
-
 
 HRESULT STDAPICALLTYPE NativeInstruction::QueryInterface(REFIID iid, void ** ppvOut)
 {

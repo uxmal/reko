@@ -238,12 +238,19 @@ struct NativeInstructionInfo
 	uint32_t Opcode;
 };
 
+
+const IID IID_INativeInstruction =
+	{ 0x2caf9227, 0x76d6, 0x4ded,{ 0xbc, 0x74, 0xb9, 0x58, 0x1, 0xe1, 0x52, 0x4e } };
+
 class INativeInstruction : public IUnknown
 {
 	virtual void STDAPICALLTYPE GetInfo(NativeInstructionInfo * info) = 0;
 	virtual void STDAPICALLTYPE Render(INativeInstructionWriter * writer, MachineInstructionWriterOptions options) = 0;
 };
 
+
+const IID IID_INativeDisassembler =
+	{ 0x10475e6b, 0xd167, 0x4db3,{ 0xb2, 0x11, 0x61, 0xf, 0x60, 0x73, 0xa3, 0x13 } };
 class INativeDisassembler : public IUnknown
 {
 	virtual INativeInstruction * STDAPICALLTYPE NextInstruction() = 0;
@@ -255,6 +262,10 @@ struct NativeRegister
 	int32_t Number;
 	int32_t BitSize;
 };
+
+// 09FFCC1F-60C8-4058-92C2-C90DAF115250
+const IID IID_INativeArchitecture =
+	{ 0x09FFCC1F, 0x60C8, 0x4058,{ 0x92, 0xC2, 0xc9, 0x0D, 0xAF, 0x11, 0x52, 0x50 } };
 
 class INativeArchitecture : public IUnknown
 {
