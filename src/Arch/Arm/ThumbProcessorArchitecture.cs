@@ -22,12 +22,14 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
@@ -35,18 +37,64 @@ namespace Reko.Arch.Arm
 {
     public class ThumbProcessorArchitecture : ProcessorArchitecture
     {
+        private INativeArchitecture native;
+        private Dictionary<string, RegisterStorage> regsByName;
+        private RegisterStorage[] regsByNumber;
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public ThumbProcessorArchitecture()
         {
-            this.StackRegister = A32Registers.sp;
             this.FramePointerType = PrimitiveType.Pointer32;
             this.PointerType = PrimitiveType.Pointer32;
             this.WordWidth = PrimitiveType.Word32;
             this.InstructionBitSize = 16;
+
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
+            var unk = CreateNativeArchitecture("arm-thumb");
+            this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
+
+            GetRegistersFromNative();
+            StackRegister = regsByName["sp"];
+        }
+
+        private void GetRegistersFromNative()
+        {
+            int cRegs;
+            IntPtr aRegs;
+            native.GetAllRegisters(out cRegs, out aRegs);
+            if (aRegs == null)
+                throw new OutOfMemoryException();
+            this.regsByName = new Dictionary<string, RegisterStorage>();
+            var regsByNumber = new List<RegisterStorage> { null };
+            NativeRegister nReg = new NativeRegister();
+            int cb = Marshal.SizeOf(nReg);
+            while (cRegs > 0)
+            {
+                nReg = (NativeRegister)Marshal.PtrToStructure(aRegs, typeof(NativeRegister));
+                if (nReg.Name != null)
+                {
+                    var n = nReg.Name;
+                    var i = nReg.Number;
+                    var b = nReg.BitSize;
+                    var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
+                    regsByName.Add(reg.Name, reg);
+                    regsByNumber.Add(reg);
+                }
+                aRegs += cb;
+                --cRegs;
+            }
+            this.regsByNumber = regsByNumber.ToArray();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new ThumbDisassembler(imageReader);
+        }
+
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        {
+            return new ThumbRewriterNew(this.native, rdr, (ArmProcessorState)state, binder, host);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
@@ -89,10 +137,7 @@ namespace Reko.Arch.Arm
             return new ArmProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-        {
-            return new ThumbRewriter(this, rdr, (ArmProcessorState) state, frame, host);
-        }
+ 
 
         public override SortedList<string, int> GetOpcodeNames()
         {
@@ -170,5 +215,9 @@ namespace Reko.Arch.Arm
         {
             throw new NotImplementedException();
         }
+
+        [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
+        public static extern IntPtr CreateNativeArchitecture(
+            [MarshalAs(UnmanagedType.LPStr)] string archName);
     }
 }

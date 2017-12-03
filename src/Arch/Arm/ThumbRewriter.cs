@@ -22,17 +22,153 @@ using Gee.External.Capstone;
 using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public partial class ThumbRewriter : IEnumerable<RtlInstructionCluster>
+    public class ThumbRewriterNew : IEnumerable<RtlInstructionCluster>
+    {
+        private INativeArchitecture nArch;
+        private EndianImageReader rdr;
+        private IStorageBinder binder;
+        private IRewriterHost host;
+
+        public ThumbRewriterNew(INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        {
+            this.nArch = nArch;
+            this.rdr = rdr;
+            this.binder = binder;
+            this.host = host;
+        }
+
+        public IEnumerator<RtlInstructionCluster> GetEnumerator()
+        {
+            var bytes = rdr.Bytes;
+            var offset = (int)rdr.Offset;
+            var addr = rdr.Address.ToLinear();
+            return new Enumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public class Enumerator : IEnumerator<RtlInstructionCluster>
+        {
+            private INativeRewriter native;
+            private byte[] bytes;
+            private GCHandle hBytes;
+            private RtlEmitter m;
+            private NativeTypeFactory ntf;
+            private NativeRtlEmitter rtlEmitter;
+            private ArmNativeRewriterHost host;
+            private IntPtr iRtlEmitter;
+            private IntPtr iNtf;
+            private IntPtr iHost;
+
+            public Enumerator(ThumbRewriterNew outer)
+            {
+                this.bytes = outer.rdr.Bytes;
+                ulong addr = outer.rdr.Address.ToLinear();
+                this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+
+                this.m = new RtlEmitter(new List<RtlInstruction>());
+                this.ntf = new NativeTypeFactory();
+                this.rtlEmitter = new NativeRtlEmitter(m, ntf, outer.host);
+                this.host = new ArmNativeRewriterHost(outer.binder, outer.host, this.ntf, rtlEmitter);
+
+                this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
+                this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);
+                this.iHost = GetCOMInterface(host, IID_INativeRewriterHost);
+
+                this.native = outer.nArch.CreateRewriter(
+                    hBytes.AddrOfPinnedObject(),
+                    bytes.Length,
+                    (int)outer.rdr.Offset,
+                    addr,
+                    rtlEmitter,
+                    ntf,
+                    host);
+            }
+
+            public RtlInstructionCluster Current { get; private set; }
+
+            object IEnumerator.Current { get { return Current; } }
+
+            private IntPtr GetCOMInterface(object o, Guid iid)
+            {
+                var iUnknown = Marshal.GetIUnknownForObject(o);
+                IntPtr intf;
+                var hr2 = Marshal.QueryInterface(iUnknown, ref iid, out intf);
+                return intf;
+            }
+
+            public void Dispose()
+            {
+                if (this.native != null)
+                {
+                    int n = native.GetCount();
+                    Marshal.ReleaseComObject(this.native);
+                    this.native = null;
+                }
+                if (iHost != null)
+                {
+                    Marshal.Release(iHost);
+                }
+                if (iNtf != null)
+                {
+                    Marshal.Release(iNtf);
+                }
+                if (iRtlEmitter != null)
+                {
+                    Marshal.Release(iRtlEmitter);
+                }
+                if (this.hBytes != null && this.hBytes.IsAllocated)
+                {
+                    this.hBytes.Free();
+                }
+            }
+
+            public bool MoveNext()
+            {
+                m.Instructions = new List<RtlInstruction>();
+                int n = native.GetCount();
+                if (native.Next() == 1)
+                    return false;
+                this.Current = this.rtlEmitter.ExtractCluster();
+                return true;
+            }
+
+            public void Reset()
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        static ThumbRewriterNew()
+        {
+            IID_INativeRewriter = typeof(INativeRewriter).GUID;
+            IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
+            IID_INativeTypeFactory = typeof(INativeTypeFactory).GUID;
+            IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
+        }
+
+        private static Guid IID_INativeRewriter;
+        private static Guid IID_INativeRewriterHost;
+        private static Guid IID_IRtlEmitter;
+        private static Guid IID_INativeTypeFactory;
+    }
+
+    public partial class ThumbRewriterOld : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<Arm32InstructionOld> instrs;
         private IStorageBinder frame;
@@ -45,7 +181,7 @@ namespace Reko.Arch.Arm
         private int itState;
         private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public ThumbRewriterOld(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.instrs = CreateInstructionStream(rdr);
             this.frame = frame;

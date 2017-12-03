@@ -85,59 +85,59 @@ start:
 
 	// Most instructions are linear.
 	rtlClass = RtlClass::Linear;
-		switch (instr->id)
-		{
-		case ARM_INS_ADD: RewriteBinop([](auto & m, HExpr a, HExpr b) { return m.IAdd(a, b); }); break;
-		case ARM_INS_ADDW: RewriteAddw(); break;
-		case ARM_INS_ADR: RewriteAdr(); break;
-		case ARM_INS_AND: RewriteAnd(); break;
-		case ARM_INS_ASR: RewriteShift([](auto & m, auto a, auto b) { return m.Sar(a, b); }); break;
-		case ARM_INS_B: RewriteB(); break;
-		case ARM_INS_BIC: RewriteBic(); break;
-		case ARM_INS_BL: RewriteBl(); break;
-		case ARM_INS_BLX: RewriteBlx(); break;
-		case ARM_INS_BX: RewriteBx(); break;
-		case ARM_INS_CBZ: RewriteCbnz([](auto & m, auto a) { return m.Eq0(a); }); break;
-		case ARM_INS_CBNZ: RewriteCbnz([](auto & m, auto a) { return m.Ne0(a); }); break;
-		case ARM_INS_CMP: RewriteCmp(); break;
-		case ARM_INS_DMB: RewriteDmb(); break;
-		case ARM_INS_EOR: RewriteEor(); break;
-		case ARM_INS_IT: RewriteIt(); goto start;  // Don't emit anything yet.
-		case ARM_INS_LDR: RewriteLdr(BaseType::Word32, BaseType::Word32); break;
-		case ARM_INS_LDRB: RewriteLdr(BaseType::UInt32, BaseType::Byte); break;
-		case ARM_INS_LDRSB: RewriteLdr(BaseType::Int32, BaseType::SByte); break;
-		case ARM_INS_LDREX: RewriteLdrex(); break;
-		case ARM_INS_LDRH: RewriteLdr(BaseType::UInt32, BaseType::Word16); break;
-		case ARM_INS_LSL: RewriteShift([](auto & m, auto a, auto b) { return m.Shl(a, b); }); break;
-		case ARM_INS_LSR: RewriteShift([](auto & m, auto a, auto b) { return m.Shr(a, b); }); break;
-		case ARM_INS_MOV: RewriteMov(); break;
-		case ARM_INS_MOVT: RewriteMovt(); break;
-		case ARM_INS_MOVW: RewriteMovw(); break;
-		case ARM_INS_MRC: RewriteMrc(); break;
-		case ARM_INS_MVN: RewriteMvn(); break;
-		case ARM_INS_POP: RewritePop(); break;
-		case ARM_INS_PUSH: RewritePush(); break;
-		case ARM_INS_RSB: RewriteRsb(); break;
-		case ARM_INS_STM: RewriteStm(0, true); break;
-		case ARM_INS_STR: RewriteStr(BaseType::Word32); break;
-		case ARM_INS_STRH: RewriteStr(BaseType::Word16); break;
-		case ARM_INS_STRB: RewriteStr(BaseType::Byte); break;
-		case ARM_INS_STREX: RewriteStrex(); break;
-		case ARM_INS_SUB: RewriteBinop([](auto & m, auto a, auto b) { return m.ISub(a, b); }); break;
-		case ARM_INS_SUBW: RewriteSubw(); break;
-		case ARM_INS_TRAP: RewriteTrap(); break;
-		case ARM_INS_TST: RewriteTst(); break;
-		case ARM_INS_UDF: RewriteUdf(); break;
-		case ARM_INS_UXTH: RewriteUxth(); break;
-		}
-		itState = (itState << 1) & 0x0F;
-		if (itState == 0)
-		{
-			itStateCondition = ARM_CC_AL;
-		}
-		m.FinishCluster(rtlClass, instr->address, instr->size);
-		return S_OK;
+	switch (instr->id)
+	{
+	case ARM_INS_ADD: RewriteBinop([](auto & m, HExpr a, HExpr b) { return m.IAdd(a, b); }); break;
+	case ARM_INS_ADDW: RewriteAddw(); break;
+	case ARM_INS_ADR: RewriteAdr(); break;
+	case ARM_INS_AND: RewriteAnd(); break;
+	case ARM_INS_ASR: RewriteShift([](auto & m, auto a, auto b) { return m.Sar(a, b); }); break;
+	case ARM_INS_B: RewriteB(); break;
+	case ARM_INS_BIC: RewriteBic(); break;
+	case ARM_INS_BL: RewriteBl(); break;
+	case ARM_INS_BLX: RewriteBlx(); break;
+	case ARM_INS_BX: RewriteBx(); break;
+	case ARM_INS_CBZ: RewriteCbnz([](auto & m, auto a) { return m.Eq0(a); }); break;
+	case ARM_INS_CBNZ: RewriteCbnz([](auto & m, auto a) { return m.Ne0(a); }); break;
+	case ARM_INS_CMP: RewriteCmp(); break;
+	case ARM_INS_DMB: RewriteDmb(); break;
+	case ARM_INS_EOR: RewriteEor(); break;
+	case ARM_INS_IT: RewriteIt(); goto start;  // Don't emit anything yet.
+	case ARM_INS_LDR: RewriteLdr(BaseType::Word32, BaseType::Word32); break;
+	case ARM_INS_LDRB: RewriteLdr(BaseType::UInt32, BaseType::Byte); break;
+	case ARM_INS_LDRSB: RewriteLdr(BaseType::Int32, BaseType::SByte); break;
+	case ARM_INS_LDREX: RewriteLdrex(); break;
+	case ARM_INS_LDRH: RewriteLdr(BaseType::UInt32, BaseType::Word16); break;
+	case ARM_INS_LSL: RewriteShift([](auto & m, auto a, auto b) { return m.Shl(a, b); }); break;
+	case ARM_INS_LSR: RewriteShift([](auto & m, auto a, auto b) { return m.Shr(a, b); }); break;
+	case ARM_INS_MOV: RewriteMov(); break;
+	case ARM_INS_MOVT: RewriteMovt(); break;
+	case ARM_INS_MOVW: RewriteMovw(); break;
+	case ARM_INS_MRC: RewriteMrc(); break;
+	case ARM_INS_MVN: RewriteMvn(); break;
+	case ARM_INS_POP: RewritePop(); break;
+	case ARM_INS_PUSH: RewritePush(); break;
+	case ARM_INS_RSB: RewriteRsb(); break;
+	case ARM_INS_STM: RewriteStm(0, true); break;
+	case ARM_INS_STR: RewriteStr(BaseType::Word32); break;
+	case ARM_INS_STRH: RewriteStr(BaseType::Word16); break;
+	case ARM_INS_STRB: RewriteStr(BaseType::Byte); break;
+	case ARM_INS_STREX: RewriteStrex(); break;
+	case ARM_INS_SUB: RewriteBinop([](auto & m, auto a, auto b) { return m.ISub(a, b); }); break;
+	case ARM_INS_SUBW: RewriteSubw(); break;
+	case ARM_INS_TRAP: RewriteTrap(); break;
+	case ARM_INS_TST: RewriteTst(); break;
+	case ARM_INS_UDF: RewriteUdf(); break;
+	case ARM_INS_UXTH: RewriteUxth(); break;
 	}
+	itState = (itState << 1) & 0x0F;
+	if (itState == 0)
+	{
+		itStateCondition = ARM_CC_AL;
+	}
+	m.FinishCluster(rtlClass, instr->address, instr->size);
+	return S_OK;
+}
 
 void ThumbRewriter::NotImplementedYet()
 {
@@ -286,7 +286,7 @@ void ThumbRewriter::ConditionalSkip(arm_cc cc, bool force)
 	}
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
-		m.Ptr32(static_cast<uint32_t>(instr->address) + 4),
+		m.Ptr32(static_cast<uint32_t>(instr->address) + instr->size),
 		RtlClass::ConditionalTransfer);
 }
 

@@ -360,7 +360,6 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_DCPS1:
 	case ARM_INS_DCPS2:
 	case ARM_INS_DCPS3:
-	case ARM_INS_IT:
 	case ARM_INS_LSL:
 	case ARM_INS_LSR:
 	case ARM_INS_ASRS:

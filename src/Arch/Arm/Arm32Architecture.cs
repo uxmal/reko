@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm
             WordWidth = PrimitiveType.Word32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
-            var unk = CreateNativeArchitecture();
+            var unk = CreateNativeArchitecture("arm32");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
             GetRegistersFromNative();
@@ -273,6 +273,7 @@ namespace Reko.Arch.Arm
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
-        public static extern IntPtr CreateNativeArchitecture();
+        public static extern IntPtr CreateNativeArchitecture(
+            [MarshalAs(UnmanagedType.LPStr)] string archName);
     }
 }

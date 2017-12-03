@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public partial class ThumbRewriter
+    public partial class ThumbRewriterOld
     {
         private void RewriteAdr()
         {

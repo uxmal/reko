@@ -27,6 +27,7 @@
 #include "ComBase.h"
 #include "ArmRewriter.h"
 #include "ArmArchitecture.h"
+#include "ThumbArchitecture.h"
 
 extern "C" {
 	
@@ -46,6 +47,9 @@ extern "C" {
 	DLLEXPORT INativeArchitecture *
 		CreateNativeArchitecture(const char * archName)
 	{
-		return new ArmArchitecture();
+		if (strcmp(archName, "arm") == 0)
+			return new ArmArchitecture();
+		else if (strcmp(archName, "arm-thumb") == 0)
+			return new ThumbArchitecture();
 	}
 }
