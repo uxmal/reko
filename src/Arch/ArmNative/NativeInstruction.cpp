@@ -159,7 +159,7 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 	char risky[40];
 	switch (op.type)
 	{
-	case ARM64_OP_IMM:
+	case ARM_OP_IMM:
 		if (insn.id == ARM_INS_B ||
 			insn.id == ARM_INS_BL ||
 			insn.id == ARM_INS_BLX)
@@ -174,20 +174,57 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 			WriteImmediateValue(op.imm, writer);
 		}
 		break;
-	case ARM64_OP_CIMM:
+	case ARM_OP_CIMM:
 		snprintf(risky, sizeof(risky), "c%d", op.imm);
 		writer.WriteString(risky);
 		break;
-	case ARM64_OP_REG:
+	case ARM_OP_PIMM:
+		snprintf(risky, sizeof(risky), "p%d", op.imm);
+		writer.WriteString(risky);
+		break;
+	case ARM_OP_REG:
 		if (op.subtracted)
 			writer.WriteChar('-');
 		writer.WriteString(ArmArchitecture::aRegs[op.reg].Name);
 		WriteShift(op, writer);
 		break;
-	case ARM64_OP_MEM:
+	case ARM_OP_SYSREG:
+		writer.WriteString("$$ SYSREG NOT IMPLEMENTED YET");
+		//writer.WriteString(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
+		break;
+	case ARM_OP_MEM:
+		if (op.mem.base == ARM_REG_PC)
+		{
+			auto uAddr = static_cast<uint32_t>(insn.address + op.mem.disp) + 8u;
+			if (op.mem.index == ARM_REG_INVALID &&
+				((int)options & (int)MachineInstructionWriterOptions::ResolvePcRelativeAddress))
+			{
+				snprintf(risky, sizeof(risky), "%08X", uAddr);
+				writer.WriteChar('[');
+				writer.WriteAddress(risky, uAddr);
+				writer.WriteChar(']');
+				//$TODO: annotation
+				//var sr = new StringRenderer();
+				//WriteMemoryOperand(op, sr);
+				//writer.AddAnnotation(sr.ToString());
+			}
+			else
+			{
+				WriteMemoryOperand(insn, op, writer);
+				//$TODO: annotation
+				// writer.AddAnnotation(addr.ToString());
+			}
+			return;
+		}
 		WriteMemoryOperand(insn, op, writer);
-		return;
-	case ARM64_OP_FP:
+		break;
+	case ARM_OP_SETEND:
+		if (this->instr->detail->arm.operands[0].setend == ARM_SETEND_BE)
+			writer.WriteString("be");
+		else 
+			writer.WriteString("le");
+		break;
+	case ARM_OP_FP:
 		snprintf(risky, sizeof(risky), "#%lf", op.fp);
 		if (strcspn(risky, nosuffixRequired) == strlen(risky))
 			strcat_s(risky, sizeof(risky), ".0");

@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Arm64Architecture.h" />
     <ClInclude Include="Arm64Disassembler.h" />
+    <ClInclude Include="Arm64Instruction.h" />
     <ClInclude Include="Arm64Rewriter.h" />
     <ClInclude Include="ArmArchitecture.h" />
     <ClInclude Include="Arm32Disassembler.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Arm32Disassembler.cpp" />
     <ClCompile Include="Arm64Architecture.cpp" />
     <ClCompile Include="Arm64Disassembler.cpp" />
+    <ClCompile Include="Arm64Instruction.cpp" />
     <ClCompile Include="Arm64Rewriter.cpp" />
     <ClCompile Include="ArmArchitecture.cpp" />
     <ClCompile Include="ArmRewriter.System.cpp" />

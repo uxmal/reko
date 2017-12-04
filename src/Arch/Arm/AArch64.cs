@@ -50,7 +50,7 @@ namespace Reko.Arch.Arm
             WordWidth = PrimitiveType.Word32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
-            var unk = CreateNativeArchitecture("aarch64");
+            var unk = CreateNativeArchitecture("arm-64");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
             GetRegistersFromNative();
@@ -156,7 +156,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Arm64State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

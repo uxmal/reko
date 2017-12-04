@@ -22,7 +22,7 @@ class NativeInstruction : public ComBase, public INativeInstruction
 {
 public:
 	NativeInstruction(cs_insn * instr, NativeInstructionInfo info);
-	~NativeInstruction() override;
+	virtual ~NativeInstruction() override;
 
 	STDMETHODIMP QueryInterface(REFIID iid, void ** ppvOut) override;
 	STDMETHODIMP_(ULONG) AddRef() override { return ComBase::AddRef(); }
@@ -44,7 +44,7 @@ private:
 	void WriteImmShift(const char * op, int value, INativeInstructionWriter & writer);
 	void WriteRegShift(const char * op, int value, INativeInstructionWriter &writer);
 	static void WriteImmediateValue(int imm8, INativeInstructionWriter & writer);
-
+protected:
 	cs_insn * instr;
 	NativeInstructionInfo info;
 };

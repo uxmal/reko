@@ -52,7 +52,7 @@ namespace Reko.Arch.Arm
             WordWidth = PrimitiveType.Word32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
-            var unk = CreateNativeArchitecture("arm32");
+            var unk = CreateNativeArchitecture("arm");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
             GetRegistersFromNative();

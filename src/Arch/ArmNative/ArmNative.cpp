@@ -52,7 +52,7 @@ extern "C" {
 			return new ArmArchitecture();
 		else if (strcmp(archName, "arm-thumb") == 0)
 			return new ThumbArchitecture();
-		else if (strcmp(archName, "arm-64"))
+		else if (strcmp(archName, "arm-64") == 0)
 			return new Arm64Architecture();
 		else
 			return nullptr;

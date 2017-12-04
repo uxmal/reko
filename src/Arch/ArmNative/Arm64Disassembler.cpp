@@ -23,6 +23,7 @@
 #include "functions.h"
 #include "ComBase.h"
 #include "NativeInstruction.h"
+#include "Arm64Instruction.h"
 #include "Arm64Disassembler.h"
 #include "Arm64Architecture.h"
 
@@ -68,14 +69,14 @@ INativeInstruction * Arm64Disassembler::NextInstruction()
 		};
 		this->uAddr += 4;
 		this->length -= 4;
-		return new NativeInstruction(instr, info);
+		return new Arm64Instruction(instr, info);
 	}
 	else
 	{
 		auto info = NativeInstructionInfo{
 			uAddr, 4, static_cast<uint32_t>(InstructionClass::Linear), instr->id
 		};
-		return new NativeInstruction(instr, info);
+		return new Arm64Instruction(instr, info);
 	}
 }
 
