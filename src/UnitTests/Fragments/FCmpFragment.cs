@@ -39,8 +39,8 @@ namespace Reko.UnitTests.Fragments
             var int32 = PrimitiveType.Int32;
             var fp0 = m.Register(new RegisterStorage("fp0", 32, 0, real80));
             var a6 = m.Register(new RegisterStorage("a6", 14, 0, PrimitiveType.Pointer32));
-            var flags = m.Frame.EnsureIdentifier(
-                new FlagRegister("flags", 42, PrimitiveType.Word32));
+            var flagReg = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+            var flags = m.Frame.EnsureFlagGroup(flagReg, 0xF, "NZCV", PrimitiveType.Byte);
 
             m.Assign(fp0, m.Cast(real80, m.Load(int32, m.ISub(a6, 0x10))));
             m.Assign(

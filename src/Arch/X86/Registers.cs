@@ -71,7 +71,7 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage O;
         public static readonly RegisterStorage P;
 
-        public static readonly Reko.Core.FlagRegister eflags;
+        public static readonly RegisterStorage eflags;
 
         public static readonly RegisterStorage FPUF;
         public static readonly RegisterStorage FPST;    // virtual register; the x87 FPU stack pointer.
@@ -205,7 +205,7 @@ namespace Reko.Arch.X86
             D = FlagRegister("D", 35);
             O = FlagRegister("O", 36);
             P = FlagRegister("P", 37);
-            eflags = new Core.FlagRegister("eflags", 38, PrimitiveType.Word32);
+            eflags = new RegisterStorage("eflags", 38, 0, PrimitiveType.Word32);
             FPUF = new RegisterStorage("FPUF", 39, 0, PrimitiveType.Byte);
             FPST = new RegisterStorage("FPST", 39, 0, PrimitiveType.Byte); 
 

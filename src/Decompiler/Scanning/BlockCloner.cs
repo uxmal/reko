@@ -324,11 +324,6 @@ namespace Reko.Scanning
             return procCalling.Frame.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
-        public Identifier VisitFlagRegister(FlagRegister freg)
-        {
-            return procCalling.Frame.EnsureRegister(freg);
-        }
-
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
         {
             throw new NotImplementedException();

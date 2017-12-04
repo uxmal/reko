@@ -45,7 +45,7 @@ namespace Reko.Arch.Avr
             this.x = new RegisterStorage("x", 33, 0, PrimitiveType.Word16);
             this.y = new RegisterStorage("y", 34, 0, PrimitiveType.Word16);
             this.z = new RegisterStorage("z", 35, 0, PrimitiveType.Word16);
-            this.sreg = new FlagRegister("sreg", 36, PrimitiveType.Byte);
+            this.sreg = new RegisterStorage("sreg", 36, 0, PrimitiveType.Byte);
             this.code = new RegisterStorage("code", 100, 0, PrimitiveType.SegmentSelector);
             this.StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16); 
             this.regs = Enumerable.Range(0, 32)
@@ -70,7 +70,7 @@ namespace Reko.Arch.Avr
             };
         }
         
-        public FlagRegister sreg { get; private set; }
+        public RegisterStorage sreg { get; private set; }
         public RegisterStorage x { get; private set; }
         public RegisterStorage y { get; private set; }
         public RegisterStorage z { get; private set; }

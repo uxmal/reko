@@ -62,11 +62,6 @@ namespace Reko.Scanning
             return frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, id.DataType);
         }
 
-        public Identifier VisitFlagRegister(FlagRegister freg)
-        {
-            return frame.EnsureRegister(freg);
-        }
-
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)
         {
             return frame.EnsureFpuStackVariable(fpu.FpuStackOffset, id.DataType);

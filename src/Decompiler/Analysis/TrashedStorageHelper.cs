@@ -107,11 +107,6 @@ namespace Reko.Analysis
             return grf;
 		}
 
-        public Storage VisitFlagRegister(FlagRegister freg)
-        {
-            throw new NotImplementedException();
-        }
-
         public Storage VisitFpuStackStorage(FpuStackStorage fpu)
 		{
             if (defining)

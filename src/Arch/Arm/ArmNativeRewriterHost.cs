@@ -68,7 +68,7 @@ namespace Reko.Arch.Arm
         public HExpr EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size)
         {
             var reg = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)baseReg];
-            var id = frame.EnsureFlagGroup((FlagRegister)reg, (uint)bitmask, name, Interop.DataTypes[size]);
+            var id = frame.EnsureFlagGroup(reg, (uint)bitmask, name, Interop.DataTypes[size]);
             return m.MapToHandle(id);
         }
 

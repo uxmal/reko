@@ -156,7 +156,7 @@ namespace Reko.Core
 			return id;
 		}
 
-        public Identifier EnsureFlagGroup(FlagRegister freg, uint grfMask, string name, DataType dt)
+        public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name, DataType dt)
 		{
 			if (grfMask == 0)
 				return null;

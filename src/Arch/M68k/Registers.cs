@@ -57,11 +57,11 @@ namespace Reko.Arch.M68k
         public static FpRegister fp6;
         public static FpRegister fp7;
 
-        public static readonly FlagRegister ccr;
+        public static readonly RegisterStorage ccr;
         public static readonly RegisterStorage sr;
         public static readonly RegisterStorage usp;
         public static readonly AddressRegister pc;
-        public static readonly FlagRegister fpsr;
+        public static readonly RegisterStorage fpsr;
 
         internal static RegisterStorage[] regs;
         internal static int Max;
@@ -96,11 +96,11 @@ namespace Reko.Arch.M68k
             fp6 = new FpRegister("fp6", 22, PrimitiveType.Real80);
             fp7 = new FpRegister("fp7", 23, PrimitiveType.Real80);
 
-            ccr = new FlagRegister("ccr", 24, PrimitiveType.Byte);
+            ccr = new RegisterStorage("ccr", 24, 0, PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
-            fpsr = new FlagRegister("fpsr", 28, PrimitiveType.Word32);
+            fpsr = new RegisterStorage("fpsr", 28, 0, PrimitiveType.Word32);
 
             Max = 28;
 

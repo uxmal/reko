@@ -35,7 +35,7 @@ namespace Reko.Core
     {
         Identifier EnsureRegister(RegisterStorage stgForeign);
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
-        Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType);
+        Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType);
         Identifier EnsureFpuStackVariable(int v, DataType dataType);
         Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer);
         Identifier EnsureSequence(Storage head, Storage tail, DataType dataType);

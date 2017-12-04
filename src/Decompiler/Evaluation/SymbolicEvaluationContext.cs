@@ -317,12 +317,6 @@ namespace Reko.Evaluation
                 return grf;
             }
 
-            public Storage VisitFlagRegister(FlagRegister freg)
-            {
-                ctx.RegisterState[freg] = Constant.Invalid;
-                return freg;
-            }
-
             public Storage VisitFpuStackStorage(FpuStackStorage fpu)
             {
                 return fpu;

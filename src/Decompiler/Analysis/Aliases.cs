@@ -324,11 +324,6 @@ namespace Reko.Analysis
             return null;
         }
 
-        public Storage VisitFlagRegister(FlagRegister freg)
-        {
-            return null;
-        }
-
         public Storage VisitTemporaryStorage(TemporaryStorage temp)
         {
             return null;

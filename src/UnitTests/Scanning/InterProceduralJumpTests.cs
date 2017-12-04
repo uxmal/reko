@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Scanning
     public class InterProceduralJumpTests
     {
         private ProgramBuilder prog;
-        private FlagRegister freg;
+        private RegisterStorage freg;
         private Identifier reg;
         private Identifier SCZO;
 
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Test()
         {
-            freg = new FlagRegister("freg", 9, PrimitiveType.Word32);
+            freg = new RegisterStorage("freg", 9, 0, PrimitiveType.Word32);
             reg = new Identifier("reg", PrimitiveType.Word32, new RegisterStorage("reg", 1, 0, PrimitiveType.Word32));
             SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(freg, 0xF, "SCZO", PrimitiveType.Byte));
             new RtlTraceBuilder

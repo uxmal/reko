@@ -51,9 +51,9 @@ namespace Reko.Arch.Arm
 
         public static readonly RegisterStorage[] GpRegs;
 
-        public static readonly FlagRegister fpscr = new FlagRegister("fpscr", 29, PrimitiveType.Word32);
-        public static readonly FlagRegister apsr = new FlagRegister("cpsr", 30, PrimitiveType.Word32);
-        public static readonly FlagRegister cpsr = new FlagRegister("cpsr", 31, PrimitiveType.Word32);
+        public static readonly RegisterStorage fpscr = new RegisterStorage("fpscr", 29, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage apsr = new RegisterStorage("cpsr", 30, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage cpsr = new RegisterStorage("cpsr", 31, 0, PrimitiveType.Word32);
 
         public static readonly RegisterStorage q0 =  new RegisterStorage("q0" , 32, 0, PrimitiveType.Word128) ;
         public static readonly RegisterStorage q1 =  new RegisterStorage("q1" , 33, 0, PrimitiveType.Word128) ;

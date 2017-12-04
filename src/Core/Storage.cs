@@ -84,41 +84,12 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// A flag register can store one or more bit registers.
-    /// </summary>
-    public class FlagRegister : RegisterStorage
-    {
-        public FlagRegister(string name, int number, PrimitiveType size) :
-            base(name, number, 0, size)
-        {
-        }
-
-        public override T Accept<T>(StorageVisitor<T> visitor)
-        {
-            return visitor.VisitFlagRegister(this);
-        }
-
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
-        {
-            return visitor.VisitFlagRegister(this, context);
-        }
-
-        public override int OffsetOf(Storage storage)
-        {
-            if (storage is FlagRegister)
-                return 0;
-            else
-                return -1;
-        }
-    }
-
-    /// <summary>
     /// This class represents groups of bits stored in flag registers. Typically, these are the
     /// Carry, Zero, Overflow etc flags that are set after ALU operations.
     /// </summary>
 	public class FlagGroupStorage : Storage
 	{
-        public FlagGroupStorage(FlagRegister freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
+        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
         {
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
@@ -126,7 +97,7 @@ namespace Reko.Core
             this.DataType = dataType;
         }
 
-        public FlagRegister FlagRegister { get; private set; }
+        public RegisterStorage FlagRegister { get; private set; }
         public uint FlagGroupBits { get; private set; }
         public DataType DataType { get; private set; }
 

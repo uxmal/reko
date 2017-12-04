@@ -177,11 +177,6 @@ namespace Reko.Analysis
 			set { liveStackVars = value; }
 		}
 
-        public Storage VisitFlagRegister(FlagRegister freg)
-        {
-            return null;
-        }
-
 		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
 		{
 			if (define)

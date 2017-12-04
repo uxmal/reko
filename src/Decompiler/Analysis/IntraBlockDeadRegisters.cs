@@ -355,11 +355,6 @@ namespace Reko.Analysis
             return true;
         }
 
-        public bool VisitFlagRegister(FlagRegister freg, bool defining)
-        {
-            return false;
-        }
-
         public bool VisitFpuStackStorage(FpuStackStorage fpu, bool defining)
         {
             return true;
