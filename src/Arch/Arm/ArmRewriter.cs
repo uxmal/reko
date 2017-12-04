@@ -35,12 +35,14 @@ namespace Reko.Arch.Arm
 {
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
     {
+        private RegisterStorage[] regs;
         private EndianImageReader rdr;
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ArmRewriterNew(Arm32Architecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        internal ArmRewriterNew(RegisterStorage[] regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
+            this.regs = regs;
             this.rdr = rdr;
             this.binder = binder;
             this.host = host;
@@ -51,7 +53,7 @@ namespace Reko.Arch.Arm
             var bytes = rdr.Bytes;
             var offset = (int)rdr.Offset;
             var addr = rdr.Address.ToLinear();
-            return new Enumerator(this);
+            return new Enumerator(regs, this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -72,7 +74,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(ArmRewriterNew outer)
+            public Enumerator(RegisterStorage [] regs, ArmRewriterNew outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
@@ -81,7 +83,7 @@ namespace Reko.Arch.Arm
                 this.m = new RtlEmitter(new List<RtlInstruction>());
                 this.ntf = new NativeTypeFactory();
                 this.rtlEmitter = new NativeRtlEmitter(m, ntf, outer.host);
-                this.host = new ArmNativeRewriterHost(outer.binder, outer.host, this.ntf, rtlEmitter);
+                this.host = new ArmNativeRewriterHost(regs, outer.binder, outer.host, this.ntf, rtlEmitter);
 
                 this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
                 this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);

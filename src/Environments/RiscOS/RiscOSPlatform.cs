@@ -76,7 +76,7 @@ namespace Reko.Environments.RiscOS
                     },
                     Signature = FunctionType.Action(
                         new Identifier[] {
-                            new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0)
+                            new Identifier("r0", PrimitiveType.Pointer32, Architecture.GetRegister("r0"))
                         })
                 };
             }

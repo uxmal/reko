@@ -35,11 +35,13 @@ namespace Reko.Arch.Arm
         private IProcessorArchitecture arch;
         private uint isValid;
         private ulong[] regData;
+        private RegisterStorage pc;
 
         public ArmProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.regData = new ulong[48];
+            this.pc = arch.GetRegister("pc");
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -76,8 +78,8 @@ namespace Reko.Arch.Arm
 
         public override void SetInstructionPointer(Address addr)
         {
-            regData[A32Registers.pc.Number] = addr.ToUInt32();
-            isValid |= 1u << A32Registers.pc.Number;
+            regData[pc.Number] = addr.ToUInt32();
+            isValid |= 1u << pc.Number;
         }
 
         public override void OnProcedureEntered()

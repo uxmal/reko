@@ -67,11 +67,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteCmp()
         {
-            var dst = RewriteOp(ops[0]);
-            var src = RewriteOp(ops[1]);
-            var flags = frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "NZCV", PrimitiveType.Byte);
-            m.Assign(flags, m.Cond(
-                m.ISub(dst, src)));
+            //$OBSOLETE
         }
 
         private void RewriteDmb()
@@ -138,14 +134,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteShift(Func<Expression,Expression, Expression> ctor)
         {
-            var dst = RewriteOp(ops[0]);
-            var src1 = RewriteOp(ops[1]);
-            var src2 = RewriteOp(ops[2]);
-            m.Assign(dst, ctor(src1, src2));
-            if (instr.ArchitectureDetail.UpdateFlags)
-            {
-                m.Assign(frame.EnsureFlagGroup(A32Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte), m.Cond(dst));
-            }
+            //$OBSOLETE
         }
 
         private void RewriteMov()
@@ -187,32 +176,12 @@ namespace Reko.Arch.Arm
 
         private void RewritePop()
         {
-            var sp = frame.EnsureRegister(A32Registers.sp);
-            m.Assign(sp, m.IAdd(sp, Constant.Int32(ops.Length * 4)));
-            int offset = ops.Length * 4;
-            foreach (var op in ops.OrderByDescending(o => o.RegisterValue.Value))
-            {
-                Predicate(
-                    ArmCodeCondition.AL,
-                    GetReg(op.RegisterValue.Value),
-                    m.LoadDw(m.ISub(sp, Constant.Int32(offset))));
-                offset -= 4;
-            }
+            //$OBSOLETE
         }
 
         private void RewritePush()
         {
-            var sp = frame.EnsureRegister(A32Registers.sp);
-            m.Assign(sp, m.ISub(sp, Constant.Int32( ops.Length * 4)));
-            int offset = 0;
-            foreach (var op in ops.OrderByDescending(o => o.RegisterValue.Value))
-            {
-                Predicate(
-                    ArmCodeCondition.AL,
-                    m.LoadDw(m.IAdd(sp, Constant.Int32(offset))),
-                    GetReg(op.RegisterValue.Value));
-                offset += 4;
-            }
+            //$OBSOLETE
         }
 
         private void RewriteRsb()

@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
-            return new ArmRewriterNew(null, new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
+            return arch.CreateRewriter(new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
         }
 
         private void BuildTest(params string[] bitStrings)
@@ -533,7 +533,7 @@ means
             BuildTest(0xE10F3000); // mrs r3, cpsr
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|r3 = __mrs(cpsr)");
+               "1|L--|r3 = __mrs(apsr)");
         }
 
         [Test]
@@ -978,7 +978,7 @@ means
             BuildTest(0xeef1fa10);  // vmrs apsr_nzcv, fpscr
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|cpsr = fpscr");
+                "1|L--|apsr_cpsr = fpscr");
         }
 
         [Test]

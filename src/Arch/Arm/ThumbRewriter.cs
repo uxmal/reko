@@ -36,13 +36,15 @@ namespace Reko.Arch.Arm
 {
     public class ThumbRewriterNew : IEnumerable<RtlInstructionCluster>
     {
+        private RegisterStorage[] regs;
         private INativeArchitecture nArch;
         private EndianImageReader rdr;
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        public ThumbRewriterNew(INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public ThumbRewriterNew(RegisterStorage []regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
+            this.regs = regs;
             this.nArch = nArch;
             this.rdr = rdr;
             this.binder = binder;
@@ -54,7 +56,7 @@ namespace Reko.Arch.Arm
             var bytes = rdr.Bytes;
             var offset = (int)rdr.Offset;
             var addr = rdr.Address.ToLinear();
-            return new Enumerator(this);
+            return new Enumerator(regs, this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -75,7 +77,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(ThumbRewriterNew outer)
+            public Enumerator(RegisterStorage[] regs, ThumbRewriterNew outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
@@ -84,7 +86,7 @@ namespace Reko.Arch.Arm
                 this.m = new RtlEmitter(new List<RtlInstruction>());
                 this.ntf = new NativeTypeFactory();
                 this.rtlEmitter = new NativeRtlEmitter(m, ntf, outer.host);
-                this.host = new ArmNativeRewriterHost(outer.binder, outer.host, this.ntf, rtlEmitter);
+                this.host = new ArmNativeRewriterHost(regs, outer.binder, outer.host, this.ntf, rtlEmitter);
 
                 this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
                 this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);
@@ -283,7 +285,7 @@ namespace Reko.Arch.Arm
 
         private Expression GetReg(ArmRegister armRegister)
         {
-            return frame.EnsureRegister(A32Registers.RegisterByCapstoneID[armRegister]);
+            throw new Exception("//$OBSOLETE");
         }
 
         private Expression RewriteOp(ArmInstructionOperand op, DataType accessSize= null)
@@ -362,7 +364,8 @@ namespace Reko.Arch.Arm
 
         private Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
         {
-            return frame.EnsureFlagGroup(A32Registers.cpsr, (uint)bits, name, type);
+            throw new Exception("//$OBSOLETE");
+            //return frame.EnsureFlagGroup(A32Registers.cpsr, (uint)bits, name, type);
         }
 
         private void Predicate(ArmCodeCondition cond, RtlInstruction instr)
@@ -383,7 +386,7 @@ namespace Reko.Arch.Arm
         {
             RtlInstruction instr;
             Identifier id;
-            if (dst.As<Identifier>(out id) && id.Storage == A32Registers.pc)
+            if (dst.As<Identifier>(out id))
             {
                 rtlc = RtlClass.Transfer;
                 instr = new RtlGoto(src, RtlClass.Transfer);

@@ -24,6 +24,7 @@ using Reko.Core.NativeInterface;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -35,13 +36,16 @@ namespace Reko.Arch.Arm
     [ClassInterface(ClassInterfaceType.None)]
     public class ArmNativeRewriterHost : MarshalByRefObject, INativeRewriterHost
     {
+        private RegisterStorage[] regs;
         private IStorageBinder frame;
         private IRewriterHost host;
         private NativeTypeFactory ntf;
         private NativeRtlEmitter m;
 
-        public ArmNativeRewriterHost(IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
+        public ArmNativeRewriterHost(RegisterStorage[] regs, IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
         {
+            Debug.Assert(regs != null);
+            this.regs = regs;
             this.frame = frame;
             this.host = host;
             this.ntf = ntf;
@@ -50,13 +54,14 @@ namespace Reko.Arch.Arm
 
         public virtual RegisterStorage GetRegister(int reg)
         {
-            return A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)reg];
+            return regs[reg];
         }
 
         public virtual RegisterStorage GetSysRegister(int sysreg)
         {
             var s = (capstone_arm_reg)sysreg;
-            return A32Registers.SysRegisterByCapstoneIDNew[(capstone_arm_sysreg)sysreg];
+            throw new NotImplementedException();
+            //return A32Registers.SysRegisterByCapstoneIDNew[(capstone_arm_sysreg)sysreg];
         }
 
         public HExpr CreateTemporary(BaseType size)
@@ -67,7 +72,7 @@ namespace Reko.Arch.Arm
 
         public HExpr EnsureFlagGroup(int baseReg, int bitmask, string name, BaseType size)
         {
-            var reg = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)baseReg];
+            var reg = regs[baseReg];
             var id = frame.EnsureFlagGroup(reg, (uint)bitmask, name, Interop.DataTypes[size]);
             return m.MapToHandle(id);
         }
@@ -85,8 +90,8 @@ namespace Reko.Arch.Arm
 
         public HExpr EnsureSequence(int regHi, int regLo, BaseType size)
         {
-            var hi = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)regHi];
-            var lo = A32Registers.RegisterByCapstoneIDNew[(capstone_arm_reg)regLo];
+            var hi = regs[regHi];
+            var lo = regs[regLo];
             var id = frame.EnsureSequence(hi, lo, Interop.DataTypes[size]);
             return m.MapToHandle(id);
         }

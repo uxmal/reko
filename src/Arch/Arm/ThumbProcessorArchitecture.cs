@@ -94,7 +94,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new ThumbRewriterNew(this.native, rdr, (ArmProcessorState)state, binder, host);
+            return new ThumbRewriterNew(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
@@ -158,17 +158,24 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            return A32Registers.GpRegs[i];
+            if (1 <= i && i < regsByNumber.Length)
+                return regsByNumber[i];
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            RegisterStorage reg;
+            if (regsByName.TryGetValue(name, out reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
         {
-            return A32Registers.GpRegs.ToArray();
+            return regsByNumber.Skip(1).ToArray();
         }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
