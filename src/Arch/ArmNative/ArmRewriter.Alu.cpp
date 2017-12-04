@@ -175,7 +175,7 @@ void ArmRewriter::RewriteLdr(BaseType size)
 	auto opSrc = this->Operand(Src1());
 	auto opDst = this->Operand(Dst());
 	auto rDst = Dst().reg;
-	if (rDst == ARM_REG_PC)
+	if (rDst == ARM_REG_PC) 
 	{
 		// Assignment to PC is the same as a jump
 		m.Goto(opSrc);

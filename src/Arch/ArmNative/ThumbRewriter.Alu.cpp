@@ -63,6 +63,8 @@ void ThumbRewriter::RewriteLdr(BaseType dtDst, BaseType dtSrc)
 {
 	this->ConditionalSkip(this->itStateCondition, false);
 	const auto & mem = Src1().mem;
+	bool isJump = (Dst().reg == ARM_REG_PC);
+
 	HExpr dst = RewriteOp(Dst());
 	HExpr src;
 	if (instr->detail->arm.op_count == 2 && instr->detail->arm.writeback)
@@ -88,16 +90,21 @@ void ThumbRewriter::RewriteLdr(BaseType dtDst, BaseType dtSrc)
 		m.Assign(baseReg, m.IAdd(baseReg, RewriteOp(Src2())));
 		src = tmp;
 	}
-	m.Assign(dst, src);
+	if (isJump)
+	{
+		rtlClass = RtlClass::Transfer;
+		m.Goto(src);
+	}
+	else
+	{
+		m.Assign(dst, src);
+	}
 }
 
 
 void ThumbRewriter::RewriteLdm(int initialOffset, BinOpEmitter op)
 {
 	auto dst = this->RewriteOp(Dst());
-	auto ops = &instr->detail->arm.operands[0];
-	auto begin = ops + 1;
-	auto end = ops + instr->detail->arm.op_count;
 	RewriteLdm(dst, 1, initialOffset, op, instr->detail->arm.writeback);
 }
 
@@ -195,20 +202,22 @@ void ThumbRewriter::RewritePop()
 void ThumbRewriter::RewritePush()
 {
 	ConditionalSkip(itStateCondition, false);
-	int offset = 0;
+
 	auto dst = this->GetReg(ARM_REG_SP);
+	m.Assign(dst, m.ISub(dst, m.Int32(instr->detail->arm.op_count * 4)));
+
+	int offset = 0;
 	auto begin = &instr->detail->arm.operands[0];
 	auto end = begin + instr->detail->arm.op_count;
 	for (auto op = begin; op != end; ++op)
 	{
 		auto ea = offset != 0
-			? m.ISub(dst, m.Int32(offset))
+			? m.IAdd(dst, m.Int32(offset))
 			: dst;
 		auto reg = GetReg(op->reg);
 		m.Assign(m.Mem32(ea), reg);
 		offset += 4;
 	}
-	m.Assign(dst, m.ISub(dst, m.Int32(offset)));
 }
 
 void ThumbRewriter::RewriteRsb()

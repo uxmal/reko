@@ -5790,7 +5790,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|sp = sp - 8",
-                "2|L--|Mem0[sp + 0:word32] = fp",
+                "2|L--|Mem0[sp:word32] = fp",
                 "3|L--|Mem0[sp + 4:word32] = lr");
         }
 
@@ -5800,9 +5800,9 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE8BD, 0x8800); // pop.w\t{fp,pc}
             AssertCode(
                 "0|T--|00100000(4): 3 instructions",
-                "1|L--|sp = sp + 8",
-                "2|L--|fp = Mem0[sp - 8:word32]",
-                "3|T--|goto Mem0[sp - 4:word32]");
+                "1|L--|fp = Mem0[sp:word32]",
+                "2|L--|sp = sp + 8",
+                "3|T--|return (0,0)");
         }
 
         [Test]
@@ -6167,7 +6167,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(4): 3 instructions",
                 "1|L--|v4 = Mem0[sp:word32]",
-                "2|L--|sp = sp + 12",
+                "2|L--|sp = sp + 0x0000000C",
                 "3|T--|goto v4");
         }
           [Test]
