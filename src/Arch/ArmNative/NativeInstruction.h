@@ -48,3 +48,4 @@ protected:
 	cs_insn * instr;
 	NativeInstructionInfo info;
 };
+

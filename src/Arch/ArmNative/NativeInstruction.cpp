@@ -17,13 +17,33 @@
 */
 
 #include "stdafx.h"
-
+#include <ostream>
+#include <strstream>
 #include "reko.h"
 
 #include "functions.h"
 #include "ComBase.h"
 #include "NativeInstruction.h"
 #include "ArmArchitecture.h"
+
+class StringRenderer : public INativeInstructionWriter
+{
+public: 
+	StringRenderer(std::ostrstream & stm) : stm(stm) {}
+	STDMETHODIMP QueryInterface(REFIID riid, void ** ppvOut) override { return E_NOTIMPL; }
+	STDMETHODIMP_(ULONG) AddRef() override { return 0; }
+	STDMETHODIMP_(ULONG) Release() override { return 0; }
+	virtual void STDAPICALLTYPE AddAnnotation(const char * a) override;
+	virtual void STDAPICALLTYPE WriteOpcode(const char * opcode) override;
+	virtual void STDAPICALLTYPE WriteAddress(const char * formattedAddress, uint64_t uAddr) override;
+	virtual void STDAPICALLTYPE Tab() override;
+	virtual void STDAPICALLTYPE WriteString(const char * s) override;
+	virtual void STDAPICALLTYPE WriteChar(char c) override;
+	virtual void STDAPICALLTYPE WriteUInt32(uint32_t n) override;
+
+private:
+	std::ostrstream & stm;
+};
 
 NativeInstruction::NativeInstruction(cs_insn * instr, NativeInstructionInfo info) :
 	instr(instr), info(info)
@@ -203,16 +223,17 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 				writer.WriteChar('[');
 				writer.WriteAddress(risky, uAddr);
 				writer.WriteChar(']');
-				//$TODO: annotation
-				//var sr = new StringRenderer();
-				//WriteMemoryOperand(op, sr);
-				//writer.AddAnnotation(sr.ToString());
+
+				std::ostrstream stm;
+				auto sr = StringRenderer(stm);
+				WriteMemoryOperand(insn, op, sr);
+				writer.AddAnnotation(stm.str());
 			}
 			else
 			{
 				WriteMemoryOperand(insn, op, writer);
-				//$TODO: annotation
-				// writer.AddAnnotation(addr.ToString());
+				snprintf(risky, sizeof(risky), "%08X", uAddr);
+				writer.AddAnnotation(risky);
 			}
 			return;
 		}
@@ -357,4 +378,37 @@ void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionWriter &
 		snprintf(risky, sizeof(risky), fmt, sign, imm8);
 		writer.WriteString(risky);
 	}
+}
+
+void StringRenderer::AddAnnotation(const char * a)
+{
+}
+
+void StringRenderer::WriteOpcode(const char * opcode)
+{
+	stm << opcode;
+}
+
+void StringRenderer::WriteAddress(const char * formattedAddress, uint64_t uAddr)
+{
+	stm << formattedAddress;
+}
+
+void StringRenderer::Tab()
+{
+	stm << ' ';
+}
+
+void StringRenderer::WriteString(const char * s)
+{
+	stm << s;
+}
+void StringRenderer::WriteChar(char c)
+{
+	stm << c;
+}
+
+void StringRenderer::WriteUInt32(uint32_t n)
+{
+	stm << std::hex << n << std::dec;
 }
