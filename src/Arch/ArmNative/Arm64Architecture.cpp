@@ -47,7 +47,7 @@ STDMETHODIMP Arm64Architecture::QueryInterface(REFIID riid, void ** ppvObject)
 
 void STDMETHODCALLTYPE Arm64Architecture::GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs)
 {
-	*pcRegs = ARM_REG_ENDING;
+	*pcRegs = ARM64_REG_ENDING;
 	*ppRegs = &aRegs[0];
 }
 
@@ -72,7 +72,7 @@ INativeRewriter * STDAPICALLTYPE Arm64Architecture::CreateRewriter(
 }
 
 const NativeRegister Arm64Architecture::aRegs[] = {
-	{ nullptr,		 ARM_REG_INVALID,    0, },
+	{ nullptr,		 ARM64_REG_INVALID,    0, },
 
 	{ "x29",	ARM64_REG_X29,	ARM64_REG_X29,	64 },
 	{ "x30",	ARM64_REG_X30,	ARM64_REG_X30,	64 },
@@ -332,7 +332,7 @@ const NativeRegister Arm64Architecture::aRegs[] = {
 	{ "v28",	ARM64_REG_V28,	ARM64_REG_Q28,	128 },
 	{ "v29",	ARM64_REG_V29,	ARM64_REG_Q29,	128 },
 	{ "v30",	ARM64_REG_V30,	ARM64_REG_Q30,	128 },
-	{ "v31",	ARM64_REG_V31,	ARM64_REG_V31, },
+	{ "v31",	ARM64_REG_V31,	ARM64_REG_Q31,  128 },
 
 
 		//> alias registers

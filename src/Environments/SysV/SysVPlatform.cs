@@ -85,6 +85,8 @@ namespace Reko.Environments.SysV
                 return new XtensaCallingConvention(Architecture);
             case "arm":                                        
                 return new Arm32CallingConvention(Architecture);
+            case "arm-64":
+                return new Arm64CallingConvention(Architecture);
             case "m68k":                                       
                 return new M68kCallingConvention(Architecture);
             case "avr8":                                       
@@ -102,7 +104,7 @@ namespace Reko.Environments.SysV
             case "alpha":
                 return new AlphaCallingConvention(Architecture);
             default:
-                throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
+                throw new NotImplementedException(string.Format("Calling convention for {0} not implemented yet.", Architecture.Description));
             }
         }
 

@@ -188,7 +188,11 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            RegisterStorage reg;
+            if (regsByName.TryGetValue(name, out reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()

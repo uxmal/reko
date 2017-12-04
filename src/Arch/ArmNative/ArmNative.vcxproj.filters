@@ -64,7 +64,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Arm64Instruction.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

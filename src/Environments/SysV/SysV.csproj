@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArchSpecific\AlphaCallingConvention.cs" />
+    <Compile Include="ArchSpecific\Arm64CallingConvention.cs" />
     <Compile Include="ArchSpecific\ArmCallingConvention.cs" />
     <Compile Include="ArchSpecific\Avr8CallingConvention.cs" />
     <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
