@@ -176,6 +176,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
             case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
+            case ElfMachine.EM_AARCH64: arch = "arm-64"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
@@ -697,6 +698,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
             case ElfMachine.EM_RISCV: return new RiscVRelocator64(this);
             case ElfMachine.EM_ALPHA: return new AlphaRelocator(this);
+            case ElfMachine.EM_AARCH64: return new Arm64Relocator(this);
             }
             return base.CreateRelocator(machine);
         }

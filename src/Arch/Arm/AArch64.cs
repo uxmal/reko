@@ -22,32 +22,101 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Opcode = Gee.External.Capstone.Arm64.Arm64Instruction;
 
 namespace Reko.Arch.Arm
 {
-    public class AArch64 : ProcessorArchitecture
+    public class Arm64Architecture : ProcessorArchitecture
     {
-        public AArch64()
+        private INativeArchitecture native;
+        private Dictionary<string, RegisterStorage> regsByName;
+        private RegisterStorage[] regsByNumber;
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
+        public Arm64Architecture()
         {
-            this.InstructionBitSize = 32;
-            this.FramePointerType = PrimitiveType.Pointer64;
-            this.PointerType = PrimitiveType.Pointer64;
-            this.WordWidth = PrimitiveType.Word64;
-            this.StackRegister = A64Registers.x31;
-            this.CarryFlagMask = 0;
+            InstructionBitSize = 32;
+            FramePointerType = PrimitiveType.Pointer32;
+            PointerType = PrimitiveType.Pointer32;
+            WordWidth = PrimitiveType.Word32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
+            var unk = CreateNativeArchitecture("aarch64");
+            this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
+
+            GetRegistersFromNative();
+            StackRegister = regsByName["sp"];
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        private void GetRegistersFromNative()
         {
-            return new AArch64Disassembler(imageReader);
+            int cRegs;
+            IntPtr aRegs;
+            native.GetAllRegisters(out cRegs, out aRegs);
+            if (aRegs == null)
+                throw new OutOfMemoryException();
+            this.regsByName = new Dictionary<string, RegisterStorage>();
+            var regsByNumber = new List<RegisterStorage> { null };
+            NativeRegister nReg = new NativeRegister();
+            int cb = Marshal.SizeOf(nReg);
+            while (cRegs > 0)
+            {
+                nReg = (NativeRegister)Marshal.PtrToStructure(aRegs, typeof(NativeRegister));
+                if (nReg.Name != null)
+                {
+                    var n = nReg.Name;
+                    var i = nReg.Number;
+                    var b = nReg.BitSize;
+                    var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
+                    regsByName.Add(reg.Name, reg);
+                    regsByNumber.Add(reg);
+                }
+                aRegs += cb;
+                --cRegs;
+            }
+            this.regsByNumber = regsByNumber.ToArray();
+        }
+
+
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+        {
+            var bytes = rdr.Bytes;
+            ulong uAddr = rdr.Address.ToLinear();
+            var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            INativeDisassembler ndasm = null;
+
+            try
+            {
+                ndasm = native.CreateDisassembler(hBytes.AddrOfPinnedObject(), bytes.Length, (int)rdr.Offset, uAddr);
+                for (;;)
+                {
+                    INativeInstruction nInstr = ndasm.NextInstruction();
+                    if (nInstr == null)
+                        yield break;
+                    else
+                        yield return new Arm64Instruction(nInstr);
+                }
+            }
+            finally
+            {
+                if (ndasm != null)
+                {
+                    ndasm = null;
+                }
+                if (hBytes != null && hBytes.IsAllocated)
+                {
+                    hBytes.Free();
+                }
+            }
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
@@ -171,5 +240,10 @@ namespace Reko.Arch.Arm
         {
             return Address.TryParse64(txtAddress, out addr);
         }
+
+        [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
+        public static extern IntPtr CreateNativeArchitecture(
+           [MarshalAs(UnmanagedType.LPStr)] string archName);
     }
 }
+

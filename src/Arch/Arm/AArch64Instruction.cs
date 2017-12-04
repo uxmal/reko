@@ -30,8 +30,11 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
+    using Core.NativeInterface;
+    using System.Runtime.InteropServices;
     using CapstoneArmInstruction = Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail>;
 
+    [Obsolete]
     public class AArch64Instruction : MachineInstruction
     {
         private static Dictionary<Arm64Instruction, InstructionClass> classOf;
@@ -63,9 +66,9 @@ namespace Reko.Arch.Arm
             }
         }
 
-        public override bool IsValid { get { return instruction.Id != Arm64Instruction.Invalid; } }
+        public override bool IsValid { get { return InstructionClass != InstructionClass.Invalid; } }
 
-        public override int OpcodeAsInteger { get { return (int)instruction.Id; } }
+        public override int OpcodeAsInteger { get { return 0; } }
 
         public override MachineOperand GetOperand(int i)
         {
@@ -121,14 +124,7 @@ namespace Reko.Arch.Arm
 
         private bool IsJump()
         {
-            switch (Internal.Id)
-            {
-            case Arm64Instruction.B:
-            case Arm64Instruction.BL:
-                return true;
-            default:
-                return false;
-            }
+            return false;
         }
 
         private void WriteShift(Arm64InstructionOperand op, MachineInstructionWriter writer)
@@ -178,58 +174,55 @@ namespace Reko.Arch.Arm
             writer.WriteOpcode(op);
             WriteImmediateValue(value, writer);
         }
+     
+    }
 
-        static AArch64Instruction()
+    public class Arm64Instruction : MachineInstruction
+    {
+        private INativeInstruction nInstr;
+        private NativeInstructionInfo info;
+
+        public Arm64Instruction(INativeInstruction nInstr)
         {
-            //$BUGBUG: I don't know this architecture nearly well enough.
-            // IT is certain that the InstructionClass values below are all wrong.
-            // Please have the courage to hunt down the information and fix it.
+            this.nInstr = nInstr;
+            nInstr.GetInfo(out info);
+            this.Address = Address.Ptr32((uint)info.LinearAddress);
+            this.Length = (int)info.Length;
+        }
 
-            classOf = new Dictionary<Arm64Instruction, InstructionClass>()
-            {
-                { Arm64Instruction.Invalid,    InstructionClass.Invalid },
+        //$REVIEW: is this really needed? nInstr is a ComInstance object,
+        // provided by the CLR, and probably has its own finalizer.
+        ~Arm64Instruction()
+        {
+            Marshal.ReleaseComObject(nInstr);
+            nInstr = null;
+        }
 
-                { Arm64Instruction.B,          InstructionClass.Transfer  },
-                { Arm64Instruction.BL,         InstructionClass.Transfer | InstructionClass.Call },
-                { Arm64Instruction.BLR,        InstructionClass.Transfer | InstructionClass.Call },
-                { Arm64Instruction.BR,         InstructionClass.Transfer  },
-                { Arm64Instruction.BRK,        InstructionClass.Transfer  },
-                { Arm64Instruction.BSL,        InstructionClass.Transfer  },
-                { Arm64Instruction.CRC32CX,    InstructionClass.Transfer  },
-                { Arm64Instruction.CRC32H,     InstructionClass.Transfer  },
-                { Arm64Instruction.CRC32W,     InstructionClass.Transfer  },
-                { Arm64Instruction.CRC32X,     InstructionClass.Transfer  },
-                { Arm64Instruction.CSEL,       InstructionClass.Transfer  },
-                { Arm64Instruction.CSINC,      InstructionClass.Transfer  },
-                { Arm64Instruction.CSINV,      InstructionClass.Transfer  },
-                { Arm64Instruction.CSNEG,      InstructionClass.Transfer  },
-                { Arm64Instruction.DCPS1,      InstructionClass.Transfer  },
-                { Arm64Instruction.DCPS2,      InstructionClass.Transfer  },
-                { Arm64Instruction.DCPS3,      InstructionClass.Transfer  },
-                { Arm64Instruction.DMB,        InstructionClass.Transfer  },
-                { Arm64Instruction.DRPS,       InstructionClass.Transfer  },
-                { Arm64Instruction.DSB,        InstructionClass.Transfer  },
-                { Arm64Instruction.DUP,        InstructionClass.Transfer  },
-                { Arm64Instruction.EON,        InstructionClass.Transfer  },
-                { Arm64Instruction.EOR,        InstructionClass.Transfer  },
-                { Arm64Instruction.ERET,       InstructionClass.Transfer  },
-                { Arm64Instruction.HLT,        InstructionClass.Transfer  },
-                { Arm64Instruction.RET,        InstructionClass.Transfer  },
-                { Arm64Instruction.SYSL,       InstructionClass.Transfer  },
-                { Arm64Instruction.SYS,        InstructionClass.Transfer  },
-                { Arm64Instruction.TBL,        InstructionClass.Transfer  },
-                { Arm64Instruction.TBNZ,       InstructionClass.Transfer  },
-                { Arm64Instruction.TBX,        InstructionClass.Transfer  },
-                { Arm64Instruction.TBZ,        InstructionClass.Transfer  },
-                { Arm64Instruction.TRN1,       InstructionClass.Transfer  },
-                { Arm64Instruction.TRN2,       InstructionClass.Transfer  },
-                { Arm64Instruction.XTN2,       InstructionClass.Transfer  },
-                { Arm64Instruction.XTN,        InstructionClass.Transfer  },
-                { Arm64Instruction.ZIP1,       InstructionClass.Transfer  },
-                { Arm64Instruction.ZIP2,       InstructionClass.Transfer  },
-                { Arm64Instruction.YIELD,      InstructionClass.Transfer },
-            };
+        public override InstructionClass InstructionClass
+        {
+            get { return (InstructionClass)info.InstructionClass; }
+        }
+
+        public override bool IsValid
+        {
+            get { return this.InstructionClass != InstructionClass.Invalid; }
+        }
+
+        public override int OpcodeAsInteger
+        {
+            get { return info.Opcode; }
+        }
+
+        public override MachineOperand GetOperand(int i)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            nInstr.Render(writer, options);
         }
     }
+
 }
 

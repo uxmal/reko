@@ -30,9 +30,9 @@ namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     [Category(Categories.Capstone)]
-    public class AArch64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
+    public class Arm64DisassemblerTests : DisassemblerTestBase<Arm64Instruction>
     {
-        private IProcessorArchitecture arch = new AArch64();
+        private IProcessorArchitecture arch = new Arm64Architecture();
         private Address baseAddress = Address.Ptr64(0x00100000);
 
         public override IProcessorArchitecture Architecture

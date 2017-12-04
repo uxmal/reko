@@ -42,7 +42,7 @@ Arm64Rewriter::Arm64Rewriter(
 	instr(nullptr)
 {
 	//Dump(".ctor: %08x", this);
-	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone); 
+	auto ec = cs_open(CS_ARCH_ARM64, CS_MODE_ARM, &hcapstone);
 	ec = cs_option(hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 	this->instr = cs_malloc(hcapstone);
 	++s_count;

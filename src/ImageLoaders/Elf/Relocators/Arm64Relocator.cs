@@ -18,34 +18,30 @@
  */
 #endregion
 
-using Gee.External.Capstone;
-using Gee.External.Capstone.Arm64;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Reko.Core;
 
-namespace Reko.Arch.Arm
+namespace Reko.ImageLoaders.Elf.Relocators
 {
-    public class AArch64DisassemblerOld : DisassemblerBase<AArch64Instruction>
+    public class Arm64Relocator : ElfRelocator64
     {
-        private IEnumerator<Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail>> stream;
-
-        public AArch64DisassemblerOld(EndianImageReader rdr)
+        public Arm64Relocator(ElfLoader64 loader) : base(loader)
         {
         }
 
-        public override AArch64Instruction DisassembleInstruction()
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
         {
-            if (stream.MoveNext())
-            {
-                return new AArch64Instruction(stream.Current);
-            }
-            else
-                return null;
+            //throw new NotImplementedException();
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            //throw new NotImplementedException();
+            return "";
         }
     }
 }

@@ -268,7 +268,9 @@ struct NativeRegister
 {
 	char * Name;
 	int32_t Number;
+	int32_t Domain;
 	int32_t BitSize;
+	int32_t BitOffset;
 };
 
 // 09FFCC1F-60C8-4058-92C2-C90DAF115250

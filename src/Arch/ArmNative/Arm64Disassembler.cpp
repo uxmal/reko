@@ -64,7 +64,7 @@ INativeInstruction * Arm64Disassembler::NextInstruction()
 	if (!cs_disasm_iter(hcapstone, &this->bytes, &this->length, &this->uAddr, instr))
 	{
 		auto info = NativeInstructionInfo{
-			uAddr, 4, static_cast<uint32_t>(InstructionClass::Invalid), ARM_INS_INVALID
+			uAddr, 4, static_cast<uint32_t>(InstructionClass::Invalid), ARM64_INS_INVALID
 		};
 		this->uAddr += 4;
 		this->length -= 4;
@@ -87,18 +87,7 @@ InstructionClass Arm64Disassembler::InstructionClassFromId(unsigned int armInstr
 {
 	switch (armInstrID)
 	{
-	case ARM_INS_INVALID: return InstructionClass::Invalid;
-	case ARM_INS_BKPT: return InstructionClass::Transfer;
-	case ARM_INS_BL: return InstructionClass::Transfer | InstructionClass::Call;
-	case ARM_INS_BLX: return InstructionClass::Transfer | InstructionClass::Call;
-	case ARM_INS_BX: return InstructionClass::Transfer;
-	case ARM_INS_BXJ: return InstructionClass::Transfer;
-	case ARM_INS_B: return InstructionClass::Transfer;
-	case ARM_INS_HLT: return InstructionClass::Transfer;
-	case ARM_INS_SVC: return InstructionClass::Transfer;
-	case ARM_INS_TEQ: return InstructionClass::Transfer;
-	case ARM_INS_TRAP: return InstructionClass::Transfer;
-	case ARM_INS_YIELD: return InstructionClass::Transfer;
+	case ARM64_INS_INVALID: return InstructionClass::Invalid;
 	}
 	return InstructionClass::Linear;
 }

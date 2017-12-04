@@ -32,7 +32,9 @@ namespace Reko.Core.NativeInterface
     {
         public string Name;
         public int Number;
+        public int Domain;
         public int BitSize;
+        public int BitOffset;
     }
 
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
