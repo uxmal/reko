@@ -33,14 +33,14 @@ using CallingConvention = System.Runtime.InteropServices.CallingConvention;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
+    public class ArmREwriter : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
         private EndianImageReader rdr;
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        internal ArmRewriterNew(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        internal ArmREwriter(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.rdr = rdr;
@@ -74,7 +74,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(Dictionary<int, RegisterStorage> regs, ArmRewriterNew outer)
+            public Enumerator(Dictionary<int, RegisterStorage> regs, ArmREwriter outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
@@ -148,7 +148,7 @@ namespace Reko.Arch.Arm
             }
         }
 
-        static ArmRewriterNew()
+        static ArmREwriter()
         {
 			IID_INativeRewriter = typeof(INativeRewriter).GUID;
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;

@@ -18,8 +18,6 @@
  */
 #endregion
 
-using Gee.External.Capstone;
-using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;

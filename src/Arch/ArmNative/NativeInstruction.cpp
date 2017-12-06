@@ -38,7 +38,7 @@ public:
 	virtual void STDAPICALLTYPE WriteAddress(const char * formattedAddress, uint64_t uAddr) override;
 	virtual void STDAPICALLTYPE Tab() override;
 	virtual void STDAPICALLTYPE WriteString(const char * s) override;
-	virtual void STDAPICALLTYPE WriteChar(char c) override;
+	virtual void STDAPICALLTYPE WriteChar(wchar_t c) override;
 	virtual void STDAPICALLTYPE WriteUInt32(uint32_t n) override;
 
 private:
@@ -214,7 +214,6 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 		break;
 	case ARM_OP_SYSREG:
 		writer.WriteString("$$ SYSREG NOT IMPLEMENTED YET");
-		//writer.WriteString(A32Registers.SysRegisterByCapstoneID[op.SysRegisterValue.Value].Name);
 		break;
 	case ARM_OP_MEM:
 		if (op.mem.base == ARM_REG_PC)
@@ -285,7 +284,7 @@ void NativeInstruction::WriteShift(const cs_arm_op & op, INativeInstructionWrite
 
 void NativeInstruction::WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer)
 {
-	writer.WriteChar('[');
+	writer.WriteString("[");
 	writer.WriteString(RegName(op.mem.base));
 	int displacement = op.mem.disp;
 	if (displacement != 0)
@@ -407,7 +406,7 @@ void StringRenderer::WriteString(const char * s)
 {
 	stm << s;
 }
-void StringRenderer::WriteChar(char c)
+void StringRenderer::WriteChar(wchar_t c)
 {
 	stm << c;
 }

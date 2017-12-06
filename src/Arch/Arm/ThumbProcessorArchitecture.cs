@@ -31,7 +31,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
 namespace Reko.Arch.Arm
 {
@@ -167,19 +166,12 @@ namespace Reko.Arch.Arm
 
         public override SortedList<string, int> GetOpcodeNames()
         {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
-                .ToSortedList(
-                    v => v.ToString().ToLowerInvariant(),
-                    v => (int)v);
+            return new SortedList<string, int>();
         }
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
-                return null;
-            return (int)result;
+            return null;
         }
 
         public override RegisterStorage GetRegister(int i)

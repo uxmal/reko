@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
-using Gee.External.Capstone.Arm;
 
 namespace Reko.Arch.Arm
 {
