@@ -8,5 +8,5 @@ script:
   - msbuild /version
   - msbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/x86/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests
   - cd subjects; python regressionTests.py --check-output --configuration=TravisRelease

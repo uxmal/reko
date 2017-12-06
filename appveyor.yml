@@ -11,4 +11,4 @@ build:
 
 test_script:
   - nunit-console-x86.exe ./src/tools/c2xml/bin/Debug/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
-  - nunit-console-x86.exe ./src/UnitTests/bin/Debug/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+  - nunit-console-x86.exe ./src/UnitTests/bin/x86/Debug/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
