@@ -5,6 +5,7 @@ install:
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
 script:
+  - sh ./setup.sh -u
   - msbuild /version
   - msbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests

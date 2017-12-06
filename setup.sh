@@ -1,4 +1,5 @@
 #!/bin/sh
+# Massages the SLN file to handle the gap between Monodevelop and Visual Studio.
 cd "$(dirname "$0")"
 
 sln="./src/Reko-decompiler.sln"
