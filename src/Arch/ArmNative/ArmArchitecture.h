@@ -26,7 +26,7 @@ public:
 	virtual STDMETHODIMP_(ULONG) AddRef(void) override { return ComBase::AddRef(); }
 	virtual STDMETHODIMP_(ULONG) Release(void) override{ return ComBase::Release(); }
 
-    STDMETHODIMP_(void) GetAllRegisters(int * pcRegs, const NativeRegister * * ppRegs) override;
+    STDMETHODIMP_(void) GetAllRegisters(int category, int * pcRegs, const NativeRegister * * ppRegs) override;
 	STDMETHODIMP_(INativeDisassembler *) CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr) override;
 	STDMETHODIMP_(INativeRewriter *) CreateRewriter(
 		const uint8_t * rawBytes,
@@ -37,5 +37,6 @@ public:
 		INativeTypeFactory * typeFactory,
 		INativeRewriterHost * host) override;
 public:
-	static const NativeRegister aRegs[];
+	static const NativeRegister aRegs[110];
+	static const NativeRegister aSysregs[19];
 };

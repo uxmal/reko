@@ -39,7 +39,7 @@ namespace Reko.Arch.Arm
     {
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
-        private RegisterStorage[] regsByNumber;
+        private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public ThumbProcessorArchitecture()
@@ -62,11 +62,11 @@ namespace Reko.Arch.Arm
         {
             int cRegs;
             IntPtr aRegs;
-            native.GetAllRegisters(out cRegs, out aRegs);
+            native.GetAllRegisters(0, out cRegs, out aRegs);
             if (aRegs == null)
                 throw new OutOfMemoryException();
             this.regsByName = new Dictionary<string, RegisterStorage>();
-            var regsByNumber = new List<RegisterStorage> { null };
+            this.regsByNumber = new Dictionary<int, RegisterStorage>();
             NativeRegister nReg = new NativeRegister();
             int cb = Marshal.SizeOf(nReg);
             while (cRegs > 0)
@@ -79,17 +79,43 @@ namespace Reko.Arch.Arm
                     var b = nReg.BitSize;
                     var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
-                    regsByNumber.Add(reg);
+                    regsByNumber.Add(reg.Number, reg);
                 }
                 aRegs += cb;
                 --cRegs;
             }
-            this.regsByNumber = regsByNumber.ToArray();
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new ThumbDisassembler(imageReader);
+            var bytes = rdr.Bytes;
+            ulong uAddr = rdr.Address.ToLinear();
+            var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            INativeDisassembler ndasm = null;
+
+            try
+            {
+                ndasm = native.CreateDisassembler(hBytes.AddrOfPinnedObject(), bytes.Length, (int)rdr.Offset, uAddr);
+                for (;;)
+                {
+                    INativeInstruction nInstr = ndasm.NextInstruction();
+                    if (nInstr == null)
+                        yield break;
+                    else
+                        yield return new Arm32Instruction(nInstr);
+                }
+            }
+            finally
+            {
+                if (ndasm != null)
+                {
+                    ndasm = null;
+                }
+                if (hBytes != null && hBytes.IsAllocated)
+                {
+                    hBytes.Free();
+                }
+            }
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -158,8 +184,9 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            if (1 <= i && i < regsByNumber.Length)
-                return regsByNumber[i];
+            RegisterStorage reg;
+            if (regsByNumber.TryGetValue(i, out reg))
+                return reg;
             else
                 return null;
         }
@@ -175,7 +202,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage[] GetRegisters()
         {
-            return regsByNumber.Skip(1).ToArray();
+            return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
         }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)

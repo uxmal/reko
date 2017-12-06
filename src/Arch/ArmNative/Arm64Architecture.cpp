@@ -45,7 +45,7 @@ STDMETHODIMP Arm64Architecture::QueryInterface(REFIID riid, void ** ppvObject)
 }
 
 
-void STDMETHODCALLTYPE Arm64Architecture::GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs)
+void STDMETHODCALLTYPE Arm64Architecture::GetAllRegisters(int regKind, int * pcRegs, const NativeRegister ** ppRegs)
 {
 	*pcRegs = ARM64_REG_ENDING;
 	*ppRegs = &aRegs[0];

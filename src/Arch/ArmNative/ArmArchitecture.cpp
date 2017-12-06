@@ -45,10 +45,18 @@ STDMETHODIMP ArmArchitecture::QueryInterface(REFIID riid, void ** ppvObject)
 }
 
 
-void STDMETHODCALLTYPE ArmArchitecture::GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs)
+void STDMETHODCALLTYPE ArmArchitecture::GetAllRegisters(int regKind, int * pcRegs, const NativeRegister ** ppRegs)
 {
-	*pcRegs = ARM_REG_ENDING;
-	*ppRegs = &aRegs[0];
+	if (regKind == 0)
+	{
+		*pcRegs = _countof(aRegs);
+		*ppRegs = &aRegs[0];
+	}
+	else if (regKind == 1)
+	{
+		*pcRegs = _countof(aSysregs);
+		*ppRegs = &aSysregs[0];
+	}
 }
 
 INativeDisassembler * STDMETHODCALLTYPE ArmArchitecture::CreateDisassembler(
@@ -71,8 +79,7 @@ INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(
 	return new ArmRewriter(rawBytes + offset, length-offset, address, m, typeFactory, host);
 }
 
-const NativeRegister ArmArchitecture::aRegs[] = {
-	{ nullptr,		 ARM_REG_INVALID,   ARM_REG_INVALID,     0, },
+const NativeRegister ArmArchitecture::aRegs[110] = {
 	{ "apsr",        ARM_REG_APSR,		ARM_REG_APSR,		 32, },
 	{ "apsr_nzcv",	 ARM_REG_APSR_NZCV,	ARM_REG_APSR_NZCV,	 32, },
 	{ "cpsr",		 ARM_REG_CPSR,		ARM_REG_CPSR,		 32, },
@@ -196,3 +203,45 @@ const NativeRegister ArmArchitecture::aRegs[] = {
 		//ARM_REG_FP = ARM_REG_R11,
 		//ARM_REG_IP = ARM_REG_R12,
 };
+
+const NativeRegister ArmArchitecture::aSysregs[19] = {
+	// independent registers
+	{ "iapsr",		ARM_SYSREG_IAPSR,		ARM_SYSREG_IAPSR,		32 },
+	{ nullptr,		ARM_SYSREG_IAPSR_G,} ,
+	{ nullptr,		ARM_SYSREG_IAPSR_NZCVQG,},		// placeholders
+
+	{ "eapsr",		ARM_SYSREG_EAPSR,		ARM_SYSREG_EAPSR,		32 },
+	{ nullptr,		ARM_SYSREG_EAPSR_G, } ,
+	{ nullptr,		ARM_SYSREG_EAPSR_NZCVQG, },		// placeholders
+
+	{ "xpsr",		ARM_SYSREG_XPSR,		ARM_SYSREG_XPSR,		32 },
+	{ nullptr,		ARM_SYSREG_XPSR_G, } ,
+	{ nullptr,		ARM_SYSREG_XPSR_NZCVQG, },		// placeholders
+
+	{ "ipsr",		ARM_SYSREG_IPSR,		ARM_SYSREG_IPSR,		32 },
+	{ "epsr",		ARM_SYSREG_EPSR,		ARM_SYSREG_EPSR,		32 },
+	{ "iepsr",		ARM_SYSREG_IEPSR,		ARM_SYSREG_IEPSR,		32 },
+	{ "msp",		ARM_SYSREG_MSP,			ARM_SYSREG_MSP,			32 },
+
+	{ "psp",		ARM_SYSREG_PSP,			ARM_SYSREG_PSP,			32 },
+	{ "primask",	ARM_SYSREG_PRIMASK,		ARM_SYSREG_PRIMASK,		32 },
+	{ "basepri",	ARM_SYSREG_BASEPRI,		ARM_SYSREG_BASEPRI,		32 },
+	{ "basepri_max",	ARM_SYSREG_BASEPRI_MAX,		ARM_SYSREG_BASEPRI_MAX,		32 },
+	{ "faultmask",	ARM_SYSREG_FAULTMASK,	ARM_SYSREG_FAULTMASK,	32 },
+
+	{ "control",	ARM_SYSREG_CONTROL,		ARM_SYSREG_CONTROL,		32 },
+};
+
+/*
+// SPSR* registers can be OR combined
+ARM_SYSREG_SPSR_C = 1,
+ARM_SYSREG_SPSR_X = 2,
+ARM_SYSREG_SPSR_S = 4,
+ARM_SYSREG_SPSR_F = 8,
+
+// CPSR* registers can be OR combined
+ARM_SYSREG_CPSR_C = 16,
+ARM_SYSREG_CPSR_X = 32,
+ARM_SYSREG_CPSR_S = 64,
+ARM_SYSREG_CPSR_F = 128,
+*/

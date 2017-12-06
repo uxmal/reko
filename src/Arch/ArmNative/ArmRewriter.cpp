@@ -671,7 +671,23 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	}
 	case ARM_OP_SYSREG:
 	{
-		auto sysreg = host->EnsureRegister(1, op.reg);
+		auto reg = op.reg;
+		switch (reg)
+		{
+		case ARM_SYSREG_SPSR_C:
+		case ARM_SYSREG_SPSR_X:
+		case ARM_SYSREG_SPSR_S:
+		case ARM_SYSREG_SPSR_F:
+			reg = ARM_REG_SPSR;
+			break;
+		case ARM_SYSREG_CPSR_C:
+		case ARM_SYSREG_CPSR_X:
+		case ARM_SYSREG_CPSR_S:
+		case ARM_SYSREG_CPSR_F:
+			reg = ARM_REG_CPSR;
+		}
+
+		auto sysreg = host->EnsureRegister(1, reg);
 		return sysreg;
 	}
 	case ARM_OP_IMM:

@@ -29,7 +29,7 @@
 ThumbDisassembler::ThumbDisassembler(const uint8_t * bytes, size_t length, int offset, uint64_t uAddr) :
 	bytes(bytes), length(length), offset(offset), uAddr(uAddr)
 {
-	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_ARM, &hcapstone);
+	auto ec = cs_open(CS_ARCH_ARM, CS_MODE_THUMB, &hcapstone);
 	ec = cs_option(this->hcapstone, CS_OPT_DETAIL, CS_OPT_ON);
 }
 

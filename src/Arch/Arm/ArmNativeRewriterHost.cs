@@ -36,13 +36,13 @@ namespace Reko.Arch.Arm
     [ClassInterface(ClassInterfaceType.None)]
     public class ArmNativeRewriterHost : MarshalByRefObject, INativeRewriterHost
     {
-        private RegisterStorage[] regs;
+        private Dictionary<int, RegisterStorage> regs;
         private IStorageBinder frame;
         private IRewriterHost host;
         private NativeTypeFactory ntf;
         private NativeRtlEmitter m;
 
-        public ArmNativeRewriterHost(RegisterStorage[] regs, IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
+        public ArmNativeRewriterHost(Dictionary<int, RegisterStorage> regs, IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
         {
             Debug.Assert(regs != null);
             this.regs = regs;
@@ -59,9 +59,7 @@ namespace Reko.Arch.Arm
 
         public virtual RegisterStorage GetSysRegister(int sysreg)
         {
-            var s = (capstone_arm_reg)sysreg;
-            throw new NotImplementedException();
-            //return A32Registers.SysRegisterByCapstoneIDNew[(capstone_arm_sysreg)sysreg];
+            return regs[sysreg];
         }
 
         public HExpr CreateTemporary(BaseType size)

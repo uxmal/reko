@@ -572,7 +572,6 @@ means
                 "1|L--|ip = (int32) SLICE(ip, ui10, 6)");
         }
 
-
         [Test]
         public void ArmRw_umlalne()
         {
@@ -978,7 +977,7 @@ means
             BuildTest(0xeef1fa10);  // vmrs apsr_nzcv, fpscr
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|apsr_cpsr = fpscr");
+                "1|L--|apsr_nzcv = fpscr");
         }
 
         [Test]

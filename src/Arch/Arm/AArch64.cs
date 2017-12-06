@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm
         {
             int cRegs;
             IntPtr aRegs;
-            native.GetAllRegisters(out cRegs, out aRegs);
+            native.GetAllRegisters(0, out cRegs, out aRegs);
             if (aRegs == null)
                 throw new OutOfMemoryException();
             this.regsByName = new Dictionary<string, RegisterStorage>();

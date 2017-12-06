@@ -35,12 +35,12 @@ namespace Reko.Arch.Arm
 {
     public class ArmRewriterNew : IEnumerable<RtlInstructionCluster>
     {
-        private RegisterStorage[] regs;
+        private Dictionary<int, RegisterStorage> regs;
         private EndianImageReader rdr;
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        internal ArmRewriterNew(RegisterStorage[] regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        internal ArmRewriterNew(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.rdr = rdr;
@@ -74,7 +74,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(RegisterStorage [] regs, ArmRewriterNew outer)
+            public Enumerator(Dictionary<int, RegisterStorage> regs, ArmRewriterNew outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();

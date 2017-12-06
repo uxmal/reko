@@ -48,7 +48,7 @@ STDMETHODIMP ThumbArchitecture::QueryInterface(REFIID riid, void ** ppvObject)
 }
 
 
-void STDMETHODCALLTYPE ThumbArchitecture::GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs)
+void STDMETHODCALLTYPE ThumbArchitecture::GetAllRegisters(int regKind, int * pcRegs, const NativeRegister ** ppRegs)
 {
 	*pcRegs = ARM_REG_ENDING;
 	*ppRegs = &ArmArchitecture::aRegs[0];

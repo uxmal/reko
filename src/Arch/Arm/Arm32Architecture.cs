@@ -41,7 +41,7 @@ namespace Reko.Arch.Arm
     {
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
-        private RegisterStorage[] regsByNumber;
+        private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm32Architecture()
@@ -62,31 +62,37 @@ namespace Reko.Arch.Arm
 
         private void GetRegistersFromNative()
         {
+            this.regsByName = new Dictionary<string, RegisterStorage>();
+            this.regsByNumber = new Dictionary<int, RegisterStorage>();
+            GetRegisterOfType(0);
+            GetRegisterOfType(1);
+        }
+
+        private void GetRegisterOfType(int registerKind)
+        {
             int cRegs;
             IntPtr aRegs;
-            native.GetAllRegisters(out cRegs, out aRegs);
+            native.GetAllRegisters(registerKind, out cRegs, out aRegs);
             if (aRegs == null)
                 throw new OutOfMemoryException();
-            this.regsByName = new Dictionary<string, RegisterStorage>();
-            var regsByNumber = new List<RegisterStorage> { null };
             NativeRegister nReg = new NativeRegister();
             int cb = Marshal.SizeOf(nReg);
             while (cRegs > 0)
             {
-                nReg = (NativeRegister) Marshal.PtrToStructure(aRegs, typeof(NativeRegister));
+                nReg = (NativeRegister)Marshal.PtrToStructure(aRegs, typeof(NativeRegister));
                 if (nReg.Name != null)
                 {
                     var n = nReg.Name;
                     var i = nReg.Number;
                     var b = nReg.BitSize;
-                    var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b/8));
+                    var a = (uint)nReg.BitOffset;
+                    var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
-                    regsByNumber.Add(reg);
+                    regsByNumber.Add(reg.Number, reg);
                 }
                 aRegs += cb;
                 --cRegs;
             }
-            this.regsByNumber = regsByNumber.ToArray();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -190,9 +196,10 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            if (0 <= i && i < regsByNumber.Length)
-                return regsByNumber[i];
-            else
+            RegisterStorage reg;
+            if (regsByNumber.TryGetValue(i, out reg))
+                return reg;
+            else 
                 return null;
         }
 
@@ -208,7 +215,7 @@ namespace Reko.Arch.Arm
         public override RegisterStorage[] GetRegisters()
         {
             // First element is "Invalid".
-            return regsByNumber.Skip(1).ToArray();
+            return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
         }
 
         public override int? GetOpcodeNumber(string name)

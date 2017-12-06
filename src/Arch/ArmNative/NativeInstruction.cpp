@@ -110,6 +110,10 @@ void STDAPICALLTYPE NativeInstruction::Render(INativeInstructionWriter * w, Mach
 	Write(instruction, ops[3], writer, options);
 }
 
+const char * NativeInstruction::RegName(int reg)
+{
+	return ArmArchitecture::aRegs[reg - ARM_REG_APSR].Name;
+}
 
 bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer)
 {
@@ -142,7 +146,7 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 		if (regPrev == ARM_REG_INVALID)
 		{
 			writer.WriteString(sep);
-			writer.WriteString(ArmArchitecture::aRegs[reg].Name);
+			writer.WriteString(RegName(reg));
 			sep = ",";
 		}
 		else if (static_cast<int>(regPrev) + 1 == static_cast<int>(reg))
@@ -154,11 +158,11 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 			if (sep == "-")
 			{
 				writer.WriteString(sep);
-				writer.WriteString(ArmArchitecture::aRegs[regPrev].Name);
+				writer.WriteString(RegName(regPrev));
 				sep = ",";
 			}
 			writer.WriteString(sep);
-			writer.WriteString(ArmArchitecture::aRegs[reg].Name);
+			writer.WriteString(RegName(reg));
 			sep = ",";
 		}
 		regPrev = reg;
@@ -166,7 +170,7 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 	if (sep[0] == '-')
 	{
 		writer.WriteChar('-');
-		writer.WriteString(ArmArchitecture::aRegs[reg].Name);
+		writer.WriteString(RegName(reg));
 	}
 	writer.WriteString("}");
 	return true;
@@ -205,7 +209,7 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 	case ARM_OP_REG:
 		if (op.subtracted)
 			writer.WriteChar('-');
-		writer.WriteString(ArmArchitecture::aRegs[op.reg].Name);
+		writer.WriteString(RegName(op.reg));
 		WriteShift(op, writer);
 		break;
 	case ARM_OP_SYSREG:
@@ -282,7 +286,7 @@ void NativeInstruction::WriteShift(const cs_arm_op & op, INativeInstructionWrite
 void NativeInstruction::WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer)
 {
 	writer.WriteChar('[');
-	writer.WriteString(ArmArchitecture::aRegs[op.mem.base].Name);
+	writer.WriteString(RegName(op.mem.base));
 	int displacement = op.mem.disp;
 	if (displacement != 0)
 	{
@@ -318,7 +322,7 @@ void NativeInstruction::WriteMemoryOperand(const cs_insn & insn, const cs_arm_op
 			writer.WriteString(",");
 			if (op.subtracted)
 				writer.WriteString("-");
-			writer.WriteString(ArmArchitecture::aRegs[op.mem.index].Name);
+			writer.WriteString(RegName(op.mem.index));
 		}
 		if (op.shift.type != ARM_SFT_INVALID)
 		{
@@ -343,7 +347,7 @@ void NativeInstruction::WriteRegShift(const char * op, int value, INativeInstruc
 	writer.WriteString(",");
 	writer.WriteOpcode(op);
 	writer.WriteChar(' ');
-	writer.WriteString(ArmArchitecture::aRegs[value].Name);
+	writer.WriteString(RegName(value));
 }
 
 void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionWriter & writer)

@@ -37,7 +37,8 @@ namespace Reko.Arch.Arm
 
         public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
         {
-            var a = (Arm32InstructionOld)x;
+            return false;
+            /*
             var b = (Arm32InstructionOld)y;
             var aInvalid = a.instruction == null;
             var bInvalid = b.instruction == null;
@@ -98,11 +99,15 @@ namespace Reko.Arch.Arm
                     aop.Type);
                 }
             }
+
             return true;
+        */
         }
 
         public override int GetOperandsHash(MachineInstruction instr)
         {
+            return 1;
+            /*
             var arm = ((Arm32InstructionOld)instr).instruction;
             if (arm == null)
                 return 0;
@@ -152,6 +157,7 @@ namespace Reko.Arch.Arm
                 }
             }
             return hash;
+            */
         }
     }
 }

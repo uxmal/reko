@@ -44,6 +44,7 @@ private:
 	void WriteImmShift(const char * op, int value, INativeInstructionWriter & writer);
 	void WriteRegShift(const char * op, int value, INativeInstructionWriter &writer);
 	static void WriteImmediateValue(int imm8, INativeInstructionWriter & writer);
+	const char * RegName(int reg);
 protected:
 	cs_insn * instr;
 	NativeInstructionInfo info;

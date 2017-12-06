@@ -280,7 +280,7 @@ const IID IID_INativeArchitecture =
 class INativeArchitecture : public IUnknown
 {
 public:
-	virtual void STDAPICALLTYPE GetAllRegisters(int * pcRegs, const NativeRegister ** ppRegs) = 0;
+	virtual void STDAPICALLTYPE GetAllRegisters(int category, int * pcRegs, const NativeRegister ** ppRegs) = 0;
 	virtual INativeDisassembler * STDAPICALLTYPE CreateDisassembler(const uint8_t * bytes, int length, int offset, uint64_t uAddr) = 0;
 	virtual INativeRewriter * STDAPICALLTYPE CreateRewriter(
 		const uint8_t * rawBytes,
