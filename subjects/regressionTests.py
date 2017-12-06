@@ -31,7 +31,7 @@ reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
 start_dir = os.getcwd()
 
 reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, "decompile.exe")
-print (reko_cmdline)
+
 output_extensions = [".asm", ".c", ".dis", ".h"]
 
 # Split a command line, but allow quotation marks to

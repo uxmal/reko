@@ -17,6 +17,42 @@ l0000005D:
 l00000061:
 	strbvs	r4,[r0],#&5F8
 
+l00000065:
+	@‰ý
+	@‰ý
+	J‰ý
+	[äý
+	
+	
+	
+	@‰ý
+	
+	J‰ý
+	@‰ý
+	
+	J‰ý
+	
+	@‰ý
+	I‰ý
+	@‰ý
+	
+	I‰ý
+	s
+	[äý
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 ;; prvCopyDataToQueue: 000000ED
 prvCopyDataToQueue proc
 	strheq	r0,[r6],#&-45
@@ -65,12 +101,36 @@ l00000125:
 	blmi	$FFC02AD1
 
 l0000012D:
+	
+	
+	
+	J‰ý
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvCopyDataFromQueue: 0000016D
 prvCopyDataFromQueue proc
 	bleq	$FEC5AB25
 
 l00000171:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueGenericSend: 00000191
 xQueueGenericSend proc
@@ -80,6 +140,73 @@ l00000195:
 	ldrteq	r8,[r0],#&425
 
 l00000199:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueuePeekFromISR: 000002A5
 xQueuePeekFromISR proc
@@ -89,6 +216,17 @@ l000002A9:
 	svclt	#&F04F85
 
 l000002AD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueGenericReceive: 000002D9
 xQueueGenericReceive proc
@@ -98,6 +236,88 @@ l000002DD:
 	ldrteq	r8,[r0],#&425
 
 l000002E1:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	üèý
+	
 
 ;; uxQueueMessagesWaiting: 00000429
 uxQueueMessagesWaiting proc
@@ -146,6 +366,31 @@ l0000045D:
 	svclt	#&F04F86
 
 l00000461:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueGiveFromISR: 000004C5
 xQueueGiveFromISR proc
@@ -155,6 +400,28 @@ l000004C9:
 	svclt	#&F04F84
 
 l000004CD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueReceiveFromISR: 00000525
 xQueueReceiveFromISR proc
@@ -177,6 +444,27 @@ l0000053D:
 	adcshs	r2,r9,fp,ror #8
 
 l00000541:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueIsQueueEmptyFromISR: 00000595
 xQueueIsQueueEmptyFromISR proc
@@ -186,6 +474,7 @@ l00000599:
 	strdvc	r4,r5,[r9],-r0
 
 l0000059D:
+	
 
 ;; xQueueIsQueueFullFromISR: 000005A1
 xQueueIsQueueFullFromISR proc
@@ -206,6 +495,14 @@ uxQueueMessagesWaitingFromISR proc
 
 ;; xQueueGetMutexHolder: 000005B5
 xQueueGetMutexHolder proc
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueTakeMutexRecursive: 000005D5
 xQueueTakeMutexRecursive proc
@@ -221,9 +518,16 @@ l000005E1:
 	sbcseq	r0,r0,r2,asr #&14
 
 l000005E5:
-	stmdbne	r6,{r0-r1,r5,r9,ip-sp}
+	stmdbne	r6,{r0-r1,r5,r9,ip,sp}
 
 l000005E9:
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueGiveMutexRecursive: 00000605
 xQueueGiveMutexRecursive proc
@@ -251,6 +555,9 @@ l00000621:
 	bne	$0118891D
 
 l00000625:
+	
+	
+	
 
 ;; xQueueGenericReset: 00000631
 xQueueGenericReset proc
@@ -267,6 +574,32 @@ l0000063D:
 	rsbeq	r2,r8,#&6B
 
 l00000645:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueGenericCreate: 000006AD
 xQueueGenericCreate proc
@@ -276,12 +609,30 @@ l000006B1:
 	ldmmi	r0!,{r0-r1,r3-r8}
 
 l000006B5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueCreateMutex: 000006DD
 xQueueCreateMutex proc
 	strheq	r0,[r6],#&-25
 
 l000006E1:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvInitialiseNewTask: 00000701
 prvInitialiseNewTask proc
@@ -321,6 +672,32 @@ l0000072D:
 	rsbseq	r5,r8,r2,asr #&1C
 
 l00000731:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvAddNewTaskToReadyList: 00000799
 prvAddNewTaskToReadyList proc
@@ -330,6 +707,53 @@ l0000079D:
 	strbeq	r0,[r6,-ip,asr #&A]
 
 l000007A1:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvAddCurrentTaskToDelayedList.isra.0: 0000085D
 prvAddCurrentTaskToDelayedList.isra.0 proc
@@ -343,9 +767,28 @@ l00000865:
 
 l00000869:
 	ldmibvs	r0,r4,r5,r8
+
+l0000086D:
 	ldrsheq	r3,[r9,-sp]!
 
 l00000871:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskCreate: 000008B5
 xTaskCreate proc
@@ -363,6 +806,8 @@ l000008C1:
 l000008C5:
 	ldrsht	r3,[pc],#&20                                        ; 000008CD
 	stmdavs	r6,r0,r4,r5
+
+l000008CD:
 	ldclhs	p0,c0,[r0,#&80]!
 
 l000008D1:
@@ -381,7 +826,7 @@ l000008E1:
 	orrspl	r0,sp,#&9500
 
 l000008E5:
-	stmdbmi	r6,{r1-r2,r6,r9,ip-sp}
+	stmdbmi	r6,{r1-r2,r6,r9,ip,sp}
 
 l000008E9:
 	movteq	r4,#&6046
@@ -393,9 +838,40 @@ l000008F1:
 	ldrbeq	pc,[r7,#&F95]!
 
 l000008F5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskCreateRestricted: 0000091D
 xTaskCreateRestricted proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskAllocateMPURegions: 00000971
 vTaskAllocateMPURegions proc
@@ -405,6 +881,12 @@ l00000975:
 	subeq	r1,r6,r0,lsr r10
 
 l00000979:
+	
+	
+	
+	
+	
+	
 
 ;; vTaskStartScheduler: 00000991
 vTaskStartScheduler proc
@@ -426,6 +908,23 @@ l000009A5:
 	svceq	#&490F23
 
 l000009A9:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskEndScheduler: 000009ED
 vTaskEndScheduler proc
@@ -450,6 +949,7 @@ l00000A05:
 	ldrtgt	r0,[pc],#&BD                                        ; 00000A0D
 
 l00000A09:
+	
 
 ;; vTaskSuspendAll: 00000A0D
 vTaskSuspendAll proc
@@ -465,6 +965,7 @@ l00000A19:
 	ldrtgt	r0,[pc],#&47                                        ; 00000A21
 
 l00000A1D:
+	
 
 ;; xTaskGetTickCount: 00000A21
 xTaskGetTickCount proc
@@ -474,6 +975,7 @@ l00000A25:
 	strbgt	r7,[r7],#0
 
 l00000A29:
+	
 
 ;; xTaskGetTickCountFromISR: 00000A2D
 xTaskGetTickCountFromISR proc
@@ -483,6 +985,7 @@ l00000A31:
 	strbgt	r7,[r7],#0
 
 l00000A35:
+	
 
 ;; uxTaskGetNumberOfTasks: 00000A39
 uxTaskGetNumberOfTasks proc
@@ -492,6 +995,7 @@ l00000A3D:
 	ldrtgt	r0,[pc],#&47                                        ; 00000A45
 
 l00000A41:
+	
 
 ;; pcTaskGetName: 00000A45
 pcTaskGetName proc
@@ -507,9 +1011,55 @@ l00000A51:
 	ldrtgt	r0,[pc],#&47                                        ; 00000A59
 
 l00000A55:
+	
 
 ;; xTaskGenericNotify: 00000A59
 xTaskGenericNotify proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskGenericNotifyFromISR: 00000B0D
 xTaskGenericNotifyFromISR proc
@@ -540,6 +1090,48 @@ l00000B2D:
 l00000B31:
 	ldrbtvs	r8,[r8],#&3A
 
+l00000B35:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 ;; xTaskNotifyWait: 00000BD5
 xTaskNotifyWait proc
 	svcne	#&41F0E9
@@ -569,6 +1161,32 @@ l00000BF5:
 	stmeq	r10!,{r1-r3,r5-r6,r9,sp}
 
 l00000BF9:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskNotifyGiveFromISR: 00000C61
 vTaskNotifyGiveFromISR proc
@@ -589,14 +1207,75 @@ l00000C75:
 
 l00000C79:
 	ldrbtvs	r9,[r8],#&23
+
+l00000C7D:
 	ldrbtvs	r8,[r8],#&50
+
+l00000C81:
 	stcl	p3,c0,[lr,-#&C0]!
 	ldrheq	r0,[r3,r2]!
 
 l00000C89:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; ulTaskNotifyTake: 00000D01
 ulTaskNotifyTake proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskIncrementTick: 00000D6D
 xTaskIncrementTick proc
@@ -615,6 +1294,65 @@ l00000D7D:
 	ldrtgt	r0,[r7],#&170
 
 l00000D81:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskResumeAll: 00000E6D
 xTaskResumeAll proc
@@ -660,6 +1398,47 @@ l00000EA1:
 	ldclmi	p7,c0,[r0]!
 
 l00000EA5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskDelay: 00000F49
 vTaskDelay proc
@@ -675,7 +1454,7 @@ l00000F55:
 	svclt	#&8F4FF3
 
 l00000F59:
-	stmeq	pc,{r0-r1,r4-fp,sp-lr}
+	stmeq	pc,{r0-r1,r4-fp,sp,lr}
 
 l00000F5D:
 	suble	r0,r10,#&2F40000
@@ -687,6 +1466,12 @@ l00000F65:
 	ldclhi	p2,c12,[r8]!
 
 l00000F69:
+	
+	
+	
+	
+	
+	
 
 ;; vTaskDelayUntil: 00000F81
 vTaskDelayUntil proc
@@ -708,6 +1493,23 @@ l00000F95:
 	vmlseq.f32	s19,s4,s8
 
 l00000F99:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskPlaceOnEventList: 00000FDD
 vTaskPlaceOnEventList proc
@@ -729,15 +1531,72 @@ l00000FF1:
 	ldrtgt	r0,[pc],#&E4                                        ; 00000FF9
 
 l00000FF5:
+	
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF9
 vTaskPlaceOnUnorderedEventList proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskRemoveFromEventList: 0000101D
 xTaskRemoveFromEventList proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskRemoveFromUnorderedEventList: 00001081
 xTaskRemoveFromUnorderedEventList proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskSwitchContext: 000010D9
 vTaskSwitchContext proc
@@ -750,6 +1609,21 @@ l000010E1:
 	teqle	r0,#&F8
 
 l000010E5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; uxTaskResetEventItemValue: 00001121
 uxTaskResetEventItemValue proc
@@ -759,6 +1633,10 @@ l00001125:
 	stmdahi	r8,r3,r5,r6
 
 l00001129:
+	
+	
+	
+	
 
 ;; xTaskGetCurrentTaskHandle: 00001139
 xTaskGetCurrentTaskHandle proc
@@ -768,6 +1646,7 @@ l0000113D:
 	ldrtgt	r0,[pc],#&47                                        ; 00001145
 
 l00001141:
+	
 
 ;; vTaskSetTimeOutState: 00001145
 vTaskSetTimeOutState proc
@@ -802,18 +1681,107 @@ l00001169:
 	ldrbtls	sp,[r8],#&350
 
 l0000116D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vTaskMissedYield: 000011AD
 vTaskMissedYield proc
 	movtgt	r0,#&B222
 
 l000011B1:
+	
+	
+	
 
 ;; vTaskPriorityInherit: 000011BD
 vTaskPriorityInherit proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xTaskPriorityDisinherit: 00001251
 xTaskPriorityDisinherit proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; pvTaskIncrementMutexHeldCount: 000012D5
 pvTaskIncrementMutexHeldCount proc
@@ -857,6 +1825,17 @@ l00001305:
 	rscshs	sp,r8,r1,lsl #&1E
 
 l00001309:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvSVCHandler: 00001335
 prvSVCHandler proc
@@ -882,10 +1861,20 @@ l00001351:
 	strbeq	r7,[r7,-r7,asr #&20]
 
 l00001355:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; pxPortInitialiseStack: 0000137D
 pxPortInitialiseStack proc
-	ldmeq	r4!,{r0-r1,r3,r5,ip-sp}
+	ldmeq	r4!,{r0-r1,r3,r5,ip,sp}
 
 l00001381:
 	svcmi	#&2302BF
@@ -897,6 +1886,15 @@ l00001389:
 	stmdane	r4,r4,r5,r6
 
 l0000138D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xPortStartScheduler: 000013B1
 xPortStartScheduler proc
@@ -915,6 +1913,105 @@ l000013C1:
 	bne	$010A1389
 
 l000013C5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vPortEndScheduler: 00001551
 vPortEndScheduler proc
@@ -931,6 +2028,78 @@ l0000155D:
 	stc2l	p12,c4,[r8]!
 	strbmi	r0,[r8,-#&BB1]!
 	movwne	r1,#&20F0
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xPortPendSVHandler: 00001689
 xPortPendSVHandler proc
@@ -950,6 +2119,23 @@ l0000169D:
 	svclt	#&F04F40
 
 l000016A1:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xPortSysTickHandler: 000016E5
 xPortSysTickHandler proc
@@ -959,9 +2145,25 @@ l000016E9:
 	svclt	#&F04F84
 
 l000016ED:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vPortSVCHandler: 00001715
 vPortSVCHandler proc
+	
+	
+	
+	
+	
+	
 
 ;; pvPortMalloc: 0000172D
 pvPortMalloc proc
@@ -974,6 +2176,24 @@ l00001735:
 	stmdaeq	r4,r4,r5,r6
 
 l00001739:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vPortFree: 00001781
 vPortFree proc
@@ -984,6 +2204,9 @@ vPortInitialiseBlocks proc
 	movtgt	r0,#&B222
 
 l00001789:
+	
+	
+	
 
 ;; xPortGetFreeHeapSize: 00001795
 xPortGetFreeHeapSize proc
@@ -1003,6 +2226,13 @@ l000017A5:
 
 ;; xEventGroupCreate: 000017A9
 xEventGroupCreate proc
+	
+	
+	
+	
+	
+	
+	
 
 ;; xEventGroupWaitBits: 000017C5
 xEventGroupWaitBits proc
@@ -1012,6 +2242,48 @@ l000017C9:
 	stcleq	p15,c1,[r6,-#&118]
 
 l000017CD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xEventGroupClearBits: 00001875
 xEventGroupClearBits proc
@@ -1067,6 +2339,22 @@ l000018B5:
 	ldrdmi	r1,r2,[r3,-#&75]
 
 l000018B9:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xEventGroupSync: 000018F9
 xEventGroupSync proc
@@ -1076,6 +2364,40 @@ l000018FD:
 	strbne	r0,[r6],-r6,asr #&A
 
 l00001901:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xEventGroupGetBitsFromISR: 00001989
 xEventGroupGetBitsFromISR proc
@@ -1101,6 +2423,17 @@ l000019A1:
 
 ;; vEventGroupDelete: 000019A5
 vEventGroupDelete proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vEventGroupSetBitsCallback: 000019D1
 vEventGroupSetBitsCallback proc
@@ -1114,6 +2447,6543 @@ l000019D9:
 	ldclgt	p6,c0,[r0,#&118]!
 
 l000019DD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	+,\
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 ;;; Segment .text (00008000)
 00008000 FE                                              .              
 
@@ -1150,6 +9020,8 @@ l00008021:
 
 l00008029:
 	ldrhtvs	r0,[pc],r8                                         ; 00008031
+
+l0000802D:
 	eorhi	r0,r0,r1
 
 l00008031:
@@ -1170,6 +9042,15 @@ l00008041:
 	eorseq	r0,r4,r9,lsr #3
 
 l00008045:
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vCheckTask: 00008069
 vCheckTask proc
@@ -1191,9 +9072,43 @@ l0000807D:
 	ldmhi	r2!,{r1-r2,r6,r8,lr}
 
 l00008081:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; Main: 000080A1
 Main proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vUART_ISR: 00008109
 vUART_ISR proc
@@ -1203,6 +9118,35 @@ l0000810D:
 	asrseq	r8,sp,asr #4
 
 l00008111:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vSetErrorLED: 00008185
 vSetErrorLED proc
@@ -1252,6 +9196,26 @@ l000081BD:
 	bllt	$0030B589
 
 l000081C1:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vApplicationIdleHook: 00008211
 vApplicationIdleHook proc
@@ -1283,6 +9247,32 @@ l00008231:
 	svcmi	#&213422
 
 l00008235:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; PDCWrite: 0000829D
 PDCWrite proc
@@ -1295,6 +9285,16 @@ l000082A5:
 	strdhs	r0,r1,[r1],-r0
 
 l000082A9:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vListInitialise: 000082D1
 vListInitialise proc
@@ -1333,10 +9333,16 @@ l000082F9:
 	stclls	p12,c8,[r0]!
 
 l000082FD:
+	
+	
+	
+	
 
 ;; vListInsert: 0000830D
 vListInsert proc
 	blvs	$01A0B9E5
+
+l00008311:
 	sbcseq	r1,r0,ip,lsl r1
 
 l00008315:
@@ -1352,9 +9358,25 @@ l00008321:
 	ldrbeq	pc,[r2],#&A42
 
 l00008325:
+	
+	
+	
+	
+	
+	
+	
 
 ;; uxListRemove: 00008341
 uxListRemove proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueCRSend: 00008365
 xQueueCRSend proc
@@ -1388,6 +9410,35 @@ l00008389:
 	ldrshteq	r1,[r9],#&20
 
 l0000838D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueCRReceive: 00008401
 xQueueCRReceive proc
@@ -1418,17 +9469,85 @@ l00008421:
 	adcseq	r3,sp,r6,asr #&10
 
 l00008425:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueCRSendFromISR: 000084A1
 xQueueCRSendFromISR proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xQueueCRReceiveFromISR: 000084D5
 xQueueCRReceiveFromISR proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvIdleTask: 0000852D
 prvIdleTask proc
 	svcvs	#&F7FFB5
-	stmlo	r7!,{r1-r7,r10-pc}
+
+l00008531:
+	stmlo	r7!,{r1-r7,r10-ip,sp,lr-pc}
 
 ;; xTaskNotifyStateClear: 00008535
 xTaskNotifyStateClear proc
@@ -1439,6 +9558,8 @@ l00008539:
 
 l0000853D:
 	ldrbtvs	r9,[r8],#&4F8
+
+l00008541:
 	streq	r0,[fp,-#&230]!
 
 l00008545:
@@ -1454,6 +9575,10 @@ l00008551:
 	ldmhs	r8!,{r4-r7,r9-fp,sp}
 
 l00008555:
+	
+	
+	
+	
 
 ;; xPortRaisePrivilege: 00008565
 xPortRaisePrivilege proc
@@ -1466,12 +9591,39 @@ l0000856D:
 	eoreq	r0,r0,#&BF
 
 l00008571:
+	
+	
 
 ;; vPortEnterCritical: 00008579
 vPortEnterCritical proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vPortExitCritical: 000085B1
 vPortExitCritical proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vParTestInitialise: 000085DD
 vParTestInitialise proc
@@ -1484,6 +9636,9 @@ l000085E5:
 	ldcllt	p9,c1,[r8,-#&80]!
 
 l000085E9:
+	
+	
+	
 
 ;; vParTestSetLED: 000085F5
 vParTestSetLED proc
@@ -1491,15 +9646,44 @@ vParTestSetLED proc
 
 l000085F9:
 	mvnsvs	r0,r6,asr #&20
+
+l000085FD:
 	stceq	p7,c0,[ip]!
 
 l00008601:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vParTestToggleLED: 00008631
 vParTestToggleLED proc
 	strheq	r0,[r6],#&-45
 
 l00008635:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvFlashCoRoutine: 00008671
 prvFlashCoRoutine proc
@@ -1510,6 +9694,33 @@ l00008675:
 	blne	$0118987D
 
 l0000867D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; prvFixedDelayCoRoutine: 000086E9
 prvFixedDelayCoRoutine proc
@@ -1519,6 +9730,43 @@ l000086ED:
 	ldrhgt	fp,[r5,#&30]!
 
 l000086F1:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vStartFlashCoRoutines: 00008785
 vStartFlashCoRoutines proc
@@ -1546,6 +9794,17 @@ l000087A1:
 	subhs	r0,lr,#&90000
 
 l000087A5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xAreFlashCoRoutinesStillRunning: 000087D1
 xAreFlashCoRoutinesStillRunning proc
@@ -1568,6 +9827,14 @@ l000087E5:
 	strbeq	r3,[r6],#&1FE
 
 l000087E9:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskCreate: 00008809
 MPU_xTaskCreate proc
@@ -1583,6 +9850,19 @@ l00008815:
 	bleq	$FE7CB135
 
 l00008819:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vTaskAllocateMPURegions: 0000884D
 MPU_vTaskAllocateMPURegions proc
@@ -1595,42 +9875,102 @@ l00008855:
 	strdlo	r0,r1,[r6,-#&4E]
 
 l00008859:
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vTaskDelayUntil: 00008875
 MPU_vTaskDelayUntil proc
 	mcreq	p5,#2,r0,c6
 
 l00008879:
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vTaskDelay: 0000889D
 MPU_vTaskDelay proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vTaskSuspendAll: 000088C1
 MPU_vTaskSuspendAll proc
 	svcmi	#&F7FFB5
 
 l000088C5:
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskResumeAll: 000088E1
 MPU_xTaskResumeAll proc
 	svclo	#&F7FFB5
 
 l000088E5:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskGetTickCount: 00008905
 MPU_xTaskGetTickCount proc
 	ldclhs	p15,c15,[r7,#&2D4]!
 
 l00008909:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_uxTaskGetNumberOfTasks: 00008929
 MPU_uxTaskGetNumberOfTasks proc
 	blne	$FFE08805
 
 l0000892D:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_pcTaskGetName: 0000894D
 MPU_pcTaskGetName proc
+	
+	
+	
+	
 
 ;; fn0000895D: 0000895D
 fn0000895D proc
@@ -1653,12 +9993,31 @@ l00008971:
 
 ;; MPU_vTaskSetTimeOutState: 00008975
 MPU_vTaskSetTimeOutState proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskCheckForTimeOut: 00008999
 MPU_xTaskCheckForTimeOut proc
 	mcreq	p5,#2,r0,c6
 
 l0000899D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskGenericNotify: 000089C5
 MPU_xTaskGenericNotify proc
@@ -1668,6 +10027,18 @@ l000089C9:
 	strbne	r0,[r6,-r6,asr #&1C]
 
 l000089CD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskNotifyWait: 000089FD
 MPU_xTaskNotifyWait proc
@@ -1677,27 +10048,80 @@ l00008A01:
 	strbne	r0,[r6,-r6,asr #&1C]
 
 l00008A05:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_ulTaskNotifyTake: 00008A35
 MPU_ulTaskNotifyTake proc
 	mcreq	p5,#2,r0,c6
 
 l00008A39:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xTaskNotifyStateClear: 00008A61
 MPU_xTaskNotifyStateClear proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueGenericCreate: 00008A89
 MPU_xQueueGenericCreate proc
 	mcreq	p5,#2,r0,c6
 
 l00008A8D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueGenericReset: 00008AB9
 MPU_xQueueGenericReset proc
 	mcreq	p5,#2,r0,c6
 
 l00008ABD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueGenericSend: 00008AE5
 MPU_xQueueGenericSend proc
@@ -1707,12 +10131,44 @@ l00008AE9:
 	strbne	r0,[r6,-r6,asr #&1C]
 
 l00008AED:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_uxQueueMessagesWaiting: 00008B1D
 MPU_uxQueueMessagesWaiting proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_uxQueueSpacesAvailable: 00008B45
 MPU_uxQueueSpacesAvailable proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueGenericReceive: 00008B6D
 MPU_xQueueGenericReceive proc
@@ -1722,6 +10178,18 @@ l00008B71:
 	strbne	r0,[r6,-r6,asr #&1C]
 
 l00008B75:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueuePeekFromISR: 00008BA5
 MPU_xQueuePeekFromISR proc
@@ -1734,12 +10202,40 @@ l00008BAD:
 	strbeq	r3,[r6],#&1FC
 
 l00008BB1:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueGetMutexHolder: 00008BD1
 MPU_xQueueGetMutexHolder proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueCreateMutex: 00008BF9
 MPU_xQueueCreateMutex proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueTakeMutexRecursive: 00008C21
 MPU_xQueueTakeMutexRecursive proc
@@ -1752,36 +10248,105 @@ l00008C29:
 	strbeq	r3,[r6],#&1FC
 
 l00008C2D:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xQueueGiveMutexRecursive: 00008C4D
 MPU_xQueueGiveMutexRecursive proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vQueueDelete: 00008C75
 MPU_vQueueDelete proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_pvPortMalloc: 00008C99
 MPU_pvPortMalloc proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vPortFree: 00008CC1
 MPU_vPortFree proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vPortInitialiseBlocks: 00008CE5
 MPU_vPortInitialiseBlocks proc
 	ldcllo	p15,c15,[r7,#&2D4]!
 
 l00008CE9:
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xPortGetFreeHeapSize: 00008D05
 MPU_xPortGetFreeHeapSize proc
 	ldclhs	p15,c15,[r7,#&2D4]!
 
 l00008D09:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xEventGroupCreate: 00008D29
 MPU_xEventGroupCreate proc
 	blne	$FFE08C05
 
 l00008D2D:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xEventGroupWaitBits: 00008D4D
 MPU_xEventGroupWaitBits proc
@@ -1794,6 +10359,19 @@ l00008D55:
 	stmdbls	r6,{r1-r2,r6,ip,pc}
 
 l00008D59:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xEventGroupClearBits: 00008D8D
 MPU_xEventGroupClearBits proc
@@ -1810,6 +10388,16 @@ MPU_xEventGroupSetBits proc
 	mcreq	p5,#2,r0,c6
 
 l00008DBD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_xEventGroupSync: 00008DE5
 MPU_xEventGroupSync proc
@@ -1819,9 +10407,30 @@ l00008DE9:
 	strbne	r0,[r6,-r6,asr #&1C]
 
 l00008DED:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; MPU_vEventGroupDelete: 00008E1D
 MPU_vEventGroupDelete proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xCoRoutineCreate: 00008E41
 xCoRoutineCreate proc
@@ -1831,6 +10440,48 @@ l00008E45:
 	stceq	p8,c3,[r0,-#&118]!
 
 l00008E49:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; vCoRoutineAddToDelayedList: 00008EF1
 vCoRoutineAddToDelayedList proc
@@ -1838,6 +10489,8 @@ vCoRoutineAddToDelayedList proc
 
 l00008EF5:
 	strbvs	r2,[r8,-#&34C]!
+
+l00008EF9:
 	stmdane	r4,r0,r1,r2
 
 l00008EFD:
@@ -1897,6 +10550,87 @@ l00008F4D:
 	strbteq	sp,[r8],#&C6E
 
 l00008F51:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; xCoRoutineRemoveFromEventList: 00009095
 xCoRoutineRemoveFromEventList proc
@@ -1915,6 +10649,13 @@ l000090A5:
 	ldrbtpl	r0,[r1],#&5F9
 
 l000090A9:
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOGetIntNumber: 000090C5
 GPIOGetIntNumber proc
@@ -1924,6 +10665,22 @@ l000090C9:
 	ldrsblt	r0,[r8],#&80
 
 l000090CD:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIODirModeSet: 0000910D
 GPIODirModeSet proc
@@ -1942,9 +10699,24 @@ l0000911D:
 	rscshs	sp,r8,r4,lsr r0
 
 l00009121:
+	
+	
+	
+	
+	
 
 ;; GPIODirModeGet: 00009135
 GPIODirModeGet proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOIntTypeSet: 0000915D
 GPIOIntTypeSet proc
@@ -1981,12 +10753,27 @@ l00009185:
 	ldmibne	pc,r0,r1,r2
 
 l00009189:
+	
+	
+	
 
 ;; GPIOIntTypeGet: 00009195
 GPIOIntTypeGet proc
 	ldmeq	r8!,{r0-r1,r5,ip,lr-pc}
 
 l00009199:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPadConfigSet: 000091C9
 GPIOPadConfigSet proc
@@ -2047,9 +10834,60 @@ l00009211:
 	ldcleq	p0,c13,[r8]!
 
 l00009215:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPadConfigGet: 0000925D
 GPIOPadConfigGet proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPinIntEnable: 000092E1
 GPIOPinIntEnable proc
@@ -2072,6 +10910,7 @@ l000092F5:
 	ldrshvc	r1,[r4],-r8
 
 l000092F9:
+	
 
 ;; GPIOPinIntStatus: 000092FD
 GPIOPinIntStatus proc
@@ -2149,6 +10988,27 @@ l00009359:
 	svclo	#&F00040
 
 l0000935D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPortIntUnregister: 000093B1
 GPIOPortIntUnregister proc
@@ -2206,6 +11066,27 @@ l000093F5:
 	svcls	#&F00040
 
 l000093F9:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPinRead: 0000944D
 GPIOPinRead proc
@@ -2216,12 +11097,22 @@ l00009451:
 
 ;; GPIOPinWrite: 00009455
 GPIOPinWrite proc
+	
+	
 
 ;; GPIOPinTypeComparator: 0000945D
 GPIOPinTypeComparator proc
 	strhle	ip,[r3],#&FFFFFF2C
 
 l00009461:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPinTypeI2C: 00009481
 GPIOPinTypeI2C proc
@@ -2231,6 +11122,13 @@ l00009485:
 	bleq	$0090986D
 
 l00009489:
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPinTypeQEI: 000094A5
 GPIOPinTypeQEI proc
@@ -2240,6 +11138,13 @@ l000094A9:
 	beq	$00909891
 
 l000094AD:
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPinTypeUART: 000094C9
 GPIOPinTypeUART proc
@@ -2249,12 +11154,21 @@ l000094CD:
 	stmdaeq	r4,r3,r4,r5
 
 l000094D1:
+	
+	
+	
+	
+	
+	
+	
 
 ;; GPIOPinTypeTimer: 000094ED
 GPIOPinTypeTimer proc
+	
 
 ;; GPIOPinTypeSSI: 000094F1
 GPIOPinTypeSSI proc
+	
 
 ;; GPIOPinTypePWM: 000094F5
 GPIOPinTypePWM proc
@@ -2292,12 +11206,23 @@ l00009519:
 	ldrbteq	r4,[r8],#&368
 
 l0000951D:
+	
+	
+	
+	
+	
+	
+	
 
 ;; IntUnregister: 00009539
 IntUnregister proc
 	movtmi	r0,#&A34B
 
 l0000953D:
+	
+	
+	
+	
 
 ;; IntPriorityGroupingSet: 0000954D
 IntPriorityGroupingSet proc
@@ -2307,6 +11232,11 @@ l00009551:
 	teqmi	r0,#&F8
 
 l00009555:
+	
+	
+	
+	
+	
 
 ;; IntPriorityGroupingGet: 00009569
 IntPriorityGroupingGet proc
@@ -2328,6 +11258,10 @@ l0000957D:
 	bicseq	r0,r0,r2,asr #4
 
 l00009581:
+	
+	
+	
+	
 
 ;; IntPrioritySet: 00009591
 IntPrioritySet proc
@@ -2402,6 +11336,25 @@ l000095E9:
 	ldrbeq	r0,[r0,#&728]
 
 l000095ED:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; IntDisable: 00009639
 IntDisable proc
@@ -2417,6 +11370,25 @@ l00009645:
 	ldrbeq	r0,[r0,#&728]
 
 l00009649:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMDelay: 00009695
 OSRAMDelay proc
@@ -2427,6 +11399,16 @@ l00009699:
 
 ;; OSRAMWriteFirst: 0000969D
 OSRAMWriteFirst proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMWriteArray: 000096C5
 OSRAMWriteArray proc
@@ -2445,7 +11427,7 @@ l000096D5:
 	ldrshteq	r7,[sp],#&80
 
 l000096D9:
-	ldmlo	r0,{r3,r5,r8,fp-pc}
+	ldmlo	r0,{r3,r5,r8,fp-ip,sp,lr-pc}
 
 l000096DD:
 	ldmible	r7,r3,r5,r6
@@ -2466,6 +11448,10 @@ l000096F1:
 	mrcge	p6,#7,r9,c13
 
 l000096F5:
+	
+	
+	
+	
 
 ;; OSRAMWriteByte: 00009705
 OSRAMWriteByte proc
@@ -2481,6 +11467,15 @@ l00009711:
 	ldrbeq	pc,[r0,r8,lsr #&12]
 
 l00009715:
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMWriteFinal: 00009739
 OSRAMWriteFinal proc
@@ -2493,9 +11488,43 @@ l00009741:
 	mvnsmi	r0,r6,asr #&20
 
 l00009745:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMClear: 00009781
 OSRAMClear proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMStringDraw: 000097CD
 OSRAMStringDraw proc
@@ -2505,6 +11534,49 @@ l000097D1:
 	subhi	r0,r6,r6,asr #&A
 
 l000097D5:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMImageDraw: 00009881
 OSRAMImageDraw proc
@@ -2529,6 +11601,27 @@ l00009899:
 	svceq	#&F00108
 
 l0000989D:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMInit: 000098F1
 OSRAMInit proc
@@ -2547,6 +11640,34 @@ l00009901:
 	ldcleq	p12,c3,[r9]!
 
 l00009905:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMDisplayOn: 00009975
 OSRAMDisplayOn proc
@@ -2559,9 +11680,35 @@ l0000997D:
 	eoreq	r8,r0,r4,lsr #&20
 
 l00009981:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; OSRAMDisplayOff: 000099C1
 OSRAMDisplayOff proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; SSIConfig: 000099E9
 SSIConfig proc
@@ -2581,6 +11728,19 @@ l000099FD:
 	stmdane	pc,r4,r6,r7
 
 l00009A01:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; SSIEnable: 00009A35
 SSIEnable proc
@@ -2590,6 +11750,7 @@ l00009A39:
 	rsbvc	r4,r0,r3,lsl #6
 
 l00009A3D:
+	
 
 ;; SSIDisable: 00009A41
 SSIDisable proc
@@ -2603,15 +11764,30 @@ l00009A49:
 
 ;; SSIIntRegister: 00009A4D
 SSIIntRegister proc
+	
+	
+	
+	
+	
 
 ;; SSIIntUnregister: 00009A61
 SSIIntUnregister proc
+	
+	
+	
+	
+	
 
 ;; SSIIntEnable: 00009A75
 SSIIntEnable proc
+	
+	
 
 ;; SSIIntDisable: 00009A7D
 SSIIntDisable proc
+	
+	
+	
 
 ;; SSIIntStatus: 00009A89
 SSIIntStatus proc
@@ -2621,6 +11797,7 @@ l00009A8D:
 	rsbvc	ip,r9,r7,asr #&20
 
 l00009A91:
+	
 
 ;; SSIIntClear: 00009A95
 SSIIntClear proc
@@ -2631,39 +11808,67 @@ SSIDataPut proc
 	movwne	r0,#&2CF1
 
 l00009A9D:
+	
+	
+	
 
 ;; SSIDataNonBlockingPut: 00009AA9
 SSIDataNonBlockingPut proc
 	rscseq	r1,r0,#&A0000001
 
 l00009AAD:
+	
+	
+	
 
 ;; SSIDataGet: 00009AB9
 SSIDataGet proc
 	movwne	r0,#&2CF1
 
 l00009ABD:
+	
+	
+	
 
 ;; SSIDataNonBlockingGet: 00009AC9
 SSIDataNonBlockingGet proc
 	ldrbteq	r1,[r0],#&368
 
 l00009ACD:
+	
+	
+	
+	
 
 ;; SysCtlSRAMSizeGet: 00009ADD
 SysCtlSRAMSizeGet proc
 	blne	$0120AC11
 
 l00009AE1:
+	
+	
+	
+	
+	
 
 ;; SysCtlFlashSizeGet: 00009AF5
 SysCtlFlashSizeGet proc
 	blne	$0120AC29
 
 l00009AF9:
+	
+	
+	
+	
+	
 
 ;; SysCtlPinPresent: 00009B0D
 SysCtlPinPresent proc
+	
+	
+	
+	
+	
 
 ;; SysCtlPeripheralPresent: 00009B21
 SysCtlPeripheralPresent proc
@@ -2679,12 +11884,30 @@ l00009B2D:
 	strbne	r1,[r2],#&868
 
 l00009B31:
+	
+	
+	
 
 ;; SysCtlPeripheralReset: 00009B3D
 SysCtlPeripheralReset proc
 	subeq	r0,fp,#&210
 
 l00009B41:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; SysCtlPeripheralEnable: 00009B7D
 SysCtlPeripheralEnable proc
@@ -2719,6 +11942,10 @@ l00009BA1:
 	rscsvc	r2,r0,r9,rrx
 
 l00009BA5:
+	
+	
+	
+	
 
 ;; SysCtlPeripheralSleepEnable: 00009BB5
 SysCtlPeripheralSleepEnable proc
@@ -2753,6 +11980,10 @@ l00009BD9:
 	rscsvc	r2,r0,r10,rrx
 
 l00009BDD:
+	
+	
+	
+	
 
 ;; SysCtlPeripheralDeepSleepEnable: 00009BED
 SysCtlPeripheralDeepSleepEnable proc
@@ -2787,6 +12018,10 @@ l00009C11:
 	rscsvc	r2,r0,fp,rrx
 
 l00009C15:
+	
+	
+	
+	
 
 ;; SysCtlPeripheralClockGating: 00009C25
 SysCtlPeripheralClockGating proc
@@ -2806,6 +12041,8 @@ l00009C35:
 
 l00009C39:
 	adcsvs	r0,pc,r7,asr #&20
+
+l00009C3D:
 	stmdaeq	r0,r5,r6,r7
 
 ;; SysCtlIntRegister: 00009C41
@@ -2816,12 +12053,19 @@ l00009C45:
 	ldclpl	p15,c15,[r7,#&80]!
 
 l00009C49:
-	stmeq	r8!,{r2-r8,r10-sp,pc}
+	stmeq	r8!,{r2-r8,r10-ip,sp,pc}
 
 l00009C4D:
+	
+	
 
 ;; SysCtlIntUnregister: 00009C55
 SysCtlIntUnregister proc
+	
+	
+	
+	
+	
 
 ;; SysCtlIntEnable: 00009C69
 SysCtlIntEnable proc
@@ -2838,6 +12082,10 @@ l00009C75:
 
 ;; SysCtlIntDisable: 00009C79
 SysCtlIntDisable proc
+	
+	
+	
+	
 
 ;; SysCtlIntClear: 00009C89
 SysCtlIntClear proc
@@ -2894,6 +12142,8 @@ SysCtlLDOConfigSet proc
 
 l00009CC9:
 	adcsvs	r0,pc,r7,asr #&20
+
+l00009CCD:
 	smlaltteq	r0,r0,r1,pc
 
 ;; SysCtlReset: 00009CD1
@@ -2924,6 +12174,11 @@ l00009CED:
 	rsbeq	r2,r0,r3,lsl #6
 
 l00009CF1:
+	
+	
+	
+	
+	
 
 ;; SysCtlResetCauseGet: 00009D05
 SysCtlResetCauseGet proc
@@ -2937,18 +12192,109 @@ l00009D0D:
 
 ;; SysCtlResetCauseClear: 00009D11
 SysCtlResetCauseClear proc
+	
+	
+	
+	
 
 ;; SysCtlBrownOutConfigSet: 00009D21
 SysCtlBrownOutConfigSet proc
+	
+	
+	
+	
 
 ;; SysCtlClockSet: 00009D31
 SysCtlClockSet proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; SysCtlClockGet: 00009DF1
 SysCtlClockGet proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; SysCtlPWMClockSet: 00009E69
 SysCtlPWMClockSet proc
+	
+	
+	
+	
+	
 
 ;; SysCtlPWMClockGet: 00009E7D
 SysCtlPWMClockGet proc
@@ -2959,6 +12305,8 @@ l00009E81:
 
 l00009E85:
 	adcsvs	r0,pc,r7,asr #&20
+
+l00009E89:
 	subne	r0,r0,r0,ror #&1F
 
 ;; SysCtlADCSpeedSet: 00009E8D
@@ -2984,12 +12332,22 @@ l00009EA5:
 	bleq	$010CAC39
 
 l00009EA9:
+	
+	
+	
+	
+	
+	
+	
 
 ;; SysCtlADCSpeedGet: 00009EC5
 SysCtlADCSpeedGet proc
 	rsbeq	r1,r8,fp,asr #&10
 
 l00009EC9:
+	
+	
+	
 
 ;; SysCtlIOSCVerificationSet: 00009ED5
 SysCtlIOSCVerificationSet proc
@@ -3009,6 +12367,8 @@ l00009EE5:
 
 l00009EE9:
 	adcsvs	r0,pc,r7,asr #&20
+
+l00009EED:
 	strbeq	r0,[r0,-#&FE0]
 
 ;; SysCtlMOSCVerificationSet: 00009EF1
@@ -3029,6 +12389,8 @@ l00009F01:
 
 l00009F05:
 	adcsvs	r0,pc,r7,asr #&20
+
+l00009F09:
 	strbeq	r0,[r0,-#&FE0]
 
 ;; SysCtlPLLVerificationSet: 00009F0D
@@ -3049,18 +12411,23 @@ l00009F1D:
 
 l00009F21:
 	adcsvs	r0,pc,r7,asr #&20
+
+l00009F25:
 	smlaltteq	r0,r0,r0,pc
 
 ;; SysCtlClkVerificationClear: 00009F29
 SysCtlClkVerificationClear proc
+	
+	
+	
+	
 
 ;; UARTParityModeSet: 00009F39
 UARTParityModeSet proc
 	ldrbthi	r2,[r0],r10,ror #6
 
 l00009F3D:
-	mrsgt	r1,The given key was not present in the dictionary.
-
+	mrsgt	r1,spsr
 
 l00009F41:
 	subgt	r7,r7,r2,rrx
@@ -3070,9 +12437,33 @@ UARTParityModeGet proc
 	ldrbthi	r0,[r0],r10,rrx
 
 l00009F49:
+	
 
 ;; UARTConfigSet: 00009F4D
 UARTConfigSet proc
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; UARTConfigGet: 00009FA9
 UARTConfigGet proc
@@ -3085,18 +12476,38 @@ l00009FB1:
 	strbne	r0,[r6],-r6,asr #&1E
 
 l00009FB5:
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; UARTEnable: 00009FD5
 UARTEnable proc
 	rscsne	r4,r0,r10,ror #6
 
 l00009FD9:
+	
+	
+	
+	
+	
 
 ;; UARTDisable: 00009FED
 UARTDisable proc
 	movwne	r1,#&28F1
 
 l00009FF1:
+	
+	
+	
+	
+	
+	
+	
 
 ;; UARTCharsAvail: 0000A00D
 UARTCharsAvail proc
@@ -3136,6 +12547,9 @@ UARTCharGet proc
 	movwne	r1,#&28F1
 
 l0000A039:
+	
+	
+	
 
 ;; UARTCharNonBlockingPut: 0000A045
 UARTCharNonBlockingPut proc
@@ -3155,9 +12569,17 @@ UARTCharPut proc
 	movwne	r1,#&28F1
 
 l0000A059:
+	
+	
+	
 
 ;; UARTBreakCtl: 0000A065
 UARTBreakCtl proc
+	
+	
+	
+	
+	
 
 ;; UARTIntRegister: 0000A079
 UARTIntRegister proc
@@ -3176,6 +12598,9 @@ l0000A089:
 	stcllt	p0,c2,[r6,-#&3E8]
 
 l0000A08D:
+	
+	
+	
 
 ;; UARTIntUnregister: 0000A099
 UARTIntUnregister proc
@@ -3194,12 +12619,20 @@ l0000A0A9:
 	stcllt	p0,c2,[r6,-#&3E8]
 
 l0000A0AD:
+	
+	
+	
 
 ;; UARTIntEnable: 0000A0B9
 UARTIntEnable proc
+	
+	
 
 ;; UARTIntDisable: 0000A0C1
 UARTIntDisable proc
+	
+	
+	
 
 ;; UARTIntStatus: 0000A0CD
 UARTIntStatus proc
@@ -3209,6 +12642,7 @@ l0000A0D1:
 	rsbvc	r0,ip,r7,asr #&20
 
 l0000A0D5:
+	
 
 ;; UARTIntClear: 0000A0D9
 UARTIntClear proc
@@ -3249,9 +12683,24 @@ l0000A101:
 	ldrbvc	pc,[r7,#&F62]!
 
 l0000A105:
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 ;; I2CSlaveInit: 0000A129
 I2CSlaveInit proc
+	
+	
+	
+	
+	
+	
 
 ;; I2CMasterEnable: 0000A141
 I2CMasterEnable proc
@@ -3261,10 +12710,15 @@ l0000A145:
 	rsbvc	r0,r2,r3,lsl #6
 
 l0000A149:
+	
 
 ;; I2CSlaveEnable: 0000A14D
 I2CSlaveEnable proc
 	ldc2l	p0,c10,[r5]!
+	
+	
+	
+	
 
 ;; I2CMasterDisable: 0000A161
 I2CMasterDisable proc
@@ -3279,18 +12733,33 @@ l0000A169:
 ;; I2CSlaveDisable: 0000A16D
 I2CSlaveDisable proc
 	ldc2l	p0,c10,[r5]!
+	
+	
+	
+	
 
 ;; I2CIntRegister: 0000A181
 I2CIntRegister proc
+	
+	
+	
+	
+	
 
 ;; I2CIntUnregister: 0000A195
 I2CIntUnregister proc
+	
+	
+	
+	
+	
 
 ;; I2CMasterIntEnable: 0000A1A9
 I2CMasterIntEnable proc
 	rsbvc	r0,r1,r3,lsr #6
 
 l0000A1AD:
+	
 
 ;; I2CSlaveIntEnable: 0000A1B1
 I2CSlaveIntEnable proc
@@ -3311,21 +12780,34 @@ I2CSlaveIntDisable proc
 	rsbvc	ip,r0,r3,lsr #6
 
 l0000A1C5:
+	
 
 ;; I2CMasterIntStatus: 0000A1C9
 I2CMasterIntStatus proc
 	strhteq	r4,[r9],#9
 
 l0000A1CD:
+	
+	
+	
+	
+	
 
 ;; I2CSlaveIntStatus: 0000A1E1
 I2CSlaveIntStatus proc
 	strhteq	r0,[r9],#9
 
 l0000A1E5:
+	
+	
+	
+	
+	
 
 ;; I2CMasterIntClear: 0000A1F9
 I2CMasterIntClear proc
+	
+	
 
 ;; I2CSlaveIntClear: 0000A201
 I2CSlaveIntClear proc
@@ -3353,6 +12835,7 @@ I2CMasterBusBusy proc
 	rscshi	ip,r3,r8,rrx
 
 l0000A21D:
+	
 
 ;; I2CMasterControl: 0000A221
 I2CMasterControl proc
@@ -3375,6 +12858,7 @@ l0000A235:
 	eorvc	r0,r0,r7,asr #&20
 
 l0000A239:
+	
 
 ;; I2CMasterDataPut: 0000A23D
 I2CMasterDataPut proc
@@ -3386,6 +12870,7 @@ I2CMasterDataGet proc
 
 ;; I2CSlaveStatus: 0000A245
 I2CSlaveStatus proc
+	
 
 ;; I2CSlaveDataPut: 0000A249
 I2CSlaveDataPut proc
@@ -3397,10 +12882,14 @@ I2CSlaveDataGet proc
 
 l0000A251:
 	svcvs	#&6C6C65
+
+l0000A255:
 	movwmi	r0,#0
 
 l0000A259:
 	blvs	$018E3801
+
+l0000A25D:
 	andpl	r0,r0,r0
 
 l0000A261:
@@ -3411,15 +12900,35 @@ l0000A265:
 
 l0000A269:
 	ldclvs	p15,c6,[r5]!
+
+l0000A26D:
 	svcvs	#&6E2064
+
+l0000A271:
 	strbvs	r2,[r2,-#&74]!
+
+l0000A275:
 	strbvs	r7,[r8,-#&420]!
-	stmdbmi	r0,{r1,r4-r6,r8,r10,sp-lr}
+
+l0000A279:
+	stmdbmi	r0,{r1,r4-r6,r8,r10,sp,lr}
+
+l0000A27D:
 	subeq	r4,r5,r4,asr #&18
+
+l0000A281:
 	strls	r0,[r0],-r0
-0000A284             96 00 00 00 C8 00 00 00 FA 00 00 00     ............
-0000A290 2C 01 00 00 5E 01 00 00 90 01 00 00 C2 01 00 00 ,...^...........
-0000A2A0 F4 01 00 00                                     ....           
+0000A284             96                                      .          
+
+l0000A285:
+	
+	
+	
+	
+	
+	
+	
+	
 0000A2A4             00 07 00 00 00 06 00 00 00 05 00 00     ............
 0000A2B0 00 04 00 00 00 03 00 00 00 02 00 00 00 01 00 00 ................
 0000A2C0 00 00 00 00                                     ....           
@@ -3514,6 +13023,8 @@ l0000A5E1:
 
 l0000A5E5:
 	strbvs	r1,[r0,-r8,ror #&1E]!
+
+l0000A5E9:
 	strbge	r5,[r0,-r8,ror #&1E]!
 
 l0000A5ED:
@@ -3566,6 +13077,11 @@ l0000A62D:
 l0000A631:
 	mrrc	p12,#2,ip,ip
 	teqls	r3,#&15
+	
+	
+	
+	
+	
 ;;; Segment .data (20000000)
 20000000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...

@@ -10,8 +10,9 @@ word32 _init(word32 lr, word32 pc, ptr32 & r10Out)
 	word32 r10_6;
 	*r10Out = call_gmon_start(pc, lr);
 	frame_dummy();
-	word32 sp_8;
-	return __do_global_ctors_aux(dwArg00, out sp_8);
+	word32 r4_8;
+	__do_global_ctors_aux(dwArg00, out r4_8);
+	return r4_8;
 }
 
 // 00008314: Register word32 abort(Register word32 pc)
@@ -36,8 +37,8 @@ void __libc_start_main(word32 pc)
 	return;
 }
 
-// 00008334: void _start(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 pc, Stack word32 dwArg00)
-void _start(word32 r4, word32 r5, word32 r6, word32 r8, word32 pc, word32 dwArg00)
+// 00008334: void _start(Register word32 pc, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r8, Stack word32 dwArg00)
+void _start(word32 pc, word32 r4, word32 r5, word32 r6, word32 r8, word32 dwArg00)
 {
 	word32 ip_3 = globals->dw8360;
 	uint16 * r0_14 = globals->ptr8364;
@@ -148,25 +149,25 @@ void call_frame_dummy()
 	return;
 }
 
-// 00008434: Register Eq_174 frobulate(Register Eq_174 r0, Register ptr32 fp, Register word32 lr, Stack Eq_174 dwArg00)
-Eq_174 frobulate(Eq_174 r0, ptr32 fp, word32 lr, Eq_174 dwArg00)
+// 00008434: Register Eq_174 frobulate(Register word32 lr, Register Eq_174 r0, Register ptr32 fp, Stack Eq_174 dwArg00)
+Eq_174 frobulate(word32 lr, Eq_174 r0, ptr32 fp, Eq_174 dwArg00)
 {
-	return __divsi3(r0 * r0, 1337, lr);
+	return __divsi3(lr, r0 * r0, 1337);
 }
 
-// 00008470: void bazulate(Register Eq_174 r0, Register Eq_174 r1, Register ptr32 fp, Register word32 lr, Stack uint32 dwArg00)
-void bazulate(Eq_174 r0, Eq_174 r1, ptr32 fp, word32 lr, uint32 dwArg00)
+// 00008470: void bazulate(Register word32 lr, Register Eq_174 r0, Register Eq_174 r1, Register ptr32 fp, Stack uint32 dwArg00)
+void bazulate(word32 lr, Eq_174 r0, Eq_174 r1, ptr32 fp, uint32 dwArg00)
 {
-	__divsi3(__divsi3(r0 + r1, frobulate(r0, fp - 0x04, lr, r1), lr), frobulate(r1, fp - 0x04, lr, r4), lr);
+	__divsi3(lr, __divsi3(lr, r0 + r1, frobulate(lr, r0, fp - 0x04, r1)), frobulate(lr, r1, fp - 0x04, r4));
 	return;
 }
 
-// 000084D4: Register ptr32 switcheroo(Register uint32 r0, Register ptr32 fp, Register word32 lr, Stack word32 dwArg00)
-ptr32 switcheroo(uint32 r0, ptr32 fp, word32 lr, word32 dwArg00)
+// 000084D4: Register ptr32 switcheroo(Register word32 lr, Register uint32 r0, Register ptr32 fp, Stack word32 dwArg00)
+ptr32 switcheroo(word32 lr, uint32 r0, ptr32 fp, word32 dwArg00)
 {
 	if (r0 > 0x06)
 	{
-		bazulate(0x00, 0x00, fp - 0x04, lr, r0);
+		bazulate(lr, 0x00, 0x00, fp - 0x04, r0);
 		return fp;
 	}
 	else
@@ -186,15 +187,15 @@ ptr32 switcheroo(uint32 r0, ptr32 fp, word32 lr, word32 dwArg00)
 	}
 }
 
-// 0000855C: void main(Register uint32 r0, Register word32 r1, Register word32 lr, Stack word32 dwArg00)
-void main(uint32 r0, word32 r1, word32 lr, word32 dwArg00)
+// 0000855C: void main(Register word32 lr, Register uint32 r0, Register word32 r1, Stack word32 dwArg00)
+void main(word32 lr, uint32 r0, word32 r1, word32 dwArg00)
 {
-	switcheroo(r0, fp - 0x04, lr, r1);
+	switcheroo(lr, r0, fp - 0x04, r1);
 	return;
 }
 
-// 00008588: Register Eq_174 __divsi3(Register Eq_174 r0, Register Eq_174 r1, Register word32 lr)
-Eq_174 __divsi3(Eq_174 r0, Eq_174 r1, word32 lr)
+// 00008588: Register Eq_174 __divsi3(Register word32 lr, Register Eq_174 r0, Register Eq_174 r1)
+Eq_174 __divsi3(word32 lr, Eq_174 r0, Eq_174 r1)
 {
 	int32 ip_4 = r0 ^ r1;
 	uint32 r3_106 = 0x01;
@@ -303,8 +304,8 @@ void __libc_csu_init(word32 lr, word32 pc, word32 dwArg00)
 		return;
 }
 
-// 000086B0: void __libc_csu_fini(Register word32 r5, Register word32 pc, Stack word32 dwArg00)
-void __libc_csu_fini(word32 r5, word32 pc, word32 dwArg00)
+// 000086B0: void __libc_csu_fini(Register word32 pc, Register word32 r5, Stack word32 dwArg00)
+void __libc_csu_fini(word32 pc, word32 r5, word32 dwArg00)
 {
 	<anonymous> *** r10_16 = pc + globals->dw8700;
 	<anonymous> ** r1_17 = *r10_16;
@@ -332,13 +333,13 @@ void __libc_csu_fini(word32 r5, word32 pc, word32 dwArg00)
 	}
 }
 
-// 0000870C: Register word32 __do_global_ctors_aux(Stack word32 dwArg00, Register out ptr32 spOut)
-word32 __do_global_ctors_aux(word32 dwArg00, ptr32 & spOut)
+// 0000870C: Register ptr32 __do_global_ctors_aux(Stack word32 dwArg00, Register out ptr32 r4Out)
+ptr32 __do_global_ctors_aux(word32 dwArg00, ptr32 & r4Out)
 {
 	<anonymous> * r2_9 = globals->ptr8740->ptrFFFFFFFC;
 	if (r2_9 != (<anonymous> *) 0x01)
 	{
-		word32 sp_28;
+		ptr32 sp_28;
 		word32 r4_29;
 		word32 lr_30;
 		word32 pc_31;
@@ -347,13 +348,13 @@ word32 __do_global_ctors_aux(word32 dwArg00, ptr32 & spOut)
 		byte NZCV_34;
 		byte Z_35;
 		r2_9();
-		return r4_29;
+		return sp_28;
 	}
 	else
 	{
-		word32 sp_24;
-		*spOut = fp;
-		return dwLoc08;
+		word32 r4_23;
+		*r4Out = dwLoc08;
+		return fp;
 	}
 }
 

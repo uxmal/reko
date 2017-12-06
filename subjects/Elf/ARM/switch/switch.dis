@@ -15,8 +15,9 @@ l000082F0:
 	word32 r10_6
 	*r10Out = call_gmon_start(pc, lr)
 	frame_dummy()
-	word32 sp_8
-	return __do_global_ctors_aux(dwArg00, out sp_8)
+	word32 r4_8
+	__do_global_ctors_aux(dwArg00, out r4_8)
+	return r4_8
 // DataOut: r10 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -92,7 +93,7 @@ fn00008324_exit:
 
 
 
-void _start(word32 r4, word32 r5, word32 r6, word32 r8, word32 pc, word32 dwArg00)
+void _start(word32 pc, word32 r4, word32 r5, word32 r6, word32 r8, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Z pc r4 r5 r6 r8
@@ -400,7 +401,7 @@ call_frame_dummy_exit:
 
 
 
-word32 frobulate(word32 r0, word32 fp, word32 lr, word32 dwArg00)
+word32 frobulate(word32 lr, word32 r0, word32 fp, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fp lr r0
@@ -414,7 +415,7 @@ frobulate_entry:
 // LocalsOut: fp(32)
 
 l00008434:
-	return __divsi3(r0 * r0, 0x00000539, lr)
+	return __divsi3(lr, r0 * r0, 0x00000539)
 // DataOut: lr r0 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -426,7 +427,7 @@ frobulate_exit:
 
 
 
-void bazulate(word32 r0, word32 r1, word32 fp, word32 lr, word32 dwArg00)
+void bazulate(word32 lr, word32 r0, word32 r1, word32 fp, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fp lr r0 r1
@@ -440,7 +441,7 @@ bazulate_entry:
 // LocalsOut: fp(32)
 
 l00008470:
-	__divsi3(__divsi3(r0 + r1, frobulate(r0, fp - 0x00000004, lr, r1), lr), frobulate(r1, fp - 0x00000004, lr, r4), lr)
+	__divsi3(lr, __divsi3(lr, r0 + r1, frobulate(lr, r0, fp - 0x00000004, r1)), frobulate(lr, r1, fp - 0x00000004, r4))
 	return
 // DataOut:
 // DataOut (flags): 
@@ -453,7 +454,7 @@ bazulate_exit:
 
 
 
-word32 switcheroo(word32 r0, word32 fp, word32 lr, word32 dwArg00)
+word32 switcheroo(word32 lr, word32 r0, word32 fp, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  fp lr r0
@@ -480,7 +481,7 @@ l000084F4:
 // LocalsOut: Local -0014(32) Stack +0000(32)
 
 l00008540:
-	bazulate(0x00000000, 0x00000000, fp - 0x00000004, lr, r0)
+	bazulate(lr, 0x00000000, 0x00000000, fp - 0x00000004, r0)
 	return fp
 // DataOut: fp
 // DataOut (flags): 
@@ -512,7 +513,7 @@ switcheroo_exit:
 
 
 
-void main(word32 r0, word32 r1, word32 lr, word32 dwArg00)
+void main(word32 lr, word32 r0, word32 r1, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr r0 r1
@@ -526,7 +527,7 @@ main_entry:
 // LocalsOut: fp(32)
 
 l0000855C:
-	switcheroo(r0, fp - 0x00000004, lr, r1)
+	switcheroo(lr, r0, fp - 0x00000004, r1)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -539,7 +540,7 @@ main_exit:
 
 
 
-word32 __divsi3(word32 r0, word32 r1, word32 lr)
+word32 __divsi3(word32 lr, word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr r0 r1
@@ -940,7 +941,7 @@ __libc_csu_init_exit:
 
 
 
-void __libc_csu_fini(word32 r5, word32 pc, word32 dwArg00)
+void __libc_csu_fini(word32 pc, word32 r5, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc r5
@@ -1002,7 +1003,7 @@ __libc_csu_fini_exit:
 
 
 
-word32 __do_global_ctors_aux(word32 dwArg00, ptr32 & spOut)
+word32 __do_global_ctors_aux(word32 dwArg00, ptr32 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
@@ -1035,15 +1036,15 @@ l00008724:
 	call r2_9 (retsize: 0; depth: 8)
 		uses: dwLoc04_5,dwLoc08,lr_27,NZCV_10,pc,r2_9,r3_26,r4_12,sp_6,Z_11
 		defs: lr_30,NZCV_34,pc_31,r2_33,r3_32,r4_29,sp_28,Z_35
-	return r4_29
+	return sp_28
 // DataOut: r10 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 r3:<invalid> r2:<invalid> r4:<invalid> -4(fp):lr 0(fp):r4
 
 l00008720_1:
-	word32 sp_24
-	*spOut = fp
-	return dwLoc08
+	word32 r4_23
+	*r4Out = dwLoc08
+	return fp
 // DataOut: r10 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 r3:<invalid> r2:<invalid> r4:<invalid> -4(fp):lr 0(fp):r4
