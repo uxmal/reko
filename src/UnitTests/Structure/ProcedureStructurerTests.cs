@@ -758,6 +758,54 @@ case_1:
         }
 
         [Test]
+        public void ProcStr_DoWhile_NestedSwitch()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+            m.BranchIf(m.Fn("action"), "done");
+            m.Switch(r1, "case_0", "case_1");
+
+            m.Label("case_0");
+            m.BranchIf(m.Fn("done"), "done");
+            m.Assign(r1, 2);
+            // Fallthru
+
+            m.Label("case_1");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.BranchIf(m.Eq(r1, 0), "head");
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        if (!action())
+        {
+            switch (r1)
+            {
+            case 0x00:
+                if (!done())
+                {
+                    r1 = 0x02;
+                    goto case_1;
+                }
+                break;
+            case 0x01:
+case_1:
+                r1 = 0x01;
+                break;
+            }
+        }
+    } while (r1 == 0x00);
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void ProcStr_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
