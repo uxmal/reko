@@ -269,6 +269,20 @@ namespace Reko.Structure
             return didReduce;
         }
 
+        private void EnqueueUnresolvedRegion(Region switchHead)
+        {
+            // Do not refine switch region if there are unresolved cycles
+            if (unresolvedCycles.Count == 0)
+                this.unresolvedSwitches.Enqueue(switchHead);
+        }
+
+        private void EnqueueUnresolvedRegion(Region head, ISet<Region> loop)
+        {
+            // Do not refine cycle if there are unresolved switches
+            if (unresolvedSwitches.Count == 0)
+                this.unresolvedCycles.Enqueue(Tuple.Create(head, loop));
+        }
+
         public bool ProcessUnresolvedRegions()
         {
             if (unresolvedCycles.Count != 0)
@@ -402,7 +416,8 @@ namespace Reko.Structure
             // It's a switch region, but we are unable to collapse it.
             // Schedule it for refinement after the whole graph has been
             // traversed.
-            this.unresolvedSwitches.Enqueue(n);
+            EnqueueUnresolvedRegion(n);
+
             return false;
         }
 
@@ -995,7 +1010,7 @@ are added during loop refinement, which we discuss next.
             // It's a cyclic region, but we are unable to collapse it.
             // Schedule it for refinement after the whole graph has been 
             // traversed.
-            this.unresolvedCycles.Enqueue(Tuple.Create(n, loopNodes));
+            EnqueueUnresolvedRegion(n, loopNodes);
             return didReduce;
         }
 #if NILZ
