@@ -670,6 +670,39 @@ case_1:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void ProcStr_Switch_IrregularEntries_AllCasesAreTails()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.BranchIf(m.Fn("check"), "case_0");
+            m.Switch(r1, "case_0", "case_1");
+
+            m.Label("case_0");
+            m.Assign(r1, 2);
+            m.Return(m.IMul(r1, 3));
+
+            m.Label("case_1");
+            m.Assign(r1, 1);
+            m.Return(m.IMul(r1, 4));
+
+            var sExp =
+@"    if (check())
+        goto case_0;
+    switch (r1)
+    {
+    case 0x00:
+case_0:
+        r1 = 0x02;
+        return r1 * 0x03;
+    case 0x01:
+        r1 = 0x01;
+        return r1 * 0x04;
+    }
+";
+            RunTest(sExp, m.Procedure);
+        }
+
         [Test(Description="A do-while with a nested if-then-else")]
         public void ProcStr_DoWhile_NestedIfElse()
         {

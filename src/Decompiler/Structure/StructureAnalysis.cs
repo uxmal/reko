@@ -407,8 +407,9 @@ namespace Reko.Structure
         /// <returns></returns>
         private bool ReduceSwitchRegion(Region n)
         {
+            bool irregularEntries = AreIrregularEntries(n);
             var follow = GetSwitchFollow(n);
-            if (follow != null || AllCasesAreTails(n))
+            if (!irregularEntries && (follow != null || AllCasesAreTails(n)))
             {
                 return ReduceIncSwitch(n, follow);
             }
@@ -620,13 +621,21 @@ all other cases, together they constitute a Switch[].
             return virtualized;
         }
 
+        private bool AreIrregularEntries(Region n)
+        {
+            foreach (var s in regionGraph.Successors(n))
+            {
+                if (regionGraph.Predecessors(s).Where(p => (p != n)).Any())
+                    return true;
+            }
+            return false;
+        }
+
         private Region GetSwitchFollow(Region n)
         {
             Region follow = null;
             foreach (var s in regionGraph.Successors(n))
             {
-                if (regionGraph.Predecessors(s).Where(p => (p != n)).Any())
-                    return null;
                 var ss = SingleSuccessor(s);
                 if (s.Type != RegionType.Tail)
                 {
