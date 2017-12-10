@@ -29,7 +29,7 @@ using Reko.Core.Types;
 namespace Reko.UnitTests.Structure
 {
     [TestFixture]
-    public class ProcedureStructurerTests
+    public class StructureAnalysisTests
     {
         private ProcedureBuilder m;
 
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_Simple()
+        public void StrAnls_Simple()
         {
             m.Return();
 
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_IfThen()
+        public void StrAnls_IfThen()
         {
             var r1 = m.Reg32("r1", 1);
             m.Label("head");
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_IfThenElse()
+        public void StrAnls_IfThenElse()
         {
             var r1 = m.Reg32("r1", 1);
             m.Label("head");
@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_While()
+        public void StrAnls_While()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_While2()
+        public void StrAnls_While2()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_BigHeadWhile()
+        public void StrAnls_BigHeadWhile()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_DoWhile()
+        public void StrAnls_DoWhile()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_NestedWhile()
+        public void StrAnls_NestedWhile()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -285,7 +285,7 @@ namespace Reko.UnitTests.Structure
 
 
         [Test]
-        public void ProcStr_WhileBreak()
+        public void StrAnls_WhileBreak()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -320,7 +320,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test(Description="Here, the block leaving the loop does some work first.")]
-        public void ProcStr_WhileBreak2()
+        public void StrAnls_WhileBreak2()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Structure
 
 
         [Test(Description = "This forces a goto, because the loop leaving goto isn't going to the follow node.")]
-        public void ProcStr_WhileGoto()
+        public void StrAnls_WhileGoto()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -414,7 +414,7 @@ end_fn:
         }
 
         [Test]
-        public void ProcStr_UnstructuredExit_NILZ()
+        public void StrAnls_UnstructuredExit_NILZ()
         {
             m.Label("loopheader");
             m.BranchIf(m.Fn("foo"), "done");
@@ -448,7 +448,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_InfiniteLoop_BreakInsideOfNestedIfs()
+        public void StrAnls_InfiniteLoop_BreakInsideOfNestedIfs()
         {
             m.Label("loopheader");
 
@@ -485,7 +485,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_InfiniteLoop()
+        public void StrAnls_InfiniteLoop()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -505,7 +505,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_Switch()
+        public void StrAnls_Switch()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -546,7 +546,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_Switch_Fallthru()
+        public void StrAnls_Switch_Fallthru()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -588,7 +588,7 @@ case_2:
         }
 
         [Test]
-        public void ProcStr_Switch_Fallthru_CoincidentTargets()
+        public void StrAnls_Switch_Fallthru_CoincidentTargets()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -631,7 +631,7 @@ target_2:
         }
 
         [Test]
-        public void ProcStr_Switch_Fallthru_IrregularCaseExits()
+        public void StrAnls_Switch_Fallthru_IrregularCaseExits()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -671,7 +671,7 @@ case_1:
         }
 
         [Test]
-        public void ProcStr_Switch_IrregularEntries_AllCasesAreTails()
+        public void StrAnls_Switch_IrregularEntries_AllCasesAreTails()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -704,7 +704,7 @@ case_0:
         }
 
         [Test(Description="A do-while with a nested if-then-else")]
-        public void ProcStr_DoWhile_NestedIfElse()
+        public void StrAnls_DoWhile_NestedIfElse()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -742,7 +742,7 @@ case_0:
         }
 
         [Test(Description="A do-while loop with many continue statements.")]
-        public void ProcStr_DoWhile_ManyContinues()
+        public void StrAnls_DoWhile_ManyContinues()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -791,7 +791,7 @@ case_0:
         }
 
         [Test]
-        public void ProcStr_DoWhile_NestedSwitch()
+        public void StrAnls_DoWhile_NestedSwitch()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -839,7 +839,7 @@ case_1:
         }
 
         [Test]
-        public void ProcStr_DoNotLoseLabels()
+        public void StrAnls_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
             m.Goto("right");
@@ -892,7 +892,7 @@ easy:
         }
 
         [Test]
-        public void ProcStr_r00237()
+        public void StrAnls_r00237()
         {
             //byte fn0800_0541(byte al, selector ds)
 
