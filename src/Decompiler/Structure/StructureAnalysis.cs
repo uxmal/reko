@@ -1277,7 +1277,6 @@ refinement on the loop body, which we describe below.
                     wl.AddRange(regionGraph.Successors(item).Where(s => !lexNodes.Contains(s)));
                 }
             }
-            //lexNodes.Remove(head);
             return lexNodes;
         }
 
@@ -1296,11 +1295,6 @@ refinement on the loop body, which we describe below.
             Goto,
             Break,
             Continue,
-        }
-
-        private bool VirtualizeIrregularEntries(Region header, ISet<Region> loopRegions)
-        {
-            return false;
         }
 
         /// <summary>
