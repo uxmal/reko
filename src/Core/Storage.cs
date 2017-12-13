@@ -126,11 +126,11 @@ namespace Reko.Core
     public enum StorageDomain
     {
         None = -1,
-        Register = 0,
-        Stack = 4096,   // Few architectures have this many registers (fingers xD)
-        Memory = 4097,
-        Flags = 4100,
+        Register = 0,   // Few architectures have 4096 registers (fingers xD)
+        Memory = 4096,
+        FpuStack = 4098,
         Temporary = 8192,
+        Stack = 16834,  
     }
 
     /// <summary>
@@ -277,6 +277,7 @@ namespace Reko.Core
         {
             this.FpuStackOffset = depth;
             this.DataType = dataType;
+            this.Domain = (StorageDomain)(StorageDomain.FpuStack + depth);
             if (FpuStackOffset >= 0)
             {
                 Name = string.Format("FPU +{0}", FpuStackOffset);

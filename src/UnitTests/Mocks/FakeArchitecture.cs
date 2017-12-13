@@ -211,10 +211,7 @@ namespace Reko.UnitTests.Mocks
 
         public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            if (offset == 0 && width == (int)reg.BitSize)
-                return reg;
-            else
-                return null;
+            return reg;
         }
 
         public RegisterStorage[] GetRegisters()

@@ -210,7 +210,7 @@ namespace Reko.ImageLoaders.LLVM
             ProcedureBuilder m)
         {
             var rt = TranslateType(retType);
-            var sigRet = m.Procedure.Frame.CreateTemporary(rt);
+            var sigRet = m.Frame.CreateTemporary(rt);
             var sigParameters = new List<Identifier>();
             foreach (var param in parameters)
             {

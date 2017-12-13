@@ -2774,5 +2774,89 @@ proc1_exit:
         // W2:  [----------]
         // W3:      [---------]
         // R      [
+
+        [Test(Description = "Ignore dead storage")]
+        [Category(Categories.UnitTests)]
+        public void SsaSubregisterAssignments()
+        {
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+    uses: r63_2 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp
+    uses: use r63_2
+Mem0:Global
+    def:  def Mem0
+    uses: ax_4 = Mem0[0x00123400:word16]
+ax_4: orig: ax
+    def:  ax_4 = Mem0[0x00123400:word16]
+    uses: Mem5[0x00123402:word16] = ax_4
+          ax_10 = DPB(ax_4, al_6, 8) (alias)
+Mem5: orig: Mem0
+    def:  Mem5[0x00123402:word16] = ax_4
+    uses: al_6 = Mem5[0x00123404:byte]
+          ah_7 = Mem5[0x00123405:byte]
+al_6: orig: al
+    def:  al_6 = Mem5[0x00123404:byte]
+    uses: Mem8[0x00123406:byte] = al_6
+          ax_10 = DPB(ax_4, al_6, 8) (alias)
+ah_7: orig: ah
+    def:  ah_7 = Mem5[0x00123405:byte]
+    uses: Mem9[0x00123407:byte] = ah_7
+          ax_11 = DPB(ax_10, ah_7, 0) (alias)
+Mem8: orig: Mem0
+    def:  Mem8[0x00123406:byte] = al_6
+Mem9: orig: Mem0
+    def:  Mem9[0x00123407:byte] = ah_7
+ax_10: orig: ax
+    def:  ax_10 = DPB(ax_4, al_6, 8) (alias)
+    uses: ax_11 = DPB(ax_10, ah_7, 0) (alias)
+ax_11: orig: ax
+    def:  ax_11 = DPB(ax_10, ah_7, 0) (alias)
+    uses: use ax_11
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	def Mem0
+	// succ:  l1
+l1:
+	r63_2 = fp
+	ax_4 = Mem0[0x00123400:word16]
+	Mem5[0x00123402:word16] = ax_4
+	al_6 = Mem5[0x00123404:byte]
+	ax_10 = DPB(ax_4, al_6, 8) (alias)
+	ah_7 = Mem5[0x00123405:byte]
+	ax_11 = DPB(ax_10, ah_7, 0) (alias)
+	Mem8[0x00123406:byte] = al_6
+	Mem9[0x00123407:byte] = ah_7
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use ax_11
+	use r63_2
+======
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 0, PrimitiveType.Byte));
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(ax, m.LoadW(m.Word32(0x00123400)));
+                m.Store(m.Word32(0x00123402), ax);
+                m.Assign(al, m.LoadB(m.Word32(0x00123404)));
+                m.Assign(ah, m.LoadB(m.Word32(0x00123405)));
+                m.Store(m.Word32(0x00123406), al);
+                m.Store(m.Word32(0x00123407), ah);
+                m.Return();
+            });
+        }
     }
 }

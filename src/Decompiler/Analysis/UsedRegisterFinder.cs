@@ -52,7 +52,7 @@ namespace Reko.Analysis
         private ProcedureFlow procFlow;
         private SsaState ssa;
         private Dictionary<PhiAssignment, BitRange> visited;
-        private bool ignoreUseInstructions;
+        private bool useLiveness;
 
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
@@ -78,7 +78,7 @@ namespace Reko.Analysis
         {
             this.procFlow = flow[ssaState.Procedure];
             this.ssa = ssaState;
-            this.ignoreUseInstructions = ignoreUse;
+            this.useLiveness = ignoreUse;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
                 DefInstruction def;
@@ -108,7 +108,7 @@ namespace Reko.Analysis
         {
             this.procFlow = flow[ssa.Procedure];
             this.ssa = ssa;
-            this.ignoreUseInstructions = ignoreUseInstructions;
+            this.useLiveness = ignoreUseInstructions;
             if (sid.Identifier.Storage is RegisterStorage ||
                  sid.Identifier.Storage is StackArgumentStorage ||
                  sid.Identifier.Storage is FpuStackStorage ||
@@ -134,7 +134,6 @@ namespace Reko.Analysis
         {
             idCur = sid.Identifier;
             return sid.Uses
-                .Where(u =>  !this.ignoreUseInstructions || u.Block != ssa.Procedure.ExitBlock)
                 .Aggregate(BitRange.Empty, (w, stm) => w | stm.Instruction.Accept(this));
         }
 
@@ -148,6 +147,17 @@ namespace Reko.Analysis
                 idCur = ass.Dst;
                 var n = Classify(ssa.Identifiers[ass.Dst]);
                 idCur = idOld;
+                return n;
+            }
+            var dpb = ass.Src as DepositBits;
+            if (dpb != null)
+            {
+                // a = DPB(a', b) is also a copy, so we must chase the uses of a.
+                var idOld = idCur;
+                idCur = ass.Dst;
+                var n = Classify(ssa.Identifiers[ass.Dst]);
+                idCur = idOld;
+                n &= new BitRange(0, dpb.InsertedBits.DataType.BitSize);
                 return n;
             }
             return ass.Src.Accept(this);
@@ -219,9 +229,19 @@ namespace Reko.Analysis
 
         public BitRange VisitUseInstruction(UseInstruction use)
         {
-            if (ignoreUseInstructions)
-                return BitRange.Empty;
-            return use.Expression.Accept(this);
+            if (useLiveness)
+            {
+                var stg = ((Identifier)use.Expression).Storage;
+                BitRange br;
+                if (!procFlow.LiveOut.TryGetValue(stg, out br))
+                    return BitRange.Empty;
+                return br;
+            }
+            else
+            {
+                var br = use.Expression.Accept(this);
+                return br;
+            }
         }
 
         public BitRange VisitAddress(Address addr)

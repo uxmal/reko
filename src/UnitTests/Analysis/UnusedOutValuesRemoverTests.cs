@@ -263,23 +263,88 @@ foo_exit:
             RunTest(sExp, pb.Program);
         }
 
-        [Test]
+        [Test(Description = "Tests a long chain of calls.")]
         [Category(Categories.UnitTests)]
-        public void Uvr_()
+        public void Uvr_Chain()
         {
-            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var arch = new FakeArchitecture();
+            var _r1 = arch.GetRegister("r1");
+            var _r2 = arch.GetRegister("r2");
+            var _r3 = arch.GetRegister("r3");
             var pb = new ProgramBuilder();
             pb.Add("main", m =>
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
-                m.Call("bool_proc", 0);
-                m.Store(m.Word32(0x00123400), m.Cast(PrimitiveType.Byte, r1));
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
+                m.Call("level1", 0);
+                m.Store(m.Word32(0x00123400), m.Cast(PrimitiveType.Byte, r1)); // forces r1 to be liveout on level1
                 m.Return();
             });
-            pb.Add("bool_proc", m =>
+            pb.Add("level1", m =>
             {
-
+                // We expect r2 to be live-in, as level2 uses it, and r1 to be leve
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
+                m.Call("level2", 0);
+                m.Return();
             });
+            pb.Add("level2", m =>
+            {
+                var r1 = m.Frame.EnsureRegister(_r1);
+                var r2 = m.Frame.EnsureRegister(_r2);
+                m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
+                m.Assign(r1, m.LoadDw(r2));
+                m.Return();
+            });
+            pb.BuildProgram();
+            var sExp =
+            #region
+@"// main
+// Return size: 0
+define main
+main_entry:
+	def r2
+	// succ:  l1
+l1:
+	call level1 (retsize: 0;)
+		uses: r2:r2
+		defs: r1:r1_4
+	Mem5[0x00123400:byte] = (byte) r1_4
+	return
+	// succ:  main_exit
+main_exit:
+===
+// level1
+// Return size: 0
+define level1
+level1_entry:
+	def r2
+	// succ:  l1
+l1:
+	call level2 (retsize: 0;)
+		uses: r2:r2
+		defs: r1:r1_4
+	return
+	// succ:  level1_exit
+level1_exit:
+	use r1_4
+===
+// level2
+// Return size: 0
+define level2
+level2_entry:
+	def r2
+	def Mem0
+	// succ:  l1
+l1:
+	r1_5 = Mem0[r2:word32]
+	return
+	// succ:  level2_exit
+level2_exit:
+	use r1_5
+===
+";
+            #endregion
+            RunTest(sExp, pb.Program);
         }
     }
 }

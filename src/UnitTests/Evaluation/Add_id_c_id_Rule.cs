@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Evaluation
             id = m.Local32("id");
             x = m.Local32("x");
             ssaIds = new SsaIdentifierCollection();
-            foreach (Identifier i in m.Procedure.Frame.Identifiers)
+            foreach (Identifier i in m.Frame.Identifiers)
             {
                 ssaIds.Add(i, null, null, false);
             }

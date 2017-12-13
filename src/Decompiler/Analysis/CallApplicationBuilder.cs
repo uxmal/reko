@@ -35,15 +35,20 @@ namespace Reko.Analysis
     public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
         private IProcessorArchitecture arch;
-        private Dictionary<Storage, Expression> defs;
-        private Dictionary<Storage, Expression> uses;
-        private Dictionary<Storage, Expression> map;
+        private Dictionary<StorageDomain, CallBinding> defs;
+        private Dictionary<StorageDomain, CallBinding> uses;
+        private Dictionary<StorageDomain, CallBinding> map;
 
         public CallApplicationBuilder(IProcessorArchitecture arch, CallInstruction call, Expression callee) : base(call.CallSite, callee)
         {
             this.arch = arch;
-            this.defs = call.Definitions.ToDictionary(u => u.Storage, u => u.Expression);
-            this.uses = call.Uses.ToDictionary(u => u.Storage, u => u.Expression);
+            this.defs = call.Definitions.ToDictionary(u => u.Storage.Domain);
+            var uses = new Dictionary<StorageDomain, CallBinding>();
+            foreach (var u in call.Uses)
+            {
+                uses.Add(u.Storage.Domain, u);
+            }
+            this.uses = call.Uses.ToDictionary(u => u.Storage.Domain);
         }
 
         public override Expression Bind(Identifier id)
@@ -62,7 +67,7 @@ namespace Reko.Analysis
             return With(defs, id.Storage);
         }
 
-        private Expression With(Dictionary<Storage, Expression> map, Storage stg)
+        private Expression With(Dictionary<StorageDomain, CallBinding> map, Storage stg)
         {
             this.map = map;
             var exp = stg.Accept(this);
@@ -72,7 +77,7 @@ namespace Reko.Analysis
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return map[grf];
+            return map[grf.Domain].Expression;
         }
 
         public Expression VisitFlagRegister(FlagRegister freg)
@@ -83,10 +88,10 @@ namespace Reko.Analysis
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
             foreach (var de in this.map
-              .Where(d => d.Key is FpuStackStorage))
+              .Where(d => d.Value.Storage is FpuStackStorage))
             {
-                if (((FpuStackStorage)de.Key).FpuStackOffset == fpu.FpuStackOffset)
-                    return de.Value;
+                if (((FpuStackStorage)de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
+                    return de.Value.Expression;
             }
             throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));
         }
@@ -98,14 +103,14 @@ namespace Reko.Analysis
 
         public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
         {
-            return defs[arg.OriginalIdentifier.Storage];
+            return defs[arg.OriginalIdentifier.Storage.Domain].Expression;
         }
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-            Expression e;
-            return map.TryGetValue(reg, out e)
-                ? e 
+            CallBinding cb;
+            return map.TryGetValue(reg.Domain, out cb)
+                ? cb.Expression 
                 : null;
         }
 
@@ -118,10 +123,10 @@ namespace Reko.Analysis
         {
             int localOff = stack.StackOffset - site.StackDepthOnEntry;
             foreach (var de in this.map
-                .Where(d => d.Key is StackStorage))
+                .Where(d => d.Value.Storage is StackStorage))
             {
-                if (((StackStorage)de.Key).StackOffset == localOff)
-                    return de.Value;
+                if (((StackStorage)de.Value.Storage).StackOffset == localOff)
+                    return de.Value.Expression;
             }
             throw new NotImplementedException(string.Format("Argument {0} not found in map: {1}",
                 stack,

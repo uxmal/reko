@@ -148,16 +148,25 @@ namespace Reko.Analysis
 
             AddModifiedFlags(frame, flow.grfLiveOut, sb);
 
-            var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
-            mayUse.ExceptWith(implicitRegs);
+            var mayUse = flow.BitsUsed.Where(b =>
+                {
+                    var reg = b.Key as RegisterStorage;
+                    return reg != null && !implicitRegs.Contains(reg);
+                })
+                .ToDictionary(
+                    de => platform.Architecture.GetSubregister(
+                        (RegisterStorage) de.Key,
+                        de.Value.Lsb,
+                        de.Value.Extent),
+                    de=>de.Value);
             
             //$BUG: should be sorted by ABI register order. Need a new method
             // IPlatform.CreateAbiRegisterCollator().
-			foreach (var reg in mayUse.OfType<RegisterStorage>().OrderBy(r => r.Number))
+			foreach (var reg in mayUse.OrderBy(r => r.Key.Number))
 			{
-				if (!IsSubRegisterOfRegisters(reg, mayUse))
+				if (!IsSubRegisterOfRegisters(reg.Key, mayUse))
 				{
-					sb.AddRegisterArgument(reg);
+					sb.AddRegisterArgument(reg.Key);
 				}
 			}
 
@@ -175,15 +184,25 @@ namespace Reko.Analysis
                 sb.AddFpuStackArgument(fpu.FpuStackOffset, id);
 			}
 
-            var liveOut = allLiveOut.Keys.OfType<RegisterStorage>().ToHashSet();
-            liveOut.ExceptWith(implicitRegs);
+            var liveOut = allLiveOut
+                .Where(de =>
+                {
+                    var reg = de.Key as RegisterStorage;
+                    return reg != null && !implicitRegs.Contains(reg);
+                })
+                 .ToDictionary(
+                    de => platform.Architecture.GetSubregister(
+                        (RegisterStorage)de.Key,
+                        de.Value.Lsb,
+                        de.Value.Extent),
+                    de => de.Value);
 
             // Sort the names in a stable way to avoid regression tests failing.
-            foreach (var r in liveOut.OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
+            foreach (var r in liveOut.OrderBy(r => r.Key.Number).ThenBy(r => r.Key.BitAddress))
 			{
-				if (!IsSubRegisterOfRegisters(r, liveOut))
+				if (!IsSubRegisterOfRegisters(r.Key, liveOut))
 				{
-					sb.AddOutParam(frame.EnsureRegister(r));
+					sb.AddOutParam(frame.EnsureRegister(r.Key));
 				}
 			}
 
@@ -258,9 +277,9 @@ namespace Reko.Analysis
 		/// <param name="r"></param>
 		/// <param name="regs"></param>
 		/// <returns></returns>
-		private bool IsSubRegisterOfRegisters(RegisterStorage rr, HashSet<RegisterStorage> regs)
+		private bool IsSubRegisterOfRegisters(RegisterStorage rr, Dictionary<RegisterStorage, BitRange> regs)
 		{
-			foreach (var r2 in regs)
+			foreach (var r2 in regs.Keys)
 			{
 				if (rr.IsSubRegisterOf(r2))
 					return true;

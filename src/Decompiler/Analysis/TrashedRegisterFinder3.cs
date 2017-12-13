@@ -173,6 +173,7 @@ namespace Reko.Analysis
 
                 procCtx.Add(proc, procFlow);
                 var idState = new Dictionary<Identifier, Tuple<Expression,BitRange>>();
+                //$REVIEW: this assumes the existence of a frame pointer.
                 var fp = sst.SsaState.Identifiers[proc.Frame.FramePointer].Identifier;
                 var block = proc.EntryBlock;
                 blockCtx.Add(block, new Context(sst.SsaState, fp, idState, procFlow));

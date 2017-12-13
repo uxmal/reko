@@ -1,8 +1,8 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO ax sp Top
-// Preserved:
+// Trashed: SCZO ax Top
+// Preserved: sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Global
@@ -22,17 +22,19 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	al_11 = fn0C00_0015(0x0003)
-	Mem13[ds:0x0300:byte] = al_11
-	al_12 = fn0C00_0020(0x0003)
-	Mem20[ds:0x0301:byte] = al_12
+	ax_5 = DPB(ax_5, fn0C00_0015(0x0003), 0)
+	al_10 = (byte) ax_5 (alias)
+	Mem12[ds:0x0300:byte] = al_10
+	ax_14 = DPB(ax_14, fn0C00_0020(0x0003), 0)
+	al_19 = (byte) ax_14 (alias)
+	Mem20[ds:0x0301:byte] = al_19
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register byte fn0C00_0015(Register word16 ax)
 // MayUse:  ax:[0..15]
 // LiveOut: ax
-// Trashed: SCZO ax sp Top
+// Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0015
 // Return size: 0
@@ -49,7 +51,7 @@ Register byte fn0C00_0015(Register word16 ax)
 // S:S
 // O:O
 // return address size: 2
-word16 fn0C00_0015(word16 ax)
+byte fn0C00_0015(word16 ax)
 fn0C00_0015_entry:
 	def ax
 	// succ:  l0C00_0015
@@ -59,17 +61,18 @@ l0C00_0015:
 l0C00_0019:
 	// succ:  l0C00_0019_thunk_fn0C00_0020
 l0C00_0019_thunk_fn0C00_0020:
-	al_13 = fn0C00_0020(ax - 0x0001)
-	return al_13
+	ax_13 = DPB(ax_13, fn0C00_0020(ax - 0x0001), 0)
+	return (byte) ax_13
 	// succ:  fn0C00_0015_exit
 l0C00_001D:
-	return 0x01
+	ax_16 = DPB(ax, 0x01, 0) (alias)
+	return (byte) ax_16
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
-Register word16 fn0C00_0020(Register word16 ax)
+Register byte fn0C00_0020(Register word16 ax)
 // MayUse:  ax:[0..15]
 // LiveOut: ax
-// Trashed: SCZO
+// Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0020
 // Return size: 0
@@ -86,7 +89,7 @@ Register word16 fn0C00_0020(Register word16 ax)
 // S:S
 // O:O
 // return address size: 2
-word16 fn0C00_0020(word16 ax)
+byte fn0C00_0020(word16 ax)
 fn0C00_0020_entry:
 	def ax
 	// succ:  l0C00_0020
@@ -96,10 +99,11 @@ l0C00_0020:
 l0C00_0024:
 	// succ:  l0C00_0024_thunk_fn0C00_0015
 l0C00_0024_thunk_fn0C00_0015:
-	al_16 = fn0C00_0015(ax - 0x0001)
-	return al_16
+	ax_16 = DPB(ax_16, fn0C00_0015(ax - 0x0001), 0)
+	return (byte) ax_16
 	// succ:  fn0C00_0020_exit
 l0C00_0028:
-	return 0x00
+	ax_19 = DPB(ax, 0x00, 0) (alias)
+	return (byte) ax_19
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:

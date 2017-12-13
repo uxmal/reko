@@ -423,8 +423,8 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfProcessBlock()
         {
-            Identifier eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
-            Identifier esp = m.Procedure.Frame.EnsureRegister(Registers.esp);
+            Identifier eax = m.Frame.EnsureRegister(Registers.eax);
+            Identifier esp = m.Frame.EnsureRegister(Registers.esp);
             m.Store(m.ISub(esp, 4), eax);
             m.Assign(eax, m.Int32(3));
             m.Assign(eax, m.LoadDw(m.ISub(esp, 4)));
@@ -439,7 +439,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfTerminatingProcedure()
         {
-            var eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
+            var eax = m.Frame.EnsureRegister(Registers.eax);
             m.Assign(eax, m.Word32(0x40));
             m.Call(exit, 4);
 

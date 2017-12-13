@@ -1135,10 +1135,10 @@ namespace Reko.Analysis
             /// <returns></returns>
             protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
             {
-                var b = aliasFrom.SsaId.DefStatement.Block;
                 var sidFrom = aliasFrom.SsaId;
-                var stgTo = id.Storage;
+                var blockFrom = sidFrom.DefStatement.Block;
                 var stgFrom = sidFrom.Identifier.Storage;
+                var stgTo = id.Storage;
                 if (stgFrom == stgTo)
                 {
                     aliasFrom.Aliases[id] = sidFrom;
@@ -1164,7 +1164,7 @@ namespace Reko.Analysis
                 else 
                 {
                     this.liveBits = this.liveBits - stgFrom.GetBitRange();
-                    sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
+                    sidUse = ReadVariableRecursive(blockstates[blockFrom], true);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
@@ -1379,6 +1379,22 @@ namespace Reko.Analysis
                     }
 
                     // Does ssaId cover the probed value?
+                    if (a.SsaId.Identifier.Storage.Covers(id.Storage))
+                    {
+                        if (generateAlias)
+                        {
+                            var sid = MaybeGenerateAliasStatement(a);
+                            bs.currentDef[id.Storage.Domain] = a;
+                            return sid;
+                        }
+                        else
+                            return alias.SsaId;
+                    }
+                }
+                // Try again, this time see if there is at least some overlap.
+                for (var a = alias; a != null; a = a.PrevState)
+                {
+                    // Does the alias overlap the probed value?
                     if (a.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
                     {
                         if (generateAlias)
