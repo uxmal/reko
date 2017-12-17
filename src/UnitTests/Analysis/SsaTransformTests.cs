@@ -2858,5 +2858,126 @@ proc1_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaTransBlockLiveness()
+        {
+            var sExp =
+            #region Expected
+@"eax_1: orig: eax
+    def:  eax_1 = 0x00000004
+Mem2: orig: Mem0
+    def:  Mem2[0x00123400:word32] = 0x00000004
+    uses: al_3 = Mem2[0x00123408:byte]
+al_3: orig: al
+    def:  al_3 = Mem2[0x00123408:byte]
+    uses: SZC_4 = cond(al_3 - 0x30)
+          SZC_5 = cond(al_3 - 0x39)
+          eax_13 = DPB(eax, al_3, 8) (alias)
+SZC_4: orig: SZC
+    def:  SZC_4 = cond(al_3 - 0x30)
+    uses: branch Test(LT,SZC_4) m4_not_number
+SZC_5: orig: SZC
+    def:  SZC_5 = cond(al_3 - 0x39)
+    uses: branch Test(GT,SZC_5) m4_not_number
+al_6: orig: al
+    def:  al_6 = 0x00
+    uses: eax_16 = DPB(eax_15, al_6, 8) (alias)
+al_7: orig: al
+    def:  al_7 = 0x01
+    uses: eax_14 = DPB(eax_13, al_7, 8) (alias)
+C:C
+    def:  def C
+    uses: use C
+eax_11: orig: eax
+    def:  eax_11 = PHI(eax_14, eax_16)
+    uses: use eax_11
+eax:eax
+    def:  def eax
+    uses: eax_13 = DPB(eax, al_3, 8) (alias)
+          eax_15 = PHI(eax, eax_13)
+eax_13: orig: eax
+    def:  eax_13 = DPB(eax, al_3, 8) (alias)
+    uses: eax_14 = DPB(eax_13, al_7, 8) (alias)
+          eax_15 = PHI(eax, eax_13)
+eax_14: orig: eax
+    def:  eax_14 = DPB(eax_13, al_7, 8) (alias)
+    uses: eax_11 = PHI(eax_14, eax_16)
+eax_15: orig: eax
+    def:  eax_15 = PHI(eax, eax_13)
+    uses: eax_16 = DPB(eax_15, al_6, 8) (alias)
+eax_16: orig: eax
+    def:  eax_16 = DPB(eax_15, al_6, 8) (alias)
+    uses: eax_11 = PHI(eax_14, eax_16)
+S:S
+    def:  def S
+    uses: use S
+Z:Z
+    def:  def Z
+    uses: use Z
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def C
+	def eax
+	def S
+	def Z
+	// succ:  l1
+l1:
+	eax_1 = 0x00000004
+	Mem2[0x00123400:word32] = 0x00000004
+	al_3 = Mem2[0x00123408:byte]
+	eax_13 = DPB(eax, al_3, 8) (alias)
+	SZC_4 = cond(al_3 - 0x30)
+	branch Test(LT,SZC_4) m4_not_number
+	// succ:  m1_maybe_number m4_not_number
+m1_maybe_number:
+	SZC_5 = cond(al_3 - 0x39)
+	branch Test(GT,SZC_5) m4_not_number
+	// succ:  m2_number m4_not_number
+m2_number:
+	al_7 = 0x01
+	eax_14 = DPB(eax_13, al_7, 8) (alias)
+	return
+	// succ:  proc1_exit
+m4_not_number:
+	eax_15 = eax_13, eax_13
+	al_6 = 0x00
+	eax_16 = DPB(eax_15, al_6, 8) (alias)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	eax_11 = PHI(eax_14, eax_16)
+	use C
+	use eax_11
+	use S
+	use Z
+======
+";
+#endregion
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
+                var flags = m.Frame.EnsureFlagGroup(new FlagRegister("FLAGS", 142, PrimitiveType.Word32), 7, "SZC", PrimitiveType.Byte);
+
+                m.Assign(eax, 4);
+                m.Store(m.Word32(0x00123400), eax);
+                m.Assign(al, m.LoadB(m.Word32(0x00123408)));
+                m.Assign(flags, m.Cond(m.ISub(al, 0x30)));
+                m.BranchIf(m.Test(ConditionCode.LT, flags), "m4_not_number");
+                m.Label("m1_maybe_number");
+                m.Assign(flags, m.Cond(m.ISub(al, 0x39)));
+                m.BranchIf(m.Test(ConditionCode.GT, flags), "m4_not_number");
+                m.Label("m2_number");
+                m.Assign(al, 1);
+                m.Return();
+                m.Label("m4_not_number");
+                m.Assign(al, 0);
+                m.Return();
+            });
+        }
     }
 }
