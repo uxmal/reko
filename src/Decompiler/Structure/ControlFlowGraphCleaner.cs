@@ -63,7 +63,11 @@ namespace Reko.Structure
 
 		public bool EndsInJump(Block block)
 		{
-			return (block.Succ.Count == 1);
+            if (block.Succ.Count != 1)
+                return false;
+            if (block.Statements.Count < 1)
+                return true;
+            return !(block.Statements.Last.Instruction is SwitchInstruction);
 		}
 
 		private void ReplaceBranchWithJump(Block block)
