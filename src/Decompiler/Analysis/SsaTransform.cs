@@ -1158,6 +1158,7 @@ namespace Reko.Analysis
                 }
                 else if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
                 {
+                    // There is a previous alias, try using that.
                     sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
@@ -1367,7 +1368,7 @@ namespace Reko.Analysis
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
                     return null;
 
-                // Defined locally in this block.
+                // Identifier id is defined locally in this block.
                 // Has the alias already been calculated?
                 for (var a = alias; a != null; a = a.PrevState)
                 {
@@ -1378,22 +1379,6 @@ namespace Reko.Analysis
                         return ssaId;
                     }
 
-                    // Does ssaId cover the probed value?
-                    if (a.SsaId.Identifier.Storage.Covers(id.Storage))
-                    {
-                        if (generateAlias)
-                        {
-                            var sid = MaybeGenerateAliasStatement(a);
-                            bs.currentDef[id.Storage.Domain] = a;
-                            return sid;
-                        }
-                        else
-                            return alias.SsaId;
-                    }
-                }
-                // Try again, this time see if there is at least some overlap.
-                for (var a = alias; a != null; a = a.PrevState)
-                {
                     // Does the alias overlap the probed value?
                     if (a.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
                     {
