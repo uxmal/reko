@@ -3224,8 +3224,13 @@ l0000000000404B29:
 	if (al_202 <=u 0x78)
 	{
 		rcx = DPB(rcx, (word32) al_202, 0);
-		rax_105 = 0x06;
-		eax_211 = 0x06;
+		switch (rcx)
+		{
+		case 0x00:
+			rax_105 = 0x06;
+			eax_211 = 0x06;
+			break;
+		}
 	}
 	else
 	{
@@ -13420,8 +13425,16 @@ l000000000040DA20:
 			if (r12b_1029 <=u 0x7E)
 			{
 				rax_1018 = DPB(rax_1708, (word32) r12b_1029, 0);
-				if (Mem215[rsp_1034 + 0x20:byte] != 0x00)
+				switch (rax_1018)
 				{
+				case 0x00:
+					if (Mem215[rsp_1034 + 0x20:byte] == 0x00)
+					{
+						if ((Mem215[rsp_1034 + 0x90:byte] & 0x01) == 0x00)
+							goto l000000000040DAF8;
+						rbp_1025 = rbp_1025 + 0x01;
+						goto l000000000040D986;
+					}
 					if (Mem215[rsp_1034 + 0x33:byte] != 0x00)
 						goto l000000000040DC40;
 					if (rbx_1024 <u r14_1031)
@@ -13445,47 +13458,39 @@ l000000000040DA20:
 					rbx_1024 = rax_1018;
 					r12d_1028 = 0x30;
 					r12b_1029 = 0x30;
+					break;
+				}
 l000000000040DB09:
-					word64 rdi_879 = Mem215[rsp_1034 + 88:word64];
-					word32 edi_880;
-					*ediOut = (word32) rdi_879;
-					if (rdi_879 != 0x00)
-					{
-						ecx_1044 = (word32) (uint64) r12d_1028;
-						word64 rdx_885 = (uint64) r12d_1028;
-						rax_1018 = (uint64) (0x01 << (byte) ((uint64) (ecx_1044 & 0x1F)));
-						if ((rdi_879[DPB(rdx_885, (word32) ((byte) rdx_885 >>u 0x05), 0) * 0x04] & (word32) rax_1018) != 0x00)
-						{
-l000000000040DB33:
-							if (Mem215[rsp_1034 + 0x33:byte] == 0x00)
-							{
-								if (rbx_1024 <u r14_1031)
-								{
-									rax_1018 = Mem215[rsp_1034 + 0x28:word64];
-									Mem800[rax_1018 + rbx_1024:byte] = 0x5C;
-								}
-								rbx_1024 = rbx_1024 + 0x01;
-l000000000040DB50:
-								rbp_1025 = rbp_1025 + 0x01;
-								goto l000000000040DB54;
-							}
-							goto l000000000040DC40;
-						}
-					}
-l000000000040DB2E:
-					if (r11b_1005 == 0x00)
-						goto l000000000040DB50;
-					goto l000000000040DB33;
-				}
-				if ((Mem215[rsp_1034 + 0x90:byte] & 0x01) != 0x00)
+				word64 rdi_879 = Mem215[rsp_1034 + 88:word64];
+				word32 edi_880;
+				*ediOut = (word32) rdi_879;
+				if (rdi_879 != 0x00)
 				{
-					rbp_1025 = rbp_1025 + 0x01;
-					goto l000000000040D986;
+					ecx_1044 = (word32) (uint64) r12d_1028;
+					word64 rdx_885 = (uint64) r12d_1028;
+					rax_1018 = (uint64) (0x01 << (byte) ((uint64) (ecx_1044 & 0x1F)));
+					if ((rdi_879[DPB(rdx_885, (word32) ((byte) rdx_885 >>u 0x05), 0) * 0x04] & (word32) rax_1018) != 0x00)
+					{
+l000000000040DB33:
+						if (Mem215[rsp_1034 + 0x33:byte] == 0x00)
+						{
+							if (rbx_1024 <u r14_1031)
+							{
+								rax_1018 = Mem215[rsp_1034 + 0x28:word64];
+								Mem800[rax_1018 + rbx_1024:byte] = 0x5C;
+							}
+							rbx_1024 = rbx_1024 + 0x01;
+l000000000040DB50:
+							rbp_1025 = rbp_1025 + 0x01;
+							goto l000000000040DB54;
+						}
+						goto l000000000040DC40;
+					}
 				}
-l000000000040DAF8:
-				if (Mem215[rsp_1034 + 0x38:byte] != 0x00 && Mem215[rsp_1034 + 0x95:byte] != 0x00)
-					goto l000000000040DB2E;
-				goto l000000000040DB09;
+l000000000040DB2E:
+				if (r11b_1005 == 0x00)
+					goto l000000000040DB50;
+				goto l000000000040DB33;
 			}
 			byte dl_1167;
 			word32 esi_1003;
@@ -13861,7 +13866,12 @@ l000000000040DB54:
 			}
 			dl_1015 = dl_1167 & Mem215[rsp_1034 + 0x20:byte];
 			if (dl_1015 == 0x00)
-				goto l000000000040DAF8;
+			{
+l000000000040DAF8:
+				if (Mem215[rsp_1034 + 0x38:byte] != 0x00 && Mem215[rsp_1034 + 0x95:byte] != 0x00)
+					goto l000000000040DB2E;
+				goto l000000000040DB09;
+			}
 			goto l000000000040DE6B;
 		}
 	}
@@ -14398,10 +14408,15 @@ l000000000040EDA1:
 					word64 r8_720;
 					if (dil_1003 <=u 122)
 					{
-						word32 edi_933 = (word32) Mem0[rbx_1001 - 0x01 + 0x00:byte];
-						r8_720 = r11_1022 - 0x01;
-						dil_1003 = (byte) edi_933;
-						*rdiOut = DPB(rdi, edi_933, 0);
+						switch (DPB(rdx_687, (word32) dil_1003, 0))
+						{
+						case 0x00:
+							word32 edi_933 = (word32) Mem0[rbx_1001 - 0x01 + 0x00:byte];
+							r8_720 = r11_1022 - 0x01;
+							dil_1003 = (byte) edi_933;
+							*rdiOut = DPB(rdi, edi_933, 0);
+							break;
+						}
 					}
 					else
 						r8_720 = rbx_1001;

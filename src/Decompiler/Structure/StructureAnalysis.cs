@@ -324,8 +324,8 @@ namespace Reko.Structure
             var ss = regionGraph.Successors(n).ToArray();
             var el = ss[0];
             var th = ss[1];
-            var elS = SingleSuccessor(el);
-            var thS = SingleSuccessor(th);
+            var elS = LinearSuccessor(el);
+            var thS = LinearSuccessor(th);
             if (elS == th || (reduceTailregions && el.Type == RegionType.Tail))
             {
                 if (RefinePredecessor(n, el))
@@ -636,7 +636,7 @@ all other cases, together they constitute a Switch[].
             Region follow = null;
             foreach (var s in regionGraph.Successors(n))
             {
-                var ss = SingleSuccessor(s);
+                var ss = LinearSuccessor(s);
                 if (s.Type != RegionType.Tail)
                 {
                     if (ss == null)
@@ -718,6 +718,19 @@ all other cases, together they constitute a Switch[].
             Debug.Print("Removing region {0} from graph", n.Block.Name);
             regionGraph.Nodes.Remove(n);
             Probe();
+        }
+
+        /// <summary>
+        /// If <paramref name="n"/> is linear region, returns
+        /// its sucessor. Otherwise returns null.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private Region LinearSuccessor(Region n)
+        {
+            if (n.Type != RegionType.Linear)
+                return null;
+            return SingleSuccessor(n);
         }
 
         /// <summary>
@@ -985,7 +998,7 @@ are added during loop refinement, which we discuss next.
                 return didReduce;
             foreach (var s in succs)
             {
-                if (SingleSuccessor(s) == n && SinglePredecessor(s) == n)
+                if (LinearSuccessor(s) == n && SinglePredecessor(s) == n)
                 {
                     // While!
                     var exp = s == succs[0] 
@@ -1224,7 +1237,7 @@ refinement on the loop body, which we describe below.
                 {
                     foreach (var latch in regionGraph.Predecessors(head))
                     {
-                        if (IsBackEdge(latch, head) && SingleSuccessor(latch) == head)
+                        if (IsBackEdge(latch, head) && LinearSuccessor(latch) == head)
                         {
                             return Tuple.Create(follow, latch);
                         }

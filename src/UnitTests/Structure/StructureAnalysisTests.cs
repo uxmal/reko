@@ -703,6 +703,38 @@ case_0:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void StrAnls_Switch_SingleCase()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.SideEffect(m.Fn("initialize"));
+            m.BranchIf(m.Gt(r1, 3), "finalize");
+            m.Switch(r1, "case_0");
+
+            m.Label("case_0");
+            m.Assign(r1, 2);
+            m.Goto("finalize");
+
+            m.Label("finalize");
+            m.SideEffect(m.Fn("finalize"));
+
+            var sExp =
+@"    initialize();
+    if (r1 <= 0x03)
+    {
+        switch (r1)
+        {
+        case 0x00:
+            r1 = 0x02;
+            break;
+        }
+    }
+    finalize();
+";
+            RunTest(sExp, m.Procedure);
+        }
+
         [Test(Description="A do-while with a nested if-then-else")]
         public void StrAnls_DoWhile_NestedIfElse()
         {
