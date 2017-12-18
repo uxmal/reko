@@ -402,5 +402,12 @@ namespace Reko.UnitTests.Arch.Arm
             var instr = Disassemble32(0x979FF103);
             Assert.AreEqual("ldrls\tpc,[pc,r3,lsl #2]", instr.ToString());
         }
+
+        [Test]
+        public void ArmDasm_mrsgt()
+        {
+            var instr = Disassemble32(0xC1431903);
+            Assert.AreEqual("mrsgt\tr1,spsr", instr.ToString());
+        }
     }
 }
