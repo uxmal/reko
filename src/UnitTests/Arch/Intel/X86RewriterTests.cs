@@ -990,23 +990,25 @@ namespace Reko.UnitTests.Arch.Intel
                 "4|T--|if (Test(NE,FPUF)) branch 0C00:0000");
         }
 
-		[Test]
-		[Ignore("issue #514")]
-		public void X86rw_FstswTestMov()
-		{
-			Run32bitTest(m =>
-			{
-				m.Label("foo");
-				m.Fstsw(m.ax);
-				m.Test(m.ah, 0x41);
-				m.Mov(m.eax, m.DwordPtr(m.esp, 4));
-				m.Jnz("foo");
-			});
-			//$TODO: Replace once fixed
-			AssertCode("");
-		}
+        [Test]
+        public void X86rw_FstswTestMov()
+        {
+            Run32bitTest(m =>
+            {
+                m.Label("foo");
+                m.Fstsw(m.ax);
+                m.Test(m.ah, 0x41);
+                m.Mov(m.eax, m.DwordPtr(m.esp, 4));
+                m.Jnz("foo");
+            });
+            AssertCode(
+                "0|L--|10000000(12): 3 instructions",
+                "1|L--|SCZO = FPUF",
+                "2|L--|eax = Mem0[esp + 0x00000004:word32]",
+                "3|T--|if (Test(LE,FPUF)) branch 10000000");
+        }
 
-		[Test]
+        [Test]
         public void X86rw_Sar()
         {
             Run16bitTest(m =>
