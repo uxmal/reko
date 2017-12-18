@@ -559,7 +559,7 @@
     <Compile Include="Structure\MockWhileGoto.cs" />
     <Compile Include="Structure\MockWhileWithDeclarations.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
-    <Compile Include="Structure\ProcedureStructurerTests.cs" />
+    <Compile Include="Structure\StructureAnalysisTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
     <Compile Include="Structure\MockIfElseIf.cs" />
