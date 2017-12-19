@@ -208,7 +208,9 @@ namespace Reko.Core.Machine
 
         public static AddressOperand Create(Address addr)
         {
-            return new AddressOperand(addr, PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
+            return new AddressOperand(
+                addr,
+                PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
         }
 
         public static AddressOperand Ptr16(ushort a)

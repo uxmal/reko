@@ -40,13 +40,36 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
 	public class PeImageLoader : ImageLoader
 	{
-        private const ushort MACHINE_i386 = (ushort)0x014C;
         private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
 		private const ushort MACHINE_m68k = (ushort)0x0268;
-        private const ushort MACHINE_ARMNT = (ushort)0x01C4;
-        private const ushort MACHINE_POWERPC = (ushort) 0x01F0;
+        private const ushort MACHINE_UNKNOWN = 0x0;         // The contents of this field are assumed to be applicable to any machine type
+        private const ushort MACHINE_AM33 = 0x1d3;          // Matsushita AM33
+        private const ushort MACHINE_AMD64 = (ushort) 0x8664;    // x64
+        private const ushort MACHINE_ARM = 0x01c0;          // ARM little endian
+        private const ushort MACHINE_ARM64 = 0xAA64;        // ARM64 little endian
+        private const ushort MACHINE_ARMNT = 0x01C4;        // ARM Thumb-2 little endian
+        private const ushort MACHINE_EBC =  0x0ebc;         // EFI byte code
+        private const ushort MACHINE_I386 = 0x014c;         // Intel 386 or later processors and compatible processors
+        private const ushort MACHINE_IA64 = 0x0200;         // Intel Itanium processor family
+        private const ushort MACHINE_M32R = 0x9041;         // Mitsubishi M32R little endian
+        private const ushort MACHINE_MIPS16 = 0x0266;       // MIPS16
+        private const ushort MACHINE_MIPSFPU = 0x0366;      // MIPS with FPU
+        private const ushort MACHINE_MIPSFPU16 = 0x0466;    // MIPS16 with FPU
+        private const ushort MACHINE_POWERPC = 0x01f0;      // Power PC little endian
+        private const ushort MACHINE_POWERPCFP = 0x01f1;    // Power PC with floating point support
         private const ushort MACHINE_POWERPC_BE = (ushort) 0x0601;       // Big-endian PC: intended for PowerMac (!)
-        private const ushort MACHINE_R4000 = (ushort)0x0166;
+        private const ushort MACHINE_R4000 = 0x0166;        // MIPS little endian
+        private const ushort MACHINE_RISCV32 = 0x5032;      // RISC-V 32-bit address space
+        private const ushort MACHINE_RISCV64 = 0x5064;      // RISC-V 64-bit address space
+        private const ushort MACHINE_RISCV128 = 0x5128;     // RISC-V 128-bit address space
+        private const ushort MACHINE_SH3 = 0x01a2;          // Hitachi SH3
+        private const ushort MACHINE_SH3DSP = 0x01a3;       // Hitachi SH3 DSP
+        private const ushort MACHINE_SH4 = 0x01a6;          // Hitachi SH4
+        private const ushort MACHINE_SH5 = 0x01a8;          // Hitachi SH5
+        private const ushort MACHINE_THUMB = 0x01c2;        // Thumb
+        private const ushort MACHINE_WCEMIPSV2 = 0x0169;    // MIPS little-endian WCE v2
+
+
         private const ushort MACHINE_ALPHA = (ushort)0x0184;
 
         private const short ImageFileRelocationsStripped = 0x0001;
@@ -158,7 +181,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
             case MACHINE_ALPHA: arch = "alpha"; break;
             case MACHINE_ARMNT: arch = "arm-thumb"; break;
-            case MACHINE_i386: arch = "x86-protected-32"; break;
+            case MACHINE_I386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
 			case MACHINE_m68k: arch = "m68k"; break;
             case MACHINE_R4000: arch = "mips-le-32"; break;
@@ -176,7 +199,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ALPHA: env = "winAlpha"; break;
             case MACHINE_ARMNT: env= "winArm"; break;
-            case MACHINE_i386: env = "win32"; break;
+            case MACHINE_I386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
 	        case MACHINE_m68k: env = "winM68k"; break;
             case MACHINE_R4000: env = "winMips"; break;
@@ -195,7 +218,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ALPHA:
             case MACHINE_ARMNT:
-            case MACHINE_i386:
+            case MACHINE_I386:
             case MACHINE_m68k:
             case MACHINE_R4000:
             case MACHINE_POWERPC:
@@ -213,7 +236,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
             case MACHINE_ARMNT: return new ArmRelocator(program);
-            case MACHINE_i386: return new i386Relocator(Services, program);
+            case MACHINE_I386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
             case MACHINE_x86_64: return new x86_64Relocator(Services, program);
 			case MACHINE_m68k: return new M68kRelocator(Services, program);
@@ -230,7 +253,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ALPHA:
             case MACHINE_ARMNT:
-            case MACHINE_i386:
+            case MACHINE_I386:
 			case MACHINE_m68k:
             case MACHINE_R4000:
             case MACHINE_POWERPC:
@@ -382,7 +405,7 @@ namespace Reko.ImageLoaders.MzExe
             var stackCommit = innerLoader.ReadWord(rdr);
             var heapReserve = innerLoader.ReadWord(rdr);
             var heapCommit = innerLoader.ReadWord(rdr);
-            rdr.ReadLeUInt32();			// loader flags
+			rdr.ReadLeUInt32();			// loader flags
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
             if (dictionaryCount == 0) return;
@@ -1002,12 +1025,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			public uint OffsetRawData;
             public bool IsHidden;
 
-            public bool IsDiscardable
+			public bool IsDiscardable
 			{
 				get { return (Flags & SectionFlagsDiscardable) != 0; }
 			}
 
-        }
+		}
 
         public uint ReadEntryPointRva()
         {

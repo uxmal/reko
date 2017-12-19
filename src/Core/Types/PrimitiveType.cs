@@ -366,6 +366,8 @@ namespace Reko.Core.Types
             Real96 = Create(Domain.Real, 12);
 
             Word128 = CreateWord(16);
+            Int128 = Create(Domain.SignedInt, 16);
+            UInt128 = Create(Domain.UnsignedInt, 16);
             Real128 = Create(Domain.Real, 16);
         
             Word256 = CreateWord(32);
@@ -407,6 +409,8 @@ namespace Reko.Core.Types
         public static PrimitiveType Real96 { get; private set; }
 
         public static PrimitiveType Word128 { get; private set; }
+        public static PrimitiveType Int128 { get; private set; }
+        public static PrimitiveType UInt128 { get; private set; }
         public static PrimitiveType Real128 { get; private set; }
 
         public static PrimitiveType Word256 { get; private set; }

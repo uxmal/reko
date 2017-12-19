@@ -29,18 +29,17 @@ using System.Text;
 
 namespace Reko.Arch.Mips
 {
-    //$TODO: 64-bit version of this.
     public class MipsProcessorState : ProcessorState
     {
         private MipsProcessorArchitecture arch;
         private Address ip;         // Instruction pointer
-        private uint[] iregs;       // integer register values.
+        private Constant[] iregs;       // integer register values.
         private bool[] valid;       // whether the regs are valid or not.
 
         public MipsProcessorState(MipsProcessorArchitecture arch)
         {
             this.arch = arch;
-            this.iregs = new uint[32];
+            this.iregs = new Constant[32];
             this.valid = new bool[32];
         }
 
@@ -56,7 +55,7 @@ namespace Reko.Arch.Mips
             int rn = r.Number;
             if (0 <= rn && rn < 32 && valid[rn])
             {
-                return Constant.UInt32(iregs[rn]);
+                return iregs[rn];
             }
             else
             {
@@ -72,7 +71,7 @@ namespace Reko.Arch.Mips
                 // Integer register.
                 if (v.IsValid)
                 {
-                    iregs[rn] = v.ToUInt32();
+                    iregs[rn] = v;
                     valid[rn] = true;
                     return;
                 }
@@ -95,8 +94,8 @@ namespace Reko.Arch.Mips
             // it's a TMP register that is never used to pass arguments.
             // It should be harmless to set it to a constant value at the
             // entry of the function.
-            iregs[25] = ip.ToUInt32();
-            SetRegister(Registers.r25, Constant.UInt32(iregs[25]));
+            iregs[25] = ip.ToConstant();
+            SetRegister(arch.GeneralRegs[25], iregs[25]);
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)

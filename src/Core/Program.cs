@@ -319,7 +319,7 @@ namespace Reko.Core
         {
             ImageSegment segment;
             if (!SegmentMap.TryFindSegment(addr, out segment))
-                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
 

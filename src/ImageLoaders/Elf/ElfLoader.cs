@@ -147,7 +147,7 @@ namespace Reko.ImageLoaders.Elf
             return mems;
         }
 
-        protected IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
+        protected virtual IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
@@ -160,6 +160,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;
             case ElfMachine.EM_MIPS:
+                //$TODO: detect release 6 of the MIPS architecture. 
+                // would be great to get our sweaty little hands on
+                // such a binary.
                 if (endianness == ELFDATA2LSB)
                 {
                     arch = "mips-le-32";
@@ -669,6 +672,35 @@ namespace Reko.ImageLoaders.Elf
             return platform.MakeAddressFromLinear(uBaseAddr);
         }
 
+        protected override IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
+        {
+            string arch;
+            switch ((ElfMachine)machineType)
+            {
+            case ElfMachine.EM_MIPS:
+                //$TODO: detect release 6 of the MIPS architecture. 
+                // would be great to get our sweaty little hands on
+                // such a binary.
+                if (endianness == ELFDATA2LSB)
+                {
+                    arch = "mips-le-64";
+                }
+                else if (endianness == ELFDATA2MSB)
+                {
+                    arch = "mips-be-64";
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
+                }
+                break;
+            default:
+                return base.CreateArchitecture(machineType, endianness);
+            }
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            return cfgSvc.GetArchitecture(arch);
+        }
+
         public override ElfObjectLinker CreateLinker()
         {
             return new ElfObjectLinker64(this, Architecture, rawImage);
@@ -695,6 +727,7 @@ namespace Reko.ImageLoaders.Elf
             {
             case ElfMachine.EM_X86_64: return new x86_64Relocator(this);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
+            case ElfMachine.EM_MIPS: return new MipsRelocator64(this);
             case ElfMachine.EM_RISCV: return new RiscVRelocator64(this);
             case ElfMachine.EM_ALPHA: return new AlphaRelocator(this);
             }
