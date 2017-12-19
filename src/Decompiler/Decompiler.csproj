@@ -395,9 +395,6 @@
     <Compile Include="Typing\TypedExpressionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Typing\TypeInferenceException.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Typing\TypeTransformer.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -427,10 +427,10 @@ namespace Reko.Arch.M68k
             {
                 var b = binder.EnsureRegister(idxop.base_reg);
                 var i = binder.EnsureRegister(idxop.index_reg);
-                var s = m.Const(i.DataType, idxop.index_scale);
                 Expression ea = b;
                 if (i != null)
                 {
+                    var s = m.Const(i.DataType, idxop.index_scale);
                     if (idxop.index_scale > 1)
                     {
                         ea = m.IMul(i, s);
