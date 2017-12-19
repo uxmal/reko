@@ -1755,6 +1755,16 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|0C00:0000(2): 1 instructions",
                 "1|L--|rArg0 = pow(2.0, rArg0) - 1.0");
         }
-    }
+
+		[Test]
+		public void X86rw_fninit()
+		{
+			Run32bitTest(0xDB, 0xE3);
+			AssertCode(     // fninit
+				"0|L--|10000000(2): 1 instructions",
+				"1|L--|__fninit()");
+		}
+
+	}
 }
 

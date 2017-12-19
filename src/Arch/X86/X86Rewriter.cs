@@ -191,6 +191,7 @@ namespace Reko.Arch.X86
                 case Opcode.fldz: RewriteFldConst(0.0); break;
                 case Opcode.fmul: EmitCommonFpuInstruction(m.FMul, false, false); break;
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
+				case Opcode.fninit: RewriteFninit(); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.fptan: RewriteFptan(); break;
@@ -359,7 +360,13 @@ namespace Reko.Arch.X86
             }
         }
 
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+		private void RewriteFninit()
+		{
+			var ppp = host.PseudoProcedure("__fninit", VoidType.Instance);
+			m.SideEffect(ppp);
+		}
+
+		public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
         {
             if (args.Length != ppp.Arity)
                 throw new ArgumentOutOfRangeException(
