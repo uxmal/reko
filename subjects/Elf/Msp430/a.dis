@@ -1,0 +1,1075 @@
+// fn00004000
+// Return size: 0
+void fn00004000()
+fn00004000_entry:
+	// succ:  l00004000
+l00004000:
+	sp = fp
+	Mem0[0x0120:ptr16] = 0x5A80
+	r15 = 0x5B78
+	r14 = 0x0200
+	r13 = 0x021C
+	VNZC = cond(r13 - r14)
+	branch Test(EQ,Z) l00004020
+	// succ:  l00004016 l00004020
+l00004016:
+	v8 = Mem0[r15:byte]
+	r15 = r15 + 1
+	v9 = Mem0[r14:byte]
+	v9 = v8
+	Mem0[r14:byte] = v9
+	r14 = r14 + 0x0001
+	VNZC = cond(r14)
+	VNZC = cond(r14 - r13)
+	branch Test(UGE,C) l00004016
+	// succ:  l00004020 l00004016
+l00004020:
+	r15 = 0x021C
+	r13 = 0x09B4
+	VNZC = cond(r13 - r15)
+	branch Test(EQ,Z) l00004036
+	// succ:  l0000402C l00004036
+l0000402C:
+	v11 = Mem0[r15:byte]
+	v11 = 0x00
+	Mem0[r15:byte] = v11
+	r15 = r15 + 0x0001
+	VNZC = cond(r15)
+	VNZC = cond(r15 - r13)
+	branch Test(UGE,C) l0000402C
+	// succ:  l00004036 l0000402C
+l00004036:
+	pc = 0x414C
+	pc = 0x403E
+fn00004000_exit:
+
+
+// task_idle
+// Return size: 0
+void task_idle()
+task_idle_entry:
+	// succ:  l4048
+l4048:
+	sp = fp
+task_idle_exit:
+
+
+// task_1
+// Return size: 0
+void task_1()
+task_1_entry:
+	// succ:  l4096
+l4096:
+	sp = fp
+	sp = sp - 0x0002
+	VNZC = cond(sp)
+	call 0x481E (retsize: 2;)
+	v5 = Mem0[sp:word16]
+	v5 = r15
+	Mem0[sp:word16] = v5
+	// succ:  l40A0
+l40A0:
+	Mem0[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x01
+	VNZC = cond(Mem0[0x0031:ptr16])
+	r15 = 0x0058
+	call 0x43A2 (retsize: 2;)
+	r14 = 0x01F4
+	r15 = sp
+	call 0x461A (retsize: 2;)
+	goto l40A0
+	// succ:  l40A0
+task_1_exit:
+
+
+// task_2
+// Return size: 0
+void task_2()
+task_2_entry:
+	// succ:  l40BC
+l40BC:
+	sp = fp
+	sp = sp - 0x0002
+	VNZC = cond(sp)
+	call 0x481E (retsize: 2;)
+	v5 = Mem0[sp:word16]
+	v5 = r15
+	Mem0[sp:word16] = v5
+	// succ:  l40C6
+l40C6:
+	Mem0[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x02
+	VNZC = cond(Mem0[0x0031:ptr16])
+	r15 = 0x0059
+	call 0x43A2 (retsize: 2;)
+	r14 = 0x00FA
+	r15 = sp
+	call 0x461A (retsize: 2;)
+	goto l40C6
+	// succ:  l40C6
+task_2_exit:
+
+
+// task_3
+// Return size: 0
+void task_3()
+task_3_entry:
+	// succ:  l40E2
+l40E2:
+	sp = fp
+	sp = sp - 0x0002
+	VNZC = cond(sp)
+	call 0x481E (retsize: 2;)
+	v5 = Mem0[sp:word16]
+	v5 = r15
+	Mem0[sp:word16] = v5
+	// succ:  l40EC
+l40EC:
+	Mem0[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x04
+	VNZC = cond(Mem0[0x0031:ptr16])
+	r15 = 0x005A
+	call 0x43A2 (retsize: 2;)
+	r14 = 0x0019
+	r15 = sp
+	call 0x461A (retsize: 2;)
+	goto l40EC
+	// succ:  l40EC
+task_3_exit:
+
+
+// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l414C
+l414C:
+	sp = fp
+	sp = 0x0A00
+	Mem0[0x0120:ptr16] = 0x5A80
+	Mem0[0x0056:ptr16] = 0xFFE0
+	Mem0[0x0057:ptr16] = 0x0007
+	Mem0[0x0032:ptr16] = 0x0007
+	Mem0[0x0031:ptr16] = 0x0007
+main_exit:
+
+
+// msp430_compute_modulator_bits
+// Return size: 0
+void msp430_compute_modulator_bits()
+msp430_compute_modulator_bits_entry:
+	// succ:  l420E
+l420E:
+	sp = fp
+msp430_compute_modulator_bits_exit:
+
+
+// init_uart_isr
+// Return size: 0
+void init_uart_isr()
+init_uart_isr_entry:
+	// succ:  l42CC
+l42CC:
+	sp = fp
+init_uart_isr_exit:
+
+
+// getchar
+// Return size: 2
+void getchar()
+getchar_entry:
+	// succ:  l4380
+l4380:
+	sp = fp
+	sp = sp - 0x0002
+	VNZC = cond(sp)
+	r14 = 0x0064
+	r15 = sp
+	call 0x43E4 (retsize: 2;)
+	VNZC = cond(r15 - 0x0000)
+	branch Test(EQ,Z) l4396
+	// succ:  l4390 l4396
+l4390:
+	v7 = Mem0[sp:byte]
+	r15 = v7
+l4396:
+	r15 = 0xFFFF
+	sp = sp + 0x0002
+	VNZC = cond(sp)
+	v8 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  getchar_exit
+getchar_exit:
+
+
+// uart_putchar_isr_mode
+// Return size: 2
+void uart_putchar_isr_mode()
+uart_putchar_isr_mode_entry:
+	// succ:  l439C
+l439C:
+	sp = fp
+	Mem0[0x0200:ptr16] = r15
+	v4 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  uart_putchar_isr_mode_exit
+uart_putchar_isr_mode_exit:
+
+
+// putchar
+// Return size: 0
+void putchar()
+putchar_entry:
+	// succ:  l43A2
+l43A2:
+	sp = fp
+putchar_exit:
+
+
+// x_getchar
+// Return size: 2
+void x_getchar()
+x_getchar_entry:
+	// succ:  l43E4
+l43E4:
+	sp = fp
+	r13 = r14
+	r14 = r15
+	r15 = 0x021C
+	call 0x4EF0 (retsize: 2;)
+	VNZC = cond(r15 - 0x0000)
+	branch Test(EQ,Z) l43F8
+	// succ:  l43F4 l43F8
+l43F4:
+	r15 = 0x0001
+	v8 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  x_getchar_exit
+l43F8:
+	r15 = 0x0000
+	v9 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  x_getchar_exit
+x_getchar_exit:
+
+
+// x_putchar
+// Return size: 0
+void x_putchar()
+x_putchar_entry:
+	// succ:  l43FC
+l43FC:
+	sp = fp
+	sp = sp - 0x0002
+	VNZC = cond(sp)
+	v5 = Mem0[sp:byte]
+	v5 = r15
+	Mem0[sp:byte] = v5
+	r13 = r14
+x_putchar_exit:
+
+
+// vRxISR
+// Return size: 0
+void vRxISR()
+vRxISR_entry:
+	// succ:  l4450
+l4450:
+	sp = fp
+vRxISR_exit:
+
+
+// vTxISR
+// Return size: 0
+void vTxISR()
+vTxISR_entry:
+	// succ:  l4480
+l4480:
+	sp = fp
+vTxISR_exit:
+
+
+// xTaskCreate
+// Return size: 0
+void xTaskCreate()
+xTaskCreate_entry:
+	// succ:  l44B4
+l44B4:
+	sp = fp
+xTaskCreate_exit:
+
+
+// vTaskDelete
+// Return size: 0
+void vTaskDelete()
+vTaskDelete_entry:
+	// succ:  l45B6
+l45B6:
+	sp = fp
+vTaskDelete_exit:
+
+
+// vTaskDelayUntil
+// Return size: 0
+void vTaskDelayUntil()
+vTaskDelayUntil_entry:
+	// succ:  l461A
+l461A:
+	sp = fp
+vTaskDelayUntil_exit:
+
+
+// vTaskDelay
+// Return size: 0
+void vTaskDelay()
+vTaskDelay_entry:
+	// succ:  l469E
+l469E:
+	sp = fp
+vTaskDelay_exit:
+
+
+// vTaskStartScheduler
+// Return size: 2
+void vTaskStartScheduler()
+vTaskStartScheduler_entry:
+	// succ:  l4702
+l4702:
+	sp = fp
+	VNZC = cond(0x0202 - 0x0000)
+	branch Test(NE,Z) l470A
+	// succ:  l4708 l470A
+l4708:
+	v5 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vTaskStartScheduler_exit
+l470A:
+vTaskStartScheduler_exit:
+
+
+// vTaskEndScheduler
+// Return size: 0
+void vTaskEndScheduler()
+vTaskEndScheduler_entry:
+	// succ:  l4736
+l4736:
+	sp = fp
+vTaskEndScheduler_exit:
+
+
+// vTaskSuspendAll
+// Return size: 0
+void vTaskSuspendAll()
+vTaskSuspendAll_entry:
+	// succ:  l4742
+l4742:
+	sp = fp
+vTaskSuspendAll_exit:
+
+
+// xTaskResumeAll
+// Return size: 0
+void xTaskResumeAll()
+xTaskResumeAll_entry:
+	// succ:  l475C
+l475C:
+	sp = fp
+xTaskResumeAll_exit:
+
+
+// xTaskGetTickCount
+// Return size: 0
+void xTaskGetTickCount()
+xTaskGetTickCount_entry:
+	// succ:  l481E
+l481E:
+	sp = fp
+xTaskGetTickCount_exit:
+
+
+// uxTaskGetNumberOfTasks
+// Return size: 0
+void uxTaskGetNumberOfTasks()
+uxTaskGetNumberOfTasks_entry:
+	// succ:  l4834
+l4834:
+	sp = fp
+uxTaskGetNumberOfTasks_exit:
+
+
+// vTaskIncrementTick
+// Return size: 0
+void vTaskIncrementTick()
+vTaskIncrementTick_entry:
+	// succ:  l484A
+l484A:
+	sp = fp
+vTaskIncrementTick_exit:
+
+
+// vTaskPlaceOnEventList
+// Return size: 0
+void vTaskPlaceOnEventList()
+vTaskPlaceOnEventList_entry:
+	// succ:  l48DA
+l48DA:
+	sp = fp
+vTaskPlaceOnEventList_exit:
+
+
+// xTaskRemoveFromEventList
+// Return size: 0
+void xTaskRemoveFromEventList()
+xTaskRemoveFromEventList_entry:
+	// succ:  l4930
+l4930:
+	sp = fp
+xTaskRemoveFromEventList_exit:
+
+
+// prvIdleTask
+// Return size: 0
+void prvIdleTask()
+prvIdleTask_entry:
+	// succ:  l49AC
+l49AC:
+	sp = fp
+	call 0x4A5E (retsize: 2;)
+	VNZC = cond(0x0222 - 0x0002)
+	branch Test(UGE,C) l49AC
+	// succ:  l49B6 l49AC
+l49B6:
+	call 0x523A (retsize: 2;)
+	goto l49AC
+	// succ:  l49AC
+prvIdleTask_exit:
+
+
+// prvInitialiseTCBVariables
+// Return size: 0
+void prvInitialiseTCBVariables()
+prvInitialiseTCBVariables_entry:
+	// succ:  l49BE
+l49BE:
+	sp = fp
+prvInitialiseTCBVariables_exit:
+
+
+// prvInitialiseTaskLists
+// Return size: 0
+void prvInitialiseTaskLists()
+prvInitialiseTaskLists_entry:
+	// succ:  l4A12
+l4A12:
+	sp = fp
+prvInitialiseTaskLists_exit:
+
+
+// prvCheckTasksWaitingTermination
+// Return size: 0
+void prvCheckTasksWaitingTermination()
+prvCheckTasksWaitingTermination_entry:
+	// succ:  l4A5E
+l4A5E:
+	sp = fp
+prvCheckTasksWaitingTermination_exit:
+
+
+// prvAllocateTCBAndStack
+// Return size: 0
+void prvAllocateTCBAndStack()
+prvAllocateTCBAndStack_entry:
+	// succ:  l4AC2
+l4AC2:
+	sp = fp
+prvAllocateTCBAndStack_exit:
+
+
+// prvDeleteTCB
+// Return size: 0
+void prvDeleteTCB()
+prvDeleteTCB_entry:
+	// succ:  l4B02
+l4B02:
+	sp = fp
+prvDeleteTCB_exit:
+
+
+// vTaskSwitchContext
+// Return size: 2
+void vTaskSwitchContext()
+vTaskSwitchContext_entry:
+	// succ:  l4B18
+l4B18:
+	sp = fp
+	VNZC = cond(0x0210 - 0x0000)
+	branch Test(NE,Z) l4BAE
+	// succ:  l4B1E l4BAE
+l4B1E:
+	r15 = 0x020C
+l4BAE:
+	v6 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vTaskSwitchContext_exit
+vTaskSwitchContext_exit:
+
+
+// vListInitialise
+// Return size: 0
+void vListInitialise()
+vListInitialise_entry:
+	// succ:  l4BD4
+l4BD4:
+	sp = fp
+vListInitialise_exit:
+
+
+// vListInitialiseItem
+// Return size: 2
+void vListInitialiseItem()
+vListInitialiseItem_entry:
+	// succ:  l4C00
+l4C00:
+	sp = fp
+	v4 = Mem0[r15 + 8:word16]
+	v4 = 0x0000
+	Mem0[r15 + 8:word16] = v4
+	v5 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vListInitialiseItem_exit
+vListInitialiseItem_exit:
+
+
+// vListInsertEnd
+// Return size: 2
+void vListInsertEnd()
+vListInsertEnd_entry:
+	// succ:  l4C06
+l4C06:
+	sp = fp
+	r12 = r15
+	v5 = Mem0[r15 + 4:word16]
+	r13 = v5
+	v7 = Mem0[r13 + 2:word16]
+	v9 = Mem0[r14 + 2:word16]
+	v9 = v7
+	Mem0[r14 + 2:word16] = v9
+	v10 = Mem0[r15 + 4:word16]
+	v11 = Mem0[r14 + 4:word16]
+	v11 = v10
+	Mem0[r14 + 4:word16] = v11
+	v12 = Mem0[r13 + 2:word16]
+	r15 = v12
+	v13 = Mem0[r15 + 4:word16]
+	v13 = r14
+	Mem0[r15 + 4:word16] = v13
+	v14 = Mem0[r13 + 2:word16]
+	v14 = r14
+	Mem0[r13 + 2:word16] = v14
+	v15 = Mem0[r12 + 4:word16]
+	v15 = r14
+	Mem0[r12 + 4:word16] = v15
+	v16 = Mem0[r14 + 8:word16]
+	v16 = r12
+	Mem0[r14 + 8:word16] = v16
+	v17 = Mem0[r12:word16]
+	v17 = v17 + 0x0001
+	Mem0[r12:word16] = v17
+	VNZC = cond(v17)
+	v19 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vListInsertEnd_exit
+vListInsertEnd_exit:
+
+
+// vListInsert
+// Return size: 0
+void vListInsert()
+vListInsert_entry:
+	// succ:  l4C32
+l4C32:
+	sp = fp
+vListInsert_exit:
+
+
+// vListRemove
+// Return size: 2
+void vListRemove()
+vListRemove_entry:
+	// succ:  l4C98
+l4C98:
+	sp = fp
+	r14 = r15
+	v5 = Mem0[r15 + 2:word16]
+	r15 = v5
+	v6 = Mem0[r14 + 4:word16]
+	v7 = Mem0[r15 + 4:word16]
+	v7 = v6
+	Mem0[r15 + 4:word16] = v7
+	v8 = Mem0[r14 + 4:word16]
+	r13 = v8
+	v10 = Mem0[r13 + 2:word16]
+	v10 = r15
+	Mem0[r13 + 2:word16] = v10
+	v11 = Mem0[r14 + 8:word16]
+	r15 = v11
+	v12 = Mem0[r15 + 4:word16]
+	VNZC = cond(v12 - r14)
+	branch Test(NE,Z) l4CBA
+	// succ:  l4CB6 l4CBA
+l4CB6:
+	v15 = Mem0[r15 + 4:word16]
+	v15 = r13
+	Mem0[r15 + 4:word16] = v15
+	// succ:  l4CBA
+l4CBA:
+	v16 = Mem0[r14 + 8:word16]
+	v16 = 0x0000
+	Mem0[r14 + 8:word16] = v16
+	v17 = Mem0[r15:word16]
+	v17 = v17 + 0xFFFF
+	Mem0[r15:word16] = v17
+	VNZC = cond(v17)
+	v18 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vListRemove_exit
+vListRemove_exit:
+
+
+// xQueueCreate
+// Return size: 0
+void xQueueCreate()
+xQueueCreate_entry:
+	// succ:  l4CC4
+l4CC4:
+	sp = fp
+xQueueCreate_exit:
+
+
+// xQueueSend
+// Return size: 0
+void xQueueSend()
+xQueueSend_entry:
+	// succ:  l4D7E
+l4D7E:
+	sp = fp
+xQueueSend_exit:
+
+
+// xQueueSendFromISR
+// Return size: 0
+void xQueueSendFromISR()
+xQueueSendFromISR_entry:
+	// succ:  l4E84
+l4E84:
+	sp = fp
+xQueueSendFromISR_exit:
+
+
+// xQueueReceive
+// Return size: 0
+void xQueueReceive()
+xQueueReceive_entry:
+	// succ:  l4EF0
+l4EF0:
+	sp = fp
+xQueueReceive_exit:
+
+
+// xQueueReceiveFromISR
+// Return size: 0
+void xQueueReceiveFromISR()
+xQueueReceiveFromISR_entry:
+	// succ:  l4FF6
+l4FF6:
+	sp = fp
+xQueueReceiveFromISR_exit:
+
+
+// uxQueueMessagesWaiting
+// Return size: 0
+void uxQueueMessagesWaiting()
+uxQueueMessagesWaiting_entry:
+	// succ:  l5068
+l5068:
+	sp = fp
+uxQueueMessagesWaiting_exit:
+
+
+// vQueueDelete
+// Return size: 0
+void vQueueDelete()
+vQueueDelete_entry:
+	// succ:  l507E
+l507E:
+	sp = fp
+vQueueDelete_exit:
+
+
+// prvUnlockQueue
+// Return size: 0
+void prvUnlockQueue()
+prvUnlockQueue_entry:
+	// succ:  l5092
+l5092:
+	sp = fp
+prvUnlockQueue_exit:
+
+
+// prvIsQueueEmpty
+// Return size: 0
+void prvIsQueueEmpty()
+prvIsQueueEmpty_entry:
+	// succ:  l510C
+l510C:
+	sp = fp
+prvIsQueueEmpty_exit:
+
+
+// prvIsQueueFull
+// Return size: 0
+void prvIsQueueFull()
+prvIsQueueFull_entry:
+	// succ:  l512E
+l512E:
+	sp = fp
+prvIsQueueFull_exit:
+
+
+// pvPortMalloc
+// Return size: 0
+void pvPortMalloc()
+pvPortMalloc_entry:
+	// succ:  l5156
+l5156:
+	sp = fp
+pvPortMalloc_exit:
+
+
+// vPortFree
+// Return size: 2
+void vPortFree()
+vPortFree_entry:
+	// succ:  l5192
+l5192:
+	sp = fp
+	v3 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vPortFree_exit
+vPortFree_exit:
+
+
+// vPortInitialiseBlocks
+// Return size: 2
+void vPortInitialiseBlocks()
+vPortInitialiseBlocks_entry:
+	// succ:  l5194
+l5194:
+	sp = fp
+	Mem0[0x0216:ptr16] = 0x0000
+	v3 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vPortInitialiseBlocks_exit
+vPortInitialiseBlocks_exit:
+
+
+// pxPortInitialiseStack
+// Return size: 2
+void pxPortInitialiseStack()
+pxPortInitialiseStack_entry:
+	// succ:  l519A
+l519A:
+	sp = fp
+	v5 = Mem0[r15:word16]
+	v5 = r14
+	Mem0[r15:word16] = v5
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v7 = Mem0[r15:word16]
+	v7 = 0x0008
+	Mem0[r15:word16] = v7
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v8 = Mem0[r15:word16]
+	v8 = 0x4444
+	Mem0[r15:word16] = v8
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v9 = Mem0[r15:word16]
+	v9 = 0x5555
+	Mem0[r15:word16] = v9
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v10 = Mem0[r15:word16]
+	v10 = 0x6666
+	Mem0[r15:word16] = v10
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v11 = Mem0[r15:word16]
+	v11 = 0x7777
+	Mem0[r15:word16] = v11
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v12 = Mem0[r15:word16]
+	v12 = 0x8888
+	Mem0[r15:word16] = v12
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v13 = Mem0[r15:word16]
+	v13 = 0x9999
+	Mem0[r15:word16] = v13
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v14 = Mem0[r15:word16]
+	v14 = 0xAAAA
+	Mem0[r15:word16] = v14
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v15 = Mem0[r15:word16]
+	v15 = 0xBBBB
+	Mem0[r15:word16] = v15
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v16 = Mem0[r15:word16]
+	v16 = 0xCCCC
+	Mem0[r15:word16] = v16
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v17 = Mem0[r15:word16]
+	v17 = 0xDDDD
+	Mem0[r15:word16] = v17
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v18 = Mem0[r15:word16]
+	v18 = 0xEEEE
+	Mem0[r15:word16] = v18
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v20 = Mem0[r15:word16]
+	v20 = r13
+	Mem0[r15:word16] = v20
+	r15 = r15 - 0x0002
+	VNZC = cond(r15)
+	v21 = Mem0[r15:word16]
+	v21 = 0x0000
+	Mem0[r15:word16] = v21
+	v22 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  pxPortInitialiseStack_exit
+pxPortInitialiseStack_exit:
+
+
+// xPortStartScheduler
+// Return size: 0
+void xPortStartScheduler()
+xPortStartScheduler_entry:
+	// succ:  l520A
+l520A:
+	sp = fp
+	call 0x528E (retsize: 2;)
+	v4 = Mem0[pc + -20494:word16]
+	r12 = v4
+	v6 = Mem0[r12:word16]
+	sp = v6
+	v7 = Mem0[sp:word16]
+	sp = sp + 2
+	r15 = v7
+	v9 = Mem0[pc + -20480:word16]
+	v9 = r15
+	Mem0[pc + -20480:word16] = v9
+	v10 = Mem0[sp:word16]
+	sp = sp + 2
+	r15 = v10
+	v11 = Mem0[sp:word16]
+	sp = sp + 2
+	r14 = v11
+	v13 = Mem0[sp:word16]
+	sp = sp + 2
+	r13 = v13
+	v15 = Mem0[sp:word16]
+	sp = sp + 2
+	r12 = v15
+	v16 = Mem0[sp:word16]
+	sp = sp + 2
+	r11 = v16
+	v18 = Mem0[sp:word16]
+	sp = sp + 2
+	r10 = v18
+	v20 = Mem0[sp:word16]
+	sp = sp + 2
+	r9 = v20
+	v22 = Mem0[sp:word16]
+	sp = sp + 2
+	r8 = v22
+	v24 = Mem0[sp:word16]
+	sp = sp + 2
+	r7 = v24
+	v26 = Mem0[sp:word16]
+	sp = sp + 2
+	r6 = v26
+	v28 = Mem0[sp:word16]
+	sp = sp + 2
+	r5 = v28
+	v30 = Mem0[sp:word16]
+	sp = sp + 2
+	r4 = v30
+xPortStartScheduler_exit:
+
+
+// vPortEndScheduler
+// Return size: 2
+void vPortEndScheduler()
+vPortEndScheduler_entry:
+	// succ:  l5238
+l5238:
+	sp = fp
+	v3 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  vPortEndScheduler_exit
+vPortEndScheduler_exit:
+
+
+// vPortYield
+// Return size: 0
+void vPortYield()
+vPortYield_entry:
+	// succ:  l523A
+l523A:
+	sp = fp
+vPortYield_exit:
+
+
+// prvSetupTimerInterrupt
+// Return size: 2
+void prvSetupTimerInterrupt()
+prvSetupTimerInterrupt_entry:
+	// succ:  l528E
+l528E:
+	sp = fp
+	Mem0[0x0160:ptr16] = 0x0000
+	Mem0[0x0160:ptr16] = 0x0100
+	Mem0[0x0160:ptr16] = Mem0[0x0160:ptr16] | 0x0004
+	Mem0[0x0172:ptr16] = 0x0020
+	Mem0[0x0162:ptr16] = 0x0010
+	Mem0[0x0160:ptr16] = Mem0[0x0160:ptr16] | 0x0004
+	Mem0[0x0160:ptr16] = Mem0[0x0160:ptr16] | 0x0010
+	v3 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  prvSetupTimerInterrupt_exit
+prvSetupTimerInterrupt_exit:
+
+
+// prvTickISR
+// Return size: 0
+void prvTickISR()
+prvTickISR_entry:
+	// succ:  l52B4
+l52B4:
+	sp = fp
+prvTickISR_exit:
+
+
+// printf
+// Return size: 2
+void printf()
+printf_entry:
+	// succ:  l5308
+l5308:
+	sp = fp
+	r15 = 0x0002
+	r15 = r15 + sp
+	VNZC = cond(r15)
+	v5 = Mem0[r15:word16]
+	r15 = r15 + 2
+	r14 = v5
+	r13 = r15
+	r15 = 0x43A2
+	call 0x537E (retsize: 2;)
+	v8 = Mem0[sp:word16]
+	sp = sp + 2
+	return
+	// succ:  printf_exit
+printf_exit:
+
+
+// PRINT
+// Return size: 0
+void PRINT()
+PRINT_entry:
+	// succ:  l531A
+l531A:
+	sp = fp
+PRINT_exit:
+
+
+// __write_pad
+// Return size: 0
+void __write_pad()
+__write_pad_entry:
+	// succ:  l534A
+l534A:
+	sp = fp
+__write_pad_exit:
+
+
+// vuprintf
+// Return size: 0
+void vuprintf()
+vuprintf_entry:
+	// succ:  l537E
+l537E:
+	sp = fp
+vuprintf_exit:
+
+
+// memchr
+// Return size: 0
+void memchr()
+memchr_entry:
+	// succ:  l593E
+l593E:
+	sp = fp
+memchr_exit:
+
+
+// strncpy
+// Return size: 0
+void strncpy()
+strncpy_entry:
+	// succ:  l5962
+l5962:
+	sp = fp
+strncpy_exit:
+
+
+// memcpy
+// Return size: 0
+void memcpy()
+memcpy_entry:
+	// succ:  l5994
+l5994:
+	sp = fp
+memcpy_exit:
+
+
+// memset
+// Return size: 0
+void memset()
+memset_entry:
+	// succ:  l5A68
+l5A68:
+	sp = fp
+memset_exit:
+
+

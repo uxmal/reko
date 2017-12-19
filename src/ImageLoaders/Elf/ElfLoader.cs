@@ -56,6 +56,7 @@ namespace Reko.ImageLoaders.Elf
         // Architecture-specific ABI's
         public const int ELFOSABI_ARM = 0x61;
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+        public const int ELFOSABI_STANDALONE = 0xFF;   // A GNU extension for the MSP.
 
         // Endianness
         public const byte ELFDATA2LSB = 1;
@@ -180,6 +181,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
+            case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
                 arch = endianness == ELFDATA2LSB ? "superH-le" : "superH-be";
                 // SuperH stack pointer is not defined by the architecture,
@@ -193,6 +195,7 @@ namespace Reko.ImageLoaders.Elf
                 // Alpha-Linux uses r30.
                 stackRegName = "r30";
                 break;
+
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -260,6 +263,7 @@ namespace Reko.ImageLoaders.Elf
             {
             case ELFOSABI_NONE: // Unspecified ABI
             case ELFOSABI_ARM:
+            case ELFOSABI_STANDALONE:
                 envName = "elf-neutral";
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
@@ -310,8 +314,8 @@ namespace Reko.ImageLoaders.Elf
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
                     continue;
-                imgSymbols[imgSym.Address] = imgSym;
-            }
+                    imgSymbols[imgSym.Address] = imgSym;
+                }
             return imgSymbols;
         }
 
@@ -1208,6 +1212,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
+            case ElfMachine.EM_MSP430: return new Msp430Relocator(this);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
@@ -1409,7 +1414,7 @@ namespace Reko.ImageLoaders.Elf
                         rawImage,
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
-                }
+            }
             }
             var segmentMap = new SegmentMap(addrPreferred);
             if (Sections.Count > 0)

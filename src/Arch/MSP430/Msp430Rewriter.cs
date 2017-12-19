@@ -64,7 +64,6 @@ namespace Reko.Arch.Msp430
                 {
                 case Opcode.invalid: Invalid(); break;
                 default:
-                    EmitUnitTest();
                     Invalid();
                     break;
                 case Opcode.addc: RewriteAdcSbc(m.IAdd); break;

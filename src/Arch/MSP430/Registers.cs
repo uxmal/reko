@@ -1,5 +1,6 @@
 ﻿using Reko.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Arch.Msp430
@@ -7,6 +8,7 @@ namespace Reko.Arch.Msp430
     public static class Registers
     {
         public static RegisterStorage[] GpRegisters;
+        public readonly static Dictionary<string, RegisterStorage> ByName;
 
         public static RegisterStorage pc = new RegisterStorage("pc", 0, 0, Msp430Architecture.Word20);
         public static RegisterStorage sp = new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20);
@@ -26,6 +28,8 @@ namespace Reko.Arch.Msp430
                     string.Format("r{0}", i), i, 0, Msp430Architecture.Word20)))
 
                 .ToArray();
+
+            ByName = GpRegisters.ToDictionary(r => r.Name);
         }
     }
 

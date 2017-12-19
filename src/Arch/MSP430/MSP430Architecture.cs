@@ -132,7 +132,10 @@ namespace Reko.Arch.Msp430
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            RegisterStorage reg;
+            return Registers.ByName.TryGetValue(name, out reg)
+                ? reg
+                : null;
         }
 
         public override RegisterStorage GetRegister(int i)
