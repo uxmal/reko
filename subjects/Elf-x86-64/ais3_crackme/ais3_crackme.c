@@ -11,11 +11,11 @@ void _init()
 	return;
 }
 
-// 0000000000400410: void _start(Register (ptr Eq_5) rdx, Stack Eq_6 qwArg00, Stack word32 dwArg04)
-void _start( * rdx, Eq_6 qwArg00, word32 dwArg04)
+// 0000000000400410: void _start(Register (ptr Eq_5) rdx, Stack Eq_6 qwArg00)
+void _start( * rdx, Eq_6 qwArg00)
 {
-	__align(fp + 0x08);
-	__libc_start_main(&globals->t4005C5, qwArg00, fp + 0x08, &globals->t400620, &globals->t4006B0, rdx, DPB(qwArg00, fp + 0x04, 0));
+	__align((char *) fp + 0x08);
+	__libc_start_main(&globals->t4005C5, qwArg00, (char *) fp + 0x08, &globals->t400620, &globals->t4006B0, rdx, fp);
 	__hlt();
 }
 
@@ -37,28 +37,28 @@ void call_gmon_start()
 	return;
 }
 
-// 0000000000400460: Register ptr64 deregister_tm_clones(Register word64 r8)
-ptr64 deregister_tm_clones(word64 r8)
+// 0000000000400460: void deregister_tm_clones(Register word64 r8)
+void deregister_tm_clones(word64 r8)
 {
 	if (false && 0x00 != 0x00)
 	{
-		ptr64 rsp_43;
-		word32 eax_44;
-		word64 rax_45;
-		word64 rbp_46;
-		word64 r8_47;
-		byte SCZO_48;
-		byte CZ_49;
-		byte SZO_50;
-		byte C_51;
-		byte Z_52;
-		word32 edi_53;
-		word64 rdi_54;
+		word64 rsp_42;
+		word32 eax_43;
+		word64 rax_44;
+		word64 rbp_45;
+		word64 r8_46;
+		byte SCZO_47;
+		byte CZ_48;
+		byte SZO_49;
+		byte C_50;
+		byte Z_51;
+		word32 edi_52;
+		word64 rdi_53;
 		eax();
-		return rsp_43;
+		return;
 	}
 	else
-		return fp + 0x04;
+		return;
 }
 
 // 0000000000400490: void register_tm_clones(Register word64 r8)
@@ -66,18 +66,18 @@ void register_tm_clones(word64 r8)
 {
 	if (true && 0x00 != 0x00)
 	{
-		word64 rsp_48;
-		word64 rax_49;
-		word64 rbp_50;
-		word64 r8_51;
-		byte SCZO_52;
-		word64 rdx_53;
-		byte Z_54;
-		byte SZO_55;
-		byte C_56;
-		word64 rsi_57;
-		word64 rdi_58;
-		word32 edx_59;
+		word64 rsp_47;
+		word64 rax_48;
+		word64 rbp_49;
+		word64 r8_50;
+		byte SCZO_51;
+		word64 rdx_52;
+		byte Z_53;
+		byte SZO_54;
+		byte C_55;
+		word64 rsi_56;
+		word64 rdi_57;
+		word32 edx_58;
 		edx();
 		return;
 	}
@@ -106,50 +106,50 @@ void frame_dummy(word64 r8)
 	}
 	else
 	{
-		word64 rsp_47;
-		byte SCZO_48;
-		byte Z_49;
-		word32 eax_50;
-		word64 rax_51;
-		byte SZO_52;
-		byte C_53;
-		word64 rbp_54;
-		word32 edi_55;
-		word64 rdi_56;
-		word64 r8_57;
-		word64 rdx_58;
-		word32 edx_59;
-		word64 rsi_60;
+		word64 rsp_44;
+		byte SCZO_45;
+		byte Z_46;
+		word32 eax_47;
+		word64 rax_48;
+		byte SZO_49;
+		byte C_50;
+		word64 rbp_51;
+		word32 edi_52;
+		word64 rdi_53;
+		word64 r8_54;
+		word64 rdx_55;
+		word32 edx_56;
+		word64 rsi_57;
 		eax();
-		register_tm_clones(r8_57);
+		register_tm_clones(r8_54);
 		return;
 	}
 }
 
-// 0000000000400520: Register word32 verify(Register (arr Eq_141) rdi)
-word32 verify(Eq_141 rdi[])
+// 0000000000400520: Register word32 verify(Register (arr Eq_133) rdi)
+word32 verify(Eq_133 rdi[])
 {
-	word32 dwLoc08_127 = 0x00;
+	word32 dwLoc0C_126 = 0x00;
 	while (true)
 	{
-		word32 eax_123;
-		if ((byte) (word32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[(int64) (word32) (uint64) dwLoc08_127].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] == 0x00)
+		word32 eax_122;
+		if ((byte) (word32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&rdi[(int64) (word32) (uint64) dwLoc0C_126].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] == 0x00)
 			break;
-		byte al_74 = (byte) (uint64) ((word32) (uint64) dwLoc08_127 ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc08_127))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
-		uint64 rax_114 = (uint64) dwLoc08_127;
-		if ((byte) (word32) (DPB(rax_114, (int16) (byte) rax_114, 0) + 0x00601020) != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_74 >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc08_127) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_74 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc08_127) ^ 0x09)) & 0x03)))))))))))) + 0x08)
+		byte al_73 = (byte) (uint64) ((word32) (uint64) dwLoc0C_126 ^ (word32) ((uint64) ((word32) (&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&((&(rdi)[(int64) ((word32) ((uint64) dwLoc0C_126))].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000))[0x00].a0000)[0x00])));
+		uint64 rax_113 = (uint64) dwLoc0C_126;
+		if ((byte) (word32) (DPB(rax_113, (int16) (byte) rax_113, 0) + 0x00601020) != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_73 >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_126) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_73 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_126) ^ 0x09)) & 0x03)))))))))))) + 0x08)
 		{
-			eax_123 = 0x00;
-			return eax_123;
+			eax_122 = 0x00;
+			return eax_122;
 		}
-		dwLoc08_127 = dwLoc08_127 + 0x01;
+		dwLoc0C_126 = dwLoc0C_126 + 0x01;
 	}
-	eax_123 = (word32) (dwLoc08_127 == 0x17);
-	return eax_123;
+	eax_122 = (word32) (dwLoc0C_126 == 0x17);
+	return eax_122;
 }
 
-// 00000000004005C5: void main(Register (ptr Eq_226) rsi, Register word32 edi)
-void main(Eq_226 * rsi, word32 edi)
+// 00000000004005C5: void main(Register (ptr Eq_218) rsi, Register word32 edi)
+void main(Eq_218 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
