@@ -905,6 +905,12 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("push\tr15", 0x41, 0x57);
         }
-    }
+
+		[Test]
+		public void X86dis_x64_push_immediate()
+		{
+			AssertCode64("push\t42", 0x6A, 0x42);
+		}
+	}
 }
 
