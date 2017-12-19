@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class SuperHRewriterTests : RewriterTestBase
     {
-        private SuperHArchitecture arch = new SuperHArchitecture();
+        private SuperHArchitecture arch = new SuperHLeArchitecture();
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SuperHState state;
         private MemoryArea image;
@@ -43,9 +43,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new SuperHRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+            return new SuperHRewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
         public override Address LoadAddress
@@ -243,33 +243,30 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        [Ignore("Wait until encountering this in real code")]
         public void SHRw_div0s()
         {
             RewriteCode("4723"); // div0s\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|T = __div0s(r3, r4)");
         }
 
         [Test]
-        [Ignore("Wait until encountering this in real code")]
         public void SHRw_div0u()
         {
             RewriteCode("1900"); // div0u
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|T = __div0u()");
         }
 
         [Test]
-        [Ignore("Wait until encountering this in real code")]
         public void SHRw_div1()
         {
             RewriteCode("4433"); // div1\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r3 = __div1(r3, r4)");
         }
 
         [Test]
@@ -678,6 +675,208 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|T = (r6 & r6) == 0x00000000");
+        }
+
+        [Test]
+        public void SHRw_sts_mach()
+        {
+            RewriteCode("0A00");   // sts\tmach,r0",
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = mach");
+        }
+
+        [Test]
+        public void SHRw_sts_shld()
+        {
+            RewriteCode("1D40");  // "shld\tr1,r0"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r1 >= 0x00000000 ? r0 << r1 : r0 >>u r1");
+        }
+
+        [Test]
+        public void SHRw_sts_shad()
+        {
+            RewriteCode("1C40");  // "shad\tr1,r0"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r1 >= 0x00000000 ? r0 << r1 : r0 >> r1");
+        }
+
+        [Test]
+        public void SHRw_sts_subc()
+        {
+            RewriteCode("1A 32");  // "subc\tr1,r2"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r2 = r2 - r1 - T");
+        }
+
+        [Test]
+        public void SHRw_sts_swap_w()
+        {
+            RewriteCode("4960");  // "swap.w\tr4,r0"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = __swap_w(r4)");
+        }
+
+        [Test]
+        public void SHRw_sts_shlr_16()
+        {
+            RewriteCode("2944");  // "shlr16\tr4"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r4 = r4 >>u 16");
+        }
+
+        [Test]
+        public void SHRw_sts_shll_16()
+        {
+            RewriteCode("2845");  // "shll16\tr5"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r5 = r5 << 16");
+        }
+
+        [Test]
+        public void SHRw_sts_xtrct()
+        {
+            RewriteCode("4D20");  // "xtrct\tr4,r0"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = __xtrct(r0, r4)");
+        }
+
+        [Test]
+        public void SHRw_sts_shar()
+        {
+            RewriteCode("2141");  // "shar\tr1"
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = r1 >> 1");
+        }
+
+        [Test]
+        public void SHRw_shll()
+        {
+            RewriteCode("0041");	// shll	r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r1 = r1 << 1");
+        }
+
+        [Test]
+        public void SHRw_cmp_pz()
+        {
+            RewriteCode("1141");	// cmp/pz	r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = r1 >= 0x00000000");
+        }
+
+        [Test]
+        public void SHRw_cmp_pl()
+        {
+            RewriteCode("1546");	// cmp/pl	r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = r6 > 0x00000000");
+        }
+
+        [Test]
+        public void SHRw_shlr8()
+        {
+            RewriteCode("1940");	// shlr8	r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = r0 >>u 8");
+        }
+
+        [Test]
+        public void SHRw_shlr()
+        {
+            RewriteCode("0942");	// shlr	r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r2 = r2 >>u 1");
+        }
+
+        [Test]
+        public void SHRw_clrt()
+        {
+            RewriteCode("0800");	// clrt
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = false");
+        }
+
+        [Test]
+        public void SHRw_rotcl()
+        {
+            RewriteCode("2440");	// invalid
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = __rcl(r0, 1, T)");
+        }
+
+        [Test]
+        public void SHRw_mulu_w()
+        {
+            RewriteCode("BE20");	// mulu.w
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|macl = (uint16) r0 *u (uint16) r11");
+        }
+
+        [Test]
+        public void SHRw_sett()
+        {
+            RewriteCode("1800");	// sett
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = true");
+        }
+
+        [Test]
+        public void SHRw_negc()
+        {
+            RewriteCode("9A69");	// negc	r9,r9
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r9 = -r9 - T");
+        }
+
+        [Test]
+        public void SHRw_ror()
+        {
+            RewriteCode("0540");	// invalid
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = __ror(r0, 1)");
+        }
+
+        [Test]
+        public void SHRw_muls_w()
+        {
+            RewriteCode("1F22");	// invalid
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|macl = (int16) r2 *s (int16) r1");
+        }
+
+        [Test]
+        public void SHRw_pc_relative_load()
+        {
+            RewriteCode("00DD44332211");    // mov.l@(0,pc),r13
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r13 = Mem0[0x00100004:word32]",
+                "2|L--|00100002(2): 1 instructions",
+                "3|L--|r3 = __div1(r3, r4)",
+                "4|L--|00100004(2): 1 instructions",
+                "5|L--|Mem0[r1 + 8:word32] = r2");
         }
     }
 }

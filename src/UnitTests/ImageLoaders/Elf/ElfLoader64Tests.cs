@@ -146,5 +146,22 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Assert.AreEqual(".text", segText.Name);
             Assert.AreEqual(8, segText.Size);
         }
+
+
+        [Test]
+        public void El64_Executable_NoSections()
+        {
+            Given_RawImage("C0 DE 00 00 00 00 00 00 DA 7A 00 00");
+            Given_ImageHeader(ElfMachine.EM_X86_64);
+            Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 0, 0x1000, 8, 8);
+            mr.ReplayAll();
+
+            When_CreateLoader64(false);
+            var segmentMap = el64.LoadImageBytes(platform, this.bytes, Address.Ptr64(0x1000));
+
+            Assert.AreEqual(1, segmentMap.Segments.Count);
+            mr.VerifyAll();
+
+        }
     }
 }

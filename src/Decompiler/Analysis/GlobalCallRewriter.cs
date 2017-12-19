@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
-using Frame = Reko.Core.Frame;
+using IStorageBinder = Reko.Core.IStorageBinder;
 using Identifier = Reko.Core.Expressions.Identifier;
 using OutArgumentStorage = Reko.Core.OutArgumentStorage;
 using PrimtiveType = Reko.Core.Types.PrimitiveType;
@@ -34,6 +34,7 @@ using RegisterStorage = Reko.Core.RegisterStorage;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
+using Reko.Core;
 
 namespace Reko.Analysis
 {
@@ -55,7 +56,7 @@ namespace Reko.Analysis
 			this.mpprocflow = mpprocflow;
 		}
 
-		public void AddStackArgument(int x, Identifier id, ProcedureFlow flow, SignatureBuilder sb)
+		public void AddStackArgument(Identifier id, ProcedureFlow flow, SignatureBuilder sb)
 		{
 			object o = flow.StackArguments[id];
 			if (o != null)
@@ -70,7 +71,7 @@ namespace Reko.Analysis
 					}
 				}
 			}
-			sb.AddStackArgument(x, id);
+			sb.AddInParam(id);
 		}
 
 		public void AddUseInstructionsForOutArguments(Procedure proc)
@@ -156,9 +157,9 @@ namespace Reko.Analysis
 				}
 			}
 
-			foreach (KeyValuePair<int,Identifier> de in GetSortedStackArguments(proc.Frame))
+			foreach (var id in GetSortedStackArguments(proc.Frame).Values)
 			{
-				AddStackArgument(de.Key, de.Value, flow, sb);
+				AddStackArgument(id, flow, sb);
 			}
 
             foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, 0))
@@ -168,7 +169,9 @@ namespace Reko.Analysis
 
             var liveOut = new HashSet<RegisterStorage>(flow.LiveOut);
             liveOut.ExceptWith(implicitRegs);
-			foreach (var r in liveOut.OrderBy(r => r.Number))
+
+            // Sort the names in a stable way to avoid regression tests failing.
+			foreach (var r in liveOut.OrderBy(r => r.Number).ThenBy(r => r.BitAddress))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{

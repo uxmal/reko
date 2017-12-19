@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf
 
         #endregion
 
-        private byte fileClass;             // 0x2 = 
+        private byte fileClass;
         private byte endianness;
         private byte fileVersion;
         private byte osAbi;
@@ -95,7 +95,6 @@ namespace Reko.ImageLoaders.Elf
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var reloc = innerLoader.Relocate(program, addrLoad);
-            innerLoader.LocateGotPointers(program, reloc.Symbols);
             return reloc;
         }
 

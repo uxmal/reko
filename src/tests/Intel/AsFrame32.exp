@@ -11,7 +11,7 @@
 10000007 E8 0B 00 00 00  	call	10000017
 1000000C 83 C4 04        	add	esp,04
 1000000F 66 89 05 28 34 00 10 	mov	[10003428],ax
-10000016 C3              	ret	
+10000016 C3              	ret
 10000017 55              	push	ebp
 10000018 8B EC           	mov	ebp,esp
 1000001A 51              	push	ecx
@@ -35,4 +35,4 @@
 1000005A 66 8B 45 FC     	mov	ax,[ebp-04]
 1000005E 8B E5           	mov	esp,ebp
 10000060 5D              	pop	ebp
-10000061 C3              	ret	
+10000061 C3              	ret

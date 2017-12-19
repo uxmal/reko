@@ -20,22 +20,32 @@
 
 using Reko.Core.Expressions;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core
 {
 	/// <summary>
 	/// Interface used for backwalkers to get services from host.
 	/// </summary>
-	public interface IBackWalkHost
+	public interface IBackWalkHost<TBlock, TInstr>
 	{
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 
-        Block GetSinglePredecessor(Block block);
+        TBlock GetSinglePredecessor(TBlock block);
 
         bool IsValidAddress(Address addr);
         RegisterStorage GetSubregister(RegisterStorage rIdx, int v1, int v2);
+        IEnumerable<TInstr> GetReversedBlockInstructions(TBlock block);
+
+        // Return [dst,src] tuple if TInstr is an assignment, null otherwise.
+        Tuple<Expression,Expression> AsAssignment(TInstr instr);
+        // Return the branch condition if TINstr is a branch, null otherwise.
+        Expression AsBranch(TInstr instr);
+
+        bool IsStackRegister(Storage storage);
+        bool IsFallthrough(TInstr instr, TBlock block);
     }
 }

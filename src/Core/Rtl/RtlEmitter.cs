@@ -85,13 +85,13 @@ namespace Reko.Core.Rtl
         /// <param name="rtlClass"></param>
         public RtlEmitter Call(Expression target, byte retSize)
         {
-            instrs.Add(new RtlCall(target, retSize, RtlClass.Transfer));
+            instrs.Add(new RtlCall(target, retSize, RtlClass.Transfer | RtlClass.Call));
             return this;
         }
 
         public RtlEmitter CallD(Expression target, byte retSize)
         {
-            instrs.Add(new RtlCall(target, retSize, RtlClass.Transfer|RtlClass.Delay));
+            instrs.Add(new RtlCall(target, retSize, RtlClass.Transfer | RtlClass.Call | RtlClass.Delay));
             return this;
         }
 
@@ -164,10 +164,10 @@ namespace Reko.Core.Rtl
             return this;
         }
 
-        public RtlEmitter SideEffect(Expression sideEffect)
+        public RtlEmitter SideEffect(Expression sideEffect, RtlClass rtlc = RtlClass.Linear)
         {
             var se = new RtlSideEffect(sideEffect);
-            se.Class = RtlClass.Linear;
+            se.Class = rtlc;
             instrs.Add(se);
             return this;
         }

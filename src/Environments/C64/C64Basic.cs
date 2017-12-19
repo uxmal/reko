@@ -96,7 +96,7 @@ namespace Reko.Environments.C64
             return new C64BasicState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new C64BasicRewriter(this, rdr.Address, program, host);
         }
@@ -158,7 +158,7 @@ namespace Reko.Environments.C64
                 return i + C64BasicInstruction.TokenMin;
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

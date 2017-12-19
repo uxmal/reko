@@ -1,5 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <library xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="ParamBlk">
+      <struct size="50">
+      </struct>
+    </typedef>
+    <typedef name="OSErr">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+  </Types>
   <service name="_Open"><syscallinfo><vector>A000</vector></syscallinfo></service>
   <service name="_Close"><syscallinfo><vector>A001</vector></syscallinfo></service>
   <service name="_Read"><syscallinfo><vector>A002</vector></syscallinfo></service>
@@ -12,7 +21,12 @@
   <service name="_Delete"><syscallinfo><vector>A009</vector></syscallinfo></service>
   <service name="_OpenRF"><syscallinfo><vector>A00A</vector></syscallinfo></service>
   <service name="_Rename"><syscallinfo><vector>A00B</vector></syscallinfo></service>
-  <service name="_GetFileInfo"><syscallinfo><vector>A00C</vector></syscallinfo></service>
+  <service name="_GetFileInfo"><syscallinfo><vector>A00C</vector></syscallinfo>
+    <signature>
+      <return><type>OSErr</type><reg>d0</reg></return>
+      <arg><ptr><type>ParamBlk</type></ptr><reg>a1</reg></arg>
+    </signature>
+  </service>
   <service name="_SetFileInfo"><syscallinfo><vector>A00D</vector></syscallinfo></service>
   <service name="_UnmountVol"><syscallinfo><vector>A00E</vector></syscallinfo></service>
   <service name="_MountVol"><syscallinfo><vector>A00F</vector></syscallinfo></service>
@@ -28,7 +42,11 @@
   <service name="_InitZone"><syscallinfo><vector>A019</vector></syscallinfo></service>
   <service name="_SetZone"><syscallinfo><vector>A01B</vector></syscallinfo></service>
   <service name="_FreeMem"><syscallinfo><vector>A01C</vector></syscallinfo></service>
-  <service name="_DisposePtr"><syscallinfo><vector>A01F</vector></syscallinfo></service>
+  <service name="_DisposePtr"><syscallinfo><vector>A01F</vector></syscallinfo>
+    <signature>
+      <arg name="ptr"><reg>a0</reg></arg>
+    </signature>
+  </service>
   <service name="_SetPtrSize"><syscallinfo><vector>A020</vector></syscallinfo></service>
   <service name="_GetPtrSize"><syscallinfo><vector>A021</vector></syscallinfo></service>
   <service name="_DisposeHandle"><syscallinfo><vector>A023</vector></syscallinfo></service>
@@ -50,7 +68,13 @@
       <arg name="zoneLimit"><ptr><void/></ptr><stack/></arg>
     </signature>
   </service>
-  <service name="_BlockMove"><syscallinfo><vector>A02E</vector></syscallinfo></service>
+  <service name="_BlockMove"><syscallinfo><vector>A02E</vector></syscallinfo>
+    <signature>
+      <arg name="src"><ptr><void/></ptr><reg>a0</reg></arg>
+      <arg name="dst"><ptr><void/></ptr><reg>a1</reg></arg>
+      <arg name="count"><prim domain="SignedInt" size="4" /><reg>d0</reg></arg>
+    </signature>
+  </service>
   <service name="_PostEvent"><syscallinfo><vector>A02F</vector></syscallinfo></service>
   <service name="_OSEventAvail"><syscallinfo><vector>A030</vector></syscallinfo></service>
   <service name="_GetOSEvent"><syscallinfo><vector>A031</vector></syscallinfo></service>
@@ -66,7 +90,14 @@
   <service name="_ReadDateTime"><syscallinfo><vector>A039</vector></syscallinfo></service>
   <service name="_SetDateTime"><syscallinfo><vector>A03A</vector></syscallinfo></service>
   <service name="_Delay"><syscallinfo><vector>A03B</vector></syscallinfo></service>
-  <service name="_CmpString"><syscallinfo><vector>A03C</vector></syscallinfo></service>
+  <service name="_CmpString"><syscallinfo><vector>A03C</vector></syscallinfo>
+    <signature>
+      <return><prim domain="SignedInt" size="4"/></return>
+      <arg><ptr><prim domain="Character" size="1"/></ptr><reg>a0</reg></arg>
+      <arg><ptr><prim domain="Character" size="1"/></ptr><reg>a1</reg></arg>
+      <arg><prim domain="UnsignedInt" size="4"/><reg>d0</reg></arg> <!-- packed words hi.lo -->
+    </signature>
+  </service>
   <service name="_DrvrInstall"><syscallinfo><vector>A03D</vector></syscallinfo></service>
   <service name="_DrvrRemove"><syscallinfo><vector>A03E</vector></syscallinfo></service>
   <service name="_InitUtil"><syscallinfo><vector>A03F</vector></syscallinfo></service>
@@ -708,7 +739,12 @@
   <service name="_SecondsToDate"><syscallinfo><vector>A9C6</vector></syscallinfo></service>
   <service name="_DateToSeconds"><syscallinfo><vector>A9C7</vector></syscallinfo></service>
   <service name="_SysBeep"><syscallinfo><vector>A9C8</vector></syscallinfo></service>
-  <service name="_SysError"><syscallinfo><vector>A9C9</vector></syscallinfo></service>
+  <service name="_SysError"><syscallinfo><vector>A9C9</vector></syscallinfo>
+    <signature>
+      <arg name="d0"><prim domain="UnsignedInt" size="2"/><reg>d0</reg></arg>
+      <arg name="msg"><ptr><void /></ptr><stack /></arg>
+    </signature>
+  </service>
   <service name="_PutIcon"><syscallinfo><vector>A9CA</vector></syscallinfo></service>
   <service name="_TEGetText"><syscallinfo><vector>A9CB</vector></syscallinfo></service>
   <service name="_TEInit">

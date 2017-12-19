@@ -81,12 +81,24 @@ namespace Reko.Evaluation
             var exp = cast.Expression.Accept(this);
             if (exp == Constant.Invalid)
                 return exp;
-            return new Cast(cast.DataType, exp);
+            if (exp is Constant ||
+                exp is Identifier)
+                return new Cast(cast.DataType, exp);
+            return Constant.Invalid;
         }
 
         public Expression VisitConditionalExpression(ConditionalExpression c)
         {
-            throw new NotImplementedException();
+            var cond = c.Condition.Accept(this);
+            if (cond == Constant.Invalid)
+                return cond;
+            var then = c.ThenExp.Accept(this);
+            if (then == Constant.Invalid)
+                return then;
+            var fals = c.FalseExp.Accept(this);
+            if (fals == Constant.Invalid)
+                return fals;
+            return new ConditionalExpression(c.DataType, cond, then, fals);
         }
 
         public Expression VisitConditionOf(ConditionOf cof)

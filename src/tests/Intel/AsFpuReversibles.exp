@@ -24,4 +24,4 @@
 0C00:003C DD 06 30 03     	fld	double ptr [0330]
 0C00:0040 DE F1           	fdivrp	st(1),st(0)
 0C00:0042 DD 1E 40 03     	fstp	double ptr [0340]
-0C00:0046 C3              	ret	
+0C00:0046 C3              	ret

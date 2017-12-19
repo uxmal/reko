@@ -14,18 +14,18 @@
 0C00:0015 6A 02           	push	02
 0C00:0017 9A 2E 00 00 0C  	call	far 0C00:002E
 0C00:001C 83 C4 06        	add	sp,06
-0C00:001F C3              	ret	
+0C00:001F C3              	ret
 0C00:0020 55              	push	bp
 0C00:0021 8B EC           	mov	bp,sp
 0C00:0023 C4 5E 06        	les	bx,[bp+06]
 0C00:0026 8B 46 0A        	mov	ax,[bp+0A]
 0C00:0029 26 01 07        	add	es:[bx],ax
 0C00:002C 5D              	pop	bp
-0C00:002D CB              	retf	
+0C00:002D CB              	retf
 0C00:002E 55              	push	bp
 0C00:002F 8B EC           	mov	bp,sp
 0C00:0031 C4 5E 06        	les	bx,[bp+06]
 0C00:0034 8B 46 0A        	mov	ax,[bp+0A]
 0C00:0037 26 29 07        	sub	es:[bx],ax
 0C00:003A 5D              	pop	bp
-0C00:003B CB              	retf	
+0C00:003B CB              	retf

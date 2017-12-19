@@ -547,7 +547,7 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     Func<int, Program, bool> filter = GetScannedFilter(dlg);
-                    var re = Scanning.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
+                    var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     if (re == null)
                         return;
                     var hits = this.decompilerSvc.Decompiler.Project.Programs

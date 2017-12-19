@@ -70,6 +70,26 @@ namespace Reko.UnitTests.Core.CLanguage
         }
 
         [Test]
+        public void NamedDataTypeExtractor_Bool()
+        {
+            Run(new[] { SType(CTokenType.Bool) },
+                new IdDeclarator { Name = "Bob" });
+
+            Assert.AreEqual("Bob", nt.Name);
+            Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor__Bool()
+        {
+            Run(new[] { SType(CTokenType._Bool) },
+                new IdDeclarator { Name = "Bob" });
+
+            Assert.AreEqual("Bob", nt.Name);
+            Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
+        }
+
+        [Test]
         public void NamedDataTypeExtractor_PtrChar()
         {
             Run(new[] { SType(CTokenType.Char), },
@@ -105,7 +125,7 @@ namespace Reko.UnitTests.Core.CLanguage
                     }
                 });
             Assert.AreEqual("fn", nt.Name);
-            Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1))))", nt.DataType.ToString());
+            Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1)))))", nt.DataType.ToString());
         }
 
         [Test]
@@ -144,7 +164,7 @@ namespace Reko.UnitTests.Core.CLanguage
                     }
                 });
             Assert.AreEqual(
-                "fn(__stdcall,arg(ptr(prim(Character,1))),()",
+                "fn(__stdcall,arg(ptr(prim(Character,1))),())",
                 nt.DataType.ToString());
         }
 
@@ -210,6 +230,30 @@ namespace Reko.UnitTests.Core.CLanguage
                 });
             Assert.IsNotNull(kind);
             Assert.IsInstanceOf<FpuStackVariable_v1>(kind);
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_thiscall_declspec()
+        {
+            Run(new[] { SType(CTokenType.Char) },
+                new PointerDeclarator()
+                {
+                    Pointee = new CallConventionDeclarator()
+                    {
+                        Convention = CTokenType.__Thiscall,
+                        Declarator = new FunctionDeclarator()
+                        {
+                            Declarator = new IdDeclarator()
+                            {
+                                Name = "test"
+                            },
+                            Parameters = new List<ParamDecl>()
+                        }
+                    }
+                });
+            Assert.AreEqual(
+                "fn(__thiscall,arg(ptr(prim(Character,1))),())",
+                nt.DataType.ToString());
         }
     }
 }

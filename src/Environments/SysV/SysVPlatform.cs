@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -39,6 +40,8 @@ namespace Reko.Environments.SysV
     public class SysVPlatform : Platform
     {
         private RegisterStorage[] trashedRegs;
+        private CallingConvention ccX86;
+        private CallingConvention ccRiscV;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
@@ -51,7 +54,7 @@ namespace Reko.Environments.SysV
             get { return ""; }
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
             switch (Architecture.Name)
             {
@@ -59,27 +62,47 @@ namespace Reko.Environments.SysV
             case "mips-le-32":
             case "mips-be-64":
             case "mips-le-64":
-                return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "ppc32":
-                return new PowerPcProcedureSerializer(Architecture, typeLoader, defaultConvention);
+                return new MipsCallingConvention(Architecture); //$ ccName?
+            case "ppc-be-32":
+            case "ppc-le-32":
+                return new PowerPcCallingConvention(Architecture);
             case "sparc32":
-                return new SparcProcedureSerializer(Architecture, typeLoader, defaultConvention);
+                return new SparcCallingConvention(Architecture);
             case "x86-protected-32":
-                return new X86ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+                if (this.ccX86 == null)
+                {
+                    var t = Type.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86", true);
+                    this.ccX86 = (CallingConvention)Activator.CreateInstance(
+                        t,
+                        4,      // retAddressOnStack,
+                        4,      // stackAlignment,
+                        4,      // pointerSize,
+                        true,   // callerCleanup,
+                        false); // reverseArguments)
+                }
+                return this.ccX86;
             case "x86-protected-64":
-                return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+                return new X86_64CallingConvention(Architecture);
             case "xtensa":
-                return new XtensaProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "arm":
-                return new Arm32ProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "m68k":
-                return new M68kProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "avr8":
-                return new Avr8ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+                return new XtensaCallingConvention(Architecture);
+            case "arm":                                        
+                return new Arm32CallingConvention(Architecture);
+            case "m68k":                                       
+                return new M68kCallingConvention(Architecture);
+            case "avr8":                                       
+                return new Avr8CallingConvention(Architecture);
             case "risc-v":
-                return new RiscVProcedureSerializer(Architecture, typeLoader, defaultConvention);
-            case "superH":
-                return new SuperHProcedureSerializer(Architecture, typeLoader, defaultConvention);
+                if (this.ccRiscV == null)
+                {
+                    var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true);
+                    this.ccRiscV = (CallingConvention)Activator.CreateInstance(t, Architecture);
+                }
+                return this.ccRiscV;
+            case "superH-le":
+            case "superH-be":
+                return new SuperHCallingConvention(Architecture);
+            case "alpha":
+                return new AlphaCallingConvention(Architecture);
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }
@@ -104,6 +127,7 @@ namespace Reko.Environments.SysV
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;
             case CBasicType.Short: return 2;
@@ -118,14 +142,10 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rw, IRewriterHost host)
         {
-            var rw = Architecture.CreateRewriter(
-                rdr,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(), host);
             var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
 
             // Match x86 pattern.
@@ -204,7 +224,7 @@ namespace Reko.Environments.SysV
             return proc;
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
             StructField_v1 field = null;
             try
@@ -222,12 +242,10 @@ namespace Reko.Environments.SysV
             var sproc = field.Type as SerializedSignature;
             if (sproc != null)
             {
-                var loader = new TypeLibraryDeserializer(this, false, Metadata);
-                var sser = this.CreateProcedureSerializer(loader, sproc.Convention);
-                var sig = sser.Deserialize(sproc, this.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                return new ExternalProcedure(field.Name, sig)
+                return new Procedure_v1
                 {
-                    EnclosingType = sproc.EnclosingType
+                    Name = field.Name,
+                    Signature = sproc,
                 };
             }
             return null;

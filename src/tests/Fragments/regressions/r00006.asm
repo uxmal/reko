@@ -262,68 +262,81 @@ l10004ACF:
 
 
 fn10004AE0 proc
+    mov dword ptr [0x00123400],0x10004AE0
 	mov	eax,[esp+0x04]
 	ret
 	endp
-	
+
 fn10004EA0 proc
+    mov dword ptr [0x00123400],0x10004EA0
 	mov	eax,[esp+0x04]
 	ret
-	endp
+	endp	
 	
 fn10000022D proc
+    mov dword ptr [0x00123400],0x1000022D
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn10005A80 proc
+    mov dword ptr [0x00123400],0x10005A80
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000A450 proc
+    mov dword ptr [0x00123400],0x1000A450
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000A700 proc
+    mov dword ptr [0x00123400],0x1000A700
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000B860 proc
+    mov dword ptr [0x00123400],0x1000B860
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000D460 proc
+    mov dword ptr [0x00123400],0x1000D460
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000D510 proc
+    mov dword ptr [0x00123400],0x1000D510
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000D580 proc
+    mov dword ptr [0x00123400],0x1000D580
 	mov eax,[esp+0x08]
 	add eax,[esp+0x04]
 	ret
 	endp
 	
 fn1000D5E0 proc
+    mov dword ptr [0x00123400],0x1000D5E0
 	mov	eax,[esp+0x04]
 	ret
 	endp
 	
 fn10025160 proc
+    mov dword ptr [0x00123400],0x10025160
 	mov eax,[esp+0x08]
 	add eax,[esp+0x04]
 	ret
 	endp
 	
 fn10000267 proc
+    mov dword ptr [0x00123400],0x10000267
 	mov edx,[0x20000000]
 	mov eax,[esp+0x04]
 	mov [edx+0x04],eax
@@ -345,6 +358,7 @@ fn100325C0 proc
 	endp
 	
 fn10032760 proc
+    mov dword ptr [0x00123400],0x10032760
 	mov edx,[0x20000000]
 	mov eax,[esp+0x04]
 	mov [edx+0x04],eax

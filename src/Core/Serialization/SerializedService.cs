@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using System;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -31,10 +32,17 @@ namespace Reko.Core.Serialization
 		}
 
         /// <summary>
-        /// Describes what registers must be set at what values to call this system call.
+        /// If non-null, specifies the address of a dispatcher function.
+        /// </summary>
+        [XmlAttribute("address")]
+        public string Address;
+
+        /// <summary>
+        /// Describes what registers must be set at what values to call this
+        /// system call.
         /// </summary>
 		[XmlElement("syscallinfo")]
-		public SerializedSyscallInfo SyscallInfo;
+		public SyscallInfo_v1 SyscallInfo;
 
 		public SystemService Build(IPlatform platform, TypeLibrary library)
 		{
@@ -57,28 +65,40 @@ namespace Reko.Core.Serialization
                             Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
                         };
                     }
+                } 
+                if (SyscallInfo.StackValues != null)
+                {
+                    svc.SyscallInfo.StackValues = SyscallInfo.StackValues.Select(sv =>
+                        new StackValue
+                        {
+                            Offset = Convert.ToInt32(sv.Offset, 16),
+                            Value = Convert.ToInt32(sv.Value, 16)
+                        }).ToArray();
                 }
             }
 			if (svc.SyscallInfo.RegisterValues == null)
 			{
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
-            TypeLibraryDeserializer loader = new TypeLibraryDeserializer(platform, true, library);
-			var sser = platform.CreateProcedureSerializer(loader, "stdapi");
+            var loader = new TypeLibraryDeserializer(platform, true, library);
+			var sser = new ProcedureSerializer(platform, loader, "stdapi");
             svc.Signature = sser.Deserialize(Signature, platform.Architecture.CreateFrame());
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
 			return svc;
 		}
 	}
 
-	public class SerializedSyscallInfo
+	public class SyscallInfo_v1
 	{
 		[XmlElement("vector")]
 		public string Vector;
 
 		[XmlElement("regvalue")]
 		public SerializedRegValue [] RegisterValues;
-	}
+
+        [XmlElement("stackvalue")]
+        public StackValue_v1[] StackValues;
+    }
 
     [Obsolete("use RegisterValue_v2")]
 	public class SerializedRegValue
@@ -99,4 +119,13 @@ namespace Reko.Core.Serialization
 			Value = val;
 		}
 	}
+
+    public class StackValue_v1
+    {
+        [XmlAttribute("offset")]
+        public string Offset;
+
+        [XmlText]
+        public string Value;
+    }
 }

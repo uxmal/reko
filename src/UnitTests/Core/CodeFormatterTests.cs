@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Core
             dw.Accept(cf);
             var sExp =
                 "\tdo" + nl +
-                "\t\tfoo = 0x00000003;" + nl +
+                "\t\tfoo = 3;" + nl +
                 "\twhile (bar < 0x00000000);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -185,8 +185,8 @@ namespace Reko.UnitTests.Core
             var sExp =
                 "\tdo" + nl +
                 "\t{" + nl +
-                    "\t\tfoo = 0x00000003;" + nl + 
-                    "\t\tfoo = 0x00000004;" + nl + 
+                    "\t\tfoo = 3;" + nl + 
+                    "\t\tfoo = 4;" + nl + 
                 "\t} while (bar < 0x00000000);" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -297,6 +297,23 @@ namespace Reko.UnitTests.Core
             var cast = new Cast(s, id);
             cast.Accept(cf);
             Assert.AreEqual("(struct foo) id", sw.ToString());
+        }
+
+        [Test]
+        public void CfStringConstant_Escape()
+        {
+            var s = Constant.String("\a\b\f\n\r\t\v\'\"\\", StringType.NullTerminated(PrimitiveType.Char));
+            s.Accept(cf);
+            var q = sw.ToString();
+            Assert.AreEqual("\"\\a\\b\\f\\n\\r\\t\\v'\\\"\\\\\"", sw.ToString());
+        }
+
+        [Test]
+        public void CfStringConstant_Escape_Numeric()
+        {
+            var s = Constant.String("\x00\x1F\x20\x21\x7E\x7F\x80", StringType.NullTerminated(PrimitiveType.Char));
+            s.Accept(cf);
+            Assert.AreEqual("\"\\0\\x1F !~\\x7F\\x80\"", sw.ToString());
         }
     }
 }

@@ -64,10 +64,11 @@ namespace Reko.Core.Rtl
         public static string FormatClass(RtlClass rtlClass)
         {
             var sb = new StringBuilder();
-            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear))
+            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear|RtlClass.Terminates))
             {
             case RtlClass.Linear: sb.Append('L'); break;
             case RtlClass.Transfer: sb.Append('T'); break;
+            case RtlClass.Terminates: sb.Append('H'); break;
             default: sb.Append('-'); break;
             }
             sb.Append((rtlClass & RtlClass.Delay) != 0 ? 'D' : '-');
@@ -87,9 +88,11 @@ namespace Reko.Core.Rtl
         Linear = 1,         // non-transfer instruction, e.g. ALU operation.
         Transfer = 2,       // transfer instruction.
         Conditional = 4,    // Instruction is gated on a condition.
-        Delay = 8,          // Next instruction is in the delay slot and may be executed.
-        Annul = 16,         // Next instruction is annulled (see SPARC architecture)
-        Invalid = 32,       // Invalid instruction
+        Call = 8,           // Instruction saves its continuation.
+        Delay = 16,         // Next instruction is in the delay slot and may be executed.
+        Annul = 32,         // Next instruction is annulled (see SPARC architecture)
+        Terminates = 64,    // Instruction terminates execution (e.g. x86 and ARM HLT)
+        Invalid = 128,      // Invalid instruction
         ConditionalTransfer = Conditional | Transfer,
     }
 
@@ -99,18 +102,11 @@ namespace Reko.Core.Rtl
     /// </summary>
     public class RtlInstructionCluster
     {
-        public RtlInstructionCluster(Address addr, int instrLength)
-        {
-            this.Address = addr;
-            this.Length = (byte) instrLength;
-            this.Instructions = new List<RtlInstruction>();
-        }
-
         public RtlInstructionCluster(Address addr, int instrLength, params RtlInstruction [] instrs)
         {
             this.Address = addr;
             this.Length = (byte)instrLength;
-            this.Instructions = new List<RtlInstruction>(instrs);
+            this.Instructions = instrs;
         }
 
         /// <summary>
@@ -120,7 +116,7 @@ namespace Reko.Core.Rtl
 
         public RtlClass Class { get; set; }
 
-        public List<RtlInstruction> Instructions { get; private set; }
+        public RtlInstruction[] Instructions { get; private set; }
 
         /// <summary>
         /// The length of the original machine instruction, in bytes.
@@ -129,7 +125,7 @@ namespace Reko.Core.Rtl
 
         public override string ToString()
         {
-            return string.Format("{0}({1}): {2} instructions", Address, Length, Instructions.Count);
+            return string.Format("{0}({1}): {2} instructions", Address, Length, Instructions.Length);
         }
 
         public void Write(TextWriter writer)

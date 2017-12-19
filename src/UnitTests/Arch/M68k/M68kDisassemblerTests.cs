@@ -156,9 +156,9 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_Bchg()
+        public void M68kdis_bchg()
         {
-            RunTest("bchg\td0,d0", 0x0140);
+            RunTest("bchg.l\td0,d0", 0x0140);
         }
 
         [Test]
@@ -567,7 +567,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_btst()
         {
-            RunTest("btst\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
+            RunTest("btst.w\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
         }
 
         [Test]
@@ -579,25 +579,25 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_move_to_ccr()
         {
-            RunTest("move\td3,ccr", 0x44c3);
+            RunTest("move.w\td3,ccr", 0x44c3);
         }
 
         [Test]
         public void M68kdis_move_fr_ccr()
         {
-            RunTest("move\tccr,(a3)", 0x42d3, 0x0000);
+            RunTest("move.w\tccr,(a3)", 0x42d3, 0x0000);
         }
 
         [Test]
         public void M68kdis_bclr_r()
         {
-            RunTest("bclr\td2,d1", 0x0581);
+            RunTest("bclr.l\td2,d1", 0x0581);
         }
 
         [Test]
         public void M68kdis_bclr_s()
         {
-            RunTest("bclr\t#$05,d4", 0x0884, 5);
+            RunTest("bclr.l\t#$05,d4", 0x0884, 5);
         }
 
         [Test]
@@ -665,7 +665,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_address_mode()
         {
-            RunTest("move.l\t(-04,a2,d0*2),d2", 0x2432, 0x04fc);
+            RunTest("move.l\t(-04,a2,d0*4),d2", 0x2432, 0x04fc);
         }
 
         [Test]

@@ -34,7 +34,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
@@ -63,6 +62,11 @@ namespace Reko.UnitTests.Analysis
             });
         }
 
+        private void Given_UserProcDecompileFlag(uint address, bool decompile)
+        {
+            program.User.Procedures[Address.Ptr32(address)].Decompile = decompile;
+        }
+
         private void Given_Procedure(uint address)
         {
             var m = new ProcedureBuilder("fnTest");
@@ -71,7 +75,13 @@ namespace Reko.UnitTests.Analysis
             this.program.Procedures[Address.Ptr32(address)] = this.proc;
         }
 
-        [Test(Description = "Empty user signature should't affect procedure signature")]
+        private void Given_UnscannedProcedure(uint address)
+        {
+            this.proc = Procedure.Create("fnTest", Address.Ptr32(address), new Frame(PrimitiveType.Pointer32));
+            this.program.Procedures[Address.Ptr32(address)] = this.proc;
+        }
+
+        [Test(Description = "Empty user signature shouldn't affect procedure signature")]
         public void Usb_EmptyUserSignature()
         {
             Given_Procedure(0x1000);
@@ -91,7 +101,7 @@ namespace Reko.UnitTests.Analysis
             var sProc = usb.ParseFunctionDeclaration("int foo(char *)");
 
             Assert.AreEqual(
-                "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
+                "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1)))))",
                 sProc.Signature.ToString());
         }
 
@@ -138,7 +148,7 @@ namespace Reko.UnitTests.Analysis
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)");
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,BYTE),arg(b,BYTE))",
+                "fn(arg(BYTE),(arg(a,BYTE),arg(b,BYTE)))",
                 sProc.Signature.ToString());
         }
 
@@ -159,7 +169,7 @@ namespace Reko.UnitTests.Analysis
             var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)");
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,BYTE))",
+                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,BYTE)))",
                 sProc.Signature.ToString());
 
             //should not accept undefined type USRDEF2
@@ -174,7 +184,7 @@ namespace Reko.UnitTests.Analysis
             sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)");
 
             Assert.AreEqual(
-                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,USRDEF2))",
+                "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,USRDEF2)))",
                 sProc.Signature.ToString());
         }
 
@@ -271,6 +281,17 @@ test_exit:
             var gbl = usb.ParseGlobalDeclaration("unsigned int *uiPtr");
             Assert.AreEqual("uiPtr", gbl.Name);
             Assert.AreEqual("ptr(prim(UnsignedInt,4))", gbl.DataType.ToString());
+        }
+
+        [Test(Description ="Reko was crashing when a user-defined procedure was marked no-decompile.")]
+        public void Usb_NoDecompileProcedure()
+        {
+            Given_UnscannedProcedure(0x1000);
+            Given_UserSignature(0x01000, "void test([[reko::arg(register,\"ecx\")]] float f)");
+            Given_UserProcDecompileFlag(0x1000, false);
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
         }
     }
 }

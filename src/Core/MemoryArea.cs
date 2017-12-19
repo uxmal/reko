@@ -89,13 +89,6 @@ namespace Reko.Core
             return new LeImageReader(this, offset);
         }
 
-        [Obsolete]
-        public SegmentMap CreateImageMap()
-        {
-            return new SegmentMap(BaseAddress,
-                new ImageSegment("", this, AccessMode.ReadWriteExecute));
-        }
-
 		/// <summary>
 		/// Adds the delta to the ushort at the given offset.
 		/// </summary>
@@ -169,6 +162,11 @@ namespace Reko.Core
             if (c != null && c.DataType.Size == type.Size)
                 return c;
             return ReadBe(abImage, imageOffset, type);
+        }
+
+        public bool TryReadBeUInt32(long offset, out uint uAddr)
+        {
+            return TryReadBeUInt32(Bytes, offset, out uAddr);
         }
 
         public bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)

@@ -106,5 +106,15 @@ namespace Reko.Core
         {
             get { return map.Count; }
         }
-	}
+
+        [Conditional("DEBUG")]
+        public void Dump(Address addrBase)
+        {
+            var lin = addrBase.ToLinear();
+            foreach (var de in map)
+            {
+                Debug.Print("{0:X8} - {1}", de.Key - lin, de.Value);
+            }
+        }
+    }
 }

@@ -232,10 +232,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var syms = new ImageSymbol[]
             {
-                new ImageSymbol(Address.Ptr32(0x04000000)) { Name = "strcpy", Type = SymbolType.Procedure },
-                new ImageSymbol(Address.Ptr32(0x04000010)) { Name = "strcmp", Type = SymbolType.Procedure },
+                new ImageSymbol(Address.Ptr32(0x04000000)) { Name = "strcpy", Type = SymbolType.ExternalProcedure },
+                new ImageSymbol(Address.Ptr32(0x04000010)) { Name = "strcmp", Type = SymbolType.ExternalProcedure },
             }.ToSortedList(k => k.Address);
-
             Given_ImageHeader(ElfMachine.EM_MIPS);
             Given_Program();
             Given_BE32_GOT(0x0000000, 0x00000000, 0x04000010, 0x04000000);
@@ -246,11 +245,30 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             el32.LocateGotPointers(program, syms);
             Assert.AreEqual("strcmp_GOT", syms[Address.Ptr32(0x10000008)].Name);
             Assert.AreEqual("strcpy_GOT", syms[Address.Ptr32(0x1000000C)].Name);
+            Assert.AreEqual(2, program.ImportReferences.Count);
+            Assert.AreEqual("strcmp", program.ImportReferences[Address.Ptr32(0x10000008)].EntryName);
+            Assert.AreEqual("strcpy", program.ImportReferences[Address.Ptr32(0x1000000C)].EntryName);
         }
 
         private void Given_Program()
         {
             this.program = new Program(new SegmentMap(Address.Ptr32(0x10000)), this.arch, this.platform);
+        }
+
+        [Test]
+        public void El32_Executable_NoSections()
+        {
+            Given_RawImage("C0 DE 00 00 00 00 00 00 DA 7A 00 00");
+            Given_ImageHeader(ElfMachine.EM_386);
+            Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 0, 0x1000, 8, 8);
+            mr.ReplayAll();
+
+            When_CreateLoader32(false);
+            var segmentMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
+
+            Assert.AreEqual(1, segmentMap.Segments.Count);
+            mr.VerifyAll();
+
         }
     }
 }

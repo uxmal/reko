@@ -42,9 +42,10 @@ namespace Reko.Environments.C64
         private Address address;
         private SortedList<ushort, C64BasicInstruction> program;
         private IRewriterHost host;
-        private RtlEmitter emitter;
+        private RtlEmitter m;
         private StringType strType;
-        private RtlInstructionCluster cluster;
+        private RtlClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
         private byte[] line;
         private int i;
 
@@ -76,17 +77,20 @@ namespace Reko.Environments.C64
 
         private RtlInstructionCluster GetRtl(C64BasicInstruction line)
         {
-            this.cluster = new RtlInstructionCluster(line.Address, 1);
-            this.cluster.Class = RtlClass.Linear;
-            this.emitter = new RtlEmitter(cluster.Instructions);
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.rtlc = RtlClass.Linear;
+            this.m = new RtlEmitter(rtlInstructions);
             Debug.Print("{0}", line);
-            this.line = line.Line; 
+            this.line = line.Line;
             this.i = 0;
             while (this.i < this.line.Length)
             {
                 ParseStatement();
             }
-            return cluster;
+            return new RtlInstructionCluster(line.Address, 1, rtlInstructions.ToArray())
+            {
+                Class = rtlc
+            };
         }
 
         private void ParseStatement()
@@ -102,7 +106,7 @@ namespace Reko.Environments.C64
                 {
                     Terminates = true,
                 };
-                emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
+                m.SideEffect(PseudoProc(ppp, VoidType.Instance));
                 i = line.Length;        // We never return from end.
                 return;
             case Token.CLOSE:
@@ -200,7 +204,7 @@ namespace Reko.Environments.C64
             {
                 var index = ExpectExpr();
                 Expect((byte)')');
-                e = emitter.Array(id.DataType, id, index);
+                e = m.Array(id.DataType, id, index);
             }
             return e;
         }
@@ -260,9 +264,9 @@ namespace Reko.Environments.C64
             switch (line[i])
             {
             default: return lhs;
-            case (byte)Token.eq: ctor = emitter.Eq; break;
-            case (byte)Token.lt: ctor = emitter.Lt; break;
-            case (byte)Token.gt: ctor = emitter.Gt; break;
+            case (byte)Token.eq: ctor = m.Eq; break;
+            case (byte)Token.lt: ctor = m.Lt; break;
+            case (byte)Token.gt: ctor = m.Gt; break;
             }
             ++i;
             var rhs = ParseOrExp();
@@ -282,7 +286,7 @@ namespace Reko.Environments.C64
                 switch ((Token)line[i])
                 {
                 default: return e;
-                case Token.add: ctor = emitter.IAdd; break;
+                case Token.add: ctor = m.IAdd; break;
                 }
                 ++i;
                 var e2 = ParseTerm();
@@ -302,7 +306,7 @@ namespace Reko.Environments.C64
                 switch (line[i])
                 {
                 default: return e;
-                case (byte)Token.mul: ctor = emitter.IMul; break;
+                case (byte)Token.mul: ctor = m.IMul; break;
                 }
                 ++i;
                 var e2 = ParseFactor();
@@ -318,7 +322,7 @@ namespace Reko.Environments.C64
                 var e = ParseFactor();
                 if (e == null)
                     return null;
-                return emitter.Neg(e);
+                return m.Neg(e);
             }
             return ParseAtom();
         }
@@ -364,7 +368,7 @@ namespace Reko.Environments.C64
                         {
                             var index = ExpectExpr();
                             Expect((byte)')');
-                            return emitter.Array(id.DataType, id, index);
+                            return m.Array(id.DataType, id, index);
                         }
                         else
                         {
@@ -419,7 +423,7 @@ namespace Reko.Environments.C64
                     ppp.Arity,
                     args.Length));
 
-            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+            return m.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
         private bool IsDigit(byte b)
@@ -443,15 +447,15 @@ namespace Reko.Environments.C64
                     ExpectExpr(); //$TODO == what is this for?
                 }
             }
-            cluster.Class = RtlClass.Linear;
-            emitter.SideEffect(
+            rtlc = RtlClass.Linear;
+            m.SideEffect(
                 PseudoProc("__Close", VoidType.Instance,
                 handle));
         }
 
         private void RewriteClr()
         {
-            emitter.SideEffect(
+            m.SideEffect(
                 PseudoProc("__Clr", VoidType.Instance));
         }
 
@@ -473,9 +477,9 @@ namespace Reko.Environments.C64
             {
                 step = Constant.Int32(1);
             }
-            cluster.Class = RtlClass.Linear;
-            emitter.SideEffect(PseudoProc("__For", VoidType.Instance,
-                emitter.Out(PrimitiveType.Ptr16, id),
+            rtlc = RtlClass.Linear;
+            m.SideEffect(PseudoProc("__For", VoidType.Instance,
+                m.Out(PrimitiveType.Ptr16, id),
                 start,
                 end,
                 step));
@@ -486,7 +490,7 @@ namespace Reko.Environments.C64
             Expression lhs = ExpectLValue();
             Expect((byte)Token.eq);
             Expression rhs = ParseExpr();
-            emitter.Assign(lhs, rhs);
+            m.Assign(lhs, rhs);
         }
 
         private void RewriteGet()
@@ -494,11 +498,11 @@ namespace Reko.Environments.C64
             Identifier id;
             if (!GetIdentifier(out id))
                 SyntaxError();
-            cluster.Class = RtlClass.Linear;
-            emitter.SideEffect(
+            rtlc = RtlClass.Linear;
+            m.SideEffect(
                 PseudoProc("__Get",
                 VoidType.Instance,
-                emitter.Out(strType, id)));
+                m.Out(strType, id)));
         }
 
         private void RewriteGosub()
@@ -507,8 +511,8 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            cluster.Class = RtlClass.Transfer;
-            emitter.Call(Address.Ptr16((ushort)lineNumber), 2);
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            m.Call(Address.Ptr16((ushort)lineNumber), 2);
         }
 
         private void RewriteGoto()
@@ -517,8 +521,8 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out lineNumber))
                 SyntaxError();
-            cluster.Class = RtlClass.Transfer;
-            emitter.Goto(Address.Ptr16((ushort)lineNumber));
+            rtlc = RtlClass.Transfer;
+            m.Goto(Address.Ptr16((ushort)lineNumber));
         }
 
         private void RewriteIf()
@@ -536,18 +540,18 @@ namespace Reko.Environments.C64
                 {
                     if (!GetInteger(out lineNumber))
                         SyntaxError();
-                    cluster.Class = RtlClass.ConditionalTransfer;
-                    emitter.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
+                    rtlc = RtlClass.ConditionalTransfer;
+                    m.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
                     return;
                 }
-                var cl = cluster;
-                var em = emitter;
-                cluster = new RtlInstructionCluster(cl.Address, 1);
-                emitter = new RtlEmitter(cluster.Instructions);
+                var cl = rtlInstructions;
+                var em = m;
+                rtlInstructions = new List<RtlInstruction>();
+                m = new RtlEmitter(rtlInstructions);
                 ParseStatement();
-                em.If(expr, cluster.Instructions.Last());
-                cluster = cl;
-                emitter = em;
+                em.If(expr, rtlInstructions.Last());
+                rtlInstructions = cl;
+                m = em;
                 return;
             }
             else if (PeekAndDiscard((byte)Token.GOTO))
@@ -555,8 +559,8 @@ namespace Reko.Environments.C64
                 int lineNumber;
                 if (!GetInteger(out lineNumber))
                     SyntaxError();
-                cluster.Class = RtlClass.ConditionalTransfer;
-                emitter.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
+                rtlc = RtlClass.ConditionalTransfer;
+                m.Branch(expr, Address.Ptr16((ushort)lineNumber), RtlClass.ConditionalTransfer);
                 return;
             }
             throw new NotImplementedException();
@@ -579,12 +583,12 @@ namespace Reko.Environments.C64
                 var fnName = "__PrintLine";
                 if (PeekAndDiscard((byte)';'))
                     fnName = "__Print";
-                emitter.SideEffect(PseudoProc(fnName, VoidType.Instance, str));
+                m.SideEffect(PseudoProc(fnName, VoidType.Instance, str));
             }
             Expression lValue = ExpectLValue();
-            cluster.Class = RtlClass.Linear;
-            emitter.SideEffect(PseudoProc("__Input", VoidType.Instance,
-                emitter.Out(PrimitiveType.Ptr16, lValue)));
+            rtlc = RtlClass.Linear;
+            m.SideEffect(PseudoProc("__Input", VoidType.Instance,
+                m.Out(PrimitiveType.Ptr16, lValue)));
         }
 
         private void RewriteInput_hash()
@@ -593,16 +597,16 @@ namespace Reko.Environments.C64
             EatSpaces();
             Expect((byte)',');
             Expression lValue = ExpectLValue();
-            cluster.Class = RtlClass.Linear;
-            emitter.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
+            rtlc = RtlClass.Linear;
+            m.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
                 logFileNo,
-                emitter.Out(PrimitiveType.Ptr16, lValue)));
+                m.Out(PrimitiveType.Ptr16, lValue)));
             while (EatSpaces() && PeekAndDiscard((byte)','))
             {
                 lValue = ExpectLValue();
-                emitter.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
+                m.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
                     logFileNo,
-                    emitter.Out(PrimitiveType.Ptr16, lValue)));
+                    m.Out(PrimitiveType.Ptr16, lValue)));
             }
         }
 
@@ -610,7 +614,7 @@ namespace Reko.Environments.C64
         {
             Identifier id;
             GetIdentifier(out id); // The variable name is redundant.
-            emitter.SideEffect(PseudoProc("__Next", VoidType.Instance));
+            m.SideEffect(PseudoProc("__Next", VoidType.Instance));
         }
 
         private void RewriteOpen()
@@ -652,7 +656,7 @@ namespace Reko.Environments.C64
                     }
                 }
             }
-            emitter.SideEffect(PseudoProc(
+            m.SideEffect(PseudoProc(
                 "__Open",
                 VoidType.Instance,
                 logicalFileNo,
@@ -668,7 +672,7 @@ namespace Reko.Environments.C64
                 throw new InvalidOperationException("?SN Error");
             Expect((byte)',');
             var val = ParseExpr();
-            emitter.SideEffect(PseudoProc("__Poke",
+            m.SideEffect(PseudoProc("__Poke",
                 VoidType.Instance,
                 addr,
                 val));
@@ -686,7 +690,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 line[i] == ':')
             {
-                emitter.SideEffect(PseudoProc("__PrintEmptyLine", VoidType.Instance));
+                m.SideEffect(PseudoProc("__PrintEmptyLine", VoidType.Instance));
                 return;
             }
             do
@@ -698,7 +702,7 @@ namespace Reko.Environments.C64
                     if (expr == null)
                         SyntaxError();
                     Expect((byte)')');
-                    emitter.SideEffect(PseudoProc("__PrintTab", VoidType.Instance, expr));
+                    m.SideEffect(PseudoProc("__PrintTab", VoidType.Instance, expr));
                     PeekAndDiscard((byte)';');
                     continue;
                 }
@@ -715,11 +719,11 @@ namespace Reko.Environments.C64
                 }
                 if (expr != null)
                 {
-                    emitter.SideEffect(PseudoProc(fnName, VoidType.Instance, expr));
+                    m.SideEffect(PseudoProc(fnName, VoidType.Instance, expr));
                 }
                 else
                 {
-                    emitter.SideEffect(PseudoProc(fnName, VoidType.Instance));
+                    m.SideEffect(PseudoProc(fnName, VoidType.Instance));
                 }
             } while (EatSpaces() && line[i] != ':');
             
@@ -736,7 +740,7 @@ namespace Reko.Environments.C64
                 var expr = ParseExpr();
                 if (expr == null)
                     break;
-                emitter.SideEffect(
+                m.SideEffect(
                     PseudoProc("__PrintStm", VoidType.Instance,
                         Constant.Int32(stm),
                         expr));
@@ -745,8 +749,8 @@ namespace Reko.Environments.C64
         
         private void RewriteReturn()
         {
-            cluster.Class = RtlClass.Transfer;
-            emitter.Return(2, 0);
+            rtlc = RtlClass.Transfer;
+            m.Return(2, 0);
         }
 
         private void RewriteSys()
@@ -755,7 +759,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 !GetInteger(out addr))
                 throw new InvalidOperationException("Expected address after SYS.");
-            emitter.SideEffect(
+            m.SideEffect(
                 PseudoProc("__Sys", VoidType.Instance,
                     new ProcedureConstant(arch.PointerType, new ExternalProcedure(
                         string.Format("fn{0:X4}", addr),

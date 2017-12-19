@@ -57,18 +57,17 @@ namespace Reko.Arch.M68k
 
         public override M68kInstruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             var addr = rdr.Address;
+            if (!rdr.TryReadBeUInt16(out instruction))
+                return null;
             var offset = rdr.Offset;
+            OpRec handler = g_instruction_table[instruction];
             try
             {
                 instr = new M68kInstruction { Address = addr };
-                instruction = rdr.ReadBeUInt16();
-                g_opcode_type = 0;
-
-                OpRec handler = g_instruction_table[instruction];
                 instr = handler.opcode_handler(this);
+                instr.Address = addr;
+                instr.Length = (int)(rdr.Address - addr);
             }
             catch
             {
@@ -80,10 +79,7 @@ namespace Reko.Arch.M68k
                 instr.Address = addr;
                 instr.Length = 2;
                 rdr.Offset = offset + 2;
-                return instr;
             }
-            instr.Address = addr;
-            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
@@ -189,12 +185,6 @@ namespace Reko.Arch.M68k
         private static bool EXT_OUTER_DISPLACEMENT_LONG(uint A) { return (((A) & 3) == 3 && ((A) & 0x47) < 0x44); }
 
 
-        // Opcode flags 
-        private uint COMBINE_OPCODE_FLAGS(uint x) { return ((x) | g_opcode_type | DASMFLAG_SUPPORTED); }
-        private const uint DASMFLAG_SUPPORTED = 0;
-        private const uint DASMFLAG_STEP_OVER = 1;
-        private const uint DASMFLAG_STEP_OUT = 2;
-
         /// <summary>
         /// OpRecs provide the knowledge for how to decode a M68k instruction.
         /// </summary>
@@ -299,7 +289,6 @@ namespace Reko.Arch.M68k
         string g_dasm_str;              //string to hold disassembly: OBSOLETE
         internal ushort instruction;    // 16-bit instruction
         uint g_cpu_type = 0;
-        uint g_opcode_type;
 
         // 'Q'uick dasm.instructions contain patterns that map to integers.
         static uint[] g_3bit_qdata_table = new uint[8] 
@@ -512,13 +501,8 @@ namespace Reko.Arch.M68k
         private MachineOperand get_ea_mode_str(uint instruction, PrimitiveType dataWidth)
         {
             uint extension;
-            uint @base;
-            uint outer;
-            string base_reg = "";
-            string index_reg = "";
             bool preindex;
             bool postindex;
-            bool comma = false;
             uint temp_value;
 
             /* Switch buffers so we don't clobber on a double-call to this function */
@@ -618,84 +602,58 @@ namespace Reko.Arch.M68k
                         break;
                     }
 
-                    @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-                    outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+                    Constant @base = null;
+                    Constant outer = null;
+                    RegisterStorage base_reg = null;
+                    RegisterStorage index_reg = null;
+                    if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                    {
+                        @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
+                    }
+                    if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
+                    {
+                        outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension)
+                            ? PrimitiveType.Word32
+                            : PrimitiveType.Int16);
+                    }
                     if (EXT_BASE_REGISTER_PRESENT(extension))
-                        base_reg = string.Format("A{0}", instruction & 7);
+                        base_reg = Registers.AddressRegister((int)instruction & 7);
                     else
-                        base_reg = "";
+                        base_reg = null;
                     if (EXT_INDEX_REGISTER_PRESENT(extension))
                     {
-                        index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                        if (EXT_INDEX_SCALE(extension) != 0)
-                            index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                        index_reg = EXT_INDEX_AR(extension)
+                           ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                           : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
                     }
                     else
-                        index_reg = "";
+                        index_reg = null;
                     preindex = (extension & 7) > 0 && (extension & 7) < 4;
                     postindex = (extension & 7) > 4;
-
-                    mode = "(";
-                    if (preindex || postindex)
-                        mode += "[";
-                    if (@base != 0)
-                    {
-                        if (EXT_BASE_DISPLACEMENT_LONG(extension))
-                        {
-                            mode += make_signed_hex_str_32(@base);
-                        }
-                        else
-                        {
-                            mode += make_signed_hex_str_16(@base);
-                        }
-                        comma = true;
-                    }
-                    if (base_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += base_reg;
-                        comma = true;
-                    }
-                    if (postindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (index_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += index_reg;
-                        comma = true;
-                    }
-                    if (preindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (outer != 0)
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += make_signed_hex_str_16(outer);
-                    }
-                    mode += ")";
-                    break;
+                    var op = new IndexedOperand(
+                        dataWidth, @base, outer, base_reg, index_reg,
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                        1 << EXT_INDEX_SCALE(extension),
+                        preindex,
+                        postindex);
+                    return op;
                 }
-
-                if (EXT_8BIT_DISPLACEMENT(extension) == 0)
-                    mode = string.Format("(A{0},{1}{2}.{3}", instruction & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
                 else
-                    mode = string.Format("({0},A{1},{2}{3}.{4}", make_signed_hex_str_8(extension), instruction & 7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                if (EXT_INDEX_SCALE(extension) != 0)
-                    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                mode += ")";
-                break;
+                {
+                    var regBase = Registers.AddressRegister((int)instruction & 7);
+                    var regIndex = EXT_INDEX_AR(extension)
+                        ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                        : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
+                    Constant disp = EXT_8BIT_DISPLACEMENT(extension) != 0
+                        ? Constant.SByte((sbyte)extension)
+                        : null;
+                    return new IndexedOperand(dataWidth, null, null, regBase, regIndex,
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        1 << EXT_INDEX_SCALE(extension), false, false);
+                }
             case 0x38:
                 // Absolute short address
-                mode = string.Format("${0}.w", read_imm_16());
-                break;
+                return new M68kAddressOperand(Address.Ptr16(read_imm_16()));
             case 0x39:
                 // Absolute long address
                 return new M68kAddressOperand(read_imm_32());
@@ -725,63 +683,42 @@ namespace Reko.Arch.M68k
                         mode = "0";
                         break;
                     }
-                    @base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-                    outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+                    Constant @base = null;
+                    Constant outer = null;
+                    if (EXT_BASE_DISPLACEMENT_PRESENT(extension))
+                    {
+                        @base = rdr.ReadBe(EXT_BASE_DISPLACEMENT_LONG(extension)
+                            ? PrimitiveType.Word32
+                            : PrimitiveType.Int16);
+                    }
+                    if (EXT_OUTER_DISPLACEMENT_PRESENT(extension))
+                    { 
+                        outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension)
+                             ? PrimitiveType.Word32
+                            : PrimitiveType.Int16);
+                    }
+                    RegisterStorage base_reg;
                     if (EXT_BASE_REGISTER_PRESENT(extension))
-                        base_reg = "PC";
+                        base_reg = Registers.pc;
                     else
-                        base_reg = "";
+                        base_reg = null;
+                    RegisterStorage index_reg;
                     if (EXT_INDEX_REGISTER_PRESENT(extension))
                     {
-                        index_reg = string.Format("{0}{1}.{2}", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
-                        if (EXT_INDEX_SCALE(extension) != 0)
-                            index_reg += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
+                        index_reg = EXT_INDEX_AR(extension)
+                            ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                            : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension));
                     }
                     else
-                        index_reg = "";
+                        index_reg =null;
                     preindex = (extension & 7) > 0 && (extension & 7) < 4;
                     postindex = (extension & 7) > 4;
-
-                    mode = "(";
-                    if (preindex || postindex)
-                        mode += "[";
-                    if (@base != 0)
-                    {
-                        mode += make_signed_hex_str_16(@base);
-                        comma = true;
-                    }
-                    if (base_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += base_reg;
-                        comma = true;
-                    }
-                    if (postindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (index_reg != "")
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += index_reg;
-                        comma = true;
-                    }
-                    if (preindex)
-                    {
-                        mode += "]";
-                        comma = true;
-                    }
-                    if (outer != 0)
-                    {
-                        if (comma)
-                            mode += ",";
-                        mode += make_signed_hex_str_16(outer);
-                    }
-                    mode += ")";
-                    break;
+                    return new IndexedOperand(
+                        dataWidth, @base, outer, base_reg, index_reg,
+                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                        1 << EXT_INDEX_SCALE(extension),
+                        preindex,
+                        postindex);
                 }
 
                 if (EXT_8BIT_DISPLACEMENT(extension) == 0)
@@ -796,7 +733,6 @@ namespace Reko.Arch.M68k
                 // Immediate 
                 return get_imm_str_u(dataWidth);
             }
-            //throw new /*NotImplementedException*/(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
             this.instr.code = Opcode.illegal;
             return null;
         }
@@ -1229,9 +1165,11 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_chk2_cmp2_8(M68kDisassembler dasm)
         {
-            uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
+            uint extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
+
             return CreateInstruction(
                 BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
                 PrimitiveType.Byte,
@@ -1241,9 +1179,10 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_chk2_cmp2_16(M68kDisassembler dasm)
         {
-            uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
+            uint extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -1258,6 +1197,9 @@ namespace Reko.Arch.M68k
             uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
+            if (BIT_B(extension))       //$DEBUG
+                extension.ToString();
+
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -1520,32 +1462,43 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
 
-            var ea = dasm.get_ea_mode_str_32(dasm.instruction); 
-            var code = BIT_B(extension) ? Opcode.divs : Opcode.divu;
-            if (BIT_A(extension))
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = dasm.get_double_data_reg(extension, (extension >> 12) & 7),
-                };
-            else if ((extension & 7) == ((extension >> 12) & 7))
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = get_data_reg((int)(extension >> 12) & 7)
-                };
+            var ea = dasm.get_ea_mode_str_32(dasm.instruction);
+            Opcode code;
+            if (BIT_B(extension))
+            {
+                code = BIT_A(extension) ? Opcode.divs : Opcode.divsl;
+            }
             else
-                return new M68kInstruction
-                {
-                    code = code,
-                    dataWidth = PrimitiveType.Word32,
-                    op1 = ea,
-                    op2 = dasm.get_double_data_reg(extension, (extension >> 12) & 7),
-                };
+            {
+                code = BIT_A(extension) ? Opcode.divu : Opcode.divul;
+            }
+            var dq = (extension >> 12) & 7;
+            var dr = (extension & 7);
+            MachineOperand op2;
+            PrimitiveType dataWidth;
+            if (BIT_A(extension))
+            {
+                op2 = dasm.get_double_data_reg(dr, dq);
+                dataWidth = PrimitiveType.Int64;
+            }
+            else if (dr == dq)
+            {
+                op2 = get_data_reg((int)dq);
+                dataWidth = PrimitiveType.Int32;
+            }
+            else
+            {
+                op2 = dasm.get_double_data_reg(dr, dq);
+                dataWidth = PrimitiveType.Int32;
+            }
+
+            return new M68kInstruction
+            {
+                code = code,
+                dataWidth = dataWidth,
+                op1 = ea,
+                op2 = op2,
+            };
         }
 
         private static M68kInstruction d68000_eori_to_ccr(M68kDisassembler dasm)
@@ -2912,8 +2865,10 @@ namespace Reko.Arch.M68k
         static OpRec[] g_opcode_info;
 
         /// <summary>
-        /// Generates the table of opcode decoders. Should only be called once per execution, as the table is expensive to build.
-        /// Fortunately, OpRecs have no mutable state, so the table is reused for all disassembler instances.
+        /// Generates the table of opcode decoders. Should only be called once
+        /// per execution, as the table is expensive to build. Fortunately,
+        /// OpRecs have no mutable state, so the table is reused for all
+        /// disassembler instances.
         /// </summary>
         private static void GenTable()
         {
@@ -2972,10 +2927,10 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_bcc_8        , 0xf000, 0x6000, 0x000),
 	new OpRec(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000),
 	new OpRec(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000),
-	new OpRec("D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
-	new OpRec("Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
-	new OpRec("D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
-	new OpRec("Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
+	new OpRec("sr:D9,E0", 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
+	new OpRec("sr:Ib,E0", 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
+	new OpRec("sr:D9,E0", 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
+	new OpRec("sr:Ib,E0", 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
 	new OpRec(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
 	new OpRec(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
 	new OpRec(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
@@ -2993,8 +2948,8 @@ namespace Reko.Arch.M68k
 	new OpRec("J", 0xff00, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_8 
 	new OpRec("J", 0xffff, 0x6100, 0x000, Opcode.bsr),              // d68000_bsr_16
 	new OpRec("J", 0xffff, 0x61ff, 0x000, Opcode.bsr),              // d68020_bsr_32
-	new OpRec("D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
-	new OpRec("Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),         // d68000_btst_s
+	new OpRec("sl:D9,E0", 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
+	new OpRec("sw:Iw,E0", 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
 	new OpRec(d68020_callm        , 0xffc0, 0x06c0, 0x27b),
 	new OpRec(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
 	new OpRec(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
@@ -3015,7 +2970,7 @@ namespace Reko.Arch.M68k
 	new OpRec("sl:E0,D9", 0xf1c0, 0xb080, 0xfff, Opcode.cmp),   // d68000_cmp_32
 	new OpRec("sw:E0,A9", 0xf1c0, 0xb0c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_16
 	new OpRec("sl:E0,A9", 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
-	new OpRec("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),     // d68000_cmpi_8
+	new OpRec("sb:Ib,E0", 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),  // d68000_cmpi_8
 	new OpRec(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
 	new OpRec(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
 	new OpRec("sw:Iw,E0", 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
@@ -3083,8 +3038,8 @@ namespace Reko.Arch.M68k
 	new OpRec("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
 	new OpRec("sw:E0,A9", 0xf1c0, 0x3040, 0xfff, Opcode.movea),     // d68000_movea_16 
 	new OpRec("sl:E0,A9", 0xf1c0, 0x2040, 0xfff, Opcode.movea),     // d68000_movea_32
-	new OpRec("E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),        // d68000_move_to_ccr
-	new OpRec("c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),        // d68010_move_fr_ccr
+	new OpRec("sw:E0,c",   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
+	new OpRec("sw:c,E0",   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
 	new OpRec(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
 	new OpRec(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
 	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),

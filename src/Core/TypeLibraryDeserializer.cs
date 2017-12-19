@@ -121,7 +121,7 @@ namespace Reko.Core
         {
             try
             {
-                var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+                var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
                 var signature = sser.Deserialize(sp.Signature, platform.Architecture.CreateFrame());
                 library.Signatures[sp.Name] = signature;
                 var mod = EnsureModule(this.moduleName, this.library);
@@ -135,7 +135,7 @@ namespace Reko.Core
 
                 if (sp.Ordinal != Procedure_v1.NoOrdinal)
                 {
-                    mod.ServicesByVector[sp.Ordinal] = svc;
+                    mod.ServicesByOrdinal[sp.Ordinal] = svc;
                 }
             }
             catch (Exception ex)
@@ -162,7 +162,7 @@ namespace Reko.Core
         public void LoadService(int ordinal, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
-            mod.ServicesByVector.Add(ordinal, svc);
+            mod.ServicesByOrdinal.Add(ordinal, svc);
         }
 
         private void LoadTypes(SerializedLibrary serializedLibrary)
@@ -180,14 +180,27 @@ namespace Reko.Core
         {
             return sType.Accept(this);
         }
-        
+
+        public ExternalProcedure LoadExternalProcedure(ProcedureBase_v1 sProc)
+        {
+            var sSig = sProc.Signature;
+            var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
+            var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+            return new ExternalProcedure(sProc.Name, sig)
+            {
+                EnclosingType = sSig.EnclosingType
+            };
+        }
+
         public void ReadDefaults(SerializedLibraryDefaults defaults)
         {
-            if (defaults == null)
-                return;
-            if (defaults.Signature != null)
+            if (defaults != null && defaults.Signature != null)
             {
                 defaultConvention = defaults.Signature.Convention;
+            }
+            if (string.IsNullOrEmpty(defaultConvention))
+            {
+                defaultConvention = platform.DefaultCallingConvention;
             }
         }
 
@@ -201,8 +214,18 @@ namespace Reko.Core
             DataType dt;
             if (pointer.DataType == null)
                 dt = new UnknownType();
-            else 
-                dt = pointer.DataType.Accept(this);
+            else
+            {
+                try
+                {
+                    //$TODO: remove the try-catch when done.
+                    dt = pointer.DataType.Accept(this);
+                }
+                catch
+                {
+                    dt = new UnknownType();
+                }
+            }
             return new Pointer(dt, platform.PointerType.Size);
         }
 
@@ -243,28 +266,28 @@ namespace Reko.Core
             var dt = str.CharType.Accept(this);
             if (str.Termination ==  StringType_v2.ZeroTermination)
                 return StringType.NullTerminated(dt);
+            if (str.Termination == StringType_v2.MsbTermination)
+                return StringType.LengthPrefixedStringType((PrimitiveType)dt, PrimitiveType.Byte);
             throw new NotImplementedException();
         }
 
         public DataType VisitSignature(SerializedSignature sSig)
         {
-            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sser = new ProcedureSerializer(platform, this, this.defaultConvention);
             return sser.Deserialize(sSig, platform.Architecture.CreateFrame());
-            //return new FunctionType(
-            //    null,
-            //    sig.ReturnValue,
-            //    sig.Parameters, 
-            //    sSig);
         }
 
         public DataType VisitStructure(StructType_v1 structure)
         {
             StructureType str;
-            if (!structures.TryGetValue(structure.Name, out str))
+            if (structure.Name == null || !structures.TryGetValue(structure.Name, out str))
             {
                 str = new StructureType(structure.Name, structure.ByteSize, true);
                 str.ForceStructure = structure.ForceStructure;
-                structures.Add(structure.Name, str);
+                if (structure.Name != null)
+                {
+                    structures.Add(structure.Name, str);
+                }
                 if (structure.Fields != null)
                 {
                     var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
@@ -334,7 +357,15 @@ namespace Reko.Core
 
         public DataType VisitEnum(SerializedEnumType enumType)
         {
-            return PrimitiveType.Word32;
+            var members = enumType.Values != null
+                ? enumType.Values.ToSortedList(k => k.Name, v => (long)v.Value)
+                : new SortedList<string, long>();
+            return new EnumType
+            {
+                Name = enumType.Name,
+                Size = enumType.Size,
+                Members = members
+            };
         }
 
         public DataType VisitTemplate(SerializedTemplate sTemplate)

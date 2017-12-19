@@ -67,6 +67,7 @@ namespace Reko.Gui.Windows.Controls
         public object CurrentPosition { get { return position; } }
         public object EndPosition { get { return addrEnd; } }
         public int LineCount { get { return GetPositionEstimate(addrEnd - addrStart); } }
+        public bool ShowPcRelative { get; set; }
 
         public int ComparePositions(object a, object b)
         {
@@ -84,11 +85,14 @@ namespace Reko.Gui.Windows.Controls
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
+                    var options = ShowPcRelative
+                        ? MachineInstructionWriterOptions.None
+                        : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
                     var dasm = program.CreateDisassembler(Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
                         var instr = dasm.Current;
-                        lines.Add(RenderAsmLine(program, instr));
+                        lines.Add(RenderAsmLine(program, instr, options));
                         --count;
                         position += instr.Length;
                     }
@@ -97,7 +101,10 @@ namespace Reko.Gui.Windows.Controls
             return lines.ToArray();
         }
 
-        public static LineSpan RenderAsmLine(Program program, MachineInstruction instr)
+        public static LineSpan RenderAsmLine(
+            Program program,
+            MachineInstruction instr,
+            MachineInstructionWriterOptions options)
         {
             var line = new List<TextSpan>();
             var addr = instr.Address;
@@ -105,7 +112,7 @@ namespace Reko.Gui.Windows.Controls
             line.Add(new InstructionTextSpan(instr, BuildBytes(program, instr), "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, instr, line);
             dfmt.Address = instr.Address;
-            instr.Render(dfmt, MachineInstructionWriterOptions.None);
+            instr.Render(dfmt, options);
             dfmt.NewLine();
             return new LineSpan(addr, line.ToArray());
         }

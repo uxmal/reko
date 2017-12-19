@@ -65,9 +65,19 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            if (ccName == null)
+                ccName = "";
+            switch (ccName)
+            {
+            case "":
+            case "__cdecl":
+                return new X86CallingConvention(4, 2, 4, true, false);
+            case "pascal":
+                return new X86CallingConvention(4, 2, 4, false, true);
+            }
+            throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -79,6 +89,7 @@ namespace Reko.Environments.Windows
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 2;
@@ -90,11 +101,6 @@ namespace Reko.Environments.Windows
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
-        }
-
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
@@ -109,7 +115,7 @@ namespace Reko.Environments.Windows
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
                 SystemService svc;
-                if (tl.ServicesByVector.TryGetValue(ordinal, out svc))
+                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out svc))
                 {
                     return new ExternalProcedure(svc.Name, svc.Signature);
                 }
@@ -119,15 +125,26 @@ namespace Reko.Environments.Windows
 
         public override void EnsureTypeLibraries(string envName)
         {
+            if (Metadata != null)
+            {
+                return;
+            }
             base.EnsureTypeLibraries(envName);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             foreach (ITypeLibraryElement tl in envCfg.TypeLibraries)
             {
-                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(tl.Name))
+                var path = cfgSvc.GetInstallationRelativePath(tl.Name);
+                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(path))
                                 .Load(this, tl.Module, Metadata);
             }
+        }
+
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
+        {
+            var sig = SignatureGuesser.SignatureFromName(fnName, this);
+            return sig;
         }
     }
 }

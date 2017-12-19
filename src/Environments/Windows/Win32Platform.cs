@@ -110,9 +110,49 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
+            if (ccName == null)
+                return new X86CallingConvention(
+                                    Architecture.PointerType.Size,
+                                    Architecture.WordWidth.Size,
+                                    Architecture.PointerType.Size,
+                                    true,
+                                    false);
+            switch (ccName)
+            {
+            case "":
+            case "cdecl":
+            case "__cdecl":
+                return new X86CallingConvention(
+                                    Architecture.PointerType.Size,
+                                    Architecture.WordWidth.Size,
+                                    Architecture.PointerType.Size,
+                                    true,
+                                    false);
+            case "stdcall":
+            case "__stdcall":
+            case "stdapi":
+                return new X86CallingConvention(
+                                Architecture.PointerType.Size,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size,
+                                false,
+                                false);
+            case "pascal":
+                return new X86CallingConvention(
+                                Architecture.PointerType.Size,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size,
+                                false,
+                                true);
+            case "__thiscall":
+                return new ThisCallConvention(
+                                Registers.ecx,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size);
+            }
+            throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -126,6 +166,7 @@ namespace Reko.Environments.Windows
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 4;
@@ -135,6 +176,7 @@ namespace Reko.Environments.Windows
             case CBasicType.Double: return 8;
             case CBasicType.LongDouble: return 8;
             case CBasicType.Int64: return 8;
+            case CBasicType.WChar_t: return 2;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }
@@ -182,14 +224,10 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rdr, IRewriterHost host)
         {
-            var rw = Architecture.CreateRewriter(
-                rdr,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(), host);
-            var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            var rtlc = rdr.FirstOrDefault();
+            if (rtlc == null)
                 return null;
             var jump = rtlc.Instructions[0] as RtlGoto;
             if (jump == null)
@@ -220,7 +258,7 @@ namespace Reko.Environments.Windows
         {
             EnsureTypeLibraries(PlatformIdentifier);
             ModuleDescriptor mod;
-            if (Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
             {
                 SystemService svc;
                 if (mod.ServicesByName.TryGetValue(procName, out svc))
@@ -250,7 +288,7 @@ namespace Reko.Environments.Windows
             if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
             SystemService svc;
-            if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
             {
                 var chr = LookupCharacteristicsByName(svc.Name);
                 return new ExternalProcedure(svc.Name, svc.Signature, chr);
@@ -272,22 +310,16 @@ namespace Reko.Environments.Windows
             get { return "__cdecl"; }
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
             EnsureTypeLibraries(PlatformIdentifier); 
-            return SignatureGuesser.SignatureFromName(
-                fnName, 
-                new TypeLibraryDeserializer(this, true, Metadata),
-                this);
+            return SignatureGuesser.SignatureFromName(fnName, this);
         }
 
-        public override Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        public override Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            return SignatureGuesser.InferTypeFromName(
-                importName,
-                new TypeLibraryDeserializer(this, true, Metadata),
-                this);
+            return SignatureGuesser.InferTypeFromName(importName);
         }
     }
 }

@@ -92,6 +92,7 @@ namespace Reko.Loading
         /// Relocation gives us a chance to determine the addresses of interesting items.
         /// </summary>
         /// <param name="rawBytes">Image of the executeable file.</param>
+        /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
         public Program LoadExecutable(string filename, byte[] image, string loader, Address addrLoad)
         {
@@ -167,9 +168,9 @@ namespace Reko.Loading
             }
             else
             {
-                var imgLoader = new NullImageLoader(Services, filename, image);
+                var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, image);
                 program = new Program(
-                    CreatePlatformSegmentMap(platform, addrLoad, image),
+                    segmentMap,
                     arch,
                     platform);
                 Address addrEp;
@@ -182,6 +183,7 @@ namespace Reko.Loading
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;
+            program.User.LoadAddress = addrLoad;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
@@ -439,19 +441,16 @@ namespace Reko.Loading
             }
         }
 
-        private SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
+        public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap();
-            if (segmentMap != null)
+            if (segmentMap == null)
             {
-                return segmentMap;
+                segmentMap = new SegmentMap(loadAddr);
             }
-            else
-            {
-                var mem = new MemoryArea(loadAddr, rawBytes);
-                return new SegmentMap(loadAddr,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            }
+            var mem = new MemoryArea(loadAddr, rawBytes);
+            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
+            return segmentMap;
         }
     }
 }

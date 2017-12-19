@@ -260,6 +260,11 @@ namespace Reko.Core.Expressions
             return Gt(a, Int32(b));
         }
 
+        public BinaryExpression Gt0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Gt, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
+        }
+
         public Constant Int8(int n)
         {
             return Constant.SByte((sbyte)n);
@@ -267,7 +272,7 @@ namespace Reko.Core.Expressions
 
         public Constant Int16(short n)
         {
-            return Constant.Word16((ushort)n);
+            return Constant.Int16(n);
         }
 
         public Constant Int16(uint n)
@@ -277,12 +282,12 @@ namespace Reko.Core.Expressions
 
         public Constant Int32(uint n)
         {
-            return Constant.Word32(n);
+            return Constant.Int32((int)n);
         }
 
         public Constant Int32(int n)
         {
-            return Constant.Word32(n);
+            return Constant.Int32(n);
         }
 
         public MemoryAccess Load(DataType dt, Expression ea)
@@ -313,6 +318,11 @@ namespace Reko.Core.Expressions
         public BinaryExpression Le(Expression a, int b)
         {
             return Le(a, Constant.Create(a.DataType, b));
+        }
+
+        public BinaryExpression Le0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Le, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
         }
 
         public BinaryExpression Lt(Expression a, Expression b)
@@ -596,6 +606,11 @@ namespace Reko.Core.Expressions
             return Constant.Word32(n);
         }
 
+        public Constant Word32(uint n)
+        {
+            return Constant.Word32(n);
+        }
+
         public Constant Word(int byteSize, long n)
         {
             return Constant.Word(byteSize, n);
@@ -604,6 +619,11 @@ namespace Reko.Core.Expressions
         public Expression Xor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, b);
+        }
+
+        public Expression Xor(Expression a, int b)
+        {
+            return new BinaryExpression(Operator.Xor, a.DataType, a, Constant.Create(a.DataType, b));
         }
     }
 }

@@ -190,7 +190,6 @@ namespace Reko.Core.CLanguage
             {
                 return new Argument_v1
                 {
-                    Kind = new StackVariable_v1 { },
                     Name = "...",
                 };
             }
@@ -313,6 +312,13 @@ namespace Reko.Core.CLanguage
                     throw new FormatException(string.Format("Can't have 'unsigned' after '{0}'.", domain));
                 domain = Domain.UnsignedInt;
                 basicType = CBasicType.Int;
+                return CreatePrimitive();
+            case CTokenType.Bool:
+            case CTokenType._Bool:
+                if (domain != Domain.None)
+                    throw new FormatException(string.Format("An '{0}' boolean doesn't make sense.", domain));
+                domain = Domain.Boolean;
+                basicType = CBasicType.Bool;
                 return CreatePrimitive();
             case CTokenType.Char:
                 if (domain == Domain.None)
@@ -540,6 +546,7 @@ namespace Reko.Core.CLanguage
             case CTokenType.__Cdecl:
             case CTokenType.__Fastcall:
             case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
                 ApplyCallConvention(storageClassSpec.Type);
                 break;
             }

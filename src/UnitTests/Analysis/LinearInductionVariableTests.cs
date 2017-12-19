@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Analysis
 			Statement use = new Statement(0, null, null);
 			ssaIds[id3].Uses.Add(use);
 
-			liv.Context.DeltaValue = m.Int32(1);
+			liv.Context.DeltaValue = m.Word32(1);
             m.Assign(id4, m.IAdd(id3, liv.Context.DeltaValue));
             liv.Context.DeltaStatement = m.Block.Statements.Last;
 			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Liv_PreTestedUge()
         {
-            Prepare(delegate(ProcedureBuilder m)
+            Prepare(m =>
             {
                 Identifier i = m.Local32("i");
                 m.Label("test");
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Liv_CreateDecTest()
 		{
-            Prepare(delegate(ProcedureBuilder m)
+            Prepare(m =>
             {
                 Identifier id = m.Local32("id");
                 m.Assign(id, Constant.Word32(10));

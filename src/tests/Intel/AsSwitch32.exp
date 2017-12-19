@@ -26,6 +26,6 @@
 10000043 E9 05 00 00 00  	jmp	1000004D
 10000048 B8 FF FF FF FF  	mov	eax,FFFFFFFF
 1000004D 89 05 54 00 00 10 	mov	[10000054],eax
-10000053 C3              	ret	
+10000053 C3              	ret
 10000054 00 00           	add	[eax],al
 10000056 00 00           	add	[eax],al

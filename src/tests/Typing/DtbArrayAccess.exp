@@ -4,7 +4,7 @@ void ArrayAccess()
 ArrayAccess_entry:
 	// succ:  l1
 l1:
-	(r + 0x00000014)[i * 0x0000000A] = 0x00000000
+	(r + 0x00000014)[i * 0x0000000A] = 0
 	return (r + 0x00000010)[i * 0x0000000A]
 	// succ:  ArrayAccess_exit
 ArrayAccess_exit:
@@ -12,9 +12,9 @@ ArrayAccess_exit:
 // Equivalence classes ////////////
 Eq_1: (ptr (struct "Globals"))
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: word32
-	T_2 (in 0x00000000 : word32)
-	T_9 (in (r + 0x00000014)[i * 0x0000000A] : word32)
+Eq_2: int32
+	T_2 (in 0 : int32)
+	T_9 (in (r + 0x00000014)[i * 0x0000000A] : int32)
 Eq_3: (ptr (struct (10 (arr T_16) a0010) (14 (arr T_15) a0014)))
 	T_3 (in r : word32)
 Eq_4: int32
@@ -46,10 +46,10 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct "Globals"))
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in 0x00000000 : word32)
+T_2: (in 0 : int32)
   Class: Eq_2
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_3: (in r : word32)
   Class: Eq_3
   DataType: (ptr (struct (10 (arr T_16) a0010) (14 (arr T_15) a0014)))
@@ -74,10 +74,10 @@ T_8: (in i * 0x0000000A : word32)
   Class: Eq_8
   DataType: ui32
   OrigDataType: ui32
-T_9: (in (r + 0x00000014)[i * 0x0000000A] : word32)
+T_9: (in (r + 0x00000014)[i * 0x0000000A] : int32)
   Class: Eq_2
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_10: (in 0x00000010 : word32)
   Class: Eq_10
   DataType: int32

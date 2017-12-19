@@ -37,32 +37,17 @@ namespace Reko.Core
 	{
         public event EventHandler MapChanged;
 
-		private SortedList<Address,ImageMapItem> items;
-
-        [Obsolete("Use other ctor")]
-		public ImageMap(Address addrBase, long imageSize)
-		{
-            if (addrBase == null)
-                throw new ArgumentNullException("addrBase");
-            this.BaseAddress = addrBase;
-            items = new SortedList<Address, ImageMapItem>(new ItemComparer());
-			SetAddressSpan(addrBase, (uint) imageSize);
-		}
-
         public ImageMap(Address addrBase)
         {
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
             this.BaseAddress = addrBase;
-            this.items = new SortedList<Address, ImageMapItem>(new ItemComparer());
+            this.Items = new SortedList<Address, ImageMapItem>(new ItemComparer());
         }
 
         public Address BaseAddress { get; private set; }
 
-        public SortedList<Address, ImageMapItem> Items
-        {
-            get { return items; }
-        }
+        public SortedList<Address, ImageMapItem> Items { get; private set; }
 
         /// <summary>
         /// Adds an image map item at the specified address. 
@@ -77,7 +62,7 @@ namespace Reko.Core
             if (!TryFindItem(addr, out item))
             {
                 // Outside of range.
-                items.Add(itemNew.Address, itemNew);
+                Items.Add(itemNew.Address, itemNew);
                 MapChanged.Fire(this);
                 return itemNew;
             }
@@ -93,13 +78,13 @@ namespace Reko.Core
 
                         itemNew.Size = (uint)(item.Size - delta);
                         item.Size = (uint)delta;
-                        items.Add(itemNew.Address, itemNew);
+                        Items.Add(itemNew.Address, itemNew);
                         MapChanged.Fire(this);
                         return itemNew;
                     }
                     else
                     {
-                        items.Add(itemNew.Address, itemNew);
+                        Items.Add(itemNew.Address, itemNew);
                         MapChanged.Fire(this);
                         return itemNew;
                     }
@@ -111,14 +96,14 @@ namespace Reko.Core
                         Debug.Assert(item.Size >= itemNew.Size);
                         item.Size -= itemNew.Size;
                         item.Address += itemNew.Size;
-                        items[itemNew.Address] = itemNew;
-                        items[item.Address] = item;
+                        Items[itemNew.Address] = itemNew;
+                        Items[item.Address] = item;
                         MapChanged.Fire(this);
                         return itemNew;
                     }
                     if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
                     {
-                        items[itemNew.Address] = itemNew;
+                        Items[itemNew.Address] = itemNew;
                         itemNew.Size = item.Size;
                     }
                     MapChanged.Fire(this);
@@ -152,10 +137,10 @@ namespace Reko.Core
                 item.Size = (uint) delta;
                 item.DataType = ChopAfter(item.DataType, (int)delta);      // Shrink the existing mofo.
 
-                items.Add(addr, itemNew);
+                Items.Add(addr, itemNew);
                 if (itemAfter != null)
                 {
-                    items.Add(itemAfter.Address, itemAfter);
+                    Items.Add(itemAfter.Address, itemAfter);
                 }
             }
             else
@@ -163,14 +148,14 @@ namespace Reko.Core
                 if (!(item.DataType is UnknownType) &&
                     !(item.DataType is CodeType))
                     throw new NotSupportedException("Haven't handled this case yet.");
-                items.Remove(item.Address);
+                Items.Remove(item.Address);
                 item.Address += itemNew.Size;
                 item.Size -= itemNew.Size;
 
-                items.Add(addr, itemNew);
-                if (item.Size > 0 && !items.ContainsKey(item.Address))
+                Items.Add(addr, itemNew);
+                if (item.Size > 0 && !Items.ContainsKey(item.Address))
                 {
-                    items.Add(item.Address, item);
+                    Items.Add(item.Address, item);
                 }
             }
             MapChanged.Fire(this);
@@ -182,7 +167,7 @@ namespace Reko.Core
                 throw new ArgumentNullException("type");
             if (type is UnknownType || type is CodeType)
                 return type;
-            throw new NotImplementedException();
+            throw new NotImplementedException(string.Format("Cannot chop image map item of type {0}.", type));
         }
 
         private DataType ChopBefore(DataType type, int offset)
@@ -205,7 +190,7 @@ namespace Reko.Core
             
             // Need to split the item.
             var itemNew = new ImageMapItem { Address = addr, Size = (uint)(item.Size - delta) };
-            items.Add(itemNew.Address, itemNew);
+            Items.Add(itemNew.Address, itemNew);
 
             item.Size = (uint)delta;
         }
@@ -222,50 +207,49 @@ namespace Reko.Core
 
             // Merge with previous item
             ImageMapItem prevItem;
-            if (items.TryGetLowerBound((addr - 1), out prevItem) &&
+            if (Items.TryGetLowerBound((addr - 1), out prevItem) &&
                 prevItem.DataType is UnknownType &&
                 prevItem.EndAddress.Equals(item.Address))
             {
                 mergedItem = prevItem;
 
                 mergedItem.Size = (uint)(item.EndAddress - mergedItem.Address);
-                items.Remove(item.Address);
+                Items.Remove(item.Address);
             }
 
             // Merge with next item
             ImageMapItem nextItem;
-            if (items.TryGetUpperBound((addr + 1), out nextItem) &&
+            if (Items.TryGetUpperBound((addr + 1), out nextItem) &&
                 nextItem.DataType is UnknownType &&
                 mergedItem.EndAddress.Equals(nextItem.Address))
             {
                 mergedItem.Size = (uint)(nextItem.EndAddress - mergedItem.Address);
-                items.Remove(nextItem.Address);
+                Items.Remove(nextItem.Address);
             }
 
             MapChanged.Fire(this);
         }
 
-        public void SetAddressSpan(Address addr, uint size)
-		{
-			items.Clear();
-
-			//ImageMapSegment seg = new ImageMapSegment("Image base", size, AccessMode.ReadWrite);
-			//seg.Address = addr;
-			//segments.Add(addr, seg);
-
-   //         ImageMapItem it = new ImageMapItem(size) { DataType = new UnknownType() };
-			//it.Address = addr;
-			//items.Add(addr, it);
-		}
-
+        /// <summary>
+        /// Try to find a map item that contains the given address.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
 		public bool TryFindItem(Address addr, out ImageMapItem item)
 		{
-			return items.TryGetLowerBound(addr, out item);
+			return Items.TryGetLowerBound(addr, out item);
 		}
 
+        /// <summary>
+        /// Try to find a map item that starts with the given address.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
 		public bool TryFindItemExact(Address addr, out ImageMapItem item)
 		{
-            return items.TryGetValue(addr, out item);
+            return Items.TryGetValue(addr, out item);
 		}
 
         // class ItemComparer //////////////////////////////////////////////////
@@ -295,7 +279,8 @@ namespace Reko.Core
 	/// </summary>
 	public class ImageMapItem
 	{
-		public uint Size;
+        private uint _size;
+        public uint Size { get { return _size; } set { if ((int)value < 0) throw new ArgumentException(); _size = value; } }
         public string Name;
         public DataType DataType;
 

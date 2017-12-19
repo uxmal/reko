@@ -282,11 +282,11 @@ namespace Reko.ImageLoaders.OdbgScript
 
         //cache for GMEXP
         List<t_export> tExportsCache = new List<t_export>();
-        ulong exportsCacheAddr;
+        //ulong exportsCacheAddr;
 
         //cache for GMIMP
         List<t_export> tImportsCache = new List<t_export>();
-        ulong importsCacheAddr;
+        //ulong importsCacheAddr;
     
 #if _WIN64
 
@@ -808,9 +808,9 @@ namespace Reko.ImageLoaders.OdbgScript
             return_to_usercode = false;
 
             tExportsCache.Clear();
-            exportsCacheAddr = 0;
+            //exportsCacheAddr = 0;
             tImportsCache.Clear();
-            importsCacheAddr = 0;
+            //importsCacheAddr = 0;
         }
 
         public void LoadFromFile(string scriptFilename, string curDir)
@@ -1949,7 +1949,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 FreeBpMem();
             }
-            else if(!softbp_t || tmpSizet > alloc_bp)
+            else if (!softbp_t || tmpSizet > alloc_bp)
             {
                 try
                 {
@@ -2033,8 +2033,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     so we'll stepinto except for a few exceptions
                     */
                     var instr = (X86Instruction) Host.DisassembleEx(Debugger.InstructionPointer);
-                    if (instr.code == Arch.X86.Opcode.call || instr.code == Arch.X86.Opcode.rep ||
-                        instr.code == Arch.X86.Opcode.repne)
+                    if (instr.code == Arch.X86.Opcode.call || instr.repPrefix != 0)
                         Debugger.StepOver(StepOverCallback);
                     else
                         Debugger.StepInto(StepIntoCallback);

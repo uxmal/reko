@@ -137,12 +137,21 @@ namespace Reko.UnitTests.Scanning
         public void BlockCloner_CloneCall()
         {
             var call = new CallInstruction(new ProcedureConstant(arch.PointerType, procCalling), new CallSite(0, 0));
-            var cloner = new BlockCloner(null, procCalling, callgraph);
             var block = new Block(procCalling, "test");
-            cloner.Statement = new Statement(42, call, block);
+            var stmOld = new Statement(42, call, block);
+            callgraph.AddStatement(stmOld);
+            callgraph.AddProcedure(procCalling);
+            callgraph.AddEdge(stmOld, procCalling);
+
+            var cloner = new BlockCloner(null, procCalling, callgraph);
+            cloner.Statement = stmOld;
+            cloner.StatementNew = new Statement(42, null, block);
             var newCall = (CallInstruction) call.Accept(cloner);
+            cloner.StatementNew.Instruction = newCall;
             Assert.AreEqual(call.Callee, newCall.Callee);
-            Assert.AreEqual(1, callgraph.CallerStatements(procCalling).Count(), "Should've added a call to the callgraph");
+            Assert.AreEqual(2, callgraph.CallerStatements(procCalling).Count(), "Should've added a call to the callgraph");
+            Assert.AreEqual(1, callgraph.Callees(cloner.Statement).Count());
+            Assert.AreEqual(1, callgraph.Callees(cloner.StatementNew).Count());
         }
 
         [Test]

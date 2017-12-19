@@ -101,6 +101,8 @@
         <File Source="$(var.AmigaOS.TargetPath)" />
         <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" />
         <File Source="$(var.AmigaOS_Design.TargetPath)" />
+        <File Source="$(var.AtariTOS.TargetPath)" />
+        <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" />
         <File Source="$(var.C64.TargetPath)" />
         <File Source="$(var.Cpm.TargetPath)" />
         <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" />
@@ -124,6 +126,7 @@
         <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
         <File Source="$(var.Windows.ProjectDir)windows32.xml" />
+        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" />
         <File Source="$(var.Windows.ProjectDir)windows64.xml" />
         <File Source="$(var.Windows.ProjectDir)commctrl.xml" />
         <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" />
@@ -132,6 +135,7 @@
         <File Source="$(var.ZX81.TargetPath)" />
 
         <!-- Architectures -->
+        <File Source="$(var.Alpha.TargetPath)" />
         <File Source="$(var.Arm.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />
@@ -182,6 +186,8 @@
         <File Source="$(var.SolutionDir)..\external\wine\krnl386.exe16.spec" />
         <File Source="$(var.SolutionDir)..\external\wine\user.exe16.spec" />
 
+        <!-- License files -->
+        <File Source="$(var.SolutionDir)..\COPYING" Id="F_License" />
       </Component>
     </ComponentGroup>
 
@@ -191,6 +197,9 @@
     </Feature>
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)..\COPYING.rtf" />
+    
     <UIRef Id="WixUI_InstallDir" />
 
     <Property Id="ARPPRODUCTICON" Value="PackageIcon" />

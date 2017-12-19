@@ -71,12 +71,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Borland\BorlandType.cs" />
+    <Compile Include="Borland\SymbolLoader.cs" />
     <Compile Include="ExeImageLoader.cs" />
     <Compile Include="ExePackLoader.cs" />
     <Compile Include="LzExeUnpacker.cs" />
     <Compile Include="MsdosImageLoader.cs" />
     <Compile Include="NeImageLoader.cs" />
     <Compile Include="PeImageLoader.cs" />
+    <Compile Include="Pe\AlphaRelocator.cs" />
+    <Compile Include="Pe\M68kRelocator.cs" />
+    <Compile Include="Pe\PowerPcRelocator.cs" />
     <Compile Include="Pe\ResourceLoader.cs" />
     <Compile Include="Pe\ArmRelocator.cs" />
     <Compile Include="Pe\i386Relocator.cs" />

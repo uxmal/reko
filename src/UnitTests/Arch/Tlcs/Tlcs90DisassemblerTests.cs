@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs90_dis_jr()
         {
-            AssertCode("jr\tZ,FFF0", "C6F0");
+            AssertCode("jr\tZ,FFF2", "C6F0");
         }
 
         [Test]
@@ -161,6 +161,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void Tlcs90_dis_f0_de_af()
         {
             AssertCode("bit\t07,(ix-0x22)", "F0DEAF");
+        }
+
+        [Test]
+        public void Tlcs90_dis_index_reg()
+        {
+            AssertCode("xor\thl,(ix+0x74)", "F07475");
         }
     }
 }

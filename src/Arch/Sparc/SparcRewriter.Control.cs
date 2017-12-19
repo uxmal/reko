@@ -44,50 +44,50 @@ namespace Reko.Arch.Sparc
         private void RewriteBranch(Expression cond)
         {
             // SPARC architecture always has delay slot.
-            ric.Class = RtlClass.ConditionalTransfer;
             var rtlClass = RtlClass.ConditionalTransfer | RtlClass.Delay;
             if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
+            this.rtlc = rtlClass;
             Constant c;
             if (cond.As(out c) && c.ToBoolean())
             {
-                emitter.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
+                m.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
             }
             else
             {
-                emitter.Branch(cond, ((AddressOperand)instrCur.Op1).Address, rtlClass);
+                m.Branch(cond, ((AddressOperand)instrCur.Op1).Address, rtlClass);
             }
         }
 
         private void RewriteCall()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.CallD(((AddressOperand)instrCur.Op1).Address, 0);
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            m.CallD(((AddressOperand)instrCur.Op1).Address, 0);
         }
 
         private void RewriteJmpl()
         {
-            ric.Class = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer;
             var rDst = instrCur.Op3 as RegisterOperand;
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
             if (rDst.Register != Registers.g0)
             {
                 var dst = RewriteOp(instrCur.Op3);
-                emitter.Assign(dst, instrCur.Address);
+                m.Assign(dst, instrCur.Address);
             }
             var target = SimplifySum(src1, src2);
             if (rDst.Register == Registers.o7)
             {
-                emitter.CallD(target, 0);
+                m.CallD(target, 0);
             }
             else if (rDst.Register == Registers.g0)
             {
-                emitter.ReturnD(0, 0);
+                m.ReturnD(0, 0);
             }
             else
             {
-                emitter.GotoD(target);
+                m.GotoD(target);
             }
         }
 
@@ -100,14 +100,14 @@ namespace Reko.Arch.Sparc
             //$REVIEW: does a SPARC trap instruction have a delay slot?
             var src1 = RewriteOp(instrCur.Op1, true);
             var src2 = RewriteOp(instrCur.Op2, true);
-            emitter.BranchInMiddleOfInstruction(
+            m.BranchInMiddleOfInstruction(
                 cond.Invert(),
                 instrCur.Address + instrCur.Length,
                 RtlClass.ConditionalTransfer);
-            emitter.SideEffect(
-                host.PseudoProcedure(
-                    PseudoProcedure.Syscall, 
-                    VoidType.Instance, 
+            m.SideEffect(
+                    host.PseudoProcedure(
+                        PseudoProcedure.Syscall, 
+                        VoidType.Instance, 
                     SimplifySum(src1, src2)));
         }
     }

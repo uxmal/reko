@@ -89,7 +89,19 @@ namespace Reko.Core.Types
             return dt as T;
         }
 
-		protected void ThrowBadSize()
+        public T TypeReferenceAs<T>() where T : DataType
+        {
+            DataType dt = this;
+            TypeReference typeRef = dt as TypeReference;
+            while (typeRef != null)
+            {
+                dt = typeRef.Referent;
+                typeRef = dt as TypeReference;
+            }
+            return dt as T;
+        }
+
+        protected void ThrowBadSize()
 		{
 			throw new InvalidOperationException(string.Format("Can't set size of {0}.", GetType().Name));
 		}

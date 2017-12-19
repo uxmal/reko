@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
-                Store(IAdd(IAdd(r, 20), SMul(i, 10)), 0);
+                Store(IAdd(IAdd(r, 20), SMul(i, 10)), Int32(0));
                 Return(Load(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
             }
@@ -380,7 +380,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, prog.Globals);
 
             Identifier ds = m.Local16("ds");
-            Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
+            Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Word16(0x0200));
 
             TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
             e = e.Accept(aen);
@@ -472,7 +472,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 m.Procedure.Signature = FunctionType.Action(new Identifier[] { arg1 });
-                m.Store(m.IAdd(arg1, 8), m.Int32(0x23));
+                m.Store(m.IAdd(arg1, 8), m.Word32(0x23));
                 m.Return();
             });
             RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");

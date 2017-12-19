@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Arch.Tlcs.Tlcs90;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Tlcs
 {
@@ -79,7 +80,7 @@ namespace Reko.Arch.Tlcs
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Tlcs90InstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -92,24 +93,46 @@ namespace Reko.Arch.Tlcs
             return new Tlcs90State(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new Tlcs90Rewriter(this, rdr, state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            uint grf = 0;
+            foreach (var c in name)
+            {
+                switch (c)
+                {
+                case 'S': grf |= Registers.S.FlagGroupBits; break;
+                case 'Z': grf |= Registers.Z.FlagGroupBits; break;
+                case 'I': grf |= Registers.I.FlagGroupBits; break;
+                case 'H': grf |= Registers.H.FlagGroupBits; break;
+                case 'V': grf |= Registers.V.FlagGroupBits; break;
+                case 'N': grf |= Registers.N.FlagGroupBits; break;
+                case 'C': grf |= Registers.C.FlagGroupBits; break;
+                }
+            }
+            return GetFlagGroup(grf);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            foreach (FlagGroupStorage f in Registers.flagBits)
+            {
+                if (f.FlagGroupBits == grf)
+                    return f;
+            }
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(grf), dt);
+            return fl;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -124,7 +147,7 @@ namespace Reko.Arch.Tlcs
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.allRegs.FirstOrDefault(r => r.Name == name);
         }
 
         public override RegisterStorage GetRegister(int i)

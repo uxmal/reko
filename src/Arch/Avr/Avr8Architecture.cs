@@ -68,13 +68,13 @@ namespace Reko.Arch.Avr
                 Tuple.Create(FlagM.ZF, 'Z'),
                 Tuple.Create(FlagM.CF, 'C'),
             };
-		}
+        }
         
-		public FlagRegister sreg { get; private set; }
-		public RegisterStorage x { get; private set; }
-		public RegisterStorage y { get; private set; }
-		public RegisterStorage z { get; private set; }
-		public RegisterStorage code { get; private set; }
+        public FlagRegister sreg { get; private set; }
+        public RegisterStorage x { get; private set; }
+        public RegisterStorage y { get; private set; }
+        public RegisterStorage z { get; private set; }
+        public RegisterStorage code { get; private set; }
 
 		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -121,12 +121,12 @@ namespace Reko.Arch.Avr
             return new Avr8State(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Avr8Rewriter(this, rdr, state, frame, host);
+            return new Avr8Rewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

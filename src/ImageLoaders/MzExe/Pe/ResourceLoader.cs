@@ -50,6 +50,9 @@ namespace Reko.ImageLoaders.MzExe.Pe
 
         public List<ProgramResource> Load()
         {
+            if (rvaResources == 0)
+                return new List<ProgramResource>();
+
             var rsrcSection = new LeImageReader(this.imgLoaded, rvaResources);
             var rdr = rsrcSection.Clone();
 
@@ -198,8 +201,15 @@ namespace Reko.ImageLoaders.MzExe.Pe
             int localeId;
             if (Int32.TryParse(langId, out localeId) && localeId > 0)
             {
-                var ci = CultureInfo.GetCultureInfo(localeId);
-                return ci.EnglishName;
+                try
+                {
+                    var ci = CultureInfo.GetCultureInfo(localeId);
+                    return ci.EnglishName;
+                }
+                catch
+                {
+                    return langId;
+                }
             }
             else
             {

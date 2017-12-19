@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Analysis
 
             trf = CreateTrashedRegisterFinder();
             var flow = CreateBlockFlow(m.Block, m.Frame);
-            flow.SymbolicIn.SetValue(esp, m.Frame.FramePointer);
+            flow.SymbolicIn.SetValue((Identifier)esp, (Expression)this.m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             stm1.Instruction.Accept(trf);
@@ -429,7 +429,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(eax, m.LoadDw(m.ISub(esp, 4)));
 
             flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
-            flow[m.Block].SymbolicIn.SetValue(esp, m.Frame.FramePointer);
+            this.flow[this.m.Block].SymbolicIn.SetValue(esp, (Expression)this.m.Frame.FramePointer);
             trf = CreateTrashedRegisterFinder(program);
             trf.ProcessBlock(m.Block);
             Assert.AreEqual("(eax:eax), (esp:fp), (Stack -4:eax)", DumpValues());
@@ -467,7 +467,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
-                m.Assign(ebx, m.Int32(0x1231313));
+                m.Assign(ebx, m.Word32(0x1231313));
                 m.Assign(eax, m.LoadDw(ebx));
                 m.Return();
             });

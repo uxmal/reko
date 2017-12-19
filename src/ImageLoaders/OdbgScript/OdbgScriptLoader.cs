@@ -18,20 +18,18 @@
  */
 #endregion
 
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Services;
+using Reko.Environments.Windows;
+using Reko.ImageLoaders.MzExe;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using rulong = System.UInt64;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
-    using Reko.Arch.X86;
-    using Reko.Environments.Windows;
-    using Reko.ImageLoaders.MzExe;
-    using System.IO;
-    using rulong = System.UInt64;
 
     /// <summary>
     /// ImageLoader that uses OdbgScript to assist in the unpacking of 
@@ -76,26 +74,38 @@ namespace Reko.ImageLoaders.OdbgScript
 
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
             var state = (X86State)program.Architecture.CreateProcessorState();
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
+            var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
-            this.scriptInterpreter.Host = new Host(this);
+            this.scriptInterpreter.Host = new Host(this, program.SegmentMap);
             this.scriptInterpreter.Debugger = this.debugger;
             emu.InstructionPointer = rr.EntryPoints[0].Address;
-            emu.WriteRegister(Registers.esp, (uint)ImageMap.BaseAddress.ToLinear() + 0x1000 - 4u);
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
-            // Load the script.
+            var stackSeg = InitializeStack(emu);
             LoadScript(Argument, scriptInterpreter.script);
-
             emu.Start();
+            TearDownStack(stackSeg);
 
             foreach (var ic in win32.InterceptedCalls)
             {
                 program.InterceptedCalls.Add(Address.Ptr32(ic.Key), ic.Value);
             }
             return program;
+        }
+
+        private ImageSegment InitializeStack(X86Emulator emu)
+        {
+            var stack = new MemoryArea(Address.Ptr32(0x7FE00000), new byte[1024 * 1024]);
+            var stackSeg = this.ImageMap.AddSegment(stack, "stack", AccessMode.ReadWrite);
+            emu.WriteRegister(Registers.esp, (uint)stack.EndAddress.ToLinear() - 4u);
+            return stackSeg;
+        }
+
+        private void TearDownStack(ImageSegment stackSeg)
+        {
+            this.ImageMap.Segments.Remove(stackSeg.Address);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -123,6 +133,25 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual void LoadScript(string scriptFilename, OllyScript script)
         {
+            // If the script file is not a rooted path, first try looking at 
+            // the current directory. If there is no file there, try finding 
+            // it in the installation directory. 
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            if (!fsSvc.IsPathRooted(scriptFilename))
+            {
+                string curDir = fsSvc.GetCurrentDirectory();
+                var absPath = Path.Combine(curDir, scriptFilename);
+                if (fsSvc.FileExists(absPath))
+                {
+                    scriptFilename = absPath;
+                }
+                else
+                {
+                    var dir = Path.GetDirectoryName(GetType().Assembly.Location);
+                    absPath = Path.Combine(dir, scriptFilename);
+                    scriptFilename = absPath;
+                }
+            }
             script.LoadFile(scriptFilename, null);
         }
 

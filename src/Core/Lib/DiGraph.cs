@@ -246,5 +246,10 @@ namespace Reko.Core.Lib
             int iPred = nTo.Predecessors.IndexOf(nFrom);
             return (iSucc >= 0 && iPred >= 0);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Nodes = {0}", nodes.Count);
+        }
     }
 }

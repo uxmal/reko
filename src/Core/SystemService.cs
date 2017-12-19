@@ -43,10 +43,7 @@ namespace Reko.Core
 
 		public ExternalProcedure CreateExternalProcedure(IProcessorArchitecture arch)
 		{
-            if (Characteristics == null)
-                return new ExternalProcedure(Name, Signature);
-            else
-                return new ExternalProcedure(Name, Signature, Characteristics);
+            return new ExternalProcedure(Name, Signature, Characteristics);
 		}
 	}
 
@@ -55,6 +52,12 @@ namespace Reko.Core
 		public RegisterStorage Register;
 		public int Value;
 	}
+
+    public class StackValue
+    {
+        public int Offset;
+        public int Value;
+    }
 
     /// <summary>
     /// Describes an exported entry point to an operating system service, or an
@@ -72,6 +75,11 @@ namespace Reko.Core
         /// </summary>
 		public RegValue [] RegisterValues;
 
+        /// <summary>
+        /// Stack values that select which subservice of the system call to invoke.
+        /// </summary>
+        public StackValue[] StackValues;
+
 		public bool Matches(int vector, ProcessorState state)
 		{
 			if (Vector != vector)
@@ -81,6 +89,12 @@ namespace Reko.Core
 
         private bool Matches(ProcessorState state)
         {
+            if (state == null &&
+                ((RegisterValues != null && RegisterValues.Length > 0) ||
+                 (StackValues != null && StackValues.Length > 0)))
+            {
+                return false;
+            }
             for (int i = 0; i < RegisterValues.Length; ++i)
             {
                 Constant v = state.GetRegister(RegisterValues[i].Register);
@@ -88,6 +102,17 @@ namespace Reko.Core
                     return false;
                 if (v.ToUInt32() != RegisterValues[i].Value)
                     return false;
+            }
+            if (StackValues != null && StackValues.Length > 0)
+            {
+                for (int i = 0; i < StackValues.Length; ++i)
+                {
+                    var c = state.GetStackValue(StackValues[i].Offset) as Constant;
+                    if (c == null || c == Constant.Invalid)
+                        return false;
+                    if (c.ToUInt32() != StackValues[i].Value)
+                        return false;
+                }
             }
             return true;
         }

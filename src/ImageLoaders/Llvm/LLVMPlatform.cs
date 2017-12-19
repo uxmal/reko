@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }
@@ -94,12 +94,17 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        public Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
         {
             throw new NotImplementedException();
         }
 
         public string DetermineCallingConvention(FunctionType signature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DispatchProcedure_v1 FindDispatcherProcedureByAddress(Address addr)
         {
             throw new NotImplementedException();
         }
@@ -134,7 +139,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
+        public ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             throw new NotImplementedException();
         }
@@ -184,12 +189,17 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public Address ResolveIndirectCall(RtlCall call)
+        {
+            return null;
+        }
+
         public Dictionary<string, object> SaveUserOptions()
         {
             throw new NotImplementedException();
         }
 
-        public ExternalProcedure SignatureFromName(string importName)
+        public ProcedureBase_v1 SignatureFromName(string importName)
         {
             throw new NotImplementedException();
         }

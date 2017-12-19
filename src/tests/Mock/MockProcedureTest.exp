@@ -15,15 +15,15 @@ done:
 	return r3
 	// succ:  FactorialMock_exit
 l1:
-	r3 = 0x00000001
+	r3 = 1
 	goto test
 	// succ:  test
 l2:
 	r3 = r3 *s r2
-	r2 = r2 - 0x00000001
+	r2 = r2 - 1
 	// succ:  test
 test:
-	Z = cond(r2 - 0x00000000)
+	Z = cond(r2 - 0)
 	branch Test(EQ,Z) done
 	goto l2
 	// succ:  l2 done

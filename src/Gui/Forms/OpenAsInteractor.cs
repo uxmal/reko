@@ -118,8 +118,11 @@ namespace Reko.Gui.Forms
         {
            var uiSvc =  dlg.Services.RequireService<IDecompilerShellUiService>();
            var fileName = uiSvc.ShowOpenFileDialog("");
-           if (fileName != null)
-               dlg.FileName.Text = fileName;
+            if (fileName != null)
+            {
+                dlg.FileName.Text = fileName;
+                EnableControls();
+            }
         }
 
         void AddressTextBox_TextChanged(object sender, EventArgs e)

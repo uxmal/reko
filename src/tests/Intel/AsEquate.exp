@@ -4,6 +4,6 @@
 0C00:0000 8B 1E 0D 00     	mov	bx,[000D]
 0C00:0004 8B 87 A7 00     	mov	ax,[bx+00A7]
 0C00:0008 89 06 0F 00     	mov	[000F],ax
-0C00:000C C3              	ret	
+0C00:000C C3              	ret
 0C00:000D 00 00           	add	[bx+si],al
 0C00:000F 00 00           	add	[bx+si],al

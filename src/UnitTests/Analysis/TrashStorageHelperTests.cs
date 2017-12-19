@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class TrashStorageHelperTests
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private TrashStorageHelper tsh;
         private TemporaryStorage trash;
 

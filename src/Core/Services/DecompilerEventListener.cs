@@ -26,6 +26,10 @@ using System.Text;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// This interface is used by the worker thread to communicate with the 
+    /// driver, be it a command line or a GUI.
+    /// </summary>
     public interface DecompilerEventListener
     {
         ICodeLocation CreateAddressNavigator(Program program, Address address);
@@ -33,6 +37,8 @@ namespace Reko.Core.Services
         ICodeLocation CreateBlockNavigator(Program program, Block block);
         ICodeLocation CreateStatementNavigator(Program program, Statement stm);
         ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride);
+        void Info(ICodeLocation location, string message);
+        void Info(ICodeLocation location, string message, params object[] args);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, string message);
@@ -52,6 +58,17 @@ namespace Reko.Core.Services
         public static DecompilerEventListener Instance { get { return e; } }
 
         #region DecompilerEventListener Members
+
+        public void Info(ICodeLocation location, string message)
+        {
+            Debug.Print("Info: {0}: {1}", location, message);
+        }
+
+        public void Info(ICodeLocation location, string message, params object[] args)
+        {
+            Debug.Print("Info: {0}: {1}", location,
+                string.Format(message, args));
+        }
 
         public void Warn(ICodeLocation location, string message)
         {

@@ -117,13 +117,13 @@ namespace Reko.Analysis
         {
             // Locate the post-call definition of the stack pointer, if any
             var defSpBinding = call.Definitions.Where(
-                d => d.Expression is Identifier).Where(
-                d => ((Identifier)d.Expression).Storage ==
+                d => d.Identifier is Identifier).Where(
+                d => ((Identifier)d.Identifier).Storage ==
                     program.Architecture.StackRegister)
                 .FirstOrDefault();
             if (defSpBinding == null)
                 return;
-            var defSpId = defSpBinding.Expression as Identifier;
+            var defSpId = defSpBinding.Identifier as Identifier;
             if (defSpId == null)
                 return;
             var usedSpExp = call.Uses.Select(u => u.Expression).
@@ -232,7 +232,7 @@ namespace Reko.Analysis
     class SsaIdentifierTransformer : InstructionTransformer
     {
         private SsaState ssa;
-        private Frame frame;
+        private IStorageBinder frame;
         private Statement stm;
         private CallInstruction call;
         private ArgumentTransformer argumentTransformer;
@@ -308,7 +308,7 @@ namespace Reko.Analysis
 
         private Identifier FindDefinedId(CallInstruction call, Storage storage)
         {
-            return call.Definitions.Select(d => d.Expression).
+            return call.Definitions.Select(d => d.Identifier).
                 OfType<Identifier>().
                 Where(usedId => usedId.Storage.Equals(storage)).
                 FirstOrDefault();

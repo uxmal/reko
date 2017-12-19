@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,19 +34,27 @@ namespace Reko.ImageLoaders.MzExe
     public class NeImageLoader : ImageLoader
     {
         // Relocation address types
-        const byte NE_RADDR_LOWBYTE = 0;
-        const byte NE_RADDR_SELECTOR = 2;
-        const byte NE_RADDR_POINTER32 = 3;
-        const byte NE_RADDR_OFFSET16 = 5;
-        const byte NE_RADDR_POINTER48 = 11;
-        const byte NE_RADDR_OFFSET32 = 13;
+        [Flags]
+        public enum NE_RADDR : byte
+        {
+            LOWBYTE = 0,
+            SELECTOR = 2,
+            POINTER32 = 3,
+            OFFSET16 = 5,
+            POINTER48 = 11,
+            OFFSET32 = 13,
+        }
 
         // Relocation types
-        const byte NE_RELTYPE_INTERNAL = 0;
-        const byte NE_RELTYPE_ORDINAL = 1;
-        const byte NE_RELTYPE_NAME = 2;
-        const byte NE_RELTYPE_OSFIXUP = 3;
-        const byte NE_RELFLAG_ADDITIVE = 4;
+        [Flags]
+        public enum NE_RELTYPE : byte
+        {
+            INTERNAL = 0,
+            ORDINAL = 1,
+            NAME = 2,
+            OSFIXUP = 3,
+            ADDITIVE = 4,
+        }
 
 
         // Resource types
@@ -63,6 +72,10 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
+        // Lowest 3 bits of a selector to the Local Descriptor Table requesting
+        // ring-3 privilege level.
+        const ushort LDT_RPL3 = 0x7;
+
         private MemoryArea mem;
         private SegmentMap segmentMap;
         private List<string> moduleNames;
@@ -79,6 +92,7 @@ namespace Reko.ImageLoaders.MzExe
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
         private SortedList<Address, ImageSymbol> imageSymbols;
         private IProcessorArchitecture arch;
+        private IPlatform platform;
         private Address addrEntry;
 
         public NeImageLoader(IServiceProvider services, string filename, byte[] rawBytes, uint e_lfanew)
@@ -390,7 +404,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-protected-16");
-            var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
+            this.platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
 
             var program = new Program(
                 this.segmentMap,
@@ -438,12 +452,12 @@ namespace Reko.ImageLoaders.MzExe
             var entries = new List<ImageSymbol>();
             for (;;)
             {
-                var cEntries = rdr.ReadByte();
-                if (cEntries == 0)
+                var cBundleEntries = rdr.ReadByte();
+                if (cBundleEntries == 0)
                     break;
                 var segNum = rdr.ReadByte();
                 var seg = this.segments[segNum - 1];
-                for (int i = 0; i < cEntries; ++i)
+                for (int i = 0; i < cBundleEntries; ++i)
                 {
                     var flags = rdr.ReadByte();
                     var offset = rdr.ReadUInt16();
@@ -452,7 +466,7 @@ namespace Reko.ImageLoaders.MzExe
                     var state = arch.CreateProcessorState();
 
                     ImageSymbol ep = new ImageSymbol(addr);
-                    if (names.TryGetValue(entries.Count, out name))
+                    if (names.TryGetValue(entries.Count + 1, out name))
                     {
                         ep.Name = name;
                     }
@@ -499,13 +513,10 @@ namespace Reko.ImageLoaders.MzExe
             this.segments = ReadSegmentTable(offset, cSeg);
             var segFirst = segments[0];
             var segLast = segments[segments.Length - 1];
-            this.mem = new MemoryArea(
-                PreferredBaseAddress,
-                new byte[segLast.LinearAddress + segLast.DataLength]);
             this.segmentMap = new SegmentMap(segFirst.Address);
             foreach (var segment in segments)
             {
-                var mem = new MemoryArea(
+                this.mem = new MemoryArea(
                     segment.Address, 
                     new byte[Math.Max(segment.Alloc, segment.DataLength)]);
                 LoadSegment(segment, mem, segmentMap);
@@ -517,6 +528,8 @@ namespace Reko.ImageLoaders.MzExe
             var segs = new List<NeSegment>(cSeg);
             var rdr = new LeImageReader(RawImage, offset);
             uint linAddress = 0x2000;
+            Debug.Print("== Segment table ");
+            Debug.Print("Offs Len  Flag Alloc");
             for (int iSeg = 0; iSeg < cSeg; ++iSeg)
             {
                 var seg = new NeSegment
@@ -533,13 +546,20 @@ namespace Reko.ImageLoaders.MzExe
                 // Align to 4kb boundary.
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
-                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
+                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
+                Debug.Print("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
+                    seg.Address,
+                    seg.DataOffset,
+                    seg.DataLength,
+                    seg.Flags,
+                    seg.Alloc);
                 segs.Add(seg);
                 linAddress += cbSegmentPage;
             }
 
-            // Generate pseudo-segment for imports
-            addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
+            // Generate pseudo-segment for imports with in a segment that isn't
+            // one of the "real" segments loaded above.
+            addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
 
             return segs.ToArray();
         }
@@ -644,40 +664,42 @@ namespace Reko.ImageLoaders.MzExe
 
         public class NeRelocationEntry
         {
-            public byte address_type;    // Relocation address type
-            public byte relocation_type; // Relocation type
-            public ushort offset;          // Offset in segment to fixup
-            public ushort target1;         // Target specification
-            public ushort target2;         // Target specification/
+            public NE_RADDR address_type;       // Relocation address type
+            public NE_RELTYPE relocation_type;  // Relocation type
+            public ushort offset;               // Offset in segment to fixup
+            public ushort target1;              // Target specification
+            public ushort target2;              // Target specification
         }
 
         // Apply relocations to a segment.
         bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
-            string module = "";
             Address address = null;
             NeRelocationEntry rep = null;
+            Debug.Print("Relocating segment {0}", seg.Address);
             for (int i = 0; i < cRelocations; i++)
             {
                 rep = new NeRelocationEntry
                 {
-                    address_type = rdr.ReadByte(),
-                    relocation_type = rdr.ReadByte(),
+                    address_type = (NE_RADDR) rdr.ReadByte(),
+                    relocation_type = (NE_RELTYPE)rdr.ReadByte(),
                     offset = rdr.ReadLeUInt16(),
                     target1 = rdr.ReadLeUInt16(),
                     target2 = rdr.ReadLeUInt16(),
                 };
+                Debug.Print("  {0}", WriteRelocationEntry(rep));
 
                 // Get the target address corresponding to this entry.
 
                 // If additive, there is no target chain list. Instead, add source
                 //  and target.
-                bool additive = (rep.relocation_type & NE_RELFLAG_ADDITIVE) != 0;
+                bool additive = (rep.relocation_type & NE_RELTYPE.ADDITIVE) != 0;
                 Tuple<Address, ImportReference> impRef;
                 uint lp;
-                switch (rep.relocation_type & 3)
+                string module = "";
+                switch (rep.relocation_type & (NE_RELTYPE)3)
                 {
-                case NE_RELTYPE_ORDINAL:
+                case NE_RELTYPE.ORDINAL:
                     module = moduleNames[rep.target1 - 1];
                     // Synthesize an import 
                     lp = ((uint)rep.target1 << 16) | rep.target2;
@@ -695,12 +717,13 @@ namespace Reko.ImageLoaders.MzExe
                     }
                     break;
 
-                case NE_RELTYPE_NAME:
+                case NE_RELTYPE.NAME:
                     module = moduleNames[rep.target1 - 1];
                     uint offName = lfaNew + this.offImportedNamesTable + rep.target2;
                     var nameRdr = new LeImageReader(RawImage, offName);
                     byte fnNameLength = nameRdr.ReadByte();
                     var abFnName = nameRdr.ReadBytes(fnNameLength);
+                    // Synthesize the import.
                     lp = ((uint)rep.target1 << 16) | rep.target2;
                     if (importStubs.TryGetValue(lp, out impRef))
                     {
@@ -715,7 +738,7 @@ namespace Reko.ImageLoaders.MzExe
                             new NamedImportReference(address, module, fnName)));
                     }
                     break;
-                case NE_RELTYPE_INTERNAL:
+                case NE_RELTYPE.INTERNAL:
                     if ((rep.target1 & 0xff) == 0xff)
                     {
                         throw new NotImplementedException();
@@ -724,13 +747,13 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         address = segments[rep.target1 - 1].Address + rep.target2;
                     }
-                    Debug.Print("{0}: {1:X4}:{2:X4} {3}",
+                    Debug.Print("    {0}: {1:X4}:{2:X4} {3}",
                           i + 1,
                           address.Selector.Value, 
-                          address.Selector.Value,
+                          address.Offset,
                           "");
                     break;
-                case NE_RELTYPE_OSFIXUP:
+                case NE_RELTYPE.OSFIXUP:
                     /* Relocation type 7:
                      *
                      *    These appear to be used as fixups for the Windows
@@ -751,7 +774,7 @@ namespace Reko.ImageLoaders.MzExe
 
                 // Apparently, high bit of address_type is sometimes set;
                 // we ignore it for now.
-                if (rep.address_type > NE_RADDR_OFFSET32)
+                if (rep.address_type > NE_RADDR.OFFSET32)
                 {
                     diags.Error(
                         string.Format(
@@ -763,25 +786,25 @@ namespace Reko.ImageLoaders.MzExe
                 if (additive)
                 {
                     var sp = seg.Address + offset;
-                    Debug.Print("    {0:X4}:{0:X4}", offset, offset);
+                    Debug.Print("    {0} (contains: {1:X4})", sp, mem.ReadLeUInt16(sp));
                     byte b;
                     ushort w;
-                    switch (rep.address_type & 0x7f)
+                    switch (rep.address_type & (NE_RADDR) 0x7f)
                     {
-                    case NE_RADDR_LOWBYTE:
+                    case NE_RADDR.LOWBYTE:
                         b = mem.ReadByte(sp);
                         mem.WriteByte(sp, (byte)(b + address.Offset));
                         break;
-                    case NE_RADDR_OFFSET16:
+                    case NE_RADDR.OFFSET16:
                         w = mem.ReadLeUInt16(sp);
                         mem.WriteLeUInt16(sp, (ushort)(w + address.Offset));
                         break;
-                    case NE_RADDR_POINTER32:
+                    case NE_RADDR.POINTER32:
                         w = mem.ReadLeUInt16(sp);
                         mem.WriteLeUInt16(sp, (ushort)(w + address.Offset));
                         mem.WriteLeUInt16(sp + 2, address.Selector.Value);
                         break;
-                    case NE_RADDR_SELECTOR:
+                    case NE_RADDR.SELECTOR:
                         // Borland creates additive records with offset zero. Strange, but OK.
                         w = mem.ReadLeUInt16(sp);
                         if (w != 0)
@@ -800,20 +823,20 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         var sp = seg.Address + offset;
                         ushort next_offset = mem.ReadLeUInt16(sp);
-                        Debug.Print("    {0:X4}:{0:X4}", offset, next_offset);
-                        switch (rep.address_type & 0x7f)
+                        Debug.Print("    {0} (contains: {1:X4})", sp, next_offset);
+                        switch (rep.address_type & (NE_RADDR) 0x7f)
                         {
-                        case NE_RADDR_LOWBYTE:
+                        case NE_RADDR.LOWBYTE:
                             mem.WriteByte(sp, (byte)address.Offset);
                             break;
-                        case NE_RADDR_OFFSET16:
+                        case NE_RADDR.OFFSET16:
                             mem.WriteLeUInt16(sp, (ushort)address.Offset);
                             break;
-                        case NE_RADDR_POINTER32:
+                        case NE_RADDR.POINTER32:
                             mem.WriteLeUInt16(sp, (ushort)address.Offset);
                             mem.WriteLeUInt16(sp + 2, address.Selector.Value);
                             break;
-                        case NE_RADDR_SELECTOR:
+                        case NE_RADDR.SELECTOR:
                             mem.WriteLeUInt16(sp, address.Selector.Value);
                             break;
                         default:
@@ -837,5 +860,28 @@ namespace Reko.ImageLoaders.MzExe
             return false;
         }
 
+        private string WriteRelocationEntry(NeRelocationEntry re)
+        {
+            switch (re.relocation_type & (NE_RELTYPE)3)
+            {
+            //case NE_RELTYPE.NAME:
+            case NE_RELTYPE.ORDINAL:
+                return string.Format("{0,8} {1,8} {2:X4} {3:X4} {4:X4}",
+                    re.address_type,
+                    re.relocation_type,
+                    re.offset,
+                    moduleNames[re.target1 - 1],
+                    re.target2);
+            default:
+                return string.Format("{0,8} {1,8} {2:X4} {3:X4} {4:X4}",
+                    re.address_type,
+                    re.relocation_type,
+                    re.offset,
+                    re.target1,
+                    re.target2);
+
+            }
+
+        }
     }
 }

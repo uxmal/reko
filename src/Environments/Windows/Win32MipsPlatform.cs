@@ -65,11 +65,9 @@ namespace Reko.Environments.Windows
             return new HashSet<RegisterStorage>();
         }
 
-
-
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            return new MipsCallingConvention(this.Architecture);
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -106,23 +104,17 @@ namespace Reko.Environments.Windows
         ///     jr  rY
         /// is treated as a trampoline.
         /// </summary>
-        /// <param name="imageReader"></param>
+        /// <param name="insts"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rtls, IRewriterHost host)
         {
-            var rtls = Architecture.CreateRewriter(
-                imageReader,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(),
-                host)
+            var instrs = rtls.SelectMany(r => r.Instructions)
                 .Take(3)
                 .ToArray();
-            if (rtls.Length < 3)
+            var addrFrom = rtls.ElementAt(2).Address;
+            if (instrs.Length < 3)
                 return null;
-            var instrs = rtls
-                .SelectMany(rtl => rtl.Instructions)
-                .ToArray();
 
             for (int i = 0; i < 3; ++i)
             {
@@ -137,7 +129,7 @@ namespace Reko.Environments.Windows
             var lo = (Constant)trampPattern[1].CapturedExpressions("lo");
             var c = Operator.IAdd.ApplyConstants(hi, lo);
             var addrTarget= MakeAddressFromConstant(c);
-            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtls[2].Address);
+            ProcedureBase proc = host.GetImportedProcedure(addrTarget, addrFrom);
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(addrTarget);
@@ -147,6 +139,7 @@ namespace Reko.Environments.Windows
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 4;
@@ -167,7 +160,7 @@ namespace Reko.Environments.Windows
             if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
             SystemService svc;
-            if (mod.ServicesByVector.TryGetValue(ordinal, out svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
             {
                 return new ExternalProcedure(svc.Name, svc.Signature);
             }

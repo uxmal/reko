@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public SuperHDisassemblerTests()
         {
-            this.arch = new SuperHArchitecture();
+            this.arch = new SuperHLeArchitecture();
         }
 
         public override IProcessorArchitecture Architecture
@@ -452,11 +452,59 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("tst\tr6,r6", "6826");
         }
 
-/*
-014C
-402C
-405C
-*/
+        [Test]
+        public void SHDis_sts_mach()
+        {
+            AssertCode("sts\tmach,r0", "0A00");
+        }
+
+        [Test]
+        public void SHDis_sts_shld()
+        {
+            AssertCode("shld\tr1,r0", "1D40");
+        }
+
+        [Test]
+        public void SHDis_sts_shad()
+        {
+            AssertCode("shad\tr1,r0", "1C40");
+        }
+
+        [Test]
+        public void SHDis_sts_subc()
+        {
+            AssertCode("subc\tr1,r1", "1A 31");
+        }
+
+        [Test]
+        public void SHDis_sts_swap_w()
+        {
+            AssertCode("swap.w\tr4,r0", "4960");
+        }
+
+        [Test]
+        public void SHDis_sts_shlr_16()
+        {
+            AssertCode("shlr16\tr4", "2944");
+        }
+
+        [Test]
+        public void SHDis_sts_shll_16()
+        {
+            AssertCode("shll16\tr5", "2845");
+        }
+
+        [Test]
+        public void SHDis_sts_xtrct()
+        {
+            AssertCode("xtrct\tr4,r0", "4D20");
+        }
+
+        [Test]
+        public void SHDis_sts_shar()
+        {
+            AssertCode("shar\tr1", "2141");
+        }
     }
 }
 

@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.BinHex
 {
@@ -49,8 +50,9 @@ namespace Reko.ImageLoaders.BinHex
             byte[] dataFork = LoadFork(hdr.DataForkLength, stm);
             byte[] rsrcFork = LoadFork(hdr.ResourceForkLength, stm);
 
-            var arch = new M68kArchitecture();
-            var platform = new MacOSClassic(Services, arch);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("m68k");
+            var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {
                 Cpt.CompactProArchive archive = new Cpt.CompactProArchive();
@@ -62,15 +64,20 @@ namespace Reko.ImageLoaders.BinHex
                     if (selectedFile != null)
                     {
                         var image = selectedFile.GetBytes();
-                        this.rsrcFork = new ResourceFork(image, arch);
+                        this.rsrcFork = new ResourceFork(platform, image);
                         this.mem = new MemoryArea(addrLoad, image);
-                        this.segmentMap = new SegmentMap(addrLoad,
-                            new ImageSegment("", mem, AccessMode.ReadWriteExecute)); 
+                        this.segmentMap = new SegmentMap(addrLoad); 
                         return new Program(this.segmentMap, arch, platform);
                     }
                 }
             }
-
+            if (hdr.FileType == "MPST")
+            {
+                this.mem = new MemoryArea(addrLoad, rsrcFork);
+                this.rsrcFork = new ResourceFork(platform, rsrcFork);
+                this.segmentMap = new SegmentMap(addrLoad);
+                return new Program(this.segmentMap, arch, platform);
+            }
             this.mem = new MemoryArea(addrLoad, dataFork);
             return new Program(
                 new SegmentMap(mem.BaseAddress,
@@ -101,12 +108,14 @@ namespace Reko.ImageLoaders.BinHex
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var entryPoints = new List<ImageSymbol>();
+            var symbols = new SortedList<Address, ImageSymbol>();
+
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints);
+                rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints, symbols);
             }
-            return new RelocationResults(entryPoints, new SortedList<Address, ImageSymbol>());
+            return new RelocationResults(entryPoints, symbols);
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

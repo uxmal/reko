@@ -128,7 +128,7 @@ namespace Reko.Scanning
                 return Program.Platform.MakeAddressFromLinear(0);
             return inboundBlock.Address != null
                 ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(0);
+                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress);
         }
 
         public void FixOutboundEdges(Block block)
@@ -143,10 +143,11 @@ namespace Reko.Scanning
                     var lastAddress = GetAddressOfLastInstruction(block);
                     var retCallThunkBlock = Scanner.CreateCallRetThunk(lastAddress, block.Procedure, s.Procedure);
                     block.Succ[i] = retCallThunkBlock;
+                    retCallThunkBlock.Pred.Add(block);
                 }
-                s.ToString();
             }
         }
+
 
         private void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
         {

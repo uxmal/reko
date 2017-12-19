@@ -47,6 +47,8 @@ namespace Reko.UnitTests.Analysis
         {
             mr = new MockRepository();
             this.CSignature = null;
+            dfa = null;
+            base.platform = null;
         }
 
 		[Test]
@@ -104,6 +106,7 @@ namespace Reko.UnitTests.Analysis
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
             this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
+            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
             RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
@@ -234,7 +237,7 @@ done:
         public void DfaReg00316()
         {
             Given_CSignature("long r316(long a)");
-            RunFileTest("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
+            RunFileTest32("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
         }
 
         [Test]
@@ -338,23 +341,31 @@ ProcedureBuilder_exit:
             this.CSignature = CSignature;
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
 		{
-            SetCSignatures(prog);
+            SetCSignatures(program);
             IImportResolver importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
-			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
                 var sig = flow.Signature ?? proc.Signature;
                 sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
-				flow.Emit(prog.Architecture, writer);
+				flow.Emit(program.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}
-		}	
-	}
+		}
+
+        [Test]
+        [Ignore("This will be fixed in analysis-branch")]
+        [Category(Categories.FailedTests)]
+        public void DfaJumpIntoProc3()
+        {
+            RunFileTest32("Fragments/multiple/jumpintoproc3.asm", "Analysis/DfaJumpIntoProc3.txt");
+        }
+    }
 }

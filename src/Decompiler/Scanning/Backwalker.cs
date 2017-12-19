@@ -30,27 +30,29 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Reko.Core.Lib;
 
 namespace Reko.Scanning
 {
-    /// <summary>
-    /// Walks code backwards to find "dominating" comparisons against constants,
-    /// which may provide vector table limits.
-    /// </summary>
+	/// <summary>
+	/// Walks code backwards to find "dominating" comparisons against constants,
+	/// which may provide vector table limits.
+	/// </summary>
     /// <remarks>
     /// This is a godawful hack; a proper range analysis would be much
     /// better. Have a spare few months?
     /// </remarks>
-    public class Backwalker
-    {
-        private IBackWalkHost host;
+	public class Backwalker<TBlock, TInstr>
+	{
+        private IBackWalkHost<TBlock, TInstr> host;
         private ExpressionSimplifier eval;
         private Identifier UsedAsFlag;
 
         private static TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
+        private TBlock startBlock;
 
-        public Backwalker(IBackWalkHost host, RtlTransfer xfer, ExpressionSimplifier eval)
-        {
+        public Backwalker(IBackWalkHost<TBlock, TInstr> host, RtlTransfer xfer, ExpressionSimplifier eval)
+		{
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;
@@ -90,8 +92,9 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        public List<BackwalkOperation> BackWalk(Block block)
+        public List<BackwalkOperation> BackWalk(TBlock block)
         {
+            this.startBlock = block;
             if (Stride > 1)
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
@@ -113,17 +116,18 @@ namespace Reko.Scanning
             return Operations;
         }
 
-        public bool BackwalkInstruction(Instruction instr)
+        public bool BackwalkInstruction(TInstr instr)
         {
-            var ass = instr as Assignment;
+            var ass = host.AsAssignment(instr);
             if (ass != null)
             {
-                var assSrc = ass.Src.Accept(eval);
-                var regSrc = RegisterOf(assSrc as Identifier);
+                var assSrc = ass.Item2.Accept(eval);
+                var assDst = ass.Item1;
+                var regSrc = RegisterOf(assSrc);
                 var binSrc = assSrc as BinaryExpression;
                 if (binSrc != null)
                 {
-                    if (RegisterOf(ass.Dst) == Index || ass.Dst == IndexExpression)
+                    if (RegisterOf(assDst) == Index || assDst == IndexExpression)
                     {
                         regSrc = RegisterOf(binSrc.Left);
                         var immSrc = binSrc.Right as Constant;
@@ -134,7 +138,7 @@ namespace Reko.Scanning
                         }
                         if (binSrc.Operator == Operator.And)
                         {
-                            if (immSrc != null && IsEvenPowerOfTwo(immSrc.ToInt32() + 1))
+                            if (immSrc != null && Bits.IsEvenPowerOfTwo(immSrc.ToInt32() + 1))
                             {
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.ToInt32() + 1));
                             }
@@ -161,9 +165,9 @@ namespace Reko.Scanning
                     }
                     if (Index != null &&
                         binSrc.Operator == Operator.Xor &&
-                        binSrc.Left == ass.Dst &&
-                        binSrc.Right == ass.Dst &&
-                        RegisterOf(ass.Dst) == host.GetSubregister(Index, 8, 8))
+                        binSrc.Left == assDst &&
+                        binSrc.Right == assDst &&
+                        RegisterOf(assDst) == host.GetSubregister(Index, 8, 8))
                     {
                         Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
                         Index = host.GetSubregister(Index, 0, 8);
@@ -173,7 +177,7 @@ namespace Reko.Scanning
                 if (Index != null &&
                     cSrc != null &&
                     cSrc.IsIntegerZero &&
-                    RegisterOf(ass.Dst) == host.GetSubregister(Index, 8, 8))
+                    RegisterOf(assDst) == host.GetSubregister(Index, 8, 8))
                 {
                     // mov bh,0 ;; xor bh,bh
                     // jmp [bx...]
@@ -184,7 +188,7 @@ namespace Reko.Scanning
                 var cof = assSrc as ConditionOf;
                 if (cof != null && UsedFlagIdentifier != null)
                 {
-                    var grfDef = (ass.Dst.Storage as FlagGroupStorage).FlagGroupBits;
+                    var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage).FlagGroupBits;
                     var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroupBits;
                     if ((grfDef & grfUse) == 0)
                         return true;
@@ -194,7 +198,7 @@ namespace Reko.Scanning
                         (binCmp.Operator is ISubOperator ||
                          binCmp.Operator is USubOperator))
                     {
-                        var idLeft = RegisterOf(binCmp.Left as Identifier);
+                        var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != null &&
                             (idLeft == Index || idLeft == host.GetSubregister(Index, 0, 8)) ||
                            (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
@@ -221,19 +225,19 @@ namespace Reko.Scanning
 
                 //$BUG: this is rubbish, the simplifier should _just_
                 // perform simplification, no substitutions.
-                var src = assSrc == Constant.Invalid ? ass.Src : assSrc;
+                var src = assSrc == Constant.Invalid ? ass.Item2 : assSrc;
                 var castSrc = src as Cast;
                 if (castSrc != null)
                     src = castSrc.Expression;
                 var memSrc = src as MemoryAccess;
-                var regDst = RegisterOf(ass.Dst);
+                var regDst = RegisterOf(assDst);
                 if (memSrc != null &&
                     (regDst == Index ||
                      (Index != null && regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
                     // R = Mem[xxx]
                     var rIdx = Index;
-                    var rDst = RegisterOf(ass.Dst);
+                    var rDst = RegisterOf(assDst);
                     if ((rDst != host.GetSubregister(rIdx, 0, 8) && castSrc == null) &&
                         rDst != rIdx)
                     {
@@ -274,7 +278,7 @@ namespace Reko.Scanning
                         return true;
                     }
                     Index = RegisterStorage.None;
-                    IndexExpression = ass.Src;
+                    IndexExpression = ass.Item2;
                     return true;
                 }
 
@@ -287,24 +291,46 @@ namespace Reko.Scanning
                 return true;
             }
 
-            var bra = instr as Branch;
+            var bra = host.AsBranch(instr);
             if (bra != null)
             {
-                var cond = bra.Condition as TestCondition;
-                if (cond != null)
-                {
-                    if (cond.ConditionCode == ConditionCode.UGE ||
-                        cond.ConditionCode == ConditionCode.UGT ||
-                        cond.ConditionCode == ConditionCode.GT)
-                    {
-                        Operations.Add(new BackwalkBranch(cond.ConditionCode));
-                        UsedFlagIdentifier = (Identifier)cond.Expression;
-                    }
-                }
-                return true;
+                bool fallthrough = host.IsFallthrough(instr, startBlock);
+                return VisitBranch(bra, fallthrough);
             }
 
             Debug.WriteLine("Backwalking not supported: " + instr);
+            return true;
+        }
+
+        private bool VisitBranch(Expression bra, bool fallthrough)
+        {
+            var cond = bra as TestCondition;
+            if (cond != null)
+            {
+                ConditionCode cc = cond.ConditionCode;
+                switch (cc)
+                {
+                case ConditionCode.UGE:
+                case ConditionCode.UGT:
+                case ConditionCode.GT:
+                    break;
+                    //$TODO: verify the branch direction here.
+                case ConditionCode.ULE:
+                    fallthrough = !fallthrough;
+                    cc = ConditionCode.UGT;
+                    break;
+                case ConditionCode.ULT:
+                    fallthrough = !fallthrough;
+                    cc = ConditionCode.UGE;
+                    break;
+                default:return true;
+                }
+                if (fallthrough)
+                {
+                    Operations.Add(new BackwalkBranch(cc));
+                    UsedFlagIdentifier = (Identifier)cond.Expression;
+                }
+            }
             return true;
         }
 
@@ -340,11 +366,11 @@ namespace Reko.Scanning
 
         public bool BackwalkInstructions(
             RegisterStorage regIdx,
-            IEnumerable<Statement> backwardStatementSequence)
+            IEnumerable<TInstr> backwardStatementSequence)
         {
-            foreach (var stm in backwardStatementSequence)
+            foreach (var instr in backwardStatementSequence)
             {
-                if (!BackwalkInstruction(stm.Instruction))
+                if (!BackwalkInstruction(instr))
                     return false;
             }
             return true;
@@ -352,9 +378,9 @@ namespace Reko.Scanning
 
         public bool BackwalkInstructions(
             RegisterStorage regIdx,
-            Block block)
+            TBlock block)
         {
-            return BackwalkInstructions(regIdx, block.Statements.Reverse<Statement>());
+            return BackwalkInstructions(regIdx, host.GetReversedBlockInstructions(block));
         }
 
         [Conditional("DEBUG")]
@@ -375,7 +401,14 @@ namespace Reko.Scanning
             var bin = ea as BinaryExpression;
             if (bin == null)
                 return RegisterStorage.None;
-            id = bin.Left as Identifier;
+            var e = bin.Left;
+            while (e != null && e is Cast)
+            {
+                e = ((Cast)e).Expression;
+            }
+            if (e == null)
+                return null;
+            id = e as Identifier;
             if (id != null)
                 return RegisterOf(id);
             var scaledExpr = bin.Left as BinaryExpression;
@@ -453,6 +486,8 @@ namespace Reko.Scanning
             {
                 // We have [id + C]
                 Stride = 1;
+                if (host.IsStackRegister(idLeft.Storage))
+                    return null;
                 DetermineVector(mem, bin.Right);
                 if (VectorAddress != null && host.IsValidAddress(VectorAddress))
                     return RegisterOf(idLeft);
@@ -550,12 +585,5 @@ namespace Reko.Scanning
 			else
 				return null;
 		}
-
-		public static bool IsEvenPowerOfTwo(int n)
-		{
-			return n != 0 && (n & (n - 1)) == 0;
-		}
-
-
     }
 }

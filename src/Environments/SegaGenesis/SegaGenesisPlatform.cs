@@ -47,7 +47,7 @@ namespace Reko.Environments.SegaGenesis
             return new HashSet<RegisterStorage>();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }
@@ -61,11 +61,6 @@ namespace Reko.Environments.SegaGenesis
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
-        }
-
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

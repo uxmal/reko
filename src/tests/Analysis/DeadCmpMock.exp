@@ -2,7 +2,7 @@ r0:r0
     def:  def r0
     uses: r0_2 = PHI(r0, r0_5)
           r0_5 = r0 + r1
-          branch r0 == 0x00000000 skip
+          branch r0 == 0 skip
 Z_1: orig: Z
 r0_2: orig: r0
     def:  r0_2 = PHI(r0, r0_5)
@@ -23,7 +23,7 @@ CmpMock_entry:
 	def r1
 	// succ:  l1
 l1:
-	branch r0 == 0x00000000 skip
+	branch r0 == 0 skip
 	// succ:  l2 skip
 l2:
 	r0_5 = r0 + r1

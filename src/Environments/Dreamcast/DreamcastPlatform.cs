@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.Core.Rtl;
 
 namespace Reko.Environments.Dreamcast
 {
@@ -51,7 +52,7 @@ namespace Reko.Environments.Dreamcast
             throw new NotImplementedException();
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }
@@ -71,7 +72,7 @@ namespace Reko.Environments.Dreamcast
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             throw new NotImplementedException();
         }

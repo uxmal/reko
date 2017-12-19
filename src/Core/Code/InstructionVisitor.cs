@@ -88,7 +88,7 @@ namespace Reko.Core.Code
 
 		public virtual void VisitDefInstruction(DefInstruction def)
 		{
-			def.Expression.Accept(this);
+			def.Identifier.Accept(this);
 		}
 
         public virtual void VisitGotoInstruction(GotoInstruction g)

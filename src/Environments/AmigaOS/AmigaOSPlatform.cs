@@ -108,14 +108,9 @@ namespace Reko.Environments.AmigaOS
             return segmentMap;
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(
-            ISerializedTypeVisitor<DataType> typeLoader,
-            string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new M68kProcedureSerializer(
-                (M68kArchitecture)Architecture,
-                typeLoader,
-                defaultConvention);
+            return new M68kCallingConvention((M68kArchitecture) this.Architecture);
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -218,6 +213,7 @@ namespace Reko.Environments.AmigaOS
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;  //$REVIEW: Does AmigaOS support wchar_t?
             case CBasicType.Short: return 2;
@@ -230,11 +226,6 @@ namespace Reko.Environments.AmigaOS
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
-        }
-
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
@@ -251,7 +242,8 @@ namespace Reko.Environments.AmigaOS
         {
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = this.CreateProcedureSerializer(new TypeLibraryDeserializer(this, true, libDst), DefaultCallingConvention);
+            var tser = new TypeLibraryDeserializer(this, true, libDst);
+            var sser = new ProcedureSerializer(this, tser, DefaultCallingConvention);
             using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation(lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
             {
                 var fpp = new FuncsFileParser((M68kArchitecture)this.Architecture, rdr);

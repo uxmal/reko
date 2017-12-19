@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
             caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
 
-            var callee = new Procedure("callee", new  Frame (PrimitiveType.Word16));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Word16));
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
             callee.Signature = FunctionType.Action(
@@ -116,5 +116,38 @@ namespace Reko.UnitTests.Core
             var instr = ab.CreateInstruction();
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
         }
-	}
+
+        [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
+        public void AppBld_BindStackReturnValue()
+        {
+            var rand = new Procedure("rand", new Frame(PrimitiveType.Pointer32));
+            var ab = new ApplicationBuilder(
+                arch,
+                rand.Frame,
+                new CallSite(4, 0),
+                new ProcedureConstant(PrimitiveType.Pointer32, rand),
+                new FunctionType(new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+                true);
+            var instr = ab.CreateInstruction();
+            Assert.AreEqual("dwArg04 = rand()", instr.ToString());
+        }
+
+        [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
+        public void AppBld_BindStackReturnValue_WithArgs()
+        {
+            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Pointer32));
+            var ab = new ApplicationBuilder(
+                arch,
+                fputs.Frame,
+                new CallSite(4, 0),
+                new ProcedureConstant(PrimitiveType.Pointer32, fputs),
+                new FunctionType(
+                    new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(12, PrimitiveType.Int32)),
+                    new Identifier("str", PrimitiveType.Pointer32, new StackArgumentStorage(8, PrimitiveType.Int32)),
+                    new Identifier("stm", PrimitiveType.Pointer32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+                true);
+            var instr = ab.CreateInstruction();
+            Assert.AreEqual("dwArg0C = fputs(dwArg08, dwArg04)", instr.ToString());
+        }
+    }
 }

@@ -34,27 +34,33 @@ namespace Reko.ImageLoaders.Elf
 {
     public abstract class ElfLoader
     {
-        public const int ELFOSABI_NONE = 0x00;  // No specific ABI specified.
-        public const int ELFOSABI_HPUX = 1;     // Hewlett-Packard HP-UX 
-        public const int ELFOSABI_NETBSD = 2;   // NetBSD 
-        public const int ELFOSABI_GNU = 3;      // GNU 
-        public const int ELFOSABI_LINUX = 3;    // Linux  historical - alias for ELFOSABI_GNU 
-        public const int ELFOSABI_SOLARIS = 6;  // Sun Solaris 
-        public const int ELFOSABI_AIX = 7;      // AIX 
-        public const int ELFOSABI_IRIX = 8;     // IRIX 
-        public const int ELFOSABI_FREEBSD = 9;  // FreeBSD 
-        public const int ELFOSABI_TRU64 = 10;   // Compaq TRU64 UNIX 
-        public const int ELFOSABI_MODESTO = 11; // Novell Modesto 
-        public const int ELFOSABI_OPENBSD = 12; // Open BSD 
-        public const int ELFOSABI_OPENVMS = 13; // Open VMS 
-        public const int ELFOSABI_NSK = 14;     // Hewlett-Packard Non-Stop Kernel 
-        public const int ELFOSABI_AROS = 15;    // Amiga Research OS 
-        public const int ELFOSABI_FENIXOS = 16; // The FenixOS highly scalable multi-core OS 
-        
+        public const int ELFOSABI_NONE = 0x00;      // No specific ABI specified.
+        public const int ELFOSABI_HPUX = 1;         // Hewlett-Packard HP-UX 
+        public const int ELFOSABI_NETBSD = 2;       // NetBSD 
+        public const int ELFOSABI_GNU = 3;          // GNU 
+        public const int ELFOSABI_LINUX = 3;        // Linux  historical - alias for ELFOSABI_GNU 
+        public const int ELFOSABI_SOLARIS = 6;      // Sun Solaris 
+        public const int ELFOSABI_AIX = 7;          // AIX 
+        public const int ELFOSABI_IRIX = 8;         // IRIX 
+        public const int ELFOSABI_FREEBSD = 9;      // FreeBSD 
+        public const int ELFOSABI_TRU64 = 10;       // Compaq TRU64 UNIX 
+        public const int ELFOSABI_MODESTO = 11;     // Novell Modesto 
+        public const int ELFOSABI_OPENBSD = 12;     // Open BSD 
+        public const int ELFOSABI_OPENVMS = 13;     // Open VMS 
+        public const int ELFOSABI_NSK = 14;         // Hewlett-Packard Non-Stop Kernel 
+        public const int ELFOSABI_AROS = 15;        // Amiga Research OS 
+        public const int ELFOSABI_FENIXOS = 16;     // The FenixOS highly scalable multi-core OS 
+        public const int ELFOSABI_CLOUDABI = 17;    // Nuxi CloudABI
+        public const int ELFOSABI_OPENVOS = 18;     // Stratus Technologies OpenVOS
+
+        // Architecture-specific ABI's
+        public const int ELFOSABI_ARM = 0x61;
+        public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+
+        // Endianness
         public const byte ELFDATA2LSB = 1;
         public const byte ELFDATA2MSB = 2;
 
-        public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
         public const uint SHF_EXECINSTR = 0x4;
@@ -94,9 +100,10 @@ namespace Reko.ImageLoaders.Elf
         public IServiceProvider Services { get { return imgLoader.Services; } }
         public ElfRelocator Relocator { get; protected set; }
         public abstract Address DefaultAddress { get; }
+        public abstract bool IsExecutableFile { get; }
         public List<ElfSection> Sections { get; private set; }
-        public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; }
-        public Dictionary<Address, ExternalProcedure> ExternalProcedures { get; }
+        public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; private set; }
+        public Dictionary<Address, ExternalProcedure> ExternalProcedures { get; private set; }
 
         public static AccessMode AccessModeOf(ulong sh_flags)
         {
@@ -144,6 +151,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
+            string stackRegName = null;
             switch ((ElfMachine)machineType)
             {
             case ElfMachine.EM_NONE: return null; // No machine
@@ -168,17 +176,34 @@ namespace Reko.ImageLoaders.Elf
                     throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
                 }
                 break;
-            case ElfMachine.EM_PPC: arch = "ppc32"; break;
-            case ElfMachine.EM_PPC64: arch = "ppc64"; break;
+            case ElfMachine.EM_PPC: arch = "ppc-be-32"; break;
+            case ElfMachine.EM_PPC64: arch = "ppc-be-64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
-            case ElfMachine.EM_SH: arch = "superH"; break;
+            case ElfMachine.EM_SH:
+                arch = endianness == ELFDATA2LSB ? "superH-le" : "superH-be";
+                // SuperH stack pointer is not defined by the architecture,
+                // but by the application itself. It appears r15 has been
+                // chosen by at least the NetBSD folks.
+                stackRegName = "r15";
+                break;
+            case ElfMachine.EM_ALPHA:
+                arch = "alpha";
+                // Alpha has no architecture-defined stack pointer. 
+                // Alpha-Linux uses r30.
+                stackRegName = "r30";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
-            return cfgSvc.GetArchitecture(arch);
+            var a = cfgSvc.GetArchitecture(arch);
+            if (stackRegName != null)
+            {
+                a.StackRegister = a.GetRegister(stackRegName);
+            }
+            return a;
         }
 
         private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>
@@ -187,7 +212,7 @@ namespace Reko.ImageLoaders.Elf
             { ElfSymbolType.STT_OBJECT, SymbolType.Data },
         };
 
-        protected ImageSymbol CreateImageSymbol(ElfSymbol sym, uint headerType)
+        protected ImageSymbol CreateImageSymbol(ElfSymbol sym, bool isExecutable)
         {
             SymbolType st;
             if (sym.SectionIndex >= Sections.Count)
@@ -205,17 +230,28 @@ namespace Reko.ImageLoaders.Elf
             // an offset from the section's virtual address. 
             // If this is an executable file, the symbol value is
             // the virtual address.
-            var addr = headerType == ElfImageLoader.ET_REL
-                ? symSection.Address + sym.Value
-                : platform.MakeAddressFromLinear(sym.Value);
+            var addr = isExecutable
+                ? platform.MakeAddressFromLinear(sym.Value)
+                : symSection.Address + sym.Value;
 
+
+            var dt = GetSymbolDataType(sym);
             return new ImageSymbol(addr)
             {
                 Type = st,
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
+                DataType = dt,
                 ProcessorState = Architecture.CreateProcessorState()
             };
+        }
+
+        private DataType GetSymbolDataType(ElfSymbol sym)
+        {
+            if (sym.Type == ElfSymbolType.STT_FUNC)
+                return new FunctionType();
+            else
+                return new UnknownType();
         }
 
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
@@ -225,10 +261,14 @@ namespace Reko.ImageLoaders.Elf
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
+            case ELFOSABI_ARM:
                 envName = "elf-neutral";
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
                 envName = "elf-cell-lv2";
+                break;
+            case ELFOSABI_LINUX:
+                envName = "linux";      //$TODO: create a linux platform
                 break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
@@ -264,6 +304,20 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
+        public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(bool isExecutable)
+        {
+            var imgSymbols = new SortedList<Address, ImageSymbol>();
+            foreach (var sym in Symbols.Values.SelectMany(seg => seg))
+            {
+                var imgSym = CreateImageSymbol(sym, isExecutable);
+                if (imgSym != null)
+                {
+                    imgSymbols[imgSym.Address] = imgSym;
+                }
+            }
+            return imgSymbols;
+        }
+
         public EndianImageReader CreateReader(ulong fileOffset)
         {
             return imgLoader.CreateReader(fileOffset);
@@ -278,7 +332,48 @@ namespace Reko.ImageLoaders.Elf
         public abstract int LoadProgramHeaderTable();
         public abstract void LoadSectionHeaders();
         public abstract List<ElfSymbol> LoadSymbolsSection(ElfSection symSection);
-        public abstract void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols);
+        /// <summary>
+        /// The GOT table contains an array of pointers. Some of these
+        /// pointers may be pointing to the symbols in the symbol table(s).
+        /// </summary>
+        public void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            // Locate the GOT
+            //$REVIEW: there doesn't seem to be a reliable way to get that
+            // information.
+            var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
+            if (got == null)
+                return;
+
+            var rdr = program.CreateImageReader(got.Address);
+            while (rdr.Address < got.EndAddress)
+            {
+                var addrGot = rdr.Address;
+                var addrSym = ReadAddress(rdr);
+                if (addrSym == null)
+                    break;
+                ImageSymbol symbol;
+                if (symbols.TryGetValue(addrSym, out symbol))
+                {
+                    // This GOT entry is a known symbol!
+                    if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
+                    {
+                        //$TODO: look up function signature.
+                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4))
+                        {
+                            Type = SymbolType.Data,
+                            Size = (uint) Architecture.PointerType.Size,
+                        };
+                        symbols[addrGot] = gotSym;
+                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
+                        if (symbol.Type == SymbolType.ExternalProcedure)
+                        {
+                            program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
+                        }
+                    }
+                }
+            }
+        }
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
         {
@@ -356,6 +451,21 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public abstract Address GetEntryPointAddress(Address addrBase);
+
+        protected void EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
+        {
+            if (addr == null)
+                return;
+            ImageSymbol ep;
+            if (!symbols.TryGetValue(addr, out ep))
+            {
+                ep = new ImageSymbol(addr)
+                {
+                    ProcessorState = Architecture.CreateProcessorState()
+                };
+            }
+            entryPoints.Add(ep);
+        }
 
         // A map for extra symbols, those not in the usual Elf symbol tables
 
@@ -455,8 +565,6 @@ namespace Reko.ImageLoaders.Elf
             return 0; //m_pImportStubs[];
         }
 
-
-
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
         {
             if (sect == null)
@@ -502,7 +610,38 @@ namespace Reko.ImageLoaders.Elf
             return imgLoader.ReadAsciiString(v);
         }
 
-        public abstract RelocationResults Relocate(Program program, Address addrLoad);
+        public abstract Address ReadAddress(EndianImageReader rdr);
+
+        public RelocationResults Relocate(Program program, Address addrLoad)
+        {
+            var symbols = CreateSymbolDictionaries(IsExecutableFile);
+
+            Relocator.Relocate(program);
+
+            LocateGotPointers(program, symbols);
+            var entryPoints = new List<ImageSymbol>();
+            var addrEntry = GetEntryPointAddress(addrLoad);
+            EnsureEntryPoint(entryPoints, symbols, addrEntry);
+            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            EnsureEntryPoint(entryPoints, symbols, addrMain);
+            return new RelocationResults(entryPoints, symbols);
+        }
+
+
+        /// <summary>
+        /// Hack off the @@GLIBC_... suffixes from symbols. 
+        /// They might become useful at some later stage, but for now
+        /// they just mangle the names unnecessarily.
+        /// </summary>
+        protected static string RemoveModuleSuffix(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+            int i = s.IndexOf("@@");
+            if (i < 0)
+                return s;
+            return s.Remove(i);
+        }
     }
 
     public class ElfLoader64 : ElfLoader
@@ -523,6 +662,8 @@ namespace Reko.ImageLoaders.Elf
         public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr64(0x8048000); } }
 
+        public override bool IsExecutableFile { get { return Header64.e_type != ElfImageLoader.ET_REL; } }
+        
         public override Address ComputeBaseAddress(IPlatform platform)
         {
             ulong uBaseAddr = ProgramHeaders64
@@ -588,6 +729,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
             case ElfMachine.EM_MIPS: return new MipsRelocator64(this);
             case ElfMachine.EM_RISCV: return new RiscVRelocator64(this);
+            case ElfMachine.EM_ALPHA: return new AlphaRelocator(this);
             }
             return base.CreateRelocator(machine);
         }
@@ -756,32 +898,50 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
+                foreach (var section in Sections)
                 {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    if (section.Name == null || section.Address == null)
+                        continue;
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer64(section);
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer64(section);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
                 }
-                else
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
             return segmentMap;
-
         }
 
         public override int LoadProgramHeaderTable()
@@ -862,7 +1022,7 @@ namespace Reko.ImageLoaders.Elf
                 var sym = Elf64_Sym.Load(rdr);
                 //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                 //    i,
-                //    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                //    RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                 //    (ElfSymbolType)(sym.st_info & 0xF),
                 //    sym.st_shndx,
                 //    GetSectionName(sym.st_shndx),
@@ -870,7 +1030,7 @@ namespace Reko.ImageLoaders.Elf
                 //    sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
-                    Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
@@ -880,77 +1040,16 @@ namespace Reko.ImageLoaders.Elf
             return symbols;
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public override Address ReadAddress(EndianImageReader rdr)
         {
-            Relocator.Relocate(program);
+            ulong uAddrSym;
+            if (!rdr.TryReadUInt64(out uAddrSym))
+                return null;
 
-            var entryPoints = new List<ImageSymbol>();
-            var symbols = new SortedList<Address, ImageSymbol>();
-            foreach (var sym in Symbols.Values.SelectMany(seg => seg))
-            {
-                var imgSym = CreateImageSymbol(sym, Header64.e_type);
-                if (imgSym != null)
-                {
-                    symbols[imgSym.Address] = imgSym;
-                }
-            }
-
-            var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
-            return new RelocationResults(entryPoints, symbols);
+            var addr = Address.Ptr64(uAddrSym);
+            return addr;
         }
 
-        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
-        {
-            // Locate the GOT
-            //$REVIEW: there doesn't seem to be a reliable way to get that
-            // information.
-            var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
-            if (got == null)
-                return;
-
-            var rdr = program.CreateImageReader(got.Address);
-            while (rdr.Address < got.EndAddress)
-            {
-                var addrGot = rdr.Address;
-                ulong uAddrSym;
-                if (!rdr.TryReadUInt64(out uAddrSym))
-                    break;
-
-                var addrSym = Address.Ptr64(uAddrSym);
-                ImageSymbol symbol;
-                if (symbols.TryGetValue(addrSym, out symbol))
-                {
-                    // This GOT entry is a known symbol!
-                    if (symbol.Type == SymbolType.Procedure)
-                    {
-                        //$TODO: look up function signature.
-                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 8))
-                        {
-                            Type = SymbolType.Data,
-                            Size = (uint) Architecture.PointerType.Size
-                        };
-                        symbols[addrGot] = gotSym;
-                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
-                    }
-                }
-            }
-        }
     }
 
     public class ElfLoader32 : ElfLoader
@@ -969,6 +1068,8 @@ namespace Reko.ImageLoaders.Elf
         public Elf32_EHdr Header { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
+
+        public override bool IsExecutableFile { get { return Header.e_type != ElfImageLoader.ET_REL; } }
 
         public static int ELF32_R_SYM(int info) { return ((info) >> 8); }
         public static int ELF32_ST_BIND(int i) { return ((i) >> 4); }
@@ -1276,6 +1377,8 @@ namespace Reko.ImageLoaders.Elf
         public string GetSymbolName(ElfSection symSection, uint symbolNo)
         {
             var strSection = symSection.LinkedSection;
+            if (strSection == null)
+                return string.Format("null:{0:X8}", symbolNo);
             uint offset = (uint)(symSection.FileOffset + symbolNo * symSection.EntrySize);
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt32(out offset);
@@ -1306,27 +1409,47 @@ namespace Reko.ImageLoaders.Elf
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var segmentMap = new SegmentMap(addrPreferred);
-            foreach (var section in Sections)
+            if (Sections.Count > 0)
             {
-                if (section.Name == null || section.Address == null)
-                    continue;
+                foreach (var section in Sections)
+                {
+                    if (section.Name == null || section.Address == null)
+                        continue;
 
-                MemoryArea mem;
-                if (segMap.TryGetLowerBound(section.Address, out mem) &&
-                    section.Address < mem.EndAddress)
-                {
-                    AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = segmentMap.AddSegment(new ImageSegment(
-                        section.Name,
-                        section.Address,
-                        mem, mode)
+                    MemoryArea mem;
+                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                        section.Address < mem.EndAddress)
                     {
-                        Size = (uint)section.Size
-                    });
-                    seg.Designer = CreateRenderer(section, machine);
-                } else
+                        AccessMode mode = AccessModeOf(section.Flags);
+                        var seg = segmentMap.AddSegment(new ImageSegment(
+                            section.Name,
+                            section.Address,
+                            mem, mode)
+                        {
+                            Size = (uint)section.Size
+                        });
+                        seg.Designer = CreateRenderer(section, machine);
+                    }
+                    else
+                    {
+                        //$TODO: warn
+                    }
+                }
+            }
+            else
+            {
+                // There are stripped ELF binaries with 0 sections. If we have one
+                // create a pseudo-section from the segMap.
+                foreach (var segment in segMap)
                 {
-                    //$TODO: warn
+                    var imgSegment = new ImageSegment(
+                        segment.Value.BaseAddress.GenerateName("seg", ""),
+                        segment.Value,
+                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                    {
+                        Size = (uint)segment.Value.Length,
+                    };
+                    segmentMap.AddSegment(imgSegment);
                 }
             }
             segmentMap.DumpSections();
@@ -1402,24 +1525,24 @@ namespace Reko.ImageLoaders.Elf
 
         public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            //Debug.Print("Symbols");
+            Debug.Print("== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new List<ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
-                //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
-                //    i,
-                //    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                //    (ElfSymbolType)(sym.st_info & 0xF),
-                //    sym.st_shndx,
-                //    GetSectionName(sym.st_shndx),
-                //    sym.st_value,
-                //    sym.st_size);
+                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                    i,
+                    RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    (ElfSymbolType)(sym.st_info & 0xF),
+                    sym.st_shndx,
+                    GetSectionName(sym.st_shndx),
+                    sym.st_value,
+                    sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
-                    Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
@@ -1429,80 +1552,14 @@ namespace Reko.ImageLoaders.Elf
             return symbols;
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public override Address ReadAddress(EndianImageReader rdr)
         {
-            Relocator.Relocate(program);
+            uint uAddr;
+            if (!rdr.TryReadUInt32(out uAddr))
+                return null;
 
-            var entryPoints = new List<ImageSymbol>();
-            var symbols = new SortedList<Address, ImageSymbol>();
-            foreach (var sym in Symbols.Values.SelectMany(seg => seg))
-            {
-                var imgSym = CreateImageSymbol(sym, Header.e_type);
-                if (imgSym != null)
-                {
-                    symbols[imgSym.Address] = imgSym;
-                }
-            }
-
-            var addrEntry = GetEntryPointAddress(addrLoad);
-            if (addrEntry != null)
-            {
-                ImageSymbol entrySymbol;
-                if (symbols.TryGetValue(addrEntry, out entrySymbol))
-                {
-                    entryPoints.Add(entrySymbol);
-                }
-                else
-                {
-                    var ep = new ImageSymbol(addrEntry)
-                    {
-                        ProcessorState = Architecture.CreateProcessorState()
-                    };
-                    entryPoints.Add(ep);
-                }
-            }
-            return new RelocationResults(entryPoints, symbols);
-        }
-
-        /// <summary>
-        /// The GOT table contains an array of pointers. Some of these
-        /// pointers may be pointing to the symbols in the symbol table(s).
-        /// </summary>
-        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
-        {
-            // Locate the GOT
-            //$REVIEW: there doesn't seem to be a reliable way to get that
-            // information.
-            var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
-            if (got == null)
-                return;
-
-            var rdr = program.CreateImageReader(got.Address);
-            while (rdr.Address < got.EndAddress)
-            {
-                var addrGot = rdr.Address;
-                uint uAddrSym;
-                if (!rdr.TryReadUInt32(out uAddrSym))
-                    break;
-
-                var addrSym = Address.Ptr32(uAddrSym);
-                ImageSymbol symbol;
-                if (symbols.TryGetValue(addrSym, out symbol))
-                {
-                    // This GOT entry is a known symbol!
-                    if (symbol.Type == SymbolType.Procedure)
-                    {
-                        //$TODO: look up function signature.
-                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4))
-                        {
-                            Type = SymbolType.Data,
-                            Size = (uint) Architecture.PointerType.Size
-                        };
-                        symbols[addrGot] = gotSym;
-                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
-                    }
-                }
-            }
+            var addr = Address.Ptr64(uAddr);
+            return addr; 
         }
     }
 }

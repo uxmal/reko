@@ -163,7 +163,6 @@ namespace Reko.Arch.Mips
         swc1,
         swl,
         swr,
-        swu,
         sync,
         syscall,
         trunc_l_d,

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,13 +40,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
         public static readonly RegisterStorage sp = new RegisterStorage("sp", 10, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage pc = new RegisterStorage("pc", 11, 0, PrimitiveType.Word16);
 
-        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Word16);
-        public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
         public static readonly RegisterStorage ix = new RegisterStorage("ix", 8, 0, PrimitiveType.Word16);
         public static readonly RegisterStorage iy = new RegisterStorage("iy", 9, 0, PrimitiveType.Word16);
 
@@ -54,6 +54,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         public static readonly FlagGroupStorage S = new FlagGroupStorage(f, (uint)FlagM.SF, "S", PrimitiveType.Bool);
         public static readonly FlagGroupStorage Z = new FlagGroupStorage(f, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage I = new FlagGroupStorage(f, (uint)FlagM.IF, "I", PrimitiveType.Bool);
         public static readonly FlagGroupStorage H = new FlagGroupStorage(f, (uint)FlagM.HF, "H", PrimitiveType.Bool);
         public static readonly FlagGroupStorage X = new FlagGroupStorage(f, (uint)FlagM.XF, "X", PrimitiveType.Bool);
         public static readonly FlagGroupStorage V = new FlagGroupStorage(f, (uint)FlagM.VF, "V", PrimitiveType.Bool);
@@ -74,6 +75,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             bc, de, hl, ix, iy, sp,
             a, b, c, d, e, f, h, l,
+            af_, bc_, de_, hl_,
         };
 
     }
@@ -82,7 +84,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
     {
         SF = 128,
         ZF = 64,
-
+        IF = 32,
         HF = 16,
         XF = 8,
         VF = 4,

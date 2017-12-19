@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -39,7 +40,7 @@ namespace Reko.Arch.Vax
 
         private Expression Bic(Expression a, Expression mask)
         {
-            return emitter.And(a, emitter.Comp(mask));
+            return m.And(a, m.Comp(mask));
         }
 
         private Expression Copy(Expression e)
@@ -49,22 +50,22 @@ namespace Reko.Arch.Vax
 
         private Expression Dec(Expression e)
         {
-            return emitter.ISub(e, 1);
+            return m.ISub(e, 1);
         }
 
         private Expression FCmp0(Expression val)
         {
-            return emitter.FSub(val, ConstantReal.Create(val.DataType, 0.0));
+            return m.FSub(val, ConstantReal.Create(val.DataType, 0.0));
         }
 
         private Expression ICmp0(Expression val)
         {
-            return emitter.ISub(val, Constant.Zero(val.DataType));
+            return m.ISub(val, Constant.Zero(val.DataType));
         }
 
         private Expression Inc(Expression e)
         {
-            return emitter.IAdd(e, 1);
+            return m.IAdd(e, 1);
         }
 
         private void RewriteMova(PrimitiveType width)
@@ -72,9 +73,13 @@ namespace Reko.Arch.Vax
             var opSrc = RewriteSrcOp(0, width);
             var mem = opSrc as MemoryAccess;
             if (mem == null)
-                throw new AddressCorrelatedException(
-                    dasm.Current.Address,
-                    "Source operand must be a memory reference.");
+            {
+                Debug.Print(
+                    "{0}: Source operand must be a memory reference.",
+                    dasm.Current.Address);
+                m.Invalid();
+                return;
+            }
             var dst = RewriteDstOp(1, PrimitiveType.Word32, e => mem.EffectiveAddress);
             NZ00(dst);
         }
@@ -94,14 +99,14 @@ namespace Reko.Arch.Vax
             var op2 = RewriteSrcOp(2, PrimitiveType.Word16);
             var op3 = RewriteSrcOp(3, PrimitiveType.Pointer32);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(
+            m.Assign(
                 grf,
                 host.PseudoProcedure(
                     op,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3));
             var c = FlagGroup(FlagM.CF);
-            emitter.Assign(c, Constant.False());
+            m.Assign(c, Constant.False());
         }
 
         private void RewriteP6(string op)
@@ -113,77 +118,98 @@ namespace Reko.Arch.Vax
             var op4 = RewriteSrcOp(4, PrimitiveType.Word16);
             var op5 = RewriteSrcOp(5, PrimitiveType.Pointer32);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(
+            m.Assign(
                 grf,
                 host.PseudoProcedure(
                     op, 
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
-            emitter.Assign(c, Constant.False());
+            m.Assign(c, Constant.False());
         }
 
         private void RewriteAdwc()
         {
             var op1 = RewriteSrcOp(0, PrimitiveType.Word32);
             var dst = RewriteDstOp(1, PrimitiveType.Word32,
-                e => emitter.IAdd(
-                        emitter.IAdd(e, op1),
+                e => m.IAdd(
+                        m.IAdd(e, op1),
                         FlagGroup(FlagM.CF)));
             AllFlags(dst);
         }
 
-        private void RewriteAlu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAlu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(e, op1));
-            genFlags(dst);
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
+            return genFlags(dst);
         }
 
-        private void RewriteAlu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAlu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
-            var op2 = RewriteSrcOp(1, width);
-            var dst = RewriteDstOp(2, width, e => fn(op2, op1));
-            genFlags(dst);
+            if (op1 != null)
+            {
+                var op2 = RewriteSrcOp(1, width);
+                if (op2 != null)
+                {
+                    var dst = RewriteDstOp(2, width, e => fn(op2, op1));
+                    if (dst != null)
+                    {
+                        return genFlags(dst);
+                    }
+                }
+            }
+            EmitInvalid();
+            return false;
         }
 
-        private void RewriteAluUnary1(PrimitiveType width, Func<Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAluUnary1(PrimitiveType width, Func<Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var dst = RewriteDstOp(1, width, e => fn(e));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
-        private void RewriteAluUnary2(PrimitiveType width, Func<Expression, Expression> fn, Action<Expression> genFlags)
+        private bool RewriteAluUnary2(PrimitiveType width, Func<Expression, Expression> fn, Func<Expression, bool> genFlags)
         {
             var op1 = RewriteSrcOp(0, width);
             var dst = RewriteDstOp(1, width, e => fn(op1));
-            genFlags(dst);
+            return genFlags(dst);
         }
 
         private void RewriteAsh(PrimitiveType width)
         {
             var op1 = RewriteSrcOp(0, PrimitiveType.SByte);
+            Func<Expression, Expression, Expression> fn;
+            Expression shift;
             var c = op1 as Constant;
             if (c != null)
             {
-                Func<Expression, Expression, Expression> fn;
                 var sh = c.ToInt16();
                 if (sh > 0)
                 {
-                    fn = emitter.Shl;
+                    fn = m.Shl;
                 }
                 else
                 {
-                    fn = emitter.Sar;
-                    sh = (short) -sh;
+                    fn = m.Sar;
+                    sh = (short)-sh;
                 }
-                var op2 = RewriteSrcOp(1, width);
-                var dst = RewriteDstOp(2, width, e => fn(op2, Constant.SByte((sbyte)sh)));
-                this.NZV0(dst);
-                return;
+                shift = Constant.SByte((sbyte)sh);
             }
-            throw new NotImplementedException();
+            else
+            {
+                shift = RewriteSrcOp(0, width);
+                fn = (a, b) => host.PseudoProcedure("__ashift", width, a, b);
+            }
+            var op2 = RewriteSrcOp(1, width);
+            var dst = RewriteDstOp(2, width, e => fn(op2, shift));
+            this.NZV0(dst);
         }
 
         private void RewriteAshp()
@@ -195,23 +221,33 @@ namespace Reko.Arch.Vax
             var op4 = RewriteSrcOp(4, PrimitiveType.Word16);
             var op5 = RewriteSrcOp(5, PrimitiveType.Pointer32);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(
+            m.Assign(
                 grf,
                 host.PseudoProcedure(
                     "vax_ashp",
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
-            emitter.Assign(c, Constant.False());
+            m.Assign(c, Constant.False());
+        }
+
+        private void RewriteBit(PrimitiveType width)
+        {
+            var mask = RewriteSrcOp(0, width);
+            var src = RewriteSrcOp(1, width);
+            var tmp = frame.CreateTemporary(width);
+            m.Assign(tmp, m.And(src, mask));
+            m.Assign(FlagGroup(FlagM.NZ), m.Cond(tmp));
+            m.Assign(FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteClr(PrimitiveType width)
         {
             RewriteDstOp(0, width, e => Constant.Create(width, 0));
-            emitter.Assign(FlagGroup(FlagM.ZF), Constant.True());
-            emitter.Assign(FlagGroup(FlagM.NF), Constant.False());
-            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(FlagGroup(FlagM.ZF), Constant.True());
+            m.Assign(FlagGroup(FlagM.NF), Constant.False());
+            m.Assign(FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteCmp(PrimitiveType width)
@@ -219,8 +255,8 @@ namespace Reko.Arch.Vax
             var op0 = RewriteSrcOp(0, width);
             var op1 = RewriteSrcOp(1, width);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF);
-            emitter.Assign(grf, emitter.Cond(emitter.ISub(op0, op1)));
-            emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(grf, m.Cond(m.ISub(op0, op1)));
+            m.Assign(FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteCmpp3()
@@ -251,21 +287,35 @@ namespace Reko.Arch.Vax
         private void RewriteMovz(PrimitiveType from, PrimitiveType to)
         {
             var opFrom = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => emitter.Cast(to, opFrom));
+            var dst = RewriteDstOp(1, to, e => m.Cast(to, opFrom));
             NZ00(dst);
         }
 
         private void RewriteCvt(PrimitiveType from, PrimitiveType to)
         {
             var src = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => emitter.Cast(to, src));
+            var dst = RewriteDstOp(1, to, e => m.Cast(to, src));
             NZV0(dst);
+        }
+
+        private void RewriteCvtComplex(string cvtfn)
+        {
+            var srclen = RewriteSrcOp(0, PrimitiveType.Word16);
+            var srcaddr = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var dstlen = RewriteSrcOp(2, PrimitiveType.Word16);
+            var dstaddr = RewriteSrcOp(3, PrimitiveType.Word16);
+            NZV0(host.PseudoProcedure(cvtfn,
+                PrimitiveType.Byte,
+                srclen,
+                srcaddr,
+                dstlen,
+                dstaddr));
         }
 
         private void RewriteCvtr(PrimitiveType from, PrimitiveType to)
         {
             var src = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => emitter.Cast(
+            var dst = RewriteDstOp(1, to, e => m.Cast(
                 to,
                 host.PseudoProcedure("round", to, src)));
             NZV0(dst);
@@ -280,14 +330,32 @@ namespace Reko.Arch.Vax
             var op4 = RewriteSrcOp(4, PrimitiveType.Word16);
             var op5 = RewriteSrcOp(5, PrimitiveType.Pointer32);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(
+            m.Assign(
                 grf,
                 host.PseudoProcedure(
                     "vax_divp",
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
-            emitter.Assign(c, Constant.False());
+            m.Assign(c, Constant.False());
+        }
+
+        private void RewriteFfx(string fnname)
+        {
+            var start = RewriteSrcOp(0, PrimitiveType.Word32);
+            var size = RewriteSrcOp(1, PrimitiveType.Byte);
+            var bas = RewriteSrcOp(2, PrimitiveType.Word32);
+            var findPos = RewriteSrcOp(3, PrimitiveType.Word32);
+            var z = FlagGroup(FlagM.ZF);
+            var grf = FlagGroup(FlagM.NVC);
+            m.Assign(
+                z,
+                host.PseudoProcedure(
+                    fnname,
+                    z.DataType,
+                    bas, size, start,
+                    m.Out(PrimitiveType.Pointer32, findPos)));
+            m.Assign(grf, 0);
         }
 
         private void RewriteIncDec(PrimitiveType width, Func<Expression, Expression> incdec)
@@ -305,14 +373,14 @@ namespace Reko.Arch.Vax
             var op4 = RewriteSrcOp(4, PrimitiveType.Word16);
             var op5 = RewriteSrcOp(5, PrimitiveType.Pointer32);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
-            emitter.Assign(
+            m.Assign(
                 grf,
                 host.PseudoProcedure(
                     "vax_mulp",
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
-            emitter.Assign(c, Constant.False());
+            m.Assign(c, Constant.False());
         }
 
         private void RewritePoly(PrimitiveType width)
@@ -327,45 +395,50 @@ namespace Reko.Arch.Vax
                 ret = frame.EnsureSequence(r1.Storage, ret.Storage, width);
             }
             var grf = FlagGroup(FlagM.ZF | FlagM.NF);
-            emitter.Assign(
+            m.Assign(
                 ret,
                 host.PseudoProcedure(
                     "vax_poly",
                     width,
                     op0, op1, op2));
-            emitter.Assign(grf, emitter.Cond(ret));
-            emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
-            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(grf, m.Cond(ret));
+            m.Assign(FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
         private void RewritePush(PrimitiveType width)
         {
             var sp = frame.EnsureRegister(Registers.sp);
-            emitter.Assign(sp, emitter.ISub(sp, width.Size));
+            m.Assign(sp, m.ISub(sp, width.Size));
             var op0 = RewriteSrcOp(0, width);
             if (op0 is MemoryAccess)
             {
                 var t = frame.CreateTemporary(width);
-                emitter.Assign(t, op0);
+                m.Assign(t, op0);
                 op0 = t;
             }
-            emitter.Assign(emitter.Load(width, sp), op0);
+            m.Assign(m.Load(width, sp), op0);
             NZ00(op0);
         }
 
         private void RewritePusha()
         {
             var sp = frame.EnsureRegister(Registers.sp);
-            emitter.Assign(sp, emitter.ISub(sp, PrimitiveType.Word32.Size));
-            var op0 = (MemoryAccess) RewriteSrcOp(0, PrimitiveType.Word32);
+            m.Assign(sp, m.ISub(sp, PrimitiveType.Word32.Size));
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word32) as MemoryAccess;
+            if (op0 == null)
+            {
+                EmitInvalid();
+                return;
+            }
             var ea = op0.EffectiveAddress;
             if (!(ea is Identifier || ea is Constant))
             {
                 var t = frame.CreateTemporary(PrimitiveType.Word32);
-                emitter.Assign(t, ea);
+                m.Assign(t, ea);
                 ea = t;
             }
-            emitter.Assign(emitter.Load(PrimitiveType.Word32, sp), ea);
+            m.Assign(m.Load(PrimitiveType.Word32, sp), ea);
             NZ00(ea);
         }
 
@@ -373,8 +446,8 @@ namespace Reko.Arch.Vax
         {
             var op1 = RewriteSrcOp(0, PrimitiveType.Word32);
             var dst = RewriteDstOp(1, PrimitiveType.Word32,
-                e => emitter.ISub(
-                        emitter.ISub(e, op1),
+                e => m.ISub(
+                        m.ISub(e, op1),
                         FlagGroup(FlagM.CF)));
             AllFlags(dst);
         }

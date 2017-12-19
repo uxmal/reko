@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,19 +38,19 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private Tlcs900Architecture arch;
         private EndianImageReader rdr;
         private ProcessorState state;
-        private Frame frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private IEnumerator<Tlcs900Instruction> dasm;
-        private RtlInstructionCluster rtlc;
+        private RtlClass rtlc;
         private RtlEmitter m;
         private Tlcs900Instruction instr;
 
-        public Tlcs900Rewriter(Tlcs900Architecture arch, EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Tlcs900Rewriter(Tlcs900Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = state;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = new Tlcs900Disassembler(this.arch, rdr).GetEnumerator();
         }
@@ -59,38 +59,54 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             while (dasm.MoveNext())
             {
-                rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
-                rtlc.Class = RtlClass.Linear;
-                m = new RtlEmitter(rtlc.Instructions);
+                rtlc = RtlClass.Linear;
+                var instrs = new List<RtlInstruction>();
+                m = new RtlEmitter(instrs);
                 this.instr = dasm.Current;
                 switch (instr.Opcode)
                 {
                 default:
+                    host.Error(
+                       instr.Address,
+                       string.Format(
+                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                           instr.Opcode));
                     EmitUnitTest();
                     Invalid();
                     break;
                 case Opcode.invalid:
                     Invalid();
                     break;
+                case Opcode.adc: RewriteAdcSbc(m.IAdd, "****0*"); break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Opcode.and: RewriteBinOp(m.And, "**1*00"); break;
                 case Opcode.bit: RewriteBit(); break;
+                case Opcode.bs1b: RewriteBs1b(); break;
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.calr: RewriteCall(); break;
+                case Opcode.ccf: RewriteCcf(); break;
+                case Opcode.chg: RewriteChg(); break;
                 case Opcode.cp: RewriteCp("SZHV1C"); break;
                 case Opcode.daa: RewriteDaa("****-*"); break;
                 case Opcode.dec: RewriteIncDec(m.ISub, "****1-"); break;
-                case Opcode.div:RewriteDiv(m.UDiv, "---V--");break;
+                case Opcode.decf: RewriteDecf(); break;
+                case Opcode.div: RewriteDiv(m.UDiv, "---V--");break;
+                case Opcode.divs: RewriteDiv(m.SDiv, "---V--");break;
                 case Opcode.djnz: RewriteDjnz(); break;
                 case Opcode.ei: RewriteEi(); break;
+                case Opcode.ex: RewriteEx(); break;
+                case Opcode.halt: RewriteHalt(); break;
                 case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
+                case Opcode.incf: RewriteIncf(); break;
                 case Opcode.lda: RewriteLda(); break;
                 case Opcode.jp: RewriteJp(); break;
                 case Opcode.jr: RewriteJp(); break;
                 case Opcode.ld: RewriteLd(); break;
+                case Opcode.ldf: RewriteLdf(); break;
                 case Opcode.ldir: RewriteLdir(PrimitiveType.Byte, "--000-"); break;
                 case Opcode.ldirw: RewriteLdir(PrimitiveType.Word16, "--000-"); break;
-                case Opcode.mul: RewriteBinOp(m.UMul, ""); break;
+                case Opcode.mul: RewriteMul(m.UMul); break;
+                case Opcode.muls: RewriteMul(m.SMul); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.or: RewriteBinOp(m.Or, "**0*00"); break;
                 case Opcode.pop: RewritePop(); break;
@@ -98,13 +114,24 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Opcode.rcf: RewriteRcf(); break;
                 case Opcode.res: RewriteRes(); break;
                 case Opcode.ret: RewriteRet(); break;
-                case Opcode.set: RewriteSet(); break;
+                case Opcode.retd: RewriteRetd(); break;
+                case Opcode.reti: RewriteReti(); break;
+                case Opcode.sbc: RewriteAdcSbc(m.ISub, "****1*"); break;
+                case Opcode.scc: RewriteScc(); break;
                 case Opcode.scf: RewriteScf(); break;
+                case Opcode.set: RewriteSet(); break;
+                case Opcode.sla: RewriteShift(m.Shl,"**0*0*"); break;
                 case Opcode.sll: RewriteShift(m.Shl,"**0*0*"); break;
                 case Opcode.srl: RewriteShift(m.Shr, "**0*0*"); break;
                 case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
+                case Opcode.swi: RewriteSwi(); break;
+                case Opcode.xor: RewriteBinOp(m.Xor, "**0*00"); break;
+                case Opcode.zcf: RewriteZcf(); break;
                 }
-                yield return rtlc;
+                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
+                {
+                    Class = rtlc
+                };
             }
         }
 
@@ -115,12 +142,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void Invalid()
         {
-            host.Error(
-               instr.Address,
-               string.Format(
-                   "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
-                   instr.Opcode));
-            rtlc.Class = RtlClass.Invalid;
+            rtlc = RtlClass.Invalid;
             m.Invalid();
         }
 
@@ -129,7 +151,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var reg = op as RegisterOperand;
             if (reg != null)
             {
-                return frame.EnsureRegister(reg.Register);
+                return binder.EnsureRegister(reg.Register);
             }
             var addr = op as AddressOperand;
             if (addr != null)
@@ -145,7 +167,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             if (mem != null)
             {
                 Expression ea = RewriteSrcEa(mem);
-                var tmp = frame.CreateTemporary(mem.Width);
+                var tmp = binder.CreateTemporary(mem.Width);
                 m.Assign(tmp, m.Load(mem.Width, ea));
                 return tmp;
             }
@@ -165,7 +187,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 if (mem.Increment < 0)
                     throw new NotImplementedException("predec");
-                ea = frame.EnsureRegister(mem.Base);
+                ea = binder.EnsureRegister(mem.Base);
                 if (mem.Offset != null)
                 {
                     ea = m.IAdd(ea, mem.Offset);
@@ -184,7 +206,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var reg = op as RegisterOperand;
             if(reg != null)
             {
-                var id = frame.EnsureIdentifier(reg.Register);
+                var id = binder.EnsureRegister(reg.Register);
                 m.Assign(id, fn(id, src));
                 return id;
             }
@@ -199,7 +221,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 Expression ea;
                 if (mem.Base != null)
                 {
-                    ea = frame.EnsureRegister(mem.Base);
+                    ea = binder.EnsureRegister(mem.Base);
                 }
                 else
                 {
@@ -210,7 +232,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     m.Assign(ea, m.ISub(ea, mem.Width.Size));
                 }
                 var load = m.Load(mem.Width, ea);
-                var tmp = frame.CreateTemporary(ea.DataType);
+                var tmp = binder.CreateTemporary(ea.DataType);
                 m.Assign(tmp, fn(load, src));
                 m.Assign(m.Load(mem.Width, ea), tmp);
                 if (mem.Increment > 0)
@@ -242,12 +264,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     break;
                 case '0':
                     m.Assign(
-                        frame.EnsureFlagGroup(arch.GetFlagGroup(mask)),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(mask)),
                         Constant.False());
                     break;
                 case '1':
                     m.Assign(
-                        frame.EnsureFlagGroup(arch.GetFlagGroup(mask)),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(mask)),
                         Constant.True());
                     break;
                 }
@@ -256,7 +278,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             if (grf != 0)
             {
                 m.Assign(
-                    frame.EnsureFlagGroup(arch.GetFlagGroup(grf)),
+                    binder.EnsureFlagGroup(arch.GetFlagGroup(grf)),
                     m.Cond(exp));
             }
         }
@@ -286,7 +308,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             return m.Test(
                 cc,
-                frame.EnsureFlagGroup(arch.GetFlagGroup(flags)));
+                binder.EnsureFlagGroup(arch.GetFlagGroup(flags)));
         }
 
         [Conditional("DEBUG")]

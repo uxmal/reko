@@ -31,20 +31,20 @@ namespace Reko.Arch.PowerPC
     {
         private void RewriteIsync()
         {
-            emitter.SideEffect(host.PseudoProcedure("__isync", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__isync", VoidType.Instance));
         }
 
         private void RewriteMfmsr()
         {
             var dst = RewriteOperand(instr.op1);
-            emitter.Assign(dst, host.PseudoProcedure("__read_msr", PrimitiveType.Word32));
+            m.Assign(dst, host.PseudoProcedure("__read_msr", PrimitiveType.Word32));
         }
 
         private void RewriteMfspr()
         {
             var spr = RewriteOperand(instr.op1);
             var reg = RewriteOperand(instr.op2);
-            emitter.Assign(
+            m.Assign(
                 reg, 
                 host.PseudoProcedure("__read_spr", PrimitiveType.Word32, spr));
         }
@@ -52,23 +52,23 @@ namespace Reko.Arch.PowerPC
         private void RewriteMtmsr()
         {
             var src = RewriteOperand(instr.op1);
-            emitter.SideEffect(host.PseudoProcedure("__write_msr", VoidType.Instance, src));
+            m.SideEffect(host.PseudoProcedure("__write_msr", VoidType.Instance, src));
         }
 
         private void RewriteMtspr()
         {
             var spr = RewriteOperand(instr.op1);
             var reg = RewriteOperand(instr.op2);
-            emitter.SideEffect(host.PseudoProcedure("__write_spr", PrimitiveType.Word32, spr, reg));
+            m.SideEffect(host.PseudoProcedure("__write_spr", PrimitiveType.Word32, spr, reg));
         }
 
         private void RewriteRfi()
         {
-            this.cluster.Class = RtlClass.Transfer;
+            this.rtlc = RtlClass.Transfer;
             var srr0 = frame.EnsureRegister(arch.SpRegisters[26]);
             var srr1 = frame.EnsureRegister(arch.SpRegisters[27]);
-            emitter.SideEffect(host.PseudoProcedure("__write_msr", PrimitiveType.Word32, srr1));
-            emitter.Goto(srr0);
+            m.SideEffect(host.PseudoProcedure("__write_msr", PrimitiveType.Word32, srr1));
+            m.Goto(srr0);
         }
     }
 }

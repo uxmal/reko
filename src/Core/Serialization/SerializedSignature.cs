@@ -61,6 +61,10 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
         public int FpuStackDelta;
 
+        [XmlAttribute("parametersValid")]
+        [DefaultValue(true)]
+        public bool ParametersValid = true;
+
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitSignature(this);
@@ -85,6 +89,7 @@ namespace Reko.Core.Serialization
             {
                 sb.Append(string.Join(",", Arguments.Select(a => a.ToString())));
             }
+            sb.Append(")");
             sb.Append(")");
             return sb.ToString();
         }

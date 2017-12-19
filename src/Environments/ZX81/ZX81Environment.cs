@@ -55,7 +55,7 @@ namespace Reko.Environments.ZX81
             return new HashSet<RegisterStorage> { Registers.a };
         }
 
-        public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
         }
@@ -74,6 +74,7 @@ namespace Reko.Environments.ZX81
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 2;
@@ -85,12 +86,6 @@ namespace Reko.Environments.ZX81
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
-        }
-
-
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

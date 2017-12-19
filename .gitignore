@@ -1,6 +1,7 @@
 [Oo]bj
 [Bb]in
 TestResults
+/.vs
 /src/Samples/TravisRelease
 /src/.vs
 *.csproj.user

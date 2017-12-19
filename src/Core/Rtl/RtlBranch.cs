@@ -26,13 +26,12 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlBranch : RtlInstruction
+    public class RtlBranch : RtlTransfer
     {
         public RtlBranch(Expression condition, Address target, RtlClass rtlClass) 
+            : base(target, rtlClass)
         {
             this.Condition = condition;
-            this.Target = target;
-            this.Class = rtlClass;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
@@ -41,8 +40,6 @@ namespace Reko.Core.Rtl
         }
 
         public Expression Condition { get; private set; }
-
-        public Address Target { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
         {

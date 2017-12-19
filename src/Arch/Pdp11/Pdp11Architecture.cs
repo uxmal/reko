@@ -101,7 +101,6 @@ namespace Reko.Arch.Pdp11
 
         #region IProcessorArchitecture Members
 
-
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Pdp11Disassembler(rdr, this);
@@ -237,7 +236,8 @@ namespace Reko.Arch.Pdp11
                 case 'C': grf |= Registers.C.FlagGroupBits; break;
                 }
             }
-            return new FlagGroupStorage(Registers.psw, grf, name, PrimitiveType.Byte);
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            return new FlagGroupStorage(Registers.psw, grf, name, dt);
         }
 
         public override string GrfToString(uint grf)
@@ -251,14 +251,14 @@ namespace Reko.Arch.Pdp11
 			return s.ToString();
 		}
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame, host);
+            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), binder, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

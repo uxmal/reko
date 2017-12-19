@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Rtl;
 
 namespace Reko.Arch.M68k
 {
@@ -58,10 +59,15 @@ namespace Reko.Arch.M68k
                     Constant.Byte(1), (s, d) =>
                         host.PseudoProcedure(procName, PrimitiveType.Word32, d, s));
             }
-            emitter.Assign(
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
-                emitter.Cond(opDst));
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+                m.Cond(opDst));
+            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
         public void RewriteRotationX(string procName)
@@ -69,19 +75,24 @@ namespace Reko.Arch.M68k
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
                 host.PseudoProcedure(procName, di.dataWidth, d, s, orw.FlagGroup(FlagM.XF)));
-            emitter.Assign(
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.XF | FlagM.ZF),
-                emitter.Cond(opDst));
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+                m.Cond(opDst));
+            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
         public void RewriteTst()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.FlagGroup(FlagM.NF | FlagM.ZF);
-            emitter.Assign(opDst, emitter.Cond(emitter.ISub(opSrc, 0)));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(opDst, m.Cond(m.ISub(opSrc, 0)));
+            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
         public void RewriteShift(Func<Expression, Expression, Expression> binOpGen)
@@ -103,12 +114,17 @@ namespace Reko.Arch.M68k
         public void RewriteBchg()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
-            var tmpMask = frame.CreateTemporary(PrimitiveType.UInt32);
-            emitter.Assign(tmpMask, emitter.Shl(1, opSrc));
-            var opDst = orw.RewriteDst(di.op2, di.Address, tmpMask, (s, d) => emitter.Xor(d, s));
-            emitter.Assign(
+            var tmpMask = binder.CreateTemporary(PrimitiveType.UInt32);
+            m.Assign(tmpMask, m.Shl(1, opSrc));
+            var opDst = orw.RewriteDst(di.op2, di.Address, tmpMask, (s, d) => m.Xor(d, s));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(
                 orw.FlagGroup(FlagM.ZF),
-                emitter.Cond(emitter.And(opDst, tmpMask)));
+                m.Cond(m.And(opDst, tmpMask)));
         }
 
         public void RewriteBclrBset(string name)
@@ -120,19 +136,19 @@ namespace Reko.Arch.M68k
             di.op2.Width = w;
             orw.DataWidth = w;
             var opDst = orw.RewriteSrc(di.op2, di.Address);
-            emitter.Assign(
+            m.Assign(
                 orw.FlagGroup(FlagM.ZF),
-                host.PseudoProcedure(name, PrimitiveType.Bool, opDst, opSrc, emitter.Out(PrimitiveType.Pointer32, opDst)));
+                host.PseudoProcedure(name, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Pointer32, opDst)));
         }
 
         public void RewriteExg()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteSrc(di.op2, di.Address);
-            var tmp = frame.CreateTemporary(PrimitiveType.Word32);
-            emitter.Assign(tmp, opSrc);
-            emitter.Assign(opSrc, opDst);
-            emitter.Assign(opDst, tmp);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+            m.Assign(tmp, opSrc);
+            m.Assign(opSrc, opDst);
+            m.Assign(opDst, tmp);
             LogicalConditions(opDst);
         }
 
@@ -150,25 +166,25 @@ namespace Reko.Arch.M68k
                 dtSrc = PrimitiveType.SByte;
                 dtDst = PrimitiveType.Int16;
             }
-            var dReg = frame.EnsureRegister(((RegisterOperand) di.op1).Register);
-            emitter.Assign(
+            var dReg = binder.EnsureRegister(((RegisterOperand) di.op1).Register);
+            m.Assign(
                 dReg,
-                emitter.Cast(dtDst, emitter.Cast(dtSrc, dReg)));
-            emitter.Assign(
+                m.Cast(dtDst, m.Cast(dtSrc, dReg)));
+            m.Assign(
                 orw.FlagGroup(FlagM.NF | FlagM.ZF),
-                emitter.Cond(dReg));
+                m.Cond(dReg));
         }
 
         public void RewriteExtb()
         {
             var dReg = orw.RewriteSrc(di.op1, di.Address);
-            emitter.Assign(
+            m.Assign(
                 dReg, 
-                emitter.Cast(PrimitiveType.Int32,
-                    emitter.Cast(PrimitiveType.SByte, dReg)));
-            emitter.Assign(
+                m.Cast(PrimitiveType.Int32,
+                    m.Cast(PrimitiveType.SByte, dReg)));
+            m.Assign(
                 orw.FlagGroup(FlagM.NF | FlagM.ZF),
-                emitter.Cond(dReg));
+                m.Cond(dReg));
         }
 
         public void RewriteLogical(Func<Expression, Expression, Expression> binOpGen)
@@ -183,8 +199,13 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, PrimitiveType.Int32, opSrc, binOpGen);
-            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF), emitter.Cond(opDst));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF), m.Cond(opDst));
+            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
         public void RewriteUnary(Func<Expression, Expression> unaryOpGen, Action<Expression> generateFlags)
@@ -198,22 +219,28 @@ namespace Reko.Arch.M68k
             if (expr.DataType.Size == width.Size)
                 return expr;
             else
-                return emitter.Cast(width, expr);
+                return m.Cast(width, expr);
         }
 
         private void RewriteAddSubq(Func<Expression,Expression,Expression> opGen)
         {
-            var opSrc = orw.RewriteSrc(di.op1, di.Address);
+            var opSrc = (Constant) orw.RewriteSrc(di.op1, di.Address);
             var regDst = di.op2 as RegisterOperand;
             if (regDst != null && regDst.Register is AddressRegister)
             {
-                var opDst = frame.EnsureRegister(regDst.Register);
-                emitter.Assign(opDst, opGen(opSrc, opDst));
+                opSrc = Constant.Int32(opSrc.ToInt32());
+                var opDst = binder.EnsureRegister(regDst.Register);
+                m.Assign(opDst, opGen(opSrc, opDst));
             }
             else
             {
                 var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, opGen);
-                emitter.Assign(orw.FlagGroup(FlagM.CVZNX), emitter.Cond(opDst));
+                if (opDst == null)
+                {
+                    EmitInvalid();
+                    return;
+                }
+                m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(opDst));
             }
         }
 
@@ -225,7 +252,12 @@ namespace Reko.Arch.M68k
             var src = orw.RewriteSrc(di.op1, di.Address);
             var dst = orw.RewriteDst(di.op2, di.Address, src, (d, s) => 
                     opr(opr(d, s), x));
-            emitter.Assign(orw.FlagGroup(FlagM.CVZNX), emitter.Cond(dst));
+            if (dst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
         }
 
         private void RewriteScc(ConditionCode cc, FlagM flagsUsed)
@@ -236,24 +268,34 @@ namespace Reko.Arch.M68k
         private void RewriteSwap()
         {
             var r = (RegisterOperand) di.op1;
-            var reg = frame.EnsureRegister(r.Register);
-            emitter.Assign(reg, host.PseudoProcedure("__swap", PrimitiveType.Word32, reg));
-            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(reg));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            var reg = binder.EnsureRegister(r.Register);
+            m.Assign(reg, host.PseudoProcedure("__swap", PrimitiveType.Word32, reg));
+            m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), m.Cond(reg));
+            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteBinOp(Func<Expression,Expression,Expression> opGen)
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, opGen);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
         }
 
         private void RewriteBinOp(Func<Expression, Expression, Expression> opGen, FlagM flags)
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, opGen);
-            emitter.Assign(orw.FlagGroup(flags), emitter.Cond(opDst));
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(flags), m.Cond(opDst));
         }
 
         private void RewriteBtst()
@@ -261,55 +303,98 @@ namespace Reko.Arch.M68k
             orw.DataWidth = di.op1 is RegisterOperand ? PrimitiveType.Word32 : PrimitiveType.Byte;
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteSrc(di.op2, di.Address);
-            emitter.Assign(
+            m.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 host.PseudoProcedure("__btst", PrimitiveType.Bool,
                     opDst, opSrc));
+        }
+
+        private void RewriteCas()
+        {
+            m.Assign(
+                orw.FlagGroup(FlagM.CVZN),
+                host.PseudoProcedure("atomic_compare_exchange_weak", PrimitiveType.Bool,
+                    m.AddrOf(orw.RewriteSrc(di.op3, di.Address)),
+                    orw.RewriteSrc(di.op2, di.Address),
+                    orw.RewriteSrc(di.op1, di.Address)));
         }
 
         private void RewriteClr()
         {
             var src = Constant.Create(di.dataWidth, 0);
             var opDst = orw.RewriteMoveDst(di.op1, di.Address, di.dataWidth, src);
-            emitter.Assign(orw.FlagGroup(FlagM.ZF), Constant.True());
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.NF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.ZF), Constant.True());
+            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.NF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
 
         private void RewriteCmp()
         {
             var src = orw.RewriteSrc(di.op1, di.Address);
             var dst = orw.RewriteSrc(di.op2, di.Address);
-            var tmp = frame.CreateTemporary(dst.DataType);
-            emitter.Assign(tmp, emitter.ISub(dst, src));
-            emitter.Assign(
+            var tmp = binder.CreateTemporary(dst.DataType);
+            m.Assign(tmp, m.ISub(dst, src));
+            m.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.ZF),
-                emitter.Cond(tmp));
+                m.Cond(tmp));
+        }
+
+        private void RewriteCmp2()
+        {
+            var reg = orw.RewriteSrc(di.op2, di.Address);
+            var lowBound = orw.RewriteSrc(di.op1, di.Address);
+            var ea = ((MemoryAccess)lowBound).EffectiveAddress;
+            var hiBound = m.Load(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+            var C = orw.FlagGroup(FlagM.CF);
+            var Z = orw.FlagGroup(FlagM.ZF);
+            m.Assign(C, m.Cor(m.Lt(reg, lowBound), m.Gt(reg, hiBound)));
+            m.Assign(Z, m.Cor(m.Eq(reg, lowBound), m.Eq(reg, hiBound)));
         }
 
         private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
         {
-            Debug.Print(di.dataWidth.ToString());
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            Expression dividend;
+            Expression quot;
+            Expression rem;
             if (di.dataWidth.BitSize == 16)
             {
                 di.dataWidth = PrimitiveType.UInt32;
-                var src = orw.RewriteSrc(di.op1, di.Address);
-                var rem = frame.CreateTemporary(dt);
-                var quot = frame.CreateTemporary(dt);
-                var regDst = frame.EnsureRegister(((RegisterOperand) di.op2).Register);
-                emitter.Assign(rem, emitter.Cast(rem.DataType, emitter.Remainder(regDst, src)));
-                emitter.Assign(quot, emitter.Cast(quot.DataType, op(regDst, src)));
-                emitter.Assign(regDst, emitter.Dpb(regDst, rem, 16));
-                emitter.Assign(regDst, emitter.Dpb(regDst, quot, 0));
-                emitter.Assign(
-                    orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
-                    emitter.Cond(quot));
-                emitter.Assign(
-                    orw.FlagGroup(FlagM.CF), Constant.False());
-                return;
+                rem = binder.CreateTemporary(dt);
+                quot = binder.CreateTemporary(dt);
+                dividend = binder.EnsureRegister(((RegisterOperand) di.op2).Register);
+                m.Assign(rem, m.Cast(rem.DataType, m.Remainder(dividend, src)));
+                m.Assign(quot, m.Cast(quot.DataType, op(dividend, src)));
+                m.Assign(dividend, m.Dpb(dividend, rem, 16));
+                m.Assign(dividend, m.Dpb(dividend, quot, 0));
             }
-            throw new NotImplementedException(di.ToString());
+            else
+            {
+                var dreg = di.op2 as DoubleRegisterOperand;
+                if (dreg != null)
+                {
+                    rem = binder.EnsureRegister(dreg.Register1);
+                    quot = binder.EnsureRegister(dreg.Register2);
+                    if (di.code == Opcode.divsl)
+                    {
+                        dividend = quot;
+                    }
+                    else
+                    {
+                        dividend = binder.EnsureSequence(dreg.Register1, dreg.Register2, di.dataWidth);
+                    }
+                    m.Assign(rem, m.Remainder(dividend, src));
+                    m.Assign(quot, op(dividend, src));
+                }
+                else
+                    throw new NotImplementedException();
+            }
+            m.Assign(
+                orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
+                m.Cond(quot));
+            m.Assign(
+                orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
         private Expression RewriteSrcOperand(MachineOperand mop)
@@ -332,30 +417,30 @@ namespace Reko.Arch.M68k
             var preDec = mop as PredecrementMemoryOperand;
             if (preDec != null)
             {
-                var reg = frame.EnsureRegister(preDec.Register);
-                var t = frame.CreateTemporary(opSrc.DataType);
+                var reg = binder.EnsureRegister(preDec.Register);
+                var t = binder.CreateTemporary(opSrc.DataType);
                 if (NeedsSpilling(opSrc))
                 {
-                    emitter.Assign(t, opSrc);
+                    this.m.Assign(t, opSrc);
                     opSrc = t;
                 }
-                emitter.Assign(reg, emitter.ISub(reg, di.dataWidth.Size));
-                var op = emitter.Load(di.dataWidth, reg);
+                this.m.Assign(reg, this.m.ISub(reg, this.m.Int32(this.di.dataWidth.Size)));
+                var op = this.m.Load(this.di.dataWidth, reg);
                 m(opSrc, op);
                 return op;
             }
             var postInc = mop as PostIncrementMemoryOperand;
             if (postInc != null)
             {
-                var reg = frame.EnsureRegister(postInc.Register);
-                var t = frame.CreateTemporary(di.dataWidth);
+                var reg = binder.EnsureRegister(postInc.Register);
+                var t = binder.CreateTemporary(di.dataWidth);
                 if (NeedsSpilling(opSrc))
                 {
-                    emitter.Assign(t, opSrc);
+                    this.m.Assign(t, opSrc);
                     opSrc = t;
                 }
-                m(opSrc, emitter.Load(di.dataWidth, reg));
-                emitter.Assign(reg, emitter.IAdd(reg, di.dataWidth.Size));
+                m(opSrc, this.m.Load(this.di.dataWidth, reg));
+                this.m.Assign(reg, this.m.IAdd(reg, this.m.Int32(this.di.dataWidth.Size)));
                 return t;
             }
             return orw.RewriteSrc(mop, di.Address);
@@ -376,11 +461,11 @@ namespace Reko.Arch.M68k
                 }
                 else if (mem.Offset == null)
                 {
-                    return frame.EnsureRegister(mem.Base);
+                    return binder.EnsureRegister(mem.Base);
                 }
                 else {
-                    return emitter.IAdd(
-                        frame.EnsureRegister(mem.Base),
+                    return m.IAdd(
+                        binder.EnsureRegister(mem.Base),
                         Constant.Int32(mem.Offset.ToInt32()));
                 }
             }
@@ -389,12 +474,23 @@ namespace Reko.Arch.M68k
             {
                 return addrOp.Address;
             }
+            var idxOp = op as IndexedOperand;
+            if (idxOp != null)
+            {
+                var c = idxOp.Base;
+                if (idxOp.base_reg == Registers.pc)
+                {
+                    var addr = di.Address + c.ToInt32();
+                    return addr;
+                }
+                idxOp.ToString();
+            }
             var indIdx = di.op1 as IndirectIndexedOperand;
             if (indIdx != null)
             {
-                var a = frame.EnsureRegister(indIdx.ARegister);
-                var x = frame.EnsureRegister(indIdx.XRegister);
-                return emitter.IAdd(a, x);        //$REVIEW: woefully incomplete...
+                var a = binder.EnsureRegister(indIdx.ARegister);
+                var x = binder.EnsureRegister(indIdx.XRegister);
+                return m.IAdd(a, x);        //$REVIEW: woefully incomplete...
             }
             throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
         }
@@ -403,38 +499,56 @@ namespace Reko.Arch.M68k
         {
             var dst = orw.RewriteSrc(di.op2, di.Address);
             var src = GetEffectiveAddress(di.op1);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         public void RewritePea()
         {
-            var sp = frame.EnsureRegister(arch.StackRegister);
-            emitter.Assign(sp, emitter.ISub(sp, 4));
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(sp, m.ISub(sp, 4));
             var ea = GetEffectiveAddress(di.op1);
-            emitter.Assign(emitter.LoadDw(sp), ea);
+            m.Assign(m.LoadDw(sp), ea);
         }
 
         public void RewriteMove(bool setFlag)
         {
+            if (GetRegister(di.op1) == Registers.ccr)
+            {
+                // move from ccr.
+                var src = m.Cast(PrimitiveType.UInt16, binder.EnsureRegister(Registers.ccr));
+                var dst = orw.RewriteDst(di.op2, di.Address, PrimitiveType.UInt16, src, (s, d) => s);
+                return;
+            }
+            else if (GetRegister(di.op2) == Registers.ccr)
+            {
+                var src = orw.RewriteSrc(di.op1, di.Address);
+                var dst = orw.RewriteDst(di.op2, di.Address, di.dataWidth ?? (PrimitiveType)src.DataType, src, (s, d) => s);
+                return;
+            }
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
-            var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) => s);
+            var opDst = orw.RewriteDst(di.op2, di.Address, di.dataWidth ?? (PrimitiveType)opSrc.DataType, opSrc, (s, d) => s);
+            if (opDst == null)
+            {
+                EmitInvalid();
+                return;
+            }
             var isSr = GetRegister(di.op1) == Registers.sr || GetRegister(di.op2) == Registers.sr;
             if (setFlag && !isSr)
             {
-                emitter.Assign(
+                m.Assign(
                     orw.FlagGroup(FlagM.CVZN),
-                    emitter.Cond(opDst));
+                    m.Cond(opDst));
             }
         }
 
         public void RewriteMoveq()
         {
             var opSrc = (sbyte) ((M68kImmediateOperand) di.op1).Constant.ToInt32();
-            var opDst = frame.EnsureRegister(((RegisterOperand)di.op2).Register);
-            emitter.Assign(opDst, Constant.Int32(opSrc));
-            emitter.Assign(
+            var opDst = binder.EnsureRegister(((RegisterOperand)di.op2).Register);
+            m.Assign(opDst, Constant.Int32(opSrc));
+            m.Assign(
                 orw.FlagGroup(FlagM.CVZN),
-                emitter.Cond(opDst));
+                m.Cond(opDst));
         }
 
         public IEnumerable<Identifier> RegisterMaskIncreasing(Domain dom, uint bitSet, Func<int,RegisterStorage> regGenerator)
@@ -446,7 +560,7 @@ namespace Reko.Arch.M68k
             {
                 if ((bitSet & mask) != 0)
                 {
-                    yield return frame.EnsureRegister(regGenerator(i));
+                    yield return binder.EnsureRegister(regGenerator(i));
                 }
             }
         }
@@ -457,7 +571,7 @@ namespace Reko.Arch.M68k
             for (int i = maxReg-1, mask = 1; i >= 0; --i, mask <<= 1)
             {
                 if ((bitSet & mask) != 0)
-                    yield return frame.EnsureRegister(regGenerator(i));
+                    yield return binder.EnsureRegister(regGenerator(i));
             }
         }
 
@@ -470,20 +584,20 @@ namespace Reko.Arch.M68k
                 Identifier srcReg = null;
                 if (postInc != null)
                 {
-                    srcReg = frame.EnsureRegister(postInc.Register);
+                    srcReg = binder.EnsureRegister(postInc.Register);
                 }
                 else
                 {
                     var src = orw.RewriteSrc(di.op1, di.Address) as MemoryAccess;
                     if (src == null)
                         throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
-                    srcReg = frame.CreateTemporary(src.EffectiveAddress.DataType);
-                    emitter.Assign(srcReg, src.EffectiveAddress);
+                    srcReg = binder.CreateTemporary(src.EffectiveAddress.DataType);
+                    m.Assign(srcReg, src.EffectiveAddress);
                 }
                 foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                 {
-                    emitter.Assign(reg, emitter.Load(di.dataWidth, srcReg));
-                    emitter.Assign(srcReg, emitter.IAdd(srcReg, di.dataWidth.Size));
+                    m.Assign(reg, m.Load(di.dataWidth, srcReg));
+                    m.Assign(srcReg, m.IAdd(srcReg, m.Int32(di.dataWidth.Size)));
                 }
                 return;
             }
@@ -493,11 +607,11 @@ namespace Reko.Arch.M68k
                 var preDec = di.op2 as PredecrementMemoryOperand;
                 if (preDec != null)
                 {
-                    var dstReg = frame.EnsureRegister(preDec.Register);
+                    var dstReg = binder.EnsureRegister(preDec.Register);
                     foreach (var reg in RegisterMaskDecreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                     {
-                        emitter.Assign(dstReg, emitter.ISub(dstReg, di.dataWidth.Size));
-                        emitter.Assign(emitter.Load(di.dataWidth, dstReg), reg);
+                        m.Assign(dstReg, m.ISub(dstReg, m.Int32(di.dataWidth.Size)));
+                        m.Assign(m.Load(di.dataWidth, dstReg), reg);
                     }
                 }
                 else
@@ -505,12 +619,12 @@ namespace Reko.Arch.M68k
                     var src = orw.RewriteSrc(di.op2, di.Address) as MemoryAccess;
                     if (src == null)
                         throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
-                    var srcReg = frame.CreateTemporary(di.dataWidth);
-                    emitter.Assign(srcReg, src.EffectiveAddress);
+                    var srcReg = binder.CreateTemporary(di.dataWidth);
+                    m.Assign(srcReg, src.EffectiveAddress);
                     foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                     {
-                        emitter.Assign(reg, emitter.Load(di.dataWidth, srcReg));
-                        emitter.Assign(srcReg, emitter.IAdd(srcReg, di.dataWidth.Size));
+                        m.Assign(reg, m.Load(di.dataWidth, srcReg));
+                        m.Assign(srcReg, m.IAdd(srcReg, di.dataWidth.Size));
                     }
                 }
                 return;
@@ -518,63 +632,83 @@ namespace Reko.Arch.M68k
             throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
         }
 
+        public void RewriteMovep()
+        {
+            var pname = (di.dataWidth == PrimitiveType.Word32)
+                ? "__movep_l"
+                : "__movep_w";
+            var op1 = RewriteSrcOperand(di.op1);
+            var op2 = RewriteSrcOperand(di.op2);
+            m.SideEffect(host.PseudoProcedure(pname, VoidType.Instance, op1, op2));
+        }
+
         private Expression RewriteNegx(Expression expr)
         {
-            expr = emitter.Neg(expr);
-            return emitter.ISub(expr, orw.FlagGroup(FlagM.XF));
+            expr = m.Neg(expr);
+            return m.ISub(expr, orw.FlagGroup(FlagM.XF));
         }
 
         private void RewriteLink()
         {
             var aReg = orw.RewriteSrc(di.op1, di.Address);
-            var aSp = frame.EnsureRegister(arch.StackRegister);
+            var aSp = binder.EnsureRegister(arch.StackRegister);
             var imm = ((M68kImmediateOperand) di.op2).Constant.ToInt32();
-            emitter.Assign(aSp, emitter.ISub(aSp, 4));
-            emitter.Assign(emitter.LoadDw(aSp), aReg);
-            emitter.Assign(aReg, aSp);
+            m.Assign(aSp, m.ISub(aSp, 4));
+            m.Assign(m.LoadDw(aSp), aReg);
+            m.Assign(aReg, aSp);
             if (imm < 0)
             {
-                emitter.Assign(aSp, emitter.ISub(aSp, -imm));
+                m.Assign(aSp, m.ISub(aSp, -imm));
             }
             else
             {
-                emitter.Assign(aSp, emitter.IAdd(aSp, -imm));
+                m.Assign(aSp, m.IAdd(aSp, -imm));
             }
         }
 
         private void RewriteUnlk()
         {
             var aReg = orw.RewriteSrc(di.op1, di.Address);
-            var aSp = frame.EnsureRegister(arch.StackRegister);
-            emitter.Assign(aSp, aReg);
-            emitter.Assign(aReg, emitter.LoadDw(aSp));
-            emitter.Assign(aSp, emitter.IAdd(aSp, 4));
+            var aSp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(aSp, aReg);
+            m.Assign(aReg, m.LoadDw(aSp));
+            m.Assign(aSp, m.IAdd(aSp, 4));
         }
 
         private void Copy(Expression dst, Expression src, int bitSize)
         {
             if (dst is Identifier && dst.DataType.BitSize > bitSize)
             {
-                var dpb = emitter.Dpb(dst, src, 0);
-                emitter.Assign(dst, dpb);
+                var dpb = m.Dpb(dst, src, 0);
+                m.Assign(dst, dpb);
             }
             else
             {
-                emitter.Assign(dst, src);
+                m.Assign(dst, src);
             }
         }
 
         private void AllConditions(Expression expr)
         {
+            if (expr == null)
+            {
+                EmitInvalid();
+                return;
+            }
             var f = orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.XF | FlagM.ZF);
-            emitter.Assign(f, emitter.Cond(expr));
+            m.Assign(f, m.Cond(expr));
         }
 
         private void LogicalConditions(Expression expr)
         {
-            emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(expr));
-            emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            if (expr == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), m.Cond(expr));
+            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
         }
     }
 }

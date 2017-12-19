@@ -1161,5 +1161,13 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("cvt.s.d\tf0,f1", instr.ToString());
             Assert.AreEqual(Opcode.cvt_s_d, instr.opcode);
         }
+
+        [Test]
+        public void MipsDis_sd_64()
+        {
+            Given_Mips64_Architecture();
+            var instr = DisassembleWord(0xFFBF0020);
+            Assert.AreEqual("sd\tra,0020(sp)", instr.ToString());
+        }
     }
 }

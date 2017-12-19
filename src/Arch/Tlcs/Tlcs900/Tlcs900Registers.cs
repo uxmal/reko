@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,6 +111,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     xwa, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xwa },
                         { 0x100, wa },
                         { 0x080, a  },
                         { 0x088, w }
@@ -119,6 +120,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     xbc, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xbc },
                         { 0x100, bc },
                         { 0x080, c  },
                         { 0x088, b }
@@ -127,6 +129,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     xde, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xde },
                         { 0x100, de },
                         { 0x080, e  },
                         { 0x088, d }
@@ -135,6 +138,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     xhl, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xhl },
                         { 0x100, hl },
                         { 0x080, l  },
                         { 0x088, h }
@@ -143,28 +147,32 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     xix, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xix },
                         { 0x100, ix },
                     }
                 },
                 {
                     xiy, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xiy },
                         { 0x100, iy },
                     }
                 },
                 {
                     xiz, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xiz },
                         { 0x100, iz },
                     }
                 },
                 {
                     xsp, new Dictionary<int, RegisterStorage>
                     {
+                        { 0x200, xsp },
                         { 0x100, sp },
                     }
                 },
-               {
+                {
                     wa, new Dictionary<int, RegisterStorage>
                     {
                         { 0x080, a  },

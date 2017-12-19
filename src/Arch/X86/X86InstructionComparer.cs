@@ -74,7 +74,13 @@ namespace Reko.Arch.X86
                     return false;
                 return base.CompareValues(memOpA.Offset, memOpB.Offset);
             }
-			throw new NotImplementedException("NYI");
+            var fpuA = opA as FpuOperand;
+            if (fpuA != null)
+            {
+                var fpuB = opB as FpuOperand;
+                return NormalizeRegisters || fpuA.StNumber == fpuB.StNumber;
+            }
+			throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
 		}
 
 
@@ -171,6 +177,11 @@ namespace Reko.Arch.X86
                     h = 29 * h ^ GetRegisterHash(memOp.SegOverride);
                 }
                 return h;
+            }
+            var fpuOp = op as FpuOperand;
+            if (fpuOp != null)
+            {
+                return h = 59 * fpuOp.StNumber.GetHashCode();
             }
 			throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
 		}

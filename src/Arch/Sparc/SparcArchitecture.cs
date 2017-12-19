@@ -80,7 +80,7 @@ namespace Reko.Arch.Sparc
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new SparcInstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
             return new SparcProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new SparcRewriter(this, rdr, (SparcProcessorState)state, frame, host);
         }
@@ -179,7 +179,7 @@ namespace Reko.Arch.Sparc
             return GetFlagGroup((uint)grf);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

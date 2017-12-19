@@ -28,6 +28,7 @@ namespace Reko.Arch.Arm
     public class Arm32Disassembler : DisassemblerBase<Arm32Instruction> 
     {
         private IEnumerator<Instruction<Gee.External.Capstone.Arm.ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> stream;
+        private static int disposes;
 
         public Arm32Disassembler(Arm32ProcessorArchitecture arch, EndianImageReader rdr) {
             var dasm = CapstoneDisassembler.CreateArmDisassembler(
@@ -42,6 +43,7 @@ namespace Reko.Arch.Arm
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
+                ++disposes;
                 stream.Dispose();
             }
             base.Dispose(disposing);

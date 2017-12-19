@@ -12,14 +12,14 @@ l2:
 	return
 	// succ:  WhileGtDecMock_exit
 loop:
-	i_2 = i_1 - 0x00000001
+	i_2 = i_1 - 1
 	Mem3[a + i_2 * 0x00000004:word32] = 0x00000000
 	// succ:  loopHdr
 loopHdr:
 	i_1 = PHI(i_0, i_2)
-	branch i_1 > 0x00000000 loop
+	branch i_1 > 0 loop
 	goto l2
 	// succ:  l2 loop
 WhileGtDecMock_exit:
 
-(0x00000063 -1 0xFFFFFFFF signed)
+(0x00000063 -1 -1 signed)

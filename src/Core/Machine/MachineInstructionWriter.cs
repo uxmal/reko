@@ -37,11 +37,17 @@ namespace Reko.Core.Machine
         /// you test for that before dereferencing.
         /// </summary>
         IPlatform Platform { get;  }
+
         /// <summary>
-        /// The address of the current instruction.
+        /// The address of the current instruction being written.
         /// </summary>
         Address Address { get; set; }
 
+        /// <summary>
+        /// Annotations are displayed as comments at the end of the line.
+        /// </summary>
+        /// <param name="a"></param>
+        void AddAnnotation(string a);   
         void WriteOpcode(string opcode);
         void WriteAddress(string formattedAddress, Address addr);
         void Tab();
@@ -71,6 +77,14 @@ namespace Reko.Core.Machine
 
         public IPlatform Platform { get; private set; }
         public Address Address { get; set; }
+
+        /// <summary>
+        /// This renederer ignores annotations
+        /// </summary>
+        /// <param name="annotation"></param>
+        public void AddAnnotation(string annotation)
+        {
+        }
 
         public void WriteOpcode(string opcode)
         {

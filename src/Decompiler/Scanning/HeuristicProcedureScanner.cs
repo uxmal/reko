@@ -38,63 +38,99 @@ namespace Reko.Scanning
     public class HeuristicProcedureScanner
     {
         private Program program;
-        private HeuristicProcedure proc;
         private IRewriterHost host;
-        private DirectedGraph<HeuristicBlock> blocks;
-        private HashSet<Tuple<HeuristicBlock, HeuristicBlock>> conflicts;
+        private ScanResults sr;
+        private DiGraph<RtlBlock> blocks;
+        private Func<Address, bool> isAddressValid;
+        private HashSet<Tuple<RtlBlock, RtlBlock>> conflicts;
 
         public HeuristicProcedureScanner(
             Program program, 
-            HeuristicProcedure proc,
+            ScanResults sr,
+            Func<Address,bool> isAddressValid,
             IRewriterHost host)
         {
             this.program = program;
-            this.proc = proc;
             this.host = host;
-            this.blocks = proc.Cfg;
-            this.conflicts = BuildConflictGraph(proc.Cfg.Nodes);
+            this.sr = sr;
+            this.blocks = sr.ICFG;
+            this.isAddressValid = isAddressValid;
+            this.conflicts = BuildConflictGraph(blocks.Nodes);
+        }
+
+        public void ResolveBlockConflicts(IEnumerable<Address> procedureStarts)
+        {
+            var reachable = TraceReachableBlocks(procedureStarts);
+            ComputeStatistics(reachable);
+            this.sr.Dump("Before conflict resolution");
+            RemoveBlocksEndingWithInvalidInstruction();
+            this.sr.Dump("After invalid instruction eliminiation");
+            RemoveBlocksConflictingWithValidBlocks(reachable);
+            this.sr.Dump("After conflicting block removal");
+            RemoveParentsOfConflictingBlocks();
+            this.sr.Dump("After parents of conflicting blocks removed");
+            //RemoveBlocksWithFewPredecessors();
+            //DumpGraph();
+            RemoveBlocksWithFewSuccessors();
+            this.sr.Dump("After few successor removal");
+            RemoveConflictsRandomly();
         }
 
         /// <summary>
         /// Resolve all block conflicts.
         /// </summary>
         /// <param name="blocks"></param>
-        public void BlockConflictResolution()
+        public void BlockConflictResolution(Address addrProcedureStart)
         {
-            var valid = TraceReachableBlocks();
+            var valid = TraceReachableBlocks(new[] { addrProcedureStart });
             ComputeStatistics(valid);
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksEndingWithInvalidInstruction();
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksConflictingWithValidBlocks(valid);
-            DumpGraph();
+            this.sr.Dump();
             RemoveParentsOfConflictingBlocks();
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksWithFewPredecessors();
-            DumpGraph();
+            this.sr.Dump();
             RemoveBlocksWithFewSuccessors();
-            DumpGraph();
+            this.sr.Dump();
             RemoveConflictsRandomly();
         }
 
         /// <summary>
-        /// Trace the reachable blocks using DFS; call them 'valid'.
+        /// Trace the reachable blocks using DFS; call them 'reachable'.
         /// </summary>
         /// <returns>A set of blocks considered "valid".</returns>
-        private HashSet<HeuristicBlock> TraceReachableBlocks()
+        private HashSet<RtlBlock> TraceReachableBlocks(IEnumerable<Address> procstarts)
         {
-            var entry = blocks.Nodes.Where(b => b.Address == proc.BeginAddress).FirstOrDefault();
-            var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder(entry).ToHashSet();
-            foreach (var item in valid.OrderBy(i => i.Address))
+            var reachable = new HashSet<RtlBlock>();
+            var mpAddrToBlock = blocks.Nodes.ToDictionary(k => k.Address);
+            foreach (var addrProcStart in procstarts)
             {
-                Debug.Print(" {0}", item.Address);
+                RtlBlock entry;
+                if (mpAddrToBlock.TryGetValue(addrProcStart ,out entry))
+                {
+                    var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
+                    reachable.UnionWith(r);
+                }
             }
-            return valid;
+            return reachable;
         }
 
-        private void ComputeStatistics(ISet<HeuristicBlock> valid)
+        /// <summary>
+        /// Given a set of the provably valid basic blocks in the program,
+        /// create a five-level deep trie of instructions. Blocks that haven't
+        /// been proved valid, but which starting with such instructions are
+        /// likely to be valid.
+        /// </summary>
+        /// <param name="valid"></param>
+        private void ComputeStatistics(ISet<RtlBlock> valid)
         {
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
+            if (cmp == null)
+                return;
+            //$REVIEW: to what use can we put this?
             var trie = new Trie<MachineInstruction>(cmp);
             foreach (var item in valid.OrderBy(i => i.Address))
             {
@@ -110,9 +146,9 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
-        public static HashSet<Tuple<HeuristicBlock, HeuristicBlock>> BuildConflictGraph(IEnumerable<HeuristicBlock> blocks)
+        public static HashSet<Tuple<RtlBlock, RtlBlock>> BuildConflictGraph(IEnumerable<RtlBlock> blocks)
         {
-            var conflicts = new HashSet<Tuple<HeuristicBlock, HeuristicBlock>>(new CollisionComparer());
+            var conflicts = new HashSet<Tuple<RtlBlock, RtlBlock>>(new CollisionComparer());
             // Find all conflicting blocks: pairs that overlap.
             var blockMap = blocks.OrderBy(n => n.Address).ToList();
             for (int i = 0; i < blockMap.Count; ++i)
@@ -142,23 +178,31 @@ namespace Reko.Scanning
         /// Any node that is in conflict with a valid node must be removed.
         /// </summary>
         /// <param name="valid"></param>
-        private void RemoveBlocksConflictingWithValidBlocks(HashSet<HeuristicBlock> valid)
+        private void RemoveBlocksConflictingWithValidBlocks(HashSet<RtlBlock> valid)
         {
-            foreach (var n in blocks.Nodes.Where(nn => !valid.Contains(nn)).ToList())
+            // `nodes` are all blocks that weren't reachable by DFS.
+            var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToHashSet();
+            foreach (var cc in
+                (from c in conflicts
+                 where nodes.Contains(c.Item1) && valid.Contains(c.Item2)
+                 select c.Item1))
             {
-                foreach (var v in valid)
-                {
-                    if (conflicts.Contains(Tuple.Create(n, v)))
-                    {
-                        RemoveBlockFromGraph(n);
-                    }
-                }
+                nodes.Remove(cc);
+                RemoveBlockFromGraph(cc);
+            }
+            foreach (var cc in 
+                (from c in conflicts
+                 where nodes.Contains(c.Item2) && valid.Contains(c.Item1)
+                 select c.Item2))
+            {
+                nodes.Remove(cc);
+                RemoveBlockFromGraph(cc);
             }
         }
 
-        private void RemoveBlockFromGraph(HeuristicBlock n)
+        private void RemoveBlockFromGraph(RtlBlock n)
         {
-            Debug.Print("Removing block: {0}", n.Address);
+            //Debug.Print("Removing block: {0}", n.Address);
             blocks.Nodes.Remove(n);
         }
 
@@ -212,17 +256,17 @@ namespace Reko.Scanning
             }
         }
 
-        private bool Remaining(Tuple<HeuristicBlock, HeuristicBlock> c)
+        private bool Remaining(Tuple<RtlBlock, RtlBlock> c)
         {
-            var nodes = proc.Cfg.Nodes;
+            var nodes = blocks.Nodes;
             return 
                 nodes.Contains(c.Item1) &&
                 nodes.Contains(c.Item2);
         }
         
-        public ISet<HeuristicBlock> GetAncestors(HeuristicBlock n)
+        public ISet<RtlBlock> GetAncestors(RtlBlock n)
         {
-            var anc = new HashSet<HeuristicBlock>();
+            var anc = new HashSet<RtlBlock>();
             foreach (var p in blocks.Predecessors(n))
             {
                 GetAncestorsAux(p, n, anc);
@@ -230,10 +274,10 @@ namespace Reko.Scanning
             return anc;
         }
 
-        private ISet<HeuristicBlock> GetAncestorsAux(
-            HeuristicBlock n, 
-            HeuristicBlock orig, 
-            ISet<HeuristicBlock> ancestors)
+        private ISet<RtlBlock> GetAncestorsAux(
+            RtlBlock n, 
+            RtlBlock orig, 
+            ISet<RtlBlock> ancestors)
         {
             if (ancestors.Contains(n) || n == orig)
                 return ancestors;
@@ -262,7 +306,7 @@ namespace Reko.Scanning
 
         private IEnumerable<Tuple<Address, Address>> GetGaps()
         {
-            var blockMap = proc.Cfg.Nodes.OrderBy(n => n.Address).ToList();
+            var blockMap = blocks.Nodes.OrderBy(n => n.Address).ToList();
             var addrLastEnd = blockMap[0].Address;
             foreach (var b in blockMap)
             {
@@ -377,7 +421,7 @@ namespace Reko.Scanning
                 Address target;
                 if (rtlGoto.Target.As<Address>(out target))
                 {
-                    return !(proc.BeginAddress <= target && target < proc.EndAddress);
+                    return !isAddressValid(target);
                 }
                 return true;
             }
@@ -405,15 +449,15 @@ namespace Reko.Scanning
             }
         }
 
-        private class CollisionComparer : IEqualityComparer<Tuple<HeuristicBlock, HeuristicBlock>>
+        private class CollisionComparer : IEqualityComparer<Tuple<RtlBlock, RtlBlock>>
         {
-            public bool Equals(Tuple<HeuristicBlock, HeuristicBlock> x, Tuple<HeuristicBlock, HeuristicBlock> y)
+            public bool Equals(Tuple<RtlBlock, RtlBlock> x, Tuple<RtlBlock, RtlBlock> y)
             {
                 return x.Item1 == y.Item1 && x.Item2 == y.Item2 ||
                        x.Item1 == y.Item2 && x.Item2 == y.Item1;
             }
 
-            public int GetHashCode(Tuple<HeuristicBlock, HeuristicBlock> obj)
+            public int GetHashCode(Tuple<RtlBlock, RtlBlock> obj)
             {
                 return obj.Item1.GetHashCode() ^ obj.Item2.GetHashCode();
             }
@@ -482,29 +526,5 @@ namespace Reko.Scanning
         //        When all possible instruction sequences are determined,
         //the one with the highest sequence score is selected as the
         //valid instruction sequence between b1 and b2.
-
-        [Conditional("DEBUG")]
-        public void DumpGraph()
-        {
-            Debug.Print("{0} nodes", proc.Cfg.Nodes.Count);
-            foreach (var block in proc.Cfg.Nodes.OrderBy(n => n.Address))
-            {
-                var addrEnd = block.GetEndAddress();
-                Debug.Write(string.Format("{0}: ", block.Name));
-                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Predecessors(block)
-                    .OrderBy(n => n.Address)
-                    .Select(n => n.Address)));
-                var sb = new StringBuilder("  ");
-                var rdr = program.CreateImageReader(block.Address);
-                while (rdr.Address < addrEnd)
-                {
-                    sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
-                }
-                Debug.WriteLine(sb.ToString());
-                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Successors(block)
-                    .OrderBy(n => n.Address)
-                    .Select(n => n.Address)));
-            }
-        }
     }
 }

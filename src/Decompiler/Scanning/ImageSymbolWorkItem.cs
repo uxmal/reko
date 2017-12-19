@@ -27,12 +27,12 @@ namespace Reko.Scanning
 {
     public class ImageSymbolWorkItem : WorkItem
     {
-        private Scanner scanner;
+        private IScanner scanner;
         private Program program;
         private ImageSymbol sym;
         private bool isEntryPoint;
 
-        public ImageSymbolWorkItem(Scanner scanner, Program program, ImageSymbol sym, bool isEntryPoint) : base(sym.Address)
+        public ImageSymbolWorkItem(IScanner scanner, Program program, ImageSymbol sym, bool isEntryPoint) : base(sym.Address)
         {
             this.scanner = scanner;
             this.program = program;

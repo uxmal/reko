@@ -53,8 +53,10 @@
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RiscVArchitecture.cs" />
+    <Compile Include="RiscVCallingConvention.cs" />
     <Compile Include="RiscVDisassembler.cs" />
     <Compile Include="RiscVInstruction.cs" />
+    <Compile Include="RiscVInstructionComparer.cs" />
     <Compile Include="RiscVRewriter.Control.cs" />
     <Compile Include="RiscVRewriter.cs" />
     <Compile Include="RiscVRewriter.Fpu.cs" />

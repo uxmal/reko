@@ -71,11 +71,16 @@ namespace Reko.Environments.Msdos
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            //$BUGBUG: unlikely to be correct in long run.
-            return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
+            return new X86CallingConvention(
+                4,      //$REVIEW: this is a far call, what about near calls?
+                2,
+                4,      //$REVIEW: this is a far ptr.
+                true,
+                false);
         }
+
 
         public override string DetermineCallingConvention(FunctionType signature)
         {
@@ -131,6 +136,7 @@ namespace Reko.Environments.Msdos
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 2;
@@ -144,17 +150,6 @@ namespace Reko.Environments.Msdos
             }
         }
 
-        /// <summary>
-        /// MS-DOS has no concept of "trampolines".
-        /// </summary>
-        /// <param name="imageReader"></param>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
-        }
-        
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();

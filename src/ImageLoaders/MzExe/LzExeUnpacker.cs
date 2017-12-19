@@ -165,6 +165,7 @@ namespace Reko.ImageLoaders.MzExe
 		{
             const int CompressedRelocationTableAddress = 0x0158;
             var relocations = pgmImgNew.Relocations;
+            var linBase = pgmImgNew.BaseAddress.ToLinear();
 			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
 
 			int rel_off=0;
@@ -189,7 +190,7 @@ namespace Reko.ImageLoaders.MzExe
 				rel_off += span;
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
-				relocations.AddSegmentReference((uint)rel_off, seg);
+				relocations.AddSegmentReference(linBase + (uint)rel_off, seg);
 				segmentMap.AddSegment(
                     new ImageSegment(
                         seg.ToString("X4"),
@@ -286,7 +287,9 @@ namespace Reko.ImageLoaders.MzExe
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new MemoryArea(addrLoad, abU);
-            this.segmentMap = imgLoaded.CreateImageMap();
+            this.segmentMap = new SegmentMap(
+                addrLoad,
+                new ImageSegment("", this.imgLoaded, AccessMode.ReadWriteExecute));
 			return imgLoaded;
 		}
 

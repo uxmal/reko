@@ -116,7 +116,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 this.span = line.Spans[iSpan];
                 this.styleStack.PushStyle(span.Style);
-                var pos = new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
+                var pos = new TextPointer(line.Position, iSpan, 0);
 
                 var insideSelection =
                     outer.ComparePositions(selStart, pos) <= 0 &&

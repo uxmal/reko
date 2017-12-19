@@ -31,6 +31,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Rtl;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using System.Diagnostics;
 
 namespace Reko.Environments.MacOS
 {
@@ -58,19 +62,23 @@ namespace Reko.Environments.MacOS
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new M68kProcedureSerializer((M68kArchitecture) Architecture, typeLoader, defaultConvention);
+            if (ccName == "pascal")
+                return new PascalCallingConvention((M68kArchitecture)this.Architecture);
+            else
+                return new M68kCallingConvention((M68kArchitecture)this.Architecture);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            base.EnsureTypeLibraries(base.PlatformIdentifier);
+            EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in this.Metadata.Modules.Values)
             {
-                SystemService svc;
-                if (module.ServicesByVector.TryGetValue(vector & 0xFFFF, out svc))
-                    return svc;
+                List<SystemService> svcs;
+                vector &= 0xFFFF;
+                if (module.ServicesByVector.TryGetValue(vector, out svcs))
+                    return svcs.FirstOrDefault(s => s.SyscallInfo.Matches(vector, state));
             }
             return null;
         }
@@ -78,7 +86,7 @@ namespace Reko.Environments.MacOS
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; }
         }
 
         public override Encoding DefaultTextEncoding
@@ -86,10 +94,14 @@ namespace Reko.Environments.MacOS
             get { return encoding; }
         }
 
+        public ImageSegment A5World { get; set; }
+        public uint A5Offset { get; set; }
+
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;  //$REVIEW: Does MacOS support wchar_t?
             case CBasicType.Short: return 2;
@@ -104,14 +116,37 @@ namespace Reko.Environments.MacOS
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
-        }
-
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+        /// <summary>
+        /// If an indirect call uses the A5 register and the offset of the call lands in the 
+        /// jump table in the A5 world, returns the address stored in the jump table
+        /// to resolve the call.
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns>Null if the call wasn't to a valid A5 jumptable location.</returns>
+
+        public override Address ResolveIndirectCall(RtlCall instr)
+        {
+            var bin = instr.Target as BinaryExpression;
+            if (bin == null)
+                return null;
+            if (bin.Operator != Operator.IAdd)
+                return null;
+            var idLeft = bin.Left as Identifier;
+            if (idLeft == null || idLeft.Storage != Registers.a5)
+                return null;
+            var cRight = bin.Right as Constant;
+            if (cRight == null)
+                return null;
+            const uint SizeOfJmpOpcode = 2;
+            uint offset = cRight.ToUInt32() + this.A5Offset + SizeOfJmpOpcode;
+            uint uAddr;
+            if (!A5World.MemoryArea.TryReadBeUInt32(offset, out uAddr))
+                return null;
+            return Address.Ptr32(uAddr);
         }
     }
 }

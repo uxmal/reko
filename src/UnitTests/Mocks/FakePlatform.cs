@@ -49,10 +49,10 @@ namespace Reko.UnitTests.Mocks
             return Test_CreateTrashedRegisters();
         }
 
-        public Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer> Test_CreateProcedureSerializer;
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public Func<string, CallingConvention> Test_GetCallingConvention;
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return Test_CreateProcedureSerializer(typeLoader, defaultConvention);
+            return Test_GetCallingConvention(ccName);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -60,15 +60,17 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public string Test_DefaultCallingConvention = "";
         public override string DefaultCallingConvention
         {
-            get { return ""; }
+            get { return Test_DefaultCallingConvention; }
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 4;
@@ -80,10 +82,6 @@ namespace Reko.UnitTests.Mocks
             case CBasicType.Int64: return 8;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
-        }
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

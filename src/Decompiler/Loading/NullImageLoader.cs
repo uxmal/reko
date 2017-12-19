@@ -26,8 +26,8 @@ using System.Text;
 namespace Reko.Loading
 {
     /// <summary>
-    /// The NullLoader is used when the decompiler is unable to determine what image loader to use.
-    /// It supports no disassembly.
+    /// The NullLoader is used when Reko is unable to determine what image
+    /// loader to use. It doesn't support disassembly.
     /// </summary>
     public class NullImageLoader : ImageLoader
     {

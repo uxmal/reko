@@ -78,7 +78,7 @@ namespace Reko.Gui.Windows
                 SystemColors.WindowText,
                 SystemColors.Window,
                 SystemFonts.DefaultFont, styleStack);
-            var ptr = new TextPointer { Character = 0, Span = 0, Line = TextModel.StartPosition };
+            var ptr = new TextPointer(TextModel.StartPosition, 0, 0);
             painter.SetSelection(ptr, ptr);
             painter.PaintGdiPlus();
             g.Transform = saveM;

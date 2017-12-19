@@ -3,7 +3,7 @@ push	0300
 call	0010
 call	0037
 add	sp,04
-ret	
+ret
 push	bp
 mov	bp,sp
 mov	bx,[bp+04]
@@ -21,9 +21,9 @@ fild	word ptr [bx+20]
 fstp	double ptr [bx+28]
 mov	sp,bp
 pop	bp
-ret	
-fldz	
+ret
+fldz
 fstp	double ptr [0400]
-fld1	
+fld1
 fistp	dword ptr [0408]
-ret	
+ret

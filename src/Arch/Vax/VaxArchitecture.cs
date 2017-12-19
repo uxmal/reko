@@ -98,7 +98,7 @@ namespace Reko.Arch.Vax
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new VaxInstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -111,12 +111,12 @@ namespace Reko.Arch.Vax
             return new VaxProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new VaxRewriter(this, rdr, state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -153,7 +153,10 @@ namespace Reko.Arch.Vax
 
         public override RegisterStorage GetRegister(int i)
         {
-            return regs[i];
+            if (0 <= i && i < regs.Length)
+                return regs[i];
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()

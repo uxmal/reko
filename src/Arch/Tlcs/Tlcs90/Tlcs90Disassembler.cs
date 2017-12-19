@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,14 +138,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     {
                         if (!rdr.TryReadByte(out b))
                             return null;
-                        dest = this.addr + (sbyte)b;
+                        dest = rdr.Address + (sbyte)b;
                     }
                     else
                     {
                         short off;
                         if (!rdr.TryReadLeInt16(out off))
                             return null;
-                        dest = this.addr + off;
+                        dest = rdr.Address + off;
                     }
                     ops[op] = AddressOperand.Create(dest);
                     break;
@@ -315,9 +315,18 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         : offset,
                 };
                 if (dasm.backPatchOp == 0)
+                {
                     instr.op1 = operand;
+                    if (instr.op2 != null)
+                    {
+                        instr.op1.Width = instr.op2.Width;
+                    }
+                }
                 else if (dasm.backPatchOp == 1)
+                {
                     instr.op2 = operand;
+                    instr.op2.Width = instr.op1.Width;
+                }
                 else
                     return null;
                 return instr;
@@ -393,9 +402,18 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 };
 
                 if (dasm.backPatchOp == 0)
+                {
                     instr.op1 = operand;
+                    if (instr.op2 != null)
+                    {
+                        operand.Width = instr.op2.Width;
+                    }
+                }
                 else if (dasm.backPatchOp == 1)
+                {
                     instr.op2 = operand;
+                    operand.Width = instr.op1.Width;
+                }
                 else
                     return null;
                 return instr;
@@ -423,7 +441,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.rcf, ""),
             new OpRec(Opcode.scf, ""),
             new OpRec(Opcode.ccf, ""),
-            new OpRec(Opcode.decx, "mw"),
+            new OpRec(Opcode.decx, "mb"),
 
             // 10
             new OpRec(Opcode.cpl, "a"),
@@ -434,7 +452,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.add, "X,Iw"),
             new OpRec(Opcode.add, "Y,Iw"),
             new OpRec(Opcode.add, "S,Iw"),
-            new OpRec(Opcode.ldar, "HL,Iw"),
+            new OpRec(Opcode.ldar, "H,jw"),
 
             new OpRec(Opcode.djnz, "jb"),
             new OpRec(Opcode.djnz, "B,jb"),
@@ -625,36 +643,36 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.sll, ""),
             new OpRec(Opcode.srl, ""),
 
-            new OpRec(Opcode.bit, "i,mw"),
-            new OpRec(Opcode.bit, "i,mw"),
-            new OpRec(Opcode.bit, "i,mw"),
-            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mb"),
+            new OpRec(Opcode.bit, "i,mb"),
+            new OpRec(Opcode.bit, "i,mb"),
+            new OpRec(Opcode.bit, "i,mb"),
 
-            new OpRec(Opcode.bit, "i,mw"),
-            new OpRec(Opcode.bit, "i,mw"),
-            new OpRec(Opcode.bit, "i,mw"),
-            new OpRec(Opcode.bit, "i,mw"),
+            new OpRec(Opcode.bit, "i,mb"),
+            new OpRec(Opcode.bit, "i,mb"),
+            new OpRec(Opcode.bit, "i,mb"),
+            new OpRec(Opcode.bit, "i,mb"),
 
             // B0
-            new OpRec(Opcode.res, "i,mw"),
-            new OpRec(Opcode.res, "i,mw"),
-            new OpRec(Opcode.res, "i,mw"),
-            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mb"),
+            new OpRec(Opcode.res, "i,mb"),
+            new OpRec(Opcode.res, "i,mb"),
+            new OpRec(Opcode.res, "i,mb"),
 
-            new OpRec(Opcode.res, "i,mw"),
-            new OpRec(Opcode.res, "i,mw"),
-            new OpRec(Opcode.res, "i,mw"),
-            new OpRec(Opcode.res, "i,mw"),
+            new OpRec(Opcode.res, "i,mb"),
+            new OpRec(Opcode.res, "i,mb"),
+            new OpRec(Opcode.res, "i,mb"),
+            new OpRec(Opcode.res, "i,mb"),
 
-            new OpRec(Opcode.set, "i,mw"),
-            new OpRec(Opcode.set, "i,mw"),
-            new OpRec(Opcode.set, "i,mw"),
-            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mb"),
+            new OpRec(Opcode.set, "i,mb"),
+            new OpRec(Opcode.set, "i,mb"),
+            new OpRec(Opcode.set, "i,mb"),
 
-            new OpRec(Opcode.set, "i,mw"),
-            new OpRec(Opcode.set, "i,mw"),
-            new OpRec(Opcode.set, "i,mw"),
-            new OpRec(Opcode.set, "i,mw"),
+            new OpRec(Opcode.set, "i,mb"),
+            new OpRec(Opcode.set, "i,mb"),
+            new OpRec(Opcode.set, "i,mb"),
+            new OpRec(Opcode.set, "i,mb"),
 
             // C0
             new OpRec(Opcode.jr, "c,jb"),

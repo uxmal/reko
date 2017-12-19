@@ -35,7 +35,7 @@ namespace Reko.Arch.PowerPC
             if (!instr.setsCR0)
                 return;
             var cr0 = frame.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
-            emitter.Assign(cr0, emitter.Cond(e));
+            m.Assign(cr0, m.Cond(e));
         }
 
 
@@ -54,7 +54,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
             var xer = frame.EnsureRegister(arch.xer);
-            emitter.Assign(xer, emitter.Cond(opD));
+            m.Assign(xer, m.Cond(opD));
         }
 
         public void RewriteAdde()
@@ -63,12 +63,12 @@ namespace Reko.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             var xer = frame.EnsureRegister(arch.xer);
-            emitter.Assign(opD,
-                emitter.IAdd(
-                    emitter.IAdd(opL, opR),
+            m.Assign(opD,
+                m.IAdd(
+                    m.IAdd(opL, opR),
                     xer));
             MaybeEmitCr0(opD);
-            emitter.Assign(xer, emitter.Cond(opD));
+            m.Assign(xer, m.Cond(opD));
         }
 
         public void RewriteAddme()
@@ -76,9 +76,9 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             var opS = RewriteOperand(instr.op2);
             var cr0 = frame.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
-            emitter.Assign(opD,
-                emitter.ISub(
-                    emitter.IAdd(opS, cr0),
+            m.Assign(opD,
+                m.ISub(
+                    m.IAdd(opS, cr0),
                     -1));
         }
 
@@ -97,7 +97,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
             var xer = frame.EnsureRegister(arch.xer);
-            emitter.Assign(xer, emitter.Cond(opD));
+            m.Assign(xer, m.Cond(opD));
         }
 
         public void RewriteAddis()
@@ -114,17 +114,17 @@ namespace Reko.Arch.PowerPC
             var opR = frame.EnsureRegister(arch.xer);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
-            emitter.Assign(opR, emitter.Cond(opD));
+            m.Assign(opR, m.Cond(opD));
         }
 
         private void RewriteAdd(Expression opD, Expression opL, Expression opR)
         {
             if (opL.IsZero)
-                emitter.Assign(opD, opR);
+                m.Assign(opD, opR);
             else if (opR.IsZero)
-                emitter.Assign(opD, opL);
+                m.Assign(opD, opL);
             else 
-                emitter.Assign(opD, emitter.IAdd(opL, opR));
+                m.Assign(opD, m.IAdd(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -135,10 +135,10 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             var s = (opL == opR)
                 ? opL
-                : emitter.And(opL, opR);
+                : m.And(opL, opR);
             if (negate)
-                s = emitter.Comp(s);
-            emitter.Assign(opD, s);
+                s = m.Comp(s);
+            m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
 
@@ -147,8 +147,8 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            var s = emitter.And(opL, emitter.Comp(opR));
-            emitter.Assign(opD, s);
+            var s = m.And(opL, m.Comp(opR));
+            m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
 
@@ -156,9 +156,9 @@ namespace Reko.Arch.PowerPC
         {
             var opD = RewriteOperand(instr.op1);
             
-            emitter.Assign(
+            m.Assign(
                 opD,
-                emitter.And(
+                m.And(
                     RewriteOperand(instr.op2),
                     Shift16(dasm.Current.op3)));
             MaybeEmitCr0(opD);
@@ -169,8 +169,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCmpi()
@@ -178,8 +178,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCmpl()
@@ -187,8 +187,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCmpli()
@@ -196,8 +196,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCmplw()
@@ -205,8 +205,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCmplwi()
@@ -214,8 +214,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCmpwi()
@@ -223,8 +223,8 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.Assign(cr, emitter.Cond(
-                emitter.ISub(r, i)));
+            m.Assign(cr, m.Cond(
+                m.ISub(r, i)));
         }
 
         private void RewriteCntlz(string name, DataType dt)
@@ -233,9 +233,9 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.op2);
             if (dt.Size < arch.WordWidth.Size)
             {
-                src = emitter.Cast(dt, src);
+                src = m.Cast(dt, src);
             }
-            emitter.Assign(dst, host.PseudoProcedure(name, PrimitiveType.UInt32, src));
+            m.Assign(dst, host.PseudoProcedure(name, PrimitiveType.UInt32, src));
         }
 
         private void RewriteCreqv()
@@ -243,7 +243,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.SideEffect(host.PseudoProcedure("__creqv", VoidType.Instance, cr, r, i));
+            m.SideEffect(host.PseudoProcedure("__creqv", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrnor()
@@ -251,7 +251,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.SideEffect(host.PseudoProcedure("__crnor", VoidType.Instance, cr, r, i));
+            m.SideEffect(host.PseudoProcedure("__crnor", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCror()
@@ -259,7 +259,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.SideEffect(host.PseudoProcedure("__cror", VoidType.Instance, cr, r, i));
+            m.SideEffect(host.PseudoProcedure("__cror", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrxor()
@@ -267,7 +267,7 @@ namespace Reko.Arch.PowerPC
             var cr = RewriteOperand(instr.op1);
             var r = RewriteOperand(instr.op2);
             var i = RewriteOperand(instr.op3);
-            emitter.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
+            m.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
         }
 
         private void RewriteDivw()
@@ -275,7 +275,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2, true);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.SDiv(opL, opR));
+            m.Assign(opD, m.SDiv(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -284,7 +284,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2, true);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.UDiv(opL, opR));
+            m.Assign(opD, m.UDiv(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -293,10 +293,10 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
             var tmp = frame.CreateTemporary(size);
-            emitter.Assign(tmp, emitter.Cast(tmp.DataType, opS));
-            emitter.Assign(
+            m.Assign(tmp, m.Cast(tmp.DataType, opS));
+            m.Assign(
                 opD, 
-                emitter.Cast(
+                m.Cast(
                     PrimitiveType.Create(Domain.SignedInt, opD.DataType.Size),
                     tmp));
             MaybeEmitCr0(opD);
@@ -306,56 +306,56 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.op1);
             var src = RewriteOperand(instr.op2);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMfcr()
         {
             var dst = RewriteOperand(instr.op1);
             var src = frame.EnsureRegister(arch.cr);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMfctr()
         {
             var src = frame.EnsureRegister(arch.ctr);
             var dst = RewriteOperand(instr.op1);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMftb()
         {
             var dst = RewriteOperand(instr.op1);
             var src = host.PseudoProcedure("__mftb", dst.DataType);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMflr()
         {
             var dst = RewriteOperand(instr.op1);
             var src = frame.EnsureRegister(arch.lr);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMtcrf()
         {
             var dst = RewriteOperand(instr.op1);
             var src = RewriteOperand(instr.op2);
-            emitter.SideEffect(host.PseudoProcedure("__mtcrf", VoidType.Instance, dst, src));
+            m.SideEffect(host.PseudoProcedure("__mtcrf", VoidType.Instance, dst, src));
         }
 
         private void RewriteMtctr()
         {
             var src = RewriteOperand(instr.op1);
             var dst = frame.EnsureRegister(arch.ctr);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMtlr()
         {
             var src= RewriteOperand(instr.op1);
             var dst = frame.EnsureRegister(arch.lr);
-            emitter.Assign(dst, src);
+            m.Assign(dst, src);
         }
 
         private void RewriteMulhw()
@@ -363,7 +363,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Sar(emitter.IMul(opL, opR), 0x20));
+            m.Assign(opD, m.Sar(m.IMul(opL, opR), 0x20));
             MaybeEmitCr0(opD);
         }
 
@@ -372,7 +372,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Sar(emitter.UMul(opL, opR), 0x20));
+            m.Assign(opD, m.Sar(m.UMul(opL, opR), 0x20));
             MaybeEmitCr0(opD);
         }
 
@@ -381,7 +381,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.IMul(opL, opR));
+            m.Assign(opD, m.IMul(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -389,7 +389,7 @@ namespace Reko.Arch.PowerPC
         {
             var opE = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Neg(opE));
+            m.Assign(opD, m.Neg(opE));
             MaybeEmitCr0(opD);
         }
 
@@ -401,10 +401,10 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             var s = (opL == opR)
                 ? opL
-                :  emitter.Or(opL, opR);
+                :  m.Or(opL, opR);
             if (negate)
-                s = emitter.Comp(s);
-            emitter.Assign(opD, s);
+                s = m.Comp(s);
+            m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
 
@@ -413,18 +413,18 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, 
-                emitter.Or(
+            m.Assign(opD, 
+                m.Or(
                     opL,
-                    emitter.Comp(opR)));
+                    m.Comp(opR)));
             MaybeEmitCr0(opD);
         }
 
         private void RewriteOris()
         {
-            emitter.Assign(
+            m.Assign(
                 RewriteOperand(instr.op1),
-                emitter.Or(
+                m.Or(
                     RewriteOperand(instr.op2),
                     Shift16(dasm.Current.op3)));
         }
@@ -433,7 +433,7 @@ namespace Reko.Arch.PowerPC
         {
             var src = RewriteOperand(instr.op2);
             var dst = RewriteOperand(instr.op1);
-            emitter.Assign(
+            m.Assign(
                 dst,
                 host.PseudoProcedure(
                     "__rlwimi",
@@ -454,103 +454,103 @@ namespace Reko.Arch.PowerPC
             ulong maskBegin = (ulong)(1ul << (64 - mb)) - 1;
             if (sh == 0)
             {
-                emitter.Assign(rd, emitter.And(rs, Constant.Word64(maskBegin)));
+                m.Assign(rd, m.And(rs, Constant.Word64(maskBegin)));
             }
             else if (sh + mb == 64)
             {
-                emitter.Assign(rd, emitter.Shr(rs, (byte)mb));
+                m.Assign(rd, m.Shr(rs, (byte)mb));
             }
             else if (sh == 0x3F && mb == 0x3F)
             {
-                emitter.Assign(rd, emitter.Shr(rs, (byte)mb));
+                m.Assign(rd, m.Shr(rs, (byte)mb));
             }
             else if (sh < mb)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shl(rs, (byte)sh),
+                m.Assign(rd, m.And(
+                    m.Shl(rs, (byte)sh),
                     maskBegin));
             }
             else if (sh == 0x39 && mb == 0x38)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x31 && mb == 0x3F)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x10 && mb == 0x2F)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x08 && mb == 0x37)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x18 && mb == 0x27)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x20 && mb == 0x1F)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x02 && mb == 0x1E)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x38 && mb == 0x3F)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x37 && mb == 0x3F)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x21 && mb == 0x3F)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x08 && mb == 0x30)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x3D && mb == 0x23)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (sh == 0x3E && mb == 0x22)
             {
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, (byte)(64 - sh)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, (byte)(64 - sh)),
                     maskBegin));
             }
             else if (mb == 0x00)
             {
-                emitter.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, Constant.Byte((byte)sh)));
+                m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, Constant.Byte((byte)sh)));
             }
             else
                 throw new NotImplementedException();
@@ -568,39 +568,39 @@ namespace Reko.Arch.PowerPC
             uint maskEnd = 1u << (31 - me);
             uint mask = maskBegin - maskEnd;
 
-//Extract and left justify immediate 	extlwi RA, RS, n, b 	rlwinm RA, RS, b, 0, n-1             	32 > n > 0
-//Extract and right justify immediate 	extrwi RA, RS, n, b 	rlwinm RA, RS, b+n, 32-n, 31 	        32 > n > 0 & b+n =< 32
-//Insert from left immediate         	inslwi RA, RS, n, b 	rlwinm RA, RS, 32-b, b, (b+n)-1 	    b+n <=32 & 32>n > 0 & 32 > b >= 0
-//Insert from right immediate       	insrwi RA, RS, n, b 	rlwinm RA, RS, 32-(b+n), b, (b+n)-1 	b+n <= 32 & 32>n > 0
-//Rotate left immediate             	rotlwi RA, RS, n    	rlwinm RA, RS, n, 0, 31 	            32 > n >= 0
-//Rotate right immediate            	rotrwi RA, RS, n    	rlwinm RA, RS, 32-n, 0, 31 	            32 > n >= 0
-//Rotate left                       	rotlw RA, RS, b      	rlwinm RA, RS, RB, 0, 31             	None
-//Shift left immediate              	slwi RA, RS, n       	rlwinm RA, RS, n, 0, 31-n 	            32 > n >= 0
-//Shift right immediate             	srwi RA, RS, n      	rlwinm RA, RS, 32-n, n, 31 	            32 > n >= 0
-//Clear left immediate              	clrlwi RA, RS, n     	rlwinm RA, RS, 0, n, 31 	            32 > n >= 0
-//Clear right immediate             	clrrwi RA, RS, n     	rlwinm RA, RS, 0, 0, 31-n 	            32 > n >= 0
-//Clear left and shift left immediate 	clrslwi RA, RS, b, n 	rlwinm RA, RS, b-n, 31-n 	            b-n >= 0 & 32 > n >= 0 & 32 > b>= 0
+            //Extract and left justify immediate 	extlwi RA, RS, n, b 	rlwinm RA, RS, b, 0, n-1             	32 > n > 0
+            //Extract and right justify immediate 	extrwi RA, RS, n, b 	rlwinm RA, RS, b+n, 32-n, 31 	        32 > n > 0 & b+n =< 32
+            //Insert from left immediate         	inslwi RA, RS, n, b 	rlwinm RA, RS, 32-b, b, (b+n)-1 	    b+n <=32 & 32>n > 0 & 32 > b >= 0
+            //Insert from right immediate       	insrwi RA, RS, n, b 	rlwinm RA, RS, 32-(b+n), b, (b+n)-1 	b+n <= 32 & 32>n > 0
+            //Rotate left immediate             	rotlwi RA, RS, n    	rlwinm RA, RS, n, 0, 31 	            32 > n >= 0
+            //Rotate right immediate            	rotrwi RA, RS, n    	rlwinm RA, RS, 32-n, 0, 31 	            32 > n >= 0
+            //Rotate left                       	rotlw RA, RS, b      	rlwinm RA, RS, RB, 0, 31             	None
+            //Shift left immediate              	slwi RA, RS, n       	rlwinm RA, RS, n, 0, 31-n 	            32 > n >= 0
+            //Shift right immediate             	srwi RA, RS, n      	rlwinm RA, RS, 32-n, n, 31 	            32 > n >= 0
+            //Clear left immediate              	clrlwi RA, RS, n     	rlwinm RA, RS, 0, n, 31 	            32 > n >= 0
+            //Clear right immediate             	clrrwi RA, RS, n     	rlwinm RA, RS, 0, 0, 31-n 	            32 > n >= 0
+            //Clear left and shift left immediate 	clrslwi RA, RS, b, n 	rlwinm RA, RS, b-n, 31-n 	            b-n >= 0 & 32 > n >= 0 & 32 > b>= 0
             if (sh == 0)
             {
-                emitter.Assign(rd, emitter.And(rs, Constant.UInt32(mask)));
+                m.Assign(rd, m.And(rs, Constant.UInt32(mask)));
                 return;
             }
             else if (mb == 32 - sh && me == 31)
             {
-                emitter.Assign(rd, emitter.Shr(rs, (byte)(32-sh)));
+                m.Assign(rd, m.Shr(rs, (byte)(32 - sh)));
                 return;
             }
-            else if (mb == 0 && me == 31-sh)
+            else if (mb == 0 && me == 31 - sh)
             {
-                emitter.Assign(rd, emitter.Shl(rs, sh));
+                m.Assign(rd, m.Shl(rs, sh));
                 return;
             }
             else if (mb == 0 && me == 31)
             {
                 if (sh < 16)
-                    emitter.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, PrimitiveType.Word32, rs, Constant.Byte(sh)));
+                    m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, PrimitiveType.Word32, rs, Constant.Byte(sh)));
                 else
-                    emitter.Assign(rd, host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
+                    m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
                 return;
             }
             else if (me == 31)
@@ -608,8 +608,8 @@ namespace Reko.Arch.PowerPC
                 int n = 32 - mb;
                 int b = sh - n;
                 mask = (1u << b) - 1;
-                emitter.Assign(rd, emitter.And(
-                    emitter.Shr(rs, Constant.Byte((byte)n)),
+                m.Assign(rd, m.And(
+                    m.Shr(rs, Constant.Byte((byte)n)),
                     Constant.Word32(mask)));
                 return;
             }
@@ -619,8 +619,8 @@ namespace Reko.Arch.PowerPC
                 {
                     // [                           llll]
                     // [                        mmm....]
-                    emitter.Assign(rd, emitter.And(
-                        emitter.Shl(rs, Constant.Byte((byte)sh)),
+                    m.Assign(rd, m.And(
+                        m.Shl(rs, Constant.Byte((byte)sh)),
                         Constant.Word32(mask)));
                     return;
                 }
@@ -629,23 +629,33 @@ namespace Reko.Arch.PowerPC
                     // [                        ll]
                     // [                        m.]
 
-                    emitter.Assign(rd, emitter.And(
-                        emitter.Shr(rs, Constant.Byte((byte)(32-sh))),
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, Constant.Byte((byte)(32 - sh))),
                         Constant.Word32(mask)));
                     return;
                 }
             }
             else
-                throw new AddressCorrelatedException(dasm.Current.Address, "{0} not handled yet.", dasm.Current);
+            {
+                //$TODO: yeah, this one is hard...
+                m.Assign(rd,
+                    host.PseudoProcedure(
+                        "__rlwinm",
+                        PrimitiveType.Word32,
+                        rs,
+                        Constant.Byte(sh),
+                        Constant.Byte(mb),
+                        Constant.Byte(me)));
+            }
 
-//Error,10034E20,rlwinm	r9,r31,1D,1B,1D not handled yet.
-//Error,10028B50,rlwinm	r8,r8,04,18,1B not handled yet.
-//Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
-//Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
-//Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
-//Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
-//Error,100338A0,rlwinm	r4,r11,08,08,0F not handled yet.
-
+            //Error,10034E20,rlwinm	r9,r31,1D,1B,1D not handled yet.
+            //Error,10028B50,rlwinm	r8,r8,04,18,1B not handled yet.
+            //Error,1002641C,rlwinm	r4,r4,04,18,1B not handled yet.
+            //Error,10026364,rlwinm	r4,r4,04,18,1B not handled yet.
+            //Error,1003078C,rlwinm	r8,r8,04,1A,1B not handled yet.
+            //Error,100294D4,rlwinm	r0,r0,04,18,1B not handled yet.
+            //Error,100338A0,rlwinm	r4,r11,08,08,0F not handled yet.
+            //rlwinm	r12,r2,09,1D,09 
         }
 
         public void RewriteRlwnm()
@@ -658,11 +668,11 @@ namespace Reko.Arch.PowerPC
             var rol = host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, sh );
             if (mb == 0 && me == 31)
             {
-                emitter.Assign(rd, rol);
+                m.Assign(rd, rol);
                 return;
             }
             var mask = (1u << (32-mb)) - (1u << (31-me));
-            emitter.Assign(rd, emitter.And(rol, Constant.UInt32(mask)));
+            m.Assign(rd, m.And(rol, Constant.UInt32(mask)));
         }
 
         public void RewriteSl(PrimitiveType dt)
@@ -670,7 +680,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Shl(opL, opR));
+            m.Assign(opD, m.Shl(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -680,7 +690,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Sar(opL, opR));
+            m.Assign(opD, m.Sar(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -689,7 +699,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Shr(opL, opR));
+            m.Assign(opD, m.Shr(opL, opR));
             MaybeEmitCr0(opD);
         }
 
@@ -698,7 +708,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.ISub(opR, opL));
+            m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
         }
 
@@ -707,10 +717,10 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.ISub(opR, opL));
+            m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
             var xer = frame.EnsureRegister(arch.xer);
-            emitter.Assign(xer, emitter.Cond(opD));
+            m.Assign(xer, m.Cond(opD));
         }
 
         public void RewriteSubfe()
@@ -719,7 +729,7 @@ namespace Reko.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             var xer = frame.EnsureRegister(arch.xer);
-            emitter.Assign(opD, emitter.IAdd(emitter.ISub(opR, opL), xer));
+            m.Assign(opD, m.IAdd(m.ISub(opR, opL), xer));
             MaybeEmitCr0(opD);
         }
 
@@ -728,7 +738,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.ISub(opR, opL));
+            m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
         }
 
@@ -737,10 +747,10 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
             var xer = frame.EnsureRegister(arch.xer);
-            emitter.Assign(
+            m.Assign(
                 opD, 
-                emitter.IAdd(
-                    emitter.ISub(
+                m.IAdd(
+                    m.ISub(
                         Constant.Zero(opD.DataType),
                         opS), 
                     xer));
@@ -755,8 +765,8 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             var s = (opL == opR)
                 ? Constant.Zero(opL.DataType)
-                : emitter.Xor(opL, opR);
-            emitter.Assign(opD, s);
+                : m.Xor(opL, opR);
+            m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
 
@@ -765,7 +775,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2, true);
             var opR = Shift16(dasm.Current.op3);
             var opD = RewriteOperand(instr.op1);
-            emitter.Assign(opD, emitter.Xor(opL, opR));
+            m.Assign(opD, m.Xor(opL, opR));
         }
     }
 }

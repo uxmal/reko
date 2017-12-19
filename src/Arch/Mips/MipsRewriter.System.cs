@@ -36,11 +36,11 @@ namespace Reko.Arch.Mips
     {
         private void RewriteBreak(MipsInstruction instr)
         {
-            emitter.SideEffect(
+            m.SideEffect(
                 host.PseudoProcedure(
                     "__break",
                     VoidType.Instance,
-                    this.RewriteOperand(instr.op1)));
+                    this.RewriteOperand0(instr.op1)));
         }
 
         private void RewriteMfc0(MipsInstruction instr)
@@ -49,42 +49,42 @@ namespace Reko.Arch.Mips
             Identifier from;
             switch (cpregFrom.Number)
             {
-            case 9: from = frame.CreateTemporary("__counter__", PrimitiveType.UInt32); break;
-            default: from = frame.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
+            case 9: from = binder.CreateTemporary("__counter__", PrimitiveType.UInt32); break;
+            default: from = binder.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
             }
-            emitter.Assign(RewriteOperand(instr.op1), from);
+            m.Assign(RewriteOperand0(instr.op1), from);
         }
 
         private void RewriteTrap(MipsInstruction instr, Func<Expression, Expression, Expression> op)
         {
             var op1 = RewriteOperand(instr.op1);
             var op2 = RewriteOperand(instr.op2);
-            if (op != emitter.Eq || !cmp.Equals(op1, op2))
+            if (op != m.Eq || !cmp.Equals(op1, op2))
             {
-                this.cluster.Class = RtlClass.ConditionalTransfer;
-                emitter.BranchInMiddleOfInstruction(
-                    op(op1, op2).Invert(),
-                    instr.Address + instr.Length,
-                    RtlClass.ConditionalTransfer);
+                this.rtlc = RtlClass.ConditionalTransfer;
+                m.BranchInMiddleOfInstruction(
+                        op(op1, op2).Invert(),
+                        instr.Address + instr.Length,
+                        RtlClass.ConditionalTransfer);
             }
             var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
-            emitter.SideEffect(trap);
+            m.SideEffect(trap);
         }
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)
         {
-            var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand(instr.op2));
-            emitter.Assign(this.RewriteOperand(instr.op1), rdhwr);
+            var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand0(instr.op2));
+            m.Assign(this.RewriteOperand0(instr.op1), rdhwr);
         }
 
         private void RewriteSyscall(MipsInstruction instr)
         {
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand(instr.op1)));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand0(instr.op1)));
         }
 
         private void RewriteSync(MipsInstruction instr)
         {
-            emitter.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand(instr.op1)));
+            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand0(instr.op1)));
         }
     }
 }

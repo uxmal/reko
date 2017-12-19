@@ -204,7 +204,7 @@ namespace Reko.Core
 		public Identifier EnsureRegister(RegisterStorage reg)
 		{
 			Identifier id = FindRegister(reg);
-			if (id == null)
+			if (id == null && reg != null)
 			{
 				id = new Identifier(reg.Name, reg.DataType, reg);
 				identifiers.Add(id);
@@ -324,14 +324,14 @@ namespace Reko.Core
 			return null;
 		}
 
-		public string FormatStackAccessName(DataType type, string prefix, int cbOffset)
+		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset)
 		{
 			cbOffset = Math.Abs(cbOffset);
 			string fmt = (cbOffset > 0xFF) ? "{0}{1}{2:X4}" : "{0}{1}{2:X2}";
 			return string.Format(fmt, type.Prefix, prefix, cbOffset);
 		}
 
-		public string FormatStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
+		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
 		{
 			if (nameOverride != null)
 				return nameOverride;
@@ -397,7 +397,7 @@ namespace Reko.Core
 			foreach (Identifier id in identifiers)
 			{
 				RegisterStorage s = id.Storage as RegisterStorage;
-				if (s == reg)
+				if (s != null && s == reg)
 					return id;
 			}
 			return null;

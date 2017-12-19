@@ -162,7 +162,7 @@ string ls	;
 
 	If Len(Dir$(fs)) Then
 
-		n = GetTypeLibData(cs, fs)
+        n = GetTypeLibData(cs, fs);
 
 		If n Then
 

@@ -848,7 +848,7 @@ rulong hwnd;
 
             if (args.Length == 3 && GetRulong(args[0], out addr) && GetRulong(args[1], out size) && GetString(args[2], out filename))
             {
-                if (!Helper.IsFullPath(filename))
+                if (!Path.IsPathRooted(filename))
                     filename = Host.TE_GetTargetDirectory() + filename;
 
                 // Truncate existing file
@@ -4297,7 +4297,7 @@ string filename, data;
                 if (args.Length == 3 && !GetString(args[2], out @out))
                     return false;
 
-                if (!Helper.IsFullPath(filename))
+                if (!Path.IsPathRooted(filename))
                     filename = Host.TE_GetTargetDirectory() + filename;
 
                 var fsSvc = services.RequireService<IFileSystemService>();

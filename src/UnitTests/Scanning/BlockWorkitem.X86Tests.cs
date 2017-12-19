@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Scanning
                 return p;
             }
 
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression [] args)
+            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
                 return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
@@ -176,13 +176,17 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-
-            public void Error(Address address, string message)
+            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
             {
                 throw new NotImplementedException();
             }
 
-            public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+            public void Error(Address address, string format, params object[] args)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Warn(Address address, string format, params object[] args)
             {
                 throw new NotImplementedException();
             }
@@ -222,8 +226,8 @@ namespace Reko.UnitTests.Scanning
                },
                new Dictionary<string, DataType>());
             var rw = arch.CreateRewriter(
-                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
-                this.state, 
+                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr),
+                this.state,
                 proc.Frame,
                 host);
             this.program = new Program
@@ -252,7 +256,7 @@ namespace Reko.UnitTests.Scanning
         public void BwiX86_WalkX86ServiceCall()
         {
             // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Int(0x21);
 
@@ -270,7 +274,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkBswap()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Bswap(m.ebp);
             });
@@ -283,7 +287,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkMovConst()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Mov(m.si, 0x606);
             });
@@ -295,7 +299,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_XorWithSelf()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Xor(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -309,7 +313,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_SubWithSelf()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Sub(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -322,7 +326,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.In(m.al, m.dx);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
@@ -335,15 +339,19 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RewriteIndirectCall()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
-                scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
-                    new FunctionType(
-                        Reg(Registers.ax),
-                        new Identifier[] { Reg(Registers.cx) }));
-
                 m.Call(m.MemW(Registers.cs, Registers.bx, 4));
             });
+            var uc = new UserCallData
+            {
+                Address = Address.SegPtr(0xC00, 0),
+                Signature = new FunctionType(
+                        Reg(Registers.ax),
+                        new Identifier[] { Reg(Registers.cx) })
+            };
+            program.User.Calls.Add(uc.Address, uc);
+
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(sw);
@@ -357,7 +365,7 @@ namespace Reko.UnitTests.Scanning
         //$TODO: big-endian version of this, please.
         public void BwiX86_IndirectJumpGated()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.And(m.bx, m.Const(3));
                 m.Add(m.bx, m.bx);
@@ -430,11 +438,13 @@ namespace Reko.UnitTests.Scanning
         public void BwiX86_RepMovsw()
         {
             var follow = new Block(proc, "follow"); // the code that follows the 'rep movsw'
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Rep();
                 m.Movsw();
                 m.Mov(m.bx, m.dx);
+
+                scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
 
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.NotNull,
@@ -464,7 +474,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_XorFlags()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(m =>
             {
                 m.Xor(m.esi, m.esi);
                 m.Label("x");
@@ -480,6 +490,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+                scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
             });
             wi.Process();
             var sExp =
@@ -497,7 +508,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_IndirectCallToConstant()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(m =>
             {
                 m.Mov(m.ebx, m.MemDw("_GetDC"));
                 m.Call(m.ebx);
@@ -505,7 +516,6 @@ namespace Reko.UnitTests.Scanning
 
                 m.Import("_GetDC", "GetDC", "user32.dll");
 
-                scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
                 scanner.Stub(x => x.TerminateBlock(Arg<Block>.Is.Anything, Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(

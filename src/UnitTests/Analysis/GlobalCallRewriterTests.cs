@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void GcrStackArguments()
 		{
-            Frame f = program.Architecture.CreateFrame();
+            var f = program.Architecture.CreateFrame();
             f.ReturnAddressKnown = true;
 			f.ReturnAddressSize = PrimitiveType.Word16.Size;
 

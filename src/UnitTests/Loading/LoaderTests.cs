@@ -29,6 +29,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Loading
 {
@@ -252,6 +253,27 @@ namespace Reko.UnitTests.Loading
 
             Assert.AreEqual(1, program.EntryPoints.Count);
             Assert.AreEqual(SymbolType.Procedure, program.EntryPoints[Address.Ptr32(0x00123500)].Type);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Ldr_MemoryMap()
+        {
+            var mmap = new SegmentMap(
+                Address.Ptr16(0x0000),
+                new ImageSegment("low_memory_area", new MemoryArea(Address.Ptr16(0x0000), new byte[0x100]), AccessMode.ReadWriteExecute));
+            var arch = mr.Stub<IProcessorArchitecture>();
+            var platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.CreateAbsoluteMemoryMap()).Return(mmap);
+            mr.ReplayAll();
+
+            var ldr = new Loader(sc);
+            var segMap = ldr.CreatePlatformSegmentMap(platform, Address.Ptr16(0x0100), new byte[] { 0x50 });
+            Assert.AreEqual(2, segMap.Segments.Count);
+            var memProg = segMap.Segments.Values.ElementAt(1).MemoryArea;
+            Assert.AreEqual(1, memProg.Length);
+            Assert.AreEqual((byte)0x50, memProg.Bytes[0]);
+
             mr.VerifyAll();
         }
 	}

@@ -96,9 +96,9 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new X86_64ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            return new X86_64CallingConvention();
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -119,6 +119,7 @@ namespace Reko.Environments.Windows
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 4;
@@ -132,14 +133,10 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader rdr, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rw, IRewriterHost host)
         {
-            var rw = Architecture.CreateRewriter(
-                rdr,
-                Architecture.CreateProcessorState(),
-                Architecture.CreateFrame(), host);
             var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
             var jump = rtlc.Instructions[0] as RtlGoto;
             if (jump == null)
@@ -169,7 +166,7 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             ModuleDescriptor mod;
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName == null || !Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
                 return null;
             SystemService svc;
             if (mod.ServicesByName.TryGetValue(procName, out svc))
@@ -180,12 +177,9 @@ namespace Reko.Environments.Windows
                 return null;
         }
 
-        public override ExternalProcedure SignatureFromName(string fnName)
+        public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
-            return SignatureGuesser.SignatureFromName(
-                fnName,
-                new TypeLibraryDeserializer(this, true, Metadata),
-                this);
+            return SignatureGuesser.SignatureFromName(fnName, this);
         }
     }
 }

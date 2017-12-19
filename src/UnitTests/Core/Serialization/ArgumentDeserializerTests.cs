@@ -50,8 +50,8 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new X86ArchitectureReal();
             platform = new MsdosPlatform(sc, arch);
-            sigser = mr.Stub<ProcedureSerializer>(
-                arch,
+            sigser = new ProcedureSerializer(
+                platform,
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
             argser = new ArgumentDeserializer(
@@ -77,18 +77,6 @@ namespace Reko.UnitTests.Core.Serialization
             Identifier id = argser.Deserialize(arg);
             Assert.AreEqual("eax", id.Name);
             Assert.AreEqual(32, id.DataType.BitSize);
-        }
-
-        [Test]
-        public void ArgSer_DeserializeReturnRegisterWithType()
-        {
-            var arg = new Argument_v1
-            {
-                Kind = new Register_v1("eax"),
-                Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
-            };
-            var id = argser.DeserializeReturnValue(arg);
-            Assert.AreEqual("(ptr char)", id.DataType.ToString());
         }
 
         [Test]

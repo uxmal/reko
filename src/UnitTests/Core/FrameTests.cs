@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrRegisterTest()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			IStorageBinder f = new Frame(PrimitiveType.Word16);
 			Identifier id0 = f.EnsureRegister(Registers.ax);
 			f.EnsureRegister(Registers.bx);
 			Identifier id2 = f.EnsureRegister(Registers.ax);
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrSequenceTest()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			var f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
 			Identifier dxax = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
@@ -71,8 +71,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrGrfTest()
 		{
-			IntelArchitecture arch = new X86ArchitectureReal();
-			Frame f = new Frame(PrimitiveType.Word16);
+			var arch = new X86ArchitectureReal();
+			var f = new Frame(PrimitiveType.Word16);
 			uint iSz = (uint) (FlagM.ZF|FlagM.SF);
 			f.EnsureFlagGroup(Registers.eflags, iSz, arch.GrfToString(iSz), PrimitiveType.Byte);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrGrfTest.txt"))
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrLocals()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			var f = new Frame(PrimitiveType.Word16);
 			f.EnsureStackLocal(2, PrimitiveType.Word16);
 			f.EnsureStackLocal(4, PrimitiveType.Word32);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrLocals.txt"))
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrSequenceAccess()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			var f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
 			Identifier dx_ax = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
@@ -116,10 +116,10 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-        [Ignore()]
+        [Ignore("")]
 		public void FrBindStackParameters()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			var f = new Frame(PrimitiveType.Word16);
 			f.ReturnAddressSize = 4;						// far call.
 			int stack = 2;
 			Identifier loc02 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc02");
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrBindMixedParameters()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			var f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier cx = f.EnsureRegister(Registers.cx);
 			int stack = PrimitiveType.Word16.Size;
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrFpuStack()
 		{
-			Frame f = new Frame(PrimitiveType.Word16);
+			var f = new Frame(PrimitiveType.Word16);
 			f.EnsureFpuStackVariable(-1, PrimitiveType.Real64);
 			f.EnsureFpuStackVariable(-2, PrimitiveType.Real64);
 			f.EnsureFpuStackVariable(0, PrimitiveType.Real64);
@@ -189,7 +189,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrEnsureRegister()
 		{
-			Frame f = new Frame(PrimitiveType.Word32);
+			var f = new Frame(PrimitiveType.Word32);
 			f.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
 			Assert.AreEqual("eax", f.Identifiers[2].Name);
 			Assert.AreSame(PrimitiveType.Word32, f.Identifiers[2].DataType);
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void EnsureOutRegister()
 		{
-			Frame f = new Frame(PrimitiveType.Word32);
+			var f = new Frame(PrimitiveType.Word32);
 			Identifier r = f.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
 			Identifier arg = f.EnsureOutArgument(r, PrimitiveType.Pointer32);
 			Assert.AreEqual("r1Out", arg.Name);

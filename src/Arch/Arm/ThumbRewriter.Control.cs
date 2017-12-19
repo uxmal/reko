@@ -37,40 +37,40 @@ namespace Reko.Arch.Arm
             var addr = Address.Ptr32((uint)ops[0].ImmediateValue.Value);
             if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
             {
-                ric.Class = RtlClass.Transfer;
-                emitter.Goto(addr);
+                rtlc = RtlClass.Transfer;
+                m.Goto(addr);
             }
             else
             {
-                ric.Class = RtlClass.ConditionalTransfer;
-                emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
+                rtlc = RtlClass.ConditionalTransfer;
+                m.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
             }
         }
 
         private void RewriteBl()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.Call(
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            m.Call(
                 Address.Ptr32((uint)ops[0].ImmediateValue.Value),
                 0);
         }
 
         private void RewriteBlx()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.Call(RewriteOp(ops[0]), 0);
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            m.Call(RewriteOp(ops[0]), 0);
         }
 
         private void RewriteBx()
         {
-            ric.Class = RtlClass.Transfer;
-            emitter.Goto(RewriteOp(ops[0]));
+            rtlc = RtlClass.Transfer;
+            m.Goto(RewriteOp(ops[0]));
         }
 
         private void RewriteCbnz(Func<Expression, Expression> ctor)
         {
-            ric.Class = RtlClass.ConditionalTransfer;
-            emitter.Branch(ctor(RewriteOp(ops[0])),
+            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(ctor(RewriteOp(ops[0])),
                 Address.Ptr32((uint)ops[1].ImmediateValue.Value),
                 RtlClass.Transfer);
         }
@@ -83,12 +83,12 @@ namespace Reko.Arch.Arm
 
         private void RewriteTrap()
         {
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
         }
 
         private void RewriteUdf()
         {
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
         }
     }
 }

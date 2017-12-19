@@ -29,7 +29,7 @@ namespace Reko.Core
     /// <summary>
     /// Binds storages to identifiers.
     /// </summary>
-    public class StorageBinder : IStorageBinder
+    public class StorageBinder : IStorageBinder, StorageVisitor<Identifier>
     {
         //$TODO: In analysis-development, storages have GetHashCode() and 
         // Equals() implementations.
@@ -101,11 +101,6 @@ namespace Reko.Core
             return id;
         }
 
-        public Identifier EnsureIdentifier(Storage stg)
-        {
-            throw new NotImplementedException();
-        }
-
         public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
         {
             throw new NotImplementedException();
@@ -113,6 +108,8 @@ namespace Reko.Core
 
         public Identifier EnsureRegister(RegisterStorage reg)
         {
+            if (reg == null)
+                return null;
             Identifier id;
             if (regs.TryGetValue(reg, out id))
                 return id;
@@ -145,5 +142,54 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
+        Identifier StorageVisitor<Identifier>.VisitFlagGroupStorage(FlagGroupStorage grf)
+        {
+            return this.EnsureFlagGroup(grf);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitFlagRegister(FlagRegister freg)
+        {
+            return this.EnsureRegister(freg);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitFpuStackStorage(FpuStackStorage fpu)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitMemoryStorage(MemoryStorage global)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitStackLocalStorage(StackLocalStorage local)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitOutArgumentStorage(OutArgumentStorage arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitRegisterStorage(RegisterStorage reg)
+        {
+            return EnsureRegister(reg);
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitSequenceStorage(SequenceStorage seq)
+        {
+            return EnsureSequence(seq.Head, seq.Tail, PrimitiveType.CreateWord((int)seq.BitSize / 8));
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitStackArgumentStorage(StackArgumentStorage stack)
+        {
+            throw new NotImplementedException();
+        }
+
+        Identifier StorageVisitor<Identifier>.VisitTemporaryStorage(TemporaryStorage temp)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

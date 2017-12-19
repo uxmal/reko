@@ -29,6 +29,8 @@ namespace Reko.CmdLine
 {
     public class CmdLineListener : DecompilerEventListener
     {
+        private bool isCanceled;
+
         public ICodeLocation CreateAddressNavigator(Program program, Address address)
         {
             return new NullCodeLocation(address.ToString());
@@ -60,6 +62,16 @@ namespace Reko.CmdLine
                 location.Text,
                 d.ImageKey,
                 d.Message);
+        }
+
+        public void Info(ICodeLocation location, string message)
+        {
+            Console.Out.WriteLine("{0}: {1}", location.Text, message);
+        }
+
+        public void Info(ICodeLocation location, string message, params object[] args)
+        {
+            Info(location, string.Format(message, args));
         }
 
         public void Warn(ICodeLocation location, string message)
@@ -108,7 +120,13 @@ namespace Reko.CmdLine
 
         public bool IsCanceled()
         {
-            return false;
+            return isCanceled;
+        }
+
+        public void CancelDecompilation(string reason)
+        {
+            Console.Out.Write("Decompilation canceled. {0}", reason);
+            this.isCanceled = true;
         }
     }
 }

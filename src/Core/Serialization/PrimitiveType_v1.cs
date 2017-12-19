@@ -120,7 +120,5 @@ namespace Reko.Core.Serialization
 		{
 			return string.Format("prim({0},{1})", Domain, ByteSize);
 		}
-
-       
     }
 }

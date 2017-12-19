@@ -2,6 +2,6 @@
 
 0C00:0000 83 3E 34 81 00  	cmp	word ptr [8134],00
 0C00:0005 0F 84 01 00     	jz	000A
-0C00:0009 C3              	ret	
+0C00:0009 C3              	ret
 0C00:000A 33 C0           	xor	ax,ax
-0C00:000C C3              	ret	
+0C00:000C C3              	ret

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,64 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Registers = Reko.Arch.Tlcs.Tlcs900.Tlcs900Registers;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
     public partial class Tlcs900Rewriter
     {
+        private void RewriteDecf()
+        {
+            //$TODO: model this as an explicit bank switch?
+            m.SideEffect(host.PseudoProcedure("__decf", VoidType.Instance));
+        }
+
         private void RewriteEi()
         {
             var ppp = host.PseudoProcedure("__ei", VoidType.Instance, RewriteSrc(instr.op1));
             m.SideEffect(ppp);
+        }
+
+        private void RewriteHalt()
+        {
+            var c = new ProcedureCharacteristics
+            {
+                Terminates = true,
+            };
+            m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
+        }
+
+        private void RewriteIncf()
+        {
+            //$TODO: model this as an explicit bank switch?
+            m.SideEffect(host.PseudoProcedure("__incf", VoidType.Instance));
+        }
+
+        private void RewriteLdf()
+        {
+            //$TODO: model this as an explicit bank switch?
+            m.SideEffect(host.PseudoProcedure("__ldf", VoidType.Instance, RewriteSrc(instr.op1)));
+        }
+
+        private void RewriteSwi()
+        {
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            var xsp = binder.EnsureRegister(Registers.xsp);
+            var sr = binder.EnsureRegister(Registers.sr);
+            var dst = Address.Ptr32(0xFFFF00u + ((ImmediateOperand)instr.op1).Value.ToUInt32() * 4);
+            m.Assign(xsp, m.ISub(xsp, m.Int32(2)));
+            m.Assign(m.LoadW(xsp), sr);
+            m.Call(dst, 4);
         }
     }
 }

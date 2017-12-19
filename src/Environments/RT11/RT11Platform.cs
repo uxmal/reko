@@ -62,16 +62,16 @@ namespace Reko.Environments.RT11
             };
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override CallingConvention GetCallingConvention(string ccName)
         {
-            return new Rt11ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            return new Rt11CallingConvention(this.arch);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
             base.EnsureTypeLibraries(PlatformIdentifier);
             int uVec = vector & 0xFFFF;
-            foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByVector.Values))
+            foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByOrdinal.Values))
             {
                 if (svc.SyscallInfo.Matches(uVec, state))
                 {
@@ -84,11 +84,6 @@ namespace Reko.Environments.RT11
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
-        }
-
-        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
-        {
-            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

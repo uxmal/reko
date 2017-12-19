@@ -83,7 +83,8 @@ namespace Reko.Core
             Debug.Assert(delta >= 0);
             if (delta > 0)
             {
-                // Need to split the segment. //$REVIEW: or do we? x86 segments can overlap.
+                // Need to split the segment if it has a size
+                // x86 real mode segments don't have sizes, and can overlap.
 
                 var segSplit = new ImageSegment(segNew.Name, segNew.Address, segNew.MemoryArea, segNew.Access);
                 segSplit.Size = (uint)(seg.Size - delta);

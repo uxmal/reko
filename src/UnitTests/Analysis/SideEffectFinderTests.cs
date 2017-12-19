@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Analysis
 			Procedure proc = new ConstrainedMock().Procedure;
             Statement def = proc.EntryBlock.Succ[0].Statements[0];
             Statement use = proc.EntryBlock.Succ[0].Statements[2];
-			Assert.AreEqual("id = bar(0x00000003)", def.Instruction.ToString());
+			Assert.AreEqual("id = bar(3)", def.Instruction.ToString());
 			Assert.AreEqual("Mem0[0x10000304:word32] = id", use.Instruction.ToString());
 			Assert.AreEqual(SideEffectFlags.Application, sef.FindSideEffect(def.Instruction));
             Assert.AreEqual(SideEffectFlags.Load | SideEffectFlags.Store, sef.FindSideEffect(proc.EntryBlock.Succ[0].Statements[1].Instruction));
@@ -104,8 +104,8 @@ namespace Reko.UnitTests.Analysis
 			{
 				var id = Local32("id");
 				Assign(id, this.Fn("bar", Int32(3)));
-				Store(Int32(0x10000300), Int32(0));
-				Store(Int32(0x10000304), id);
+				Store(Word32(0x10000300), Int32(0));
+				Store(Word32(0x10000304), id);
 			}
 		}
 
@@ -115,11 +115,10 @@ namespace Reko.UnitTests.Analysis
 			{
 				var id = Local32("id");
 				var ix = Local32("ix");
-				LoadId(id, Int32(0x1000000));
-				LoadId(ix, Int32(0x1000004));
-				Store(Int32(0x10000008), id);
+				LoadId(id, Word32(0x1000000));
+				LoadId(ix, Word32(0x1000004));
+				Store(Word32(0x10000008), id);
 			}
-
 		}
 	}
 }
