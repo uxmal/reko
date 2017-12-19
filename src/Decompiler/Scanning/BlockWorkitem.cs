@@ -780,6 +780,7 @@ namespace Reko.Scanning
                     return true;
                 }
                 AffectProcessorState(svc.Signature);
+                OnAfterCall(svc.Signature, svc.Characteristics);
             }
             else
             {

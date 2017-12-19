@@ -41321,7 +41321,7 @@ l1483_0D69:
 	byte cl_147
 	selector cs_148
 	selector fs_149
-	call fn1483_8A82 (retsize: 2;)
+	call fn1483_8A82 (retsize: 2; depth: -6)
 		uses: ah_85,al_72,ax_86,bh,bl_59,bp_95,bx_61,C_110,ch_65,cl,cs,cx_67,dh_77,di,dl,ds,dx_79,es,fs,O_103,P,S,SCZDOP,SCZO_102,si,SO_82,sp_105,ss,SZO_109,wLoc02_4,wLoc04_75,wLoc06_89,wLoc08_91,wLoc0A,Z
 		defs: ah_135,al_124,ax_121,bh_142,bl_127,bp_137,bx_128,C_131,ch_125,cl_147,cs_148,cx_141,dh_132,di_136,dl_145,ds_130,dx_140,es_138,fs_149,O_139,P_123,S_146,SCZDOP_143,SCZO_126,si_129,SO_134,sp_120,ss_122,SZO_133,Z_144
 	word16 bx_167 = bx_128 + Mem108[ds_130:(bx_128 - 0x0079) + di_136:word16] + C_131

@@ -154,8 +154,6 @@ namespace Reko.Analysis
             int depth = c.ToInt32();
             if (bin.Operator == Operator.ISub)
                 depth = -depth;
-            if (depth > 0)
-                throw new NotImplementedException("Expected stack depth to be negative.");
             return -depth;
         }
 

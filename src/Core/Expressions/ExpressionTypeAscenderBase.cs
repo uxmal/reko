@@ -231,9 +231,16 @@ namespace Reko.Core.Expressions
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
                 dtLeft is Pointer)
             {
-                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
-                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+                if (ptRight != null)
+                {
+                    if ((ptRight.Domain & Domain.Integer) != 0)
+                        return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+                    else if ((ptRight.Domain & Domain.Pointer) != 0)
+                        return PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
+                }
+                if (dtRight is Pointer)
+                    return PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
+                throw new TypeInferenceException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             if (ptRight != null && ptRight.Domain == Domain.Pointer || 
                 dtRight is Pointer)
@@ -245,7 +252,7 @@ namespace Reko.Core.Expressions
                 // integer.
                 if (ptLeft != null && (ptLeft.Domain & Domain.Pointer) != 0)
                     return PrimitiveType.Create(Domain.Integer, dtLeft.Size);
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+                throw new TypeInferenceException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             return dtLeft;
         }

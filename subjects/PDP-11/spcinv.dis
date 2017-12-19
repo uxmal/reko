@@ -2376,7 +2376,7 @@ l0AF0:
 	word16 r4_38
 	bool Z_39
 	byte NZV_40
-	call r5 + 0x0002 (retsize: 0; FPU: 2;)
+	call r5 + 0x0002 (retsize: 0; depth: -2 FPU: 2;)
 		uses: NZ_27,r0_26,r4_23,r5_31,sp_32,V_28,wLoc02_4,Z_21
 		defs: NZ_35,NZV_40,r0_34,r4_38,r5_37,sp_33,V_36,Z_39
 	return r0_34

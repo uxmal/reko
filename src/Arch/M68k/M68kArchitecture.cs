@@ -37,6 +37,8 @@ namespace Reko.Arch.M68k
     [Designer("Reko.Arch.M68k.Design.M68kArchitectureDesigner,Reko.Arch.M68k.Design")]
     public class M68kArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public M68kArchitecture()
         {
             InstructionBitSize = 16;
@@ -45,9 +47,10 @@ namespace Reko.Arch.M68k
             WordWidth = PrimitiveType.Word32;
             CarryFlagMask = (uint)FlagM.CF;
             StackRegister = Registers.a7;
-        }
+            flagGroups = new Dictionary<uint, FlagGroupStorage>();
+    }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+    public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);
         }
@@ -140,7 +143,16 @@ namespace Reko.Arch.M68k
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.ccr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

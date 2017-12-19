@@ -956,7 +956,7 @@ l0738:
 	word16 r5_74
 	bool C_75
 	bool N_76
-	call Mem10[r4_3 + 0x002A:word16] (retsize: 4; FPU: 2;)
+	call Mem10[r4_3 + 0x002A:word16] (retsize: 4; depth: -2 FPU: 2;)
 		uses: NZ_59,NZVC_40,r0_38,r1_37,r2_47,r3_46,r4_62,r5_50,sp_56,V_60,Z_43
 		defs: C_75,N_76,NZ_66,NZVC_68,pc_64,r0_69,r1_70,r2_71,r3_72,r4_65,r5_74,sp_63,V_67,Z_73
 	return
@@ -1066,7 +1066,7 @@ l07FE:
 	bool V_119
 	bool N_120
 	byte NZ_121
-	call Mem0[wArg04:word16] (retsize: 4; FPU: 2;)
+	call Mem0[wArg04:word16] (retsize: 4; depth: 2 FPU: 2;)
 		uses: C_85,N_79,NZ_103,NZVC_90,r0_93,r1,r2_92,r3_18,r4_107,r5_96,sp_100,V_104,Z_91,ZC_75
 		defs: C_112,N_120,NZ_121,NZVC_110,r0_117,r1_116,r2_118,r3_109,r4_111,r5_113,sp_108,V_119,Z_115,ZC_114
 	return
@@ -1765,7 +1765,7 @@ l0C44:
 	byte NZVC_89
 	word16 r3_91
 	word16 r2_92
-	call wArg04 (retsize: 2; FPU: 2;)
+	call wArg04 (retsize: 2; depth: -4 FPU: 2;)
 		uses: C_76,N_50,NZ_78,NZV_70,NZVC_73,r0_20,r1_77,r2_16,r3_15,sp_81,V_79
 		defs: C_87,N_85,NZ_86,NZV_84,NZVC_89,r0_83,r1_90,r2_92,r3_91,sp_82,V_88
 // DataOut: r0 r1 r3
@@ -1791,7 +1791,7 @@ l0C62:
 	word16 r1_65
 	word16 r3_66
 	word16 r2_67
-	call wArg04 (retsize: 2; FPU: 2;)
+	call wArg04 (retsize: 2; depth: -4 FPU: 2;)
 		uses: C_52,N_50,NZ_51,NZV_49,NZVC_48,r0_20,r1_10,r2_16,r3_15,sp_56,V_53
 		defs: C_62,N_60,NZ_61,NZV_59,NZVC_64,r0_58,r1_65,r2_67,r3_66,sp_57,V_63
 // DataOut: r3
@@ -2230,7 +2230,7 @@ l0E7C:
 	bool C_50
 	byte NZV_51
 	byte NV_52
-	call Mem10[r4_3 + 0x002A:word16] (retsize: 4; FPU: 2;)
+	call Mem10[r4_3 + 0x002A:word16] (retsize: 4; depth: -6 FPU: 2;)
 		uses: C_34,NV_36,NZ_31,NZV_35,NZVC_30,r0_22,r1_26,r2_14,r3_18,r4_38,sp_25,V_32,Z_33
 		defs: C_50,NV_52,NZ_42,NZV_51,NZVC_44,pc_40,r0_47,r1_48,r2_45,r3_46,r4_41,sp_39,V_43,Z_49
 	return NV_52
@@ -3070,7 +3070,7 @@ l1086:
 	word16 r4_62
 	byte NV_63
 	byte NZV_64
-	call Mem0[r4:word16] (retsize: 4; FPU: 2;)
+	call Mem0[r4:word16] (retsize: 4; depth: 2 FPU: 2;)
 		uses: C_39,N_31,NV_27,NZ_44,NZV_26,NZVC_30,r0_34,r1_33,r2_29,r3_32,r4_49,sp_41,V_45,Z_38,ZC_28
 		defs: C_56,N_57,NV_63,NZ_52,NZV_64,NZVC_59,r0_51,r1_54,r2_60,r3_55,r4_62,sp_50,V_53,Z_58,ZC_61
 	return r0_51
@@ -3751,7 +3751,7 @@ l1478:
 	bool Z_49
 	word16 r5_50
 	word16 r4_51
-	call wArg00 (retsize: 2; FPU: 2;)
+	call wArg00 (retsize: 2; depth: -4 FPU: 2;)
 		uses: C_13,NZ_36,r0_32,r2_26,r3_3,sp_39,V_37,Z_12
 		defs: C_48,NZ_43,NZVC_46,pc_41,r0_45,r2_47,r3_42,r4_51,r5_50,sp_40,V_44,Z_49
 	word16 v26_52 = Mem35[r0_45:word16] & 0x0800

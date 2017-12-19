@@ -182,6 +182,8 @@ namespace Reko.Analysis
                 this.stmCur = stm;
                 try
                 {
+                    if (stm.LinearAddress == 0x000000000010f638)
+                        stm.ToString();
                     stm.Instruction.Accept(this);
                 }
                 catch (Exception ex)
