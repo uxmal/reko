@@ -37,13 +37,13 @@ Eq_119: (union "Eq_119" (int32 u0) (uint32 u1))
 	T_170 (in r16_90 : Eq_119)
 	T_176 (in Mem80[r17_52 + 0x00000AF4:word32] : word32)
 Eq_181: (fn void ())
-	T_181 (in deregister_tm_clones : word32)
+	T_181 (in deregister_tm_clones : ptr32)
 	T_182 (in signature of deregister_tm_clones : void)
 Eq_188: (fn void ())
-	T_188 (in register_tm_clones : word32)
+	T_188 (in register_tm_clones : ptr32)
 	T_189 (in signature of register_tm_clones : void)
 Eq_193: (fn (ptr void) ((ptr void), int32, Eq_197))
-	T_193 (in memset : word32)
+	T_193 (in memset : ptr32)
 	T_194 (in signature of memset : void)
 Eq_197: size_t
 	T_197 (in num : size_t)
@@ -53,7 +53,7 @@ Eq_197: size_t
 	T_206 (in r4_35 : word32)
 	T_207 (in r5_34 : word32)
 Eq_202: (fn (ptr void) (Eq_197, Eq_197))
-	T_202 (in calloc : word32)
+	T_202 (in calloc : ptr32)
 	T_203 (in signature of calloc : void)
 Eq_209: (union "Eq_209" (byte u0) (word32 u1))
 	T_209 (in dwLoc14 : word32)
@@ -66,7 +66,7 @@ Eq_210: (struct "Eq_210" (0 Eq_209 t0000) (1 word32 dw0001) (4 byte b0004))
 	T_228 (in r2_50 : (ptr Eq_210))
 	T_230 (in r2_62 : (ptr Eq_210))
 Eq_233: (fn void ((ptr Eq_2)))
-	T_233 (in _init : word32)
+	T_233 (in _init : ptr32)
 	T_234 (in signature of _init : void)
 Eq_288: (struct "Eq_288" (10084 ptr32 ptr10084))
 	T_288 (in ra : (ptr Eq_288))
@@ -79,7 +79,7 @@ T_2: (in ra : (ptr Eq_2))
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr (struct (104F4 T_22 t104F4)))
-T_3: (in __gmon_start__ : word32)
+T_3: (in __gmon_start__ : ptr32)
   Class: Eq_3
   DataType: word32
   OrigDataType: 
@@ -119,7 +119,7 @@ T_12: (in None_17 : bcuiposr0)
   Class: Eq_12
   DataType: bcuiposr0
   OrigDataType: bcuiposr0
-T_13: (in __gmon_start__ : word32)
+T_13: (in __gmon_start__ : ptr32)
   Class: Eq_13
   DataType: (ptr code)
   OrigDataType: (ptr code)
@@ -323,7 +323,7 @@ T_63: (in r2_8 == globals->ptr10AA8 + 2692 : bool)
   Class: Eq_63
   DataType: bool
   OrigDataType: bool
-T_64: (in __gmon_start__ : word32)
+T_64: (in __gmon_start__ : ptr32)
   Class: Eq_64
   DataType: (ptr code)
   OrigDataType: (ptr code)
@@ -435,7 +435,7 @@ T_91: (in (word32) r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00000000 : bool)
   Class: Eq_91
   DataType: bool
   OrigDataType: bool
-T_92: (in __gmon_start__ : word32)
+T_92: (in __gmon_start__ : ptr32)
   Class: Eq_92
   DataType: (ptr code)
   OrigDataType: (ptr code)
@@ -507,7 +507,7 @@ T_109: (in (word32) r19_10[2800] != 0x00000000 : bool)
   Class: Eq_109
   DataType: bool
   OrigDataType: bool
-T_110: (in __gmon_start__ : word32)
+T_110: (in __gmon_start__ : ptr32)
   Class: Eq_110
   DataType: word32
   OrigDataType: 
@@ -667,7 +667,7 @@ T_149: (in r3_114 : word32)
   Class: Eq_149
   DataType: word32
   OrigDataType: word32
-T_150: (in __gmon_start__ : word32)
+T_150: (in __gmon_start__ : ptr32)
   Class: Eq_150
   DataType: (ptr code)
   OrigDataType: (ptr code)
@@ -791,7 +791,7 @@ T_180: (in (word32) (r2_56 < r16_90) != 0x00000000 : bool)
   Class: Eq_180
   DataType: bool
   OrigDataType: bool
-T_181: (in deregister_tm_clones : word32)
+T_181: (in deregister_tm_clones : ptr32)
   Class: Eq_181
   DataType: (ptr Eq_181)
   OrigDataType: (ptr (fn T_183 ()))
@@ -819,7 +819,7 @@ T_187: (in Mem73[r19_10 + 0x00000AF0:byte] : byte)
   Class: Eq_106
   DataType: byte
   OrigDataType: byte
-T_188: (in register_tm_clones : word32)
+T_188: (in register_tm_clones : ptr32)
   Class: Eq_188
   DataType: (ptr Eq_188)
   OrigDataType: (ptr (fn T_190 ()))
@@ -839,7 +839,7 @@ T_192: (in dwArg04 : word32)
   Class: Eq_192
   DataType: word32
   OrigDataType: word32
-T_193: (in memset : word32)
+T_193: (in memset : ptr32)
   Class: Eq_193
   DataType: (ptr Eq_193)
   OrigDataType: (ptr (fn T_201 (T_198, T_199, T_200)))
@@ -875,7 +875,7 @@ T_201: (in memset(r4_20, r5_19, r6_18) : (ptr void))
   Class: Eq_201
   DataType: (ptr void)
   OrigDataType: (ptr void)
-T_202: (in calloc : word32)
+T_202: (in calloc : ptr32)
   Class: Eq_202
   DataType: (ptr Eq_202)
   OrigDataType: (ptr (fn T_208 (T_206, T_207)))
@@ -999,7 +999,7 @@ T_232: (in true : bool)
   Class: Eq_232
   DataType: bool
   OrigDataType: bool
-T_233: (in _init : word32)
+T_233: (in _init : ptr32)
   Class: Eq_233
   DataType: (ptr Eq_233)
   OrigDataType: (ptr (fn T_235 (T_231)))

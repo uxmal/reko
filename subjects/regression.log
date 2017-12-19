@@ -551,10 +551,10 @@ client_read_reply: error: An error occurred during data flow analysis.
 fn0000000000016864: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 90
-   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 182
+   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 91
+   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 184
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
+   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 0000000000018320: error: An error occurred while processing the statement branch 0x0000000000019E20 - 0x0000000000019E18 >> 0x00000003 == 0x0000000000000000 l0000000000018354.
@@ -1692,14 +1692,65 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-: error: Error when reconstructing types.
-    Specified argument was out of the range of valid values.
-Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 162
-   at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 51
-   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
-   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
+000120D4: error: An error occurred while processing the statement C_157 = cond(o2_150 - (sp_29 + 0x00000060)) (alias).
+    Pulling difference (ptr (struct 0001 (0 int8 b0000))) and (ptr byte)
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitConditionOf(ConditionOf cof) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 270
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 71
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00012290: error: An error occurred while processing the statement branch o1 * 0x00000002 - (l1_101 + 0x00000003) <=u 0x00000000 l0001227C_ds_t.
+    Pulling difference ui32 and ptr32
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000122C0: error: An error occurred while processing the statement branch o1 * 0x00000002 - l1_101 <=u 0x00000000 l000122B8_ds_t.
+    Pulling difference ui32 and (ptr (struct 0001 (0 byte b0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00012868: error: An error occurred while processing the statement word32 l1_251 = o0_224 + 0xFFFFFFFF - (i0_243 + 0x00000000).
+    Pulling difference (ptr int8) and (ptr int8)
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00012CD8: error: An error occurred while processing the statement dupnstr(i0_124, i0_124 - i0_124).
+    Pulling difference (ptr (struct 0001 (0 int8 b0000))) and (ptr (struct 0001 (0 int8 b0000)))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 63
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 55
+   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00013274: error: An error occurred while processing the statement branch sp_23 + 0x00000060 - l0_124 == 0x00000000 l00013250_ds_t.
+    Pulling difference ptr32 and (union (int32 u0) (ptr32 u1))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+: warning: Type transformer has looped 51 times, quitting prematurely.
 safe_read: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection.
 Parameter name: index
@@ -1710,6 +1761,14 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 66
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+00017540: warning: Expected sizes of arrays to have been determined by now
+00028000: warning: Expected sizes of arrays to have been determined by now
+00028240: warning: Expected sizes of arrays to have been determined by now
+00029A40: warning: Expected sizes of arrays to have been determined by now
+00017540: warning: Expected sizes of arrays to have been determined by now
+00028000: warning: Expected sizes of arrays to have been determined by now
+00028240: warning: Expected sizes of arrays to have been determined by now
+00029A40: warning: Expected sizes of arrays to have been determined by now
 
 === Elf-x86-64\ls
 *** Elf-x86-64\ls
@@ -1884,33 +1943,33 @@ fn00000000004061B0: error: An error occurred during data flow analysis.
     Offset must be non-negative.
 Parameter name: bitOffset
        at Reko.Core.Expressions.Slice..ctor(DataType dt, Expression i, Int32 bitOffset) in C:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 40
-   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 246
-   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 94
-   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 182
+   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 248
+   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 95
+   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 184
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
+   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0000000000406B70: error: An error occurred during data flow analysis.
     Offset must be non-negative.
 Parameter name: bitOffset
        at Reko.Core.Expressions.Slice..ctor(DataType dt, Expression i, Int32 bitOffset) in C:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 40
-   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 246
-   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 94
-   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 182
+   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 248
+   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 95
+   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 184
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
+   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0000000000407EA0: error: An error occurred during data flow analysis.
     Offset must be non-negative.
 Parameter name: bitOffset
        at Reko.Core.Expressions.Slice..ctor(DataType dt, Expression i, Int32 bitOffset) in C:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 40
-   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 246
-   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 94
-   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 182
+   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 248
+   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 95
+   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 184
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
+   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn000000000040BD70: error: An error occurred during data flow analysis.
@@ -1933,21 +1992,21 @@ fn000000000040D420: error: An error occurred during data flow analysis.
 fn000000000040D450: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 90
-   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 182
+   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 91
+   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 184
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
+   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 fn0000000000411900: error: An error occurred during data flow analysis.
     Offset must be non-negative.
 Parameter name: bitOffset
        at Reko.Core.Expressions.Slice..ctor(DataType dt, Expression i, Int32 bitOffset) in C:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 40
-   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 246
-   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 94
-   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 182
+   at Reko.Analysis.Aliases.CreateAliasInstruction(Identifier varFrom, Identifier varTo) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 248
+   at Reko.Analysis.Aliases.Def(Identifier idar) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 95
+   at Reko.Analysis.Aliases.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 184
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
-   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 175
+   at Reko.Analysis.Aliases.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\Aliases.cs:line 177
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 000000000040A8A3: error: An error occurred while processing the statement r10 = r10 - rbp.
@@ -3919,7 +3978,7 @@ fn291C: error: An error occurred during data flow analysis.
        at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0000: error: An error occurred while processing the statement word16 af_92 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
+03B0: error: An error occurred while processing the statement word16 af_92 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
@@ -4284,7 +4343,7 @@ fn291C: error: An error occurred during data flow analysis.
        at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 185
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0000: error: An error occurred while processing the statement word16 af_94 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
+0C9B: error: An error occurred while processing the statement word16 af_94 = DPB(Mem80[v3 - 2 + 0x0000:word16], 0x05, 8).
     Pulling difference ptr32 and (union (int16 u0) (ui32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
