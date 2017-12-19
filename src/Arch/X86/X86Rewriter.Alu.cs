@@ -659,12 +659,14 @@ namespace Reko.Arch.X86
                     return;
                 }
             }
+            var imm = instrCur.op1 as ImmediateOperand;
+            var value = SrcOp(dasm.Current.op1, arch.StackRegister.DataType);
             Debug.Assert(
-                dasm.Current.dataWidth == PrimitiveType.Word16 ||
-                dasm.Current.dataWidth == PrimitiveType.Word32 ||
-                dasm.Current.dataWidth == PrimitiveType.Word64,
+                value.DataType.Size == 2 ||
+                value.DataType.Size == 4 ||
+                value.DataType.Size == 8,
                 string.Format("Unexpected size {0}", dasm.Current.dataWidth));
-            RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
+            RewritePush(PrimitiveType.CreateWord(value.DataType.Size), value);
         }
 
         private void RewritePush(RegisterStorage reg)
@@ -795,7 +797,7 @@ namespace Reko.Arch.X86
             m.Assign(sp, m.IAdd(sp, width.Size));
         }
 
-        private void RewritePush(PrimitiveType dataWidth, Expression expr)
+        private void RewritePush(DataType dataWidth, Expression expr)
         {
             Constant c = expr as Constant;
             if (c != null && c.DataType != dataWidth)

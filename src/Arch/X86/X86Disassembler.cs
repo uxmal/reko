@@ -1060,7 +1060,7 @@ namespace Reko.Arch.X86
                     pOperand = new RegisterOperand(RegFromBitsRexW(2, width));
                     break;
                 case 'r':		// Register encoded as last 3 bits of instruction.
-                    width = OperandWidth(strFormat[i++]);
+                    iWidth = width = OperandWidth(strFormat[i++]);
                     pOperand = new RegisterOperand(RegFromBitsRexB(op, width));
                     break;
                 case 's':		// Segment encoded as next byte of the format string.
