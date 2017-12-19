@@ -284,7 +284,7 @@ namespace Reko.Analysis
         public bool VisitAssignment(Assignment ass)
         {
             var value = ass.Src.Accept(eval);
-            DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
+            DebugEx.PrintIf(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
 
             DepositBits dpb;
             Identifier idDpb;
@@ -318,7 +318,7 @@ namespace Reko.Analysis
                 foreach (var d in ci.Definitions)
                 {
                     ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
-                    DebugEx.Print(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 return true;
             }
@@ -347,7 +347,7 @@ namespace Reko.Analysis
                 if (flow.Trashed.Contains(d.Storage))
                 {
                     ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
-                    DebugEx.Print(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 if (flow.Preserved.Contains(d.Storage))
                 {
@@ -356,7 +356,7 @@ namespace Reko.Analysis
                         .Select(u => u.Expression.Accept(eval))
                         .SingleOrDefault();
                     ctx.SetValue((Identifier)d.Expression, before);
-                    DebugEx.Print(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, before);
+                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, before);
                 }
             }
             return true;
@@ -365,7 +365,7 @@ namespace Reko.Analysis
         public bool VisitDeclaration(Declaration decl)
         {
             var value = decl.Expression.Accept(eval);
-            DebugEx.Print(trace.TraceVerbose, "{0} = [{1}]", decl.Identifier, value);
+            DebugEx.PrintIf(trace.TraceVerbose, "{0} = [{1}]", decl.Identifier, value);
             ctx.SetValue(decl.Identifier, value);
             return true;
         }
@@ -409,7 +409,7 @@ namespace Reko.Analysis
             {
                 ctx.SetValue(phi.Dst, total);
             }
-            DebugEx.Print(trace.TraceVerbose, "{0} = φ[{1}]", phi.Dst, total);
+            DebugEx.PrintIf(trace.TraceVerbose, "{0} = φ[{1}]", phi.Dst, total);
             return true;
         }
 
@@ -536,11 +536,11 @@ namespace Reko.Analysis
             var b = block ?? this.block;
             foreach (var de in blockCtx[b].IdState.OrderBy(i => i.Key.Name))
             {
-                DebugEx.Print(trace.TraceVerbose, "{0}: [{1}]", de.Key, de.Value);
+                DebugEx.PrintIf(trace.TraceVerbose, "{0}: [{1}]", de.Key, de.Value);
             }
             foreach (var de in blockCtx[b].StackState.OrderBy(i => i.Key))
             {
-                DebugEx.Print(trace.TraceVerbose, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
+                DebugEx.PrintIf(trace.TraceVerbose, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
             }
         }
 

@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf
 
         #endregion
 
-        private byte fileClass;             // 0x2 = 
+        private byte fileClass;
         private byte endianness;
         private byte fileVersion;
         private byte osAbi;

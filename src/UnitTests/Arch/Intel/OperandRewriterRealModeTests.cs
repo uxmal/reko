@@ -39,10 +39,13 @@ namespace Reko.UnitTests.Arch.Intel
 		private Procedure proc;
         private X86Instruction instr;
 
-		[TestFixtureSetUp]
-		public void Setup()
-		{
-			arch = new X86ArchitectureReal();
+        // Once the project has been ported to use NUnit 3.0, remove this comment and uncomment the line containing "[OneTimeSetup]" and remove the line containing "[TestFixtureSetUp]".
+        // 
+        // [OneTimeSetUp]
+        [TestFixtureSetUp]
+        public void Setup()
+        {
+            arch = new X86ArchitectureReal();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var program = new Program(
                 new SegmentMap(

@@ -837,14 +837,14 @@ namespace Reko.Scanning
         {
             List<Address> vector;
             ImageMapVectorTable imgVector;
-            Expression swExp;
+            Expression switchExp;
             UserIndirectJump indJump;
 
             var listener = scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out indJump))
             {
                 vector = indJump.Table.Addresses;
-                swExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
+                switchExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
                 imgVector = indJump.Table;
             }
             else
@@ -892,24 +892,26 @@ namespace Reko.Scanning
                     bw.VectorAddress,
                     vector.ToArray(),
                     builder.TableByteSize);
-                swExp = idIndex;
+                switchExp = idIndex;
                 if (idIndex == null || idIndex.Name == "None")
-                    swExp = bw.IndexExpression;
+                    switchExp = bw.IndexExpression;
             }
-            ScanVectorTargets(xfer, vector);
 
-            if (xfer is RtlGoto)
+            if (xfer is RtlCall)
             {
+                ScanCallVectorTargets(vector);
+            }
+            else 
+            {
+                var jumpDests = ScanJumpVectorTargets(vector);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 blockCur = blockSource;
-                foreach (Address addr in vector)
+                foreach (var dest in jumpDests)
                 {
-                    var dest = scanner.FindContainingBlock(addr);
-                    Debug.Assert(dest != null, "The block at address " + addr + "should have been enqueued.");
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
               
-                if (swExp == null)
+                if (switchExp == null)
                 {
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
                     Emit(new ReturnInstruction());
@@ -919,7 +921,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
+                    Emit(new SwitchInstruction(switchExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
                 }
             }
             if (imgVector.Size > 0)
@@ -933,27 +935,31 @@ namespace Reko.Scanning
             return true;
         }
 
-        private void ScanVectorTargets(RtlTransfer xfer, List<Address> vector)
+        private void ScanCallVectorTargets(List<Address> vector)
         {
             foreach (Address addr in vector)
             {
                 var st = state.Clone();
-                if (xfer is RtlCall)
+                var pbase = scanner.ScanProcedure(addr, null, st);
+                var pcallee = pbase as Procedure;
+                if (pcallee != null)
                 {
-                    var pbase = scanner.ScanProcedure(addr, null, st);
-                    var pcallee = pbase as Procedure;
-                    if (pcallee != null)
-                    {
-                        program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
-                    }
-                }
-                else
-                {
-                    if (!program.SegmentMap.IsValidAddress(addr))
-                        break;
-                    BlockFromAddress(ric.Address, addr, blockCur.Procedure, state);
+                    program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
                 }
             }
+        }
+
+        private List<Block> ScanJumpVectorTargets(List<Address> vector)
+        {
+            var blocks = new List<Block>();
+            foreach (Address addr in vector)
+            {
+                var st = state.Clone();
+                if (!program.SegmentMap.IsValidAddress(addr))
+                    break;
+                blocks.Add(BlockFromAddress(ric.Address, addr, blockCur.Procedure, state));
+            }
+            return blocks;
         }
 
         private void Emit(Instruction instruction)

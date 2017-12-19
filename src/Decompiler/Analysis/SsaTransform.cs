@@ -1294,7 +1294,7 @@ namespace Reko.Analysis
                 sid.Uses.RemoveAll(u => u == phi.DefStatement);
 
                 // Remove all phi uses which may have become trivial now.
-                DebugEx.Print(trace.TraceVerbose, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
+                DebugEx.PrintIf(trace.TraceVerbose, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
                 foreach (var use in users)
                 {
                     var phiAss = use.Instruction as PhiAssignment;

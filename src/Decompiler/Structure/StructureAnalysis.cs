@@ -269,6 +269,20 @@ namespace Reko.Structure
             return didReduce;
         }
 
+        private void EnqueueUnresolvedRegion(Region switchHead)
+        {
+            // Do not refine switch region if there are unresolved cycles
+            if (unresolvedCycles.Count == 0)
+                this.unresolvedSwitches.Enqueue(switchHead);
+        }
+
+        private void EnqueueUnresolvedRegion(Region head, ISet<Region> loop)
+        {
+            // Do not refine cycle if there are unresolved switches
+            if (unresolvedSwitches.Count == 0)
+                this.unresolvedCycles.Enqueue(Tuple.Create(head, loop));
+        }
+
         public bool ProcessUnresolvedRegions()
         {
             if (unresolvedCycles.Count != 0)
@@ -310,8 +324,8 @@ namespace Reko.Structure
             var ss = regionGraph.Successors(n).ToArray();
             var el = ss[0];
             var th = ss[1];
-            var elS = SingleSuccessor(el);
-            var thS = SingleSuccessor(th);
+            var elS = LinearSuccessor(el);
+            var thS = LinearSuccessor(th);
             if (elS == th || (reduceTailregions && el.Type == RegionType.Tail))
             {
                 if (RefinePredecessor(n, el))
@@ -393,8 +407,9 @@ namespace Reko.Structure
         /// <returns></returns>
         private bool ReduceSwitchRegion(Region n)
         {
+            bool irregularEntries = AreIrregularEntries(n);
             var follow = GetSwitchFollow(n);
-            if (follow != null || AllCasesAreTails(n))
+            if (!irregularEntries && (follow != null || AllCasesAreTails(n)))
             {
                 return ReduceIncSwitch(n, follow);
             }
@@ -402,7 +417,8 @@ namespace Reko.Structure
             // It's a switch region, but we are unable to collapse it.
             // Schedule it for refinement after the whole graph has been
             // traversed.
-            this.unresolvedSwitches.Enqueue(n);
+            EnqueueUnresolvedRegion(n);
+
             return false;
         }
 
@@ -605,14 +621,22 @@ all other cases, together they constitute a Switch[].
             return virtualized;
         }
 
+        private bool AreIrregularEntries(Region n)
+        {
+            foreach (var s in regionGraph.Successors(n))
+            {
+                if (regionGraph.Predecessors(s).Where(p => (p != n)).Any())
+                    return true;
+            }
+            return false;
+        }
+
         private Region GetSwitchFollow(Region n)
         {
             Region follow = null;
             foreach (var s in regionGraph.Successors(n))
             {
-                if (regionGraph.Predecessors(s).Where(p => (p != n)).Any())
-                    return null;
-                var ss = SingleSuccessor(s);
+                var ss = LinearSuccessor(s);
                 if (s.Type != RegionType.Tail)
                 {
                     if (ss == null)
@@ -694,6 +718,19 @@ all other cases, together they constitute a Switch[].
             Debug.Print("Removing region {0} from graph", n.Block.Name);
             regionGraph.Nodes.Remove(n);
             Probe();
+        }
+
+        /// <summary>
+        /// If <paramref name="n"/> is linear region, returns
+        /// its sucessor. Otherwise returns null.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private Region LinearSuccessor(Region n)
+        {
+            if (n.Type != RegionType.Linear)
+                return null;
+            return SingleSuccessor(n);
         }
 
         /// <summary>
@@ -961,7 +998,7 @@ are added during loop refinement, which we discuss next.
                 return didReduce;
             foreach (var s in succs)
             {
-                if (SingleSuccessor(s) == n && SinglePredecessor(s) == n)
+                if (LinearSuccessor(s) == n && SinglePredecessor(s) == n)
                 {
                     // While!
                     var exp = s == succs[0] 
@@ -995,7 +1032,7 @@ are added during loop refinement, which we discuss next.
             // It's a cyclic region, but we are unable to collapse it.
             // Schedule it for refinement after the whole graph has been 
             // traversed.
-            this.unresolvedCycles.Enqueue(Tuple.Create(n, loopNodes));
+            EnqueueUnresolvedRegion(n, loopNodes);
             return didReduce;
         }
 #if NILZ
@@ -1200,7 +1237,7 @@ refinement on the loop body, which we describe below.
                 {
                     foreach (var latch in regionGraph.Predecessors(head))
                     {
-                        if (IsBackEdge(latch, head) && SingleSuccessor(latch) == head)
+                        if (IsBackEdge(latch, head) && LinearSuccessor(latch) == head)
                         {
                             return Tuple.Create(follow, latch);
                         }
@@ -1253,7 +1290,6 @@ refinement on the loop body, which we describe below.
                     wl.AddRange(regionGraph.Successors(item).Where(s => !lexNodes.Contains(s)));
                 }
             }
-            //lexNodes.Remove(head);
             return lexNodes;
         }
 
@@ -1272,11 +1308,6 @@ refinement on the loop body, which we describe below.
             Goto,
             Break,
             Continue,
-        }
-
-        private bool VirtualizeIrregularEntries(Region header, ISet<Region> loopRegions)
-        {
-            return false;
         }
 
         /// <summary>

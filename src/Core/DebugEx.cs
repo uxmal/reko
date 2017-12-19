@@ -26,19 +26,10 @@ using System.Text;
 
 namespace Reko.Core
 {
-    public class DebugEx
+    public static class DebugEx
     {
         [Conditional("DEBUG")]
-        public static void Print(bool trace, string message)
-        {
-            if (trace)
-            {
-                Debug.Print(message);
-            }
-        }
-
-        [Conditional("DEBUG")]
-        public static void Print(bool trace, string message, params object[] args)
+        public static void PrintIf(bool trace, string message, params object[] args)
         {
             if (trace)
             {

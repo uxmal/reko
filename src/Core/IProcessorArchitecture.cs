@@ -218,13 +218,37 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
+        private RegisterStorage regStack;
+
         public string Name { get; set; }
         public string Description {get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         public int InstructionBitSize { get; protected set; }
-        public RegisterStorage StackRegister { get; set; }
+
+        /// <summary>
+        /// The stack register used by the architecture.
+        /// </summary>
+        /// <remarks>
+        /// Many architectures reserve a specific register to be used as a stack
+        /// pointer register, but not all. ProcessorArchitecture subclasses for 
+        /// architectures that have a predefined register must set this property
+        /// in their respective constructors. Architectures that don't have a 
+        /// predefined register must leave it null and expect the IPlatform
+        /// instance to set this property.
+        /// </remarks>
+        public RegisterStorage StackRegister
+        {
+            get
+            {
+                if (this.regStack == null)
+                    throw new InvalidOperationException("This architecture has no stack pointer. The platform must define it.");
+                return regStack;
+            }
+            set { this.regStack = value; }
+        }
+
         public RegisterStorage FpuStackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 

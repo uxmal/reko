@@ -371,14 +371,16 @@ namespace Reko.Arch.X86
                 else if (acc.Register != Registers.ah)
                     return false;
                 this.len += nextInstr.Length;
-                dasm.Skip(1);
                 m.Assign(
                     orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
-                    frame.EnsureRegister(Registers.FPUF));
-                if (!dasm.MoveNext())
-                    throw new AddressCorrelatedException(nextInstr.Address, "Expected instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
-                nextInstr = dasm.Current;
-                this.len += nextInstr.Length;
+                    orw.AluRegister(Registers.FPUF));
+
+                // Advance past the 'test' instruction.
+                dasm.Skip(1);
+                while (dasm.MoveNext())
+                {
+                    instrCur = dasm.Current;
+                    this.len += instrCur.Length;
 
                 /* fcom/fcomp/fcompp Results:
                     Condition      C3  C2  C0
@@ -412,31 +414,36 @@ namespace Reko.Arch.X86
                     jnz    0x41    <=
                 */
 
-                switch (nextInstr.code)
+                    switch (instrCur.code)
                 {
+                    case Opcode.mov:
+                        RewriteMov();
+                        break;
                 case Opcode.jpe:
-                    if (mask == 0x05) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
-                    if (mask == 0x44) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
-                    break;
+                        if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.op1); return true; }
+                        if (mask == 0x44) { Branch(ConditionCode.NE, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
                 case Opcode.jpo:
-                    if (mask == 0x44) { Branch(ConditionCode.EQ, nextInstr.op1); return true;}
-                    if (mask == 0x41) { Branch(ConditionCode.LE, nextInstr.op1); return true;}
-                    if (mask == 0x05) { Branch(ConditionCode.LT, nextInstr.op1); return true;}
-                    break;
+                        if (mask == 0x44) { Branch(ConditionCode.EQ, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.op1); return true; }
+                        if (mask == 0x05) { Branch(ConditionCode.LT, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
                 case Opcode.jz:
-                    if (mask == 0x40) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
-                    if (mask == 0x01) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
-                    break;
+                        if (mask == 0x40) { Branch(ConditionCode.NE, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.op1); return true; }
+                        if (mask == 0x01) { Branch(ConditionCode.GE, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
                 case Opcode.jnz:
-                    if (mask == 0x40) { Branch(ConditionCode.EQ, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.LE, nextInstr.op1); return true; }
-                    if (mask == 0x01) { Branch(ConditionCode.LT, nextInstr.op1); return true; }
-                    break;
+                        if (mask == 0x40) { Branch(ConditionCode.EQ, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.op1); return true; }
+                        if (mask == 0x01) { Branch(ConditionCode.LT, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                    default:
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
                 }
-
-                throw new AddressCorrelatedException(nextInstr.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, nextInstr.code);
+            }
+                throw new AddressCorrelatedException(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
             }
             return false;
         }

@@ -72,7 +72,7 @@ namespace Reko.ImageLoaders.MzExe
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
 			SegmentMap imageMap = segmentMap;
-			EndianImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
+			EndianImageReader rdr = new LeImageReader(exe.RawImage, exe.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
@@ -134,8 +134,27 @@ namespace Reko.ImageLoaders.MzExe
                 results.Symbols[sym.Address] = sym;
                 ep.NoDecompile = true;
             }
+
+            LoadDebugSymbols(results.Symbols, addrLoad);
             return results;
 		}
+
+        private void LoadDebugSymbols(SortedList<Address, ImageSymbol> symbols, Address addrLoad)
+        {
+            //$REVIEW: this is hardwired. some kind of generic "sniffing" mechanism needs to be implemented.
+            // We don't want to load every registered symbol provider, though. Perhaps
+            // load symbols in a separate AppDomain, marshal all the symbols across,
+            // then discard the appdomain?
+            var borsymLdr = new Borland.SymbolLoader(exe, RawImage, addrLoad);
+            if (borsymLdr.LoadDebugHeader())
+            {
+                var syms = borsymLdr.LoadSymbols();
+                foreach (var sym in syms)
+                {
+                    symbols[sym.Key] = sym.Value;
+                }
+            }
+        }
 
         [Conditional("DEBUG")]
         public void DumpSegments(SegmentMap segmentMap)

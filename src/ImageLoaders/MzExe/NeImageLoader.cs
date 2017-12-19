@@ -72,6 +72,10 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
+        // Lowest 3 bits of a selector to the Local Descriptor Table requesting
+        // ring-3 privilege level.
+        const ushort LDT_RPL3 = 0x7;
+
         private MemoryArea mem;
         private SegmentMap segmentMap;
         private List<string> moduleNames;
@@ -542,7 +546,7 @@ namespace Reko.ImageLoaders.MzExe
                 // Align to 4kb boundary.
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
-                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
+                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
                 Debug.Print("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
                     seg.Address,
                     seg.DataOffset,
@@ -555,7 +559,7 @@ namespace Reko.ImageLoaders.MzExe
 
             // Generate pseudo-segment for imports with in a segment that isn't
             // one of the "real" segments loaded above.
-            addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
+            addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
 
             return segs.ToArray();
         }

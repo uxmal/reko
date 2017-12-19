@@ -82,6 +82,7 @@ namespace Reko.Environments.Ps3
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;  //$REVIEW: Does PS/3 support wchar_t?
             case CBasicType.Short: return 2;

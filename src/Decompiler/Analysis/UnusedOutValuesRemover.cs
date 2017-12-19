@@ -235,7 +235,7 @@ namespace Reko.Analysis
         /// <returns></returns>
         private Dictionary<Storage, BitRange> CollectLiveOutStorages(Procedure procCallee)
         {
-            DebugEx.Print(trace.TraceVerbose, "== Collecting live out storages of {0}", procCallee.Name);
+            DebugEx.PrintIf(trace.TraceVerbose, "== Collecting live out storages of {0}", procCallee.Name);
             var liveOutStorages = new Dictionary<Storage, BitRange>();
 
             var sig = procCallee.Signature;
@@ -259,7 +259,7 @@ namespace Reko.Analysis
                     var ci = stm.Instruction as CallInstruction;
                     if (ci == null)
                         continue;
-                    DebugEx.Print(trace.TraceVerbose, "  {0}", ci);
+                    DebugEx.PrintIf(trace.TraceVerbose, "  {0}", ci);
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     foreach (var def in ci.Definitions)
                     {
@@ -271,7 +271,7 @@ namespace Reko.Analysis
                         {
                             var br = urf.Classify(ssaCaller, sid, true);
                             BitRange brOld;
-                            DebugEx.Print(trace.TraceVerbose, "  {0}: {1}", sid.Identifier.Name, br);
+                            DebugEx.PrintIf(trace.TraceVerbose, "  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out brOld))
                             {
                                 br = br | brOld;

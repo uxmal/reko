@@ -55,6 +55,8 @@ namespace Reko.Gui.Windows.Controls
             this.treeView.DragOver += treeView_DragOver;
             this.treeView.DragDrop += treeView_DragDrop;
             this.treeView.MouseWheel += treeView_MouseWheel;
+
+            this.treeView.MouseDown += TreeView_MouseDown;
         }
 
         public ContextMenu ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = value; } }
@@ -114,6 +116,17 @@ namespace Reko.Gui.Windows.Controls
             var eh = MouseWheel;
             if (eh != null)
                 eh(this, e);
+        }
+
+        private void TreeView_MouseDown(object sender, MouseEventArgs e)
+        {
+            var pt = new Point(e.X, e.Y);
+            var hit = treeView.HitTest(pt);
+            if (hit.Location == TreeViewHitTestLocations.Label)
+            {
+                // Workaround for a bug in Windows Forms (Reko #505)
+                treeView.SelectedNode = hit.Node;
+            }
         }
 
         private TreeNode NodeOf(TreeNodeCollection nodes, object value)

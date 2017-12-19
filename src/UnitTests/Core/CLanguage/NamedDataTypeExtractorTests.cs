@@ -70,6 +70,26 @@ namespace Reko.UnitTests.Core.CLanguage
         }
 
         [Test]
+        public void NamedDataTypeExtractor_Bool()
+        {
+            Run(new[] { SType(CTokenType.Bool) },
+                new IdDeclarator { Name = "Bob" });
+
+            Assert.AreEqual("Bob", nt.Name);
+            Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor__Bool()
+        {
+            Run(new[] { SType(CTokenType._Bool) },
+                new IdDeclarator { Name = "Bob" });
+
+            Assert.AreEqual("Bob", nt.Name);
+            Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
+        }
+
+        [Test]
         public void NamedDataTypeExtractor_PtrChar()
         {
             Run(new[] { SType(CTokenType.Char), },

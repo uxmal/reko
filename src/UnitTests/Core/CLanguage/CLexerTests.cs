@@ -421,5 +421,19 @@ namespace Reko.UnitTests.Core.CLanguage
             Lex("// foo\nid");
             AssertToken(CTokenType.Id);
         }
+
+        [Test]
+        public void CLexer_Bool_C()
+        {
+            Lex("_Bool");   // This is a C keyword
+            AssertToken(CTokenType._Bool);
+        }
+
+        [Test]
+        public void CLexer_Bool_CPlusPlus()
+        {
+            Lex("bool");   // This is a C++ keyword
+            AssertToken(CTokenType.Bool);
+        }
     }
 }

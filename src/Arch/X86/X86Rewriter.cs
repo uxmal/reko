@@ -192,6 +192,7 @@ namespace Reko.Arch.X86
                 case Opcode.fldz: RewriteFldConst(0.0); break;
                 case Opcode.fmul: EmitCommonFpuInstruction(m.FMul, false, false); break;
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
+				case Opcode.fninit: RewriteFninit(); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.fptan: RewriteFptan(); break;
@@ -360,7 +361,13 @@ namespace Reko.Arch.X86
             }
         }
 
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+		private void RewriteFninit()
+		{
+			var ppp = host.PseudoProcedure("__fninit", VoidType.Instance);
+			m.SideEffect(ppp);
+		}
+
+		public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
         {
             if (args.Length != ppp.Arity)
                 throw new ArgumentOutOfRangeException(
@@ -380,37 +387,39 @@ namespace Reko.Arch.X86
         [Flags]
         public enum CopyFlags
         {
-            ForceBreak = 1,
-            EmitCc = 2,
-            SetCfIf0 = 4,
+            EmitCc = 1,
+            SetCfIf0 = 2,
         }
 
         /// <summary>
-        /// Breaks up very common case of x86:
+        /// Generates assignments, with special-case logic to break up
+        /// instructions where the destination is a memory address.
+        /// </summary>
+        /// <remarks>
+        /// The special case breaks instructions that write to memory
+        /// like this:
         /// <code>
         ///		op [memaddr], reg
         /// </code>
-        /// into the equivalent:
+        /// into into the equivalent:
         /// <code>
         ///		tmp := [memaddr] op reg;
         ///		store([memaddr], tmp);
         /// </code>
-        /// </summary>
-        /// <param name="opDst"></param>
-        /// <param name="src"></param>
-        /// <param name="forceBreak">if true, forcibly splits the assignments in two if the destination is a memory store.</param>
-        /// <returns>Returns the destination of the copy.</returns>
+        /// This makes analysis easier for the subsequent phases of the 
+        /// decompiler.
+        /// </remarks>
         public void EmitCopy(MachineOperand opDst, Expression src, CopyFlags flags)
         {
             Expression dst = SrcOp(opDst);
             Identifier idDst = dst as Identifier;
-            if (idDst != null || (flags & CopyFlags.ForceBreak) == 0)
+            if (idDst != null)
             {
                 AssignToRegister(idDst, src);
             }
             else
             {
-                Identifier tmp = frame.CreateTemporary(opDst.Width);
+                var tmp = frame.CreateTemporary(opDst.Width);
                 m.Assign(tmp, src);
                 var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
                 m.Assign(ea, tmp);
@@ -430,6 +439,7 @@ namespace Reko.Arch.X86
         {
             if (arch.WordWidth.BitSize == 64 && idDst.Storage.BitSize == 32)
             {
+                // Special case for X86-64: 
                 var reg = (RegisterStorage)idDst.Storage;
                 idDst = frame.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
                 src = m.Cast(PrimitiveType.UInt64, src);

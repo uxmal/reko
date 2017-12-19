@@ -75,7 +75,6 @@ namespace Reko.Structure
         Linear,
         Condition,
         IncSwitch,
-        Switch,
         Tail,
     }
 }

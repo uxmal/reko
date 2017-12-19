@@ -132,10 +132,11 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(sExp, instr.ToString());
         }
 
-        private void AssertCode64(string sExp, params byte[] bytes)
+        private X86Instruction AssertCode64(string sExp, params byte[] bytes)
         {
             var instr = Disassemble64(bytes);
             Assert.AreEqual(sExp, instr.ToString());
+            return instr;
         }
 
         [SetUp]
@@ -892,6 +893,25 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("cvtsi2ss\txmm0,rax", 0xF3, 0x48, 0x0F, 0x2A, 0xC0);
         }
-    }
+
+        [Test]
+        public void X86dis_out_dx()
+        {
+            AssertCode16("out\tdx,al", 0xEE);
+            AssertCode16("out\tdx,ax", 0xEF);
+        }
+
+        [Test]
+        public void X86dis_x64_push()
+        {
+            AssertCode64("push\tr15", 0x41, 0x57);
+        }
+
+        [Test]
+        public void X86dis_x64_push_immediate()
+        {
+            AssertCode64("push\t42", 0x6A, 0x42);
+        }
+	}
 }
 

@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Environments.Windows
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void PMNP_regression7()
         {
             RunTest(
@@ -310,6 +310,15 @@ namespace Reko.UnitTests.Environments.Windows
             RunTest(
                 "__thiscall public: QString * QT::QString::operator =(QString *)",
                 "??4QString@QT@@QAEAAV01@$$QAV01@@Z");
+        }
+
+        [Test]
+        [Ignore("Issue #484")]
+        public void PMNP_nested_template()
+        {
+            RunTest(
+                "@@@",
+                "?GetPropertiesPriv@CPropertySet@@AAEPAV?$hash_map@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@VCValue@@VLECSimpleStringHash@@U?$equal_to@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@VCValue@@@_STL@@@2@@_STL@@XZ");
         }
     }
 }

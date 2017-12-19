@@ -994,6 +994,24 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86rw_FstswTestMov()
+        {
+            Run32bitTest(m =>
+            {
+                m.Label("foo");
+                m.Fstsw(m.ax);
+                m.Test(m.ah, 0x41);
+                m.Mov(m.eax, m.DwordPtr(m.esp, 4));
+                m.Jnz("foo");
+            });
+            AssertCode(
+                "0|L--|10000000(12): 3 instructions",
+                "1|L--|SCZO = FPUF",
+                "2|L--|eax = Mem0[esp + 0x00000004:word32]",
+                "3|T--|if (Test(LE,FPUF)) branch 10000000");
+        }
+
+        [Test]
         public void X86rw_Sar()
         {
             Run16bitTest(m =>
@@ -1744,6 +1762,56 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(     // f2xm1
                 "0|L--|0C00:0000(2): 1 instructions",
                 "1|L--|ST[Top:real64] = pow(2.0, ST[Top:real64]) - 1.0");
+        }
+
+		[Test]
+		public void X86rw_fninit()
+		{
+			Run32bitTest(0xDB, 0xE3);
+			AssertCode(     // fninit
+				"0|L--|10000000(2): 1 instructions",
+				"1|L--|__fninit()");
+		}
+
+        [Test]
+        public void X86rw_x64_push_immediate()
+        {
+            Run64bitTest(0x6A, 0xC2);
+            AssertCode(     // "push 0xC2", 
+                "0|L--|0000000140000000(2): 2 instructions",
+                "1|L--|rsp = rsp - 0x0000000000000008",
+                "2|L--|Mem0[rsp:word64] = 0xFFFFFFFFFFFFFFC2");
+        }
+
+        [Test]
+        public void X86rw_x64_push_register()
+        {
+            Run64bitTest(0x53);
+            AssertCode(     // "push rbx", 
+                "0|L--|0000000140000000(1): 2 instructions",
+                "1|L--|rsp = rsp - 0x0000000000000008",
+                "2|L--|Mem0[rsp:word64] = rbx");
+        }
+
+        [Test]
+        public void X86rw_x64_push_memoryload()
+        {
+            Run64bitTest(0xFF, 0x75, 0xE0);
+            AssertCode(     // "push rbx", 
+                "0|L--|0000000140000000(3): 3 instructions",
+                "1|L--|v4 = Mem0[rbp - 0x0000000000000020:word64]",
+                "2|L--|rsp = rsp - 0x0000000000000008",
+                "3|L--|Mem0[rsp:word64] = v4");
+        }
+
+        [Test]
+        public void X86rw_push_segreg()
+        {
+            Run32bitTest(0x06);
+            AssertCode(     // "push es", 
+                "0|L--|10000000(1): 2 instructions",
+                "1|L--|esp = esp - 0x00000002",
+                "2|L--|Mem0[esp:word16] = es");
         }
     }
 }

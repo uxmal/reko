@@ -60,6 +60,8 @@ namespace Reko.Environments.SysV
             {
             case "mips-be-32":
             case "mips-le-32":
+            case "mips-be-64":
+            case "mips-le-64":
                 return new MipsCallingConvention(Architecture); //$ ccName?
             case "ppc-be-32":
             case "ppc-le-32":
@@ -125,6 +127,7 @@ namespace Reko.Environments.SysV
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;
             case CBasicType.Short: return 2;
