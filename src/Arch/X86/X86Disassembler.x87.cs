@@ -454,7 +454,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.fclex), 
-				new SingleByteOpRec(Opcode.illegal), 
+				new SingleByteOpRec(Opcode.fninit), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
