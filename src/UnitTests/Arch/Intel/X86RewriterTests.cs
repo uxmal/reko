@@ -1396,7 +1396,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0xC4, 0xC0);
             AssertCode(
-                "0|---|10000000(0): 1 instructions",
+                "0|---|10000000(2): 1 instructions",
                 "1|---|<invalid>");
         }
 
