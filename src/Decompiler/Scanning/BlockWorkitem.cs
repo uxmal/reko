@@ -611,7 +611,7 @@ namespace Reko.Scanning
             ProcedureCharacteristics chr,
             CallSite site)
         {
-            if (vaScanner.TryScan(ric.Address, sig, chr))
+            if (vaScanner.TryScan(ric.Address, callee, sig, chr))
             {
                 Emit(vaScanner.BuildInstruction(callee, site));
             }
