@@ -65,6 +65,9 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        //$REVIEW: consider removing this unit test. It sole function is counting the
+        // number of reconstituted function. This changes each time msvcrt.xml is modified,
+        // and provides no value.
 		public void SlibReadMsvcrtXml()
 		{
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
@@ -73,7 +76,7 @@ namespace Reko.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(45, lib.Procedures.Count);
+			Assert.AreEqual(47, lib.Procedures.Count);
 		}
 
         [Test(Description = "Validates that the realmodeintservices file (in format 1) can be read properly")]
