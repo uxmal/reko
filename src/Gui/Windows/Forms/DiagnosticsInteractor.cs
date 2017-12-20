@@ -96,15 +96,27 @@ namespace Reko.Gui.Windows.Forms
 
             // This may be called from a worker thread, so we have to be careful to 
             // call the listView on the UI thread.
-            syncCtx.Post((a) =>
+            if (listView.InvokeRequired)
             {
-                var li = new ListViewItem();
-                li.Text = location.Text;
-                li.Tag = location;
-                li.ImageKey = d.ImageKey;
-                li.SubItems.Add(d.Message);
-                listView.Items.Add(li);
-            }, null);
+                this.syncCtx.Post((a) =>
+                {
+                    AddDiagnosticImpl(location, d);
+                }, null);
+            }
+            else
+            {
+                AddDiagnosticImpl(location, d);
+            }
+        }
+
+        private void AddDiagnosticImpl(ICodeLocation location, Diagnostic d)
+        {
+            var li = new ListViewItem();
+            li.Text = location.Text;
+            li.Tag = location;
+            li.ImageKey = d.ImageKey;
+            li.SubItems.Add(d.Message);
+            listView.Items.Add(li);
         }
 
         public void Error(string message)
