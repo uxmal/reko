@@ -52,7 +52,7 @@ namespace Reko.Gui.Windows
 
         public void WriteOpcode(string opcode)
         {
-            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, opcode, UiStyles.DisassemblerOpcode));
+            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, opcode + " ", UiStyles.DisassemblerOpcode));
         }
 
         public void WriteAddress(string formattedAddress, Address addr)

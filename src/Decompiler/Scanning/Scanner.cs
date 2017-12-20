@@ -743,7 +743,9 @@ namespace Reko.Scanning
             }
             blocks[addr].End = blocks[blockStarts[blockToSplit]].End;
             blocks[blockStarts[blockToSplit]].End = linAddr;
-            SanityCheck(blocks);
+			// Calling SanityCheck while scanning large binaries is very slow
+			// resulting in a O(n^2) performance.
+       		//     SanityCheck(blocks);
             return blockNew;
         }
 

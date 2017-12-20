@@ -346,12 +346,16 @@ namespace Reko.Arch.X86
             }
             if (instrCur == null)
             {
-                return new X86Instruction(Opcode.illegal, dataWidth, addressWidth) 
-                { Address = addr };
+                instrCur = Illegal();
             }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
             return instrCur;
+        }
+
+        private X86Instruction Illegal()
+        {
+            return new X86Instruction(Opcode.illegal, dataWidth, addressWidth);
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
@@ -857,12 +861,16 @@ namespace Reko.Arch.X86
             {
                 if (disasm.currentDecodingContext.F2Prefix)
                 {
+                    if (opF2Fmt == null)
+                        return disasm.Illegal();
                     var instr = disasm.DecodeOperands(this.opF2, op, opF2Fmt);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.F3Prefix)
                 {
+                    if (opF3Fmt == null)
+                        return disasm.Illegal();
                     var instr = disasm.DecodeOperands(this.opF3, op, opF3Fmt);
                     instr.repPrefix = 0;
                     return instr;

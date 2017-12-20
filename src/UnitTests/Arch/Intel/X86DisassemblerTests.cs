@@ -912,6 +912,12 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("push\t42", 0x6A, 0x42);
         }
+
+        [Test]
+        public void X86dis_rep_prefix_to_ucomiss()
+        {
+            AssertCode32("illegal", 0xF2, 0x0F, 0x2E, 0x00);
+        }
 	}
 }
 
