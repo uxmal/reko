@@ -14403,7 +14403,7 @@ l0000000000410FD5:
 					goto l0000000000411283;
 				rbx_214 = rbx_214 << 0x0A;
 				edx_337 = 0x00;
-				goto l0000000000411038;
+				break;
 			case 0x01:
 			case 0x02:
 			case 0x04:
@@ -14468,7 +14468,7 @@ l0000000000411028:
 					edx_337 = (word32) (uint64) (edx_337 | r8d_420);
 					esi_397 = (word32) rsi_300;
 				} while (esi_397 == 0x00);
-				goto l0000000000411038;
+				break;
 			case 0x05:
 			case 0x25:
 				rsi_300 = (int64) eax_317;
@@ -14491,7 +14491,7 @@ l0000000000411028:
 					edx_337 = (word32) (uint64) (edx_337 | r8d_480);
 					edi_457 = (word32) (uint64) (edi_457 - 0x01);
 				} while (edi_457 != 0x00);
-				goto l0000000000411038;
+				break;
 			case 0x09:
 			case 0x29:
 				rdi_506 = (int64) eax_317;
@@ -14500,7 +14500,7 @@ l0000000000411028:
 					goto l0000000000411193;
 				rbx_214 = ~0x00;
 				edx_337 = 0x01;
-				goto l0000000000411038;
+				break;
 			case 11:
 			case 0x2B:
 				rdi_506 = (int64) eax_317;
@@ -14637,7 +14637,6 @@ l0000000000411283:
 				}
 				break;
 			}
-l0000000000411038:
 			rbp_242 = (uint64) (ebp_240 | edx_337);
 			Mem354[r15_44 + 0x00:word64] = r14_212 + (int64) ecx_312;
 			ebp_240 = (word32) rbp_242;
@@ -14897,7 +14896,7 @@ l00000000004114AD:
 					goto l000000000041175B;
 				rbx_273 = rbx_273 << 0x0A;
 				edx_398 = 0x00;
-				goto l0000000000411510;
+				break;
 			case 0x01:
 			case 0x02:
 			case 0x04:
@@ -14966,7 +14965,7 @@ l0000000000411500:
 					edx_398 = (word32) (uint64) (edx_398 | r8d_479);
 					esi_456 = (word32) rsi_359;
 				} while (esi_456 == 0x00);
-				goto l0000000000411510;
+				break;
 			case 0x05:
 			case 0x25:
 				rsi_359 = (int64) eax_376;
@@ -14993,7 +14992,7 @@ l0000000000411500:
 					edx_398 = (word32) (uint64) (edx_398 | r8d_539);
 					edi_516 = (word32) (uint64) (edi_516 - 0x01);
 				} while (edi_516 != 0x00);
-				goto l0000000000411510;
+				break;
 			case 0x09:
 			case 0x29:
 				rdi_565 = (int64) eax_376;
@@ -15002,7 +15001,7 @@ l0000000000411500:
 					goto l000000000041166B;
 				rbx_273 = ~0x00;
 				edx_398 = 0x01;
-				goto l0000000000411510;
+				break;
 			case 11:
 			case 0x2B:
 				rdi_565 = (int64) eax_376;
@@ -15155,7 +15154,6 @@ l000000000041175B:
 				}
 				break;
 			}
-l0000000000411510:
 			rbp_301 = (uint64) (ebp_302 | edx_398);
 			Mem413[r15_238 + 0x00:word64] = r14_271 + (int64) ecx_371;
 			ebp_302 = (word32) rbp_301;
