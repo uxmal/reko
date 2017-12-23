@@ -2003,7 +2003,6 @@ l0800_1726:
 		si_409 = si_107;
 		while (true)
 		{
-l0800_1794:
 			Eq_304 si_409;
 			si_409 = (word32) si_409 + 0x01;
 			int16 ax_414 = (int16) (ds->*si_409);
@@ -2030,13 +2029,13 @@ l0800_17E6:
 				goto l0800_172F;
 			case 0x04:
 				bLoc2B_1212 = bLoc2B_1212 | 0x01;
-				goto l0800_1794;
+				break;
 			case 0x05:
 				wLoc24_396 = ax_414 - 0x30;
 				int16 wLoc24_1221 = wLoc24_396;
 				if (wLoc24_1221 >= 0x00)
 					wLoc24_396 = ax_414 - 0x26;
-				goto l0800_1794;
+				break;
 			case 0x06:
 				if ((bLoc2B_1212 & 0x01) == 0x00)
 					fn0800_1708(bp_1001, ds, out es);
@@ -2137,13 +2136,13 @@ l0800_19DD:
 				}
 			case 11:
 				bLoc2B_1212 = bLoc2B_1212 | 0x08;
-				goto l0800_1794;
+				break;
 			case 0x0C:
 				bLoc2B_1212 = bLoc2B_1212 | 0x02;
-				goto l0800_1794;
+				break;
 			case 0x0D:
 				bLoc2B_1212 = bLoc2B_1212 | 0x04;
-				goto l0800_1794;
+				break;
 			case 0x0E:
 				si_1203.u0 = 0x08;
 				goto l0800_1844;

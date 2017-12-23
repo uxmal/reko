@@ -12411,14 +12411,14 @@ l0800_9051:
 					goto l0800_8FD8;
 				case 0x04:
 					Mem481[ss:bp - 0x01 + 0x00:byte] = Mem447[ss:bp - 0x01 + 0x00:byte] | 0x01;
-					goto l0800_9051;
+					break;
 				case 0x05:
 					word16 v44_485 = Mem447[ss:bp - 0x0A + 0x00:word16];
 					Mem486[ss:bp - 0x0A + 0x00:word16] = ax_446 - 0x30;
 					di = v44_485;
 					if (v44_485 >= 0x00)
 						Mem495[ss:bp - 0x0A + 0x00:word16] = Mem486[ss:bp - 0x0A + 0x00:word16] + 0x0A;
-					goto l0800_9051;
+					break;
 				case 0x06:
 					if ((Mem447[ss:bp - 0x01 + 0x00:byte] & 0x01) == 0x00)
 						di = fn0800_8FAB(bp, ds, out es_432);
@@ -12532,13 +12532,13 @@ l0800_9284:
 					}
 				case 11:
 					Mem761[ss:bp - 0x01 + 0x00:byte] = Mem447[ss:bp - 0x01 + 0x00:byte] | 0x08;
-					goto l0800_9051;
+					break;
 				case 0x0C:
 					Mem765[ss:bp - 0x01 + 0x00:byte] = Mem447[ss:bp - 0x01 + 0x00:byte] | 0x02;
-					goto l0800_9051;
+					break;
 				case 0x0D:
 					Mem769[ss:bp - 0x01 + 0x00:byte] = Mem447[ss:bp - 0x01 + 0x00:byte] | 0x04;
-					goto l0800_9051;
+					break;
 				case 0x0E:
 					si_1200 = 0x08;
 					goto l0800_90CE;
@@ -13820,14 +13820,14 @@ l0800_9949:
 						}
 					case 0x06:
 						wLoc04_1055 = wLoc04_1055 | 0x10;
-						goto l0800_9931;
+						break;
 					case 0x07:
 						wLoc04_1055 = wLoc04_1055 | 0x0100;
 						goto l0800_99D1;
 					case 0x08:
 l0800_99D1:
 						wLoc04_1055 = wLoc04_1055 & ~0x10;
-						goto l0800_9931;
+						break;
 					case 0x09:
 						if (ch_249 >u 0x00)
 							goto l0800_9987;
@@ -14178,7 +14178,6 @@ l0800_9C82:
 						wLoc04_1055 = wLoc04_1055 | 0x20;
 						break;
 					}
-l0800_9931:
 					ch_249 = 0x05;
 l0800_98DB:
 					ax = DPB(ax_275, Mem0[ds:si_133 + 0x00:byte], 0);

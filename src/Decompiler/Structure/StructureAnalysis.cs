@@ -509,11 +509,7 @@ all other cases, together they constitute a Switch[].
                 if (CoalesceTailRegion(node, switchNodes))
                     return;
             }
-            foreach (var node in switchNodes)
-            {
-                if (LastResort(node))
-                    return;
-            }
+            LastResort(switchNodes);
         }
 
         private bool VirtualizeIrregularSwitchEntries(Region n)
@@ -1413,6 +1409,40 @@ refinement on the loop body, which we describe below.
                 // Whoa, we're in trouble now....
                 return false;
             }
+        }
+
+        private bool LastResort(ISet<Region> regions)
+        {
+            var vEdge = FindLastResortEdge( regions);
+            if (vEdge != null)
+            {
+                VirtualizeEdge(vEdge);
+                return true;
+            }
+            else
+            {
+                // Whoa, we're in trouble now....
+                return false;
+            }
+        }
+
+        private VirtualEdge FindLastResortEdge(ISet<Region> regions)
+        {
+            var edges = regions.SelectMany(
+                n => regionGraph.Successors(n).
+                Where(s => regions.Contains(s)).
+                Select(s => new VirtualEdge(n, s, VirtualEdgeType.Goto)));
+
+            foreach(var vEdge in edges)
+                if (!doms.DominatesStrictly(vEdge.From, vEdge.To) &&
+                    !doms.DominatesStrictly(vEdge.To, vEdge.From))
+                    return vEdge;
+
+            foreach (var vEdge in edges)
+                if (!doms.DominatesStrictly(vEdge.From, vEdge.To))
+                    return vEdge;
+
+            return edges.FirstOrDefault();
         }
 
         public class VirtualEdge
