@@ -384,21 +384,18 @@ Eq_2 * fn00400FC4(word32 r0, Eq_2 * r2, Eq_18 r3, word32 r4, word32 r25, ptr32 r
 	if (Test(LE,cond(r3 - -0x0020)))
 	{
 		struct Eq_242 * r31_61 = (word32) r3 + 0x07 & -0x08;
-l00401004:
-		word32 r3_74;
-		union Eq_2 * r2_82 = fn0040105C(r0, r2, r31_61, r25, r26, r27, r28, r29, r30_14, r31_61, cr0, lr, dwLoc38, out r3_74, out r25, out r26, out r27, out r28, out r29, out r30_14, out r31_61);
-		if (Test(NE,cond(r3_74)) || Test(EQ,cond(r30_14)))
-			return r2_82;
-		else
+		do
 		{
+			word32 r3_74;
+			union Eq_2 * r2_82 = fn0040105C(r0, r2, r31_61, r25, r26, r27, r28, r29, r30_14, r31_61, cr0, lr, dwLoc38, out r3_74, out r25, out r26, out r27, out r28, out r29, out r30_14, out r31_61);
+			if (Test(NE,cond(r3_74)) || Test(EQ,cond(r30_14)))
+				return r2_82;
 			word32 r3_96;
 			r0 = fn004017F0(r2_82, r31_61, dwLoc38, out r2, out r3_96);
-			if (Test(NE,cond(r3_96)))
-				goto l00401004;
-			word32 r3_108;
-			*r3Out = 0x00;
-			return r2;
-		}
+		} while (Test(NE,cond(r3_96)));
+		word32 r3_108;
+		*r3Out = 0x00;
+		return r2;
 	}
 	else
 	{
@@ -673,21 +670,21 @@ void fn004014A4(Eq_1594 * r2, Eq_1630 r3[], word16 * r4, word32 r5)
 			if (Test(GT,cond(r5)))
 			{
 				word32 ctr_37 = r5;
-l00401500:
-				Eq_1625 r11_43 = *r4;
-				if (Test(GE,cond(r11_43 - 0x0100)))
+				do
 				{
-					*r2->ptr007C = 0x002A;
-					return;
-				}
-				(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r3[r3_42].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (byte) (int32) (int8) (r11_43 & 0xFF);
-				r4 = r4 + 0x01;
-				if (Test(EQ,cond(*r4)))
-					return;
-				r3_42 = r3_42 + 0x01;
-				ctr_37 = ctr_37 - 0x01;
-				if (ctr_37 != 0x00)
-					goto l00401500;
+					Eq_1625 r11_43 = *r4;
+					if (Test(GE,cond(r11_43 - 0x0100)))
+					{
+						*r2->ptr007C = 0x002A;
+						return;
+					}
+					(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r3[r3_42].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (byte) (int32) (int8) (r11_43 & 0xFF);
+					r4 = r4 + 0x01;
+					if (Test(EQ,cond(*r4)))
+						return;
+					r3_42 = r3_42 + 0x01;
+					ctr_37 = ctr_37 - 0x01;
+				} while (ctr_37 != 0x00);
 			}
 			return;
 		}

@@ -286,18 +286,15 @@ byte fn0040143F()
 	if (fn00401B98() != 0x00)
 	{
 		word32 edx_32 = fs->ptr0018->dw0004;
-l00401460:
-		__lock();
-		word32 eax_37;
-		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
-		if (eax_37 != 0x00)
+		do
 		{
-			if (edx_32 != eax_37)
-				goto l00401460;
-			return 0x01;
-		}
-		else
-			return 0x00;
+			__lock();
+			word32 eax_37;
+			__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
+			if (eax_37 == 0x00)
+				return 0x00;
+		} while (edx_32 == eax_37);
+		return 0x01;
 	}
 	else
 		return 0x00;
