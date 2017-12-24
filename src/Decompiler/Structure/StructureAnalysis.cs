@@ -371,12 +371,7 @@ namespace Reko.Structure
                 n.Expression = null;
                 return true;
             }
-            else
-            {
-                if (RefinePredecessor(n, th))
-                    return false;
-                return false;
-            }
+            return false;
         }
 
         private bool ReduceSequence(Region n)
