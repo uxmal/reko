@@ -251,7 +251,7 @@ namespace Reko.Structure
             switch (n.Type)
             {
             case RegionType.Condition:
-                didReduce = ReduceIfRegion(n, false);
+                didReduce = ReduceIfRegion(n);
                 break;
             case RegionType.IncSwitch:
                 didReduce = ReduceSwitchRegion(n);
@@ -316,17 +316,15 @@ namespace Reko.Structure
         /// and reduces them out of the graph.
         /// </summary>
         /// <param name="n">The header of the possible if-region</param>
-        /// <param name="reduceTailregions">If true, will consider tail
-        /// regions as well as properly formed regions.</param>
         /// <returns></returns>
-        private bool ReduceIfRegion(Region n, bool reduceTailregions)
+        private bool ReduceIfRegion(Region n)
         {
             var ss = regionGraph.Successors(n).ToArray();
             var el = ss[0];
             var th = ss[1];
             var elS = LinearSuccessor(el);
             var thS = LinearSuccessor(th);
-            if (elS == th || (reduceTailregions && el.Type == RegionType.Tail))
+            if (elS == th)
             {
                 if (RefinePredecessor(n, el))
                     return false;
@@ -340,7 +338,7 @@ namespace Reko.Structure
                 n.Expression = null;
                 return true;
             }
-            else if (thS == el || (reduceTailregions && th.Type == RegionType.Tail))
+            else if (thS == el)
             {
                 if (RefinePredecessor(n, th))
                     return false;
