@@ -765,6 +765,7 @@ l00001108:
 	r1 = Mem0[r63 + 0x00000004:word32]
 	r1 = r1 - 0x00000001
 	Mem0[r63 + 0x00000004:word32] = r1
+	goto 0x00001200
 l00001114_thunk_fn00001200:
 	call fn00001200 (retsize: 0;)
 	return
@@ -785,6 +786,7 @@ l00001208:
 	r1 = Mem0[r63 + 0x00000004:word32]
 	r1 = r1 - 0x00000001
 	Mem0[r63 + 0x00000004:word32] = r1
+	goto 0x00001100
 l00001214_thunk_fn00001100:
 	call fn00001100 (retsize: 0;)
 	return

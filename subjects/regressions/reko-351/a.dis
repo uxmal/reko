@@ -344,7 +344,7 @@ l80000198:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:8000271C a1:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 
-l8000019E_thunk_register_tm_clones:
+l800001A0_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:
@@ -356,7 +356,7 @@ l80000188:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:8000271C a1:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 
-l80000188_thunk_register_tm_clones:
+l8000018A_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:
