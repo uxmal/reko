@@ -934,6 +934,32 @@ case_1:
         }
 
         [Test]
+        public void StrAnls_DoWhile_Return()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+
+            m.BranchIf(m.Fn("check"), "ok");
+            m.Return(m.Int32(-1));
+
+            m.Label("ok");
+            m.BranchIf(m.Fn("next"), "head");
+
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        if (!check())
+            return -0x01;
+    } while (next());
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
