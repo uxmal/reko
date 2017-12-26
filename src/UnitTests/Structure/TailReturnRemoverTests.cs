@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Types;
@@ -40,6 +41,7 @@ namespace Reko.UnitTests.Structure
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
             var proc = new Procedure("test", new Frame(PrimitiveType.Pointer32));
+            proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);
             var trrm = new TailReturnRemover(proc);
@@ -150,7 +152,5 @@ namespace Reko.UnitTests.Structure
                 m.Return();
             });
         }
-
-
     }
 }

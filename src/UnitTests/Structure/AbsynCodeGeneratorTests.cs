@@ -85,7 +85,6 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "ProcedureBuilder()" + nl +
                 "{" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -106,7 +105,6 @@ namespace Reko.UnitTests.Structure
                 "\tif (!foo())" + nl+ 
                 "\t\tbar();" + nl +
                 "\tbaz();" + nl+ 
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -132,7 +130,6 @@ namespace Reko.UnitTests.Structure
                 "\t\tThen();" + nl +
                 "\telse"  + nl +
                 "\t\tElse();" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -155,7 +152,6 @@ namespace Reko.UnitTests.Structure
                 "		if (ax < -12)" + nl +
                 "			ax = -12;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
 
         }
@@ -193,7 +189,6 @@ namespace Reko.UnitTests.Structure
                 "			break;" + nl +
                 "		LoopWork();" + nl +
                 "	}" + nl +
-                "	return;" + nl + 
                 "}" + nl);
 
         }
@@ -208,7 +203,6 @@ namespace Reko.UnitTests.Structure
                 "	do" + nl +
                 "		Frobulate();" + nl +
                 "	while (!DoneFrobbing());" + nl +
-                "	return;" + nl + 
                 "}" + nl);
         }
 
@@ -225,7 +219,6 @@ namespace Reko.UnitTests.Structure
                 "		if (NeedsBork())" + nl + 
                 "			Bork();" + nl + 
                 "	} while (!Done());" + nl + 
-                "	return;" + nl + 
                 "}" + nl);
         }
 
@@ -249,7 +242,6 @@ namespace Reko.UnitTests.Structure
                 "	bar3();" + nl +
                 "end:" + nl + 
                 "	bar4();" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -268,7 +260,6 @@ namespace Reko.UnitTests.Structure
                 "		return;" + nl +
                 "	}" + nl +
                 "	niz();" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -315,7 +306,6 @@ namespace Reko.UnitTests.Structure
                 "		print(n);" + nl +
                 "		break;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -338,7 +328,6 @@ namespace Reko.UnitTests.Structure
                 "		fn2();" + nl +
                 "		break;" + nl +
                 "	}" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -360,12 +349,10 @@ namespace Reko.UnitTests.Structure
                 "		}" + nl +
                 "		i = i + 1;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void AcgWhileReturn()
         {
             CompileTest(m =>
@@ -392,7 +379,6 @@ namespace Reko.UnitTests.Structure
                 "		grux = foo();" + nl +
                 "\t}" + nl +
                 "\textra();" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -412,7 +398,6 @@ namespace Reko.UnitTests.Structure
                 "			break;" + nl +
                 "		Mem0[0x00300000:byte] = v;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 

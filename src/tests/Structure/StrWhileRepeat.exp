@@ -46,6 +46,5 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 		si = si_23;
 	} while (si_23 != 0x0000);
 	Mem28[ds:0x0302:word16] = ax_16;
-	return;
 }
 ===========================

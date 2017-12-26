@@ -109,8 +109,8 @@ namespace Reko.Structure
 
         public bool VisitReturn(AbsynReturn ret)
         {
-            Debug.Assert(ret.Value == null);
-            return true;
+            // Only remove returns that don't return anything.
+            return ret.Value == null;
         }
 
         public bool VisitSideEffect(AbsynSideEffect side)
@@ -120,7 +120,7 @@ namespace Reko.Structure
 
         public bool VisitSwitch(AbsynSwitch absynSwitch)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitWhile(AbsynWhile loop)

@@ -38,6 +38,5 @@ void fn0C00_0000(selector ds)
 		ax_11 = ax_11 + 0x0001;
 	}
 	Mem18[ds:0x0300:word16] = ax_11;
-	return;
 }
 ===========================

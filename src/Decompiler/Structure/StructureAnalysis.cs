@@ -66,12 +66,17 @@ namespace Reko.Structure
             ccc.Transform();
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
+            proc.Body = new List<AbsynStatement>();
             var reg = Execute();
             //$REVIEW: yeecch. Should return the statements, and 
             // caller decides what to do with'em. Probably 
             // return an abstract Procedure, rather than overloading
             // the IR procedure.
             proc.Body.AddRange(reg.Statements);
+
+            // Post processing steps
+            var trrm = new TailReturnRemover(proc);
+            trrm.Transform();
         }
 
         /// <summary>

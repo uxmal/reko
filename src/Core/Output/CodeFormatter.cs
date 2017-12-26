@@ -855,7 +855,7 @@ namespace Reko.Core.Output
 			writer.WriteLine();
 			writer.Write("{");
             writer.WriteLine();
-			if (proc.Body.Count > 0)
+			if (proc.Body != null)
 			{
 				for (int i = 0; i < proc.Body.Count; ++i)
 				{
