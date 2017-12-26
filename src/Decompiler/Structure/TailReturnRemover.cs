@@ -33,7 +33,7 @@ namespace Reko.Structure
     /// Removes reduntant 'return' statements in procedures that return
     /// void. These return statements will always be in tail position.
     /// </summary>
-    public class TailReturnRemover
+    public class TailReturnRemover : IAbsynVisitor<bool>
     {
         private Procedure proc;
 
@@ -50,20 +50,92 @@ namespace Reko.Structure
             RemoveRedundantReturn(stmts);
         }
 
+        public bool VisitAssignment(AbsynAssignment ass)
+        {
+            return false;
+        }
+
+        public bool VisitBreak(AbsynBreak brk)
+        {
+            return false;
+        }
+
+        public bool VisitCase(AbsynCase absynCase)
+        {
+            return false;
+        }
+
+        public bool VisitContinue(AbsynContinue cont)
+        {
+            return false;
+        }
+
+        public bool VisitDeclaration(AbsynDeclaration decl)
+        {
+            return false;
+        }
+
+        public bool VisitDefault(AbsynDefault decl)
+        {
+            return false;
+        }
+
+        public bool VisitDoWhile(AbsynDoWhile loop)
+        {
+            return false;
+        }
+
+        public bool VisitGoto(AbsynGoto gotoStm)
+        {
+            return false;
+        }
+
+        public bool VisitIf(AbsynIf ifStm)
+        {
+            RemoveRedundantReturn(ifStm.Then);
+            RemoveRedundantReturn(ifStm.Else);
+            return false;
+        }
+
+        public bool VisitLabel(AbsynLabel lbl)
+        {
+            return false;
+        }
+
+        public bool VisitLineComment(AbsynLineComment comment)
+        {
+            return false;
+        }
+
+        public bool VisitReturn(AbsynReturn ret)
+        {
+            Debug.Assert(ret.Value == null);
+            return true;
+        }
+
+        public bool VisitSideEffect(AbsynSideEffect side)
+        {
+            return false;
+        }
+
+        public bool VisitSwitch(AbsynSwitch absynSwitch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitWhile(AbsynWhile loop)
+        {
+            return false;
+        }
+
         private void RemoveRedundantReturn(List<AbsynStatement> stmts)
         {
             while (stmts.Count > 0)
             {
                 int i = stmts.Count - 1;
-                if (stmts[i] is AbsynReturn)
-                {
-                    Debug.Assert(((AbsynReturn)stmts.Last()).Value == null);
-                    stmts.RemoveAt(i);
-                }
-                else
-                {
+                if (!stmts[i].Accept(this))
                     return;
-                }
+                stmts.RemoveAt(i);
             }
         }
     }

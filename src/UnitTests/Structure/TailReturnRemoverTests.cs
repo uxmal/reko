@@ -125,5 +125,32 @@ namespace Reko.UnitTests.Structure
             });
 
         }
+
+        [Test(Description = "Clean up multiple redundant return statements")]
+        public void Trr_IfThenBranch()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    if (id)
+        fn();
+}
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var id = new Identifier("id", PrimitiveType.Bool, null);
+                var fn = new Identifier("fn", PrimitiveType.Pointer32, null);
+                m.If(id, t =>
+                {
+                    t.SideEffect(m.Fn(fn));
+                    t.Return();
+                });
+                m.Return();
+            });
+        }
+
+
     }
 }
