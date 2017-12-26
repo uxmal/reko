@@ -52,13 +52,17 @@ namespace Reko.Structure
 
         private void RemoveRedundantReturn(List<AbsynStatement> stmts)
         {
-            if (stmts.Count > 0)
+            while (stmts.Count > 0)
             {
                 int i = stmts.Count - 1;
                 if (stmts[i] is AbsynReturn)
                 {
                     Debug.Assert(((AbsynReturn)stmts.Last()).Value == null);
                     stmts.RemoveAt(i);
+                }
+                else
+                {
+                    return;
                 }
             }
         }

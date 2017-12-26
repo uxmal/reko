@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Structure
                 m.Return());
         }
 
-        [Test]
+        [Test(Description = "Return statements not in tail position shouldn't be eliminated.")]
         public void Trr_NotTail()
         {
             var sExp =
@@ -102,6 +102,28 @@ namespace Reko.UnitTests.Structure
                 m.SideEffect(m.Fn(fn));
                 m.Return();
             });
+        }
+
+        [Test(Description = "Clean up multiple redundant return statements")]
+        public void Trr_MultipleReturns()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    fn();
+}
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var fn = new Identifier("fn", PrimitiveType.Pointer32, null);
+                m.SideEffect(m.Fn(fn));
+                m.Return();
+                m.Return();
+                m.Return();
+            });
+
         }
     }
 }
