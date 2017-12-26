@@ -934,6 +934,32 @@ case_1:
         }
 
         [Test]
+        public void StrAnls_DoWhile_Return()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+
+            m.BranchIf(m.Fn("check"), "ok");
+            m.Return(m.Int32(-1));
+
+            m.Label("ok");
+            m.BranchIf(m.Fn("next"), "head");
+
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        if (!check())
+            return -0x01;
+    } while (next());
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
@@ -1041,37 +1067,37 @@ m.Label("l0800_0585");
             var sExp =
             #region Expected
 @"    cx_10 = 20000;
-l0800_0544:
-    si_12 = 0x8E8A;
-    al_13 = 0x00;
     do
     {
-        si_12 = si_12 + 0x01;
-        if (Mem0[ds:si_12:byte] != 0x00)
+        si_12 = 0x8E8A;
+        al_13 = 0x00;
+        do
         {
-            al_13 = 0x01;
-            Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
-            if (si_12 != Mem0[ds:0x8F0B:word16])
-                break;
-        }
-        Z_26 = cond(si_12 - 0x8F0A);
-    } while (si_12 == 0x8F0A);
-    if (!Z_26)
-    {
-        Mem0[ds:0x8F0B:word16] = si_12;
-        al_43 = Mem0[ds:si_12 - 0x8E31:byte];
-        if (al_43 != 0x00)
+            si_12 = si_12 + 0x01;
+            if (Mem0[ds:si_12:byte] != 0x00)
+            {
+                al_13 = 0x01;
+                Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
+                if (si_12 != Mem0[ds:0x8F0B:word16])
+                    break;
+            }
+            Z_26 = cond(si_12 - 0x8F0A);
+        } while (si_12 == 0x8F0A);
+        if (!Z_26)
         {
-            if (al_43 < 0x00)
-                al_43 = 0x00;
-            return al_43;
+            Mem0[ds:0x8F0B:word16] = si_12;
+            al_43 = Mem0[ds:si_12 - 0x8E31:byte];
+            if (al_43 != 0x00)
+            {
+                if (al_43 < 0x00)
+                    al_43 = 0x00;
+                return al_43;
+            }
         }
-    }
-    else if (al_13 == 0x00)
-        Mem0[ds:0x8F0B:byte] = 0x00;
-    cx_10 = cx_10 - 0x01;
-    if (cx_10 != 0x00)
-        goto l0800_0544;
+        else if (al_13 == 0x00)
+            Mem0[ds:0x8F0B:byte] = 0x00;
+        cx_10 = cx_10 - 0x01;
+    } while (cx_10 != 0x00);
     return 0x00;
 ";
             #endregion

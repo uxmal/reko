@@ -1203,26 +1203,26 @@ l00012780:
 									dupnstr(&i0_166->b0001, i0_185 - i0_166);
 									(word32 *) 0x38 = (word32 *) &i0_166->b0001;
 									struct Eq_1535 * i0_195 = i0_185;
-l000127B8:
-									int32 o0_202;
-									if (i0_195 - &i0_166->b0001 != 0x00)
+									while (true)
 									{
+										int32 o0_202;
+										if (i0_195 - &i0_166->b0001 == 0x00)
+											break;
 										int32 o0_508 = (int32) i0_195->bFFFFFFFF;
-										if (o0_508 == 0x20)
+										if (o0_508 != 0x20)
 										{
-											i0_195 = &i0_195->bFFFFFFFF;
-											goto l000127B8;
+											if (o0_508 == 0x09)
+											{
+												i0_195 = &i0_195->bFFFFFFFF;
+												continue;
+											}
+											else
+											{
+												o0_202 = (int32) i0_195->b0000;
+												goto l000127E4;
+											}
 										}
-										else if (o0_508 == 0x09)
-										{
-											i0_195 = &i0_195->bFFFFFFFF;
-											continue;
-										}
-										else
-										{
-											o0_202 = (int32) i0_195->b0000;
-											goto l000127E4;
-										}
+										i0_195 = &i0_195->bFFFFFFFF;
 									}
 									o0_202 = (int32) i0_195->b0000;
 l000127E4:
@@ -2932,25 +2932,19 @@ void _obstack_newchunk(Eq_5013 * o0, int32 o1)
 void _obstack_allocated_p(Eq_5321 * o0, uint32 o1)
 {
 	struct Eq_5323 * g3_28 = o0->ptr0004;
-l000156F4:
-	if (g3_28 == null)
-		return;
-	else
+	while (g3_28 != null)
 	{
 		uint32 g0_20 = g3_28 - o1;
-		if (g0_20 >= 0x00)
-		{
-			g3_28 = g3_28->ptr0004;
-			goto l000156F4;
-		}
-		else
+		if (g0_20 < 0x00)
 		{
 			if (g3_28->dw0000 - o1 >= 0x00)
 				return;
 			g3_28 = g3_28->ptr0004;
 			continue;
 		}
+		g3_28 = g3_28->ptr0004;
 	}
+	return;
 }
 
 // 00015724: void _obstack_free(Register (ptr Eq_5345) o0, Register uint32 o1)

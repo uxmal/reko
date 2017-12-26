@@ -1103,10 +1103,11 @@ refinement on the loop body, which we describe below.
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
-            {
-                CoalesceTailRegions(lexicalNodes);
-                Probe();
                 return true;
+            foreach (var n in lexicalNodes)
+            {
+                if (CoalesceTailRegion(n, lexicalNodes))
+                    return true;
             }
             foreach (var n in lexicalNodes)
             {
@@ -1114,16 +1115,6 @@ refinement on the loop body, which we describe below.
                     return true;
             }
             return false;
-        }
-
-        private void CoalesceTailRegions(ISet<Region> regions)
-        {
-            foreach (var n in regions)
-            {
-                if (!regionGraph.Nodes.Contains(n))
-                    continue;
-                CoalesceTailRegion(n, regions);
-            }
         }
 
         private bool CoalesceTailRegion(Region n, ICollection<Region> regions)
