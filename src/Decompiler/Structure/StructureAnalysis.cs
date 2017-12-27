@@ -652,6 +652,12 @@ all other cases, together they constitute a Switch[].
 
         private bool ReduceIncSwitch(Region n, Region follow)
         {
+            //$REVIEW: workaround for when the datatype of n.Expression
+            // is non-integral. What causes this?
+            var pt = n.Expression.DataType as PrimitiveType;
+            if (pt == null)
+                pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
+
             var succs = regionGraph.Successors(n).ToArray();
             var cases = new Dictionary<Region, List<int>>();
             for (int i = 0; i < succs.Length; ++i)
@@ -665,11 +671,6 @@ all other cases, together they constitute a Switch[].
             {
                 foreach (int c in cases[succ])
                 {
-                    //$REVIEW: workaround for when the datatype of n.Expression
-                    // is non-integral. What causes this?
-                    var pt = n.Expression.DataType as PrimitiveType;
-                    if (pt == null)
-                        pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
                     stms.Add(new AbsynCase(Constant.Create(pt, c)));
                 }
                 stms.AddRange(succ.Statements);
