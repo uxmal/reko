@@ -521,9 +521,11 @@ namespace Reko.ImageLoaders.MzExe
             ImageSymbols[entrySym.Address] = entrySym;
             var entryPoints = new List<ImageSymbol> { entrySym };
             ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable, ImageSymbols);
-			if(rvaExportTable != 0)
-				AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
-			ReadImportDescriptors(addrLoad);
+            if (rvaExportTable != 0)
+            {
+                AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
+            }
+            ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
             return new RelocationResults(entryPoints, ImageSymbols);
 		}
