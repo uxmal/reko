@@ -256,7 +256,7 @@ namespace Reko.Structure
             switch (n.Type)
             {
             case RegionType.Condition:
-                didReduce = ReduceIfRegion(n, false);
+                didReduce = ReduceIfRegion(n);
                 break;
             case RegionType.IncSwitch:
                 didReduce = ReduceSwitchRegion(n);
@@ -321,17 +321,15 @@ namespace Reko.Structure
         /// and reduces them out of the graph.
         /// </summary>
         /// <param name="n">The header of the possible if-region</param>
-        /// <param name="reduceTailregions">If true, will consider tail
-        /// regions as well as properly formed regions.</param>
         /// <returns></returns>
-        private bool ReduceIfRegion(Region n, bool reduceTailregions)
+        private bool ReduceIfRegion(Region n)
         {
             var ss = regionGraph.Successors(n).ToArray();
             var el = ss[0];
             var th = ss[1];
             var elS = LinearSuccessor(el);
             var thS = LinearSuccessor(th);
-            if (elS == th || (reduceTailregions && el.Type == RegionType.Tail))
+            if (elS == th)
             {
                 if (RefinePredecessor(n, el))
                     return false;
@@ -345,7 +343,7 @@ namespace Reko.Structure
                 n.Expression = null;
                 return true;
             }
-            else if (thS == el || (reduceTailregions && th.Type == RegionType.Tail))
+            else if (thS == el)
             {
                 if (RefinePredecessor(n, th))
                     return false;
@@ -378,12 +376,7 @@ namespace Reko.Structure
                 n.Expression = null;
                 return true;
             }
-            else
-            {
-                if (RefinePredecessor(n, th))
-                    return false;
-                return false;
-            }
+            return false;
         }
 
         private bool ReduceSequence(Region n)
@@ -514,11 +507,7 @@ all other cases, together they constitute a Switch[].
                 if (CoalesceTailRegion(node, switchNodes))
                     return;
             }
-            foreach (var node in switchNodes)
-            {
-                if (LastResort(node))
-                    return;
-            }
+            LastResort(switchNodes);
         }
 
         private bool VirtualizeIrregularSwitchEntries(Region n)
@@ -1119,10 +1108,11 @@ refinement on the loop body, which we describe below.
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
-            {
-                CoalesceTailRegions(lexicalNodes);
-                Probe();
                 return true;
+            foreach (var n in lexicalNodes)
+            {
+                if (CoalesceTailRegion(n, lexicalNodes))
+                    return true;
             }
             foreach (var n in lexicalNodes)
             {
@@ -1130,16 +1120,6 @@ refinement on the loop body, which we describe below.
                     return true;
             }
             return false;
-        }
-
-        private void CoalesceTailRegions(ISet<Region> regions)
-        {
-            foreach (var n in regions)
-            {
-                if (!regionGraph.Nodes.Contains(n))
-                    continue;
-                CoalesceTailRegion(n, regions);
-            }
         }
 
         private bool CoalesceTailRegion(Region n, ICollection<Region> regions)
@@ -1418,6 +1398,40 @@ refinement on the loop body, which we describe below.
                 // Whoa, we're in trouble now....
                 return false;
             }
+        }
+
+        private bool LastResort(ISet<Region> regions)
+        {
+            var vEdge = FindLastResortEdge( regions);
+            if (vEdge != null)
+            {
+                VirtualizeEdge(vEdge);
+                return true;
+            }
+            else
+            {
+                // Whoa, we're in trouble now....
+                return false;
+            }
+        }
+
+        private VirtualEdge FindLastResortEdge(ISet<Region> regions)
+        {
+            var edges = regions.SelectMany(
+                n => regionGraph.Successors(n).
+                Where(s => regions.Contains(s)).
+                Select(s => new VirtualEdge(n, s, VirtualEdgeType.Goto)));
+
+            foreach(var vEdge in edges)
+                if (!doms.DominatesStrictly(vEdge.From, vEdge.To) &&
+                    !doms.DominatesStrictly(vEdge.To, vEdge.From))
+                    return vEdge;
+
+            foreach (var vEdge in edges)
+                if (!doms.DominatesStrictly(vEdge.From, vEdge.To))
+                    return vEdge;
+
+            return edges.FirstOrDefault();
         }
 
         public class VirtualEdge

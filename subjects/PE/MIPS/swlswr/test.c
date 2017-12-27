@@ -162,25 +162,22 @@ void fn00011460()
 void fn0001147C(word32 * r4, word32 * r5, UINT dwArg00, int32 dwArg04)
 {
 	word32 * dwArg00_26 = r4;
-l0001148C:
-	if ((word32) (dwArg00_26 < r5) == 0x00)
-		return;
-	else if (*dwArg00_26 == 0x00)
+	while ((word32) (dwArg00_26 < r5) != 0x00)
 	{
+		if (*dwArg00_26 != 0x00)
+		{
+			<anonymous> * r8_17 = *dwArg00_26;
+			word32 sp_18;
+			word32 ra_19;
+			word32 r5_20;
+			word32 r4_21;
+			word32 r9_22;
+			word32 r8_23;
+			r8_17();
+		}
 		dwArg00_26 = dwArg00_26 + 0x01;
-		goto l0001148C;
 	}
-	else
-	{
-		<anonymous> * r8_17 = *dwArg00_26;
-		word32 sp_18;
-		word32 ra_19;
-		word32 r5_20;
-		word32 r4_21;
-		word32 r9_22;
-		word32 r8_23;
-		r8_17();
-	}
+	return;
 }
 
 // 000114E4: void fn000114E4()

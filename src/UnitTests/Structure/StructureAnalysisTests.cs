@@ -735,6 +735,69 @@ case_0:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void StrAnls_Switch_LastResort()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Switch(r1, "case_0", "case_1", "case_2");
+
+            m.Label("case_0");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 2);
+            m.BranchIf(m.Fn("needFullCheck"), "fullCheck");
+
+            m.BranchIf(m.Fn("fastCheckFailed"), "failed");
+            m.Goto("done");
+
+            m.Label("fullCheck");
+            m.BranchIf(m.Fn("fullCheckFailed"), "failed");
+            m.Goto("done");
+
+            m.Label("failed");
+            m.SideEffect(m.Fn("throwError"));
+            m.Goto("done");
+
+            m.Label("case_2");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+        r1 = 0x03;
+        break;
+    case 0x01:
+        r1 = 0x02;
+        if (!needFullCheck())
+        {
+            if (fastCheckFailed())
+                goto failed;
+        }
+        else if (fullCheckFailed())
+        {
+failed:
+            throwError();
+        }
+        break;
+    case 0x02:
+        r1 = 0x01;
+        break;
+    }
+    finalize();
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
         [Test(Description="A do-while with a nested if-then-else")]
         public void StrAnls_DoWhile_NestedIfElse()
         {
@@ -871,6 +934,32 @@ case_1:
         }
 
         [Test]
+        public void StrAnls_DoWhile_Return()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+
+            m.BranchIf(m.Fn("check"), "ok");
+            m.Return(m.Int32(-1));
+
+            m.Label("ok");
+            m.BranchIf(m.Fn("next"), "head");
+
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        if (!check())
+            return -0x01;
+    } while (next());
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
@@ -978,37 +1067,37 @@ m.Label("l0800_0585");
             var sExp =
             #region Expected
 @"    cx_10 = 20000;
-l0800_0544:
-    si_12 = 0x8E8A;
-    al_13 = 0x00;
     do
     {
-        si_12 = si_12 + 0x01;
-        if (Mem0[ds:si_12:byte] != 0x00)
+        si_12 = 0x8E8A;
+        al_13 = 0x00;
+        do
         {
-            al_13 = 0x01;
-            Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
-            if (si_12 != Mem0[ds:0x8F0B:word16])
-                break;
-        }
-        Z_26 = cond(si_12 - 0x8F0A);
-    } while (si_12 == 0x8F0A);
-    if (!Z_26)
-    {
-        Mem0[ds:0x8F0B:word16] = si_12;
-        al_43 = Mem0[ds:si_12 - 0x8E31:byte];
-        if (al_43 != 0x00)
+            si_12 = si_12 + 0x01;
+            if (Mem0[ds:si_12:byte] != 0x00)
+            {
+                al_13 = 0x01;
+                Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
+                if (si_12 != Mem0[ds:0x8F0B:word16])
+                    break;
+            }
+            Z_26 = cond(si_12 - 0x8F0A);
+        } while (si_12 == 0x8F0A);
+        if (!Z_26)
         {
-            if (al_43 < 0x00)
-                al_43 = 0x00;
-            return al_43;
+            Mem0[ds:0x8F0B:word16] = si_12;
+            al_43 = Mem0[ds:si_12 - 0x8E31:byte];
+            if (al_43 != 0x00)
+            {
+                if (al_43 < 0x00)
+                    al_43 = 0x00;
+                return al_43;
+            }
         }
-    }
-    else if (al_13 == 0x00)
-        Mem0[ds:0x8F0B:byte] = 0x00;
-    cx_10 = cx_10 - 0x01;
-    if (cx_10 != 0x00)
-        goto l0800_0544;
+        else if (al_13 == 0x00)
+            Mem0[ds:0x8F0B:byte] = 0x00;
+        cx_10 = cx_10 - 0x01;
+    } while (cx_10 != 0x00);
     return 0x00;
 ";
             #endregion
