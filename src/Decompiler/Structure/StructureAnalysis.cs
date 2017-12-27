@@ -656,16 +656,11 @@ all other cases, together they constitute a Switch[].
             // is non-integral. What causes this?
             var pt = n.Expression.DataType as PrimitiveType;
             if (pt == null)
-                pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
-
-            var succs = regionGraph.Successors(n).ToArray();
-            var cases = new Dictionary<Region, List<int>>();
-            for (int i = 0; i < succs.Length; ++i)
             {
-                if (!cases.ContainsKey(succs[i]))
-                    cases.Add(succs[i], new List<int>());
-                cases[succs[i]].Add(i);
+                eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
+                pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
             }
+            var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
             foreach (var succ in cases.Keys)
             {
@@ -698,6 +693,26 @@ all other cases, together they constitute a Switch[].
                 n.Type = RegionType.Tail;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Collects the cases of a switch statement such that cases with
+        /// the same destination region are collected in the same list
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns>A mapping from Region to a list of the case values
+        /// that jump to that region.</returns>
+        private Dictionary<Region, List<int>> CollectSwitchCases(Region n)
+        {
+            var succs = regionGraph.Successors(n).ToArray();
+            var cases = new Dictionary<Region, List<int>>();
+            for (int i = 0; i < succs.Length; ++i)
+            {
+                if (!cases.ContainsKey(succs[i]))
+                    cases.Add(succs[i], new List<int>());
+                cases[succs[i]].Add(i);
+            }
+            return cases;
         }
 
         /// <summary>
