@@ -18,7 +18,6 @@ void _init()
 		byte Z_20;
 		png_get_PLTE();
 	}
-	return;
 }
 
 // 0000000000400CD0: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00)
@@ -33,7 +32,7 @@ void _start( * rdx, Eq_17 qwArg00)
 void deregister_tm_clones(word64 r8)
 {
 	if (false || 0x00 == 0x00)
-		return;
+		;
 	else
 	{
 		word64 rsp_42;
@@ -49,7 +48,6 @@ void deregister_tm_clones(word64 r8)
 		word32 edi_52;
 		word64 rdi_53;
 		eax();
-		return;
 	}
 }
 
@@ -57,7 +55,7 @@ void deregister_tm_clones(word64 r8)
 void register_tm_clones()
 {
 	if (0x00 == 0x00 || 0x00 == 0x00)
-		return;
+		;
 	else
 	{
 		word64 rsp_42;
@@ -71,7 +69,6 @@ void register_tm_clones()
 		word64 rdi_50;
 		word32 eax_51;
 		eax();
-		return;
 	}
 }
 
@@ -83,7 +80,6 @@ void __do_global_dtors_aux(word64 r8)
 		deregister_tm_clones(r8);
 		globals->b602108 = 0x01;
 	}
-	return;
 }
 
 // 0000000000400DA0: void frame_dummy()
@@ -105,13 +101,9 @@ void frame_dummy()
 		word64 rsi_50;
 		eax();
 		register_tm_clones();
-		return;
 	}
 	else
-	{
 		register_tm_clones();
-		return;
-	}
 }
 
 // 0000000000400DC6: void component(Register uint32 ecx, Register word32 edx, Register word32 esi, Register word32 edi, Register word32 r8d, Register ptr64 r13)
@@ -145,7 +137,6 @@ void component(uint32 ecx, word32 edx, word32 esi, word32 edi, word32 r8d, ptr64
 		word64 rsi_77;
 		word32 edi_78;
 		eax_61();
-		return;
 	}
 }
 
@@ -741,18 +732,15 @@ void __libc_csu_init(word32 edi)
 			globals->u601E00();
 		} while (rbx_80 + 0x01 != rbp_79);
 	}
-	return;
 }
 
 // 00000000004017F0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	return;
 }
 
 // 00000000004017F4: void _fini()
 void _fini()
 {
-	return;
 }
 

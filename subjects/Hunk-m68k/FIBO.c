@@ -220,7 +220,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_26) a3)
@@ -228,7 +227,6 @@ void fn00001214(Eq_26 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_32) a2)
@@ -236,7 +234,6 @@ void fn0000126C(Eq_32 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: Register word32 fn00001278(Stack Eq_399 dwArg04, Register out ptr32 d1Out, Register out ptr32 a1Out, Register out ptr32 a5Out)
@@ -379,7 +376,6 @@ void fn00001354(int32 d7, Eq_26 * a3, Eq_108 a6, int32 dwArg04, Eq_68 * dwArg08)
 	word32 a1_42;
 	word32 a5_43;
 	fn0000131C(dwArg00, out d1_41, out a1_42, out a5_43);
-	return;
 }
 
 // 00001390: Register word32 fn00001390(Register int32 d7, Register (ptr (ptr code)) a3, Register Eq_108 a6)
@@ -1371,7 +1367,6 @@ void fn000020BC(ptr32 dwArg04)
 {
 	if (dwArg04 != 0x00 && globals->dw3ECC != 0x00)
 		fn00002184(globals->dw3ECC, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
-	return;
 }
 
 // 00002184: void fn00002184(Stack (ptr Eq_3195) dwArg04, Stack uint32 dwArg08, Stack uint32 dwArg0C)
@@ -1402,7 +1397,6 @@ void fn00002184(Eq_3195 * dwArg04, uint32 dwArg08, uint32 dwArg0C)
 	Remove(a3_113);
 	struct Eq_506 * a3_82 = a3_113 - 0x04;
 	FreeMem(a3_82, a3_82->dw0000);
-	return;
 }
 
 // 00002220: Register (ptr Eq_32) fn00002220(Stack (ptr Eq_3157) dwArg04, Stack Eq_3158 dwArg08, Register out ptr32 d1Out, Register out ptr32 a0Out)
@@ -1560,7 +1554,6 @@ void fn000023B4(int32 d0, Eq_506 * dwArg04)
 		}
 		FreeMem(dwArg04, 0x0018);
 	}
-	return;
 }
 
 // 00002424: Register word32 fn00002424(Register out ptr32 a1Out, Register out ptr32 a2Out, Register out ptr32 a5Out)
@@ -2001,7 +1994,6 @@ void fn00002B98(word32 a2, word32 dwArg04)
 			} while (a2_37 != null);
 		}
 	}
-	return;
 }
 
 // 00002BDC: Register int32 fn00002BDC(Register Eq_725 d0, Register Eq_725 d1, Register int32 d7, Register (ptr (ptr byte)) a1, Register (ptr byte) a5, Register (ptr byte) a6, Stack Eq_399 dwArg04, Register out ptr32 a3Out, Register out ptr32 a6Out)

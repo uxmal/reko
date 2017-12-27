@@ -218,7 +218,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_25) a3)
@@ -226,7 +225,6 @@ void fn00001214(Eq_25 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
@@ -234,7 +232,6 @@ void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: Register word32 fn00001278(Stack Eq_397 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)
@@ -371,7 +368,6 @@ void fn00001354(Eq_25 * a3, Eq_107 a6, int32 dwArg04, Eq_67 * dwArg08)
 	word32 a1_39;
 	word32 a5_40;
 	fn0000131C(dwArg00, out a1_39, out a5_40);
-	return;
 }
 
 // 00001390: Register Eq_655 fn00001390(Register Eq_655 d0, Register Eq_107 a6)
@@ -1903,7 +1899,6 @@ void fn00002784(ptr32 dwArg04)
 {
 	if (dwArg04 != 0x00 && globals->dw3DC8 != 0x00)
 		fn0000284C(globals->dw3DC8, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
-	return;
 }
 
 // 0000284C: void fn0000284C(Stack (ptr Eq_4799) dwArg04, Stack uint32 dwArg08, Stack uint32 dwArg0C)
@@ -1934,7 +1929,6 @@ void fn0000284C(Eq_4799 * dwArg04, uint32 dwArg08, uint32 dwArg0C)
 	Remove(a3_113);
 	struct Eq_496 * a3_82 = a3_113 - 0x04;
 	FreeMem(a3_82, a3_82->dw0000);
-	return;
 }
 
 // 000028E8: Register (ptr Eq_31) fn000028E8(Stack (ptr Eq_4761) dwArg04, Stack Eq_4762 dwArg08, Register out ptr32 d1Out, Register out ptr32 a0Out)
@@ -2092,7 +2086,6 @@ void fn00002A7C(int32 d0, Eq_496 * dwArg04)
 		}
 		FreeMem(dwArg04, 0x0018);
 	}
-	return;
 }
 
 // 00002AEC: Register (ptr Eq_5199) fn00002AEC(Register (ptr Eq_4515) a2, Register out ptr32 a1Out, Register out ptr32 a5Out)
@@ -2221,7 +2214,6 @@ void fn00002ED4(word32 a2, word32 dwArg04)
 			} while (a2_37 != null);
 		}
 	}
-	return;
 }
 
 // 00002F18: Register Eq_655 fn00002F18(Register Eq_655 d0, Register Eq_107 a6, Stack (ptr Eq_713) dwArg04, Register out ptr32 d1Out, Register out ptr32 d7Out, Register out ptr32 a1Out, Register out ptr32 a5Out, Register out ptr32 a6Out)

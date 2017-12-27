@@ -70,20 +70,18 @@ void __do_global_dtors_aux(word32 o7)
 			fn00027C8C();
 		*l7_114->ptr0008 = 0x01;
 	}
-	return;
 }
 
 // 000115CC: void fini_dummy()
 void fini_dummy()
 {
-	return;
 }
 
 // 000115D8: void frame_dummy(Register word32 o7)
 void frame_dummy(word32 o7)
 {
 	if (fn0001150C(o7, 0x0001659C)->dw0018 == 0x00)
-		return;
+		;
 	else
 		fn00027C98();
 }
@@ -91,21 +89,18 @@ void frame_dummy(word32 o7)
 // 00011620: void init_dummy()
 void init_dummy()
 {
-	return;
 }
 
 // 0001162C: void notice(Register word32 o0, Stack Eq_26 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg50, Stack word32 dwArg54, Stack word32 dwArg58)
 void notice(word32 o0, Eq_26 dwArg48, word32 dwArg4C, word32 dwArg50, word32 dwArg54, word32 dwArg58)
 {
 	vfprintf();
-	return;
 }
 
 // 00011660: void xstrerror(Register word32 o0)
 void xstrerror(word32 o0)
 {
 	strerror();
-	return;
 }
 
 // 00011674: void xmalloc(Register Eq_156 o0)
@@ -113,7 +108,7 @@ void xmalloc(Eq_156 o0)
 {
 	malloc();
 	if (o0 != 0x00)
-		return;
+		;
 	else
 	{
 		notice(0x000170A8, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
@@ -136,7 +131,7 @@ void xrealloc(Eq_156 o0, int32 o1)
 		Z_24 = cond(o1);
 	}
 	if (Z_24)
-		return;
+		;
 	else
 	{
 		notice(0x000170A8, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
@@ -158,7 +153,6 @@ void savestring(Eq_156 o0, Eq_156 o1)
 {
 	xmalloc((word32) o1 + 0x01);
 	strcpy();
-	return;
 }
 
 // 0001174C: void savestring2(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3)
@@ -167,7 +161,6 @@ void savestring2(word32 o0, word32 o1, word32 o2, word32 o3)
 	xmalloc(o1 + o3 + 0x01);
 	strcpy();
 	strcpy();
-	return;
 }
 
 // 00011780: void fancy_abort()
@@ -183,7 +176,6 @@ void dupnstr(Eq_26 o0, Eq_236 o1)
 	xmalloc((word32) o1 + 0x01);
 	strncpy();
 	*((word32) o1 + ((word32) o1 + 0x01)) = 0x00;
-	return;
 }
 
 // 000117CC: Register Eq_248 substr(Register Eq_248 o0, Register (ptr int8) o1)
@@ -288,7 +280,6 @@ void safe_write(int32 o0, word32 o1, int32 o2, Eq_156 o3)
 				i2_47 = i2_47 - o0;
 		} while (i2_47 > 0x00);
 	}
-	return;
 }
 
 // 00011914: void save_pointers()
@@ -297,7 +288,6 @@ void save_pointers()
 	uint32 o1_6 = globals->dw28210;
 	globals->t2B280 = globals->t281E0;
 	globals->dw2B290 = o1_6;
-	return;
 }
 
 // 00011938: void restore_pointers()
@@ -306,7 +296,6 @@ void restore_pointers()
 	uint32 o1_6 = globals->dw2B290;
 	globals->t281E0 = globals->t2B280;
 	globals->dw28210 = o1_6;
-	return;
 }
 
 // 0001195C: Register int32 is_id_char(Register int32 o0)
@@ -332,15 +321,9 @@ void usage()
 	notice(0x00017108, dwLoc28, dwLoc24, dwLoc20, dwLoc1C, dwLoc18);
 	exit();
 	if ((int32) (int8 *) 33 == 0x2F)
-	{
 		fn000119E0(&globals->t27C00, 33);
-		return;
-	}
 	else
-	{
 		fn000119D0(&globals->t27C00, 33);
-		return;
-	}
 }
 
 // 000119BC: Register Eq_156 in_system_include_dir(Register Eq_156 o0)
@@ -360,7 +343,6 @@ void fn000119D0(Eq_401 * o0, Eq_156 i0)
 {
 	abort();
 	fn000119E0(o0, i0);
-	return;
 }
 
 // 000119E0: Register (ptr Eq_401) fn000119E0(Register (ptr Eq_401) o0, Register Eq_156 i0)
@@ -493,7 +475,6 @@ void file_excluded_p(Eq_156 o0)
 				l0_23 = l0_23->ptr0004;
 		} while (l0_23 != null);
 	}
-	return;
 }
 
 // 00011BC8: void string_list_cons(Register word32 o0, Register word32 o1)
@@ -502,7 +483,6 @@ void string_list_cons(word32 o0, word32 o1)
 	xmalloc(0x08);
 	(word32 *) 0x08 = o0;
 	(word32 *) 0x0C = o1;
-	return;
 }
 
 // 00011BE4: Register (ptr Eq_625) visit_each_hash_node(Register (ptr Eq_625) o0)
@@ -561,7 +541,6 @@ void add_symbol(Eq_673 * o0, Eq_156 o1)
 	savestring(o1, o1);
 	o0->t0004 = o1;
 	o0->dw0008 = 0x00;
-	return;
 }
 
 // 00011C6C: void lookup(Register (arr Eq_7777) o0, Register Eq_156 o1)
@@ -613,14 +592,12 @@ l00011D1C:
 		o0_53 = (struct Eq_673 *) 0x0C;
 	}
 	add_symbol(o0_53, o1);
-	return;
 }
 
 // 00011D3C: void free_def_dec(Register (ptr Eq_769) o0)
 void free_def_dec(Eq_769 * o0)
 {
 	xfree(xfree(o0->dw000C));
-	return;
 }
 
 // 00011D58: void unexpand_if_needed(Register (ptr byte) o0)
@@ -883,7 +860,6 @@ l00012120:
 	else
 		o2_121->b0000 = 0x00;
 	savestring(&sp_29->b0060, o2_121 - &sp_29->b0060);
-	return;
 }
 
 // 0001214C: void shortpath(Register Eq_156 o0, Register Eq_156 o1)
@@ -1105,7 +1081,6 @@ void referenced_file_is_newer(int8 * o0)
 	sp_57->a0060[l1_54] = 0x00;
 	abspath(o0_62, sp_57->a0060);
 	find_file(o0_62, 0x00);
-	return;
 }
 
 // 0001251C: void save_def_or_dec(Register (ptr int8) o0)
@@ -1429,7 +1404,6 @@ l00012D00:
 	xmalloc(o0_105);
 	globals->t27F3C = o0_105;
 	memcpy();
-	return;
 }
 
 // 00012E2C: void gen_aux_info_file(Register Eq_156 o0)
@@ -1459,7 +1433,6 @@ void gen_aux_info_file(Eq_156 o0)
 			xstrerror(l2_80);
 			fprintf();
 			pwait(0x00017270);
-			return;
 		}
 	}
 	else
@@ -1527,7 +1500,7 @@ l00013074:
 	}
 	Eq_288 l0_124 = fp->tFFFFFF98;
 	if (l0_124 == 0x00)
-		return;
+		;
 	else
 	{
 		if (o2 == 0x00)
@@ -1584,7 +1557,6 @@ l000131F0:
 		notice(l0_172, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 		free();
 		close();
-		return;
 	}
 }
 
@@ -1613,7 +1585,6 @@ void reverse_def_dec_list(Eq_2932 * o0)
 			Mem30[o1_4 + 0x04:word32] = g3_16;
 		}
 	}
-	return;
 }
 
 // 0001360C: Register Eq_26 identify_lineno(Register Eq_26 o0)
@@ -1717,7 +1688,6 @@ void seek_to_line(Eq_3049 o0)
 			}
 			globals->dw28230 = o1_81;
 		}
-		return;
 	}
 	else
 		abort();
@@ -1761,7 +1731,6 @@ void output_bytes(uint32 o0, uint32 o1)
 	}
 	memcpy();
 	globals->dw28210 = globals->dw28210 + o1;
-	return;
 }
 
 // 0001388C: void output_string(Register uint32 o0)
@@ -1769,7 +1738,6 @@ void output_string(uint32 o0)
 {
 	strlen();
 	output_bytes(o0, o0);
-	return;
 }
 
 // 000138AC: Register Eq_26 output_up_to(Register Eq_26 o0, Register out ptr32 i1Out, Register out ptr32 i2Out)
@@ -1812,7 +1780,6 @@ void edit_fn_declaration(word32 o0, word32 dwArg44, word32 dwArg48)
 	{
 		restore_pointers();
 		notice(0x00017470, o1, dwArg4C, dwArg50, dwArg54, dwArg58);
-		return;
 	}
 }
 
@@ -2063,7 +2030,6 @@ void edit_fn_definition(word32 o0, Eq_26 o1, word32 dwArg44, word32 dwArg48)
 		word32 i2_97;
 		output_up_to(o1, out i1_96, out i2_97);
 	}
-	return;
 }
 
 // 000140B4: void do_cleaning(Register (ptr byte) o0, Register uint32 o1)
@@ -2071,7 +2037,7 @@ void do_cleaning(byte * o0, uint32 o1)
 {
 	byte * i0_4 = o0;
 	if (o0 - o1 >= 0x00)
-		return;
+		;
 	else
 	{
 		ui32 o1_50 = (word32) *o0;
@@ -2082,7 +2048,6 @@ void do_cleaning(byte * o0, uint32 o1)
 				return;
 			o1_50 = (word32) *i0_4;
 		}
-		return;
 	}
 }
 
@@ -2299,7 +2264,6 @@ void edit_file(Eq_4295 * o0)
 			}
 		}
 	}
-	return;
 }
 
 // 00014E24: void do_processing()
@@ -2321,7 +2285,6 @@ void do_processing()
 		}
 	}
 	visit_each_hash_node(visit_each_hash_node(globals->a28240));
-	return;
 }
 
 // 00014EA4: void main(Register Eq_26 o1, Stack word32 dwArg44, Stack word32 dwArg48)
@@ -2564,7 +2527,6 @@ void _obstack_begin(Eq_4710 * o0, word32 o1, word32 o2, code * o3, word32 o4)
 		i0_112->dw0010 = o0_88;
 		i1_131->dw0004 = 0x00;
 		i0_112->dw0028 = i0_112->dw0028 & ~0x40000000 & ~0x20000000;
-		return;
 	}
 	else
 	{
@@ -2674,7 +2636,6 @@ void _obstack_begin_1(Eq_4859 * o0, word32 o1, word32 o2, code * o3, word32 o4, 
 		i0_113->dw0010 = o0_89;
 		i1_132->dw0004 = 0x00;
 		i0_113->dw0028 = i0_113->dw0028 & ~0x40000000 & ~0x20000000;
-		return;
 	}
 	else
 	{
@@ -2925,7 +2886,6 @@ void _obstack_newchunk(Eq_5013 * o0, int32 o1)
 	i0_130->t0028 = o0_131 & ~0x40000000;
 	Mem136[i0_130 + 0x0C:word32] = i1_129 + l2_122;
 	i0_130->ptr0008 = i1_129;
-	return;
 }
 
 // 000156F0: void _obstack_allocated_p(Register (ptr Eq_5321) o0, Register uint32 o1)
@@ -2944,7 +2904,6 @@ void _obstack_allocated_p(Eq_5321 * o0, uint32 o1)
 		}
 		g3_28 = g3_28->ptr0004;
 	}
-	return;
 }
 
 // 00015724: void _obstack_free(Register (ptr Eq_5345) o0, Register uint32 o1)
@@ -3030,7 +2989,6 @@ void _obstack_free(Eq_5345 * o0, uint32 o1)
 	}
 	else if (i1_119 != 0x00)
 		abort();
-	return;
 }
 
 // 000157D4: void obstack_free(Register (ptr Eq_5455) o0, Register uint32 o1)
@@ -3116,7 +3074,6 @@ void obstack_free(Eq_5455 * o0, uint32 o1)
 	}
 	else if (i1_119 != 0x00)
 		abort();
-	return;
 }
 
 // 00015884: void _obstack_memory_used(Register (ptr Eq_5565) o0)
@@ -3129,7 +3086,6 @@ void _obstack_memory_used(Eq_5565 * o0)
 			g3_15 = g3_15->ptr0004;
 		while (g3_15 != null);
 	}
-	return;
 }
 
 // 000158B4: void print_and_abort()
@@ -3272,7 +3228,7 @@ void make_temp_file(int32 o0)
 		{
 			close();
 			if (o0_65 == 0x0A)
-				return;
+				;
 			else
 				abort();
 		}
@@ -3416,7 +3372,6 @@ void _getopt_initialize(int8 * o2)
 		globals->dw2B2D0 = 0x00;
 	else
 		globals->dw2B2D0 = 0x01;
-	return;
 }
 
 // 00015E04: Register int32 _getopt_internal(Register (ptr (arr Eq_6013)) o1, Register (ptr int8) o2, Register (ptr Eq_4459) o3, Register (ptr word32) o4, Register word32 o5, Stack word32 dwArg44, Stack word32 dwArg50, Register out ptr32 l0Out, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
@@ -4076,7 +4031,6 @@ void getopt(word32 o0, Eq_6013 * o1[], int8 * o2)
 	word32 l7_29;
 	word32 i6_30;
 	_getopt_internal(o1, o2, null, null, 0x00, dwLoc2C, dwLoc20, out l0_27, out l6_28, out l7_29, out i6_30);
-	return;
 }
 
 // 000169A8: Register word32 getopt_long(Register word32 o0, Register (ptr (arr Eq_6013)) o1, Register (ptr int8) o2, Register (ptr Eq_4459) o3, Register (ptr word32) o4, Register out ptr32 l6Out, Register out ptr32 l7Out, Register out ptr32 i6Out)
@@ -4098,7 +4052,6 @@ void getopt_long_only(word32 o0, Eq_6013 * o1[], int8 * o2, Eq_4459 * o3, word32
 	word32 l7_29;
 	word32 i6_30;
 	_getopt_internal(o1, o2, o3, o4, 0x01, dwLoc2C, dwLoc20, out l0_27, out l6_28, out l7_29, out i6_30);
-	return;
 }
 
 // 000169F8: Register word32 pexecute(Register (ptr word32) o4, Register (ptr word32) o5, Register word32 l1, Stack word32 dwArg44, Stack Eq_26 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack ui32 dwArg5C, Register out ptr32 i2Out, Register out ptr32 i6Out)
@@ -4226,7 +4179,6 @@ l00016B10:
 void pwait(word32 o1)
 {
 	wait();
-	return;
 }
 
 // 00016C40: void mkstemps(Register (ptr byte) o0, Register int32 o1)
@@ -4285,7 +4237,6 @@ void mkstemps(byte * o0, int32 o1)
 	{
 l00016E58:
 	}
-	return;
 }
 
 // 00016E64: Register word32 fn00016E64(Register word32 o7, Register word32 l7)
@@ -4338,7 +4289,6 @@ word32 * __do_global_ctors_aux(word32 o7)
 // 00016EBC: void init_dummy()
 void init_dummy()
 {
-	return;
 }
 
 // 00016EC8: Register word32 _init(Register word32 o7)
@@ -4352,351 +4302,298 @@ word32 _init(word32 o7)
 void _fini(word32 o7)
 {
 	__do_global_dtors_aux(o7);
-	return;
 }
 
 // 00027C38: void _PROCEDURE_LINKAGE_TABLE_()
 void _PROCEDURE_LINKAGE_TABLE_()
 {
-fn00027C38_entry:
-l00027C38:
-l00027C38:
-fn00027C38_exit:
 }
 
 // 00027C68: void atexit()
 void atexit()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027C74: void exit()
 void exit()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027C80: void _exit()
 void _exit()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027C8C: void fn00027C8C()
 void fn00027C8C()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027C98: void fn00027C98()
 void fn00027C98()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CA4: void vfprintf()
 void vfprintf()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CB0: void strerror()
 void strerror()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CBC: void malloc()
 void malloc()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CC8: void realloc()
 void realloc()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CD4: void free()
 void free()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CE0: void strcpy()
 void strcpy()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CEC: void strncpy()
 void strncpy()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027CF8: void read()
 void read()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D04: void write()
 void write()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D10: void abort()
 void abort()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D1C: void strlen()
 void strlen()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D28: void strncmp()
 void strncmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D34: void strcmp()
 void strcmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D40: void stat()
 void stat()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D4C: void atoi()
 void atoi()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D58: void memcpy()
 void memcpy()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D64: void fprintf()
 void fprintf()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D70: void strcat()
 void strcat()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D7C: void access()
 void access()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D88: void open()
 void open()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027D94: void close()
 void close()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DA0: void unlink()
 void unlink()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DAC: void strrchr()
 void strrchr()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DB8: void longjmp()
 void longjmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DC4: void setjmp()
 void setjmp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DD0: void fflush()
 void fflush()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DDC: void link()
 void link()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DE8: void creat()
 void creat()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027DF4: void chmod()
 void chmod()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E00: void setlocale()
 void setlocale()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E0C: void getenv()
 void getenv()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E18: void getcwd()
 void getcwd()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E24: void fputs()
 void fputs()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E30: void mktemp()
 void mktemp()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E54: void pipe()
 void pipe()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E60: void sleep()
 void sleep()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E6C: void vfork()
 void vfork()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E78: void dup()
 void dup()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E84: void wait()
 void wait()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E90: void gettimeofday()
 void gettimeofday()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027E9C: void getpid()
 void getpid()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027EA8: void __urem64()
 void __urem64()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 
 // 00027EB4: void __udiv64()
 void __udiv64()
 {
 	_PROCEDURE_LINKAGE_TABLE_();
-	return;
 }
 

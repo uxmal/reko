@@ -19,7 +19,6 @@ void _init()
 	word32 ra_25;
 	bcuiposr0 None_26;
 	(globals->ptr10000880 + -25584)();
-	return;
 }
 
 // 00400230: void __start(Stack word32 dwArg00)
@@ -83,13 +82,11 @@ void __do_global_dtors_aux()
 		}
 		globals->ptr10000878->dw0008 = 0x01;
 	}
-	return;
 }
 
 // 00400704: void fini_dummy()
 void fini_dummy()
 {
-	return;
 }
 
 // 0040072C: void frame_dummy()
@@ -106,13 +103,11 @@ void frame_dummy()
 		word32 r5_28;
 		r25_9();
 	}
-	return;
 }
 
 // 00400784: void init_dummy()
 void init_dummy()
 {
-	return;
 }
 
 // 004007B0: void handle_stop(Stack word32 dwArg00)
@@ -132,7 +127,6 @@ void handle_stop(word32 dwArg00)
 	word32 r1_35;
 	r25_24();
 	*globals->ptr100008C0 = 0x01;
-	return;
 }
 
 // 0040083C: void handle_log_rotate(Stack word32 dwArg00)
@@ -162,7 +156,6 @@ void handle_log_rotate(word32 dwArg00)
 	word32 r6_45;
 	word32 r7_46;
 	r25_36();
-	return;
 }
 
 // 004008D0: void main(Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -1067,7 +1060,6 @@ void client_new(word32 r2, Eq_706 * r4, Eq_707 * r5, int32 r7, word32 dwArg00, w
 			}
 		}
 	}
-	return;
 }
 
 // 00402028: void client_prepare_connect(Register word32 r4, Stack word32 dwArg00)
@@ -1139,7 +1131,6 @@ void client_prepare_connect(word32 r4, word32 dwArg00)
 	word32 r5_123;
 	word32 r6_124;
 	r25_112();
-	return;
 }
 
 // 004021A0: void client_copy_request(Register (ptr Eq_1713) r4, Stack word32 dwArg00)
@@ -1148,7 +1139,6 @@ void client_copy_request(Eq_1713 * r4, word32 dwArg00)
 	memcpy(r4_16, r5_20, r6_22);
 	r4->dw0FB0 = &r4->dw07D8 + 0x01;
 	r4->dw0FAC = r4->dw07D8;
-	return;
 }
 
 // 00402244: void client_parse_request(Register (ptr Eq_1735) r4, Stack word32 dwArg00)
@@ -1618,7 +1608,6 @@ void add_to_request(Eq_2201 * r4, word32 r5, word32 r6, int32 r7, word32 dwArg00
 	word32 r2_73;
 	word32 r3_74;
 	r25_63();
-	return;
 }
 
 // 00402C1C: void get_a_line(Register word32 r4, Register word32 r5, Register (ptr int32) r6, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -1644,7 +1633,6 @@ l00402D84:
 		{
 l00402E20:
 			*dwArg00_103 = 0x00;
-			return;
 		}
 		else
 		{
@@ -1692,7 +1680,6 @@ void client_read_request(word32 r2, Eq_2409 * r4, word32 dwArg00)
 	word32 r7_50;
 	recv();
 	r4->dw07D8 = r2_46;
-	return;
 }
 
 // 00402EF8: void client_send_request(Register word32 r2, Register (ptr Eq_2434) r4, Stack word32 dwArg00)
@@ -1739,7 +1726,6 @@ void client_send_request(word32 r2, Eq_2434 * r4, word32 dwArg00)
 			r25_113();
 		}
 	}
-	return;
 }
 
 // 0040307C: void client_read_reply(Register word32 r2, Register (ptr Eq_2503) r4, Stack word32 dwArg00)
@@ -1761,7 +1747,6 @@ void client_read_reply(word32 r2, Eq_2503 * r4, word32 dwArg00)
 	r2_53 = r4;
 	r2_54 = (char *) r4 + 4024;
 	r4->ptr1788 = (char *) r4 + 4024;
-	return;
 }
 
 // 00403140: void client_parse_reply(Register (ptr Eq_2545) r4, Stack word32 dwArg00)
@@ -1792,7 +1777,6 @@ void client_parse_reply(Eq_2545 * r4, word32 dwArg00)
 			r25_39();
 		}
 	}
-	return;
 }
 
 // 004031DC: void client_copy_reply(Register (ptr Eq_2575) r4, Stack word32 dwArg00)
@@ -1825,7 +1809,6 @@ void client_copy_reply(Eq_2575 * r4, word32 dwArg00)
 			r4->dw178C = r4->dw178C - r2_68;
 		}
 	}
-	return;
 }
 
 // 00403318: void client_check_reply_http(Register (ptr Eq_2628) r4, Stack word32 dwArg00)
@@ -1902,10 +1885,8 @@ void client_check_reply_http(Eq_2628 * r4, word32 dwArg00)
 				r4->ptr1788 = (struct Eq_2630 *) ((char *) r4 + 4024);
 				r4->dw178C = 0x00;
 			}
-			return;
 		}
 	}
-	return;
 }
 
 // 004036BC: void client_close(Register (ptr Eq_2788) r4, Stack word32 dwArg00)
@@ -1924,7 +1905,6 @@ void client_close(Eq_2788 * r4, word32 dwArg00)
 			r4->dw0004 = -0x01;
 		}
 	}
-	return;
 }
 
 // 00403794: void client_destroy(Register (ptr Eq_2816) r4, Stack word32 dwArg00)
@@ -1952,7 +1932,6 @@ void client_destroy(Eq_2816 * r4, word32 dwArg00)
 		r25_44();
 	}
 	free(r4_28);
-	return;
 }
 
 // 00403840: void client_check_activ(Register (ptr Eq_2846) r4, Register int32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -1996,7 +1975,6 @@ void client_check_activ(Eq_2846 * r4, int32 r5, word32 dwArg00, word32 dwArg04)
 		word32 r7_101;
 		r25_90();
 	}
-	return;
 }
 
 // 00403A1C: void open_destination(Register word32 r2, Register word32 r4, Stack word32 dwArg00)
@@ -2059,7 +2037,6 @@ void open_destination(word32 r2, word32 r4, word32 dwArg00)
 			r25_195();
 		}
 	}
-	return;
 }
 
 // 00403C00: void clist_new(Register word32 r2)
@@ -2085,7 +2062,6 @@ void clist_new(word32 r2)
 		r2_21->dw0000 = 0x00;
 		r2_21->dw0004 = 0x00;
 	}
-	return;
 }
 
 // 00403CBC: void clist_add(Register (ptr Eq_3016) r4, Register (ptr Eq_3017) r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2101,7 +2077,6 @@ void clist_add(Eq_3016 * r4, Eq_3017 * r5, word32 dwArg00, word32 dwArg04)
 	r4->dw0000 = r4->dw0000 + 0x01;
 	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
 		r4->dw0004 = r4->dw0000;
-	return;
 }
 
 // 00403DBC: void clist_remove(Register (ptr Eq_3068) r4, Register (ptr Eq_3069) r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2117,7 +2092,6 @@ void clist_remove(Eq_3068 * r4, Eq_3069 * r5, word32 dwArg00, word32 dwArg04)
 			r5->ptr17B8->ptr17BC = r5->ptr17BC;
 		r4->dw0000 = r4->dw0000 + -0x01;
 	}
-	return;
 }
 
 // 00403EC0: void clist_find_fdin(Register (ptr Eq_3115) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2130,7 +2104,6 @@ void clist_find_fdin(Eq_3115 * r4, word32 r5, word32 dwArg00, word32 dwArg04)
 			return;
 		dwLoc10_18 = dwLoc10_18->ptr17B8;
 	}
-	return;
 }
 
 // 00403F5C: void clist_find_fdout(Register (ptr Eq_3132) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2143,7 +2116,6 @@ void clist_find_fdout(Eq_3132 * r4, word32 r5, word32 dwArg00, word32 dwArg04)
 			return;
 		dwLoc10_18 = dwLoc10_18->ptr17B8;
 	}
-	return;
 }
 
 // 00403FF8: void clist_delete(Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2167,7 +2139,6 @@ void clist_delete(word32 dwArg00, word32 dwArg04)
 	word32 r4_36;
 	word32 r5_37;
 	r25_30();
-	return;
 }
 
 // 00404070: void clist_close_all(Register (ptr Eq_3171) r4, Stack word32 dwArg00)
@@ -2187,7 +2158,6 @@ void clist_close_all(Eq_3171 * r4, word32 dwArg00)
 		r25_32();
 		dwLoc18_18 = dwLoc18_18->ptr17B8;
 	}
-	return;
 }
 
 // 00404108: void clist_destroy_all(Register (ptr Eq_3192) r4, Stack word32 dwArg00)
@@ -2206,7 +2176,6 @@ void clist_destroy_all(Eq_3192 * r4, word32 dwArg00)
 		word32 r5_47;
 		r25_39();
 	}
-	return;
 }
 
 // 004041B0: void clist_destroy(Stack word32 dwArg00)
@@ -2229,7 +2198,6 @@ void clist_destroy(word32 dwArg00)
 	word32 r4_32;
 	r25_26();
 	free(r4_34);
-	return;
 }
 
 // 00404240: void request_new(Register word32 r2, Register word32 r4, Stack word32 dwArg00)
@@ -2273,9 +2241,8 @@ void request_new(word32 r2, word32 r4, word32 dwArg00)
 		word32 r3_96;
 		r25_87();
 		if (r2_94 == 0x00)
-			return;
+			;
 	}
-	return;
 }
 
 // 00404378: void request_parse_line(Register word32 r2, Register word32 r4, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2324,7 +2291,6 @@ void request_parse_line(word32 r2, word32 r4, word32 dwArg00, word32 dwArg04)
 		word32 r2_80;
 		r25_72();
 	}
-	return;
 }
 
 // 00404458: void request_save_line(Register (ptr Eq_3352) r4, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack byte bArg0B)
@@ -2392,7 +2358,6 @@ void request_save_line(Eq_3352 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 			memcpy(r4_159, r5_160, r6_161);
 		}
 	}
-	return;
 }
 
 // 004046C4: void request_make_url(Register (ptr Eq_3470) r4, Stack word32 dwArg00)
@@ -2463,7 +2428,6 @@ void request_make_url(Eq_3470 * r4, word32 dwArg00)
 			snprintf();
 		}
 	}
-	return;
 }
 
 // 004048DC: void request_add_lines(Register (ptr Eq_3538) r4, Register (ptr Eq_3539) r5, Register word32 r6, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -2505,7 +2469,6 @@ void request_add_lines(Eq_3538 * r4, Eq_3539 * r5, word32 r6, word32 dwArg00, wo
 		r4->dw0558 = r4->dw0558 + -0x01;
 		free(r4_65);
 	}
-	return;
 }
 
 // 00404B34: void get_method(Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2522,7 +2485,6 @@ void get_method(word32 dwArg00, word32 dwArg04)
 	word32 r6_31;
 	strsep();
 	strncpy(r4_34, r5_35, r6_36);
-	return;
 }
 
 // 00404BC8: void get_uri(Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2539,7 +2501,6 @@ void get_uri(word32 dwArg00, word32 dwArg04)
 	word32 r6_31;
 	strsep();
 	strncpy(r4_34, r5_35, r6_36);
-	return;
 }
 
 // 00404C5C: void get_version(Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2556,7 +2517,6 @@ void get_version(word32 dwArg00, word32 dwArg04)
 	word32 r6_31;
 	strsep();
 	strncpy(r4_34, r5_35, r6_36);
-	return;
 }
 
 // 00404CF0: void request_get_host(Register (ptr Eq_3685) r4, Register uint32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2647,7 +2607,6 @@ void request_get_host(Eq_3685 * r4, uint32 r5, word32 dwArg00, word32 dwArg04)
 	word32 r6_67;
 	word32 r7_68;
 	r25_54();
-	return;
 }
 
 // 00404FC0: void request_get_content_length(Register (ptr Eq_3807) r4, Register uint32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2738,7 +2697,6 @@ void request_get_content_length(Eq_3807 * r4, uint32 r5, word32 dwArg00, word32 
 	word32 r6_67;
 	word32 r7_68;
 	r25_54();
-	return;
 }
 
 // 00405264: void is_a_method(Stack word32 dwArg00)
@@ -2753,7 +2711,6 @@ l0040528C:
 		if (r2_63 != 0x00)
 			goto l0040528C;
 	}
-	return;
 }
 
 // 00405328: void request_destroy(Register (ptr Eq_3952) r4, Stack word32 dwArg00)
@@ -2765,7 +2722,6 @@ void request_destroy(Eq_3952 * r4, word32 dwArg00)
 		free(r4_58);
 	}
 	free(r4_30);
-	return;
 }
 
 // 004053F0: void properties_parse_int(Register (ptr int8) r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -2789,10 +2745,8 @@ void properties_parse_int(int8 * r5, word32 dwArg00, word32 dwArg04)
 			word32 r3_74;
 			word32 r7_75;
 			r25_64();
-			return;
 		}
 	}
-	return;
 }
 
 // 004054D0: void properties_load(Register word32 r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -3007,7 +2961,6 @@ void properties_load(word32 r4, word32 r5, word32 dwArg00, word32 dwArg04)
 			fclose(r4_154);
 		}
 	}
-	return;
 }
 
 // 00405CD0: void properties_parse_command_line(Register int32 r4, Register (arr (ptr Eq_4354)) r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -3272,7 +3225,6 @@ void print_log(int32 r4, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 
 		bcuiposr0 None_85;
 		(globals->ptr1000087C + 27004)();
 	}
-	return;
 }
 
 // 004066E8: void open_log(Stack word32 dwArg00)
@@ -3308,7 +3260,6 @@ void open_log(word32 dwArg00)
 	}
 	*globals->ptr10000A20 = *globals->ptr10000914;
 	strcpy(r4_36, r5_38);
-	return;
 }
 
 // 00406848: void log_rotate()
@@ -3345,7 +3296,6 @@ void log_rotate()
 	word32 r3_40;
 	word32 r5_41;
 	r25_32();
-	return;
 }
 
 // 0040697C: void log_string(Register word32 r5, Stack word32 dwArg00)
@@ -3454,7 +3404,6 @@ void log_string(word32 r5, word32 dwArg00)
 				globals->ptr10000878->dw0824 = globals->ptr10000878->dw0824 + -0x0A;
 		}
 	}
-	return;
 }
 
 // 00406BF0: void server_new(Register word32 r2, Register word32 r6, Register word32 r7, Stack word32 dwArg00, Stack word32 dwArg04, Stack uint16 wArg06, Stack word32 dwArg08, Stack word32 dwArg0C)
@@ -3513,7 +3462,6 @@ void server_new(word32 r2, word32 r6, word32 r7, word32 dwArg00, word32 dwArg04,
 		inet_addr();
 		r2_32->dw000C = r2_118;
 	}
-	return;
 }
 
 // 00406D4C: void server_open(Register word32 r2, Register (ptr int32) r4, Stack word32 dwArg00)
@@ -3614,7 +3562,6 @@ void server_open(word32 r2, int32 * r4, word32 dwArg00)
 				*r4 = r2_30;
 		}
 	}
-	return;
 }
 
 // 00406FF8: void server_close(Register (ptr int32) r4, Stack word32 dwArg00)
@@ -3628,7 +3575,6 @@ void server_close(int32 * r4, word32 dwArg00)
 			*r4 = -0x01;
 		}
 	}
-	return;
 }
 
 // 0040708C: void server_destroy(Register word32 r4, Stack word32 dwArg00)
@@ -3659,7 +3605,6 @@ void server_destroy(word32 r4, word32 dwArg00)
 	word32 r7_48;
 	r25_38();
 	free(r4_50);
-	return;
 }
 
 // 00407150: void slist_new(Register word32 r2)
@@ -3685,7 +3630,6 @@ void slist_new(word32 r2)
 		r2_21->dw0000 = 0x00;
 		r2_21->dw0004 = 0x00;
 	}
-	return;
 }
 
 // 0040720C: void slist_add(Register (ptr Eq_5367) r4, Register (ptr Eq_5368) r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -3701,7 +3645,6 @@ void slist_add(Eq_5367 * r4, Eq_5368 * r5, word32 dwArg00, word32 dwArg04)
 	r4->dw0000 = r4->dw0000 + 0x01;
 	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
 		r4->dw0004 = r4->dw0000;
-	return;
 }
 
 // 0040730C: void slist_remove(Register (ptr Eq_5419) r4, Register (ptr Eq_5420) r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -3717,7 +3660,6 @@ void slist_remove(Eq_5419 * r4, Eq_5420 * r5, word32 dwArg00, word32 dwArg04)
 			r5->ptr0018->ptr001C = r5->ptr001C;
 		r4->dw0000 = r4->dw0000 + -0x01;
 	}
-	return;
 }
 
 // 00407410: void slist_find_fd(Register (ptr Eq_5466) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
@@ -3730,7 +3672,6 @@ void slist_find_fd(Eq_5466 * r4, word32 r5, word32 dwArg00, word32 dwArg04)
 			return;
 		dwLoc10_18 = dwLoc10_18->ptr0018;
 	}
-	return;
 }
 
 // 004074AC: void slist_delete(Stack word32 dwArg00, Stack word32 dwArg04)
@@ -3772,7 +3713,6 @@ void slist_delete(word32 dwArg00, word32 dwArg04)
 	word32 r6_62;
 	word32 r7_63;
 	r25_53();
-	return;
 }
 
 // 00407568: void slist_close_all(Register (ptr Eq_5524) r4, Stack word32 dwArg00)
@@ -3792,7 +3732,6 @@ void slist_close_all(Eq_5524 * r4, word32 dwArg00)
 		r25_32();
 		dwLoc18_18 = dwLoc18_18->ptr0018;
 	}
-	return;
 }
 
 // 00407600: void slist_destroy_all(Register (ptr Eq_5545) r4, Stack word32 dwArg00)
@@ -3811,7 +3750,6 @@ void slist_destroy_all(Eq_5545 * r4, word32 dwArg00)
 		word32 r5_47;
 		r25_39();
 	}
-	return;
 }
 
 // 004076A8: void slist_destroy(Stack word32 dwArg00)
@@ -3834,13 +3772,11 @@ void slist_destroy(word32 dwArg00)
 	word32 r4_32;
 	r25_26();
 	free(r4_34);
-	return;
 }
 
 // 00407740: void __fixunsdfsi(Register word64 f12, Register word64 f13, Register word32 FCSR)
 void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
 {
-	return;
 }
 
 // 004077E0: void _fpadd_parts(Register (ptr Eq_5592) r4, Register (ptr Eq_5593) r5, Register (ptr Eq_5594) r6)
@@ -3857,7 +3793,7 @@ void _fpadd_parts(Eq_5592 * r4, Eq_5593 * r5, Eq_5594 * r6)
 				if ((r4_29 ^ 0x04) != 0x00)
 					return;
 				if (r4->dw0004 == r5->dw0004)
-					return;
+					;
 			}
 			else if ((r4_29 ^ 0x04) != 0x00)
 			{
@@ -3988,7 +3924,6 @@ void _fpadd_parts(Eq_5592 * r4, Eq_5593 * r5, Eq_5594 * r6)
 			}
 		}
 	}
-	return;
 }
 
 // 00407A38: void __addsf3(Register word64 f12, Register word64 f14)
@@ -4052,7 +3987,6 @@ void __addsf3(word64 f12, word64 f14)
 	bcuiposr0 None_87;
 	word32 r2_88;
 	r25_74();
-	return;
 }
 
 // 00407AE0: void __subsf3(Register word64 f12, Register word64 f14)
@@ -4116,7 +4050,6 @@ void __subsf3(word64 f12, word64 f14)
 	word32 r6_91;
 	bcuiposr0 None_92;
 	r25_78();
-	return;
 }
 
 // 00407BA0: void __mulsf3(Register word64 f12, Register word64 f14)
@@ -4251,7 +4184,6 @@ l00407DA4:
 	word32 hi_86;
 	word32 lo_87;
 	r25_71();
-	return;
 }
 
 // 00407DD0: void __divsf3(Register word64 f12, Register word64 f14)
@@ -4403,7 +4335,6 @@ void __floatsisf(uint32 r4)
 	word32 r6_49;
 	word32 r5_50;
 	r25_34();
-	return;
 }
 
 // 00408040: void __fixsfsi(Register word64 f12)
@@ -4429,10 +4360,9 @@ void __fixsfsi(word64 f12)
 		if (dwLoc18 >= 0x00)
 		{
 			if ((word32) (dwLoc18 < 0x001F) == 0x00)
-				return;
+				;
 		}
 	}
-	return;
 }
 
 // 00408100: void __extendsfdf2(Register word64 f12)
@@ -4464,7 +4394,6 @@ void __extendsfdf2(word64 f12)
 	word32 r7_53;
 	word32 r6_54;
 	r25_41();
-	return;
 }
 
 // 00408180: void _fpadd_parts(Register (ptr Eq_6359) r4, Register (ptr Eq_6360) r5, Register (ptr Eq_6361) r6)
@@ -4655,10 +4584,8 @@ l00408490:
 			}
 			else
 				r6->t0000.u0 = 0x03;
-			return;
 		}
 	}
-	return;
 }
 
 // 004084FC: void __adddf3()
@@ -4746,7 +4673,6 @@ void __adddf3()
 	word32 r5_123;
 	bcuiposr0 None_124;
 	r25_104();
-	return;
 }
 
 // 004085CC: void __subdf3()
@@ -4834,7 +4760,6 @@ void __subdf3()
 	word32 r5_127;
 	bcuiposr0 None_128;
 	r25_108();
-	return;
 }
 
 // 004086B0: void __muldf3()
@@ -5078,7 +5003,6 @@ l00408B58:
 			word32 r12_157;
 			word32 r15_158;
 			r25_126();
-			return;
 		}
 	}
 }
@@ -5329,7 +5253,6 @@ void __eqdf2()
 			r25_103();
 		}
 	}
-	return;
 }
 
 // 00408EE0: void __nedf2()
@@ -5401,7 +5324,6 @@ void __nedf2()
 			r25_103();
 		}
 	}
-	return;
 }
 
 // 00408FB0: void __gedf2()
@@ -5473,7 +5395,6 @@ void __gedf2()
 			r25_103();
 		}
 	}
-	return;
 }
 
 // 00409080: void __ltdf2()
@@ -5545,7 +5466,6 @@ void __ltdf2()
 			r25_103();
 		}
 	}
-	return;
 }
 
 // 00409150: void __floatsidf(Register Eq_7774 r4)
@@ -5592,7 +5512,6 @@ void __floatsidf(Eq_7774 r4)
 	word32 r6_54;
 	word32 r5_55;
 	r25_37();
-	return;
 }
 
 // 00409250: void __negdf2()
@@ -5624,7 +5543,6 @@ void __negdf2()
 	word32 r4_49;
 	word32 r5_50;
 	r25_33();
-	return;
 }
 
 // 004092D0: void __make_dp(Stack word32 dwArg10, Stack word32 dwArg14)
@@ -5641,7 +5559,6 @@ void __make_dp(word32 dwArg10, word32 dwArg14)
 	word32 r5_32;
 	word32 r6_33;
 	r25_15();
-	return;
 }
 
 // 00409330: void __truncdfsf2()
@@ -5676,7 +5593,6 @@ void __truncdfsf2()
 	word32 r5_65;
 	word32 r7_66;
 	r25_41();
-	return;
 }
 
 // 004093E0: void __pack_f(Register (ptr Eq_7904) r4)
@@ -5715,13 +5631,9 @@ void __pack_f(Eq_7904 * r4)
 				}
 				else
 					r4_66 = (word32) r4_66 + 0x003F;
-				return;
 			}
 		}
-		return;
 	}
-	else
-		return;
 }
 
 // 00409540: void __unpack_f(Register (ptr uint32) r4, Register (ptr Eq_7980) r5)
@@ -5737,7 +5649,6 @@ void __unpack_f(uint32 * r4, Eq_7980 * r5)
 			r5->dw000C = r3_5 + 0x007FFFFF << 0x07 | 0x40000000;
 			r5->dw0008 = r4_12 + -0x007F;
 			r5->dw0000 = 0x03;
-			return;
 		}
 		else if (r3_5 != 0x007FFFFF)
 		{
@@ -5746,13 +5657,9 @@ void __unpack_f(uint32 * r4, Eq_7980 * r5)
 			else
 				r5->dw0000 = 0x00;
 			r5->dw000C = r3_5 + 0x007FFFFF;
-			return;
 		}
 		else
-		{
 			r5->dw0000 = 0x04;
-			return;
-		}
 	}
 	else if (r3_5 != 0x007FFFFF)
 	{
@@ -5775,13 +5682,9 @@ void __unpack_f(uint32 * r4, Eq_7980 * r5)
 		else
 			r5->dw0000 = 0x03;
 		r5->dw000C = r5_23;
-		return;
 	}
 	else
-	{
 		r5->dw0000 = 0x02;
-		return;
-	}
 }
 
 // 00409630: void __make_fp()
@@ -5797,7 +5700,6 @@ void __make_fp()
 	word32 r6_27;
 	word32 r7_28;
 	r25_11();
-	return;
 }
 
 // 00409680: void __pack_d(Register (ptr Eq_8096) r4)
@@ -5882,7 +5784,6 @@ void __pack_d(Eq_8096 * r4)
 		}
 	}
 	r10_163 = r10_163 + (word32) (r11_10 < 0x00);
-	return;
 }
 
 // 00409930: void __unpack_d(Register (ptr Eq_8234) r4, Register (ptr Eq_8235) r5)
@@ -5900,7 +5801,6 @@ void __unpack_d(Eq_8234 * r4, Eq_8235 * r5)
 			r5->t0014 = (word32) r3_9 - 0x01 << 0x08;
 			r5->dw0008 = r7_16 + -0x03FF;
 			r5->dw0000 = 0x03;
-			return;
 		}
 		else if (((word32) r3_9 - 0x01 | r2_8 + 0x000FFFFF) != 0x00)
 		{
@@ -5910,13 +5810,9 @@ void __unpack_d(Eq_8234 * r4, Eq_8235 * r5)
 				r5->dw0000 = 0x00;
 			r5->dw0010 = r2_8 + 0x000FFFFF;
 			r5->t0014 = (word32) r3_9 - 0x01;
-			return;
 		}
 		else
-		{
 			r5->dw0000 = 0x04;
-			return;
-		}
 	}
 	else if (((word32) r3_9 - 0x01 | r2_8 + 0x000FFFFF) != 0x00)
 	{
@@ -5941,13 +5837,9 @@ void __unpack_d(Eq_8234 * r4, Eq_8235 * r5)
 			r5->dw0000 = 0x03;
 		r5->dw0010 = r8_37;
 		r5->t0014 = r9_38;
-		return;
 	}
 	else
-	{
 		r5->dw0000 = 0x02;
-		return;
-	}
 }
 
 // 00409A90: void __fpcmp_parts_d(Register (ptr Eq_8389) r4, Register (ptr Eq_8390) r5)
@@ -6001,12 +5893,10 @@ void __fpcmp_parts_d(Eq_8389 * r4, Eq_8390 * r5)
 			if (r6_66 == r7_65)
 			{
 				if ((word32) (r4->dw0014 < r5->dw0014) != 0x00)
-					return;
+					;
 			}
-			return;
 		}
 	}
-	return;
 }
 
 // 00409C10: void __do_global_ctors_aux()
@@ -6028,13 +5918,11 @@ void __do_global_ctors_aux()
 			r25_17();
 		} while (r16_32->dwFFFFFFFC != -0x01);
 	}
-	return;
 }
 
 // 00409C84: void init_dummy()
 void init_dummy()
 {
-	return;
 }
 
 // 00409CB0: void _fini()
@@ -6046,6 +5934,5 @@ void _fini()
 	word32 ra_17;
 	bcuiposr0 None_18;
 	(globals->ptr1000087C + 0x0620)();
-	return;
 }
 

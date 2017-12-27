@@ -212,7 +212,6 @@ void fn002004F2(byte w)
 	do
 		;
 	while (*(byte *) 0x4004 != w);
-	return;
 }
 
 // 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_478 deOut, Register out Eq_479 hOut)
@@ -288,7 +287,6 @@ void fn002005B8()
 		xbc_13 = xbc_13 + 0x01;
 		hl_14 = hl_14 - 0x01;
 	} while (hl_14 != 0x00);
-	return;
 }
 
 // 002005F5: void fn002005F5(Register word32 xwa)
@@ -309,7 +307,6 @@ void fn002005F5(word32 xwa)
 		word32 xwa_33;
 		(*v9_16)();
 	}
-	return;
 }
 
 // 0020060C: void fn0020060C()
@@ -320,6 +317,5 @@ void fn0020060C()
 		*(ui32 *) 0x6F83 = *(ui32 *) 0x6F83 & ~0x08;
 		*(byte *) 0x6DA0 = 0x00;
 	}
-	return;
 }
 

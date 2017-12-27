@@ -8,13 +8,11 @@
 void fn0800_0150(byte al)
 {
 	fn0800_01E6(al, 10004, 10004, Mem0[0x0800:0x025A:selector]);
-	return;
 }
 
 // 0800:0163: void fn0800_0163()
 void fn0800_0163()
 {
-	return;
 }
 
 // 0800:0164: void fn0800_0164(Register byte al, Stack byte bArg02)
@@ -39,7 +37,6 @@ void fn0800_0176(selector ds)
 	Mem31[ds:0x67:word16] = (word16) es_bx_28;
 	Mem32[ds:0x69:word16] = SLICE(es_bx_28, selector, 16);
 	msdos_set_interrupt_vector(0x00, SEQ(cs, 0x016D));
-	return;
 }
 
 // 0800:01B9: Register byte fn0800_01B9(Register selector ds, Register out ptr16 dlOut)
@@ -122,7 +119,6 @@ void fn0800_01E6(byte al, word16 si, word16 di, selector es)
 			es = Mem78[ss_109:sp_98 + 0x00:selector];
 		}
 	}
-	return;
 }
 
 // 0800:023D: void fn0800_023D(Register byte al, Register word16 cx, Register word16 dx, Register selector ds)
@@ -130,7 +126,6 @@ void fn0800_023D(byte al, word16 cx, word16 dx, selector ds)
 {
 	word16 ax_8;
 	msdos_write_file(0x02, cx, ds_dx, out ax_8);
-	return;
 }
 
 // 0800:025E: void main(Register word16 bp, Register selector ds)
@@ -285,7 +280,6 @@ void main(word16 bp, selector ds)
 	Mem264[ss:fp - 0x54 + 0x00:word16] = 2027;
 	word16 di_265;
 	fn0800_B2EF(ds_94, wArg00, wArg02, out di_265);
-	return;
 }
 
 // 0800:0402: Register word16 fn0800_0402(Register word16 si, Register selector ds, Register out ptr16 dsOut)
@@ -1060,7 +1054,6 @@ l0800_0CF5:
 	Mem94[ss:fp - 116 + 0x00:word16] = 2206;
 	word16 di_96;
 	fn0800_B2EF(ds, wArg00, wArg02, out di_96);
-	return;
 }
 
 // 0800:0D24: Register byte fn0800_0D24(Register selector ds, Stack word16 wArg02, Stack segptr32 ptrArg04, Stack word16 wArg06, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
@@ -2957,7 +2950,6 @@ l0800_21B6:
 	Mem385[es_bx_382 + 0x04:byte] = (byte) (ax_28 + (cx_55 + 0x04) >>u 0x08);
 	Mem390[es_bx_382 + 0x05:byte] = bLoc0C + bLoc0E;
 	fn0800_2688(fp - 0x02, ds_100, cx_55 + 0x04, 0x00, 0x00, 0x00);
-	return;
 }
 
 // 0800:2201: Register selector fn0800_2201(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04)
@@ -4023,7 +4015,6 @@ void fn0800_2C9A(selector ds)
 		si_18 = si_18 + 0x02;
 		cx_15 = cx_15 + 0x01;
 	} while (cx_15 <u 0x0100);
-	return;
 }
 
 // 0800:2CCF: Register word16 fn0800_2CCF(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06, Stack word16 wArg08)
@@ -4106,7 +4097,6 @@ void fn0800_2DBF(selector ds, word16 wArg02, word16 wArg04)
 	Mem10[ds:18002:word16] = Mem8[ds:0x2A27:word16];
 	Mem13[ds:18000:word16] = wArg02;
 	Mem16[ds:0x464E:word16] = wArg04;
-	return;
 }
 
 // 0800:2DE2: Register word16 fn0800_2DE2(Register word16 bp, Register word16 si, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dlOut, Register out ptr16 dsOut)
@@ -5103,7 +5093,6 @@ l0800_3594:
 		di_172 = di_172 + 0x01;
 		cx_174 = cx_174 - 0x01;
 	}
-	return;
 }
 
 // 0800:35A3: Register byte fn0800_35A3(Register selector ds, Stack word16 wArg06, Stack word16 wArg08)
@@ -6370,7 +6359,6 @@ void fn0800_43D4(word16 wArg02, selector psegArg04, word16 wArg06)
 		Mem40[psegArg04:si_17 + 0x06:word16] = 0x00;
 		Mem41[psegArg04:si_17 + 0x0A:word16] = 0x00;
 	}
-	return;
 }
 
 // 0800:441C: void fn0800_441C(Register selector ds, Stack segptr32 ptrArg02, Stack selector psegArg04, Stack word16 wArg06)
@@ -6450,7 +6438,6 @@ void fn0800_441C(selector ds, segptr32 ptrArg02, selector psegArg04, word16 wArg
 		}
 		fn0800_4550(fp - 0x02);
 	}
-	return;
 }
 
 // 0800:4550: void fn0800_4550(Register word16 bp)
@@ -6496,7 +6483,6 @@ void fn0800_4550(word16 bp)
 		Mem63[ss:bp_102 - 0x06 + 0x00:word16] = ax_55 >>u 0x01;
 		Mem64[ss:bp_102 - 0x08 + 0x00:word16] = dx_61;
 	}
-	return;
 }
 
 // 0800:45E2: Register word16 fn0800_45E2(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dxOut)
@@ -7331,7 +7317,6 @@ void fn0800_4F2C(word16 bp, selector ds)
 		word16 v58_171 = Mem158[ds_161:20108:word16] + 0x04;
 		Mem172[ds_161:20108:word16] = v58_171;
 		Mem176[ds_161:20110:word16] = Mem172[ds_161:20110:word16] + (v58_171 <u 0x00);
-		return;
 	}
 	else
 	{
@@ -7381,7 +7366,6 @@ void fn0800_4F2C(word16 bp, selector ds)
 		Mem447[ss:fp - 0x26 + 0x00:word16] = Mem444[ds_425:0x29E3:word16];
 		selector ds_448;
 		fn0800_ACB3(ds_425, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_448);
-		return;
 	}
 }
 
@@ -9487,7 +9471,6 @@ void fn0800_6EE6(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 {
 	word16 di_24;
 	fn0800_B2EF(ds, 0x2223, ds, out di_24);
-	return;
 }
 
 // 0800:6EFF: void fn0800_6EFF(Register selector ds, Stack word16 wArg02)
@@ -9500,7 +9483,6 @@ void fn0800_6EFF(selector ds, word16 wArg02)
 		word16 di_31;
 		fn0800_B2EF(ds, 0x223E, ds, out di_31);
 	}
-	return;
 }
 
 // 0800:6F20: void fn0800_6F20(Register word16 bp, Register selector ds)
@@ -9839,7 +9821,6 @@ void fn0800_6F20(word16 bp, selector ds)
 	word16 v96_332 = Mem328[ds_329:20108:word16] + 0x04;
 	Mem333[ds_329:20108:word16] = v96_332;
 	Mem337[ds_329:20110:word16] = Mem333[ds_329:20110:word16] + (v96_332 <u 0x00);
-	return;
 }
 
 // 0800:73AC: Register word16 fn0800_73AC(Register selector ds, Register out ptr16 bpOut, Register out ptr16 dsOut)
@@ -11498,7 +11479,6 @@ void fn0800_87F8(selector ds)
 		cx_52 = cx_52 - 0x01;
 	} while (cx_52 != 0x00);
 	Mem62[ds:11821:word16] = cx_52;
-	return;
 }
 
 // 0800:8832: void fn0800_8832(Register selector ds)
@@ -11529,7 +11509,6 @@ void fn0800_8832(selector ds)
 			Mem55[ds:11819:word16] = di_33;
 		}
 	}
-	return;
 }
 
 // 0800:889A: void fn0800_889A(Register selector ds)
@@ -11628,7 +11607,6 @@ l0800_8957:
 		Mem88[ds:11817:word16] = 0x01;
 		Mem89[ds:11819:word16] = 0x00;
 	}
-	return;
 }
 
 // 0800:89A8: void fn0800_89A8(Register selector ds, Stack word16 wArg02)
@@ -11707,7 +11685,6 @@ l0800_8A2F:
 				SEQ(Mem133[ds:11829:selector], 0x00)[di_129 * 0x02] = dx_11;
 		}
 	}
-	return;
 }
 
 // 0800:8ACF: void fn0800_8ACF(Register byte al, Register word16 cx, Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
@@ -11719,7 +11696,6 @@ void fn0800_8ACF(byte al, word16 cx, selector ds, segptr32 ptrArg02, segptr32 pt
 		Mem35[ptrArg06 + 0x00:word16] = cx;
 	else
 		fn0800_8D64(ds, ax_12);
-	return;
 }
 
 // 0800:8B0D: Register byte fn0800_8B0D(Register byte al, Register word16 bp, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 dsOut)
@@ -11811,7 +11787,6 @@ void fn0800_8B69(selector ds, word16 wArg02)
 {
 	selector ds_20;
 	fn0800_8B0D(0x00, fp - 0x02, ds, wArg02, 0x00, 0x01, out ds_20);
-	return;
 }
 
 // 0800:8B95: void fn0800_8B95(Register byte al, Register byte dl, Stack segptr32 ptrArg02)
@@ -11822,7 +11797,6 @@ void fn0800_8B95(byte al, byte dl, segptr32 ptrArg02)
 	word16 dx_11 = DPB(dx, msdos_get_system_date(out dh_7, out cx_8), 0);
 	Mem16[ptrArg02 + 0x00:word16] = cx_8;
 	Mem17[ptrArg02 + 0x02:word16] = dx_11;
-	return;
 }
 
 // 0800:8BA8: void fn0800_8BA8(Register byte al, Register byte cl, Stack segptr32 ptrArg02)
@@ -11833,7 +11807,6 @@ void fn0800_8BA8(byte al, byte cl, segptr32 ptrArg02)
 	byte dl_9;
 	Mem17[ptrArg02 + 0x00:word16] = DPB(cx, msdos_get_system_time(out ch_7, out dh_8, out dl_9), 0);
 	Mem19[ptrArg02 + 0x02:word16] = dx;
-	return;
 }
 
 // 0800:8BBB: Register word16 fn0800_8BBB(Register word16 bp, Register word16 si, Register word16 di, Stack word16 wArg00, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut)
@@ -12069,7 +12042,6 @@ l0800_8D3E:
 void fn0800_8D64(selector ds, word16 wArg02)
 {
 	fn0800_8D2B(ds, wArg02);
-	return;
 }
 
 // 0800:8D76: void fn0800_8D76(Stack word16 wArg02)
@@ -12077,7 +12049,6 @@ void fn0800_8D76(word16 wArg02)
 {
 	word16 dx_9;
 	msdos_ioctl_get_device_info(wArg02, out dx_9);
-	return;
 }
 
 // 0800:8D87: void fn0800_8D87(Stack byte bArg02, Stack byte bArg04, Stack word16 wArg06, Stack segptr32 ptrArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E)
@@ -12145,7 +12116,6 @@ l0800_8DD9:
 void fn0800_8E09(word16 wArg02, word16 wArg04, word16 wArg06)
 {
 	fn0800_8D87(0x61, 0x00, 0x0A, DPB(ptrLoc0A, wArg02, 0), wArg04, wArg06, 0x00);
-	return;
 }
 
 // 0800:8E29: Register word16 fn0800_8E29(Register byte al, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack byte bArg08, Register out ptr16 dxOut)
@@ -12266,7 +12236,6 @@ byte fn0800_8F7F(byte al, selector ds, segptr32 ptrArg02)
 void fn0800_8F97(word16 ax, word16 dx, word16 bx, word16 di, selector ds)
 {
 	fn0800_9107(ax, dx, bx, fp - 0x02, di, ds);
-	return;
 }
 
 // 0800:8FAB: Register word16 fn0800_8FAB(Register word16 bp, Register selector ds, Register out ptr16 esOut)
@@ -12300,15 +12269,9 @@ void fn0800_90F2(word16 ax, word16 bx, word16 bp, selector ds)
 	word16 di_24;
 	word16 ax_25 = fn0800_94B0(ax, bx, ds, Mem0[ss:bp + 0x08:word16], wArg00, wArg02, wArg04, ptrArg06, ptrArg0A, out dx_22, out bx_23, out di_24);
 	if (Mem0[ss:bp - 0x08 + 0x00:word16] <= 0x00)
-	{
 		fn0800_911F(bp);
-		return;
-	}
 	else
-	{
 		fn0800_9107(ax_25, dx_22, bx_23, bp, di_24, ds);
-		return;
-	}
 }
 
 // 0800:9107: void fn0800_9107(Register word16 ax, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 di, Register selector ds)
@@ -12893,7 +12856,6 @@ l0800_8FD8:
 	}
 	word16 bp_252;
 	fn0800_93A6(bp, out bp_252);
-	return;
 }
 
 // 0800:911F: void fn0800_911F(Register word16 bp)
@@ -12903,13 +12865,11 @@ void fn0800_911F(word16 bp)
 	{
 		word16 bp_11;
 		fn0800_93A6(bp, out bp_11);
-		return;
 	}
 	else
 	{
 		word16 bp_9;
 		fn0800_93BE(bp, psegArg00, wArg02, wArg04, out bp_9);
-		return;
 	}
 }
 
@@ -12924,14 +12884,12 @@ word16 fn0800_912A(word16 ax, word16 bp, selector ds, ptr16 & bpOut)
 void fn0800_9145(word16 ax, word16 bp)
 {
 	fn0800_93EF(ax, bp);
-	return;
 }
 
 // 0800:9169: void fn0800_9169(Register word16 ax, Register word16 bp)
 void fn0800_9169(word16 ax, word16 bp)
 {
 	fn0800_93EF(ax, bp);
-	return;
 }
 
 // 0800:920E: Register word16 fn0800_920E(Register word16 ax, Register word16 bp, Register selector ds, Register out ptr16 bpOut)
@@ -13107,7 +13065,6 @@ void fn0800_93EF(word16 ax, word16 bp)
 	{
 		word16 bp_88;
 		fn0800_93A6(bp, out bp_88);
-		return;
 	}
 	else
 	{
@@ -13128,7 +13085,6 @@ void fn0800_93EF(word16 ax, word16 bp)
 		byte dl_84;
 		byte Z_85;
 		(Mem31[ss:sp_1 + 0x00:word16] + 0x03)();
-		return;
 	}
 }
 
@@ -13548,14 +13504,12 @@ l0800_959C:
 void fn0800_9652(byte al, segptr32 ptrArg02)
 {
 	__syscall(33);
-	return;
 }
 
 // 0800:9667: void fn0800_9667(Register byte al, Stack segptr32 ptrArg02)
 void fn0800_9667(byte al, segptr32 ptrArg02)
 {
 	__syscall(33);
-	return;
 }
 
 // 0800:9764: Register word16 fn0800_9764(Register byte dl, Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg04, Register out ptr16 dlOut, Register out ptr16 diOut, Register out ptr16 dsOut)
@@ -14313,10 +14267,7 @@ byte fn0800_9DA4(word16 dx)
 void fn0800_9E15(selector ds)
 {
 	if (ds == Mem0[ds:0x06:word16])
-	{
 		Mem15[0x0800:~0x62C6:word16] = 0x00;
-		return;
-	}
 	else
 	{
 		selector es_9 = Mem0[ds:0x06:selector];
@@ -14324,7 +14275,6 @@ void fn0800_9E15(selector ds)
 		Mem11[ds_10:0x06:word16] = es_9;
 		Mem12[es_9:0x04:word16] = ds_10;
 		Mem13[0x0800:~0x62C6:word16] = ds_10;
-		return;
 	}
 }
 
@@ -14337,7 +14287,6 @@ void fn0800_9E3E(selector ds)
 		Mem29[0x0800:~0x62C6:word16] = ds;
 		Mem30[ds:0x04:word16] = ds;
 		Mem31[ds:0x06:word16] = ds;
-		return;
 	}
 	else
 	{
@@ -14347,7 +14296,6 @@ void fn0800_9E3E(selector ds)
 		Mem23[ds:0x04:word16] = ax_3;
 		Mem27[es_20:0x04:word16] = ds;
 		Mem28[ds:0x06:word16] = es_20;
-		return;
 	}
 }
 
@@ -14630,10 +14578,7 @@ void fn0800_A006(word16 bx, word16 bp, selector ds)
 		}
 		selector ds_89;
 		fn0800_9E75(Mem59[0x0800:~0x62C4:selector], wArg02, out ds_89);
-		return;
 	}
-	else
-		return;
 }
 
 // 0800:A080: void fn0800_A080(Register word16 ax, Register word16 cx, Register word16 bx, Register selector ds)
@@ -14643,7 +14588,6 @@ void fn0800_A080(word16 ax, word16 cx, word16 bx, selector ds)
 	{
 		Mem58[bx:0x00:word16] = ax;
 		fn0800_A1D6(ds, 0x00, bx + ax);
-		return;
 	}
 	else
 	{
@@ -14658,7 +14602,6 @@ void fn0800_A080(word16 ax, word16 cx, word16 bx, selector ds)
 			Mem54[dx_38:0x08:word16] = di_24;
 		selector ds_44;
 		fn0800_9E75(ds, di_24, out ds_44);
-		return;
 	}
 }
 
@@ -14764,7 +14707,6 @@ void fn0800_A2CC()
 	word16 sp_4;
 	selector ds_5;
 	Mem0[ds:9972:word16]();
-	return;
 }
 
 // 0800:A2D0: void fn0800_A2D0()
@@ -14773,7 +14715,6 @@ void fn0800_A2D0()
 	word16 sp_4;
 	selector ds_5;
 	Mem0[ds:0x26F6:word16]();
-	return;
 }
 
 // 0800:A2D4: void fn0800_A2D4()
@@ -14782,7 +14723,6 @@ void fn0800_A2D4()
 	word16 sp_4;
 	selector ds_5;
 	Mem0[ds:9976:word16]();
-	return;
 }
 
 // 0800:A2D8: void fn0800_A2D8()
@@ -14791,7 +14731,6 @@ void fn0800_A2D8()
 	word16 sp_4;
 	selector ds_5;
 	Mem0[ds:9978:word16]();
-	return;
 }
 
 // 0800:A36D: void fn0800_A36D(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 si, Register word16 di, Register selector es, Register selector ds)
@@ -14804,7 +14743,6 @@ void fn0800_A36D(word16 ax, word16 cx, word16 dx, word16 bx, word16 si, word16 d
 	{
 		byte al_37 = Mem0[ds:si + 0x00:byte];
 	}
-	return;
 }
 
 // 0800:A401: Register word16 fn0800_A401(Register byte al, Register selector ds, Stack selector psegArg02, Stack word16 wArg04)
@@ -15879,7 +15817,6 @@ void fn0800_B03B(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wAr
 	}
 	if (wArg0A >>u 0x01 <u 0x00)
 		Mem53[es_17:di_16 + 0x00:byte] = Mem0[ds_20:si_21 + 0x00:byte];
-	return;
 }
 
 // 0800:B05F: void fn0800_B05F(Stack segptr32 ptrArg02, Stack word16 wArg06, Stack byte bArg08)
@@ -15910,14 +15847,12 @@ void fn0800_B05F(segptr32 ptrArg02, word16 wArg06, byte bArg08)
 	}
 	if (cx_37 <u 0x00)
 		Mem49[es_12:di_11 + 0x00:byte] = bArg08;
-	return;
 }
 
 // 0800:B083: void fn0800_B083(Stack word16 wArg02, Stack word16 wArg04, Stack byte bArg06, Stack word16 wArg08)
 void fn0800_B083(word16 wArg02, word16 wArg04, byte bArg06, word16 wArg08)
 {
 	fn0800_B05F(DPB(ptrLoc0A, wArg02, 0), wArg08, bArg06);
-	return;
 }
 
 // 0800:B0A1: void fn0800_B0A1(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg08, Stack word16 wArg0A)
@@ -15964,7 +15899,6 @@ void fn0800_B0A1(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wAr
 	}
 	if (cx_76 <u 0x00)
 		Mem99[es_36:di_74 + ax_119:byte] = Mem0[ds_31:si_72 + ax_119:byte];
-	return;
 }
 
 // 0800:B0F3: Register selector fn0800_B0F3(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A)
@@ -15980,7 +15914,6 @@ void fn0800_B113(byte al, selector ds, word16 wArg02, segptr32 ptrArg04)
 	word16 ax_18;
 	if (msdos_create_truncate_file(wArg02, SLICE(ptrArg04, selector, 16), (word16) ptrArg04, out ax_18))
 		fn0800_8D2B(ds, ax_18);
-	return;
 }
 
 // 0800:B12E: void fn0800_B12E(Register byte al, Register selector ds, Stack word16 wArg02)
@@ -15988,7 +15921,6 @@ void fn0800_B12E(byte al, selector ds, word16 wArg02)
 {
 	word16 ax_16;
 	msdos_write_file(wArg02, 0x00, SEQ(ds, 0x00), out ax_16);
-	return;
 }
 
 // 0800:B140: Register byte fn0800_B140(Register word16 si, Register word16 di, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 dsOut)
@@ -16108,7 +16040,6 @@ void fn0800_B2A0(selector ds, segptr32 ptrArg02, word16 wArg06)
 		SEQ(ds, 0x24EA)[ax_31 * 0x02] = wArg06 & ~0x4700 | 0x8000;
 	else
 		fn0800_8D2B(ds, ax_31);
-	return;
 }
 
 // 0800:B2EF: Register word16 fn0800_B2EF(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 diOut)
@@ -16879,7 +16810,6 @@ void fn0800_BB98(word16 wArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08,
 		else
 			fn0800_BF9E(DPB(ptrLoc0C, wArg08, 0), wArg0A, DPB(ptrLoc08, wArg04, 0));
 	}
-	return;
 }
 
 // 0800:BBE9: void fn0800_BBE9(Stack segptr32 ptrArg02)
@@ -16916,7 +16846,6 @@ void fn0800_BBE9(segptr32 ptrArg02)
 		bx_27 = bx_27 + 0x02;
 		cx_26 = cx_26 - 0x01;
 	} while (cx_26 != 0x00);
-	return;
 }
 
 // 0800:BC49: void fn0800_BC49(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg08, Stack segptr32 ptrArg0A, Stack word16 wArg0C, Stack segptr32 ptrArg0E, Stack word16 wArg10, Stack segptr32 ptrArg12, Stack word16 wArg14)
@@ -16992,7 +16921,6 @@ void fn0800_BC49(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wAr
 void fn0800_BE3B(word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E, word16 wArg10, word16 wArg12, word16 wArg14)
 {
 	fn0800_BC49(DPB(ptrLoc16, wArg02, 0), wArg04, DPB(ptrLoc12, wArg06, 0), wArg08, DPB(ptrLoc0E, wArg0A, 0), wArg0C, DPB(ptrLoc0A, wArg0E, 0), wArg10, DPB(ptrLoc06, wArg12, 0), wArg14);
-	return;
 }
 
 // 0800:BEA2: Register word16 fn0800_BEA2(Register selector ds, Stack segptr32 ptrArg02, Stack word16 wArg06, Stack word16 wArg08, Register out ptr16 diOut)
@@ -17007,7 +16935,6 @@ word16 fn0800_BEA2(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08,
 void fn0800_BF18(word16 dx, word16 bx, word16 di, selector ds, word16 wArg06, word16 wArg08)
 {
 	fn0800_8F97(~0x411A, dx, bx, di, ds);
-	return;
 }
 
 // 0800:BF5F: void fn0800_BF5F(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
@@ -17061,7 +16988,6 @@ l0800_BF7C:
 	}
 	if (cx_70 <u 0x00)
 		Mem99[es_19:di_105 + 0x00:byte] = Mem0[es_41:si_104 + 0x00:byte];
-	return;
 }
 
 // 0800:BF9E: void fn0800_BF9E(Stack segptr32 ptrArg02, Stack word16 wArg04, Stack segptr32 ptrArg06)
@@ -17090,7 +17016,6 @@ l0800_BFAE:
 		di_40 = di_40 + 0x01;
 		cx_32 = cx_32 - 0x01;
 	}
-	return;
 }
 
 // 0800:BFC7: Register word16 fn0800_BFC7(Stack segptr32 ptrArg02, Stack word16 wArg04)
@@ -17190,7 +17115,6 @@ l0800_C030:
 		di_42 = di_42 + 0x01;
 		cx_58 = cx_58 - 0x01;
 	}
-	return;
 }
 
 // 0800:C04F: Register word16 fn0800_C04F(Register selector ds, Stack segptr32 ptrArg02, Stack segptr32 ptrArg06, Register out ptr16 dxOut, Register out ptr16 diOut, Register out ptr16 dsOut)
@@ -17413,7 +17337,6 @@ void fn0800_C177(word16 bp, word16 si, selector ds, word16 wArg02, word16 wArg04
 	ptr32 es_bx_331 = Mem284[ss:bp_237 + 0x08:segptr32];
 	Mem335[es_bx_331 + 0x03:byte] = Mem284[es_bx_331 + 0x03:byte] + 0x01;
 	Mem338[es_bx_331 + 0x02:byte] = Mem335[ss:bp_237 + 0x04:byte];
-	return;
 }
 
 // 0800:C379: Register word16 fn0800_C379(Register selector ds, Register out ptr16 dsOut)
@@ -17648,7 +17571,6 @@ word16 fn0800_C779(byte al, selector ds, word16 wArg02, segptr32 ptrArg04, word1
 // 1483:0ADB: void fn1483_0ADB()
 void fn1483_0ADB()
 {
-	return;
 }
 
 // 1483:0ADC: FpuStack real64 fn1483_0ADC(Register byte al, Register byte ah, Register word16 cx, Register word16 dx, Register byte bl, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register selector fs, FpuStack real64 rArg0)
@@ -18271,7 +18193,6 @@ void fn1483_1B13()
 	word16 di_8;
 	word16 bx_9;
 	Mem0[5251:bx + 0x00:ptr32]();
-	return;
 }
 
 // 1483:1B38: Register word16 fn1483_1B38(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack selector psegArg00, Register out ptr16 cxOut, Register out ptr16 dlOut, Register out ptr16 dhOut, Register out ptr16 bxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 esOut, Register out ptr16 dsOut)
@@ -18459,30 +18380,6 @@ word16 fn1483_1BB8(byte al, word16 cx, word16 bp, word16 si, selector ds, ptr16 
 // 1483:1BB9: FlagGroup byte fn1483_1BB9(Register byte al, Register word16 cx, Register word16 bp, Register out ptr16 axOut, Register out ptr16 bpOut)
 byte fn1483_1BB9(byte al, word16 cx, word16 bp, ptr16 & axOut, ptr16 & bpOut)
 {
-fn1483_1BB9_entry:
-	sp = fp
-	al = al + 115
-	ax = DPB(ax, al, 0) (alias)
-	bp = bp + cx
-	SCZO = cond(bp)
-	C = SCZO (alias)
-	fn1483_1BBD()
-	return C
-l1483_1BB9:
-l1483_1BB9:
-	branch Test(UGE,C) l1483_1BBF
-	goto l1483_1BBC
-l1483_1BB9_thunk_fn1483_1BBF:
-	fn1483_1BBF()
-	return C
-l1483_1BBB_thunk_fn1483_1BBD:
-l1483_1BBC:
-	ax = fn1483_1B38(ax, cx, dx, bx, bp, si, di, es, ds, psegArg00, out cx, out dl, out dh, out bx, out bp, out si, out di, out es, out ds)
-	al = (byte) ax (alias)
-	return ax
-fn1483_1BB9_exit:
-	use ax (=> axOut)
-	use bp (=> bpOut)
 }
 
 // 1483:1BBD: void fn1483_1BBD()
@@ -18496,21 +18393,14 @@ void fn1483_1BBD()
 		word16 di_15;
 		selector ds_16;
 		Mem0[ds:bx + 0xE10D + di:word16]();
-		return;
 	}
 	else
-	{
 		fn1483_1BBF();
-		return;
-	}
 }
 
 // 1483:1BBF: void fn1483_1BBF()
 void fn1483_1BBF()
 {
-fn1483_1BBF_entry:
-l1483_1BBF:
-fn1483_1BBF_exit:
 }
 
 // 1483:1C50: void fn1483_1C50(Register word16 dx)
@@ -18523,6 +18413,5 @@ void fn1483_1C50(word16 dx)
 	word16 dx_8;
 	word16 ax_9;
 	ax_5();
-	return;
 }
 

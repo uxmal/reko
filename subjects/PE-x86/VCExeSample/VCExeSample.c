@@ -15,7 +15,6 @@ int32 main(int32 argc, char * * argv)
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 {
 	printf("%s %d %s %f", arg1, arg2, arg3, (real64) arg4);
-	return;
 }
 
 // 00401060: void test2(Stack word32 dwArg04)
@@ -24,35 +23,30 @@ void test2(word32 dwArg04)
 	test1("1", 0x02, "3", globals->r4020E8);
 	if (dwArg04 == 0x00)
 		test1("5", 0x06, "7", globals->r4020E4);
-	return;
 }
 
 // 004010B0: void indirect_call_test3(Stack (ptr Eq_51) c)
 void indirect_call_test3(cdecl_class * c)
 {
 	c->vtbl->method04(c, 1000);
-	return;
 }
 
 // 004010D0: void test4()
 void test4()
 {
 	globals->gbl_c->vtbl->method00(globals->gbl_c);
-	return;
 }
 
 // 004010F0: void test5()
 void test5()
 {
 	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020EC);
-	return;
 }
 
 // 00401120: void test6(Stack Eq_62 c, Stack int32 a, Stack int32 b)
 void test6(Eq_62 c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
-	return;
 }
 
 // 00401160: void test7(Stack real64 rArg04)
@@ -61,7 +55,6 @@ void test7(real64 rArg04)
 	if (1.0 < rArg04)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, 0x0D, rArg04);
-	return;
 }
 
 // 004011B0: Register word32 nested_if_blocks_test8(Stack real64 rArg04, FpuStack real64 rArg0)
@@ -87,7 +80,6 @@ void loop_test9(real32 rArg04, real64 rArg0)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg0);
 		dwLoc08_12 = dwLoc08_12 + 0x01;
 	}
-	return;
 }
 
 // 004012A0: void const_div_test10(Stack word32 dwArg04)
@@ -102,7 +94,6 @@ void const_div_test10(word32 dwArg04)
 	}
 	globals->dw40301C = ecx_19;
 	globals->dw403020 = eax_16;
-	return;
 }
 
 // 004012D0: void loop_test11(Register word32 ecx, Register word32 ebp)
@@ -132,7 +123,6 @@ void loop_test11(word32 ecx, word32 ebp)
 		*(ebp_19 - 0x04) = ecx_38 - 0x01;
 		ecx = ecx_38 - 0x01;
 	}
-	return;
 }
 
 // 00401330: void nested_structs_test12(Stack (ptr Eq_307) dwArg04)
@@ -142,13 +132,11 @@ void nested_structs_test12(nested_structs_type * dwArg04)
 	dwArg04->str.b = 0x02;
 	dwArg04->str.c = 0x03;
 	dwArg04->d = 0x04;
-	return;
 }
 
 // 00401360: void nested_structs_test13(Stack (ptr Eq_324) str)
 void nested_structs_test13(nested_structs_type * str)
 {
 	nested_structs_test12(str);
-	return;
 }
 

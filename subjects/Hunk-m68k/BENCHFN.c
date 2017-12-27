@@ -218,7 +218,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_26) a3)
@@ -226,7 +225,6 @@ void fn00001214(Eq_26 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_32) a2)
@@ -234,7 +232,6 @@ void fn0000126C(Eq_32 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: Register word32 fn00001278(Stack Eq_398 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)
@@ -371,13 +368,11 @@ void fn00001354(int32 d7, Eq_26 * a3, Eq_108 a6, int32 dwArg04, Eq_68 * dwArg08)
 	word32 a1_41;
 	word32 a5_42;
 	fn0000131C(dwArg00, out a1_41, out a5_42);
-	return;
 }
 
 // 00001390: void fn00001390()
 void fn00001390()
 {
-	return;
 }
 
 // 00001394: void fn00001394()
@@ -393,7 +388,6 @@ void fn00001394()
 	fn00001390();
 	fn00001390();
 	fn00001390();
-	return;
 }
 
 // 000013AC: void fn000013AC()
@@ -409,7 +403,6 @@ void fn000013AC()
 	fn00001394();
 	fn00001394();
 	fn00001394();
-	return;
 }
 
 // 000013C4: void fn000013C4()
@@ -424,7 +417,6 @@ void fn000013C4()
 	fn000013AC();
 	fn000013AC();
 	fn000013AC();
-	return;
 }
 
 // 000013D8: Register Eq_766 fn000013D8(Register int32 d7, Register (ptr (ptr code)) a3, Register Eq_108 a6)
@@ -1392,7 +1384,6 @@ void fn00002098(ptr32 dwArg04)
 {
 	if (dwArg04 != 0x00 && globals->dw3EA8 != 0x00)
 		fn00002160(globals->dw3EA8, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
-	return;
 }
 
 // 00002160: void fn00002160(Stack (ptr Eq_3189) dwArg04, Stack uint32 dwArg08, Stack uint32 dwArg0C)
@@ -1423,7 +1414,6 @@ void fn00002160(Eq_3189 * dwArg04, uint32 dwArg08, uint32 dwArg0C)
 	Remove(a3_113);
 	struct Eq_498 * a3_82 = a3_113 - 0x04;
 	FreeMem(a3_82, a3_82->dw0000);
-	return;
 }
 
 // 000021FC: Register (ptr Eq_32) fn000021FC(Stack (ptr Eq_3151) dwArg04, Stack Eq_3152 dwArg08, Register out ptr32 d1Out, Register out ptr32 a0Out)
@@ -1581,7 +1571,6 @@ void fn00002390(int32 d0, Eq_498 * dwArg04)
 		}
 		FreeMem(dwArg04, 0x0018);
 	}
-	return;
 }
 
 // 00002400: Register word32 fn00002400(Register out ptr32 a1Out, Register out ptr32 a2Out, Register out ptr32 a5Out)
@@ -2022,7 +2011,6 @@ void fn00002B74(word32 a2, word32 dwArg04)
 			} while (a2_37 != null);
 		}
 	}
-	return;
 }
 
 // 00002BB8: Register Eq_766 fn00002BB8(Register Eq_766 d0, Register Eq_766 d1, Register int32 d7, Register (ptr (ptr byte)) a1, Register (ptr byte) a5, Register (ptr byte) a6, Stack Eq_776 dwArg04, Register out ptr32 a6Out)

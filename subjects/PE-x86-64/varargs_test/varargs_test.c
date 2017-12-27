@@ -53,7 +53,6 @@ void fn00000001400010D0(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 q
 	word64 rax_63;
 	word32 r9d_64;
 	_stdio_common_vfscanf();
-	return;
 }
 
 // 0000000140001130: Register ptr64 fn0000000140001130()
@@ -96,7 +95,6 @@ void fn0000000140001140(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 q
 	byte SZO_61;
 	byte C_62;
 	_stdio_common_vfprintf();
-	return;
 }
 
 // 00000001400011B0: Register word32 fn00000001400011B0(Register ui64 rcx)
@@ -216,14 +214,12 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13, word128 xmm1)
 	int3();
 	int3();
 	fn0000000140001290();
-	return;
 }
 
 // 0000000140001290: void fn0000000140001290()
 void fn0000000140001290()
 {
 	fn000000014000193C();
-	return;
 }
 
 // 00000001400012A0: void fn00000001400012A0()
@@ -237,7 +233,6 @@ void fn00000001400012A0()
 	word32 eax_12;
 	word64 rcx_13;
 	globals->u40002098();
-	return;
 }
 
 // 00000001400012BC: Register word32 fn00000001400012BC(Register word32 edx, Register ptr64 r13, Register (ptr Eq_335) gs, Stack word64 qwArg08, Stack word64 qwArg10)
@@ -527,7 +522,6 @@ l000000014000156A:
 		if ((word32) (uint64) (edi_97 + 0x01) < 0x02)
 			goto l000000014000156A;
 	}
-	return;
 }
 
 // 00000001400015C4: Register byte fn00000001400015C4(Register (ptr Eq_335) gs)
@@ -725,7 +719,6 @@ void fn00000001400017B4(byte cl)
 {
 	if (fn0000000140001DC4() != 0x00 && cl == 0x00)
 		globals->qw400035B8 = 0x00;
-	return;
 }
 
 // 00000001400017D8: Register word32 fn00000001400017D8(Register byte dl)
@@ -789,7 +782,6 @@ word64 fn0000000140001804(word32 eax)
 void fn0000000140001854(word32 eax)
 {
 	fn0000000140001804(eax);
-	return;
 }
 
 // 000000014000186C: void fn000000014000186C(Stack word64 qwArg08, Stack ui64 qwArg10, Stack word64 qwArg18, Stack word64 qwArg20)
@@ -808,7 +800,6 @@ void fn000000014000186C(word64 qwArg08, ui64 qwArg10, word64 qwArg18, word64 qwA
 		globals->qw40003000 = rax_15;
 	}
 	globals->qw40003008 = ~rax_15;
-	return;
 }
 
 // 0000000140001918: Register word32 fn0000000140001918()
@@ -829,13 +820,11 @@ void fn0000000140001928()
 	word64 rsp_4;
 	word64 rcx_5;
 	globals->ptr40002028();
-	return;
 }
 
 // 0000000140001938: void fn0000000140001938()
 void fn0000000140001938()
 {
-	return;
 }
 
 // 000000014000193C: void fn000000014000193C()
@@ -845,7 +834,6 @@ void fn000000014000193C()
 	*rax_4 = *rax_4 | 0x04;
 	ui64 * rax_10 = fn00000001400010C0();
 	*rax_10 = *rax_10 | 0x02;
-	return;
 }
 
 // 0000000140001958: Register word32 fn0000000140001958()
@@ -941,7 +929,6 @@ void fn0000000140001B14()
 	word64 rsp_4;
 	word64 rcx_5;
 	globals->ptr40002068();
-	return;
 }
 
 // 0000000140001B24: void fn0000000140001B24(Register (ptr (ptr Eq_1455)) rcx)
@@ -967,10 +954,8 @@ void fn0000000140001B24(Eq_1455 * * rcx)
 			api-ms-win-crt-runtime-l1-1-0.dll!terminate();
 			int3();
 			fn0000000140001B5C(qwLoc28, qwLoc20);
-			return;
 		}
 	}
-	return;
 }
 
 // 0000000140001B5C: void fn0000000140001B5C(Stack word64 qwArg08, Stack word64 qwArg10)
@@ -995,7 +980,6 @@ void fn0000000140001B5C(word64 qwArg08, word64 qwArg10)
 		}
 		rbx_11 = rbx_11 + 0x08;
 	}
-	return;
 }
 
 // 0000000140001BA8: void fn0000000140001BA8(Stack word64 qwArg08, Stack word64 qwArg10)
@@ -1020,7 +1004,6 @@ void fn0000000140001BA8(word64 qwArg08, word64 qwArg10)
 		}
 		rbx_11 = rbx_11 + 0x08;
 	}
-	return;
 }
 
 // 0000000140001BF4: void fn0000000140001BF4()
@@ -1028,7 +1011,6 @@ void fn0000000140001BF4()
 {
 	word64 rsp_3;
 	globals->ptr40002190();
-	return;
 }
 
 // 0000000140001BFC: Register byte fn0000000140001BFC(Register word32 edx, Register word32 ebx, Register ptr64 r13, Stack word64 qwArg08, Stack word64 qwArg10, Stack word64 qwArg18)
@@ -1118,14 +1100,12 @@ word32 fn0000000140001DC4()
 // 0000000140001DD0: void fn0000000140001DD0()
 void fn0000000140001DD0()
 {
-	return;
 }
 
 // 0000000140001E7C: void fn0000000140001E7C(Register (ptr Eq_1827) rax, Register Eq_1828 rdx, Register (ptr Eq_1829) r9)
 void fn0000000140001E7C(Eq_1827 * rax, Eq_1828 rdx, Eq_1829 * r9)
 {
 	fn0000000140001E9C(rax, rdx, r9, r9->ptr0038);
-	return;
 }
 
 // 0000000140001E9C: void fn0000000140001E9C(Register (ptr Eq_1827) rax, Register Eq_1828 rcx, Register (ptr Eq_1829) rdx, Register (ptr Eq_1835) r8)
@@ -1142,7 +1122,6 @@ void fn0000000140001E9C(Eq_1827 * rax, Eq_1828 rcx, Eq_1829 * rdx, Eq_1835 * r8)
 		r9_14 = (word64) rcx.u1 + (uint64) ((word32) rcx_27->b0003 & ~0x0F);
 	ui64 r9_37 = r9_14 ^ rdx_24;
 	fn00000001400011B0(r9_37);
-	return;
 }
 
 // 0000000140001F10: void fn0000000140001F10()
@@ -1151,7 +1130,6 @@ void fn0000000140001F10()
 	word64 rsp_3;
 	word32 eax_4;
 	eax();
-	return;
 }
 
 // 0000000140001F12: void fn0000000140001F12(Register word64 rcx)
@@ -1165,12 +1143,10 @@ void fn0000000140001F12(word64 rcx)
 	word64 rcx_19;
 	word32 ecx_20;
 	seh_filter_exe();
-	return;
 }
 
 // 0000000140001F30: void fn0000000140001F30(Register word64 rcx)
 void fn0000000140001F30(word64 rcx)
 {
-	return;
 }
 

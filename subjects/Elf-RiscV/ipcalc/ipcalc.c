@@ -12,7 +12,6 @@ void herror()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F30: void __strdup()
@@ -23,7 +22,6 @@ void __strdup()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F40: void clock_gettime()
@@ -34,7 +32,6 @@ void clock_gettime()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F50: void close()
@@ -45,7 +42,6 @@ void close()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F60: void read()
@@ -56,7 +52,6 @@ void read()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F70: void inet_ntop()
@@ -67,7 +62,6 @@ void inet_ntop()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F80: void snprintf()
@@ -78,7 +72,6 @@ void snprintf()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014F90: void getaddrinfo()
@@ -89,7 +82,6 @@ void getaddrinfo()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014FA0: void dlopen()
@@ -100,7 +92,6 @@ void dlopen()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014FB0: void open()
@@ -111,7 +102,6 @@ void open()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014FC0: void __snprintf_chk()
@@ -122,7 +112,6 @@ void __snprintf_chk()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014FD0: void dlsym()
@@ -133,7 +122,6 @@ void dlsym()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000014FF0: void getopt_long()
@@ -144,7 +132,6 @@ void getopt_long()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015000: void __vasprintf_chk()
@@ -155,7 +142,6 @@ void __vasprintf_chk()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015010: void __asprintf_chk()
@@ -166,7 +152,6 @@ void __asprintf_chk()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015020: void getnameinfo()
@@ -177,7 +162,6 @@ void getnameinfo()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015030: void memset()
@@ -188,7 +172,6 @@ void memset()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015040: void inet_pton()
@@ -199,7 +182,6 @@ void inet_pton()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015050: void strcmp()
@@ -210,7 +192,6 @@ void strcmp()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015060: void free()
@@ -221,7 +202,6 @@ void free()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015070: void __printf_chk()
@@ -232,7 +212,6 @@ void __printf_chk()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015080: void __sprintf_chk()
@@ -243,7 +222,6 @@ void __sprintf_chk()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015090: void fwrite()
@@ -254,7 +232,6 @@ void fwrite()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 00000000000150A0: void memcmp()
@@ -265,7 +242,6 @@ void memcmp()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 00000000000150B0: void fputs()
@@ -276,7 +252,6 @@ void fputs()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 00000000000150C0: void isatty()
@@ -287,7 +262,6 @@ void isatty()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 00000000000150D0: void __fprintf_chk()
@@ -298,7 +272,6 @@ void __fprintf_chk()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 00000000000150F0: void putchar()
@@ -309,7 +282,6 @@ void putchar()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015100: void fputc()
@@ -320,7 +292,6 @@ void fputc()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015110: void __stack_chk_fail()
@@ -331,7 +302,6 @@ void __stack_chk_fail()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015120: void __errno_location()
@@ -342,7 +312,6 @@ void __errno_location()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015130: void strtol()
@@ -353,7 +322,6 @@ void strtol()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015140: void strchr()
@@ -364,7 +332,6 @@ void strchr()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015150: void memcpy()
@@ -375,7 +342,6 @@ void memcpy()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015160: void abort()
@@ -386,7 +352,6 @@ void abort()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015170: void freeaddrinfo()
@@ -397,7 +362,6 @@ void freeaddrinfo()
 	word64 t3_7;
 	word64 t1_8;
 	t3_4();
-	return;
 }
 
 // 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr Eq_291) gp, Register Eq_292 a0, Register word64 a1)
@@ -901,7 +865,6 @@ void fn0000000000015EB8(word64 qwArg00)
 	word64 t3_30;
 	word64 t1_31;
 	t3_19();
-	return;
 }
 
 // 0000000000015EF0: void fn0000000000015EF0()
@@ -909,7 +872,7 @@ void fn0000000000015EF0()
 {
 	Eq_1202 a4_7 = 0x0E;
 	if (a4_7 >= 0x07 || 0x00 == 0x00)
-		return;
+		;
 	else
 	{
 		word64 sp_20;
@@ -919,7 +882,6 @@ void fn0000000000015EF0()
 		word64 t1_24;
 		word64 ra_25;
 		null();
-		return;
 	}
 }
 
@@ -927,7 +889,7 @@ void fn0000000000015EF0()
 void fn0000000000015F24()
 {
 	if (0x00 == 0x00 || 0x00 == 0x00)
-		return;
+		;
 	else
 	{
 		word64 sp_21;
@@ -936,7 +898,6 @@ void fn0000000000015F24()
 		word64 a1_24;
 		word64 t1_25;
 		null();
-		return;
 	}
 }
 
@@ -948,7 +909,6 @@ void fn0000000000015F64(Eq_1228 * gp)
 		fn0000000000015EF0();
 		gp->t0894.u0 = 0x01;
 	}
-	return;
 }
 
 // 0000000000015F94: void fn0000000000015F94()
@@ -964,13 +924,9 @@ void fn0000000000015F94()
 		word64 t1_27;
 		null();
 		fn0000000000015F24();
-		return;
 	}
 	else
-	{
 		fn0000000000015F24();
-		return;
-	}
 }
 
 // 0000000000015FCC: void fn0000000000015FCC(Register (ptr Eq_291) gp, Register Eq_741 a0)
@@ -1012,7 +968,6 @@ void fn0000000000015FCC(Eq_291 * gp, Eq_741 a0)
 		fwrite();
 		fwrite();
 		fwrite();
-		return;
 	}
 	else
 	{
@@ -1023,7 +978,6 @@ void fn0000000000015FCC(Eq_291 * gp, Eq_741 a0)
 		fwrite();
 		fwrite();
 		fwrite();
-		return;
 	}
 }
 
@@ -1394,7 +1348,6 @@ void fn00000000000168B8(word64 ra, Eq_291 * gp, Eq_292 a0, Eq_292 a1)
 	word64 s0_13;
 	word64 a0_14;
 	fn0000000000016830(ra, gp, a0, a1, a1, out sp_12, out s0_13, out a0_14);
-	return;
 }
 
 // 00000000000168E4: Register Eq_310 fn00000000000168E4(Register (ptr Eq_291) gp, Register Eq_310 a0, Register Eq_304 a1)
@@ -1518,9 +1471,7 @@ l0000000000016AF4:
 void fn0000000000016B38(Eq_2057 a0)
 {
 	if (0x007F < a0)
-		return;
-	else
-		return;
+		;
 }
 
 // 0000000000016B68: Register Eq_1673 fn0000000000016B68(Register Eq_1673 a0)
@@ -2605,10 +2556,7 @@ void fn0000000000017B40(Eq_291 * gp, Eq_1673 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 t1_218;
 		word64 fa3_219;
 		t1_197();
-		return;
 	}
-	else
-		return;
 }
 
 // 0000000000017D10: void fn0000000000017D10(Register (ptr Eq_291) gp, Register ptr64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3)
@@ -2892,10 +2840,7 @@ void fn0000000000017D10(Eq_291 * gp, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3)
 		word64 t1_229;
 		word64 fa3_230;
 		t1_207();
-		return;
 	}
-	else
-		return;
 }
 
 // 0000000000017F04: Register Eq_1673 fn0000000000017F04(Register (ptr Eq_291) gp, Register Eq_1673 a0, Register Eq_292 a1, Register Eq_1673 a2, Register Eq_1673 a3)
@@ -3074,12 +3019,10 @@ void fn00000000000182E8()
 			s0_43 = s0_55 + 0x08;
 		} while (s2_56 != s1_58);
 	}
-	return;
 }
 
 // 0000000000018378: void fn0000000000018378()
 void fn0000000000018378()
 {
-	return;
 }
 

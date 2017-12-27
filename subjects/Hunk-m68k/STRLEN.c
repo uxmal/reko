@@ -211,7 +211,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_25) a3)
@@ -219,7 +218,6 @@ void fn00001214(Eq_25 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
@@ -227,14 +225,12 @@ void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: void fn00001278(Stack int32 dwArg04)
 void fn00001278(int32 dwArg04)
 {
 	fn0000127C(dwArg04);
-	return;
 }
 
 // 0000127C: void fn0000127C(Register int32 d2)
@@ -249,7 +245,6 @@ void fn0000127C(int32 d2)
 	if (v6_5 != null)
 		fn0000126C(v6_5);
 	FreeMem(v8_8, v8_8->dw0000);
-	return;
 }
 
 // 000012D0: void fn000012D0(Stack int32 dwArg04)
@@ -288,7 +283,6 @@ void fn000012D0(int32 dwArg04)
 		}
 	}
 	fn00001278(dwArg04);
-	return;
 }
 
 // 0000131C: void fn0000131C(Stack int32 dwArg04)
@@ -318,7 +312,6 @@ void fn0000131C(int32 dwArg04)
 		}
 		fn000012D0(dwArg04);
 	}
-	return;
 }
 
 // 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr Eq_67) dwArg08)
@@ -341,7 +334,6 @@ void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 		} while (*a3_45 != null);
 	}
 	fn0000131C(fn00001390());
-	return;
 }
 
 // 00001390: Register word32 fn00001390()

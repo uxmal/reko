@@ -23,6 +23,7 @@ using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -663,7 +664,14 @@ all other cases, together they constitute a Switch[].
             foreach (var succ in cases.Keys)
             {
                 foreach (int c in cases[succ])
-                    stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, c)));
+                {
+                    //$REVIEW: workaround for when the datatype of n.Expression
+                    // is non-integral. What causes this?
+                    var pt = n.Expression.DataType as PrimitiveType;
+                    if (pt == null)
+                        pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
+                    stms.Add(new AbsynCase(Constant.Create(pt, c)));
+                }
                 stms.AddRange(succ.Statements);
                 if (succ.Type != RegionType.Tail)
                 {

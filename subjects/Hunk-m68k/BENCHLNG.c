@@ -220,7 +220,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_26) a3)
@@ -228,7 +227,6 @@ void fn00001214(Eq_26 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_32) a2)
@@ -236,7 +234,6 @@ void fn0000126C(Eq_32 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: Register word32 fn00001278(Stack Eq_400 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)
@@ -370,7 +367,6 @@ void fn00001354(Eq_82 d1, int32 d7, Eq_32 * a1, Eq_26 * a3, Eq_32 * a5, Eq_110 *
 	word32 a1_47;
 	word32 a5_48;
 	fn0000131C(dwArg00, out a1_47, out a5_48);
-	return;
 }
 
 // 00001390: Register Eq_82 fn00001390(Register Eq_82 d0, Register Eq_82 d1, Register int32 d7, Register (ptr Eq_32) a1, Register (ptr Eq_32) a5, Register (ptr Eq_110) a6)
@@ -1577,7 +1573,6 @@ void fn000021C8(ptr32 dwArg04)
 {
 	if (dwArg04 != 0x00 && globals->dw3E58 != 0x00)
 		fn00002290(globals->dw3E58, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
-	return;
 }
 
 // 00002290: void fn00002290(Stack (ptr Eq_3525) dwArg04, Stack uint32 dwArg08, Stack uint32 dwArg0C)
@@ -1608,7 +1603,6 @@ void fn00002290(Eq_3525 * dwArg04, uint32 dwArg08, uint32 dwArg0C)
 	Remove(a3_113);
 	struct Eq_503 * a3_82 = a3_113 - 0x04;
 	FreeMem(a3_82, a3_82->dw0000);
-	return;
 }
 
 // 0000232C: Register (ptr Eq_32) fn0000232C(Stack (ptr Eq_3487) dwArg04, Stack Eq_3488 dwArg08, Register out ptr32 d1Out, Register out ptr32 a0Out)
@@ -1766,7 +1760,6 @@ void fn000024C0(int32 d0, Eq_503 * dwArg04)
 		}
 		FreeMem(dwArg04, 0x0018);
 	}
-	return;
 }
 
 // 00002530: Register word32 fn00002530(Register out ptr32 a1Out, Register out ptr32 a2Out, Register out ptr32 a5Out)
@@ -2106,7 +2099,6 @@ void fn00002BAC(word32 a2, word32 dwArg04)
 			} while (a2_37 != null);
 		}
 	}
-	return;
 }
 
 // 00002BF0: Register Eq_82 fn00002BF0(Register Eq_82 d0, Register Eq_82 d1, Register int32 d7, Register (ptr Eq_32) a1, Register (ptr Eq_32) a5, Register (ptr Eq_110) a6, Stack Eq_725 dwArg04, Register out ptr32 d1Out, Register out ptr32 d7Out, Register out ptr32 a1Out, Register out ptr32 a5Out, Register out ptr32 a6Out)

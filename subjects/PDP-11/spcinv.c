@@ -545,7 +545,6 @@ void fn06A2()
 			r5_25 = r5_25 - 0x01;
 		} while (r5_25 >= null);
 	}
-	return;
 }
 
 // 06D6: Register Eq_2 fn06D6(Register Eq_99 r1, Register Eq_2 r4, Register (ptr Eq_3) r5, Register (ptr Eq_4) pc)
@@ -817,7 +816,6 @@ void fn093C(Eq_135 r0, Eq_99 r1, Eq_14 r3)
 		r3_21 = r3_21 + 0x01;
 		wLoc04_24 = v21_33;
 	} while (v21_33 != 0x00);
-	return;
 }
 
 // 096A: Register Eq_14 fn096A(Register Eq_14 r3)
@@ -1038,7 +1036,6 @@ void fn0AF6(Eq_99 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, byte bArg00)
 	fn0AB6(globals->w0F14 + 0x02, r1, r3, r4, r5, out r4_16, out r5_17);
 	*r4_16 = 0x80;
 	PRINT(&globals->b1178);
-	return;
 }
 
 // 0B1A: Register Eq_135 fn0B1A(Register Eq_99 r1, Register Eq_2 r4, Register (ptr Eq_3) r5, Stack byte bArg00, Register out ptr16 r1Out, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out (ptr Eq_1015) r5Out)

@@ -7,7 +7,6 @@
 // 00001498: void fn00001498()
 void fn00001498()
 {
-	return;
 }
 
 // 0000149C: void fn0000149C(Register word32 d0, Register word32 a5)
@@ -165,7 +164,6 @@ l00001652:
 		if (d0_144 != 0x00)
 			goto l00001652;
 	}
-	return;
 }
 
 // 00001680: void fn00001680(Stack word32 dwArg04, Stack word32 dwArg08)
@@ -180,12 +178,10 @@ void fn00001680(word32 dwArg04, word32 dwArg08)
 			Mem51[dwArg08 + 0x0018:word32] = 0x00;
 			Mem53[dwArg08 + 0x00:word32] = 0x00;
 			Mem55[dwArg08 + 0x08:word32] = 0x00;
-			return;
 		}
 	}
 	else if (!__btst(Mem0[dwArg08 + 0x0E:byte], 0x04))
 		fn00001D80(dwArg08);
-	return;
 }
 
 // 000016D0: void fn000016D0(Register word32 d0, Register word32 d6, Register word32 a5, Stack word32 dwArg08)
@@ -240,7 +236,6 @@ void fn000016D0(word32 d0, word32 d6, word32 a5, word32 dwArg08)
 			dwArg08_122 = dwArg08_122 + 0x01;
 		} while (v38_182 != 0x00);
 	}
-	return;
 }
 
 // 00001C40: void fn00001C40(Register word32 a5, Stack word32 dwArg04, Stack byte bArg07, Stack word32 dwArg08, Stack word32 dwArg0C)
@@ -259,15 +254,9 @@ void fn00001C40(word32 a5, word32 dwArg04, byte bArg07, word32 dwArg08, word32 d
 	else
 		d0_17 = fn00001E94(a5, dwArg04, SLICE(dwArg04, byte, 24), dwArg08);
 	if (-0x01 - d0_17 != 0x00)
-	{
 		Mem36[dwArg0C + 0x00:word32] = Mem11[dwArg0C + 0x00:word32] + 0x01;
-		return;
-	}
 	else
-	{
 		Mem30[dwArg0C + 0x00:word32] = d0_17;
-		return;
-	}
 }
 
 // 00001C84: void fn00001C84(Register word32 a5, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10)
@@ -279,7 +268,6 @@ void fn00001C84(word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word3
 			fn00001C40(a5, dwArg04, SLICE(dwArg04, byte, 24), dwArg0C, dwArg10);
 		while (false);
 	}
-	return;
 }
 
 // 00001CC4: void fn00001CC4(Register word32 a5, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10)
@@ -295,14 +283,12 @@ void fn00001CC4(word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word3
 			d3_57 = d3_57 + 0x01;
 		} while (false);
 	}
-	return;
 }
 
 // 00001D0C: void fn00001D0C(Stack word32 dwArg04)
 void fn00001D0C(word32 dwArg04)
 {
 	Mem12[dwArg04 + 0x00:word32] = Mem0[dwArg04 + 0x00:word32] + 0x04;
-	return;
 }
 
 // 00001D24: Register word32 fn00001D24(Register word32 a5, Stack word32 dwArg04)
@@ -393,7 +379,6 @@ word32 fn00001D80(word32 dwArg04)
 void fn00001DF4(word32 a5)
 {
 	fn00001E04(a5, 0x01);
-	return;
 }
 
 // 00001E04: Register word32 fn00001E04(Register word32 a5, Stack word32 dwArg04)
@@ -587,7 +572,6 @@ void fn00001FD8(word32 a5)
 			d4_24 = d4_24 + 0x0020;
 		} while (d4_24 - Mem0[a5 + -0x0800:word32] <=u 0x00);
 	}
-	return;
 }
 
 // 00002014: void fn00002014(Register word32 d0, Register word32 a5, Stack word32 dwArg04)
@@ -619,7 +603,6 @@ void fn00002014(word32 d0, word32 a5, word32 dwArg04)
 	}
 	Mem38[a2_22 + 0x00:word32] = Mem32[a2_22 + 0x08:word32];
 	Mem41[a2_22 + 0x04:word32] = 0x00;
-	return;
 }
 
 // 00002068: Register word32 fn00002068(Register word32 d3, Stack word32 dwArg04, Register out ptr32 d3Out)
@@ -753,7 +736,6 @@ void fn000021F0(word32 a5)
 			d1_48 = d1_48 + 0x01;
 		} while (d1_48 < 0x03);
 	}
-	return;
 }
 
 // 00002264: void fn00002264(Register word32 d1, Stack word32 dwArg04)
@@ -780,14 +762,12 @@ void fn00002264(word32 d1, word32 dwArg04)
 			Mem56[a2_43 + 0x00:byte] = 0x00;
 		}
 	}
-	return;
 }
 
 // 00002294: void fn00002294(Register word32 a5, Stack word32 dwArg04)
 void fn00002294(word32 a5, word32 dwArg04)
 {
 	fn00002354(a5, dwArg04, 0x00, 0x00, 0x00);
-	return;
 }
 
 // 000022C4: void fn000022C4(Register word32 a2, Register word32 a5)
@@ -831,7 +811,6 @@ void fn000022C4(word32 a2, word32 a5)
 		if (false)
 			Mem104[a5_66 + -0x06B8:word32] = a0_73;
 	}
-	return;
 }
 
 // 00002354: void fn00002354(Register word32 a5, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Stack byte bArg0F)
@@ -860,7 +839,6 @@ void fn00002354(word32 a5, word32 dwArg04, word32 dwArg08, word32 dwArg0C, byte 
 		word32 a0_51;
 		(a5 + 0x0062)();
 	}
-	return;
 }
 
 // 000023B4: Register word32 fn000023B4(Stack word32 dwArg04, Stack word32 dwArg08)
@@ -905,7 +883,6 @@ void fn000023F8(word32 a5, word32 dwArg04)
 	word32 a5_22;
 	word32 a0_23;
 	a0_18();
-	return;
 }
 
 // 00002418: void fn00002418(Register word32 a5)
@@ -924,7 +901,6 @@ void fn00002418(word32 a5)
 		a0_12();
 	}
 	fn0000243C(a5, 0x000000FF);
-	return;
 }
 
 // 0000243C: void fn0000243C(Register word32 a5, Stack word32 dwArg04)
@@ -966,14 +942,12 @@ l00002452:
 		byte V_101;
 		(a5 + 0x0092)();
 	}
-	return;
 }
 
 // 000024B0: void fn000024B0(Register word32 d3, Register word32 a5, Stack word32 dwArg04)
 void fn000024B0(word32 d3, word32 a5, word32 dwArg04)
 {
 	fn000024C4(d3, a5, fp - 0x04, dwArg04, Mem0[a5 + -0x053C:word32]);
-	return;
 }
 
 // 000024C4: void fn000024C4(Register word32 d3, Register word32 a5, Register word32 a6, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -991,10 +965,7 @@ l000024EA:
 			if (fn00002644(a5, dwArg00) != 0x00)
 				goto l000024EA;
 		}
-		return;
 	}
-	else
-		return;
 }
 
 // 00002510: Register word32 fn00002510(Register word32 a5, Register word32 a6, Stack word32 dwArg04, Register out ptr32 d4Out)
@@ -1066,7 +1037,6 @@ word32 fn000025B4(word32 a5, word32 dwArg04, word32 dwArg08)
 void fn00002610(word32 a5, word32 dwArg04)
 {
 	Mem11[a5 + -0x02CC:word32] = dwArg04;
-	return;
 }
 
 // 00002644: Register word32 fn00002644(Register word32 a5, Stack word32 dwArg04)
@@ -1148,7 +1118,6 @@ void fn000027A0()
 	byte CVZN_16;
 	word32 a5_17;
 	(a5 + 0x005A)();
-	return;
 }
 
 // 000027B0: Register word32 fn000027B0(Register word32 a5, Stack word32 dwArg04, Register out ptr32 a0Out)
@@ -1380,7 +1349,6 @@ void fn00002AE0(word32 d3, word32 a2, word32 a5, word32 dwArg04)
 	a2[dwArg04 * 0x10] = 0x00;
 	(a2 + 0x04)[dwArg04 * 0x10] = 0x00;
 	(a2 + 0x08)[dwArg04 * 0x10] = 0x00;
-	return;
 }
 
 // 00002B18: void fn00002B18(Register word32 a5, Stack word32 dwArg04)
@@ -1404,7 +1372,6 @@ void fn00002B18(word32 a5, word32 dwArg04)
 				Mem73[a5 + -1332:word32] = a2_37;
 		}
 	}
-	return;
 }
 
 // 00002BB4: Register word32 fn00002BB4(Register word32 a5, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -1540,7 +1507,6 @@ void fn00002E18(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
 		}
 	}
 	Mem51[a2_121 + 0x00:word32] = dwArg0C;
-	return;
 }
 
 // 00002EA8: Register word32 fn00002EA8(Register word32 a5, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -1597,6 +1563,5 @@ void fn00003340(word32 d0, word32 d1, word32 a5, word16 wArg06)
 		d2_19 = d2_19 + 0x01;
 	} while (d0_21 - (a5 + -0x044C) <u 0x00);
 	Mem49[a5 + -0x06C4:word32] = 22;
-	return;
 }
 
