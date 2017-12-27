@@ -128,11 +128,12 @@ namespace Reko.ImageLoaders.MzExe
 		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, List<ImageSymbol> entryPoints)
 		{
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
-			rdr.ReadLeUInt32();	// Characteristics
-			rdr.ReadLeUInt32(); // timestamp
-			rdr.ReadLeUInt32();	// version.
-			rdr.ReadLeUInt32();	// binary name.
-			rdr.ReadLeUInt32();	// base ordinal
+			uint characteristics = rdr.ReadLeUInt32();
+			uint timestamp = rdr.ReadLeUInt32();
+			uint version = rdr.ReadLeUInt32();
+			uint binaryNameAddr = rdr.ReadLeUInt32();
+			uint baseOrdinal = rdr.ReadLeUInt32();
+
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
 			uint rvaApfn = rdr.ReadLeUInt32();
@@ -520,7 +521,8 @@ namespace Reko.ImageLoaders.MzExe
             ImageSymbols[entrySym.Address] = entrySym;
             var entryPoints = new List<ImageSymbol> { entrySym };
             ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable, ImageSymbols);
-            AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
+			if(rvaExportTable != 0)
+				AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
             return new RelocationResults(entryPoints, ImageSymbols);
