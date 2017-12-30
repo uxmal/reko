@@ -175,6 +175,34 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        public void StrAnls_While_BreakAtTheEndOfBody()
+        {
+            m.Label("head");
+            m.BranchIf(m.Not(m.Fn("next")), "done");
+
+            m.Label("loop");
+            m.SideEffect(m.Fn("process"));
+            m.BranchIf(m.Fn("cancel"), "done");
+            m.Goto("head");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(m.Int32(1));
+
+            var sExp =
+@"    while (next())
+    {
+        process();
+        if (cancel())
+            break;
+    }
+    finalize();
+    return 0x01;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_BigHeadWhile()
         {
             var r1 = m.Reg32("r1", 1);
