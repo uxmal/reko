@@ -498,10 +498,11 @@ void fn0000000140001550(Eq_699 * rcx, word64 qwArg08)
 {
 	RtlCaptureContext(tLoc54);
 	Eq_755 rsi_16 = rcx->t00F8;
-l000000014000156A:
-	Eq_782 rax_47 = RtlLookupFunctionEntry(rsi_16, fp + 0x08, null);
-	if (rax_47 != null)
+	while (true)
 	{
+		Eq_782 rax_47 = RtlLookupFunctionEntry(rsi_16, fp + 0x08, null);
+		if (rax_47 == null)
+			break;
 		word64 rsp_91;
 		word64 rbx_92;
 		word64 rdi_94;
@@ -519,8 +520,8 @@ l000000014000156A:
 		word32 ecx_106;
 		byte SO_107;
 		KERNEL32.dll!RtlVirtualUnwind();
-		if ((word32) (uint64) (edi_97 + 0x01) < 0x02)
-			goto l000000014000156A;
+		if ((word32) (uint64) (edi_97 + 0x01) >= 0x02)
+			return;
 	}
 }
 

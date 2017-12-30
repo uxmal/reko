@@ -2703,13 +2703,12 @@ void request_get_content_length(Eq_3807 * r4, uint32 r5, word32 dwArg00, word32 
 void is_a_method(word32 dwArg00)
 {
 	ui32 dwLoc18_15 = 0x00;
-l0040528C:
-	if (globals->ptr100009C8[dwLoc18_15] != 0x00)
+	while (globals->ptr100009C8[dwLoc18_15] != 0x00)
 	{
 		strncmp(r4_53, r5_54, r6_55);
 		dwLoc18_15 = dwLoc18_15 + 0x01;
-		if (r2_63 != 0x00)
-			goto l0040528C;
+		if (r2_63 == 0x00)
+			return;
 	}
 }
 

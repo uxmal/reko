@@ -1002,19 +1002,20 @@ Eq_1283 fn0EF8(Eq_1283 r0, Eq_2056 * r4, word16 * r5, code * wArg00, byte bArg01
 		if (v33_136 != 0x00)
 		{
 			word16 * r0_142 = v13_10->ptr0006;
-			do
+			while (true)
 			{
 				*r0_142 = *r5_146;
 				r5_146 = r5_146 + 0x01;
 				r0_142 = r0_142 + 0x01;
 				r1_148 = r1_148 - 0x01;
 				if (r1_148 == 0x00)
-					goto l0F2C;
+					break;
 				r2_138 = r2_138 - 0x01;
-			} while (r2_138 != 0x00);
+				if (r2_138 == 0x00)
+					break;
+			}
 		}
 	}
-l0F2C:
 	r3_13->b0074 = bLoc09;
 	if (v40 == 0x00)
 	{
@@ -1274,21 +1275,22 @@ word16 fn1040(code * * r4, code * * wArg00, word16 wArg02, ptr16 & r2Out, ptr16 
 	{
 		if (r2_100 > 0x91)
 		{
-l106A:
 			while (true)
 			{
-				wchar_t v21_103 = r2_100 - 0x88;
-				if (v21_103 >= 0x00)
+				while (true)
+				{
+					wchar_t v21_103 = r2_100 - 0x88;
+					if (v21_103 >= 0x00)
+						break;
+					r0_102 = __rol(r0_102, r0_102);
+					r2_100 = r2_100 - 0x01;
+				}
+				if (v21_103 == 0x00)
 					break;
-				r0_102 = __rol(r0_102, r0_102);
-				r2_100 = r2_100 - 0x01;
-			}
-			if (v21_103 != 0x00)
-			{
 				r2_100 = r2_100 + 0x01;
 				r0_102 = r0_102 >> 0x01;
-				if (r0_102 != 0x00)
-					goto l106A;
+				if (r0_102 == 0x00)
+					break;
 			}
 			if (r3_12 <= 0x00)
 				r0_102 = -r0_102;

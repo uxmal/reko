@@ -246,11 +246,12 @@ word16 fn00200557(word16 wa, word16 bc, byte d, byte * xhl)
 	word16 wa_100 = DPB(wa, c * 0x02, 0);
 	byte * xde_29 = (word16) (DPB(bc, 0x00, 8) * 0x40) + ((word32) (c * 0x02) + 0x9800);
 	byte b_33 = 0x13;
-l00200579:
-	cu8 v17_47 = *xhl;
-	wa_100 = DPB(wa_100, v17_47, 0);
-	if (v17_47 != 0x00)
+	while (true)
 	{
+		cu8 v17_47 = *xhl;
+		wa_100 = DPB(wa_100, v17_47, 0);
+		if (v17_47 == 0x00)
+			break;
 		xhl = xhl + 0x01;
 		if (v17_47 >= 0x5B)
 			wa_100 = DPB(wa_100, v17_47 + 0xE0, 0);
@@ -262,8 +263,8 @@ l00200579:
 		wa_100 = DPB(wa_77 + 0x09, w_82, 8);
 		xde_29 = xde_88 + 0x01;
 		b_33 = b_33 - 0x01;
-		if (b_33 != 0x00)
-			goto l00200579;
+		if (b_33 == 0x00)
+			return wa_100;
 	}
 	return wa_100;
 }

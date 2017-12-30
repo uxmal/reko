@@ -291,15 +291,14 @@ void __setargv(byte al, Eq_534 * ds, Eq_535 wArg00)
 		byte Eq_536::* di_70 = si_23 + 0x02;
 		byte cl_71 = 0x7F;
 		word16 cx_72 = 0x7F;
-l0800_036D:
-		if (cx_72 != 0x00)
+		while (cx_72 != 0x00)
 		{
 			cx_72 = cx_72 - 0x01;
 			di_70 = di_96 + 0x01;
 			cl_71 = (byte) cx_72;
 			byte Eq_536::* di_96 = di_70;
-			if (0x00 == es_44->*di_96)
-				goto l0800_036D;
+			if (0x00 != es_44->*di_96)
+				break;
 		}
 		if (cx_72 == 0x00)
 		{
@@ -368,8 +367,7 @@ void fn0800_0393(word16 cx, Eq_622 Eq_536::*dx, word16 bx, Eq_536 * bp, byte Eq_
 					else
 					{
 						ds_99->t0086 = bp_105;
-l0800_0407:
-						if (cx_135 != 0x00)
+						while (cx_135 != 0x00)
 						{
 							ss->*bp_105 = si_103;
 							bp_105 = (word32) bp_105 + 0x02;
@@ -379,8 +377,8 @@ l0800_0407:
 								si_103 = si_103 + 0x01;
 								cx_135 = cx_135 - 0x01;
 							} while (al_163 != 0x00 && cx_135 != 0x00);
-							if (al_163 == 0x00)
-								goto l0800_0407;
+							if (al_163 != 0x00)
+								break;
 						}
 						ss->*bp_105 = 0x00;
 						word16 sp_141;
@@ -510,13 +508,12 @@ void __setenvp(Eq_182 si, Eq_426 * ds)
 			{
 				ds->*bx_101 = di_105;
 				bx_101 = (word32) bx_101 + 0x02;
-l0800_0461:
-				if (cx_106 != 0x00)
+				while (cx_106 != 0x00)
 				{
 					di_105 = (word32) di_105 + 0x01;
 					cx_106 = cx_106 - 0x01;
-					if (0x00 == ds->*di_105)
-						goto l0800_0461;
+					if (0x00 != ds->*di_105)
+						break;
 				}
 			} while (ds->*di_105 != 0x00);
 			ds->*bx_101 = 0x00;
@@ -1778,14 +1775,13 @@ l0800_1572:
 word16 fn0800_108C(Eq_2621 di, Eq_2452 * es)
 {
 	word16 cx_13 = ~0x00;
-l0800_1092:
-	if (cx_13 != 0x00)
+	while (cx_13 != 0x00)
 	{
 		di = (word16) di_29 + 0x01;
 		cx_13 = cx_13 - 0x01;
 		Eq_2621 di_29 = di;
-		if (0x00 == es->*di_29)
-			goto l0800_1092;
+		if (0x00 != es->*di_29)
+			return ~cx_13 - 0x01;
 	}
 	return ~cx_13 - 0x01;
 }

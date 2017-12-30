@@ -345,12 +345,13 @@ bool fn05EF(Eq_612 c, byte b, Eq_358 e, byte d, Eq_612 l, Eq_617 & aOut, Eq_618 
 	globals->b1670 = b;
 	globals->t166F = c;
 	globals->t1671.u0 = 0x01;
-l05FA:
-	Eq_628 a_23 = *globals->t166F;
-	*aOut = a_23;
-	bool C_30 = cond(a_23 - globals->t1671);
-	if (a_23 >= globals->t1671)
+	while (true)
 	{
+		Eq_628 a_23 = *globals->t166F;
+		*aOut = a_23;
+		bool C_30 = cond(a_23 - globals->t1671);
+		if (a_23 < globals->t1671)
+			break;
 		word16 hl_51 = DPB(globals->t1671, 0x00, 8);
 		union Eq_428 * hl_57 = (word16) globals->t166F + hl_51;
 		Eq_428 c_61 = *hl_57;
@@ -361,8 +362,8 @@ l05FA:
 		byte h_66;
 		C_30 = fn056B(c_61, (byte) hl_51, SLICE(hl_51, byte, 8), (byte) hl_57, SLICE(hl_57, byte, 8), out a_63, out bc_64, out l_65, out h_66);
 		globals->t1671.u1 = (word16) globals->t1671 + 0x01;
-		if (globals->t1671 != 0x00)
-			goto l05FA;
+		if (globals->t1671 == 0x00)
+			break;
 	}
 	byte l_39;
 	*lOut = 113;
@@ -409,8 +410,7 @@ Eq_750 fn063E(word16 bc, Eq_752 e, byte d, Eq_754 & bOut, Eq_755 & lOut)
 	globals->b167B = 0x00;
 	globals->t1678->u0 = 0x00;
 	globals->t167A.u0 = 0x00;
-l0657:
-	if (0x03 >= globals->t167A)
+	while (0x03 >= globals->t167A)
 	{
 		globals->b167C = 0x30;
 		while (true)
@@ -440,8 +440,8 @@ l0657:
 			bc = 0x27;
 		}
 		globals->t167A.u1 = (word16) globals->t167A + 0x01;
-		if (globals->t167A != 0x00)
-			goto l0657;
+		if (globals->t167A == 0x00)
+			break;
 	}
 	Eq_752 hl_52 = globals->t1678;
 	Eq_750 hl_48 = globals->t1676;
@@ -1066,8 +1066,7 @@ byte fn0990(word16 af, word16 bc, Eq_1546 e, byte d, byte h, byte l, Eq_1550 & a
 	*eOut = 0x00;
 	byte c_217;
 	*cOut = 0x20;
-l0B04:
-	if (0x07 >= globals->t1697)
+	while (0x07 >= globals->t1697)
 	{
 		union Eq_95 * hl_339 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x01);
 		byte c_343;
@@ -1080,16 +1079,17 @@ l0B04:
 		*cOut = 0x01;
 		byte e_355;
 		*eOut = (byte) (hl_347 + 0x01);
-		if (a_362 != 0x01)
-			goto l0B04;
+		if (a_362 == 0x01)
+			break;
 	}
 	globals->t1697.u0 = 0x00;
-l0B3D:
-	word16 hl_266;
-	*hlOut = 0x1697;
-	byte C_273 = cond(0x02 - globals->t1697);
-	if (0x02 >= globals->t1697)
+	while (true)
 	{
+		word16 hl_266;
+		*hlOut = 0x1697;
+		byte C_273 = cond(0x02 - globals->t1697);
+		if (0x02 < globals->t1697)
+			break;
 		union Eq_95 * hl_299 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x09);
 		byte c_303;
 		byte a_304 = fn03E6(*hl_299, (byte) hl_299, out c_303);
@@ -1104,8 +1104,8 @@ l0B3D:
 		byte e_315;
 		*eOut = (byte) (hl_307 + 0x09);
 		C_273 = cond(hl_317);
-		if (a_323 != 0x01)
-			goto l0B3D;
+		if (a_323 == 0x01)
+			break;
 	}
 	byte b_275;
 	*bOut = 0x00;

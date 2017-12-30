@@ -174,23 +174,22 @@ void fn0444()
 	ci16 r0_15 = globals->w0046;
 	if (r0_15 <= 0x00)
 	{
-		do
+		while (65356 - r0_15 <= 0x00)
 		{
-			if (65356 - r0_15 > 0x00)
-				goto l0464;
 			r0_15 = r0_15 + 0x0168;
-		} while (r0_15 > 0x00);
+			if (r0_15 > 0x00)
+				break;
+		}
 	}
 	else
 	{
-		do
+		while (0xB4 - r0_15 > 0x00)
 		{
-			if (0xB4 - r0_15 <= 0x00)
-				goto l0464;
 			r0_15 = r0_15 - 0x0168;
-		} while (r0_15 < 0x00);
+			if (r0_15 >= 0x00)
+				break;
+		}
 	}
-l0464:
 	globals->w0046 = r0_15;
 	if (v12 <= 0x00)
 		r0_15 = r0_15 + 0x0168;

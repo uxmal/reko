@@ -193,10 +193,8 @@ void fn000016D0(word32 d0, word32 d6, word32 a5, word32 dwArg08)
 	word32 dwArg08_122 = dwArg08 + 0x01;
 	if (v17_42 != 0x00)
 	{
-		do
+		while (true)
 		{
-			if (false)
-				return;
 			word32 d0_138;
 			if ((byte) d6_130 >= 0x20 && (byte) d6_130 <= 0x78)
 				d0_138 = (int32) (Mem0[a5 + -0x0818 + (int32) ((byte) d6_130):byte] & 0x0F);
@@ -234,7 +232,9 @@ void fn000016D0(word32 d0, word32 d6, word32 a5, word32 dwArg08)
 			byte v38_182 = Mem0[dwArg08_122 + 0x00:byte];
 			d6_130 = DPB(d6_130, v38_182, 0);
 			dwArg08_122 = dwArg08_122 + 0x01;
-		} while (v38_182 != 0x00);
+			if (v38_182 == 0x00)
+				return;
+		}
 	}
 }
 
@@ -908,13 +908,12 @@ void fn0000243C(word32 a5, word32 dwArg04)
 {
 	word32 d1_104 = 0x00;
 	word32 d2_103 = a5 + -0x044C;
-l00002452:
-	if (dwArg04 - Mem0[d2_103 + 0x00:word32] != 0x00)
+	while (dwArg04 - Mem0[d2_103 + 0x00:word32] != 0x00)
 	{
 		d2_103 = d2_103 + 0x08;
 		d1_104 = d1_104 + 0x01;
-		if (d2_103 - (a5 + -1012) <u 0x00)
-			goto l00002452;
+		if (d2_103 - (a5 + -1012) >=u 0x00)
+			break;
 	}
 	if (dwArg04 - (a5 + -0x044C)[d1_104 * 0x08] == 0x00)
 	{
@@ -956,14 +955,15 @@ void fn000024C4(word32 d3, word32 a5, word32 a6, word32 dwArg04, word32 dwArg08)
 	if (-0x0020 - dwArg04 >=u 0x00)
 	{
 		word32 d3_49 = DPB(dwArg04 + 0x03, (word16) (dwArg04 + 0x03) & ~0x03, 0);
-l000024EA:
-		Mem56[fp - 0x10 + 0x00:word32] = d3_49;
-		word32 d4_60;
-		if (fn00002510(a5, fp - 0x04, dwArg00, out d4_60) == 0x00 && d4_60 != 0x00)
+		while (true)
 		{
+			Mem56[fp - 0x10 + 0x00:word32] = d3_49;
+			word32 d4_60;
+			if (fn00002510(a5, fp - 0x04, dwArg00, out d4_60) != 0x00 || d4_60 == 0x00)
+				break;
 			Mem88[fp - 0x10 + 0x00:word32] = d3_49;
-			if (fn00002644(a5, dwArg00) != 0x00)
-				goto l000024EA;
+			if (fn00002644(a5, dwArg00) == 0x00)
+				return;
 		}
 	}
 }

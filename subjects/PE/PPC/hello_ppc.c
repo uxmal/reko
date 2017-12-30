@@ -189,10 +189,8 @@ word32 fn004004B4(Eq_2 * r2, Eq_18 r3, byte * r4, word32 r13, word32 r14, word32
 	{
 		ptr32 r26_167 = fp + -0x0280;
 		struct Eq_534 * r14_169 = *((char *) r2 + 0x0054);
-		do
+		while (Test(GT,cond(0x01)))
 		{
-			if (Test(LE,cond(0x01)))
-				goto l00400DEC;
 			int32 r10_194;
 			if (Test(GT,cond(r31_190 - 0x001F)) && Test(LT,cond(r31_190 - 121)))
 				r10_194 = (int32) (int8) Mem60[r14_169 + -0x001C + r31_190:byte] & 0x0F;
@@ -213,9 +211,10 @@ word32 fn004004B4(Eq_2 * r2, Eq_18 r3, byte * r4, word32 r13, word32 r14, word32
 			}
 			r23_183 = r23_183 + 0x01;
 			r31_190 = (int32) (int8) *r23_183;
-		} while (Test(NE,cr0));
+			if (Test(EQ,cr0))
+				break;
+		}
 	}
-l00400DEC:
 	word32 r25_138;
 	*r25Out = dwLoc20;
 	word32 r26_141;
@@ -2161,13 +2160,12 @@ Eq_2 * fn00403618(Eq_2 * r2, Eq_18 r3, Eq_242 * r29, Eq_242 * r30, Eq_18 r31, by
 	struct Eq_5184 * r8_6 = *((char *) r2 + 0x00EC);
 	int32 r10_12 = 0x00;
 	struct Eq_5184 * r11_13 = r8_6;
-l00403638:
-	if (Test(NE,cond(r11_13->a0000[0x00] - r3)))
+	while (Test(NE,cond(r11_13->a0000[0x00] - r3)))
 	{
 		r11_13 = r11_13 + 0x01;
 		r10_12 = r10_12 + 0x01;
-		if (Test(LT,cond(r11_13 - (r8_6 + 88))))
-			goto l00403638;
+		if (Test(GE,cond(r11_13 - (r8_6 + 88))))
+			break;
 	}
 	struct Eq_5191 * r11_20 = r10_12 << 0x03;
 	if (Test(EQ,cond(Mem0[r8_6 + r11_20:word32] - r3)))
@@ -2461,12 +2459,11 @@ Eq_3281 * fn00403C20(Eq_2 * r2, Eq_3281 * r3)
 	word32 r10_5 = *((char *) r2 + 244);
 	struct Eq_3281 * r11_10 = r10_5 + 0x04;
 	ui32 r10_9 = **((char *) r2 + 0x00F0) * 0x0C + r10_5;
-l00403C38:
-	if (Test(NE,cond(r11_10->dw0000 - r3)))
+	while (Test(NE,cond(r11_10->dw0000 - r3)))
 	{
 		r11_10 = r11_10 + 0x01;
-		if (Test(GT,cond(r10_9 - r11_10)))
-			goto l00403C38;
+		if (Test(LE,cond(r10_9 - r11_10)))
+			break;
 	}
 	struct Eq_3281 * r10_16 = r11_10;
 	if (Test(NE,cond(r11_10->dw0004 - r3)))
