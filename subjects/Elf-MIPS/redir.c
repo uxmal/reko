@@ -558,7 +558,7 @@ l00400F10:
 		if (r2_562 >= 0x00)
 			goto l00401454;
 		__errno_location();
-	} while (*r2_1085 != 0x04);
+	} while (*r2_1085 == 0x04);
 	__errno_location();
 	__errno_location();
 	char * r3_1137 = strerror(r4_1124);
@@ -1874,7 +1874,7 @@ void client_check_reply_http(Eq_2628 * r4, word32 dwArg00)
 				}
 				if ((word32) r2_99->b0002 == 0x0A)
 					break;
-			} while ((word32) r2_99->b0002 == 0x0D);
+			} while ((word32) r2_99->b0002 != 0x0D);
 			if (r2_105 > ~0x01)
 			{
 				r4->ptr1788 = (struct Eq_2630 *) (&r2_99->b0002 + 0x01);

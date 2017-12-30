@@ -305,7 +305,7 @@ byte fn0040143A()
 			__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
 			if (eax_37 == 0x00)
 				return 0x00;
-		} while (edx_32 == eax_37);
+		} while (edx_32 != eax_37);
 		return 0x01;
 	}
 	else

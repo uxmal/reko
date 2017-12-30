@@ -792,7 +792,7 @@ void _fgetc(Eq_426 * ds, Eq_1182 Eq_426::*wArg02)
 							(ds->*wArg02).w0002 = (ds->*wArg02).w0002 & 65151 | 0x20;
 						return;
 					}
-				} while (bLoc03 != 0x0D || ((ds->*wArg02).w0002 & 0x40) != 0x00);
+				} while (bLoc03 == 0x0D && ((ds->*wArg02).w0002 & 0x40) == 0x00);
 				(ds->*wArg02).w0002 = (ds->*wArg02).w0002 & ~0x20;
 				return;
 			}
@@ -903,7 +903,7 @@ byte Eq_426::*_read(Eq_426 * ds, int16 wArg02, Eq_882 wArg04, cu16 wArg06)
 			al_121 = bLoc03;
 			di_114 = (word32) di_114 + 0x01;
 l0800_0A7F:
-		} while (di_114 != wArg04);
+		} while (di_114 == wArg04);
 l0800_0AA7:
 		ax_101 = di_114 - wArg04;
 	}
@@ -1052,7 +1052,7 @@ l0800_0CC1:
 			cx_145 = ax_155;
 			ax_103 = (uint16) (dx_ax_158 /u wArg06);
 			si_104 = si_104 + 0x01;
-		} while (ax_155 == 0x00);
+		} while (ax_155 != 0x00);
 l0800_0CA4:
 		if (ax_103 == 0x00)
 		{
@@ -2601,7 +2601,7 @@ cu16 fn0800_1B06(cu16 ax, Eq_3674 Eq_286::*bp, Eq_284 * ds, ptr16 & bpOut)
 			return fn0800_1AEB(bp, out bp_86);
 		}
 		Eq_4725 ax_71 = DPB(ax_20, al_31, 0);
-	} while (al_31 < 0x00 || ds_25->*((word32) ax_71 + 0x055A) != 0x01);
+	} while (al_31 >= 0x00 && ds_25->*((word32) ax_71 + 0x055A) == 0x01);
 	word16 sp_56;
 	struct Eq_4735 * ss_57;
 	word16 bp_58;
@@ -2811,7 +2811,7 @@ Eq_286 __scantol(Eq_286 ax, ui16 bx, Eq_284 * ds, Eq_286 wArg06, Eq_286 wArg08, 
 			goto l0800_1C5A;
 		Eq_286 ax_216 = (int16) al_66;
 		byte bl_225 = (byte) ax_216;
-	} while ((bl_225 & 0x80) != 0x00 || (Mem34[ds_53:ax_216 + di_41:byte] & 0x01) == 0x00);
+	} while ((bl_225 & 0x80) == 0x00 && (Mem34[ds_53:ax_216 + di_41:byte] & 0x01) != 0x00);
 	ax_134 = ax_216;
 	byte al_235 = (byte) ax_216;
 	ci16 wArg0A_240 = wArg0A - 0x01;
@@ -3076,7 +3076,7 @@ l0800_1D0F:
 							Eq_5374 dx_ax_619 = wArg08 * di_569;
 							si_303 = (word16) ax_si_625;
 							di_306 = SLICE(ax_si_625, word16, 16);
-						} while (SLICE(dx_ax_619, byte, 16) + SLICE(dx_ax_619, byte, 24) + (ax_si_625 < 0x00) != 0x00);
+						} while (SLICE(dx_ax_619, byte, 16) + SLICE(dx_ax_619, byte, 24) + (ax_si_625 < 0x00) == 0x00);
 						Eq_5386 ah_649 = (bLoc07_14 < ~0x00) + ~0x00;
 						ax_178 = DPB(~0x00, ah_649, 8);
 						word16 dx_655;

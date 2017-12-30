@@ -2592,10 +2592,10 @@ l1FE6:
 			pc->w31F8 = pc->w31F8 + 0x06;
 			pc->w31BA = pc->w31BA + 0x02;
 			globals->w54FC = globals->w54FA - 0x01;
-		} while (v205 <= 0x00);
+		} while (v205 > 0x00);
 		pc->w31E4 = pc->w31E4 + 0x02;
 		globals->w54DA = globals->w54D8 + 0x01;
-	} while (0x05 - globals->w54D8 > 0x00);
+	} while (0x05 - globals->w54D8 <= 0x00);
 	*globals->w5426 = *globals->w5426 + 0x01;
 	globals->w54C8 = 0x00;
 	globals->w54CA = 0x00;
@@ -3904,7 +3904,7 @@ Eq_1283 fn395C(Eq_1283 r0, Eq_2056 * r4, word16 * r5, Eq_4633 * pc, Eq_7313 & r4
 		}
 		*globals->w5426 = 0x15;
 		globals->w5760 = globals->b575E + 0x01;
-	} while (0x05 - globals->b575E > 0x00);
+	} while (0x05 - globals->b575E <= 0x00);
 	*globals->w5426 = *globals->w5426 + 0x01;
 	globals->w5760 = 0x01;
 	do
@@ -4228,7 +4228,7 @@ Eq_1283 fn3E12(Eq_1283 r0, Eq_2056 * r4, word16 * r5, Eq_4633 * pc, Eq_6279 & r4
 		} while (0x04 - globals->w57B2 <= 0x00);
 		pc->w1890 = pc->w1890 + 0x0D;
 		globals->w57B2 = globals->b57B0 + 0x01;
-	} while (0x05 - globals->b57B0 > 0x00);
+	} while (0x05 - globals->b57B0 <= 0x00);
 	*globals->w5426 = *globals->w5426 + 0x01;
 	return r0_12;
 }

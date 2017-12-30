@@ -1137,7 +1137,7 @@ m.Label("l0800_0585");
                     break;
             }
             Z_26 = cond(si_12 - 0x8F0A);
-        } while (si_12 == 0x8F0A);
+        } while (si_12 != 0x8F0A);
         if (!Z_26)
         {
             Mem0[ds:0x8F0B:word16] = si_12;

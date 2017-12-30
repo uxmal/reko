@@ -1000,7 +1000,10 @@ are added during loop refinement, which we discuss next.
                     else
                     {
                         // DoWhile!
-                        loopStm = new AbsynDoWhile(s.Statements, s.Expression);
+                        var exp = s == succs[0]
+                            ? n.Expression.Invert()
+                            : n.Expression;
+                        loopStm = new AbsynDoWhile(s.Statements, exp);
                         n.Type = RegionType.Linear;
                     }
                     n.Statements = new List<AbsynStatement> { loopStm };

@@ -538,7 +538,7 @@ byte fn00000001400015C4(Eq_335 * gs)
 			word64 rax_39;
 			if (!__cmpxchg(globals->qw400035B8, rcx_32, 0x00, out rax_39))
 				goto l00000001400015F2;
-		} while (rcx_32 == rax_39);
+		} while (rcx_32 != rax_39);
 		al_12 = 0x01;
 	}
 	else

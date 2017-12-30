@@ -1390,7 +1390,7 @@ void fn1078(word16 af, byte b, byte d, Eq_358 e, Eq_428 l, byte h)
 		byte b_37 = v3->b0003;
 		cu8 a_44 = __ror(0x00 - (globals->t16A8 < ~0x00) & b_37, false);
 		af = DPB(af, a_44, 0);
-	} while (a_44 >= 0x00);
+	} while (a_44 < 0x00);
 	fn1081(af, b_37, d, e, l, h);
 }
 
@@ -1733,7 +1733,7 @@ void fn1262()
 		{
 			Eq_3009 a_9 = fn045B();
 			globals->t16A8 = a_9;
-		} while (a_9 != 0x20);
+		} while (a_9 == 0x20);
 	}
 }
 

@@ -259,7 +259,7 @@ void fn0C00_0000(selector ds)
 	{
 		do
 			;
-		while (Mem49[ds_41:0x81B0:word16] == 0x0000 || Mem49[ds_41:0x5404:word16] >= 0x0020);
+		while (Mem49[ds_41:0x81B0:word16] != 0x0000 && Mem49[ds_41:0x5404:word16] < 0x0020);
 		fn0C00_0283(0x5450, ds_41);
 		Mem65[ds_41:0x5404:word16] = 0x0000;
 		fn0C00_0259();
@@ -321,7 +321,7 @@ void fn0C00_0000(selector ds)
 			fn0C00_0265();
 			do
 				;
-			while (Mem141[ds_122:0x81B0:word16] == 0x0000 || Mem141[ds_122:0x5404:word16] >= 0x0046);
+			while (Mem141[ds_122:0x81B0:word16] != 0x0000 && Mem141[ds_122:0x5404:word16] < 0x0046);
 			fn0C00_028F(0x53E7, ds_122);
 			fn0C00_028B();
 			fn0C00_027F();

@@ -40,7 +40,7 @@ void fn0200(Eq_2 r4, Eq_3 * r5, Eq_4 * pc)
 			break;
 		r2_29 = 0x00;
 		r3_115.u0 = 0x02;
-	} while (61611 == 0x00);
+	} while (61611 != 0x00);
 	globals->w0F06 = r2_29;
 	globals->u0F08 = r3_115;
 	globals->w0024 = globals->w0024 | 0x1040;
@@ -745,7 +745,7 @@ Eq_135 fn07A6(Eq_2 r4, Eq_4 * pc, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, p
 				globals->w0F02 = 0x00;
 				goto l08B2;
 			}
-		} while (r5_167 != null);
+		} while (r5_167 == null);
 		globals->ptr0F28 = r5_167;
 	}
 l08B2:
