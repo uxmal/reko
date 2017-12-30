@@ -1546,7 +1546,7 @@ byte fn0800_12E2(word16 bp, selector ds, ptr16 & dsOut)
 	Mem87[ss:fp - 0x8C + 0x00:word16] = 0x00;
 	selector ds_104 = fn0800_1CF6(fp - 0x02, ds_1269);
 	word16 si_107 = 0x00;
-	while (true)
+	do
 	{
 		Mem112[ss:fp - 0x8C + 0x00:word16] = ds_104;
 		Mem115[ss:fp - 0x8E + 0x00:word16] = 0x4541;
@@ -1603,9 +1603,7 @@ byte fn0800_12E2(word16 bp, selector ds, ptr16 & dsOut)
 			bp_108 = fn0800_23EC(bp_108, ds_104, wArg00, wArg02, out ds_104);
 		}
 		si_107 = 0x01;
-		if ((DPB(ax_1198, 0x00, 8) << 0x08) + DPB(dx_1193, 0x00, 8) >=u ~0x73)
-			break;
-	}
+	} while ((DPB(ax_1198, 0x00, 8) << 0x08) + DPB(dx_1193, 0x00, 8) <u ~0x73);
 	if (si_107 == 0x00)
 	{
 		Mem173[ss:fp - 0x8C + 0x00:word16] = Mem115[ds_104:10705:word16];
@@ -8461,7 +8459,7 @@ word16 fn0800_5E64(word16 bp, selector ds, ptr16 & dsOut)
 				selector ds_1341;
 				word16 di_1342 = fn0800_40BF(fp - 0x02, ds_1324, bArg00, wArg02, wArg04, out ds_1341);
 				Mem1345[ss:fp - 0x24 + 0x00:word16] = 0x00;
-				while (true)
+				do
 				{
 					selector es_1356 = Mem1345[ss:fp - 0x0C + 0x00:selector];
 					word16 dx_1359 = Mem1345[es_1356:di_1342 + 0x00:word16] - Mem1345[ss:(fp - 0x12) + 0x00:word16];
@@ -8484,9 +8482,7 @@ word16 fn0800_5E64(word16 bp, selector ds, ptr16 & dsOut)
 					Mem1482[ss:fp - 0x24 + 0x00:word16] = Mem1477[ss:fp - 0x24 + 0x00:word16] + 0x01;
 					di_1342 = di_1479 + 0x04;
 					si_1275 = si_1275 + 0x01;
-					if (si_1275 == Mem1482[ss:(fp - 0x26) + 0x00:word16])
-						break;
-				}
+				} while (si_1275 != Mem1482[ss:(fp - 0x26) + 0x00:word16]);
 				Mem1389[ss:fp - 0x40 + 0x00:word16] = 0x01;
 				word16 ax_1393 = -(Mem1389[ss:fp - 0x24 + 0x00:word16] + 0x03);
 				Mem1398[ss:fp - 66 + 0x00:word16] = Mem1389[ss:fp - 0x3A + 0x00:word16] - (ax_1393 == 0x00);
@@ -16889,7 +16885,7 @@ word16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 	if (wArg0A != 0x00)
 	{
 		di_108 = di_17;
-		while (true)
+		do
 		{
 			word16 di_108;
 			if (cx_110 == 0x00)
@@ -16897,9 +16893,7 @@ word16 fn0800_BFE6(segptr32 ptrArg02, segptr32 ptrArg06, word16 wArg0A)
 			di_108 = di_111 + 0x01;
 			cx_110 = cx_110 - 0x01;
 			word16 di_111 = di_108;
-			if (0x00 != Mem0[es_18:di_111 + 0x00:byte])
-				break;
-		}
+		} while (0x00 == Mem0[es_18:di_111 + 0x00:byte]);
 		word16 bx_66 = wArg0A - cx_110;
 		word16 cx_105 = bx_66;
 		word16 di_103 = di_17;

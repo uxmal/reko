@@ -345,7 +345,7 @@ bool fn05EF(Eq_612 c, byte b, Eq_358 e, byte d, Eq_612 l, Eq_617 & aOut, Eq_618 
 	globals->b1670 = b;
 	globals->t166F = c;
 	globals->t1671.u0 = 0x01;
-	while (true)
+	do
 	{
 		Eq_628 a_23 = *globals->t166F;
 		*aOut = a_23;
@@ -362,9 +362,7 @@ bool fn05EF(Eq_612 c, byte b, Eq_358 e, byte d, Eq_612 l, Eq_617 & aOut, Eq_618 
 		byte h_66;
 		C_30 = fn056B(c_61, (byte) hl_51, SLICE(hl_51, byte, 8), (byte) hl_57, SLICE(hl_57, byte, 8), out a_63, out bc_64, out l_65, out h_66);
 		globals->t1671.u1 = (word16) globals->t1671 + 0x01;
-		if (globals->t1671 == 0x00)
-			break;
-	}
+	} while (globals->t1671 != 0x00);
 	byte l_39;
 	*lOut = 113;
 	byte h_40;
@@ -1083,7 +1081,7 @@ byte fn0990(word16 af, word16 bc, Eq_1546 e, byte d, byte h, byte l, Eq_1550 & a
 			break;
 	}
 	globals->t1697.u0 = 0x00;
-	while (true)
+	do
 	{
 		word16 hl_266;
 		*hlOut = 0x1697;
@@ -1104,9 +1102,7 @@ byte fn0990(word16 af, word16 bc, Eq_1546 e, byte d, byte h, byte l, Eq_1550 & a
 		byte e_315;
 		*eOut = (byte) (hl_307 + 0x09);
 		C_273 = cond(hl_317);
-		if (a_323 == 0x01)
-			break;
-	}
+	} while (a_323 != 0x01);
 	byte b_275;
 	*bOut = 0x00;
 	byte a_289;

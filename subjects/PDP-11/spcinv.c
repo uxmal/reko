@@ -1131,9 +1131,9 @@ l0BB8:
 			*r4Out = r4 + 0x01;
 			r3 = r3 - 0x01;
 			*r3Out = r3;
-			if (r3 == 0x00)
-				return r0;
-			goto l0B88;
+			if (r3 != 0x00)
+				goto l0B88;
+			return r0;
 		}
 	}
 	r5_107 = r5_65 + 0x00;

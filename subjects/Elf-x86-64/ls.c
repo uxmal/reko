@@ -4499,15 +4499,13 @@ l0000000000406004:
 				if ((rdx_138 - 0x18)[rax_140 * 0x08] == 0x00)
 				{
 					word64 rax_147 = (rax_140 << 0x03) + rdx_138;
-					while (true)
+					do
 					{
 						rbx_120 = rbx_120 - 0x01;
 						if (rbx_120 == 0x01)
 							break;
 						rax_147 = rax_147 - 0x18;
-						if (Mem0[rax_147 - 0x18 + 0x00:byte] != 0x00)
-							break;
-					}
+					} while (Mem0[rax_147 - 0x18 + 0x00:byte] == 0x00);
 				}
 			}
 			byte r12b_131;
@@ -8264,15 +8262,13 @@ word64 fn000000000040A630(word64 rdx, word64 rsi, word64 rdi, ptr64 & rdxOut, pt
 	word64 rbx_131 = rsi + 0x01;
 	if (Mem0[rsi + 0x00:byte] == 0x2F)
 	{
-		while (true)
+		do
 		{
 			rbx_131 = rbx_131 + 0x00;
 			if (Mem0[rbx_131 + 0x00:byte] != 0x2F)
 				break;
 			rbx_131 = rbx_131 + 0x01;
-			if (Mem0[rbx_131 + 0x01:byte] != 0x2F)
-				break;
-		}
+		} while (Mem0[rbx_131 + 0x01:byte] == 0x2F);
 	}
 	word64 rax_114;
 	word64 rax_56 = DPB(rax_35, strlen(rbx_131), 0);
@@ -10116,7 +10112,7 @@ l000000000040C7EB:
 						ah_456 = SLICE(rax_452, byte, 8);
 						ax_457 = (word16) rax_452;
 						al_458 = (byte) rax_452;
-						while (true)
+						do
 						{
 							ebx_459 = ϕ(ebx_451, ebx_473);
 							Z_460 = ϕ(Z_373, Z_475);
@@ -10137,9 +10133,7 @@ l000000000040C7EB:
 							ebx_473 = (word32) rbx_472;
 							SCZO_474 = cond(ebx_473 - 0x08);
 							Z_475 = SCZO_474;
-							if (ebx_473 == 0x08)
-								break;
-						}
+						} while (ebx_473 != 0x08);
 					}
 					else
 					{
@@ -11806,16 +11800,14 @@ l000000000040CE3E:
 				if (rcx_111 != 0x00 && r13_12 <u rbx_171)
 				{
 					word64 rax_245 = 0x00;
-					while (true)
+					do
 					{
 						Mem259[rbp_117 - 0x01 + 0x00:byte] = 0x20;
 						r13_12 = r13_12 + 0x01;
 						if (rdx_169 == rax_245)
 							break;
 						rax_245 = rax_245 + 0x01;
-						if (r13_12 == rbx_171)
-							break;
-					}
+					} while (r13_12 != rbx_171);
 				}
 				Mem184[rbp_117 + 0x00:byte] = 0x00;
 				word64 rdx_185 = rbx_171 - r13_12;
@@ -11827,16 +11819,14 @@ l000000000040CE3E:
 				if (r12_118 != 0x00 && rbx_171 >u rax_193)
 				{
 					word64 rax_219 = 0x00;
-					while (true)
+					do
 					{
 						rdx_200 = rdx_200 + 0x01;
 						Mem234[rdx_200 - 0x01 + 0x00:byte] = 0x20;
 						if (rsi == rax_219)
 							break;
 						rax_219 = rax_219 + 0x01;
-						if (rdx_200 == rbx_171)
-							break;
-					}
+					} while (rdx_200 != rbx_171);
 				}
 				Mem216[rdx_200 + 0x00:byte] = 0x00;
 			}
@@ -15455,7 +15445,7 @@ l0000000000411AC9:
 									SCZO = cond(edi - 0x23);
 									if (Test(EQ,Z))
 									{
-										while (true)
+										do
 										{
 											rax = Mem0[rdi + 0x08:word64];
 											SCZO = cond(rax - Mem0[rdi + 0x10:word64]);
@@ -15474,9 +15464,7 @@ l0000000000411AC9:
 											if (Test(EQ,Z))
 												break;
 											SCZO = cond(eax - ~0x00);
-											if (Test(EQ,Z))
-												break;
-										}
+										} while (Test(NE,Z));
 										SCZO = cond(eax - ~0x00);
 										if (Test(NE,Z))
 											goto l0000000000411AB0;

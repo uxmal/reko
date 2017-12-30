@@ -1333,6 +1333,17 @@ refinement on the loop body, which we describe below.
             return regionGraph.Successors(n).Where(s => (s == follow)).Any();
         }
 
+        private LoopType DetermineLoopType(Region header, Region latch, Region follow)
+        {
+            if (!HasExitEdgeFrom(latch, follow))
+                return LoopType.While;
+            if (!HasExitEdgeFrom(header, follow))
+                return LoopType.DoWhile;
+            if (header.Statements.Count > 0)
+                return LoopType.DoWhile;
+            return LoopType.While;
+        }
+
         /// <summary>
         /// Virtualizes any edge leaving the lexically
         /// contained loop nodes other than the exit edge. Edges that
@@ -1349,9 +1360,7 @@ refinement on the loop body, which we describe below.
         private bool VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)
         {
             bool didVirtualize = false;
-            var loopType = HasExitEdgeFrom(header, follow) ?
-                LoopType.While :
-                LoopType.DoWhile;
+            var loopType = DetermineLoopType(header, latch, follow);
             foreach (var n in lexicalNodes)
             {
                 var vEdges = new List<VirtualEdge>();

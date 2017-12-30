@@ -1002,7 +1002,7 @@ Eq_1283 fn0EF8(Eq_1283 r0, Eq_2056 * r4, word16 * r5, code * wArg00, byte bArg01
 		if (v33_136 != 0x00)
 		{
 			word16 * r0_142 = v13_10->ptr0006;
-			while (true)
+			do
 			{
 				*r0_142 = *r5_146;
 				r5_146 = r5_146 + 0x01;
@@ -1011,9 +1011,7 @@ Eq_1283 fn0EF8(Eq_1283 r0, Eq_2056 * r4, word16 * r5, code * wArg00, byte bArg01
 				if (r1_148 == 0x00)
 					break;
 				r2_138 = r2_138 - 0x01;
-				if (r2_138 == 0x00)
-					break;
-			}
+			} while (r2_138 != 0x00);
 		}
 	}
 	r3_13->b0074 = bLoc09;
@@ -1275,7 +1273,7 @@ word16 fn1040(code * * r4, code * * wArg00, word16 wArg02, ptr16 & r2Out, ptr16 
 	{
 		if (r2_100 > 0x91)
 		{
-			while (true)
+			do
 			{
 				while (true)
 				{
@@ -1289,9 +1287,7 @@ word16 fn1040(code * * r4, code * * wArg00, word16 wArg02, ptr16 & r2Out, ptr16 
 					break;
 				r2_100 = r2_100 + 0x01;
 				r0_102 = r0_102 >> 0x01;
-				if (r0_102 == 0x00)
-					break;
-			}
+			} while (r0_102 != 0x00);
 			if (r3_12 <= 0x00)
 				r0_102 = -r0_102;
 l107E:

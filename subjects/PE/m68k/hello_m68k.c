@@ -955,16 +955,14 @@ void fn000024C4(word32 d3, word32 a5, word32 a6, word32 dwArg04, word32 dwArg08)
 	if (-0x0020 - dwArg04 >=u 0x00)
 	{
 		word32 d3_49 = DPB(dwArg04 + 0x03, (word16) (dwArg04 + 0x03) & ~0x03, 0);
-		while (true)
+		do
 		{
 			Mem56[fp - 0x10 + 0x00:word32] = d3_49;
 			word32 d4_60;
 			if (fn00002510(a5, fp - 0x04, dwArg00, out d4_60) != 0x00 || d4_60 == 0x00)
-				break;
-			Mem88[fp - 0x10 + 0x00:word32] = d3_49;
-			if (fn00002644(a5, dwArg00) == 0x00)
 				return;
-		}
+			Mem88[fp - 0x10 + 0x00:word32] = d3_49;
+		} while (fn00002644(a5, dwArg00) != 0x00);
 	}
 }
 
