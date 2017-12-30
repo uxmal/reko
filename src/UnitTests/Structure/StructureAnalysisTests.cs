@@ -1015,6 +1015,32 @@ case_1:
         }
 
         [Test]
+        public void StrAnls_DoWhile_BreakAtTheStartOfBody()
+        {
+            m.Label("head");
+            m.SideEffect(m.Fn("process"));
+            m.BranchIf(m.Fn("cancel"), "done");
+            m.BranchIf(m.Not(m.Fn("next")), "done");
+            m.Goto("head");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(m.Int32(1));
+
+            var sExp =
+@"    do
+    {
+        process();
+        if (cancel())
+            break;
+    } while (next());
+    finalize();
+    return 0x01;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
