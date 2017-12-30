@@ -263,6 +263,33 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        public void StrAnls_DoWhile_InvertedCondition()
+        {
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+
+            m.Label("loop");
+            m.Store(r1, m.LoadDw(r2));
+            m.Assign(r1, m.IAdd(r1, 4));
+            m.Assign(r2, m.IAdd(r2, 4));
+            m.BranchIf(m.Ne(r1, r2), "done");
+            m.Goto("loop");
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp =
+@"    do
+    {
+        Mem0[r1:word32] = Mem0[r2:word32];
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
+    } while (r1 == r2);
+    return r2;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_NestedWhile()
         {
             var r1 = m.Reg32("r1", 1);
