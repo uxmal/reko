@@ -1141,12 +1141,7 @@ refinement on the loop body, which we describe below.
                 if (CoalesceTailRegion(n, lexicalNodes))
                     return true;
             }
-            foreach (var n in lexicalNodes)
-            {
-                if (LastResort(n))
-                    return true;
-            }
-            return false;
+            return LastResort(lexicalNodes);
         }
 
         private bool CoalesceTailRegion(Region n, ICollection<Region> regions)
