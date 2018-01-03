@@ -5,14 +5,12 @@ init:
 
 configuration: Release
 
-reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
-
 build:
   project: src/Reko-decompiler.sln
   verbosity: normal
 
 environment:
-  reko_setup: $(reko_setup)
+  reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
 
 build_success:
   - cmd: for %i in ("%reko_setup%") DO (
@@ -25,5 +23,5 @@ test_script:
   - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%CONFIGURATION%/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
 
 artifacts:
-  - path: $(reko_setup)
+  - path: src/WixInstaller/bin/$(configuration)/*.msi
     name: Reko installer
