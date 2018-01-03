@@ -674,6 +674,24 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteSbcd()
+        {
+            // We do not take the trouble of widening the XF to the word size
+            // to simplify code analysis in later stages. 
+            var x = orw.FlagGroup(FlagM.XF);
+            orw.DataWidth = PrimitiveType.Byte;
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            orw.DataWidth = PrimitiveType.Byte;
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (d, s) =>
+                    m.ISub(m.ISub(d, s), x));
+            if (dst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+        }
+
         private void RewriteUnlk()
         {
             var aReg = orw.RewriteSrc(di.op1, di.Address);

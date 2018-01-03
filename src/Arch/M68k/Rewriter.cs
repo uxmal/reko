@@ -150,6 +150,7 @@ VS Overflow Set 1001 V
                 case Opcode.fbnlt: RewriteFbcc(ConditionCode.GE); break;
                 case Opcode.fbnle: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbogl: RewriteFbcc(ConditionCode.NE); break;
+                case Opcode.fbolt: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbult: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
@@ -186,7 +187,9 @@ VS Overflow Set 1001 V
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
                 case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
                 case Opcode.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
+                case Opcode.rte: RewriteRte(); break;
                 case Opcode.rts: RewriteRts(); break;
+                case Opcode.sbcd: RewriteSbcd(); break;
                 case Opcode.scc: RewriteScc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.scs: RewriteScc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.seq: RewriteScc(ConditionCode.EQ, FlagM.ZF); break;

@@ -1382,6 +1382,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         [Test]
         [Category(Categories.UnitTests)]
+        [Ignore("This instruction was only supported on the 68020, and almost noone used it. do we care?")]
         public void M68krw_rtm()
         {
             Rewrite(0x06C0);        // rtm d0
@@ -1409,9 +1410,10 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4036, 0x600A); // negx.b (0A, a6, d6)
             AssertCode(
-                "0|T--|00010000(2): 5 instructions",
-                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
-                "2|L--|Z = true");
+                "0|L--|00010000(4): 3 instructions",
+                "1|L--|v4 = -Mem0[a6 + 10 + d6:byte] - X",
+                "2|L--|Mem0[a6 + 10 + d6:byte] = v4",
+                "3|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -1420,10 +1422,10 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4E73);    // rte
             AssertCode(
-                "0|S--|00010000(2): 5 instructions",
+                "0|S--|00010000(2): 3 instructions",
                 "1|L--|sr = Mem0[a7:word16]",
-                "2|L--|sp = sp + 2",
-                "3|T--|return XX");
+                "2|L--|a7 = a7 + 2",
+                "3|T--|return (4,0)");
         }
 
         [Test]
@@ -1453,9 +1455,10 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x8F02);    // sbcd d2,d7
             AssertCode(
-                "0|T--|00010000(2): 5 instructions",
-                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
-                "2|L--|Z = true");
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|v5 = (byte) d2 - (byte) d7 - X",
+                "2|L--|d7 = DPB(d7, v5, 0)",
+                "3|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -1464,13 +1467,13 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0xF684, 0x0678);    // fbolt$00001CCE
             AssertCode(
-                "0|T--|00010000(2): 5 instructions",
-                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
-                "2|L--|Z = true");
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(LT,fpsr)) branch 0001067A");
         }
 
         [Test]
         [Category(Categories.UnitTests)]
+        [Ignore("This instruction was only supported on the 68020, and almost noone used it. do we care?")]
         public void M68krw_callm()
         {
             Rewrite(0x06EE, 0x0000, 0x0486); // callm#$00,$0486(a6)

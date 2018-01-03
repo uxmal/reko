@@ -368,6 +368,21 @@ namespace Reko.Arch.M68k
                 m.Assign(m.Load(dataWidth, r), tmp);
                 return tmp;
             }
+            var indidx = operand as IndirectIndexedOperand;
+            if (indidx != null)
+            {
+                Expression ea = binder.EnsureRegister(indidx.ARegister);
+                if (indidx.Imm8 != 0)
+                    ea = m.IAdd(ea, Constant.Int32(indidx.Imm8));
+                Expression ix = binder.EnsureRegister(indidx.XRegister);
+                if (indidx.Scale > 1)
+                    ix = m.IMul(ix, Constant.Int32(indidx.Scale));
+                var load = m.Load(dataWidth, m.IAdd(ea, ix));
+                var tmp = binder.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(load));
+                m.Assign(load, tmp);
+                return tmp;
+            }
             throw new AddressCorrelatedException(
                 addrInstr,
                 "Unimplemented RewriteUnary for operand {0} of type {1}.", 
