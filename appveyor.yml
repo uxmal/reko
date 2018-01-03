@@ -15,4 +15,4 @@ test_script:
 
 artifacts:
   - path: src/WixInstaller/bin/Release/*.msi
-  - name: Reko installer
+    name: Reko installer
