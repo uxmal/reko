@@ -13,10 +13,11 @@ environment:
   reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
 
 after_build:
-  - cmd: for %i in ("%reko_setup%") DO (
-           set filepath=%~dpni
-           move %reko_setup% %filepath%%APPVEYOR_REPO_COMMIT%.msi
-         )
+  - ps: >-
+        $filePath = $env:reko_setup
+        $filePathWe = (Split-Path -Path $filePath -Leaf).Split(".")[0];
+        $newPath = $filePathWe + $env:APPVEYOR_REPO_COMMIT + ".msi"
+        Move-Item $filePath $newPath
 
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
