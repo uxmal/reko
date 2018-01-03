@@ -214,6 +214,55 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        public void StrAnls_While_LastResort()
+        {
+            m.Label("head");
+            m.BranchIf(m.Not(m.Fn("next")), "done");
+
+            m.BranchIf(m.Fn("needFullCheck"), "fullCheck");
+
+            m.BranchIf(m.Fn("fastCheckFailed"), "failed");
+            m.SideEffect(m.Fn("calc"));
+            m.Goto("wait");
+
+            m.Label("fullCheck");
+            m.BranchIf(m.Fn("fullCheckFailed"), "failed");
+            m.Goto("wait");
+
+            m.Label("failed");
+            m.SideEffect(m.Fn("throwError"));
+
+            m.Label("wait");
+            m.SideEffect(m.Fn("wait"));
+            m.Goto("head");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(m.Int32(0));
+
+            var sExp =
+@"    while (next())
+    {
+        if (!needFullCheck())
+        {
+            if (fastCheckFailed())
+                goto failed;
+            calc();
+        }
+        else if (fullCheckFailed())
+        {
+failed:
+            throwError();
+        }
+        wait();
+    }
+    finalize();
+    return 0x00;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_BigHeadWhile()
         {
             var r1 = m.Reg32("r1", 1);
