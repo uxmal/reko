@@ -28,6 +28,26 @@ namespace Reko.UnitTests.Structure
 	[TestFixture]
 	public class CompoundConditionCoalescerTests : StructureTestBase
 	{
+		private void RunTest(string sourceFilename, string outFilename)
+		{
+			using (FileUnitTester fut = new FileUnitTester(outFilename))
+			{
+				RewriteProgramMsdos(sourceFilename, Address.SegPtr(0xC00, 0));
+				foreach (Procedure proc in program.Procedures.Values)
+				{
+					proc.Write(false, fut.TextWriter);
+					fut.TextWriter.WriteLine();
+
+					CompoundConditionCoalescer ccc = new CompoundConditionCoalescer(proc);
+					ccc.Transform();
+					proc.Write(false, fut.TextWriter);
+					fut.TextWriter.WriteLine("================");
+				}
+
+				fut.AssertFilesEqual();
+			}
+		}
+
 		[Test]
 		public void CccTest1()
 		{
@@ -50,26 +70,6 @@ namespace Reko.UnitTests.Structure
 		public void CccAsciiHex()
 		{
 			RunTest("Fragments/ascii_hex.asm", "Structure/CccAsciiHex.txt");
-		}
-
-		private void RunTest(string sourceFilename, string outFilename)
-		{
-			using (FileUnitTester fut = new FileUnitTester(outFilename))
-			{
-				RewriteProgramMsdos(sourceFilename, Address.SegPtr(0xC00, 0));
-				foreach (Procedure proc in program.Procedures.Values)
-				{
-					proc.Write(false, fut.TextWriter);
-					fut.TextWriter.WriteLine();
-
-					CompoundConditionCoalescer ccc = new CompoundConditionCoalescer(proc);
-					ccc.Transform();
-					proc.Write(false, fut.TextWriter);
-					fut.TextWriter.WriteLine("================");
-				}
-
-				fut.AssertFilesEqual();
-			}
 		}
 	}
 }

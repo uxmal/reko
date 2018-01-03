@@ -25,6 +25,7 @@ using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Structure
 {
@@ -32,6 +33,7 @@ namespace Reko.UnitTests.Structure
     public class StructureAnalysisTests
     {
         private ProcedureBuilder m;
+        private CompoundConditionCoalescer ccc;
 
         [SetUp]
         public void Setup()
@@ -39,10 +41,19 @@ namespace Reko.UnitTests.Structure
             m = new ProcedureBuilder();
         }
 
+        private void Given_CompoundConditionCoalescer(Procedure proc)
+        {
+            ccc = new CompoundConditionCoalescer(proc);
+        }
+
         private void RunTest(string sExp, Procedure proc)
         {
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
+            if (ccc != null)
+            {
+                ccc.Transform();
+            }
             var ps = new StructureAnalysis(new FakeDecompilerEventListener(), new Program(), proc);
             var reg = ps.Execute();
             var sb = new StringWriter();
@@ -1183,6 +1194,46 @@ m.Label("l0800_0585");
 ";
             #endregion
 
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test(Description = "This was failing because the compound condition coalescer required the CFG cleaner" +
+            " to execute first.")]
+        public void StrAnls_Issue_529()
+        {
+            var m = new ProcedureBuilder();
+            var fp = m.Frame.FramePointer;
+            var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            var puts = new ExternalProcedure("puts", new FunctionType());
+
+            m.Label("m4E2");
+            m.Goto("m4F7");
+
+            m.Label("m4E4");
+            m.SideEffect(m.Fn(puts, Constant.String("Hello", StringType.NullTerminated(PrimitiveType.Byte))));
+            m.Return();
+
+            m.Label("m4F7");
+            m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x0808A0A4))), "m502");
+            m.Label("m500");
+            m.Goto("m50D");
+
+            m.Label("m502");
+            m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x0808A0A8))), "m4E4");
+            m.Goto("m50D");
+            m.Label("m50D");
+            m.SideEffect(m.Fn(puts, Constant.String("Goodbye", StringType.NullTerminated(PrimitiveType.Byte))));
+            m.Goto("m4E4");
+
+            var sExp =
+            #region Expected
+@"    if (Mem0[0x0808A0A4:word32] != 0x00 || Mem0[0x0808A0A8:word32] != 0x00)
+        puts(""Goodbye"");
+    puts(""Hello"");
+    return;
+";
+            #endregion
+            Given_CompoundConditionCoalescer(m.Procedure);
             RunTest(sExp, m.Procedure);
         }
     }

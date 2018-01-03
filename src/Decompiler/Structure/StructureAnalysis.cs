@@ -63,10 +63,10 @@ namespace Reko.Structure
 
         public void Structure()
         {
-            var ccc = new CompoundConditionCoalescer(proc);
-            ccc.Transform();
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
+            var ccc = new CompoundConditionCoalescer(proc);
+            ccc.Transform();
             proc.Body = new List<AbsynStatement>();
             var reg = Execute();
             //$REVIEW: yeecch. Should return the statements, and 
