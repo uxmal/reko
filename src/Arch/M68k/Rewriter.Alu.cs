@@ -541,6 +541,14 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteMove16()
+        {
+            orw.DataWidth = PrimitiveType.Word128;
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            src.DataType = PrimitiveType.Word128;
+            var dst = orw.RewriteDst(di.op2, di.Address, PrimitiveType.Word128, src, (s, d) => s);
+        }
+
         public void RewriteMoveq()
         {
             var opSrc = (sbyte) ((M68kImmediateOperand) di.op1).Constant.ToInt32();

@@ -116,6 +116,7 @@ VS Overflow Set 1001 V
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.bvs: RewriteBcc(ConditionCode.OV, FlagM.VF); break;
                 case Opcode.bchg: RewriteBchg(); break;
+                case Opcode.bkpt: RewriteBkpt(); break;
                 case Opcode.bra: RewriteBra(); break;
                 case Opcode.bset: RewriteBclrBset("__bset"); break;
                 case Opcode.bsr: RewriteBsr(); break;
@@ -166,9 +167,11 @@ VS Overflow Set 1001 V
                 case Opcode.lsl: RewriteShift((s, d) => m.Shl(d, s)); break;
                 case Opcode.lsr: RewriteShift((s, d) => m.Shr(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
+                case Opcode.move16: RewriteMove16(); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.movep: RewriteMovep(); break;
                 case Opcode.moveq: RewriteMoveq(); break;
+                case Opcode.moves: RewriteMoves(); break;
                 case Opcode.movem: RewriteMovem(arch.GetRegister); break;
                 case Opcode.muls: RewriteMul((s, d) => m.SMul(d, s)); break;
                 case Opcode.mulu: RewriteMul((s, d) => m.UMul(d, s)); break;

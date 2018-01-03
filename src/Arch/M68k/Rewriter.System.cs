@@ -18,27 +18,31 @@
  */
 #endregion
 
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Machine
+namespace Reko.Arch.M68k
 {
-    /// <summary>
-    /// Classifies a machine instruction according to its behavior.
-    /// </summary>
-    [Flags]
-    public enum InstructionClass
+    public partial class Rewriter
     {
-        None,
-        Linear  = 1,            // ALU instruction, computational (like ADD, SHR, or MOVE)
-        Transfer = 2,           // Control flow transfer like JMP, CALL
-        Conditional = 4,        // Conditionally executed  (like branches or CMOV instructions)
-        Delay = 8,              // The following instruction is in a delay slot.
-        Annul = 16,             // The following instruction is anulled.
-        Invalid = 32,           // The instruction is invalid
-        Call = 64,              // The instruction saves a return address somewhere
-        System = 128,           // Privileged instruction
+        private void RewriteBkpt()
+        {
+            rtlc = RtlClass.Invalid;
+            var src = this.orw.RewriteSrc(di.op1, di.Address);
+            m.SideEffect(host.PseudoProcedure("__bkpt", VoidType.Instance, src));
+        }
+
+        private void RewriteMoves()
+        {
+            rtlc = RtlClass.System;
+            var src = this.orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, di.dataWidth, src, (s, d) =>
+                host.PseudoProcedure("__moves", VoidType.Instance, s));
+        }
     }
 }

@@ -368,7 +368,11 @@ namespace Reko.Arch.M68k
                 m.Assign(m.Load(dataWidth, r), tmp);
                 return tmp;
             }
-            throw new NotImplementedException("Unimplemented RewriteUnary for operand type " + operand.ToString());
+            throw new AddressCorrelatedException(
+                addrInstr,
+                "Unimplemented RewriteUnary for operand {0} of type {1}.", 
+                operand.ToString(),
+                operand.GetType().Name);
         }
 
         public Expression RewriteMoveDst(MachineOperand opDst, Address addrInstr, PrimitiveType dataWidth, Expression src)

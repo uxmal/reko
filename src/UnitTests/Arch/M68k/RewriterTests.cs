@@ -1379,5 +1379,105 @@ namespace Reko.UnitTests.Arch.M68k
                 "4|L--|N = false",
                 "5|L--|V = false");
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_rtm()
+        {
+            Rewrite(0x06C0);        // rtm d0
+            AssertCode(
+                "0|T--|00010000(2): 5 instructions",
+                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
+                "2|L--|Z = true");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_moves()
+        {
+            Rewrite(0x0EA0, 0x0048);    // moves.w -(a0),d0
+            AssertCode(
+                "0|S--|00010000(4): 3 instructions",
+                "1|L--|a0 = a0 - 2",
+                "2|L--|v4 = __moves(Mem0[a0:word16])",
+                "3|L--|d0 = DPB(d0, v4, 0)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_negx()
+        {
+            Rewrite(0x4036, 0x600A); // negx.b (0A, a6, d6)
+            AssertCode(
+                "0|T--|00010000(2): 5 instructions",
+                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
+                "2|L--|Z = true");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_rte()
+        {
+            Rewrite(0x4E73);    // rte
+            AssertCode(
+                "0|S--|00010000(2): 5 instructions",
+                "1|L--|sr = Mem0[a7:word16]",
+                "2|L--|sp = sp + 2",
+                "3|T--|return XX");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_bkpt()
+        {
+            Rewrite(0x484B);    // bkpt#$03
+            AssertCode(
+               "0|---|00010000(2): 1 instructions",
+               "1|L--|__bkpt(0x03)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_move16()
+        {
+            Rewrite(0xF605, 0x6600, 0xFFF4);    // move16 (a5)+,#$6600FFF4
+            AssertCode(
+               "0|L--|00010000(6): 2 instructions",
+               "1|L--|v3 = Mem0[a5:word128]",
+               "2|L--|a5 = a5 + 16");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_sbcd()
+        {
+            Rewrite(0x8F02);    // sbcd d2,d7
+            AssertCode(
+                "0|T--|00010000(2): 5 instructions",
+                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
+                "2|L--|Z = true");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_fbolt()
+        {
+            Rewrite(0xF684, 0x0678);    // fbolt$00001CCE
+            AssertCode(
+                "0|T--|00010000(2): 5 instructions",
+                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
+                "2|L--|Z = true");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_callm()
+        {
+            Rewrite(0x06EE, 0x0000, 0x0486); // callm#$00,$0486(a6)
+            AssertCode(
+                "0|T--|00010000(2): 5 instructions",
+                "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
+                "2|L--|Z = true");
+        }
     }
 }
