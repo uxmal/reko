@@ -10,13 +10,15 @@ build:
   verbosity: normal
 
 environment:
-  reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
+  reko_setup: src/WixInstaller/bin/Release/*.msi
 
 after_build:
   - ps: >-
+        $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
         $filePath = $env:reko_setup;
         $filePathWe = (Split-Path -Path $filePath -Leaf).Split(".")[0];
-        $newPath = $filePathWe + "-" + $env:APPVEYOR_REPO_COMMIT + ".msi";
+        $newPath = $filePathWe + "-" + $shortHash + ".msi";
+        "$filePath -> $newPath";
         Move-Item $filePath $newPath;
 
 test_script:
