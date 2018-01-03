@@ -5,14 +5,25 @@ init:
 
 configuration: Release
 
+reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
+
 build:
   project: src/Reko-decompiler.sln
   verbosity: normal
 
+environment:
+  reko_setup: $(reko_setup)
+
+build_success:
+  - cmd: for %i in ("%reko_setup%") DO (
+           set filepath=%~dpni
+           move %reko_setup% %filepath%%APPVEYOR_REPO_COMMIT%.msi
+         )
+
 test_script:
-  - nunit-console-x86.exe ./src/tools/c2xml/bin/$(configuration)/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
-  - nunit-console-x86.exe ./src/UnitTests/bin/$(configuration)/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+  - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
+  - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%CONFIGURATION%/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
 
 artifacts:
-  - path: src/WixInstaller/bin/$(configuration)/*.msi
+  - path: $(reko_setup)
     name: Reko installer
