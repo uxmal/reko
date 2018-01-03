@@ -12,3 +12,7 @@ build:
 test_script:
   - nunit-console-x86.exe ./src/tools/c2xml/bin/Release/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
   - nunit-console-x86.exe ./src/UnitTests/bin/Release/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+
+artifacts:
+  - path: src/WixInstaller/bin/Release/*.msi
+  - name: Reko installer
