@@ -117,6 +117,7 @@
         <File Source="$(var.RT11.TargetPath)" />
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
         <File Source="$(var.SegaGenesis.TargetPath)" />
+        <File Source="$(var.SegaGenesis.ProjectDir)SegaGenesis.xml" />
         <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.SysV.ProjectDir)lp32.xml" />
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
