@@ -1426,116 +1426,115 @@ void process_aux_info_file(Eq_156 o0, word32 o2)
 	strcat();
 	ptr32 sp_23 = (char *) fp - 0x00F8 - ((word32) o0 + 0x0A & ~0x07);
 	word32 l2_222 = 0x00;
-l00013074:
-	bool Z_270;
-	word32 o0_107;
-	access();
-	if (sp_23 == 0x61)
+	while (true)
 	{
-		word32 l3_256 = globals->dw2B760;
-		if (l3_256 != 0x02)
-		{
-			shortpath(0x00, sp_23 + 0x60);
-			xstrerror(l3_256);
-			o0_107 = 0x00017300;
-			goto l000131F0;
-		}
-		if (o2 != 0x00)
-		{
-			notice(94928, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
-			return;
-		}
-		Z_270 = cond(0x01);
-	}
-	else
-		Z_270 = cond(l2_222);
-	Eq_156 o1_102;
-	word32 l0_101;
-	word32 l2_119;
-	if (!Z_270)
-	{
-		gen_aux_info_file(o0);
-		if (o0 == 0x00)
-		{
-			globals->dw27F20 = globals->dw27F20 + 0x01;
-			return;
-		}
+		bool Z_270;
+		word32 o0_107;
 		access();
 		if (sp_23 == 0x61)
 		{
+			word32 l3_256 = globals->dw2B760;
+			if (l3_256 != 0x02)
+			{
+				shortpath(0x00, sp_23 + 0x60);
+				xstrerror(l3_256);
+				o0_107 = 0x00017300;
+				goto l000131F0;
+			}
+			if (o2 != 0x00)
+			{
+				notice(94928, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
+				return;
+			}
+			Z_270 = cond(0x01);
+		}
+		else
+			Z_270 = cond(l2_222);
+		Eq_156 o1_102;
+		word32 l0_101;
+		word32 l2_119;
+		if (!Z_270)
+		{
+			gen_aux_info_file(o0);
+			if (o0 == 0x00)
+			{
+				globals->dw27F20 = globals->dw27F20 + 0x01;
+				return;
+			}
+			access();
+			if (sp_23 == 0x61)
+			{
+				l2_119 = globals->dw2B760;
+				l0_101 = 0x00017300;
+				o1_102 = sp_23 + 0x60;
+				goto l000131D0;
+			}
+		}
+		stat();
+		if (sp_23 == 0x61)
+		{
 			l2_119 = globals->dw2B760;
-			l0_101 = 0x00017300;
+			l0_101 = 0x00017328;
 			o1_102 = sp_23 + 0x60;
 			goto l000131D0;
 		}
-	}
-	stat();
-	if (sp_23 == 0x61)
-	{
-		l2_119 = globals->dw2B760;
-		l0_101 = 0x00017328;
-		o1_102 = sp_23 + 0x60;
-		goto l000131D0;
-	}
-	Eq_288 l0_124 = fp->tFFFFFF98;
-	if (l0_124 == 0x00)
-		;
-	else
-	{
-		if (o2 == 0x00)
+		Eq_288 l0_124 = fp->tFFFFFF98;
+		if (l0_124 == 0x00)
+			break;
+		if (o2 != 0x00)
 		{
-			int32 l7_204 = fp->dwFFFFFFA8;
-			stat();
-			if (o0 == ~0x00)
+l00013218:
+			open();
+			if (sp_23 == 0x61)
 			{
-				l2_119 = globals->dw2B760;
-				l0_101 = 0x00017328;
-				o1_102 = o0;
-l000131D0:
-				shortpath(0x00, o1_102);
-				xstrerror(l2_119);
-				o0_107 = l0_101;
-l000131F0:
-				notice(o0_107, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
+				word32 l2_143 = globals->dw2B760;
+				shortpath(0x00, sp_23 + 0x60);
+				xstrerror(l2_143);
+				notice(0x00017358, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 			}
-			int32 o0_218 = fp->dwFFFFFFA8;
-			if (o0_218 - l7_204 > 0x00)
+			word32 l0_172;
+			word32 l2_170;
+			xmalloc((word32) l0_124 + 0x01);
+			*((word32) l0_124 + ((word32) l0_124 + 0x01)) = 0x00;
+			safe_read(sp_23 + 0x60, (word32) l0_124 + 0x01, l0_124);
+			if (sp_23 + 0x60 - l0_124 != 0x00)
 			{
-				l2_222 = 0x01;
-				goto l00013074;
+				l2_170 = globals->dw2B760;
+				l0_172 = 0x00017390;
 			}
-		}
-		open();
-		if (sp_23 == 0x61)
-		{
-			word32 l2_143 = globals->dw2B760;
+			else
+			{
+				close();
+				if (sp_23 == 0x60)
+					return;
+				l2_170 = globals->dw2B760;
+				l0_172 = 0x000173C0;
+			}
 			shortpath(0x00, sp_23 + 0x60);
-			xstrerror(l2_143);
-			notice(0x00017358, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
-		}
-		word32 l0_172;
-		word32 l2_170;
-		xmalloc((word32) l0_124 + 0x01);
-		*((word32) l0_124 + ((word32) l0_124 + 0x01)) = 0x00;
-		safe_read(sp_23 + 0x60, (word32) l0_124 + 0x01, l0_124);
-		if (sp_23 + 0x60 - l0_124 != 0x00)
-		{
-			l2_170 = globals->dw2B760;
-			l0_172 = 0x00017390;
-		}
-		else
-		{
+			xstrerror(l2_170);
+			notice(l0_172, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
+			free();
 			close();
-			if (sp_23 == 0x60)
-				return;
-			l2_170 = globals->dw2B760;
-			l0_172 = 0x000173C0;
+			return;
 		}
-		shortpath(0x00, sp_23 + 0x60);
-		xstrerror(l2_170);
-		notice(l0_172, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
-		free();
-		close();
+		int32 l7_204 = fp->dwFFFFFFA8;
+		stat();
+		if (o0 == ~0x00)
+		{
+			l2_119 = globals->dw2B760;
+			l0_101 = 0x00017328;
+			o1_102 = o0;
+l000131D0:
+			shortpath(0x00, o1_102);
+			xstrerror(l2_119);
+			o0_107 = l0_101;
+l000131F0:
+			notice(o0_107, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
+		}
+		int32 o0_218 = fp->dwFFFFFFA8;
+		if (o0_218 - l7_204 <= 0x00)
+			goto l00013218;
+		l2_222 = 0x01;
 	}
 }
 

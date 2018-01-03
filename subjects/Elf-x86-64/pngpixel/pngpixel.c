@@ -506,173 +506,173 @@ void main(Eq_278 * rsi, word32 edi, word64 r13, Eq_281 * fs)
 			ptr64 rbp_427;
 			png_start_read_image();
 			int32 dwLoc68_450 = 0x00;
-l0000000000401673:
-			int32 eax_480 = (word32) (uint64) dwLoc68_450;
-			if (eax_480 >= dwLoc6C)
+			while (true)
 			{
-l000000000040167F:
-				*(rbp_427 - 0x40) = 0x00;
-				word64 rsp_496;
-				word64 rbp_497;
-				byte SCZO_498;
-				word32 edi_499;
-				word64 rsi_500;
-				word64 rax_501;
-				struct Eq_655 * fs_502;
-				word32 eax_503;
-				byte SZO_504;
-				byte C_505;
-				byte Z_506;
-				word64 rdi_507;
-				word32 esi_508;
-				word32 ecx_509;
-				word64 rcx_510;
-				word32 edx_511;
-				word64 rdx_512;
-				word64 r13_513;
-				word64 r9_514;
-				word64 r8_515;
-				byte SO_516;
-				byte cl_517;
-				byte al_518;
-				byte dil_519;
-				png_free();
-				word64 rsp_524;
-				word64 rbp_525;
-				byte SCZO_526;
-				word32 edi_527;
-				word64 rsi_528;
-				word64 rax_529;
-				struct Eq_680 * fs_530;
-				word32 eax_531;
-				byte SZO_532;
-				byte C_533;
-				byte Z_534;
-				word64 rdi_535;
-				word32 esi_536;
-				word32 ecx_537;
-				word64 rcx_538;
-				word32 edx_539;
-				word64 rdx_540;
-				word64 r13_541;
-				word64 r9_542;
-				word64 r8_543;
-				byte SO_544;
-				byte cl_545;
-				byte al_546;
-				byte dil_547;
-				png_destroy_info_struct();
-l00000000004016DE:
-				word64 rsp_201;
-				byte SCZO_203;
-				word32 edi_204;
-				word64 rsi_205;
-				word64 rax_206;
-				word32 eax_208;
-				byte SZO_209;
-				byte C_210;
-				byte Z_211;
-				word64 rdi_212;
-				word32 esi_213;
-				word32 ecx_214;
-				word64 rcx_215;
-				word32 edx_216;
-				word64 rdx_217;
-				word64 r13_218;
-				word64 r9_219;
-				word64 r8_220;
-				byte SO_221;
-				byte cl_222;
-				byte al_223;
-				byte dil_224;
-				png_destroy_read_struct();
-l000000000040175D:
-				if ((*(rbp_123 - 0x08) ^ fs->qw0028) != 0x00)
-					__stack_chk_fail();
-				return;
-			}
-			word32 dwLoc5C_588;
-			word32 dwLoc58_587;
-			word32 dwLoc64_586;
-			word32 dwLoc60_585;
-			if ((word32) (uint64) dwLoc78 == 0x01)
-			{
-				word32 eax_707;
-				if (dwLoc68_450 > 0x01)
-					eax_707 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc68_450)) >> 0x01))))) - 0x01);
-				else
-					eax_707 = 0x07;
-				word32 eax_745;
-				uint32 edx_741 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (eax_707 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450) + 0x01)) >> 0x01)))))))))))) & 0x07))) + (word32) ((uint64) dwLoc88));
-				if (dwLoc68_450 > 0x01)
-					eax_745 = (word32) (uint64) ((word32) (uint64) (0x07 - dwLoc68_450) >> 0x01);
-				else
-					eax_745 = 0x03;
-				if ((word32) (uint64) (word32) (uint64) (edx_741 >> (byte) ((uint64) eax_745)) == 0x00)
-					goto l000000000040166F;
-				word32 eax_830;
-				dwLoc60_585 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_450 & 0x01) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450) + 0x01)) >> 0x01))))))))) & 0x07);
-				dwLoc64_586 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_450 & 0x01) == 0x00) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_450) >> 0x01))))))))) & 0x07);
-				dwLoc58_587 = (word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc68_450)) >> 0x01)))));
-				if (dwLoc68_450 > 0x02)
-					eax_830 = (word32) (uint64) (word32) (uint64) (0x08 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450) - 0x01)) >> 0x01)))));
-				else
-					eax_830 = 0x08;
-				dwLoc5C_588 = eax_830;
-			}
-			else
-			{
-				dwLoc60_585 = 0x00;
-				dwLoc64_586 = 0x00;
-				dwLoc58_587 = 0x01;
-				dwLoc5C_588 = 0x01;
-			}
-			uint32 dwLoc54_603 = (word32) (uint64) dwLoc64_586;
-			while (dwLoc54_603 < (word32) ((uint64) dwLoc84))
-			{
-				int32 eax_633 = puts("png_read_row");
-				word64 rsp_639;
-				byte SCZO_641;
-				word32 edi_642;
-				word64 rsi_643;
-				word64 rax_644;
-				struct Eq_171 * fs_645;
-				word32 eax_646;
-				byte SZO_647;
-				byte C_648;
-				byte Z_649;
-				word64 rdi_650;
-				word32 esi_651;
-				word32 ecx_652;
-				word64 rcx_653;
-				word32 edx_654;
-				word64 rdx_655;
-				word64 r13_656;
-				word64 r9_657;
-				word64 r8_658;
-				byte SO_659;
-				byte cl_660;
-				byte al_661;
-				byte dil_662;
-				png_read_row();
-				if ((uint64) dwLoc54_603 == rax_78)
+				int32 eax_480 = (word32) (uint64) dwLoc68_450;
+				if (eax_480 >= dwLoc6C)
+					break;
+				word32 dwLoc5C_588;
+				word32 dwLoc58_587;
+				word32 dwLoc64_586;
+				word32 dwLoc60_585;
+				if ((word32) (uint64) dwLoc78 == 0x01)
 				{
-					uint32 dwLoc50_677 = (word32) (uint64) dwLoc60_585;
-					while (dwLoc50_677 < (word32) ((uint64) dwLoc88))
-					{
-						if ((uint64) dwLoc50_677 == rax_71)
-						{
-							rbp_427 = print_pixel((byte) rax_127, fs_645);
-							goto l000000000040167F;
-						}
-						dwLoc50_677 = dwLoc50_677 + (word32) ((uint64) dwLoc58_587);
-					}
+					word32 eax_707;
+					if (dwLoc68_450 > 0x01)
+						eax_707 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc68_450)) >> 0x01))))) - 0x01);
+					else
+						eax_707 = 0x07;
+					word32 eax_745;
+					uint32 edx_741 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (eax_707 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450))) & 0x01)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450) + 0x01)) >> 0x01)))))))))))) & 0x07))) + (word32) ((uint64) dwLoc88));
+					if (dwLoc68_450 > 0x01)
+						eax_745 = (word32) (uint64) ((word32) (uint64) (0x07 - dwLoc68_450) >> 0x01);
+					else
+						eax_745 = 0x03;
+					if ((word32) (uint64) (word32) (uint64) (edx_741 >> (byte) ((uint64) eax_745)) == 0x00)
+						goto l000000000040166F;
+					word32 eax_830;
+					dwLoc60_585 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68_450 & 0x01) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450) + 0x01)) >> 0x01))))))))) & 0x07);
+					dwLoc64_586 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc68_450 & 0x01) == 0x00) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x03 - (word32) ((uint64) ((word32) ((uint64) dwLoc68_450) >> 0x01))))))))) & 0x07);
+					dwLoc58_587 = (word32) (uint64) (word32) (uint64) (0x01 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x07 - dwLoc68_450)) >> 0x01)))));
+					if (dwLoc68_450 > 0x02)
+						eax_830 = (word32) (uint64) (word32) (uint64) (0x08 >> (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68_450) - 0x01)) >> 0x01)))));
+					else
+						eax_830 = 0x08;
+					dwLoc5C_588 = eax_830;
 				}
-				dwLoc54_603 = dwLoc54_603 + (word32) ((uint64) dwLoc5C_588);
-			}
+				else
+				{
+					dwLoc60_585 = 0x00;
+					dwLoc64_586 = 0x00;
+					dwLoc58_587 = 0x01;
+					dwLoc5C_588 = 0x01;
+				}
+				uint32 dwLoc54_603 = (word32) (uint64) dwLoc64_586;
+				while (dwLoc54_603 < (word32) ((uint64) dwLoc84))
+				{
+					int32 eax_633 = puts("png_read_row");
+					word64 rsp_639;
+					byte SCZO_641;
+					word32 edi_642;
+					word64 rsi_643;
+					word64 rax_644;
+					struct Eq_171 * fs_645;
+					word32 eax_646;
+					byte SZO_647;
+					byte C_648;
+					byte Z_649;
+					word64 rdi_650;
+					word32 esi_651;
+					word32 ecx_652;
+					word64 rcx_653;
+					word32 edx_654;
+					word64 rdx_655;
+					word64 r13_656;
+					word64 r9_657;
+					word64 r8_658;
+					byte SO_659;
+					byte cl_660;
+					byte al_661;
+					byte dil_662;
+					png_read_row();
+					if ((uint64) dwLoc54_603 == rax_78)
+					{
+						uint32 dwLoc50_677 = (word32) (uint64) dwLoc60_585;
+						while (dwLoc50_677 < (word32) ((uint64) dwLoc88))
+						{
+							if ((uint64) dwLoc50_677 == rax_71)
+							{
+								rbp_427 = print_pixel((byte) rax_127, fs_645);
+								goto l000000000040167F;
+							}
+							dwLoc50_677 = dwLoc50_677 + (word32) ((uint64) dwLoc58_587);
+						}
+					}
+					dwLoc54_603 = dwLoc54_603 + (word32) ((uint64) dwLoc5C_588);
+				}
 l000000000040166F:
-			dwLoc68_450 = dwLoc68_450 + 0x01;
-			goto l0000000000401673;
+				dwLoc68_450 = dwLoc68_450 + 0x01;
+			}
+l000000000040167F:
+			*(rbp_427 - 0x40) = 0x00;
+			word64 rsp_496;
+			word64 rbp_497;
+			byte SCZO_498;
+			word32 edi_499;
+			word64 rsi_500;
+			word64 rax_501;
+			struct Eq_655 * fs_502;
+			word32 eax_503;
+			byte SZO_504;
+			byte C_505;
+			byte Z_506;
+			word64 rdi_507;
+			word32 esi_508;
+			word32 ecx_509;
+			word64 rcx_510;
+			word32 edx_511;
+			word64 rdx_512;
+			word64 r13_513;
+			word64 r9_514;
+			word64 r8_515;
+			byte SO_516;
+			byte cl_517;
+			byte al_518;
+			byte dil_519;
+			png_free();
+			word64 rsp_524;
+			word64 rbp_525;
+			byte SCZO_526;
+			word32 edi_527;
+			word64 rsi_528;
+			word64 rax_529;
+			struct Eq_680 * fs_530;
+			word32 eax_531;
+			byte SZO_532;
+			byte C_533;
+			byte Z_534;
+			word64 rdi_535;
+			word32 esi_536;
+			word32 ecx_537;
+			word64 rcx_538;
+			word32 edx_539;
+			word64 rdx_540;
+			word64 r13_541;
+			word64 r9_542;
+			word64 r8_543;
+			byte SO_544;
+			byte cl_545;
+			byte al_546;
+			byte dil_547;
+			png_destroy_info_struct();
+l00000000004016DE:
+			word64 rsp_201;
+			byte SCZO_203;
+			word32 edi_204;
+			word64 rsi_205;
+			word64 rax_206;
+			word32 eax_208;
+			byte SZO_209;
+			byte C_210;
+			byte Z_211;
+			word64 rdi_212;
+			word32 esi_213;
+			word32 ecx_214;
+			word64 rcx_215;
+			word32 edx_216;
+			word64 rdx_217;
+			word64 r13_218;
+			word64 r9_219;
+			word64 r8_220;
+			byte SO_221;
+			byte cl_222;
+			byte al_223;
+			byte dil_224;
+			png_destroy_read_struct();
+l000000000040175D:
+			if ((*(rbp_123 - 0x08) ^ fs->qw0028) != 0x00)
+				__stack_chk_fail();
+			return;
 		}
 		word64 rsp_921;
 		word64 rbp_922;
