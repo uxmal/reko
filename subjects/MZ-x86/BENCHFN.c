@@ -703,6 +703,8 @@ void _fseek(Eq_426 * ds, Eq_1182 Eq_426::*wArg02, word16 wArg04, word16 wArg06, 
 		int16 ax_81 = (int16) (ds->*wArg02).b0004;
 		word16 dx_85;
 		word16 ax_86 = _lseek((byte) ax_81, ds, ax_81, wArg04, wArg06, (byte) wArg08, out dx_85);
+		if (dx_85 != ~0x00 || ax_86 != ~0x00)
+			;
 	}
 }
 
@@ -819,40 +821,36 @@ cui16 _isatty(int16 wArg02)
 // 0800:0904: void _setvbuf(Register (ptr Eq_426) ds, Stack (memptr (ptr Eq_426) Eq_1182) wArg02, Stack Eq_882 wArg04, Stack ci16 wArg06, Stack cu16 wArg08)
 void _setvbuf(Eq_426 * ds, Eq_1182 Eq_426::*wArg02, Eq_882 wArg04, ci16 wArg06, cu16 wArg08)
 {
-	if ((ds->*wArg02).ptr000E == wArg02 && (wArg06 <= 0x02 && wArg08 <= 0x7FFF))
+	if ((ds->*wArg02).ptr000E != wArg02 || (wArg06 > 0x02 || wArg08 > 0x7FFF))
+		return;
+	if (ds->w04AC == 0x00 && &Eq_426::t0352 == wArg02)
+		ds->w04AC = 0x01;
+	else if (ds->w04AA == 0x00 && &Eq_426::t0342 == wArg02)
+		ds->w04AA = 0x01;
+	if ((ds->*wArg02).w0000 != 0x00)
+		_fseek(ds, wArg02, 0x00, 0x00, 0x01);
+	if (((ds->*wArg02).w0002 & 0x04) != 0x00)
+		_free(ds, (ds->*wArg02).t0008);
+	(ds->*wArg02).w0002 = (ds->*wArg02).w0002 & ~0x0C;
+	(ds->*wArg02).w0006 = 0x00;
+	(ds->*wArg02).t0008 = &(ds->*wArg02).b0004 + 0x01;
+	(ds->*wArg02).t000A = &(ds->*wArg02).b0004 + 0x01;
+	if (wArg06 != 0x02 && true)
 	{
-		if (ds->w04AC == 0x00 && &Eq_426::t0352 == wArg02)
-			ds->w04AC = 0x01;
-		else if (ds->w04AA == 0x00 && &Eq_426::t0342 == wArg02)
-			ds->w04AA = 0x01;
-		if ((ds->*wArg02).w0000 != 0x00)
-			_fseek(ds, wArg02, 0x00, 0x00, 0x01);
-		if (((ds->*wArg02).w0002 & 0x04) != 0x00)
-			_free(ds, (ds->*wArg02).t0008);
-		(ds->*wArg02).w0002 = (ds->*wArg02).w0002 & ~0x0C;
-		(ds->*wArg02).w0006 = 0x00;
-		(ds->*wArg02).t0008 = &(ds->*wArg02).b0004 + 0x01;
-		(ds->*wArg02).t000A = &(ds->*wArg02).b0004 + 0x01;
-		if (wArg06 == 0x02 || false)
-			return;
 		ds->w0234 = 0x09D6;
-		if (wArg04 != 0x00)
+		if (wArg04 == 0x00)
 		{
-l0800_09B7:
-			(ds->*wArg02).t000A = wArg04;
-			(ds->*wArg02).t0008 = wArg04;
-			(ds->*wArg02).w0006 = wArg08;
-			if (wArg06 == 0x01)
-				(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x08;
-			return;
-		}
-		Eq_882 ax_121 = _malloc(ds, wArg08);
-		wArg04 = ax_121;
-		if (ax_121 != 0x00)
-		{
+			Eq_882 ax_121 = _malloc(ds, wArg08);
+			wArg04 = ax_121;
+			if (ax_121 == 0x00)
+				return;
 			(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x04;
-			goto l0800_09B7;
 		}
+		(ds->*wArg02).t000A = wArg04;
+		(ds->*wArg02).t0008 = wArg04;
+		(ds->*wArg02).w0006 = wArg08;
+		if (wArg06 == 0x01)
+			(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x08;
 	}
 }
 
@@ -1181,6 +1179,8 @@ l0800_0E8D:
 	{
 		(ds->*wArg04).t000A = (word32) (ds->*wArg04).t000A + 0x01;
 		ds->*((ds->*wArg04).t000A - 0x01) = bArg02;
+		if (((ds->*wArg04).w0002 & 0x08) == 0x00 || bArg02 != 0x0A && bArg02 != 0x0D || _fflush(ds, wArg04) == 0x00)
+			;
 		return;
 	}
 	(ds->*wArg04).w0000 = (ds->*wArg04).w0000 - 0x01;

@@ -51,26 +51,23 @@ void fn0001116C(Eq_76 * r2, word32 * * r4)
 void fn000111C4(DWORD r2)
 {
 	ui32 r8_7 = globals->dw13030;
-	if (r8_7 != 0x00)
+	if (r8_7 != 0x00 && r8_7 != 0xB064)
+		globals->dw13034 = ~r8_7;
+	else
 	{
-		if (r8_7 != 0xB064)
-		{
-			globals->dw13034 = ~r8_7;
-			return;
-		}
+		word32 sp_20;
+		word32 ra_21;
+		word32 r8_22;
+		word32 r9_23;
+		uint32 r2_24;
+		COREDLL.dll!Ordinal_2696();
+		ui32 r8_32 = r2_24 >> 0x10 ^ r2_24 + 0xFFFF;
+		ui32 dwLoc0C_33 = r8_32;
+		if (r8_32 == 0x00)
+			dwLoc0C_33 = 0xB064;
+		globals->dw13030 = dwLoc0C_33;
+		globals->dw13034 = ~dwLoc0C_33;
 	}
-	word32 sp_20;
-	word32 ra_21;
-	word32 r8_22;
-	word32 r9_23;
-	uint32 r2_24;
-	COREDLL.dll!Ordinal_2696();
-	ui32 r8_32 = r2_24 >> 0x10 ^ r2_24 + 0xFFFF;
-	ui32 dwLoc0C_33 = r8_32;
-	if (r8_32 == 0x00)
-		dwLoc0C_33 = 0xB064;
-	globals->dw13030 = dwLoc0C_33;
-	globals->dw13034 = ~dwLoc0C_33;
 }
 
 // 00011278: void fn00011278(Register Eq_71 r4, Stack word32 dwArg00)
@@ -214,13 +211,10 @@ code * fn0001152C(code * r2, word32 dwArg00)
 					realloc(r8_10, dwLoc18_100);
 					sp_111 = fp + ~0x3B;
 				}
-				if (sp_111->t0014 == 0x00)
+				if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
 				{
-					if ((word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
-					{
-						sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
-						sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
-					}
+					sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
+					sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
 				}
 			}
 			if (sp_111->t0014 == 0x00)

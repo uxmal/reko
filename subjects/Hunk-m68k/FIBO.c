@@ -1633,11 +1633,7 @@ Eq_3622 fn00002454(Eq_399 dwArg04, Eq_399 dwArg08, Eq_399 dwArg0C, Eq_725 dwArg1
 				goto l00002550;
 			}
 			if (dwArg0C - dwArg04 < 0x00 || dwArg10 - dwArg08 <= 0x00)
-			{
-l00002550:
-				d0_115.u0 = 0x00;
-				return d0_115;
-			}
+				goto l00002550;
 		}
 		goto l00002550;
 	}
@@ -1661,7 +1657,9 @@ l00002550:
 		word32 d2_81;
 		word32 d1_83;
 		*d1Out = fn00002558(dwArg04, dwArg08, dwArg10, out d1_80, out d2_81);
-		goto l00002550;
+l00002550:
+		d0_115.u0 = 0x00;
+		return d0_115;
 	}
 }
 
@@ -2029,7 +2027,12 @@ void fn00002C28(Eq_725 d0, Eq_725 d1, int32 d7, byte * * a1, byte * a5, byte * a
 	Eq_4536 d4_140 = 0x00;
 	Eq_725 d5_1223 = 0x00;
 	if (*dwArg08 == 0x00)
+	{
+l00003C2A:
+		if (d5_1223 != ~0x00 || a7_149->dw003C != 0x00)
+			;
 		return;
+	}
 l00002C4A:
 	Eq_4547 d3_165;
 	Eq_4548 d3_150 = 0x00;
@@ -2128,7 +2131,7 @@ l00002C4A:
 l00003C20:
 		if (d3_165 != 0x00 && *a4_146 != 0x00)
 			goto l00002C4A;
-		return;
+		goto l00003C2A;
 	}
 	a7_149->b0048 = 0x69;
 	a7_149->b0049 = 0x00;

@@ -1622,11 +1622,7 @@ Eq_3565 fn000023B8(Eq_835 dwArg04, Eq_835 dwArg08, Eq_725 * dwArg0C, Eq_82 dwArg
 				goto l000024B4;
 			}
 			if (dwArg0C - dwArg04 < 0x00 || dwArg10 - dwArg08 <= 0x00)
-			{
-l000024B4:
-				d0_115.u0 = 0x00;
-				return d0_115;
-			}
+				goto l000024B4;
 		}
 		goto l000024B4;
 	}
@@ -1650,7 +1646,9 @@ l000024B4:
 		word32 d2_81;
 		word32 d1_83;
 		*d1Out = fn000024BC(dwArg04, dwArg08, dwArg10, out d1_80, out d2_81);
-		goto l000024B4;
+l000024B4:
+		d0_115.u0 = 0x00;
+		return d0_115;
 	}
 }
 

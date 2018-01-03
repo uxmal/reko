@@ -2494,6 +2494,11 @@ void fn1929(word16 af, byte b, cu8 c, byte d, cu8 e, Eq_12 * ix, word16 wArg11, 
 	fn02F4(DPB(af, d - a - (e - a < 0x00), 8), b, c, wArg11, ix, out c_40, out b_41, out hl_42);
 	byte l_29 = (byte) wArg11;
 	byte v17_46 = ix->bFFFFFFD9;
+	if (v17_46 == 0x00 && (v17_46 | l_29) == 0x00)
+	{
+		if (ix->bFFFFFFD9 == 0x00 || l_29 == 0x00)
+			;
+	}
 }
 
 // 1BA4: void fn1BA4(Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register (ptr Eq_5578) ix, Stack word16 wArg00, Stack word16 wArg10, Stack word16 wArg1D, Stack word16 wArg1F)

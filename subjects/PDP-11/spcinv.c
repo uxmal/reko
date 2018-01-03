@@ -168,9 +168,7 @@ l0370:
 		r0_101 = fn0998(r0_235, r1_231, r3_232, r4_233, r5_234, pc, bArg00, out r1_110, out r2_237, out r3_115, out r4, out r5);
 		if (0x1178 - r4 != 0x00)
 			break;
-		if (globals->w0F12 != 0x00)
-			continue;
-		if (globals->w0F02 != 0x00)
+		if (globals->w0F12 != 0x00 || globals->w0F02 != 0x00)
 			continue;
 		if (true)
 		{

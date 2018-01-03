@@ -1547,11 +1547,7 @@ Eq_3395 fn000023F8(Eq_692 dwArg04, Eq_692 dwArg08, byte * dwArg0C, Eq_687 dwArg1
 				goto l000024F4;
 			}
 			if (dwArg0C - dwArg04 < 0x00 || dwArg10 - dwArg08 <= 0x00)
-			{
-l000024F4:
-				d0_115.u0 = 0x00;
-				return d0_115;
-			}
+				goto l000024F4;
 		}
 		goto l000024F4;
 	}
@@ -1575,7 +1571,9 @@ l000024F4:
 		word32 d2_81;
 		word32 d1_83;
 		*d1Out = fn000024FC(dwArg04, dwArg08, dwArg10, out d1_80, out d2_81);
-		goto l000024F4;
+l000024F4:
+		d0_115.u0 = 0x00;
+		return d0_115;
 	}
 }
 

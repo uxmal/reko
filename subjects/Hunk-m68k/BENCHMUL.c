@@ -1762,11 +1762,7 @@ Eq_4306 fn000026B8(Eq_715 dwArg04, Eq_715 dwArg08, Eq_750 * dwArg0C, Eq_705 dwAr
 				goto l000027B4;
 			}
 			if (dwArg0C - dwArg04 < 0x00 || dwArg10 - dwArg08 <= 0x00)
-			{
-l000027B4:
-				d0_115.u0 = 0x00;
-				return d0_115;
-			}
+				goto l000027B4;
 		}
 		goto l000027B4;
 	}
@@ -1790,7 +1786,9 @@ l000027B4:
 		word32 d2_81;
 		word32 d1_83;
 		*d1Out = fn000027BC(dwArg04, dwArg08, dwArg10, out d1_80, out d2_81);
-		goto l000027B4;
+l000027B4:
+		d0_115.u0 = 0x00;
+		return d0_115;
 	}
 }
 

@@ -61,18 +61,17 @@ void __start(Eq_37 * ra, word32 dwArg00)
 void deregister_tm_clones()
 {
 	word32 r2_8 = globals->dw10AA4;
-	if (r2_8 != globals->ptr10AA8 + 2692)
+	if (r2_8 == globals->ptr10AA8 + 2692 || __gmon_start__ == null)
+		;
+	else
 	{
-		if (__gmon_start__ != null)
-		{
-			word32 sp_19;
-			word32 r28_20;
-			word32 r25_21;
-			word32 r4_22;
-			word32 r2_23;
-			word32 ra_24;
-			__gmon_start__();
-		}
+		word32 sp_19;
+		word32 r28_20;
+		word32 r25_21;
+		word32 r4_22;
+		word32 r2_23;
+		word32 ra_24;
+		__gmon_start__();
 	}
 }
 
@@ -81,18 +80,17 @@ void register_tm_clones()
 {
 	int32 r5_10 = globals->dw10AA4 - (globals->ptr10AA8 + 2692);
 	Eq_81 r2_12 = r5_10 >> 0x02 >> 0x1F;
-	if ((word32) r2_12 + (r5_10 >> 0x02) >> 0x01 != 0x00)
+	if ((word32) r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00 || __gmon_start__ == null)
+		;
+	else
 	{
-		if (__gmon_start__ != null)
-		{
-			word32 sp_23;
-			word32 r28_24;
-			word32 r25_25;
-			word32 r4_26;
-			word32 r5_27;
-			word32 r2_28;
-			__gmon_start__();
-		}
+		word32 sp_23;
+		word32 r28_24;
+		word32 r25_25;
+		word32 r4_26;
+		word32 r5_27;
+		word32 r2_28;
+		__gmon_start__();
 	}
 }
 

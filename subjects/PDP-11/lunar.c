@@ -1851,16 +1851,16 @@ Eq_4140 * fn15F2(Eq_2 r0, Eq_4140 * r1, word16 pc)
 // 1658: Register (ptr Eq_4140) fn1658(Register (ptr Eq_4140) r1, Register (ptr Eq_4190) r3, Stack word16 wArg02, Register out ptr16 r3Out)
 Eq_4140 * fn1658(Eq_4140 * r1, Eq_4190 * r3, word16 wArg02, ptr16 & r3Out)
 {
-	if (wArg02 == 0x00)
+	if (wArg02 != 0x00 || 0x30 - *r3 != 0x00)
 	{
-		if (0x30 - *r3 == 0x00)
-		{
-			r1->t0000.u0 = 0x20;
-			return &r1->b0001;
-		}
+		r1->t0000 = *r3;
+		return &r1->b0001;
 	}
-	r1->t0000 = *r3;
-	return &r1->b0001;
+	else
+	{
+		r1->t0000.u0 = 0x20;
+		return &r1->b0001;
+	}
 }
 
 // 1674: void fn1674(Register Eq_2 r0, Register (ptr Eq_4140) r1, Register word16 pc)
