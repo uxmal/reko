@@ -16,8 +16,10 @@ after_build:
   - ps: >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
         $filePath = $env:reko_setup;
-        $filePathWe = (Split-Path -Path $filePath -Leaf).Split(".")[0];
-        $newPath = $filePathWe + "-" + $shortHash + ".msi";
+        $item = Get-Item $filePath;
+        $newPath = $item.DirectoryName;
+        $newPath+= [System.IO.Path]::DirectorySeparatorChar;
+        $newPath+= $item.BaseName + "-" + $shortHash + ".msi";
         "$filePath -> $newPath";
         Move-Item $filePath $newPath;
 
