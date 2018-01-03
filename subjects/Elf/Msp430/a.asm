@@ -1180,6 +1180,8 @@ l4B1E:
 	add.w	r15,r15
 	cmp.w	#0000,0222(r15)
 	jnz	4B46
+
+l4B30:
 	add.w	#FFFF,&020C
 	mov.w	&020C,r15
 	add.w	r15,r15
@@ -1188,6 +1190,8 @@ l4B1E:
 	add.w	r15,r15
 	cmp.w	#0000,0222(r15)
 	jz	4B30
+
+l4B46:
 	mov.w	#0222,r13
 	mov.w	&020C,r14
 	add.w	r14,r14
@@ -1219,6 +1223,8 @@ l4B1E:
 	mov.w	0002(r15),r15
 	cmp.w	r15,r14
 	jz	4BB0
+
+l4B98:
 	mov.w	&020C,r15
 	add.w	r15,r15
 	add.w	r15,r15
@@ -1229,9 +1235,21 @@ l4B1E:
 
 l4BAE:
 	mov.w	@sp+,pc
-4BB0 1F 42 0C 02 0F 5F 0F 5F 0F 5F 0F 5F 1E 42 0C 02 .B..._._._._.B..
-4BC0 0E 5E 0E 5E 0E 5E 0E 5E 1E 4E 26 02 9F 4E 02 00 .^.^.^.^.N&..N..
-4BD0 26 02 E2 3F                                     &..?           
+
+l4BB0:
+	mov.w	&020C,r15
+	add.w	r15,r15
+	add.w	r15,r15
+	add.w	r15,r15
+	add.w	r15,r15
+	mov.w	&020C,r14
+	add.w	r14,r14
+	add.w	r14,r14
+	add.w	r14,r14
+	add.w	r14,r14
+	mov.w	0226(r14),r14
+	mov.w	0002(r14),0226(r15)
+	jmp	4B98
 
 ;; vListInitialise: 4BD4
 vListInitialise proc

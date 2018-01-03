@@ -1,1075 +1,2017 @@
-// fn00004000
-// Return size: 0
 void fn00004000()
-fn00004000_entry:
-	// succ:  l00004000
-l00004000:
-	sp = fp
-	Mem0[0x0120:ptr16] = 0x5A80
-	r15 = 0x5B78
-	r14 = 0x0200
-	r13 = 0x021C
-	VNZC = cond(r13 - r14)
-	branch Test(EQ,Z) l00004020
-	// succ:  l00004016 l00004020
-l00004016:
-	v8 = Mem0[r15:byte]
-	r15 = r15 + 1
-	v9 = Mem0[r14:byte]
-	v9 = v8
-	Mem0[r14:byte] = v9
-	r14 = r14 + 0x0001
-	VNZC = cond(r14)
-	VNZC = cond(r14 - r13)
-	branch Test(UGE,C) l00004016
-	// succ:  l00004020 l00004016
-l00004020:
-	r15 = 0x021C
-	r13 = 0x09B4
-	VNZC = cond(r13 - r15)
-	branch Test(EQ,Z) l00004036
-	// succ:  l0000402C l00004036
-l0000402C:
-	v11 = Mem0[r15:byte]
-	v11 = 0x00
-	Mem0[r15:byte] = v11
-	r15 = r15 + 0x0001
-	VNZC = cond(r15)
-	VNZC = cond(r15 - r13)
-	branch Test(UGE,C) l0000402C
-	// succ:  l00004036 l0000402C
-l00004036:
-	pc = 0x414C
-	pc = 0x403E
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 fn00004000_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+fn00004000_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00004000:
+	Mem2[0x0120:ptr16] = 0x5A80
+	word20 r15_27 = 0x5B78
+	word20 r14_26 = 0x0200
+	word20 r13_5 = 0x021C
+	branch r13_5 == r14_26 l00004020
+// DataOut: r13 r14 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00004016:
+	Mem32[r14_26:byte] = Mem2[r15_27:byte]
+	r15_27 = r15_27 + 1
+	r14_26 = r14_26 + 0x0001
+	branch r14_26 >=u r13_5 l00004016
+// DataOut: r13 r14 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r14:<invalid> r13:0x021C
+
+l00004020:
+	word20 r15_11 = 0x021C
+	word20 r13_12 = 0x09B4
+	branch r13_12 == r15_11 l00004036
+// DataOut: r13 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r14:<invalid> r13:0x021C
+
+l0000402C:
+	Mem22[r15_11:byte] = 0x00
+	r15_11 = r15_11 + 0x0001
+	branch r15_11 >=u r13_12 l0000402C
+// DataOut: r13 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r14:<invalid> r13:0x09B4
+
+l00004036:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r14:<invalid> r13:0x09B4
 
 
-// task_idle
-// Return size: 0
+
 void task_idle()
-task_idle_entry:
-	// succ:  l4048
-l4048:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 task_idle_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+task_idle_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4048:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// task_1
-// Return size: 0
+
 void task_1()
-task_1_entry:
-	// succ:  l4096
-l4096:
-	sp = fp
-	sp = sp - 0x0002
-	VNZC = cond(sp)
-	call 0x481E (retsize: 2;)
-	v5 = Mem0[sp:word16]
-	v5 = r15
-	Mem0[sp:word16] = v5
-	// succ:  l40A0
-l40A0:
-	Mem0[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x01
-	VNZC = cond(Mem0[0x0031:ptr16])
-	r15 = 0x0058
-	call 0x43A2 (retsize: 2;)
-	r14 = 0x01F4
-	r15 = sp
-	call 0x461A (retsize: 2;)
-	goto l40A0
-	// succ:  l40A0
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 task_1_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+task_1_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l4096:
+	word20 sp_4
+	byte VNZC_5
+	word20 r15_6
+	word20 r14_7
+	call 0x481E (retsize: 2; depth: 4)
+		uses: sp_2,VNZC_3
+		defs: r14_7,r15_6,sp_4,VNZC_5
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l40A0:
+	Mem13[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x01
+	word20 sp_16
+	byte VNZC_17
+	word20 r15_18
+	word20 r14_19
+	call 0x43A2 (retsize: 2; depth: 4)
+		uses: r14_7,r15_15,sp_4,VNZC_14,wLoc02_11
+		defs: r14_19,r15_18,sp_16,VNZC_17
+	word20 sp_22
+	byte VNZC_23
+	word20 r15_24
+	word20 r14_25
+	call 0x461A (retsize: 2; depth: 4)
+		uses: r14_20,r15_21,sp_16,VNZC_17,wLoc02_11
+		defs: r14_25,r15_24,sp_22,VNZC_23
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 r15:fp - 0x0002 r14:0x01F4 -2(fp):r15
+// LocalsOut: fp(40)
 
 
-// task_2
-// Return size: 0
+
 void task_2()
-task_2_entry:
-	// succ:  l40BC
-l40BC:
-	sp = fp
-	sp = sp - 0x0002
-	VNZC = cond(sp)
-	call 0x481E (retsize: 2;)
-	v5 = Mem0[sp:word16]
-	v5 = r15
-	Mem0[sp:word16] = v5
-	// succ:  l40C6
-l40C6:
-	Mem0[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x02
-	VNZC = cond(Mem0[0x0031:ptr16])
-	r15 = 0x0059
-	call 0x43A2 (retsize: 2;)
-	r14 = 0x00FA
-	r15 = sp
-	call 0x461A (retsize: 2;)
-	goto l40C6
-	// succ:  l40C6
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 task_2_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+task_2_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l40BC:
+	word20 sp_4
+	byte VNZC_5
+	word20 r15_6
+	word20 r14_7
+	call 0x481E (retsize: 2; depth: 4)
+		uses: sp_2,VNZC_3
+		defs: r14_7,r15_6,sp_4,VNZC_5
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l40C6:
+	Mem13[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x02
+	word20 sp_16
+	byte VNZC_17
+	word20 r15_18
+	word20 r14_19
+	call 0x43A2 (retsize: 2; depth: 4)
+		uses: r14_7,r15_15,sp_4,VNZC_14,wLoc02_11
+		defs: r14_19,r15_18,sp_16,VNZC_17
+	word20 sp_22
+	byte VNZC_23
+	word20 r15_24
+	word20 r14_25
+	call 0x461A (retsize: 2; depth: 4)
+		uses: r14_20,r15_21,sp_16,VNZC_17,wLoc02_11
+		defs: r14_25,r15_24,sp_22,VNZC_23
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 r15:fp - 0x0002 r14:0x00FA -2(fp):r15
+// LocalsOut: fp(40)
 
 
-// task_3
-// Return size: 0
+
 void task_3()
-task_3_entry:
-	// succ:  l40E2
-l40E2:
-	sp = fp
-	sp = sp - 0x0002
-	VNZC = cond(sp)
-	call 0x481E (retsize: 2;)
-	v5 = Mem0[sp:word16]
-	v5 = r15
-	Mem0[sp:word16] = v5
-	// succ:  l40EC
-l40EC:
-	Mem0[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x04
-	VNZC = cond(Mem0[0x0031:ptr16])
-	r15 = 0x005A
-	call 0x43A2 (retsize: 2;)
-	r14 = 0x0019
-	r15 = sp
-	call 0x461A (retsize: 2;)
-	goto l40EC
-	// succ:  l40EC
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 task_3_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+task_3_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l40E2:
+	word20 sp_4
+	byte VNZC_5
+	word20 r15_6
+	word20 r14_7
+	call 0x481E (retsize: 2; depth: 4)
+		uses: sp_2,VNZC_3
+		defs: r14_7,r15_6,sp_4,VNZC_5
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l40EC:
+	Mem13[0x0031:ptr16] = Mem0[0x0031:ptr16] ^ 0x04
+	word20 sp_16
+	byte VNZC_17
+	word20 r15_18
+	word20 r14_19
+	call 0x43A2 (retsize: 2; depth: 4)
+		uses: r14_7,r15_15,sp_4,VNZC_14,wLoc02_11
+		defs: r14_19,r15_18,sp_16,VNZC_17
+	word20 sp_22
+	byte VNZC_23
+	word20 r15_24
+	word20 r14_25
+	call 0x461A (retsize: 2; depth: 4)
+		uses: r14_20,r15_21,sp_16,VNZC_17,wLoc02_11
+		defs: r14_25,r15_24,sp_22,VNZC_23
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 r15:fp - 0x0002 r14:0x0019 -2(fp):r15
+// LocalsOut: fp(40)
 
 
-// main
-// Return size: 0
+
 void main()
-main_entry:
-	// succ:  l414C
-l414C:
-	sp = fp
-	sp = 0x0A00
-	Mem0[0x0120:ptr16] = 0x5A80
-	Mem0[0x0056:ptr16] = 0xFFE0
-	Mem0[0x0057:ptr16] = 0x0007
-	Mem0[0x0032:ptr16] = 0x0007
-	Mem0[0x0031:ptr16] = 0x0007
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+main_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l414C:
+	Mem1[0x0120:ptr16] = 0x5A80
+	Mem2[0x0056:ptr16] = 0xFFE0
+	Mem3[0x0057:ptr16] = 0x0007
+	Mem4[0x0032:ptr16] = 0x0007
+	Mem5[0x0031:ptr16] = 0x0007
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// msp430_compute_modulator_bits
-// Return size: 0
+
 void msp430_compute_modulator_bits()
-msp430_compute_modulator_bits_entry:
-	// succ:  l420E
-l420E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 msp430_compute_modulator_bits_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+msp430_compute_modulator_bits_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l420E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// init_uart_isr
-// Return size: 0
+
 void init_uart_isr()
-init_uart_isr_entry:
-	// succ:  l42CC
-l42CC:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 init_uart_isr_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+init_uart_isr_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l42CC:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// getchar
-// Return size: 2
-void getchar()
+
+void getchar(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: VNZC r14 r15 sp
+// Preserved:
 getchar_entry:
-	// succ:  l4380
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4380:
-	sp = fp
-	sp = sp - 0x0002
-	VNZC = cond(sp)
-	r14 = 0x0064
-	r15 = sp
-	call 0x43E4 (retsize: 2;)
-	VNZC = cond(r15 - 0x0000)
-	branch Test(EQ,Z) l4396
-	// succ:  l4390 l4396
-l4390:
-	v7 = Mem0[sp:byte]
-	r15 = v7
+	word20 sp_6
+	byte VNZC_7
+	word20 r14_8
+	word20 r15_9
+	bool Z_10
+	call 0x43E4 (retsize: 2; depth: 4)
+		uses: r14_4,r15_5,sp_2,VNZC_3
+		defs: r14_8,r15_9,sp_6,VNZC_7,Z_10
+	branch fp == 0x0002 l4396
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4396:
-	r15 = 0xFFFF
-	sp = sp + 0x0002
-	VNZC = cond(sp)
-	v8 = Mem0[sp:word16]
-	sp = sp + 2
 	return
-	// succ:  getchar_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 r14:0x0064 r15:fp - 0x0002
+
 getchar_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r14:0x0064 r15:0xFFFF
+
+l4390:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 r14:0x0064 r15:fp - 0x0002
 
 
-// uart_putchar_isr_mode
-// Return size: 2
-void uart_putchar_isr_mode()
+
+void uart_putchar_isr_mode(word20 r15, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r15
+// LiveOut:
+// Trashed: sp
+// Preserved:
 uart_putchar_isr_mode_entry:
-	// succ:  l439C
+// DataOut: r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l439C:
-	sp = fp
-	Mem0[0x0200:ptr16] = r15
-	v4 = Mem0[sp:word16]
-	sp = sp + 2
+	Mem3[0x0200:ptr16] = r15
 	return
-	// succ:  uart_putchar_isr_mode_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 uart_putchar_isr_mode_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// putchar
-// Return size: 0
+
 void putchar()
-putchar_entry:
-	// succ:  l43A2
-l43A2:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 putchar_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+putchar_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l43A2:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// x_getchar
-// Return size: 2
-void x_getchar()
+
+void x_getchar(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: VNZC r13 r14 r15 sp
+// Preserved:
 x_getchar_entry:
-	// succ:  l43E4
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l43E4:
-	sp = fp
-	r13 = r14
-	r14 = r15
-	r15 = 0x021C
-	call 0x4EF0 (retsize: 2;)
-	VNZC = cond(r15 - 0x0000)
-	branch Test(EQ,Z) l43F8
-	// succ:  l43F4 l43F8
-l43F4:
-	r15 = 0x0001
-	v8 = Mem0[sp:word16]
-	sp = sp + 2
-	return
-	// succ:  x_getchar_exit
+	word20 sp_7
+	word20 r14_8
+	word20 r13_9
+	word20 r15_10
+	byte VNZC_11
+	bool Z_12
+	call 0x4EF0 (retsize: 2; depth: 2)
+		uses: r13_3,r14_5,r15_6,sp_1
+		defs: r13_9,r14_8,r15_10,sp_7,VNZC_11,Z_12
+	branch r15_10 == 0x0000 l43F8
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l43F8:
-	r15 = 0x0000
-	v9 = Mem0[sp:word16]
-	sp = sp + 2
 	return
-	// succ:  x_getchar_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r13:r14 r14:r15 r15:021C
+
+l43F4:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r13:r14 r14:r15 r15:021C
+
 x_getchar_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r13:r14 r14:r15 r15:<invalid>
 
 
-// x_putchar
-// Return size: 0
+
 void x_putchar()
-x_putchar_entry:
-	// succ:  l43FC
-l43FC:
-	sp = fp
-	sp = sp - 0x0002
-	VNZC = cond(sp)
-	v5 = Mem0[sp:byte]
-	v5 = r15
-	Mem0[sp:byte] = v5
-	r13 = r14
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 x_putchar_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+x_putchar_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l43FC:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vRxISR
-// Return size: 0
+
 void vRxISR()
-vRxISR_entry:
-	// succ:  l4450
-l4450:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vRxISR_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vRxISR_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4450:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTxISR
-// Return size: 0
+
 void vTxISR()
-vTxISR_entry:
-	// succ:  l4480
-l4480:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTxISR_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTxISR_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4480:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xTaskCreate
-// Return size: 0
+
 void xTaskCreate()
-xTaskCreate_entry:
-	// succ:  l44B4
-l44B4:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xTaskCreate_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xTaskCreate_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l44B4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskDelete
-// Return size: 0
+
 void vTaskDelete()
-vTaskDelete_entry:
-	// succ:  l45B6
-l45B6:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskDelete_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskDelete_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l45B6:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskDelayUntil
-// Return size: 0
+
 void vTaskDelayUntil()
-vTaskDelayUntil_entry:
-	// succ:  l461A
-l461A:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskDelayUntil_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskDelayUntil_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l461A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskDelay
-// Return size: 0
+
 void vTaskDelay()
-vTaskDelay_entry:
-	// succ:  l469E
-l469E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskDelay_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskDelay_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l469E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskStartScheduler
-// Return size: 2
-void vTaskStartScheduler()
+
+void vTaskStartScheduler(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: VNZC sp
+// Preserved:
 vTaskStartScheduler_entry:
-	// succ:  l4702
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4702:
-	sp = fp
-	VNZC = cond(0x0202 - 0x0000)
-	branch Test(NE,Z) l470A
-	// succ:  l4708 l470A
-l4708:
-	v5 = Mem0[sp:word16]
-	sp = sp + 2
-	return
-	// succ:  vTaskStartScheduler_exit
+	branch 0x0202 != 0x0000 l470A
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l470A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4708:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 vTaskStartScheduler_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// vTaskEndScheduler
-// Return size: 0
+
 void vTaskEndScheduler()
-vTaskEndScheduler_entry:
-	// succ:  l4736
-l4736:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskEndScheduler_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskEndScheduler_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4736:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskSuspendAll
-// Return size: 0
+
 void vTaskSuspendAll()
-vTaskSuspendAll_entry:
-	// succ:  l4742
-l4742:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskSuspendAll_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskSuspendAll_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4742:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xTaskResumeAll
-// Return size: 0
+
 void xTaskResumeAll()
-xTaskResumeAll_entry:
-	// succ:  l475C
-l475C:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xTaskResumeAll_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xTaskResumeAll_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l475C:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xTaskGetTickCount
-// Return size: 0
+
 void xTaskGetTickCount()
-xTaskGetTickCount_entry:
-	// succ:  l481E
-l481E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xTaskGetTickCount_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xTaskGetTickCount_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l481E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// uxTaskGetNumberOfTasks
-// Return size: 0
+
 void uxTaskGetNumberOfTasks()
-uxTaskGetNumberOfTasks_entry:
-	// succ:  l4834
-l4834:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 uxTaskGetNumberOfTasks_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+uxTaskGetNumberOfTasks_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4834:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskIncrementTick
-// Return size: 0
+
 void vTaskIncrementTick()
-vTaskIncrementTick_entry:
-	// succ:  l484A
-l484A:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskIncrementTick_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskIncrementTick_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l484A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskPlaceOnEventList
-// Return size: 0
+
 void vTaskPlaceOnEventList()
-vTaskPlaceOnEventList_entry:
-	// succ:  l48DA
-l48DA:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vTaskPlaceOnEventList_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vTaskPlaceOnEventList_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l48DA:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xTaskRemoveFromEventList
-// Return size: 0
+
 void xTaskRemoveFromEventList()
-xTaskRemoveFromEventList_entry:
-	// succ:  l4930
-l4930:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xTaskRemoveFromEventList_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xTaskRemoveFromEventList_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4930:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvIdleTask
-// Return size: 0
+
 void prvIdleTask()
-prvIdleTask_entry:
-	// succ:  l49AC
-l49AC:
-	sp = fp
-	call 0x4A5E (retsize: 2;)
-	VNZC = cond(0x0222 - 0x0002)
-	branch Test(UGE,C) l49AC
-	// succ:  l49B6 l49AC
-l49B6:
-	call 0x523A (retsize: 2;)
-	goto l49AC
-	// succ:  l49AC
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvIdleTask_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvIdleTask_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l49AC:
+	word20 sp_2
+	byte VNZC_3
+	bool C_4
+	call 0x4A5E (retsize: 2; depth: 2)
+		uses: sp_1
+		defs: C_4,sp_2,VNZC_3
+	branch 0x0222 >=u 0x0002 l49AC
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l49B6:
+	word20 sp_7
+	byte VNZC_8
+	bool C_9
+	call 0x523A (retsize: 2; depth: 2)
+		uses: C_6,sp_2,VNZC_5
+		defs: C_9,sp_7,VNZC_8
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvInitialiseTCBVariables
-// Return size: 0
+
 void prvInitialiseTCBVariables()
-prvInitialiseTCBVariables_entry:
-	// succ:  l49BE
-l49BE:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvInitialiseTCBVariables_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvInitialiseTCBVariables_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l49BE:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvInitialiseTaskLists
-// Return size: 0
+
 void prvInitialiseTaskLists()
-prvInitialiseTaskLists_entry:
-	// succ:  l4A12
-l4A12:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvInitialiseTaskLists_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvInitialiseTaskLists_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4A12:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvCheckTasksWaitingTermination
-// Return size: 0
+
 void prvCheckTasksWaitingTermination()
-prvCheckTasksWaitingTermination_entry:
-	// succ:  l4A5E
-l4A5E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvCheckTasksWaitingTermination_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvCheckTasksWaitingTermination_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4A5E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvAllocateTCBAndStack
-// Return size: 0
+
 void prvAllocateTCBAndStack()
-prvAllocateTCBAndStack_entry:
-	// succ:  l4AC2
-l4AC2:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvAllocateTCBAndStack_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvAllocateTCBAndStack_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4AC2:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvDeleteTCB
-// Return size: 0
+
 void prvDeleteTCB()
-prvDeleteTCB_entry:
-	// succ:  l4B02
-l4B02:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvDeleteTCB_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvDeleteTCB_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4B02:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vTaskSwitchContext
-// Return size: 2
-void vTaskSwitchContext()
+
+void vTaskSwitchContext(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: VNZC r13 r14 r15 sp
+// Preserved:
 vTaskSwitchContext_entry:
-	// succ:  l4B18
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4B18:
-	sp = fp
-	VNZC = cond(0x0210 - 0x0000)
-	branch Test(NE,Z) l4BAE
-	// succ:  l4B1E l4BAE
+	branch 0x0210 != 0x0000 l4BAE
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4B1E:
-	r15 = 0x020C
+	branch Mem0[0x020C * 2 * 2 * 2 * 2 + 546:word16] != 0x0000 l4B46
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
+l4B30:
+	Mem89[0x020C:ptr16] = Mem0[0x020C:ptr16] + 0xFFFF
+	branch Mem89[0x020C * 2 * 2 * 2 * 2 + 546:word16] == 0x0000 l4B30
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:0x020C + 0x020C + (0x020C + 0x020C) + ((0x020C + 0x020C) + (0x020C + 0x020C)) + (((0x020C + 0x020C) + (0x020C + 0x020C)) + ((0x020C + 0x020C) + (0x020C + 0x020C)))
+// LocalsOut: fp(40)
+
+l4B46:
+	word20 r13_24 = 0x0222
+	Mem42[0x020C * 2 * 2 * 2 * 2 + r13_24 + 4:word16] = Mem0[Mem0[0x020C * 2 * 2 * 2 * 2 + r13_24 + 4:word16] + 2:word16]
+	branch Mem42[0x020C * 2 * 2 * 2 * 2 + r13_24 + 4:word16] == Mem42[((((0x020C * 2) * 2) * 2) * 2 + r13_24) + 2:word16] l4BB0
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:0x020C + 0x020C + (0x020C + 0x020C) + ((0x020C + 0x020C) + (0x020C + 0x020C)) + (((0x020C + 0x020C) + (0x020C + 0x020C)) + ((0x020C + 0x020C) + (0x020C + 0x020C)))
+// LocalsOut: fp(40)
+
+l4BB0:
+	Mem88[0x020C * 2 * 2 * 2 * 2 + 550:word16] = Mem42[Mem42[0x020C * 2 * 2 * 2 * 2 + 550:word16] + 2:word16]
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r13:0x0222 r14:<invalid>
+// LocalsOut: fp(40)
+
+l4B98:
+	Mem71[0x0202:ptr16] = Mem42[Mem42[0x020C * 2 * 2 * 2 * 2 + 550:word16] + 6:word16]
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r13:0x0222 r14:<invalid>
+// LocalsOut: fp(40)
+
 l4BAE:
-	v6 = Mem0[sp:word16]
-	sp = sp + 2
 	return
-	// succ:  vTaskSwitchContext_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r15:<invalid> r13:0x0222 r14:<invalid>
+
 vTaskSwitchContext_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r15:<invalid> r13:0x0222 r14:<invalid>
 
 
-// vListInitialise
-// Return size: 0
+
 void vListInitialise()
-vListInitialise_entry:
-	// succ:  l4BD4
-l4BD4:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vListInitialise_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vListInitialise_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4BD4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vListInitialiseItem
-// Return size: 2
-void vListInitialiseItem()
+
+void vListInitialiseItem(word20 r15, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r15
+// LiveOut:
+// Trashed: sp
+// Preserved:
 vListInitialiseItem_entry:
-	// succ:  l4C00
+// DataOut: r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4C00:
-	sp = fp
-	v4 = Mem0[r15 + 8:word16]
-	v4 = 0x0000
-	Mem0[r15 + 8:word16] = v4
-	v5 = Mem0[sp:word16]
-	sp = sp + 2
+	Mem6[r15 + 8:word16] = 0x0000
 	return
-	// succ:  vListInitialiseItem_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 vListInitialiseItem_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// vListInsertEnd
-// Return size: 2
-void vListInsertEnd()
+
+void vListInsertEnd(word20 r14, word20 r15, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r14 r15
+// LiveOut:
+// Trashed: VNZC r12 r13 r15 sp
+// Preserved:
 vListInsertEnd_entry:
-	// succ:  l4C06
+// DataOut: r14 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4C06:
-	sp = fp
-	r12 = r15
-	v5 = Mem0[r15 + 4:word16]
-	r13 = v5
-	v7 = Mem0[r13 + 2:word16]
-	v9 = Mem0[r14 + 2:word16]
-	v9 = v7
-	Mem0[r14 + 2:word16] = v9
-	v10 = Mem0[r15 + 4:word16]
-	v11 = Mem0[r14 + 4:word16]
-	v11 = v10
-	Mem0[r14 + 4:word16] = v11
-	v12 = Mem0[r13 + 2:word16]
-	r15 = v12
-	v13 = Mem0[r15 + 4:word16]
-	v13 = r14
-	Mem0[r15 + 4:word16] = v13
-	v14 = Mem0[r13 + 2:word16]
-	v14 = r14
-	Mem0[r13 + 2:word16] = v14
-	v15 = Mem0[r12 + 4:word16]
-	v15 = r14
-	Mem0[r12 + 4:word16] = v15
-	v16 = Mem0[r14 + 8:word16]
-	v16 = r12
-	Mem0[r14 + 8:word16] = v16
-	v17 = Mem0[r12:word16]
-	v17 = v17 + 0x0001
-	Mem0[r12:word16] = v17
-	VNZC = cond(v17)
-	v19 = Mem0[sp:word16]
-	sp = sp + 2
+	word16 v5_5 = Mem0[r15 + 4:word16]
+	Mem11[r14 + 2:word16] = Mem0[v5_5 + 2:word16]
+	Mem15[r14 + 4:word16] = Mem11[r15 + 4:word16]
+	Mem20[Mem15[v5_5 + 2:word16] + 4:word16] = r14
+	Mem23[v5_5 + 2:word16] = r14
+	Mem26[r15 + 4:word16] = r14
+	Mem29[r14 + 8:word16] = r15
+	Mem32[r15:word16] = Mem29[r15:word16] + 0x0001
 	return
-	// succ:  vListInsertEnd_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 vListInsertEnd_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r12:r15 r13:<invalid> r15:<invalid>
 
 
-// vListInsert
-// Return size: 0
+
 void vListInsert()
-vListInsert_entry:
-	// succ:  l4C32
-l4C32:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vListInsert_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vListInsert_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4C32:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vListRemove
-// Return size: 2
-void vListRemove()
+
+void vListRemove(word20 r15, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r15
+// LiveOut:
+// Trashed: VNZC r13 r14 r15 sp
+// Preserved:
 vListRemove_entry:
-	// succ:  l4C98
+// DataOut: r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4C98:
-	sp = fp
-	r14 = r15
-	v5 = Mem0[r15 + 2:word16]
-	r15 = v5
-	v6 = Mem0[r14 + 4:word16]
-	v7 = Mem0[r15 + 4:word16]
-	v7 = v6
-	Mem0[r15 + 4:word16] = v7
-	v8 = Mem0[r14 + 4:word16]
-	r13 = v8
-	v10 = Mem0[r13 + 2:word16]
-	v10 = r15
-	Mem0[r13 + 2:word16] = v10
-	v11 = Mem0[r14 + 8:word16]
-	r15 = v11
-	v12 = Mem0[r15 + 4:word16]
-	VNZC = cond(v12 - r14)
-	branch Test(NE,Z) l4CBA
-	// succ:  l4CB6 l4CBA
+	word16 v5_5 = Mem0[r15 + 2:word16]
+	Mem10[v5_5 + 4:word16] = Mem0[r15 + 4:word16]
+	word16 v8_11 = Mem10[r15 + 4:word16]
+	Mem15[v8_11 + 2:word16] = v5_5
+	word16 v11_16 = Mem15[r15 + 8:word16]
+	branch Mem15[v11_16 + 4:word16] != r15 l4CBA
+// DataOut: r13 r14 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l4CB6:
-	v15 = Mem0[r15 + 4:word16]
-	v15 = r13
-	Mem0[r15 + 4:word16] = v15
-	// succ:  l4CBA
+	Mem33[v11_16 + 4:word16] = v8_11
+// DataOut: r14 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp r14:r15 r15:<invalid> r13:<invalid>
+// LocalsOut: fp(40)
+
 l4CBA:
-	v16 = Mem0[r14 + 8:word16]
-	v16 = 0x0000
-	Mem0[r14 + 8:word16] = v16
-	v17 = Mem0[r15:word16]
-	v17 = v17 + 0xFFFF
-	Mem0[r15:word16] = v17
-	VNZC = cond(v17)
-	v18 = Mem0[sp:word16]
-	sp = sp + 2
+	Mem23[r15 + 8:word16] = 0x0000
+	Mem26[v11_16:word16] = Mem23[v11_16:word16] + 0xFFFF
 	return
-	// succ:  vListRemove_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r14:r15 r15:<invalid> r13:<invalid>
+
 vListRemove_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r14:r15 r15:<invalid> r13:<invalid>
 
 
-// xQueueCreate
-// Return size: 0
+
 void xQueueCreate()
-xQueueCreate_entry:
-	// succ:  l4CC4
-l4CC4:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xQueueCreate_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xQueueCreate_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4CC4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xQueueSend
-// Return size: 0
+
 void xQueueSend()
-xQueueSend_entry:
-	// succ:  l4D7E
-l4D7E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xQueueSend_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xQueueSend_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4D7E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xQueueSendFromISR
-// Return size: 0
+
 void xQueueSendFromISR()
-xQueueSendFromISR_entry:
-	// succ:  l4E84
-l4E84:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xQueueSendFromISR_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xQueueSendFromISR_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4E84:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xQueueReceive
-// Return size: 0
+
 void xQueueReceive()
-xQueueReceive_entry:
-	// succ:  l4EF0
-l4EF0:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xQueueReceive_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xQueueReceive_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4EF0:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// xQueueReceiveFromISR
-// Return size: 0
+
 void xQueueReceiveFromISR()
-xQueueReceiveFromISR_entry:
-	// succ:  l4FF6
-l4FF6:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xQueueReceiveFromISR_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xQueueReceiveFromISR_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l4FF6:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// uxQueueMessagesWaiting
-// Return size: 0
+
 void uxQueueMessagesWaiting()
-uxQueueMessagesWaiting_entry:
-	// succ:  l5068
-l5068:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 uxQueueMessagesWaiting_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+uxQueueMessagesWaiting_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5068:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vQueueDelete
-// Return size: 0
+
 void vQueueDelete()
-vQueueDelete_entry:
-	// succ:  l507E
-l507E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vQueueDelete_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vQueueDelete_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l507E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvUnlockQueue
-// Return size: 0
+
 void prvUnlockQueue()
-prvUnlockQueue_entry:
-	// succ:  l5092
-l5092:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvUnlockQueue_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvUnlockQueue_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5092:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvIsQueueEmpty
-// Return size: 0
+
 void prvIsQueueEmpty()
-prvIsQueueEmpty_entry:
-	// succ:  l510C
-l510C:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvIsQueueEmpty_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvIsQueueEmpty_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l510C:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvIsQueueFull
-// Return size: 0
+
 void prvIsQueueFull()
-prvIsQueueFull_entry:
-	// succ:  l512E
-l512E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvIsQueueFull_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvIsQueueFull_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l512E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// pvPortMalloc
-// Return size: 0
+
 void pvPortMalloc()
-pvPortMalloc_entry:
-	// succ:  l5156
-l5156:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 pvPortMalloc_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+pvPortMalloc_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5156:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vPortFree
-// Return size: 2
-void vPortFree()
+
+void vPortFree(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: sp
+// Preserved:
 vPortFree_entry:
-	// succ:  l5192
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l5192:
-	sp = fp
-	v3 = Mem0[sp:word16]
-	sp = sp + 2
 	return
-	// succ:  vPortFree_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 vPortFree_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// vPortInitialiseBlocks
-// Return size: 2
-void vPortInitialiseBlocks()
+
+void vPortInitialiseBlocks(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: sp
+// Preserved:
 vPortInitialiseBlocks_entry:
-	// succ:  l5194
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l5194:
-	sp = fp
-	Mem0[0x0216:ptr16] = 0x0000
-	v3 = Mem0[sp:word16]
-	sp = sp + 2
+	Mem2[0x0216:ptr16] = 0x0000
 	return
-	// succ:  vPortInitialiseBlocks_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 vPortInitialiseBlocks_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// pxPortInitialiseStack
-// Return size: 2
-void pxPortInitialiseStack()
+
+void pxPortInitialiseStack(word20 r13, word20 r14, word20 r15, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r13 r14 r15
+// LiveOut:
+// Trashed: VNZC r15 sp
+// Preserved:
 pxPortInitialiseStack_entry:
-	// succ:  l519A
+// DataOut: r13 r14 r15
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l519A:
-	sp = fp
-	v5 = Mem0[r15:word16]
-	v5 = r14
-	Mem0[r15:word16] = v5
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v7 = Mem0[r15:word16]
-	v7 = 0x0008
-	Mem0[r15:word16] = v7
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v8 = Mem0[r15:word16]
-	v8 = 0x4444
-	Mem0[r15:word16] = v8
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v9 = Mem0[r15:word16]
-	v9 = 0x5555
-	Mem0[r15:word16] = v9
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v10 = Mem0[r15:word16]
-	v10 = 0x6666
-	Mem0[r15:word16] = v10
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v11 = Mem0[r15:word16]
-	v11 = 0x7777
-	Mem0[r15:word16] = v11
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v12 = Mem0[r15:word16]
-	v12 = 0x8888
-	Mem0[r15:word16] = v12
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v13 = Mem0[r15:word16]
-	v13 = 0x9999
-	Mem0[r15:word16] = v13
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v14 = Mem0[r15:word16]
-	v14 = 0xAAAA
-	Mem0[r15:word16] = v14
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v15 = Mem0[r15:word16]
-	v15 = 0xBBBB
-	Mem0[r15:word16] = v15
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v16 = Mem0[r15:word16]
-	v16 = 0xCCCC
-	Mem0[r15:word16] = v16
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v17 = Mem0[r15:word16]
-	v17 = 0xDDDD
-	Mem0[r15:word16] = v17
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v18 = Mem0[r15:word16]
-	v18 = 0xEEEE
-	Mem0[r15:word16] = v18
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v20 = Mem0[r15:word16]
-	v20 = r13
-	Mem0[r15:word16] = v20
-	r15 = r15 - 0x0002
-	VNZC = cond(r15)
-	v21 = Mem0[r15:word16]
-	v21 = 0x0000
-	Mem0[r15:word16] = v21
-	v22 = Mem0[sp:word16]
-	sp = sp + 2
+	Mem7[r15:word16] = r14
+	Mem11[r15 - 0x0002:word16] = 0x0008
+	Mem15[r15 - 0x0004:word16] = 0x4444
+	Mem19[r15 - 0x0006:word16] = 0x5555
+	Mem23[r15 - 0x0008:word16] = 0x6666
+	Mem27[r15 - 0x000A:word16] = 0x7777
+	Mem31[r15 - 0x000C:word16] = 0x8888
+	Mem35[r15 - 0x000E:word16] = 0x9999
+	Mem39[r15 - 0x0010:word16] = 0xAAAA
+	Mem43[r15 - 0x0012:word16] = 0xBBBB
+	Mem47[r15 - 0x0014:word16] = 0xCCCC
+	Mem51[r15 - 0x0016:word16] = 0xDDDD
+	Mem55[r15 - 0x0018:word16] = 0xEEEE
+	Mem60[r15 - 0x001A:word16] = r13
+	Mem65[r15 - 0x001C:word16] = 0x0000
 	return
-	// succ:  pxPortInitialiseStack_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 pxPortInitialiseStack_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r15:r15 - 0x7FFE
 
 
-// xPortStartScheduler
-// Return size: 0
-void xPortStartScheduler()
-xPortStartScheduler_entry:
-	// succ:  l520A
-l520A:
-	sp = fp
-	call 0x528E (retsize: 2;)
-	v4 = Mem0[pc + -20494:word16]
-	r12 = v4
-	v6 = Mem0[r12:word16]
-	sp = v6
-	v7 = Mem0[sp:word16]
-	sp = sp + 2
-	r15 = v7
-	v9 = Mem0[pc + -20480:word16]
-	v9 = r15
-	Mem0[pc + -20480:word16] = v9
-	v10 = Mem0[sp:word16]
-	sp = sp + 2
-	r15 = v10
-	v11 = Mem0[sp:word16]
-	sp = sp + 2
-	r14 = v11
-	v13 = Mem0[sp:word16]
-	sp = sp + 2
-	r13 = v13
-	v15 = Mem0[sp:word16]
-	sp = sp + 2
-	r12 = v15
-	v16 = Mem0[sp:word16]
-	sp = sp + 2
-	r11 = v16
-	v18 = Mem0[sp:word16]
-	sp = sp + 2
-	r10 = v18
-	v20 = Mem0[sp:word16]
-	sp = sp + 2
-	r9 = v20
-	v22 = Mem0[sp:word16]
-	sp = sp + 2
-	r8 = v22
-	v24 = Mem0[sp:word16]
-	sp = sp + 2
-	r7 = v24
-	v26 = Mem0[sp:word16]
-	sp = sp + 2
-	r6 = v26
-	v28 = Mem0[sp:word16]
-	sp = sp + 2
-	r5 = v28
-	v30 = Mem0[sp:word16]
-	sp = sp + 2
-	r4 = v30
+
+void xPortStartScheduler(word20 pc)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  pc
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xPortStartScheduler_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+xPortStartScheduler_entry:
+// DataOut: pc
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l520A:
+	word20 sp_2
+	word20 pc_3
+	word20 r12_4
+	word20 r15_5
+	word20 r14_6
+	word20 r13_7
+	word20 r11_8
+	word20 r10_9
+	word20 r9_10
+	word20 r8_11
+	word20 r7_12
+	word20 r6_13
+	word20 r5_14
+	word20 r4_15
+	call 0x528E (retsize: 2; depth: 2)
+		uses: sp_1
+		defs: pc_3,r10_9,r11_8,r12_4,r13_7,r14_6,r15_5,r4_15,r5_14,r6_13,r7_12,r8_11,r9_10,sp_2
+	Mem26[pc_3 + -20480:word16] = Mem0[Mem0[Mem0[pc_3 + -20494:word16]:word16]:word16]
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vPortEndScheduler
-// Return size: 2
-void vPortEndScheduler()
+
+void vPortEndScheduler(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: sp
+// Preserved:
 vPortEndScheduler_entry:
-	// succ:  l5238
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l5238:
-	sp = fp
-	v3 = Mem0[sp:word16]
-	sp = sp + 2
 	return
-	// succ:  vPortEndScheduler_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 vPortEndScheduler_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// vPortYield
-// Return size: 0
+
 void vPortYield()
-vPortYield_entry:
-	// succ:  l523A
-l523A:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vPortYield_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vPortYield_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l523A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// prvSetupTimerInterrupt
-// Return size: 2
-void prvSetupTimerInterrupt()
+
+void prvSetupTimerInterrupt(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: sp
+// Preserved:
 prvSetupTimerInterrupt_entry:
-	// succ:  l528E
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l528E:
-	sp = fp
-	Mem0[0x0160:ptr16] = 0x0000
-	Mem0[0x0160:ptr16] = 0x0100
-	Mem0[0x0160:ptr16] = Mem0[0x0160:ptr16] | 0x0004
-	Mem0[0x0172:ptr16] = 0x0020
-	Mem0[0x0162:ptr16] = 0x0010
-	Mem0[0x0160:ptr16] = Mem0[0x0160:ptr16] | 0x0004
-	Mem0[0x0160:ptr16] = Mem0[0x0160:ptr16] | 0x0010
-	v3 = Mem0[sp:word16]
-	sp = sp + 2
+	Mem2[0x0160:ptr16] = 0x0000
+	Mem3[0x0160:ptr16] = 0x0100
+	Mem4[0x0160:ptr16] = Mem3[0x0160:ptr16] | 0x0004
+	Mem5[0x0172:ptr16] = 0x0020
+	Mem6[0x0162:ptr16] = 0x0010
+	Mem7[0x0160:ptr16] = Mem6[0x0160:ptr16] | 0x0004
+	Mem8[0x0160:ptr16] = Mem7[0x0160:ptr16] | 0x0010
 	return
-	// succ:  prvSetupTimerInterrupt_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 prvSetupTimerInterrupt_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2
 
 
-// prvTickISR
-// Return size: 0
+
 void prvTickISR()
-prvTickISR_entry:
-	// succ:  l52B4
-l52B4:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 prvTickISR_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+prvTickISR_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l52B4:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// printf
-// Return size: 2
-void printf()
+
+void printf(word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: VNZC r13 r14 r15 sp
+// Preserved:
 printf_entry:
-	// succ:  l5308
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(40)
+
 l5308:
-	sp = fp
-	r15 = 0x0002
-	r15 = r15 + sp
-	VNZC = cond(r15)
-	v5 = Mem0[r15:word16]
-	r15 = r15 + 2
-	r14 = v5
-	r13 = r15
-	r15 = 0x43A2
-	call 0x537E (retsize: 2;)
-	v8 = Mem0[sp:word16]
-	sp = sp + 2
+	word20 sp_11
+	word20 r15_12
+	byte VNZC_13
+	word20 r14_14
+	word20 r13_15
+	call 0x537E (retsize: 2; depth: 2)
+		uses: r13_9,r14_8,r15_10,sp_1,VNZC_4
+		defs: r13_15,r14_14,r15_12,sp_11,VNZC_13
 	return
-	// succ:  printf_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 printf_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp + 2 r15:0x43A2 r14:<invalid> r13:fp + 0x0004
 
 
-// PRINT
-// Return size: 0
+
 void PRINT()
-PRINT_entry:
-	// succ:  l531A
-l531A:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 PRINT_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+PRINT_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l531A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// __write_pad
-// Return size: 0
+
 void __write_pad()
-__write_pad_entry:
-	// succ:  l534A
-l534A:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 __write_pad_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+__write_pad_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l534A:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// vuprintf
-// Return size: 0
+
 void vuprintf()
-vuprintf_entry:
-	// succ:  l537E
-l537E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 vuprintf_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+vuprintf_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l537E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// memchr
-// Return size: 0
+
 void memchr()
-memchr_entry:
-	// succ:  l593E
-l593E:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 memchr_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+memchr_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l593E:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// strncpy
-// Return size: 0
+
 void strncpy()
-strncpy_entry:
-	// succ:  l5962
-l5962:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 strncpy_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+strncpy_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5962:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// memcpy
-// Return size: 0
+
 void memcpy()
-memcpy_entry:
-	// succ:  l5994
-l5994:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 memcpy_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+memcpy_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5994:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
 
 
-// memset
-// Return size: 0
+
 void memset()
-memset_entry:
-	// succ:  l5A68
-l5A68:
-	sp = fp
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 memset_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
+memset_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l5A68:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 
 

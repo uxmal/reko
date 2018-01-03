@@ -34,7 +34,9 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Architecture : ProcessorArchitecture
     {
-        public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(5);  // Yep!
+        //$TODO: Reko doesn't handle data types that aren't 1, 2, 4, 8 bytes long.
+        // At some future point we want to handle arbitrary bit sizes
+        public readonly static PrimitiveType Word20 = PrimitiveType.Word32;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Msp430Architecture()
@@ -145,7 +147,7 @@ namespace Reko.Arch.Msp430
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.GpRegisters;
         }
 
         public override string GrfToString(uint grf)
@@ -160,7 +162,7 @@ namespace Reko.Arch.Msp430
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
