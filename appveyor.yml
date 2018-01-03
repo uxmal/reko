@@ -3,12 +3,12 @@ version: 0.7.2.{build}
 init: 
   - git config --global core.autocrlf true 
 
-configuration: Debug
+configuration: Release
 
 build:
   project: src/Reko-decompiler.sln
   verbosity: normal
 
 test_script:
-  - nunit-console-x86.exe ./src/tools/c2xml/bin/Debug/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
-  - nunit-console-x86.exe ./src/UnitTests/bin/Debug/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+  - nunit-console-x86.exe ./src/tools/c2xml/bin/Release/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
+  - nunit-console-x86.exe ./src/UnitTests/bin/Release/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
