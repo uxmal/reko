@@ -41,7 +41,6 @@ namespace Reko.Arch.Microchip.PIC18
 
         internal MachineOperand op1;
         internal MachineOperand op2;
-        internal MachineOperand op3;
 
         /// <summary>
         /// Instantiates a new <see cref="PIC18Instruction"/> with given <see cref="Opcode"/>, execution mode and operands.
@@ -51,7 +50,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="isExecExtend">True if this PIC18 instruction is for extended execution mode.</param>
         /// <param name="ops">Zero, one or two instuction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
-        public PIC18Instruction (Opcode opc, PICExecMode execMode, params MachineOperand[] ops)
+        public PIC18Instruction(Opcode opc, PICExecMode execMode, params MachineOperand[] ops)
         {
             this.Opcode = opc;
             this.ExecMode = execMode;
@@ -62,11 +61,7 @@ namespace Reko.Arch.Microchip.PIC18
                 {
                     op2 = ops[1];
                     if (ops.Length >= 3)
-                    {
-                        op3 = ops[2];
-                        if (ops.Length >= 4)
-                            throw new ArgumentException("Too many operands.", nameof(ops));
-                    }
+                        throw new ArgumentException("Too many operands.", nameof(ops));
                 }
             }
         }
@@ -114,7 +109,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </value>
         public override bool IsValid
         {
-            get { return Opcode == Opcode.invalid; }
+            get { return Opcode != Opcode.invalid; }
         }
 
         /// <summary>
@@ -141,7 +136,6 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 case 0: return op1;
                 case 1: return op2;
-                case 2: return op3;
                 default: return null;
             }
         }
@@ -160,9 +154,7 @@ namespace Reko.Arch.Microchip.PIC18
                     return 0;
                 if (op2 == null)
                     return 1;
-                if (op3 == null)
-                    return 2;
-                return 3;
+                return 2;
             }
         }
 
@@ -171,16 +163,18 @@ namespace Reko.Arch.Microchip.PIC18
             writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
-            writer.Tab();
-            op1.Write(writer, options);
-            if (op2 == null)
-                return;
-            writer.Write(",");
-            op2.Write(writer, options);
-            if (op3 == null)
-                return;
-            writer.Write(",");
-            op3.Write(writer, options);
+            if ((op1 as PIC18OperandImpl).IsVisible)
+            {
+                writer.Tab();
+                op1.Write(writer, options);
+                if (op2 == null)
+                    return;
+                if ((op2 as PIC18OperandImpl).IsVisible)
+                {
+                    writer.Write(",");
+                    op2.Write(writer, options);
+                }
+            }
         }
 
         /// <summary>
@@ -194,39 +188,39 @@ namespace Reko.Arch.Microchip.PIC18
         {
             switch (opcode)
             {
-                case Opcode.daw:
+                case Opcode.DAW:
                     return FlagM.C;
 
-                case Opcode.clrf:
+                case Opcode.CLRF:
                     return FlagM.Z;
 
-                case Opcode.andlw:
-                case Opcode.andwf:
-                case Opcode.comf:
-                case Opcode.iorlw:
-                case Opcode.iorwf:
-                case Opcode.movf:
-                case Opcode.rlncf:
-                case Opcode.rrncf:
-                case Opcode.xorlw:
-                case Opcode.xorwf:
+                case Opcode.ANDLW:
+                case Opcode.ANDWF:
+                case Opcode.COMF:
+                case Opcode.IORLW:
+                case Opcode.IORWF:
+                case Opcode.MOVF:
+                case Opcode.RLNCF:
+                case Opcode.RRNCF:
+                case Opcode.XORLW:
+                case Opcode.XORWF:
                     return FlagM.Z | FlagM.N;
 
-                case Opcode.rlcf:
-                case Opcode.rrcf:
+                case Opcode.RLCF:
+                case Opcode.RRCF:
                     return FlagM.C | FlagM.Z | FlagM.N;
 
-                case Opcode.addlw:
-                case Opcode.addwf:
-                case Opcode.addwfc:
-                case Opcode.decf:
-                case Opcode.incf:
-                case Opcode.negf:
-                case Opcode.reset:
-                case Opcode.subfwb:
-                case Opcode.sublw:
-                case Opcode.subwf:
-                case Opcode.subwfb:
+                case Opcode.ADDLW:
+                case Opcode.ADDWF:
+                case Opcode.ADDWFC:
+                case Opcode.DECF:
+                case Opcode.INCF:
+                case Opcode.NEGF:
+                case Opcode.RESET:
+                case Opcode.SUBFWB:
+                case Opcode.SUBLW:
+                case Opcode.SUBWF:
+                case Opcode.SUBWFB:
                     return FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N;
 
                 default:
@@ -245,32 +239,32 @@ namespace Reko.Arch.Microchip.PIC18
         {
             switch (opcode)
             {
-                case Opcode.addwfc:
-                case Opcode.bc:
-                case Opcode.bnc:
-                case Opcode.rlcf:
-                case Opcode.rrcf:
-                case Opcode.subfwb:
-                case Opcode.subwfb:
+                case Opcode.ADDWFC:
+                case Opcode.BC:
+                case Opcode.BNC:
+                case Opcode.RLCF:
+                case Opcode.RRCF:
+                case Opcode.SUBFWB:
+                case Opcode.SUBWFB:
                     return FlagM.C;
 
-                case Opcode.daw:
+                case Opcode.DAW:
                     return FlagM.C | FlagM.DC;
 
-                case Opcode.bn:
-                case Opcode.bnn:
+                case Opcode.BN:
+                case Opcode.BNN:
                     return FlagM.N;
 
-                case Opcode.bnz:
-                case Opcode.bz:
+                case Opcode.BNZ:
+                case Opcode.BZ:
                     return FlagM.Z;
 
-                case Opcode.bnov:
-                case Opcode.bov:
+                case Opcode.BNOV:
+                case Opcode.BOV:
                     return FlagM.OV;
 
-                case Opcode.@return:
-                case Opcode.retfie:
+                case Opcode.RETURN:
+                case Opcode.RETFIE:
                     return FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N;
 
                 default:
@@ -286,35 +280,35 @@ namespace Reko.Arch.Microchip.PIC18
             classOf = new Dictionary<Opcode, InstructionClass>()
             {
                 { Opcode.invalid, InstructionClass.Invalid },
-                { Opcode.call,    LinkTransfer },
-                { Opcode.rcall,   LinkTransfer },
-                { Opcode.reset,   Transfer },
-                { Opcode.callw,   LinkTransfer },
-                { Opcode.@return, Transfer },
-                { Opcode.retlw,   Transfer },
-                { Opcode.retfie,  Transfer },
-                { Opcode.bra,     Transfer },
-                { Opcode.@goto,   Transfer },
-                { Opcode.decfsz,  CondLinear },
-                { Opcode.incfsz,  CondLinear },
-                { Opcode.infsnz,  CondLinear },
-                { Opcode.dcfsnz,  CondLinear },
-                { Opcode.cpfslt,  CondLinear },
-                { Opcode.cpfseq,  CondLinear },
-                { Opcode.cpfsgt,  CondLinear },
-                { Opcode.tstfsz,  CondLinear },
-                { Opcode.btfss,   CondTransfer },
-                { Opcode.btfsc,   CondTransfer },
-                { Opcode.bz,      CondTransfer },
-                { Opcode.bnz,     CondTransfer },
-                { Opcode.bc,      CondTransfer },
-                { Opcode.bnc,     CondTransfer },
-                { Opcode.bov,     CondTransfer },
-                { Opcode.bnov,    CondTransfer },
-                { Opcode.bn,      CondTransfer },
-                { Opcode.bnn,     CondTransfer },
-                { Opcode.addulnk, Transfer },
-                { Opcode.subulnk, Transfer },
+                { Opcode.CALL,    LinkTransfer },
+                { Opcode.RCALL,   LinkTransfer },
+                { Opcode.RESET,   Transfer },
+                { Opcode.CALLW,   LinkTransfer },
+                { Opcode.RETURN,  Transfer },
+                { Opcode.RETLW,   Transfer },
+                { Opcode.RETFIE,  Transfer },
+                { Opcode.BRA,     Transfer },
+                { Opcode.GOTO,    Transfer },
+                { Opcode.DECFSZ,  CondLinear },
+                { Opcode.INCFSZ,  CondLinear },
+                { Opcode.INFSNZ,  CondLinear },
+                { Opcode.DCFSNZ,  CondLinear },
+                { Opcode.CPFSLT,  CondLinear },
+                { Opcode.CPFSEQ,  CondLinear },
+                { Opcode.CPFSGT,  CondLinear },
+                { Opcode.TSTFSZ,  CondLinear },
+                { Opcode.BTFSS,   CondLinear },
+                { Opcode.BTFSC,   CondLinear },
+                { Opcode.BZ,      CondTransfer },
+                { Opcode.BNZ,     CondTransfer },
+                { Opcode.BC,      CondTransfer },
+                { Opcode.BNC,     CondTransfer },
+                { Opcode.BOV,     CondTransfer },
+                { Opcode.BNOV,    CondTransfer },
+                { Opcode.BN,      CondTransfer },
+                { Opcode.BNN,     CondTransfer },
+                { Opcode.ADDULNK, Transfer },
+                { Opcode.SUBULNK, Transfer },
             };
 
         }

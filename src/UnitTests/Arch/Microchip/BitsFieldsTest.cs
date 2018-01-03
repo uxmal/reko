@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
+using Microchip.Utils;
 
-namespace Microchip.Utils
+namespace Reko.UnitTests.Arch.Microchip
 {
     [TestFixture]
     public class BitsFieldsTests

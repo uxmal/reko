@@ -41,12 +41,21 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets or sets the PIC18 execution mode.
         /// </summary>
-        public PICExecMode ExecMode { get; set; } = PICExecMode.Traditional;
+        public PICExecMode ExecMode
+        {
+            get { return _execMode; }
+            set
+            {
+                if (InstructionSetID != InstructionSetID.PIC18)
+                    _execMode = value;
+            }
+        }
+        private PICExecMode _execMode = PICExecMode.Traditional;
 
         /// <summary>
         /// Gets the PIC instruction-set identifier.
         /// </summary>
-        public InstructionSetID InstructionSetID { get; private set; }
+        public InstructionSetID InstructionSetID { get; }
 
         #endregion
 
@@ -83,21 +92,27 @@ namespace Reko.Arch.Microchip.PIC18
             addrCur = rdr.Address;
             if ((addrCur.Offset & 1) != 0)
                 throw new AddressCorrelatedException(addrCur, $"Attempt to disassemble at odd address : {addrCur.ToString()}.");
+
+            // A PIC18 instruction can be 1, 2 or 3 words long. The 1st word (opcode) determines the actual length of the instruction.
+            
             ushort uInstr;
             if (!rdr.TryReadUInt16(out uInstr))
                 return null;
+            var offset = rdr.Offset;
             try
             {
-                var op = uInstr >> 12;
-                instrCur = opcodesTable[op].Decode(uInstr, this);
+                instrCur = opcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
             }
             catch (Exception ex)
             {
                 throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} code.");
             }
+
+            // If there is no legal instruction, consume only one word and return an Illegal pseudo-instruction.
             if (instrCur == null)
             {
-                return new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur };
+                instrCur = new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur };
+                rdr.Offset = offset + 2; // Consider only the first word of the binary instruction.
             }
             instrCur.Address = addrCur;
             instrCur.Length = (int)(rdr.Address - addrCur);
@@ -109,32 +124,22 @@ namespace Reko.Arch.Microchip.PIC18
         #region Helpers
 
         /// <summary>
-        /// Gets additional instruction's word. Check for consistency (like a NOP instruction) and provides the 12 least-significant bits.
+        /// Gets an additional instruction's word. Used for 2-word or 3-word instructions.
+        /// Check for consistency (NOP-alike format) and provides the 12 least-significant bits.
         /// </summary>
         /// <param name="rdr">The memory reader.</param>
         /// <param name="w">[out] an ushort to fill in.</param>
         /// <returns>
-        /// True if it succeeds, false if it fails.
+        /// True if it succeeds, false if it fails. Reached end of memory or misformed binary word.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown <paramref name="rdr"/> argument is null.</exception>
         private static bool _getAddlWord(EndianImageReader rdr, out ushort w)
         {
             if (rdr == null) throw new ArgumentNullException(nameof(rdr));
-            if (!rdr.TryReadBeUInt16(out w)) return false;
+            if (!rdr.TryReadUInt16(out w)) return false;
             if ((w & 0xF000U) != 0xF000U) return false;
             w &= (ushort)0xFFFU;
             return true;
-        }
-
-        /// <summary>
-        /// Gets an invalid instruction.
-        /// </summary>
-        /// <returns>
-        /// A PIC18Instruction.
-        /// </returns>
-        private PIC18Instruction Invalid()
-        {
-            return new PIC18Instruction(Opcode.invalid, ExecMode);
         }
 
         private abstract class Decoder
@@ -162,13 +167,13 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Invalid instruction.
+        /// Invalid instruction. Return NUL to indicate an invalid instruction.
         /// </summary>
         private class InvalidOpRec : Decoder
         {
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                return dasm.Invalid();
+                return null;
             }
         }
 
@@ -179,7 +184,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             private Opcode opcode;
 
-            public NoOperandOpRec(Opcode opc)
+            public NoOperandOpRec(Opcode opc) 
             {
                 opcode = opc;
             }
@@ -206,7 +211,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (uInstr == 0x00FFU)
                     return new PIC18Instruction(opcode, dasm.ExecMode);
-                return dasm.Invalid();
+                return null;
             }
         }
 
@@ -225,43 +230,19 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED)
-                    return dasm.Invalid();
+                    return null;
                 return new PIC18Instruction(opcode, dasm.ExecMode);
-            }
-        }
-
-        /// <summary>
-        /// Instructions ADDFSR, SUBFSR (PIC18 extended or later).
-        /// </summary>
-        private class FsrArithOpRec : Decoder
-        {
-            private Opcode opcode;
-
-            public FsrArithOpRec(Opcode opc)
-            {
-                opcode = opc;
-            }
-
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
-            {
-                if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED)
-                    return dasm.Invalid();
-                return new PIC18Instruction(opcode, dasm.ExecMode)
-                {
-                    op1 = new PIC18FSRNumOperand((byte)uInstr.Extract(6, 2)),
-                    op2 = new PIC18Immed6Operand((byte)uInstr.Extract(0, 6))
-                };
             }
         }
 
         /// <summary>
         /// Instruction in the form '....-bbba-ffff-ffff' (BTG, BSF, BCF, BTFSS, BTFSC)
         /// </summary>
-        private class MemBitOpRec : Decoder
+        private class MemoryBitAccessWithDestOpRec : Decoder
         {
             private Opcode opcode;
 
-            public MemBitOpRec(Opcode opc)
+            public MemoryBitAccessWithDestOpRec(Opcode opc)
             {
                 opcode = opc;
             }
@@ -270,9 +251,8 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18BankMemoryOperand((byte)uInstr.Extract(0, 8)),
-                    op2 = new PIC18BitNumberOperand((byte)uInstr.Extract(9, 3)),
-                    op3 = new PIC18AccessRAMOperand(uInstr.Extract(8, 1))
+                   
+                    op1 = new PIC18DataBitAccessOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 8), uInstr.Extract(8, 1), (byte)uInstr.Extract(9, 3)),
                 };
             }
         }
@@ -280,11 +260,11 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Instruction in the form '....-...a-ffff-ffff' (MULWF, CPFSLT, CPFSEQ, CPFSGT, SETF, CLRF, NEGF, MOVWF)
         /// </summary>
-        private class MemBankedOpRec : Decoder
+        private class MemoryAccessOpRec : Decoder
         {
             private Opcode opcode;
 
-            public MemBankedOpRec(Opcode opc)
+            public MemoryAccessOpRec(Opcode opc)
             {
                 opcode = opc;
             }
@@ -293,8 +273,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18BankMemoryOperand((byte)uInstr.Extract(0, 8)),
-                    op2 = new PIC18AccessRAMOperand(uInstr.Extract(8, 1))
+                    op1 = new PIC18DataByteAccessOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 8), uInstr.Extract(8, 1))
                 };
             }
         }
@@ -302,11 +281,11 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Instruction in the form '....-..da-ffff-ffff' (DECF, IORWF, ANDWF, XORWF, COMF, ADDWFC, ADDWF, INCF, DECFSZ, RRCF, RLCF, SWAPF, INCFSZ, RRNCF, RLNCF, INFSNZ, DCFSNZ, MOVF, SUBFWB, SUBWFB, SUBWF, TSTFSZ)
         /// </summary>
-        private class MemBankedWregOpRec : Decoder
+        private class MemoryAccessWithDestOpRec : Decoder
         {
             private Opcode opcode;
 
-            public MemBankedWregOpRec(Opcode opc)
+            public MemoryAccessWithDestOpRec(Opcode opc)
             {
                 opcode = opc;
             }
@@ -315,15 +294,13 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18BankMemoryOperand((byte)uInstr.Extract(0, 8)),
-                    op2 = new PIC18WdestOperand(uInstr.Extract(9, 1)),
-                    op3 = new PIC18AccessRAMOperand(uInstr.Extract(8, 1))
+                    op1 = new PIC18DataByteAccessWithDestOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 8), uInstr.Extract(8, 1), uInstr.Extract(9, 1))
                 };
             }
         }
 
         /// <summary>
-        /// Instruction in the form '....-....-kkkk-kkkk' ()
+        /// Instruction in the form '....-....-kkkk-kkkk' (ADDLW, MOVLW, RETLW, PUSHL, ...)
         /// </summary>
         private class Immed8OpRec : Decoder
         {
@@ -337,7 +314,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Immed8Operand((byte)uInstr.Extract(0, 8))
+                    op1 = new PIC18Immed8Operand(dasm.ExecMode, (byte)uInstr.Extract(0, 8))
                 };
             }
         }
@@ -364,20 +341,21 @@ namespace Reko.Arch.Microchip.PIC18
                     case InstructionSetID.PIC18:
                     case InstructionSetID.PIC18_EXTENDED:
                         if (bsrval >= 16)
-                            return dasm.Invalid();
+                            return null;
                         return new PIC18Instruction(opcode, dasm.ExecMode)
                         {
-                            op1 = new PIC18Immed4Operand(bsrval)
+                            op1 = new PIC18Immed4Operand(dasm.ExecMode, bsrval)
                         };
                     case InstructionSetID.PIC18_ENHANCED:
                         if (bsrval >= 64)
-                            return dasm.Invalid();
+                            return null;
                         return new PIC18Instruction(opcode, dasm.ExecMode)
                         {
-                            op1 = new PIC18Immed6Operand(bsrval)
+                            op1 = new PIC18Immed6Operand(dasm.ExecMode, bsrval)
                         };
+                    default:
+                        throw new NotImplementedException();
                 }
-                return dasm.Invalid();
             }
         }
 
@@ -397,14 +375,14 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 ushort lsw;
                 if (!_getAddlWord(dasm.rdr, out lsw))
-                    return dasm.Invalid();
+                    return null;
                 if (lsw >= 256)  // second word must be <xxxx 0000 kkkk kkkk>
-                    return dasm.Invalid();
+                    return null;
 
                 var msw = uInstr.Extract(0, 4);
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Memory12bitAddrOperand((ushort)((msw << 8) | lsw))
+                    op1 = new PIC18Memory12bitAbsAddrOperand(dasm.ExecMode, (ushort)((msw << 8) | lsw))
                 };
             }
         }
@@ -425,7 +403,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18ShadowOperand(uInstr.Extract(0, 1))
+                    op1 = new PIC18ShadowOperand(dasm.ExecMode, uInstr.Extract(0, 1))
                 };
             }
         }
@@ -447,7 +425,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Rel8Operand((sbyte)(uInstr.ExtractSignExtend(0, 8)), dasm.addrCur)
+                    op1 = new PIC18ProgRel8AddrOperand(dasm.ExecMode, (sbyte)(uInstr.ExtractSignExtend(0, 8)), dasm.addrCur)
                 };
             }
         }
@@ -469,7 +447,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Rel11Operand(uInstr.ExtractSignExtend(0, 11), dasm.addrCur)
+                    op1 = new PIC18ProgRel11AddrOperand(dasm.ExecMode, uInstr.ExtractSignExtend(0, 11), dasm.addrCur)
                 };
             }
         }
@@ -490,7 +468,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18TBLOperand(uInstr.Extract(0, 2))
+                    op1 = new PIC18TableReadWriteOperand(dasm.ExecMode, uInstr.Extract(0, 2))
                 };
             }
         }
@@ -509,14 +487,14 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                ushort word2;  // This a 2-words instruction.
+                ushort word2;  // This a 2-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2))
-                    return dasm.Invalid();
+                    return null;
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Memory12bitAddrOperand(uInstr.Extract(0, 12)),
-                    op2 = new PIC18Memory12bitAddrOperand(word2.Extract(0, 12)),
+                    op1 = new PIC18Memory12bitAbsAddrOperand(dasm.ExecMode, uInstr.Extract(0, 12)),
+                    op2 = new PIC18Memory12bitAbsAddrOperand(dasm.ExecMode, word2.Extract(0, 12)),
                 };
             }
         }
@@ -537,12 +515,12 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 ushort word2;  // This a 2-words instruction.
                 if (!_getAddlWord(dasm.rdr, out word2))
-                    return dasm.Invalid();
-                uint dstaddr = (uint)((uInstr.Extract(0, 8) << 12) | word2.Extract(0, 12));
+                    return null;
+                uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18CodeAddr20Operand(dstaddr),
+                    op1 = new PIC18Prog20bitAbsAddrOperand(dasm.ExecMode, dstaddr),
                 };
             }
         }
@@ -563,13 +541,13 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 ushort word2;  // This is a 2-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2))
-                    return dasm.Invalid();
-                uint dstaddr = (uint)((uInstr.Extract(0, 8) << 12) | word2.Extract(0, 12));
+                    return null;
+                uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18CodeAddr20Operand(dstaddr),
-                    op2 = new PIC18ShadowOperand(uInstr.Extract(8, 1)),
+                    op1 = new PIC18Prog20bitAbsAddrOperand(dasm.ExecMode, dstaddr),
+                    op2 = new PIC18ShadowOperand(dasm.ExecMode, uInstr.Extract(8, 1)),
                 };
             }
         }
@@ -589,17 +567,17 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_ENHANCED) // Only supported by PIC18 Enhanced.
-                    return dasm.Invalid();
+                    return null;
                 ushort word2, word3;  // This is a 3-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2) || !_getAddlWord(dasm.rdr, out word3))
-                    return dasm.Invalid();
+                    return null;
                 ushort srcaddr = (ushort)((uInstr.Extract(0, 4) << 10) | word2.Extract(2, 10));
                 ushort dstaddr = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Memory14bitAddrOperand(srcaddr),
-                    op2 = new PIC18Memory14bitAddrOperand(dstaddr),
+                    op1 = new PIC18Memory14bitAbsAddrOperand(dasm.ExecMode, srcaddr),
+                    op2 = new PIC18Memory14bitAbsAddrOperand(dasm.ExecMode, dstaddr),
                 };
             }
         }
@@ -618,28 +596,32 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
+                byte fsrnum = (byte)uInstr.Extract(4, 4);
+                if (fsrnum >= 3)
+                    return null;
+
                 ushort word2;  // This is a 2-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2))
-                    return dasm.Invalid();
+                    return null;
 
                 switch (dasm.InstructionSetID)
                 {
                     case InstructionSetID.PIC18:
                     case InstructionSetID.PIC18_EXTENDED:
-                        if (word2 >= 256) // Second word must be 'xxxx-0000-kkkk-kkkk'
-                            return dasm.Invalid();
+                        if (word2 > 0xFF) // Second word must be 'xxxx-0000-kkkk-kkkk'
+                            return null;
                         return new PIC18Instruction(opcode, dasm.ExecMode)
                         {
-                            op1 = new PIC18FSRNumOperand((byte)uInstr.Extract(4, 2)),
-                            op2 = new PIC18Immed12Operand((ushort)((uInstr.Extract(0, 4) << 8) | word2))
+                            op1 = new PIC18FSRNumOperand(dasm.ExecMode, fsrnum),
+                            op2 = new PIC18Immed12Operand(dasm.ExecMode, (ushort)((uInstr.Extract(0, 4) << 8) | word2))
                         };
                     case InstructionSetID.PIC18_ENHANCED:
-                        if (word2 >= 1024) // Second word must be 'xxxx-00kk-kkkk-kkkk'
-                            return dasm.Invalid();
+                        if (word2 > 0x3FF) // Second word must be 'xxxx-00kk-kkkk-kkkk'
+                            return null;
                         return new PIC18Instruction(opcode, dasm.ExecMode)
                         {
-                            op1 = new PIC18FSRNumOperand((byte)uInstr.Extract(4, 2)),
-                            op2 = new PIC18Immed14Operand((ushort)((uInstr.Extract(0, 4) << 8) | word2))
+                            op1 = new PIC18FSRNumOperand(dasm.ExecMode, fsrnum),
+                            op2 = new PIC18Immed14Operand(dasm.ExecMode, (ushort)((uInstr.Extract(0, 4) << 10) | word2))
                         };
                     default:
                         throw new InvalidOperationException($"Unknown PIC18 instruction set: {dasm.InstructionSetID}");
@@ -651,25 +633,71 @@ namespace Reko.Arch.Microchip.PIC18
         #region PIC18 Extended Execution mode only
 
         /// <summary>
-        /// Instruction ADDULNK, SUBULNK decoder. (Extended Execution mode)
+        /// Instructions ADDFSR, SUBFSR (PIC18 extended or later).
         /// </summary>
-        private class LnkOpRec : Decoder
+        private class FsrArithOpRec : Decoder
         {
             private Opcode opcode;
 
-            public LnkOpRec(Opcode opc)
+            public FsrArithOpRec(Opcode opc)
             {
                 opcode = opc;
             }
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                if (dasm.ExecMode != PICExecMode.Extended) // Only supported by PIC18 running in Extended Execution mode.
-                    return dasm.Invalid();
+                byte fsrnum = (byte)uInstr.Extract(6, 2);
+                if (fsrnum >= 3)
+                    return null;
+                switch (dasm.InstructionSetID)
+                {
+                    case InstructionSetID.PIC18:
+                        return null;
+
+                    case InstructionSetID.PIC18_EXTENDED:
+                        if (dasm.ExecMode != PICExecMode.Extended)
+                            return null;
+                        break;
+
+                    case InstructionSetID.PIC18_ENHANCED:
+                        if (dasm.ExecMode != PICExecMode.Extended && (opcode != Opcode.ADDFSR && opcode != Opcode.SUBFSR))
+                            return null;
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Immed6Operand((byte)uInstr.Extract(0, 6))
+                    op1 = new PIC18FSRNumOperand(dasm.ExecMode, fsrnum),
+                    op2 = new PIC18Immed6Operand(dasm.ExecMode, (byte)uInstr.Extract(0, 6))
+                };
+            }
+        }
+
+        /// <summary>
+        /// Instructions ADDULNK, SUBULNK (PIC18 extended or later, extended execution mode).
+        /// </summary>
+        private class FsrULinkOpRec : Decoder
+        {
+            private Opcode opcode;
+
+            public FsrULinkOpRec(Opcode opc)
+            {
+                opcode = opc;
+            }
+
+            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            {
+                if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED)
+                    return null;
+                if (dasm.ExecMode != PICExecMode.Extended) // Only supported by PIC18 running in Extended Execution mode.
+                    return null;
+
+                return new PIC18Instruction(opcode, dasm.ExecMode)
+                {
+                    op1 = new PIC18Immed6Operand(dasm.ExecMode, (byte)uInstr.Extract(0, 6))
                 };
             }
         }
@@ -689,18 +717,18 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // PIC running in Extended Execution mode?
-                    return dasm.Invalid();
+                    return null;
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED) // Only supported by PIC18 Extended and later.
-                    return dasm.Invalid();
+                    return null;
 
                 ushort word2;  // This is a 2-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2))
-                    return dasm.Invalid();
+                    return null;
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18FSRIdxOperand((byte)uInstr.Extract(0, 7)),
-                    op2 = new PIC18Memory12bitAddrOperand(word2)
+                    op1 = new PIC18FSRIdxOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 7)),
+                    op2 = new PIC18Memory12bitAbsAddrOperand(dasm.ExecMode, word2)
                 };
             }
         }
@@ -720,20 +748,20 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return dasm.Invalid();
+                    return null;
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_ENHANCED) // ... and being a PIC18 Enhanced.
-                    return dasm.Invalid();
+                    return null;
 
                 ushort word2, word3;  // This is a 3-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2) || !_getAddlWord(dasm.rdr, out word3))
-                    return dasm.Invalid();
+                    return null;
                 byte zssource = (byte)word2.Extract(2, 7);
                 ushort fsdest = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18FSRIdxOperand(zssource),
-                    op2 = new PIC18Memory14bitAddrOperand(fsdest)
+                    op1 = new PIC18FSRIdxOperand(dasm.ExecMode, zssource),
+                    op2 = new PIC18Memory14bitAbsAddrOperand(dasm.ExecMode, fsdest)
                 };
             }
         }
@@ -753,18 +781,18 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return dasm.Invalid();
+                    return null;
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED) // ... and being a PIC18 Extended and later?
-                    return dasm.Invalid();
+                    return null;
 
                 ushort word2;  // This is a 2-word instruction.
                 if (!_getAddlWord(dasm.rdr, out word2))
-                    return dasm.Invalid();
+                    return null;
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18FSRIdxOperand((byte)uInstr.Extract(0, 7)),
-                    op2 = new PIC18FSRIdxOperand((byte)word2.Extract(0, 7))
+                    op1 = new PIC18FSRIdxOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 7)),
+                    op2 = new PIC18FSRIdxOperand(dasm.ExecMode, (byte)word2.Extract(0, 7))
                 };
             }
         }
@@ -784,13 +812,13 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
-                    return dasm.Invalid();
+                    return null;
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED) // ... and being a PIC18 Extended and later.
-                    return dasm.Invalid();
+                    return null;
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Immed8Operand((byte)uInstr.Extract(0, 8)),
+                    op1 = new PIC18Immed8Operand(dasm.ExecMode, (byte)uInstr.Extract(0, 8)),
                 };
             }
         }
@@ -812,51 +840,51 @@ namespace Reko.Arch.Microchip.PIC18
                     new SubDecoder(0, 4, new Decoder[16]
                     {
                         // 0000 0000 0000 0000
-                        new NoOperandOpRec(Opcode.nop),
+                        new NoOperandOpRec(Opcode.NOP),
                         // 0000 0000 0000 0001
                         new InvalidOpRec(),
                         // 0000 0000 0000 0010
-                        new MovsflOpRec(Opcode.movsfl),
+                        new MovsflOpRec(Opcode.MOVSFL),
                         // 0000 0000 0000 0011
-                        new NoOperandOpRec(Opcode.sleep),
+                        new NoOperandOpRec(Opcode.SLEEP),
                         // 0000 0000 0000 0100
-                        new NoOperandOpRec(Opcode.clrwdt),
+                        new NoOperandOpRec(Opcode.CLRWDT),
                         // 0000 0000 0000 0101
-                        new NoOperandOpRec(Opcode.push),
+                        new NoOperandOpRec(Opcode.PUSH),
                         // 0000 0000 0000 0110
-                        new NoOperandOpRec(Opcode.pop),
+                        new NoOperandOpRec(Opcode.POP),
                         // 0000 0000 0000 0111
-                        new NoOperandOpRec(Opcode.daw),
+                        new NoOperandOpRec(Opcode.DAW),
                         // 0000 0000 0000 1000
-                        new TblOpRec(Opcode.tblrd),
+                        new TblOpRec(Opcode.TBLRD),
                         // 0000 0000 0000 1001
-                        new TblOpRec(Opcode.tblrd),
+                        new TblOpRec(Opcode.TBLRD),
                         // 0000 0000 0000 1010
-                        new TblOpRec(Opcode.tblrd),
+                        new TblOpRec(Opcode.TBLRD),
                         // 0000 0000 0000 1011
-                        new TblOpRec(Opcode.tblrd),
+                        new TblOpRec(Opcode.TBLRD),
                         // 0000 0000 0000 1100
-                        new TblOpRec(Opcode.tblwt),
+                        new TblOpRec(Opcode.TBLWT),
                         // 0000 0000 0000 1101
-                        new TblOpRec(Opcode.tblwt),
+                        new TblOpRec(Opcode.TBLWT),
                         // 0000 0000 0000 1110
-                        new TblOpRec(Opcode.tblwt),
+                        new TblOpRec(Opcode.TBLWT),
                         // 0000 0000 0000 1111
-                        new TblOpRec(Opcode.tblwt)
+                        new TblOpRec(Opcode.TBLWT)
                     } ),
                     // 0000 0000 0001 ????
                     new SubDecoder(0, 4, new Decoder[16]
                     {
                         // 0000 0000 0001 0000
-                        new ShadowOpRec(Opcode.retfie),
+                        new ShadowOpRec(Opcode.RETFIE),
                         // 0000 0000 0001 0001
-                        new ShadowOpRec(Opcode.retfie),
+                        new ShadowOpRec(Opcode.RETFIE),
                         // 0000 0000 0001 0010
-                        new ShadowOpRec(Opcode.@return),
+                        new ShadowOpRec(Opcode.RETURN),
                         // 0000 0000 0001 0011
-                        new ShadowOpRec(Opcode.@return),
+                        new ShadowOpRec(Opcode.RETURN),
                         // 0000 0000 0001 0100
-                        new ExtdNoOperandOpRec(Opcode.callw),
+                        new ExtdNoOperandOpRec(Opcode.CALLW),
                         // 0000 0000 0001 0101
                         new InvalidOpRec(),
                         // 0000 0000 0001 0110
@@ -889,7 +917,7 @@ namespace Reko.Arch.Microchip.PIC18
                     // 0000 0000 0101 ....
                     new InvalidOpRec(),
                     // 0000 0000 0110 ....
-                    new MovfflOpRec(Opcode.movffl),
+                    new MovfflOpRec(Opcode.MOVFFL),
                     // 0000 0000 0111 ....
                     new InvalidOpRec(),
                     // 0000 0000 1000
@@ -907,138 +935,138 @@ namespace Reko.Arch.Microchip.PIC18
                     // 0000 0000 1110
                     new InvalidOpRec(),
                     // 0000 0000 1111
-                    new ResetOpRec(Opcode.reset),
+                    new ResetOpRec(Opcode.RESET),
                 } ),
                 // 0000 0001
-                new MovlbImmOpRec(Opcode.movlb),
+                new MovlbImmOpRec(Opcode.MOVLB),
                 // 0000 0010 .... ....
-                new MemBankedWregOpRec(Opcode.mulwf),
+                new MemoryAccessOpRec(Opcode.MULWF),
                 // 0000 0011 .... ....
-                new MemBankedWregOpRec(Opcode.mulwf),
+                new MemoryAccessOpRec(Opcode.MULWF),
                 // 0000 0100 .... ....
-                new MemBankedWregOpRec(Opcode.decf),
+                new MemoryAccessWithDestOpRec(Opcode.DECF),
                 // 0000 0101 .... ....
-                new MemBankedWregOpRec(Opcode.decf),
+                new MemoryAccessWithDestOpRec(Opcode.DECF),
                 // 0000 0110 .... ....
-                new MemBankedWregOpRec(Opcode.decf),
+                new MemoryAccessWithDestOpRec(Opcode.DECF),
                 // 0000 0111 .... ....
-                new MemBankedWregOpRec(Opcode.decf),
+                new MemoryAccessWithDestOpRec(Opcode.DECF),
                 // 0000 1000 .... ....
-                new Immed8OpRec(Opcode.sublw),
+                new Immed8OpRec(Opcode.SUBLW),
                 // 0000 1001 .... ....
-                new Immed8OpRec(Opcode.iorlw),
+                new Immed8OpRec(Opcode.IORLW),
                 // 0000 1010 .... ....
-                new Immed8OpRec(Opcode.xorlw),
+                new Immed8OpRec(Opcode.XORLW),
                 // 0000 1011 .... ....
-                new Immed8OpRec(Opcode.andlw),
+                new Immed8OpRec(Opcode.ANDLW),
                 // 0000 1100 .... ....
-                new Immed8OpRec(Opcode.retlw),
+                new Immed8OpRec(Opcode.RETLW),
                 // 0000 1101 .... ....
-                new Immed8OpRec(Opcode.mullw),
+                new Immed8OpRec(Opcode.MULLW),
                 // 0000 1110 .... ....
-                new Immed8OpRec(Opcode.movlw),
+                new Immed8OpRec(Opcode.MOVLW),
                 // 0000 1111 .... ....
-                new Immed8OpRec(Opcode.addlw),
+                new Immed8OpRec(Opcode.ADDLW),
             } ),
             // 0001 ??.. .... ....
             new SubDecoder(10, 2, new Decoder[4]
             {
                 // 0001 00.. .... ....
-                new MemBankedWregOpRec(Opcode.iorwf),
+                new MemoryAccessWithDestOpRec(Opcode.IORWF),
                 // 0001 01.. .... ....
-                new MemBankedWregOpRec(Opcode.andwf),
+                new MemoryAccessWithDestOpRec(Opcode.ANDWF),
                 // 0001 10.. .... ....
-                new MemBankedWregOpRec(Opcode.xorwf),
+                new MemoryAccessWithDestOpRec(Opcode.XORWF),
                 // 0001 11.. .... ....
-                new MemBankedWregOpRec(Opcode.comf),
+                new MemoryAccessWithDestOpRec(Opcode.COMF),
             } ),
             // 0010 ??.. .... ....
             new SubDecoder(10, 2, new Decoder[4]
             {
                 // 0010 00.. .... ....
-                new MemBankedWregOpRec(Opcode.addwfc),
+                new MemoryAccessWithDestOpRec(Opcode.ADDWFC),
                 // 0010 01.. .... ....
-                new MemBankedWregOpRec(Opcode.addwf),
+                new MemoryAccessWithDestOpRec(Opcode.ADDWF),
                 // 0010 10.. .... ....
-                new MemBankedWregOpRec(Opcode.incf),
+                new MemoryAccessWithDestOpRec(Opcode.INCF),
                 // 0010 11.. .... ....
-                new MemBankedWregOpRec(Opcode.decfsz),
+                new MemoryAccessWithDestOpRec(Opcode.DECFSZ),
             } ),
             // 0011 ??.. .... ....
             new SubDecoder(10, 2, new Decoder[4]
             {
                 // 0011 00.. .... ....
-                new MemBankedWregOpRec(Opcode.rrcf),
+                new MemoryAccessWithDestOpRec(Opcode.RRCF),
                 // 0011 01.. .... ....
-                new MemBankedWregOpRec(Opcode.rlcf),
+                new MemoryAccessWithDestOpRec(Opcode.RLCF),
                 // 0011 10.. .... ....
-                new MemBankedWregOpRec(Opcode.swapf),
+                new MemoryAccessWithDestOpRec(Opcode.SWAPF),
                 // 0011 11.. .... ....
-                new MemBankedWregOpRec(Opcode.incfsz),
+                new MemoryAccessWithDestOpRec(Opcode.INCFSZ),
             } ),
             // 0100 ??.. .... ....
             new SubDecoder(10, 2, new Decoder[4]
             {
                 // 0100 00.. .... ....
-                new MemBankedWregOpRec(Opcode.rrncf),
+                new MemoryAccessWithDestOpRec(Opcode.RRNCF),
                 // 0100 01.. .... ....
-                new MemBankedWregOpRec(Opcode.rlncf),
+                new MemoryAccessWithDestOpRec(Opcode.RLNCF),
                 // 0100 10.. .... ....
-                new MemBankedWregOpRec(Opcode.infsnz),
+                new MemoryAccessWithDestOpRec(Opcode.INFSNZ),
                 // 0100 11.. .... ....
-                new MemBankedWregOpRec(Opcode.dcfsnz),
+                new MemoryAccessWithDestOpRec(Opcode.DCFSNZ),
             } ),
             // 0101 ??.. .... ....
             new SubDecoder(10, 2, new Decoder[4]
             {
                 // 0101 00.. .... ....
-                new MemBankedWregOpRec(Opcode.movf),
+                new MemoryAccessWithDestOpRec(Opcode.MOVF),
                 // 0101 01.. .... ....
-                new MemBankedWregOpRec(Opcode.subfwb),
+                new MemoryAccessWithDestOpRec(Opcode.SUBFWB),
                 // 0101 10.. .... ....
-                new MemBankedWregOpRec(Opcode.subwfb),
+                new MemoryAccessWithDestOpRec(Opcode.SUBWFB),
                 // 0101 11.. .... ....
-                new MemBankedWregOpRec(Opcode.subwf),
+                new MemoryAccessWithDestOpRec(Opcode.SUBWF),
             } ),
             // 0110 ???. .... ....
             new SubDecoder(9, 3, new Decoder[8]
             {
                 // 0110 000. .... ....
-                new MemBankedOpRec(Opcode.cpfslt),
+                new MemoryAccessOpRec(Opcode.CPFSLT),
                 // 0110 001. .... ....
-                new MemBankedOpRec(Opcode.cpfseq),
+                new MemoryAccessOpRec(Opcode.CPFSEQ),
                 // 0110 010. .... ....
-                new MemBankedOpRec(Opcode.cpfsgt),
+                new MemoryAccessOpRec(Opcode.CPFSGT),
                 // 0110 011. .... ....
-                new MemBankedOpRec(Opcode.tstfsz),
+                new MemoryAccessOpRec(Opcode.TSTFSZ),
                 // 0110 100. .... ....
-                new MemBankedOpRec(Opcode.setf),
+                new MemoryAccessOpRec(Opcode.SETF),
                 // 0110 101. .... ....
-                new MemBankedOpRec(Opcode.clrf),
+                new MemoryAccessOpRec(Opcode.CLRF),
                 // 0110 110
-                new MemBankedOpRec(Opcode.negf),
+                new MemoryAccessOpRec(Opcode.NEGF),
                 // 0110 111. .... ....
-                new MemBankedOpRec(Opcode.movwf),
+                new MemoryAccessOpRec(Opcode.MOVWF),
             } ),
             // 0111 .... .... ....
-            new MemBitOpRec(Opcode.btg),
+            new MemoryBitAccessWithDestOpRec(Opcode.BTG),
             // 1000 .... .... ....
-            new MemBitOpRec(Opcode.bsf),
+            new MemoryBitAccessWithDestOpRec(Opcode.BSF),
             // 1001 .... .... ....
-            new MemBitOpRec(Opcode.bcf),
+            new MemoryBitAccessWithDestOpRec(Opcode.BCF),
             // 1010 .... .... ....
-            new MemBitOpRec(Opcode.btfss),
+            new MemoryBitAccessWithDestOpRec(Opcode.BTFSS),
             // 1011 .... .... ....
-            new MemBitOpRec(Opcode.btfsc),
+            new MemoryBitAccessWithDestOpRec(Opcode.BTFSC),
             // 1100 .... .... ....
-            new MovffOpRec(Opcode.movff),
+            new MovffOpRec(Opcode.MOVFF),
             // 1101 ?... .... ....
             new SubDecoder(11, 1 , new Decoder[2]
                 {
                 // 1101 0... .... ....
-                new TargetRel11OpRec(Opcode.bra),
+                new TargetRel11OpRec(Opcode.BRA),
                 // 1101 1... .... ....
-                new TargetRel11OpRec(Opcode.rcall),
+                new TargetRel11OpRec(Opcode.RCALL),
                 } ),
             // 1110 ?... .... ....
             new SubDecoder(11, 1, new Decoder[2]
@@ -1047,71 +1075,63 @@ namespace Reko.Arch.Microchip.PIC18
                 new SubDecoder(8, 3, new Decoder[8]
                 {
                     // 1110 0000 .... ....
-                    new TargetRel8OpRec(Opcode.bz),
+                    new TargetRel8OpRec(Opcode.BZ),
                     // 1110 0001 .... ....
-                    new TargetRel8OpRec(Opcode.bnz),
+                    new TargetRel8OpRec(Opcode.BNZ),
                     // 1110 0010 .... ....
-                    new TargetRel8OpRec(Opcode.bc),
+                    new TargetRel8OpRec(Opcode.BC),
                     // 1110 0011 .... ....
-                    new TargetRel8OpRec(Opcode.bnc),
+                    new TargetRel8OpRec(Opcode.BNC),
                     // 1110 0100 .... ....
-                    new TargetRel8OpRec(Opcode.bov),
+                    new TargetRel8OpRec(Opcode.BOV),
                     // 1110 0101 .... ....
-                    new TargetRel8OpRec(Opcode.bnov),
+                    new TargetRel8OpRec(Opcode.BNOV),
                     // 1110 0110 .... ....
-                    new TargetRel8OpRec(Opcode.bn),
+                    new TargetRel8OpRec(Opcode.BN),
                     // 1110 0111 .... ....
-                    new TargetRel8OpRec(Opcode.bnn),
+                    new TargetRel8OpRec(Opcode.BNN),
                 } ),
                 // 1110 1??? .... ....
                 new SubDecoder(8, 3, new Decoder[8]
                 {
                     // 1110 1000 ??.. ....
                     new SubDecoder(6, 2, new Decoder[4]
-                    {
-                        // 1110 1000 00.. ....
-                        new LnkOpRec(Opcode.addulnk),
-                        // 1110 1000 01.. ....
-                        new FsrArithOpRec(Opcode.addfsr),
-                        // 1110 1000 10.. ....
-                        new FsrArithOpRec(Opcode.addfsr),
-                        // 1110 1000 11.. ....
-                        new FsrArithOpRec(Opcode.addfsr),
-                    } ),
+                        {
+                            new FsrArithOpRec(Opcode.ADDFSR),
+                            new FsrArithOpRec(Opcode.ADDFSR),
+                            new FsrArithOpRec(Opcode.ADDFSR),
+                            new FsrULinkOpRec(Opcode.ADDULNK),
+                        }),
                     // 1110 1001 ??.. ....
                     new SubDecoder(6, 2, new Decoder[4]
-                    {
-                        // 1110 1001 00.. ....
-                        new LnkOpRec(Opcode.subulnk),
-                        // 1110 1001 01.. ....
-                        new FsrArithOpRec(Opcode.subfsr),
-                        // 1110 1001 10.. ....
-                        new FsrArithOpRec(Opcode.subfsr),
-                        // 1110 1001 11.. ....
-                        new FsrArithOpRec(Opcode.subfsr),
-                    } ),
+                        {
+                            new FsrArithOpRec(Opcode.SUBFSR),
+                            new FsrArithOpRec(Opcode.SUBFSR),
+                            new FsrArithOpRec(Opcode.SUBFSR),
+                            new FsrULinkOpRec(Opcode.SUBULNK),
+                        }),
                     // 1110 1010 .... ....
-                    new PushlOpRec(Opcode.pushl),
+                    new PushlOpRec(Opcode.PUSHL),
                     // 1110 1011 ?... ....
                     new SubDecoder(7, 1, new Decoder[2]
                     {
                         // 1110 1011 0... ....
-                        new MovsfOpRec(Opcode.movsf),
+                        new MovsfOpRec(Opcode.MOVSF),
                         // 1110 1011 1... ....
-                        new MovssOpRec(Opcode.movss),
+                        new MovssOpRec(Opcode.MOVSS),
                     } ),
                     // 1110 1100 .... ....
-                    new CallOpRec(Opcode.call),
+                    new CallOpRec(Opcode.CALL),
                     // 1110 1101 .... ....
-                    new CallOpRec(Opcode.call),
+                    new CallOpRec(Opcode.CALL),
                     // 1110 1110 .... ....
-                    new LfsrOpRec(Opcode.lfsr),
+                    new LfsrOpRec(Opcode.LFSR),
                     // 1110 1111 .... ....
-                    new TargetAbs20OpRec(Opcode.@goto),
+                    new TargetAbs20OpRec(Opcode.GOTO),
                 } ),
             } ),
             // 1111 .... .... ....
-            new NoOperandOpRec(Opcode.nop),
+            new NoOperandOpRec(Opcode.NOP),
         };
 
         #endregion

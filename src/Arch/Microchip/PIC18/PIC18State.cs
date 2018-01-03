@@ -119,8 +119,6 @@ namespace Reko.Arch.Microchip.PIC18
 		{
 		}
 
-
-
 	}
 
 }

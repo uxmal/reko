@@ -4,11 +4,9 @@ using NUnit.Framework;
 using System.Globalization;
 using System.Xml.Linq;
 
-namespace Reko.UnitTests.Arch.Microchip.Crownking
+namespace Reko.UnitTests.Arch.Microchip
 {
-    namespace Microchip_Tests
-    {
-        [TestFixture]
+    [TestFixture]
         public class MicrochipPICCrowningTests
         {
             private PICCrownking db;
@@ -128,4 +126,3 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
 
         }
     }
-}

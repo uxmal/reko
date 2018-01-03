@@ -55,7 +55,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC PICDescriptor { get; private set; }
+        public PIC PICDescriptor { get; }
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
@@ -183,7 +183,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            //TODO: CreatePointerScanner - understand, implement
+            //TODO: CreatePointerScanner - understand purpose, implement
             throw new NotImplementedException($"{nameof(CreatePointerScanner)} not implemented.");
         }
 
@@ -199,7 +199,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
-            //TODO: ReadCodeAddress - understand, implement
+            //TODO: ReadCodeAddress - understand purpose, implement
             throw new NotImplementedException($"{nameof(ReadCodeAddress)} not implemented.");
         }
 

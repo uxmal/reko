@@ -44,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -89,6 +90,12 @@
     <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18ExtdArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PICSamples.cs" />
+    <Compile Include="Arch\Microchip\PICSamplesTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -639,6 +646,10 @@
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Microchip\Microchip.csproj">
+      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
+      <Name>Microchip</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
       <Name>Mips</Name>
@@ -841,6 +852,26 @@
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Arch\Microchip\Samples\PIC16EnhV1Sample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Arch\Microchip\Samples\PIC16Sample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Arch\Microchip\Samples\PIC18EnhSample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Arch\Microchip\Samples\PIC18ExtdSample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Arch\Microchip\Samples\PIC18Sample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

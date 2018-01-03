@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
+using Microchip.Utils;
 
-namespace Microchip.Utils
+namespace Reko.UnitTests.Arch.Microchip
 {
     [TestFixture]
     public class ConvUtilsTests

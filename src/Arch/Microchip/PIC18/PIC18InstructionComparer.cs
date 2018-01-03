@@ -97,10 +97,6 @@ namespace Reko.Arch.Microchip.PIC18
                 if (retval && instrA.NumberOfOperands > 1)
                 {
                     retval = CompareOperands(instrA.op2, instrB.op2);
-                    if (retval && instrA.NumberOfOperands > 2)
-                    {
-                        retval = CompareOperands(instrA.op3, instrB.op3);
-                    }
                 }
             }
             return retval;

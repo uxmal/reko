@@ -61,7 +61,7 @@ namespace Microchip.Crownking
             return null;
         }
 
-        private string _getPICDBFilePath()
+        private string _getPICLocalDBFilePath()
         {
             string sDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string path = Path.Combine(sDir, _localdbfile);
@@ -70,7 +70,7 @@ namespace Microchip.Crownking
 
         private void _openDB()
         {
-            CurrentDBPath = _getPICDBFilePath();
+            CurrentDBPath = _getPICLocalDBFilePath();
 
             // No local database, check presence of IDE X database
             if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
@@ -327,7 +327,7 @@ namespace Microchip.Crownking
         public void UpdateDB(Func<string, bool> filter = null, Func<XDocument, XDocument> pruning = null)
         {
             string idecrownkingpath = _getIDECrownkingFilePath();   // The MPLAB X IDE database
-            string localpath = _getPICDBFilePath();       // The local database
+            string localpath = _getPICLocalDBFilePath();       // The local database
 
             if (idecrownkingpath == null)
             {

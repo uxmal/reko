@@ -21,172 +21,173 @@
 namespace Reko.Arch.Microchip.PIC18
 {
     /// <summary>
-    /// Values that represent opcodes of the PIC18 Legacy/Extended family.
+    /// Values that represent opcodes of the PIC18 Legacy/Extended/Enhanced family.
+    // Note: Opcodes are defined in uppercase to conform to Microchip MASM syntax.
     /// </summary>
     public enum Opcode
     {
         invalid,
         ///<summary>Add literal and WREG</summary>
-        addlw,
+        ADDLW,
         ///<summary>Add WREG and f</summary>
-        addwf,
+        ADDWF,
         ///<summary>Add WREG and Carry to f</summary>
-        addwfc,
+        ADDWFC,
         ///<summary>AND literal with WREG</summary>
-        andlw,
+        ANDLW,
         ///<summary>AND WREG with f</summary>
-        andwf,
+        ANDWF,
         ///<summary>Branch if carry</summary>
-        bc,
+        BC,
         ///<summary>Bit clear f</summary>
-        bcf,
+        BCF,
         ///<summary>Branch if negative</summary>
-        bn,
+        BN,
         ///<summary>Branch if not carry</summary>
-        bnc,
+        BNC,
         ///<summary>Branch if not negative</summary>
-        bnn,
+        BNN,
         ///<summary>Branch if not overflow</summary>
-        bnov,
+        BNOV,
         ///<summary>Branch if not zero</summary>
-        bnz,
+        BNZ,
         ///<summary>Branch if overflow</summary>
-        bov,
+        BOV,
         ///<summary>Branch unconditionally</summary>
-        bra,
+        BRA,
         ///<summary>Bit set f</summary>
-        bsf,
+        BSF,
         ///<summary>Bit test f, skip if clear</summary>
-        btfsc,
+        BTFSC,
         ///<summary>Bit test f, skip if set</summary>
-        btfss,
+        BTFSS,
         ///<summary>Bit toggle f</summary>
-        btg,
+        BTG,
         ///<summary>Branch if zero</summary>
-        bz,
+        BZ,
         ///<summary>CAll subroutine</summary>
-        call,
+        CALL,
         ///<summary>Clear f</summary>
-        clrf,
+        CLRF,
         ///<summary>Clear Watchdog Timer</summary>
-        clrwdt,
+        CLRWDT,
         ///<summary>Complement f</summary>
-        comf,
+        COMF,
         ///<summary>Compare f with WREG, skip =</summary>
-        cpfseq,
+        CPFSEQ,
         ///<summary>Compare f with WREG, skip ></summary>
-        cpfsgt,
+        CPFSGT,
         ///<summary>Compare f with WREG,  skip <</summary>
-        cpfslt,
+        CPFSLT,
         ///<summary>Decimal adjust W register</summary>
-        daw,
+        DAW,
         ///<summary>Decrement f, skip if not 0</summary>
-        dcfsnz,
+        DCFSNZ,
         ///<summary>Decrement f</summary>
-        decf,
+        DECF,
         ///<summary>Decrement f,  skip if 0</summary>
-        decfsz,
+        DECFSZ,
         ///<summary>Go to address</summary>
-        @goto,
+        GOTO,
         ///<summary>Increment f</summary>
-        incf,
+        INCF,
         ///<summary>Increment f,  skip if 0</summary>
-        incfsz,
+        INCFSZ,
         ///<summary>Increment f, skip if not 0</summary>
-        infsnz,
+        INFSNZ,
         ///<summary>Inclusive OR literal with WREG</summary>
-        iorlw,
+        IORLW,
         ///<summary>Inclusive OR WREG with f</summary>
-        iorwf,
+        IORWF,
         ///<summary>Move literal to FSRn</summary>
-        lfsr,
+        LFSR,
         ///<summary>Move f</summary>
-        movf,
+        MOVF,
         ///<summary>Move source to destination</summary>
-        movff,
-        ///<summary>Move source to destination (long range)</summary>
-        movffl,
+        MOVFF,
+        ///<summary>Move source to destination (long range - enhanced PIC18 only)</summary>
+        MOVFFL,
         ///<summary>Move literal to low nibble in BSR</summary>
-        movlb,
+        MOVLB,
         ///<summary>Move literal to WREG</summary>
-        movlw,
+        MOVLW,
         ///<summary>Move WREG to f</summary>
-        movwf,
+        MOVWF,
         ///<summary>Multiply literal with WREG</summary>
-        mullw,
+        MULLW,
         ///<summary>Multiply WREG with f</summary>
-        mulwf,
+        MULWF,
         ///<summary>Negate f</summary>
-        negf,
+        NEGF,
         ///<summary>No operation</summary>
-        nop,
+        NOP,
         ///<summary>Pop top of return stack</summary>
-        pop,
+        POP,
         ///<summary>Push top of return stack</summary>
-        push,
+        PUSH,
         ///<summary>Relative call</summary>
-        rcall,
+        RCALL,
         ///<summary>Reset</summary>
-        reset,
+        RESET,
         ///<summary>Return from interrupt</summary>
-        retfie,
+        RETFIE,
         ///<summary>Return with literal in WREG</summary>
-        retlw,
+        RETLW,
         ///<summary>Return from subroutine</summary>
-        @return,
+        RETURN,
         ///<summary>Rotate left f through Carry</summary>
-        rlcf,
+        RLCF,
         ///<summary>Rotate left f (No Carry)</summary>
-        rlncf,
+        RLNCF,
         ///<summary>Rotate right f through Carry</summary>
-        rrcf,
+        RRCF,
         ///<summary>Rotate right f (No Carry)</summary>
-        rrncf,
+        RRNCF,
         ///<summary>Set f</summary>
-        setf,
+        SETF,
         ///<summary>Enter sleep mode</summary>
-        sleep,
+        SLEEP,
         ///<summary>Substract f from WREG with Borrow</summary>
-        subfwb,
+        SUBFWB,
         ///<summary>Substract WREG from literal</summary>
-        sublw,
+        SUBLW,
         ///<summary>Substract WREG from f</summary>
-        subwf,
+        SUBWF,
         ///<summary>Substract WREG from f with Borrow</summary>
-        subwfb,
+        SUBWFB,
         ///<summary>Swap nibbles in f</summary>
-        swapf,
+        SWAPF,
         ///<summary>Table read</summary>
-        tblrd,
+        TBLRD,
         ///<summary>Table write</summary>
-        tblwt,
+        TBLWT,
         ///<summary>Test f,  skip if 0</summary>
-        tstfsz,
+        TSTFSZ,
         ///<summary>Exclusive OR literal with WREG</summary>
-        xorlw,
+        XORLW,
         ///<summary>Exclusive OR WREG with f</summary>
-        xorwf,
+        XORWF,
 
         // PIC18 Extended Execution mode
 
         ///<summary>Add literal to FSR</summary>
-        addfsr,
+        ADDFSR,
         ///<summary>Add literal to FSR2 and return</summary>
-        addulnk,
+        ADDULNK,
         ///<summary>Call subroutine using WREG</summary>
-        callw,
+        CALLW,
         ///<summary>Move indexed to f</summary>
-        movsf,
+        MOVSF,
         ///<summary>Move indexed to indexed</summary>
-        movss,
+        MOVSS,
         ///<summary>Push literal at FSR2, decrement FSR2</summary>
-        pushl,
+        PUSHL,
         ///<summary>Substract literal from FSR</summary>
-        subfsr,
+        SUBFSR,
         ///<summary>Substract literal from FSR2 and return</summary>
-        subulnk,
-        ///<summary>Move indexed to f (Long range)</summary>
-        movsfl,
+        SUBULNK,
+        ///<summary>Move indexed to f (Long range - enhanced PIC18 only)</summary>
+        MOVSFL
     }
 
 }

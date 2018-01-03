@@ -30,6 +30,7 @@ namespace Reko.Arch.Microchip.PIC18
 {
     public static class Registers
     {
+        //TODO: build the registers (SFR) using the PIC definition
 
         /// <summary>STATUS register. </summary>
         public static readonly FlagRegister status = new FlagRegister("STATUS", 0x3FD8, PrimitiveType.Byte);

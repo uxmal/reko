@@ -96,17 +96,17 @@ namespace Microchip.Crownking
     {
         /// <summary> PIC Instruction Set is undefined. </summary>
         UNDEFINED,
-        /// <summary> PIC Instruction Set is PIC16 like pic16f77 - basic mid-range. </summary>
+        /// <summary> PIC Instruction Set is PIC16 like pic16f77 - basic mid-range. Identified as InstructionSet="pic16f77" in XML definition.</summary>
         PIC16,
-        /// <summary> PIC Instruction Set is PIC16 like pic16f1946 - mid-range enhanced 5-bit BSR. </summary>
+        /// <summary> PIC Instruction Set is PIC16 like pic16f1946 - mid-range enhanced 5-bit BSR. Identified as InstructionSet="cpu_mid_v10" in XML definition.</summary>
         PIC16_ENH,
-        /// <summary> PIC Instruction Set is PIC16 like pic16f15313 - mid-range enhanced 6-bit BSR. </summary>
+        /// <summary> PIC Instruction Set is PIC16 like pic16f15313 - mid-range enhanced 6-bit BSR. Identified as InstructionSet="cpu_p16f1_v1" in XML definition.</summary>
         PIC16_ENH_V1,
-        /// <summary> PIC Instruction Set is traditional PIC18 like pic18f1220 - without any extended mode. A.k.a "PIC18 Traditional".</summary>
+        /// <summary> PIC Instruction Set is traditional PIC18 like pic18f1220 - without any extended mode. Identified as InstructionSet="pic18" in XML definition.</summary>
         PIC18,
-        /// <summary> PIC Instruction Set is PIC18 like pic18f1230 - with extended mode capabilities. A.k.a. "PIC18 Extended".</summary>
+        /// <summary> PIC Instruction Set is PIC18 like pic18f1230 - with extended execution mode capabilities. Identified as InstructionSet="egg" in XML definition.</summary>
         PIC18_EXTENDED,
-        /// <summary> PIC Instruction Set is PIC18 enhanced like pic18f25k42 - same as PIC18_EXTD + some instructions for bigger RAM size. A.k.a. "PIC18 Enhanced".</summary>
+        /// <summary> PIC Instruction Set is PIC18 enhanced like pic18f25k42 - same as PIC18_EXTD + some instructions for bigger RAM size. Identified as InstructionSet="cpu_pic18f_v6" in XML definition.</summary>
         PIC18_ENHANCED,
     }
 
@@ -4274,7 +4274,15 @@ namespace Microchip.Crownking
     {
         #region Locals
 
-        private static Dictionary<string, InstructionSetID> _mapInstrID;  // Maps the 'instructionsetid' to internal code.
+        // Maps the 'instructionsetid' to internal code.
+        private static Dictionary<string, InstructionSetID> _mapInstrID = new Dictionary<string, InstructionSetID>() {
+                { "pic16f77", InstructionSetID.PIC16 },
+                { "cpu_mid_v10", InstructionSetID.PIC16_ENH },
+                { "cpu_p16f1_v1", InstructionSetID.PIC16_ENH_V1 },
+                { "egg", InstructionSetID.PIC18_EXTENDED },
+                { "pic18", InstructionSetID.PIC18 },
+                { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
+            };
 
         #endregion
 
@@ -4284,21 +4292,6 @@ namespace Microchip.Crownking
         /// Default constructor.
         /// </summary>
         public PIC() { }
-
-        /// <summary>
-        /// Static constructor.
-        /// </summary>
-        static PIC()
-        {
-            _mapInstrID = new Dictionary<string, InstructionSetID>() {
-                { "pic16f77", InstructionSetID.PIC16 },
-                { "cpu_mid_v10", InstructionSetID.PIC16_ENH },
-                { "cpu_p16f1_v1", InstructionSetID.PIC16_ENH_V1 },
-                { "egg", InstructionSetID.PIC18_EXTENDED },
-                { "pic18", InstructionSetID.PIC18 },
-                { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
-            };
-        }
 
         #endregion
 
@@ -4380,7 +4373,7 @@ namespace Microchip.Crownking
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets the PIC architecture (16xxxx, 16Exxx, 18xxxx)
+        /// Gets the PIC architecture name (16xxxx, 16Exxx, 18xxxx)
         /// </summary>
         /// <value>
         /// The architecture as a string.
@@ -4429,7 +4422,8 @@ namespace Microchip.Crownking
         public string DosID { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this PIC supports the PIC18 extended execution mode.
+        /// Gets the indicator whether this PIC supports the PIC18 extended execution mode.
+        /// Overriden by the dataspace definition containing - or not - extended-mode-only memory space.
         /// </summary>
         /// <value>
         /// True if this PIC supports extended execution mode, false if not.
@@ -4487,7 +4481,7 @@ namespace Microchip.Crownking
                 if (InstructionSet == null)
                     return InstructionSetID.UNDEFINED;
                 InstructionSetID id;
-                if (!_mapInstrID.TryGetValue(this.InstructionSet.ID, out id))
+                if (!_mapInstrID.TryGetValue(InstructionSet.ID, out id))
                 {
                     id = InstructionSetID.UNDEFINED;
                     if (Arch == "16xxxx") id = InstructionSetID.PIC16;
