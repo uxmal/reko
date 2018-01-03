@@ -551,6 +551,7 @@
     <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
+    <Compile Include="Structure\AbsynCodeEmitter.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
@@ -568,6 +569,7 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
+    <Compile Include="Structure\TailReturnRemoverTests.cs" />
     <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
     <Compile Include="TestSerializedTypeRenderer.cs" />

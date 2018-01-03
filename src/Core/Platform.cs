@@ -327,6 +327,23 @@ namespace Reko.Core
                 this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
                     .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
                     .Where(cl => cl != null).ToArray();
+
+                ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
+            }
+        }
+
+        private void ApplyCharacteristicsToServices(CharacteristicsLibrary[] characteristicsLibs, TypeLibrary metadata)
+        {
+            foreach (var ch in characteristicsLibs.SelectMany(cl => cl.Entries))
+            {
+                foreach (var m in metadata.Modules.Values)
+                {
+                    SystemService svc;
+                    if (m.ServicesByName.TryGetValue(ch.Key, out svc))
+                    {
+                        svc.Characteristics = ch.Value;
+                    }
+                }
             }
         }
 

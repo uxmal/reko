@@ -101,14 +101,13 @@ l000011F8:
 			word32 * a6_184 = d0_23 + 0x05;
 			d3_124 = 0x01;
 			struct Eq_185 * a0_187 = a0 + d2_134;
-l000010DA:
-			a0_187 = a0_187 - 0x01;
-			if (a0_187->b0000 > 0x20)
+			do
 			{
+				a0_187 = a0_187 - 0x01;
+				if (a0_187->b0000 <= 0x20)
+					break;
 				d2_134 = d2_134 - 0x01;
-				if (d2_134 != ~0x00)
-					goto l000010DA;
-			}
+			} while (d2_134 != ~0x00);
 			a0_187[0x01] = (struct Eq_185) 0x00;
 			do
 			{
@@ -217,7 +216,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_25) a3)
@@ -225,7 +223,6 @@ void fn00001214(Eq_25 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
@@ -233,7 +230,6 @@ void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: Register word32 fn00001278(Stack Eq_399 dwArg04)
@@ -349,7 +345,6 @@ void fn00001354(int32 d2, int32 d3, Eq_25 * a3, Eq_109 a6, int32 dwArg04, Eq_67 
 	}
 	*(fp - 0x0014) = fn00001390(d2, d3, a6);
 	fn0000131C(dwArg00);
-	return;
 }
 
 // 00001390: Register word32 fn00001390(Register int32 d2, Register int32 d3, Register Eq_109 a6)
@@ -1303,7 +1298,6 @@ void fn00002060(ptr32 dwArg04)
 {
 	if (dwArg04 != 0x00 && globals->dw2BC0 != 0x00)
 		fn00002128(globals->dw2BC0, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
-	return;
 }
 
 // 00002128: void fn00002128(Stack (ptr Eq_2994) dwArg04, Stack uint32 dwArg08, Stack uint32 dwArg0C)
@@ -1334,7 +1328,6 @@ void fn00002128(Eq_2994 * dwArg04, uint32 dwArg08, uint32 dwArg0C)
 	Remove(a3_113);
 	struct Eq_480 * a3_82 = a3_113 - 0x04;
 	FreeMem(a3_82, a3_82->dw0000);
-	return;
 }
 
 // 000021C4: Register (ptr Eq_31) fn000021C4(Stack (ptr Eq_2960) dwArg04, Stack Eq_2961 dwArg08, Register out ptr32 a0Out)
@@ -1478,7 +1471,6 @@ void fn00002358(int32 d0, Eq_480 * dwArg04)
 		}
 		FreeMem(dwArg04, 0x0018);
 	}
-	return;
 }
 
 // 000023C8: Register word32 fn000023C8(Register out ptr32 a5Out)
@@ -1812,7 +1804,6 @@ void fn00002A44(word32 a2, word32 dwArg04)
 			} while (a2_35 != null);
 		}
 	}
-	return;
 }
 
 // 00002A88: Register word32 fn00002A88(Register Eq_687 d2, Stack Eq_692 dwArg04, Stack Eq_687 dwArg08)

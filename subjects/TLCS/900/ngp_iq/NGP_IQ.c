@@ -212,7 +212,6 @@ void fn002004F2(byte w)
 	do
 		;
 	while (*(byte *) 0x4004 != w);
-	return;
 }
 
 // 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_478 deOut, Register out Eq_479 hOut)
@@ -247,11 +246,12 @@ word16 fn00200557(word16 wa, word16 bc, byte d, byte * xhl)
 	word16 wa_100 = DPB(wa, c * 0x02, 0);
 	byte * xde_29 = (word16) (DPB(bc, 0x00, 8) * 0x40) + ((word32) (c * 0x02) + 0x9800);
 	byte b_33 = 0x13;
-l00200579:
-	cu8 v17_47 = *xhl;
-	wa_100 = DPB(wa_100, v17_47, 0);
-	if (v17_47 != 0x00)
+	do
 	{
+		cu8 v17_47 = *xhl;
+		wa_100 = DPB(wa_100, v17_47, 0);
+		if (v17_47 == 0x00)
+			return wa_100;
 		xhl = xhl + 0x01;
 		if (v17_47 >= 0x5B)
 			wa_100 = DPB(wa_100, v17_47 + 0xE0, 0);
@@ -263,9 +263,7 @@ l00200579:
 		wa_100 = DPB(wa_77 + 0x09, w_82, 8);
 		xde_29 = xde_88 + 0x01;
 		b_33 = b_33 - 0x01;
-		if (b_33 != 0x00)
-			goto l00200579;
-	}
+	} while (b_33 != 0x00);
 	return wa_100;
 }
 
@@ -288,7 +286,6 @@ void fn002005B8()
 		xbc_13 = xbc_13 + 0x01;
 		hl_14 = hl_14 - 0x01;
 	} while (hl_14 != 0x00);
-	return;
 }
 
 // 002005F5: void fn002005F5(Register word32 xwa)
@@ -309,7 +306,6 @@ void fn002005F5(word32 xwa)
 		word32 xwa_33;
 		(*v9_16)();
 	}
-	return;
 }
 
 // 0020060C: void fn0020060C()
@@ -320,6 +316,5 @@ void fn0020060C()
 		*(ui32 *) 0x6F83 = *(ui32 *) 0x6F83 & ~0x08;
 		*(byte *) 0x6DA0 = 0x00;
 	}
-	return;
 }
 

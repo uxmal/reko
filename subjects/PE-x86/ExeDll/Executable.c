@@ -23,7 +23,6 @@ word32 fn00401000(ptr32 & ebpOut)
 // 00401050: void fn00401050()
 void fn00401050()
 {
-	return;
 }
 
 // 00401060: Register word32 fn00401060(Stack word32 dwArg04)
@@ -254,7 +253,6 @@ void fn004012D8(_EXCEPTION_POINTERS * dwArg04)
 	SetUnhandledExceptionFilter(null);
 	UnhandledExceptionFilter(dwArg04);
 	TerminateProcess(GetCurrentProcess(), 0xC0000409);
-	return;
 }
 
 // 004013FB: Register (ptr Eq_557) fn004013FB(Stack (ptr Eq_118) dwArg04, Stack uint32 dwArg08)
@@ -286,18 +284,15 @@ byte fn0040143F()
 	if (fn00401B98() != 0x00)
 	{
 		word32 edx_32 = fs->ptr0018->dw0004;
-l00401460:
-		__lock();
-		word32 eax_37;
-		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
-		if (eax_37 != 0x00)
+		do
 		{
-			if (edx_32 != eax_37)
-				goto l00401460;
-			return 0x01;
-		}
-		else
-			return 0x00;
+			__lock();
+			word32 eax_37;
+			__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
+			if (eax_37 == 0x00)
+				return 0x00;
+		} while (edx_32 != eax_37);
+		return 0x01;
 	}
 	else
 		return 0x00;
@@ -372,7 +367,6 @@ void fn004014AD(ptr32 edi, ptr32 dwArg04)
 			globals->dw40334C = eax_78;
 			globals->dw403350 = eax_78;
 		}
-		return;
 	}
 	else
 	{
@@ -382,7 +376,6 @@ void fn004014AD(ptr32 edi, ptr32 dwArg04)
 		word32 esi_174;
 		word32 edi_175;
 		fn00401544(ebx, dwArg04, edi, out ebx_173, out esi_174, out edi_175);
-		return;
 	}
 }
 
@@ -424,7 +417,6 @@ void fn004015CE(byte bArg04)
 {
 	if (fn00401B98() != 0x00 && bArg04 == 0x00)
 		globals->dw403338 = 0x00;
-	return;
 }
 
 // 004015EB: void fn004015EB(Stack (ptr Eq_118) dwArg04, Stack byte bArg08)
@@ -435,7 +427,6 @@ void fn004015EB(Eq_118 * dwArg04, byte bArg08)
 		fn00401C48();
 		fn00401C48();
 	}
-	return;
 }
 
 // 00401613: Register word32 fn00401613(Stack ui32 dwArg04)
@@ -476,7 +467,6 @@ word32 fn00401613(ui32 dwArg04)
 void fn0040164E(ui32 dwArg04)
 {
 	fn00401613(dwArg04);
-	return;
 }
 
 // 00401663: void fn00401663()
@@ -498,32 +488,27 @@ void fn00401663()
 		globals->dw403004 = ecx_69;
 		globals->dw403000 = ~ecx_69;
 	}
-	return;
 }
 
 // 004016FF: void fn004016FF()
 void fn004016FF()
 {
-	return;
 }
 
 // 00401703: void fn00401703()
 void fn00401703()
 {
-	return;
 }
 
 // 00401709: void fn00401709()
 void fn00401709()
 {
-	return;
 }
 
 // 0040170C: void fn0040170C()
 void fn0040170C()
 {
 	InitializeSListHead(&globals->u403358);
-	return;
 }
 
 // 00401718: void fn00401718(Register word32 eax)
@@ -542,16 +527,12 @@ void fn00401718(word32 eax)
 		fn00401774(0x00030000, dwArg00);
 		int3();
 		fn00401739();
-		return;
 	}
-	else
-		return;
 }
 
 // 00401739: void fn00401739()
 void fn00401739()
 {
-	return;
 }
 
 // 0040173F: void fn0040173F()
@@ -565,19 +546,16 @@ void fn0040173F()
 	word32 ecx_9 = globals->dw403364;
 	globals->dw403360 = globals->dw403360 | 0x02;
 	globals->dw403364 = ecx_9;
-	return;
 }
 
 // 0040175C: void fn0040175C()
 void fn0040175C()
 {
-	return;
 }
 
 // 00401768: void fn00401768()
 void fn00401768()
 {
-	return;
 }
 
 // 0040176E: Register ptr32 fn0040176E()
@@ -598,7 +576,6 @@ void fn00401774(word32 dwArg00, Eq_118 * dwArg04)
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
 			globals->dw403368 = globals->dw403368 & 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
-		return;
 	}
 	else
 		__fastfail(dwArg04);
@@ -621,7 +598,6 @@ bool fn0040188F()
 void fn004018D3()
 {
 	SetUnhandledExceptionFilter(&globals->t4018DF);
-	return;
 }
 
 // 00401920: void fn00401920()
@@ -649,7 +625,6 @@ void fn00401920()
 			esi_34 = esi_34 + 0x01;
 		} while (esi_34 < &globals->dw4024C8);
 	}
-	return;
 }
 
 // 00401976: void fn00401976()
@@ -657,7 +632,6 @@ void fn00401976()
 {
 	word32 esp_3;
 	globals->ptr4020D0();
-	return;
 }
 
 // 00401980: Register ptr32 fn00401980(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack ui32 dwArg08)
@@ -740,7 +714,6 @@ void fn004019FE(word32 edx)
 			}
 		}
 	}
-	return;
 }
 
 // 00401B98: Register word32 fn00401B98()
@@ -752,12 +725,10 @@ word32 fn00401B98()
 // 00401BA4: void fn00401BA4()
 void fn00401BA4()
 {
-	return;
 }
 
 // 00401C48: void fn00401C48()
 void fn00401C48()
 {
-	return;
 }
 

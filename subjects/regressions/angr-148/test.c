@@ -18,7 +18,6 @@ void _init()
 		byte Z_20;
 		__gmon_start__();
 	}
-	return;
 }
 
 // 0000000000400440: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00)
@@ -47,10 +46,7 @@ void deregister_tm_clones(word64 r8)
 		word32 edi_52;
 		word64 rdi_53;
 		eax();
-		return;
 	}
-	else
-		return;
 }
 
 // 00000000004004A0: void register_tm_clones(Register word64 r8)
@@ -71,10 +67,7 @@ void register_tm_clones(word64 r8)
 		word64 rdi_57;
 		word32 edx_58;
 		edx();
-		return;
 	}
-	else
-		return;
 }
 
 // 00000000004004E0: void __do_global_dtors_aux(Register word64 r8)
@@ -85,17 +78,13 @@ void __do_global_dtors_aux(word64 r8)
 		deregister_tm_clones(r8);
 		globals->b601040 = 0x01;
 	}
-	return;
 }
 
 // 0000000000400500: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
 	if (globals->qw600E20 == 0x00 || 0x00 == 0x00)
-	{
 		register_tm_clones(r8);
-		return;
-	}
 	else
 	{
 		word64 rsp_44;
@@ -114,7 +103,6 @@ void frame_dummy(word64 r8)
 		word64 rsi_57;
 		eax();
 		register_tm_clones(r8_54);
-		return;
 	}
 }
 
@@ -122,14 +110,12 @@ void frame_dummy(word64 r8)
 void f()
 {
 	putchar(0x78);
-	return;
 }
 
 // 000000000040053D: void main()
 void main()
 {
 	f();
-	return;
 }
 
 // 0000000000400550: void __libc_csu_init(Register word32 edi)
@@ -160,18 +146,15 @@ void __libc_csu_init(word32 edi)
 			globals->u600E10();
 		} while (rbx_79 + 0x01 != rbp_78);
 	}
-	return;
 }
 
 // 00000000004005C0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	return;
 }
 
 // 00000000004005C4: void _fini()
 void _fini()
 {
-	return;
 }
 

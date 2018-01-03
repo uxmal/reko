@@ -8,7 +8,6 @@
 void _init()
 {
 	call_gmon_start();
-	return;
 }
 
 // 0000000000400410: void _start(Register (ptr Eq_5) rdx, Stack Eq_6 qwArg00)
@@ -34,7 +33,6 @@ void call_gmon_start()
 		word32 eax_23;
 		eax();
 	}
-	return;
 }
 
 // 0000000000400460: void deregister_tm_clones(Register word64 r8)
@@ -55,10 +53,7 @@ void deregister_tm_clones(word64 r8)
 		word32 edi_52;
 		word64 rdi_53;
 		eax();
-		return;
 	}
-	else
-		return;
 }
 
 // 0000000000400490: void register_tm_clones(Register word64 r8)
@@ -79,10 +74,7 @@ void register_tm_clones(word64 r8)
 		word64 rdi_57;
 		word32 edx_58;
 		edx();
-		return;
 	}
-	else
-		return;
 }
 
 // 00000000004004D0: void __do_global_dtors_aux(Register word64 r8)
@@ -93,17 +85,13 @@ void __do_global_dtors_aux(word64 r8)
 		deregister_tm_clones(r8);
 		globals->b601038 = 0x01;
 	}
-	return;
 }
 
 // 00000000004004F0: void frame_dummy(Register word64 r8)
 void frame_dummy(word64 r8)
 {
 	if (globals->qw600E08 == 0x00 || 0x00 == 0x00)
-	{
 		register_tm_clones(r8);
-		return;
-	}
 	else
 	{
 		word64 rsp_44;
@@ -122,7 +110,6 @@ void frame_dummy(word64 r8)
 		word64 rsi_57;
 		eax();
 		register_tm_clones(r8_54);
-		return;
 	}
 }
 
@@ -157,7 +144,6 @@ void main(Eq_218 * rsi, word32 edi)
 		puts("Correct! that is the secret key!");
 	else
 		puts("I'm sorry, that's the wrong secret key!");
-	return;
 }
 
 // 0000000000400620: void __libc_csu_init(Register word32 edi)
@@ -188,18 +174,15 @@ void __libc_csu_init(word32 edi)
 			globals->u600DF8();
 		} while (rbx_66 + 0x01 != rbp_61);
 	}
-	return;
 }
 
 // 00000000004006B0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	return;
 }
 
 // 00000000004006B4: void _fini()
 void _fini()
 {
-	return;
 }
 

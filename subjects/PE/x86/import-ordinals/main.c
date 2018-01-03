@@ -7,7 +7,6 @@
 // 00401000: void fn00401000()
 void fn00401000()
 {
-	return;
 }
 
 // 00401010: Register word32 fn00401010(Stack word32 dwArg04)
@@ -299,18 +298,15 @@ byte fn0040143A()
 	if (fn00401B98() != 0x00)
 	{
 		word32 edx_32 = fs->ptr0018->dw0004;
-l0040145B:
-		__lock();
-		word32 eax_37;
-		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
-		if (eax_37 != 0x00)
+		do
 		{
-			if (edx_32 != eax_37)
-				goto l0040145B;
-			return 0x01;
-		}
-		else
-			return 0x00;
+			__lock();
+			word32 eax_37;
+			__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
+			if (eax_37 == 0x00)
+				return 0x00;
+		} while (edx_32 != eax_37);
+		return 0x01;
 	}
 	else
 		return 0x00;
@@ -371,7 +367,6 @@ void fn004015C9(byte bArg04)
 {
 	if (fn00401B98() != 0x00 && bArg04 == 0x00)
 		globals->dw403338 = 0x00;
-	return;
 }
 
 // 004015E6: void fn004015E6(Stack (ptr Eq_94) dwArg04, Stack byte bArg08)
@@ -382,7 +377,6 @@ void fn004015E6(Eq_94 * dwArg04, byte bArg08)
 		fn00401C46();
 		fn00401C46();
 	}
-	return;
 }
 
 // 0040165E: void fn0040165E()
@@ -404,13 +398,11 @@ void fn0040165E()
 		globals->dw403004 = ecx_69;
 		globals->dw403000 = ~ecx_69;
 	}
-	return;
 }
 
 // 00401761: void fn00401761()
 void fn00401761()
 {
-	return;
 }
 
 // 00401767: Register ptr32 fn00401767()
@@ -431,7 +423,6 @@ void fn0040176D(word32 dwArg00, Eq_94 * dwArg04)
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
 			globals->dw403368 = globals->dw403368 & 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
-		return;
 	}
 	else
 		__fastfail(dwArg04);
@@ -455,7 +446,6 @@ void fn00401972()
 {
 	word32 esp_3;
 	globals->ptr4020D4();
-	return;
 }
 
 // 00401980: Register ptr32 fn00401980(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack ui32 dwArg08)
@@ -538,7 +528,6 @@ void fn004019FE(word32 edx)
 			}
 		}
 	}
-	return;
 }
 
 // 00401B98: Register word32 fn00401B98()
@@ -550,6 +539,5 @@ word32 fn00401B98()
 // 00401C46: void fn00401C46()
 void fn00401C46()
 {
-	return;
 }
 

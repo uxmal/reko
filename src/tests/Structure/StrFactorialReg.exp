@@ -11,7 +11,6 @@ fn0C00_0000_exit:
 void fn0C00_0000(selector ds)
 {
 	Mem4[ds:0x0064:word16] = fn0C00_000B(0x0005);
-	return;
 }
 ===========================
 // fn0C00_000B

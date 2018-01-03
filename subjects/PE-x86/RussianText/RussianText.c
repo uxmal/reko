@@ -8,13 +8,11 @@
 void _GetExceptDLLinfo()
 {
 	fn004011FC(dwArg04);
-	return;
 }
 
 // 00401084: void fn00401084()
 void fn00401084()
 {
-	return;
 }
 
 // 0040110B: void fn0040110B(Register word32 eax)
@@ -45,7 +43,6 @@ void fn0040110B(word32 eax)
 			__CRTL_TLS_ExitThread();
 		}
 	}
-	return;
 }
 
 // 00401158: Register word32 fn00401158()
@@ -64,13 +61,11 @@ int32 main(int32 argc, char * * argv)
 // 0040117C: void fn0040117C()
 void fn0040117C()
 {
-	return;
 }
 
 // 00401180: void fn00401180()
 void fn00401180()
 {
-	return;
 }
 
 // 004011B0: void fn004011B0(Stack word32 dwArg04)
@@ -90,7 +85,6 @@ void fn004011B0(word32 dwArg04)
 	*(esp_30 - 0x08) = fn00401158();
 	memcpy(*(esp_30 - 0x08), *(esp_30 - 0x04), *esp_30);
 	_InitTermAndUnexPtrs();
-	return;
 }
 
 // 004011FC: void fn004011FC(Stack (ptr Eq_4) dwArg04)
@@ -99,6 +93,5 @@ void fn004011FC(Eq_4 * dwArg04)
 	globals->dw4020F8 = fn00401158() + 0x1C;
 	dwArg04->dw0000 = 0x82727349;
 	dwArg04->ptr0004 = 0x004020E4;
-	return;
 }
 

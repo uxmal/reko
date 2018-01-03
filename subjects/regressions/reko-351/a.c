@@ -22,7 +22,6 @@ void deregister_tm_clones()
 		byte Z_49;
 		null();
 	}
-	return;
 }
 
 // 800000AE: void register_tm_clones()
@@ -47,7 +46,6 @@ void register_tm_clones()
 		byte V_59;
 		null();
 	}
-	return;
 }
 
 // 800000E4: void __do_global_dtors_aux(Register word32 d2)
@@ -104,13 +102,11 @@ void __do_global_dtors_aux(word32 d2)
 		}
 		globals->b80002724 = 0x01;
 	}
-	return;
 }
 
 // 80000158: void call___do_global_dtors_aux()
 void call___do_global_dtors_aux()
 {
-	return;
 }
 
 // 80000160: void frame_dummy()
@@ -148,25 +144,19 @@ void frame_dummy()
 		byte N_75;
 		null();
 		register_tm_clones();
-		return;
 	}
 	else
-	{
 		register_tm_clones();
-		return;
-	}
 }
 
 // 800001A4: void call_frame_dummy()
 void call_frame_dummy()
 {
-	return;
 }
 
 // 800001AC: void sine_taylor(Stack real64 rArg04)
 void sine_taylor(real64 rArg04)
 {
-	return;
 }
 
 // 8000033C: void factorial(Stack int32 dwArg04)
@@ -175,7 +165,6 @@ void factorial(int32 dwArg04)
 	int32 dwLoc08_15 = 0x02;
 	while (dwLoc08_15 - dwArg04 <= 0x00)
 		dwLoc08_15 = dwLoc08_15 + 0x01;
-	return;
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -184,7 +173,6 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 	int32 dwLoc08_16 = 0x00;
 	while (dwLoc08_16 - dwArg0C < 0x00)
 		dwLoc08_16 = dwLoc08_16 + 0x01;
-	return;
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -207,7 +195,6 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 		factorial(dwLoc08_104);
 		dwLoc08_104 = dwLoc08_104 + 0x04;
 	}
-	return;
 }
 
 // 8000049A: void main()
@@ -215,7 +202,6 @@ void main()
 {
 	sine_taylor(DPB(rLoc10, 0x40091EB8, 0));
 	_sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 1063818100, 0), fp - 0x08);
-	return;
 }
 
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_222 tArg14)
@@ -232,7 +218,6 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_222 tArg14)
 		dwLoc20_132 = v24_77 + 0x03;
 		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_77) * (real80) (v24_77 + 0x01)) * (real80) (v24_77 + 0x02)) * (real80) (v24_77 + 0x03));
 	}
-	return;
 }
 
 // 80000624: void __do_global_ctors_aux()
@@ -253,12 +238,10 @@ void __do_global_ctors_aux()
 			a0_12();
 		} while (-0x01 - *(a2_28 - 0x04) != 0x00);
 	}
-	return;
 }
 
 // 8000064E: void call___do_global_ctors_aux()
 void call___do_global_ctors_aux()
 {
-	return;
 }
 

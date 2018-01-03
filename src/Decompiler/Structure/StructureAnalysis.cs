@@ -23,6 +23,7 @@ using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,12 +67,17 @@ namespace Reko.Structure
             ccc.Transform();
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
+            proc.Body = new List<AbsynStatement>();
             var reg = Execute();
             //$REVIEW: yeecch. Should return the statements, and 
             // caller decides what to do with'em. Probably 
             // return an abstract Procedure, rather than overloading
             // the IR procedure.
             proc.Body.AddRange(reg.Statements);
+
+            // Post processing steps
+            var trrm = new TailReturnRemover(proc);
+            trrm.Transform();
         }
 
         /// <summary>
@@ -251,7 +257,7 @@ namespace Reko.Structure
             switch (n.Type)
             {
             case RegionType.Condition:
-                didReduce = ReduceIfRegion(n, false);
+                didReduce = ReduceIfRegion(n);
                 break;
             case RegionType.IncSwitch:
                 didReduce = ReduceSwitchRegion(n);
@@ -316,17 +322,15 @@ namespace Reko.Structure
         /// and reduces them out of the graph.
         /// </summary>
         /// <param name="n">The header of the possible if-region</param>
-        /// <param name="reduceTailregions">If true, will consider tail
-        /// regions as well as properly formed regions.</param>
         /// <returns></returns>
-        private bool ReduceIfRegion(Region n, bool reduceTailregions)
+        private bool ReduceIfRegion(Region n)
         {
             var ss = regionGraph.Successors(n).ToArray();
             var el = ss[0];
             var th = ss[1];
             var elS = LinearSuccessor(el);
             var thS = LinearSuccessor(th);
-            if (elS == th || (reduceTailregions && el.Type == RegionType.Tail))
+            if (elS == th)
             {
                 if (RefinePredecessor(n, el))
                     return false;
@@ -340,7 +344,7 @@ namespace Reko.Structure
                 n.Expression = null;
                 return true;
             }
-            else if (thS == el || (reduceTailregions && th.Type == RegionType.Tail))
+            else if (thS == el)
             {
                 if (RefinePredecessor(n, th))
                     return false;
@@ -373,12 +377,7 @@ namespace Reko.Structure
                 n.Expression = null;
                 return true;
             }
-            else
-            {
-                if (RefinePredecessor(n, th))
-                    return false;
-                return false;
-            }
+            return false;
         }
 
         private bool ReduceSequence(Region n)
@@ -509,11 +508,7 @@ all other cases, together they constitute a Switch[].
                 if (CoalesceTailRegion(node, switchNodes))
                     return;
             }
-            foreach (var node in switchNodes)
-            {
-                if (LastResort(node))
-                    return;
-            }
+            LastResort(switchNodes);
         }
 
         private bool VirtualizeIrregularSwitchEntries(Region n)
@@ -657,19 +652,22 @@ all other cases, together they constitute a Switch[].
 
         private bool ReduceIncSwitch(Region n, Region follow)
         {
-            var succs = regionGraph.Successors(n).ToArray();
-            var cases = new Dictionary<Region, List<int>>();
-            for (int i = 0; i < succs.Length; ++i)
+            //$REVIEW: workaround for when the datatype of n.Expression
+            // is non-integral. What causes this?
+            var pt = n.Expression.DataType as PrimitiveType;
+            if (pt == null)
             {
-                if (!cases.ContainsKey(succs[i]))
-                    cases.Add(succs[i], new List<int>());
-                cases[succs[i]].Add(i);
+                eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
+                pt = PrimitiveType.CreateWord(n.Expression.DataType.Size);
             }
+            var cases = CollectSwitchCases(n);
             var stms = new List<AbsynStatement>();
             foreach (var succ in cases.Keys)
             {
                 foreach (int c in cases[succ])
-                    stms.Add(new AbsynCase(Constant.Create(n.Expression.DataType, c)));
+                {
+                    stms.Add(new AbsynCase(Constant.Create(pt, c)));
+                }
                 stms.AddRange(succ.Statements);
                 if (succ.Type != RegionType.Tail)
                 {
@@ -695,6 +693,26 @@ all other cases, together they constitute a Switch[].
                 n.Type = RegionType.Tail;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Collects the cases of a switch statement such that cases with
+        /// the same destination region are collected in the same list
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns>A mapping from Region to a list of the case values
+        /// that jump to that region.</returns>
+        private Dictionary<Region, List<int>> CollectSwitchCases(Region n)
+        {
+            var succs = regionGraph.Successors(n).ToArray();
+            var cases = new Dictionary<Region, List<int>>();
+            for (int i = 0; i < succs.Length; ++i)
+            {
+                if (!cases.ContainsKey(succs[i]))
+                    cases.Add(succs[i], new List<int>());
+                cases[succs[i]].Add(i);
+            }
+            return cases;
         }
 
         /// <summary>
@@ -982,7 +1000,10 @@ are added during loop refinement, which we discuss next.
                     else
                     {
                         // DoWhile!
-                        loopStm = new AbsynDoWhile(s.Statements, s.Expression);
+                        var exp = s == succs[0]
+                            ? n.Expression.Invert()
+                            : n.Expression;
+                        loopStm = new AbsynDoWhile(s.Statements, exp);
                         n.Type = RegionType.Linear;
                     }
                     n.Statements = new List<AbsynStatement> { loopStm };
@@ -1114,10 +1135,11 @@ refinement on the loop body, which we describe below.
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
-            {
-                CoalesceTailRegions(lexicalNodes);
-                Probe();
                 return true;
+            foreach (var n in lexicalNodes)
+            {
+                if (CoalesceTailRegion(n, lexicalNodes))
+                    return true;
             }
             foreach (var n in lexicalNodes)
             {
@@ -1125,16 +1147,6 @@ refinement on the loop body, which we describe below.
                     return true;
             }
             return false;
-        }
-
-        private void CoalesceTailRegions(ISet<Region> regions)
-        {
-            foreach (var n in regions)
-            {
-                if (!regionGraph.Nodes.Contains(n))
-                    continue;
-                CoalesceTailRegion(n, regions);
-            }
         }
 
         private bool CoalesceTailRegion(Region n, ICollection<Region> regions)
@@ -1310,6 +1322,28 @@ refinement on the loop body, which we describe below.
             Continue,
         }
 
+        public enum LoopType
+        {
+            While,
+            DoWhile,
+        }
+
+        private bool HasExitEdgeFrom(Region n, Region follow)
+        {
+            return regionGraph.Successors(n).Where(s => (s == follow)).Any();
+        }
+
+        private LoopType DetermineLoopType(Region header, Region latch, Region follow)
+        {
+            if (!HasExitEdgeFrom(latch, follow))
+                return LoopType.While;
+            if (!HasExitEdgeFrom(header, follow))
+                return LoopType.DoWhile;
+            if (header.Statements.Count > 0)
+                return LoopType.DoWhile;
+            return LoopType.While;
+        }
+
         /// <summary>
         /// Virtualizes any edge leaving the lexically
         /// contained loop nodes other than the exit edge. Edges that
@@ -1326,6 +1360,7 @@ refinement on the loop body, which we describe below.
         private bool VirtualizeIrregularExits(Region header, Region latch, Region follow, ISet<Region> lexicalNodes)
         {
             bool didVirtualize = false;
+            var loopType = DetermineLoopType(header, latch, follow);
             foreach (var n in lexicalNodes)
             {
                 var vEdges = new List<VirtualEdge>();
@@ -1340,8 +1375,11 @@ refinement on the loop body, which we describe below.
                     {
                         if (s == follow)
                         {
-                            if (n != latch && n != header)
+                            if (loopType == LoopType.DoWhile && n != latch ||
+                                loopType == LoopType.While && n != header)
+                            {
                                 vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Break));
+                            }
                         }
                         else
                             vEdges.Add(new VirtualEdge(n, s, VirtualEdgeType.Goto));
@@ -1413,6 +1451,40 @@ refinement on the loop body, which we describe below.
                 // Whoa, we're in trouble now....
                 return false;
             }
+        }
+
+        private bool LastResort(ISet<Region> regions)
+        {
+            var vEdge = FindLastResortEdge( regions);
+            if (vEdge != null)
+            {
+                VirtualizeEdge(vEdge);
+                return true;
+            }
+            else
+            {
+                // Whoa, we're in trouble now....
+                return false;
+            }
+        }
+
+        private VirtualEdge FindLastResortEdge(ISet<Region> regions)
+        {
+            var edges = regions.SelectMany(
+                n => regionGraph.Successors(n).
+                Where(s => regions.Contains(s)).
+                Select(s => new VirtualEdge(n, s, VirtualEdgeType.Goto)));
+
+            foreach(var vEdge in edges)
+                if (!doms.DominatesStrictly(vEdge.From, vEdge.To) &&
+                    !doms.DominatesStrictly(vEdge.To, vEdge.From))
+                    return vEdge;
+
+            foreach (var vEdge in edges)
+                if (!doms.DominatesStrictly(vEdge.From, vEdge.To))
+                    return vEdge;
+
+            return edges.FirstOrDefault();
         }
 
         public class VirtualEdge

@@ -62,7 +62,6 @@ PyObject * py_unused(PyObject * self, PyObject * args)
 void initpySample()
 {
 	Py_InitModule4("pySample", globals->methods, null, null, 1007);
-	return;
 }
 
 // 100011E9: Register word32 fn100011E9(Stack uint32 dwArg08)
@@ -313,7 +312,6 @@ l1000147A:
 void fn10001493()
 {
 	globals->t10003008 = ~0x00;
-	return;
 }
 
 // 1000149E: Register Eq_741 DllMain(Stack Eq_742 hModule, Stack Eq_197 dwReason, Stack Eq_395 lpReserved)
@@ -403,14 +401,12 @@ void fn10001665()
 	word32 esp_4;
 	word32 ecx_5;
 	unlock();
-	return;
 }
 
 // 1000166E: void fn1000166E(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg04)
 void fn1000166E( * ebx, ptr32 esi, word32 edi, word32 dwArg04)
 {
 	fn100015CF(ebx, esi, edi);
-	return;
 }
 
 // 10001680: void fn10001680()
@@ -436,7 +432,6 @@ void fn10001680()
 			esi_12 = esi_12 + 0x01;
 		} while (esi_12 < &globals->dw100021D8);
 	}
-	return;
 }
 
 // 100016D0: Register word32 fn100016D0(Stack Eq_488 dwArg04)
@@ -548,6 +543,5 @@ void fn10001864()
 		globals->dw10003000 = esi_68;
 		globals->dw10003004 = ~esi_68;
 	}
-	return;
 }
 

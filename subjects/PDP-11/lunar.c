@@ -15,7 +15,6 @@ void fn0128(Eq_2 r4, word16 pc)
 		globals->w006E = r0_3;
 		fn053A(r4, pc);
 	}
-	return;
 }
 
 // 0242: void fn0242(Register word16 r0, Register (ptr word16) r1)
@@ -89,7 +88,6 @@ void fn0300(Eq_2 r4)
 		globals->w004E = 0x00;
 		globals->w0050 = 0x00;
 		globals->w0052 = 62866;
-		return;
 	}
 	else
 	{
@@ -138,7 +136,6 @@ void fn0300(Eq_2 r4)
 		word16 r3_89;
 		fn125E(globals->w004E, globals->u004C, out r2_88, out r3_89);
 		globals->w0052 = r2_88 - 0x0A6E;
-		return;
 	}
 }
 
@@ -169,7 +166,6 @@ void fn03CE(word16 * r0)
 	globals->w27A8 = globals->w27A8 | globals->w0090;
 	globals->w27A8 = globals->w27A8 | globals->w008E;
 	fn0242(0x27A2, r0);
-	return;
 }
 
 // 0444: void fn0444()
@@ -178,23 +174,22 @@ void fn0444()
 	ci16 r0_15 = globals->w0046;
 	if (r0_15 <= 0x00)
 	{
-		do
+		while (65356 - r0_15 <= 0x00)
 		{
-			if (65356 - r0_15 > 0x00)
-				goto l0464;
 			r0_15 = r0_15 + 0x0168;
-		} while (r0_15 > 0x00);
+			if (r0_15 > 0x00)
+				break;
+		}
 	}
 	else
 	{
-		do
+		while (0xB4 - r0_15 > 0x00)
 		{
-			if (0xB4 - r0_15 <= 0x00)
-				goto l0464;
 			r0_15 = r0_15 - 0x0168;
-		} while (r0_15 < 0x00);
+			if (r0_15 >= 0x00)
+				break;
+		}
 	}
-l0464:
 	globals->w0046 = r0_15;
 	if (v12 <= 0x00)
 		r0_15 = r0_15 + 0x0168;
@@ -203,7 +198,6 @@ l0464:
 	if (0x021C - r0_16 >= 0x00)
 		r0_16 = r0_16 - 0x02D0;
 	globals->u004C = r0_16->w3290;
-	return;
 }
 
 // 0488: void fn0488()
@@ -259,7 +253,6 @@ void fn0488()
 		r3_122 = -r3_122;
 	globals->w005E = globals->w005E + r3_122;
 	globals->w005A = r2_123;
-	return;
 }
 
 // 053A: void fn053A(Register Eq_2 r4, Register word16 pc)
@@ -711,7 +704,6 @@ void fn0AF6(ci16 * wArg00)
 	globals->w34D2 = 13770;
 	NZ_12 = cond(v35);
 	V_13 = false;
-	return;
 }
 
 // 0B06: Register word16 fn0B06(Register int16 r3, Register (ptr word16) r5, Register word16 pc)
@@ -845,7 +837,6 @@ void fn0C36(ci16 r2, ci16 r3, word16 pc)
 		fn0C76(r0_27, pc);
 		r3 = r3 - 0x01;
 	} while (r3 > 0x00);
-	return;
 }
 
 // 0C72: void fn0C72()
@@ -871,7 +862,6 @@ void fn0C76(ci16 r0, word16 pc)
 	} while (v8_12 != 0x00);
 	word16 r4_17;
 	fn1578(r0, pc, out r4_17);
-	return;
 }
 
 // 0C90: void fn0C90(Stack (ptr ci16) wArg00, Stack (ptr ci16) wArg02, Stack ui16 wArg04)
@@ -885,13 +875,11 @@ void fn0C90(ci16 * wArg00, ci16 * wArg02, ui16 wArg04)
 	else
 		(wArg02 >> 0x01)->w3013 = (wArg02 >> 0x01)->w3013 & ~0x0F;
 	(wArg02 >> 0x01)->w3013 = (wArg02 >> 0x01)->w3013 | wArg04;
-	return;
 }
 
 // 0CCA: void fn0CCA(Register ci16 r4, Stack int16 wArg02)
 void fn0CCA(ci16 r4, int16 wArg02)
 {
-	return;
 }
 
 // 0CEC: void fn0CEC()
@@ -933,13 +921,11 @@ void fn0D3C(code * ptrArg00)
 	bool Z_45;
 	word16 r5_46;
 	ptrArg00();
-	return;
 }
 
 // 0D66: void fn0D66(Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C)
 void fn0D66(word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C)
 {
-	return;
 }
 
 // 0D78: Register (ptr cui16) fn0D78(Register wchar_t r4, Register (ptr cui16) r5, Stack (ptr code) wArg00)
@@ -1016,7 +1002,6 @@ void fn0E06(int16 r0)
 		r1_10 = r1_10 + 0x01;
 		r0 = -(r0 >> 0x01);
 	} while (r0 != 0x00);
-	return;
 }
 
 // 0E32: Register word16 fn0E32(Register word16 pc, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out Eq_1109 r5Out)
@@ -1186,7 +1171,6 @@ void fn103C(word16 r0, Eq_3299 * r3, Eq_3300 * r5, Eq_3301 * wArg00)
 		globals->w0046 = wLoc0C_63;
 		fn0444();
 	}
-	return;
 }
 
 // 114A: FlagGroup bool fn114A(Register Eq_2 r0, Register Eq_2 r1, Register out ptr16 r2Out, Register out ptr16 r3Out)
@@ -1883,10 +1867,7 @@ Eq_4140 * fn1658(Eq_4140 * r1, Eq_4190 * r3, word16 wArg02, ptr16 & r3Out)
 void fn1674(Eq_2 r0, Eq_4140 * r1, word16 pc)
 {
 	if (r0 > 0x00)
-	{
 		fn15F2(r0, r1, pc);
-		return;
-	}
 	else
 	{
 		word16 * r0_21 = fn15F2(-r0, r1, pc);
@@ -1894,7 +1875,6 @@ void fn1674(Eq_2 r0, Eq_4140 * r1, word16 pc)
 			r0_21 = r0_21 - 0x02;
 		while (*r0_21 != 0x20);
 		*r0_21 = (word16) 0x2D;
-		return;
 	}
 }
 
@@ -1934,6 +1914,5 @@ void fn355A()
 	do
 		;
 	while (*(ci8 *) 64396 > 0x00);
-	return;
 }
 
