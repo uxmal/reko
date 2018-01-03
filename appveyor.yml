@@ -10,7 +10,7 @@ build:
   verbosity: normal
 
 environment:
-  reko_setup: src/WixInstaller/bin/Release/*.msi
+  reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
 
 after_build:
   - ps: >-
