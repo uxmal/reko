@@ -1052,7 +1052,6 @@ namespace Reko.Arch.M68k
             return new M68kInstruction { code = Opcode.illegal };
         }
 
-        //$REVIEW: doesn't appear to be official opcode mnemonic?
         private static M68kInstruction d68020_callm(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_ONLY);
