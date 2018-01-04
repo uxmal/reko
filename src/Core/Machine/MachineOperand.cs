@@ -55,26 +55,44 @@ namespace Reko.Core.Machine
 
         public abstract void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options);
 
-		public static string FormatSignedValue(Constant c)
+		/// <summary>
+		/// Should signed integers always be formatted with a leading sign character?
+		/// Setting this to Yes allows chaining a sequence of numbers into an expression,
+		///  like "+5+7-3+9".
+		/// Setting this to No will format numbers like "5" and "-3" which is normal for standalone numbers.
+		/// </summary>
+		public enum SignRequiredForSignedIntegers
 		{
-			string s = "+";
+			/// <summary>
+			/// A + or - sign is required in front of signed integer
+			/// </summary>
+			Yes,
+			/// <summary>
+			/// Positive integers will have no sign in front; negative will have -
+			/// </summary>
+			No
+		}
+
+		public static string FormatSignedValue(Constant c, SignRequiredForSignedIntegers signRequired = SignRequiredForSignedIntegers.Yes, string formatSpecifier = "{0}{1}")
+		{
+			string s = (signRequired == SignRequiredForSignedIntegers.Yes ? "+" : "");
 			int tmp = c.ToInt32();
 			if (tmp < 0)
 			{
 				s = "-";
 				tmp = -tmp;
 			}
-			return s + tmp.ToString(FormatString(c.DataType));
+			return string.Format(formatSpecifier, s, tmp.ToString(FormatString(c.DataType)));
 		}
 
         private static readonly char[] floatSpecials = new char[] { '.', 'e', 'E' };
 
-        public static string FormatValue(Constant c)
+        public static string FormatValue(Constant c, SignRequiredForSignedIntegers signRequiredForSignedIntegers = SignRequiredForSignedIntegers.Yes, string integerFormatSpecifier = "{0}{1}")
         {
             var pt = (PrimitiveType)c.DataType;
             if (pt.Domain == Domain.SignedInt)
             {
-                return FormatSignedValue(c);
+                return FormatSignedValue(c, signRequiredForSignedIntegers, integerFormatSpecifier);
             }
             else if (pt.Domain == Domain.Real)
             {
@@ -86,7 +104,7 @@ namespace Reko.Core.Machine
                 return str;
             }
             else
-                return FormatUnsignedValue(c);
+                return FormatUnsignedValue(c, integerFormatSpecifier);
         }
 
 		private static string FormatString(DataType dt)
@@ -101,9 +119,9 @@ namespace Reko.Core.Machine
 			}
 		}
 
-		public static string FormatUnsignedValue(Constant c)
+		public static string FormatUnsignedValue(Constant c, string formatSpecifier = "{0}{1}")
 		{
-			return c.ToUInt64().ToString(FormatString(c.DataType));
+			return string.Format(formatSpecifier, "", c.ToUInt64().ToString(FormatString(c.DataType)));
 		}
 	}
 

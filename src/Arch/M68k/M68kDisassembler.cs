@@ -35,6 +35,8 @@ namespace Reko.Arch.M68k
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
+		public static string HexStringFormat = "{0}${1}";
+
         private EndianImageReader rdr;        // program counter 
         internal M68kInstruction instr;  // instruction being built
         private static TraceSwitch trace = new TraceSwitch("m68dasm", "Detailed tracing of M68k disassembler");
