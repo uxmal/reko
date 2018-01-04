@@ -81,7 +81,7 @@ namespace Reko.Arch.M68k
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write("#");
-            writer.Write(MachineOperand.FormatValue(Constant, SignRequiredForSignedIntegers.No, M68kDisassembler.HexStringFormat));
+            writer.Write(MachineOperand.FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
         }
     }
 
@@ -153,7 +153,9 @@ namespace Reko.Arch.M68k
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
 			if (Offset != null)
-				writer.Write(MachineOperand.FormatValue(Offset, SignRequiredForSignedIntegers.No, M68kDisassembler.HexStringFormat));
+			{
+				writer.Write(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
+			}
             writer.Write("(");
             writer.Write(Base.Name);
             writer.Write(")");
