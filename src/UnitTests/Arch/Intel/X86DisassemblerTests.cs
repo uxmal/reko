@@ -918,6 +918,12 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("illegal", 0xF2, 0x0F, 0x2E, 0x00);
         }
+
+        [Test]
+        public void X86dis_pause()
+        {
+            AssertCode32("pause", 0xF3, 0x90);
+        }
 	}
 }
 

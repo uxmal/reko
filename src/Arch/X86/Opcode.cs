@@ -240,6 +240,7 @@ namespace Reko.Arch.X86
         outs,
         outsb,
         palignr,
+        pause,
         pcmpeqb,
         pcmpistri,
         pop,
