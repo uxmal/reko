@@ -365,9 +365,6 @@ namespace Reko.Arch.M68k
         private M68kImmediateOperand get_imm_str_s32() { return get_imm_str_s(2); }
 
         private M68kImmediateOperand get_imm_str_u8() { return get_imm_str_u(PrimitiveType.Byte); }
-        private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(PrimitiveType.Word16); }
-        [Obsolete("Use rdr.TryReadUInt32", true)]
-        private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(PrimitiveType.Word32); }
 
         private static RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
         private static RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
@@ -1410,12 +1407,16 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_cptrapcc_16(M68kDisassembler dasm)
         {
-            uint extension1;
-            uint extension2;
+            ushort extension1;
+            ushort extension2;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+
             extension1 = dasm.read_imm_16();
-            extension2 = dasm.read_imm_16();
-            dasm.g_dasm_str = string.Format("{0}trap{1,4} {2}; (extension = {3}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.get_imm_str_u16(), extension2);
+            if (!dasm.rdr.TryReadBeUInt16(out extension1))
+                return null;
+            if (!dasm.rdr.TryReadBeUInt16(out extension2))
+                return null;
+            dasm.g_dasm_str = string.Format("{0}trap{1,4} {2}; (extension = {3}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[extension1 & 0x3f], dasm.rdr.ReadBeUInt16(), extension2);
             return new M68kInstruction { code = Opcode.illegal };
         }
 
@@ -1523,11 +1524,15 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68000_eori_to_sr(M68kDisassembler dasm)
         {
+            ushort extension1;
+            if (!dasm.rdr.TryReadBeUInt16(out extension1))
+                return null;
+
             return new M68kInstruction
             {
                 code = Opcode.eori,
                 dataWidth = PrimitiveType.Word16,
-                op1 = dasm.get_imm_str_u16(),
+                op1 = new M68kImmediateOperand(Constant.UInt16(extension1)),
                 op2 = new RegisterOperand(Registers.sr),
             };
         }
@@ -2453,24 +2458,30 @@ namespace Reko.Arch.M68k
         private static M68kInstruction d68020_pack_rr(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            ushort uImm;
+            if (!dasm.rdr.TryReadBeUInt16(out uImm))
+                return null;
             return new M68kInstruction
             {
                 code = Opcode.pack,
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = get_data_reg((dasm.instruction >> 9) & 7),
-                op3 = dasm.get_imm_str_u16()
+                op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
             };
         }
 
         private static M68kInstruction d68020_pack_mm(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            ushort uImm;
+            if (!dasm.rdr.TryReadBeUInt16(out uImm))
+                return null;
             return new M68kInstruction
             {
                 code = Opcode.pack,
                 op1 = dasm.get_pre_dec(dasm.instruction & 7),
                 op2 = dasm.get_pre_dec((dasm.instruction >> 9) & 7),
-                op3 = dasm.get_imm_str_u16()
+                op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
             };
         }
 
@@ -2551,10 +2562,14 @@ namespace Reko.Arch.M68k
         private static M68kInstruction d68020_trapcc_16(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            ushort uImm;
+            if (!dasm.rdr.TryReadBeUInt16(out uImm))
+                return null;
+
             return new M68kInstruction
             {
                 code = g_trapcc[(dasm.instruction >> 8) & 0xf],
-                op1 = dasm.get_imm_str_u16()
+                op1 = new M68kImmediateOperand(Constant.UInt16(uImm))
             };
         }
 
@@ -2685,24 +2700,30 @@ namespace Reko.Arch.M68k
         private static M68kInstruction d68020_unpk_rr(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            ushort uImm;
+            if (!dasm.rdr.TryReadBeUInt16(out uImm))
+                return null;
             return new M68kInstruction
             {
                 code = Opcode.unpk,
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = get_data_reg((dasm.instruction >> 9) & 7),
-                op3 = dasm.get_imm_str_u16()
+                op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
             };
         }
 
         private static M68kInstruction d68020_unpk_mm(M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            ushort uImm;
+            if (!dasm.rdr.TryReadBeUInt16(out uImm))
+                return null;
             return new M68kInstruction
             {
                 code = Opcode.unpk,
                 op1 = dasm.get_pre_dec(dasm.instruction & 7),
                 op2 = dasm.get_pre_dec((dasm.instruction >> 9) & 7),
-                op3 = dasm.get_imm_str_u16()
+                op3 = new M68kImmediateOperand(Constant.UInt16(uImm))
             };
         }
 
@@ -3072,12 +3093,12 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
 	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
 	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new OpRec("sl:Ml,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
-	new OpRec("sw:Mw,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),      // d68000_movem_re_16  
-	new OpRec("sl:Ml,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32
-	new OpRec("sw:nE0,mw", 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16 
-	new OpRec("sl:nE0,ml", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32 
+	new OpRec("sw:Mw,E0", 0xfff8, 0x48a0, 0x000, Opcode.movem),     // d68000_movem_pd_16
+	new OpRec("sl:Ml,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),     // d68000_movem_pd_32
+	new OpRec("sw:Mw,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),     // d68000_movem_re_16
+	new OpRec("sl:Ml,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32
+	new OpRec("sw:nE0,mw", 0xffc0, 0x4c80, 0x37b, Opcode.movem),    // d68000_movem_er_16
+	new OpRec("sl:nE0,ml", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),    // d68000_movem_er_32
 	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
 	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
 	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
