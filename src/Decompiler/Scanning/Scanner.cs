@@ -62,7 +62,6 @@ namespace Reko.Scanning
         private IImportResolver importResolver;
         private SortedList<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
-        private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Address, ImportReference> importReferences;
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
@@ -89,7 +88,6 @@ namespace Reko.Scanning
             this.procQueue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
-            this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
