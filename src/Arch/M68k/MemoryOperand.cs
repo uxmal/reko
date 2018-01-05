@@ -152,10 +152,10 @@ namespace Reko.Arch.M68k
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-			if (Offset != null)
-			{
-				writer.Write(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
-			}
+            if (Offset != null)
+            {
+                writer.Write(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
+            }
             writer.Write("(");
             writer.Write(Base.Name);
             writer.Write(")");

@@ -35,7 +35,7 @@ namespace Reko.Arch.M68k
 
     public partial class M68kDisassembler : DisassemblerBase<M68kInstruction>
     {
-		public const string HexStringFormat = "{0}${1}";
+        public const string HexStringFormat = "{0}${1}";
 
         private EndianImageReader rdr;        // program counter 
         internal M68kInstruction instr;  // instruction being built
