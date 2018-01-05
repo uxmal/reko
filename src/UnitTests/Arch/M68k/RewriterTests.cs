@@ -1476,11 +1476,22 @@ namespace Reko.UnitTests.Arch.M68k
         [Ignore("This instruction was only supported on the 68020, and almost noone used it. do we care?")]
         public void M68krw_callm()
         {
-            Rewrite(0x06EE, 0x0000, 0x0486); // callm#$00,$0486(a6)
+            Rewrite(0x06EE, 0x0000, 0x0486); // callm #$00,$0486(a6)
             AssertCode(
                 "0|T--|00010000(2): 5 instructions",
                 "1|L--|Mem0[a2 + 3223:word16] = 0x0000",
                 "2|L--|Z = true");
+        }
+
+        [Test]
+        public void M68krw_dbcs()
+        {
+            Rewrite(0x55CF, 0xFFF2);        // dbcs d7,$000F21B2
+            AssertCode(
+                "0|T--|00010000(4): 3 instructions",
+                "1|T--|if (Test(ULT,C)) branch 00010004",
+                "2|L--|d7 = d7 - 0x00000001",
+                "3|T--|if (d7 != 0xFFFFFFFF) branch 0000FFF4");
         }
     }
 }

@@ -130,6 +130,7 @@ VS Overflow Set 1001 V
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
                 case Opcode.cmpm: RewriteCmp(); break;
+                case Opcode.dbcs: RewriteDbcc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.dbeq: RewriteDbcc(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
