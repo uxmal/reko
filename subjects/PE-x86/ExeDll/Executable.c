@@ -379,13 +379,13 @@ void fn004014AD(ptr32 edi, ptr32 dwArg04)
 	}
 }
 
-// 00401544: Register (ptr Eq_745) fn00401544(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-Eq_745 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+// 00401544: Register (ptr Eq_754) fn00401544(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+Eq_754 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_745 * eax_31;
+	struct Eq_754 * eax_31;
 	struct Eq_89 * ebp_10 = fn00401980(ebx, esi, edi, dwLoc0C, 0x004024F8, 0x08);
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
-	struct Eq_765 * eax_15 = (struct Eq_765 *) 23117;
+	struct Eq_774 * eax_15 = (struct Eq_774 *) 23117;
 	if (globals->w400000 == 23117)
 	{
 		eax_15 = globals->ptr40003C;
@@ -397,7 +397,7 @@ Eq_745 * fn00401544(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & es
 			if (eax_15 != null && eax_15->dw0024 >= 0x00)
 			{
 				*(ebp_10 - 0x04) = ~0x01;
-				eax_31 = (struct Eq_745 *) DPB(eax_15, 0x01, 0);
+				eax_31 = (struct Eq_754 *) DPB(eax_15, 0x01, 0);
 l004015C8:
 				word32 esi_37;
 				word32 edi_38;
@@ -408,7 +408,7 @@ l004015C8:
 		}
 	}
 	*(ebp_10 - 0x04) = ~0x01;
-	eax_31 = (struct Eq_745 *) DPB(eax_15, 0x00, 0);
+	eax_31 = (struct Eq_754 *) DPB(eax_15, 0x00, 0);
 	goto l004015C8;
 }
 
@@ -584,10 +584,10 @@ void fn00401774(word32 dwArg00, Eq_118 * dwArg04)
 // 0040188F: Register bool fn0040188F()
 bool fn0040188F()
 {
-	Eq_1096 eax_4 = GetModuleHandleW(null);
+	Eq_1105 eax_4 = GetModuleHandleW(null);
 	if (eax_4 != null && eax_4->unused == 23117)
 	{
-		struct Eq_1110 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+		struct Eq_1119 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
 		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
 			return eax_42->dw00E8 != 0x00;
 	}

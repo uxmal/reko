@@ -5,6 +5,6 @@
 #include "hello_m68k.h"
 
 <anonymous> g_tFFFFFFFF;
-Eq_46 g_t0000;
-Eq_1895 g_t0FF8;
+Eq_48 g_t0000;
+Eq_1921 g_t0FF8;
 

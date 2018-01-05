@@ -91,7 +91,7 @@ void fn00200089(word16 de)
 		byte a_536;
 		byte SZHVC_537;
 		bool Z_538;
-		((union Eq_245 *) 0x7000)();
+		((union Eq_247 *) 0x7000)();
 	}
 	word16 wa_222;
 	word16 bc_221;
@@ -142,7 +142,7 @@ void fn00200089(word16 de)
 		byte a_491;
 		byte SZHVC_492;
 		bool Z_493;
-		((union Eq_245 *) 0x7000)();
+		((union Eq_247 *) 0x7000)();
 	}
 	word16 wa_323;
 	word16 bc_322;
@@ -193,7 +193,7 @@ void fn00200089(word16 de)
 		byte a_448;
 		byte SZHVC_449;
 		bool Z_450;
-		((union Eq_245 *) 0x7000)();
+		((union Eq_247 *) 0x7000)();
 	}
 	fn00200532(0x00, 0x04, bc_360, fn00200532(*(byte *) 0x4003, 0x04, bc_360, de_372, 0x0D0E), 0x0D0D);
 	word16 wa_407 = DPB(wa_381, 0x04, 8);
@@ -214,10 +214,10 @@ void fn002004F2(byte w)
 	while (*(byte *) 0x4004 != w);
 }
 
-// 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_478 deOut, Register out Eq_479 hOut)
-byte fn0020050A(byte w, byte a, word16 bc, word16 de, word16 hl, Eq_478 & deOut, Eq_479 & hOut)
+// 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_480 deOut, Register out Eq_481 hOut)
+byte fn0020050A(byte w, byte a, word16 bc, word16 de, word16 hl, Eq_480 & deOut, Eq_481 & hOut)
 {
-	struct Eq_480 * xde_27 = DPB(0x9800, (word16) (DPB(bc, 0x00, 8) * 0x02) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x40), 0);
+	struct Eq_482 * xde_27 = DPB(0x9800, (word16) (DPB(bc, 0x00, 8) * 0x02) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x40), 0);
 	xde_27->b0000 = a;
 	xde_27->b0001 = w;
 	word16 de_43;

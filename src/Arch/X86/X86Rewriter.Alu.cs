@@ -979,13 +979,13 @@ namespace Reko.Arch.X86
                 break;
             case Opcode.ins:
             case Opcode.insb:
-                regDX = orw.AluRegister(Registers.rdx, instrCur.addrWidth);
+                regDX = frame.EnsureRegister(Registers.dx);
                 m.Assign(MemDi(), host.PseudoProcedure("__in", instrCur.dataWidth, regDX));
                 incDi = true;
                 break;
             case Opcode.outs:
             case Opcode.outsb:
-                regDX = orw.AluRegister(Registers.rdx, instrCur.addrWidth);
+                regDX = frame.EnsureRegister(Registers.dx);
                 m.SideEffect(host.PseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, regDX, RegAl));
                 incSi = true;
                 break;
