@@ -72,7 +72,7 @@ word16 fn02C8(Eq_118 * r4, Eq_119 & r3Out, ptr16 & r4Out)
 	word16 r4_35;
 	*r4Out = &r4->b0001 + 0x01;
 	word16 r3_50;
-	*r3Out = r2_10 - r2_19;
+	*r3Out = r2_19 - r2_10;
 	return r2_40 + r2_29;
 }
 
@@ -956,7 +956,7 @@ l0D9C:
 				globals->w00A8 = globals->w00A8 + 0x01;
 				globals->w00A8 = globals->w00A8 & ~~0x03;
 				*r5 = globals->w00A6;
-				*r5 = globals->w00A8 | *r5;
+				*r5 = *r5 | globals->w00A8;
 				*r5 = *r5 | 0x8C04;
 				r5 = r5 + 0x01;
 			}
@@ -996,9 +996,9 @@ void fn0E06(int16 r0)
 	fn0C90(wLoc06, r1_3, wLoc02_17);
 	do
 	{
-		*r1_10 = r0 - *r1_10;
+		*r1_10 = *r1_10 - r0;
 		r3_12 = r3_12 - 0x02;
-		*r3_12 = r0 - *r3_12;
+		*r3_12 = *r3_12 - r0;
 		r1_10 = r1_10 + 0x01;
 		r0 = -(r0 >> 0x01);
 	} while (r0 != 0x00);

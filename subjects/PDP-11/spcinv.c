@@ -399,7 +399,7 @@ bool fn05D4(Eq_137 r0, Eq_99 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, Eq_4 * pc, byte b
 	*r4Out = r4;
 	*r5Out = r5;
 	*r0Out = r0;
-	word16 v9_6 = globals->w0F02 - r3;
+	word16 v9_6 = r3 - globals->w0F02;
 	cu16 v12_10 = 0x04 - v9_6;
 	bool Z_122 = cond(v12_10);
 	if (v12_10 <= 0x00)

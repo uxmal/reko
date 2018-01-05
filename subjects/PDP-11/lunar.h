@@ -1725,7 +1725,7 @@ T_191: (in r3_50 : word16)
   Class: Eq_191
   DataType: word16
   OrigDataType: word16
-T_192: (in r2_10 - r2_19 : word16)
+T_192: (in r2_19 - r2_10 : word16)
   Class: Eq_192
   DataType: word16
   OrigDataType: word16
@@ -12025,35 +12025,35 @@ T_2766: (in Mem73[r5 + 0x0000:word16] : word16)
   Class: Eq_2763
   DataType: cui16
   OrigDataType: word16
-T_2767: (in 00A8 : ptr16)
+T_2767: (in 0x0000 : word16)
   Class: Eq_2767
-  DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_2770 t0000)))
-T_2768: (in 0x0000 : word16)
-  Class: Eq_2768
   DataType: word16
   OrigDataType: word16
-T_2769: (in 0x00A8 + 0x0000 : word16)
-  Class: Eq_2769
-  DataType: ptr16
-  OrigDataType: ptr16
-T_2770: (in Mem73[0x00A8 + 0x0000:word16] : word16)
-  Class: Eq_2770
+T_2768: (in r5 + 0x0000 : word16)
+  Class: Eq_2768
+  DataType: (ptr word16)
+  OrigDataType: (ptr word16)
+T_2769: (in Mem73[r5 + 0x0000:word16] : word16)
+  Class: Eq_2763
   DataType: cui16
   OrigDataType: cui16
+T_2770: (in 00A8 : ptr16)
+  Class: Eq_2770
+  DataType: (ptr cui16)
+  OrigDataType: (ptr (struct (0 T_2773 t0000)))
 T_2771: (in 0x0000 : word16)
   Class: Eq_2771
   DataType: word16
   OrigDataType: word16
-T_2772: (in r5 + 0x0000 : word16)
+T_2772: (in 0x00A8 + 0x0000 : word16)
   Class: Eq_2772
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
-T_2773: (in Mem73[r5 + 0x0000:word16] : word16)
-  Class: Eq_2763
+  DataType: ptr16
+  OrigDataType: ptr16
+T_2773: (in Mem73[0x00A8 + 0x0000:word16] : word16)
+  Class: Eq_2773
   DataType: cui16
   OrigDataType: cui16
-T_2774: (in globals->w00A8 | *r5 : word16)
+T_2774: (in *r5 | globals->w00A8 : word16)
   Class: Eq_2763
   DataType: cui16
   OrigDataType: cui16
@@ -12429,7 +12429,7 @@ T_2867: (in Mem0[r1_10 + 0x0000:word16] : word16)
   Class: Eq_2867
   DataType: word16
   OrigDataType: word16
-T_2868: (in r0 - *r1_10 : word16)
+T_2868: (in *r1_10 - r0 : word16)
   Class: Eq_2868
   DataType: word16
   OrigDataType: word16
@@ -12465,7 +12465,7 @@ T_2876: (in Mem30[r3_12 + 0x0000:word16] : word16)
   Class: Eq_2876
   DataType: word16
   OrigDataType: word16
-T_2877: (in r0 - *r3_12 : word16)
+T_2877: (in *r3_12 - r0 : word16)
   Class: Eq_2877
   DataType: word16
   OrigDataType: word16

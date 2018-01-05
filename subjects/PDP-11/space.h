@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFF95B3 word16 wFFFF95B3) (0 (ptr cui16) ptr0000) (4 (struct "Eq_2072" 0002 (0 word16 w0000) (2 (ptr code) ptr0002)) t0004) (A (struct "Eq_2072" 0002) t000A) (10 (struct "Eq_2072" 0002) t0010) (1E word16 w001E) (20 word16 w0020) (22 ptr16 ptr0022) (24 cui16 w0024) (26 word16 w0026) (28 cu16 w0028) (2A byte b002A) (2B cui16 w002B) (36 (union "Eq_214" (byte u0) ((ptr Eq_18527) u1) ((ptr code) u2)) u0036) (38 (union "Eq_214") u0038) (3A (union "Eq_214") u003A) (3C (union "Eq_214") u003C) (3D (union "Eq_214") u003D) (48 (union "Eq_214") u0048) (4A (union "Eq_214") u004A) (50 (struct "Eq_2072" 0002) t0050) (62 (union "Eq_214") u0062) (A2 (union "Eq_214") u00A2) (A6 (union "Eq_214") u00A6) (A8 (union "Eq_214") u00A8) (AA (union "Eq_214") u00AA) (AC (union "Eq_214") u00AC) (AE (union "Eq_214") u00AE) (B0 (union "Eq_214") u00B0) (B2 (union "Eq_214") u00B2) (397 Eq_132 t0397) (3B8 char b03B8) (3BC char b03BC) (592 char b0592) (5E4 byte b05E4) (5EF byte b05EF) (601 byte b0601) (BEC word16 w0BEC) (11EC code t11EC) (151E Eq_2836 t151E) (15FF word16 w15FF) (1DAA (ptr code) ptr1DAA) (46C4 (arr (ptr code)) a46C4) (474C code t474C) (47E0 word16 w47E0) (47E4 (arr Eq_18524) a47E4) (487E (arr word16) a487E) (48BA word16 w48BA) (48BC word16 w48BC) (48C8 word16 w48C8) (48D0 word16 w48D0) (48DA word16 w48DA) (48E4 word16 w48E4) (48EE word16 w48EE) (48F8 word16 w48F8) (4902 word16 w4902) (490C word16 w490C) (4910 word16 w4910) (491A word16 w491A) (4924 word16 w4924) (492E word16 w492E) (4938 word16 w4938) (4942 word16 w4942) (494C word16 w494C) (4956 word16 w4956) (495A word16 w495A) (495E word16 w495E) (4964 word16 w4964) (4D3E (arr (ptr Eq_7605)) a4D3E) (4D88 word16 w4D88) (4D8A word16 w4D8A) (4D96 word16 w4D96) (4D9E word16 w4D9E) (501C word16 w501C) (501E word16 w501E) (5022 word16 w5022) (5028 word16 w5028) (502C word16 w502C) (5032 word16 w5032) (5038 word16 w5038) (5042 word16 w5042) (504C word16 w504C) (5056 word16 w5056) (5060 word16 w5060) (506A word16 w506A) (5074 word16 w5074) (5096 word16 w5096) (50A0 word16 w50A0) (50A4 word16 w50A4) (50AE word16 w50AE) (515E word16 w515E) (5164 word16 w5164) (516A word16 w516A) (5174 word16 w5174) (51FE (arr word16) a51FE) (520A word16 w520A) (5214 word16 w5214) (521E word16 w521E) (5228 word16 w5228) (5232 word16 w5232) (523C word16 w523C) (5246 word16 w5246) (5250 word16 w5250) (525A word16 w525A) (5264 word16 w5264) (529C Eq_2199 t529C) (52A2 Eq_1035 t52A2) (52A6 word16 w52A6) (52B0 word16 w52B0) (52BA word16 w52BA) (52C0 Eq_1035 t52C0) (52C4 word16 w52C4) (52CE word16 w52CE) (52D8 word16 w52D8) (52F8 word16 w52F8) (52FC word16 w52FC) (5306 word16 w5306) (531E (arr ui16) a531E) (532A word16 w532A) (533E word16 w533E) (534E word16 w534E) (5362 word16 w5362) (5376 Eq_1600 t5376) (53D2 word16 w53D2) (53E4 word16 w53E4) (53E8 cu16 w53E8) (53EA cu16 w53EA) (53EC cui16 w53EC) (53F0 (ptr code) ptr53F0) (5414 (ptr code) ptr5414) (541C (arr word16) a541C) (5424 (ptr Eq_510) ptr5424) (5426 word16 w5426) (542C word16 w542C) (5450 (arr word16) a5450) (5464 (arr byte) a5464) (54BA (ptr ui16) ptr54BA) (54BC word16 w54BC) (54C2 word16 w54C2) (54C4 word16 w54C4) (54C6 word16 w54C6) (54C8 word16 w54C8) (54CA word16 w54CA) (54CC word16 w54CC) (54CE word16 w54CE) (54D0 word16 w54D0) (54D2 word16 w54D2) (54D4 word16 w54D4) (54D6 word16 w54D6) (54D8 word16 w54D8) (54DA word16 w54DA) (54DE word16 w54DE) (54E0 word16 w54E0) (54E2 word16 w54E2) (54E4 word16 w54E4) (54E6 ci16 w54E6) (54E8 ci16 w54E8) (54EA ci16 w54EA) (54EC word16 w54EC) (54EE ci16 w54EE) (54F0 word16 w54F0) (54F2 word16 w54F2) (54F4 word16 w54F4) (54F6 word16 w54F6) (54FA word16 w54FA) (54FC word16 w54FC) (5508 byte b5508) (550A (arr ci16) a550A) (551C word16 w551C) (5668 (arr byte) a5668) (569E word16 w569E) (56A0 word16 w56A0) (56A2 (union "Eq_7593" (int16 u0) (ptr16 u1)) u56A2) (56A4 word16 w56A4) (56A6 word16 w56A6) (56AA word16 w56AA) (56AC word16 w56AC) (56B6 (union "Eq_11175" (int16 u0) (byte u1)) u56B6) (56B8 word16 w56B8) (56BA word16 w56BA) (56BC word16 w56BC) (56BE word16 w56BE) (56C0 word16 w56C0) (56C4 (ptr ci16) ptr56C4) (56C6 (arr byte) a56C6) (56D6 int16 w56D6) (56D8 word16 w56D8) (56DA word16 w56DA) (56FE (ptr word16) ptr56FE) (5700 (ptr word16) ptr5700) (5706 (ptr word16) ptr5706) (5708 word16 w5708) (570A word16 w570A) (570C ci16 w570C) (570E word16 w570E) (5710 word16 w5710) (5712 (union "Eq_1690" (wchar_t u0) (int16 u1) (uint16 u2) (ptr16 u3)) u5712) (5714 word16 w5714) (5716 word16 w5716) (5718 word16 w5718) (575E byte b575E) (5760 word16 w5760) (5762 word16 w5762) (5764 word16 w5764) (5766 word16 w5766) (5768 word16 w5768) (576A word16 w576A) (576C word16 w576C) (576E word16 w576E) (5770 word16 w5770) (5772 word16 w5772) (5774 word16 w5774) (5776 word16 w5776) (5778 word16 w5778) (577A (union "Eq_1299" (byte u0) ((ptr Eq_18529) u1)) u577A) (577C word16 w577C) (577E word16 w577E) (5780 word16 w5780) (5782 word16 w5782) (5788 word16 w5788) (578A word16 w578A) (578C word16 w578C) (578E word16 w578E) (5790 word16 w5790) (5792 word16 w5792) (5794 word16 w5794) (5796 word16 w5796) (5798 word16 w5798) (579A word16 w579A) (579C word16 w579C) (579E word16 w579E) (57A0 word16 w57A0) (57A2 word16 w57A2) (57A4 word16 w57A4) (57A6 word16 w57A6) (57A8 word16 w57A8) (57AA word16 w57AA) (57AE (ptr word16) ptr57AE) (57B0 byte b57B0) (57B2 word16 w57B2) (57B4 word16 w57B4) (57B6 word16 w57B6) (57B8 word16 w57B8) (57BA word16 w57BA) (57BC word16 w57BC) (57C0 word16 w57C0) (57C2 (ptr word16) ptr57C2) (57C4 (ptr word16) ptr57C4) (57C6 byte b57C6) (57C8 word16 w57C8) (57CA word16 w57CA) (57CC word16 w57CC) (57CE word16 w57CE) (57D0 word16 w57D0) (57D4 byte b57D4) (57D5 byte b57D5) (57D6 byte b57D6) (57D7 byte b57D7) (57DA (ptr word16) ptr57DA) (57DC (ptr word16) ptr57DC) (57DD byte b57DD) (57DE ci16 w57DE) (57DF (union "Eq_1299") u57DF) (57E0 word16 w57E0) (57E2 word16 w57E2) (57E4 (ptr word16) ptr57E4) (57E6 byte b57E6) (57E7 byte b57E7) (57E8 Eq_1606 t57E8) (57F8 word16 w57F8) (57FA word16 w57FA) (57FC word16 w57FC) (57FE word16 w57FE) (5800 word16 w5800) (5802 word16 w5802) (5806 word16 w5806) (5808 word16 w5808) (580A (ptr word16) ptr580A) (580C (ptr word16) ptr580C) (580E (ptr word16) ptr580E) (5810 byte b5810) (5811 byte b5811) (5812 byte b5812) (5813 (union "Eq_16959" (int16 u0) (byte u1)) u5813) (5814 (union "Eq_1299") u5814) (5815 byte b5815) (5816 (arr byte) a5816) (581B (arr byte) a581B) (5821 (arr byte) a5821) (5828 (arr byte) a5828) (5854 ci16 w5854) (5856 word16 w5856) (5858 word16 w5858) (585A word16 w585A) (586E byte b586E) (586F byte b586F) (5870 byte b5870) (5871 byte b5871) (5872 word16 w5872) (5874 word16 w5874) (5875 byte b5875) (5876 word16 w5876) (5898 (arr byte) a5898) (58B6 word16 w58B6) (58B8 word16 w58B8) (58BA word16 w58BA) (58BC word16 w58BC) (58BE word16 w58BE) (58C0 word16 w58C0) (58C2 (arr word16) a58C2) (5926 (arr ci16) a5926) (598A (arr word16) a598A) (5A2C (arr word16) a5A2C) (5A3E (arr word16) a5A3E) (5A66 (arr word16) a5A66) (8880 code t8880) (8890 code t8890) (15508 (arr ci16) a15508))
+Eq_1: (struct "Globals" (FFFF95B3 word16 wFFFF95B3) (0 (ptr cui16) ptr0000) (2 (ptr (ptr (ptr (ptr (ptr cui16))))) ptr0002) (4 (struct "Eq_2072" 0002 (0 word16 w0000) (2 (ptr code) ptr0002)) t0004) (A (struct "Eq_2072" 0002) t000A) (10 (struct "Eq_2072" 0002) t0010) (1E word16 w001E) (20 word16 w0020) (22 ptr16 ptr0022) (24 cui16 w0024) (26 word16 w0026) (28 cu16 w0028) (2A byte b002A) (2B cui16 w002B) (36 (union "Eq_214" (byte u0) ((ptr Eq_18527) u1) ((ptr code) u2)) u0036) (38 (union "Eq_214") u0038) (3A (union "Eq_214") u003A) (3C (union "Eq_214") u003C) (3D (union "Eq_214") u003D) (48 (union "Eq_214") u0048) (4A (union "Eq_214") u004A) (50 (struct "Eq_2072" 0002) t0050) (62 (union "Eq_214") u0062) (A2 (union "Eq_214") u00A2) (A6 (union "Eq_214") u00A6) (A8 (union "Eq_214") u00A8) (AA (union "Eq_214") u00AA) (AC (union "Eq_214") u00AC) (AE (union "Eq_214") u00AE) (B0 (union "Eq_214") u00B0) (B2 (union "Eq_214") u00B2) (397 Eq_132 t0397) (3B8 char b03B8) (3BC char b03BC) (592 char b0592) (5E4 byte b05E4) (5EF byte b05EF) (601 byte b0601) (BEC word16 w0BEC) (11EC code t11EC) (151E Eq_2836 t151E) (15FF word16 w15FF) (1DAA (ptr code) ptr1DAA) (46C4 (arr (ptr code)) a46C4) (474C code t474C) (47E0 word16 w47E0) (47E4 (arr Eq_18524) a47E4) (487E (arr word16) a487E) (48BA word16 w48BA) (48BC word16 w48BC) (48C8 word16 w48C8) (48D0 word16 w48D0) (48DA word16 w48DA) (48E4 word16 w48E4) (48EE word16 w48EE) (48F8 word16 w48F8) (4902 word16 w4902) (490C word16 w490C) (4910 word16 w4910) (491A word16 w491A) (4924 word16 w4924) (492E word16 w492E) (4938 word16 w4938) (4942 word16 w4942) (494C word16 w494C) (4956 word16 w4956) (495A word16 w495A) (495E word16 w495E) (4964 word16 w4964) (4D3E (arr (ptr Eq_7605)) a4D3E) (4D88 word16 w4D88) (4D8A word16 w4D8A) (4D96 word16 w4D96) (4D9E word16 w4D9E) (501C word16 w501C) (501E word16 w501E) (5022 word16 w5022) (5028 word16 w5028) (502C word16 w502C) (5032 word16 w5032) (5038 word16 w5038) (5042 word16 w5042) (504C word16 w504C) (5056 word16 w5056) (5060 word16 w5060) (506A word16 w506A) (5074 word16 w5074) (5096 word16 w5096) (50A0 word16 w50A0) (50A4 word16 w50A4) (50AE word16 w50AE) (515E word16 w515E) (5164 word16 w5164) (516A word16 w516A) (5174 word16 w5174) (51FE (arr word16) a51FE) (520A word16 w520A) (5214 word16 w5214) (521E word16 w521E) (5228 word16 w5228) (5232 word16 w5232) (523C word16 w523C) (5246 word16 w5246) (5250 word16 w5250) (525A word16 w525A) (5264 word16 w5264) (529C Eq_2199 t529C) (52A2 Eq_1035 t52A2) (52A6 word16 w52A6) (52B0 word16 w52B0) (52BA word16 w52BA) (52C0 Eq_1035 t52C0) (52C4 word16 w52C4) (52CE word16 w52CE) (52D8 word16 w52D8) (52F8 word16 w52F8) (52FC word16 w52FC) (5306 word16 w5306) (531E (arr ui16) a531E) (532A word16 w532A) (533E word16 w533E) (534E word16 w534E) (5362 word16 w5362) (5376 Eq_1600 t5376) (53D2 word16 w53D2) (53E4 word16 w53E4) (53E8 cu16 w53E8) (53EA cu16 w53EA) (53EC cui16 w53EC) (53F0 (ptr code) ptr53F0) (5414 (ptr code) ptr5414) (541C (arr word16) a541C) (5424 (ptr Eq_510) ptr5424) (5426 word16 w5426) (542C word16 w542C) (5450 (arr word16) a5450) (5464 (arr byte) a5464) (54BA (ptr ui16) ptr54BA) (54BC word16 w54BC) (54C2 word16 w54C2) (54C4 word16 w54C4) (54C6 word16 w54C6) (54C8 word16 w54C8) (54CA word16 w54CA) (54CC word16 w54CC) (54CE word16 w54CE) (54D0 word16 w54D0) (54D2 word16 w54D2) (54D4 word16 w54D4) (54D6 word16 w54D6) (54D8 word16 w54D8) (54DA word16 w54DA) (54DE word16 w54DE) (54E0 word16 w54E0) (54E2 word16 w54E2) (54E4 word16 w54E4) (54E6 ci16 w54E6) (54E8 ci16 w54E8) (54EA ci16 w54EA) (54EC word16 w54EC) (54EE ci16 w54EE) (54F0 word16 w54F0) (54F2 word16 w54F2) (54F4 word16 w54F4) (54F6 word16 w54F6) (54FA word16 w54FA) (54FC word16 w54FC) (5508 byte b5508) (550A (arr ci16) a550A) (551C word16 w551C) (5668 (arr byte) a5668) (569E word16 w569E) (56A0 word16 w56A0) (56A2 (union "Eq_7593" (int16 u0) (ptr16 u1)) u56A2) (56A4 word16 w56A4) (56A6 word16 w56A6) (56AA word16 w56AA) (56AC word16 w56AC) (56B6 (union "Eq_11175" (int16 u0) (byte u1)) u56B6) (56B8 word16 w56B8) (56BA word16 w56BA) (56BC word16 w56BC) (56BE word16 w56BE) (56C0 word16 w56C0) (56C4 (ptr ci16) ptr56C4) (56C6 (arr byte) a56C6) (56D6 int16 w56D6) (56D8 word16 w56D8) (56DA word16 w56DA) (56FE (ptr word16) ptr56FE) (5700 (ptr word16) ptr5700) (5706 (ptr word16) ptr5706) (5708 word16 w5708) (570A word16 w570A) (570C ci16 w570C) (570E word16 w570E) (5710 word16 w5710) (5712 (union "Eq_1690" (wchar_t u0) (int16 u1) (uint16 u2) (ptr16 u3)) u5712) (5714 word16 w5714) (5716 word16 w5716) (5718 word16 w5718) (575E byte b575E) (5760 word16 w5760) (5762 word16 w5762) (5764 word16 w5764) (5766 word16 w5766) (5768 word16 w5768) (576A word16 w576A) (576C word16 w576C) (576E word16 w576E) (5770 word16 w5770) (5772 word16 w5772) (5774 word16 w5774) (5776 word16 w5776) (5778 word16 w5778) (577A (union "Eq_1299" (byte u0) ((ptr Eq_18529) u1)) u577A) (577C word16 w577C) (577E word16 w577E) (5780 word16 w5780) (5782 word16 w5782) (5788 word16 w5788) (578A word16 w578A) (578C word16 w578C) (578E word16 w578E) (5790 word16 w5790) (5792 word16 w5792) (5794 word16 w5794) (5796 word16 w5796) (5798 word16 w5798) (579A word16 w579A) (579C word16 w579C) (579E word16 w579E) (57A0 word16 w57A0) (57A2 word16 w57A2) (57A4 word16 w57A4) (57A6 word16 w57A6) (57A8 word16 w57A8) (57AA word16 w57AA) (57AE (ptr word16) ptr57AE) (57B0 byte b57B0) (57B2 word16 w57B2) (57B4 word16 w57B4) (57B6 word16 w57B6) (57B8 word16 w57B8) (57BA word16 w57BA) (57BC word16 w57BC) (57C0 word16 w57C0) (57C2 (ptr word16) ptr57C2) (57C4 (ptr word16) ptr57C4) (57C6 byte b57C6) (57C8 word16 w57C8) (57CA word16 w57CA) (57CC word16 w57CC) (57CE word16 w57CE) (57D0 word16 w57D0) (57D4 byte b57D4) (57D5 byte b57D5) (57D6 byte b57D6) (57D7 byte b57D7) (57DA (ptr word16) ptr57DA) (57DC (ptr word16) ptr57DC) (57DD byte b57DD) (57DE ci16 w57DE) (57DF (union "Eq_1299") u57DF) (57E0 word16 w57E0) (57E2 word16 w57E2) (57E4 (ptr word16) ptr57E4) (57E6 byte b57E6) (57E7 byte b57E7) (57E8 Eq_1606 t57E8) (57F8 word16 w57F8) (57FA word16 w57FA) (57FC word16 w57FC) (57FE word16 w57FE) (5800 word16 w5800) (5802 word16 w5802) (5806 word16 w5806) (5808 word16 w5808) (580A (ptr word16) ptr580A) (580C (ptr word16) ptr580C) (580E (ptr word16) ptr580E) (5810 byte b5810) (5811 byte b5811) (5812 byte b5812) (5813 (union "Eq_16959" (int16 u0) (byte u1)) u5813) (5814 (union "Eq_1299") u5814) (5815 byte b5815) (5816 (arr byte) a5816) (581B (arr byte) a581B) (5821 (arr byte) a5821) (5828 (arr byte) a5828) (5854 ci16 w5854) (5856 word16 w5856) (5858 word16 w5858) (585A word16 w585A) (586E byte b586E) (586F byte b586F) (5870 byte b5870) (5871 byte b5871) (5872 word16 w5872) (5874 word16 w5874) (5875 byte b5875) (5876 word16 w5876) (5898 (arr byte) a5898) (58B6 word16 w58B6) (58B8 word16 w58B8) (58BA word16 w58BA) (58BC word16 w58BC) (58BE word16 w58BE) (58C0 word16 w58C0) (58C2 (arr word16) a58C2) (5926 (arr ci16) a5926) (598A (arr word16) a598A) (5A2C (arr word16) a5A2C) (5A3E (arr word16) a5A3E) (5A66 (arr word16) a5A66) (8880 code t8880) (8890 code t8890) (15508 (arr ci16) a15508))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_22: (fn void ((ptr char)))
 	T_22 (in FnSubfn : ptr16)
@@ -597,18 +597,10 @@ Eq_1138: (struct "Eq_1138" (0 Eq_1087 t0000) (4 Eq_1087 t0004))
 	T_1138 (in sp : word16)
 	T_1140 (in sp - 0x0002 : word16)
 	T_1149 (in sp - 0x0002 : word16)
-Eq_1202: (struct "Eq_1202" (0 Eq_1213 t0000) (4 word16 w0004) (5 word16 w0005) (6 (ptr code) ptr0006) (8 (ptr code) ptr0008) (A (ptr code) ptr000A))
-	T_1202 (in v3 : ptr16)
-Eq_1213: (union "Eq_1213" (byte u0) (word16 u1))
-	T_1213 (in Mem0[v3 + 0x0000:word16] : word16)
-	T_1214 (in NZVC_4 + Mem0[v3 + 0x0000:word16] : bool)
-	T_1217 (in Mem7[v3 + 0x0000:word16] : word16)
-	T_1220 (in Mem7[v3 + 0x0000:word16] : word16)
-	T_1223 (in Mem10[r3 + 0x00A4:word16] : word16)
-Eq_1216: (union "Eq_1216" (byte u0) (word16 u1))
-	T_1216 (in v3 + 0x0000 : word16)
-Eq_1219: (union "Eq_1219" (byte u0) (word16 u1))
-	T_1219 (in v3 + 0x0000 : word16)
+Eq_1201: (struct "Eq_1201" (0 word16 w0000) (4 cu16 w0004) (5 cu16 w0005) (6 (ptr code) ptr0006) (8 (ptr code) ptr0008) (A (ptr code) ptr000A))
+	T_1201 (in v3 : ptr16)
+Eq_1213: (union "Eq_1213" (bool u0) (word16 u1))
+	T_1213 (in v3->w0005 - v3->w0004 < 0x0000 : bool)
 Eq_1299: (union "Eq_1299" (byte u0) ((ptr Eq_18529) u1))
 	T_1299 (in r0 : Eq_1299)
 	T_1303 (in r0 : Eq_1299)
@@ -767,7 +759,7 @@ Eq_1299: (union "Eq_1299" (byte u0) ((ptr Eq_18529) u1))
 	T_12300 (in r0_71 : Eq_1299)
 	T_12302 (in fn0FA4(r2_106) : word16)
 	T_12339 (in fn4230(r0_71, r4_77, &globals->w5174, pc, out r2_87, out r4_88, out r5_89) : word16)
-	T_12719 (in fn4230(r0_107, r4_10 - 0x0002, &globals->w516A, pc, out r2_106, out r4_13, out r5_233) : word16)
+	T_12719 (in fn4230(r0_107, r4_10 - &globals->ptr0002, &globals->w516A, pc, out r2_106, out r4_13, out r5_233) : word16)
 	T_12880 (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, out r4_10, out r5_11) : word16)
 	T_12900 (in r0_110 : Eq_1299)
 	T_12909 (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, out r4_10, out r5_11) : word16)
@@ -879,31 +871,28 @@ Eq_1301: (fn Eq_1299 (Eq_1299, word16, ptr16))
 	T_1301 (in fn0B60 : ptr16)
 	T_1302 (in signature of fn0B60 : void)
 	T_1312 (in fn0B60 : ptr16)
-Eq_1315: (struct "Eq_1315" (0 Eq_1334 t0000) (1 word16 w0001) (2 (ptr word16) ptr0002) (4 (ptr word16) ptr0004) (6 (ptr word16) ptr0006))
+Eq_1315: (struct "Eq_1315" (0 Eq_1334 t0000) (1 cu16 w0001) (2 (ptr word16) ptr0002) (4 (ptr word16) ptr0004) (6 (ptr word16) ptr0006))
 	T_1315 (in v3 : ptr16)
 Eq_1321: (struct "Eq_1321" (44 (ptr word16) ptr0044) (52 Eq_1334 t0052) (5A word16 w005A) (74 byte b0074) (7E (ptr word16) ptr007E) (A4 word16 w00A4))
 	T_1321 (in r3_5 : (ptr Eq_1321))
 	T_1325 (in Mem4[0x5424 + 0x0000:word16] : word16)
-Eq_1334: (union "Eq_1334" (byte u0) (word16 u1))
+Eq_1334: (union "Eq_1334" (cu16 u0) (byte u1))
 	T_1334 (in Mem7[v3 + 0x0000:byte] : byte)
 	T_1338 (in Mem9[v3 - 0x0004 + 0x0000:byte] : byte)
-	T_1373 (in Mem9[v3 + 0x0000:word16] : word16)
+	T_1376 (in Mem9[v3 + 0x0000:word16] : word16)
 	T_1399 (in Mem20[v3 + 0x0000:word16] : word16)
 	T_1402 (in Mem99[r3_5 + 0x0052:word16] : word16)
 	T_1517 (in Mem111[v3 + 0x0000:word16] : word16)
 	T_1520 (in Mem120[r3_5 + 0x0052:word16] : word16)
-Eq_1379: (union "Eq_1379" (byte u0) (word16 u1))
-	T_1379 (in Mem9[v3 - 0x0004 + 0x0000:word16] : word16)
-Eq_1380: (union "Eq_1380" (byte u0) (word16 u1))
-	T_1380 (in NZVC_14 + Mem9[(v3 - 0x0004) + 0x0000:word16] : bool)
-	T_1384 (in Mem17[v3 - 0x0004 + 0x0000:word16] : word16)
+Eq_1379: (union "Eq_1379" (bool u0) (word16 u1))
+	T_1379 (in v3->w0001 - v3->t0000 < 0x0000 : bool)
 Eq_1447: (struct "Eq_1447" (44 word16 w0044) (53 byte b0053) (5A word16 w005A) (7E word16 w007E))
 	T_1447 (in r3_59 : (ptr Eq_1447))
 	T_1451 (in Mem58[0x5424 + 0x0000:word16] : word16)
 Eq_1556: (union "Eq_1556" (int16 u0) (uint16 u1))
 	T_1556 (in wArg02 : Eq_1556)
 	T_1563 (in v11_45 : Eq_1556)
-	T_1565 (in 1 << wArg02 : int16)
+	T_1565 (in wArg02 << 1 : word16)
 	T_1566 (in 0x0000 : word16)
 	T_1580 (in 0x0000 : word16)
 Eq_1585: (fn bool (Eq_117))
@@ -1131,7 +1120,7 @@ Eq_1863: (union "Eq_1863" (ci8 u0) (ci16 u1))
 	T_1870 (in *r0_9 | 0x0200 : word16)
 	T_1873 (in Mem63[r0_9 + 0x0000:word16] : word16)
 	T_1907 (in Mem0[r0_9 + 0x0000:word16] : word16)
-	T_1910 (in ~*r0_9 & 0x8000 : word16)
+	T_1910 (in *r0_9 & ~0x8000 : word16)
 	T_1913 (in Mem55[r0_9 + 0x0000:word16] : word16)
 	T_1916 (in Mem55[r0_9 + 0x0000:byte] : byte)
 	T_1917 (in 0x00 : byte)
@@ -1217,10 +1206,10 @@ Eq_2072: (struct "Eq_2072" 0002 (0 word16 w0000) (2 (ptr code) ptr0002))
 	T_11625 (in 0x0000 : word16)
 	T_11645 (in r4_105 : (ptr Eq_2072))
 	T_12093 (in r4 : (ptr Eq_2072))
-	T_12096 (in r4_10 - 0x0002 : word16)
+	T_12096 (in r4_10 - &globals->ptr0002 : word16)
 	T_12309 (in r4_77 : (ptr Eq_2072))
-	T_12675 (in r4_10 - 0x0002 : word16)
-	T_12714 (in r4_10 - 0x0002 : word16)
+	T_12675 (in r4_10 - &globals->ptr0002 : word16)
+	T_12714 (in r4_10 - &globals->ptr0002 : word16)
 	T_12956 (in r4_108 : (ptr Eq_2072))
 	T_12958 (in r4_10 + 0x0002 : word16)
 	T_13034 (in r4_203 : (ptr Eq_2072))
@@ -1407,7 +1396,7 @@ Eq_2850: (union "Eq_2850" (ci8 u0) (cui16 u1))
 	T_3910 (in Mem18[r4 + 0x0000:word16] : word16)
 	T_3911 (in 0x0000 : word16)
 	T_3915 (in Mem18[r4 + 0x0000:word16] : word16)
-	T_3918 (in ~r4->t0000 & 0x8000 : word16)
+	T_3918 (in r4->t0000 & ~0x8000 : word16)
 	T_3921 (in Mem63[r4 + 0x0000:word16] : word16)
 Eq_2879: (union "Eq_2879" (byte u0) (word16 u1))
 	T_2879 (in 0x0020 : word16)
@@ -1950,8 +1939,8 @@ Eq_8746: (fn void (Eq_1299, (ptr Eq_2072), (ptr word16), (ptr Eq_4649)))
 Eq_8771: (fn word16 (ptr16))
 	T_8771 (in fn0F9C : ptr16)
 	T_8772 (in signature of fn0F9C : void)
-Eq_10504: (struct "Eq_10504" (15FF cui16 w15FF))
-	T_10504 (in fp : ptr16)
+Eq_10512: (struct "Eq_10512" (15FF word16 w15FF))
+	T_10512 (in fp : ptr16)
 Eq_10525: (fn void ())
 	T_10525 (in __reset : ptr16)
 	T_10526 (in signature of __reset : void)
@@ -1987,13 +1976,6 @@ Eq_11594: (fn byte ())
 	T_17933 (in __bpt : ptr16)
 Eq_11808: (struct "Eq_11808" (15FF cui16 w15FF))
 	T_11808 (in r2_8 : (ptr Eq_11808))
-Eq_11830: (union "Eq_11830" (cui16 u0) (ptr16 u1))
-	T_11830 (in r4_10 : Eq_11830)
-Eq_11843: (union "Eq_11843" (cui16 u0) (ptr16 u1))
-	T_11843 (in 0x0002 : word16)
-Eq_11869: (union "Eq_11869" (cui16 u0) (ptr16 u1))
-	T_11869 (in r4_10 - 0x0002 : word16)
-	T_11870 (in *r4Out : word16)
 Eq_12090: (fn void (Eq_1299, (ptr Eq_2072), (ptr word16), (ptr Eq_4649)))
 	T_12090 (in fn3F42 : ptr16)
 	T_12091 (in signature of fn3F42 : void)
@@ -2053,8 +2035,8 @@ Eq_16647: (struct "Eq_16647" (15FF (ptr cui16) ptr15FF))
 Eq_16959: (union "Eq_16959" (int16 u0) (byte u1))
 	T_16959 (in (int16) globals->w5856 : int16)
 	T_16963 (in Mem96[0x5813 + 0x0000:byte] : byte)
-Eq_18109: (union "Eq_18109" (cui16 u0) (ptr16 u1))
-	T_18109 (in Mem0[Mem0[r0_12 + 0x0000:word16] + 0x0000:ptr16] : ptr16)
+Eq_18106: (union "Eq_18106" (cui16 u0) (ptr16 u1))
+	T_18106 (in Mem0[Mem0[r0_12 + 0x0000:word16] + 0x0000:ptr16] : ptr16)
 Eq_18222: (struct "Eq_18222" 0004 (0 word16 w0000))
 	T_18222 (in r1_259 : (ptr Eq_18222))
 	T_18223 (in 0x47E4 : word16)
@@ -2079,9 +2061,9 @@ Eq_18524: (struct "Eq_18524" 0004 (0 word16 w0000))
 	T_18525
 Eq_18527: (struct "Eq_18527" (0 Eq_214 t0000) (2 Eq_214 t0002))
 	T_18527
-Eq_18528: (struct "Eq_18528" (44 (ptr code) ptr0044) (52 word16 w0052) (74 byte b0074) (A4 Eq_1213 t00A4))
+Eq_18528: (struct "Eq_18528" (44 (ptr code) ptr0044) (52 cu16 w0052) (74 byte b0074) (A4 word16 w00A4))
 	T_18528
-Eq_18529: (struct "Eq_18529" (0 (ptr Eq_18109) ptr0000) (15FF cui16 w15FF) (5897 byte b5897))
+Eq_18529: (struct "Eq_18529" (0 (ptr Eq_18106) ptr0000) (15FF cui16 w15FF) (5897 byte b5897))
 	T_18529
 Eq_18530: (union "Eq_18530" (ci8 u0) (ci16 u1) (Eq_2850 u2) (Eq_3332 u3) (Eq_3442 u4))
 	T_18530
@@ -4528,7 +4510,7 @@ T_609: (in 0x000A : word16)
   Class: Eq_609
   DataType: word16
   OrigDataType: word16
-T_610: (in 0x000A - wLoc02_10 : word16)
+T_610: (in wLoc02_10 - 0x000A : word16)
   Class: Eq_540
   DataType: ci16
   OrigDataType: word16
@@ -6595,7 +6577,7 @@ T_1125: (in signature of fn0B02 : void)
 T_1126: (in r3 : Eq_1087)
   Class: Eq_1087
   DataType: Eq_1087
-  OrigDataType: (ptr (struct (44 T_1237 t0044) (52 T_1208 t0052) (74 T_1226 t0074) (A4 T_1223 t00A4)))
+  OrigDataType: (ptr (struct (44 T_1237 t0044) (52 T_1210 t0052) (74 T_1226 t0074) (A4 T_1223 t00A4)))
 T_1127: (in r4 : word16)
   Class: Eq_1068
   DataType: word16
@@ -6892,73 +6874,73 @@ T_1200: (in fn0B02(r3, r4, out r4_17) : word16)
   Class: Eq_1087
   DataType: Eq_1087
   OrigDataType: word16
-T_1201: (in NZVC_4 : byte)
+T_1201: (in v3 : ptr16)
   Class: Eq_1201
-  DataType: byte
-  OrigDataType: byte
-T_1202: (in v3 : ptr16)
+  DataType: (ptr Eq_1201)
+  OrigDataType: (ptr (struct (0 T_1204 t0000) (4 T_1210 t0004) (5 T_1207 t0005) (6 T_1237 t0006) (8 T_1237 t0008) (A T_1237 t000A)))
+T_1202: (in 0x0000 : word16)
   Class: Eq_1202
-  DataType: (ptr Eq_1202)
-  OrigDataType: (ptr (struct (0 T_1213 t0000) (4 T_1208 t0004) (5 T_1205 t0005) (6 T_1237 t0006) (8 T_1237 t0008) (A T_1237 t000A)))
-T_1203: (in 0x0005 : word16)
-  Class: Eq_1203
   DataType: word16
   OrigDataType: word16
-T_1204: (in v3 + 0x0005 : word16)
-  Class: Eq_1204
+T_1203: (in v3 + 0x0000 : word16)
+  Class: Eq_1203
   DataType: ptr16
   OrigDataType: ptr16
-T_1205: (in Mem0[v3 + 0x0005:word16] : word16)
+T_1204: (in Mem0[v3 + 0x0000:word16] : word16)
+  Class: Eq_1204
+  DataType: word16
+  OrigDataType: word16
+T_1205: (in 0x0005 : word16)
   Class: Eq_1205
   DataType: word16
   OrigDataType: word16
-T_1206: (in 0x0004 : word16)
+T_1206: (in v3 + 0x0005 : word16)
   Class: Eq_1206
-  DataType: word16
-  OrigDataType: word16
-T_1207: (in v3 + 0x0004 : word16)
-  Class: Eq_1207
   DataType: ptr16
   OrigDataType: ptr16
-T_1208: (in Mem0[v3 + 0x0004:word16] : word16)
+T_1207: (in Mem0[v3 + 0x0005:word16] : word16)
+  Class: Eq_1207
+  DataType: cu16
+  OrigDataType: cu16
+T_1208: (in 0x0004 : word16)
   Class: Eq_1208
   DataType: word16
   OrigDataType: word16
-T_1209: (in v3->w0005 - v3->w0004 : word16)
+T_1209: (in v3 + 0x0004 : word16)
   Class: Eq_1209
-  DataType: word16
-  OrigDataType: word16
-T_1210: (in cond(v3->w0005 - v3->w0004) : byte)
-  Class: Eq_1201
-  DataType: byte
-  OrigDataType: byte
-T_1211: (in 0x0000 : word16)
-  Class: Eq_1211
-  DataType: word16
-  OrigDataType: word16
-T_1212: (in v3 + 0x0000 : word16)
-  Class: Eq_1212
   DataType: ptr16
   OrigDataType: ptr16
-T_1213: (in Mem0[v3 + 0x0000:word16] : word16)
+T_1210: (in Mem0[v3 + 0x0004:word16] : word16)
+  Class: Eq_1210
+  DataType: cu16
+  OrigDataType: cu16
+T_1211: (in v3->w0005 - v3->w0004 : word16)
+  Class: Eq_1211
+  DataType: cu16
+  OrigDataType: cu16
+T_1212: (in 0x0000 : word16)
+  Class: Eq_1211
+  DataType: cu16
+  OrigDataType: cu16
+T_1213: (in v3->w0005 - v3->w0004 < 0x0000 : bool)
   Class: Eq_1213
   DataType: Eq_1213
-  OrigDataType: (union (byte u0) (word16 u1))
-T_1214: (in NZVC_4 + Mem0[v3 + 0x0000:word16] : bool)
-  Class: Eq_1213
-  DataType: Eq_1213
-  OrigDataType: byte
+  OrigDataType: (union (bool u0) (word16 u1))
+T_1214: (in Mem0[v3 + 0x0000:word16] + (Mem0[v3 + 0x0005:word16] - Mem0[v3 + 0x0004:word16] <u 0x0000) : word16)
+  Class: Eq_1204
+  DataType: word16
+  OrigDataType: word16
 T_1215: (in 0x0000 : word16)
   Class: Eq_1215
   DataType: word16
   OrigDataType: word16
 T_1216: (in v3 + 0x0000 : word16)
   Class: Eq_1216
-  DataType: (ptr Eq_1216)
-  OrigDataType: (ptr (union (byte u1) (word16 u0)))
+  DataType: (ptr word16)
+  OrigDataType: (ptr word16)
 T_1217: (in Mem7[v3 + 0x0000:word16] : word16)
-  Class: Eq_1213
-  DataType: Eq_1213
+  Class: Eq_1204
+  DataType: word16
   OrigDataType: word16
 T_1218: (in 0x0000 : word16)
   Class: Eq_1218
@@ -6966,12 +6948,12 @@ T_1218: (in 0x0000 : word16)
   OrigDataType: word16
 T_1219: (in v3 + 0x0000 : word16)
   Class: Eq_1219
-  DataType: (ptr Eq_1219)
-  OrigDataType: (ptr (union (byte u1) (word16 u0)))
+  DataType: (ptr word16)
+  OrigDataType: (ptr word16)
 T_1220: (in Mem7[v3 + 0x0000:word16] : word16)
-  Class: Eq_1213
-  DataType: Eq_1213
-  OrigDataType: (union (byte u1) (word16 u0))
+  Class: Eq_1204
+  DataType: word16
+  OrigDataType: word16
 T_1221: (in 0x00A4 : word16)
   Class: Eq_1221
   DataType: word16
@@ -6981,9 +6963,9 @@ T_1222: (in r3 + 0x00A4 : word16)
   DataType: word16
   OrigDataType: word16
 T_1223: (in Mem10[r3 + 0x00A4:word16] : word16)
-  Class: Eq_1213
+  Class: Eq_1204
   DataType: Eq_1087
-  OrigDataType: Eq_1213
+  OrigDataType: word16
 T_1224: (in 0x0074 : word16)
   Class: Eq_1224
   DataType: word16
@@ -7010,12 +6992,12 @@ T_1229: (in 0x0004 : word16)
   OrigDataType: word16
 T_1230: (in v3 + 0x0004 : word16)
   Class: Eq_1230
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1231: (in Mem10[v3 + 0x0004:word16] : word16)
-  Class: Eq_1208
-  DataType: word16
-  OrigDataType: word16
+  Class: Eq_1210
+  DataType: cu16
+  OrigDataType: cu16
 T_1232: (in 0x0052 : word16)
   Class: Eq_1232
   DataType: word16
@@ -7025,21 +7007,21 @@ T_1233: (in r3 + 0x0052 : word16)
   DataType: ptr16
   OrigDataType: ptr16
 T_1234: (in Mem34[r3 + 0x0052:word16] : word16)
-  Class: Eq_1208
+  Class: Eq_1210
   DataType: Eq_1087
-  OrigDataType: word16
+  OrigDataType: cu16
 T_1235: (in 0x0006 : word16)
   Class: Eq_1235
   DataType: word16
   OrigDataType: word16
 T_1236: (in v3 + 0x0006 : word16)
   Class: Eq_1236
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1237: (in Mem34[v3 + 0x0006:word16] : word16)
   Class: Eq_1237
   DataType: (ptr code)
-  OrigDataType: word16
+  OrigDataType: cu16
 T_1238: (in 0x0044 : word16)
   Class: Eq_1238
   DataType: word16
@@ -7146,12 +7128,12 @@ T_1263: (in 0x0004 : word16)
   OrigDataType: word16
 T_1264: (in v3 + 0x0004 : word16)
   Class: Eq_1264
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1265: (in Mem10[v3 + 0x0004:word16] : word16)
-  Class: Eq_1208
-  DataType: word16
-  OrigDataType: word16
+  Class: Eq_1210
+  DataType: cu16
+  OrigDataType: cu16
 T_1266: (in 0x0052 : word16)
   Class: Eq_1266
   DataType: word16
@@ -7161,9 +7143,9 @@ T_1267: (in r3 + 0x0052 : word16)
   DataType: (ptr word16)
   OrigDataType: (ptr word16)
 T_1268: (in Mem62[r3 + 0x0052:word16] : word16)
-  Class: Eq_1208
+  Class: Eq_1210
   DataType: Eq_1087
-  OrigDataType: word16
+  OrigDataType: cu16
 T_1269: (in 0x0008 : word16)
   Class: Eq_1269
   DataType: word16
@@ -7218,12 +7200,12 @@ T_1281: (in 0x0006 : word16)
   OrigDataType: word16
 T_1282: (in v3 + 0x0006 : word16)
   Class: Eq_1282
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1283: (in Mem72[v3 + 0x0006:word16] : word16)
   Class: Eq_1237
   DataType: (ptr code)
-  OrigDataType: word16
+  OrigDataType: cu16
 T_1284: (in 0x000A : word16)
   Class: Eq_1284
   DataType: word16
@@ -7274,8 +7256,8 @@ T_1295: (in 0x0008 : word16)
   OrigDataType: word16
 T_1296: (in v3 + 0x0008 : word16)
   Class: Eq_1296
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1297: (in Mem75[v3 + 0x0008:word16] : word16)
   Class: Eq_1237
   DataType: (ptr code)
@@ -7351,7 +7333,7 @@ T_1314: (in fn0B60(r0, r3, out r3_9) : word16)
 T_1315: (in v3 : ptr16)
   Class: Eq_1315
   DataType: (ptr Eq_1315)
-  OrigDataType: (ptr (struct (0 T_1334 t0000) (1 T_1370 t0001) (2 T_1405 t0002) (4 T_1411 t0004) (6 T_1535 t0006)))
+  OrigDataType: (ptr (struct (0 T_1334 t0000) (1 T_1373 t0001) (2 T_1405 t0002) (4 T_1411 t0004) (6 T_1535 t0006)))
 T_1316: (in 0x0002 : word16)
   Class: Eq_1316
   DataType: ui16
@@ -7556,65 +7538,65 @@ T_1366: (in sp_135 : (ptr (ptr word16)))
   Class: Eq_1366
   DataType: (ptr (ptr word16))
   OrigDataType: (ptr (ptr (struct (0 T_1538 t0000))))
-T_1367: (in NZVC_14 : byte)
+T_1367: (in v3 - 0x0004 : word16)
   Class: Eq_1367
-  DataType: byte
-  OrigDataType: byte
-T_1368: (in 0x0001 : word16)
+  DataType: (ptr word16)
+  OrigDataType: (ptr (struct (0 T_1370 t0000)))
+T_1368: (in 0x0000 : word16)
   Class: Eq_1368
   DataType: word16
   OrigDataType: word16
-T_1369: (in v3 + 0x0001 : word16)
+T_1369: (in v3 - 0x0004 + 0x0000 : word16)
   Class: Eq_1369
   DataType: ptr16
   OrigDataType: ptr16
-T_1370: (in Mem9[v3 + 0x0001:word16] : word16)
+T_1370: (in Mem9[v3 - 0x0004 + 0x0000:word16] : word16)
   Class: Eq_1370
   DataType: word16
   OrigDataType: word16
-T_1371: (in 0x0000 : word16)
+T_1371: (in 0x0001 : word16)
   Class: Eq_1371
   DataType: word16
   OrigDataType: word16
-T_1372: (in v3 + 0x0000 : word16)
+T_1372: (in v3 + 0x0001 : word16)
   Class: Eq_1372
-  DataType: (ptr byte)
-  OrigDataType: (ptr byte)
-T_1373: (in Mem9[v3 + 0x0000:word16] : word16)
-  Class: Eq_1334
-  DataType: Eq_1334
-  OrigDataType: (union (byte u0) (word16 u1))
-T_1374: (in v3->w0001 - v3->t0000 : word16)
+  DataType: ptr16
+  OrigDataType: ptr16
+T_1373: (in Mem9[v3 + 0x0001:word16] : word16)
+  Class: Eq_1373
+  DataType: cu16
+  OrigDataType: cu16
+T_1374: (in 0x0000 : word16)
   Class: Eq_1374
   DataType: word16
   OrigDataType: word16
-T_1375: (in cond(v3->w0001 - v3->t0000) : byte)
-  Class: Eq_1367
-  DataType: byte
-  OrigDataType: byte
-T_1376: (in v3 - 0x0004 : word16)
-  Class: Eq_1376
-  DataType: (ptr Eq_1379)
-  OrigDataType: (ptr (struct (0 T_1379 t0000)))
-T_1377: (in 0x0000 : word16)
+T_1375: (in v3 + 0x0000 : word16)
+  Class: Eq_1375
+  DataType: (ptr byte)
+  OrigDataType: (ptr byte)
+T_1376: (in Mem9[v3 + 0x0000:word16] : word16)
+  Class: Eq_1334
+  DataType: Eq_1334
+  OrigDataType: (union (cu16 u0) (byte u1))
+T_1377: (in v3->w0001 - v3->t0000 : word16)
   Class: Eq_1377
-  DataType: word16
-  OrigDataType: word16
-T_1378: (in v3 - 0x0004 + 0x0000 : word16)
-  Class: Eq_1378
-  DataType: ptr16
-  OrigDataType: ptr16
-T_1379: (in Mem9[v3 - 0x0004 + 0x0000:word16] : word16)
+  DataType: cu16
+  OrigDataType: cu16
+T_1378: (in 0x0000 : word16)
+  Class: Eq_1377
+  DataType: cu16
+  OrigDataType: cu16
+T_1379: (in v3->w0001 - v3->t0000 < 0x0000 : bool)
   Class: Eq_1379
   DataType: Eq_1379
-  OrigDataType: (union (byte u0) (word16 u1))
-T_1380: (in NZVC_14 + Mem9[(v3 - 0x0004) + 0x0000:word16] : bool)
+  OrigDataType: (union (bool u0) (word16 u1))
+T_1380: (in Mem9[v3 - 0x0004 + 0x0000:word16] + (Mem9[v3 + 0x0001:word16] - Mem9[v3 + 0x0000:word16] <u 0x0000) : word16)
   Class: Eq_1380
-  DataType: Eq_1380
-  OrigDataType: byte
+  DataType: word16
+  OrigDataType: word16
 T_1381: (in v3 - 0x0004 : word16)
   Class: Eq_1381
-  DataType: (ptr Eq_1380)
+  DataType: (ptr word16)
   OrigDataType: (ptr (struct (0 T_1384 t0000)))
 T_1382: (in 0x0000 : word16)
   Class: Eq_1382
@@ -7626,7 +7608,7 @@ T_1383: (in v3 - 0x0004 + 0x0000 : word16)
   OrigDataType: ptr16
 T_1384: (in Mem17[v3 - 0x0004 + 0x0000:word16] : word16)
   Class: Eq_1380
-  DataType: Eq_1380
+  DataType: word16
   OrigDataType: word16
 T_1385: (in v3 - 0x0004 : word16)
   Class: Eq_1385
@@ -7706,12 +7688,12 @@ T_1403: (in 0x0002 : word16)
   OrigDataType: word16
 T_1404: (in v3 + 0x0002 : word16)
   Class: Eq_1404
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1405: (in Mem99[v3 + 0x0002:word16] : word16)
   Class: Eq_1405
   DataType: (ptr word16)
-  OrigDataType: word16
+  OrigDataType: cu16
 T_1406: (in 0x0044 : word16)
   Class: Eq_1406
   DataType: word16
@@ -8178,12 +8160,12 @@ T_1521: (in 0x0002 : word16)
   OrigDataType: word16
 T_1522: (in v3 + 0x0002 : word16)
   Class: Eq_1522
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cu16)
+  OrigDataType: (ptr cu16)
 T_1523: (in Mem120[v3 + 0x0002:word16] : word16)
   Class: Eq_1405
   DataType: (ptr word16)
-  OrigDataType: word16
+  OrigDataType: cu16
 T_1524: (in 0x007E : word16)
   Class: Eq_1524
   DataType: word16
@@ -8348,7 +8330,7 @@ T_1564: (in 1 : int16)
   Class: Eq_1564
   DataType: int16
   OrigDataType: int16
-T_1565: (in 1 << wArg02 : int16)
+T_1565: (in wArg02 << 1 : word16)
   Class: Eq_1556
   DataType: Eq_1556
   OrigDataType: ui16
@@ -9720,15 +9702,15 @@ T_1907: (in Mem0[r0_9 + 0x0000:word16] : word16)
   Class: Eq_1863
   DataType: Eq_1863
   OrigDataType: ci16
-T_1908: (in ~*r0_9 : word16)
+T_1908: (in 0x8000 : word16)
   Class: Eq_1908
-  DataType: ci16
-  OrigDataType: ci16
-T_1909: (in 0x8000 : word16)
+  DataType: word16
+  OrigDataType: word16
+T_1909: (in ~0x8000 : word16)
   Class: Eq_1909
   DataType: cui16
   OrigDataType: cui16
-T_1910: (in ~*r0_9 & 0x8000 : word16)
+T_1910: (in *r0_9 & ~0x8000 : word16)
   Class: Eq_1863
   DataType: Eq_1863
   OrigDataType: cui16
@@ -17060,15 +17042,15 @@ T_3742: (in Mem69[r4 + 0x0000:word16] : word16)
   Class: Eq_3345
   DataType: ci16
   OrigDataType: cui16
-T_3743: (in ~r4->t0000 : word16)
+T_3743: (in 0x0002 : word16)
   Class: Eq_3743
-  DataType: cui16
-  OrigDataType: cui16
-T_3744: (in 0x0002 : word16)
+  DataType: word16
+  OrigDataType: word16
+T_3744: (in ~0x0002 : word16)
   Class: Eq_3744
   DataType: cui16
   OrigDataType: cui16
-T_3745: (in ~r4->t0000 & 0x0002 : word16)
+T_3745: (in r4->t0000 & ~0x0002 : word16)
   Class: Eq_3345
   DataType: ci16
   OrigDataType: cui16
@@ -17752,15 +17734,15 @@ T_3915: (in Mem18[r4 + 0x0000:word16] : word16)
   Class: Eq_2850
   DataType: Eq_2850
   OrigDataType: cui16
-T_3916: (in ~r4->t0000 : word16)
+T_3916: (in 0x8000 : word16)
   Class: Eq_3916
-  DataType: cui16
-  OrigDataType: cui16
-T_3917: (in 0x8000 : word16)
+  DataType: word16
+  OrigDataType: word16
+T_3917: (in ~0x8000 : word16)
   Class: Eq_3917
   DataType: cui16
   OrigDataType: cui16
-T_3918: (in ~r4->t0000 & 0x8000 : word16)
+T_3918: (in r4->t0000 & ~0x8000 : word16)
   Class: Eq_2850
   DataType: Eq_2850
   OrigDataType: cui16
@@ -17811,7 +17793,7 @@ T_3929: (in r3_26 : word16)
 T_3930: (in r4_27 : (ptr Eq_3930))
   Class: Eq_3930
   DataType: (ptr Eq_3930)
-  OrigDataType: (ptr (struct (2 T_3972 t0002) (11 T_3952 t0011)))
+  OrigDataType: (ptr (struct (2 T_3972 t0002) (11 T_3954 t0011)))
 T_3931: (in r2_28 : word16)
   Class: Eq_3931
   DataType: word16
@@ -17888,27 +17870,27 @@ T_3949: (in Mem33[fp + 0xFFF8:word16] : word16)
   Class: Eq_3946
   DataType: (ptr code)
   OrigDataType: word16
-T_3950: (in 0x0011 : word16)
+T_3950: (in fp + 0xFFF8 : word16)
   Class: Eq_3950
-  DataType: word16
-  OrigDataType: word16
-T_3951: (in r4_27 + 0x0011 : word16)
-  Class: Eq_3951
-  DataType: word16
-  OrigDataType: word16
-T_3952: (in Mem33[r4_27 + 0x0011:word16] : word16)
-  Class: Eq_3952
-  DataType: cui16
-  OrigDataType: cui16
-T_3953: (in fp + 0xFFF8 : word16)
-  Class: Eq_3953
   DataType: ptr16
   OrigDataType: ptr16
-T_3954: (in Mem33[fp + 0xFFF8:word16] : word16)
+T_3951: (in Mem33[fp + 0xFFF8:word16] : word16)
   Class: Eq_3946
   DataType: (ptr code)
   OrigDataType: cui16
-T_3955: (in r4_27->w0011 | fp->ptrFFF8 : word16)
+T_3952: (in 0x0011 : word16)
+  Class: Eq_3952
+  DataType: word16
+  OrigDataType: word16
+T_3953: (in r4_27 + 0x0011 : word16)
+  Class: Eq_3953
+  DataType: word16
+  OrigDataType: word16
+T_3954: (in Mem33[r4_27 + 0x0011:word16] : word16)
+  Class: Eq_3954
+  DataType: cui16
+  OrigDataType: cui16
+T_3955: (in fp->ptrFFF8 | r4_27->w0011 : word16)
   Class: Eq_3946
   DataType: (ptr code)
   OrigDataType: cui16
@@ -18079,7 +18061,7 @@ T_3996: (in r3_29 : word16)
 T_3997: (in r4_30 : (ptr Eq_3997))
   Class: Eq_3997
   DataType: (ptr Eq_3997)
-  OrigDataType: (ptr (struct (2 T_4034 t0002) (11 T_4014 t0011)))
+  OrigDataType: (ptr (struct (2 T_4034 t0002) (11 T_4016 t0011)))
 T_3998: (in r2_31 : word16)
   Class: Eq_3931
   DataType: word16
@@ -18136,27 +18118,27 @@ T_4011: (in Mem36[fp + 0xFFF8:word16] : word16)
   Class: Eq_4008
   DataType: (ptr code)
   OrigDataType: word16
-T_4012: (in 0x0011 : word16)
+T_4012: (in fp + 0xFFF8 : word16)
   Class: Eq_4012
-  DataType: word16
-  OrigDataType: word16
-T_4013: (in r4_30 + 0x0011 : word16)
-  Class: Eq_4013
-  DataType: word16
-  OrigDataType: word16
-T_4014: (in Mem36[r4_30 + 0x0011:word16] : word16)
-  Class: Eq_4014
-  DataType: cui16
-  OrigDataType: cui16
-T_4015: (in fp + 0xFFF8 : word16)
-  Class: Eq_4015
   DataType: ptr16
   OrigDataType: ptr16
-T_4016: (in Mem36[fp + 0xFFF8:word16] : word16)
+T_4013: (in Mem36[fp + 0xFFF8:word16] : word16)
   Class: Eq_4008
   DataType: (ptr code)
   OrigDataType: cui16
-T_4017: (in r4_30->w0011 | fp->ptrFFF8 : word16)
+T_4014: (in 0x0011 : word16)
+  Class: Eq_4014
+  DataType: word16
+  OrigDataType: word16
+T_4015: (in r4_30 + 0x0011 : word16)
+  Class: Eq_4015
+  DataType: word16
+  OrigDataType: word16
+T_4016: (in Mem36[r4_30 + 0x0011:word16] : word16)
+  Class: Eq_4016
+  DataType: cui16
+  OrigDataType: cui16
+T_4017: (in fp->ptrFFF8 | r4_30->w0011 : word16)
   Class: Eq_4008
   DataType: (ptr code)
   OrigDataType: cui16
@@ -18515,16 +18497,16 @@ T_4105: (in r4_15 + 0x0000 : word16)
 T_4106: (in Mem0[r4_15 + 0x0000:word16] : word16)
   Class: Eq_4106
   DataType: cui16
-  OrigDataType: word16
-T_4107: (in ~r4_15->t0000 : word16)
-  Class: Eq_4107
-  DataType: cui16
   OrigDataType: cui16
-T_4108: (in 0x8002 : word16)
+T_4107: (in 0x8002 : word16)
+  Class: Eq_4107
+  DataType: word16
+  OrigDataType: word16
+T_4108: (in ~0x8002 : word16)
   Class: Eq_4108
   DataType: cui16
   OrigDataType: cui16
-T_4109: (in ~r4_15->t0000 & 0x8002 : word16)
+T_4109: (in r4_15->t0000 & ~0x8002 : word16)
   Class: Eq_4106
   DataType: cui16
   OrigDataType: cui16
@@ -18534,8 +18516,8 @@ T_4110: (in 0x0000 : word16)
   OrigDataType: word16
 T_4111: (in r4_15 + 0x0000 : word16)
   Class: Eq_4111
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cui16)
+  OrigDataType: (ptr cui16)
 T_4112: (in Mem32[r4_15 + 0x0000:word16] : word16)
   Class: Eq_4106
   DataType: Eq_18530
@@ -18550,8 +18532,8 @@ T_4114: (in 0x0000 : word16)
   OrigDataType: word16
 T_4115: (in r4_15 + 0x0000 : word16)
   Class: Eq_4115
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cui16)
+  OrigDataType: (ptr cui16)
 T_4116: (in Mem32[r4_15 + 0x0000:word16] : word16)
   Class: Eq_4106
   DataType: cui16
@@ -18570,8 +18552,8 @@ T_4119: (in 0x0000 : word16)
   OrigDataType: word16
 T_4120: (in r4_15 + 0x0000 : word16)
   Class: Eq_4120
-  DataType: (ptr word16)
-  OrigDataType: (ptr word16)
+  DataType: (ptr cui16)
+  OrigDataType: (ptr cui16)
 T_4121: (in Mem34[r4_15 + 0x0000:word16] : word16)
   Class: Eq_4106
   DataType: Eq_18530
@@ -20332,15 +20314,15 @@ T_4560: (in Mem39[r0 + 0x0000:word16] : word16)
   Class: Eq_4529
   DataType: ci16
   OrigDataType: cui16
-T_4561: (in ~r0->t0000 : word16)
+T_4561: (in 0x0002 : word16)
   Class: Eq_4561
-  DataType: cui16
-  OrigDataType: cui16
-T_4562: (in 0x0002 : word16)
+  DataType: word16
+  OrigDataType: word16
+T_4562: (in ~0x0002 : word16)
   Class: Eq_4562
   DataType: cui16
   OrigDataType: cui16
-T_4563: (in ~r0->t0000 & 0x0002 : word16)
+T_4563: (in r0->t0000 & ~0x0002 : word16)
   Class: Eq_4529
   DataType: ci16
   OrigDataType: cui16
@@ -20788,43 +20770,43 @@ T_4674: (in Mem7[Mem7[fp + 0x000E:ptr16] + 0x0000:word16] : word16)
   Class: Eq_4662
   DataType: cui16
   OrigDataType: cui16
-T_4675: (in 0x0000 : word16)
+T_4675: (in 0x0002 : word16)
   Class: Eq_4675
-  DataType: (ptr (ptr cui16))
-  OrigDataType: (ptr (struct (0 T_4676 t0000)))
-T_4676: (in Mem7[0x0000:ptr16] : ptr16)
+  DataType: ui16
+  OrigDataType: ui16
+T_4676: (in r4_3 - 0x0002 : word16)
   Class: Eq_4676
-  DataType: (ptr cui16)
+  DataType: (ptr (ptr cui16))
   OrigDataType: (ptr (struct (0 T_4679 t0000)))
 T_4677: (in 0x0000 : word16)
   Class: Eq_4677
   DataType: word16
   OrigDataType: word16
-T_4678: (in Mem7[0x0000:ptr16] + 0x0000 : word16)
+T_4678: (in r4_3 - 0x0002 + 0x0000 : word16)
   Class: Eq_4678
+  DataType: word16
+  OrigDataType: word16
+T_4679: (in Mem7[r4_3 - 0x0002 + 0x0000:ptr16] : ptr16)
+  Class: Eq_4679
+  DataType: (ptr cui16)
+  OrigDataType: (ptr (struct (0 T_4682 t0000)))
+T_4680: (in 0x0000 : word16)
+  Class: Eq_4680
+  DataType: word16
+  OrigDataType: word16
+T_4681: (in Mem7[r4_3 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+  Class: Eq_4681
   DataType: ptr16
   OrigDataType: ptr16
-T_4679: (in Mem7[Mem7[0x0000:ptr16] + 0x0000:word16] : word16)
-  Class: Eq_4679
+T_4682: (in Mem7[Mem7[r4_3 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+  Class: Eq_4682
   DataType: cui16
   OrigDataType: cui16
-T_4680: (in 0x0002 : word16)
-  Class: Eq_4680
-  DataType: ui16
-  OrigDataType: ui16
-T_4681: (in r4_3 - 0x0002 : word16)
-  Class: Eq_4681
+T_4683: (in 0x0000 : word16)
+  Class: Eq_4683
   DataType: (ptr (ptr cui16))
   OrigDataType: (ptr (struct (0 T_4684 t0000)))
-T_4682: (in 0x0000 : word16)
-  Class: Eq_4682
-  DataType: word16
-  OrigDataType: word16
-T_4683: (in r4_3 - 0x0002 + 0x0000 : word16)
-  Class: Eq_4683
-  DataType: word16
-  OrigDataType: word16
-T_4684: (in Mem7[r4_3 - 0x0002 + 0x0000:ptr16] : ptr16)
+T_4684: (in Mem7[0x0000:ptr16] : ptr16)
   Class: Eq_4684
   DataType: (ptr cui16)
   OrigDataType: (ptr (struct (0 T_4687 t0000)))
@@ -20832,15 +20814,15 @@ T_4685: (in 0x0000 : word16)
   Class: Eq_4685
   DataType: word16
   OrigDataType: word16
-T_4686: (in Mem7[r4_3 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+T_4686: (in Mem7[0x0000:ptr16] + 0x0000 : word16)
   Class: Eq_4686
   DataType: ptr16
   OrigDataType: ptr16
-T_4687: (in Mem7[Mem7[r4_3 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+T_4687: (in Mem7[Mem7[0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_4687
   DataType: cui16
   OrigDataType: cui16
-T_4688: (in *null & *(*(r4_3 - 0x0002)) : word16)
+T_4688: (in **(r4_3 - 0x0002) & *null : word16)
   Class: Eq_4688
   DataType: cui16
   OrigDataType: cui16
@@ -32012,39 +31994,39 @@ T_7480: (in 0x0002 : word16)
   Class: Eq_7480
   DataType: ui16
   OrigDataType: ui16
-T_7481: (in r5_11 - 0x0002 : word16)
+T_7481: (in r0_12 - 0x0002 : word16)
   Class: Eq_7481
-  DataType: (ptr cui16)
+  DataType: (ptr (ptr cui16))
   OrigDataType: (ptr (struct (0 T_7484 t0000)))
 T_7482: (in 0x0000 : word16)
   Class: Eq_7482
   DataType: word16
   OrigDataType: word16
-T_7483: (in r5_11 - 0x0002 + 0x0000 : word16)
+T_7483: (in r0_12 - 0x0002 + 0x0000 : word16)
   Class: Eq_7483
   DataType: word16
   OrigDataType: word16
-T_7484: (in Mem0[r5_11 - 0x0002 + 0x0000:word16] : word16)
+T_7484: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] : ptr16)
   Class: Eq_7484
+  DataType: (ptr cui16)
+  OrigDataType: (ptr (struct (0 T_7487 t0000)))
+T_7485: (in 0x0000 : word16)
+  Class: Eq_7485
+  DataType: word16
+  OrigDataType: word16
+T_7486: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+  Class: Eq_7486
+  DataType: ptr16
+  OrigDataType: ptr16
+T_7487: (in Mem0[Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+  Class: Eq_7487
   DataType: cui16
   OrigDataType: cui16
-T_7485: (in 0x0002 : word16)
-  Class: Eq_7485
+T_7488: (in 0x0002 : word16)
+  Class: Eq_7488
   DataType: ui16
   OrigDataType: ui16
-T_7486: (in r0_12 - 0x0002 : word16)
-  Class: Eq_7486
-  DataType: (ptr (ptr word16))
-  OrigDataType: (ptr (struct (0 T_7489 t0000)))
-T_7487: (in 0x0000 : word16)
-  Class: Eq_7487
-  DataType: word16
-  OrigDataType: word16
-T_7488: (in r0_12 - 0x0002 + 0x0000 : word16)
-  Class: Eq_7488
-  DataType: word16
-  OrigDataType: word16
-T_7489: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] : ptr16)
+T_7489: (in r5_11 - 0x0002 : word16)
   Class: Eq_7489
   DataType: (ptr word16)
   OrigDataType: (ptr (struct (0 T_7492 t0000)))
@@ -32052,19 +32034,19 @@ T_7490: (in 0x0000 : word16)
   Class: Eq_7490
   DataType: word16
   OrigDataType: word16
-T_7491: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+T_7491: (in r5_11 - 0x0002 + 0x0000 : word16)
   Class: Eq_7491
-  DataType: ptr16
-  OrigDataType: ptr16
-T_7492: (in Mem0[Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+  DataType: word16
+  OrigDataType: word16
+T_7492: (in Mem0[r5_11 - 0x0002 + 0x0000:word16] : word16)
   Class: Eq_7492
   DataType: word16
   OrigDataType: word16
-T_7493: (in ~**(r0_12 - 0x0002) : word16)
+T_7493: (in ~*(r5_11 - 0x0002) : word16)
   Class: Eq_7493
   DataType: cui16
   OrigDataType: cui16
-T_7494: (in *(r5_11 - 0x0002) & ~(*(*(r0_12 - 0x0002))) : word16)
+T_7494: (in **(r0_12 - 0x0002) & ~(*(r5_11 - 0x0002)) : word16)
   Class: Eq_7494
   DataType: cui16
   OrigDataType: cui16
@@ -37095,7 +37077,7 @@ T_8750: (in r5 : (ptr word16))
 T_8751: (in pc : (ptr Eq_4649))
   Class: Eq_4649
   DataType: (ptr Eq_4649)
-  OrigDataType: (ptr (struct (0 T_18103 t0000)))
+  OrigDataType: (ptr (struct (0 T_18109 t0000)))
 T_8752: (in 0x4D88 : word16)
   Class: Eq_2073
   DataType: (ptr word16)
@@ -44104,59 +44086,59 @@ T_10503: (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, ou
   Class: Eq_1299
   DataType: Eq_1299
   OrigDataType: word16
-T_10504: (in fp : ptr16)
+T_10504: (in 0x0002 : word16)
   Class: Eq_10504
-  DataType: (ptr Eq_10504)
-  OrigDataType: (ptr (struct (15FF T_10507 t15FF)))
-T_10505: (in 0x15FF : word16)
-  Class: Eq_10505
-  DataType: word16
-  OrigDataType: word16
-T_10506: (in fp + 0x15FF : word16)
-  Class: Eq_10506
-  DataType: ptr16
-  OrigDataType: ptr16
-T_10507: (in Mem0[fp + 0x15FF:word16] : word16)
-  Class: Eq_10507
-  DataType: cui16
-  OrigDataType: cui16
-T_10508: (in 0x0002 : word16)
-  Class: Eq_10508
   DataType: ui16
   OrigDataType: ui16
-T_10509: (in r2_8 - 0x0002 : word16)
+T_10505: (in r2_8 - 0x0002 : word16)
+  Class: Eq_10505
+  DataType: (ptr (ptr cui16))
+  OrigDataType: (ptr (struct (0 T_10508 t0000)))
+T_10506: (in 0x0000 : word16)
+  Class: Eq_10506
+  DataType: word16
+  OrigDataType: word16
+T_10507: (in r2_8 - 0x0002 + 0x0000 : word16)
+  Class: Eq_10507
+  DataType: word16
+  OrigDataType: word16
+T_10508: (in Mem0[r2_8 - 0x0002 + 0x0000:ptr16] : ptr16)
+  Class: Eq_10508
+  DataType: (ptr cui16)
+  OrigDataType: (ptr (struct (0 T_10511 t0000)))
+T_10509: (in 0x0000 : word16)
   Class: Eq_10509
-  DataType: (ptr (ptr word16))
-  OrigDataType: (ptr (struct (0 T_10512 t0000)))
-T_10510: (in 0x0000 : word16)
+  DataType: word16
+  OrigDataType: word16
+T_10510: (in Mem0[r2_8 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
   Class: Eq_10510
-  DataType: word16
-  OrigDataType: word16
-T_10511: (in r2_8 - 0x0002 + 0x0000 : word16)
+  DataType: ptr16
+  OrigDataType: ptr16
+T_10511: (in Mem0[Mem0[r2_8 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_10511
-  DataType: word16
-  OrigDataType: word16
-T_10512: (in Mem0[r2_8 - 0x0002 + 0x0000:ptr16] : ptr16)
+  DataType: cui16
+  OrigDataType: cui16
+T_10512: (in fp : ptr16)
   Class: Eq_10512
-  DataType: (ptr word16)
-  OrigDataType: (ptr (struct (0 T_10515 t0000)))
-T_10513: (in 0x0000 : word16)
+  DataType: (ptr Eq_10512)
+  OrigDataType: (ptr (struct (15FF T_10515 t15FF)))
+T_10513: (in 0x15FF : word16)
   Class: Eq_10513
   DataType: word16
   OrigDataType: word16
-T_10514: (in Mem0[r2_8 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+T_10514: (in fp + 0x15FF : word16)
   Class: Eq_10514
   DataType: ptr16
   OrigDataType: ptr16
-T_10515: (in Mem0[Mem0[r2_8 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+T_10515: (in Mem0[fp + 0x15FF:word16] : word16)
   Class: Eq_10515
   DataType: word16
   OrigDataType: word16
-T_10516: (in ~**(r2_8 - 0x0002) : word16)
+T_10516: (in ~fp->w15FF : word16)
   Class: Eq_10516
   DataType: cui16
   OrigDataType: cui16
-T_10517: (in fp->w15FF & ~(*(*(r2_8 - 0x0002))) : word16)
+T_10517: (in **(r2_8 - 0x0002) & ~fp->w15FF : word16)
   Class: Eq_10517
   DataType: cui16
   OrigDataType: cui16
@@ -49408,10 +49390,10 @@ T_11829: (in r3_9 : word16)
   Class: Eq_11829
   DataType: word16
   OrigDataType: word16
-T_11830: (in r4_10 : Eq_11830)
+T_11830: (in r4_10 : (ptr (ptr (ptr (ptr (ptr (ptr cui16)))))))
   Class: Eq_11830
-  DataType: Eq_11830
-  OrigDataType: (union (cui16 u0) (ptr16 u1))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr cui16))))))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_11831: (in r5_11 : word16)
   Class: Eq_11831
   DataType: word16
@@ -49462,72 +49444,72 @@ T_11842: (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_106, out r3_9, 
   OrigDataType: word16
 T_11843: (in 0x0002 : word16)
   Class: Eq_11843
-  DataType: cui16
-  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u0) (ptr16 u1))
-T_11844: (in r4_10 - 0x0002 : word16)
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr cui16))))))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
+T_11844: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_11844
-  DataType: cui16
-  OrigDataType: cui16
-T_11845: (in r4_10 - 0x0002 : word16)
-  Class: Eq_11845
   DataType: (ptr (ptr cui16))
-  OrigDataType: (ptr (struct (0 T_11848 t0000)))
-T_11846: (in 0x0000 : word16)
+  OrigDataType: (ptr (struct (0 T_11847 t0000)))
+T_11845: (in 0x0000 : word16)
+  Class: Eq_11845
+  DataType: word16
+  OrigDataType: word16
+T_11846: (in r4_10 - 0x0002 + 0x0000 : word16)
   Class: Eq_11846
   DataType: word16
   OrigDataType: word16
-T_11847: (in r4_10 - 0x0002 + 0x0000 : word16)
+T_11847: (in Mem0[r4_10 - 0x0002 + 0x0000:ptr16] : ptr16)
   Class: Eq_11847
-  DataType: word16
-  OrigDataType: word16
-T_11848: (in Mem0[r4_10 - 0x0002 + 0x0000:ptr16] : ptr16)
-  Class: Eq_11848
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_11851 t0000)))
-T_11849: (in 0x0000 : word16)
-  Class: Eq_11849
+  OrigDataType: (ptr (struct (0 T_11850 t0000)))
+T_11848: (in 0x0000 : word16)
+  Class: Eq_11848
   DataType: word16
   OrigDataType: word16
-T_11850: (in Mem0[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
-  Class: Eq_11850
+T_11849: (in Mem0[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+  Class: Eq_11849
   DataType: ptr16
   OrigDataType: ptr16
-T_11851: (in Mem0[Mem0[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+T_11850: (in Mem0[Mem0[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+  Class: Eq_11850
+  DataType: cui16
+  OrigDataType: cui16
+T_11851: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_11851
   DataType: cui16
   OrigDataType: cui16
-T_11852: (in r4_10 - 0x0002 | *(*(r4_10 - 0x0002)) : word16)
+T_11852: (in **(r4_10 - &globals->ptr0002) | r4_10 - &globals->ptr0002 : word16)
   Class: Eq_11852
   DataType: cui16
   OrigDataType: cui16
-T_11853: (in r4_10 - 0x0002 : word16)
+T_11853: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_11853
-  DataType: Eq_11853
-  OrigDataType: 
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr cui16))))))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_11854: (in 0x0000 : word16)
   Class: Eq_11854
-  DataType: Eq_11854
-  OrigDataType: 
+  DataType: word16
+  OrigDataType: word16
 T_11855: (in r4_10 - 0x0002 + 0x0000 : word16)
   Class: Eq_11855
-  DataType: Eq_11855
-  OrigDataType: 
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr cui16))))))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_11856: (in Mem16[r4_10 - 0x0002 + 0x0000:ptr16] : ptr16)
   Class: Eq_11856
-  DataType: Eq_11856
-  OrigDataType: 
+  DataType: (ptr cui16)
+  OrigDataType: (ptr (struct (0 T_11859 t0000)))
 T_11857: (in 0x0000 : word16)
   Class: Eq_11857
-  DataType: Eq_11857
-  OrigDataType: 
+  DataType: word16
+  OrigDataType: word16
 T_11858: (in Mem16[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
   Class: Eq_11858
-  DataType: Eq_11858
-  OrigDataType: 
+  DataType: ptr16
+  OrigDataType: ptr16
 T_11859: (in Mem16[Mem16[r4_10 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_11852
   DataType: cui16
-  OrigDataType: 
+  OrigDataType: word16
 T_11860: (in 0x0009 : word16)
   Class: Eq_11860
   DataType: word16
@@ -49564,13 +49546,13 @@ T_11868: (in r4_13 : word16)
   Class: Eq_1068
   DataType: word16
   OrigDataType: word16
-T_11869: (in r4_10 - 0x0002 : word16)
+T_11869: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_11869
-  DataType: Eq_11869
-  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u0) (ptr16 u1))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr cui16))))))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_11870: (in *r4Out : word16)
   Class: Eq_11869
-  DataType: Eq_11869
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr cui16))))))
   OrigDataType: word16
 T_11871: (in 58C0 : ptr16)
   Class: Eq_11871
@@ -50472,15 +50454,15 @@ T_12095: (in pc : (ptr Eq_4649))
   Class: Eq_4649
   DataType: (ptr Eq_4649)
   OrigDataType: (ptr (struct (1866 T_15392 t1866)))
-T_12096: (in r4_10 - 0x0002 : word16)
+T_12096: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_2072
   DataType: (ptr Eq_2072)
-  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u0) (ptr16 u1))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_12097: (in 0x515E : word16)
   Class: Eq_2073
   DataType: (ptr word16)
   OrigDataType: word16
-T_12098: (in fn3F42(r0_107, r4_10 - 0x0002, &globals->w515E, pc) : void)
+T_12098: (in fn3F42(r0_107, r4_10 - &globals->ptr0002, &globals->w515E, pc) : void)
   Class: Eq_12098
   DataType: void
   OrigDataType: void
@@ -52788,15 +52770,15 @@ T_12674: (in fn3F42 : ptr16)
   Class: Eq_12090
   DataType: (ptr Eq_12090)
   OrigDataType: (ptr (fn T_12677 (T_11833, T_12675, T_12676, T_7195)))
-T_12675: (in r4_10 - 0x0002 : word16)
+T_12675: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_2072
   DataType: (ptr Eq_2072)
-  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u0) (ptr16 u1))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_12676: (in 0x5164 : word16)
   Class: Eq_2073
   DataType: (ptr word16)
   OrigDataType: word16
-T_12677: (in fn3F42(r0_107, r4_10 - 0x0002, &globals->w5164, pc) : void)
+T_12677: (in fn3F42(r0_107, r4_10 - &globals->ptr0002, &globals->w5164, pc) : void)
   Class: Eq_12098
   DataType: void
   OrigDataType: void
@@ -52944,10 +52926,10 @@ T_12713: (in fn4230 : ptr16)
   Class: Eq_5344
   DataType: (ptr Eq_5344)
   OrigDataType: (ptr (fn T_12719 (T_11833, T_12714, T_12715, T_7195, T_12716, T_12717, T_12718)))
-T_12714: (in r4_10 - 0x0002 : word16)
+T_12714: (in r4_10 - &globals->ptr0002 : word16)
   Class: Eq_2072
   DataType: (ptr Eq_2072)
-  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u0) (ptr16 u1))
+  OrigDataType: (union ((ptr (struct 0002 (0 word16 w0000) (2 (ptr code) ptr0002))) u1) (ptr16 u0))
 T_12715: (in 0x516A : word16)
   Class: Eq_2073
   DataType: (ptr word16)
@@ -52964,7 +52946,7 @@ T_12718: (in out r5_233 : ptr16)
   Class: Eq_5352
   DataType: ptr16
   OrigDataType: ptr16
-T_12719: (in fn4230(r0_107, r4_10 - 0x0002, &globals->w516A, pc, out r2_106, out r4_13, out r5_233) : word16)
+T_12719: (in fn4230(r0_107, r4_10 - &globals->ptr0002, &globals->w516A, pc, out r2_106, out r4_13, out r5_233) : word16)
   Class: Eq_1299
   DataType: Eq_1299
   OrigDataType: word16
@@ -53752,7 +53734,7 @@ T_12915: (in Mem0[Mem0[r4_10 + 0x0000:word16] + 0x0000:ptr16] : ptr16)
   Class: Eq_12915
   DataType: Eq_12915
   OrigDataType: (union (cui16 u0) (ptr16 u1))
-T_12916: (in pc | *(*r4_10) : word16)
+T_12916: (in **r4_10 | pc : ptr16)
   Class: Eq_12912
   DataType: (ptr Eq_12915)
   OrigDataType: cui16
@@ -56831,7 +56813,7 @@ T_13684: (in r0_159 << 1 : word16)
 T_13685: (in r1_7 : (ptr cui16))
   Class: Eq_13685
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_13702 t0000)))
+  OrigDataType: (ptr (struct (0 T_13711 t0000)))
 T_13686: (in r2_8 : word16)
   Class: Eq_13686
   DataType: word16
@@ -56888,55 +56870,55 @@ T_13699: (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, ou
   Class: Eq_1299
   DataType: Eq_1299
   OrigDataType: word16
-T_13700: (in 0x0000 : word16)
+T_13700: (in fp : ptr16)
   Class: Eq_13700
-  DataType: word16
-  OrigDataType: word16
-T_13701: (in r1_7 + 0x0000 : word16)
-  Class: Eq_13701
-  DataType: word16
-  OrigDataType: word16
-T_13702: (in Mem0[r1_7 + 0x0000:word16] : word16)
-  Class: Eq_13702
-  DataType: cui16
-  OrigDataType: cui16
-T_13703: (in fp : ptr16)
-  Class: Eq_13703
   DataType: ptr16
   OrigDataType: ptr16
-T_13704: (in 0x0002 : word16)
-  Class: Eq_13704
+T_13701: (in 0x0002 : word16)
+  Class: Eq_13701
   DataType: ui16
   OrigDataType: ui16
-T_13705: (in fp - 0x0002 : word16)
-  Class: Eq_13705
+T_13702: (in fp - 0x0002 : word16)
+  Class: Eq_13702
   DataType: (ptr (ptr cui16))
+  OrigDataType: (ptr (struct (0 T_13705 t0000)))
+T_13703: (in 0x0000 : word16)
+  Class: Eq_13703
+  DataType: word16
+  OrigDataType: word16
+T_13704: (in fp - 0x0002 + 0x0000 : word16)
+  Class: Eq_13704
+  DataType: ptr16
+  OrigDataType: ptr16
+T_13705: (in Mem0[fp - 0x0002 + 0x0000:ptr16] : ptr16)
+  Class: Eq_13705
+  DataType: (ptr cui16)
   OrigDataType: (ptr (struct (0 T_13708 t0000)))
 T_13706: (in 0x0000 : word16)
   Class: Eq_13706
   DataType: word16
   OrigDataType: word16
-T_13707: (in fp - 0x0002 + 0x0000 : word16)
+T_13707: (in Mem0[fp - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
   Class: Eq_13707
   DataType: ptr16
   OrigDataType: ptr16
-T_13708: (in Mem0[fp - 0x0002 + 0x0000:ptr16] : ptr16)
+T_13708: (in Mem0[Mem0[fp - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_13708
-  DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_13711 t0000)))
+  DataType: cui16
+  OrigDataType: cui16
 T_13709: (in 0x0000 : word16)
   Class: Eq_13709
   DataType: word16
   OrigDataType: word16
-T_13710: (in Mem0[fp - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+T_13710: (in r1_7 + 0x0000 : word16)
   Class: Eq_13710
-  DataType: ptr16
-  OrigDataType: ptr16
-T_13711: (in Mem0[Mem0[fp - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+  DataType: word16
+  OrigDataType: word16
+T_13711: (in Mem0[r1_7 + 0x0000:word16] : word16)
   Class: Eq_13711
   DataType: cui16
   OrigDataType: cui16
-T_13712: (in *r1_7 | *(*(fp - 0x0002)) : word16)
+T_13712: (in **(fp - 0x0002) | *r1_7 : word16)
   Class: Eq_13712
   DataType: cui16
   OrigDataType: cui16
@@ -61567,7 +61549,7 @@ T_14868: (in r2_8 : ptr16)
 T_14869: (in r3_9 : (ptr cui16))
   Class: Eq_14869
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_14884 t0000)))
+  OrigDataType: (ptr (struct (0 T_14889 t0000)))
 T_14870: (in r5_11 : word16)
   Class: Eq_14870
   DataType: word16
@@ -61616,39 +61598,39 @@ T_14881: (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, ou
   Class: Eq_1299
   DataType: Eq_1299
   OrigDataType: word16
-T_14882: (in 0x0000 : word16)
+T_14882: (in 0x0002 : word16)
   Class: Eq_14882
-  DataType: word16
-  OrigDataType: word16
-T_14883: (in r3_9 + 0x0000 : word16)
-  Class: Eq_14883
-  DataType: word16
-  OrigDataType: word16
-T_14884: (in Mem0[r3_9 + 0x0000:word16] : word16)
-  Class: Eq_14884
-  DataType: cui16
-  OrigDataType: cui16
-T_14885: (in 0x0002 : word16)
-  Class: Eq_14885
   DataType: ui16
   OrigDataType: ui16
-T_14886: (in r2_8 - 0x0002 : word16)
-  Class: Eq_14886
+T_14883: (in r2_8 - 0x0002 : word16)
+  Class: Eq_14883
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_14889 t0000)))
+  OrigDataType: (ptr (struct (0 T_14886 t0000)))
+T_14884: (in 0x0000 : word16)
+  Class: Eq_14884
+  DataType: word16
+  OrigDataType: word16
+T_14885: (in r2_8 - 0x0002 + 0x0000 : word16)
+  Class: Eq_14885
+  DataType: word16
+  OrigDataType: word16
+T_14886: (in Mem0[r2_8 - 0x0002 + 0x0000:word16] : word16)
+  Class: Eq_14886
+  DataType: cui16
+  OrigDataType: cui16
 T_14887: (in 0x0000 : word16)
   Class: Eq_14887
   DataType: word16
   OrigDataType: word16
-T_14888: (in r2_8 - 0x0002 + 0x0000 : word16)
+T_14888: (in r3_9 + 0x0000 : word16)
   Class: Eq_14888
   DataType: word16
   OrigDataType: word16
-T_14889: (in Mem0[r2_8 - 0x0002 + 0x0000:word16] : word16)
+T_14889: (in Mem0[r3_9 + 0x0000:word16] : word16)
   Class: Eq_14889
   DataType: cui16
   OrigDataType: cui16
-T_14890: (in *r3_9 | *(r2_8 - 0x0002) : word16)
+T_14890: (in *(r2_8 - 0x0002) | *r3_9 : word16)
   Class: Eq_14890
   DataType: cui16
   OrigDataType: cui16
@@ -63395,7 +63377,7 @@ T_15325: (in r1_7 : word16)
 T_15326: (in r2_8 : (ptr cui16))
   Class: Eq_15326
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_15345 t0000)))
+  OrigDataType: (ptr (struct (0 T_15342 t0000)))
 T_15327: (in r3_9 : word16)
   Class: Eq_15327
   DataType: word16
@@ -63407,7 +63389,7 @@ T_15328: (in r5_11 : word16)
 T_15329: (in r4_10 : (ptr Eq_2072))
   Class: Eq_2072
   DataType: (ptr Eq_2072)
-  OrigDataType: (ptr (struct (0 T_15342 t0000)))
+  OrigDataType: (ptr (struct (0 T_15345 t0000)))
 T_15330: (in r0_12 : Eq_1299)
   Class: Eq_1299
   DataType: Eq_1299
@@ -63452,11 +63434,11 @@ T_15340: (in 0x0000 : word16)
   Class: Eq_15340
   DataType: word16
   OrigDataType: word16
-T_15341: (in r4_10 + 0x0000 : word16)
+T_15341: (in r2_8 + 0x0000 : word16)
   Class: Eq_15341
   DataType: word16
   OrigDataType: word16
-T_15342: (in Mem0[r4_10 + 0x0000:word16] : word16)
+T_15342: (in Mem0[r2_8 + 0x0000:word16] : word16)
   Class: Eq_15342
   DataType: cui16
   OrigDataType: cui16
@@ -63464,16 +63446,16 @@ T_15343: (in 0x0000 : word16)
   Class: Eq_15343
   DataType: word16
   OrigDataType: word16
-T_15344: (in r2_8 + 0x0000 : word16)
+T_15344: (in r4_10 + 0x0000 : word16)
   Class: Eq_15344
   DataType: word16
   OrigDataType: word16
-T_15345: (in Mem0[r2_8 + 0x0000:word16] : word16)
+T_15345: (in Mem0[r4_10 + 0x0000:word16] : word16)
   Class: Eq_15345
   DataType: cui16
   OrigDataType: cui16
-T_15346: (in r4_10->w0000 | *r2_8 : word16)
-  Class: Eq_15345
+T_15346: (in *r2_8 | r4_10->w0000 : word16)
+  Class: Eq_15342
   DataType: cui16
   OrigDataType: cui16
 T_15347: (in 0x0000 : word16)
@@ -63485,7 +63467,7 @@ T_15348: (in r2_8 + 0x0000 : word16)
   DataType: (ptr cui16)
   OrigDataType: (ptr cui16)
 T_15349: (in Mem15[r2_8 + 0x0000:word16] : word16)
-  Class: Eq_15345
+  Class: Eq_15342
   DataType: cui16
   OrigDataType: cui16
 T_15350: (in 0x0005 : word16)
@@ -64307,7 +64289,7 @@ T_15553: (in out r2_87 : ptr16)
 T_15554: (in out r4_10 : ptr16)
   Class: Eq_5351
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_15342 t0000)))
+  OrigDataType: (ptr (struct (0 T_15345 t0000)))
 T_15555: (in out r5_89 : ptr16)
   Class: Eq_5352
   DataType: ptr16
@@ -66963,11 +66945,11 @@ T_16217: (in r3_9 : word16)
 T_16218: (in r4_10 : (ptr cui16))
   Class: Eq_16218
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_16235 t0000)))
+  OrigDataType: (ptr (struct (0 T_16232 t0000)))
 T_16219: (in r5_11 : (ptr cui16))
   Class: Eq_16219
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_16232 t0000)))
+  OrigDataType: (ptr (struct (0 T_16235 t0000)))
 T_16220: (in r0_12 : Eq_1299)
   Class: Eq_1299
   DataType: Eq_1299
@@ -67012,11 +66994,11 @@ T_16230: (in 0x0000 : word16)
   Class: Eq_16230
   DataType: word16
   OrigDataType: word16
-T_16231: (in r5_11 + 0x0000 : word16)
+T_16231: (in r4_10 + 0x0000 : word16)
   Class: Eq_16231
   DataType: word16
   OrigDataType: word16
-T_16232: (in Mem0[r5_11 + 0x0000:word16] : word16)
+T_16232: (in Mem0[r4_10 + 0x0000:word16] : word16)
   Class: Eq_16232
   DataType: cui16
   OrigDataType: cui16
@@ -67024,16 +67006,16 @@ T_16233: (in 0x0000 : word16)
   Class: Eq_16233
   DataType: word16
   OrigDataType: word16
-T_16234: (in r4_10 + 0x0000 : word16)
+T_16234: (in r5_11 + 0x0000 : word16)
   Class: Eq_16234
   DataType: word16
   OrigDataType: word16
-T_16235: (in Mem0[r4_10 + 0x0000:word16] : word16)
+T_16235: (in Mem0[r5_11 + 0x0000:word16] : word16)
   Class: Eq_16235
   DataType: cui16
   OrigDataType: cui16
-T_16236: (in *r5_11 | *r4_10 : word16)
-  Class: Eq_16235
+T_16236: (in *r4_10 | *r5_11 : word16)
+  Class: Eq_16232
   DataType: cui16
   OrigDataType: cui16
 T_16237: (in 0x0000 : word16)
@@ -67045,7 +67027,7 @@ T_16238: (in r4_10 + 0x0000 : word16)
   DataType: (ptr cui16)
   OrigDataType: (ptr cui16)
 T_16239: (in Mem15[r4_10 + 0x0000:word16] : word16)
-  Class: Eq_16235
+  Class: Eq_16232
   DataType: cui16
   OrigDataType: cui16
 T_16240: (in 0x0003 : word16)
@@ -67503,7 +67485,7 @@ T_16352: (in r4_10 : word16)
 T_16353: (in r5_11 : (ptr cui16))
   Class: Eq_16353
   DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_16366 t0000)))
+  OrigDataType: (ptr (struct (0 T_16374 t0000)))
 T_16354: (in r0_12 : Eq_1299)
   Class: Eq_1299
   DataType: Eq_1299
@@ -67544,51 +67526,51 @@ T_16363: (in fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, ou
   Class: Eq_1299
   DataType: Eq_1299
   OrigDataType: word16
-T_16364: (in 0x0000 : word16)
+T_16364: (in 0x0002 : word16)
   Class: Eq_16364
-  DataType: word16
-  OrigDataType: word16
-T_16365: (in r5_11 + 0x0000 : word16)
-  Class: Eq_16365
-  DataType: word16
-  OrigDataType: word16
-T_16366: (in Mem0[r5_11 + 0x0000:word16] : word16)
-  Class: Eq_16366
-  DataType: cui16
-  OrigDataType: cui16
-T_16367: (in 0x0002 : word16)
-  Class: Eq_16367
   DataType: ui16
   OrigDataType: ui16
-T_16368: (in r0_12 - 0x0002 : word16)
-  Class: Eq_16368
+T_16365: (in r0_12 - 0x0002 : word16)
+  Class: Eq_16365
   DataType: (ptr (ptr cui16))
+  OrigDataType: (ptr (struct (0 T_16368 t0000)))
+T_16366: (in 0x0000 : word16)
+  Class: Eq_16366
+  DataType: word16
+  OrigDataType: word16
+T_16367: (in r0_12 - 0x0002 + 0x0000 : word16)
+  Class: Eq_16367
+  DataType: word16
+  OrigDataType: word16
+T_16368: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] : ptr16)
+  Class: Eq_16368
+  DataType: (ptr cui16)
   OrigDataType: (ptr (struct (0 T_16371 t0000)))
 T_16369: (in 0x0000 : word16)
   Class: Eq_16369
   DataType: word16
   OrigDataType: word16
-T_16370: (in r0_12 - 0x0002 + 0x0000 : word16)
+T_16370: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
   Class: Eq_16370
-  DataType: word16
-  OrigDataType: word16
-T_16371: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] : ptr16)
+  DataType: ptr16
+  OrigDataType: ptr16
+T_16371: (in Mem0[Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_16371
-  DataType: (ptr cui16)
-  OrigDataType: (ptr (struct (0 T_16374 t0000)))
+  DataType: cui16
+  OrigDataType: cui16
 T_16372: (in 0x0000 : word16)
   Class: Eq_16372
   DataType: word16
   OrigDataType: word16
-T_16373: (in Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000 : word16)
+T_16373: (in r5_11 + 0x0000 : word16)
   Class: Eq_16373
-  DataType: ptr16
-  OrigDataType: ptr16
-T_16374: (in Mem0[Mem0[r0_12 - 0x0002 + 0x0000:ptr16] + 0x0000:word16] : word16)
+  DataType: word16
+  OrigDataType: word16
+T_16374: (in Mem0[r5_11 + 0x0000:word16] : word16)
   Class: Eq_16374
   DataType: cui16
   OrigDataType: cui16
-T_16375: (in *r5_11 | *(*(r0_12 - 0x0002)) : word16)
+T_16375: (in **(r0_12 - 0x0002) | *r5_11 : word16)
   Class: Eq_16375
   DataType: cui16
   OrigDataType: cui16
@@ -74455,7 +74437,7 @@ T_18090: (in r5_11 : word16)
 T_18091: (in r0_12 : Eq_1299)
   Class: Eq_1299
   DataType: Eq_1299
-  OrigDataType: (ptr (struct (0 T_18106 t0000)))
+  OrigDataType: (ptr (struct (0 T_18103 t0000)))
 T_18092: (in fn0EF8 : ptr16)
   Class: Eq_7470
   DataType: (ptr Eq_7470)
@@ -74496,41 +74478,41 @@ T_18101: (in 0x0000 : word16)
   Class: Eq_18101
   DataType: word16
   OrigDataType: word16
-T_18102: (in pc + 0x0000 : word16)
+T_18102: (in r0_12 + 0x0000 : word16)
   Class: Eq_18102
   DataType: word16
   OrigDataType: word16
-T_18103: (in Mem0[pc + 0x0000:word16] : word16)
-  Class: Eq_15719
-  DataType: cui16
-  OrigDataType: cui16
+T_18103: (in Mem0[r0_12 + 0x0000:word16] : word16)
+  Class: Eq_18103
+  DataType: (ptr Eq_18106)
+  OrigDataType: (ptr (struct (0 T_18106 t0000)))
 T_18104: (in 0x0000 : word16)
   Class: Eq_18104
   DataType: word16
   OrigDataType: word16
-T_18105: (in r0_12 + 0x0000 : word16)
+T_18105: (in Mem0[r0_12 + 0x0000:word16] + 0x0000 : word16)
   Class: Eq_18105
   DataType: word16
   OrigDataType: word16
-T_18106: (in Mem0[r0_12 + 0x0000:word16] : word16)
+T_18106: (in Mem0[Mem0[r0_12 + 0x0000:word16] + 0x0000:ptr16] : ptr16)
   Class: Eq_18106
-  DataType: (ptr Eq_18109)
-  OrigDataType: (ptr (struct (0 T_18109 t0000)))
+  DataType: Eq_18106
+  OrigDataType: (union (cui16 u0) (ptr16 u1))
 T_18107: (in 0x0000 : word16)
   Class: Eq_18107
   DataType: word16
   OrigDataType: word16
-T_18108: (in Mem0[r0_12 + 0x0000:word16] + 0x0000 : word16)
+T_18108: (in pc + 0x0000 : word16)
   Class: Eq_18108
   DataType: word16
   OrigDataType: word16
-T_18109: (in Mem0[Mem0[r0_12 + 0x0000:word16] + 0x0000:ptr16] : ptr16)
-  Class: Eq_18109
-  DataType: Eq_18109
-  OrigDataType: (union (cui16 u0) (ptr16 u1))
-T_18110: (in pc->w0000 | *(*r0_12) : word16)
-  Class: Eq_18106
-  DataType: (ptr Eq_18109)
+T_18109: (in Mem0[pc + 0x0000:word16] : word16)
+  Class: Eq_15719
+  DataType: cui16
+  OrigDataType: cui16
+T_18110: (in **r0_12 | pc->w0000 : ptr16)
+  Class: Eq_18103
+  DataType: (ptr Eq_18106)
   OrigDataType: cui16
 T_18111: (in 0x0000 : word16)
   Class: Eq_18111
@@ -74538,12 +74520,12 @@ T_18111: (in 0x0000 : word16)
   OrigDataType: word16
 T_18112: (in r0_12 + 0x0000 : word16)
   Class: Eq_18112
-  DataType: (ptr (ptr Eq_18109))
-  OrigDataType: (ptr (ptr (struct (0 T_18109 t0000))))
+  DataType: (ptr (ptr Eq_18106))
+  OrigDataType: (ptr (ptr (struct (0 T_18106 t0000))))
 T_18113: (in Mem16[r0_12 + 0x0000:word16] : word16)
-  Class: Eq_18106
+  Class: Eq_18103
   DataType: Eq_1299
-  OrigDataType: (ptr Eq_18109)
+  OrigDataType: (ptr Eq_18106)
 T_18114: (in 0x0003 : word16)
   Class: Eq_18114
   DataType: word16
@@ -76316,6 +76298,7 @@ union Eq_214 {
 }struct Globals {
 	word16 wFFFF95B3;	// FFFF95B3
 	cui16 * ptr0000;	// 0
+	cui16 ***** ptr0002;	// 2
 	struct Eq_2072 t0004;	// 4
 	struct Eq_2072 t000A;	// A
 	struct Eq_2072 t0010;	// 10
@@ -76798,29 +76781,19 @@ typedef struct Eq_1138 {
 	Eq_1087 t0004;	// 4
 } Eq_1138;
 
-typedef struct Eq_1202 {
-	Eq_1213 t0000;	// 0
-	word16 w0004;	// 4
-	word16 w0005;	// 5
+typedef struct Eq_1201 {
+	word16 w0000;	// 0
+	cu16 w0004;	// 4
+	cu16 w0005;	// 5
 	<anonymous> * ptr0006;	// 6
 	<anonymous> * ptr0008;	// 8
 	<anonymous> * ptr000A;	// A
-} Eq_1202;
+} Eq_1201;
 
 typedef union Eq_1213 {
-	byte u0;
+	bool u0;
 	word16 u1;
 } Eq_1213;
-
-typedef union Eq_1216 {
-	byte u0;
-	word16 u1;
-} Eq_1216;
-
-typedef union Eq_1219 {
-	byte u0;
-	word16 u1;
-} Eq_1219;
 
 typedef union Eq_1299 {
 	byte u0;
@@ -76831,7 +76804,7 @@ typedef Eq_1299 (Eq_1301)(Eq_1299, word16, ptr16);
 
 typedef struct Eq_1315 {
 	Eq_1334 t0000;	// 0
-	word16 w0001;	// 1
+	cu16 w0001;	// 1
 	word16 * ptr0002;	// 2
 	word16 * ptr0004;	// 4
 	word16 * ptr0006;	// 6
@@ -76847,19 +76820,14 @@ typedef struct Eq_1321 {
 } Eq_1321;
 
 typedef union Eq_1334 {
-	byte u0;
-	word16 u1;
+	cu16 u0;
+	byte u1;
 } Eq_1334;
 
 typedef union Eq_1379 {
-	byte u0;
+	bool u0;
 	word16 u1;
 } Eq_1379;
-
-typedef union Eq_1380 {
-	byte u0;
-	word16 u1;
-} Eq_1380;
 
 typedef struct Eq_1447 {
 	word16 w0044;	// 44
@@ -77517,9 +77485,9 @@ typedef void (Eq_8746)(Eq_1299, Eq_2072 *, word16 *, Eq_4649 *);
 
 typedef word16 (Eq_8771)(ptr16);
 
-typedef struct Eq_10504 {
-	cui16 w15FF;	// 15FF
-} Eq_10504;
+typedef struct Eq_10512 {
+	word16 w15FF;	// 15FF
+} Eq_10512;
 
 typedef void (Eq_10525)();
 
@@ -77552,21 +77520,6 @@ typedef byte (Eq_11594)();
 typedef struct Eq_11808 {
 	cui16 w15FF;	// 15FF
 } Eq_11808;
-
-typedef union Eq_11830 {
-	cui16 u0;
-	ptr16 u1;
-} Eq_11830;
-
-typedef union Eq_11843 {
-	cui16 u0;
-	ptr16 u1;
-} Eq_11843;
-
-typedef union Eq_11869 {
-	cui16 u0;
-	ptr16 u1;
-} Eq_11869;
 
 typedef void (Eq_12090)(Eq_1299, Eq_2072 *, word16 *, Eq_4649 *);
 
@@ -77611,10 +77564,10 @@ typedef union Eq_16959 {
 	byte u1;
 } Eq_16959;
 
-typedef union Eq_18109 {
+typedef union Eq_18106 {
 	cui16 u0;
 	ptr16 u1;
-} Eq_18109;
+} Eq_18106;
 
 typedef struct Eq_18222 {	// size: 4 4
 	word16 w0000;	// 0
@@ -77640,13 +77593,13 @@ typedef struct Eq_18527 {
 
 typedef struct Eq_18528 {
 	<anonymous> * ptr0044;	// 44
-	word16 w0052;	// 52
+	cu16 w0052;	// 52
 	byte b0074;	// 74
-	Eq_1213 t00A4;	// A4
+	word16 w00A4;	// A4
 } Eq_18528;
 
 typedef struct Eq_18529 {
-	union Eq_18109 * ptr0000;	// 0
+	union Eq_18106 * ptr0000;	// 0
 	cui16 w15FF;	// 15FF
 	byte b5897;	// 5897
 } Eq_18529;

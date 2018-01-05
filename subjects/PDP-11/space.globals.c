@@ -6,6 +6,7 @@
 
 word16 g_wFFFF95B3;
 cui16 * g_ptr0000 = null;
+cui16 ***** g_ptr0002 = null;
 struct Eq_2072 g_t0004 = 
 	{
 		0x0000,
