@@ -119,9 +119,9 @@ namespace Reko.Core.Machine
 			}
 		}
 
-		public static string FormatUnsignedValue(Constant c, string formatSpecifier = "{0}{1}")
+		public static string FormatUnsignedValue(Constant c, string format = "{0}{1}")
 		{
-			return string.Format(formatSpecifier, "", c.ToUInt64().ToString(FormatString(c.DataType)));
+			return string.Format(format, "", c.ToUInt64().ToString(FormatString(c.DataType)));
 		}
 	}
 
