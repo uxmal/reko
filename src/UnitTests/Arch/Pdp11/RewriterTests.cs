@@ -210,6 +210,16 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "2|L--|NZVC = cond(sp)");
         }
 
+        [Test]
+        public void Pdp11Rw_sub_indirect()
+        {
+            BuildTest(0xE5CE, 0x000A);  // sub #000A,@sp
+            AssertCode(
+                "0|L--|0200(4): 3 instructions",
+                "1|L--|v3 = Mem0[sp:word16] - 0x000A",
+                "2|L--|Mem0[sp:word16] = v3",
+                "3|L--|NZVC = cond(v3)");
+        }
 
         [Test]
         public void Pdp11Rw_bit()
@@ -334,7 +344,7 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "1|L--|v3 = Mem0[r4:word16]",
                 "2|L--|r4 = r4 + 0x0002",
                 "3|L--|r0 = r0 - 0x0002",
-                "4|L--|v5 = v3 & Mem0[r0:word16]",
+                "4|L--|v5 = Mem0[r0:word16] & v3",
                 "5|L--|Mem0[r0:word16] = v5",
                 "6|L--|NZ = cond(v5)",
                 "7|L--|V = false");

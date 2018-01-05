@@ -498,27 +498,27 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
+                    m.Assign(tmp, gen(m.Load(tmp.DataType, r), src));
                     m.Assign(m.Load(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
+                    m.Assign(tmp, gen(m.Load(tmp.DataType, r), src));
                     m.Assign(m.Load(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
+                    m.Assign(tmp, gen(m.Load(tmp.DataType, r), src));
                     m.Assign(m.Load(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, gen(src, m.Load(PrimitiveType.Ptr16, m.Load(tmp.DataType, r))));
+                    m.Assign(tmp, gen(m.Load(PrimitiveType.Ptr16, m.Load(tmp.DataType, r)), src));
                     m.Assign(m.Load(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecrDef:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r))));
+                    m.Assign(tmp, gen(m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r)), src));
                     m.Assign(m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r)), tmp);
                     break;
                 case AddressMode.Absolute:
