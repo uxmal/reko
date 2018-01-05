@@ -84,12 +84,12 @@ namespace Reko.Arch.X86
         private void RewriteHlt()
         {
             rtlc = RtlClass.Terminates;
-            var ppp = host.EnsurePseudoProcedure("__hlt", VoidType.Instance, 0);
-            ppp.Characteristics = new ProcedureCharacteristics
+            var c = new ProcedureCharacteristics
             {
                 Terminates = true,
             };
-            m.SideEffect(PseudoProc(ppp, VoidType.Instance));
+            var ppp = host.PseudoProcedure("__hlt", c, VoidType.Instance);
+            m.SideEffect(ppp);
         }
 
         /// <summary>

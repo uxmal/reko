@@ -56,7 +56,7 @@ namespace Reko.Core
             this.EnvironmentMetadata = new TypeLibrary();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
-            this.PseudoProcedures = new Dictionary<string, PseudoProcedure>();
+            this.PseudoProcedures = new Dictionary<string, Dictionary<FunctionType, PseudoProcedure>>();
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
@@ -261,9 +261,9 @@ namespace Reko.Core
         public SortedList<Address, Procedure> Procedures { get; private set; }
 
         /// <summary>
-        /// The program's pseudo procedures, indexed by name.
+        /// The program's pseudo procedures, indexed by name and by signature.
         /// </summary>
-        public Dictionary<string, PseudoProcedure> PseudoProcedures { get; private set; }
+        public Dictionary<string, Dictionary<FunctionType, PseudoProcedure>> PseudoProcedures { get; private set; }
 
         /// <summary>
         /// List of resources stored in the binary. Some executable file formats support the
@@ -444,11 +444,23 @@ namespace Reko.Core
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
-            PseudoProcedure p;
-            if (!PseudoProcedures.TryGetValue(name, out p))
+            var sig = new FunctionType(
+                new Identifier("", returnType, null),
+                Enumerable.Range(0, arity).Select(e =>
+                    new Identifier("", new UnknownType(), null))
+                    .ToArray());
+
+            Dictionary<FunctionType, PseudoProcedure> de;
+            if (!PseudoProcedures.TryGetValue(name, out de))
             {
+                de = new Dictionary<FunctionType, PseudoProcedure>(new DataTypeComparer());
+                PseudoProcedures[name] = de;
+            }
+            PseudoProcedure p;
+            if (!de.TryGetValue(sig, out p))
+            { 
                 p = new PseudoProcedure(name, returnType, arity);
-                PseudoProcedures[name] = p;
+                de.Add(sig, p);
             }
             return p;
         }
