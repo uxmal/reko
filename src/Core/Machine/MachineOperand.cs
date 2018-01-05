@@ -58,22 +58,22 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Converts a signed integer constant to string representatioon.
         /// </summary>
-        /// <param name="signRequiredForSignedIntegers">sign Should signed integers always be formatted with a leading sign character?
-        /// Setting this to Yes allows chaining a sequence of numbers into an expression,
+        /// <param name="forceSign">sign Should signed integers always be formatted with a leading sign character?
+        /// Setting this to true allows chaining a sequence of numbers into an expression,
         ///  like "+5+7-3+9".
-        /// Setting this to No will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
-        /// <param name="integerFormatSpecifier">Format string; allows injecting platform-specific characters before/between/after sign and value
+        /// Setting this to false will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
+        /// <param name="format">Format string; allows injecting platform-specific characters before/between/after sign and value
         /// when printing an integer value as hex. {0} will be the sign character (if any) and {1} will be the absolute value.</param>
-        public static string FormatSignedValue(Constant c, bool signRequired = true, string formatSpecifier = "{0}{1}")
+        public static string FormatSignedValue(Constant c, bool forceSign = true, string format = "{0}{1}")
         {
-            string s = (signRequired ? "+" : "");
+            string s = (forceSign ? "+" : "");
             int tmp = c.ToInt32();
             if (tmp < 0)
             {
                 s = "-";
                 tmp = -tmp;
             }
-            return string.Format(formatSpecifier, s, tmp.ToString(FormatString(c.DataType)));
+            return string.Format(format, s, tmp.ToString(FormatString(c.DataType)));
         }
 
         private static readonly char[] floatSpecials = new char[] { '.', 'e', 'E' };
@@ -81,18 +81,18 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Converts a numeric constant to string representatioon.
         /// </summary>
-        /// <param name="signRequiredForSignedIntegers">sign Should signed integers always be formatted with a leading sign character?
-        /// Setting this to Yes allows chaining a sequence of numbers into an expression,
+        /// <param name="forceSignForSignedIntegers">sign Should signed integers always be formatted with a leading sign character?
+        /// Setting this to true allows chaining a sequence of numbers into an expression,
         ///  like "+5+7-3+9".
-        /// Setting this to No will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
-        /// <param name="integerFormatSpecifier">Format string; allows injecting platform-specific characters before/between/after sign and value
+        /// Setting this to false will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
+        /// <param name="integerFormat">Format string; allows injecting platform-specific characters before/between/after sign and value
         /// when printing an integer value as hex. {0} will be the sign character (if any) and {1} will be the absolute value.</param>
-        public static string FormatValue(Constant c, bool signRequiredForSignedIntegers = true, string integerFormatSpecifier = "{0}{1}")
+        public static string FormatValue(Constant c, bool forceSignForSignedIntegers = true, string integerFormat = "{0}{1}")
         {
             var pt = (PrimitiveType)c.DataType;
             if (pt.Domain == Domain.SignedInt)
             {
-                return FormatSignedValue(c, signRequiredForSignedIntegers, integerFormatSpecifier);
+                return FormatSignedValue(c, forceSignForSignedIntegers, integerFormat);
             }
             else if (pt.Domain == Domain.Real)
             {
@@ -104,7 +104,7 @@ namespace Reko.Core.Machine
                 return str;
             }
             else
-                return FormatUnsignedValue(c, integerFormatSpecifier);
+                return FormatUnsignedValue(c, integerFormat);
         }
 
 		private static string FormatString(DataType dt)
