@@ -152,8 +152,8 @@ call_frame_dummy proc
 ;; sine_taylor: 800001AC
 sine_taylor proc
 	link	a6,#$FFB0
-	fmove.d	+$0008(a6),fp0
-	fmul.d	+$0008(a6),fp0
+	fmove.d	$0008(a6),fp0
+	fmul.d	$0008(a6),fp0
 	fmove.d	fp0,-$0008(a6)
 	fmove.d	-$0008(a6),fp1
 	fmul.d	-$0008(a6),fp1
@@ -164,9 +164,9 @@ sine_taylor proc
 	fsub.x	fp0,fp1
 	fmove.x	fp1,fp0
 	fmove.x	fp0,fp1
-	fmul.d	+$0008(a6),fp1
+	fmul.d	$0008(a6),fp1
 	fmove.d	fp1,-$0018(a6)
-	fmove.d	+$0008(a6),fp0
+	fmove.d	$0008(a6),fp0
 	fmul.d	-$0010(a6),fp0
 	fmove.d	fp0,-$0020(a6)
 	fmove.d	-$0008(a6),fp0
@@ -231,7 +231,7 @@ factorial proc
 
 l8000034C:
 	move.l	-$0004(a6),d0
-	cmp.l	+$0008(a6),d0
+	cmp.l	$0008(a6),d0
 	bgt	$8000036A
 
 l80000356:
@@ -255,12 +255,12 @@ pow_int proc
 
 l80000386:
 	move.l	-$0004(a6),d0
-	cmp.l	+$0010(a6),d0
+	cmp.l	$0010(a6),d0
 	bge	$800003A8
 
 l80000390:
 	fmove.d	-$000C(a6),fp0
-	fmul.d	+$0008(a6),fp0
+	fmul.d	$0008(a6),fp0
 	fmove.d	fp0,-$000C(a6)
 	addq.l	#$01,-$0004(a6)
 	bra	$80000386
@@ -278,22 +278,22 @@ l800003A8:
 sine_taylor proc
 	link	a6,#$FFF4
 	fmovem.x	fp2,-(a7)
-	move.l	+$0008(a6),-$000C(a6)
-	move.l	+$000C(a6),-$0008(a6)
+	move.l	$0008(a6),-$000C(a6)
+	move.l	$000C(a6),-$0008(a6)
 	moveq	#$03,d0
 	move.l	d0,-$0004(a6)
 
 l800003D6:
 	move.l	-$0004(a6),d0
-	cmp.l	+$0010(a6),d0
+	cmp.l	$0010(a6),d0
 	bgt	$80000428
 
 l800003E0:
 	move.l	-$0004(a6),-(a7)
-	move.l	+$000C(a6),-(a7)
-	move.l	+$0008(a6),-(a7)
+	move.l	$000C(a6),-(a7)
+	move.l	$0008(a6),-(a7)
 	jsr.l	-$007A(pc)                                           ; 80000372
-	lea	+$000C(a7),a7
+	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	-$0004(a6),-(a7)
 	jsr.l	-$00C0(pc)                                           ; 8000033C
@@ -314,15 +314,15 @@ l80000428:
 
 l8000042E:
 	move.l	-$0004(a6),d0
-	cmp.l	+$0010(a6),d0
+	cmp.l	$0010(a6),d0
 	bgt	$80000480
 
 l80000438:
 	move.l	-$0004(a6),-(a7)
-	move.l	+$000C(a6),-(a7)
-	move.l	+$0008(a6),-(a7)
+	move.l	$000C(a6),-(a7)
+	move.l	$0008(a6),-(a7)
 	jsr.l	-$00D2(pc)                                           ; 80000372
-	lea	+$000C(a7),a7
+	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	-$0004(a6),-(a7)
 	jsr.l	-$0118(pc)                                           ; 8000033C
@@ -362,7 +362,7 @@ main proc
 	move.l	#$51EB851F,-(a7)
 	move.l	#$40091EB8,-(a7)
 	jsr.l	$800004DE
-	lea	+$0014(a7),a7
+	lea	$0014(a7),a7
 	clr.l	d0
 	unlk	a6
 	rts	
@@ -370,8 +370,8 @@ main proc
 ;; _sin: 800004DE
 _sin proc
 	link	a6,#$FFDC
-	move.l	+$0008(a6),-$0008(a6)
-	move.l	+$000C(a6),-$0004(a6)
+	move.l	$0008(a6),-$0008(a6)
+	move.l	$000C(a6),-$0004(a6)
 	fmove.d	-$0008(a6),fp0
 	fmul.d	-$0008(a6),fp0
 	fmove.d	fp0,-$0024(a6)
@@ -385,7 +385,7 @@ _sin proc
 l8000051A:
 	fmove.d	-$0008(a6),fp0
 	fdiv.d	-$0010(a6),fp0
-	fcmp.d	+$0010(a6),fp0
+	fcmp.d	$0010(a6),fp0
 	fbnge	$8000060E
 
 l80000530:
@@ -429,10 +429,10 @@ l80000530:
 	fmove.d	-$0010(a6),fp1
 	fmul.x	fp0,fp1
 	fmove.d	fp1,-$0010(a6)
-	movea.l	+$0018(a6),a0
+	movea.l	$0018(a6),a0
 	move.l	(a0),d0
 	addq.l	#$01,d0
-	movea.l	+$0018(a6),a0
+	movea.l	$0018(a6),a0
 	move.l	d0,(a0)
 	bra	$8000051A
 
