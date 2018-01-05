@@ -818,24 +818,25 @@ namespace Reko.Scanning
             }
         }
 
-        //$REVIEW: can't the callers call Program.EnsurePse
+        [Obsolete]
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
-            return Program.EnsurePseudoProcedure(name, returnType, arity);
+            throw new NotSupportedException();
         }
 
         public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
         {
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, ppp),
                 returnType,
                 args);
         }
 
+
         public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
             ppp.Characteristics = c;
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, ppp),
@@ -843,6 +844,7 @@ namespace Reko.Scanning
                 args);
         }
 
+        
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             Procedure_v1 userProc;

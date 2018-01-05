@@ -73,12 +73,6 @@ namespace Reko.UnitTests.Scanning
         protected void Given_RewriterHost()
         {
             host = mr.Stub<IRewriterHost>();
-            host.Stub(h => h.EnsurePseudoProcedure(null, null, 0))
-                .IgnoreArguments()
-                .Do(new Func<string, DataType, int, PseudoProcedure>((n, dt, a) =>
-                {
-                    return new PseudoProcedure(n, dt, a);
-                }));
             host.Stub(h => h.PseudoProcedure(
                 Arg<string>.Is.Anything,
                 Arg<DataType>.Is.Anything,
@@ -90,7 +84,6 @@ namespace Reko.UnitTests.Scanning
                     return new Application(new ProcedureConstant(fn, ppp),
                         dt,
                         a);
-
             }));
         }
 

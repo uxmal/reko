@@ -206,9 +206,6 @@ namespace Reko.UnitTests.Arch.Sparc
                 VoidType.Instance,
                 Constant.Word32(0x19)));
 
-            host.Stub(h => h.EnsurePseudoProcedure("__mulscc", PrimitiveType.Int32, 2))
-                .Return(new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2));
-
             BuildTest(0x8B204009);  // mulscc  %g1,%o1,%g5
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",

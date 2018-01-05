@@ -442,27 +442,41 @@ namespace Reko.Core
                 .FirstOrDefault();
         }
 
-        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, params Expression[] args)
         {
-            var sig = new FunctionType(
-                new Identifier("", returnType, null),
-                Enumerable.Range(0, arity).Select(e =>
-                    new Identifier("", new UnknownType(), null))
-                    .ToArray());
+            var sig = MakeSignatureFromApplication(returnType, args);
+            return EnsurePseudoProcedure(name, sig);
+        }
 
+        private static FunctionType MakeSignatureFromApplication(DataType returnType, Expression[] args)
+        {
+            return new FunctionType(
+                new Identifier("", returnType, null),
+                args.Select((arg, i) => IdFromExpression(arg, i)).ToArray());
+        }
+
+        private static Identifier IdFromExpression(Expression arg, int i)
+        {
+            var id = arg as Identifier;
+            var stg = id != null ? id.Storage : null;
+            return new Identifier("", arg.DataType, stg);
+        }
+
+        public PseudoProcedure EnsurePseudoProcedure(string name, FunctionType sig)
+        {
             Dictionary<FunctionType, PseudoProcedure> de;
             if (!PseudoProcedures.TryGetValue(name, out de))
             {
                 de = new Dictionary<FunctionType, PseudoProcedure>(new DataTypeComparer());
                 PseudoProcedures[name] = de;
             }
-            PseudoProcedure p;
-            if (!de.TryGetValue(sig, out p))
-            { 
-                p = new PseudoProcedure(name, returnType, arity);
-                de.Add(sig, p);
+            PseudoProcedure intrinsic;
+            if (!de.TryGetValue(sig, out intrinsic))
+            {
+                intrinsic = new PseudoProcedure(name, sig);
+                de.Add(sig, intrinsic);
             }
-            return p;
+            return intrinsic;
         }
 
         public Procedure_v1 EnsureUserProcedure(Address address, string name, bool decompile = true)
