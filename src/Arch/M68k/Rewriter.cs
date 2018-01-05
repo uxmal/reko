@@ -114,6 +114,7 @@ VS Overflow Set 1001 V
                 case Opcode.bmi: RewriteBcc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
+                case Opcode.bvc: RewriteBcc(ConditionCode.NO, FlagM.VF); break;
                 case Opcode.bvs: RewriteBcc(ConditionCode.OV, FlagM.VF); break;
                 case Opcode.bchg: RewriteBchg(); break;
                 case Opcode.bkpt: RewriteBkpt(); break;
@@ -130,10 +131,12 @@ VS Overflow Set 1001 V
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
                 case Opcode.cmpm: RewriteCmp(); break;
+
                 case Opcode.dbcs: RewriteDbcc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.dbeq: RewriteDbcc(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
+                case Opcode.dbpl: RewriteDbcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.divs: RewriteDiv(m.SDiv, PrimitiveType.Int16); break;
@@ -147,11 +150,13 @@ VS Overflow Set 1001 V
                 case Opcode.fadd: RewriteFBinOp((s, d) => m.FAdd(d, s)); break;
                     //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
                 case Opcode.fbf: m.Nop(); break;
+                case Opcode.fblt: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbnge: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbnlt: RewriteFbcc(ConditionCode.GE); break;
                 case Opcode.fbnle: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbogl: RewriteFbcc(ConditionCode.NE); break;
                 case Opcode.fbolt: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbugt: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbult: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
