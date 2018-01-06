@@ -53,7 +53,10 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof (SerializedLibrary));
 			SerializedLibrary lib;
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(
+                FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"),
+                FileMode.Open,
+                FileAccess.Read))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
@@ -72,7 +75,10 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(
+                FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"),
+                FileMode.Open,
+                FileAccess.Read))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}

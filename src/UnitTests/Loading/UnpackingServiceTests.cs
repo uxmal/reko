@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Loading
         void Given_File(string name, byte[] content)
         {
             fsSvc.Stub(f => f.FileExists(name)).Return(true);
-            fsSvc.Stub(f => f.CreateFileStream(name, FileMode.Open))
+            fsSvc.Stub(f => f.CreateFileStream(name, FileMode.Open, FileAccess.Read))
                 .Return(new MemoryStream(content));
         }
 

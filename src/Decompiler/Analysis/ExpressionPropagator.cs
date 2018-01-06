@@ -142,6 +142,13 @@ namespace Reko.Analysis
 
         private int GetStackDepthBeforeCall()
         {
+            // We often see crashes on this statement due to flaws earlier in
+            // the Reko process. The register state is cleared when this analysis
+            // encounters a procedure that terminates/diverges. The most common
+            // cause for this is encountering invalid instructions from the 
+            // architecture rewriter. If you see an exception here, look for 
+            // unimplemented machine instruction rewriters for the relevant 
+            // architecture.
             var spVal = ctx.RegisterState[platform.Architecture.StackRegister];
             if (ctx.IsFramePointer(spVal))
                 return 0;
