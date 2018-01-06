@@ -23,6 +23,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(arch.PICDescriptor, pic);
             Assert.AreEqual(arch.Name, pic.Name);
             Assert.AreEqual(PrimitiveType.UInt16, arch.WordWidth);
+            Assert.NotNull(arch.MemoryMapper);
         }
 
         [Test]

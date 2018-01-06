@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 
 using Microchip.Crownking;
+using Microchip.MemoryMapper;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -56,6 +57,20 @@ namespace Reko.Arch.Microchip.PIC18
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
         public PIC PICDescriptor { get; }
+
+        /// <summary>
+        /// Gets the PIC memory mapper.
+        /// </summary>
+        public IPICMemoryMapper MemoryMapper
+        {
+            get
+            {
+                if (_memmapper == null)
+                    _memmapper = PICMemoryMapper.Create(PICDescriptor);
+                return _memmapper;
+            }
+        }
+        IPICMemoryMapper _memmapper;
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {

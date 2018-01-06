@@ -88,6 +88,7 @@
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
+    <Compile Include="Arch\Microchip\Common\MemoryMapperTests.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
@@ -821,6 +822,7 @@
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Arch\Microchip\PIC16\" />
     <Folder Include="Core\Machine\" />
   </ItemGroup>
   <ItemGroup>

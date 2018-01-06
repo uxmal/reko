@@ -43,14 +43,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         public PICExecMode ExecMode
         {
-            get { return _execMode; }
-            set
-            {
-                if (InstructionSetID != InstructionSetID.PIC18)
-                    _execMode = value;
-            }
+            get { return arch.MemoryMapper.ExecMode; }
+            set { arch.MemoryMapper.ExecMode = value; }
         }
-        private PICExecMode _execMode = PICExecMode.Traditional;
 
         /// <summary>
         /// Gets the PIC instruction-set identifier.
@@ -71,6 +66,7 @@ namespace Reko.Arch.Microchip.PIC18
             this.arch = arch;
             this.rdr = rdr;
             this.InstructionSetID = arch.PICDescriptor?.GetInstructionSetID ?? InstructionSetID.PIC18_ENHANCED;
+            this.ExecMode = PICExecMode.Traditional;
         }
 
         #endregion
@@ -273,7 +269,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18DataByteAccessOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 8), uInstr.Extract(8, 1))
+                    op1 = new PIC18DataBankAccessOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 8), uInstr.Extract(8, 1))
                 };
             }
         }
@@ -727,7 +723,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18FSRIdxOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 7)),
+                    op1 = new PIC18FSR2IdxOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 7)),
                     op2 = new PIC18Memory12bitAbsAddrOperand(dasm.ExecMode, word2)
                 };
             }
@@ -760,7 +756,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18FSRIdxOperand(dasm.ExecMode, zssource),
+                    op1 = new PIC18FSR2IdxOperand(dasm.ExecMode, zssource),
                     op2 = new PIC18Memory14bitAbsAddrOperand(dasm.ExecMode, fsdest)
                 };
             }
@@ -791,8 +787,8 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18FSRIdxOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 7)),
-                    op2 = new PIC18FSRIdxOperand(dasm.ExecMode, (byte)word2.Extract(0, 7))
+                    op1 = new PIC18FSR2IdxOperand(dasm.ExecMode, (byte)uInstr.Extract(0, 7)),
+                    op2 = new PIC18FSR2IdxOperand(dasm.ExecMode, (byte)word2.Extract(0, 7))
                 };
             }
         }

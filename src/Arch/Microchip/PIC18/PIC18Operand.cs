@@ -45,11 +45,11 @@ namespace Reko.Arch.Microchip.PIC18
         T Visit(PIC18Immed8Operand imm8);
         T Visit(PIC18Immed12Operand imm12);
         T Visit(PIC18Immed14Operand imm14);
-        T Visit(PIC18FSRIdxOperand imm8);
+        T Visit(PIC18FSR2IdxOperand imm8);
         T Visit(PIC18Memory12bitAbsAddrOperand addr12);
         T Visit(PIC18Memory14bitAbsAddrOperand addr14);
         T Visit(PIC18DataBitAccessOperand bitno);
-        T Visit(PIC18DataByteAccessOperand mem);
+        T Visit(PIC18DataBankAccessOperand mem);
         T Visit(PIC18DataByteAccessWithDestOperand mem);
         T Visit(PIC18ProgRel8AddrOperand roff8);
         T Visit(PIC18ProgRel11AddrOperand roff11);
@@ -65,7 +65,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// </summary>
     public abstract class PIC18OperandImpl : MachineOperand, IPIC18kOperand
     {
-        protected PICExecMode ExecMode { get; }
+        public PICExecMode ExecMode { get; }
 
         /// <summary>
         /// Specialised constructor for use only by derived class.
@@ -239,9 +239,9 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// A PIC18 7-bit unsigned offset operand. Used by MOVSF, MOVSFL, MOVSS instructions.
+    /// A PIC18 7-bit unsigned offset operand to FSR2. Used by MOVSF, MOVSFL, MOVSS instructions.
     /// </summary>
-    public class PIC18FSRIdxOperand : PIC18OperandImpl
+    public class PIC18FSR2IdxOperand : PIC18OperandImpl
     {
         /// <summary>
         /// Gets the 7-bit unsigned offset constant.
@@ -252,7 +252,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Instantiates a 7-bit unsigned offset operand. Used by MOVSF, MOVSFL, MOVSS instructions.
         /// </summary>
         /// <param name="b">The byte value.</param>
-        public PIC18FSRIdxOperand(PICExecMode mode, byte b) : base(PrimitiveType.Byte, mode)
+        public PIC18FSR2IdxOperand(PICExecMode mode, byte b) : base(PrimitiveType.Byte, mode)
         {
             Offset = Constant.Byte(b);
         }
@@ -361,11 +361,11 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// A PIC18 data memory bit access with destination operand (like "f,b,a").
-    /// Used by Bit-oriented instructions (BCF, BTFSS, ...)
+    /// A PIC18 Bank/Access Data Memory Address operand (like "f,a").
     /// </summary>
-    public class PIC18DataBitAccessOperand : PIC18OperandImpl
+    public class PIC18DataBankAccessOperand : PIC18OperandImpl
     {
+
         /// <summary>
         /// Gets the 8-bit memory address.
         /// </summary>
@@ -376,7 +376,38 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         public Constant IsAccessRAM { get; }
 
-        /// <summary>
+        public PIC18DataBankAccessOperand(PICExecMode mode, byte addr, int a) : base(PrimitiveType.Byte, mode)
+        {
+            MemAddr = Constant.Byte(addr);
+            IsAccessRAM = Constant.Bool(a == 0);
+        }
+
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
+        {
+            return visitor.Visit(this);
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (ExecMode == PICExecMode.Extended && IsAccessRAM.ToBoolean() && (MemAddr.ToByte() < 0x60))
+            {
+                writer.Write($"[{MemAddr}]");
+            }
+            else
+            {
+                writer.Write($"{MemAddr}{(IsAccessRAM.ToBoolean() ? ",ACCESS" : "")}");
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 data memory bit access with destination operand (like "f,b,a").
+    /// Used by Bit-oriented instructions (BCF, BTFSS, ...)
+    /// </summary>
+    public class PIC18DataBitAccessOperand : PIC18DataBankAccessOperand
+    {
+         /// <summary>
         /// Gets the bit number (value between 0 and 7).
         /// </summary>
         /// <value>
@@ -388,10 +419,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// Instantiates a bit number operand. Used by Bit-oriented instructions (BCF, BTFSS, ...).
         /// </summary>
         /// <param name="b">The byte value.</param>
-        public PIC18DataBitAccessOperand(PICExecMode mode, byte addr, int a, byte b) : base(PrimitiveType.Byte, mode)
+        public PIC18DataBitAccessOperand(PICExecMode mode, byte addr, int a, byte b) : base(mode,addr, a)
         {
-            MemAddr = Constant.Byte(addr);
-            IsAccessRAM = Constant.Bool(a == 0);
             BitNumber = Constant.Byte(b);
         }
 
@@ -402,66 +431,15 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (IsAccessRAM.ToBoolean())
+            if (ExecMode == PICExecMode.Extended && IsAccessRAM.ToBoolean() && (MemAddr.ToByte() < 0x60))
             {
-                if (ExecMode == PICExecMode.Extended && (MemAddr.ToByte() < 0x60))
-                {
-                    writer.Write($"[{MemAddr}],{BitNumber.ToByte()}");
-                }
-                else
-                    writer.Write($"{MemAddr},{BitNumber.ToByte()},ACCESS");
+                writer.Write($"[{MemAddr}],{BitNumber.ToByte()}");
             }
             else
             {
-                writer.Write($"{MemAddr},{BitNumber.ToByte()}");
+                writer.Write($"{MemAddr},{BitNumber.ToByte()}{(IsAccessRAM.ToBoolean() ? ",ACCESS" : "")}");
             }
 
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC18 Bank Data Memory Address operand (like "f,a").
-    /// </summary>
-    public class PIC18DataByteAccessOperand : PIC18OperandImpl
-    {
-
-        /// <summary>
-        /// Gets the 8-bit memory address.
-        /// </summary>
-        public Constant MemAddr { get; }
-
-        /// <summary>
-        /// Gets the indication if RAM location is in Access RAM or specified by BSR register.
-        /// </summary>
-        public Constant IsAccessRAM { get; }
-
-        public PIC18DataByteAccessOperand(PICExecMode mode, byte addr, int a) : base(PrimitiveType.Byte, mode)
-        {
-            MemAddr = Constant.Byte(addr);
-            IsAccessRAM = Constant.Bool(a == 0);
-        }
-
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            if (IsAccessRAM.ToBoolean())
-            {
-                if (ExecMode == PICExecMode.Extended && (MemAddr.ToByte() < 0x60))
-                {
-                    writer.Write($"[{MemAddr}]");
-                }
-                else
-                    writer.Write($"{MemAddr},ACCESS");
-            }
-            else
-            {
-                writer.Write($"{MemAddr}");
-            }
         }
 
     }
@@ -469,28 +447,16 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 Bank Data Memory Address with destination operand (like "f,d,a").
     /// </summary>
-    public class PIC18DataByteAccessWithDestOperand : PIC18OperandImpl
+    public class PIC18DataByteAccessWithDestOperand : PIC18DataBankAccessOperand
     {
-
-        /// <summary>
-        /// Gets the 8-bit memory address.
-        /// </summary>
-        public Constant MemAddr { get; }
-
-        /// <summary>
-        /// Gets the indication if RAM location is in Access RAM or specified by BSR register.
-        /// </summary>
-        public Constant IsAccessRAM { get; }
 
         /// <summary>
         /// Gets the indication if the Working Register is the destination of the operation. If false, the File Register is the destination.
         /// </summary>
         public Constant WregIsDest { get; }
 
-        public PIC18DataByteAccessWithDestOperand(PICExecMode mode, byte addr, int a, int d) : base(PrimitiveType.Byte, mode)
+        public PIC18DataByteAccessWithDestOperand(PICExecMode mode, byte addr, int a, int d) : base(mode, addr, a)
         {
-            MemAddr = Constant.Byte(addr);
-            IsAccessRAM = Constant.Bool(a == 0);
             WregIsDest = Constant.Bool(d == 0);
         }
 
@@ -501,19 +467,15 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (IsAccessRAM.ToBoolean())
+            if (ExecMode == PICExecMode.Extended && IsAccessRAM.ToBoolean() && (MemAddr.ToByte() < 0x60))
             {
-                if (ExecMode == PICExecMode.Extended && (MemAddr.ToByte() < 0x60))
-                {
-                    writer.Write($"[{MemAddr}]{(WregIsDest.ToBoolean() ? ",W" : "")}");
-                }
-                else
-                    writer.Write($"{MemAddr}{(WregIsDest.ToBoolean() ? ",W" : "")},ACCESS");
+                writer.Write($"[{MemAddr}]{(WregIsDest.ToBoolean() ? ",W" : "")}");
             }
             else
             {
-                writer.Write($"{MemAddr}{(WregIsDest.ToBoolean() ? ",W" : "")}");
+                writer.Write($"{MemAddr}{(WregIsDest.ToBoolean() ? ",W" : "")}{(IsAccessRAM.ToBoolean() ? ",ACCESS" : "")}");
             }
+
         }
 
     }

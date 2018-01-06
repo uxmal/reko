@@ -84,13 +84,20 @@ namespace Microchip.Crownking
     /// </summary>
     public enum PICExecMode
     {
-        Undefined = -1,
+
+        /// <summary>
+        /// PIC is executing the traditional/legacy instruction set.
+        /// </summary>
         Traditional,
+
+        /// <summary>
+        /// PIC is executing the extended instruction set with Indexed Literal Offset Addressing mode.
+        /// </summary>
         Extended
     };
 
     /// <summary>
-    /// Values that represent PIC Instruction Set identifiers.
+    /// Values that represent PIC Instruction-Set identifiers.
     /// </summary>
     public enum InstructionSetID
     {

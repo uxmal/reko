@@ -21,12 +21,14 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
 
 namespace Reko.Arch.Microchip.PIC18
 {
     public class MemoryOperand : MachineOperand
     {
         public RegisterStorage Base;
+        public Constant Offset;
 
         public MemoryOperand(PrimitiveType width, RegisterStorage baseReg) : base(width)
         {

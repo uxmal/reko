@@ -39,8 +39,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private static Dictionary<Opcode, InstructionClass> classOf;
 
-        internal MachineOperand op1;
-        internal MachineOperand op2;
+        internal PIC18OperandImpl op1;
+        internal PIC18OperandImpl op2;
 
         /// <summary>
         /// Instantiates a new <see cref="PIC18Instruction"/> with given <see cref="Opcode"/>, execution mode and operands.
@@ -50,7 +50,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="isExecExtend">True if this PIC18 instruction is for extended execution mode.</param>
         /// <param name="ops">Zero, one or two instuction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
-        public PIC18Instruction(Opcode opc, PICExecMode execMode, params MachineOperand[] ops)
+        public PIC18Instruction(Opcode opc, PICExecMode execMode, params PIC18OperandImpl[] ops)
         {
             this.Opcode = opc;
             this.ExecMode = execMode;
