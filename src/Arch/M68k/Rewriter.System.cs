@@ -52,6 +52,14 @@ namespace Reko.Arch.M68k
             m.SideEffect(host.PseudoProcedure("__pflushr", VoidType.Instance, src));
         }
 
+        private void RewritePtest()
+        {
+            rtlc = RtlClass.System;
+            var src1 = this.orw.RewriteSrc(di.op1, di.Address);
+            var src2 = this.orw.RewriteSrc(di.op2, di.Address);
+            m.SideEffect(host.PseudoProcedure("__ptest", VoidType.Instance, src2, src1));
+        }
+
         private void RewriteRte()
         {
             rtlc = RtlClass.System;

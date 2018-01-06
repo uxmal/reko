@@ -172,6 +172,7 @@ VS Overflow Set 1001 V
                 case Opcode.fbolt: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbogt: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbor: RewriteFbcc(ConditionCode.EQ); break;     //$REVIEW: is this correct?
+                case Opcode.fbseq: RewriteFbcc(ConditionCode.EQ); break;
                 case Opcode.fbsf: RewriteFbcc(ConditionCode.NEVER); break;
                 case Opcode.fbsne: RewriteFbcc(ConditionCode.NE); break;
                 case Opcode.fbst: RewriteFbcc(ConditionCode.ALWAYS); break;
@@ -187,6 +188,7 @@ VS Overflow Set 1001 V
                 case Opcode.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Opcode.fneg: RewriteFUnaryOp(m.Neg); break;
                 case Opcode.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
+                case Opcode.ftan: RewriteFtan(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;
@@ -212,6 +214,7 @@ VS Overflow Set 1001 V
                 case Opcode.pack: RewritePack(); break;
                 case Opcode.pea: RewritePea(); break;
                 case Opcode.pflushr: RewritePflushr(); break;
+                case Opcode.ptest: RewritePtest(); break;
                 case Opcode.rol: RewriteRotation(PseudoProcedure.Rol); break;
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
                 case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
@@ -245,6 +248,7 @@ VS Overflow Set 1001 V
                 case Opcode.swap: RewriteSwap(); break;
                 case Opcode.trap: RewriteTrap(); break;
                 case Opcode.trapeq: RewriteTrapCc(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.trapf: RewriteTrapCc(ConditionCode.NEVER, 0); break;
                 case Opcode.traphi: RewriteTrapCc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
                 case Opcode.trapls: RewriteTrapCc(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
                 case Opcode.traplt: RewriteTrapCc(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;

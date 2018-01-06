@@ -199,6 +199,11 @@ namespace Reko.Arch.M68k
 
         private void RewriteTrapCc(ConditionCode cc, FlagM flags)
         {
+            if (cc == ConditionCode.NEVER)
+            {
+                m.Nop();
+                return;
+            }
             rtlc = RtlClass.Transfer|RtlClass.Call;
             if (cc != ConditionCode.ALWAYS)
             {

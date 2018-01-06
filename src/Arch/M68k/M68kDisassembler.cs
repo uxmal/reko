@@ -502,7 +502,7 @@ namespace Reko.Arch.M68k
         /// <returns></returns>
         private MachineOperand get_ea_mode_str(uint instruction, PrimitiveType dataWidth)
         {
-            uint extension;
+            ushort extension;
             bool preindex;
             bool postindex;
             uint temp_value;
@@ -584,8 +584,8 @@ namespace Reko.Arch.M68k
             case 0x36:
             case 0x37:
                 // address register indirect with index
-                extension = read_imm_16();
-
+                if (!rdr.TryReadBeUInt16(out extension))
+                    return null;
                 if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
                 {
                     throw new NotSupportedException("Invalid address mode.");
@@ -600,8 +600,7 @@ namespace Reko.Arch.M68k
 
                     if (EXT_EFFECTIVE_ZERO(extension))
                     {
-                        mode = "0";
-                        break;
+                        return new M68kAddressOperand(Address.Ptr32(0));
                     }
 
                     Constant @base = null;

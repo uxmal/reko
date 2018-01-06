@@ -124,6 +124,14 @@ namespace Reko.Arch.M68k
             m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
         }
 
+        private void RewriteFtan()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("tan", s.DataType, s));
+        }
+
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)
         {
             if (src.DataType != dst.DataType)

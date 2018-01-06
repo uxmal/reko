@@ -827,7 +827,7 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_Clr_d1()
+        public void M68krw_clr_d1()
         {
             Rewrite(0x4241);
             AssertCode(
@@ -979,8 +979,6 @@ namespace Reko.UnitTests.Arch.M68k
                 "5|L--|V = false");
         }
 
-
-
         [Test]
         public void M68krw_bset_addr()
         {
@@ -989,6 +987,24 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(6): 1 instructions",
                 "1|L--|Z = __bset(Mem0[a0 + 16:byte], 0x0001, out Mem0[a0 + 16:byte])");
             //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
+        }
+
+        [Test]
+        public void M68krw_bset_effectivezero()
+        {
+            Rewrite(0x01F0, 0x01C0);
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|Z = __bset(Mem0[null:byte], d0, out Mem0[null:byte])");
+        }
+
+        [Test]
+        public void M68krw_bset_effective()
+        {
+            Rewrite(0x08F1, 0x9708, 0xF1CC);
+            AssertCode(
+                "0|L--|00010000(6): 1 instructions",
+                "1|L--|Z = __bset(Mem0[null:byte], 0x9708, out Mem0[null:byte])");
         }
 
         [Test]
@@ -1596,6 +1612,34 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(6): 1 instructions",
                 "1|L--|a0 = Mem0[a5:word32] + (word32) ((int16) a3) * 2 + 128");
+        }
+
+        [Test]
+        public void M68krw_chk_zeroextension()
+        {
+            Rewrite(0x4736, 0x05C0);    // chk
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|T--|if (null >= 0x00000000 && null <= d3) branch 00010004",
+                "2|L--|__syscall(0x06)");
+        }
+
+        [Test]
+        public void M68krw_ptest()
+        {
+            Rewrite(0xF000, 0x8000);    // ptest
+            AssertCode(
+                "0|S--|00010000(4): 1 instructions",
+                "1|L--|__ptest(d0, 0x00)");
+        }
+
+        [Test]
+        public void M68krw_trapf()
+        {
+            Rewrite(0x51FC);    // trapf
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|nop");
         }
     }
 }
