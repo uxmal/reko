@@ -718,6 +718,12 @@ Eq_1106: (struct "Eq_1106" 0003 (0 int8 b0000) (1 int8 b0001) (2 int8 b0002))
 	T_1209 (in o0_149 : (ptr Eq_1106))
 	T_1224 (in o1_120 + 0x00000003 : word32)
 	T_1226 (in o1_120 + 0x00000002 : word32)
+Eq_1146: (struct "Eq_1146" 0001 (FFFFFFFF int8 bFFFFFFFF) (0 byte b0000))
+	T_1146 (in sp_29 + 0x00000060 : word32)
+Eq_1234: (union "Eq_1234" (int32 u0) (uint32 u1))
+	T_1234 (in g0_154 : Eq_1234)
+	T_1236 (in o2_150 - &sp_29->b0060 : word32)
+	T_1238 (in 0x00000000 : word32)
 Eq_1266: (fn void (Eq_156, Eq_156))
 	T_1266 (in abspath : ptr32)
 	T_1267 (in signature of abspath : void)
@@ -6575,23 +6581,23 @@ T_1143: (in cond(o0_98 - 0x0000002F) : byte)
 T_1144: (in savestring : ptr32)
   Class: Eq_681
   DataType: (ptr Eq_681)
-  OrigDataType: 
+  OrigDataType: (ptr (fn T_1148 (T_1145, T_1147)))
 T_1145: (in sp_29 + 0x00000060 : word32)
   Class: Eq_156
   DataType: Eq_156
   OrigDataType: (ptr byte)
 T_1146: (in sp_29 + 0x00000060 : word32)
   Class: Eq_1146
-  DataType: (ptr byte)
-  OrigDataType: (ptr byte)
+  DataType: (ptr Eq_1146)
+  OrigDataType: (ptr (struct 0001 (FFFFFFFF int8 bFFFFFFFF) (0 byte b0000)))
 T_1147: (in o2_121 - &sp_29->b0060 : word32)
   Class: Eq_156
   DataType: Eq_156
-  OrigDataType: 
+  OrigDataType: int32
 T_1148: (in savestring(&sp_29->b0060, o2_121 - &sp_29->b0060) : void)
-  Class: Eq_1148
-  DataType: Eq_1148
-  OrigDataType: 
+  Class: Eq_683
+  DataType: void
+  OrigDataType: void
 T_1149: (in 0xFFFFFFFF : word32)
   Class: Eq_1149
   DataType: int32
@@ -6932,18 +6938,18 @@ T_1233: (in (int32) *o2_150 != 0x0000002F : bool)
   Class: Eq_1233
   DataType: bool
   OrigDataType: bool
-T_1234: (in g0_154 : uint32)
+T_1234: (in g0_154 : Eq_1234)
   Class: Eq_1234
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: Eq_1234
+  OrigDataType: (union (int32 u0) (uint32 u1))
 T_1235: (in sp_29 + 0x00000060 : word32)
   Class: Eq_1235
-  DataType: (ptr byte)
-  OrigDataType: (ptr byte)
+  DataType: (ptr int8)
+  OrigDataType: (ptr (struct 0001 (0 int8 b0000)))
 T_1236: (in o2_150 - &sp_29->b0060 : word32)
   Class: Eq_1234
-  DataType: uint32
-  OrigDataType: 
+  DataType: Eq_1234
+  OrigDataType: int32
 T_1237: (in cond(g0_154) : byte)
   Class: Eq_1227
   DataType: bool
@@ -6958,16 +6964,16 @@ T_1239: (in g0_154 < 0x00000000 : bool)
   OrigDataType: bool
 T_1240: (in sp_29 + 0x00000060 : word32)
   Class: Eq_1240
-  DataType: (ptr byte)
-  OrigDataType: (ptr byte)
+  DataType: (ptr int8)
+  OrigDataType: (ptr (struct 0001 (0 int8 b0000)))
 T_1241: (in o2_150 - &sp_29->b0060 : word32)
   Class: Eq_1241
-  DataType: Eq_1241
-  OrigDataType: 
+  DataType: int32
+  OrigDataType: int32
 T_1242: (in cond(o2_150 - &sp_29->b0060) : byte)
   Class: Eq_1227
   DataType: bool
-  OrigDataType: 
+  OrigDataType: byte
 T_1243: (in 0xFFFFFFFF : word32)
   Class: Eq_1243
   DataType: int32
@@ -10502,16 +10508,16 @@ T_2125: (in l1_251 : int32)
   OrigDataType: int32
 T_2126: (in 0xFFFFFFFF : word32)
   Class: Eq_2126
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_2127: (in o0_224 + 0xFFFFFFFF : word32)
   Class: Eq_2127
   DataType: (ptr int8)
   OrigDataType: (ptr int8)
 T_2128: (in 0x00000000 : word32)
   Class: Eq_2128
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_2129: (in i0_243 + 0x00000000 : word32)
   Class: Eq_2129
   DataType: (ptr int8)
@@ -10519,7 +10525,7 @@ T_2129: (in i0_243 + 0x00000000 : word32)
 T_2130: (in &o0_224->bFFFFFFFF - i0_243 : word32)
   Class: Eq_2125
   DataType: int32
-  OrigDataType: 
+  OrigDataType: int32
 T_2131: (in sp_254 : (ptr Eq_2131))
   Class: Eq_2131
   DataType: (ptr Eq_2131)
@@ -12419,15 +12425,15 @@ T_2604: (in i0_124 + 0x00000001 : word32)
 T_2605: (in dupnstr : ptr32)
   Class: Eq_2010
   DataType: (ptr Eq_2010)
-  OrigDataType: 
+  OrigDataType: (ptr (fn T_2607 (T_2471, T_2606)))
 T_2606: (in i0_124 - i0_124 : word32)
   Class: Eq_236
   DataType: Eq_236
-  OrigDataType: 
+  OrigDataType: int32
 T_2607: (in dupnstr(i0_124, i0_124 - i0_124) : void)
-  Class: Eq_2607
-  DataType: Eq_2607
-  OrigDataType: 
+  Class: Eq_2015
+  DataType: void
+  OrigDataType: void
 T_2608: (in sp_23 + 0x00000060 : word32)
   Class: Eq_2608
   DataType: (ptr word32)
@@ -33604,6 +33610,16 @@ typedef struct Eq_1106 {	// size: 3 3
 	int8 b0001;	// 1
 	int8 b0002;	// 2
 } Eq_1106;
+
+typedef struct Eq_1146 {	// size: 1 1
+	int8 bFFFFFFFF;	// FFFFFFFF
+	byte b0000;	// 0
+} Eq_1146;
+
+typedef union Eq_1234 {
+	int32 u0;
+	uint32 u1;
+} Eq_1234;
 
 typedef void (Eq_1266)(Eq_156, Eq_156);
 

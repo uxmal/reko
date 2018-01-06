@@ -1968,10 +1968,10 @@ void fn004032AC(Eq_18 r3, byte cr0)
 	if (Test(NE,cond(r3)) && Test(NE,cr0))
 	{
 		byte * r11_21 = (word32) r3 + 0x01;
-		Eq_18 r10_22 = *r3;
+		Eq_4804 r10_22 = *r3;
 		do
 		{
-			Eq_18 r4_25 = *r11_21;
+			Eq_4804 r4_25 = *r11_21;
 			r11_21 = r11_21 + 0x01;
 			*r11_21 = (byte) r10_22;
 			r10_22 = r4_25;
@@ -2003,7 +2003,7 @@ Eq_2 * fn004032FC(Eq_2 * r2, byte * r4, word32 r13, word32 r14, word32 r15, word
 	word32 r30_119 = 0x00;
 	if (Test(GT,cond(r4_73)))
 	{
-		(*r31_70)->u0 = 0x00;
+		**r31_70 = 0x00;
 		*r31_70 = (word32) *r31_70 + 0x01;
 	}
 	else
@@ -2246,7 +2246,7 @@ word32 fn00403744(word32 r0, Eq_2 * r2, Eq_18 r3, word32 r29, int32 r30, Eq_18 r
 			int32 r11_66 = 0x00;
 			do
 			{
-				Eq_18 r4_68 = *((word32) r3 + r11_66);
+				Eq_5348 r4_68 = *((word32) r3 + r11_66);
 				fp->aFFFFFEA0[r11_66] = (byte) r4_68;
 				r11_66 = r11_66 + 0x01;
 			} while (Test(NE,cond(r4_68)));

@@ -1720,6 +1720,10 @@ Eq_4433: (union "Eq_4433" (int32 u0) (uint64 u1))
 	T_4433 (in a5_94 >> 0x00000004 : word64)
 Eq_4441: (union "Eq_4441" (int64 u0) (word32 u1))
 	T_4441 (in (int64) (int32) (t5_38 << 0x00000002) : int64)
+Eq_4469: (union "Eq_4469" (int64 u0) (ptr64 u1))
+	T_4469 (in 0000000000019E20 : ptr64)
+Eq_4470: (union "Eq_4470" (int64 u0) (ptr64 u1))
+	T_4470 (in 0000000000019E18 : ptr64)
 Eq_4492: (union "Eq_4492" (int32 u0) (word64 u1))
 	T_4492 (in 8 : int32)
 Eq_4499: (struct "Eq_4499" 0001 (0 byte b0000) (1 byte b0001))
@@ -19623,32 +19627,32 @@ T_4468: (in 0000000000019E18 : ptr64)
   OrigDataType: ptr64
 T_4469: (in 0000000000019E20 : ptr64)
   Class: Eq_4469
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: Eq_4469
+  OrigDataType: (union (int64 u0) (ptr64 u1))
 T_4470: (in 0000000000019E18 : ptr64)
   Class: Eq_4470
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: Eq_4470
+  OrigDataType: (union (int64 u1) (ptr64 u0))
 T_4471: (in 0x0000000000019E20 - 0x0000000000019E18 : word64)
   Class: Eq_4471
-  DataType: Eq_4471
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: int64
 T_4472: (in 0x00000003 : uint32)
   Class: Eq_4472
-  DataType: Eq_4472
-  OrigDataType: 
+  DataType: uint32
+  OrigDataType: uint32
 T_4473: (in 0x0000000000019E20 - 0x0000000000019E18 >> 0x00000003 : word64)
   Class: Eq_4473
-  DataType: Eq_4473
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: int64
 T_4474: (in 0x0000000000000000 : word64)
   Class: Eq_4473
-  DataType: Eq_4473
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: word64
 T_4475: (in 0x0000000000019E20 - 0x0000000000019E18 >> 0x00000003 == 0x0000000000000000 : bool)
   Class: Eq_4475
-  DataType: Eq_4475
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_4476: (in a5_49 : (ptr code))
   Class: Eq_4476
   DataType: (ptr code)
@@ -21613,6 +21617,16 @@ typedef union Eq_4441 {
 	int64 u0;
 	word32 u1;
 } Eq_4441;
+
+typedef union Eq_4469 {
+	int64 u0;
+	ptr64 u1;
+} Eq_4469;
+
+typedef union Eq_4470 {
+	int64 u0;
+	ptr64 u1;
+} Eq_4470;
 
 typedef union Eq_4492 {
 	int32 u0;

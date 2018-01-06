@@ -70,6 +70,10 @@ Eq_233: (fn int32 ((ptr char)))
 Eq_245: (fn void ())
 	T_245 (in _init : ptr64)
 	T_246 (in signature of _init : void)
+Eq_248: (union "Eq_248" (int64 u0) (ptr64 u1))
+	T_248 (in 0000000000600E00 : ptr64)
+Eq_249: (union "Eq_249" (int64 u0) (ptr64 u1))
+	T_249 (in 0000000000600DF8 : ptr64)
 Eq_275: (union "Eq_275" (word32 u0) ((ptr code) u1))
 	T_275 (in Mem0[0x0000000000600DF8 + 0x0000000000000000:word32] : word32)
 // Type Variables ////////////
@@ -1063,32 +1067,32 @@ T_247: (in _init() : void)
   OrigDataType: void
 T_248: (in 0000000000600E00 : ptr64)
   Class: Eq_248
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: Eq_248
+  OrigDataType: (union (int64 u0) (ptr64 u1))
 T_249: (in 0000000000600DF8 : ptr64)
   Class: Eq_249
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: Eq_249
+  OrigDataType: (union (int64 u1) (ptr64 u0))
 T_250: (in 0x0000000000600E00 - 0x0000000000600DF8 : word64)
   Class: Eq_250
-  DataType: Eq_250
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: int64
 T_251: (in 0x0000000000000003 : word64)
   Class: Eq_251
-  DataType: Eq_251
-  OrigDataType: 
+  DataType: word64
+  OrigDataType: word64
 T_252: (in 0x0000000000600E00 - 0x0000000000600DF8 >> 0x0000000000000003 : word64)
   Class: Eq_252
-  DataType: Eq_252
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: int64
 T_253: (in 0x0000000000000000 : word64)
   Class: Eq_252
-  DataType: Eq_252
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: word64
 T_254: (in 0x0000000000600E00 - 0x0000000000600DF8 >> 0x0000000000000003 == 0x0000000000000000 : bool)
   Class: Eq_254
-  DataType: Eq_254
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_255: (in rsp_60 : word64)
   Class: Eq_255
   DataType: word64
@@ -1280,6 +1284,16 @@ typedef word32 (Eq_225)(Eq_136 *[]);
 typedef int32 (Eq_233)(char *);
 
 typedef void (Eq_245)();
+
+typedef union Eq_248 {
+	int64 u0;
+	ptr64 u1;
+} Eq_248;
+
+typedef union Eq_249 {
+	int64 u0;
+	ptr64 u1;
+} Eq_249;
 
 typedef union Eq_275 {
 	word32 u0;

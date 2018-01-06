@@ -148,6 +148,10 @@ Eq_991: (fn ptr64 (byte, (ptr Eq_174)))
 Eq_996: (fn void ())
 	T_996 (in _init : ptr64)
 	T_997 (in signature of _init : void)
+Eq_999: (union "Eq_999" (int64 u0) (ptr64 u1))
+	T_999 (in 0000000000601E08 : ptr64)
+Eq_1000: (union "Eq_1000" (int64 u0) (ptr64 u1))
+	T_1000 (in 0000000000601E00 : ptr64)
 Eq_1026: (union "Eq_1026" (word32 u0) ((ptr code) u1))
 	T_1026 (in Mem0[0x0000000000601E00 + 0x0000000000000000:word32] : word32)
 // Type Variables ////////////
@@ -4145,32 +4149,32 @@ T_998: (in _init() : void)
   OrigDataType: void
 T_999: (in 0000000000601E08 : ptr64)
   Class: Eq_999
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: Eq_999
+  OrigDataType: (union (int64 u0) (ptr64 u1))
 T_1000: (in 0000000000601E00 : ptr64)
   Class: Eq_1000
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: Eq_1000
+  OrigDataType: (union (int64 u1) (ptr64 u0))
 T_1001: (in 0x0000000000601E08 - 0x0000000000601E00 : word64)
   Class: Eq_1001
-  DataType: Eq_1001
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: int64
 T_1002: (in 0x0000000000000003 : word64)
   Class: Eq_1002
-  DataType: Eq_1002
-  OrigDataType: 
+  DataType: word64
+  OrigDataType: word64
 T_1003: (in 0x0000000000601E08 - 0x0000000000601E00 >> 0x0000000000000003 : word64)
   Class: Eq_1003
-  DataType: Eq_1003
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: int64
 T_1004: (in 0x0000000000000000 : word64)
   Class: Eq_1003
-  DataType: Eq_1003
-  OrigDataType: 
+  DataType: int64
+  OrigDataType: word64
 T_1005: (in 0x0000000000601E08 - 0x0000000000601E00 >> 0x0000000000000003 == 0x0000000000000000 : bool)
   Class: Eq_1005
-  DataType: Eq_1005
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_1006: (in rsp_72 : word64)
   Class: Eq_1006
   DataType: word64
@@ -4442,6 +4446,16 @@ typedef int32 (Eq_942)(char *);
 typedef ptr64 (Eq_991)(byte, Eq_174 *);
 
 typedef void (Eq_996)();
+
+typedef union Eq_999 {
+	int64 u0;
+	ptr64 u1;
+} Eq_999;
+
+typedef union Eq_1000 {
+	int64 u0;
+	ptr64 u1;
+} Eq_1000;
 
 typedef union Eq_1026 {
 	word32 u0;
