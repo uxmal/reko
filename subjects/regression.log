@@ -445,6 +445,8 @@ UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, qui
 
 === Elf\ARM\switch\switch
 === Elf\MIPS\swlswr\test
+=== Elf\x86-64\retpoline\retpoline.elf
+=== Elf\x86-64\retpoline\retpoline_stripped.elf
 === Elf-MIPS\redir
 *** Elf-MIPS\redir
 00400BB8: warning: Unable to resolve imported reference __xpg_basename.
