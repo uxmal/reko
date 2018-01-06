@@ -26,6 +26,7 @@ after_build:
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
   - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%CONFIGURATION%/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+  - cmd: cd subjects; python regressionTests.py --check-output --configuration=TravisRelease
 
 artifacts:
   - path: src/WixInstaller/bin/$(configuration)/*.msi
