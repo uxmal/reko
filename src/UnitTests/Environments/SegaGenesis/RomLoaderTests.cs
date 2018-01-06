@@ -97,6 +97,5 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var ramSegment = program.SegmentMap.Segments.Values.First(s => s.Name == ".data");
             Assert.IsNotNull(ramSegment.MemoryArea, "RAM segment should have a MemoryArea");
         }
-
     }
 }

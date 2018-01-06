@@ -1139,9 +1139,12 @@ namespace Reko.ImageLoaders.Elf
                     var otherSection = Sections[shndx];
                 }
                 string str = GetStrPtr((int)strIdx, name);
-                // Hack off the "@@GLIBC_2.0" of Linux, if present
+                // Hack off the "@@GLIBC_2.0" of Linux, if present.
+                // Some Borland symbols could start with @@, so 
+                // don't remove the suffix if the string starts
+                // with '@@'.
                 int pos;
-                if ((pos = str.IndexOf("@@")) >= 0)
+                if ((pos = str.IndexOf("@@")) > 0)
                     str = str.Remove(pos);
                 // Ensure no overwriting (except functions)
 #if Nilx

@@ -42,7 +42,9 @@ namespace Reko.Core
 
 		public Procedure(string name, Frame frame) : base(name)
 		{
-            this.Body = new List<AbsynStatement>();
+            //$REVIEW consider removing Body completely and use
+            // AbsynProcedure instead.
+            this.Body = null;
             this.blocks = new List<Block>();
             this.ControlGraph = new BlockGraph(blocks);
 			this.Frame = frame;
@@ -51,7 +53,7 @@ namespace Reko.Core
 			this.ExitBlock = AddBlock(Name + "_exit");
 		}
 
-        public List<AbsynStatement> Body { get; private set; }
+        public List<AbsynStatement> Body { get; set; }
         public BlockGraph ControlGraph { get; private set; }
         public Block EntryBlock { get; private set; }
         public Block ExitBlock { get; private set; }

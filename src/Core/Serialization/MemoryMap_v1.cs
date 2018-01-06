@@ -57,7 +57,7 @@ namespace Reko.Core.Serialization
                 var ser = SerializedLibrary.CreateSerializer(
                     typeof(MemoryMap_v1),
                     SerializedLibrary.Namespace_v4);
-                using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open))
+                using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var mmap = (MemoryMap_v1)ser.Deserialize(stm);
                     return mmap;

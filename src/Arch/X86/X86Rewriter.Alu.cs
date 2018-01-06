@@ -84,12 +84,12 @@ namespace Reko.Arch.X86
         private void RewriteHlt()
         {
             rtlc = RtlClass.Terminates;
-            var ppp = host.EnsurePseudoProcedure("__hlt", VoidType.Instance, 0);
-            ppp.Characteristics = new ProcedureCharacteristics
+            var c = new ProcedureCharacteristics
             {
                 Terminates = true,
             };
-            m.SideEffect(PseudoProc(ppp, VoidType.Instance));
+            var ppp = host.PseudoProcedure("__hlt", c, VoidType.Instance);
+            m.SideEffect(ppp);
         }
 
         /// <summary>
@@ -727,11 +727,15 @@ namespace Reko.Arch.X86
 
         private void RewriteOut()
         {
-            var ppp = host.EnsurePseudoProcedure("__out" + instrCur.op2.Width.Prefix, VoidType.Instance, 2);
-            m.SideEffect(m.Fn(ppp, 
-                SrcOp(instrCur.op1),
-                SrcOp(instrCur.op2)));
+            var port = SrcOp(instrCur.op1);
+            var val = SrcOp(instrCur.op2);
+            var ppp = host.PseudoProcedure(
+                "__out" + instrCur.op2.Width.Prefix,
+                VoidType.Instance,
+                port, val);
+            m.SideEffect(ppp);
         }
+
         private void RewritePop()
         {
             RewritePop(dasm.Current.op1, dasm.Current.op1.Width);
@@ -868,14 +872,10 @@ namespace Reko.Arch.X86
 
         private void RewriteShxd(string name)
         {
-            var ppp = host.EnsurePseudoProcedure(name, instrCur.op1.Width, 3);
-            m.Assign(
-                SrcOp(instrCur.op1), 
-                m.Fn(
-                    ppp,
-                    SrcOp(instrCur.op1),
-                    SrcOp(instrCur.op2),
-                    SrcOp(instrCur.op3)));
+            var arg1 = SrcOp(instrCur.op1);
+            var arg2 = SrcOp(instrCur.op2);
+            var arg3 = SrcOp(instrCur.op3);
+            m.Assign(arg1, host.PseudoProcedure(name, arg1.DataType, arg1, arg2, arg3));
         }
 
         public MemoryAccess MemDi()
@@ -979,16 +979,14 @@ namespace Reko.Arch.X86
                 break;
             case Opcode.ins:
             case Opcode.insb:
-                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__in", instrCur.dataWidth, 1);
-                m.Assign(MemDi(), m.Fn(ppp, regDX));
+                regDX = frame.EnsureRegister(Registers.dx);
+                m.Assign(MemDi(), host.PseudoProcedure("__in", instrCur.dataWidth, regDX));
                 incDi = true;
                 break;
             case Opcode.outs:
             case Opcode.outsb:
-                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, 2);
-                m.SideEffect(m.Fn(ppp, regDX, RegAl));
+                regDX = frame.EnsureRegister(Registers.dx);
+                m.SideEffect(host.PseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, regDX, RegAl));
                 incSi = true;
                 break;
             case Opcode.scas:

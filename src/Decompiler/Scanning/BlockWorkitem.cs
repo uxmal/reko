@@ -599,7 +599,7 @@ namespace Reko.Scanning
             ProcedureCharacteristics chr,
             CallSite site)
         {
-            if (vaScanner.TryScan(ric.Address, sig, chr))
+            if (vaScanner.TryScan(ric.Address, callee, sig, chr))
             {
                 Emit(vaScanner.BuildInstruction(callee, site, chr));
             }
@@ -788,6 +788,7 @@ namespace Reko.Scanning
                     return true;
                 }
                 AffectProcessorState(svc.Signature);
+                OnAfterCall(svc.Signature, svc.Characteristics);
             }
             else
             {

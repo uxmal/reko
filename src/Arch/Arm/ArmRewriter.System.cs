@@ -19,7 +19,9 @@
 #endregion
 
 using Gee.External.Capstone.Arm;
+using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -81,6 +83,16 @@ namespace Reko.Arch.Arm
         {
             ConditionalSkip();
             m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst), Operand(Src1)));
+        }
+
+        private void RewriteSvc()
+        {
+            rtlc = RtlClass.Call | RtlClass.Transfer;
+            var svcNum = Operand(Dst);
+            m.SideEffect(host.PseudoProcedure(
+                PseudoProcedure.Syscall,
+                VoidType.Instance,
+                Operand(Dst)));
         }
     }
 }

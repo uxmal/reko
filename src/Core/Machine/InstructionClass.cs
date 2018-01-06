@@ -39,5 +39,6 @@ namespace Reko.Core.Machine
         Annul = 16,             // The following instruction is anulled.
         Invalid = 32,           // The instruction is invalid
         Call = 64,              // The instruction saves a return address somewhere
+        System = 128,           // Privileged instruction
     }
 }

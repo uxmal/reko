@@ -8,7 +8,6 @@
 void fn80000000(word32 d2)
 {
 	fn800003CC(d2);
-	return;
 }
 
 // 80000132: Register real80 fn80000132(Register word32 d2, Stack real96 rArg04, Stack real96 rArg10)
@@ -67,7 +66,6 @@ void fn8000036C(word32 d2, real96 rArg04)
 	fn800001F2(d2, (real96) (real80) rArg04);
 	real80 fp2_32;
 	fn800002AE(d2, (real96) (real80) rArg04, out fp2_32);
-	return;
 }
 
 // 800003CC: void fn800003CC(Register word32 d2)
@@ -80,6 +78,5 @@ void fn800003CC(word32 d2)
 	real80 fp2_50;
 	fn800002AE(d2, (real96) (real80) v6_10, out fp2_50);
 	fn8000036C(d2, (real96) (real80) v6_10);
-	return;
 }
 

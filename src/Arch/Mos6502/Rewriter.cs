@@ -214,11 +214,7 @@ namespace Reko.Arch.Mos6502
 
         private void Brk()
         {
-            m.Call(
-                new ProcedureConstant(
-                    new Pointer(new CodeType(), 2),
-                    host.EnsurePseudoProcedure("__brk", VoidType.Instance, 0)),
-                2);
+            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance));
         }
 
         private void Cmp(RegisterStorage r)
@@ -353,12 +349,9 @@ namespace Reko.Arch.Mos6502
 
         private void Rotate(string rot)
         {
-            var fn = new ProcedureConstant(
-                new Pointer(new CodeType(), 2),
-                host.EnsurePseudoProcedure(rot, PrimitiveType.Byte, 2));
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operand);
-            m.Assign(arg, m.Fn(fn, arg, Constant.Byte(1)));
+            m.Assign(arg, host.PseudoProcedure(rot, arg.DataType, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
 

@@ -90,6 +90,7 @@
     <Compile Include="Rewriter.Control.cs" />
     <Compile Include="Rewriter.cs" />
     <Compile Include="Rewriter.Fpu.cs" />
+    <Compile Include="Rewriter.System.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

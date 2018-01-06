@@ -23,7 +23,6 @@ void _init(Eq_2 * ra)
 		word32 r2_40;
 		bcuiposr0 None_41;
 		(ra_28->ptr104D0 + 0x0970)();
-		return;
 	}
 	else
 	{
@@ -62,21 +61,18 @@ void __start(Eq_37 * ra, word32 dwArg00)
 void deregister_tm_clones()
 {
 	word32 r2_8 = globals->dw10AA4;
-	if (r2_8 != globals->ptr10AA8 + 2692)
+	if (r2_8 == globals->ptr10AA8 + 2692 || __gmon_start__ == null)
+		;
+	else
 	{
-		if (__gmon_start__ != null)
-		{
-			word32 sp_19;
-			word32 r28_20;
-			word32 r25_21;
-			word32 r4_22;
-			word32 r2_23;
-			word32 ra_24;
-			__gmon_start__();
-			return;
-		}
+		word32 sp_19;
+		word32 r28_20;
+		word32 r25_21;
+		word32 r4_22;
+		word32 r2_23;
+		word32 ra_24;
+		__gmon_start__();
 	}
-	return;
 }
 
 // 000006A8: void register_tm_clones()
@@ -84,21 +80,18 @@ void register_tm_clones()
 {
 	int32 r5_10 = globals->dw10AA4 - (globals->ptr10AA8 + 2692);
 	Eq_81 r2_12 = r5_10 >> 0x02 >> 0x1F;
-	if ((word32) r2_12 + (r5_10 >> 0x02) >> 0x01 != 0x00)
+	if ((word32) r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00 || __gmon_start__ == null)
+		;
+	else
 	{
-		if (__gmon_start__ != null)
-		{
-			word32 sp_23;
-			word32 r28_24;
-			word32 r25_25;
-			word32 r4_26;
-			word32 r5_27;
-			word32 r2_28;
-			__gmon_start__();
-			return;
-		}
+		word32 sp_23;
+		word32 r28_24;
+		word32 r25_25;
+		word32 r4_26;
+		word32 r5_27;
+		word32 r2_28;
+		__gmon_start__();
 	}
-	return;
 }
 
 // 000006F4: void __do_global_dtors_aux()
@@ -153,14 +146,12 @@ void __do_global_dtors_aux()
 		}
 		r19_10[2800] = (struct Eq_60) 0x01;
 	}
-	return;
 }
 
 // 000007D4: void frame_dummy()
 void frame_dummy()
 {
 	register_tm_clones();
-	return;
 }
 
 // 000007F0: void main(Stack word32 dwArg00, Stack word32 dwArg04)
@@ -175,17 +166,13 @@ void main(word32 dwArg00, word32 dwArg04)
 	struct Eq_210 * r2_50 = r2_45;
 	Eq_209 r3_52 = dwLoc14;
 	struct Eq_210 * r2_62 = r2_45;
-	return;
 }
 
 // 000008C0: void __libc_csu_init(Register (ptr Eq_2) ra)
 void __libc_csu_init(Eq_2 * ra)
 {
 	if (true)
-	{
 		_init(ra);
-		return;
-	}
 	else
 	{
 		word32 * r16_45 = globals->ptr10ABC;
@@ -213,14 +200,12 @@ void __libc_csu_init(Eq_2 * ra)
 				r16_45 = r16_83 + 0x04;
 			}
 		}
-		return;
 	}
 }
 
 // 00000964: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	return;
 }
 
 // 00000970: void __do_global_ctors_aux()
@@ -243,7 +228,6 @@ void __do_global_ctors_aux()
 			r25_17();
 		} while (*r16_37 != -0x01);
 	}
-	return;
 }
 
 // 00000A10: void _fini(Register (ptr Eq_288) ra)
@@ -255,6 +239,5 @@ void _fini(Eq_288 * ra)
 	word32 ra_19;
 	bcuiposr0 None_20;
 	(ra->ptr10084 + 0x06F4)();
-	return;
 }
 

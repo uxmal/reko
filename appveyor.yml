@@ -3,12 +3,30 @@ version: 0.7.2.{build}
 init: 
   - git config --global core.autocrlf true 
 
-configuration: Debug
+configuration: Release
 
 build:
   project: src/Reko-decompiler.sln
   verbosity: normal
 
+environment:
+  reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
+
+after_build:
+  - ps: >-
+        $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
+        $filePath = $env:reko_setup;
+        $item = Get-Item $filePath;
+        $newPath = $item.DirectoryName;
+        $newPath+= [System.IO.Path]::DirectorySeparatorChar;
+        $newPath+= $item.BaseName + "-" + $shortHash + ".msi";
+        "$filePath -> $newPath";
+        Move-Item $filePath $newPath;
+
 test_script:
-  - nunit-console-x86.exe ./src/tools/c2xml/bin/Debug/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
-  - nunit-console-x86.exe ./src/UnitTests/bin/Debug/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+  - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
+  - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%CONFIGURATION%/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
+
+artifacts:
+  - path: src/WixInstaller/bin/$(configuration)/*.msi
+    name: Reko installer

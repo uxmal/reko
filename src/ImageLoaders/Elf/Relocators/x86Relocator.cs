@@ -63,9 +63,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 uint sym = info >> 8;
                 string symStr = loader.GetSymbolName(symtab, sym);
 
-                var addr = plt.Address + (i + 1) * plt.EntrySize;
+                var addr = Address.Ptr32(offset);
                 importReferences[addr] = new NamedImportReference(
-                    addr, null, symStr);
+                    addr, "", symStr);
             }
         }
 

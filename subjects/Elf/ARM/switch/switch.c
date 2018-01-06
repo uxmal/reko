@@ -33,7 +33,6 @@ void __libc_start_main(word32 pc)
 	word32 pc_7;
 	word32 ip_8;
 	(*ip_5)();
-	return;
 }
 
 // 00008334: void _start(Register word32 r4, Register word32 r5, Register word32 r6, Register Eq_54 r8, Register word32 pc, Stack word32 dwArg00)
@@ -45,15 +44,9 @@ void _start(word32 r4, word32 r5, word32 r6, Eq_54 r8, word32 pc, word32 dwArg00
 	abort(pc);
 	*r0_14 = (union Eq_54 *) r8;
 	if (Z)
-	{
 		call_gmon_start(pc, ip_3);
-		return;
-	}
 	else
-	{
 		call_gmon_start(pc, ip_3);
-		return;
-	}
 }
 
 // 0000836C: Register word32 call_gmon_start(Register word32 pc, Stack word32 dwArg00)
@@ -86,10 +79,7 @@ void __do_global_dtors_aux(word32 dwArg00)
 		<anonymous> *** r4_29 = globals->ptr83F8;
 		<anonymous> * r2_31 = **r4_29;
 		if (Z)
-		{
 			*r5_10 = 0x01;
-			return;
-		}
 		else
 		{
 			*r4_29 = (<anonymous> ***) ((char *) *r4_29 + 0x04);
@@ -103,17 +93,13 @@ void __do_global_dtors_aux(word32 dwArg00)
 			byte Z_44;
 			word32 r2_45;
 			r2_31();
-			return;
 		}
 	}
-	else
-		return;
 }
 
 // 000083FC: void call___do_global_dtors_aux()
 void call___do_global_dtors_aux()
 {
-	return;
 }
 
 // 00008404: void frame_dummy()
@@ -130,19 +116,13 @@ void frame_dummy()
 			byte NZCV_20;
 			byte Z_21;
 			fn00000000();
-			return;
 		}
-		else
-			return;
 	}
-	else
-		return;
 }
 
 // 0000842C: void call_frame_dummy()
 void call_frame_dummy()
 {
-	return;
 }
 
 // 00008434: Register ui32 frobulate(Register ui32 r0, Register word32 lr, Stack word32 dwArg00, Stack ui32 dwArg04, Register out ptr32 fpOut)
@@ -190,7 +170,6 @@ word32 switcheroo(ui32 r0, word32 lr, word32 dwArg00)
 void main(ui32 r0, word32 r1, word32 lr, word32 dwArg00)
 {
 	switcheroo(r0, lr, r1);
-	return;
 }
 
 // 00008588: Register ui32 __divsi3(Register ui32 r0, Register word32 r1, Register word32 lr)
@@ -240,12 +219,7 @@ void __div0(ui32 r0, word32 dwArg00)
 {
 	__syscall(0x00900014);
 	if (C)
-	{
 		__syscall(0x00900025);
-		return;
-	}
-	else
-		return;
 }
 
 // 00008654: void __libc_csu_init(Register word32 lr, Register word32 pc, Stack word32 dwArg00)
@@ -270,10 +244,7 @@ void __libc_csu_init(word32 lr, word32 pc, word32 dwArg00)
 		byte C_60;
 		bcuiposr0 None_61;
 		(*r1_22)();
-		return;
 	}
-	else
-		return;
 }
 
 // 000086B0: void __libc_csu_fini(Register word32 r5, Register word32 pc, Stack word32 dwArg00)
@@ -282,10 +253,7 @@ void __libc_csu_fini(word32 r5, word32 pc, word32 dwArg00)
 	<anonymous> *** r10_16 = pc + globals->dw8700;
 	<anonymous> ** r1_17 = *r10_16;
 	if (Z)
-	{
 		_fini(r5);
-		return;
-	}
 	else
 	{
 		word32 sp_37;
@@ -300,7 +268,6 @@ void __libc_csu_fini(word32 r5, word32 pc, word32 dwArg00)
 		byte NZCV_46;
 		byte Z_47;
 		(*r1_17)();
-		return;
 	}
 }
 
@@ -332,13 +299,11 @@ word32 __do_global_ctors_aux(word32 dwArg00, ptr32 & spOut)
 // 00008744: void call___do_global_ctors_aux()
 void call___do_global_ctors_aux()
 {
-	return;
 }
 
 // 0000874C: void _fini(Register word32 lr)
 void _fini(word32 lr)
 {
 	__do_global_dtors_aux(lr);
-	return;
 }
 

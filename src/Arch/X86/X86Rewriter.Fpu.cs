@@ -416,9 +416,15 @@ namespace Reko.Arch.X86
 
                     switch (instrCur.code)
                 {
-                    case Opcode.mov:
-                        RewriteMov();
-                        break;
+                    //$TODO The following instructions are being added on an ad-hoc
+                    // basis, since they don't affect the x86 flags register.
+                    // The long term fix is to implement an architecture-specific
+                    // condition code elimination pass as described elsewhere.
+                    case Opcode.mov: RewriteMov(); break;
+                    case Opcode.fstp: RewriteFst(true); break;
+                    case Opcode.push: RewritePush(); break;
+                    case Opcode.lea: RewriteLea(); break;
+
                 case Opcode.jpe:
                         if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.op1); return true; }
                         if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.op1); return true; }

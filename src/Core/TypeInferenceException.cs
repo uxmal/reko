@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Reko.Typing
+namespace Reko.Core
 {
 	/// <summary>
 	/// An exception occurring during type inference.

@@ -122,6 +122,7 @@
     <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProcedureSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
+    <Compile Include="Core\Types\DataTypeComparerTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\MacOSClassicTests.cs" />
     <Compile Include="Environments\MacOS\MacsBugSymbolScannerTests.cs" />
@@ -560,6 +561,7 @@
     <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
+    <Compile Include="Structure\AbsynCodeEmitter.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
@@ -577,6 +579,7 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
+    <Compile Include="Structure\TailReturnRemoverTests.cs" />
     <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
     <Compile Include="TestSerializedTypeRenderer.cs" />

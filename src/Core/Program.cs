@@ -56,7 +56,7 @@ namespace Reko.Core
             this.EnvironmentMetadata = new TypeLibrary();
             this.ImportReferences = new Dictionary<Address, ImportReference>(new Address.Comparer());		// uint (offset) -> string
             this.InterceptedCalls = new Dictionary<Address, ExternalProcedure>(new Address.Comparer());
-            this.PseudoProcedures = new Dictionary<string, PseudoProcedure>();
+            this.PseudoProcedures = new Dictionary<string, Dictionary<FunctionType, PseudoProcedure>>();
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
@@ -261,9 +261,9 @@ namespace Reko.Core
         public SortedList<Address, Procedure> Procedures { get; private set; }
 
         /// <summary>
-        /// The program's pseudo procedures, indexed by name.
+        /// The program's pseudo procedures, indexed by name and by signature.
         /// </summary>
-        public Dictionary<string, PseudoProcedure> PseudoProcedures { get; private set; }
+        public Dictionary<string, Dictionary<FunctionType, PseudoProcedure>> PseudoProcedures { get; private set; }
 
         /// <summary>
         /// List of resources stored in the binary. Some executable file formats support the
@@ -442,15 +442,41 @@ namespace Reko.Core
                 .FirstOrDefault();
         }
 
-        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, params Expression[] args)
         {
-            PseudoProcedure p;
-            if (!PseudoProcedures.TryGetValue(name, out p))
+            var sig = MakeSignatureFromApplication(returnType, args);
+            return EnsurePseudoProcedure(name, sig);
+        }
+
+        private static FunctionType MakeSignatureFromApplication(DataType returnType, Expression[] args)
+        {
+            return new FunctionType(
+                new Identifier("", returnType, null),
+                args.Select((arg, i) => IdFromExpression(arg, i)).ToArray());
+        }
+
+        private static Identifier IdFromExpression(Expression arg, int i)
+        {
+            var id = arg as Identifier;
+            var stg = id != null ? id.Storage : null;
+            return new Identifier("", arg.DataType, stg);
+        }
+
+        public PseudoProcedure EnsurePseudoProcedure(string name, FunctionType sig)
+        {
+            Dictionary<FunctionType, PseudoProcedure> de;
+            if (!PseudoProcedures.TryGetValue(name, out de))
             {
-                p = new PseudoProcedure(name, returnType, arity);
-                PseudoProcedures[name] = p;
+                de = new Dictionary<FunctionType, PseudoProcedure>(new DataTypeComparer());
+                PseudoProcedures[name] = de;
             }
-            return p;
+            PseudoProcedure intrinsic;
+            if (!de.TryGetValue(sig, out intrinsic))
+            {
+                intrinsic = new PseudoProcedure(name, sig);
+                de.Add(sig, intrinsic);
+            }
+            return intrinsic;
         }
 
         public Procedure_v1 EnsureUserProcedure(Address address, string name, bool decompile = true)

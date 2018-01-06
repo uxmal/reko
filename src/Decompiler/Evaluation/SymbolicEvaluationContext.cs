@@ -149,6 +149,8 @@ namespace Reko.Evaluation
                     {
                         if (v2 == Constant.Invalid || value == Constant.Invalid)
                             return Constant.Invalid;
+                        if (v2.DataType.Size + value.DataType.Size != accessDataType.Size)
+                            return Constant.Invalid;
 
                         //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant if v2 and value are 
                         // constant.

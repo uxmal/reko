@@ -266,7 +266,10 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.pop, "Ev"),
 
 				// 90
-				new SingleByteOpRec(Opcode.nop),
+				new PrefixedOpRec(
+                    Opcode.nop, "",
+                    Opcode.nop, "",
+                    Opcode.pause, ""),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),

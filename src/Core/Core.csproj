@@ -635,6 +635,7 @@
     <Compile Include="StorageBinder.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
+    <Compile Include="TypeInferenceException.cs" />
     <Compile Include="TypeLibrary.cs">
       <SubType>Code</SubType>
     </Compile>

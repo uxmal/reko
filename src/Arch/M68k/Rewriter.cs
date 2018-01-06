@@ -81,6 +81,7 @@ namespace Reko.Arch.M68k
                     m.Invalid();
                     break;
                 case Opcode.illegal: RewriteIllegal(); break;
+                case Opcode.abcd: RewriteAbcd(); break;
                 case Opcode.add: RewriteBinOp((s, d) => m.IAdd(d, s), FlagM.CVZNX); break;
                 case Opcode.adda: RewriteBinOp((s, d) => m.IAdd(d, s)); break;
                 case Opcode.addi: RewriteArithmetic((s, d) => m.IAdd(d, s)); break;
@@ -114,12 +115,15 @@ VS Overflow Set 1001 V
                 case Opcode.bmi: RewriteBcc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
+                case Opcode.bvc: RewriteBcc(ConditionCode.NO, FlagM.VF); break;
                 case Opcode.bvs: RewriteBcc(ConditionCode.OV, FlagM.VF); break;
                 case Opcode.bchg: RewriteBchg(); break;
+                case Opcode.bkpt: RewriteBkpt(); break;
                 case Opcode.bra: RewriteBra(); break;
                 case Opcode.bset: RewriteBclrBset("__bset"); break;
                 case Opcode.bsr: RewriteBsr(); break;
                 case Opcode.btst: RewriteBtst(); break;
+                case Opcode.callm: RewriteCallm(); break;
                 case Opcode.cas: RewriteCas(); break;
                 case Opcode.clr: RewriteClr(); break;
                 case Opcode.chk: RewriteChk(); break;
@@ -129,14 +133,22 @@ VS Overflow Set 1001 V
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
                 case Opcode.cmpm: RewriteCmp(); break;
+
+                case Opcode.dbcc: RewriteDbcc(ConditionCode.UGE, FlagM.CF); break;
+                case Opcode.dbcs: RewriteDbcc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.dbeq: RewriteDbcc(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.dbge: RewriteDbcc(ConditionCode.GE, FlagM.NF | FlagM.ZF); break;
                 case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
-                case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
+                case Opcode.dbls: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF ); break;
+                case Opcode.dbhi: RewriteDbcc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.dbpl: RewriteDbcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.dbt: RewriteDbcc(ConditionCode.ALWAYS, 0); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.divs: RewriteDiv(m.SDiv, PrimitiveType.Int16); break;
                 case Opcode.divsl: RewriteDiv(m.SDiv, PrimitiveType.Int32); break;
                 case Opcode.divu: RewriteDiv(m.UDiv, PrimitiveType.UInt16); break;
+                case Opcode.divul: RewriteDiv(m.UDiv, PrimitiveType.UInt32); break;
                 case Opcode.eor: RewriteLogical((s, d) => m.Xor(d, s)); break;
                 case Opcode.eori: RewriteLogical((s, d) => m.Xor(d, s)); break;
                 case Opcode.exg: RewriteExg(); break;
@@ -145,10 +157,27 @@ VS Overflow Set 1001 V
                 case Opcode.fadd: RewriteFBinOp((s, d) => m.FAdd(d, s)); break;
                     //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
                 case Opcode.fbf: m.Nop(); break;
+                case Opcode.fblt: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbgl: RewriteFbcc(ConditionCode.NE); break;
+                case Opcode.fbgt: RewriteFbcc(ConditionCode.GT); break;
+                case Opcode.fbgle: RewriteFbcc(ConditionCode.NE); break;    //$BUG: should be !is_nan
+                case Opcode.fbne: RewriteFbcc(ConditionCode.NE); break;
                 case Opcode.fbnge: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbngl: RewriteFbcc(ConditionCode.EQ); break;
+                case Opcode.fbngle: RewriteFbcc(ConditionCode.EQ); break;   //$BUG: should be is_nan
                 case Opcode.fbnlt: RewriteFbcc(ConditionCode.GE); break;
                 case Opcode.fbnle: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbogl: RewriteFbcc(ConditionCode.NE); break;
+                case Opcode.fbole: RewriteFbcc(ConditionCode.LE); break;
+                case Opcode.fbolt: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbogt: RewriteFbcc(ConditionCode.GT); break;
+                case Opcode.fbor: RewriteFbcc(ConditionCode.EQ); break;     //$REVIEW: is this correct?
+                case Opcode.fbseq: RewriteFbcc(ConditionCode.EQ); break;
+                case Opcode.fbsf: RewriteFbcc(ConditionCode.NEVER); break;
+                case Opcode.fbsne: RewriteFbcc(ConditionCode.NE); break;
+                case Opcode.fbst: RewriteFbcc(ConditionCode.ALWAYS); break;
+                case Opcode.fbuge: RewriteFbcc(ConditionCode.GE); break;
+                case Opcode.fbugt: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbult: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
@@ -159,6 +188,7 @@ VS Overflow Set 1001 V
                 case Opcode.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Opcode.fneg: RewriteFUnaryOp(m.Neg); break;
                 case Opcode.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
+                case Opcode.ftan: RewriteFtan(); break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;
                 case Opcode.lea: RewriteLea(); break;
@@ -166,24 +196,33 @@ VS Overflow Set 1001 V
                 case Opcode.lsl: RewriteShift((s, d) => m.Shl(d, s)); break;
                 case Opcode.lsr: RewriteShift((s, d) => m.Shr(d, s)); break;
                 case Opcode.move: RewriteMove(true); break;
+                case Opcode.move16: RewriteMove16(); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.movep: RewriteMovep(); break;
                 case Opcode.moveq: RewriteMoveq(); break;
+                case Opcode.moves: RewriteMoves(); break;
                 case Opcode.movem: RewriteMovem(arch.GetRegister); break;
                 case Opcode.muls: RewriteMul((s, d) => m.SMul(d, s)); break;
                 case Opcode.mulu: RewriteMul((s, d) => m.UMul(d, s)); break;
+                case Opcode.nbcd: RewriteNbcd(); break;
                 case Opcode.neg: RewriteUnary(s => m.Neg(s), AllConditions); break;
                 case Opcode.negx: RewriteUnary(RewriteNegx, AllConditions); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.not: RewriteUnary(s => m.Comp(s), LogicalConditions); break;
                 case Opcode.or: RewriteLogical((s, d) => m.Or(d, s)); break;
                 case Opcode.ori: RewriteLogical((s, d) => m.Or(d, s)); break;
+                case Opcode.pack: RewritePack(); break;
                 case Opcode.pea: RewritePea(); break;
+                case Opcode.pflushr: RewritePflushr(); break;
+                case Opcode.ptest: RewritePtest(); break;
                 case Opcode.rol: RewriteRotation(PseudoProcedure.Rol); break;
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
                 case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
                 case Opcode.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
+                case Opcode.rte: RewriteRte(); break;
+                case Opcode.rtm: RewriteRtm(); break;
                 case Opcode.rts: RewriteRts(); break;
+                case Opcode.sbcd: RewriteSbcd(); break;
                 case Opcode.scc: RewriteScc(ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.scs: RewriteScc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.seq: RewriteScc(ConditionCode.EQ, FlagM.ZF); break;
@@ -196,6 +235,8 @@ VS Overflow Set 1001 V
                 case Opcode.smi: RewriteScc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.sne: RewriteScc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.spl: RewriteScc(ConditionCode.GT, FlagM.NF); break;
+                case Opcode.svc: RewriteScc(ConditionCode.NO, FlagM.VF); break;
+                case Opcode.svs: RewriteScc(ConditionCode.OV, FlagM.VF); break;
                 case Opcode.st: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.True()); break;
                 case Opcode.sf: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.False()); break;
                 case Opcode.stop: RewriteStop(); break;
@@ -206,8 +247,16 @@ VS Overflow Set 1001 V
                 case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
                 case Opcode.trap: RewriteTrap(); break;
+                case Opcode.trapeq: RewriteTrapCc(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.trapf: RewriteTrapCc(ConditionCode.NEVER, 0); break;
+                case Opcode.traphi: RewriteTrapCc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.trapls: RewriteTrapCc(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
+                case Opcode.traplt: RewriteTrapCc(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;
+
+                case Opcode.tas: RewriteTas(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;
+                case Opcode.unpk: RewriteUnpk(); break;
                 }
                 yield return new RtlInstructionCluster(
                     addr,

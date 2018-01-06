@@ -391,7 +391,7 @@ namespace Reko.Arch.M68k
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
                 {
-                    op = new M68kImmediateOperand(Constant.Zero(dataWidth));
+                    op = new M68kAddressOperand(Address.Ptr32(0));
                     return true;
                 }
 

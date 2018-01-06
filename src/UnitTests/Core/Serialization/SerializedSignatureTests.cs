@@ -69,7 +69,10 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			SerializedSignature ssig;
             var fsSvc = sc.RequireService<IFileSystemService>();
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("Core/AxBxCl.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(
+                FileUnitTester.MapTestPath("Core/AxBxCl.xml"),
+                FileMode.Open,
+                FileAccess.Read))
 			{
 				XmlTextReader rdr = new XmlTextReader(stm);
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedSignature));

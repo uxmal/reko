@@ -11,7 +11,6 @@ void fn00011000(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 	memcpy(calloc(0x01, 0x05), fp + ~0x1B, 0x05);
 	dwLoc24->b0000 = 0x0C;
 	dwLoc24->dw0001 = 0x00;
-	return;
 }
 
 // 000110A0: Register Eq_42 Win32CrtStartup()
@@ -28,7 +27,6 @@ void fn000110E8(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 	fn000114E4();
 	fn00011000(dwLoc28, dwLoc24, dwLoc20, dwLoc1C);
 	fn00011278(0x00, r4);
-	return;
 }
 
 // 0001116C: void fn0001116C(Register (ptr Eq_76) r2, Register (ptr (ptr word32)) r4)
@@ -47,41 +45,35 @@ void fn0001116C(Eq_76 * r2, word32 * * r4)
 	word32 r8_26;
 	word32 r5_27;
 	XcptFilter();
-	return;
 }
 
 // 000111C4: void fn000111C4(Register Eq_42 r2)
 void fn000111C4(DWORD r2)
 {
 	ui32 r8_7 = globals->dw13030;
-	if (r8_7 != 0x00)
+	if (r8_7 != 0x00 && r8_7 != 0xB064)
+		globals->dw13034 = ~r8_7;
+	else
 	{
-		if (r8_7 != 0xB064)
-		{
-			globals->dw13034 = ~r8_7;
-			return;
-		}
+		word32 sp_20;
+		word32 ra_21;
+		word32 r8_22;
+		word32 r9_23;
+		uint32 r2_24;
+		COREDLL.dll!Ordinal_2696();
+		ui32 r8_32 = r2_24 >> 0x10 ^ r2_24 + 0xFFFF;
+		ui32 dwLoc0C_33 = r8_32;
+		if (r8_32 == 0x00)
+			dwLoc0C_33 = 0xB064;
+		globals->dw13030 = dwLoc0C_33;
+		globals->dw13034 = ~dwLoc0C_33;
 	}
-	word32 sp_20;
-	word32 ra_21;
-	word32 r8_22;
-	word32 r9_23;
-	uint32 r2_24;
-	COREDLL.dll!Ordinal_2696();
-	ui32 r8_32 = r2_24 >> 0x10 ^ r2_24 + 0xFFFF;
-	ui32 dwLoc0C_33 = r8_32;
-	if (r8_32 == 0x00)
-		dwLoc0C_33 = 0xB064;
-	globals->dw13030 = dwLoc0C_33;
-	globals->dw13034 = ~dwLoc0C_33;
-	return;
 }
 
 // 00011278: void fn00011278(Register Eq_71 r4, Stack word32 dwArg00)
 void fn00011278(UINT r4, word32 dwArg00)
 {
 	fn000112A8(r4, 0x00, 0x00, dwLoc18, dwLoc14, dwLoc10);
-	return;
 }
 
 // 000112A8: void fn000112A8(Register Eq_71 r4, Register int32 r5, Register int32 r6, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
@@ -92,7 +84,7 @@ void fn000112A8(UINT r4, int32 r5, int32 r6, word32 dwArg00, word32 dwArg04, wor
 	{
 		fn0001147C(&globals->dw12018, &globals->dw1201C, dwLoc18, dwLoc14);
 		if (r6 != 0x00)
-			return;
+			;
 		else
 		{
 			fn00011460();
@@ -135,51 +127,43 @@ l00011374:
 void fn000113D8(UINT r4, word32 dwArg00)
 {
 	fn000112A8(r4, 0x01, 0x00, dwLoc18, dwLoc14, dwLoc10);
-	return;
 }
 
 // 00011408: void fn00011408()
 void fn00011408()
 {
 	fn000112A8(0x00, 0x00, 0x01, dwLoc18, dwLoc14, dwLoc10);
-	return;
 }
 
 // 00011434: void fn00011434()
 void fn00011434()
 {
 	fn000112A8(0x00, 0x01, 0x01, dwLoc18, dwLoc14, dwLoc10);
-	return;
 }
 
 // 00011460: void fn00011460()
 void fn00011460()
 {
-	return;
 }
 
 // 0001147C: void fn0001147C(Register (ptr word32) r4, Register (ptr word32) r5, Stack Eq_71 dwArg00, Stack int32 dwArg04)
 void fn0001147C(word32 * r4, word32 * r5, UINT dwArg00, int32 dwArg04)
 {
 	word32 * dwArg00_26 = r4;
-l0001148C:
-	if ((word32) (dwArg00_26 < r5) == 0x00)
-		return;
-	else if (*dwArg00_26 == 0x00)
+	while ((word32) (dwArg00_26 < r5) != 0x00)
 	{
+		if (*dwArg00_26 != 0x00)
+		{
+			<anonymous> * r8_17 = *dwArg00_26;
+			word32 sp_18;
+			word32 ra_19;
+			word32 r5_20;
+			word32 r4_21;
+			word32 r9_22;
+			word32 r8_23;
+			r8_17();
+		}
 		dwArg00_26 = dwArg00_26 + 0x01;
-		goto l0001148C;
-	}
-	else
-	{
-		<anonymous> * r8_17 = *dwArg00_26;
-		word32 sp_18;
-		word32 ra_19;
-		word32 r5_20;
-		word32 r4_21;
-		word32 r9_22;
-		word32 r8_23;
-		r8_17();
 	}
 }
 
@@ -188,7 +172,6 @@ void fn000114E4()
 {
 	fn0001147C(&globals->dw12008, &globals->dw1200C, dwLoc18, dwLoc14);
 	fn0001147C(&globals->dw12000, &globals->dw12004, dwLoc18, dwLoc14);
-	return;
 }
 
 // 0001152C: Register (ptr code) fn0001152C(Register (ptr code) r2, Stack word32 dwArg00)
@@ -228,13 +211,10 @@ code * fn0001152C(code * r2, word32 dwArg00)
 					realloc(r8_10, dwLoc18_100);
 					sp_111 = fp + ~0x3B;
 				}
-				if (sp_111->t0014 == 0x00)
+				if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
 				{
-					if ((word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
-					{
-						sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
-						sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
-					}
+					sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
+					sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
 				}
 			}
 			if (sp_111->t0014 == 0x00)
@@ -264,6 +244,5 @@ void fn000116FC(code * r2, word32 dwArg00)
 	else
 		fp->dwFFFFFFF4 = -0x01;
 	fp->dwFFFFFFF0 = fp->dwFFFFFFF4;
-	return;
 }
 

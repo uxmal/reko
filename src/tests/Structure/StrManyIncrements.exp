@@ -59,6 +59,5 @@ define ManyIncrements
 		r0 = r0 + 0x00000001;
 		Mem0[0x33333330:word32] = r1;
 	}
-	return;
 }
 ===========================

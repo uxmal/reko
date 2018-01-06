@@ -57,6 +57,7 @@ namespace Reko.Analysis
         private DecompilerEventListener eventListener;
         private ExpressionValueComparer ecomp;
         private Block blockCur;
+        private Statement stmCur;
 
         public TrashedRegisterFinder(
             Program program,
@@ -195,6 +196,7 @@ namespace Reko.Analysis
             StartProcessingBlock(block);
             foreach (var stm in block.Statements)
             {
+                this.stmCur = stm;
                 try
                 {
                     stm.Instruction.Accept(this);
@@ -390,6 +392,7 @@ namespace Reko.Analysis
                 // A terminating procedure has no trashed registers because caller will never see those effects!
                 ctx.RegisterState.Clear();
                 ctx.TrashedFlags = 0;
+                Debug.Print("*** Terminated stm {0:X8} - {1}", stmCur.LinearAddress, ci);
                 return ci;
             }
 

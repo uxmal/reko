@@ -1980,26 +1980,26 @@ l00002304:
 	branch true l0000231C
 // DataOut: a5
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000012 a6:fp - 0x00000004 a0:<invalid> d0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000012 a6:fp - 0x00000004 a2:<invalid> a0:<invalid> d0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -4(fp):a6
 // LocalsOut: fp(32) Local -0008(32)
 
 l00002316:
 	Mem104[a5_66 + -1720:word32] = a0_73
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000012 a6:fp - 0x00000004 a1:fp + 0xFFFFFFF8 d0:0x73797376 a0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000012 a6:fp - 0x00000004 a2:<invalid> a1:fp + 0xFFFFFFF8 d0:0x73797376 a0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -8(fp):<invalid> -4(fp):a6
 // LocalsOut: fp(32)
 
 l0000231C:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000012 a6:fp - 0x00000004 a1:fp + 0xFFFFFFF8 d0:<invalid> a0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp - 0x00000012 a6:fp - 0x00000004 a2:<invalid> a1:fp + 0xFFFFFFF8 d0:<invalid> a0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -8(fp):<invalid> -4(fp):a6
 
 fn000022C4_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp a6:a6 a1:fp + 0xFFFFFFF8 d0:0 a2:<invalid> a0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -8(fp):<invalid> -4(fp):a6
+// SymbolicIn: a7:fp a6:a6 a2:<invalid> a1:fp + 0xFFFFFFF8 d0:0 a0:<invalid> -21(fp):0xA1AD -20(fp):a5 + -752 -19(fp):0x01 -18(fp):0xA89F -16(fp):a5 + -748 -12(fp):a2 -8(fp):<invalid> -4(fp):a6
 
 
 

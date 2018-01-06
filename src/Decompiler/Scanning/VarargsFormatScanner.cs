@@ -73,7 +73,7 @@ namespace Reko.Scanning
             return ab.CreateInstruction(this.expandedSig, chr);
         }
 
-        public bool TryScan(Address addrInstr, FunctionType sig, ProcedureCharacteristics chr)
+        public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics chr)
         {
             if (
                 sig == null || !sig.IsVarargs() ||
@@ -83,7 +83,9 @@ namespace Reko.Scanning
                 this.expandedSig = null;    //$out parameter
                 return false;
             }
-            var format = ReadVarargsFormat(sig);
+            var format = ReadVarargsFormat(addrInstr, callee, sig);
+            if (format == null)
+                return false;
             var argTypes = ParseVarargsFormat(addrInstr, chr, format);
             this.expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             return true;
@@ -94,7 +96,7 @@ namespace Reko.Scanning
             return op.Accept<Expression>(eval);
         }
 
-        private string ReadVarargsFormat(FunctionType sig)
+        private string ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
         {
             var formatIndex = sig.Parameters.Length - 2;
             if (formatIndex < 0)
@@ -112,11 +114,8 @@ namespace Reko.Scanning
                 {
                     return ReadCString(reg);
                 }
-                throw new NotSupportedException(
-                    string.Format(
-                        "The {0} parameter of {1} wasn't a stack access.",
-                         formatParam.Name,
-                         sig.Name));
+                WarnUnableToDetermineFormatString(addrInstr, callee);
+                return null;
             }
             var stackAccess = arch.CreateStackAccess(
                 frame,
@@ -124,9 +123,21 @@ namespace Reko.Scanning
                 stackStorage.DataType);
             var c = GetValue(stackAccess) as Constant;
             if (c == null || !c.IsValid)
-                throw new ApplicationException(
-                    string.Format("Varargs: invalid format constant"));
+            {
+                WarnUnableToDetermineFormatString(addrInstr, callee);
+                return null;
+            }
             return ReadCString(c);
+        }
+
+        private void WarnUnableToDetermineFormatString(Address addrInstr, Expression callee)
+        {
+            var listener = services.RequireService<DecompilerEventListener>();
+            listener.Warn(
+                //$TODO: get address of call instruction
+                listener.CreateAddressNavigator(this.program, addrInstr),
+                "Unable to determine format string for call to '{0}'.",
+                callee);
         }
 
         private string ReadCString(Constant cAddr)
