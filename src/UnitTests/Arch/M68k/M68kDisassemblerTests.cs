@@ -718,5 +718,11 @@ namespace Reko.UnitTests.Arch.M68k
             // decode to an illegal instruction
             RunTest("illegal\t", 0xF2BC, 0x00E0);
         }
+
+        [Test]
+        public void M68kdis_cmpi_pc_relative_indexing()
+        {
+            RunTest("cmpi.b\t#$04,(pc,d0.w,+002C)", 0x0C3B, 0x0004, 0x0028);
+        }
     }
 }

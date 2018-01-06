@@ -666,6 +666,7 @@ namespace Reko.Arch.M68k
                 //g_helper_str = string.Format("; (${0})", (make_int_16(temp_value) + g_cpu_pc - 2) & 0xffffffff);
             case 0x3B:
                 // Program counter with index
+                var extension_offset = (short)(rdr.Address - instr.Address);
                 extension = read_imm_16();
 
                 if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
@@ -724,13 +725,32 @@ namespace Reko.Arch.M68k
                 }
 
                 if (EXT_8BIT_DISPLACEMENT(extension) == 0)
+                {
                     mode = string.Format("(PC,{0}%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                }
                 else
-                    mode = string.Format("({0},PC,%c%d.%c", make_signed_hex_str_8(extension), EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                {
+
+                    mode = string.Format("({0},PC,%c%d.%c",
+                        make_signed_hex_str_8(extension),
+                        EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension),
+                        EXT_INDEX_LONG(extension) ? 'l' : 'w');
+                }
                 if (EXT_INDEX_SCALE(extension) != 0)
                     mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
                 mode += ")";
-                break;
+                return new IndexedOperand(
+                    dataWidth,
+                    null,
+                    Constant.Int16((short)((extension & 0xFF) + extension_offset)),
+                    Registers.pc,
+                    EXT_INDEX_AR(extension)
+                            ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension))
+                            : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                    EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Word16,
+                    EXT_INDEX_SCALE(extension) != 0 ? (1 << EXT_INDEX_SCALE(extension)) : 1,
+                    false,
+                    false);
             case 0x3C:
                 // Immediate 
                 return get_imm_str_u(dataWidth);
@@ -1638,7 +1658,7 @@ namespace Reko.Arch.M68k
                     case 0x68: mnemonic = Opcode.fssub; break;
                     case 0x6c: mnemonic = Opcode.fdsub; break;
 
-                    default: throw new NotImplementedException("FPU (?)");
+                    default: return null;
                     }
 
                     if ((w2 & 0x4000) != 0)

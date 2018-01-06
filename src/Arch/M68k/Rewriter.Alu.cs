@@ -388,7 +388,14 @@ namespace Reko.Arch.M68k
                     m.Assign(quot, op(dividend, src));
                 }
                 else
-                    throw new NotImplementedException();
+                {
+                    rem = orw.RewriteSrc(di.op1, di.Address);
+                    quot = orw.RewriteSrc(di.op2, di.Address);
+                    var divisor = binder.CreateTemporary(rem.DataType);
+                    m.Assign(divisor, rem);
+                    m.Assign(rem, m.Remainder(quot, divisor));
+                    m.Assign(quot, op(quot, divisor));
+                }
             }
             m.Assign(
                 orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
@@ -474,16 +481,35 @@ namespace Reko.Arch.M68k
             {
                 return addrOp.Address;
             }
-            var idxOp = op as IndexedOperand;
-            if (idxOp != null)
+            var indop = op as IndexedOperand;
+            if (indop != null)
             {
-                var c = idxOp.Base;
-                if (idxOp.base_reg == Registers.pc)
+                var c = indop.Base;
+                if (indop.base_reg == Registers.pc)
                 {
                     var addr = di.Address + c.ToInt32();
                     return addr;
                 }
-                idxOp.ToString();
+                Expression ea = orw.Combine(indop.Base, indop.base_reg);
+                if (indop.postindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                if (indop.index_reg != null)
+                {
+                    var idx = orw.Combine(null, indop.index_reg);
+                    if (indop.index_reg_width.BitSize != 32)
+                        idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
+                    if (indop.index_scale > 1)
+                        idx = m.IMul(idx, m.Int32(indop.index_scale));
+                    ea = orw.Combine(ea, idx);
+                }
+                if (indop.preindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                ea = orw.Combine(ea, indop.outer);
+                return ea;
             }
             var indIdx = di.op1 as IndirectIndexedOperand;
             if (indIdx != null)
@@ -495,11 +521,33 @@ namespace Reko.Arch.M68k
             throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
         }
 
+
         public void RewriteLea()
         {
             var dst = orw.RewriteSrc(di.op2, di.Address);
             var src = GetEffectiveAddress(di.op1);
             m.Assign(dst, src);
+        }
+
+        public void RewritePack()
+        {
+            orw.DataWidth = PrimitiveType.UInt16;
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var adj = orw.RewriteSrc(di.op3, di.Address);
+            orw.DataWidth = PrimitiveType.Byte;
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("__pack", PrimitiveType.Byte, s, adj));
+        }
+
+        public void RewriteUnpk()
+        {
+            orw.DataWidth = PrimitiveType.Byte;
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var adj = orw.RewriteSrc(di.op3, di.Address);
+            orw.DataWidth = PrimitiveType.UInt16;
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                //$REVIEW: shoud really be byte[2]...
+                host.PseudoProcedure("__unpk", PrimitiveType.Word16, s, adj));
         }
 
         public void RewritePea()
@@ -637,7 +685,8 @@ namespace Reko.Arch.M68k
                 }
                 return;
             }
-            throw new AddressCorrelatedException(di.Address, "Unsupported addressing mode for {0}.", di);
+            // Unsupported addressing mode.
+            EmitInvalid();
         }
 
         public void RewriteMovep()
@@ -674,6 +723,24 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteAbcd()
+        {
+            // We do not take the trouble of widening the XF to the word size
+            // to simplify code analysis in later stages. 
+            var x = orw.FlagGroup(FlagM.XF);
+            orw.DataWidth = PrimitiveType.Byte;
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            orw.DataWidth = PrimitiveType.Byte;
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                    m.IAdd(m.IAdd(d, s), x));
+            if (dst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+        }
+
         private void RewriteSbcd()
         {
             // We do not take the trouble of widening the XF to the word size
@@ -684,6 +751,20 @@ namespace Reko.Arch.M68k
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(di.op2, di.Address, src, (d, s) =>
                     m.ISub(m.ISub(d, s), x));
+            if (dst == null)
+            {
+                EmitInvalid();
+                return;
+            }
+            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+        }
+
+        private void RewriteNbcd()
+        {
+            var x = orw.FlagGroup(FlagM.XF);
+            orw.DataWidth = PrimitiveType.Byte;
+            var dst = orw.RewriteDst(di.op1, di.Address, null, (s, d) =>
+                    m.ISub(m.ISub(Constant.Zero(d.DataType), d), x));
             if (dst == null)
             {
                 EmitInvalid();

@@ -110,6 +110,8 @@ namespace Reko.Arch.M68k
             {
                 writer.Write(sep);
                 writer.Write(index_reg.Name);
+                if (index_reg_width.BitSize == 16)
+                    writer.Write(".w");
                 if (index_scale > 1)
                     writer.Write("*{0}", index_scale);
                 sep = ",";

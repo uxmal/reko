@@ -133,6 +133,8 @@ namespace Reko.Arch.M68k
                 if (indop.index_reg != null)
                 {
                     var idx = Combine(null, indop.index_reg);
+                    if (indop.index_reg_width.BitSize != 32)
+                        idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
                     if (indop.index_scale > 1)
                         idx = m.IMul(idx, indop.index_scale);
                     ea = Combine(ea, idx);
@@ -160,7 +162,7 @@ namespace Reko.Arch.M68k
             return ea;
         }
 
-        Expression Combine(Expression e, RegisterStorage reg)
+        public Expression Combine(Expression e, RegisterStorage reg)
         {
             if (reg == null)
                 return e;
@@ -170,7 +172,7 @@ namespace Reko.Arch.M68k
             return m.IAdd(e, r);
         }
 
-        Expression Combine(Expression e, Expression o)
+        public Expression Combine(Expression e, Expression o)
         {
             if (o == null)
                 return e;
@@ -253,7 +255,7 @@ namespace Reko.Arch.M68k
             {
                 var r = binder.EnsureRegister(post.Register);
                 var tmp = binder.CreateTemporary(dataWidth);
-                m.Assign(tmp, opGen(src, m.Load(post.Width, r))); 
+                m.Assign(tmp, opGen(src, m.Load(dataWidth, r))); 
                 m.Assign(m.Load(dataWidth, r), tmp);
                 m.Assign(r, m.IAdd(r, m.Int32(dataWidth.Size)));
                 return tmp;
@@ -378,6 +380,36 @@ namespace Reko.Arch.M68k
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 var load = m.Load(dataWidth, m.IAdd(ea, ix));
+
+                var tmp = binder.CreateTemporary(dataWidth);
+                m.Assign(tmp, opGen(load));
+                m.Assign(load, tmp);
+                return tmp;
+            }
+            var indop = operand as IndexedOperand;
+            if (indop != null)
+            {
+                Expression ea = Combine(indop.Base, indop.base_reg);
+                if (indop.postindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                if (indop.index_reg != null)
+                {
+                    var idx = Combine(null, indop.index_reg);
+                    if (indop.index_reg_width.BitSize != 32)
+                        idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
+                    if (indop.index_scale > 1)
+                        idx = m.IMul(idx, m.Int32(indop.index_scale));
+                    ea = Combine(ea, idx);
+                }
+                if (indop.preindex)
+                {
+                    ea = m.LoadDw(ea);
+                }
+                ea = Combine(ea, indop.outer);
+                var load =  m.Load(DataWidth, ea);
+
                 var tmp = binder.CreateTemporary(dataWidth);
                 m.Assign(tmp, opGen(load));
                 m.Assign(load, tmp);

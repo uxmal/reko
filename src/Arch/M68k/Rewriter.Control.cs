@@ -70,6 +70,13 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteCallm()
+        {
+            // CALLM was very rarely used, only existed on 68020.
+            // Until someone really needs it, we just give up.
+            EmitInvalid();
+        }
+
         private void RewriteChk()
         {
             rtlc = RtlClass.Conditional | RtlClass.Linear;
@@ -128,6 +135,12 @@ namespace Reko.Arch.M68k
 
         private void RewriteDbcc(ConditionCode cc, FlagM flags)
         {
+            var addr = (Address)orw.RewriteSrc(di.op2, di.Address, true);
+            if (cc == ConditionCode.ALWAYS)
+            {
+                rtlc = RtlClass.Transfer;
+                m.Goto(addr);
+            }
             rtlc = RtlClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
@@ -141,7 +154,7 @@ namespace Reko.Arch.M68k
             m.Assign(src, m.ISub(src, 1));
             m.Branch(
                 m.Ne(src, m.Word32(-1)),
-                (Address)orw.RewriteSrc(di.op2, di.Address, true),
+                addr,
                 RtlClass.ConditionalTransfer);
         }
 
@@ -159,6 +172,13 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteRtm()
+        {
+            // RTM was very rarely used, only existed on 68020.
+            // Until someone really needs it, we just give up.
+            EmitInvalid();
+        }
+
         private void RewriteRts()
         {
             rtlc = RtlClass.Transfer;
@@ -170,9 +190,17 @@ namespace Reko.Arch.M68k
             m.SideEffect(host.PseudoProcedure("__stop", VoidType.Instance));
         }
 
-        private void RewriteTrap()
+        private void RewriteTrap(ConditionCode cc, FlagM flags)
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer|RtlClass.Call;
+            if (cc != ConditionCode.ALWAYS)
+            {
+                rtlc |= RtlClass.Conditional;
+                m.BranchInMiddleOfInstruction(
+                    m.Test(cc, orw.FlagGroup(flags)).Invert(),
+                    di.Address + di.Length,
+                    RtlClass.ConditionalTransfer);
+            }
             var vector = orw.RewriteSrc(di.op1, di.Address);
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
         }

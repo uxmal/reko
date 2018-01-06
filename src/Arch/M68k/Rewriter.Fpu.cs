@@ -37,13 +37,23 @@ namespace Reko.Arch.M68k
 
         private void RewriteFbcc(ConditionCode cc)
         {
-            rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(
-                m.Test(cc, binder.EnsureRegister(Registers.fpsr)),
-                ((M68kAddressOperand)di.op1).Address,
-                RtlClass.ConditionalTransfer);
+            var addr = ((M68kAddressOperand)di.op1).Address;
+            if (cc == ConditionCode.NEVER)
+            {
+                m.Nop();
+            }
+            else if (cc == ConditionCode.ALWAYS)
+            {
+                rtlc = RtlClass.Transfer;
+                m.Goto(addr);
+            }
+            else
+            {
+                rtlc = RtlClass.ConditionalTransfer;
+                var test = m.Test(cc, binder.EnsureRegister(Registers.fpsr));
+                m.Branch(test, addr, rtlc);
+            }
         }
-
         private void RewriteFbcc(Func<Expression, Expression> fnTest)
         {
             rtlc = RtlClass.ConditionalTransfer;

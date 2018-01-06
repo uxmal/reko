@@ -45,6 +45,13 @@ namespace Reko.Arch.M68k
                 host.PseudoProcedure("__moves", VoidType.Instance, s));
         }
 
+        private void RewritePflushr()
+        {
+            rtlc = RtlClass.System;
+            var src = this.orw.RewriteSrc(di.op1, di.Address);
+            m.SideEffect(host.PseudoProcedure("__pflushr", VoidType.Instance, src));
+        }
+
         private void RewriteRte()
         {
             rtlc = RtlClass.System;
@@ -53,6 +60,12 @@ namespace Reko.Arch.M68k
             m.Assign(sr, m.LoadW(sp));
             m.Assign(sp, m.IAdd(sp, m.Int32(2)));
             m.Return(4, 0);
+        }
+
+        private void RewriteTas()
+        {
+            //$TODO: need to implement this using operand rewriter.
+            EmitInvalid();
         }
     }
 }
