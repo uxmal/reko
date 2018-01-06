@@ -243,11 +243,11 @@ VS Overflow Set 1001 V
                 case Opcode.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
                 case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
-                case Opcode.trap: RewriteTrap(ConditionCode.ALWAYS, 0); break;
-                case Opcode.trapeq: RewriteTrap(ConditionCode.EQ, FlagM.ZF); break;
-                case Opcode.traphi: RewriteTrap(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
-                case Opcode.trapls: RewriteTrap(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
-                case Opcode.traplt: RewriteTrap(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.trap: RewriteTrap(); break;
+                case Opcode.trapeq: RewriteTrapCc(ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.traphi: RewriteTrapCc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.trapls: RewriteTrapCc(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
+                case Opcode.traplt: RewriteTrapCc(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;
 
                 case Opcode.tas: RewriteTas(); break;
                 case Opcode.tst: RewriteTst(); break;

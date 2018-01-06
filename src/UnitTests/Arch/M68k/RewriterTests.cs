@@ -1575,7 +1575,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00010004",
-                "2|L--|__syscall(0x0029)");
+                "2|L--|__syscall(0x0007, 0x0029)");
         }
 
         [Test]

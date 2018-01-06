@@ -190,7 +190,14 @@ namespace Reko.Arch.M68k
             m.SideEffect(host.PseudoProcedure("__stop", VoidType.Instance));
         }
 
-        private void RewriteTrap(ConditionCode cc, FlagM flags)
+        private void RewriteTrap()
+        {
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            var vector = orw.RewriteSrc(di.op1, di.Address);
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
+        }
+
+        private void RewriteTrapCc(ConditionCode cc, FlagM flags)
         {
             rtlc = RtlClass.Transfer|RtlClass.Call;
             if (cc != ConditionCode.ALWAYS)
@@ -201,8 +208,12 @@ namespace Reko.Arch.M68k
                     di.Address + di.Length,
                     RtlClass.ConditionalTransfer);
             }
-            var vector = orw.RewriteSrc(di.op1, di.Address);
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
+            var args = new List<Expression> { Constant.UInt16(7) };
+            if (di.op1 != null)
+            {
+                args.Add(orw.RewriteSrc(di.op1, di.Address));
+            }
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, args.ToArray()));
         }
     }
 }
