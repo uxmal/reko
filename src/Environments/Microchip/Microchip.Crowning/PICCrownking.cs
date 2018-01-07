@@ -62,7 +62,10 @@ namespace Microchip.Crownking
 
         private string _getPICLocalDBFilePath()
         {
-            string sDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Assembly CrownkingAssembly;
+            CrownkingAssembly = Assembly.GetAssembly(this.GetType());
+            string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
+//            string sDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string path = Path.Combine(sDir, _localdbfile);
             return path;
         }

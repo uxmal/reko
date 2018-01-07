@@ -15,12 +15,12 @@ namespace Reko.UnitTests.Arch.Microchip
             public void LoadDB()
             {
                 db = PICCrownking.GetDB();
-                Assert.That(db, Is.Not.Null, "No accessible PIC database");
+                Assert.That(db, Is.Not.Null, "No accessible PIC XML database");
             }
 
             [Test]
             [Explicit]
-            [Description("Update PIC local database")]
+            [Description("Update PIC local database - valid only if Microchip MPLAB X IDE is installed in the current environment")]
             public void Test_UpdateDB()
             {
                 db.UpdateDB();
