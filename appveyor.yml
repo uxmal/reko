@@ -22,7 +22,7 @@ after_build:
         "[after_build] compressing CmdLine...";
         7z a $env:artifacts_dir/CmdLine-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:CONFIGURATION/.;
         mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
-        # Rename setup to have shortHash before the extension
+        ;
         $filePath = ./$env:artifacts_dir/*.msi;
         $item = Get-Item $filePath;
         $newPath = $item.DirectoryName;
