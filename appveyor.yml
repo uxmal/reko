@@ -22,8 +22,8 @@ after_build:
         $newPath+= $item.BaseName + "-" + $shortHash + ".msi";
         "$filePath -> $newPath";
         Move-Item $filePath $newPath;
-  - cmd: 7z a ./src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/WindowsDecompiler.7z src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/.
-  - cmd: 7z a ./src/Drivers/CmdLine/bin/%CONFIGURATION%/CmdLine.7z src/Drivers/CmdLine/bin/%CONFIGURATION%/.
+  - cmd: 7z a ./src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/WindowsDecompiler.zip src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/.
+  - cmd: 7z a ./src/Drivers/CmdLine/bin/%CONFIGURATION%/CmdLine.zip src/Drivers/CmdLine/bin/%CONFIGURATION%/.
 
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
@@ -33,7 +33,7 @@ test_script:
 artifacts:
   - path: src/WixInstaller/bin/$(configuration)/*.msi
     name: Reko installer
-  - path: src/Drivers/WindowsDecompiler/bin/$(configuration)/WindowsDecompiler.7z
+  - path: src/Drivers/WindowsDecompiler/bin/$(configuration)/WindowsDecompiler.zip
     name: Reko WinForms driver
-  - path: src/Drivers/CmdLine/bin/$(configuration)/CmdLine.7z
+  - path: src/Drivers/CmdLine/bin/$(configuration)/CmdLine.zip
     name: Reko CmdLine driver
