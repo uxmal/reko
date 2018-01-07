@@ -15,7 +15,7 @@ environment:
 after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
-        $version = $env:APPVEYOR_BUILD_VERSION;
+        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
         ;
         mkdir $env:artifacts_dir;
         "[after_build] compressing WindowsDecompiler...";
