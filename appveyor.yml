@@ -18,12 +18,15 @@ after_build:
         $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
         ;
         mkdir $env:artifacts_dir;
+        ;
+        <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
         "[after_build] compressing WindowsDecompiler...";
         7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/.;
         "[after_build] compressing CmdLine...";
         7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:CONFIGURATION/.;
         mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         ;
+        <# Append the short hash to the .msi setup #>;
         $filePath = $env:artifacts_dir + "/*.msi";
         $item = Get-Item $filePath;
         $newPath = $item.DirectoryName + "/" + $item.BaseName + "-" + $shortHash + ".msi";
