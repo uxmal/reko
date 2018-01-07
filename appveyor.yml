@@ -17,9 +17,9 @@ after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
         mkdir $env:artifacts_dir;
-        "[after_build] compressing WindowsDecompiler..."
+        "[after_build] compressing WindowsDecompiler...";
         7z a $env:artifacts_dir/WindowsDecompiler-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/.;
-        "[after_build] compressing CmdLine..."
+        "[after_build] compressing CmdLine...";
         7z a $env:artifacts_dir/CmdLine-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:CONFIGURATION/.;
         mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         # Rename setup to have shortHash before the extension
