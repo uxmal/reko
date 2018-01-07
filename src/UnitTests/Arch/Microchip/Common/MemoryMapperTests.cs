@@ -17,7 +17,6 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         {
             arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18));
             IPICMemoryMapper map = arch.MemoryMapper;
-            map.ExecMode = PICExecMode.Traditional;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18, map.InstructionSetID);
 
@@ -115,7 +114,6 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         {
             arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
             IPICMemoryMapper map = arch.MemoryMapper;
-            map.ExecMode = PICExecMode.Traditional;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, map.InstructionSetID);
 
@@ -213,7 +211,6 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         {
             arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
             IPICMemoryMapper map = arch.MemoryMapper;
-            map.ExecMode = PICExecMode.Traditional;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, map.InstructionSetID);
 

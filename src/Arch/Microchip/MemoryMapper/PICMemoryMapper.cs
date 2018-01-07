@@ -147,7 +147,7 @@ namespace Microchip.MemoryMapper
                     case MemoryDomain.Absolute:
                         return iVirtAddr;
                 }
-                throw new NotImplementedException();
+                throw new NotImplementedException($"Remapping address for '{TypeOfMemory}' domain is not implemented yet.");
             }
 
             #endregion
@@ -381,7 +381,7 @@ namespace Microchip.MemoryMapper
             if (datasize < 12) throw new ArgumentOutOfRangeException("Too low data memory size. Check PIC definition.");
             map._remaptable = new int[datasize];
 
-            // Build the map for all memory spaces but data-related memory spaces which are deferred to when we'll know the actual PIC execution mode.
+            // Build the map for all memory spaces but data-related memory spaces which construction is deferred to when we'll know/use the actual PIC execution mode.
             // 
             map.PIC.ArchDef.MemTraits.Traits.ForEach((e) => { var ee = e as IMemTraitsSymbolAcceptor; if (ee != null) ee.Accept(map); });
             map.PIC.ProgramSpace.Sectors?.ForEach((e) => { var ee = e as IMemProgramRegionAcceptor; if (ee != null) ee.Accept(map); });
@@ -406,27 +406,10 @@ namespace Microchip.MemoryMapper
             {
                 if (InstructionSetID == InstructionSetID.PIC18)
                     value = PICExecMode.Traditional;
-                if (value != _execMode || _dataregions.Count <= 0)
+                if (value != _execMode)
                 {
                     _execMode = value;
-                    _dataregions.Clear();
-                    for (int i = 0; i < _remaptable.Length; i++)
-                        _remaptable[i] = NOPHYSICAL_MEM;
-                    switch (value)
-                    {
-                        case PICExecMode.Traditional:
-                            PIC.DataSpace.TraditionalModeOnly?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
-                            PIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
-                            break;
-                        case PICExecMode.Extended:
-                            if (!PIC.IsExtended) throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
-                            PIC.DataSpace.ExtendedModeOnly?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
-                            PIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
-                            break;
-                    }
-                    PIC.IndirectSpace?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
-                    PIC.DMASpace?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
-
+                    _setDataRegions();
                 }
             }
         }
@@ -436,6 +419,39 @@ namespace Microchip.MemoryMapper
 
         #region Data memory related
 
+        private void _setDataRegions()
+        {
+            _dataregions.Clear();
+            HasSFR = false;
+            HasGPR = false;
+            HasDPR = false;
+            HasNMMR = false;
+            HasLinear = false;
+            HasEmulatorZone = false;
+            for (int i = 0; i < _remaptable.Length; i++)
+                _remaptable[i] = NOPHYSICAL_MEM;
+            switch (ExecMode)
+            {
+                case PICExecMode.Traditional:
+                    PIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                    PIC.DataSpace.TraditionalModeOnly?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                    break;
+                case PICExecMode.Extended:
+                    if (!PIC.IsExtended) throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
+                    PIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                    PIC.DataSpace.ExtendedModeOnly?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                    break;
+            }
+            PIC.IndirectSpace?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+            PIC.DMASpace?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+        }
+
+        private List<IMemoryRegion> _getDataRegions()
+        {
+            if (_dataregions.Count <= 0) _setDataRegions();
+            return _dataregions;
+        }
+
         /// <summary>
         /// Gets a data memory region given its name ID.
         /// </summary>
@@ -444,7 +460,7 @@ namespace Microchip.MemoryMapper
         /// The data memory region.
         /// </returns>
         public IMemoryRegion GetDataRegion(string sregionName)
-            => _dataregions?.Find((regn) => regn.TypeOfMemory == MemoryDomain.Data && regn.RegionName == sregionName);
+            => _getDataRegions().Find((regn) => regn.TypeOfMemory == MemoryDomain.Data && regn.RegionName == sregionName);
 
         /// <summary>
         /// Gets a data memory region given a memory virtual address.
@@ -454,7 +470,7 @@ namespace Microchip.MemoryMapper
         /// The data memory region.
         /// </returns>
         public IMemoryRegion GetDataRegion(int iVirtAddr)
-            => _dataregions?.Find((regn) => regn.Contains(iVirtAddr) && regn.TypeOfMemory == MemoryDomain.Data);
+            => _getDataRegions().Find((regn) => regn.Contains(iVirtAddr) && regn.TypeOfMemory == MemoryDomain.Data);
 
         /// <summary>
         /// Remap a data address.
@@ -472,7 +488,7 @@ namespace Microchip.MemoryMapper
         /// <value>
         /// The data regions enumeration.
         /// </value>
-        public IReadOnlyList<IMemoryRegion> DataRegions => _dataregions;
+        public IReadOnlyList<IMemoryRegion> DataRegions => _getDataRegions();
 
         /// <summary>
         /// Gets the data memory Emulator zone. Valid only if <seealso cref="HasEmulatorZone"/> is true.
