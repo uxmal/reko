@@ -22,12 +22,18 @@ after_build:
         $newPath+= $item.BaseName + "-" + $shortHash + ".msi";
         "$filePath -> $newPath";
         Move-Item $filePath $newPath;
+  - cmd: 7z a ./src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/WindowsDecompiler.7z src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/.
+  - cmd: 7z a ./src/Drivers/CmdLine/bin/%CONFIGURATION%/CmdLine.7z src/Drivers/CmdLine/bin/%CONFIGURATION%/.
 
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
   - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%CONFIGURATION%/Reko.UnitTests.dll -exclude=UserInterface,FailedTests /framework:net-4.5
-  - cmd: cd subjects; python regressionTests.py --check-output --configuration=TravisRelease
+  - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION%
 
 artifacts:
   - path: src/WixInstaller/bin/$(configuration)/*.msi
     name: Reko installer
+  - path: src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/WindowsDecompiler.7z
+    name: Reko WinForms driver
+  - path: src/Drivers/CmdLine/bin/%CONFIGURATION%/CmdLine.7z
+    name: Reko CmdLine driver
