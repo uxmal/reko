@@ -11,7 +11,6 @@ build:
 
 environment:
   artifacts_dir: bin
-  reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
 
 after_build:
   - ps : >-
@@ -25,9 +24,7 @@ after_build:
         ;
         $filePath = $env:artifacts_dir + "/*.msi";
         $item = Get-Item $filePath;
-        $newPath = $item.DirectoryName;
-        $newPath+= [System.IO.Path]::DirectorySeparatorChar;
-        $newPath+= $item.BaseName + "-" + $shortHash + ".msi";
+        $newPath = $item.DirectoryName + "/" + $item.BaseName + "-" + $shortHash + ".msi";
         "[after_build] renaming $filePath -> $newPath";
         mv $filePath $newPath;
 
