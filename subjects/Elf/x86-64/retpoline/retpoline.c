@@ -122,6 +122,8 @@ void main(word64 r8)
 void __llvm_retpoline_r11()
 {
 	fn0000000000400700(qwLoc08);
+	while (true)
+		__pause();
 }
 
 // 0000000000400700: void fn0000000000400700(Stack word64 qwArg00)
