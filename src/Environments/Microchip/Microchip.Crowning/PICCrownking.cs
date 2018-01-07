@@ -1,5 +1,5 @@
 ﻿
-// summary:	Implements the Microchip PIC definition loading from the Microchip PIC  database.
+// summary:	Implements the Microchip PIC definition loading from the Microchip PIC XML database.
 // 
 namespace Microchip.Crownking
 {
@@ -13,7 +13,6 @@ namespace Microchip.Crownking
     using System.Linq;
     using System.Reflection;
     using System.Xml.Linq;
-    using Microchip.Utils;
 
     /// <summary>
     /// This factory class provides methods for loading Microchip PIC definition (XML) from the MPLAB X IDE (a.k.a. Crownking) database or a local copy of it.
@@ -346,7 +345,7 @@ namespace Microchip.Crownking
             // An MPLAB X IDE database exists. The caller considers we need to (re)generate the local database.
             try
             {
-#if DEBUG
+#if false
                 XElement xpics = new XElement("PICS");   // For debugging purpose we wish a text-readable (uncompressed) version of the PIC database.
                 XDocument xconcat = new XDocument(xpics);
 #endif
@@ -376,7 +375,7 @@ namespace Microchip.Crownking
                                     
                                     if (xdoc != null)
                                     {
-#if DEBUG
+#if false
                                         xpics.Add(xdoc.Root);
 #endif
                                         ZipArchiveEntry picentry = zoutfile.CreateEntry(entry.FullName);
@@ -388,7 +387,7 @@ namespace Microchip.Crownking
                         }
                     }
                 }
-#if DEBUG
+#if false
                 xconcat.Save(localpath.Replace(".zip", ".xml"), SaveOptions.None);
 #endif
                 CurrentDBPath = localpath;

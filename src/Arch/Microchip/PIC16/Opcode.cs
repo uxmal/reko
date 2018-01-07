@@ -27,112 +27,111 @@ namespace Reko.Arch.Microchip.PIC16
     {
         illegal,
         ///<summary>Add literal with W</summary>
-        addlw,
+        ADDLW,
         ///<summary>Add W with f</summary>
-        addwf,
+        ADDWF,
         ///<summary>AND literal with W</summary>
-        andlw,
+        ANDLW,
         ///<summary>AND W with f</summary>
-        andwf,
+        ANDWF,
         ///<summary>Bit clear f</summary>
-        bcf,
+        BCF,
         ///<summary>Relative branch with W</summary>
-        brw,
+        BRW,
         ///<summary>Bit set f</summary>
-        bsf,
+        BSF,
         ///<summary>Bit test f, skip if clear</summary>
-        btfsc,
+        BTFSC,
         ///<summary>Bit test f,  skip if set</summary>
-        btfss,
+        BTFSS,
         ///<summary>Call subroutine</summary>
-        call,
+        CALL,
         ///<summary>Clear f</summary>
-        clrf,
+        CLRF,
         ///<summary>Clear W</summary>
-        clrw,
+        CLRW,
         ///<summary>Clear watchdog timer</summary>
-        clrwdt,
+        CLRWDT,
         ///<summary>Complement f</summary>
-        comf,
+        COMF,
         ///<summary>Decrement f</summary>
-        decf,
+        DECF,
         ///<summary>Decrement f, skip if 0</summary>
-        decfsz,
+        DECFSZ,
         ///<summary>Unconditional branch</summary>
-        @goto,
+        GOTO,
         ///<summary>Increment f</summary>
-        incf,
+        INCF,
         ///<summary>Increment f, skip if 0</summary>
-        incfsz,
+        INCFSZ,
         ///<summary>Inclusive OR literal with W</summary>
-        iorlw,
+        IORLW,
         ///<summary>Inclusive OR W with f</summary>
-        iorwf,
+        IORWF,
         ///<summary>Move f</summary>
-        movf,
+        MOVF,
         ///<summary>Move literal to W</summary>
-        movlw,
+        MOVLW,
         ///<summary>Move W to f</summary>
-        movwf,
+        MOVWF,
         ///<summary>No operation</summary>
-        nop,
+        NOP,
         ///<summary>Load OPTION register with W</summary>
-        option,
+        OPTION,
         ///<summary>Return from interrupt</summary>
-        retfie,
+        RETFIE,
         ///<summary>Return with literal in W</summary>
-        retlw,
+        RETLW,
         ///<summary>Return from subroutine</summary>
-        àreturn,
+        RETURN,
         ///<summary>Rotate left f through Carry</summary>
-        rlf,
+        RLF,
         ///<summary>Rotate right f through Carry</summary>
-        rrf,
+        RRF,
         ///<summary>Enter sleep mode</summary>
-        sleep,
+        SLEEP,
         ///<summary>Substract W from literal</summary>
-        sublw,
+        SUBLW,
         ///<summary>Substract W from f</summary>
-        subwf,
+        SUBWF,
         ///<summary>Swap nibbles in f</summary>
-        swapf,
+        SWAPF,
         ///<summary>Load TRIS register with W</summary>
-        tris,
+        TRIS,
         ///<summary>Exclusive OR literal with W</summary>
-        xorlw,
+        XORLW,
         ///<summary>Exclusive OR W with f</summary>
-        xorwf,
+        XORWF,
         ///<summary>Add literal to FSRn</summary>
-
-        addfsr,
+        ADDFSR,
         ///<summary>Add W and CARRY bit to f</summary>
-        addwfc,
+        ADDWFC,
         ///<summary>Arithmetic right shift</summary>
-        asrf,
+        ASRF,
         ///<summary>Relative branch</summary>
-        bra,
+        BRA,
         ///<summary>Subroutine call with W</summary>
-        callw,
+        CALLW,
         ///<summary>Logical left shift</summary>
-        lslf,
+        LSLF,
         ///<summary>Logical right shift</summary>
-        lsrf,
+        LSRF,
         ///<summary>Move INDFn to W</summary>
-        moviw,
+        MOVIW,
         ///<summary>Move k[FSRn] to W</summary>
         moviw_idx,
         ///<summary>Move literal to BSR</summary>
-        movlb,
+        MOVLB,
         ///<summary>Move literal to PCLATH</summary>
-        movlp,
+        MOVLP,
         ///<summary>Move W to INDFn</summary>
-        movwi,
+        MOVWI,
         ///<summary>Move W to k[FSRn]</summary>
-        movwi_idx,
+        MOVWI_idx,
         ///<summary>Reset processor</summary>
-        reset,
+        RESET,
         ///<summary>Substract W from f with Borrow</summary>
-        subwfb
+        SUBWFB
     }
 
 }

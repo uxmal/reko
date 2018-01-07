@@ -359,6 +359,15 @@ namespace Microchip.MemoryMapper
         }
 
         /// <summary>
+        /// Private constructor creating an instance of memory mapper for specified PIC.
+        /// </summary>
+        /// <param name="thePIC">the PIC descriptor.</param>
+        private PICMemoryMapper(PIC thePIC)
+        {
+            PIC = thePIC;
+        }
+
+        /// <summary>
         /// Creates a new PICMemoryMapper.
         /// </summary>
         /// <param name="thePIC">the PIC descriptor.</param>
@@ -366,15 +375,14 @@ namespace Microchip.MemoryMapper
         /// A <see cref="IPICMemoryMapper"/> instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="thePIC"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid data memory size (less than 12 bytes).</exception>
         public static IPICMemoryMapper Create(PIC thePIC)
         {
             if (thePIC == null) throw new ArgumentNullException(nameof(thePIC));
-            var map = new PICMemoryMapper
+            var map = new PICMemoryMapper(thePIC)
             {
-                PIC = thePIC,
                 _progregions = new List<IMemoryRegion>(),
                 _dataregions = new List<IMemoryRegion>()
-
             };
 
             int datasize = thePIC.DataSpace?.EndAddr ?? 0;
@@ -393,7 +401,7 @@ namespace Microchip.MemoryMapper
 
         #region IPICMemoryMapper interface
 
-        public PIC PIC { get; private set;  }
+        public PIC PIC { get; }
 
         public InstructionSetID InstructionSetID { get { return PIC.GetInstructionSetID; } }
 
