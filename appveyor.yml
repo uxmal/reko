@@ -16,7 +16,6 @@ after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
         $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
-        ;
         mkdir $env:artifacts_dir;
         ;
         <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
