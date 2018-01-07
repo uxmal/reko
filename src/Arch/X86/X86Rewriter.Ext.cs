@@ -51,5 +51,10 @@ namespace Reko.Arch.X86
             var src = this.SrcOp(instrCur.op2);
             m.Assign(dst, host.PseudoProcedure("__pxor", dst.DataType, dst, src));
         }
+
+        public void RewritePause()
+        {
+            m.SideEffect(host.PseudoProcedure("__pause", VoidType.Instance));
+        }
     }
 }

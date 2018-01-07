@@ -1186,6 +1186,15 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86rw_pause()
+        {
+            Run32bitTest(0xF3, 0x90);
+            AssertCode(
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|__pause()");
+        }
+
+        [Test]
         public void X86rw_pxor_self()
         {
             Run32bitTest(0x0F, 0xEF, 0xC9);
