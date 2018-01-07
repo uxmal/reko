@@ -10,20 +10,26 @@ build:
   verbosity: normal
 
 environment:
+  artifacts_dir: bin
   reko_setup: src/WixInstaller/bin/$(configuration)/*.msi
 
 after_build:
-  - ps: >-
+  - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
-        $filePath = $env:reko_setup;
+        mkdir $env:artifacts_dir;
+        "[after_build] compressing WindowsDecompiler..."
+        7z a $env:artifacts_dir/WindowsDecompiler-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/.;
+        "[after_build] compressing CmdLine..."
+        7z a $env:artifacts_dir/CmdLine-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:CONFIGURATION/.;
+        mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
+        # Rename setup to have shortHash before the extension
+        $filePath = ./$env:artifacts_dir/*.msi;
         $item = Get-Item $filePath;
         $newPath = $item.DirectoryName;
         $newPath+= [System.IO.Path]::DirectorySeparatorChar;
         $newPath+= $item.BaseName + "-" + $shortHash + ".msi";
-        "$filePath -> $newPath";
-        Move-Item $filePath $newPath;
-  - cmd: 7z a ./src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/WindowsDecompiler.zip src/Drivers/WindowsDecompiler/bin/%CONFIGURATION%/.
-  - cmd: 7z a ./src/Drivers/CmdLine/bin/%CONFIGURATION%/CmdLine.zip src/Drivers/CmdLine/bin/%CONFIGURATION%/.
+        "[after_build] renaming $filePath -> $newPath";
+        mv $filePath $newPath;
 
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=UserInterface,FailedTests /framework:net-4.5
@@ -31,9 +37,9 @@ test_script:
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION%
 
 artifacts:
-  - path: src/WixInstaller/bin/$(configuration)/*.msi
+  - path: bin/*.msi
     name: Reko installer
-  - path: src/Drivers/WindowsDecompiler/bin/$(configuration)/WindowsDecompiler.zip
+  - path: bin/WindowsDecompiler-*.zip
     name: Reko WinForms driver
-  - path: src/Drivers/CmdLine/bin/$(configuration)/CmdLine.zip
+  - path: bin/CmdLine-*.zip
     name: Reko CmdLine driver
