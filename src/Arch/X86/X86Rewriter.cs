@@ -287,6 +287,7 @@ namespace Reko.Arch.X86
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.@outs: RewriteStringInstruction(); break;
                 case Opcode.@outsb: RewriteStringInstruction(); break;
+                case Opcode.pause: RewritePause(); break;
                 case Opcode.palignr: RewritePalignr(); break;
                 case Opcode.pcmpeqb: RewritePcmpeqb(); break;
                 case Opcode.pop: RewritePop(); break;

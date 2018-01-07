@@ -297,9 +297,11 @@ main proc
 ;; __llvm_retpoline_r11: 00000000004006F0
 __llvm_retpoline_r11 proc
 	call	0000000000400700
+
+l00000000004006F5:
 	pause
 	jmp	00000000004006F5
-	nop	dword ptr [rax+00]
+00000000004006FC                                     0F 1F 40 00             ..@.
 
 ;; fn0000000000400700: 0000000000400700
 fn0000000000400700 proc

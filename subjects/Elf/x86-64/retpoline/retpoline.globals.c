@@ -5,7 +5,7 @@
 #include "retpoline.h"
 
 char g_str4007A8[] = "done\x0A";
-union Eq_221 g_u600E10 = 
+union Eq_224 g_u600E10 = 
 	{
 		0x00400550
 	};

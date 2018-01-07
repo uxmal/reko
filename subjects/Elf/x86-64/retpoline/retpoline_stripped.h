@@ -30,6 +30,9 @@ Eq_51: (union "Eq_51" (word32 u0) ((ptr code) u1))
 Eq_58: (fn void (word64))
 	T_58 (in fn0000000000400700 : ptr64)
 	T_59 (in signature of fn0000000000400700 : void)
+Eq_63: (fn void ())
+	T_63 (in __pause : ptr64)
+	T_64 (in signature of __pause : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -279,6 +282,18 @@ T_62: (in fn0000000000400700(qwLoc08) : void)
   Class: Eq_62
   DataType: void
   OrigDataType: void
+T_63: (in __pause : ptr64)
+  Class: Eq_63
+  DataType: (ptr Eq_63)
+  OrigDataType: (ptr (fn T_65 ()))
+T_64: (in signature of __pause : void)
+  Class: Eq_63
+  DataType: (ptr Eq_63)
+  OrigDataType: 
+T_65: (in __pause() : void)
+  Class: Eq_65
+  DataType: void
+  OrigDataType: void
 */
 typedef struct Globals {
 	word64 qw600FF8;	// 600FF8
@@ -306,4 +321,6 @@ typedef union Eq_51 {
 } Eq_51;
 
 typedef void (Eq_58)(word64);
+
+typedef void (Eq_63)();
 
