@@ -1841,6 +1841,25 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|0000000140000000(4): 1 instructions",
                 "1|L--|__prefetcht0(Mem0[rax:byte])");
         }
+
+        [Test]
+        public void X86rw_xorps()
+        {
+            Run64bitTest(0x0F, 0x57, 0xC0); // xorps\txmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(3): 3 instructions",
+                "1|L--|v3 = xmm0",
+                "2|L--|v4 = xmm0",
+                "3|L--|xmm0 = __xorps(v3, v4)");
+        }
+
+        [Test]
+        public void X86rw_aesimc()
+        {
+            Run32bitTest(0x66, 0x0F, 0x38, 0xDB, 0xC0); // aesimc\txmm0,xmm0
+            AssertCode(
+                "0|L--|10000000(5): 1 instructions",
+                "1|L--|xmm0 = __aesimc(xmm0)");
+        }
     }
 }
-

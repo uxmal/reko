@@ -936,6 +936,24 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("lfence", 0x0F, 0xAE, 0xE8);
         }
+
+        [Test]
+        public void X86dis_xorps()
+        {
+            AssertCode32("xorps\txmm0,xmm0", 0x0F, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_xorpd()
+        {
+            AssertCode32("xorpd\txmm0,xmm0", 0x66, 0x0F, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_aesimc()
+        {
+            AssertCode64("aesimc\txmm0,xmm0", 0x66, 0x0F, 0x38, 0xDB, 0xC0);
+        }
 	}
 }
 

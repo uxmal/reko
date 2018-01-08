@@ -123,7 +123,7 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
 
-                new SingleByteOpRec(Opcode.illegal),
+                new ThreeByteOpRec(),
                 new SingleByteOpRec(Opcode.illegal),
                 new ThreeByteOpRec(),
                 new SingleByteOpRec(Opcode.illegal),
@@ -159,7 +159,9 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.xorps, "Vps,Hps,Wps",
+                    Opcode.xorpd, "Vpd,Hpd,Wpd"),
 
                 new PrefixedOpRec(
                     Opcode.addps, "Vps,Hps,Wps",

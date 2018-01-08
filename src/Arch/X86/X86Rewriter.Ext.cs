@@ -38,6 +38,13 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter
     {
+        public void RewriteAesimc()
+        {
+            var dst = SrcOp(instrCur.op1);
+            var src = SrcOp(instrCur.op2);
+            m.Assign(dst, host.PseudoProcedure("__aesimc", dst.DataType, src));
+        }
+
         public void RewritePxor()
         {
             var rdst = instrCur.op1 as RegisterOperand;

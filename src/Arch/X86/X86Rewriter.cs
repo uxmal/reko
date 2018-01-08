@@ -99,6 +99,7 @@ namespace Reko.Arch.X86
                 case Opcode.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
                 case Opcode.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
                 case Opcode.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
+                case Opcode.aesimc: RewriteAesimc(); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
@@ -357,6 +358,9 @@ namespace Reko.Arch.X86
                 case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
+                case Opcode.xorpd: RewritePackedBinop("__xorpd", PrimitiveType.Word64); break;
+                case Opcode.xorps: RewritePackedBinop("__xorps", PrimitiveType.Word32); break;
+
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }

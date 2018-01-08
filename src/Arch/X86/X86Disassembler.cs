@@ -740,6 +740,10 @@ namespace Reko.Arch.X86
             {
                 switch (op)
                 {
+                case 0x38:
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec0F38[op].Decode(disasm, op, "");
                 case 0x3A:
                     if (!disasm.rdr.TryReadByte(out op))
                         return null;
@@ -1152,6 +1156,10 @@ namespace Reko.Arch.X86
             switch (fmt[i++])
             {
             case 'd':
+                if (i < fmt.Length && fmt[i] == 'q')
+                {
+                    ++i; return PrimitiveType.Word128;
+                }
                 return PrimitiveType.Word32;
             case 'p':
                 switch (fmt[i++])
@@ -1353,14 +1361,16 @@ namespace Reko.Arch.X86
 
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
+		private static OpRec [] s_aOpRec0F38;
 		private static OpRec [] s_aOpRec0F3A;
-		private static OpRec [] s_aOpRecGrp;
+        private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
 
 		static X86Disassembler()
 		{
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
+            s_aOpRec0F38 = Create0F38Oprecs();
             s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
