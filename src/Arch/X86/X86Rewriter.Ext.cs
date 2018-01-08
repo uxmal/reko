@@ -66,5 +66,10 @@ namespace Reko.Arch.X86
         {
             m.SideEffect(host.PseudoProcedure("__pause", VoidType.Instance));
         }
+
+        public void RewritePrefetch(string name)
+        {
+            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(instrCur.op1)));
+        }
     }
 }

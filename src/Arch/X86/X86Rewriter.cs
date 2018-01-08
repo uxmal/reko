@@ -295,6 +295,10 @@ namespace Reko.Arch.X86
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.popa: RewritePopa(); break;
                 case Opcode.popf: RewritePopf(); break;
+                case Opcode.prefetchnta: RewritePrefetch("__prefetchnta"); break;
+                case Opcode.prefetcht0: RewritePrefetch("__prefetcht0"); break;
+                case Opcode.prefetcht1: RewritePrefetch("__prefetcht1"); break;
+                case Opcode.prefetcht2: RewritePrefetch("__prefetcht2"); break;
                 case Opcode.pshufd: RewritePshufd(); break;
                 case Opcode.punpcklbw: RewritePunpcklbw(); break;
                 case Opcode.punpcklwd: RewritePunpcklwd(); break;

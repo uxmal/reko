@@ -1825,12 +1825,21 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86drw_lfence()
+        public void X86rw_lfence()
         {
             Run32bitTest(0x0F, 0xAE, 0xE8); // lfence
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
                 "1|L--|__lfence()");
+        }
+
+        [Test]
+        public void X86rw_prefetch()
+        {
+            Run64bitTest(0x41, 0x0F, 0x18, 0x08); // prefetch
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|__prefetcht0(Mem0[rax:byte])");
         }
     }
 }

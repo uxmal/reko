@@ -27840,7 +27840,6 @@ fn1483_118B proc
 	mov	si,014C
 	mov	cx,00FA
 	illegal
-	ret
 	call	467E
 	fsubr	dword ptr [di+61B8]
 	xchg	al,ah

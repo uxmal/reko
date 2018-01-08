@@ -227,10 +227,10 @@ namespace Reko.Arch.X86
                     new SingleByteOpRec(Opcode.sfence, "")),
 
 				// group 16
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.prefetchnta, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht0, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht1, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht2, "Mb"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
