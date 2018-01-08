@@ -77,14 +77,6 @@ namespace Reko.Arch.Microchip.PIC18
         public PICExecMode ExecMode { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether this PIC18 instruction is used in extended-mode instruction set only.
-        /// </summary>
-        /// <value>
-        /// True if this PIC18 is in extended-mode, false if not.
-        /// </value>
-        public bool IsExecExtended => ExecMode == PICExecMode.Extended;
-
-        /// <summary>
         /// The kind of instruction.
         /// </summary>
         /// <value>

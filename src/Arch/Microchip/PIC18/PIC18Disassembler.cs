@@ -1,5 +1,7 @@
 ﻿#region License
 /* 
+ * Copyright (C) 2017-2018 Christian Hostelet
+ * inspired by work of
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -516,7 +518,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Prog20bitAbsAddrOperand(dasm.ExecMode, dstaddr),
+                    op1 = new PIC18ProgAbsAddrOperand(dasm.ExecMode, dstaddr),
                 };
             }
         }
@@ -542,7 +544,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                 return new PIC18Instruction(opcode, dasm.ExecMode)
                 {
-                    op1 = new PIC18Prog20bitAbsAddrOperand(dasm.ExecMode, dstaddr),
+                    op1 = new PIC18ProgAbsAddrOperand(dasm.ExecMode, dstaddr),
                     op2 = new PIC18ShadowOperand(dasm.ExecMode, uInstr.Extract(8, 1)),
                 };
             }

@@ -10,7 +10,8 @@ namespace Microchip.MemoryMapper
     /// <summary>
     /// A factory class which implements the PIC memory mapper based on individual PIC definition.
     /// </summary>
-    public sealed class PICMemoryMapper : IPICMemoryMapper, IMemProgramRegionVisitor, IMemDataRegionVisitor, IMemDataSymbolVisitor, IMemTraitsSymbolVisitor
+    public sealed class PICMemoryMapper : IPICMemoryMapper,
+        IMemProgramRegionVisitor, IMemDataRegionVisitor, IMemDataSymbolVisitor, IMemTraitsSymbolVisitor
     {
         #region Locals
 
