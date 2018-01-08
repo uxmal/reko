@@ -252,6 +252,7 @@ namespace Reko.Arch.X86
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.leave: RewriteLeave(); break;
                 case Opcode.les: RewriteLxs(Registers.es); break;
+                case Opcode.lfence: RewriteLfence(); break;
                 case Opcode.lfs: RewriteLxs(Registers.fs); break;
                 case Opcode.lgs: RewriteLxs(Registers.gs); break;
                 case Opcode.@lock: RewriteLock(); break;
@@ -261,6 +262,7 @@ namespace Reko.Arch.X86
                 case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
+                case Opcode.mfence: RewriteMfence(); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;

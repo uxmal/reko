@@ -1814,6 +1814,24 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|esp = esp - 0x00000002",
                 "2|L--|Mem0[esp:word16] = es");
         }
+
+        [Test]
+        public void X86rw_mfence()
+        {
+            Run32bitTest(0x0F, 0xAE, 0xF0);   // mfence
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|__mfence()");
+        }
+
+        [Test]
+        public void X86drw_lfence()
+        {
+            Run32bitTest(0x0F, 0xAE, 0xE8); // lfence
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|__lfence()");
+        }
     }
 }
 

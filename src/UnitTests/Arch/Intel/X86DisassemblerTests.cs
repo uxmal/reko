@@ -924,6 +924,18 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("pause", 0xF3, 0x90);
         }
+
+        [Test]
+        public void X86dis_mfence()
+        {
+            AssertCode32("mfence", 0x0F, 0xAE, 0xF0);
+        }
+
+        [Test]
+        public void X86dis_lfence()
+        {
+            AssertCode32("lfence", 0x0F, 0xAE, 0xE8);
+        }
 	}
 }
 
