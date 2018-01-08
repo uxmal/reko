@@ -208,6 +208,8 @@ namespace Reko.Scanning
         public void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
         {
             var hits = enumerable.Intersect(this.WatchedAddresses).ToArray();
+            if (hits.Length > 0)
+                hits.ToString();
         }
     }
 }
