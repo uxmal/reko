@@ -35,6 +35,7 @@ using Opcode = Gee.External.Capstone.Arm.ArmInstruction;
 
 namespace Reko.Arch.Arm
 {
+    // https://wiki.ubuntu.com/ARM/Thumb2PortingHowto
     public class Arm32ProcessorArchitecture : ProcessorArchitecture
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
