@@ -134,7 +134,7 @@ namespace Reko.Scanning
 
         public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
-            throw new NotImplementedException();
+            return new GotoInstruction(gotoInstruction.Target.Accept(this));
         }
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)

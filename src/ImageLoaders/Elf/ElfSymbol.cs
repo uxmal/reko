@@ -33,5 +33,13 @@ namespace Reko.ImageLoaders.Elf
         public byte Info;
         public uint SectionIndex;
         public ulong Size;
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append(string.IsNullOrEmpty(Name) ? "?" : Name);
+            sb.AppendFormat(" {0:X}", Value);
+            return sb.ToString();
+        }
     }
 }

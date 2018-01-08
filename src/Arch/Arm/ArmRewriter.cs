@@ -811,12 +811,5 @@ namespace Reko.Arch.Arm
         {
             return frame.EnsureFlagGroup(A32Registers.cpsr, (uint) bits, name, type);
         }
-
-        private void RewriteSvc()
-        {
-            m.SideEffect(m.Fn(
-                host.EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2), 
-                Operand(Dst)));
-        }
     }
 }

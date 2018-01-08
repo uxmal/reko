@@ -316,10 +316,18 @@ namespace Reko.Typing
             return rdr.ReadCString(dt, program.TextEncoding);
         }
 
-        void PromoteToCString(Constant c, DataType charType)
+        DataType PromoteToCString(Constant c, DataType charType)
         {
+            // Note that it's OK if there is no global field corresponding to a string constant.
+            // It means that the string will be emitted "inline" in the code and not
+            // as a separate global character array.
+            var dt = StringType.NullTerminated(charType);
             var field = GlobalVars.Fields.AtOffset(c.ToInt32());
-            field.DataType = StringType.NullTerminated(charType);
+            if (field != null)
+            {
+                field.DataType = dt;
+            }
+            return dt;
         }
 
         private StructureField EnsureFieldAtOffset(StructureType str, DataType dt, int offset)

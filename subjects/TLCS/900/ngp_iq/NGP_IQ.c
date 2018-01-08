@@ -91,7 +91,7 @@ void fn00200089(word16 de)
 		byte a_536;
 		byte SZHVC_537;
 		bool Z_538;
-		((union Eq_245 *) 0x7000)();
+		((union Eq_247 *) 0x7000)();
 	}
 	word16 wa_222;
 	word16 bc_221;
@@ -142,7 +142,7 @@ void fn00200089(word16 de)
 		byte a_491;
 		byte SZHVC_492;
 		bool Z_493;
-		((union Eq_245 *) 0x7000)();
+		((union Eq_247 *) 0x7000)();
 	}
 	word16 wa_323;
 	word16 bc_322;
@@ -193,7 +193,7 @@ void fn00200089(word16 de)
 		byte a_448;
 		byte SZHVC_449;
 		bool Z_450;
-		((union Eq_245 *) 0x7000)();
+		((union Eq_247 *) 0x7000)();
 	}
 	fn00200532(0x00, 0x04, bc_360, fn00200532(*(byte *) 0x4003, 0x04, bc_360, de_372, 0x0D0E), 0x0D0D);
 	word16 wa_407 = DPB(wa_381, 0x04, 8);
@@ -212,13 +212,12 @@ void fn002004F2(byte w)
 	do
 		;
 	while (*(byte *) 0x4004 != w);
-	return;
 }
 
-// 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_478 deOut, Register out Eq_479 hOut)
-byte fn0020050A(byte w, byte a, word16 bc, word16 de, word16 hl, Eq_478 & deOut, Eq_479 & hOut)
+// 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_480 deOut, Register out Eq_481 hOut)
+byte fn0020050A(byte w, byte a, word16 bc, word16 de, word16 hl, Eq_480 & deOut, Eq_481 & hOut)
 {
-	struct Eq_480 * xde_27 = DPB(0x9800, (word16) (DPB(bc, 0x00, 8) * 0x02) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x40), 0);
+	struct Eq_482 * xde_27 = DPB(0x9800, (word16) (DPB(bc, 0x00, 8) * 0x02) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x40), 0);
 	xde_27->b0000 = a;
 	xde_27->b0001 = w;
 	word16 de_43;
@@ -247,11 +246,12 @@ word16 fn00200557(word16 wa, word16 bc, byte d, byte * xhl)
 	word16 wa_100 = DPB(wa, c * 0x02, 0);
 	byte * xde_29 = (word16) (DPB(bc, 0x00, 8) * 0x40) + ((word32) (c * 0x02) + 0x9800);
 	byte b_33 = 0x13;
-l00200579:
-	cu8 v17_47 = *xhl;
-	wa_100 = DPB(wa_100, v17_47, 0);
-	if (v17_47 != 0x00)
+	do
 	{
+		cu8 v17_47 = *xhl;
+		wa_100 = DPB(wa_100, v17_47, 0);
+		if (v17_47 == 0x00)
+			return wa_100;
 		xhl = xhl + 0x01;
 		if (v17_47 >= 0x5B)
 			wa_100 = DPB(wa_100, v17_47 + 0xE0, 0);
@@ -263,9 +263,7 @@ l00200579:
 		wa_100 = DPB(wa_77 + 0x09, w_82, 8);
 		xde_29 = xde_88 + 0x01;
 		b_33 = b_33 - 0x01;
-		if (b_33 != 0x00)
-			goto l00200579;
-	}
+	} while (b_33 != 0x00);
 	return wa_100;
 }
 
@@ -288,7 +286,6 @@ void fn002005B8()
 		xbc_13 = xbc_13 + 0x01;
 		hl_14 = hl_14 - 0x01;
 	} while (hl_14 != 0x00);
-	return;
 }
 
 // 002005F5: void fn002005F5(Register word32 xwa)
@@ -309,7 +306,6 @@ void fn002005F5(word32 xwa)
 		word32 xwa_33;
 		(*v9_16)();
 	}
-	return;
 }
 
 // 0020060C: void fn0020060C()
@@ -320,6 +316,5 @@ void fn0020060C()
 		*(ui32 *) 0x6F83 = *(ui32 *) 0x6F83 & ~0x08;
 		*(byte *) 0x6DA0 = 0x00;
 	}
-	return;
 }
 

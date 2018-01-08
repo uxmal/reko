@@ -29,7 +29,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class SuperHRelocator : ElfRelocator32
     {
-        public SuperHRelocator(ElfLoader32 loader) : base(loader)
+        public SuperHRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 

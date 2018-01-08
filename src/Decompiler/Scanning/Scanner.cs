@@ -62,7 +62,6 @@ namespace Reko.Scanning
         private IImportResolver importResolver;
         private SortedList<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
-        private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Address, ImportReference> importReferences;
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
@@ -89,7 +88,6 @@ namespace Reko.Scanning
             this.procQueue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
-            this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
@@ -743,7 +741,9 @@ namespace Reko.Scanning
             }
             blocks[addr].End = blocks[blockStarts[blockToSplit]].End;
             blocks[blockStarts[blockToSplit]].End = linAddr;
-            SanityCheck(blocks);
+			// Calling SanityCheck while scanning large binaries is very slow
+			// resulting in a O(n^2) performance.
+       		//     SanityCheck(blocks);
             return blockNew;
         }
 
@@ -818,24 +818,25 @@ namespace Reko.Scanning
             }
         }
 
-        //$REVIEW: can't the callers call Program.EnsurePse
+        [Obsolete]
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
-            return Program.EnsurePseudoProcedure(name, returnType, arity);
+            throw new NotSupportedException();
         }
 
         public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
         {
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, ppp),
                 returnType,
                 args);
         }
 
+
         public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var ppp = Program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
             ppp.Characteristics = c;
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, ppp),
@@ -843,6 +844,7 @@ namespace Reko.Scanning
                 args);
         }
 
+        
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             Procedure_v1 userProc;

@@ -188,15 +188,49 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new Group7OpRec(
+                    new SingleByteOpRec(Opcode.xrstor, "Md"),
+
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, "")),
+                new Group7OpRec(
+                    new SingleByteOpRec(Opcode.xsaveopt, "Md"),
+
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, "")),
+
+                new Group7OpRec(
+                    new SingleByteOpRec(Opcode.clflush, "Md"),
+
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, "")),
 
 				// group 16
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.prefetchnta, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht0, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht1, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht2, "Mb"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

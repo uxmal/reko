@@ -81,12 +81,7 @@ namespace Reko.Arch.M68k
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write("#");
-            var pt = Constant.DataType as PrimitiveType;
-            if (pt == null || pt.Domain != Domain.Real)
-            {
-                writer.Write("$");
-            }
-            writer.Write(MachineOperand.FormatValue(Constant));
+            writer.Write(MachineOperand.FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
         }
     }
 
@@ -159,10 +154,7 @@ namespace Reko.Arch.M68k
         {
             if (Offset != null)
             {
-                writer.Write('$');
-                writer.Write(Offset.IsNegative
-                    ? MachineOperand.FormatSignedValue(Offset)
-                    : MachineOperand.FormatUnsignedValue(Offset));
+                writer.Write(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
             }
             writer.Write("(");
             writer.Write(Base.Name);

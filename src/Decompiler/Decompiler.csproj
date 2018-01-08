@@ -344,6 +344,7 @@
     <Compile Include="Structure\Region.cs" />
     <Compile Include="Structure\RegionFactory.cs" />
     <Compile Include="Structure\ReverseGraph.cs" />
+    <Compile Include="Structure\TailReturnRemover.cs" />
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\ExpressionTypeAscender.cs" />
     <Compile Include="Typing\ExpressionTypeDescender.cs" />
@@ -392,9 +393,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\TypedExpressionRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Typing\TypeInferenceException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Typing\TypeTransformer.cs">

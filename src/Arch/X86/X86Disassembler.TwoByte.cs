@@ -75,7 +75,7 @@ namespace Reko.Arch.X86
                     Opcode.movshdup, "Vx,Wx"),
                 new SingleByteOpRec(Opcode.illegal),
 
-                new SingleByteOpRec(Opcode.illegal),
+                new GroupOpRec(16, ""),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),

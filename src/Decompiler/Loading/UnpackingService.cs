@@ -150,7 +150,7 @@ namespace Reko.Loading
             {
                 if (fsSvc.FileExists(filename))
                 {
-                    stm = fsSvc.CreateFileStream(filename, FileMode.Open);
+                    stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read);
                     try
                     {
                         var sSuffix = (int[])new UbjsonReader(stm).Read();

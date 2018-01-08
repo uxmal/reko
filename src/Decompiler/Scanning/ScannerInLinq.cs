@@ -105,7 +105,7 @@ namespace Reko.Scanning
         {
             this.sr = sr;
 
-            //sr.WatchedAddresses.Add(Address.Ptr32(0x9D34)); //$DEBUG
+           // sr.WatchedAddresses.Add(Address.Ptr64(0x0000000000405EF3)); //$DEBUG
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We

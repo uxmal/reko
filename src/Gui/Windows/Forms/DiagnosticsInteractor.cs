@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
@@ -38,6 +39,7 @@ namespace Reko.Gui.Windows.Forms
         private IServiceProvider services;
         private ListView listView;
         private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
+        private SynchronizationContext syncCtx;
 
         public IWindowFrame Frame { get; set; }
 
@@ -45,6 +47,7 @@ namespace Reko.Gui.Windows.Forms
         {
             if (listView == null)
                 throw new ArgumentNullException("listView");
+            syncCtx = SynchronizationContext.Current;
             this.listView = listView;
             listView.DoubleClick += listView_DoubleClick;
             listView.HandleCreated += listView_HandleCreated;
@@ -93,15 +96,27 @@ namespace Reko.Gui.Windows.Forms
 
             // This may be called from a worker thread, so we have to be careful to 
             // call the listView on the UI thread.
-            listView.Invoke(new Action(() =>
+            if (listView.InvokeRequired)
             {
-                var li = new ListViewItem();
-                li.Text = location.Text;
-                li.Tag = location;
-                li.ImageKey = d.ImageKey;
-                li.SubItems.Add(d.Message);
-                listView.Items.Add(li);
-            }));
+                this.syncCtx.Post((a) =>
+                {
+                    AddDiagnosticImpl(location, d);
+                }, null);
+            }
+            else
+            {
+                AddDiagnosticImpl(location, d);
+            }
+        }
+
+        private void AddDiagnosticImpl(ICodeLocation location, Diagnostic d)
+        {
+            var li = new ListViewItem();
+            li.Text = location.Text;
+            li.Tag = location;
+            li.ImageKey = d.ImageKey;
+            li.SubItems.Add(d.Message);
+            listView.Items.Add(li);
         }
 
         public void Error(string message)

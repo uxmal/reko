@@ -944,7 +944,7 @@ T_198: (in 0x20 : byte)
   Class: Eq_197
   DataType: cu8
   OrigDataType: cu8
-T_199: (in a0_185->b0000 <= 0x20 : bool)
+T_199: (in a0_185->b0000 > 0x20 : bool)
   Class: Eq_199
   DataType: bool
   OrigDataType: bool

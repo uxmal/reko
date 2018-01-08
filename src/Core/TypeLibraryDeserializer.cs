@@ -359,7 +359,7 @@ namespace Reko.Core
         {
             var members = enumType.Values != null
                 ? enumType.Values.ToSortedList(k => k.Name, v => (long)v.Value)
-                : null;
+                : new SortedList<string, long>();
             return new EnumType
             {
                 Name = enumType.Name,

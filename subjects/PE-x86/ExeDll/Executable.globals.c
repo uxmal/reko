@@ -5,10 +5,10 @@
 #include "Executable.h"
 
 Eq_118 g_t0005;
-Eq_765 g_t0100;
-Eq_765 g_t5A4D;
+Eq_774 g_t0100;
+Eq_774 g_t5A4D;
 word16 g_w400000 = 0x5A4D;
-struct Eq_765 * g_ptr40003C = &g_t0100;
+struct Eq_774 * g_ptr40003C = &g_t0100;
 LONG g_t4018DF(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr (struct "_EXCEPTION_POINTERS"))))
 ;
 <anonymous> * g_ptr4020D0 = fn00401BA4;

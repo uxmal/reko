@@ -16,9 +16,9 @@ union Eq_120 * g_ptr83F4 = &g_t10870;
 	{
 	};
 word32 g_dw8700 = 0x00008180;
-struct Eq_332 * g_ptr8740 = &g_t10838;
+struct Eq_334 * g_ptr8740 = &g_t10838;
 <anonymous> ** g_ptr10764 = &g_ptr10840;
-Eq_332 g_t10838 = 
+Eq_334 g_t10838 = 
 	{
 		&g_tFFFFFFFF,
 	};

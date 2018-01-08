@@ -84,12 +84,12 @@ namespace Reko.Arch.X86
         private void RewriteHlt()
         {
             rtlc = RtlClass.Terminates;
-            var ppp = host.EnsurePseudoProcedure("__hlt", VoidType.Instance, 0);
-            ppp.Characteristics = new ProcedureCharacteristics
+            var c = new ProcedureCharacteristics
             {
                 Terminates = true,
             };
-            m.SideEffect(PseudoProc(ppp, VoidType.Instance));
+            var ppp = host.PseudoProcedure("__hlt", c, VoidType.Instance);
+            m.SideEffect(ppp);
         }
 
         /// <summary>
@@ -659,12 +659,14 @@ namespace Reko.Arch.X86
                     return;
                 }
             }
+            var imm = instrCur.op1 as ImmediateOperand;
+            var value = SrcOp(dasm.Current.op1, arch.StackRegister.DataType);
             Debug.Assert(
-                dasm.Current.dataWidth == PrimitiveType.Word16 ||
-                dasm.Current.dataWidth == PrimitiveType.Word32 ||
-                dasm.Current.dataWidth == PrimitiveType.Word64,
+                value.DataType.Size == 2 ||
+                value.DataType.Size == 4 ||
+                value.DataType.Size == 8,
                 string.Format("Unexpected size {0}", dasm.Current.dataWidth));
-            RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
+            RewritePush(PrimitiveType.CreateWord(value.DataType.Size), value);
         }
 
         private void RewritePush(RegisterStorage reg)
@@ -725,11 +727,15 @@ namespace Reko.Arch.X86
 
         private void RewriteOut()
         {
-            var ppp = host.EnsurePseudoProcedure("__out" + instrCur.op2.Width.Prefix, VoidType.Instance, 2);
-            m.SideEffect(m.Fn(ppp, 
-                SrcOp(instrCur.op1),
-                SrcOp(instrCur.op2)));
+            var port = SrcOp(instrCur.op1);
+            var val = SrcOp(instrCur.op2);
+            var ppp = host.PseudoProcedure(
+                "__out" + instrCur.op2.Width.Prefix,
+                VoidType.Instance,
+                port, val);
+            m.SideEffect(ppp);
         }
+
         private void RewritePop()
         {
             RewritePop(dasm.Current.op1, dasm.Current.op1.Width);
@@ -795,7 +801,7 @@ namespace Reko.Arch.X86
             m.Assign(sp, m.IAdd(sp, width.Size));
         }
 
-        private void RewritePush(PrimitiveType dataWidth, Expression expr)
+        private void RewritePush(DataType dataWidth, Expression expr)
         {
             Constant c = expr as Constant;
             if (c != null && c.DataType != dataWidth)
@@ -866,14 +872,10 @@ namespace Reko.Arch.X86
 
         private void RewriteShxd(string name)
         {
-            var ppp = host.EnsurePseudoProcedure(name, instrCur.op1.Width, 3);
-            m.Assign(
-                SrcOp(instrCur.op1), 
-                m.Fn(
-                    ppp,
-                    SrcOp(instrCur.op1),
-                    SrcOp(instrCur.op2),
-                    SrcOp(instrCur.op3)));
+            var arg1 = SrcOp(instrCur.op1);
+            var arg2 = SrcOp(instrCur.op2);
+            var arg3 = SrcOp(instrCur.op3);
+            m.Assign(arg1, host.PseudoProcedure(name, arg1.DataType, arg1, arg2, arg3));
         }
 
         public MemoryAccess MemDi()
@@ -977,16 +979,14 @@ namespace Reko.Arch.X86
                 break;
             case Opcode.ins:
             case Opcode.insb:
-                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__in", instrCur.dataWidth, 1);
-                m.Assign(MemDi(), m.Fn(ppp, regDX));
+                regDX = frame.EnsureRegister(Registers.dx);
+                m.Assign(MemDi(), host.PseudoProcedure("__in", instrCur.dataWidth, regDX));
                 incDi = true;
                 break;
             case Opcode.outs:
             case Opcode.outsb:
-                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, 2);
-                m.SideEffect(m.Fn(ppp, regDX, RegAl));
+                regDX = frame.EnsureRegister(Registers.dx);
+                m.SideEffect(host.PseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, regDX, RegAl));
                 incSi = true;
                 break;
             case Opcode.scas:

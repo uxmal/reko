@@ -28,6 +28,5 @@ void fn0C00_0000(word16 ax, word16 si, selector ds)
 	else
 		bx_10 = 0x1211;
 	Mem6[ds:si:word16] = bx_10;
-	return;
 }
 ===========================

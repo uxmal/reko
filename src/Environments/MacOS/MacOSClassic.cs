@@ -41,6 +41,7 @@ namespace Reko.Environments.MacOS
     public class MacOSClassic : Platform
     {
         private MacOsRomanEncoding encoding;
+        private Identifier ptrA5World;
 
         public MacOSClassic(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "macOs")
@@ -50,7 +51,7 @@ namespace Reko.Environments.MacOS
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new HashSet<RegisterStorage> { Registers.a7 };
+            return new HashSet<RegisterStorage> { Registers.a5, Registers.a7 };
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -101,6 +102,7 @@ namespace Reko.Environments.MacOS
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;  //$REVIEW: Does MacOS support wchar_t?
             case CBasicType.Short: return 2;
@@ -115,10 +117,33 @@ namespace Reko.Environments.MacOS
             }
         }
 
+        public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
+        {
+            var ptrA5World = EnsureA5Pointer();
+            var a5 = proc.Frame.EnsureRegister(Registers.a5);
+            m.Assign(a5, ptrA5World);
+        }
+
+        private Identifier EnsureA5Pointer()
+        {
+            if (this.ptrA5World != null)
+                return this.ptrA5World;
+
+            var a5world_t = new StructureType
+            {
+                Name = "A5World_t",
+                ForceStructure = true,
+            };
+            var ptr = new Pointer(a5world_t, PointerType.Size);
+            this.ptrA5World = new Identifier("a5world", ptr, new MemoryStorage());
+            return this.ptrA5World;
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// If an indirect call uses the A5 register and the offset of the call lands in the 
         /// jump table in the A5 world, returns the address stored in the jump table
@@ -126,7 +151,6 @@ namespace Reko.Environments.MacOS
         /// </summary>
         /// <param name="instr"></param>
         /// <returns>Null if the call wasn't to a valid A5 jumptable location.</returns>
-
         public override Address ResolveIndirectCall(RtlCall instr)
         {
             var bin = instr.Target as BinaryExpression;

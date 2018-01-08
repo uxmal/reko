@@ -12,17 +12,7 @@ union Eq_32 g_u12BC =
 	{
 		0x64
 	};
-struct Eq_725 g_t13E4 = 
-	{
-		0x25,
-		0x64,
-	};
-struct Eq_725 g_t1D6C = 
-	{
-		0x25,
-		0x00,
-	};
-Eq_4513 g_a2815[] = 
+Eq_4522 g_a2815[] = 
 	{
 	};
 ptr32 g_ptr3D70 = 0x00000000;
@@ -36,13 +26,13 @@ ui32 g_dw3D8C = 0x05050505;
 word32 g_dw3D98 = 0x05050505;
 ptr32 g_ptr3D9C = 0x06060606;
 word32 g_dw3DA0 = 0x06060606;
-struct Eq_3069 * g_ptr3DA4 = &g_t6060606;
+struct Eq_3071 * g_ptr3DA4 = &g_t6060606;
 word32 g_dw3DA8 = 0x06060606;
-Eq_3614 g_a3DAC[] = 
+Eq_3619 g_a3DAC[] = 
 	{
 	};
 Eq_5 g_t4000;
 Eq_70 g_t10202;
 Eq_70 g_t3030303;
-Eq_3069 g_t6060606;
+Eq_3071 g_t6060606;
 

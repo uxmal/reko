@@ -59,6 +59,5 @@ void fn0C00_0000(word16 si, word16 di, selector ds)
 	ax_18 = si_12 - si;
 l0C00_0024:
 	Mem20[ds:0x0300:word16] = ax_18;
-	return;
 }
 ===========================

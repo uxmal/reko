@@ -31,7 +31,6 @@ namespace Reko.Core.Services
     /// </summary>
     public interface IFileSystemService
     {
-        Stream CreateFileStream(string filename, FileMode mode);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
         XmlWriter CreateXmlWriter(string filename);

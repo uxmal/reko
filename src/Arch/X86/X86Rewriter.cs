@@ -191,6 +191,7 @@ namespace Reko.Arch.X86
                 case Opcode.fldz: RewriteFldConst(0.0); break;
                 case Opcode.fmul: EmitCommonFpuInstruction(m.FMul, false, false); break;
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
+				case Opcode.fninit: RewriteFninit(); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.fptan: RewriteFptan(); break;
@@ -251,6 +252,7 @@ namespace Reko.Arch.X86
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.leave: RewriteLeave(); break;
                 case Opcode.les: RewriteLxs(Registers.es); break;
+                case Opcode.lfence: RewriteLfence(); break;
                 case Opcode.lfs: RewriteLxs(Registers.fs); break;
                 case Opcode.lgs: RewriteLxs(Registers.gs); break;
                 case Opcode.@lock: RewriteLock(); break;
@@ -260,6 +262,7 @@ namespace Reko.Arch.X86
                 case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
+                case Opcode.mfence: RewriteMfence(); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
@@ -286,11 +289,16 @@ namespace Reko.Arch.X86
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.@outs: RewriteStringInstruction(); break;
                 case Opcode.@outsb: RewriteStringInstruction(); break;
+                case Opcode.pause: RewritePause(); break;
                 case Opcode.palignr: RewritePalignr(); break;
                 case Opcode.pcmpeqb: RewritePcmpeqb(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.popa: RewritePopa(); break;
                 case Opcode.popf: RewritePopf(); break;
+                case Opcode.prefetchnta: RewritePrefetch("__prefetchnta"); break;
+                case Opcode.prefetcht0: RewritePrefetch("__prefetcht0"); break;
+                case Opcode.prefetcht1: RewritePrefetch("__prefetcht1"); break;
+                case Opcode.prefetcht2: RewritePrefetch("__prefetcht2"); break;
                 case Opcode.pshufd: RewritePshufd(); break;
                 case Opcode.punpcklbw: RewritePunpcklbw(); break;
                 case Opcode.punpcklwd: RewritePunpcklwd(); break;
@@ -359,7 +367,13 @@ namespace Reko.Arch.X86
             }
         }
 
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+		private void RewriteFninit()
+		{
+			var ppp = host.PseudoProcedure("__fninit", VoidType.Instance);
+			m.SideEffect(ppp);
+		}
+
+		public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
         {
             if (args.Length != ppp.Arity)
                 throw new ArgumentOutOfRangeException(

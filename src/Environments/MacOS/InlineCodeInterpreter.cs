@@ -144,7 +144,7 @@ namespace Reko.Environments.MacOS
                 });
                 offset += t.Item1;
             }
-
+            ssig.StackDelta = offset + 4;   // 4 = return address size.
             var syscallinfo = new SyscallInfo_v1
             {
                 Vector = vector.ToString("X4"),

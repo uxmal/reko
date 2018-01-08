@@ -4,7 +4,7 @@
 
 #include "NGP_IQ.h"
 
-Eq_245 g_a7000[];
+Eq_247 g_a7000[];
 word16 g_a8300[];
 byte g_a9000[];
 byte g_a9800[];

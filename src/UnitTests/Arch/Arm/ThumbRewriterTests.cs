@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         private class FakeRewriterHost : IRewriterHost
         {
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            public PseudoProcedure EnsurePseudoProcedure_DEAD(string name, DataType returnType, int arity)
             {
                 return new PseudoProcedure(name, returnType, arity);
             }

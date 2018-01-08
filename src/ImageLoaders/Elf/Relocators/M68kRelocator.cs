@@ -28,7 +28,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class M68kRelocator : ElfRelocator32
     {
-        public M68kRelocator(ElfLoader32 loader) : base(loader)
+        public M68kRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 

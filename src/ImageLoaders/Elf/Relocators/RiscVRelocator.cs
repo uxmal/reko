@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public class RiscVRelocator64 : ElfRelocator64
     {
-        public RiscVRelocator64(ElfLoader64 loader) : base(loader)
+        public RiscVRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 

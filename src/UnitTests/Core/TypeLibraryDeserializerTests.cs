@@ -353,5 +353,32 @@ namespace Reko.UnitTests.Core
             var globalByOrdinal = stdlib.GlobalsByOrdinal[42];
             Assert.AreSame(globalByName, globalByOrdinal);
         }
+
+        [Test]
+        public void Tlldr_typedef_empty_enum()
+        {
+            Given_ArchitectureStub();
+            mr.ReplayAll();
+
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var slib = new SerializedLibrary
+            {
+                Types = new SerializedType[]
+                {
+                    new SerializedTypedef
+                    {
+                        Name ="empty_enum",
+                        DataType =new SerializedEnumType
+                        {
+                            Name = "empty",
+                            Size = 4,
+                        }
+                    }
+                }
+            };
+            var lib = tlLdr.Load(slib);
+
+            Assert.AreEqual("(enum empty,())", lib.LookupType("empty_enum").ToString());
+        }
     }
 }

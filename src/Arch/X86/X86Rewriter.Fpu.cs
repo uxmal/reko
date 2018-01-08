@@ -371,71 +371,85 @@ namespace Reko.Arch.X86
                 else if (acc.Register != Registers.ah)
                     return false;
                 this.len += nextInstr.Length;
-                dasm.Skip(1);
                 m.Assign(
-                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), orw.FlagGroup(FlagM.FPUF));
-                if (!dasm.MoveNext())
-                    throw new AddressCorrelatedException(nextInstr.Address, "Expected instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
-                nextInstr = dasm.Current;
-                this.len += nextInstr.Length;
+                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                    orw.FlagGroup(FlagM.FPUF));
 
-                /* fcom/fcomp/fcompp Results:
-                    Condition      C3  C2  C0
-                    ST(0) > SRC     0   0   0
-                    ST(0) < SRC     0   0   1
-                    ST(0) = SRC     1   0   0
-                    Unordered       1   1   1
-
-                   Masks:
-                    Mask   Flags
-                    0x01   C0
-                    0x04   C2
-                    0x40   C3
-                    0x05   C2 and C0
-                    0x41   C3 and C0
-                    0x44   C3 and C2
-
-                  Masks && jump operations:
-                    Opcode Mask Condition
-                    jpe    0x05    >=
-                    jpe    0x41    >
-                    jpe    0x44    !=
-                    jpo    0x05    <
-                    jpo    0x41    <=
-                    jpo    0x44    =
-                    jz     0x01    >=
-                    jz     0x40    !=
-                    jz     0x41    >
-                    jnz    0x01    <
-                    jnz    0x40    =
-                    jnz    0x41    <=
-                */
-
-                switch (nextInstr.code)
+                // Advance past the 'test' instruction.
+                dasm.Skip(1);
+                while (dasm.MoveNext())
                 {
-                case Opcode.jpe:
-                    if (mask == 0x05) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
-                    if (mask == 0x44) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
-                    break;
-                case Opcode.jpo:
-                    if (mask == 0x44) { Branch(ConditionCode.EQ, nextInstr.op1); return true;}
-                    if (mask == 0x41) { Branch(ConditionCode.LE, nextInstr.op1); return true;}
-                    if (mask == 0x05) { Branch(ConditionCode.LT, nextInstr.op1); return true;}
-                    break;
-                case Opcode.jz:
-                    if (mask == 0x40) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
-                    if (mask == 0x01) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
-                    break;
-                case Opcode.jnz:
-                    if (mask == 0x40) { Branch(ConditionCode.EQ, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.LE, nextInstr.op1); return true; }
-                    if (mask == 0x01) { Branch(ConditionCode.LT, nextInstr.op1); return true; }
-                    break;
-                }
+                    instrCur = dasm.Current;
+                    this.len += instrCur.Length;
 
-                throw new AddressCorrelatedException(nextInstr.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, nextInstr.code);
+                    /* fcom/fcomp/fcompp Results:
+                        Condition      C3  C2  C0
+                        ST(0) > SRC     0   0   0
+                        ST(0) < SRC     0   0   1
+                        ST(0) = SRC     1   0   0
+                        Unordered       1   1   1
+
+                       Masks:
+                        Mask   Flags
+                        0x01   C0
+                        0x04   C2
+                        0x40   C3
+                        0x05   C2 and C0
+                        0x41   C3 and C0
+                        0x44   C3 and C2
+
+                      Masks && jump operations:
+                        Opcode Mask Condition
+                        jpe    0x05    >=
+                        jpe    0x41    >
+                        jpe    0x44    !=
+                        jpo    0x05    <
+                        jpo    0x41    <=
+                        jpo    0x44    =
+                        jz     0x01    >=
+                        jz     0x40    !=
+                        jz     0x41    >
+                        jnz    0x01    <
+                        jnz    0x40    =
+                        jnz    0x41    <=
+                    */
+
+                    switch (instrCur.code)
+                    {
+                    //$TODO The following instructions are being added on an ad-hoc
+                    // basis, since they don't affect the x86 flags register.
+                    // The long term fix is to implement an architecture-specific
+                    // condition code elimination pass as described elsewhere.
+                    case Opcode.mov: RewriteMov(); break;
+                    case Opcode.fstp: RewriteFst(true); break;
+                    case Opcode.push: RewritePush(); break;
+                    case Opcode.lea: RewriteLea(); break;
+
+                    case Opcode.jpe:
+                        if (mask == 0x05) { Branch(ConditionCode.GE, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.op1); return true; }
+                        if (mask == 0x44) { Branch(ConditionCode.NE, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                    case Opcode.jpo:
+                        if (mask == 0x44) { Branch(ConditionCode.EQ, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.op1); return true; }
+                        if (mask == 0x05) { Branch(ConditionCode.LT, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                    case Opcode.jz:
+                        if (mask == 0x40) { Branch(ConditionCode.NE, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.GT, instrCur.op1); return true; }
+                        if (mask == 0x01) { Branch(ConditionCode.GE, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                    case Opcode.jnz:
+                        if (mask == 0x40) { Branch(ConditionCode.EQ, instrCur.op1); return true; }
+                        if (mask == 0x41) { Branch(ConditionCode.LE, instrCur.op1); return true; }
+                        if (mask == 0x01) { Branch(ConditionCode.LT, instrCur.op1); return true; }
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected {0} fstsw mask for {1} opcode .", mask, instrCur.code);
+                    default:
+                        throw new AddressCorrelatedException(instrCur.Address, "Unexpected instruction {0} after fstsw", instrCur);
+                    }
+                }
+                throw new AddressCorrelatedException(instrCur.Address, "Expected branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
             }
             return false;
         }

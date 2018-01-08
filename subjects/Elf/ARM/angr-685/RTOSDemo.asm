@@ -4,8 +4,7 @@
 00000020 00 00 00 00 00 00 00 00 00 00 00 00 15 17 00 00 ................
 00000030 00 00 00 00 00 00 00 00 89 16 00 00 E5 16 00 00 ................
 00000040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00000050 00 00 00 00 09 81 00 00                         ........       
-00000058                         70                              p      
+00000050 00 00 00 00 09 81 00 00 70                      ........p      
 
 ;; prvUnlockQueue: 00000059
 prvUnlockQueue proc
@@ -1947,8 +1946,8 @@ SysCtlClkVerificationClear proc
 ;; UARTParityModeSet: 00009F39
 UARTParityModeSet proc
 	ldrbthi	r2,[r0],r10,ror #6
-	mrsgt	r1,The given key was not present in the dictionary.
-
+	mrsgt	r1,spsr
+	subgt	r7,r7,r2,rrx
 
 ;; UARTParityModeGet: 00009F45
 UARTParityModeGet proc

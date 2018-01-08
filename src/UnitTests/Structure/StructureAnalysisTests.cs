@@ -25,13 +25,15 @@ using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Structure
 {
     [TestFixture]
-    public class ProcedureStructurerTests
+    public class StructureAnalysisTests
     {
         private ProcedureBuilder m;
+        private CompoundConditionCoalescer ccc;
 
         [SetUp]
         public void Setup()
@@ -39,10 +41,19 @@ namespace Reko.UnitTests.Structure
             m = new ProcedureBuilder();
         }
 
+        private void Given_CompoundConditionCoalescer(Procedure proc)
+        {
+            ccc = new CompoundConditionCoalescer(proc);
+        }
+
         private void RunTest(string sExp, Procedure proc)
         {
             var cfgc = new ControlFlowGraphCleaner(proc);
             cfgc.Transform();
+            if (ccc != null)
+            {
+                ccc.Transform();
+            }
             var ps = new StructureAnalysis(new FakeDecompilerEventListener(), new Program(), proc);
             var reg = ps.Execute();
             var sb = new StringWriter();
@@ -57,7 +68,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_Simple()
+        public void StrAnls_Simple()
         {
             m.Return();
 
@@ -68,7 +79,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_IfThen()
+        public void StrAnls_IfThen()
         {
             var r1 = m.Reg32("r1", 1);
             m.Label("head");
@@ -87,7 +98,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_IfThenElse()
+        public void StrAnls_IfThenElse()
         {
             var r1 = m.Reg32("r1", 1);
             m.Label("head");
@@ -113,7 +124,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_While()
+        public void StrAnls_While()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -143,7 +154,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_While2()
+        public void StrAnls_While2()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -175,7 +186,84 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_BigHeadWhile()
+        public void StrAnls_While_BreakAtTheEndOfBody()
+        {
+            m.Label("head");
+            m.BranchIf(m.Not(m.Fn("next")), "done");
+
+            m.Label("loop");
+            m.SideEffect(m.Fn("process"));
+            m.BranchIf(m.Fn("cancel"), "done");
+            m.Goto("head");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(m.Int32(1));
+
+            var sExp =
+@"    while (next())
+    {
+        process();
+        if (cancel())
+            break;
+    }
+    finalize();
+    return 0x01;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_While_LastResort()
+        {
+            m.Label("head");
+            m.BranchIf(m.Not(m.Fn("next")), "done");
+
+            m.BranchIf(m.Fn("needFullCheck"), "fullCheck");
+
+            m.BranchIf(m.Fn("fastCheckFailed"), "failed");
+            m.SideEffect(m.Fn("calc"));
+            m.Goto("wait");
+
+            m.Label("fullCheck");
+            m.BranchIf(m.Fn("fullCheckFailed"), "failed");
+            m.Goto("wait");
+
+            m.Label("failed");
+            m.SideEffect(m.Fn("throwError"));
+
+            m.Label("wait");
+            m.SideEffect(m.Fn("wait"));
+            m.Goto("head");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(m.Int32(0));
+
+            var sExp =
+@"    while (next())
+    {
+        if (!needFullCheck())
+        {
+            if (fastCheckFailed())
+                goto failed;
+            calc();
+        }
+        else if (fullCheckFailed())
+        {
+failed:
+            throwError();
+        }
+        wait();
+    }
+    finalize();
+    return 0x00;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_BigHeadWhile()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -209,7 +297,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_DoWhile()
+        public void StrAnls_DoWhile()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -235,7 +323,34 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void ProcStr_NestedWhile()
+        public void StrAnls_DoWhile_InvertedCondition()
+        {
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+
+            m.Label("loop");
+            m.Store(r1, m.LoadDw(r2));
+            m.Assign(r1, m.IAdd(r1, 4));
+            m.Assign(r2, m.IAdd(r2, 4));
+            m.BranchIf(m.Ne(r1, r2), "done");
+            m.Goto("loop");
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp =
+@"    do
+    {
+        Mem0[r1:word32] = Mem0[r2:word32];
+        r1 = r1 + 0x04;
+        r2 = r2 + 0x04;
+    } while (r1 == r2);
+    return r2;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_NestedWhile()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -285,7 +400,7 @@ namespace Reko.UnitTests.Structure
 
 
         [Test]
-        public void ProcStr_WhileBreak()
+        public void StrAnls_WhileBreak()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -320,7 +435,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test(Description="Here, the block leaving the loop does some work first.")]
-        public void ProcStr_WhileBreak2()
+        public void StrAnls_WhileBreak2()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -365,7 +480,7 @@ namespace Reko.UnitTests.Structure
 
 
         [Test(Description = "This forces a goto, because the loop leaving goto isn't going to the follow node.")]
-        public void ProcStr_WhileGoto()
+        public void StrAnls_WhileGoto()
         {
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
@@ -414,7 +529,7 @@ end_fn:
         }
 
         [Test]
-        public void ProcStr_UnstructuredExit_NILZ()
+        public void StrAnls_UnstructuredExit_NILZ()
         {
             m.Label("loopheader");
             m.BranchIf(m.Fn("foo"), "done");
@@ -448,7 +563,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_InfiniteLoop_BreakInsideOfNestedIfs()
+        public void StrAnls_InfiniteLoop_BreakInsideOfNestedIfs()
         {
             m.Label("loopheader");
 
@@ -485,7 +600,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_InfiniteLoop()
+        public void StrAnls_InfiniteLoop()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -505,7 +620,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_Switch()
+        public void StrAnls_Switch()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -546,7 +661,7 @@ unstructuredexit:
         }
 
         [Test]
-        public void ProcStr_Switch_Fallthru()
+        public void StrAnls_Switch_Fallthru()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -588,7 +703,7 @@ case_2:
         }
 
         [Test]
-        public void ProcStr_Switch_Fallthru_CoincidentTargets()
+        public void StrAnls_Switch_Fallthru_CoincidentTargets()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -631,7 +746,7 @@ target_2:
         }
 
         [Test]
-        public void ProcStr_Switch_Fallthru_IrregularCaseExits()
+        public void StrAnls_Switch_Fallthru_IrregularCaseExits()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -670,8 +785,136 @@ case_1:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void StrAnls_Switch_IrregularEntries_AllCasesAreTails()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.BranchIf(m.Fn("check"), "case_0");
+            m.Switch(r1, "case_0", "case_1");
+
+            m.Label("case_0");
+            m.Assign(r1, 2);
+            m.Return(m.IMul(r1, 3));
+
+            m.Label("case_1");
+            m.Assign(r1, 1);
+            m.Return(m.IMul(r1, 4));
+
+            var sExp =
+@"    if (check())
+        goto case_0;
+    switch (r1)
+    {
+    case 0x00:
+case_0:
+        r1 = 0x02;
+        return r1 * 0x03;
+    case 0x01:
+        r1 = 0x01;
+        return r1 * 0x04;
+    }
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_Switch_SingleCase()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.SideEffect(m.Fn("initialize"));
+            m.BranchIf(m.Gt(r1, 3), "finalize");
+            m.Switch(r1, "case_0");
+
+            m.Label("case_0");
+            m.Assign(r1, 2);
+            m.Goto("finalize");
+
+            m.Label("finalize");
+            m.SideEffect(m.Fn("finalize"));
+
+            var sExp =
+@"    initialize();
+    if (r1 <= 0x03)
+    {
+        switch (r1)
+        {
+        case 0x00:
+            r1 = 0x02;
+            break;
+        }
+    }
+    finalize();
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_Switch_LastResort()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Switch(r1, "case_0", "case_1", "case_2");
+
+            m.Label("case_0");
+            m.Assign(r1, 3);
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Assign(r1, 2);
+            m.BranchIf(m.Fn("needFullCheck"), "fullCheck");
+
+            m.BranchIf(m.Fn("fastCheckFailed"), "failed");
+            m.Goto("done");
+
+            m.Label("fullCheck");
+            m.BranchIf(m.Fn("fullCheckFailed"), "failed");
+            m.Goto("done");
+
+            m.Label("failed");
+            m.SideEffect(m.Fn("throwError"));
+            m.Goto("done");
+
+            m.Label("case_2");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(r1);
+
+            var sExp =
+@"    switch (r1)
+    {
+    case 0x00:
+        r1 = 0x03;
+        break;
+    case 0x01:
+        r1 = 0x02;
+        if (!needFullCheck())
+        {
+            if (fastCheckFailed())
+                goto failed;
+        }
+        else if (fullCheckFailed())
+        {
+failed:
+            throwError();
+        }
+        break;
+    case 0x02:
+        r1 = 0x01;
+        break;
+    }
+    finalize();
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
         [Test(Description="A do-while with a nested if-then-else")]
-        public void ProcStr_DoWhile_NestedIfElse()
+        public void StrAnls_DoWhile_NestedIfElse()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -709,7 +952,7 @@ case_1:
         }
 
         [Test(Description="A do-while loop with many continue statements.")]
-        public void ProcStr_DoWhile_ManyContinues()
+        public void StrAnls_DoWhile_ManyContinues()
         {
             var r1 = m.Reg32("r1", 1);
 
@@ -758,7 +1001,107 @@ case_1:
         }
 
         [Test]
-        public void ProcStr_DoNotLoseLabels()
+        public void StrAnls_DoWhile_NestedSwitch()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+            m.BranchIf(m.Fn("action"), "done");
+            m.Switch(r1, "case_0", "case_1");
+
+            m.Label("case_0");
+            m.BranchIf(m.Fn("done"), "done");
+            m.Assign(r1, 2);
+            // Fallthru
+
+            m.Label("case_1");
+            m.Assign(r1, 1);
+            m.Goto("done");
+
+            m.Label("done");
+            m.BranchIf(m.Eq(r1, 0), "head");
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        if (!action())
+        {
+            switch (r1)
+            {
+            case 0x00:
+                if (!done())
+                {
+                    r1 = 0x02;
+                    goto case_1;
+                }
+                break;
+            case 0x01:
+case_1:
+                r1 = 0x01;
+                break;
+            }
+        }
+    } while (r1 == 0x00);
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_DoWhile_Return()
+        {
+            var r1 = m.Reg32("r1", 1);
+
+            m.Label("head");
+
+            m.BranchIf(m.Fn("check"), "ok");
+            m.Return(m.Int32(-1));
+
+            m.Label("ok");
+            m.BranchIf(m.Fn("next"), "head");
+
+            m.Return(r1);
+
+            var sExp =
+@"    do
+    {
+        if (!check())
+            return -0x01;
+    } while (next());
+    return r1;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_DoWhile_BreakAtTheStartOfBody()
+        {
+            m.Label("head");
+            m.SideEffect(m.Fn("process"));
+            m.BranchIf(m.Fn("cancel"), "done");
+            m.BranchIf(m.Not(m.Fn("next")), "done");
+            m.Goto("head");
+
+            m.Label("done");
+            m.SideEffect(m.Fn("finalize"));
+            m.Return(m.Int32(1));
+
+            var sExp =
+@"    do
+    {
+        process();
+        if (cancel())
+            break;
+    } while (next());
+    finalize();
+    return 0x01;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_DoNotLoseLabels()
         {
             m.BranchIf(m.Fn("check"), "left");
             m.Goto("right");
@@ -811,7 +1154,7 @@ easy:
         }
 
         [Test]
-        public void ProcStr_r00237()
+        public void StrAnls_r00237()
         {
             //byte fn0800_0541(byte al, selector ds)
 
@@ -865,41 +1208,81 @@ m.Label("l0800_0585");
             var sExp =
             #region Expected
 @"    cx_10 = 20000;
-l0800_0544:
-    si_12 = 0x8E8A;
-    al_13 = 0x00;
     do
     {
-        si_12 = si_12 + 0x01;
-        if (Mem0[ds:si_12:byte] != 0x00)
+        si_12 = 0x8E8A;
+        al_13 = 0x00;
+        do
         {
-            al_13 = 0x01;
-            Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
-            if (si_12 != Mem0[ds:0x8F0B:word16])
-                break;
-        }
-        Z_26 = cond(si_12 - 0x8F0A);
-    } while (si_12 == 0x8F0A);
-    if (!Z_26)
-    {
-        Mem0[ds:0x8F0B:word16] = si_12;
-        al_43 = Mem0[ds:si_12 - 0x8E31:byte];
-        if (al_43 != 0x00)
+            si_12 = si_12 + 0x01;
+            if (Mem0[ds:si_12:byte] != 0x00)
+            {
+                al_13 = 0x01;
+                Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
+                if (si_12 != Mem0[ds:0x8F0B:word16])
+                    break;
+            }
+            Z_26 = cond(si_12 - 0x8F0A);
+        } while (si_12 != 0x8F0A);
+        if (!Z_26)
         {
-            if (al_43 < 0x00)
-                al_43 = 0x00;
-            return al_43;
+            Mem0[ds:0x8F0B:word16] = si_12;
+            al_43 = Mem0[ds:si_12 - 0x8E31:byte];
+            if (al_43 != 0x00)
+            {
+                if (al_43 < 0x00)
+                    al_43 = 0x00;
+                return al_43;
+            }
         }
-    }
-    else if (al_13 == 0x00)
-        Mem0[ds:0x8F0B:byte] = 0x00;
-    cx_10 = cx_10 - 0x01;
-    if (cx_10 != 0x00)
-        goto l0800_0544;
+        else if (al_13 == 0x00)
+            Mem0[ds:0x8F0B:byte] = 0x00;
+        cx_10 = cx_10 - 0x01;
+    } while (cx_10 != 0x00);
     return 0x00;
 ";
             #endregion
 
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test(Description = "This was failing because the compound condition coalescer required the CFG cleaner" +
+            " to execute first.")]
+        public void StrAnls_Issue_529()
+        {
+            var m = new ProcedureBuilder();
+            var fp = m.Frame.FramePointer;
+            var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            var puts = new ExternalProcedure("puts", new FunctionType());
+
+            m.Label("m4E2");
+            m.Goto("m4F7");
+
+            m.Label("m4E4");
+            m.SideEffect(m.Fn(puts, Constant.String("Hello", StringType.NullTerminated(PrimitiveType.Byte))));
+            m.Return();
+
+            m.Label("m4F7");
+            m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x0808A0A4))), "m502");
+            m.Label("m500");
+            m.Goto("m50D");
+
+            m.Label("m502");
+            m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x0808A0A8))), "m4E4");
+            m.Goto("m50D");
+            m.Label("m50D");
+            m.SideEffect(m.Fn(puts, Constant.String("Goodbye", StringType.NullTerminated(PrimitiveType.Byte))));
+            m.Goto("m4E4");
+
+            var sExp =
+            #region Expected
+@"    if (Mem0[0x0808A0A4:word32] != 0x00 || Mem0[0x0808A0A8:word32] != 0x00)
+        puts(""Goodbye"");
+    puts(""Hello"");
+    return;
+";
+            #endregion
+            Given_CompoundConditionCoalescer(m.Procedure);
             RunTest(sExp, m.Procedure);
         }
     }

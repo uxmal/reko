@@ -2514,7 +2514,7 @@ l00401BFC:
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_81,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38,r2_83,r25_86,r28_34,r3_33,r30_27,r4_84,r5_85,r6_30,r7_31,ra_26,sp_23
 		defs: r2_96,r25_89,r28_88,r3_97,r30_91,r4_92,r5_93,r6_94,r7_95,ra_90,sp_87
 	Mem101[r2_32 + 0x00001798:word16] = 0x0002
-	Mem105[r2_32 + 0x0000179A:word16] = (word16) (word32) Mem101[r4 + 0x00000002:word16]
+	Mem105[r2_32 + 0x0000179A:word16] = (word16) (word32) Mem101[r4 + 0x00000002:uint16]
 	Mem109[r2_32 + 0x0000179C:word32] = Mem105[r4 + 0x00000004:word32]
 	word32 sp_116
 	word32 r28_117
@@ -2532,7 +2532,7 @@ l00401BFC:
 		defs: r2_125,r25_118,r28_117,r3_126,r30_120,r4_121,r5_122,r6_123,r7_124,ra_119,sp_116
 	Mem130[r2_32:word32] = r2_125
 	Mem135[r2_32 + 0x000017A8:word16] = 0x0002
-	Mem139[r2_32 + 0x000017AA:word16] = (word16) (word32) Mem135[r5 + 0x00000002:word16]
+	Mem139[r2_32 + 0x000017AA:word16] = (word16) (word32) Mem135[r5 + 0x00000002:uint16]
 	Mem143[r2_32 + 0x000017AC:word32] = Mem139[r5 + 0x00000004:word32]
 	Mem146[r2_32 + 0x00001790:word32] = r7
 	word32 r25_150 = Mem146[0x100008E4:word32]
@@ -9185,7 +9185,7 @@ l00406070_ds_t:
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -0028(32) Stack +0000(32) Stack +0004(32)
 
 l00406150:
-	Mem288[Mem0[0x10000A40:word32] + 4 + ((dwLoc24_132 * 0x00000014 - dwLoc24_132 << 0x03) + 144):word32] = (word32) Mem0[((word32) bLoc1C_111 << 0x01) + Mem0[__register_frame_info:word32]:word16] + 0x00010000
+	Mem288[Mem0[0x10000A40:word32] + 4 + ((dwLoc24_132 * 0x00000014 - dwLoc24_132 << 0x03) + 144):word32] = (word32) Mem0[((word32) bLoc1C_111 << 0x01) + Mem0[Mem0[0x10000A6C:word32]:word32]:uint16] + 0x00010000
 	dwLoc28_103 = dwLoc28_103 + -1
 // DataOut:
 // DataOut (flags): 
@@ -9366,7 +9366,7 @@ l00406374_ds_f:
 // LocalsOut: fp(32) Local -0018(32)
 
 l004063B4:
-	branch (word32) Mem0[((word32) Mem0[Mem0[0x10000A40:word32] + ((dwLoc18_27 * 0x00000014 - dwLoc18_27 << 0x03) + 8) + 0x00000004:int8] << 0x01) + Mem0[__register_frame_info:word32]:word16] == 0x00010000 l004063B4_ds_t
+	branch (word32) Mem0[((word32) Mem0[Mem0[0x10000A40:word32] + ((dwLoc18_27 * 0x00000014 - dwLoc18_27 << 0x03) + 8) + 0x00000004:int8] << 0x01) + Mem0[Mem0[0x10000A6C:word32]:word32]:uint16] == 0x00010000 l004063B4_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r2:2 r4:<invalid> r3:<invalid> r5:<invalid> r6:<invalid> r1:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -9984,7 +9984,7 @@ log_string_exit:
 
 
 
-void server_new(word32 r2, word32 r6, word32 r7, word32 dwArg00, word32 dwArg04, word16 wArg06, word32 dwArg08, word32 dwArg0C)
+void server_new(word32 r2, word32 r6, word32 r7, word32 dwArg00, word32 dwArg04, uint16 wArg06, word32 dwArg08, word32 dwArg0C)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2 r6 r7
@@ -11034,7 +11034,7 @@ slist_destroy_exit:
 
 
 
-void __fixunsdfsi(word32 f12, word32 f13, word32 FCSR)
+void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  f12 f13 FCSR
@@ -11047,7 +11047,7 @@ __fixunsdfsi_entry:
 // SymbolicIn: sp:fp
 
 l00407740:
-	branch !(1105199104.0 <= f12_f13) l00407740_ds_t
+	branch !(0x00000000 <= f12_f13) l00407740_ds_t
 // DataOut: f12 f13 FCSR
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -11600,15 +11600,15 @@ _fpadd_parts_exit:
 
 
 
-void __addsf3()
+void __addsf3(word64 f12, word64 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  f12 f14
 // LiveOut:
 // Trashed: r25 r28 r4 r5 r6
 // Preserved: r16 r17 ra sp
 __addsf3_entry:
-// DataOut:
+// DataOut: f12 f14
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
@@ -11623,8 +11623,8 @@ l00407A38:
 	word32 r16_28
 	word32 r4_29
 	word32 r5_30
-	word32 f12_31
-	word32 f14_32
+	word64 f12_31
+	word64 f14_32
 	word32 r6_33
 	bcuiposr0 None_34
 	word32 r2_35
@@ -11639,8 +11639,8 @@ l00407A38:
 	word32 r16_46
 	word32 r4_47
 	word32 r5_48
-	word32 f12_49
-	word32 f14_50
+	word64 f12_49
+	word64 f14_50
 	word32 r6_51
 	bcuiposr0 None_52
 	word32 r2_53
@@ -11655,8 +11655,8 @@ l00407A38:
 	word32 r16_65
 	word32 r4_66
 	word32 r5_67
-	word32 f12_68
-	word32 f14_69
+	word64 f12_68
+	word64 f14_69
 	word32 r6_70
 	bcuiposr0 None_71
 	word32 r2_72
@@ -11672,8 +11672,8 @@ l00407A38:
 	word32 r16_81
 	word32 r4_82
 	word32 r5_83
-	word32 f12_84
-	word32 f14_85
+	word64 f12_84
+	word64 f14_85
 	word32 r6_86
 	bcuiposr0 None_87
 	word32 r2_88
@@ -11688,19 +11688,19 @@ l00407A38:
 __addsf3_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r6:<invalid> ra:ra -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r6:<invalid> ra:ra -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 
 
-void __subsf3()
+void __subsf3(word64 f12, word64 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  f12 f14
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r16 r17 ra sp
 __subsf3_entry:
-// DataOut:
+// DataOut: f12 f14
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32) Local -0034(32)
@@ -11715,8 +11715,8 @@ l00407AE0:
 	word32 r16_28
 	word32 r4_29
 	word32 r5_30
-	word32 f12_31
-	word32 f14_32
+	word64 f12_31
+	word64 f14_32
 	word32 r2_33
 	word32 r6_34
 	bcuiposr0 None_35
@@ -11731,8 +11731,8 @@ l00407AE0:
 	word32 r16_46
 	word32 r4_47
 	word32 r5_48
-	word32 f12_49
-	word32 f14_50
+	word64 f12_49
+	word64 f14_50
 	word32 r2_51
 	word32 r6_52
 	bcuiposr0 None_53
@@ -11747,8 +11747,8 @@ l00407AE0:
 	word32 r16_69
 	word32 r4_70
 	word32 r5_71
-	word32 f12_72
-	word32 f14_73
+	word64 f12_72
+	word64 f14_73
 	word32 r2_74
 	word32 r6_75
 	bcuiposr0 None_76
@@ -11764,8 +11764,8 @@ l00407AE0:
 	word32 r16_85
 	word32 r4_86
 	word32 r5_87
-	word32 f12_88
-	word32 f14_89
+	word64 f12_88
+	word64 f14_89
 	word32 r2_90
 	word32 r6_91
 	bcuiposr0 None_92
@@ -11780,19 +11780,19 @@ l00407AE0:
 __subsf3_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r2:<invalid> r6:<invalid> ra:ra -80(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r2:<invalid> r6:<invalid> ra:ra -80(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 
 
-void __mulsf3()
+void __mulsf3(word64 f12, word64 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  f12 f14
 // LiveOut:
 // Trashed: hi lo r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r17 ra sp
 __mulsf3_entry:
-// DataOut:
+// DataOut: f12 f14
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -0038(32) Local -003C(32) Local -0040(32) Local -0044(32) Local -0048(32)
@@ -11807,8 +11807,8 @@ l00407BA0:
 	word32 r16_28
 	word32 r4_29
 	word32 r5_30
-	word32 f12_31
-	word32 f14_32
+	word64 f12_31
+	word64 f14_32
 	word32 r2_33
 	word32 r7_34
 	word32 r3_35
@@ -11826,8 +11826,8 @@ l00407BA0:
 	word32 r16_49
 	word32 r4_50
 	word32 r5_51
-	word32 f12_52
-	word32 f14_53
+	word64 f12_52
+	word64 f14_53
 	word32 r2_54
 	word32 r7_55
 	word32 r3_56
@@ -11847,84 +11847,84 @@ l00407BA0:
 l00407BA0_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407BA0_ds_f:
 // DataOut: r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -0038(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C0C:
 	branch (word32) (dwLoc38 <u 2) != 0x00000000 l00407C0C_ds_t
 // DataOut: r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C0C_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C0C_ds_f:
 // DataOut: r2 r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C20:
 	branch (dwLoc48 ^ 0x00000004) != 0x00000000 l00407C20_ds_t
 // DataOut: r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C20_ds_t:
 // DataOut: r2 r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C40:
 	branch (dwLoc38 ^ 0x00000004) != 0x00000000 l00407C40_ds_t
 // DataOut: r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C40_ds_t:
 // DataOut: r2 r3
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C5C:
 	branch (dwLoc48 ^ 0x00000002) != 0x00000000 l00407C5C_ds_t
 // DataOut: r3
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C5C_ds_t:
 // DataOut: r2
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C80:
 	branch (dwLoc38 ^ 0x00000002) != 0x00000000 l00407C80_ds_t
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407C80_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -003C(32) Local -0040(32) Local -0044(32)
 
 l00407CA8:
@@ -11936,107 +11936,107 @@ l00407CA8:
 	branch hi_134 >> 0x00 >= 0x00000000 l00407CA8_ds_t
 // DataOut: r5 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407CA8_ds_t:
 	r4_155 = lo_133
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:hi r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:hi r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407CA8_ds_f:
 	r4_155 = lo_133
 // DataOut: r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:hi r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:hi r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407CF8:
 	word32 r2_199 = (hi_134 >> 0x00) + 0x00000001
 // DataOut: r2 r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:lo r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:lo r5:lo r16:fp + -56 r2:hi >> 0x1F r7:<invalid> r3:hi >> 0x00 r6:hi >> 0x00 Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D04:
 	branch r2_199 == 0x00000000 l00407CF8_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407CF8_ds_t:
 	r6_150 = r6_150 >>u 0x01
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407CF8_ds_f:
 	r6_150 = r6_150 >>u 0x01
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D10:
 	r4_155 = r4_155 >>u 0x01 | 0x80000000
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D18:
 	branch r6_150 < 0x00000000 l00407D18_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D18_ds_t:
 	r2_199 = r6_150 + 0x00000001
 // DataOut: r2 r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D18_ds_f:
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D20:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x80000000 r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407D24:
 	branch (word32) (0x3FFFFFFF <u r6_150) != 0x00000000 l00407D24_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407D24_ds_t:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D24_ds_f:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0020(32)
 
 l00407D38:
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D48:
@@ -12044,204 +12044,204 @@ l00407D48:
 	branch r4_155 == 0x80000000 l00407D38_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D38_ds_t:
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D38_ds_f:
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D58:
 	r6_150 = r6_150 | 0x00000001
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D5C:
 	branch (word32) (0x3FFFFFFF <u r6_150) == 0x00000000 l00407D5C_ds_t
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D5C_ds_t:
 	r4_155 = r4_155 << 0x01
 // DataOut: r3 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D5C_ds_f:
 	r4_155 = r4_155 << 0x01
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D68:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:0x3FFFFFFF r16:fp + -56 r2:<invalid> r7:0x80000000 r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D6C:
 	branch r6_150 != 0x0000003F l00407D6C_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D6C_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:64 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:64 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D6C_ds_f:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:64 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:64 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D7C:
 	branch r6_150 != 0x00000080 l00407D7C_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:3 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:3 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D7C_ds_t:
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D7C_ds_f:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D88:
 	branch r4_155 == 0x00000000 l00407D88_ds_t
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D88_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D88_ds_f:
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D90:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407D98:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:3 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:3 r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -36(fp):<invalid> -32(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407C80_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C5C_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C40_ds_f:
 // DataOut: r2
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C48:
 	branch (dwLoc48 ^ 0x00000002) == 0x00000000 l00407C48_ds_t
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C48_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407C48_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C54:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C8C:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407C20_ds_f:
 // DataOut: r3
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C28:
 	branch (dwLoc38 ^ 0x00000002) == 0x00000000 l00407C28_ds_t
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C28_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407C28_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C38:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -0034(32) Local -0044(32)
 
 l00407C64:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:fp + -72 r3:<invalid> -80(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407DA4:
 	word32 r25_71 = Mem0[0x100009AC:word32]
@@ -12253,8 +12253,8 @@ l00407DA4:
 	word32 r16_77
 	word32 r4_78
 	word32 r5_79
-	word32 f12_80
-	word32 f14_81
+	word64 f12_80
+	word64 f14_81
 	word32 r2_82
 	word32 r7_83
 	word32 r3_84
@@ -12267,24 +12267,24 @@ l00407DA4:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -68(fp):<invalid> -52(fp):<invalid> -40(fp):3 -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -96 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -56 r2:<invalid> r7:<invalid> r3:<invalid> r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -68(fp):<invalid> -52(fp):<invalid> -40(fp):3 -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 __mulsf3_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r2:<invalid> r7:<invalid> r3:<invalid> ra:ra r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -68(fp):<invalid> -52(fp):<invalid> -40(fp):3 -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r2:<invalid> r7:<invalid> r3:<invalid> ra:ra r6:<invalid> Sequence hi:lo:<invalid> -80(fp):0x10008860 -68(fp):<invalid> -52(fp):<invalid> -40(fp):3 -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 
 
-void __divsf3()
+void __divsf3(word64 f12, word64 f14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  f12 f14
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 ra sp
 __divsf3_entry:
-// DataOut:
+// DataOut: f12 f14
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -0028(32) Local -002C(32) Local -0030(32) Local -0034(32) Local -0038(32)
@@ -12299,8 +12299,8 @@ l00407DD0:
 	word32 r16_28
 	word32 r4_29
 	word32 r5_30
-	word32 f12_31
-	word32 f14_32
+	word64 f12_31
+	word64 f14_32
 	word32 r6_33
 	word32 r8_34
 	word32 r2_35
@@ -12317,8 +12317,8 @@ l00407DD0:
 	word32 r16_48
 	word32 r4_49
 	word32 r5_50
-	word32 f12_51
-	word32 f14_52
+	word64 f12_51
+	word64 f14_52
 	word32 r6_53
 	word32 r8_54
 	word32 r2_55
@@ -12337,88 +12337,88 @@ l00407DD0:
 l00407DD0_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407DD0_ds_f:
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -0028(32) Local -002C(32) Local -0030(32) Local -0034(32)
 
 l00407E3C:
 	branch (word32) (dwLoc28 <u 2) != 0x00000000 l00407E3C_ds_t
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -56 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -56 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -002C(32) Local -0030(32) Local -0034(32)
 
 l00407E3C_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -56 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -56 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407E3C_ds_f:
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -56 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -56 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -002C(32) Local -0030(32) Local -0034(32)
 
 l00407E50:
 	branch (dwLoc38 ^ 0x00000004) == 0x00000000 l00407E50_ds_t
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -40 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:fp + -40 r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407E50_ds_t:
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407E50_ds_f:
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407E68:
 	branch (dwLoc38 ^ 0x00000002) != 0x00000000 l00407E68_ds_t
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407E68_ds_t:
 // DataOut: r2 r5
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407E88:
 	branch (dwLoc28 ^ 0x00000004) != 0x00000000 l00407E88_ds_t
 // DataOut: r5
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407E88_ds_t:
 // DataOut: r2
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407EA0:
 	branch (dwLoc28 ^ 0x00000002) != 0x00000000 l00407EA0_ds_t
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407EA0_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -002C(32) Local -0030(32)
 
 l00407EB4:
@@ -12427,19 +12427,19 @@ l00407EB4:
 	branch r5_125 == 0x00000000 l00407EB4_ds_t
 // DataOut: r2 r4 r5 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:4 r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:4 r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EB4_ds_t:
 // DataOut: r4 r5 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EB4_ds_f:
 // DataOut: r2 r4 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407ED4:
@@ -12447,7 +12447,7 @@ l00407ED4:
 	r5_125 = (word32) (dwLoc2C << 0x01 <u dwLoc1C)
 // DataOut: r4 r5 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EE4:
@@ -12455,26 +12455,26 @@ l00407EE4:
 	word32 r6_130 = 0x00000000
 // DataOut: r2 r4 r5 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EEC:
 	branch r5_125 != 0x00000000 l00407EE4_ds_t
 // DataOut: r2 r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EE4_ds_t:
 // DataOut: r2 r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EE4_ds_f:
 // DataOut: r2 r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EF8:
@@ -12482,7 +12482,7 @@ l00407EF8:
 	r4_123 = r4_123 - dwLoc1C
 // DataOut: r2 r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F00:
@@ -12491,141 +12491,141 @@ l00407F00:
 	branch r2_129 != 0x00000000 l00407F00_ds_t
 // DataOut: r2 r4 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F00_ds_t:
 	r5_125 = (word32) (r4_123 <u dwLoc1C)
 // DataOut: r2 r4 r5 r6 r7
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F00_ds_f:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F10:
 	branch r6_130 != 0x0000003F l00407F10_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F10_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:64 r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:64 r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F10_ds_f:
 	word32 r2_146 = r6_130 + 0x00000080
 // DataOut: r2 r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:64 r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:64 r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F20:
 	branch r2_146 != 0x00000000 l00407F20_ds_t
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F20_ds_t:
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F20_ds_f:
 // DataOut: r4 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F28:
 	branch r4_123 == 0x00000000 l00407F28_ds_t
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F28_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F28_ds_f:
 // DataOut: r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F30:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407F34:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -48(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407EA0_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407EA8:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:4 r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:4 r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407E88_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407E90:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407E68_ds_f:
 // DataOut: r5 r6
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407E74:
 	branch dwLoc38 == dwLoc28 l00407E74_ds_t
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407E74_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407E74_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 // LocalsOut: fp(32)
 
 l00407E80:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> -64(fp):0x10008860 -52(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l00407F3C:
 	word32 r25_67 = Mem0[0x100009AC:word32]
@@ -12637,8 +12637,8 @@ l00407F3C:
 	word32 r16_73
 	word32 r4_74
 	word32 r5_75
-	word32 f12_76
-	word32 f14_77
+	word64 f12_76
+	word64 f14_77
 	word32 r6_78
 	word32 r8_79
 	word32 r2_80
@@ -12650,12 +12650,12 @@ l00407F3C:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -56(fp):4 -52(fp):<invalid> -48(fp):<invalid> -44(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -80 r25:<invalid> r28:0x10008860 r17:<invalid> r4:<invalid> r5:<invalid> r16:fp + -40 r6:<invalid> r8:fp + -56 r2:<invalid> r3:<invalid> r7:<invalid> -64(fp):0x10008860 -56(fp):4 -52(fp):<invalid> -48(fp):<invalid> -44(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 __divsf3_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r6:<invalid> r8:<invalid> r2:<invalid> ra:ra r3:<invalid> r7:<invalid> -64(fp):0x10008860 -56(fp):4 -52(fp):<invalid> -48(fp):<invalid> -44(fp):<invalid> -24(fp):f12 -20(fp):f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r17:r17 r4:<invalid> r5:<invalid> r16:r16 r6:<invalid> r8:<invalid> r2:<invalid> ra:ra r3:<invalid> r7:<invalid> -64(fp):0x10008860 -56(fp):4 -52(fp):<invalid> -48(fp):<invalid> -44(fp):<invalid> -24(fp):(word32) f12 -20(fp):(word32) f14 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 
 
@@ -12813,7 +12813,7 @@ l00408014:
 	word32 r4_45
 	word32 ra_46
 	word32 r1_47
-	word32 f0_48
+	word64 f0_48
 	word32 r6_49
 	word32 r5_50
 	call r25_34 (retsize: 0; depth: 48)
@@ -12836,15 +12836,15 @@ __floatsisf_exit:
 
 
 
-void __fixsfsi()
+void __fixsfsi(word64 f12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  f12
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5
 // Preserved: ra sp
 __fixsfsi_entry:
-// DataOut:
+// DataOut: f12
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32) Local -001C(32) Local -0020(32)
@@ -12857,7 +12857,7 @@ l00408040:
 	word32 r4_19
 	word32 r5_20
 	word32 ra_21
-	word32 f12_22
+	word64 f12_22
 	word32 r3_23
 	word32 r2_24
 	call r25_9 (retsize: 0; depth: 56)
@@ -12872,136 +12872,136 @@ l00408040:
 l00408040_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l00408040_ds_f:
 // DataOut: r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -0018(32) Local -001C(32)
 
 l00408084:
 	branch (word32) (dwLoc20 <u 2) != 0x00000000 l00408084_ds_t
 // DataOut: r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -0018(32) Local -001C(32)
 
 l00408084_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l00408084_ds_f:
 // DataOut: r4
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -0018(32) Local -001C(32)
 
 l00408090:
 	branch (dwLoc20 ^ 0x00000004) == 0x00000000 l00408090_ds_t
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -0018(32) Local -001C(32)
 
 l00408090_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -001C(32)
 
 l00408090_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -0018(32) Local -001C(32)
 
 l0040809C:
 	branch dwLoc18 < 0x00000000 l0040809C_ds_t
 // DataOut: r5
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -001C(32)
 
 l0040809C_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l0040809C_ds_f:
 // DataOut: r5
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -001C(32)
 
 l004080AC:
 	branch (word32) (dwLoc18 < 31) != 0x00000000 l004080AC_ds_t
 // DataOut: r5
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x00000000 -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -001C(32)
 
 l004080AC_ds_t:
 // DataOut: r5
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -0014(32) Local -001C(32)
 
 l004080CC:
 	branch dwLoc1C == 0x00000000 l004080CC_ds_t
 // DataOut: r2 r3
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l004080CC_ds_t:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l004080CC_ds_f:
 // DataOut: r2
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l004080E4:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l004080AC_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 // LocalsOut: Local -001C(32)
 
 l004080B8:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 l004080E8:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 __fixsfsi_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> ra:ra -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> ra:ra -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 
 
-void __extendsfdf2()
+void __extendsfdf2(word64 f12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  f12
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: ra sp
 __extendsfdf2_entry:
-// DataOut:
+// DataOut: f12
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32) Local -0014(32)
@@ -13014,7 +13014,7 @@ l00408100:
 	word32 ra_19
 	word32 r4_20
 	word32 r5_21
-	word32 f12_22
+	word64 f12_22
 	word32 r2_23
 	word32 r3_24
 	word32 r7_25
@@ -13029,7 +13029,7 @@ l00408100:
 	word32 ra_47
 	word32 r4_48
 	word32 r5_49
-	word32 f12_50
+	word64 f12_50
 	word32 r2_51
 	word32 r3_52
 	word32 r7_53
@@ -13045,7 +13045,7 @@ l00408100:
 __extendsfdf2_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r2:<invalid> r3:<invalid> r7:<invalid> r6:<invalid> ra:ra -48(fp):<invalid> -44(fp):<invalid> -40(fp):0x10008860 -16(fp):f12 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x10008860 r4:<invalid> r5:<invalid> r2:<invalid> r3:<invalid> r7:<invalid> r6:<invalid> ra:ra -48(fp):<invalid> -44(fp):<invalid> -40(fp):0x10008860 -16(fp):(word32) f12 -4(fp):ra
 
 
 
@@ -13697,13 +13697,13 @@ l004084FC:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r17_48
@@ -13719,13 +13719,13 @@ l004084FC:
 	word32 r28_60
 	word32 r25_61
 	word32 r3_62
-	word32 f12_63
+	word64 f12_63
 	word32 r2_64
-	word32 f13_65
+	word64 f13_65
 	word32 r7_66
-	word32 f14_67
+	word64 f14_67
 	word32 r6_68
-	word32 f15_69
+	word64 f15_69
 	word32 r8_70
 	word32 r18_71
 	word32 r17_72
@@ -13741,13 +13741,13 @@ l004084FC:
 	word32 r28_85
 	word32 r25_86
 	word32 r3_87
-	word32 f12_88
+	word64 f12_88
 	word32 r2_89
-	word32 f13_90
+	word64 f13_90
 	word32 r7_91
-	word32 f14_92
+	word64 f14_92
 	word32 r6_93
-	word32 f15_94
+	word64 f15_94
 	word32 r8_95
 	word32 r18_96
 	word32 r17_97
@@ -13764,13 +13764,13 @@ l004084FC:
 	word32 r28_107
 	word32 r25_108
 	word32 r3_109
-	word32 f12_110
+	word64 f12_110
 	word32 r2_111
-	word32 f13_112
+	word64 f13_112
 	word32 r7_113
-	word32 f14_114
+	word64 f14_114
 	word32 r6_115
-	word32 f15_116
+	word64 f15_116
 	word32 r8_117
 	word32 r18_118
 	word32 r17_119
@@ -13813,13 +13813,13 @@ l004085CC:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r17_48
@@ -13835,13 +13835,13 @@ l004085CC:
 	word32 r28_60
 	word32 r25_61
 	word32 r3_62
-	word32 f12_63
+	word64 f12_63
 	word32 r2_64
-	word32 f13_65
+	word64 f13_65
 	word32 r7_66
-	word32 f14_67
+	word64 f14_67
 	word32 r6_68
-	word32 f15_69
+	word64 f15_69
 	word32 r8_70
 	word32 r18_71
 	word32 r17_72
@@ -13857,13 +13857,13 @@ l004085CC:
 	word32 r28_89
 	word32 r25_90
 	word32 r3_91
-	word32 f12_92
+	word64 f12_92
 	word32 r2_93
-	word32 f13_94
+	word64 f13_94
 	word32 r7_95
-	word32 f14_96
+	word64 f14_96
 	word32 r6_97
-	word32 f15_98
+	word64 f15_98
 	word32 r8_99
 	word32 r18_100
 	word32 r17_101
@@ -13880,13 +13880,13 @@ l004085CC:
 	word32 r28_111
 	word32 r25_112
 	word32 r3_113
-	word32 f12_114
+	word64 f12_114
 	word32 r2_115
-	word32 f13_116
+	word64 f13_116
 	word32 r7_117
-	word32 f14_118
+	word64 f14_118
 	word32 r6_119
-	word32 f15_120
+	word64 f15_120
 	word32 r8_121
 	word32 r18_122
 	word32 r17_123
@@ -13929,13 +13929,13 @@ l004086B0:
 	word32 r28_44
 	word32 r25_45
 	word32 r3_46
-	word32 f12_47
+	word64 f12_47
 	word32 r2_48
-	word32 f13_49
+	word64 f13_49
 	word32 r7_50
-	word32 f14_51
+	word64 f14_51
 	word32 r6_52
-	word32 f15_53
+	word64 f15_53
 	word32 r8_54
 	word32 r18_55
 	word32 r16_56
@@ -13964,13 +13964,13 @@ l004086B0:
 	word32 r28_81
 	word32 r25_82
 	word32 r3_83
-	word32 f12_84
+	word64 f12_84
 	word32 r2_85
-	word32 f13_86
+	word64 f13_86
 	word32 r7_87
-	word32 f14_88
+	word64 f14_88
 	word32 r6_89
-	word32 f15_90
+	word64 f15_90
 	word32 r8_91
 	word32 r18_92
 	word32 r16_93
@@ -14589,13 +14589,13 @@ l00408B58:
 	word32 r28_128
 	word32 r25_129
 	word32 r3_130
-	word32 f12_131
+	word64 f12_131
 	word32 r2_132
-	word32 f13_133
+	word64 f13_133
 	word32 r7_134
-	word32 f14_135
+	word64 f14_135
 	word32 r6_136
-	word32 f15_137
+	word64 f15_137
 	word32 r8_138
 	word32 r18_139
 	word32 r16_140
@@ -14651,13 +14651,13 @@ l00408BA0:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r16_48
@@ -14679,13 +14679,13 @@ l00408BA0:
 	word32 r28_66
 	word32 r25_67
 	word32 r3_68
-	word32 f12_69
+	word64 f12_69
 	word32 r2_70
-	word32 f13_71
+	word64 f13_71
 	word32 r7_72
-	word32 f14_73
+	word64 f14_73
 	word32 r6_74
-	word32 f15_75
+	word64 f15_75
 	word32 r8_76
 	word32 r18_77
 	word32 r16_78
@@ -15119,13 +15119,13 @@ l00408DDC:
 	word32 r28_102
 	word32 r25_103
 	word32 r3_104
-	word32 f12_105
+	word64 f12_105
 	word32 r2_106
-	word32 f13_107
+	word64 f13_107
 	word32 r7_108
-	word32 f14_109
+	word64 f14_109
 	word32 r6_110
-	word32 f15_111
+	word64 f15_111
 	word32 r8_112
 	word32 r18_113
 	word32 r16_114
@@ -15174,13 +15174,13 @@ l00408E10:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r16_48
@@ -15195,13 +15195,13 @@ l00408E10:
 	word32 r28_59
 	word32 r25_60
 	word32 r3_61
-	word32 f12_62
+	word64 f12_62
 	word32 r2_63
-	word32 f13_64
+	word64 f13_64
 	word32 r7_65
-	word32 f14_66
+	word64 f14_66
 	word32 r6_67
-	word32 f15_68
+	word64 f15_68
 	word32 r8_69
 	word32 r18_70
 	word32 r16_71
@@ -15254,13 +15254,13 @@ l00408EB4:
 	word32 r28_106
 	word32 r25_107
 	word32 r3_108
-	word32 f12_109
+	word64 f12_109
 	word32 r2_110
-	word32 f13_111
+	word64 f13_111
 	word32 r7_112
-	word32 f14_113
+	word64 f14_113
 	word32 r6_114
-	word32 f15_115
+	word64 f15_115
 	word32 r8_116
 	word32 r18_117
 	word32 r16_118
@@ -15307,13 +15307,13 @@ l00408EE0:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r16_48
@@ -15328,13 +15328,13 @@ l00408EE0:
 	word32 r28_59
 	word32 r25_60
 	word32 r3_61
-	word32 f12_62
+	word64 f12_62
 	word32 r2_63
-	word32 f13_64
+	word64 f13_64
 	word32 r7_65
-	word32 f14_66
+	word64 f14_66
 	word32 r6_67
-	word32 f15_68
+	word64 f15_68
 	word32 r8_69
 	word32 r18_70
 	word32 r16_71
@@ -15387,13 +15387,13 @@ l00408F84:
 	word32 r28_106
 	word32 r25_107
 	word32 r3_108
-	word32 f12_109
+	word64 f12_109
 	word32 r2_110
-	word32 f13_111
+	word64 f13_111
 	word32 r7_112
-	word32 f14_113
+	word64 f14_113
 	word32 r6_114
-	word32 f15_115
+	word64 f15_115
 	word32 r8_116
 	word32 r18_117
 	word32 r16_118
@@ -15440,13 +15440,13 @@ l00408FB0:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r16_48
@@ -15461,13 +15461,13 @@ l00408FB0:
 	word32 r28_59
 	word32 r25_60
 	word32 r3_61
-	word32 f12_62
+	word64 f12_62
 	word32 r2_63
-	word32 f13_64
+	word64 f13_64
 	word32 r7_65
-	word32 f14_66
+	word64 f14_66
 	word32 r6_67
-	word32 f15_68
+	word64 f15_68
 	word32 r8_69
 	word32 r18_70
 	word32 r16_71
@@ -15520,13 +15520,13 @@ l00409054:
 	word32 r28_106
 	word32 r25_107
 	word32 r3_108
-	word32 f12_109
+	word64 f12_109
 	word32 r2_110
-	word32 f13_111
+	word64 f13_111
 	word32 r7_112
-	word32 f14_113
+	word64 f14_113
 	word32 r6_114
-	word32 f15_115
+	word64 f15_115
 	word32 r8_116
 	word32 r18_117
 	word32 r16_118
@@ -15573,13 +15573,13 @@ l00409080:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	word32 r18_47
 	word32 r16_48
@@ -15594,13 +15594,13 @@ l00409080:
 	word32 r28_59
 	word32 r25_60
 	word32 r3_61
-	word32 f12_62
+	word64 f12_62
 	word32 r2_63
-	word32 f13_64
+	word64 f13_64
 	word32 r7_65
-	word32 f14_66
+	word64 f14_66
 	word32 r6_67
-	word32 f15_68
+	word64 f15_68
 	word32 r8_69
 	word32 r18_70
 	word32 r16_71
@@ -15653,13 +15653,13 @@ l00409124:
 	word32 r28_106
 	word32 r25_107
 	word32 r3_108
-	word32 f12_109
+	word64 f12_109
 	word32 r2_110
-	word32 f13_111
+	word64 f13_111
 	word32 r7_112
-	word32 f14_113
+	word64 f14_113
 	word32 r6_114
-	word32 f15_115
+	word64 f15_115
 	word32 r8_116
 	word32 r18_117
 	word32 r16_118
@@ -15844,8 +15844,8 @@ l0040922C:
 	word32 r4_49
 	word32 ra_50
 	word32 r1_51
-	word32 f1_52
-	word32 f0_53
+	word64 f1_52
+	word64 f0_53
 	word32 r6_54
 	word32 r5_55
 	call r25_37 (retsize: 0; depth: 56)
@@ -15887,9 +15887,9 @@ l00409250:
 	word32 r28_22
 	word32 r25_23
 	word32 r3_24
-	word32 f12_25
+	word64 f12_25
 	word32 r2_26
-	word32 f13_27
+	word64 f13_27
 	word32 r6_28
 	word32 ra_29
 	word32 r4_30
@@ -15902,9 +15902,9 @@ l00409250:
 	word32 r28_41
 	word32 r25_42
 	word32 r3_43
-	word32 f12_44
+	word64 f12_44
 	word32 r2_45
-	word32 f13_46
+	word64 f13_46
 	word32 r6_47
 	word32 ra_48
 	word32 r4_49
@@ -15982,9 +15982,9 @@ l00409330:
 	word32 r28_22
 	word32 r25_23
 	word32 r3_24
-	word32 f12_25
+	word64 f12_25
 	word32 r2_26
-	word32 f13_27
+	word64 f13_27
 	word32 r6_28
 	word32 ra_29
 	word32 r4_30
@@ -16020,9 +16020,9 @@ l004093B0:
 	word32 r28_56
 	word32 r25_57
 	word32 r3_58
-	word32 f12_59
+	word64 f12_59
 	word32 r2_60
-	word32 f13_61
+	word64 f13_61
 	word32 r6_62
 	word32 ra_63
 	word32 r4_64

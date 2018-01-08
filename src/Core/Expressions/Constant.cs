@@ -250,7 +250,7 @@ namespace Reko.Core.Expressions
 				if (p.BitSize <= 16)
                     return Constant.Create(p, -Convert.ToInt32(c) & 0xFFFF);
 				if (p.BitSize <= 32)
-                    return Constant.Create(p, -Convert.ToInt32(c));
+                    return Constant.Create(p, -Convert.ToInt64(c) & -1);
                 return Constant.Create(p, -Convert.ToInt64(c));
 			}
 			else 

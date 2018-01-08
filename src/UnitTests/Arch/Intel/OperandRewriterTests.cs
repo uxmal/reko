@@ -174,16 +174,9 @@ namespace Reko.UnitTests.Arch.Intel
 			throw new NotImplementedException();
 		}
 
-		public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int args)
-		{
-            if (program == null)
-			    throw new NotImplementedException();
-            return program.EnsurePseudoProcedure(name, returnType, args);
-		}
-
         public Expression PseudoProcedure(string name , DataType returnType, params Expression[] args)
         {
-            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args);
             return new Application(
                 new ProcedureConstant(PrimitiveType.Pointer32, ppp),
                 returnType,
@@ -192,7 +185,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args);
             ppp.Characteristics = c;
             return new Application(
                 new ProcedureConstant(PrimitiveType.Pointer32, ppp),

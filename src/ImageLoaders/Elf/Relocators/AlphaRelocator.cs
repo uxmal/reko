@@ -29,7 +29,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class AlphaRelocator : ElfRelocator64
     {
-        public AlphaRelocator(ElfLoader64 loader) : base(loader)
+        public AlphaRelocator(ElfLoader64 loader, SortedList<Address,ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 

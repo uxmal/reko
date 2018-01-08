@@ -45,8 +45,9 @@ namespace Reko.Analysis
 		private HashSet<Identifier> deadIn;
 		private Dictionary<Identifier, List<Identifier>> aliases;
 		private IProcessorArchitecture arch;
+        private Statement stm;
 
-		public Aliases(Procedure proc, IProcessorArchitecture arch) : this(proc, arch, null)
+        public Aliases(Procedure proc, IProcessorArchitecture arch) : this(proc, arch, null)
         {
 		}
 
@@ -91,7 +92,7 @@ namespace Reko.Analysis
 			{
 				if (!deadIn.Contains(i))
 				{
-					block.Statements.Insert(++iAt, 0, CreateAliasInstruction(idar, i));
+					block.Statements.Insert(++iAt, stm.LinearAddress, CreateAliasInstruction(idar, i));
 					deadIn.Add(i);
 				}
 			}
@@ -171,7 +172,8 @@ namespace Reko.Analysis
 				StartBlock(block);
 				for (iStm = block.Statements.Count-1; iStm >= 0; --iStm)
 				{
-					Instruction instr = block.Statements[iStm].Instruction;
+                    this.stm = block.Statements[iStm];
+					Instruction instr = stm.Instruction;
 					instr.Accept(this);
 				}
 			}

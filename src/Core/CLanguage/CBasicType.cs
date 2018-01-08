@@ -31,6 +31,7 @@ namespace Reko.Core.CLanguage
     public enum CBasicType
     {
         None,
+        Bool,
         Char,
         WChar_t,
         Short,

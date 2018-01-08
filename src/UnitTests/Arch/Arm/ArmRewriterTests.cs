@@ -682,5 +682,14 @@ means
                 "1|T--|if (Test(UGT,ZC)) branch 00100004",
                 "2|T--|goto Mem0[0x00100008 + r3 * 0x00000004:word32]");
         }
+
+        [Test]
+        public void ArmRw_svc()
+        {
+            BuildTest(0xEF001234); // svc 0x1234
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|L--|__syscall(0x00001234)");
+        }
     }
 }

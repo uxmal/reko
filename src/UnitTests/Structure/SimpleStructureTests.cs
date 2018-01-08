@@ -285,7 +285,6 @@ ret
 {
 	if (dwArg04 != 0x00000000)
 		Mem11[0x00123234:word32] = 0x00006423;
-	return;
 }
 ===
 ", program);
@@ -302,7 +301,6 @@ ret
 @"void fn00100000()
 {
 	Mem5[0x02000000:word32] = fn0010000C(dwArg00, dwArg04);
-	return;
 }
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)

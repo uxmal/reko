@@ -36,8 +36,6 @@ namespace Reko.Arch.X86
 	{
         private class X86LegacyCodeRegisterExtension
         {
-            const byte MAGIC = 0x40;
-            const byte MAGIC_MASK = 0xf0;
             internal static X86LegacyCodeRegisterExtension Disabled = new X86LegacyCodeRegisterExtension(0);
             
             byte val;
@@ -46,6 +44,7 @@ namespace Reko.Arch.X86
             {
                 this.val = value;
             }
+
             internal X86LegacyCodeRegisterExtension(byte magic, bool wide, bool modrm_reg, bool sib_idx, bool modrm_rm)
             {
                 this.ByteValue = (byte)((this.val & 0xf) | ((magic & 0xf) << 4));
@@ -176,6 +175,7 @@ namespace Reko.Arch.X86
             {
                 return this.isSegmentOverrideActive;
             }
+
             internal RegisterStorage SegmentOverride
             {
                 get
@@ -346,12 +346,23 @@ namespace Reko.Arch.X86
             }
             if (instrCur == null)
             {
-                return new X86Instruction(Opcode.illegal, dataWidth, addressWidth) 
-                { Address = addr };
+                instrCur = Illegal();
             }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
             return instrCur;
+        }
+
+        private X86Instruction Illegal()
+        {
+            return new X86Instruction(Opcode.illegal, dataWidth, addressWidth);
+        }
+
+        private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
+        {
+            int reg_bits = bits & 7;
+            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            return GpRegFromBits(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexW(int bits, PrimitiveType dataWidth)
@@ -850,12 +861,16 @@ namespace Reko.Arch.X86
             {
                 if (disasm.currentDecodingContext.F2Prefix)
                 {
+                    if (opF2Fmt == null)
+                        return disasm.Illegal();
                     var instr = disasm.DecodeOperands(this.opF2, op, opF2Fmt);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.F3Prefix)
                 {
+                    if (opF3Fmt == null)
+                        return disasm.Illegal();
                     var instr = disasm.DecodeOperands(this.opF3, op, opF3Fmt);
                     instr.repPrefix = 0;
                     return instr;
@@ -1053,8 +1068,8 @@ namespace Reko.Arch.X86
                     pOperand = new RegisterOperand(RegFromBitsRexW(2, width));
                     break;
                 case 'r':		// Register encoded as last 3 bits of instruction.
-                    width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBitsRexW(op, width));
+                    iWidth = width = OperandWidth(strFormat[i++]);
+                    pOperand = new RegisterOperand(RegFromBitsRexB(op, width));
                     break;
                 case 's':		// Segment encoded as next byte of the format string.
                     pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
