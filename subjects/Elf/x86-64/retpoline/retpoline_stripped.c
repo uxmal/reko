@@ -21,11 +21,11 @@ void fn0000000000400428()
 	}
 }
 
-// 0000000000400480: void fn0000000000400480(Stack Eq_17 qwArg00)
-void fn0000000000400480(Eq_17 qwArg00)
+// 0000000000400480: void fn0000000000400480(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+void fn0000000000400480( * rdx, Eq_18 qwArg00)
 {
 	__align(fp + 0x08);
-	calloc(0x00400660, qwArg00);
+	__libc_start_main(&globals->t400660, qwArg00, fp + 0x08, &globals->t400710, &globals->t400780, rdx, ptrLoc04);
 	__hlt();
 }
 

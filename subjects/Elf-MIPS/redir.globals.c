@@ -102,6 +102,7 @@ struct Eq_222 * g_ptr10000A40 = &g_t10000024;
 <anonymous> * g_ptr10000A5C = properties_parse_command_line;
 <anonymous> * g_ptr10000A64 = __make_fp;
 <anonymous> * g_ptr10000A68 = __make_dp;
+uint16 (** g_ptr10000A6C)[] = null;
 <anonymous> * g_ptr10000A70 = log_rotate;
 <anonymous> * g_ptr10000A80 = request_destroy;
 <anonymous> * g_ptr10000A84 = server_open;

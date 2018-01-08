@@ -26,7 +26,7 @@ l0000000000400AF8:
 	byte SZO_18
 	byte C_19
 	byte Z_20
-	call png_get_PLTE (retsize: 8; depth: 16)
+	call __gmon_start__ (retsize: 8; depth: 16)
 		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
 		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
 // DataOut: r15d rbp

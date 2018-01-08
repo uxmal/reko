@@ -48,10 +48,10 @@ fn0000000000400428_exit:
 
 
 
-void fn0000000000400480(word64 qwArg00)
+void fn0000000000400480(word64 rdx, word64 qwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  rdx
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -63,14 +63,14 @@ fn0000000000400480_exit:
 // SymbolicIn:
 
 fn0000000000400480_entry:
-// DataOut:
+// DataOut: rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64) Stack +0000(64)
+// LocalsOut: fp(64) Local -0004(0) Stack +0000(64)
 
 l0000000000400480:
 	__align(fp + 0x0000000000000008)
-	calloc(0x0000000000400660, qwArg00)
+	__libc_start_main(0x0000000000400660, qwArg00, fp + 0x0000000000000008, 0x0000000000400710, 0x0000000000400780, rdx, ptrLoc04)
 	__hlt()
 // DataOut:
 // DataOut (flags): 

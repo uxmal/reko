@@ -21,11 +21,11 @@ void _init()
 	}
 }
 
-// 0000000000400480: void _start(Stack Eq_17 qwArg00)
-void _start(Eq_17 qwArg00)
+// 0000000000400480: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
+void _start( * rdx, Eq_18 qwArg00)
 {
 	__align(fp + 0x08);
-	calloc(0x00400660, qwArg00);
+	__libc_start_main(&globals->t400660, qwArg00, fp + 0x08, &globals->t400710, &globals->t400780, rdx, ptrLoc04);
 	__hlt();
 }
 

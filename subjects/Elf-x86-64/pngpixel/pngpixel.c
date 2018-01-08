@@ -16,7 +16,7 @@ void _init()
 		byte SZO_18;
 		byte C_19;
 		byte Z_20;
-		png_get_PLTE();
+		__gmon_start__();
 	}
 }
 

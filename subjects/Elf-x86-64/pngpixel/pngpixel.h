@@ -211,7 +211,7 @@ T_14: (in Z_20 : byte)
   Class: Eq_14
   DataType: byte
   OrigDataType: byte
-T_15: (in png_get_PLTE : ptr64)
+T_15: (in __gmon_start__ : ptr64)
   Class: Eq_15
   DataType: (ptr code)
   OrigDataType: (ptr code)

@@ -9185,7 +9185,7 @@ l00406070_ds_t:
 // LocalsOut: fp(32) Local -001C(32) Local -0020(32) Local -0024(32) Local -0028(32) Stack +0000(32) Stack +0004(32)
 
 l00406150:
-	Mem288[Mem0[0x10000A40:word32] + 4 + ((dwLoc24_132 * 0x00000014 - dwLoc24_132 << 0x03) + 144):word32] = (word32) Mem0[((word32) bLoc1C_111 << 0x01) + Mem0[__register_frame_info:word32]:uint16] + 0x00010000
+	Mem288[Mem0[0x10000A40:word32] + 4 + ((dwLoc24_132 * 0x00000014 - dwLoc24_132 << 0x03) + 144):word32] = (word32) Mem0[((word32) bLoc1C_111 << 0x01) + Mem0[Mem0[0x10000A6C:word32]:word32]:uint16] + 0x00010000
 	dwLoc28_103 = dwLoc28_103 + -1
 // DataOut:
 // DataOut (flags): 
@@ -9366,7 +9366,7 @@ l00406374_ds_f:
 // LocalsOut: fp(32) Local -0018(32)
 
 l004063B4:
-	branch (word32) Mem0[((word32) Mem0[Mem0[0x10000A40:word32] + ((dwLoc18_27 * 0x00000014 - dwLoc18_27 << 0x03) + 8) + 0x00000004:int8] << 0x01) + Mem0[__register_frame_info:word32]:uint16] == 0x00010000 l004063B4_ds_t
+	branch (word32) Mem0[((word32) Mem0[Mem0[0x10000A40:word32] + ((dwLoc18_27 * 0x00000014 - dwLoc18_27 << 0x03) + 8) + 0x00000004:int8] << 0x01) + Mem0[Mem0[0x10000A6C:word32]:word32]:uint16] == 0x00010000 l004063B4_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r2:2 r4:<invalid> r3:<invalid> r5:<invalid> r6:<invalid> r1:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
