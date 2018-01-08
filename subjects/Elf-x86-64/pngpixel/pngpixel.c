@@ -210,9 +210,10 @@ word64 print_pixel(byte dil, Eq_174 * fs)
 		byte Z_153;
 		byte dil_154;
 		png_error();
-		if ((rax_26 ^ fs_146->qw0028) != 0x00)
+		if ((rax_26 ^ fs_146->qw0028) == 0x00)
+			return rbp;
+		else
 			__stack_chk_fail();
-		return rbp;
 	}
 	else
 	{
@@ -670,9 +671,10 @@ l00000000004016DE:
 			byte dil_224;
 			png_destroy_read_struct();
 l000000000040175D:
-			if ((*(rbp_123 - 0x08) ^ fs->qw0028) != 0x00)
+			if ((*(rbp_123 - 0x08) ^ fs->qw0028) == 0x00)
+				return;
+			else
 				__stack_chk_fail();
-			return;
 		}
 		word64 rsp_921;
 		word64 rbp_922;

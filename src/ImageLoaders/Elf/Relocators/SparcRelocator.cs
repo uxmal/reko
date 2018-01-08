@@ -30,11 +30,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
     // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
     public class SparcRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public SparcRelocator(ElfLoader32 loader) : base(loader)
+        public SparcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
         }
 
         public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)

@@ -467,16 +467,15 @@ l00000000004012C9:
 // SymbolicIn: rsp:fp - 0x0000000000000078 rbp:fp - 0x0000000000000008 rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:(word32) al -116(fp):ecx -112(fp):rdx -104(fp):rsi -96(fp):rdi -72(fp):(word32) al -48(fp):<invalid> -32(fp):rbx -24(fp):r12 -16(fp):r13 -8(fp):rbp
 // LocalsOut: fp(64) Local -0008(64)
 
-l00000000004012E9:
-	__stack_chk_fail()
-// DataOut: fs
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000078 rbp:fp - 0x0000000000000008 rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> -116(fp):ecx -112(fp):rdx -104(fp):rsi -96(fp):rdi -72(fp):(word32) al -48(fp):<invalid> -32(fp):rbx -24(fp):r12 -16(fp):r13 -8(fp):rbp
-// LocalsOut: fp(64) Local -0008(64)
-
 l00000000004012EE:
 	return rbp
 // DataOut: fs rbp
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 0x0000000000000078 rbp:fp - 0x0000000000000008 rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> -116(fp):ecx -112(fp):rdx -104(fp):rsi -96(fp):rdi -72(fp):(word32) al -48(fp):<invalid> -32(fp):rbx -24(fp):r12 -16(fp):r13 -8(fp):rbp
+
+l00000000004012E9:
+	__stack_chk_fail()
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000078 rbp:fp - 0x0000000000000008 rax:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> -116(fp):ecx -112(fp):rdx -104(fp):rsi -96(fp):rdi -72(fp):(word32) al -48(fp):<invalid> -32(fp):rbx -24(fp):r12 -16(fp):r13 -8(fp):rbp
 
@@ -1234,12 +1233,6 @@ l000000000040175D:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
 
-l0000000000401772:
-	__stack_chk_fail()
-// DataOut: rbp
-// DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
-
 l0000000000401777:
 	return
 // DataOut:
@@ -1247,6 +1240,12 @@ l0000000000401777:
 // SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
 
 main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp
+
+l0000000000401772:
+	__stack_chk_fail()
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> rbp:<invalid> rax:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> rdi:<invalid> eax:<invalid> r9:<invalid> r8:<invalid> al:<invalid> edx:<invalid> -200(fp):fp - 0x0000000000000078 -192(fp):fp - 0x0000000000000074 -184(fp):fp - 0x0000000000000070 -168(fp):rsi -156(fp):edi -140(fp):0x00000001 -108(fp):<invalid> -104(fp):<invalid> -100(fp):<invalid> -96(fp):<invalid> -92(fp):<invalid> -88(fp):<invalid> -84(fp):<invalid> -80(fp):<invalid> -76(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -32(fp):<invalid> -24(fp):<invalid> -16(fp):<invalid> -8(fp):rbp

@@ -20,12 +20,13 @@
 
 using System;
 using Reko.Core;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class XtensaRelocator : ElfRelocator32
     {
-        public XtensaRelocator(ElfLoader32 loader) : base(loader)
+        public XtensaRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 

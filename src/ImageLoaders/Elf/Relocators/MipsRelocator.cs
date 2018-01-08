@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
     // https://gcc.gnu.org/ml/gcc/2008-07/txt00000.txt - MIPS non-PIC ABI specification
     public class MipsRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public MipsRelocator(ElfLoader32 elfLoader) : base(elfLoader)
+        public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = elfLoader;
         }
 
         public override void Relocate(Program program)
@@ -180,7 +177,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
     {
         private ElfLoader64 elfLoader;
 
-        public MipsRelocator64(ElfLoader64 elfLoader) : base(elfLoader)
+        public MipsRelocator64(ElfLoader64 elfLoader, SortedList<Address, ImageSymbol> imageSymbols) : base(elfLoader, imageSymbols)
         {
             this.elfLoader = elfLoader;
         }

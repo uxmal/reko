@@ -93,17 +93,14 @@ namespace Reko.ImageLoaders.Elf
             this.Architecture = CreateArchitecture(machine, endianness);
             this.Symbols = new Dictionary<ElfSection, List<ElfSymbol>>();
             this.Sections = new List<ElfSection>();
-            this.ExternalProcedures = new Dictionary<Address, ExternalProcedure>();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get { return imgLoader.Services; } }
-        public ElfRelocator Relocator { get; protected set; }
         public abstract Address DefaultAddress { get; }
         public abstract bool IsExecutableFile { get; }
         public List<ElfSection> Sections { get; private set; }
         public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; private set; }
-        public Dictionary<Address, ExternalProcedure> ExternalProcedures { get; private set; }
 
         public static AccessMode AccessModeOf(ulong sh_flags)
         {
@@ -278,7 +275,7 @@ namespace Reko.ImageLoaders.Elf
             return platform;
         }
 
-        public virtual ElfRelocator CreateRelocator(ElfMachine machine)
+        public virtual ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> symbols)
         {
             throw new NotSupportedException(
                 string.Format("Relocator for architecture {0} not implemented yet.",
@@ -310,10 +307,9 @@ namespace Reko.ImageLoaders.Elf
             foreach (var sym in Symbols.Values.SelectMany(seg => seg))
             {
                 var imgSym = CreateImageSymbol(sym, isExecutable);
-                if (imgSym != null)
-                {
-                    imgSymbols[imgSym.Address] = imgSym;
-                }
+                if (imgSym == null || imgSym.Address.ToLinear() == 0)
+                    continue;
+                imgSymbols[imgSym.Address] = imgSym;
             }
             return imgSymbols;
         }
@@ -358,12 +354,7 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
                     {
-                        //$TODO: look up function signature.
-                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4))
-                        {
-                            Type = SymbolType.Data,
-                            Size = (uint) Architecture.PointerType.Size,
-                        };
+                        ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
                         Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
                         if (symbol.Type == SymbolType.ExternalProcedure)
@@ -373,6 +364,17 @@ namespace Reko.ImageLoaders.Elf
                     }
                 }
             }
+        }
+
+        public ImageSymbol CreateGotSymbol(Address addrGot, string name)
+        {
+            //$TODO: look up function signature.
+            int size = Architecture.PointerType.Size;
+            return new ImageSymbol(addrGot, name + "_GOT", new Pointer(new CodeType(), size))
+            {
+                Type = SymbolType.Data,
+                Size = (uint)size,
+            };
         }
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
@@ -615,14 +617,13 @@ namespace Reko.ImageLoaders.Elf
         public RelocationResults Relocate(Program program, Address addrLoad)
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
-
-            Relocator.Relocate(program);
-
+            var relocator = CreateRelocator(this.machine, symbols);
+            relocator.Relocate(program);
             LocateGotPointers(program, symbols);
             var entryPoints = new List<ImageSymbol>();
             var addrEntry = GetEntryPointAddress(addrLoad);
             EnsureEntryPoint(entryPoints, symbols, addrEntry);
-            var addrMain = Relocator.FindMainFunction(program, addrEntry);
+            var addrMain = relocator.FindMainFunction(program, addrEntry);
             EnsureEntryPoint(entryPoints, symbols, addrMain);
             return new RelocationResults(entryPoints, symbols);
         }
@@ -655,7 +656,6 @@ namespace Reko.ImageLoaders.Elf
             this.osAbi = osAbi;
             base.rawImage = rawImage;
             this.ProgramHeaders64 = new List<Elf64_PHdr>();
-            this.Relocator = CreateRelocator((ElfMachine)elfHeader.e_machine);
         }
 
         public Elf64_EHdr Header64 { get; set; }
@@ -721,17 +721,17 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override ElfRelocator CreateRelocator(ElfMachine machine)
+        public override ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> symbols)
         {
             switch (machine)
             {
-            case ElfMachine.EM_X86_64: return new x86_64Relocator(this);
-            case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
-            case ElfMachine.EM_MIPS: return new MipsRelocator64(this);
-            case ElfMachine.EM_RISCV: return new RiscVRelocator64(this);
-            case ElfMachine.EM_ALPHA: return new AlphaRelocator(this);
+            case ElfMachine.EM_X86_64: return new x86_64Relocator(this, symbols);
+            case ElfMachine.EM_PPC64: return new PpcRelocator64(this, symbols);
+            case ElfMachine.EM_MIPS: return new MipsRelocator64(this, symbols);
+            case ElfMachine.EM_RISCV: return new RiscVRelocator64(this, symbols);
+            case ElfMachine.EM_ALPHA: return new AlphaRelocator(this, symbols);
             }
-            return base.CreateRelocator(machine);
+            return base.CreateRelocator(machine, symbols);
         }
 
         public override void Dump(TextWriter writer)
@@ -1061,7 +1061,6 @@ namespace Reko.ImageLoaders.Elf
                 throw new ArgumentNullException("header32");
             this.Header = header32;
             this.ProgramHeaders = new List<Elf32_PHdr>();
-            this.Relocator = CreateRelocator((ElfMachine)header32.e_machine);
             this.rawImage = rawImage;
         }
 
@@ -1202,21 +1201,21 @@ namespace Reko.ImageLoaders.Elf
             return new ElfObjectLinker32(this, Architecture, rawImage);
         }
 
-        public override ElfRelocator CreateRelocator(ElfMachine machine)
+        public override ElfRelocator CreateRelocator(ElfMachine machine, SortedList<Address, ImageSymbol> imageSymbols)
         {
             switch (machine)
             {
-            case ElfMachine.EM_386: return new x86Relocator(this);
-            case ElfMachine.EM_ARM: return new ArmRelocator(this);
-            case ElfMachine.EM_MIPS: return new MipsRelocator(this);
-            case ElfMachine.EM_PPC: return new PpcRelocator(this);
-            case ElfMachine.EM_SPARC: return new SparcRelocator(this);
-            case ElfMachine.EM_XTENSA: return new XtensaRelocator(this);
-            case ElfMachine.EM_68K: return new M68kRelocator(this);
-            case ElfMachine.EM_AVR: return new AvrRelocator(this);
-            case ElfMachine.EM_SH: return new SuperHRelocator(this);
+            case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
+            case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
+            case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
+            case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
+            case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
+            case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
+            case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
+            case ElfMachine.EM_AVR: return new AvrRelocator(this, imageSymbols);
+            case ElfMachine.EM_SH: return new SuperHRelocator(this, imageSymbols);
             }
-            return base.CreateRelocator(machine);
+            return base.CreateRelocator(machine, imageSymbols);
         }
 
         public ImageSegmentRenderer CreateRenderer(ElfSection shdr, ElfMachine machine)

@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class ArmRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public ArmRelocator(ElfLoader32 loader) : base(loader)
+        public ArmRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
         }
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)

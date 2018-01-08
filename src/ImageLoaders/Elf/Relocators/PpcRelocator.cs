@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class PpcRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public PpcRelocator(ElfLoader32 loader) : base(loader)
+        public PpcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
         }
 
         /// <remarks>
@@ -105,9 +102,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public class PpcRelocator64 : ElfRelocator64
     {
-        private ElfLoader64 loader;
-
-        public PpcRelocator64(ElfLoader64 loader) : base(loader)
+        public PpcRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
             this.loader = loader;
         }

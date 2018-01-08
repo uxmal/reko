@@ -29,10 +29,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class x86_64Relocator : ElfRelocator64
     {
-        private ElfLoader64 loader;
         private Dictionary<Address, ImportReference> importReferences;
 
-        public x86_64Relocator(ElfLoader64 loader) : base(loader)
+        public x86_64Relocator(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
             this.loader = loader;
         }
@@ -48,10 +47,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// </remarks>
         public override void Relocate(Program program)
         {
-            base.Relocate(program);
-
             this.importReferences = program.ImportReferences;
-
+            base.Relocate(program);
             LoadImportReferencesFromRelaPlt();
         }
 
@@ -63,30 +60,33 @@ namespace Reko.ImageLoaders.Elf.Relocators
             for (ulong i = 0; i < rela_plt.EntryCount(); ++i)
             {
                 // Read the .rela.plt entry
-                ulong offset;
-                if (!relaRdr.TryReadUInt64(out offset))
-                    return;
-                ulong info;
-                if (!relaRdr.TryReadUInt64(out info))
-                    return;
-                long addend;
-                if (!relaRdr.TryReadInt64(out addend))
-                    return;
+                var rela = Elf64_Rela.Read(relaRdr);
 
-                ulong sym = info >> 32;
-                string symStr = loader.GetSymbol64(rela_plt.LinkedSection, sym);
+                ulong sym = rela.r_info >> 32;
+                var symStr = loader.Symbols[rela_plt.LinkedSection][(int)sym];
 
                 var addr = plt.Address + (uint)(i + 1) * plt.EntrySize;
                 importReferences.Add(
                     addr,
-                    new NamedImportReference(addr, null, symStr));
+                    new NamedImportReference(addr, null, symStr.Name));
             }
         }
 
         public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf64_Rela rela)
         {
+            var rt = (x86_64Rt)(rela.r_info & 0xFF);
             if (loader.Sections.Count <= sym.SectionIndex)
                 return;
+            if (rt == x86_64Rt.R_X86_64_GLOB_DAT ||
+                rt == x86_64Rt.R_X86_64_JUMP_SLOT)
+            {
+                var addrPfn = Address.Ptr64(rela.r_offset);
+
+                importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name));
+                var gotSym = loader.CreateGotSymbol(addrPfn, sym.Name);
+                imageSymbols.Add(addrPfn, gotSym);
+                return;
+            }
             if (sym.SectionIndex == 0)
                 return;
             var symSection = loader.Sections[(int)sym.SectionIndex];
@@ -113,7 +113,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 relW = null;
             }
             ulong PP = P;
-            var rt = (x86_64Rt)(rela.r_info & 0xFF);
             switch (rt)
             {
             case x86_64Rt.R_X86_64_NONE: //  just ignore (common)

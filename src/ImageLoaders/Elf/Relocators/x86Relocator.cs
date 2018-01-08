@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     class x86Relocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public x86Relocator(ElfLoader32 loader) : base(loader)
+        public x86Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
         }
 
         public override void Relocate(Program program)
