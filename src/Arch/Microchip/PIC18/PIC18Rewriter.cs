@@ -92,10 +92,7 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.invalid: m.Invalid(); break;
                     case Opcode.ADDFSR: RewriteADDFSR(); break;
                     case Opcode.ADDLW: RewriteADDLW(); break;
-
-                    case Opcode.ADDULNK:
-                        break;
-
+                    case Opcode.ADDULNK: RewriteADDULNK(); break;
                     case Opcode.ADDWF: RewriteADDWF(); break;
                     case Opcode.ADDWFC: RewriteADDWFC(); break;
                     case Opcode.ANDLW: RewriteANDLW(); break;
@@ -122,10 +119,7 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.CPFSEQ: RewriteCPFSEQ(); break;
                     case Opcode.CPFSGT: RewriteCPFSGT(); break;
                     case Opcode.CPFSLT: RewriteCPFSLT(); break;
-
-                    case Opcode.DAW:
-                        break;
-
+                    case Opcode.DAW: RewriteDAW(); break;
                     case Opcode.DCFSNZ: RewriteDCFSNZ(); break;
                     case Opcode.DECF: RewriteDECF(); break;
                     case Opcode.DECFSZ: RewriteDECFSZ(); break;
@@ -135,61 +129,28 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.INFSNZ: RewriteINFSNZ(); break;
                     case Opcode.IORLW: RewriteIORLW(); break;
                     case Opcode.IORWF: RewriteIORWF(); break;
-
-                    case Opcode.LFSR:
-                        break;
-
-                    case Opcode.MOVF:
-                        break;
-
-                    case Opcode.MOVFF:
-                        break;
-
-                    case Opcode.MOVFFL:
-                        break;
-
+                    case Opcode.LFSR: RewriteLFSR(); break;
+                    case Opcode.MOVF: RewriteMOVF(); break;
+                    case Opcode.MOVFF: RewriteMOVFF(); break;
+                    case Opcode.MOVFFL: RewriteMOVFFL(); break;
                     case Opcode.MOVLB: RewriteMOVLB(); break;
                     case Opcode.MOVLW: RewriteMOVLW(); break;
-
-                    case Opcode.MOVSF:
-                        break;
-
-                    case Opcode.MOVSFL:
-                        break;
-
-                    case Opcode.MOVSS:
-                        break;
-
+                    case Opcode.MOVSF: RewriteMOVSF(); break;
+                    case Opcode.MOVSFL: RewriteMOVSFL(); break;
+                    case Opcode.MOVSS: RewriteMOVSS(); break;
                     case Opcode.MOVWF: RewriteMOVWF(); break;
                     case Opcode.MULLW: RewriteMULLW(); break;
                     case Opcode.MULWF: RewriteMULWF(); break;
                     case Opcode.NEGF: RewriteNEGF(); break;
                     case Opcode.NOP: m.Nop(); break;
-
-                    case Opcode.POP:
-                        break;
-
-                    case Opcode.PUSH:
-                        break;
-
-                    case Opcode.PUSHL:
-                        break;
-
-                    case Opcode.RCALL:
-                        break;
-
-                    case Opcode.RESET:
-                        break;
-
-                    case Opcode.RETFIE:
-                        break;
-
-                    case Opcode.RETLW:
-                        break;
-
-                    case Opcode.RETURN:
-                        break;
-
+                    case Opcode.POP: RewritePUSHL(); break;
+                    case Opcode.PUSH: RewritePUSH(); break;
+                    case Opcode.PUSHL: RewritePUSHL(); break;
+                    case Opcode.RCALL: RewriteRCALL(); break;
+                    case Opcode.RESET: RewriteRESET(); break;
+                    case Opcode.RETFIE: RewriteRETFIE(); break;
+                    case Opcode.RETLW: RewriteRETLW(); break;
+                    case Opcode.RETURN: RewriteRETURN(); break;
                     case Opcode.RLCF: RewriteRLCF(); break;
                     case Opcode.RLNCF: RewriteRLNCF(); break;
                     case Opcode.RRCF: RewriteRRCF(); break;
@@ -199,22 +160,12 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.SUBFSR: RewriteSUBFSR(); break;
                     case Opcode.SUBFWB: RewriteSUBFWB(); break;
                     case Opcode.SUBLW: RewriteSUBLW(); break;
-
-                    case Opcode.SUBULNK:
-                        break;
-
+                    case Opcode.SUBULNK: RewriteSUBULNK(); break;
                     case Opcode.SUBWF: RewriteSUBWF(); break;
                     case Opcode.SUBWFB: RewriteSUBWFB(); break;
-
-                    case Opcode.SWAPF:
-                        break;
-
-                    case Opcode.TBLRD:
-                        break;
-
-                    case Opcode.TBLWT:
-                        break;
-
+                    case Opcode.SWAPF: RewriteSWAPF(); break;
+                    case Opcode.TBLRD: RewriteTBLRD(); break;
+                    case Opcode.TBLWT: RewriteTBLWT(); break;
                     case Opcode.TSTFSZ: RewriteTSTFSZ(); break;
                     case Opcode.XORLW: RewriteXORLW(); break;
                     case Opcode.XORWF: RewriteXORWF(); break;
@@ -256,7 +207,7 @@ namespace Reko.Arch.Microchip.PIC18
                 return imm14Op.Imm14;
             var bankaccess = op as PIC18DataBankAccessOperand;
             if (bankaccess != null)
-                return getMemoryBankAccess(bankaccess);
+                return GetMemoryBankAccess(bankaccess);
             var off8 = op as PIC18ProgRel8AddrOperand;
             if (off8 != null)
                 return off8.CodeTarget.Address;
@@ -305,12 +256,12 @@ namespace Reko.Arch.Microchip.PIC18
             var dstop = op as PIC18DataByteAccessWithDestOperand;
             if (dstop != null)
             {
-                dst = (dstop.WregIsDest.ToBoolean() ? binder.EnsureRegister(Registers.wreg) : getMemoryBankAccess(dstop));
+                dst = (dstop.WregIsDest.ToBoolean() ? binder.EnsureRegister(Registers.wreg) : GetMemoryBankAccess(dstop));
             }
             return dst;
         }
 
-        private Expression getMemoryBankAccess(PIC18DataBankAccessOperand mem)
+        private Expression GetMemoryBankAccess(PIC18DataBankAccessOperand mem)
         {
             Address offset = mem.MemAddr.Address;
             if ((mem.ExecMode == PICExecMode.Extended) && mem.IsAccessRAM.ToBoolean() && (offset.ToUInt16() < 0x60))
@@ -348,6 +299,15 @@ namespace Reko.Arch.Microchip.PIC18
             var k = RewriteOp(instr.op1);
             m.Assign(w, m.IAdd(w, k));
             m.Assign(FlagGroup(FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N), m.Cond(w));
+        }
+
+        private void RewriteADDULNK()
+        {
+            var fsr2 = binder.EnsureSequence(Registers.fsr2l, Registers.fsr2h, PrimitiveType.UInt16);
+            var k = RewriteOp(instr.op1);
+            m.Assign(fsr2, m.IAdd(fsr2, k));
+            rtlc = RtlClass.Transfer;
+            m.Return(1, 0);
         }
 
         private void RewriteADDWF()
@@ -491,17 +451,19 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCALL()
         {
-            //TODO: See TOS update, shadowing of WREG,STATUS,BSR
+            //TODO: See TOS/stack update, shadowing of WREG,STATUS,BSR
             rtlc = RtlClass.Transfer | RtlClass.Call;
             var target = RewriteOp(instr.op1);
-            m.Call(target, 3);
+            m.Call(target, 1);
         }
 
         private void RewriteCALLW()
         {
             rtlc = RtlClass.Transfer | RtlClass.Call;
             var w = binder.EnsureRegister(Registers.wreg);
-            var target = m.IAdd(w, instr.Address);
+            var pclath = binder.EnsureRegister(Registers.pclath);
+            var pclatu = binder.EnsureRegister(Registers.pclatu);
+            var target = m.Fn(host.PseudoProcedure("__callw", VoidType.Instance, w, pclath, pclatu));
             m.Call(target, 3);
         }
 
@@ -547,6 +509,16 @@ namespace Reko.Arch.Microchip.PIC18
             var src = RewriteOp(instr.op1);
             var w = binder.EnsureRegister(Registers.wreg);
             m.Branch(m.Ult(src, w), instr.Address + 2, RtlClass.ConditionalTransfer);
+        }
+
+        private void RewriteDAW()
+        {
+            var w = binder.EnsureRegister(Registers.wreg);
+            var C = FlagGroup(FlagM.C);
+            var DC = FlagGroup(FlagM.DC);
+            Expression res = m.Fn(host.PseudoProcedure("__daw", PrimitiveType.Byte, w, C, DC));
+            m.Assign(w, res);
+            m.Assign(FlagGroup(FlagM.C), m.Cond(res));
         }
 
         private void RewriteDECF()
@@ -626,6 +598,35 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
         }
 
+        private void RewriteLFSR()
+        {
+            var sfr = RewriteOp(instr.op1);
+            var k = RewriteOp(instr.op2);
+            m.Assign(sfr, k);
+        }
+
+        private void RewriteMOVF()
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDestOp(instr.op1);
+            m.Assign(dst, src);
+            m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
+        }
+
+        private void RewriteMOVFF()
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDestOp(instr.op2);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteMOVFFL()
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDestOp(instr.op2);
+            m.Assign(dst, src);
+        }
+
         private void RewriteMOVLB()
         {
             var bsr = binder.EnsureRegister(Registers.bsr);
@@ -638,6 +639,30 @@ namespace Reko.Arch.Microchip.PIC18
             var w = binder.EnsureRegister(Registers.wreg);
             var k = RewriteOp(instr.op1);
             m.Assign(w, k);
+        }
+
+        private void RewriteMOVSF()
+        {
+            var fsr2 = binder.EnsureSequence(Registers.fsr2l, Registers.fsr2h, PrimitiveType.UInt16);
+            var zs = RewriteOp(instr.op1);
+            var fd = RewriteOp(instr.op2);
+            m.Assign(fd, m.LoadB(m.IAdd(fsr2, zs)));
+        }
+
+        private void RewriteMOVSFL()
+        {
+            var fsr2 = binder.EnsureSequence(Registers.fsr2l, Registers.fsr2h, PrimitiveType.UInt16);
+            var zs = RewriteOp(instr.op1);
+            var fd = RewriteOp(instr.op2);
+            m.Assign(fd, m.LoadB(m.IAdd(fsr2, zs)));
+        }
+
+        private void RewriteMOVSS()
+        {
+            var fsr2 = binder.EnsureSequence(Registers.fsr2l, Registers.fsr2h, PrimitiveType.UInt16);
+            var zs = RewriteOp(instr.op1);
+            var zd = RewriteOp(instr.op2);
+            m.Assign(m.Deref(m.IAdd(fsr2, zd)), m.LoadB(m.IAdd(fsr2, zs)));
         }
 
         private void RewriteMOVWF()
@@ -671,15 +696,72 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(FlagGroup(FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N), m.Cond(dst));
         }
 
+        private void RewritePOP()
+        {
+            var tos = binder.EnsureSequence(Registers.tosl, Registers.tosu, PrimitiveType.Word32);
+            //TODO: See stack update
+        }
+
+        private void RewritePUSH()
+        {
+            var tos = binder.EnsureSequence(Registers.tosl, Registers.tosu, PrimitiveType.Word32);
+            //TODO: see stack update
+        }
+
+        private void RewritePUSHL()
+        {
+            var fsr2 = binder.EnsureSequence(Registers.fsr2l, Registers.fsr2h, PrimitiveType.UInt16);
+            var k = RewriteOp(instr.op1);
+            m.Assign(m.Deref(fsr2), k);
+            m.Assign(fsr2, m.IAdd(fsr2, 1));
+        }
+
+        private void RewriteRCALL()
+        {
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            var target = RewriteOp(instr.op1);
+            m.Call(target, 1);
+        }
+
+        private void RewriteRESET()
+        {
+            rtlc = RtlClass.Terminates;
+            m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
+        }
+
+        private void RewriteRETFIE()
+        {
+            var tos = binder.EnsureSequence(Registers.tosl, Registers.tosu, PrimitiveType.Word32);
+            //TODO: See TOS restore and stack update
+            rtlc = RtlClass.Transfer;
+            m.Return(1, 0);
+        }
+
+        private void RewriteRETLW()
+        {
+            var w = binder.EnsureRegister(Registers.wreg);
+            var k = RewriteOp(instr.op1);
+            m.Assign(w, k);
+            rtlc = RtlClass.Transfer;
+            m.Return(1, 0);
+        }
+
+        private void RewriteRETURN()
+        {
+            //TODO: shadow WREG, BSR, STATUS
+            rtlc = RtlClass.Transfer;
+            m.Return(1, 0);
+        }
+
         private void RewriteRLCF()
         {
             var src = RewriteOp(instr.op1);
             var dst = RewriteDestOp(instr.op1);
-            var carry = FlagGroup(FlagM.C);
+            var C = FlagGroup(FlagM.C);
             //TODO:  PseudoProcedure(?)
-            m.Fn(new PseudoProcedure("__rlcf", src.DataType, 2), src, carry);
-            m.Assign(dst, src);
-            m.Assign(carry, m.Cond(dst));
+            var tmp = m.Fn(host.PseudoProcedure("__rlcf", src.DataType, src, C));
+            m.Assign(dst, tmp);
+            m.Assign(C, m.Cond(tmp));
             m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
         }
 
@@ -688,20 +770,20 @@ namespace Reko.Arch.Microchip.PIC18
             var src = RewriteOp(instr.op1);
             var dst = RewriteDestOp(instr.op1);
             //TODO:  PseudoProcedure(?)
-            m.Fn(new PseudoProcedure("__rlncf", src.DataType, 1), src);
-            m.Assign(dst, src);
-            m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
+            var tmp = m.Fn(host.PseudoProcedure("__rlncf", src.DataType, src));
+            m.Assign(dst, tmp);
+            m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(tmp));
         }
 
         private void RewriteRRCF()
         {
             var src = RewriteOp(instr.op1);
             var dst = RewriteDestOp(instr.op1);
-            var carry = FlagGroup(FlagM.C);
+            var C = FlagGroup(FlagM.C);
             //TODO:  PseudoProcedure(?)
-            m.Fn(new PseudoProcedure("__rrcf", src.DataType, 2), src, carry);
-            m.Assign(dst, src);
-            m.Assign(carry, m.Cond(dst));
+            var tmp = m.Fn(host.PseudoProcedure("__rrcf", src.DataType, src, C));
+            m.Assign(dst, tmp);
+            m.Assign(C, m.Cond(tmp));
             m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
         }
 
@@ -710,8 +792,8 @@ namespace Reko.Arch.Microchip.PIC18
             var src = RewriteOp(instr.op1);
             var dst = RewriteDestOp(instr.op1);
             //TODO:  PseudoProcedure(?)
-            m.Fn(new PseudoProcedure("__rrncf", src.DataType, 1), src);
-            m.Assign(dst, src);
+            var tmp = m.Fn(host.PseudoProcedure("__rrncf", src.DataType, src));
+            m.Assign(dst, tmp);
             m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
         }
 
@@ -751,6 +833,15 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(FlagGroup(FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N), m.Cond(w));
         }
 
+        private void RewriteSUBULNK()
+        {
+            var fsr2 = binder.EnsureSequence(Registers.fsr2l, Registers.fsr2h, PrimitiveType.UInt16);
+            var k = RewriteOp(instr.op1);
+            m.Assign(fsr2, m.USub(fsr2, k));
+            rtlc = RtlClass.Transfer;
+            m.Return(1, 0);
+        }
+
         private void RewriteSUBWF()
         {
             var w = binder.EnsureRegister(Registers.wreg);
@@ -767,6 +858,25 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = RewriteDestOp(instr.op1);
             m.Assign(dst, m.ISub(m.ISub(src, w), m.Not(FlagGroup(FlagM.C))));
             m.Assign(FlagGroup(FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N), m.Cond(dst));
+        }
+
+        private void RewriteSWAPF()
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDestOp(instr.op1);
+            dst = m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, src));
+        }
+
+        private void RewriteTBLRD()
+        {
+            var tblmode = ((PIC18TableReadWriteOperand)instr.op1).TBLIncrMode;
+            m.SideEffect(host.PseudoProcedure("__tblrd", VoidType.Instance, tblmode));
+        }
+
+        private void RewriteTBLWT()
+        {
+            var tblmode = ((PIC18TableReadWriteOperand)instr.op1).TBLIncrMode;
+            m.SideEffect(host.PseudoProcedure("__tblwt", VoidType.Instance, tblmode));
         }
 
         private void RewriteTSTFSZ()

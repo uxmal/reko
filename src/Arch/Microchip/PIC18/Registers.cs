@@ -150,10 +150,10 @@ namespace Reko.Arch.Microchip.PIC18
         public static readonly RegisterStorage pcl = new RegisterStorage("PCL", 0x3FF9, 0, PrimitiveType.Byte);
 
         /// <summary>PCLH special function register. </summary>
-        public static readonly RegisterStorage pclh = new RegisterStorage("PCLH", 0x3FFA, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage pclath = new RegisterStorage("PCLATH", 0x3FFA, 0, PrimitiveType.Byte);
 
         /// <summary>PCLU special function register. </summary>
-        public static readonly RegisterStorage pclu = new RegisterStorage("PCLU", 0x3FFB, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage pclatu = new RegisterStorage("PCLATU", 0x3FFB, 0, PrimitiveType.Byte);
 
         /// <summary>STKPTR special function register. </summary>
         public static readonly RegisterStorage stkptr = new RegisterStorage("STKPTR", 0x3FFC, 0, PrimitiveType.Byte);
@@ -179,7 +179,7 @@ namespace Reko.Arch.Microchip.PIC18
                 fsr1l, fsr1h, plusw1, preinc1, postdec1, postinc1, indf1, wreg,
                 fsr0l, fsr0h, plusw0, preinc0, postdec0, postinc0, indf0,
                 prodl, prodh, tablat, tblptrl, tblptrh, tblptru,
-                pcl, pclh, pclu, stkptr, tosl, tosh, tosu,
+                pcl, pclath, pclatu, stkptr, tosl, tosh, tosu,
             }.ToDictionary(r => r.Name);
 
             RegsByAddr = new[]
@@ -189,7 +189,7 @@ namespace Reko.Arch.Microchip.PIC18
                 fsr1l, fsr1h, plusw1, preinc1, postdec1, postinc1, indf1, wreg,
                 fsr0l, fsr0h, plusw0, preinc0, postdec0, postinc0, indf0,
                 prodl, prodh, tablat, tblptrl, tblptrh, tblptru,
-                pcl, pclh, pclu, stkptr, tosl, tosh, tosu,
+                pcl, pclath, pclatu, stkptr, tosl, tosh, tosu,
             }.ToDictionary(r => Address.Ptr32((uint)r.Number));
         }
 

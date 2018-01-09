@@ -98,8 +98,8 @@ namespace Reko.Arch.Microchip.PIC18
 		{
             ulong off = addr.ToUInt32();
             SetRegister(Registers.pcl, Constant.Byte((byte)(off & 0xFF)));
-            SetRegister(Registers.pclh, Constant.Byte((byte)((off>>8) & 0xFF)));
-            SetRegister(Registers.pclu, Constant.Byte((byte)((off>>16) & 0xFF)));
+            SetRegister(Registers.pclath, Constant.Byte((byte)((off>>8) & 0xFF)));
+            SetRegister(Registers.pclatu, Constant.Byte((byte)((off>>16) & 0xFF)));
         }
 
         public override void OnProcedureEntered()
