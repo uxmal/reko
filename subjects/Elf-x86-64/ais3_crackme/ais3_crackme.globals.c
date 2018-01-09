@@ -13,10 +13,7 @@ Eq_20 g_t4006B0 = Unexpected function type (fn void ())
 char g_str4006C8[] = "You need to enter the secret key!";
 char g_str4006F0[] = "Correct! that is the secret key!";
 char g_str400718[] = "I'm sorry, that's the wrong secret key!";
-union Eq_275 g_u600DF8 = 
-	{
-		0x004004F0
-	};
+<anonymous> * g_ptr600DF8 = frame_dummy;
 word64 g_qw600E08 = 0x0000000000000000;
 word64 g_qw600FE0 = 0x0000000000000000;
 byte g_b601038 = 0x00;

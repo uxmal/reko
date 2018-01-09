@@ -11,10 +11,10 @@ Eq_30 g_t401780 = Unexpected function type (fn void ())
 Eq_31 g_t4017F0 = Unexpected function type (fn void ())
 ;
 char g_str401808[] = "pngpixel: invalid bit depth %u\x0A";
-word64 g_a401828[] = 
+<anonymous> * g_a401828[] = 
 	{
 	};
-word64 g_a401958[] = 
+<anonymous> * g_a401958[] = 
 	{
 	};
 char g_str401990[] = "rb";
@@ -23,10 +23,7 @@ void g_v4019E8 = ;
 void g_v401A18 = ;
 char g_str401A48[] = "pngpixel: %s: could not open file\x0A";
 void g_v401A70 = ;
-union Eq_1026 g_u601E00 = 
-	{
-		0x00400DA0
-	};
+<anonymous> * g_ptr601E00 = frame_dummy;
 word64 g_qw601E10 = 0x0000000000000000;
 word64 g_qw601FF8 = 0x0000000000000000;
 FILE * g_ptr602100 = null;

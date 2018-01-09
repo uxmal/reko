@@ -75,7 +75,7 @@ call_gmon_start proc
 	jz	000000000040044E
 
 l000000000040044C:
-	call	eax
+	call	rax
 
 l000000000040044E:
 	add	rsp,08
@@ -103,7 +103,7 @@ l0000000000400477:
 l0000000000400481:
 	pop	rbp
 	mov	edi,00601038
-	jmp	eax
+	jmp	rax
 0000000000400489                            0F 1F 80 00 00 00 00          .......
 
 ;; register_tm_clones: 0000000000400490
@@ -132,7 +132,7 @@ l00000000004004BE:
 	pop	rbp
 	mov	rsi,rax
 	mov	edi,00601038
-	jmp	edx
+	jmp	rdx
 00000000004004C9                            0F 1F 80 00 00 00 00          .......
 
 ;; __do_global_dtors_aux: 00000000004004D0
@@ -165,7 +165,7 @@ l0000000000400504:
 	push	rbp
 	mov	edi,00600E08
 	mov	rbp,rsp
-	call	eax
+	call	rax
 	pop	rbp
 	jmp	0000000000400490
 0000000000400515                0F 1F 00                              ...       
@@ -314,7 +314,7 @@ l0000000000400670:
 	mov	rdx,r15
 	mov	rsi,r14
 	mov	edi,r13d
-	call	dword ptr [r12+rbx*8]
+	call	qword ptr [r12+rbx*8]
 	add	rbx,01
 	cmp	rbx,rbp
 	jnz	0000000000400670

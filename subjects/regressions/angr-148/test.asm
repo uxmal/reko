@@ -98,7 +98,7 @@ l0000000000400487:
 l0000000000400491:
 	pop	rbp
 	mov	edi,00601040
-	jmp	eax
+	jmp	rax
 0000000000400499                            0F 1F 80 00 00 00 00          .......
 
 ;; register_tm_clones: 00000000004004A0
@@ -127,7 +127,7 @@ l00000000004004CE:
 	pop	rbp
 	mov	rsi,rax
 	mov	edi,00601040
-	jmp	edx
+	jmp	rdx
 00000000004004D9                            0F 1F 80 00 00 00 00          .......
 
 ;; __do_global_dtors_aux: 00000000004004E0
@@ -160,7 +160,7 @@ l0000000000400514:
 	push	rbp
 	mov	edi,00600E20
 	mov	rbp,rsp
-	call	eax
+	call	rax
 	pop	rbp
 	jmp	00000000004004A0
 0000000000400525                0F 1F 00                              ...       
@@ -215,7 +215,7 @@ l0000000000400590:
 	mov	rdx,r13
 	mov	rsi,r14
 	mov	edi,r15d
-	call	dword ptr [r12+rbx*8]
+	call	qword ptr [r12+rbx*8]
 	add	rbx,01
 	cmp	rbx,rbp
 	jnz	0000000000400590

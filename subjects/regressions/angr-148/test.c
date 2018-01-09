@@ -45,7 +45,7 @@ void deregister_tm_clones(word64 r8)
 		byte Z_51;
 		word32 edi_52;
 		word64 rdi_53;
-		eax();
+		null();
 	}
 }
 
@@ -54,19 +54,18 @@ void register_tm_clones(word64 r8)
 {
 	if (true && 0x00 != 0x00)
 	{
-		word64 rsp_47;
-		word64 rax_48;
-		word64 rbp_49;
-		word64 r8_50;
-		byte SCZO_51;
-		word64 rdx_52;
-		byte Z_53;
-		byte SZO_54;
-		byte C_55;
-		word64 rsi_56;
-		word64 rdi_57;
-		word32 edx_58;
-		edx();
+		word64 rsp_45;
+		word64 rax_46;
+		word64 rbp_47;
+		word64 r8_48;
+		byte SCZO_49;
+		word64 rdx_50;
+		byte Z_51;
+		byte SZO_52;
+		byte C_53;
+		word64 rsi_54;
+		word64 rdi_55;
+		null();
 	}
 }
 
@@ -101,7 +100,7 @@ void frame_dummy(word64 r8)
 		word64 rdx_55;
 		word32 edx_56;
 		word64 rsi_57;
-		eax();
+		null();
 		register_tm_clones(r8_54);
 	}
 }
@@ -143,7 +142,7 @@ void __libc_csu_init(word32 edi)
 			byte C_83;
 			byte Z_84;
 			word64 rdi_85;
-			globals->u600E10();
+			globals->ptr600E10();
 		} while (rbx_79 + 0x01 != rbp_78);
 	}
 }

@@ -20,16 +20,15 @@ l0000000000400428:
 // LocalsOut: fp(64)
 
 l0000000000400438:
-	word64 rsp_17
-	byte SCZO_18
-	word64 rax_19
-	byte SZO_20
-	byte C_21
-	byte Z_22
-	word32 eax_23
-	call eax (retsize: 4; depth: 12)
-		uses: C_7,eax,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_21,eax_23,rax_19,rsp_17,SCZO_18,SZO_20,Z_22
+	word64 rsp_15
+	byte SCZO_16
+	word64 rax_17
+	byte SZO_18
+	byte C_19
+	byte Z_20
+	call __gmon_start__ (retsize: 8; depth: 16)
+		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
+		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
@@ -66,11 +65,11 @@ _start_entry:
 // DataOut: rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64) Local -0004(0) Stack +0000(64)
+// LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000400480:
 	__align(fp + 0x0000000000000008)
-	__libc_start_main(0x0000000000400660, qwArg00, fp + 0x0000000000000008, 0x0000000000400710, 0x0000000000400780, rdx, ptrLoc04)
+	__libc_start_main(0x0000000000400660, qwArg00, fp + 0x0000000000000008, 0x0000000000400710, 0x0000000000400780, rdx, fp)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -121,7 +120,7 @@ l00000000004004CB:
 	byte C_47
 	word32 edi_48
 	word64 rdi_49
-	call eax (retsize: 4; depth: 4)
+	call 0x0000000000000000 (retsize: 4; depth: 4)
 		uses: C_35,eax,edi,qwLoc08_4,r8,rax_32,rbp_36,rdi_38,rsp_37,SCZO_7,SZO_33,Z_34
 		defs: C_47,eax_41,edi_48,r8_43,rax_42,rbp_40,rdi_49,rsp_39,SCZO_44,SZO_46,Z_45
 	return
@@ -168,19 +167,18 @@ l0000000000400518:
 // SymbolicIn: rsp:fp - 0x0000000000000008 rsi:0x0000000000000000 rbp:fp - 0x0000000000000008 rax:0x0000000000000000 -8(fp):rbp
 
 l000000000040050D:
-	word64 rsp_42
-	word64 rsi_43
-	word64 rbp_44
-	byte SCZO_45
-	word64 rax_46
-	byte Z_47
-	byte SZO_48
-	byte C_49
-	word64 rdi_50
-	word32 eax_51
-	call eax (retsize: 4; depth: 4)
-		uses: C_38,eax,qwLoc08_5,rax_35,rbp_39,rdi_41,rsi_12,rsp_40,SCZO_13,SZO_36,Z_37
-		defs: C_49,eax_51,rax_46,rbp_44,rdi_50,rsi_43,rsp_42,SCZO_45,SZO_48,Z_47
+	word64 rsp_40
+	word64 rsi_41
+	word64 rbp_42
+	byte SCZO_43
+	word64 rax_44
+	byte Z_45
+	byte SZO_46
+	byte C_47
+	word64 rdi_48
+	call 0x0000000000000000 (retsize: 4; depth: 4)
+		uses: C_36,qwLoc08_5,rax_33,rbp_37,rdi_39,rsi_12,rsp_38,SCZO_13,SZO_34,Z_35
+		defs: C_47,rax_44,rbp_42,rdi_48,rsi_41,rsp_40,SCZO_43,SZO_46,Z_45
 	return
 // DataOut:
 // DataOut (flags): 
@@ -527,7 +525,7 @@ l0000000000400750:
 	byte Z_86
 	word32 ebx_87
 	word64 rdi_88
-	call Mem0[0x0000000000600E10:word32] (retsize: 4; depth: 60)
+	call Mem0[0x0000000000600E10:word64] (retsize: 8; depth: 64)
 		uses: C_64,ebx_62,edi,qwLoc08_4,qwLoc10_7,qwLoc18_13,qwLoc20_16,qwLoc28_20,qwLoc30_24,r12_17,r13_66,r14_67,r15_9,r15d_65,rbp_31,rbx_61,rdi_70,rdx_68,rsi_69,rsp_30,SCZO_32,SZO_63,Z_34
 		defs: C_85,ebx_87,edi_76,r12_78,r13_77,r14_74,r15_73,r15d_75,rbp_79,rbx_80,rdi_88,rdx_82,rsi_81,rsp_72,SCZO_83,SZO_84,Z_86
 	branch rbp_79 != rbx_80 + 0x0000000000000001 l0000000000400750
