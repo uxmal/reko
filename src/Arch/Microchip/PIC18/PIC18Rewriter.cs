@@ -52,11 +52,11 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC18Rewriter(PIC18Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.disasm = new PIC18Disassembler(arch, rdr);
-            this.dasm = disasm.GetEnumerator();
             this.state = state;
             this.binder = binder;
             this.host = host;
+            disasm = new PIC18Disassembler(arch, rdr);
+            dasm = disasm.GetEnumerator();
         }
 
         /// <summary>
