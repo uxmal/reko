@@ -954,6 +954,24 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("vmovss\txmm0,dword ptr [rip+00000351]", 0xC5, 0xFA, 0x10, 0x05, 0x51, 0x03, 0x00, 0x00);
         }
-	}
+
+        [Test]
+        public void X86dis_vcvtsi2ss()
+        {
+            AssertCode64("vcvtsi2ss\txmm0,xmm0,rax", 0xC4, 0xE1, 0xFA, 0x2A, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vcvtsi2sd()
+        {
+            AssertCode64("vcvtsi2sd\txmm0,xmm0,rdx", 0xC4, 0xE1, 0xFB, 0x2A, 0xC2);
+        }
+
+        [Test]
+        public void X86dis_call_Ev()
+        {
+            AssertCode64("call\trax", 0xFF, 0xD0);
+        }
+    }
 }
 

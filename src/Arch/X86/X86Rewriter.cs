@@ -136,8 +136,10 @@ namespace Reko.Arch.X86
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
                 case Opcode.cvtpi2ps: RewriteCvtPackedToReal(PrimitiveType.Real32); break;
-                case Opcode.cvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
-                case Opcode.cvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
+                case Opcode.cvtsi2sd:
+                case Opcode.vcvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Opcode.cvtsi2ss:
+                case Opcode.vcvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
                 case Opcode.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Opcode.cvttps2pi: RewriteCvttps2pi(); break;

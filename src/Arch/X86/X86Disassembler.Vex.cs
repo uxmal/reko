@@ -32,6 +32,8 @@ namespace Reko.Arch.X86
         {
             return new Dictionary<Opcode, Opcode>
             {
+                { Opcode.cvtsi2sd, Opcode.vcvtsi2sd },
+                { Opcode.cvtsi2ss, Opcode.vcvtsi2ss },
                 { Opcode.movss, Opcode.vmovss },
             };
         }

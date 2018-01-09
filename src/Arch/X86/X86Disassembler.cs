@@ -36,37 +36,33 @@ namespace Reko.Arch.X86
 	{
         private class X86LegacyCodeRegisterExtension
         {
-            internal static X86LegacyCodeRegisterExtension Disabled = new X86LegacyCodeRegisterExtension(0);
-            
-            byte val;
-
             internal X86LegacyCodeRegisterExtension(byte value)
             {
-                this.val = value;
+                this.ByteValue = value;
+            }
+
+            public void Reset()
+            {
+                ByteValue = 0;
             }
 
             internal byte ByteValue { get; set; }
-
-            internal bool IsActive()
-            {
-                return this.val != 0;
-            }
 
             internal bool FlagWideValue
             {
                 get
                 {
-                    return ((this.val & 0x8) == 0x8);
+                    return ((this.ByteValue & 0x8) == 0x8);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x8);
+                        this.ByteValue = (byte)(this.ByteValue | 0x8);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x8);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x8);
                     }
                 }
             }
@@ -74,17 +70,17 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x4) == 0x4);
+                    return ((this.ByteValue & 0x4) == 0x4);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x4);
+                        this.ByteValue = (byte)(this.ByteValue | 0x4);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x4);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x4);
                     }
                 }
             }
@@ -92,17 +88,17 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x1) == 0x1);
+                    return ((this.ByteValue & 0x1) == 0x1);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x1);
+                        this.ByteValue = (byte)(this.ByteValue | 0x1);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x1);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x1);
                     }
                 }
             }
@@ -110,21 +106,22 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x2) == 0x2);
+                    return ((this.ByteValue & 0x2) == 0x2);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x2);
+                        this.ByteValue = (byte)(this.ByteValue | 0x2);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x2);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x2);
                     }
                 }
             }
         }
+
         private class X86InstructionDecodeInfo
         {
             bool isModRegMemActive;
@@ -138,6 +135,7 @@ namespace Reko.Arch.X86
 
             internal X86InstructionDecodeInfo()
             {
+                this.registerExtension = new X86LegacyCodeRegisterExtension(0);
                 this.Reset();
             }
 
@@ -151,11 +149,13 @@ namespace Reko.Arch.X86
 
                 // We do not reset isRegisterExtensionPrefixEnabled as that is set by the processor mode
                 this.isRegisterExtensionActive = false;
-                this.registerExtension = X86LegacyCodeRegisterExtension.Disabled;
+                this.registerExtension.Reset();
 
                 this.F2Prefix = false;
                 this.F3Prefix = false;
                 this.SizeOverridePrefix = false;
+                this.IsVex = false;
+                this.VexRegister = 0;
             }
 
             internal bool IsSegmentOverrideActive()
@@ -197,7 +197,7 @@ namespace Reko.Arch.X86
                 set
                 {
                     this.isRegisterExtensionActive = true;
-                    this.registerExtension = new X86LegacyCodeRegisterExtension(value);
+                    this.registerExtension.ByteValue = value;
                 }
             }
 
@@ -205,6 +205,9 @@ namespace Reko.Arch.X86
             {
                 return this.isModRegMemActive;
             }
+
+            public bool IsVex { get; set; }
+
             internal byte ModRegMemByte
             {
                 get
@@ -227,6 +230,8 @@ namespace Reko.Arch.X86
             internal bool F3Prefix { get; set; }
 
             internal bool SizeOverridePrefix { get; set; }
+
+            public byte VexRegister { get; set; }
         }
 
         private ProcessorMode mode;
@@ -275,6 +280,10 @@ namespace Reko.Arch.X86
         {
             if (!rdr.IsValid)
                 return null;
+            if (rdr.Address.ToLinear() == 0x400438) //$DEBUG
+            {
+                rdr.Address.ToLinear();
+            }
             var addr = rdr.Address;
             dataWidth = defaultDataWidth;
             addressWidth = defaultAddressWidth;
@@ -708,8 +717,11 @@ namespace Reko.Arch.X86
                 if (!disasm.rdr.TryReadByte(out op))
                     return null;
                 var r = (~op >> 2) & 4;
+                var vvvv = (~op >> 3) & 0xF;
                 var pp = op & 3;
                 var ctx = disasm.currentDecodingContext;
+                ctx.IsVex = true;
+                ctx.VexRegister = (byte)vvvv;
                 ctx.RegisterExtensionPrefixByte = (byte)r;
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
@@ -729,8 +741,45 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                //$TODO implement three-byte VEX prefix decoder.
-                return null;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var rxb = op >> 5;
+                var mmmmm = op & 0x1F;
+
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var w = op >> 7;
+                var vvvv = (~op >> 3) & 0xF;
+                var pp = op & 0x3;
+                //$TODO: L.
+
+                var ctx = disasm.currentDecodingContext;
+                ctx.IsVex = true;
+                ctx.VexRegister = (byte)vvvv;
+                ctx.RegisterExtension.FlagWideValue = w != 0;
+                ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
+                ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
+                ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.F2Prefix = pp == 3;
+                ctx.F3Prefix = pp == 2;
+                ctx.SizeOverridePrefix = pp == 1;
+
+                OpRec[] decoders;
+                switch (mmmmm)
+                {
+                case 1: decoders = s_aOpRec0F;  break;
+                case 2: decoders = s_aOpRec0F38; break;
+                case 3: decoders = s_aOpRec0F3A; break;
+                default: return null;
+                }
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var instr = decoders[op].Decode(disasm, op, opFormat);
+                if (instr == null)
+                    return instr;
+                if (!s_mpVex.TryGetValue(instr.code, out instr.code))
+                    return null;
+                return instr;
             }
         }
 
@@ -923,6 +972,8 @@ namespace Reko.Arch.X86
         {
             if (strFormat == null)
                 return null;
+            if (opcode == Opcode.call) //$DEBUG
+                opcode.ToString();
             MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
@@ -973,10 +1024,16 @@ namespace Reko.Arch.X86
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
                     break;
                 case 'H':       // reg
-                    //$TODO: VEX form not implemented yet, skip over for now.
-                    while (strFormat[i] != ',')
-                        ++i;
-                    continue;
+                    if (currentDecodingContext.IsVex)
+                    {
+                        width = SseOperandWidth(strFormat, ref i);
+                        pOperand = new RegisterOperand(XmmRegFromBits(currentDecodingContext.VexRegister, width));
+                    }
+                    else
+                    {
+                        i = strFormat.IndexOf(',', i);
+                    }
+                    break;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
                     width = SseOperandWidth(strFormat, ref i);
                     if (!TryEnsureModRM(out modRm))

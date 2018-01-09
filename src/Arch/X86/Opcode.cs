@@ -315,6 +315,8 @@ namespace Reko.Arch.X86
         ucomisd,
         vmfunc,
 
+        vcvtsi2sd,
+        vcvtsi2ss,
         vmovss,
 
         wait,
