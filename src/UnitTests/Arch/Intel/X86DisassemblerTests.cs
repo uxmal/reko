@@ -734,12 +734,6 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void Dis_x86_invalid_les()
-        {
-            AssertCode64("illegal", 0xC4, 0xC0);
-        }
-
-        [Test]
         public void Dis_x86_emulate_x87_int_39()
         {
             options = new X86Options { Emulate8087 = true };
@@ -953,6 +947,12 @@ movzx	ax,byte ptr [bp+04]
         public void X86dis_aesimc()
         {
             AssertCode64("aesimc\txmm0,xmm0", 0x66, 0x0F, 0x38, 0xDB, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vmovss()
+        {
+            AssertCode64("vmovss\txmm0,dword ptr [rip+00000351]", 0xC5, 0xFA, 0x10, 0x05, 0x51, 0x03, 0x00, 0x00);
         }
 	}
 }

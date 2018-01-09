@@ -1861,5 +1861,23 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|10000000(5): 1 instructions",
                 "1|L--|xmm0 = __aesimc(xmm0)");
         }
+
+        [Test]
+        public void X86rw_vmovss_load()
+        {
+            Run64bitTest(0xC5, 0xFA, 0x10, 0x05, 0x51, 0x03, 0x00, 0x00); // vmovss txmm0,dword ptr [rip+00000351]
+            AssertCode(
+                "0|L--|0000000140000000(8): 1 instructions",
+                "1|L--|xmm0 = DPB(xmm0, Mem0[0x0000000140000359:real32], 0)");
+        }
+
+        [Test]
+        public void X86rw_vmovss_store()
+        {
+            Run64bitTest(0xC5, 0xFA, 0x11, 0x85, 0x2C, 0xFF, 0xFF, 0xFF); // vmovss dword ptr [rbp-0xd4], xmm0
+            AssertCode(
+                "0|L--|0000000140000000(8): 1 instructions",
+                "1|L--|Mem0[rbp - 0x00000000000000D4:real32] = (real32) xmm0");
+        }
     }
 }

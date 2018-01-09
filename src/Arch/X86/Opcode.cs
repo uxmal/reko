@@ -314,6 +314,9 @@ namespace Reko.Arch.X86
         ucomiss,
         ucomisd,
         vmfunc,
+
+        vmovss,
+
         wait,
         xadd,
         xchg,

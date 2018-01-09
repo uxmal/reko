@@ -334,11 +334,11 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.ret),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.les,	"Gv,Mp"),
-                    new SingleByteOpRec(Opcode.illegal)),      //$TODO: VEX + 2 byte
+                    new VexDecoder3()),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.lds,	"Gv,Mp"),
-                    new SingleByteOpRec(Opcode.illegal)),      //$TODO: VEX + 1 byte
-				new SingleByteOpRec(Opcode.mov,	"Eb,Ib"),
+                    new VexDecoder2()),
+                new SingleByteOpRec(Opcode.mov,	"Eb,Ib"),
 				new SingleByteOpRec(Opcode.mov,	"Ev,Iz"),
 
 				new SingleByteOpRec(Opcode.enter, "Iw,Ib"),
@@ -346,7 +346,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.retf,	"Iw"),
 				new SingleByteOpRec(Opcode.retf,	""),
 				new SingleByteOpRec(Opcode.@int,	"3"),
-				new InterruptOpRec(Opcode.@int,	"Ib"),
+				new InterruptOpRec(Opcode.@int,	    "Ib"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.into,	""),
                     new SingleByteOpRec(Opcode.illegal)),

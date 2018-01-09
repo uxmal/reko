@@ -45,20 +45,13 @@ namespace Reko.Arch.X86
                 this.val = value;
             }
 
-            internal X86LegacyCodeRegisterExtension(byte magic, bool wide, bool modrm_reg, bool sib_idx, bool modrm_rm)
-            {
-                this.ByteValue = (byte)((this.val & 0xf) | ((magic & 0xf) << 4));
-                this.FlagWideValue = wide;
-                this.FlagTargetModrmRegister = modrm_reg;
-                this.FlagTargetSIBIndex = sib_idx;
-                this.FlagTargetModrmRegOrMem = modrm_rm;
-            }
-
             internal byte ByteValue { get; set; }
+
             internal bool IsActive()
             {
                 return this.val != 0;
             }
+
             internal bool FlagWideValue
             {
                 get
@@ -143,11 +136,6 @@ namespace Reko.Arch.X86
             bool isRegisterExtensionActive;
             X86LegacyCodeRegisterExtension registerExtension;
 
-            bool repetitionPrefixF2;
-            bool repetitionPrefixF3;
-
-            bool sizeOverridePrefix;
-
             internal X86InstructionDecodeInfo()
             {
                 this.Reset();
@@ -165,10 +153,9 @@ namespace Reko.Arch.X86
                 this.isRegisterExtensionActive = false;
                 this.registerExtension = X86LegacyCodeRegisterExtension.Disabled;
 
-                this.repetitionPrefixF2 = false;
-                this.repetitionPrefixF3 = false;
-
-                this.sizeOverridePrefix = false;
+                this.F2Prefix = false;
+                this.F3Prefix = false;
+                this.SizeOverridePrefix = false;
             }
 
             internal bool IsSegmentOverrideActive()
@@ -193,6 +180,7 @@ namespace Reko.Arch.X86
             {
                 return this.isRegisterExtensionActive;
             }
+
             internal X86LegacyCodeRegisterExtension RegisterExtension
             {
                 get
@@ -234,53 +222,13 @@ namespace Reko.Arch.X86
                 }
             }
 
-            internal bool F2Prefix
-            {
-                get
-                {
-                    return this.repetitionPrefixF2;
-                }
-                set
-                {
-                    if (!value)
-                    {
-                        throw new ArgumentException("In what case is it reasonable to not call Reset() instead???");
-                    }
-                    this.repetitionPrefixF2 = value;
-                }
-            }
-            internal bool F3Prefix
-            {
-                get
-                {
-                    return this.repetitionPrefixF3;
-                }
-                set
-                {
-                    if (!value)
-                    {
-                        throw new ArgumentException("In what case is it reasonable to not call Reset() instead???");
-                    }
-                    this.repetitionPrefixF3 = value;
-                }
-            }
-            internal bool SizeOverridePrefix
-            {
-                get
-                {
-                    return this.sizeOverridePrefix;
-                }
-                set
-                {
-                    if (!value)
-                    {
-                        throw new ArgumentException("In what case is it reasonable to not call Reset() instead???");
-                    }
-                    this.sizeOverridePrefix = value;
-                }
-            }
-        };
-        
+            internal bool F2Prefix { get; set; }
+
+            internal bool F3Prefix { get; set; }
+
+            internal bool SizeOverridePrefix { get; set; }
+        }
+
         private ProcessorMode mode;
         private X86Instruction instrCur;
 		private PrimitiveType dataWidth;
@@ -750,6 +698,39 @@ namespace Reko.Arch.X86
                     return s_aOpRec0F3A[op].Decode(disasm, op, "");
                 default: return null;
                 }
+            }
+        }
+
+        public class VexDecoder2 : OpRec
+        {
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var r = (~op >> 2) & 4;
+                var pp = op & 3;
+                var ctx = disasm.currentDecodingContext;
+                ctx.RegisterExtensionPrefixByte = (byte)r;
+                ctx.F2Prefix = pp == 3;
+                ctx.F3Prefix = pp == 2;
+                ctx.SizeOverridePrefix = pp == 1;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var instr = s_aOpRec0F[op].Decode(disasm, op, opFormat);
+                if (instr == null)
+                    return instr;
+                if (!s_mpVex.TryGetValue(instr.code, out instr.code))
+                    return null;
+                return instr;
+            }
+        }
+
+        public class VexDecoder3 : OpRec
+        {
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                //$TODO implement three-byte VEX prefix decoder.
+                return null;
             }
         }
 
@@ -1365,6 +1346,7 @@ namespace Reko.Arch.X86
 		private static OpRec [] s_aOpRec0F3A;
         private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
+        private static Dictionary<Opcode, Opcode> s_mpVex;
 
 		static X86Disassembler()
 		{
@@ -1375,6 +1357,7 @@ namespace Reko.Arch.X86
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
+            s_mpVex = CreateVexMapping();
             Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
 		}
 	}
