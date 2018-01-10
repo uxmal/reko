@@ -24205,22 +24205,23 @@ l0000000000410B30:
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
+l0000000000410B45:
+// DataOut: r11 rdi rdx rsi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 216 -152(fp):r8 -144(fp):r9
+// LocalsOut: fp(64)
+
 l0000000000410B7C:
 	fn0000000000410AC0(fp - 0x00000000000000B8, rdx, rsi, rdi, fp - 0x00000000000000D0, r11)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 216 -152(fp):r8 -144(fp):r9
+// SymbolicIn: rsp:fp - 216 -152(fp):r8 -144(fp):r9 -136(fp):xmm0 -120(fp):xmm1 -104(fp):xmm2 -88(fp):xmm3 -72(fp):xmm4 -56(fp):xmm5 -40(fp):xmm6 -24(fp):xmm7
 
 fn0000000000410B30_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rax:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r12:<invalid> rbp:<invalid> rbx:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> eax:<invalid> rdi:<invalid> -208(fp):0x00000020 -204(fp):0x00000030 -200(fp):fp + 0x0000000000000008 -192(fp):fp - 0x00000000000000B8 -152(fp):r8 -144(fp):r9
-
-l0000000000410B45:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp - 216 -152(fp):r8 -144(fp):r9
+// SymbolicIn: rsp:<invalid> rax:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> r12:<invalid> rbp:<invalid> rbx:<invalid> rcx:<invalid> rdx:<invalid> rsi:<invalid> eax:<invalid> rdi:<invalid> -208(fp):0x00000020 -204(fp):0x00000030 -200(fp):fp + 0x0000000000000008 -192(fp):fp - 0x00000000000000B8 -152(fp):r8 -144(fp):r9 -136(fp):xmm0 -120(fp):xmm1 -104(fp):xmm2 -88(fp):xmm3 -72(fp):xmm4 -56(fp):xmm5 -40(fp):xmm6 -24(fp):xmm7
 
 
 

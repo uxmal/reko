@@ -13176,8 +13176,7 @@ void fn0000000000410AC0(word64 rax, word64 rdx, word64 rsi, word64 rdi, word64 r
 // 0000000000410B30: void fn0000000000410B30(Register byte al, Register word64 rdx, Register word64 rsi, Register word64 rdi, Register word64 r11)
 void fn0000000000410B30(byte al, word64 rdx, word64 rsi, word64 rdi, word64 r11)
 {
-	if (al == 0x00)
-		fn0000000000410AC0(fp - 0xB8, rdx, rsi, rdi, fp - 0xD0, r11);
+	fn0000000000410AC0(fp - 0xB8, rdx, rsi, rdi, fp - 0xD0, r11);
 }
 
 // 0000000000410C40: Register word64 fn0000000000410C40(Register word64 rsi, Register word64 rdi)

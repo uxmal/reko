@@ -1792,6 +1792,7 @@ Parameter name: index
 00000000004113F3: warning: Unable to resolve imported reference __strtoul_internal.
 0000000000403ABB: warning: Unable to resolve imported reference error.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
+0000000000407E02: warning: Rewriting x86 opcode 'vaddpd' is not supported yet.
 00000000004021A0: warning: Unable to resolve imported reference __ctype_toupper_loc.
 0000000000402210: warning: Unable to resolve imported reference __mempcpy_chk.
 0000000000402250: warning: Unable to resolve imported reference _exit.

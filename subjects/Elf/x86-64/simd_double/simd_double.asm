@@ -282,28 +282,24 @@ l0000000000000820:
 	mov	rdx,rax
 	mov	rax,[rbp-38]
 	add	rax,rdx
-	illegal
+	vmovaps	xmm0,[rax]
 	mov	rax,[rbp-18]
 	shl	rax,05
 	mov	rdx,rax
 	mov	rax,[rbp-30]
 	add	rax,rdx
-	illegal
+	vmovaps	xmm1,[rax]
 	mov	rax,[rbp-18]
 	shl	rax,05
 	mov	rdx,rax
 	mov	rax,[rbp-28]
 	add	rax,rdx
-	illegal
-	nop
-	illegal
-	test	[rax-01],esi
-	illegal
-	illegal
-	illegal
-	illegal
-	add	[rax-7D],cl
-	call	00000000458B5085
+	vmovaps	[rbp-70],xmm1
+	vmovaps	[rbp-00000090],xmm0
+	vmovaps	xmm0,[rbp-70]
+	vaddpd	xmm0,xmm0,[rbp-00000090]
+	vmovaps	[rax],xmm0
+	add	qword ptr [rbp-18],01
 
 l0000000000000881:
 	mov	rax,[rbp-18]
@@ -364,10 +360,10 @@ l0000000000000921:
 	and	eax,01
 	or	rdx,rax
 	vcvtsi2sd	xmm0,xmm0,rdx
-	illegal
+	vaddsd	xmm0,xmm0,xmm0
 
 l0000000000000936:
-	illegal
+	vmovsd	double ptr [rcx],xmm0
 	add	qword ptr [rbp-08],01
 
 l000000000000093F:
@@ -399,10 +395,10 @@ l000000000000097A:
 	and	eax,01
 	or	rdx,rax
 	vcvtsi2sd	xmm0,xmm0,rdx
-	illegal
+	vaddsd	xmm0,xmm0,xmm0
 
 l000000000000098F:
-	illegal
+	vmovsd	double ptr [rcx],xmm0
 	add	qword ptr [rbp-10],01
 
 l0000000000000998:
@@ -419,8 +415,8 @@ l00000000000009AC:
 	lea	rdx,[00000000+rax*8]
 	mov	rax,[rbp-40]
 	add	rax,rdx
-	illegal
-	illegal
+	vxorpd	xmm0,xmm0,xmm0
+	vmovsd	double ptr [rax],xmm0
 	add	qword ptr [rbp-18],01
 
 l00000000000009CC:
@@ -445,7 +441,7 @@ l00000000000009F8:
 	add	rax,rdx
 	mov	rax,[rax]
 	mov	[rbp-48],rax
-	illegal
+	vmovsd	xmm0,double ptr [rbp-48]
 	lea	rdi,[rip+000000DA]                                     ; 0000000000000AF8
 	mov	eax,00000001
 	call	00000000000005E0

@@ -15288,28 +15288,14 @@ fn0000000000410B30 proc
 	jz	0000000000410B7C
 
 l0000000000410B45:
-	illegal
-	and	al,50
-	illegal
-	and	r8b,60
-	illegal
-	push	rsp
-	and	al,70
-	illegal
-	pushf
-	and	al,80
-	add	[rax],al
-	add	[rdi],cl
-	sub	[rsp+00000090],esp
-	illegal
-	lodsb
-	and	al,A0
-	add	[rax],al
-	add	[rdi],cl
-	sub	[rsp+000000B0],esi
-	illegal
-	mov	esp,0000C024
-	add	[rax-73],cl
+	movaps	[rsp+50],xmm0
+	movaps	[rsp+60],xmm1
+	movaps	[rsp+70],xmm2
+	movaps	[rsp+00000080],xmm3
+	movaps	[rsp+00000090],xmm4
+	movaps	[rsp+000000A0],xmm5
+	movaps	[rsp+000000B0],xmm6
+	movaps	[rsp+000000C0],xmm7
 
 l0000000000410B7C:
 	lea	rax,[rsp+000000E0]
