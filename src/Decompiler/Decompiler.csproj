@@ -340,6 +340,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Structure\LoopFinder.cs" />
+    <Compile Include="Structure\ProcedurePrettifier.cs" />
     <Compile Include="Structure\StructureAnalysis.cs" />
     <Compile Include="Structure\Region.cs" />
     <Compile Include="Structure\RegionFactory.cs" />

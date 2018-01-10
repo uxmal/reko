@@ -78,6 +78,8 @@ namespace Reko.Structure
             // Post processing steps
             var trrm = new TailReturnRemover(proc);
             trrm.Transform();
+            var pp = new ProcedurePrettifier(proc);
+            pp.Transform();
         }
 
         /// <summary>
