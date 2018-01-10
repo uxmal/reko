@@ -315,9 +315,15 @@ namespace Reko.Arch.X86
         ucomisd,
         vmfunc,
 
+        vaddpd,
+        vaddsd,
         vcvtsi2sd,
         vcvtsi2ss,
+        vmovaps,
+        vmovsd,
         vmovss,
+        vxorpd,
+        vxorps,
 
         wait,
         xadd,

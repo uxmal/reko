@@ -158,10 +158,22 @@ namespace Reko.Arch.X86
 
         private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size)
         {
-            var xmm = SrcOp(instrCur.op1);
+            var dst = SrcOp(instrCur.op1);
             var tmp = frame.CreateTemporary(size);
-            m.Assign(tmp, fn(m.Cast(size, xmm), SrcOp(instrCur.op2)));
-            m.Assign(xmm, m.Dpb(xmm, tmp, 0));
+            if (instrCur.op3 != null)
+            {
+                var src1 = SrcOp(instrCur.op2);
+                var src2 = SrcOp(instrCur.op3);
+                src1 = m.Cast(size, src1);
+                src2 = m.Cast(size, src2);
+                m.Assign(tmp, fn(src1, src2));
+                m.Assign(dst, m.Dpb(dst, tmp, 0));
+            }
+            else
+            {
+                m.Assign(tmp, fn(m.Cast(size, dst), SrcOp(instrCur.op2)));
+                m.Assign(dst, m.Dpb(dst, tmp, 0));
+            }
         }
 
         private void RewritePackedBinop(string fnName, PrimitiveType elementType)

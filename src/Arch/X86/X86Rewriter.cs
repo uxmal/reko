@@ -97,7 +97,8 @@ namespace Reko.Arch.X86
                 case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
                 case Opcode.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
-                case Opcode.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
+                case Opcode.addsd:
+                case Opcode.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
                 case Opcode.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
                 case Opcode.aesimc: RewriteAesimc(); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
@@ -267,14 +268,16 @@ namespace Reko.Arch.X86
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mfence: RewriteMfence(); break;
                 case Opcode.mov: RewriteMov(); break;
-                case Opcode.movaps: RewriteMov(); break;
+                case Opcode.movaps:
+                case Opcode.vmovaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movlhps: RewriteMovlhps(); break;
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
-                case Opcode.movsd: RewriteMovssd(PrimitiveType.Real64); break;
+                case Opcode.movsd:
+                case Opcode.vmovsd:  RewriteMovssd(PrimitiveType.Real64); break;
                 case Opcode.movss:
                 case Opcode.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
@@ -361,7 +364,8 @@ namespace Reko.Arch.X86
                 case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
-                case Opcode.xorpd: RewritePackedBinop("__xorpd", PrimitiveType.Word64); break;
+                case Opcode.xorpd:
+                case Opcode.vxorpd: RewritePackedBinop("__xorpd", PrimitiveType.Word64); break;
                 case Opcode.xorps: RewritePackedBinop("__xorps", PrimitiveType.Word32); break;
 
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;

@@ -280,10 +280,6 @@ namespace Reko.Arch.X86
         {
             if (!rdr.IsValid)
                 return null;
-            if (rdr.Address.ToLinear() == 0x400438) //$DEBUG
-            {
-                rdr.Address.ToLinear();
-            }
             var addr = rdr.Address;
             dataWidth = defaultDataWidth;
             addressWidth = defaultAddressWidth;
@@ -731,8 +727,13 @@ namespace Reko.Arch.X86
                 var instr = s_aOpRec0F[op].Decode(disasm, op, opFormat);
                 if (instr == null)
                     return instr;
-                if (!s_mpVex.TryGetValue(instr.code, out instr.code))
+                Opcode vexCode;
+                if (!s_mpVex.TryGetValue(instr.code, out vexCode))
+                {
+                    Debug.Print("Failed to map {0} to VEX counterpart", instr.code);
                     return null;
+                }
+                instr.code = vexCode;
                 return instr;
             }
         }

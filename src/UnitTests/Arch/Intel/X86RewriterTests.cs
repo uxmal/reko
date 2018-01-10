@@ -1765,14 +1765,14 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|rArg0 = pow(2.0, rArg0) - 1.0");
         }
 
-		[Test]
-		public void X86rw_fninit()
-		{
-			Run32bitTest(0xDB, 0xE3);
-			AssertCode(     // fninit
-				"0|L--|10000000(2): 1 instructions",
-				"1|L--|__fninit()");
-		}
+        [Test]
+        public void X86rw_fninit()
+        {
+            Run32bitTest(0xDB, 0xE3);
+            AssertCode(     // fninit
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|__fninit()");
+        }
 
         [Test]
         public void X86rw_x64_push_immediate()
@@ -1898,6 +1898,45 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|0000000140000000(5): 2 instructions",
                 "1|L--|v4 = (real64) rdx",
                 "2|L--|xmm0 = DPB(xmm0, v4, 0)");
+        }
+
+        [Test]
+        public void X86rw_vmovsd()
+        {
+            Run64bitTest(0xC5, 0xFB, 0x11, 0x01); // vmovsd double ptr[rcx], xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|Mem0[rcx:real64] = (real64) xmm0");
+        }
+
+        [Test]
+        public void X86rw_vmovaps()
+        {
+            Run64bitTest(0xC5, 0xFD, 0x28, 0x00); // vmovaps xmm0,[rax]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = Mem0[rax:word128]");
+        }
+
+        [Test]
+        public void X86rw_vaddsd()
+        {
+            Run64bitTest(0xC5, 0xFB, 0x58, 0xC0);   // vaddsd xmm0,xmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|v3 = (real64) xmm0 + (real64) xmm0",
+                "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+        [Test]
+        public void X86rw_vxorpd()
+        {
+            Run64bitTest(0xC5, 0xF9, 0x57, 0xC0);   // vxorpd xmm0,xmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 3 instructions",
+                "1|L--|v3 = xmm0",
+                "2|L--|v4 = xmm0",
+                "3|L--|xmm0 = __xorpd(v3, v4)");
         }
     }
 }
