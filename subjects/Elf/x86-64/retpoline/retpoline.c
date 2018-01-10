@@ -31,9 +31,7 @@ void _start( * rdx, Eq_17 qwArg00)
 // 00000000004004B0: void deregister_tm_clones(Register word64 r8)
 void deregister_tm_clones(word64 r8)
 {
-	if (r8 == 0x00601040 || 0x00 == 0x00)
-		;
-	else
+	if (r8 != 0x00601040 && 0x00 != 0x00)
 	{
 		word64 rsp_39;
 		word64 rbp_40;
@@ -53,9 +51,7 @@ void deregister_tm_clones(word64 r8)
 // 00000000004004E0: void register_tm_clones()
 void register_tm_clones()
 {
-	if (0x00 == 0x00 || 0x00 == 0x00)
-		;
-	else
+	if (0x00 != 0x00 && 0x00 != 0x00)
 	{
 		word64 rsp_40;
 		word64 rsi_41;
@@ -73,9 +69,7 @@ void register_tm_clones()
 // 0000000000400520: void __do_global_dtors_aux(Register word64 r8)
 void __do_global_dtors_aux(word64 r8)
 {
-	if (globals->b601040 != 0x00)
-		;
-	else
+	if (globals->b601040 == 0x00)
 	{
 		deregister_tm_clones(r8);
 		globals->b601040 = 0x01;

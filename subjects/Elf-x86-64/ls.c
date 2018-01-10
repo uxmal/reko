@@ -3198,9 +3198,7 @@ void fn0000000000404D90(word64 rdi)
 	free(Mem0[rdi + 0x00:word64]);
 	free(Mem0[rdi + 0x08:word64]);
 	word64 rdi_10 = Mem0[rdi + 0xA8:word64];
-	if (rdi_10 == 6399338)
-		;
-	else
+	if (rdi_10 != 6399338)
 	{
 		word64 rsp_20;
 		word64 rbx_21;
@@ -7660,9 +7658,7 @@ void fn000000000040A730(word64 rdi, word32 r14d)
 {
 	word64 rdx_116 = Mem0[rdi + 0x00:word64];
 	byte cl_119 = (byte) (word32) Mem0[rdx_116 + 0x00:byte];
-	if (cl_119 == 0x00)
-		;
-	else
+	if (cl_119 != 0x00)
 	{
 		byte r8b_130 = 0x00;
 		word64 rax_100 = 0x00;

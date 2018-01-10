@@ -905,9 +905,7 @@ void vListInsert(uint32 r0, Eq_1055 r1, ui64 * r2, word32 r8, ui32 ip)
 		r1 = DPB(r1, 0x6AE0, 16);
 	union Eq_1055 * r8_33 = r8 + -0x0C68;
 	*r8_33 = (union Eq_1055 *) r1;
-	if (Z)
-		;
-	else
+	if (!Z)
 	{
 		word32 sp_35;
 		byte V_36;
@@ -1715,9 +1713,7 @@ void OSRAMWriteFirst()
 // 000096C5: void OSRAMWriteArray(Register (ptr Eq_1914) r5)
 void OSRAMWriteArray(Eq_1914 * r5)
 {
-	if (Z)
-		;
-	else
+	if (!Z)
 	{
 		word32 sp_6;
 		word32 r5_7;
@@ -2218,9 +2214,7 @@ void UARTIntRegister(Eq_2182 r0, word32 r4, Eq_2182 * ip)
 void UARTIntUnregister(Eq_2189 r0, word32 r4, Eq_2189 * ip)
 {
 	*ip = (union Eq_2189 *) r0;
-	if (NZV)
-		;
-	else
+	if (!NZV)
 	{
 		word32 sp_13;
 		word32 r0_14;
@@ -2300,9 +2294,7 @@ void CPUwfi(word32 r2, word32 r6, Eq_2253 r7, Eq_2213 * pc)
 // 0000A0F5: void I2CMasterInit(Register word32 r2, Register word32 r6, Register (ptr Eq_2272) r7)
 void I2CMasterInit(word32 r2, word32 r6, Eq_2272 * r7)
 {
-	if (V)
-		;
-	else
+	if (!V)
 	{
 		word32 sp_13;
 		word32 r0_14;

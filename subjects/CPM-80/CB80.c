@@ -1181,9 +1181,7 @@ void fn0BE4(word16 af, byte b, byte d, Eq_358 e, byte h, Eq_428 l)
 		cu8 a_138 = globals->b138A;
 		if (a_138 != 0x02)
 		{
-			if (globals->b138A != 0x03)
-				;
-			else
+			if (globals->b138A == 0x03)
 				fn0105();
 		}
 		else
@@ -1827,9 +1825,7 @@ byte fn12D8(word16 af, Eq_3210 b, Eq_3210 c, Eq_358 e, byte d, Eq_428 l, byte h,
 // 130B: void fn130B(Register Eq_3210 c, Register Eq_3210 b, Register Eq_358 e, Register byte d, Register Eq_428 l, Register byte h)
 void fn130B(Eq_3210 c, Eq_3210 b, Eq_358 e, byte d, Eq_428 l, byte h)
 {
-	if (C)
-		;
-	else
+	if (!C)
 	{
 		byte b_14;
 		byte l_15;

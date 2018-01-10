@@ -83,9 +83,7 @@ void fn000112A8(UINT r4, int32 r5, int32 r6, word32 dwArg00, word32 dwArg04, wor
 	if (r5 != 0x00)
 	{
 		fn0001147C(&globals->dw12018, &globals->dw1201C, dwLoc18, dwLoc14);
-		if (r6 != 0x00)
-			;
-		else
+		if (r6 == 0x00)
 		{
 			fn00011460();
 			TerminateProcess((void *) 66, r4);

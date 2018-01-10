@@ -5643,9 +5643,7 @@ void __fpcmp_parts_d(Eq_8391 * r4, Eq_8392 * r5)
 	}
 	if ((r3_17 ^ 0x02) == 0x00)
 		return;
-	if (r4->dw0004 != r5->dw0004)
-		;
-	else
+	if (r4->dw0004 == r5->dw0004)
 	{
 		int32 r6_53 = r4->dw0008;
 		int32 r3_54 = r5->dw0008;

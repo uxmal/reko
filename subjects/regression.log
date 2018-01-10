@@ -3237,8 +3237,8 @@ Parameter name: Linear address 00000000 is not in known segment.
 fn1483_1BB9: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 214
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 111
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 216
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 113
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
 

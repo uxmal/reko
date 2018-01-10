@@ -31,9 +31,7 @@ void fn0000000000400480( * rdx, Eq_17 qwArg00)
 // 00000000004004B0: void fn00000000004004B0(Register word64 r8)
 void fn00000000004004B0(word64 r8)
 {
-	if (r8 == 0x00601040 || 0x00 == 0x00)
-		;
-	else
+	if (r8 != 0x00601040 && 0x00 != 0x00)
 	{
 		word64 rsp_39;
 		word64 rbp_40;

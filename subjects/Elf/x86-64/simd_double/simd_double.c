@@ -75,9 +75,7 @@ void register_tm_clones()
 // 00000000000006E0: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (globals->b201048 != 0x00)
-		;
-	else
+	if (globals->b201048 == 0x00)
 	{
 		if (globals->qw200FF8 != 0x00)
 		{
@@ -144,9 +142,7 @@ uint64 vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi)
 	uint128 rdx_rax_25 = (uint128) (uint64) rdi;
 	uint64 rdx_27 = (uint64) (rdx_rax_25 % rcx_22);
 	uint64 rax_29 = (uint64) (rdx_rax_25 /u rcx_22);
-	if (0x00 < rax_29)
-		;
-	else
+	if (0x00 >= rax_29)
 		return rdx_27 - 0x08;
 }
 

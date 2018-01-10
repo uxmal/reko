@@ -80,9 +80,7 @@ void fini_dummy()
 // 000115D8: void frame_dummy(Register word32 o7)
 void frame_dummy(word32 o7)
 {
-	if (fn0001150C(o7, 0x0001659C)->dw0018 == 0x00)
-		;
-	else
+	if (fn0001150C(o7, 0x0001659C)->dw0018 != 0x00)
 		fn00027C98();
 }
 
@@ -107,9 +105,7 @@ void xstrerror(word32 o0)
 void xmalloc(Eq_156 o0)
 {
 	malloc();
-	if (o0 != 0x00)
-		;
-	else
+	if (o0 == 0x00)
 	{
 		notice(0x000170A8, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 		exit();
@@ -130,9 +126,7 @@ void xrealloc(Eq_156 o0, int32 o1)
 		malloc();
 		Z_24 = cond(o1);
 	}
-	if (Z_24)
-		;
-	else
+	if (!Z_24)
 	{
 		notice(0x000170A8, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 		exit();
@@ -1752,9 +1746,7 @@ void edit_fn_declaration(word32 o0, word32 dwArg44, word32 dwArg48)
 	strlen();
 	save_pointers();
 	setjmp();
-	if (0x0002B240 == 0x00)
-		;
-	else
+	if (0x0002B240 != 0x00)
 	{
 		restore_pointers();
 		notice(0x00017470, o1, dwArg4C, dwArg50, dwArg54, dwArg58);
@@ -2014,9 +2006,7 @@ void edit_fn_definition(word32 o0, Eq_26 o1, word32 dwArg44, word32 dwArg48)
 void do_cleaning(byte * o0, uint32 o1)
 {
 	byte * i0_4 = o0;
-	if (o0 - o1 >= 0x00)
-		;
-	else
+	if (o0 - o1 < 0x00)
 	{
 		ui32 o1_50 = (word32) *o0;
 		while (o1_50 + ~0x07 << 0x18 >> 0x18 >= 0x54)
@@ -3194,9 +3184,7 @@ void make_temp_file(int32 o0)
 		if (o0_65 != 11)
 		{
 			close();
-			if (o0_65 == 0x0A)
-				;
-			else
+			if (o0_65 != 0x0A)
 				abort();
 		}
 		else

@@ -31,9 +31,7 @@ void _start( * rdx, Eq_17 qwArg00)
 // 0000000000400D00: void deregister_tm_clones(Register word64 r8)
 void deregister_tm_clones(word64 r8)
 {
-	if (false || 0x00 == 0x00)
-		;
-	else
+	if (true && 0x00 != 0x00)
 	{
 		word64 rsp_42;
 		word32 eax_43;
@@ -54,9 +52,7 @@ void deregister_tm_clones(word64 r8)
 // 0000000000400D40: void register_tm_clones()
 void register_tm_clones()
 {
-	if (0x00 == 0x00 || 0x00 == 0x00)
-		;
-	else
+	if (0x00 != 0x00 && 0x00 != 0x00)
 	{
 		word64 rsp_40;
 		word64 rsi_41;
