@@ -1,0 +1,45 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=L:\Microchip\PIC\Projects\Reko\PIC18Extd\main.o
+Folder=Intermediary
+DeviceName=PIC18F1230
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\mcc18\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=extended-mode
+ToolArgsString=-k -Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=
+[File001]
+Location=L:\Microchip\PIC\Projects\Reko\PIC18Extd\PIC18EggExtd.cof
+Folder=Output
+DeviceName=PIC18F1230
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=extended-mode
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=
+[File002]
+Location=L:\Microchip\PIC\Projects\Reko\PIC18Extd\PIC18EggExtd.hex
+Folder=Output
+DeviceName=PIC18F1230
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\mcc18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=extended-mode
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=
+[TOOL_LOC_STAMPS]
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\mcc18\bin\mplink.exe
+tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\mcc18\bin\mcc18.exe
