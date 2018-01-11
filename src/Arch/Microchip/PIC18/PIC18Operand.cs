@@ -272,7 +272,7 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// A PIC18 12-bit data memory address operand (used by MOVFF, MOVSF instruction)
+    /// A PIC18 12-bit data memory absolute address operand (used by MOVFF, MOVSF instruction)
     /// </summary>
     public class PIC18Memory12bitAbsAddrOperand : PIC18OperandImpl
     {
@@ -299,7 +299,7 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// A PIC18 14-bit data memory address operand (used by MOVFFL, MOVSFL instruction)
+    /// A PIC18 14-bit data memory absolute address operand (used by MOVFFL, MOVSFL instruction)
     /// </summary>
     public class PIC18Memory14bitAbsAddrOperand : PIC18OperandImpl
     {
