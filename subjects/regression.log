@@ -1995,38 +1995,8 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 00401828: warning: Expected sizes of arrays to have been determined by now
 00401958: warning: Expected sizes of arrays to have been determined by now
-004019E8: error: Failed to write global variable g_v4019E8.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitVoidType(VoidType voidType) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 356
-   at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00401A18: error: Failed to write global variable g_v401A18.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitVoidType(VoidType voidType) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 356
-   at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00401A70: error: Failed to write global variable g_v401A70.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitVoidType(VoidType voidType) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 356
-   at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 00401828: warning: Expected sizes of arrays to have been determined by now
 00401958: warning: Expected sizes of arrays to have been determined by now
-004019E8: error: Failed to write global variable g_v4019E8.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitVoidType(VoidType voidType) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 356
-   at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00401A18: error: Failed to write global variable g_v401A18.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitVoidType(VoidType voidType) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 356
-   at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00401A70: error: Failed to write global variable g_v401A70.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitVoidType(VoidType voidType) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 356
-   at Reko.Core.Types.VoidType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\VoidType.cs:line 51
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in C:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 
 === Hunk-m68k\BENCHFN
 === Hunk-m68k\BENCHLNG
