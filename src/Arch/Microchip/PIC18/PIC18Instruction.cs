@@ -1,5 +1,7 @@
 ﻿#region License
 /* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -48,7 +50,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         /// <param name="opc">The PIC18 opcode.</param>
         /// <param name="isExecExtend">True if this PIC18 instruction is for extended execution mode.</param>
-        /// <param name="ops">Zero, one or two instuction's operands ops.</param>
+        /// <param name="ops">Zero, one or two instruction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
         public PIC18Instruction(Opcode opc, PICExecMode execMode, params PIC18OperandImpl[] ops)
         {

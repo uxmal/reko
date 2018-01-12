@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
- * Copyright (C) 2017-2018 Christian Hostelet
- * inspired by work of
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,6 +25,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Microchip.MemoryMapper;
+using System;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -83,6 +85,63 @@ namespace Reko.Arch.Microchip.PIC18
 
         public virtual bool IsVisible => true;
 
+    }
+
+    public class DataAddressOperand : MachineOperand
+    {
+        public Address Address;
+
+        public DataAddressOperand(Address a) : base(PrimitiveType.Ptr16)
+        {
+            if (a == null) throw new ArgumentNullException(nameof(a));
+            Address = a;
+        }
+
+        public static DataAddressOperand Create(Address addr)
+        {
+            return new DataAddressOperand(addr);
+        }
+
+        public static DataAddressOperand Ptr16(ushort a)
+        {
+            return new DataAddressOperand(Address.Ptr16(a));
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteAddress(Address.ToString(), Address);
+        }
+    }
+
+    public class ProgAddressOperand : MachineOperand
+    {
+        public Address Address;
+
+        public ProgAddressOperand(Address a) : base(PrimitiveType.Pointer32)
+        {
+            if (a == null) throw new ArgumentNullException(nameof(a));
+            Address = a;
+        }
+
+        public static ProgAddressOperand Create(Address addr)
+        {
+            return new ProgAddressOperand(addr);
+        }
+
+        public static ProgAddressOperand Ptr16(ushort a)
+        {
+            return new ProgAddressOperand(Address.Ptr32(a));
+        }
+
+        public static ProgAddressOperand Ptr32(uint a)
+        {
+            return new ProgAddressOperand(Address.Ptr32(a));
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteAddress(Address.ToString(), Address);
+        }
     }
 
     /// <summary>
@@ -279,11 +338,11 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the 12-bit data memory address.
         /// </summary>
-        public AddressOperand DataTarget { get; }
+        public DataAddressOperand DataTarget { get; }
 
         public PIC18Memory12bitAbsAddrOperand(PICExecMode mode, ushort w) : base(PrimitiveType.UInt16, mode)
         {
-            DataTarget = AddressOperand.Ptr16(w);
+            DataTarget = DataAddressOperand.Ptr16(w);
         }
 
         public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
@@ -306,7 +365,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the 14-bit data memory address.
         /// </summary>
-        public AddressOperand DataTarget { get; }
+        public DataAddressOperand DataTarget { get; }
 
         /// <summary>
         /// Instantiates a 14-bit data memory address operand (used by MOVFFL, MOVSFL instruction)
@@ -314,7 +373,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="w">An ushort to process.</param>
         public PIC18Memory14bitAbsAddrOperand(PICExecMode mode, ushort w) : base(PrimitiveType.UInt16, mode)
         {
-            DataTarget = AddressOperand.Ptr16(w);
+            DataTarget = DataAddressOperand.Ptr16(w);
         }
 
         public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
@@ -371,7 +430,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the 8-bit memory address.
         /// </summary>
-        public AddressOperand MemAddr { get; }
+        public DataAddressOperand MemAddr { get; }
 
         /// <summary>
         /// Gets the indication if RAM location is in Access RAM or specified by BSR register.
@@ -380,7 +439,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public PIC18DataBankAccessOperand(PICExecMode mode, byte addr, int a) : base(PrimitiveType.Byte, mode)
         {
-            MemAddr = AddressOperand.Ptr16(addr);
+            MemAddr = DataAddressOperand.Ptr16(addr);
             IsAccessRAM = Constant.Bool(a == 0);
         }
 
@@ -495,7 +554,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the target absolute code address. This is a byte address.
         /// </summary>
-        public AddressOperand CodeTarget { get; }
+        public ProgAddressOperand CodeTarget { get; }
 
         /// <summary>
         /// Instantiates a 8-bit relative code offset operand.
@@ -506,7 +565,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             RelativeWordOffset = Constant.SByte(off);
             uint absaddr = (uint)((long)instrAddr.ToUInt32() + 1 + off) & 0xFFFFFU;
-            CodeTarget = AddressOperand.Ptr32(absaddr << 1); 
+            CodeTarget = ProgAddressOperand.Ptr32(absaddr << 1); 
         }
 
         public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
@@ -534,7 +593,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the target absolute code address. This is a byte address.
         /// </summary>
-        public AddressOperand CodeTarget { get; }
+        public ProgAddressOperand CodeTarget { get; }
 
         /// <summary>
         /// Instantiates a 11-bit code relative offset operand.
@@ -545,7 +604,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             RelativeWordOffset = Constant.Int16(off);
             uint absaddr = (uint)((long)instrAddr.ToUInt32() + 1 + off) & 0xFFFFFU;
-            CodeTarget = AddressOperand.Ptr32(absaddr << 1);
+            CodeTarget = ProgAddressOperand.Ptr32(absaddr << 1);
         }
 
         public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
@@ -566,9 +625,9 @@ namespace Reko.Arch.Microchip.PIC18
     public class PIC18ProgAbsAddrOperand : PIC18OperandImpl
     {
         /// <summary>
-        /// Gets the Code Memory Address. This is a byte address (21-bit, bit 0 = 0).
+        /// Gets the Program Memory Address. This is a byte address (21-bit, bit 0 = 0).
         /// </summary>
-        public AddressOperand CodeTarget { get; }
+        public ProgAddressOperand CodeTarget { get; }
 
         /// <summary>
         /// Instantiates a Absolute Code Address operand. Used by GOTO, CALL instructions.
@@ -576,7 +635,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="addr">The program word address.</param>
         public PIC18ProgAbsAddrOperand(PICExecMode mode, uint addr) : base(PrimitiveType.Pointer32, mode)
         {
-            CodeTarget = AddressOperand.Ptr32(addr << 1);
+            CodeTarget = ProgAddressOperand.Ptr32(addr << 1);
         }
 
         public override T Accept<T>(IPIC18OperandVisitor<T> visitor)

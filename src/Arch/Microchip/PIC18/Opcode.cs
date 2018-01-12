@@ -1,5 +1,7 @@
 ﻿#region License
 /* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,7 +19,6 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-
 namespace Reko.Arch.Microchip.PIC18
 {
     /// <summary>

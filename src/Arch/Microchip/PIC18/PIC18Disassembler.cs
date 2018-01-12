@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
- * Copyright (C) 2017-2018 Christian Hostelet
- * inspired by work of
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -103,7 +103,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             catch (Exception ex)
             {
-                throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} code.");
+                throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} binary code 0x{uInstr:X4}.");
             }
 
             // If there is no legal instruction, consume only one word and return an Illegal pseudo-instruction.

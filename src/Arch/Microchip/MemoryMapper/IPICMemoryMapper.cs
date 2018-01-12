@@ -1,9 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region License
+/* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Microchip.Crownking;
+using Reko.Core;
+using System.Collections.Generic;
 
 namespace Microchip.MemoryMapper
 {
@@ -46,22 +65,22 @@ namespace Microchip.MemoryMapper
         IMemoryRegion GetDataRegion(string sregionName);
 
         /// <summary>
-        /// Gets a data memory region given a memory virtual byte address.
+        /// Gets a data memory region given a memory byte address.
         /// </summary>
-        /// <param name="iVirtByteAddr">The memory byte address.</param>
+        /// <param name="aByteAddr">The data memory byte address.</param>
         /// <returns>
-        /// The data memory region.
+        /// The data memory region or null.
         /// </returns>
-        IMemoryRegion GetDataRegion(int iVirtByteAddr);
+        IMemoryRegion GetDataRegion(Address aByteAddr);
 
         /// <summary>
-        /// Remap a data byte address.
+        /// Remap a data memory byte address to its actual physical address.
         /// </summary>
-        /// <param name="iVirtByteAddr">The memory byte address.</param>
+        /// <param name="aByteAddr">The data memory byte address.</param>
         /// <returns>
-        /// The physical address.
+        /// The actual physical data memory address.
         /// </returns>
-        int RemapDataAddr(int iVirtByteAddr);
+        Address RemapDataAddr(Address aByteAddr);
 
         /// <summary>
         /// Enumerates the data regions.
@@ -147,20 +166,20 @@ namespace Microchip.MemoryMapper
         /// <summary>
         /// Gets a program memory region given a memory virtual byte address.
         /// </summary>
-        /// <param name="iVirtByteAddr">The memory byte address.</param>
+        /// <param name="aVirtByteAddr">The memory byte address.</param>
         /// <returns>
         /// The program memory region.
         /// </returns>
-        IMemoryRegion GetProgramRegion(int iVirtByteAddr);
+        IMemoryRegion GetProgramRegion(Address aVirtByteAddr);
 
         /// <summary>
-        /// Remap a program byte address.
+        /// Remaps a program memory byte address to its actual physical address. Essentially a no-op for program memory.
         /// </summary>
-        /// <param name="iVirtByteAddr">The memory byte address.</param>
+        /// <param name="aByteAddr">The program memory byte address.</param>
         /// <returns>
-        /// The physical address.
+        /// The actual physical program memory byte address.
         /// </returns>
-        int RemapProgramAddr(int iVirtByteAddr);
+        Address RemapProgramAddr(Address aByteAddr);
 
         /// <summary>
         /// Enumerates the program regions.

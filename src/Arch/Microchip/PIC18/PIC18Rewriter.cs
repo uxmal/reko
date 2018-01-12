@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
- * Copyright (C) 2017-2018 Christian Hostelet
- * inspired by work of
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -263,7 +263,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private Expression GetMemoryBankAccess(PIC18DataBankAccessOperand mem)
         {
-            Address offset = mem.MemAddr.Address;
+            var offset = mem.MemAddr.Address;
             if ((mem.ExecMode == PICExecMode.Extended) && mem.IsAccessRAM.ToBoolean() && (offset.ToUInt16() < 0x60))
             {
                 // Address is in the form [FSR2]+offset.
@@ -275,8 +275,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (mem.IsAccessRAM.ToBoolean())
                 {
                     // Address is ACCESS Bank addressing.
-                    int physAddr = arch.MemoryMapper.RemapDataAddr(offset.ToUInt16());
-                    return Constant.Create(PrimitiveType.Ptr16, physAddr);
+                    var physAddr = arch.MemoryMapper.RemapDataAddr(offset);
+                    return physAddr;
                 }
                 else
                 {

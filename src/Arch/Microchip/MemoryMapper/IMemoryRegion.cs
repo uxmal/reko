@@ -1,5 +1,27 @@
-﻿using Microchip.Crownking;
-using System;
+﻿#region License
+/* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Microchip.Crownking;
+using Reko.Core;
 
 namespace Microchip.MemoryMapper
 {
@@ -10,7 +32,7 @@ namespace Microchip.MemoryMapper
     public interface IMemoryRegion
     {
         /// <summary>
-        /// Gets the name of the memory region.
+        /// Gets the unique name of the memory region.
         /// </summary>
         /// <value>
         /// The ID of the memory region as a string.
@@ -18,28 +40,22 @@ namespace Microchip.MemoryMapper
         string RegionName { get; }
 
         /// <summary>
-        /// Gets the virtual byte addresses range.
+        /// Gets the logical byte addresses range.
         /// </summary>
-        /// <value>
-        /// A tuple providing the start and end+1 virtual byte addresses of the memory region.
-        /// </value>
-        Tuple<int, int> VirtualByteAddress { get; }
+        AddressRange LogicalByteAddress { get; }
 
         /// <summary>
-        /// Gets the physical byte addresses range.
+        /// Gets the corresponding physical byte addresses range.
         /// </summary>
-        /// <value>
-        /// A tuple providing the start and end+1 physical byte addresses of the memory region.
-        /// </value>
-        Tuple<int, int> PhysicalByteAddress { get; }
+        AddressRange PhysicalByteAddress { get; }
 
         /// <summary>
         /// Gets the memory region total size in bytes.
         /// </summary>
         /// <value>
-        /// The size in number of bytes.
+        /// The size of the memory region in number of bytes.
         /// </value>
-        int Size { get; }
+        uint Size { get; }
 
         /// <summary>
         /// Gets the type of the memory region.
@@ -66,23 +82,14 @@ namespace Microchip.MemoryMapper
         MemTrait Trait { get; }
 
         /// <summary>
-        /// Remaps a virtual byte address to a physical byte address.
+        /// Checks whether the given memory fragment is contained in this memory region.
         /// </summary>
-        /// <param name="iVirtByteAddr">The virtual memory byte address.</param>
-        /// <returns>
-        /// The physical byte address as an integer; -1 if no physical byte address found (non-existent memory).
-        /// </returns>
-        int RemapAddress(int iVirtByteAddr);
-
-        /// <summary>
-        /// Checks wether the given memory fragment is contained in this memory region.
-        /// </summary>
-        /// <param name="iVirtByteAddr">The starting memory byte virtual address of the fragment.</param>
-        /// <param name="Len">The length in bytes of the fragment.</param>
+        /// <param name="aFragAddr">The starting address of the fragment.</param>
+        /// <param name="Len">The length in bytes of the fragment. (default=0)</param>
         /// <returns>
         /// True if the fragment is contained in this memory region, false if not.
         /// </returns>
-        bool Contains(int iVirtByteAddr, int Len = 0);
+        bool Contains(Address aFragAddr, int Len = 0);
 
     }
 }

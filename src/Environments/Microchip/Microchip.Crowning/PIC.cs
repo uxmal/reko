@@ -18,7 +18,7 @@
  */
 #endregion
 
-// summary:	Implements the Microchip PIC XML definition (de)serialization per Microchip Crownking Database.
+// summary:	Implements the Microchip PIC XML definition (de-)serialization per Microchip Crownking Database.
 //
 namespace Microchip.Crownking
 {
@@ -34,10 +34,15 @@ namespace Microchip.Crownking
 
     public enum MemoryDomain : byte
     {
+        /// <summary> Memory does not belong to any known PIC memory spaces. </summary>
         Unknown = 0,
+        /// <summary> Memory belongs to the PIC Program memory space. </summary>
         Prog,
+        /// <summary> Memory belongs to the PIC Data memory space. </summary>
         Data,
+        /// <summary> Memory is an absolute memory space. </summary>
         Absolute,
+        /// <summary> Memory belongs to some other PIC memory space. </summary>
         Other
     };
 
@@ -57,6 +62,8 @@ namespace Microchip.Crownking
         Emulator,
         /// <summary>Data region is a linear view of data memory.</summary>
         Linear,
+        /// <summary>Data region is a Direct Access Memory space.</summary>
+        DMA,
         /// <summary>Program region is code</summary>
         Code,
         /// <summary>Program region is external code</summary>
@@ -153,7 +160,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "beginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _beginaddrformatted { get { return $"0x{BeginAddr:X}"; } set { BeginAddr = value.ToInt32Ex(); } }
+        public string _beginaddrformatted { get { return $"0x{BeginAddr:X}"; } set { BeginAddr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the begin address of the memory range.
@@ -162,7 +169,7 @@ namespace Microchip.Crownking
         /// The begin address as an integer.
         /// </value>
         [XmlIgnore]
-        public int BeginAddr { get; private set; }
+        public uint BeginAddr { get; private set; }
 
         /// <summary>
         /// Used to (de)serialize <see cref="EndAddr" /> property from/to hexadecimal string.
@@ -172,7 +179,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "endaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _endaddrformatted { get { return $"0x{EndAddr:X}"; } set { EndAddr = value.ToInt32Ex(); } }
+        public string _endaddrformatted { get { return $"0x{EndAddr:X}"; } set { EndAddr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the end address of the memory range.
@@ -181,7 +188,7 @@ namespace Microchip.Crownking
         /// The end address as an integer.
         /// </value>
         [XmlIgnore]
-        public int EndAddr { get; private set; }
+        public uint EndAddr { get; private set; }
 
         #endregion
 
@@ -4130,7 +4137,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "blockbeginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _blockbeginaddrformatted { get { return $"0x{BlockBeginAddr:X}"; } set { BlockBeginAddr = value.ToInt32Ex(); } }
+        public string _blockbeginaddrformatted { get { return $"0x{BlockBeginAddr:X}"; } set { BlockBeginAddr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the beginning address of the linear memory bank.
@@ -4139,7 +4146,7 @@ namespace Microchip.Crownking
         /// The address as an integer.
         /// </value>
         [XmlIgnore]
-        public int BlockBeginAddr { get; private set; }
+        public uint BlockBeginAddr { get; private set; }
 
         /// <summary>
         /// Used to (de)serialize <see cref="BlockEndAddr" /> property from/to hexadecimal string.
@@ -4149,7 +4156,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "blockendaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _blockendaddrformatted { get { return $"0x{BlockEndAddr:X}"; } set { BlockEndAddr = value.ToInt32Ex(); } }
+        public string _blockendaddrformatted { get { return $"0x{BlockEndAddr:X}"; } set { BlockEndAddr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the ending address of the linear memory bank.
@@ -4158,7 +4165,7 @@ namespace Microchip.Crownking
         /// The address as an integer.
         /// </value>
         [XmlIgnore]
-        public int BlockEndAddr { get; private set; }
+        public uint BlockEndAddr { get; private set; }
 
         #endregion
 
@@ -4253,7 +4260,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "endaddr", Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _endaddrformatted { get { return $"0x{EndAddr:X}"; } set { EndAddr = value.ToInt32Ex(); } }
+        public string _endaddrformatted { get { return $"0x{EndAddr:X}"; } set { EndAddr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the highest (end) address of the data memory space.
@@ -4262,7 +4269,7 @@ namespace Microchip.Crownking
         /// The address as an integer.
         /// </value>
         [XmlIgnore]
-        public int EndAddr { get; private set; }
+        public uint EndAddr { get; private set; }
 
         #endregion
 
@@ -4498,6 +4505,15 @@ namespace Microchip.Crownking
                 return id;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this PIC is belonging to the PIC18 family.
+        /// </summary>
+        /// <value>
+        /// True if PIC18 family, false if not.
+        /// </value>
+        [XmlIgnore]
+        public bool IsPIC18 => GetInstructionSetID >= InstructionSetID.PIC18;
 
         #endregion
 

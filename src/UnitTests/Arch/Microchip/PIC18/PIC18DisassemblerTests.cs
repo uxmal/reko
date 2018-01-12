@@ -51,6 +51,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         // 
         private Dictionary<ushort[], ExpectResult> _anyPIC_anyMode_Instrs = new Dictionary<ushort[], ExpectResult>()
         {
+            //DEBUG
+            { new ushort[] { 0x0300 }, new ExpectResult("MULWF\t0x00") },
+            //DEBUG
+
             { new ushort[] { 0x0000 }, new ExpectResult("NOP") },
             { new ushort[] { 0x0001 }, new ExpectResult("invalid", "unknown opcode") },
             { new ushort[] { 0x0002 }, new ExpectResult("invalid", "missing second word") },

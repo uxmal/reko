@@ -1,5 +1,7 @@
 ﻿#region License
 /* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
  * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -43,8 +45,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         public PIC18Architecture(PIC picDescr)
         {
-            this.PICDescriptor = picDescr;
-            this.flagGroups = new List<FlagGroupStorage>();
+            PICDescriptor = picDescr;
+            flagGroups = new List<FlagGroupStorage>();
             base.Name = picDescr.Name;
             base.Description = picDescr.Desc;
             base.FramePointerType = PrimitiveType.Offset16;
