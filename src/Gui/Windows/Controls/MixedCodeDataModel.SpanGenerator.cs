@@ -238,7 +238,7 @@ namespace Reko.Gui.Windows.Controls
                 for (int i = 0; i < chars.Length; ++i)
                 {
                     char ch = chars[i];
-                    if (char.IsControl(ch) || char.IsSurrogate(ch))
+                    if (char.IsControl(ch) || char.IsSurrogate(ch) || (0xE000 <= ch && ch <= 0xE0FF))
                         chars[i] = '.';
                 }
 

@@ -383,7 +383,8 @@ namespace Reko.Core.Serialization
                 try
                 {
                     enc = Encoding.GetEncoding(sUser.TextEncoding);
-                } catch
+                }
+                catch
                 {
                     var diagSvc = Services.RequireService<IDiagnosticsService>();
                     diagSvc.Warn(
