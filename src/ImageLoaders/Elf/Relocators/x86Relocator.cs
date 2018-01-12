@@ -42,9 +42,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private void LoadImportReferencesFromRelPlt(Dictionary<Address,ImportReference> importReferences)
         {
             var rel_plt = loader.GetSectionInfoByName(".rel.plt");
+            if (rel_plt == null)
+                return;
             var symtab = rel_plt.LinkedSection;
-
-            var plt = loader.GetSectionInfoByName(".plt");
             var relRdr = loader.CreateReader(rel_plt.FileOffset);
 
             uint entries = rel_plt.EntryCount();
