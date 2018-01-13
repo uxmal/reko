@@ -897,13 +897,15 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
-                eventListener.Error(
-                    eventListener.CreateProcedureNavigator(program, proc),
-                    string.Format(
-                        "Removing edge ({0}, {1}) caused losing of some code blocks",
-                        vEdge.From.Block.Name,
-                        vEdge.To.Block.Name));
-
+                if (vEdge.To.IsReturn)
+                    RemoveRegion(vEdge.To);
+                else
+                    eventListener.Error(
+                        eventListener.CreateProcedureNavigator(program, proc),
+                        string.Format(
+                            "Removing edge ({0}, {1}) caused losing of some code blocks",
+                            vEdge.From.Block.Name,
+                            vEdge.To.Block.Name));
 
                 Probe();
             }
