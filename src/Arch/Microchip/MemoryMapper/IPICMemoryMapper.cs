@@ -278,4 +278,5 @@ namespace Microchip.MemoryMapper
         bool HasDCI { get; }
 
     }
+
 }

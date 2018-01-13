@@ -96,6 +96,7 @@ namespace Microchip.MemoryMapper
 
             private PIC _pic;
             private readonly Dictionary<MemoryDomainKey, MemTrait> maptraits = new Dictionary<MemoryDomainKey, MemTrait>(new MemoryDomainKeyEqualityComparer());
+            private static readonly MemTrait memtraitdefault = new DefaultMemTrait();
 
             #endregion
 
@@ -126,7 +127,11 @@ namespace Microchip.MemoryMapper
             /// True if it succeeds, false if it fails.
             /// </returns>
             public bool GetTrait(MemoryDomain dom, MemorySubDomain subdom, out MemTrait trait)
-                => maptraits.TryGetValue(new MemoryDomainKey(dom, subdom), out trait);
+            {
+                if (!maptraits.TryGetValue(new MemoryDomainKey(dom, subdom), out trait))
+                    trait = memtraitdefault;
+                return true;
+            }
 
             #endregion
 
@@ -514,13 +519,32 @@ namespace Microchip.MemoryMapper
             /// </returns>
             public abstract IMemoryRegion GetRegion(Address addr);
 
+            /// <summary>
+            /// Remaps a memory address.
+            /// </summary>
+            /// <param name="aVirtAddr">The memory address.</param>
+            /// <returns>
+            /// The physical address or null.
+            /// </returns>
+            public abstract Address RemapAddr(Address aVirtAddr);
+
         }
 
         private class ProgMemoryMapper : MemoryMapperBase, IMemProgramRegionVisitor
         {
+
+            #region Locals
+
             private readonly MemTraits traits;
             private List<ProgMemRegion> _memregions;
 
+            #endregion
+
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="oPIC">The PIC definition.</param>
+            /// <param name="traits">The PIC memory traits.</param>
             public ProgMemoryMapper(PIC oPIC, MemTraits traits) : base(oPIC)
             {
                 this.traits = traits;
@@ -528,6 +552,12 @@ namespace Microchip.MemoryMapper
                 oPIC.ProgramSpace.Sectors?.ForEach((e) => { var ee = e as IMemProgramRegionAcceptor; if (ee != null) ee.Accept(this); });
             }
 
+            /// <summary>
+            /// Gets the memory regions contained in this program memory mapper.
+            /// </summary>
+            /// <value>
+            /// The list of program memory regions.
+            /// </value>
             public override IReadOnlyList<IMemoryRegion> Regions => _memregions;
 
             /// <summary>
@@ -551,13 +581,13 @@ namespace Microchip.MemoryMapper
                 => _memregions?.Find((regn) => regn.Contains(aVirtAddr));
 
             /// <summary>
-            /// Remaps a virtual program memory address to physical memory address.
+            /// Remaps a program memory address to physical memory address.
             /// </summary>
-            /// <param name="iVirtAddr">The virtual program memory address.</param>
+            /// <param name="iVirtAddr">The program memory address.</param>
             /// <returns>
             /// The physical memory address or null.
             /// </returns>
-            public Address RemapAddr(Address aVirtAddr)
+            public override Address RemapAddr(Address aVirtAddr)
             {
                 if (GetRegion(aVirtAddr) == null) return null;
                 return aVirtAddr;
@@ -766,6 +796,14 @@ namespace Microchip.MemoryMapper
 
             #endregion
 
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="oPIC">The PIC definition.</param>
+            /// <param name="traits">The PIC memory traits.</param>
+            /// <param name="mode">ThePIC execution  mode.</param>
+            /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC data memory size is invalid.</exception>
+            /// <exception cref="InvalidOperationException">Thrown if the PIC execution mode is invalid.</exception>
             public DataMemoryMapper(PIC oPIC, MemTraits traits, PICExecMode mode) : base(oPIC)
             {
                 this.traits = traits;
@@ -843,6 +881,12 @@ namespace Microchip.MemoryMapper
             /// </value>
             public bool HasLinear { get; private set; } = false;
 
+            /// <summary>
+            /// Gets the data memory regions contained in this data memory mapper.
+            /// </summary>
+            /// <value>
+            /// The list of data memory regions.
+            /// </value>
             public override IReadOnlyList<IMemoryRegion> Regions => _memregions;
 
             /// <summary>
@@ -866,13 +910,13 @@ namespace Microchip.MemoryMapper
                 => _memregions.Find((regn) => regn.Contains(virtAddr));
 
             /// <summary>
-            /// Remap a data address.
+            /// Remaps a data memory address to physical memory address.
             /// </summary>
             /// <param name="aVirtAddr">The memory data address.</param>
             /// <returns>
-            /// The physical program address or null.
+            /// The physical data address or null.
             /// </returns>
-            public Address RemapAddr(Address aVirtAddr)
+            public override Address RemapAddr(Address aVirtAddr)
             {
                 var regn = GetRegion(aVirtAddr);
                 if (regn == null) return null;

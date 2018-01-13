@@ -18,7 +18,7 @@
  */
 #endregion
 
-// summary:	Implements the Microchip PIC XML definition (de-)serialization per Microchip Crownking Database.
+// summary:	Implements the Microchip PIC XML definition serialization per Microchip Crownking Database.
 //
 namespace Microchip.Crownking
 {
@@ -32,6 +32,9 @@ namespace Microchip.Crownking
 
     #region Base common definitions
 
+    /// <summary>
+    /// Values that represent PIC memory domains.
+    /// </summary>
     public enum MemoryDomain : byte
     {
         /// <summary> Memory does not belong to any known PIC memory spaces. </summary>
@@ -46,15 +49,18 @@ namespace Microchip.Crownking
         Other
     };
 
+    /// <summary>
+    /// Values that represent PIC memory sub-domains.
+    /// </summary>
     public enum MemorySubDomain
     {
-        /// <summary>Memory region is undefined (transient value)</summary>
+        /// <summary>Memory region is undefined (transient value).</summary>
         Undef = -1,
-        /// <summary>Data region is a Special Function Register</summary>
+        /// <summary>Data region is a Special Function Register.</summary>
         SFR,
-        /// <summary>Data region is a General Purpose Register</summary>
+        /// <summary>Data region is a General Purpose Register.</summary>
         GPR,
-        /// <summary>Data region is a Dual-Port Register</summary>
+        /// <summary>Data region is a Dual-Port Register.</summary>
         DPR,
         /// <summary>Data region is a Non-Memory-Map Register.</summary>
         NNMR,
@@ -64,23 +70,23 @@ namespace Microchip.Crownking
         Linear,
         /// <summary>Data region is a Direct Access Memory space.</summary>
         DMA,
-        /// <summary>Program region is code</summary>
+        /// <summary>Program region is code.</summary>
         Code,
-        /// <summary>Program region is external code</summary>
+        /// <summary>Program region is external code.</summary>
         ExtCode,
-        /// <summary>Program region is EEPROM</summary>
+        /// <summary>Program region is Data EEPROM.</summary>
         EEData,
-        /// <summary>Program region is a Configuration Bits</summary>
+        /// <summary>Program region is a Configuration Bits.</summary>
         Config,
-        /// <summary>Program region is a User IDs words</summary>
+        /// <summary>Program region is a User IDs words.</summary>
         UserID,
-        /// <summary>Program region is a Device IDs words</summary>
+        /// <summary>Program region is a Device IDs words.</summary>
         DeviceID,
-        /// <summary>Program region is a Revision IDs words</summary>
+        /// <summary>Program region is a Revision IDs words.</summary>
         RevisionID,
-        /// <summary>Program region is for Debugger</summary>
+        /// <summary>Program region is for Debugger.</summary>
         Debugger,
-        /// <summary>Program region is a Calibration words</summary>
+        /// <summary>Program region is a Calibration words.</summary>
         Calib,
         /// <summary>Program region is of other type.</summary>
         Other
@@ -113,9 +119,9 @@ namespace Microchip.Crownking
         /// <summary> PIC Instruction Set is PIC16 like pic16f77 - basic mid-range. Identified as InstructionSet="pic16f77" in XML definition.</summary>
         PIC16,
         /// <summary> PIC Instruction Set is PIC16 like pic16f1946 - mid-range enhanced 5-bit BSR. Identified as InstructionSet="cpu_mid_v10" in XML definition.</summary>
-        PIC16_ENH,
+        PIC16_ENHANCED,
         /// <summary> PIC Instruction Set is PIC16 like pic16f15313 - mid-range enhanced 6-bit BSR. Identified as InstructionSet="cpu_p16f1_v1" in XML definition.</summary>
-        PIC16_ENH_V1,
+        PIC16_ENHANCED_V1,
         /// <summary> PIC Instruction Set is traditional PIC18 like pic18f1220 - without any extended mode. Identified as InstructionSet="pic18" in XML definition.</summary>
         PIC18,
         /// <summary> PIC Instruction Set is PIC18 like pic18f1230 - with extended execution mode capabilities. Identified as InstructionSet="egg" in XML definition.</summary>
@@ -124,9 +130,8 @@ namespace Microchip.Crownking
         PIC18_ENHANCED,
     }
 
-
     /// <summary>
-    /// (Serializable)The abstract class <see cref="MemoryAddrRange"/> represents a PIC memory address range (either in data, program or absolute space).
+    /// The abstract class <see cref="MemoryAddrRange"/> represents a PIC memory address range [begin, end) (either in data, program or absolute space).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public abstract class MemoryAddrRange :
@@ -153,10 +158,10 @@ namespace Microchip.Crownking
         public abstract MemorySubDomain MemorySubDomain { get; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="BeginAddr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="BeginAddr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The begin address content as an hexa string.
+        /// The begin address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "beginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -172,10 +177,10 @@ namespace Microchip.Crownking
         public uint BeginAddr { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="EndAddr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="EndAddr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The end address as an hexa string.
+        /// The end address as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "endaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -243,7 +248,7 @@ namespace Microchip.Crownking
     #region ArchDef XML element
 
     /// <summary>
-    /// (Serializable)Device ID to revision number.
+    /// Device ID to revision number.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DEVIDToRev
@@ -292,10 +297,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Memory trait (characteristics).
+    /// Memory trait (characteristics).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class MemTrait
+    public abstract class MemTrait : IMemTraitsSymbolAcceptor
     {
 
         #region Constructors
@@ -331,7 +336,7 @@ namespace Microchip.Crownking
         /// Gets the memory word implementation (bit mask).
         /// </summary>
         /// <value>
-        /// The memory word implementation bitmask.
+        /// The memory word implementation bit mask.
         /// </value>
         [XmlIgnore]
         public virtual int WordImpl { get; private set; }
@@ -380,13 +385,151 @@ namespace Microchip.Crownking
 
         #endregion
 
+        #region IMemTraitsSymbolAcceptor interfaces 
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" method for this memory trait.
+        /// </summary>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
+        public abstract void Accept(IMemTraitsSymbolVisitor v);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T>(IMemTraitsSymbolVisitor<T> v);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context);
+
+        #endregion
+
     }
 
     /// <summary>
-    /// (Serializable)Code memory traits.
+    /// A default memory trait.
+    /// </summary>
+    public sealed class DefaultMemTrait : MemTrait
+    {
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the default size of the memory word.
+        /// </summary>
+        /// <value>
+        /// The size of the memory word in bytes.
+        /// </value>
+        [XmlIgnore]
+        public override int WordSize => 1;
+
+        /// <summary>
+        /// Gets the default memory location access size.
+        /// </summary>
+        /// <value>
+        /// The size of the location in bytes.
+        /// </value>
+        [XmlIgnore]
+        public override int LocSize => 1;
+
+        /// <summary>
+        /// Gets the default memory word implementation (bit mask).
+        /// </summary>
+        /// <value>
+        /// The memory word implementation bit mask.
+        /// </value>
+        [XmlIgnore]
+        public override int WordImpl => 0xFF;
+
+        /// <summary>
+        /// Gets the default initial (erased) memory word value.
+        /// </summary>
+        /// <value>
+        /// The word initialize.
+        /// </value>
+        [XmlIgnore]
+        public override int WordInit => 0xFF;
+
+        /// <summary>
+        /// Gets the default memory word safe value.
+        /// </summary>
+        /// <value>
+        /// The memory word safe value.
+        /// </value>
+        [XmlIgnore]
+        public override int WordSafe => 0x00;
+
+        #endregion
+
+        #region IMemTraitsSymbolAcceptor interfaces 
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" method for this default memory trait.
+        /// </summary>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
+        public override void Accept(IMemTraitsSymbolVisitor v)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this code memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this code memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #endregion
+
+    }
+
+    /// <summary>
+    /// Code memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CodeMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class CodeMemTraits : MemTrait
     {
         #region Constructors
 
@@ -397,24 +540,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this code memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this code memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this code memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)External code memory traits.
+    /// External code memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ExtCodeMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class ExtCodeMemTraits : MemTrait
     {
         #region Constructors
 
@@ -425,24 +592,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this external code memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this external code memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this external code memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Calibration data memory traits.
+    /// Calibration data memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CalDataMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class CalDataMemTraits : MemTrait
     {
         #region Constructors
 
@@ -453,24 +644,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this calibration memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this calibration memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this calibration memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Background debug memory traits.
+    /// Background debug memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class BackgroundDebugMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class BackgroundDebugMemTraits : MemTrait
     {
         #region Constructors
 
@@ -481,24 +696,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this debugger memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this debugger memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this debugger memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Test memory traits.
+    /// Test memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class TestMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class TestMemTraits : MemTrait
     {
         #region Constructors
 
@@ -509,24 +748,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this test memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this test memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this test memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)User IDs memory traits.
+    /// User IDs memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class UserIDMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class UserIDMemTraits : MemTrait
     {
         #region Constructors
 
@@ -537,24 +800,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this User ID memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this User ID memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this User ID memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Configuration fuses memory traits.
+    /// Configuration fuses memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ConfigFuseMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class ConfigFuseMemTraits : MemTrait
     {
         #region Constructors
 
@@ -565,14 +852,38 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this configuration fuses memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this configuration fuses memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this configuration fuses memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -594,10 +905,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Configuration Write-Once-Read-Many memory traits.
+    /// Configuration Write-Once-Read-Many memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ConfigWORMMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class ConfigWORMMemTraits : MemTrait
     {
         #region Constructors
 
@@ -608,24 +919,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this configuration words memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this configuration words memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this configuration words memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Device IDs memory traits.
+    /// Device IDs memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceIDMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class DeviceIDMemTraits : MemTrait
     {
         #region Constructors
 
@@ -636,24 +971,48 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this Device ID memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this Device ID memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this Device ID memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)EEPROM data memory traits.
+    /// EEPROM data memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class EEDataMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class EEDataMemTraits : MemTrait
     {
         #region Constructors
 
@@ -664,14 +1023,38 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this Data EEPROM memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this Data EEPROM memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this Data EEPROM memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -705,10 +1088,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Data memory traits.
+    /// Data memory traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataMemTraits : MemTrait, IMemTraitsSymbolAcceptor
+    public sealed class DataMemTraits : MemTrait
     {
         #region Constructors
 
@@ -719,21 +1102,45 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region IMemTraitsSymbolAcceptor interface 
+        #region IMemTraitsSymbolAcceptor interfaces 
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a memory trait visitor and calls the appropriate
-        /// "Visit()" method for this trait.
+        /// "Visit()" method for this data memory trait.
         /// </summary>
         /// <param name="v">An <see cref="IMemTraitsRegionVisitor"/> visitor to accept.</param>
-        public void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemTraitsSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this data memory trait.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T}"/> visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemTraitsSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a memory trait visitor and calls the appropriate
+        /// "Visit()" function for this data memory trait with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">An <see cref="IMemTraitsRegionVisitor{T, C}"/> visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemTraitsSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)The various memory regions' traits.
+    /// The various memory regions' traits.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class MemTraits
@@ -803,7 +1210,7 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)PIC memory architecture definition.
+    /// PIC memory architecture definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ArchDef
@@ -878,11 +1285,6 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region Method
-
-
-        #endregion
-
     }
 
     #endregion
@@ -890,7 +1292,7 @@ namespace Microchip.Crownking
     #region InterruptList XML element
 
     /// <summary>
-    /// (Serializable)Interrupt request.
+    /// Interrupt request.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class Interrupt
@@ -908,10 +1310,10 @@ namespace Microchip.Crownking
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="IRQ" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="IRQ" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The IRQ content as an hexa string.
+        /// The IRQ content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "irq", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -952,8 +1354,48 @@ namespace Microchip.Crownking
 
     #region ProgramSpace XML element
 
+    public abstract class MemProgramSymbolAcceptor : IMemProgramSymbolAcceptor
+    {
+
+        #region IMemProgramSymbolAcceptor interface
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this program memory symbol.
+        /// </summary>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public abstract void Accept(IMemProgramSymbolVisitor v);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this program memory symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T>(IMemProgramSymbolVisitor<T> v);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this program memory symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context);
+
+        #endregion
+
+    }
+
     /// <summary>
-    /// A program memory addresses range.
+    /// A program memory addresses [range)
     /// </summary>
     public abstract class ProgMemoryRange : MemoryAddrRange
     {
@@ -971,10 +1413,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)A Program memory region.
+    /// A Program memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class ProgMemoryRegion : ProgMemoryRange
+    public abstract class ProgMemoryRegion : ProgMemoryRange, IMemProgramRegionAcceptor
     {
         #region Constructors
 
@@ -998,10 +1440,45 @@ namespace Microchip.Crownking
 
         #endregion
 
+        #region IMemProgramRegionAcceptor interfaces
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
+        /// "Visit()" method for this program memory region.
+        /// </summary>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        public abstract void Accept(IMemProgramRegionVisitor v);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T>(IMemProgramRegionVisitor<T> v);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context);
+
+        #endregion
+
     }
 
     /// <summary>
-    /// (Serializable)Program Memory region seen as a section.
+    /// Program Memory region seen as a section.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public abstract class ProgMemorySection : ProgMemoryRegion
@@ -1049,10 +1526,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Adjust byte address pointing in program memory spaces.
+    /// Adjust byte address pointing in program memory spaces.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ProgByteAdjustPoint : IMemProgramSymbolAcceptor
+    public sealed class ProgByteAdjustPoint : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -1066,21 +1543,45 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this program memory byte address adjustment symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this program memory byte address adjustment symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this program memory byte address adjustment symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Offset" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Offset" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The offset content as an hexa string.
+        /// The offset content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1153,10 +1654,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Adjust bit address pointing in program memory slots.
+    /// Adjust bit address pointing in program memory slots.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ProgBitAdjustPoint : IMemProgramSymbolAcceptor
+    public sealed class ProgBitAdjustPoint : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -1170,21 +1671,45 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this program memory bit address adjustment symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this program memory bit address adjustment symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this program memory bit address adjustment symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Offset" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Offset" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The offset content as an hexa string.
+        /// The offset content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1257,10 +1782,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Code memory sector.
+    /// Code memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CodeSector : ProgMemorySection, IMemProgramRegionAcceptor
+    public sealed class CodeSector : ProgMemorySection
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Code;
 
@@ -1277,20 +1802,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this code program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this code program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this code program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Calibration data zone memory region.
+    /// Calibration data zone memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class CalDataZone : ProgMemorySection, IMemProgramRegionAcceptor
+    public sealed class CalDataZone : ProgMemorySection
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Calib;
 
@@ -1307,20 +1856,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this calibration data program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this calibration data program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this calibration data program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Test zone memory region.
+    /// Test zone memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class TestZone : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class TestZone : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
 
@@ -1337,20 +1910,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this test zone program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this test zone program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this test zone program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)User IDs memory sector.
+    /// User IDs memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class UserIDSector : ProgMemorySection, IMemProgramRegionAcceptor
+    public sealed class UserIDSector : ProgMemorySection
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.UserID;
 
@@ -1367,20 +1964,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this User ID program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this User ID program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this User ID program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Revision IDs sector.
+    /// Revision IDs sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class RevisionIDSector : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class RevisionIDSector : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.RevisionID;
 
@@ -1397,10 +2018,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this Revision ID program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this Revision ID program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this Revision ID program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1420,10 +2065,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device IDs sector.
+    /// Device IDs sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceIDSector : ProgMemorySection, IMemProgramRegionAcceptor
+    public sealed class DeviceIDSector : ProgMemorySection
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceID;
 
@@ -1440,10 +2085,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this Device ID program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this Device ID program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this Device ID program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1459,10 +2128,10 @@ namespace Microchip.Crownking
         public List<DEVIDToRev> DEVIDToRev { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Mask" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Mask" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The mask content as an hexa string.
+        /// The mask content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1478,10 +2147,10 @@ namespace Microchip.Crownking
         public int Mask { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Value"/> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Value"/> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The value content as an hexa string.
+        /// The value content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "value", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1501,7 +2170,7 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Register field semantic checksum address range.
+    /// Device Configuration Register field semantic checksum address range.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DCRFieldSemanticChecksum : MemoryAddrRange
@@ -1522,10 +2191,10 @@ namespace Microchip.Crownking
         public override MemoryDomain MemoryDomain => MemoryDomain.Prog;
 
         /// <summary>
-        /// Used to (de)serialize <see cref="ChecksumAlgo" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="ChecksumAlgo" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The checksumalgo content as an hexa string.
+        /// The checksum algorithm content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "checksumalgo", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1535,7 +2204,7 @@ namespace Microchip.Crownking
         /// Gets the checksum algorithm code.
         /// </summary>
         /// <value>
-        /// The checksum algo. codeas an integer.
+        /// The checksum algorithm code as an integer.
         /// </value>
         [XmlIgnore]
         public int ChecksumAlgo { get; private set; }
@@ -1545,10 +2214,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Register field pattern semantic.
+    /// Device Configuration Register field pattern semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldSemantic : IMemProgramSymbolAcceptor
+    public sealed class DCRFieldSemantic : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -1562,11 +2231,35 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this device configuration register field semantic symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register field semantic symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register field symbol semantic with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1627,10 +2320,10 @@ namespace Microchip.Crownking
         public bool IsLangHidden { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="OscModeIDRef" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="OscModeIDRef" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The oscmodeidref content as an hexa string.
+        /// The oscillator mode id reference content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "oscmodeidref", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1662,10 +2355,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Register Field definition.
+    /// Device Configuration Register Field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldDef : IMemProgramSymbolAcceptor
+    public sealed class DCRFieldDef : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -1679,11 +2372,35 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this device configuration register field symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register field symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register field symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1708,7 +2425,7 @@ namespace Microchip.Crownking
         public string CName { get; set; }
 
         /// <summary>
-        /// Gets the name of the bitfield.
+        /// Gets the name of the bit field.
         /// </summary>
         /// <value>
         /// The name as a string.
@@ -1726,10 +2443,10 @@ namespace Microchip.Crownking
         public string Desc { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="BitAddr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="BitAddr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The bitaddr content as an hexa string.
+        /// The bit address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_baddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -1748,17 +2465,17 @@ namespace Microchip.Crownking
         public int BitAddr { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the bitwidth of the field.
+        /// Gets the bit width of the field.
         /// </summary>
         /// <value>
         /// The width in number of bits.
@@ -1767,20 +2484,20 @@ namespace Microchip.Crownking
         public int NzWidth { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Mask" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Mask" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The mask as an hexa string.
+        /// The mask as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _maskformatted { get { return $"0x{Mask:X}"; } set { Mask = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the bitmask of the field in the register.
+        /// Gets the bit mask of the field in the register.
         /// </summary>
         /// <value>
-        /// The bitmask as an integer.
+        /// The bit mask as an integer.
         /// </value>
         [XmlIgnore]
         public int Mask { get; private set; }
@@ -1817,10 +2534,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Register mode.
+    /// Device Configuration Register mode.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRMode : IMemProgramSymbolAcceptor
+    public sealed class DCRMode : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -1834,11 +2551,35 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this device configuration register mode symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register mode symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register mode symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1868,10 +2609,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Register illegal definition.
+    /// Device Configuration Register illegal definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRDefIllegal : IMemProgramSymbolAcceptor
+    public sealed class DCRDefIllegal : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -1885,11 +2626,35 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this invalid device configuration register symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this invalid device configuration register symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this invalid device configuration register symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1918,10 +2683,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Register definition.
+    /// Device Configuration Register definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRDef : IMemProgramSymbolAcceptor
+    public sealed class DCRDef : MemProgramSymbolAcceptor
     {
 
         #region Constructors
@@ -1936,11 +2701,35 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this device configuration register symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device configuration register symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -1966,10 +2755,10 @@ namespace Microchip.Crownking
         public List<DCRMode> DCRModes { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2012,29 +2801,29 @@ namespace Microchip.Crownking
         public string Desc { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the bitwidth of the register.
+        /// Gets the bit width of the register.
         /// </summary>
         /// <value>
-        /// The bitwidth of the register.
+        /// The bit width of the register.
         /// </value>
         [XmlIgnore]
         public int NzWidth { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Impl" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Impl" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The impl content as an hexa string.
+        /// The implementation mask as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2059,10 +2848,10 @@ namespace Microchip.Crownking
         public string Access { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Default" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Default" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The default content as an hexa string.
+        /// The default value content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "default", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2078,10 +2867,10 @@ namespace Microchip.Crownking
         public int Default { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="FactoryDefault" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="FactoryDefault" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The factorydefault content as an hexa string.
+        /// The factory default content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "factorydefault", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2106,10 +2895,10 @@ namespace Microchip.Crownking
         public bool IsLangHidden { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="UnimplVal" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="UnimplVal" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The unimplval content as an hexa string.
+        /// The unimplemented value content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "unimplval", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2119,10 +2908,10 @@ namespace Microchip.Crownking
         public int UnimplVal { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Unused" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Unused" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The unused content as an hexa string.
+        /// The unused content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "unused", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2132,20 +2921,20 @@ namespace Microchip.Crownking
         public int Unused { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="UseInChecksum" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="UseInChecksum" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The useinchecksum content as an hexa string.
+        /// The use-in-checksum content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "useinchecksum", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _useinchecksumformatted { get { return $"0x{UseInChecksum:X}"; } set { UseInChecksum = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the bitmask to use in checksum computation.
+        /// Gets the bit mask to use in checksum computation.
         /// </summary>
         /// <value>
-        /// The bitmask as an integer.
+        /// The bit mask as an integer.
         /// </value>
         [XmlIgnore]
         public int UseInChecksum { get; private set; }
@@ -2155,10 +2944,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Configuration Fuses memory sector.
+    /// Configuration Fuses memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ConfigFuseSector : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class ConfigFuseSector : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Config;
 
@@ -2175,10 +2964,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this configuration fuses program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this configuration fuses program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this configuration fuses program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -2199,10 +3012,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Background debugger vector memroy sector.
+    /// Background debugger vector memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class BACKBUGVectorSector : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class BACKBUGVectorSector : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Debugger;
 
@@ -2219,20 +3032,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this debugger program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this debugger program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this debugger program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Data EEPROM memory sector.
+    /// Data EEPROM memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class EEDataSector : ProgMemorySection, IMemProgramRegionAcceptor
+    public sealed class EEDataSector : ProgMemorySection
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.EEData;
 
@@ -2249,20 +3086,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this Data EEPROM program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this Data EEPROM program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this Data EEPROM program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Device Information Area (DIA) register.
+    /// Device Information Area (DIA) register.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceRegister : IMemProgramSymbolAcceptor
+    public sealed class DeviceRegister : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -2276,21 +3137,45 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this device information area program memory symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device information area program memory symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device information area program memory symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2315,20 +3200,20 @@ namespace Microchip.Crownking
         public string CName { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the bitwidth of the register.
+        /// Gets the bit width of the register.
         /// </summary>
         /// <value>
-        /// The bitwidth as an integer.
+        /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
         public int NzWidth { get; private set; }
@@ -2338,10 +3223,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Inormation Area register array.
+    /// Device Information Area register array.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DIARegisterArray : IMemProgramSymbolAcceptor
+    public sealed class DIARegisterArray : MemProgramSymbolAcceptor
     {
         #region Constructors
 
@@ -2355,11 +3240,35 @@ namespace Microchip.Crownking
         #region IMemProgramSymbolAcceptor interface
 
         /// <summary>
-        /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// The <see cref="Accept"/> method accepts a program memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this device information areas program memory symbol.
         /// </summary>
-        /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramSymbolVisitor v) { v.Visit(this); }
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        public override void Accept(IMemProgramSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device information areas program memory symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a program memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this device information areas program memory symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -2370,10 +3279,10 @@ namespace Microchip.Crownking
         public List<object> Registers { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2402,10 +3311,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Information Area memory region.
+    /// Device Information Area memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DIASector : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class DIASector : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
 
@@ -2422,10 +3331,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this device information area program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this device information area program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this device information area program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -2445,10 +3378,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Device Configuration Information memory region.
+    /// Device Configuration Information memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCISector : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class DCISector : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
 
@@ -2465,10 +3398,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this device configuration information program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this device configuration information program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this device configuration information program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -2488,10 +3445,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)External Code memory region.
+    /// External Code memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ExtCodeSector : ProgMemoryRegion, IMemProgramRegionAcceptor
+    public sealed class ExtCodeSector : ProgMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Code;
 
@@ -2508,17 +3465,41 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a program memory region visitor and calls the appropriate
-        /// "Visit()" method for this program memory region.
+        /// "Visit()" method for this external code program memory region.
         /// </summary>
         /// <param name="v">The program memory region visitor to accept.</param>
-        public void Accept(IMemProgramRegionVisitor v) { v.Visit(this); }
+        public override void Accept(IMemProgramRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this external code program memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemProgramRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a program memory region visitor and calls the
+        /// appropriate "Visit()" function for this external code program memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The program memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemProgramRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Interrupt Vector area.
+    /// Interrupt Vector area.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class VectorArea
@@ -2535,10 +3516,10 @@ namespace Microchip.Crownking
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzSize" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzSize" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzsize content as an hexa string.
+        /// The byte size content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzsize", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2567,7 +3548,7 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Program memory space.
+    /// Program memory space.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ProgramSpace
@@ -2584,7 +3565,7 @@ namespace Microchip.Crownking
         #region Properties
 
         /// <summary>
-        /// Gets the program memroy sectors.
+        /// Gets the program memory sectors.
         /// </summary>
         /// <value>
         /// The various sectors.
@@ -2620,6 +3601,46 @@ namespace Microchip.Crownking
 
     #region DataSpace XML element
 
+    public abstract class MemDataSymbolAcceptor : IMemDataSymbolAcceptor
+    {
+
+        #region IMemDataSymbolAcceptor interface
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a data memory symbol visitor and calls the appropriate
+        /// "Visit()" method for this data memory symbol.
+        /// </summary>
+        /// <param name="v">The data memory symbol visitor to accept.</param>
+        public abstract void Accept(IMemDataSymbolVisitor v);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this data memory symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The data memory symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T>(IMemDataSymbolVisitor<T> v);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a data memory symbol visitor and calls the
+        /// appropriate "Visit()" function for this data memory symbol with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context);
+
+        #endregion
+
+    }
+
     /// <summary>
     /// A data memory addresses range.
     /// </summary>
@@ -2639,10 +3660,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)A Data memory region.
+    /// A Data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public abstract class DataMemoryRegion : DataMemoryRange
+    public abstract class DataMemoryRegion : DataMemoryRange, IMemDataRegionAcceptor
     {
         #region Constructors
 
@@ -2666,10 +3687,45 @@ namespace Microchip.Crownking
 
         #endregion
 
+        #region IMemDataRegionAcceptor interface
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the appropriate
+        /// "Visit()" method for this data memory region.
+        /// </summary>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        public abstract void Accept(IMemDataRegionVisitor v);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this data memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T>(IMemDataRegionVisitor<T> v);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this data memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context);
+
+        #endregion
+
     }
 
     /// <summary>
-    /// (Serializable)a memory banked region.
+    /// A memory banked region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public abstract class DataMemoryBankedRegion : DataMemoryRegion
@@ -2686,10 +3742,10 @@ namespace Microchip.Crownking
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Bank" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Bank" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The bank number content as an hexa string.
+        /// The bank number content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "bank", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2709,10 +3765,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Adjust byte address pointing in data memory spaces.
+    /// Adjust byte address pointing in data memory spaces.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataByteAdjustPoint : IMemDataSymbolAcceptor
+    public sealed class DataByteAdjustPoint : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -2727,20 +3783,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this data memory byte address adjustment symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this data memory byte address adjustment symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this data memory byte address adjustment symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T,C>(IMemDataSymbolVisitor<T,C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Offset" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Offset" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The offset content as an hexa string.
+        /// The offset content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2807,10 +3887,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Adjust bit address pointing in data memory slots.
+    /// Adjust bit address pointing in data memory slots.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataBitAdjustPoint : IMemDataSymbolAcceptor
+    public sealed class DataBitAdjustPoint : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -2825,20 +3905,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this data memory bit address adjustment symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this data memory bit address adjustment symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this data memory bit address adjustment symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Offset" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Offset" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The offset content as an hexa string.
+        /// The offset content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -2905,10 +4009,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)SFR Field semantic.
+    /// SFR Field semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRFieldSemantic : IMemDataSymbolAcceptor
+    public sealed class SFRFieldSemantic : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -2923,10 +4027,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this special function register field semantic symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register field semantic symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register field semantic symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -2955,10 +4083,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)SFR bits-field definition.
+    /// SFR bits-field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRFieldDef : IMemDataSymbolAcceptor
+    public sealed class SFRFieldDef : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -2973,17 +4101,41 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this special function register field symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register field symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register field symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the various sematics of this SFR field.
+        /// Gets the various semantics of this SFR field.
         /// </summary>
         /// <value>
         /// The SFR field semantics.
@@ -3019,10 +4171,10 @@ namespace Microchip.Crownking
         public string Desc { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3038,10 +4190,10 @@ namespace Microchip.Crownking
         public int NzWidth { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Mask" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Mask" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The mask content as an hexa string.
+        /// The mask content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3088,10 +4240,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)SFR Fields definitions for a given mode.
+    /// SFR Fields definitions for a given mode.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRMode : IMemDataSymbolAcceptor
+    public sealed class SFRMode : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3106,10 +4258,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this special function register mode symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register mode symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register mode symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3119,7 +4295,7 @@ namespace Microchip.Crownking
         /// Gets the SFR fields definitions.
         /// </summary>
         /// <value>
-        /// The SFR fields or adjustpoints.
+        /// The SFR fields or adjust points.
         /// </value>
         [XmlElement(ElementName = "SFRFieldDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRFieldDef))]
         [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DataBitAdjustPoint))]
@@ -3145,10 +4321,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)List of SFR modes.
+    /// List of SFR modes.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRModeList : IMemDataSymbolAcceptor
+    public sealed class SFRModeList : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3163,10 +4339,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this special function register modes list symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register modes list symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register modes list symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3186,10 +4386,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Special Function Register (SFR) definition.
+    /// Special Function Register (SFR) definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRDef : IMemDataSymbolAcceptor
+    public sealed class SFRDef : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3204,10 +4404,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this special function register symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3224,10 +4448,10 @@ namespace Microchip.Crownking
         public List<SFRMode> SFRModes { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3270,26 +4494,26 @@ namespace Microchip.Crownking
         public string Desc { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the bitwidth of this SFR.
+        /// Gets the bit width of this SFR.
         /// </summary>
         /// <value>
-        /// The bitwidth as an integer.
+        /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
         public int NzWidth { get; private set; }
 
         /// <summary>
-        /// Gets the byte width of thi SFR.
+        /// Gets the byte width of this SFR.
         /// </summary>
         /// <value>
         /// The width of the SFR in number of bytes.
@@ -3298,10 +4522,10 @@ namespace Microchip.Crownking
         public int ByteWidth => (NzWidth + 7) >> 3;
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Impl" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Impl" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The impl content as an hexa string.
+        /// The implementation mask as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3398,10 +4622,10 @@ namespace Microchip.Crownking
         public string BaseOfPeripheral { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NMMRID" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NMMRID" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nmmrid content as an hexa string.
+        /// The Non-Memory-Map-Register ID content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nmmrid", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3449,10 +4673,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Mirrored registers area.
+    /// Mirrored registers area.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class Mirror : IMemDataSymbolAcceptor
+    public sealed class Mirror : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3467,20 +4691,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this mirrored data memory symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this mirrored data memory symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this mirrored data memory symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3496,10 +4744,10 @@ namespace Microchip.Crownking
         public int Addr { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzSize" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzSize" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzsize content as an hexa string.
+        /// The byte size content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzsize", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3528,7 +4776,7 @@ namespace Microchip.Crownking
     }
 
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class JoinedSFRDef : IMemDataSymbolAcceptor
+    public sealed class JoinedSFRDef : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3543,10 +4791,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this joined special function registers symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this joined special function registers symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this joined special function registers symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3562,26 +4834,26 @@ namespace Microchip.Crownking
         public List<SFRDef> SFRs { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the memory address of the joinded SFR
+        /// Gets the memory address of the joined SFRs.
         /// </summary>
         /// <value>
         /// The address as an integer.
-        /// </value>
+        /// </value>s
         [XmlIgnore]
         public int Addr { get; private set; }
 
         /// <summary>
-        /// Gets the name of the joinded SFR.
+        /// Gets the name of the joined SFRs.
         /// </summary>
         /// <value>
         /// The name as a string.
@@ -3590,7 +4862,7 @@ namespace Microchip.Crownking
         public string CName { get; set; }
 
         /// <summary>
-        /// Gets the description of the joinded SFR.
+        /// Gets the description of the joined SFRs.
         /// </summary>
         /// <value>
         /// The description as a string.
@@ -3599,7 +4871,7 @@ namespace Microchip.Crownking
         public string Desc { get; set; }
 
         /// <summary>
-        /// Gets the name of the joinded SFR.
+        /// Gets the name of the joined SFRs.
         /// </summary>
         /// <value>
         /// The name as a string.
@@ -3608,10 +4880,10 @@ namespace Microchip.Crownking
         public string Name { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3631,10 +4903,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Selection of a SFR.
+    /// Selection of a SFR.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SelectSFR : IMemDataSymbolAcceptor
+    public sealed class SelectSFR : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3649,10 +4921,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this special function register selection symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register selection symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this special function register selection symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3681,10 +4977,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Multiplexed SFRs definition.
+    /// Multiplexed SFRs definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class MuxedSFRDef : IMemDataSymbolAcceptor
+    public sealed class MuxedSFRDef : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3699,10 +4995,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this multiplexed special function registers symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this multiplexed special function registers symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this multiplexed special function registers symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3718,17 +5038,17 @@ namespace Microchip.Crownking
         public List<SelectSFR> SelectSFRs { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="Addr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="Addr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The addr content as an hexa string.
+        /// The address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
 
         /// <summary>
-        /// Gets the memory address of the multiplex.
+        /// Gets the memory address of the multiplexed SFRs.
         /// </summary>
         /// <value>
         /// The address as an integer.
@@ -3737,10 +5057,10 @@ namespace Microchip.Crownking
         public int Addr { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="NzWidth" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The nzwidth content as an hexa string.
+        /// The bit width content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3769,10 +5089,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)DMA Register mirror.
+    /// DMA Register mirror.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DMARegisterMirror : IMemDataSymbolAcceptor
+    public sealed class DMARegisterMirror : MemDataSymbolAcceptor
     {
         #region Constructors
 
@@ -3787,10 +5107,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a definition data symbol visitor and calls the
-        /// appropriate "Visit()" method for this data symbol.
+        /// appropriate "Visit()" method for this Direct Memory Access register symbol.
         /// </summary>
         /// <param name="v">The definition data symbol visitor to accept.</param>
-        public void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataSymbolVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this Direct Memory Access register symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataSymbolVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a definition data symbol visitor and calls the
+        /// appropriate "Visit()" function for this Direct Memory Access register symbol.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The definition data symbol visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3819,10 +5163,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Special Function Registers data memory region.
+    /// Special Function Registers data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRDataSector : DataMemoryBankedRegion, IMemDataRegionAcceptor
+    public sealed class SFRDataSector : DataMemoryBankedRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.SFR;
 
@@ -3839,20 +5183,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this data memory region.
+        /// appropriate "Visit()" method for this special function registers memory region.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
-        public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this special function registers memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this special function registers memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the various SFRs (simple, joined, muxed, mirrored, DMA, adjusted) defined in this memory region.
+        /// Gets the various SFRs (simple, joined, multiplexed, mirrored, DMA, adjusted) defined in this memory region.
         /// </summary>
         /// <value>
-        /// The SFRs, Muxed, Joined, ... definitions
+        /// The SFRs, MuxedSFR, JoinedSFR, ... definitions
         /// </value>
         [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(SFRDef))]
         [XmlElement(ElementName = "AdjustPoint", Form = XmlSchemaForm.None, Namespace = "", Type = typeof(DataByteAdjustPoint))]
@@ -3867,10 +5235,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)General Purpose Registers (GPR) data memory region.
+    /// General Purpose Registers (GPR) data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class GPRDataSector : DataMemoryBankedRegion, IMemDataRegionAcceptor
+    public sealed class GPRDataSector : DataMemoryBankedRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.GPR;
 
@@ -3887,10 +5255,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this data memory region.
+        /// appropriate "Visit()" method for this general purpose registers memory region.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
-        public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this general purpose registers memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this general purpose registers memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3906,10 +5298,10 @@ namespace Microchip.Crownking
         public string ShadowIDRef { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="ShadowOffset" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="ShadowOffset" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The shadowoffset content as an hexa string.
+        /// The shadow offset content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "shadowoffset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -3929,10 +5321,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Dual Port Registers data memory sector.
+    /// Dual Port Registers data memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DPRDataSector : DataMemoryBankedRegion, IMemDataRegionAcceptor
+    public sealed class DPRDataSector : DataMemoryBankedRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.DPR;
 
@@ -3949,10 +5341,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this data memory region.
+        /// appropriate "Visit()" method for this dual port registers memory region.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
-        public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this dual port registers memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this dual port registers memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3969,7 +5385,7 @@ namespace Microchip.Crownking
         public List<object> SFRs { get; set; }
 
         /// <summary>
-        /// Gets the shadowed memroy region identifier reference.
+        /// Gets the shadowed memory region identifier reference.
         /// </summary>
         /// <value>
         /// The shadow identifier reference as a string.
@@ -3978,10 +5394,10 @@ namespace Microchip.Crownking
         public string ShadowIDRef { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="ShadowOffset" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="ShadowOffset" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The shadowoffset content as an hexa string.
+        /// The shadow offset content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "shadowoffset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -4001,10 +5417,10 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Emulator memory region.
+    /// Emulator memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class EmulatorZone : DataMemoryRegion, IMemDataRegionAcceptor
+    public sealed class EmulatorZone : DataMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Emulator;
 
@@ -4021,17 +5437,41 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this data memory region.
+        /// appropriate "Visit()" method for this emulator zone data memory region.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
-        public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this emulator zone data memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this emulator zone data memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public override T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
     }
 
     /// <summary>
-    /// (Serializable)Non-Memory-Mapped-Register (NMMR) definitions.
+    /// Non-Memory-Mapped-Register (NMMR) definitions.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class NMMRPlace : IMemDataRegionAcceptor
@@ -4049,10 +5489,34 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this data memory region.
+        /// appropriate "Visit()" method for this Non-Memory-Mapped register definition.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
         public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this Non-Memory-Mapped register definition.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this Non-Memory-Mapped register definition.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public T Accept<T,C>(IMemDataRegionVisitor<T,C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -4081,7 +5545,7 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Linear data memory region.
+    /// Linear data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class LinearDataSector : DataMemoryRange, IMemDataRegionAcceptor
@@ -4101,20 +5565,44 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the
-        /// appropriate "Visit()" method for this data memory region.
+        /// appropriate "Visit()" method for this linear access data memory region.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
         public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this linear access data memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+
+        /// <summary>
+        /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this linear access data memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Used to (de)serialize <see cref="BankSize" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="BankSize" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The banksize content as an hexa string.
+        /// The bank size content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "banksize", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -4130,10 +5618,10 @@ namespace Microchip.Crownking
         public int BankSize { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="BlockBeginAddr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="BlockBeginAddr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The blockbeginaddr content as an hexa string.
+        /// The block begin address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "blockbeginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -4149,10 +5637,10 @@ namespace Microchip.Crownking
         public uint BlockBeginAddr { get; private set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="BlockEndAddr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="BlockEndAddr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The blockendaddr content as an hexa string.
+        /// The block end address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "blockendaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -4172,7 +5660,7 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Data memory regions regardless of PIC execution mode.
+    /// Data memory regions regardless of PIC execution mode.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class RegardlessOfMode
@@ -4207,7 +5695,7 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
-    /// (Serializable)Data memory space.
+    /// Data memory space.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DataSpace
@@ -4253,10 +5741,10 @@ namespace Microchip.Crownking
         public List<GPRDataSector> ExtendedModeOnly { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="EndAddr" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="EndAddr" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The endaddr content as an hexa string.
+        /// The end address content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "endaddr", Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -4280,7 +5768,7 @@ namespace Microchip.Crownking
     #region PIC XML definition
 
     /// <summary>
-    /// (Serializable)PIC definition.
+    /// PIC definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [XmlRoot(Namespace = "", IsNullable = false)]
@@ -4288,11 +5776,11 @@ namespace Microchip.Crownking
     {
         #region Locals
 
-        // Maps the 'instructionsetid' to internal code.
+        // Maps the 'InstructionsetID' to internal code.
         private static Dictionary<string, InstructionSetID> _mapInstrID = new Dictionary<string, InstructionSetID>() {
                 { "pic16f77", InstructionSetID.PIC16 },
-                { "cpu_mid_v10", InstructionSetID.PIC16_ENH },
-                { "cpu_p16f1_v1", InstructionSetID.PIC16_ENH_V1 },
+                { "cpu_mid_v10", InstructionSetID.PIC16_ENHANCED },
+                { "cpu_p16f1_v1", InstructionSetID.PIC16_ENHANCED_V1 },
                 { "egg", InstructionSetID.PIC18_EXTENDED },
                 { "pic18", InstructionSetID.PIC18 },
                 { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
@@ -4405,10 +5893,10 @@ namespace Microchip.Crownking
         public string Desc { get; set; }
 
         /// <summary>
-        /// Used to (de)serialize <see cref="ProcID" /> property from/to hexadecimal string.
+        /// Used to serialize <see cref="ProcID" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
-        /// The procid content as an hexa string.
+        /// The processor id content as an hexadecimal string.
         /// </value>
         [XmlAttribute(AttributeName = "procid", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
@@ -4424,7 +5912,7 @@ namespace Microchip.Crownking
         public int ProcID { get; private set; }
 
         /// <summary>
-        /// Gets the datasheet identifier of the PIC.
+        /// Gets the data sheet identifier of the PIC.
         /// </summary>
         /// <value>
         /// The identifier as a string.
@@ -4437,7 +5925,7 @@ namespace Microchip.Crownking
 
         /// <summary>
         /// Gets the indicator whether this PIC supports the PIC18 extended execution mode.
-        /// Overriden by the dataspace definition containing - or not - extended-mode-only memory space.
+        /// Overridden by the data space definition containing - or not - extended-mode-only memory space.
         /// </summary>
         /// <value>
         /// True if this PIC supports extended execution mode, false if not.
@@ -4455,10 +5943,10 @@ namespace Microchip.Crownking
         public bool HasFreeze { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this PIC is debuggable.
+        /// Gets a value indicating whether this PIC supports debugging.
         /// </summary>
         /// <value>
-        /// True if this PIC is debuggable, false if not.
+        /// True if this PIC supports debugging, false if not.
         /// </value>
         [XmlAttribute(AttributeName = "isdebuggable", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsDebuggable { get; set; }
@@ -4499,7 +5987,7 @@ namespace Microchip.Crownking
                 {
                     id = InstructionSetID.UNDEFINED;
                     if (Arch == "16xxxx") id = InstructionSetID.PIC16;
-                    if (Arch == "16Exxx") id = InstructionSetID.PIC16_ENH_V1;
+                    if (Arch == "16Exxx") id = InstructionSetID.PIC16_ENHANCED_V1;
                     if (Arch == "18xxxx") id = (IsExtended ? InstructionSetID.PIC18_EXTENDED : InstructionSetID.PIC18);
                 }
                 return id;
@@ -4528,10 +6016,10 @@ namespace Microchip.Crownking
         /// <summary>
         /// A PICCrownking extension method that gets a PIC descriptor.
         /// </summary>
-        /// <param name="db">The PIC database to act on.</param>
+        /// <param name="db">The PIC database to retrieve definition from.</param>
         /// <param name="sPICName">Name of the PIC.</param>
         /// <returns>
-        /// The PIC descriptor.
+        /// The PIC descriptor or null.
         /// </returns>
         public static PIC GetPIC(this PICCrownking db, string sPICName)
             => db.GetPICAsXML(sPICName)?.ToObject<PIC>();
