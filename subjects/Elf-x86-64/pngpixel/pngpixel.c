@@ -31,40 +31,38 @@ void _start( * rdx, Eq_17 qwArg00)
 // 0000000000400D00: void deregister_tm_clones(Register word64 r8)
 void deregister_tm_clones(word64 r8)
 {
-	if (true && 0x00 != 0x00)
-	{
-		word64 rsp_42;
-		word32 eax_43;
-		word64 rax_44;
-		word64 rbp_45;
-		word64 r8_46;
-		byte SCZO_47;
-		byte CZ_48;
-		byte SZO_49;
-		byte C_50;
-		byte Z_51;
-		word32 edi_52;
-		word64 rdi_53;
-		null();
-	}
+	if (false || 0x00 == 0x00)
+		return;
+	word64 rsp_42;
+	word32 eax_43;
+	word64 rax_44;
+	word64 rbp_45;
+	word64 r8_46;
+	byte SCZO_47;
+	byte CZ_48;
+	byte SZO_49;
+	byte C_50;
+	byte Z_51;
+	word32 edi_52;
+	word64 rdi_53;
+	null();
 }
 
 // 0000000000400D40: void register_tm_clones()
 void register_tm_clones()
 {
-	if (0x00 != 0x00 && 0x00 != 0x00)
-	{
-		word64 rsp_40;
-		word64 rsi_41;
-		word64 rbp_42;
-		byte SCZO_43;
-		word64 rax_44;
-		byte Z_45;
-		byte SZO_46;
-		byte C_47;
-		word64 rdi_48;
-		null();
-	}
+	if (0x00 == 0x00 || 0x00 == 0x00)
+		return;
+	word64 rsp_40;
+	word64 rsi_41;
+	word64 rbp_42;
+	byte SCZO_43;
+	word64 rax_44;
+	byte Z_45;
+	byte SZO_46;
+	byte C_47;
+	word64 rdi_48;
+	null();
 }
 
 // 0000000000400D80: void __do_global_dtors_aux(Register word64 r8)
@@ -206,8 +204,7 @@ word64 print_pixel(byte dil, Eq_171 * fs)
 		png_error();
 		if ((rax_26 ^ fs_145->qw0028) == 0x00)
 			return rbp;
-		else
-			__stack_chk_fail();
+		__stack_chk_fail();
 	}
 	else
 	{
@@ -666,8 +663,7 @@ l00000000004016DE:
 l000000000040175D:
 			if ((*(rbp_123 - 0x08) ^ fs->qw0028) == 0x00)
 				return;
-			else
-				__stack_chk_fail();
+			__stack_chk_fail();
 		}
 		word64 rsp_921;
 		word64 rbp_922;

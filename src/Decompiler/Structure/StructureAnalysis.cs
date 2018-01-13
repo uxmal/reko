@@ -308,6 +308,11 @@ namespace Reko.Structure
             var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
             foreach (var n in postOrder)
             {
+                if (VirtualizeReturn(n))
+                    return true;
+            }
+            foreach (var n in postOrder)
+            {
                 if (CoalesceTailRegion(n, regionGraph.Nodes))
                     return true;
             }
@@ -315,6 +320,23 @@ namespace Reko.Structure
             {
                 if (LastResort(n))
                     return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Replace edge to return statement with just return statement
+        /// </summary>
+        private bool VirtualizeReturn(Region n)
+        {
+            VirtualEdge returnEdge = null;
+            foreach (var s in regionGraph.Successors(n))
+                if (s.Statements.Count > 0 && s.Statements[0] is AbsynReturn)
+                    returnEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
+            if (returnEdge != null)
+            {
+                VirtualizeEdge(returnEdge);
+                return true;
             }
             return false;
         }

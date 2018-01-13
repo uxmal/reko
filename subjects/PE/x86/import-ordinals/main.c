@@ -295,21 +295,18 @@ Eq_512 * fn004013F6(Eq_94 * dwArg04, uint32 dwArg08)
 // 0040143A: Register byte fn0040143A()
 byte fn0040143A()
 {
-	if (fn00401B98() != 0x00)
-	{
-		word32 edx_32 = fs->ptr0018->dw0004;
-		do
-		{
-			__lock();
-			word32 eax_37;
-			__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
-			if (eax_37 == 0x00)
-				return 0x00;
-		} while (edx_32 != eax_37);
-		return 0x01;
-	}
-	else
+	if (fn00401B98() == 0x00)
 		return 0x00;
+	word32 edx_32 = fs->ptr0018->dw0004;
+	do
+	{
+		__lock();
+		word32 eax_37;
+		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
+		if (eax_37 == 0x00)
+			return 0x00;
+	} while (edx_32 != eax_37);
+	return 0x01;
 }
 
 // 0040146F: Register byte fn0040146F(Register word32 edx, Stack (ptr Eq_94) dwArg04)
@@ -319,13 +316,12 @@ byte fn0040146F(word32 edx, Eq_94 * dwArg04)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
 	fn00401C46();
+	if (false)
+		return 0x00;
+	fn00401C46();
 	if (true)
-	{
-		fn00401C46();
-		if (true)
-			return 0x01;
-		fn00401C46();
-	}
+		return 0x01;
+	fn00401C46();
 	return 0x00;
 }
 
@@ -432,13 +428,12 @@ void fn0040176D(word32 dwArg00, Eq_94 * dwArg04)
 bool fn0040188B()
 {
 	Eq_857 eax_4 = GetModuleHandleW(null);
-	if (eax_4 != null && eax_4->unused == 23117)
-	{
-		struct Eq_871 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
-		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
-			return eax_42->dw00E8 != 0x00;
-	}
-	return 0x00;
+	if (eax_4 == null || eax_4->unused != 23117)
+		return 0x00;
+	struct Eq_871 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+	if (eax_42->dw0000 != 0x4550 || (eax_42->w0018 != 0x010B || eax_42->dw0074 <= 0x0E))
+		return 0x00;
+	return eax_42->dw00E8 != 0x00;
 }
 
 // 00401972: void fn00401972()

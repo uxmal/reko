@@ -1491,14 +1491,11 @@ Eq_117 fn1370(Eq_117 r0, Eq_1757 * r3, Eq_2836 * r4, ptr16 & r2Out, Eq_3004 * & 
 	r4[0x07] = (struct Eq_2836) v12_11;
 	if (v12_11 != 0x00)
 		return r0;
-	else
-	{
-		r4[0x07] = (struct Eq_2836) 0x00;
-		word16 r2_33;
-		word16 r3_34;
-		word16 r4_35;
-		return fn1836(r3, r4, out r2_33, out r3_34, out r4_35);
-	}
+	r4[0x07] = (struct Eq_2836) 0x00;
+	word16 r2_33;
+	word16 r3_34;
+	word16 r4_35;
+	return fn1836(r3, r4, out r2_33, out r3_34, out r4_35);
 }
 
 // 13FE: void fn13FE()
@@ -1966,40 +1963,37 @@ word16 fn1932(Eq_1757 * r3, Eq_2836 * r4, ptr16 & r3Out, ptr16 & r4Out)
 	r4[0x0E] = (struct Eq_2836) v5_4;
 	if (v5_4 != 0x00)
 		return fn18F6(r4, wLoc02);
+	r4->t0000 = r4->t0000 | 0x1000;
+	r3->ptr0072 = null;
+	word16 r4_24 = r3->w0070;
+	*r4Out = r4_24;
+	if (r4_24 == 0x00)
+		__syscall(0x8998);
+	ptr16 sp_28 = r3->ptr0064;
+	*(sp_28 - 0x02) = 3828;
+	*(sp_28 - 0x04) = (struct Eq_1757 **) r3;
+	if (r3->b0074 != 0x00)
+	{
+		r3->ptr0072 = null;
+		r3->w0070 = 0x00;
+		r3->ptr0014 = null;
+		r3->w000C = r3->w0058;
+		r3->t00A2.u1 = 0x00;
+		word16 r3_65;
+		*r3Out = v22;
+		return r2;
+	}
 	else
 	{
-		r4->t0000 = r4->t0000 | 0x1000;
+		*(sp_28 - 0x02) = r4_24;
 		r3->ptr0072 = null;
-		word16 r4_24 = r3->w0070;
-		*r4Out = r4_24;
-		if (r4_24 == 0x00)
-			__syscall(0x8998);
-		ptr16 sp_28 = r3->ptr0064;
-		*(sp_28 - 0x02) = 3828;
-		*(sp_28 - 0x04) = (struct Eq_1757 **) r3;
-		if (r3->b0074 != 0x00)
-		{
-			r3->ptr0072 = null;
-			r3->w0070 = 0x00;
-			r3->ptr0014 = null;
-			r3->w000C = r3->w0058;
-			r3->t00A2.u1 = 0x00;
-			word16 r3_65;
-			*r3Out = v22;
-			return r2;
-		}
-		else
-		{
-			*(sp_28 - 0x02) = r4_24;
-			r3->ptr0072 = null;
-			r3->w0070 = 0x00;
-			r3->ptr0014 = null;
-			r3->w000C = r3->w0058;
-			r3->t00A2.u1 = 0x00;
-			word16 r3_52;
-			*r3Out = v19;
-			return r2;
-		}
+		r3->w0070 = 0x00;
+		r3->ptr0014 = null;
+		r3->w000C = r3->w0058;
+		r3->t00A2.u1 = 0x00;
+		word16 r3_52;
+		*r3Out = v19;
+		return r2;
 	}
 }
 
@@ -2031,8 +2025,9 @@ void fn1962(Eq_4297 * r3)
 void fn1966(Eq_4303 r0, Eq_4297 * r3)
 {
 	*r3->t001C = r0;
-	if (r3->w0018 - r3->t001C < 0x00)
-		fn1974(r3);
+	if (r3->w0018 - r3->t001C >= 0x00)
+		return;
+	fn1974(r3);
 }
 
 // 196A: Register Eq_4306 fn196A(Register (ptr Eq_4297) r3)
@@ -2041,11 +2036,8 @@ Eq_4306 fn196A(Eq_4297 * r3)
 	Eq_4306 r0_4 = r3->t001C;
 	if (r3->w0018 - r0_4 >= 0x00)
 		return r0_4;
-	else
-	{
-		fn1974(r3);
-		return r0_4;
-	}
+	fn1974(r3);
+	return r0_4;
 }
 
 // 1974: void fn1974(Register (ptr Eq_4297) r3)

@@ -647,60 +647,57 @@ Eq_242 * fn00401474(Eq_2 * r2, Eq_242 * r3)
 {
 	if (Test(GT,cond(**((char *) r2 + 116) - r3)))
 		return (int32) (int8) Mem0[Mem0[r2 + 0x0078:word32] + r3:byte] & 0x40;
-	else
-		return null;
+	return null;
 }
 
 // 004014A4: void fn004014A4(Register (ptr Eq_1594) r2, Register (arr Eq_1630) r3, Register (ptr word16) r4, Register word32 r5)
 void fn004014A4(Eq_1594 * r2, Eq_1630 r3[], word16 * r4, word32 r5)
 {
 	int32 r3_42 = 0x00;
-	if (Test(EQ,cond(r3)) || Test(NE,cond(r5)))
+	if (Test(NE,cond(r3)) && Test(EQ,cond(r5)))
+		return;
+	if (Test(NE,cond(r3)))
 	{
-		if (Test(NE,cond(r3)))
+		if (Test(GT,cond(r5)))
 		{
-			if (Test(GT,cond(r5)))
-			{
-				word32 ctr_37 = r5;
-				do
-				{
-					Eq_1625 r11_43 = *r4;
-					if (Test(GE,cond(r11_43 - 0x0100)))
-					{
-						*r2->ptr007C = 0x002A;
-						return;
-					}
-					(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r3[r3_42].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (byte) (int32) (int8) (r11_43 & 0xFF);
-					r4 = r4 + 0x01;
-					if (Test(EQ,cond(*r4)))
-						return;
-					r3_42 = r3_42 + 0x01;
-					ctr_37 = ctr_37 - 0x01;
-				} while (ctr_37 != 0x00);
-			}
-		}
-		else
-		{
-			word16 * r11_15 = r4;
+			word32 ctr_37 = r5;
 			do
 			{
-				r11_15 = r11_63 + 0x01;
-				word16 * r11_63 = r11_15;
-			} while (Test(NE,cond(*r11_63)));
+				Eq_1625 r11_43 = *r4;
+				if (Test(GE,cond(r11_43 - 0x0100)))
+				{
+					*r2->ptr007C = 0x002A;
+					return;
+				}
+				(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r3[r3_42].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (byte) (int32) (int8) (r11_43 & 0xFF);
+				r4 = r4 + 0x01;
+				if (Test(EQ,cond(*r4)))
+					return;
+				r3_42 = r3_42 + 0x01;
+				ctr_37 = ctr_37 - 0x01;
+			} while (ctr_37 != 0x00);
 		}
+	}
+	else
+	{
+		word16 * r11_15 = r4;
+		do
+		{
+			r11_15 = r11_63 + 0x01;
+			word16 * r11_63 = r11_15;
+		} while (Test(NE,cond(*r11_63)));
 	}
 }
 
 // 00401554: void fn00401554(Register (ptr Eq_1653) r2, Register (ptr Eq_1668) r3, Register ui32 r4)
 void fn00401554(Eq_1653 * r2, Eq_1668 * r3, ui32 r4)
 {
-	if (Test(NE,cond(r3)))
-	{
-		if (Test(LE,cond((r4 & 0xFFFF) - 0xFF)))
-			*r3 = (union Eq_1668 *) (int32) (int8) (r4 & 0xFFFF & 0xFF);
-		else
-			*r2->ptr007C = 0x002A;
-	}
+	if (Test(EQ,cond(r3)))
+		return;
+	if (Test(LE,cond((r4 & 0xFFFF) - 0xFF)))
+		*r3 = (union Eq_1668 *) (int32) (int8) (r4 & 0xFFFF & 0xFF);
+	else
+		*r2->ptr007C = 0x002A;
 }
 
 // 00401598: Register (ptr Eq_2) fn00401598(Register word32 r0, Register (ptr Eq_2) r2, Register Eq_18 r3, Register Eq_18 r4, Register word32 r25, Register ptr32 r26, Register Eq_18 r27, Register Eq_18 r28, Register Eq_18 r29, Register Eq_18 r30, Register Eq_18 r31, Register byte cr0, Register word32 lr, Stack word32 dwArg08, Register out ptr32 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
@@ -2192,34 +2189,25 @@ Eq_4101 * * fn004036B0(Eq_2 * r2, Eq_4101 * * r3, Eq_4101 * * r4)
 {
 	struct Eq_2018 * r10_4 = *((char *) r2 + 0x0068);
 	struct Eq_4101 * r11_5 = r10_4->ptr0000;
-	if (Test(NE,cond(r11_5 - (r10_4 + 0x0C))))
-	{
-		if (Test(LE,cond((r11_5->ptr0004 & -0x04) - r3)))
-		{
-			if (Test(GT,cond((r10_4->dw0010 & -0x04) - r3)))
-			{
-				struct Eq_4101 * r10_26 = r11_5;
-				while (true)
-				{
-					struct Eq_4101 * r11_28 = r10_26->ptr0000;
-					if (Test(GT,cond((r11_28->ptr0004 & -0x04) - r3)))
-						break;
-					r10_26 = r11_28;
-				}
-				*r4 = (struct Eq_4101 **) r10_26;
-				struct Eq_4101 ** r11_36 = null;
-				if (Test(NE,cond((r10_26->ptr0004 & -0x04) - r3)))
-					r11_36 = (struct Eq_4101 **) 0x01;
-				return r11_36;
-			}
-			else
-				return (struct Eq_4101 **) -0x02;
-		}
-		else
-			return (struct Eq_4101 **) -0x01;
-	}
-	else
+	if (Test(EQ,cond(r11_5 - (r10_4 + 0x0C))))
 		return (struct Eq_4101 **) -0x03;
+	if (Test(GT,cond((r11_5->ptr0004 & -0x04) - r3)))
+		return (struct Eq_4101 **) -0x01;
+	if (Test(LE,cond((r10_4->dw0010 & -0x04) - r3)))
+		return (struct Eq_4101 **) -0x02;
+	struct Eq_4101 * r10_26 = r11_5;
+	while (true)
+	{
+		struct Eq_4101 * r11_28 = r10_26->ptr0000;
+		if (Test(GT,cond((r11_28->ptr0004 & -0x04) - r3)))
+			break;
+		r10_26 = r11_28;
+	}
+	*r4 = (struct Eq_4101 **) r10_26;
+	struct Eq_4101 ** r11_36 = null;
+	if (Test(NE,cond((r10_26->ptr0004 & -0x04) - r3)))
+		r11_36 = (struct Eq_4101 **) 0x01;
+	return r11_36;
 }
 
 // 00403744: Register word32 fn00403744(Register word32 r0, Register (ptr Eq_2) r2, Register Eq_18 r3, Register word32 r29, Register int32 r30, Register Eq_18 r31, Register byte cr0, Stack word32 dwArg08, Register out ptr32 r2Out, Register out ptr32 r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
@@ -2418,32 +2406,29 @@ word32 fn00403B08(Eq_2 * r2, Eq_3281 * r3, word32 r29, word32 r30, word32 r31, w
 	v3->dw0008 = r31;
 	if (Test(GE,cond(r3 - 0x17)))
 		return r0;
+	word32 r0_38 = fn00403B84((char *) r3 - 0x02 << 0x02, lr);
+	struct Eq_3200 * r3_41 = fn00403C20(r2, r3);
+	<anonymous> ** r31_43 = r3_41->ptr0008;
+	struct Eq_3200 * r29_42 = r3_41;
+	if (Test(NE,cond(r31_43 - 0x01)))
+	{
+		if (Test(EQ,cond(r31_43)))
+		{
+			word32 r30_84;
+			r29_42 = fn004035A0(r2, (int32 *) 0x03, r3_41, r3, r31_43, dwLoc40, out r30_84, out r31_43);
+		}
+		r29_42->ptr0008 = null;
+		word32 r2_70;
+		*r2Out = dwLoc34;
+		word32 r29_73;
+		*r29Out = dwLoc10;
+		return fn00403F10(r31_43, dwLoc34);
+	}
 	else
 	{
-		word32 r0_38 = fn00403B84((char *) r3 - 0x02 << 0x02, lr);
-		struct Eq_3200 * r3_41 = fn00403C20(r2, r3);
-		<anonymous> ** r31_43 = r3_41->ptr0008;
-		struct Eq_3200 * r29_42 = r3_41;
-		if (Test(NE,cond(r31_43 - 0x01)))
-		{
-			if (Test(EQ,cond(r31_43)))
-			{
-				word32 r30_84;
-				r29_42 = fn004035A0(r2, (int32 *) 0x03, r3_41, r3, r31_43, dwLoc40, out r30_84, out r31_43);
-			}
-			r29_42->ptr0008 = null;
-			word32 r2_70;
-			*r2Out = dwLoc34;
-			word32 r29_73;
-			*r29Out = dwLoc10;
-			return fn00403F10(r31_43, dwLoc34);
-		}
-		else
-		{
-			word32 r29_48;
-			*r29Out = dwLoc10;
-			return r0_38;
-		}
+		word32 r29_48;
+		*r29Out = dwLoc10;
+		return r0_38;
 	}
 }
 

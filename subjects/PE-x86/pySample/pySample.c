@@ -10,8 +10,7 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 	PyObject * eax_20 = PyArg_ParseTuple(ptrArg08, "ii:sum", fp - 0x04, fp - 0x08);
 	if (eax_20 != null)
 		return Py_BuildValue("i", dwLoc04 + dwLoc08);
-	else
-		return eax_20;
+	return eax_20;
 }
 
 // 10001050: Register (ptr Eq_2) fn10001050(Stack (ptr Eq_3) ptrArg04, Stack (ptr Eq_4) ptrArg08)
@@ -20,8 +19,7 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 	PyObject * eax_20 = PyArg_ParseTuple(ptrArg08, "ii:dif", fp - 0x08, fp - 0x04);
 	if (eax_20 != null)
 		return Py_BuildValue("i", dwLoc08 - dwLoc04);
-	else
-		return eax_20;
+	return eax_20;
 }
 
 // 100010A0: Register (ptr Eq_2) fn100010A0(Stack (ptr Eq_3) ptrArg04, Stack (ptr Eq_4) ptrArg08)
@@ -30,8 +28,7 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 	PyObject * eax_20 = PyArg_ParseTuple(ptrArg08, "ii:div", fp - 0x08, fp - 0x04);
 	if (eax_20 != null)
 		return Py_BuildValue("i", (int32) ((int64) dwLoc08 / dwLoc04));
-	else
-		return eax_20;
+	return eax_20;
 }
 
 // 100010F0: Register (ptr Eq_2) fn100010F0(Stack (ptr Eq_3) ptrArg04, Stack (ptr Eq_4) ptrArg08)
@@ -40,22 +37,18 @@ PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 	PyObject * eax_20 = PyArg_ParseTuple(ptrArg08, "ff:fdiv", fp - 0x08, fp - 0x04);
 	if (eax_20 != null)
 		return Py_BuildValue("f", (real64) rLoc08 / rLoc04);
-	else
-		return eax_20;
+	return eax_20;
 }
 
 // 10001140: Register (ptr Eq_99) py_unused(Stack (ptr Eq_100) self, Stack (ptr Eq_101) args)
 PyObject * py_unused(PyObject * self, PyObject * args)
 {
 	PyObject * eax_15 = PyArg_ParseTuple(args, ":unused");
-	if (eax_15 != null)
-	{
-		PyObject * eax_24 = &_Py_NoneStruct;
-		eax_24->ob_refcnt = eax_24->ob_refcnt + 0x01;
-		return &_Py_NoneStruct;
-	}
-	else
+	if (eax_15 == null)
 		return eax_15;
+	PyObject * eax_24 = &_Py_NoneStruct;
+	eax_24->ob_refcnt = eax_24->ob_refcnt + 0x01;
+	return &_Py_NoneStruct;
 }
 
 // 10001170: void initpySample()
@@ -437,13 +430,12 @@ void fn10001680()
 // 100016D0: Register word32 fn100016D0(Stack Eq_488 dwArg04)
 word32 fn100016D0(HMODULE dwArg04)
 {
-	if (dwArg04->unused == 23117)
-	{
-		struct Eq_1024 * eax_21 = dwArg04 + dwArg04->dw003C / 0x0040;
-		if (eax_21->dw0000 == 0x4550)
-			return (word32) (eax_21->w0018 == 0x010B);
-	}
-	return 0x00;
+	if (dwArg04->unused != 23117)
+		return 0x00;
+	struct Eq_1024 * eax_21 = dwArg04 + dwArg04->dw003C / 0x0040;
+	if (eax_21->dw0000 != 0x4550)
+		return 0x00;
+	return (word32) (eax_21->w0018 == 0x010B);
 }
 
 // 10001700: Register (ptr Eq_1041) fn10001700(Stack Eq_488 dwArg04, Stack uint32 dwArg08)
