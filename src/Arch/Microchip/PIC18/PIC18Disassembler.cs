@@ -41,18 +41,14 @@ namespace Reko.Arch.Microchip.PIC18
         #region Properties
 
         /// <summary>
-        /// Gets or sets the PIC18 execution mode.
+        /// Gets the PIC18 execution mode this disassembler is configured to.
         /// </summary>
-        public PICExecMode ExecMode
-        {
-            get { return arch.MemoryMapper.ExecMode; }
-            set { arch.MemoryMapper.ExecMode = value; }
-        }
+        public PICExecMode ExecMode => arch?.ExecMode ?? PICExecMode.Traditional;
 
         /// <summary>
         /// Gets the PIC instruction-set identifier.
         /// </summary>
-        public InstructionSetID InstructionSetID { get; }
+        public InstructionSetID InstructionSetID => arch?.PICDescriptor?.GetInstructionSetID ?? InstructionSetID.PIC18_ENHANCED;
 
         #endregion
 
@@ -67,8 +63,6 @@ namespace Reko.Arch.Microchip.PIC18
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.InstructionSetID = arch.PICDescriptor?.GetInstructionSetID ?? InstructionSetID.PIC18_ENHANCED;
-            this.ExecMode = PICExecMode.Traditional;
         }
 
         #endregion
@@ -94,9 +88,9 @@ namespace Reko.Arch.Microchip.PIC18
             // A PIC18 instruction can be 1, 2 or 3 words long. The 1st word (opcode) determines the actual length of the instruction.
             
             ushort uInstr;
+            var offset = rdr.Offset;
             if (!rdr.TryReadUInt16(out uInstr))
                 return null;
-            var offset = rdr.Offset;
             try
             {
                 instrCur = opcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
@@ -110,7 +104,7 @@ namespace Reko.Arch.Microchip.PIC18
             if (instrCur == null)
             {
                 instrCur = new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur };
-                rdr.Offset = offset + 2; // Consider only the first word of the binary instruction.
+                rdr.Offset = offset + 2; // Consume only the first word of the binary instruction.
             }
             instrCur.Address = addrCur;
             instrCur.Length = (int)(rdr.Address - addrCur);
@@ -126,9 +120,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// Check for consistency (NOP-alike format) and provides the 12 least-significant bits.
         /// </summary>
         /// <param name="rdr">The memory reader.</param>
-        /// <param name="w">[out] an ushort to fill in.</param>
+        /// <param name="w">[out] an 16-bit integer to fill in.</param>
         /// <returns>
-        /// True if it succeeds, false if it fails. Reached end of memory or misformed binary word.
+        /// True if it succeeds, false if it fails. Reached end of memory or mis-formed binary word.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown <paramref name="rdr"/> argument is null.</exception>
         private static bool _getAddlWord(EndianImageReader rdr, out ushort w)

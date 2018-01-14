@@ -40,7 +40,7 @@ namespace Microchip.MemoryMapper
         PIC PIC { get; }
 
         /// <summary>
-        /// Gets the PIC execution mode (applicable to PIC18Ext only).
+        /// Gets the PIC execution mode (applicable to PIC18 only).
         /// </summary>
         /// <value>
         /// The PIC execution mode.
@@ -48,10 +48,10 @@ namespace Microchip.MemoryMapper
         PICExecMode ExecMode { get; set; }
 
         /// <summary>
-        /// Gets the PIC instruction set identifier.
+        /// Gets the instruction set identifier of the target PIC.
         /// </summary>
         /// <value>
-        /// A value from the enumeration <seealso cref="InstructionSetID"/>.
+        /// A value from the <see cref="InstructionSetID"/> enumeration.
         /// </value>
         InstructionSetID InstructionSetID { get; }
 

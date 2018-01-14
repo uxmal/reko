@@ -1162,8 +1162,20 @@ namespace Microchip.MemoryMapper
 
         #region IPICMemoryMapper interface
 
+        /// <summary>
+        /// Gets the target PIC for this memory mapper.
+        /// </summary>
+        /// <value>
+        /// The target PIC.
+        /// </value>
         public PIC PIC { get; }
 
+        /// <summary>
+        /// Gets the instruction set identifier of the target PIC.
+        /// </summary>
+        /// <value>
+        /// A value from the <see cref="InstructionSetID"/> enumeration.
+        /// </value>
         public InstructionSetID InstructionSetID { get { return PIC.GetInstructionSetID; } }
 
         /// <summary>

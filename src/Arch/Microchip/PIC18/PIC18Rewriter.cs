@@ -59,21 +59,6 @@ namespace Reko.Arch.Microchip.PIC18
             dasm = disasm.GetEnumerator();
         }
 
-        /// <summary>
-        /// Gets or sets the PIC18 execution mode.
-        /// </summary>
-        public PICExecMode ExecMode
-        {
-            get
-            {
-                return disasm.ExecMode;
-            }
-            set
-            {
-                disasm.ExecMode = value;
-            }
-        }
-
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())

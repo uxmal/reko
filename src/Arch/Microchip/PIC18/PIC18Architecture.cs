@@ -61,6 +61,18 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC PICDescriptor { get; }
 
         /// <summary>
+        /// Gets or sets the PIC execution mode.
+        /// </summary>
+        /// <value>
+        /// The PIC execution mode.
+        /// </value>
+        public PICExecMode ExecMode
+        {
+            get { return MemoryMapper.ExecMode; }
+            set { MemoryMapper.ExecMode = value; }
+        }
+
+        /// <summary>
         /// Gets the PIC memory mapper.
         /// </summary>
         public IPICMemoryMapper MemoryMapper

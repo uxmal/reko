@@ -91,6 +91,7 @@
     <Compile Include="Arch\Microchip\Common\MemoryMapperTests.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18RewriterTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18EnhdArchitectureTests.cs" />

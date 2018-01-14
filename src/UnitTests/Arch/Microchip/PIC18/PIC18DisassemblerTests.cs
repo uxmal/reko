@@ -20,8 +20,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
     [TestFixture]
     public class PIC18DisassemblerTests
     {
-        private PIC pic;
-        private PIC18Architecture arch;
+        private static PIC pic;
+        private static PIC18Architecture arch;
 
         private class ExpectResult
         {
@@ -51,10 +51,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         // 
         private Dictionary<ushort[], ExpectResult> _anyPIC_anyMode_Instrs = new Dictionary<ushort[], ExpectResult>()
         {
-            //DEBUG
-            { new ushort[] { 0x0300 }, new ExpectResult("MULWF\t0x00") },
-            //DEBUG
-
             { new ushort[] { 0x0000 }, new ExpectResult("NOP") },
             { new ushort[] { 0x0001 }, new ExpectResult("invalid", "unknown opcode") },
             { new ushort[] { 0x0002 }, new ExpectResult("invalid", "missing second word") },
@@ -943,7 +939,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             var image = new MemoryArea(Address.Ptr32(0x0100), bytes);
 
             var rdr = new LeImageReader(image, 0);
-            var dasm = new PIC18Disassembler(arch, rdr) { ExecMode = mode };
+            arch.ExecMode = mode;
+            var dasm = new PIC18Disassembler(arch, rdr);
             return dasm.First();
         }
 
