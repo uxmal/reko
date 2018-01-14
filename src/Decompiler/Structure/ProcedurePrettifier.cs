@@ -87,9 +87,9 @@ namespace Reko.Structure
                 ifStm.Then[i] = ifStm.Then[i].Accept(this);
             }
 
-            for (int i = 0; i < ifStm.Then.Count; ++i)
+            for (int i = 0; i < ifStm.Else.Count; ++i)
             {
-                ifStm.Then[i] = ifStm.Then[i].Accept(this);
+                ifStm.Else[i] = ifStm.Else[i].Accept(this);
             }
 
             if (ifStm.Then.Count == 0 && ifStm.Else.Count > 0)
