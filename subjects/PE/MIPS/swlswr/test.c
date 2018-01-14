@@ -83,11 +83,10 @@ void fn000112A8(UINT r4, int32 r5, int32 r6, word32 dwArg00, word32 dwArg04, wor
 	if (r5 != 0x00)
 	{
 		fn0001147C(&globals->dw12018, &globals->dw1201C, dwLoc18, dwLoc14);
-		if (r6 == 0x00)
-		{
-			fn00011460();
-			TerminateProcess((void *) 66, r4);
-		}
+		if (r6 != 0x00)
+			return;
+		fn00011460();
+		TerminateProcess((void *) 66, r4);
 	}
 	else if (globals->t13040 == 0x00)
 	{
@@ -179,59 +178,56 @@ code * fn0001152C(code * r2, word32 dwArg00)
 	struct Eq_310 * sp_111 = fp + -0x0038;
 	Eq_10 dwLoc20_138 = 0x00;
 	Eq_316 r8_19 = globals->t1303C - r8_10;
-	if (r8_19 >= 0x00)
+	if (r8_19 < 0x00)
+		return sp_111->ptr002C;
+	if (r8_10 != 0x00)
 	{
-		if (r8_10 != 0x00)
+		word32 ra_132;
+		word32 r4_133;
+		word32 r8_134;
+		word32 r9_135;
+		Eq_10 r2_136;
+		word32 r5_137;
+		msize();
+		dwLoc20_138 = r2_136;
+	}
+	if ((word32) (dwLoc20_138 < (word32) r8_19 + 0x04) != 0x00)
+	{
+		if (r8_10 == 0x00)
 		{
-			word32 ra_132;
-			word32 r4_133;
-			word32 r8_134;
-			word32 r9_135;
-			Eq_10 r2_136;
-			word32 r5_137;
-			msize();
-			dwLoc20_138 = r2_136;
+			malloc(0x0010);
+			sp_111 = fp + ~0x3B;
 		}
-		if ((word32) (dwLoc20_138 < (word32) r8_19 + 0x04) != 0x00)
+		else
 		{
-			if (r8_10 == 0x00)
+			Eq_10 dwLoc18_100 = dwLoc20_138 << 0x01;
+			if ((word32) (dwLoc20_138 < 0x0201) == 0x00)
+				dwLoc18_100 = (word32) dwLoc20_138 + 0x0200;
+			if ((word32) (dwLoc20_138 < dwLoc18_100) != 0x00)
 			{
-				malloc(0x0010);
+				realloc(r8_10, dwLoc18_100);
 				sp_111 = fp + ~0x3B;
 			}
-			else
+			if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
 			{
-				Eq_10 dwLoc18_100 = dwLoc20_138 << 0x01;
-				if ((word32) (dwLoc20_138 < 0x0201) == 0x00)
-					dwLoc18_100 = (word32) dwLoc20_138 + 0x0200;
-				if ((word32) (dwLoc20_138 < dwLoc18_100) != 0x00)
-				{
-					realloc(r8_10, dwLoc18_100);
-					sp_111 = fp + ~0x3B;
-				}
-				if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
-				{
-					sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
-					sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
-				}
+				sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
+				sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
 			}
-			if (sp_111->t0014 == 0x00)
-			{
-				sp_111->ptr002C = null;
-				return sp_111->ptr002C;
-			}
-			sp_111->t0028 = (word32) sp_111->t0014 + ((sp_111->t0028 - sp_111->t001C >> 0x02) << 0x02);
-			sp_111->t001C = sp_111->t0014;
 		}
-		*sp_111->t0028 = sp_111->ptr0038;
-		sp_111->t0028 = (word32) sp_111->t0028 + 0x04;
-		globals->t1303C = sp_111->t0028;
-		globals->t13040 = sp_111->t001C;
-		sp_111->ptr002C = sp_111->ptr0038;
-		return sp_111->ptr002C;
+		if (sp_111->t0014 == 0x00)
+		{
+			sp_111->ptr002C = null;
+			return sp_111->ptr002C;
+		}
+		sp_111->t0028 = (word32) sp_111->t0014 + ((sp_111->t0028 - sp_111->t001C >> 0x02) << 0x02);
+		sp_111->t001C = sp_111->t0014;
 	}
-	else
-		return sp_111->ptr002C;
+	*sp_111->t0028 = sp_111->ptr0038;
+	sp_111->t0028 = (word32) sp_111->t0028 + 0x04;
+	globals->t1303C = sp_111->t0028;
+	globals->t13040 = sp_111->t001C;
+	sp_111->ptr002C = sp_111->ptr0038;
+	return sp_111->ptr002C;
 }
 
 // 000116FC: void fn000116FC(Register (ptr code) r2, Stack word32 dwArg00)

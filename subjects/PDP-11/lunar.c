@@ -1733,43 +1733,40 @@ Eq_2 fn13AA(word16 pc, ci16 * ptrArg00)
 	} while (globals->w0070 - fn1578(r0_11, pc, out r4_17) > 0x00);
 	if (r0_4 < 0x00)
 		return r4_17;
-	else
+	__reset();
+	word16 * r0_30 = globals->a182A;
+	ci16 r1_34 = 500;
+	do
 	{
-		__reset();
-		word16 * r0_30 = globals->a182A;
-		ci16 r1_34 = 500;
-		do
-		{
-			*r0_30 = 0xF700;
-			word16 * r0_40 = r0_30 + 0x01;
-			*r0_40 = 0x00;
-			r0_30 = r0_40 + 0x01;
-			r1_34 = r1_34 - 0x01;
-		} while (r1_34 > 0x00);
-		word16 * r0_47 = globals->a34E0;
-		ci16 r1_51 = 711;
-		do
-		{
-			*r0_47 = 0xF700;
-			word16 * r0_57 = r0_47 + 0x01;
-			*r0_57 = 0x00;
-			r0_47 = r0_57 + 0x01;
-			r1_51 = r1_51 - 0x01;
-		} while (r1_51 > 0x00);
-		*(word16 *) ~0x01 = 0x00;
-		word16 * r0_67 = globals->a013E;
-		while (true)
-		{
-			word16 * v28_71 = *r0_67;
-			word16 * r0_72 = r0_67 + 0x01;
-			if (v28_71 == null)
-				break;
-			*v28_71 = *r0_72;
-			r0_67 = r0_72 + 0x01;
-		}
-		while (true)
-			fn0128(r4_17, pc);
+		*r0_30 = 0xF700;
+		word16 * r0_40 = r0_30 + 0x01;
+		*r0_40 = 0x00;
+		r0_30 = r0_40 + 0x01;
+		r1_34 = r1_34 - 0x01;
+	} while (r1_34 > 0x00);
+	word16 * r0_47 = globals->a34E0;
+	ci16 r1_51 = 711;
+	do
+	{
+		*r0_47 = 0xF700;
+		word16 * r0_57 = r0_47 + 0x01;
+		*r0_57 = 0x00;
+		r0_47 = r0_57 + 0x01;
+		r1_51 = r1_51 - 0x01;
+	} while (r1_51 > 0x00);
+	*(word16 *) ~0x01 = 0x00;
+	word16 * r0_67 = globals->a013E;
+	while (true)
+	{
+		word16 * v28_71 = *r0_67;
+		word16 * r0_72 = r0_67 + 0x01;
+		if (v28_71 == null)
+			break;
+		*v28_71 = *r0_72;
+		r0_67 = r0_72 + 0x01;
 	}
+	while (true)
+		fn0128(r4_17, pc);
 }
 
 // 1578: Register word16 fn1578(Register ci16 r0, Register word16 pc, Register out ptr16 r4Out)

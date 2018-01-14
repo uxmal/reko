@@ -281,21 +281,18 @@ Eq_557 * fn004013FB(Eq_118 * dwArg04, uint32 dwArg08)
 // 0040143F: Register byte fn0040143F()
 byte fn0040143F()
 {
-	if (fn00401B98() != 0x00)
-	{
-		word32 edx_32 = fs->ptr0018->dw0004;
-		do
-		{
-			__lock();
-			word32 eax_37;
-			__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
-			if (eax_37 == 0x00)
-				return 0x00;
-		} while (edx_32 != eax_37);
-		return 0x01;
-	}
-	else
+	if (fn00401B98() == 0x00)
 		return 0x00;
+	word32 edx_32 = fs->ptr0018->dw0004;
+	do
+	{
+		__lock();
+		word32 eax_37;
+		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
+		if (eax_37 == 0x00)
+			return 0x00;
+	} while (edx_32 != eax_37);
+	return 0x01;
 }
 
 // 00401474: Register byte fn00401474(Register word32 edx, Stack (ptr Eq_118) dwArg04)
@@ -305,13 +302,12 @@ byte fn00401474(word32 edx, Eq_118 * dwArg04)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
 	fn00401C48();
+	if (false)
+		return 0x00;
+	fn00401C48();
 	if (true)
-	{
-		fn00401C48();
-		if (true)
-			return 0x01;
-		fn00401C48();
-	}
+		return 0x01;
+	fn00401C48();
 	return 0x00;
 }
 
@@ -521,13 +517,12 @@ void fn00401718(word32 eax)
 	byte C_12;
 	byte Z_13;
 	controlfp_s();
-	if (eax_10 != 0x00)
-	{
-		*(fp - 0x04) = 0x07;
-		fn00401774(0x00030000, dwArg00);
-		int3();
-		fn00401739();
-	}
+	if (eax_10 == 0x00)
+		return;
+	*(fp - 0x04) = 0x07;
+	fn00401774(0x00030000, dwArg00);
+	int3();
+	fn00401739();
 }
 
 // 00401739: void fn00401739()
@@ -585,13 +580,12 @@ void fn00401774(word32 dwArg00, Eq_118 * dwArg04)
 bool fn0040188F()
 {
 	Eq_1105 eax_4 = GetModuleHandleW(null);
-	if (eax_4 != null && eax_4->unused == 23117)
-	{
-		struct Eq_1119 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
-		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
-			return eax_42->dw00E8 != 0x00;
-	}
-	return 0x00;
+	if (eax_4 == null || eax_4->unused != 23117)
+		return 0x00;
+	struct Eq_1119 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+	if (eax_42->dw0000 != 0x4550 || (eax_42->w0018 != 0x010B || eax_42->dw0074 <= 0x0E))
+		return 0x00;
+	return eax_42->dw00E8 != 0x00;
 }
 
 // 004018D3: void fn004018D3()

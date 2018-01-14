@@ -835,23 +835,22 @@ void _setvbuf(Eq_426 * ds, Eq_1182 Eq_426::*wArg02, Eq_882 wArg04, ci16 wArg06, 
 	(ds->*wArg02).w0006 = 0x00;
 	(ds->*wArg02).t0008 = &(ds->*wArg02).b0004 + 0x01;
 	(ds->*wArg02).t000A = &(ds->*wArg02).b0004 + 0x01;
-	if (wArg06 != 0x02 && true)
+	if (wArg06 == 0x02 || false)
+		return;
+	ds->w0234 = 0x09D6;
+	if (wArg04 == 0x00)
 	{
-		ds->w0234 = 0x09D6;
-		if (wArg04 == 0x00)
-		{
-			Eq_882 ax_121 = _malloc(ds, wArg08);
-			wArg04 = ax_121;
-			if (ax_121 == 0x00)
-				return;
-			(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x04;
-		}
-		(ds->*wArg02).t000A = wArg04;
-		(ds->*wArg02).t0008 = wArg04;
-		(ds->*wArg02).w0006 = wArg08;
-		if (wArg06 == 0x01)
-			(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x08;
+		Eq_882 ax_121 = _malloc(ds, wArg08);
+		wArg04 = ax_121;
+		if (ax_121 == 0x00)
+			return;
+		(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x04;
 	}
+	(ds->*wArg02).t000A = wArg04;
+	(ds->*wArg02).t0008 = wArg04;
+	(ds->*wArg02).w0006 = wArg08;
+	if (wArg06 == 0x01)
+		(ds->*wArg02).w0002 = (ds->*wArg02).w0002 | 0x08;
 }
 
 // 0800:09F7: Register (memptr (ptr Eq_426) byte) _read(Register (ptr Eq_426) ds, Stack int16 wArg02, Stack Eq_882 wArg04, Stack cu16 wArg06)
@@ -923,62 +922,68 @@ Eq_1801 _write(Eq_426 * ds, int16 wArg02, Eq_882 wArg04, Eq_1801 wArg06)
 {
 	Eq_1801 ax_149;
 	byte al_16 = (byte) ((word32) wArg06 + 0x01);
-	if (wArg06 < ~0x00)
+	if (wArg06 >= ~0x00)
+	{
+		if (((&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] & 0x8000) == 0x00)
+		{
+			(&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] = (&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] & ~0x0200;
+			Eq_882 wLoc86_113 = wArg04;
+			Eq_1801 wLoc8A_110 = wArg06;
+			Eq_1837 si_105 = fp - 0x84;
+			while (wLoc8A_110 != 0x00)
+			{
+				Eq_1801 v20_109 = wLoc8A_110 - 0x01;
+				wLoc8A_110 = v20_109;
+				wLoc86_113 = (word32) wLoc86_113 + 0x01;
+				byte al_114 = ds->*wLoc86_113;
+				if (al_114 == 0x0A)
+				{
+					ds->*si_105 = 0x0D;
+					si_105 = (word32) si_105 + 0x01;
+				}
+				ds->*si_105 = al_114;
+				si_105 = (word32) si_105 + 0x01;
+				if (si_105 - (fp - 0x84) < 0x80)
+					continue;
+				Eq_1801 di_130 = si_105 - (fp - 0x84);
+				Eq_1801 ax_141 = __write((byte) (fp - 0x84), ds, wArg02, fp - 0x84, di_130);
+				if (ax_141 != di_130)
+				{
+					if (ax_141 < 0x00)
+						ax_149.u0 = ~0x00;
+					else
+						ax_149 = (word32) ax_141 + (wArg06 - v20_109) - di_130;
+					return ax_149;
+				}
+				si_105 = fp - 0x84;
+			}
+			Eq_1801 di_165 = si_105 - (fp - 0x84);
+			if (true)
+			{
+				Eq_1801 ax_189 = __write((byte) (fp - 0x84), ds, wArg02, fp - 0x84, di_165);
+				if (ax_189 != di_165)
+				{
+					if (ax_189 < 0x00)
+						ax_149.u0 = ~0x00;
+					else
+						ax_149 = wArg06 + ax_189 - di_165;
+					return ax_149;
+				}
+			}
+			ax_149 = wArg06;
+			return ax_149;
+		}
+		else
+		{
+			ax_149 = __write(al_16, ds, wArg02, wArg04, wArg06);
+			return ax_149;
+		}
+	}
+	else
 	{
 		ax_149.u0 = 0x00;
 		return ax_149;
 	}
-	if (((&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] & 0x8000) != 0x00)
-	{
-		ax_149 = __write(al_16, ds, wArg02, wArg04, wArg06);
-		return ax_149;
-	}
-	(&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] = (&(ds->*(ds->*ds).a0482))[wArg02 * 0x02] & ~0x0200;
-	Eq_882 wLoc86_113 = wArg04;
-	Eq_1801 wLoc8A_110 = wArg06;
-	Eq_1837 si_105 = fp - 0x84;
-	while (wLoc8A_110 != 0x00)
-	{
-		Eq_1801 v20_109 = wLoc8A_110 - 0x01;
-		wLoc8A_110 = v20_109;
-		wLoc86_113 = (word32) wLoc86_113 + 0x01;
-		byte al_114 = ds->*wLoc86_113;
-		if (al_114 == 0x0A)
-		{
-			ds->*si_105 = 0x0D;
-			si_105 = (word32) si_105 + 0x01;
-		}
-		ds->*si_105 = al_114;
-		si_105 = (word32) si_105 + 0x01;
-		if (si_105 - (fp - 0x84) < 0x80)
-			continue;
-		Eq_1801 di_130 = si_105 - (fp - 0x84);
-		Eq_1801 ax_141 = __write((byte) (fp - 0x84), ds, wArg02, fp - 0x84, di_130);
-		if (ax_141 != di_130)
-		{
-			if (ax_141 < 0x00)
-				ax_149.u0 = ~0x00;
-			else
-				ax_149 = (word32) ax_141 + (wArg06 - v20_109) - di_130;
-			return ax_149;
-		}
-		si_105 = fp - 0x84;
-	}
-	Eq_1801 di_165 = si_105 - (fp - 0x84);
-	if (true)
-	{
-		Eq_1801 ax_189 = __write((byte) (fp - 0x84), ds, wArg02, fp - 0x84, di_165);
-		if (ax_189 != di_165)
-		{
-			if (ax_189 < 0x00)
-				ax_149.u0 = ~0x00;
-			else
-				ax_149 = wArg06 + ax_189 - di_165;
-			return ax_149;
-		}
-	}
-	ax_149 = wArg06;
-	return ax_149;
 }
 
 // 0800:0BE2: Register Eq_427 __write(Register byte al, Register (ptr Eq_426) ds, Stack int16 wArg02, Stack Eq_882 wArg04, Stack Eq_1801 wArg06)
@@ -1802,14 +1807,11 @@ Eq_2497 fn0800_1099(byte al, Eq_2544 Eq_3370::*bp, byte Eq_284::*di, Eq_284 * ds
 	*diOut = di + 0x01;
 	if (v9_9 <= 0x00)
 		return cx;
-	else
-	{
-		word16 dx_21;
-		word16 bx_22;
-		word16 di_23;
-		struct Eq_3392 * es_24;
-		return fn0800_10A1(bp, di + 0x01, out dx_21, out bx_22, out di_23, out es_24);
-	}
+	word16 dx_21;
+	word16 bx_22;
+	word16 di_23;
+	struct Eq_3392 * es_24;
+	return fn0800_10A1(bp, di + 0x01, out dx_21, out bx_22, out di_23, out es_24);
 }
 
 // 0800:10A1: Register word16 fn0800_10A1(Register (memptr (ptr Eq_3370) Eq_2544) bp, Register (memptr (ptr Eq_284) byte) di, Register out ptr16 dxOut, Register out Eq_2547 bxOut, Register out Eq_2548 diOut, Register out (ptr Eq_2549) esOut)

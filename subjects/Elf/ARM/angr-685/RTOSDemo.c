@@ -314,23 +314,22 @@ void xTaskResumeAll(word32 ip, word32 pc)
 void vTaskDelay(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp, word32 lr, word32 * pc)
 {
 	__syscall(0x00B940B5);
-	if (Z)
-	{
-		__syscall(0x00601A4B);
-		__syscall(0x008F4FF3);
-		*pc = r0;
-		*(pc - 0x04) = r1;
-		*(pc - 0x08) = r4;
-		*(pc - 0x0C) = r5;
-		*(pc - 0x10) = r6;
-		*(pc - 0x14) = r7;
-		*(pc - 0x18) = r8;
-		*(pc - 0x1C) = r9;
-		*(pc - 0x20) = r10;
-		*(pc - 0x24) = fp;
-		*(pc - 0x28) = fp;
-		*(pc - 44) = lr;
-	}
+	if (!Z)
+		return;
+	__syscall(0x00601A4B);
+	__syscall(0x008F4FF3);
+	*pc = r0;
+	*(pc - 0x04) = r1;
+	*(pc - 0x08) = r4;
+	*(pc - 0x0C) = r5;
+	*(pc - 0x10) = r6;
+	*(pc - 0x14) = r7;
+	*(pc - 0x18) = r8;
+	*(pc - 0x1C) = r9;
+	*(pc - 0x20) = r10;
+	*(pc - 0x24) = fp;
+	*(pc - 0x28) = fp;
+	*(pc - 44) = lr;
 }
 
 // 00000F81: void vTaskDelayUntil(Register (ptr word32) r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 pc)
@@ -815,16 +814,15 @@ void vApplicationIdleHook(Eq_949 * r0, ui32 r1, word32 r2, Eq_952 * r7, Eq_953 *
 		word32 lr_88;
 		fnFFC084ED();
 	}
-	if (NV)
+	if (!NV)
+		return;
+	r7->t0AFF = pc;
+	if (C)
+		PDCInit(r0, r1, r2, r8);
+	else
 	{
-		r7->t0AFF = pc;
-		if (C)
-			PDCInit(r0, r1, r2, r8);
-		else
-		{
-			struct Eq_949 * r0_72 = r0 & r1 << 0x01;
-			PDCInit(r0_72, r1, r2, r8);
-		}
+		struct Eq_949 * r0_72 = r0 & r1 << 0x01;
+		PDCInit(r0_72, r1, r2, r8);
 	}
 }
 
@@ -1464,14 +1462,14 @@ void GPIOIntTypeSet(ui32 r0, word32 r4, word32 r8, word32 pc)
 		word32 lr_42;
 		fn010CC069();
 	}
-	if (Z)
+	if (!Z)
 		;
 }
 
 // 00009195: void GPIOIntTypeGet(Register word32 r8)
 void GPIOIntTypeGet(word32 r8)
 {
-	if (Z)
+	if (!Z)
 		;
 }
 

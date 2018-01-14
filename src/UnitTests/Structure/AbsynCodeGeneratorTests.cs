@@ -429,16 +429,13 @@ namespace Reko.UnitTests.Structure
 "{" + nl +
 "	a1 = fn0540();" + nl +
 "	tmp = Mem0[0x8416:word16];" + nl +
-"	if (tmp == 0x0000)" + nl +
-"	{" + nl +
-"		Mem0[0x8414:word16] = 0x0000;" + nl +
-"		if (0x8414 != 0x0000)" + nl +
-"		{" + nl +
-"			fn02A9(&ax_96);" + nl +
-"			return ax_96;" + nl +
-"		}" + nl +
-"	}" + nl +
-"	return a1;" + nl +
+"	if (tmp != 0x0000)" + nl +
+"		return a1;" + nl +
+"	Mem0[0x8414:word16] = 0x0000;" + nl +
+"	if (0x8414 == 0x0000)" + nl +
+"		return a1;" + nl +
+"	fn02A9(&ax_96);" + nl +
+"	return ax_96;" + nl +
 "}" + nl);
 
 

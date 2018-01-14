@@ -31,64 +31,59 @@ void _start( * rdx, Eq_17 qwArg00)
 // 0000000000000650: void deregister_tm_clones()
 void deregister_tm_clones()
 {
-	if (2101320 != 2101320)
-	{
-		<anonymous> * rax_27 = globals->ptr200FD8;
-		if (rax_27 != null)
-		{
-			word64 rsp_33;
-			word64 rdi_34;
-			word64 rbp_35;
-			word64 rax_36;
-			byte SCZO_37;
-			byte Z_38;
-			byte SZO_39;
-			byte C_40;
-			rax_27();
-		}
-	}
+	if (2101320 == 2101320)
+		return;
+	<anonymous> * rax_27 = globals->ptr200FD8;
+	if (rax_27 == null)
+		return;
+	word64 rsp_33;
+	word64 rdi_34;
+	word64 rbp_35;
+	word64 rax_36;
+	byte SCZO_37;
+	byte Z_38;
+	byte SZO_39;
+	byte C_40;
+	rax_27();
 }
 
 // 0000000000000690: void register_tm_clones()
 void register_tm_clones()
 {
 	word64 rsi_7 = 0x0000000000201048 - 0x0000000000201048;
-	if ((rsi_7 >> 0x03) + ((rsi_7 >> 0x03) >>u 0x3F) >> 0x01 != 0x00)
-	{
-		<anonymous> * rax_34 = globals->ptr200FF0;
-		if (rax_34 != null)
-		{
-			word64 rsp_40;
-			word64 rdi_41;
-			word64 rsi_42;
-			word64 rbp_43;
-			byte SCZO_44;
-			word64 rax_45;
-			byte Z_46;
-			byte SZO_47;
-			byte C_48;
-			rax_34();
-		}
-	}
+	if ((rsi_7 >> 0x03) + ((rsi_7 >> 0x03) >>u 0x3F) >> 0x01 == 0x00)
+		return;
+	<anonymous> * rax_34 = globals->ptr200FF0;
+	if (rax_34 == null)
+		return;
+	word64 rsp_40;
+	word64 rdi_41;
+	word64 rsi_42;
+	word64 rbp_43;
+	byte SCZO_44;
+	word64 rax_45;
+	byte Z_46;
+	byte SZO_47;
+	byte C_48;
+	rax_34();
 }
 
 // 00000000000006E0: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	if (globals->b201048 == 0x00)
+	if (globals->b201048 != 0x00)
+		return;
+	if (globals->qw200FF8 != 0x00)
 	{
-		if (globals->qw200FF8 != 0x00)
-		{
-			word64 rsp_25;
-			byte SCZO_26;
-			byte Z_27;
-			word64 rbp_28;
-			word64 rdi_29;
-			__cxa_finalize();
-		}
-		deregister_tm_clones();
-		globals->b201048 = 0x01;
+		word64 rsp_25;
+		byte SCZO_26;
+		byte Z_27;
+		word64 rbp_28;
+		word64 rdi_29;
+		__cxa_finalize();
 	}
+	deregister_tm_clones();
+	globals->b201048 = 0x01;
 }
 
 // 0000000000000720: void frame_dummy()

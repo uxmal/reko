@@ -308,6 +308,11 @@ namespace Reko.Structure
             var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
             foreach (var n in postOrder)
             {
+                if (VirtualizeReturn(n))
+                    return true;
+            }
+            foreach (var n in postOrder)
+            {
                 if (CoalesceTailRegion(n, regionGraph.Nodes))
                     return true;
             }
@@ -315,6 +320,23 @@ namespace Reko.Structure
             {
                 if (LastResort(n))
                     return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Replace edge to return statement with just return statement
+        /// </summary>
+        private bool VirtualizeReturn(Region n)
+        {
+            VirtualEdge returnEdge = null;
+            foreach (var s in regionGraph.Successors(n))
+                if (s.IsReturn)
+                    returnEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
+            if (returnEdge != null)
+            {
+                VirtualizeEdge(returnEdge);
+                return true;
             }
             return false;
         }
@@ -846,11 +868,11 @@ doing future pattern matches.
         /// <param name="to"></param>
         public void VirtualizeEdge(VirtualEdge vEdge)
         {
-            AbsynReturn ret;
             AbsynStatement stm;
-            if (vEdge.To.Statements.Count > 0 && vEdge.To.Statements[0].As<AbsynReturn>(out ret))
+            if (vEdge.To.IsReturn)
             {
                 // Goto to a return statement => just a return statement.
+                var ret = (AbsynReturn)vEdge.To.Statements[0];
                 Expression v = ret.Value != null ? ret.Value.CloneExpression() : null;
                 stm = new AbsynReturn(v);
             }
@@ -875,13 +897,15 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
-                eventListener.Error(
-                    eventListener.CreateProcedureNavigator(program, proc),
-                    string.Format(
-                        "Removing edge ({0}, {1}) caused losing of some code blocks",
-                        vEdge.From.Block.Name,
-                        vEdge.To.Block.Name));
-
+                if (vEdge.To.IsReturn)
+                    RemoveRegion(vEdge.To);
+                else
+                    eventListener.Error(
+                        eventListener.CreateProcedureNavigator(program, proc),
+                        string.Format(
+                            "Removing edge ({0}, {1}) caused losing of some code blocks",
+                            vEdge.From.Block.Name,
+                            vEdge.To.Block.Name));
 
                 Probe();
             }
