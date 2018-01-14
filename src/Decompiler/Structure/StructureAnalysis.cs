@@ -331,7 +331,7 @@ namespace Reko.Structure
         {
             VirtualEdge returnEdge = null;
             foreach (var s in regionGraph.Successors(n))
-                if (s.Statements.Count > 0 && s.Statements[0] is AbsynReturn)
+                if (s.IsReturn)
                     returnEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
             if (returnEdge != null)
             {
@@ -868,11 +868,11 @@ doing future pattern matches.
         /// <param name="to"></param>
         public void VirtualizeEdge(VirtualEdge vEdge)
         {
-            AbsynReturn ret;
             AbsynStatement stm;
-            if (vEdge.To.Statements.Count > 0 && vEdge.To.Statements[0].As<AbsynReturn>(out ret))
+            if (vEdge.To.IsReturn)
             {
                 // Goto to a return statement => just a return statement.
+                var ret = (AbsynReturn)vEdge.To.Statements[0];
                 Expression v = ret.Value != null ? ret.Value.CloneExpression() : null;
                 stm = new AbsynReturn(v);
             }
