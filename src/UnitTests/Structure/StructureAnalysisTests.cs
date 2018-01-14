@@ -124,6 +124,37 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        public void StrAnls_ReturnInsideOfIf()
+        {
+            m.BranchIf(m.Fn("canceled"), "exit");
+
+            m.BranchIf(m.Fn("canStart"), "start");
+
+            m.SideEffect(m.Fn("wait"));
+            m.BranchIf(m.Not(m.Fn("canStart")), "exit");
+
+            m.Label("start");
+            m.SideEffect(m.Fn("start"));
+
+            m.Label("exit");
+            m.Return();
+
+            var sExp =
+@"    if (canceled())
+        return;
+    if (!canStart())
+    {
+        wait();
+        if (!canStart())
+            return;
+    }
+    start();
+    return;
+";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
         public void StrAnls_While()
         {
             var r1 = m.Reg32("r1", 1);

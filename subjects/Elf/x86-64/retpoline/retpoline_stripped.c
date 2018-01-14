@@ -31,21 +31,20 @@ void fn0000000000400480( * rdx, Eq_17 qwArg00)
 // 00000000004004B0: void fn00000000004004B0(Register word64 r8)
 void fn00000000004004B0(word64 r8)
 {
-	if (r8 != 0x00601040 && 0x00 != 0x00)
-	{
-		word64 rsp_39;
-		word64 rbp_40;
-		word32 eax_41;
-		word64 rax_42;
-		word64 r8_43;
-		byte SCZO_44;
-		byte Z_45;
-		byte SZO_46;
-		byte C_47;
-		word32 edi_48;
-		word64 rdi_49;
-		null();
-	}
+	if (r8 == 0x00601040 || 0x00 == 0x00)
+		return;
+	word64 rsp_39;
+	word64 rbp_40;
+	word32 eax_41;
+	word64 rax_42;
+	word64 r8_43;
+	byte SCZO_44;
+	byte Z_45;
+	byte SZO_46;
+	byte C_47;
+	word32 edi_48;
+	word64 rdi_49;
+	null();
 }
 
 // 0000000000400560: void fn0000000000400560(Register word32 esi, Register word32 edi)

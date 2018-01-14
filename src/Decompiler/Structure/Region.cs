@@ -47,6 +47,17 @@ namespace Reko.Structure
         public List<AbsynStatement> Statements { get; set; }
         public Expression Expression { get; set; }
 
+        /// <summary>
+        /// Return true if region consists of a single AbsynReturn statement.
+        /// </summary>
+        public bool IsReturn
+        {
+            get
+            {
+                return Statements.Count == 1 && Statements[0] is AbsynReturn;
+            }
+        }
+
         public Region(Block block) : this(block, new List<AbsynStatement>())
         {
         }
