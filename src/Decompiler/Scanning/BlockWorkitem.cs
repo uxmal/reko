@@ -406,8 +406,6 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
-            if (this.ric.Address.ToLinear() == 0x08048474) //$DEBUG
-                ric.ToString();
             var blockFrom = blockCur;
             if ((g.Class & RtlClass.Delay) != 0)
             {
@@ -447,7 +445,31 @@ namespace Reko.Scanning
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                     var sig = trampoline.Signature;
                     var chr = trampoline.Characteristics;
+                    // Adjust stack to "hide" any pushed return value since
+                    // currently Reko treats the return value as an implicit detail
+                    // of the calling convention. Had the x86 rewriter explicity
+                    // generated code to predecrement the stack pointer
+                    // when encountering CALL instructions this would 
+                    // not be necessary.
+                    if (sig.ReturnAddressOnStack != 0)
+                    {
+                        Emit(new Assignment(stackReg, new BinaryExpression(
+                            Operator.IAdd,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                    }
                     EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
+                    if (sig.ReturnAddressOnStack != 0)
+                    {
+                        //$TODO: make x86 calls' implicit storage explicit
+                        // to avoid this hacky dance,
+                        Emit(new Assignment(stackReg, new BinaryExpression(
+                            Operator.ISub,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                    }
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -503,8 +525,6 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
-            if (this.ric.Address.ToLinear() == 0x08048456) //$DEBUG
-                ric.ToString();
             if ((call.Class & RtlClass.Delay) != 0)
             {
                 // Get delay slot instruction cluster.
