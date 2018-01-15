@@ -1964,6 +1964,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
 0000000140001114: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfscanf.
 00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
+0000000140001E52: warning: Unable to guess parameters of api-ms-win-crt-heap-l1-1-0.dll!_set_new_mode.
 0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
 0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
 0000000140001DEC: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_seh_filter_exe.

@@ -471,23 +471,18 @@ fn00000001400012A0_entry:
 l00000001400012A0:
 	fn0000000140001B14()
 	word32 eax_4 = fn0000000140001ABC()
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: rsp:fp
-
-l0000000140001E52:
-	word64 rsp_9
-	byte SCZO_10
-	word32 ecx_11
-	word32 eax_12
-	word64 rcx_13
-	call Mem0[0x0000000140002098:word64] (retsize: 4; depth: 4)
+	word64 rsp_8
+	byte SCZO_9
+	word32 ecx_10
+	word32 eax_11
+	word64 rcx_12
+	call set_new_mode (retsize: 8; depth: 8)
 		uses: eax_4,rcx_5,rsp_6,SCZO_7
-		defs: eax_12,ecx_11,rcx_13,rsp_9,SCZO_10
+		defs: eax_11,ecx_10,rcx_12,rsp_8,SCZO_9
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp rcx:(uint64) eax rax:<invalid>
+// SymbolicIn: rsp:fp
 
 fn00000001400012A0_exit:
 // DataOut:
