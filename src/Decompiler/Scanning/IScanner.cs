@@ -50,6 +50,9 @@ namespace Reko.Scanning
         Address EnqueueUserProcedure(Procedure_v1 sp);
 
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
+
+        ProcedureBase GetTrampoline(Address addr);
+
         void TerminateBlock(Block block, Address addrEnd);
 
         /// <summary>

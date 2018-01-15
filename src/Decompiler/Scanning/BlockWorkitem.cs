@@ -406,6 +406,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
+            if (this.ric.Address.ToLinear() == 0x08048474) //$DEBUG
+                ric.ToString();
             var blockFrom = blockCur;
             if ((g.Class & RtlClass.Delay) != 0)
             {
@@ -435,6 +437,17 @@ namespace Reko.Scanning
                 {
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                     GenerateCallToOutsideProcedure(jmpSite, addrTarget);
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
+                var trampoline = scanner.GetTrampoline(addrTarget);
+                if (trampoline != null)
+                {
+                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    var sig = trampoline.Signature;
+                    var chr = trampoline.Characteristics;
+                    EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
@@ -490,6 +503,8 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
+            if (this.ric.Address.ToLinear() == 0x08048456) //$DEBUG
+                ric.ToString();
             if ((call.Class & RtlClass.Delay) != 0)
             {
                 // Get delay slot instruction cluster.
