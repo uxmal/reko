@@ -1776,23 +1776,23 @@ T_328: (in fn0000000140001ABC() : word32)
   Class: Eq_175
   DataType: word32
   OrigDataType: word32
-T_329: (in rsp_8 : word64)
+T_329: (in rsp_9 : word64)
   Class: Eq_329
   DataType: word64
   OrigDataType: word64
-T_330: (in SCZO_9 : byte)
+T_330: (in SCZO_10 : byte)
   Class: Eq_330
   DataType: byte
   OrigDataType: byte
-T_331: (in ecx_10 : word32)
+T_331: (in ecx_11 : word32)
   Class: Eq_331
   DataType: word32
   OrigDataType: word32
-T_332: (in eax_11 : word32)
+T_332: (in eax_12 : word32)
   Class: Eq_332
   DataType: word32
   OrigDataType: word32
-T_333: (in rcx_12 : word64)
+T_333: (in rcx_13 : word64)
   Class: Eq_333
   DataType: word64
   OrigDataType: word64

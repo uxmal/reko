@@ -6515,12 +6515,12 @@ l000000000040873F:
 																			SCZO = cond(eax - Mem0[0x000000000061B170 + 0x00:word32]);
 																			if (Test(GT,SZO))
 																				Mem0[0x000000000061B170 + 0x00:word32] = eax;
-																			rax = (uint64) Mem0[~0x3333330A:word32];
+																			rax = (uint64) Mem0[0xCCCCCCF5:word32];
 																			rax = (uint64) (eax & 0xB000);
 																			SCZO = cond(eax - 0x2000);
 																			if (Test(EQ,Z))
 																			{
-																				rax = Mem0[~0x333332FA:word64];
+																				rax = Mem0[0xCCCCCD05:word64];
 																				r15 = r13 - 0x02D0;
 																				rsi = r15;
 																				rdi = rax;
@@ -6537,7 +6537,7 @@ l000000000040873F:
 																				SCZO = cond(eax - Mem0[0x000000000061B15C + 0x00:word32]);
 																				if (Test(GT,SZO))
 																					Mem0[0x000000000061B15C + 0x00:word32] = eax;
-																				rax = Mem0[~0x333332FA:word64];
+																				rax = Mem0[0xCCCCCD05:word64];
 																				rsi = r15;
 																				rdi = rax;
 																				eax = (word32) al;
@@ -6612,7 +6612,7 @@ l00000000004081F4:
 																			}
 																			else
 																			{
-																				rdi = Mem0[~0x333332F2:word64];
+																				rdi = Mem0[0xCCCCCD0D:word64];
 																				r8 = Mem0[0x000000000061A560 + 0x00:word64];
 																				rsi = rbp - 0x02D0;
 																				rdx = (uint64) Mem0[0x000000000061B134 + 0x00:word32];
@@ -8278,7 +8278,7 @@ word64 fn000000000040B710(word64 rsi, word64 rdi, word64 r11, word128 xmm0, word
 	word64 r8_112;
 	word64 r9_113;
 	word64 rax_114 = fn000000000040ABC0(rsi, out rsi_111, out r8_112, out r9_113);
-	if (rax_114 >u ~0x00)
+	if (rax_114 >u 0xFFFFFFFF || rax_114 <u 0x01)
 		return 0x00;
 	if (Mem0[r11 + 0x10:word64] == rax_114)
 		return 0x01;

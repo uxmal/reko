@@ -12760,7 +12760,7 @@ l0800_94A2:
 			}
 			goto l0800_94AD;
 		}
-		if (bl <=u 0x5A)
+		if (bl <=u 0x5A && bl >=u 0x30)
 			bl_28 = bl - 55;
 		else
 			bl_28 = bl - 0x57;

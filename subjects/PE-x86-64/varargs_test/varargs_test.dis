@@ -471,14 +471,14 @@ fn00000001400012A0_entry:
 l00000001400012A0:
 	fn0000000140001B14()
 	word32 eax_4 = fn0000000140001ABC()
-	word64 rsp_8
-	byte SCZO_9
-	word32 ecx_10
-	word32 eax_11
-	word64 rcx_12
-	call set_new_mode (retsize: 8; depth: 8)
-		uses: eax_4,rcx_5,rsp_6,SCZO_7
-		defs: eax_11,ecx_10,rcx_12,rsp_8,SCZO_9
+	word64 rsp_9
+	byte SCZO_10
+	word32 ecx_11
+	word32 eax_12
+	word64 rcx_13
+	call set_new_mode (retsize: 8;)
+		uses: eax_4,rcx_5,rsp_8,SCZO_7
+		defs: eax_12,ecx_11,rcx_13,rsp_9,SCZO_10
 	return
 // DataOut:
 // DataOut (flags): 

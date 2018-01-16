@@ -226,11 +226,11 @@ void fn00000001400012A0()
 {
 	fn0000000140001B14();
 	word32 eax_4 = fn0000000140001ABC();
-	word64 rsp_8;
-	byte SCZO_9;
-	word32 ecx_10;
-	word32 eax_11;
-	word64 rcx_12;
+	word64 rsp_9;
+	byte SCZO_10;
+	word32 ecx_11;
+	word32 eax_12;
+	word64 rcx_13;
 	set_new_mode();
 }
 

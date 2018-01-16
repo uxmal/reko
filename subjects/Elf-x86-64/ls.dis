@@ -12049,7 +12049,7 @@ l000000000040875F:
 // SymbolicIn: rsp:<invalid> rbp:<invalid> r13:<invalid> rbx:<invalid> rdx:<invalid> rax:<invalid> rcx:<invalid> r9:<invalid> rsi:0x00000000CCCCCCCD r14:<invalid> rdi:<invalid> r8:<invalid> esi:<invalid> r12:<invalid> r15d:<invalid> r15:<invalid> eax:<invalid> r11:<invalid> r10:<invalid> al:<invalid> cl:<invalid> edx:<invalid> ah:<invalid> sil:<invalid> ecx:<invalid> r14d:<invalid> edi:<invalid> r8b:<invalid> r8d:<invalid> ebp:<invalid> bpl:<invalid> r12d:<invalid> dx:<invalid> dl:<invalid> r13b:<invalid> r11d:<invalid> -924(fp):ecx -920(fp):<invalid> -912(fp):<invalid> -908(fp):edx -64(fp):<invalid> -48(fp):rbx -40(fp):r12 -32(fp):r13 -24(fp):r14 -16(fp):r15 -8(fp):rbp
 
 l0000000000408765:
-	rax = (uint64) Mem0[0xFFFFFFFFCCCCCCF5:word32]
+	rax = (uint64) Mem0[0x00000000CCCCCCF5:word32]
 	rax = (uint64) (eax & 0x0000B000)
 	SCZO = cond(eax - 0x00002000)
 	branch Test(NE,Z) l0000000000408A30
@@ -12058,7 +12058,7 @@ l0000000000408765:
 // SymbolicIn: rsp:<invalid> rbp:<invalid> r13:<invalid> rbx:<invalid> rdx:<invalid> rax:<invalid> rcx:<invalid> r9:<invalid> rsi:0x00000000CCCCCCCD r14:<invalid> rdi:<invalid> r8:<invalid> esi:<invalid> r12:<invalid> r15d:<invalid> r15:<invalid> eax:<invalid> r11:<invalid> r10:<invalid> al:<invalid> cl:<invalid> edx:<invalid> ah:<invalid> sil:<invalid> ecx:<invalid> r14d:<invalid> edi:<invalid> r8b:<invalid> r8d:<invalid> ebp:<invalid> bpl:<invalid> r12d:<invalid> dx:<invalid> dl:<invalid> r13b:<invalid> r11d:<invalid> -924(fp):ecx -920(fp):<invalid> -912(fp):<invalid> -908(fp):edx -64(fp):<invalid> -48(fp):rbx -40(fp):r12 -32(fp):r13 -24(fp):r14 -16(fp):r15 -8(fp):rbp
 
 l0000000000408A30:
-	rdi = Mem0[0xFFFFFFFFCCCCCD0D:word64]
+	rdi = Mem0[0x00000000CCCCCD0D:word64]
 	r8 = Mem0[0x000000000061A560:word64]
 	rsi = rbp - 0x00000000000002D0
 	rdx = (uint64) Mem0[0x000000000061B134:word32]
@@ -12081,7 +12081,7 @@ l0000000000408A68:
 // SymbolicIn: rsp:<invalid> rbp:<invalid> r13:<invalid> rbx:<invalid> rdx:<invalid> rax:<invalid> rcx:<invalid> r9:<invalid> rsi:<invalid> r14:<invalid> rdi:<invalid> r8:<invalid> esi:<invalid> r12:<invalid> r15d:<invalid> r15:<invalid> eax:<invalid> r11:<invalid> r10:<invalid> al:<invalid> cl:<invalid> edx:<invalid> ah:<invalid> ecx:<invalid> r14d:<invalid> sil:<invalid> dl:<invalid> edi:<invalid> r8b:<invalid> r8d:<invalid> ebp:<invalid> bpl:<invalid> r12d:<invalid> dx:<invalid> r13b:<invalid> r11d:<invalid> -924(fp):ecx -920(fp):<invalid> -912(fp):<invalid> -908(fp):edx -64(fp):<invalid> -48(fp):rbx -40(fp):r12 -32(fp):r13 -24(fp):r14 -16(fp):r15 -8(fp):rbp
 
 l0000000000408779:
-	rax = Mem0[0xFFFFFFFFCCCCCD05:word64]
+	rax = Mem0[0x00000000CCCCCD05:word64]
 	r15 = r13 - 0x00000000000002D0
 	rsi = r15
 	rdi = rax
@@ -12108,7 +12108,7 @@ l00000000004087B4:
 // SymbolicIn: rsp:<invalid> rbp:<invalid> r13:<invalid> rbx:<invalid> rdx:<invalid> rax:<invalid> rcx:<invalid> r9:<invalid> rsi:0x00000000CCCCCCCD r14:<invalid> rdi:<invalid> r8:<invalid> esi:<invalid> r12:<invalid> r15d:<invalid> r15:<invalid> eax:<invalid> r11:<invalid> r10:<invalid> al:<invalid> cl:<invalid> edx:<invalid> ah:<invalid> sil:<invalid> ecx:<invalid> r14d:<invalid> edi:<invalid> r8b:<invalid> r8d:<invalid> ebp:<invalid> bpl:<invalid> r12d:<invalid> dx:<invalid> dl:<invalid> r13b:<invalid> r11d:<invalid> -924(fp):ecx -920(fp):<invalid> -912(fp):<invalid> -908(fp):edx -64(fp):<invalid> -48(fp):rbx -40(fp):r12 -32(fp):r13 -24(fp):r14 -16(fp):r15 -8(fp):rbp
 
 l00000000004087BA:
-	rax = Mem0[0xFFFFFFFFCCCCCD05:word64]
+	rax = Mem0[0x00000000CCCCCD05:word64]
 	rsi = r15
 	rdi = rax
 	eax = (word32) al
@@ -15233,7 +15233,7 @@ l000000000040B770:
 	word64 r8_112
 	word64 r9_113
 	word64 rax_114 = fn000000000040ABC0(rsi, out rsi_111, out r8_112, out r9_113)
-	branch rax_114 >u 0xFFFFFFFFFFFFFFFF l000000000040B870
+	branch rax_114 >u 0x00000000FFFFFFFF || rax_114 <u 0x0000000000000001 l000000000040B870
 // DataOut: fs r10 r11 r12 r13 r14 r15 r8 r9 rbp rbx rsi xmm0 xmm1 xmm2 xmm3
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000068 rbx:rdi rbp:<invalid> xmm1:<invalid> xmm0:<invalid> rax:<invalid> rsi:<invalid> esi:<invalid> -24(fp):rbx -16(fp):rbp -8(fp):r12
