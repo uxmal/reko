@@ -464,6 +464,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
+                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             });
             follow.Procedure = proc;
             wi.Process();
@@ -491,6 +492,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             });
             wi.Process();
             var sExp =

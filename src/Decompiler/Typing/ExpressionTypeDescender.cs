@@ -288,7 +288,8 @@ namespace Reko.Typing
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
-                binExp.Operator == Operator.Xor)
+                binExp.Operator == Operator.Xor || binExp.Operator == Operator.Cand ||
+                binExp.Operator == Operator.Cor)
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.

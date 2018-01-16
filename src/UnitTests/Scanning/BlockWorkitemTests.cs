@@ -164,6 +164,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
                 scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             }
 
             var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
@@ -464,6 +465,7 @@ testProc_exit:
             scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
                 .IgnoreArguments()
                 .Return(l00100100);
+            scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
 
             trace.Add(m => m.GotoD(Address.Ptr32(0x0100100)));
@@ -643,6 +645,7 @@ testProc_exit:
             scanner.Stub(s => s.TerminateBlock(
                 Arg<Block>.Is.Equal(l00100000),
                 Arg<Address>.Is.Equal(Address.Ptr32(0x0010000C))));
+            scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
 
             trace.Add(m => m.Assign(r0, r1));   // 100000

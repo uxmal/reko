@@ -119,7 +119,9 @@ namespace Reko.Core.Expressions
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.UnsignedInt);
             }
-            else if (binExp.Operator is ConditionalOperator)
+            else if (binExp.Operator is ConditionalOperator ||
+                binExp.Operator is CorOperator ||
+                binExp.Operator is CandOperator)
             {
                 dt = PrimitiveType.Bool;
             }

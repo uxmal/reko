@@ -30,6 +30,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Reko.UnitTests.Mocks;
+using System.Linq;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -161,6 +162,14 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Conditional(PrimitiveType.Word32, Constant.False(), Constant.Word32(1), Constant.Word32(0));
             Assert.AreEqual("0x00000000", expr.Accept(simplifier).ToString());
+        }
+       
+        [Test]
+        public void Ecs_UnsignedRangeComparison()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Ugt(m.ISub(foo, 2), m.Word32(5));
+            Assert.AreEqual("foo_0 >u 0x00000007 || foo_0 <u 0x00000002", expr.Accept(simplifier).ToString());
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Reko.Core.Operators
             return c1.IsValid && c2.IsValid;
         }
 
-        protected Constant BuildConstant(DataType t1, DataType t2, int val)
+        protected Constant BuildConstant(DataType t1, DataType t2, long val)
 		{
 			PrimitiveType p1 = (PrimitiveType) t1;
 			PrimitiveType p2 = (PrimitiveType) t2;
