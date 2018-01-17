@@ -282,23 +282,23 @@ l0000000000000820:
 	mov	rdx,rax
 	mov	rax,[rbp-38]
 	add	rax,rdx
-	vmovaps	xmm0,[rax]
+	vmovapd	ymm0,[rax]
 	mov	rax,[rbp-18]
 	shl	rax,05
 	mov	rdx,rax
 	mov	rax,[rbp-30]
 	add	rax,rdx
-	vmovaps	xmm1,[rax]
+	vmovapd	ymm1,[rax]
 	mov	rax,[rbp-18]
 	shl	rax,05
 	mov	rdx,rax
 	mov	rax,[rbp-28]
 	add	rax,rdx
-	vmovaps	[rbp-70],xmm1
-	vmovaps	[rbp-00000090],xmm0
-	vmovaps	xmm0,[rbp-70]
-	vaddpd	xmm0,xmm0,[rbp-00000090]
-	vmovaps	[rax],xmm0
+	vmovapd	[rbp-70],ymm1
+	vmovapd	[rbp-00000090],ymm0
+	vmovapd	ymm0,[rbp-70]
+	vaddpd	ymm0,ymm0,[rbp-00000090]
+	vmovapd	[rax],ymm0
 	add	qword ptr [rbp-18],01
 
 l0000000000000881:

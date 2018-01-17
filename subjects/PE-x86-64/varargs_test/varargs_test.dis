@@ -3,7 +3,7 @@ word32 fn0000000140001000()
 
 // MayUse: 
 // LiveOut: eax
-// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdx xmm0
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdx xmm0 ymm0
 // Preserved: rsp
 fn0000000140001000_entry:
 // DataOut: sil
@@ -259,7 +259,7 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13, word128 xmm1)
 
 // MayUse:  r13 r8 rbx xmm1
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbp rbx rcx rdx rsp sp spl xmm0 xmm1
+// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbp rbx rcx rdx rsp sp spl xmm0 xmm1 ymm0 ymm1
 // Preserved:
 fn00000001400011D4_entry:
 // DataOut: r13 r8 rbx xmm1
@@ -496,7 +496,7 @@ word32 fn00000001400012BC(word32 edx, word64 r13, selector gs, word64 qwArg08, w
 
 // MayUse:  edx gs r13
 // LiveOut: eax
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi r10 r10b r10d r10w r11 r11b r11d r11w r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi si sil xmm0
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi r10 r10b r10d r10w r11 r11b r11d r11w r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi si sil xmm0 ymm0
 // Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
 // DataOut: edx gs r13
@@ -839,7 +839,7 @@ DWORD Win32CrtStartup()
 
 // MayUse:  edx gs r13
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi r10 r10b r10d r10w r11 r11b r11d r11w r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi si sil xmm0
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl dx eax ebx ecx edx esi r10 r10b r10d r10w r11 r11b r11d r11w r8 r8b r8d r8w r9 r9b r9d r9w rax rbx rcx rdx rsi si sil xmm0 ymm0
 // Preserved: rsp
 Win32CrtStartup_entry:
 // DataOut: edx gs r13
@@ -1183,7 +1183,7 @@ word32 fn000000014000164C(word32 ecx, word64 r8, word64 r13, word128 xmm1, word6
 
 // MayUse:  ecx r13 r8 xmm1
 // LiveOut: al eax rsp
-// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbp rbx rcx rdx rsp sp spl xmm0 xmm1
+// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp r8 r8b r8d r8w r9 r9b r9d r9w rax rbp rbx rcx rdx rsp sp spl xmm0 xmm1 ymm0 ymm1
 // Preserved:
 fn000000014000164C_entry:
 // DataOut: ecx r13 r8 xmm1

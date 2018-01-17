@@ -461,7 +461,7 @@ void main(word128 xmm0)
 
 // MayUse:  xmm0
 // LiveOut:
-// Trashed: SCZO ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w rax rcx rdi rdx rsi si sil xmm0
+// Trashed: SCZO ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w rax rcx rdi rdx rsi si sil xmm0 ymm0
 // Preserved: rbp rsp
 main_entry:
 // DataOut: xmm0

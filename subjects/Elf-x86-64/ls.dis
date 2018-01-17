@@ -14377,7 +14377,7 @@ byte fn000000000040ADB0(word64 rdi, word64 r8, word128 xmm0, word128 xmm1, word1
 
 // MayUse:  r8 rdi xmm0 xmm1 xmm2 xmm3
 // LiveOut: al xmm0 xmm1 xmm2 xmm3
-// Trashed: SCZOP ah al ax eax rax xmm0 xmm1 xmm2 xmm3
+// Trashed: SCZOP ah al ax eax rax xmm0 xmm1 xmm2 xmm3 ymm0 ymm1 ymm2 ymm3
 // Preserved: rsp
 fn000000000040ADB0_entry:
 	*xmm0Out = xmm0
@@ -14716,7 +14716,7 @@ word64 fn000000000040B400(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64
 
 // MayUse:  r11 r8 rcx rdi rdx rsi xmm0 xmm1 xmm2 xmm3
 // LiveOut: eax r9 rax xmm0 xmm1 xmm2 xmm3
-// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r15 r15b r15d r15w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3
+// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r15 r15b r15d r15w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3 ymm0 ymm1 ymm2 ymm3
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040B400_entry:
 	*xmm0Out = xmm0
@@ -15147,7 +15147,7 @@ word64 fn000000000040B710(word64 rsi, word64 rdi, word64 r11, word128 xmm0, word
 
 // MayUse:  esi r11 rdi rsi xmm0 xmm1
 // LiveOut: al r8 r9 rax rsi xmm0 xmm1
-// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1
+// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 ymm0 ymm1
 // Preserved: r12 rbp rbx rsp
 fn000000000040B710_entry:
 	*xmm0Out = xmm0
@@ -15336,7 +15336,7 @@ word32 fn000000000040B8F0(word64 rax, word64 rdx, word64 rsi, word64 rdi, word64
 
 // MayUse:  r11 r8 rax rdi rdx rsi xmm0 xmm1 xmm2 xmm3
 // LiveOut: eax r10 r8 r9 rsi xmm0 xmm1 xmm2 xmm3
-// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3
+// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3 ymm0 ymm1 ymm2 ymm3
 // Preserved: r12 rbp rbx rsp
 fn000000000040B8F0_entry:
 	*xmm2Out = xmm2
@@ -15669,7 +15669,7 @@ word64 fn000000000040BB50(word64 rax, word64 rsi, word64 rdi, word64 r8, word64 
 
 // MayUse:  r11 r8 rax rdi rsi xmm0 xmm1 xmm2 xmm3
 // LiveOut: eax r10 r8 r9 rax rsi xmm0 xmm1 xmm2 xmm3
-// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3
+// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3 ymm0 ymm1 ymm2 ymm3
 // Preserved: rbx rsp
 fn000000000040BB50_entry:
 // DataOut: ebx fs r11 r12 r13 r14 r15 r8 rax rbp rdi rsi xmm0 xmm1 xmm2 xmm3
@@ -15734,7 +15734,7 @@ word64 fn000000000040BB90(word64 rax, word64 rsi, word64 rdi, word64 r8, word64 
 
 // MayUse:  r11 r15 r8 rax rdi rsi xmm0 xmm1 xmm2 xmm3
 // LiveOut: r10 r8 r9 rax rsi xmm0 xmm1 xmm2 xmm3
-// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3
+// Trashed: SCZOP ah al ax ch cl cx dh di dil dl dx eax ecx edi edx esi r10 r10b r10d r10w r8 r8b r8d r8w r9 r9b r9d r9w rax rcx rdi rdx rsi si sil xmm0 xmm1 xmm2 xmm3 ymm0 ymm1 ymm2 ymm3
 // Preserved: r12 rbp rbx rsp
 fn000000000040BB90_entry:
 	*r8Out = r8
