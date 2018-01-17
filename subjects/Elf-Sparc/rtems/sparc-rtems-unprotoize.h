@@ -1650,20 +1650,20 @@ Eq_3774: (fn int32 (Eq_214))
 	T_8964 (in close : ptr32)
 Eq_3824: (struct "Eq_3824" (8 (ptr Eq_3825) ptr0008))
 	T_3824 (in o0 : (ptr Eq_3824))
-Eq_3825: (struct "Eq_3825" (4 (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))) ptr0004))
+Eq_3825: (struct "Eq_3825" (4 (ptr Eq_3829) ptr0004))
 	T_3825 (in o1_4 : (ptr Eq_3825))
 	T_3828 (in Mem0[o0 + 8:word32] : word32)
-Eq_3829: (ptr Eq_3829)
-	T_3829 (in g3_5 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+Eq_3829: (struct "Eq_3829" (0 (ptr Eq_3829) ptr0000))
+	T_3829 (in g3_5 : (ptr Eq_3829))
 	T_3832 (in Mem0[o1_4 + 4:word32] : word32)
 	T_3833 (in 0x00000000 : word32)
-	T_3835 (in g3_16 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+	T_3835 (in g3_16 : (ptr Eq_3829))
 	T_3838 (in Mem0[g3_5 + 0x00000000:word32] : word32)
 	T_3839 (in 0x00000000 : word32)
-	T_3841 (in o0_15 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+	T_3841 (in o0_15 : (ptr Eq_3829))
 	T_3842 (in 0x00000000 : word32)
 	T_3845 (in Mem20[g3_5 + 0x00000000:word32] : word32)
-	T_3846 (in g2_21 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+	T_3846 (in g2_21 : (ptr Eq_3829))
 	T_3849 (in Mem20[g3_16 + 0x00000000:word32] : word32)
 	T_3852 (in Mem25[g3_16 + 0x00000000:word32] : word32)
 	T_3853 (in 0x00000000 : word32)
@@ -17736,9 +17736,9 @@ T_3828: (in Mem0[o0 + 8:word32] : word32)
   Class: Eq_3825
   DataType: (ptr Eq_3825)
   OrigDataType: word32
-T_3829: (in g3_5 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_3829: (in g3_5 : (ptr Eq_3829))
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: (ptr (struct (0 T_3829 t0000)))
 T_3830: (in 4 : int32)
   Class: Eq_3830
@@ -17750,19 +17750,19 @@ T_3831: (in o1_4 + 4 : word32)
   OrigDataType: word32
 T_3832: (in Mem0[o1_4 + 4:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3833: (in 0x00000000 : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3834: (in g3_5 == null : bool)
   Class: Eq_3834
   DataType: bool
   OrigDataType: bool
-T_3835: (in g3_16 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_3835: (in g3_16 : (ptr Eq_3829))
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: (ptr (struct (0 T_3829 t0000)))
 T_3836: (in 0x00000000 : word32)
   Class: Eq_3836
@@ -17774,23 +17774,23 @@ T_3837: (in g3_5 + 0x00000000 : word32)
   OrigDataType: word32
 T_3838: (in Mem0[g3_5 + 0x00000000:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3839: (in 0x00000000 : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3840: (in g3_16 == null : bool)
   Class: Eq_3840
   DataType: bool
   OrigDataType: bool
-T_3841: (in o0_15 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_3841: (in o0_15 : (ptr Eq_3829))
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: (ptr (struct (0 T_3829 t0000)))
 T_3842: (in 0x00000000 : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3843: (in 0x00000000 : word32)
   Class: Eq_3843
@@ -17802,11 +17802,11 @@ T_3844: (in g3_5 + 0x00000000 : word32)
   OrigDataType: (ptr word32)
 T_3845: (in Mem20[g3_5 + 0x00000000:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
-T_3846: (in g2_21 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_3846: (in g2_21 : (ptr Eq_3829))
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: (ptr (struct (0 T_3860 t0000)))
 T_3847: (in 0x00000000 : word32)
   Class: Eq_3847
@@ -17818,7 +17818,7 @@ T_3848: (in g3_16 + 0x00000000 : word32)
   OrigDataType: word32
 T_3849: (in Mem20[g3_16 + 0x00000000:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3850: (in 0x00000000 : word32)
   Class: Eq_3850
@@ -17830,11 +17830,11 @@ T_3851: (in g3_16 + 0x00000000 : word32)
   OrigDataType: (ptr word32)
 T_3852: (in Mem25[g3_16 + 0x00000000:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3853: (in 0x00000000 : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3854: (in g2_21 != null : bool)
   Class: Eq_3854
@@ -17850,7 +17850,7 @@ T_3856: (in o1_4 + 4 : word32)
   OrigDataType: (ptr word32)
 T_3857: (in Mem30[o1_4 + 4:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3858: (in 0x00000000 : word32)
   Class: Eq_3858
@@ -17862,7 +17862,7 @@ T_3859: (in g2_21 + 0x00000000 : word32)
   OrigDataType: word32
 T_3860: (in Mem25[g2_21 + 0x00000000:word32] : word32)
   Class: Eq_3829
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_3829)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_3829)
   OrigDataType: word32
 T_3861: (in o0 : Eq_214)
   Class: Eq_214
@@ -41777,10 +41777,12 @@ typedef struct Eq_3824 {
 } Eq_3824;
 
 typedef struct Eq_3825 {
-	***************************************************************************************************** ptr0004;	// 4
+	struct Eq_3829 * ptr0004;	// 4
 } Eq_3825;
 
-typedef  * Eq_3829;
+typedef struct Eq_3829 {
+	struct Eq_3829 * ptr0000;	// 0
+} Eq_3829;
 
 typedef union Eq_3863 {
 	char * u0;

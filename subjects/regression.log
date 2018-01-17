@@ -423,7 +423,6 @@ fn092A: error: An error occurred during data flow analysis.
 0000A524: error: Rewriting ARM opcode 'ldrsbthi' is not supported yet.
 0000A534: error: Rewriting ARM opcode 'strbteq' is not supported yet.
 0000A544: error: Rewriting ARM opcode 'stcge' is not supported yet.
-: warning: Type transformer has looped 51 times, quitting prematurely.
 vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 xTaskNotifyWait: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 uxTaskResetEventItemValue: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -624,7 +623,6 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-: warning: Type transformer has looped 51 times, quitting prematurely.
 safe_read: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection.
 Parameter name: index
@@ -974,7 +972,6 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-: warning: Type transformer has looped 51 times, quitting prematurely.
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 000028C5: warning: Expected sizes of arrays to have been determined by now
@@ -1493,7 +1490,6 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
-: warning: Type transformer has looped 51 times, quitting prematurely.
 00000DAC: warning: Expected sizes of arrays to have been determined by now
 00000DB8: warning: Expected sizes of arrays to have been determined by now
 00000DC4: warning: Expected sizes of arrays to have been determined by now
@@ -1609,292 +1605,10 @@ fn0AF6: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-: error: Error when reconstructing types.
-    PprPrimitiveReplacer found a cycle in type graph.
-       at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 140
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitPointer(Pointer ptr) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 101
-   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
-   at Reko.Core.Types.DataTypeTransformer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 34
-   at Reko.Typing.PtrPrimitiveReplacer.VisitArray(ArrayType at) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 142
-   at Reko.Core.Types.ArrayType.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 45
-   at Reko.Core.Types.DataTypeTransformer.VisitPointer(Pointer ptr) in C:\dev\uxmal\reko\master\src\Core\Types\DataTypeTransformer.cs:line 101
-   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
-   at Reko.Typing.PtrPrimitiveReplacer.Replace(DataType dt) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 62
-   at Reko.Typing.PtrPrimitiveReplacer.ReplaceAll(DecompilerEventListener eventListener) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\PtrPrimitiveReplacer.cs:line 92
-   at Reko.Typing.TypeTransformer.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 265
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 99
-   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
+00001758: warning: Expected sizes of arrays to have been determined by now
+00002C58: warning: Expected sizes of arrays to have been determined by now
+00001758: warning: Expected sizes of arrays to have been determined by now
+00002C58: warning: Expected sizes of arrays to have been determined by now
 
 === PE\MIPS\swlswr\test.exe
 === PE\PPC\hello_ppc.exe
@@ -1936,7 +1650,6 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-: warning: Type transformer has looped 51 times, quitting prematurely.
 
 === PE\x86\demo_upx\Demo.exe
 === PE\x86\import-ordinals\import-ordinals.dcproject

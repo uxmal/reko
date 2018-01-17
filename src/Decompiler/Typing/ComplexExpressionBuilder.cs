@@ -440,11 +440,11 @@ namespace Reko.Typing
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
         {
-            if (exp == null || elementSize == 1)
+            if (exp == null || elementSize <= 1)
                 return exp;
             BinaryExpression bin;
             Constant cRight = null;
-            if (!exp.As(out bin) ||
+           if (!exp.As(out bin) ||
                 (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul) ||
                 !bin.Right.As(out cRight) ||
                 cRight.ToInt32() % elementSize != 0)

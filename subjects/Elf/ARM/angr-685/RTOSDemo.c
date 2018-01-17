@@ -497,10 +497,10 @@ void vPortStoreTaskMPUSettings(Eq_579 r0, Eq_579 * r9, word32 fp)
 	*r9 = (union Eq_579 *) r0;
 }
 
-// 00001689: void xPortPendSVHandler(Register (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_603))))))))))))))))))))))))))))))))))))))))))))))))))) r0, Register (ptr word64) r1, Register word32 r2, Register word32 r3, Register Eq_607 r5, Register word32 r6, Register word32 r8, Register (ptr Eq_13) r9, Register word32 r10, Register word32 fp, Register ui32 pc)
-void xPortPendSVHandler( * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * r0, word64 * r1, word32 r2, word32 r3, Eq_607 r5, word32 r6, word32 r8, Eq_13 * r9, word32 r10, word32 fp, ui32 pc)
+// 00001689: void xPortPendSVHandler(Register (ptr Eq_603) r0, Register (ptr word64) r1, Register word32 r2, Register word32 r3, Register Eq_607 r5, Register word32 r6, Register word32 r8, Register (ptr Eq_13) r9, Register word32 r10, Register word32 fp, Register ui32 pc)
+void xPortPendSVHandler(Eq_603 * r0, word64 * r1, word32 r2, word32 r3, Eq_607 r5, word32 r6, word32 r8, Eq_13 * r9, word32 r10, word32 fp, ui32 pc)
 {
-	Mem3[r0 + 0x00:word32] = r0;
+	r0->ptr0000 = r0;
 	__syscall(6822475);
 	*r1 = r2_r1;
 	if (!Z)

@@ -945,8 +945,8 @@ Eq_2351: (fn void (Eq_137, Eq_99, Eq_2, (ptr Eq_3)))
 Eq_2413: (fn void ())
 	T_2413 (in __halt : ptr16)
 	T_2414 (in signature of __halt : void)
-Eq_2417: (ptr Eq_2417)
-	T_2417 (in r5_7 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_2417))))))))))))))))))))))))))))))))))))))))))))))))))))
+Eq_2417: (struct "Eq_2417" (0 (ptr Eq_2417) ptr0000))
+	T_2417 (in r5_7 : (ptr Eq_2417))
 	T_2426 (in Mem10[r5_7 + 0x0000:word16] : word16)
 Eq_2480: (fn word16 (word16))
 	T_2480 (in __swab : ptr16)
@@ -10671,9 +10671,9 @@ T_2416: (in r4_6 : word16)
   Class: Eq_2416
   DataType: word16
   OrigDataType: word16
-T_2417: (in r5_7 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_2417))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_2417: (in r5_7 : (ptr Eq_2417))
   Class: Eq_2417
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_2417)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_2417)
   OrigDataType: (ptr (struct (0 T_2426 t0000)))
 T_2418: (in r0_8 : Eq_137)
   Class: Eq_137
@@ -10709,7 +10709,7 @@ T_2425: (in r5_7 + 0x0000 : word16)
   OrigDataType: word16
 T_2426: (in Mem10[r5_7 + 0x0000:word16] : word16)
   Class: Eq_2417
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_2417)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_2417)
   OrigDataType: word16
 T_2427: (in r5_11 : word16)
   Class: Eq_2427
@@ -14150,7 +14150,9 @@ typedef void (Eq_2351)(Eq_137, Eq_99, Eq_2, Eq_3 *);
 
 typedef void (Eq_2413)();
 
-typedef  * Eq_2417;
+typedef struct Eq_2417 {
+	struct Eq_2417 * ptr0000;	// 0
+} Eq_2417;
 
 typedef word16 (Eq_2480)(word16);
 

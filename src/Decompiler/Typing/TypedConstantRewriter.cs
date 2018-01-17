@@ -387,7 +387,8 @@ namespace Reko.Typing
 
 		public Expression VisitStructure(StructureType str)
 		{
-			throw new NotImplementedException();
+            c.TypeVariable.DataType = str;
+            return c;
 		}
 
 		public Expression VisitUnion(UnionType ut)
