@@ -63,7 +63,7 @@ Eq_151: (fn void ((ptr (arr real64))))
 	T_152 (in signature of free : void)
 Eq_181: (union "Eq_181" (word128 u0) ((arr word64 2) u1))
 	T_181 (in xmm0 : Eq_181)
-	T_223 (in DPB(xmm0, v27_173 + v27_173, 0) : word128)
+	T_223 (in DPB(xmm0, v26_173 + v26_173, 0) : word128)
 	T_225 (in DPB(xmm0, (real64) qwLoc10_163, 0) : word128)
 	T_255 (in DPB(xmm0, v19_143 + v19_143, 0) : word128)
 	T_257 (in DPB(xmm0, (real64) rax_117, 0) : word128)
@@ -973,7 +973,7 @@ T_213: (in qwLoc18_133 < 0x00000000000003FF : bool)
   Class: Eq_213
   DataType: bool
   OrigDataType: bool
-T_214: (in v27_173 : real64)
+T_214: (in v26_173 : real64)
   Class: Eq_214
   DataType: real64
   OrigDataType: real64
@@ -1005,11 +1005,11 @@ T_221: (in (real64) (qwLoc10_163 >> 0x0000000000000001 | (uint64) (eax_152 & 0x0
   Class: Eq_214
   DataType: real64
   OrigDataType: real64
-T_222: (in v27_173 + v27_173 : real64)
+T_222: (in v26_173 + v26_173 : real64)
   Class: Eq_222
   DataType: real64
   OrigDataType: real64
-T_223: (in DPB(xmm0, v27_173 + v27_173, 0) : word128)
+T_223: (in DPB(xmm0, v26_173 + v26_173, 0) : word128)
   Class: Eq_181
   DataType: Eq_181
   OrigDataType: word128

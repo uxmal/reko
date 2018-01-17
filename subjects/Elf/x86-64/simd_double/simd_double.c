@@ -156,8 +156,8 @@ void main(Eq_181 xmm0)
 			xmm0 = DPB(xmm0, (real64) qwLoc10_163, 0);
 		else
 		{
-			real64 v27_173 = (real64) (qwLoc10_163 >> 0x01 | (uint64) (eax_152 & 0x01));
-			xmm0 = DPB(xmm0, v27_173 + v27_173, 0);
+			real64 v26_173 = (real64) (qwLoc10_163 >> 0x01 | (uint64) (eax_152 & 0x01));
+			xmm0 = DPB(xmm0, v26_173 + v26_173, 0);
 		}
 		*rcx_150 = (real64) xmm0;
 		qwLoc10_163 = (word64) qwLoc10_163 + 0x01;

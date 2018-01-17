@@ -496,8 +496,8 @@ l00000000000008FD:
 // LocalsOut: fp(64) Local -0010(64) Local -0038(64) Local -0040(64) Local -0048(64)
 
 l0000000000000921:
-	real64 v27_173 = (real64) (qwLoc10_163 >>u 0x0000000000000001 | (uint64) (eax_152 & 0x00000001))
-	xmm0 = DPB(xmm0, v27_173 + v27_173, 0)
+	real64 v26_173 = (real64) (qwLoc10_163 >>u 0x0000000000000001 | (uint64) (eax_152 & 0x00000001))
+	xmm0 = DPB(xmm0, v26_173 + v26_173, 0)
 // DataOut: rcx xmm0
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000058 rbp:fp - 0x0000000000000008 rax:<invalid> rsi:<invalid> rdi:<invalid> rdx:<invalid> rcx:<invalid> xmm0:<invalid> -72(fp):<invalid> -64(fp):<invalid> -56(fp):<invalid> -48(fp):0x0000000000000400 -16(fp):<invalid> -8(fp):rbp
