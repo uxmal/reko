@@ -1910,12 +1910,21 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86rw_vmovaps()
+        public void X86rw_vmovaps_xmm()
         {
-            Run64bitTest(0xC5, 0xFD, 0x28, 0x00); // vmovaps xmm0,[rax]
+            Run64bitTest(0xC5, 0xF9, 0x28, 0x00); // vmovaps xmm0,[rax]
             AssertCode(
                 "0|L--|0000000140000000(4): 1 instructions",
                 "1|L--|xmm0 = Mem0[rax:word128]");
+        }
+
+        [Test]
+        public void X86rw_vmovaps_ymm()
+        {
+            Run64bitTest(0xC5, 0xFD, 0x28, 0x00); // vmovaps ymm0,[rax]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ymm0 = Mem0[rax:word256]");
         }
 
         [Test]
@@ -1937,6 +1946,17 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|v3 = xmm0",
                 "2|L--|v4 = xmm0",
                 "3|L--|xmm0 = __xorpd(v3, v4)");
+        }
+
+        [Test]
+        public void X86rw_vxorpd_mem_256()
+        {
+            Run64bitTest(0xC5, 0xFD, 0x57, 0x09);   // vxorpd\tymm1,ymm0,[rcx]
+            AssertCode(
+             "0|L--|0000000140000000(4): 3 instructions",
+             "1|L--|v4 = ymm1",
+             "2|L--|v5 = ymm0",
+             "3|L--|ymm1 = __xorpd(v4, v5)");
         }
     }
 }

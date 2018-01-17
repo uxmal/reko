@@ -268,7 +268,9 @@ namespace Reko.Arch.X86
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mfence: RewriteMfence(); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movapd:
                 case Opcode.movaps:
+                case Opcode.vmovapd:
                 case Opcode.vmovaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;

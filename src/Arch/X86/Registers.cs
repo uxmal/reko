@@ -142,6 +142,23 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage xmm14;
         public static readonly RegisterStorage xmm15;
 
+        public static readonly RegisterStorage ymm0;
+        public static readonly RegisterStorage ymm1;
+        public static readonly RegisterStorage ymm2;
+        public static readonly RegisterStorage ymm3;
+        public static readonly RegisterStorage ymm4;
+        public static readonly RegisterStorage ymm5;
+        public static readonly RegisterStorage ymm6;
+        public static readonly RegisterStorage ymm7;
+        public static readonly RegisterStorage ymm8;
+        public static readonly RegisterStorage ymm9;
+        public static readonly RegisterStorage ymm10;
+        public static readonly RegisterStorage ymm11;
+        public static readonly RegisterStorage ymm12;
+        public static readonly RegisterStorage ymm13;
+        public static readonly RegisterStorage ymm14;
+        public static readonly RegisterStorage ymm15;
+
         public static readonly RegisterStorage mm0;
         public static readonly RegisterStorage mm1;
         public static readonly RegisterStorage mm2;
@@ -290,6 +307,24 @@ namespace Reko.Arch.X86
             xmm14 = new RegisterStorage("xmm14", 74, 0, PrimitiveType.Word128);
             xmm15 = new RegisterStorage("xmm15", 75, 0, PrimitiveType.Word128);
 
+            ymm0 = new RegisterStorage("ymm0", 60, 0, PrimitiveType.Word256);
+            ymm1 = new RegisterStorage("ymm1", 61, 0, PrimitiveType.Word256);
+            ymm2 = new RegisterStorage("ymm2", 62, 0, PrimitiveType.Word256);
+            ymm3 = new RegisterStorage("ymm3", 63, 0, PrimitiveType.Word256);
+            ymm4 = new RegisterStorage("ymm4", 64, 0, PrimitiveType.Word256);
+            ymm5 = new RegisterStorage("ymm5", 65, 0, PrimitiveType.Word256);
+            ymm6 = new RegisterStorage("ymm6", 66, 0, PrimitiveType.Word256);
+            ymm7 = new RegisterStorage("ymm7", 67, 0, PrimitiveType.Word256);
+            ymm8 = new RegisterStorage("ymm8", 68, 0, PrimitiveType.Word256);
+            ymm9 = new RegisterStorage("ymm9", 69, 0, PrimitiveType.Word256);
+            ymm10 = new RegisterStorage("ymm10", 70, 0, PrimitiveType.Word256);
+            ymm11 = new RegisterStorage("ymm11", 71, 0, PrimitiveType.Word256);
+            ymm12 = new RegisterStorage("ymm12", 72, 0, PrimitiveType.Word256);
+            ymm13 = new RegisterStorage("ymm13", 73, 0, PrimitiveType.Word256);
+            ymm14 = new RegisterStorage("ymm14", 74, 0, PrimitiveType.Word256);
+            ymm15 = new RegisterStorage("ymm15", 75, 0, PrimitiveType.Word256);
+
+
             rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Pointer64);
 
             All = new RegisterStorage[] {
@@ -423,7 +458,24 @@ namespace Reko.Arch.X86
                  xmm13,
                  xmm14,
                  xmm15,
-			};
+
+                 ymm0 ,
+                 ymm1 ,
+                 ymm2 ,
+                 ymm3 ,
+                 ymm4 ,
+                 ymm5 ,
+                 ymm6 ,
+                 ymm7 ,
+                 ymm8 ,
+                 ymm9 ,
+                 ymm10,
+                 ymm11,
+                 ymm12,
+                 ymm13,
+                 ymm14,
+                 ymm15,
+            };
 
             SubRegisters = new Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>>
             {
@@ -823,6 +875,23 @@ namespace Reko.Arch.X86
                         { 0x0008, r15b },
                     }
                 },
+                { ymm0, new Dictionary<uint, RegisterStorage> { { 0x128, xmm0 } } },
+                { ymm1, new Dictionary<uint, RegisterStorage> { { 0x128, xmm1 } } },
+                { ymm2, new Dictionary<uint, RegisterStorage> { { 0x128, xmm2 } } },
+                { ymm3, new Dictionary<uint, RegisterStorage> { { 0x128, xmm3 } } },
+                { ymm4, new Dictionary<uint, RegisterStorage> { { 0x128, xmm4 } } },
+                { ymm5, new Dictionary<uint, RegisterStorage> { { 0x128, xmm5 } } },
+                { ymm6, new Dictionary<uint, RegisterStorage> { { 0x128, xmm6 } } },
+                { ymm7, new Dictionary<uint, RegisterStorage> { { 0x128, xmm7 } } },
+
+                { ymm8, new Dictionary<uint, RegisterStorage> { { 0x128, xmm8 } } },
+                { ymm9, new Dictionary<uint, RegisterStorage> { { 0x128, xmm9 } } },
+                { ymm10, new Dictionary<uint, RegisterStorage> { { 0x128, xmm10 } } },
+                { ymm11, new Dictionary<uint, RegisterStorage> { { 0x128, xmm11 } } },
+                { ymm12, new Dictionary<uint, RegisterStorage> { { 0x128, xmm12 } } },
+                { ymm13, new Dictionary<uint, RegisterStorage> { { 0x128, xmm13 } } },
+                { ymm14, new Dictionary<uint, RegisterStorage> { { 0x128, xmm14 } } },
+                { ymm15, new Dictionary<uint, RegisterStorage> { { 0x128, xmm15 } } },
             };
 
             Gp64BitRegisters = new[]

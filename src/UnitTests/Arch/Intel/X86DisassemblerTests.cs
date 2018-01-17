@@ -680,7 +680,17 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("movlhps\txmm3,xmm3", 0x0f, 0x16, 0xdb);
             AssertCode32("pshuflw\txmm3,xmm3,00", 0xf2, 0x0f, 0x70, 0xdb, 0x00);
+        }
+
+        [Test]
+        public void X86dis_pcmpeqb()
+        {
             AssertCode32("pcmpeqb\txmm0,[eax]", 0x66, 0x0f, 0x74, 0x00);
+        }
+
+        [Test]
+        public void Dis_x86_more3()
+        {
             AssertCode32("stmxcsr\tdword ptr [ebp-0C]", 0x0f, 0xae, 0x5d, 0xf4);
             AssertCode32("palignr\txmm3,xmm1,00", 0x66, 0x0f, 0x3a, 0x0f, 0xd9, 0x00);
             AssertCode32("movq\t[edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
@@ -980,10 +990,15 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
+        public void X86dis_vmovapd()
+        {
+            AssertCode64("vmovapd\tymm1,[rax]", 0xC5, 0xFD, 0x28, 0x08);
+        }
+
+        [Test]
         public void X86dis_vmovaps()
         {
-            AssertCode64("vmovaps\txmm1,[rax]", 0xC5, 0xFD, 0x28, 0x08);
-            AssertCode64("vmovaps\t[rcx+4D],xmm4", 0xC5, 0xFD, 0x29, 0x61, 0x4D);
+            AssertCode64("vmovaps\t[rcx+4D],xmm4", 0xC5, 0xF8, 0x29, 0x61, 0x4D);
         }
 
         [Test]
@@ -1001,13 +1016,25 @@ movzx	ax,byte ptr [bp+04]
         [Test]
         public void X86dis_vaddpd()
         {
-            AssertCode64("vaddpd\txmm0,xmm0,[rbp-00000090]", 0xC5, 0xFD, 0x58, 0x85, 0x70, 0xFF, 0xFF, 0xFF);
+            AssertCode64("vaddpd\tymm0,ymm0,[rbp-00000090]", 0xC5, 0xFD, 0x58, 0x85, 0x70, 0xFF, 0xFF, 0xFF);
         }
 
         [Test]
         public void X86dis_64_lea()
         {
             AssertCode64("lea\trdi,[rip+000000DA]", 0x48, 0x8D, 0x3D, 0xDA, 0x00, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_vxorpd_256()
+        {
+            AssertCode64("vxorpd\tymm0,ymm0,ymm0", 0xC5, 0xFD, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vxorpd_mem_256()
+        {
+            AssertCode64("vxorpd\tymm1,ymm0,[rcx]", 0xC5, 0xFD, 0x57, 0x09);
         }
     }
 }

@@ -156,6 +156,7 @@ namespace Reko.Arch.X86
                 this.SizeOverridePrefix = false;
                 this.IsVex = false;
                 this.VexRegister = 0;
+                this.VexLong = false;
             }
 
             internal bool IsSegmentOverrideActive()
@@ -232,6 +233,8 @@ namespace Reko.Arch.X86
             internal bool SizeOverridePrefix { get; set; }
 
             public byte VexRegister { get; set; }
+
+            public bool VexLong { get; set; } // If true, use YMM or 256-bit memory access.
         }
 
         private ProcessorMode mode;
@@ -459,6 +462,28 @@ namespace Reko.Arch.X86
 
         private RegisterStorage XmmRegFromBits(int bits, PrimitiveType dataWidth)
         {
+            if (dataWidth.BitSize == 256)
+            {
+                switch (bits)
+                {
+                case 0: return Registers.ymm0;
+                case 1: return Registers.ymm1;
+                case 2: return Registers.ymm2;
+                case 3: return Registers.ymm3;
+                case 4: return Registers.ymm4;
+                case 5: return Registers.ymm5;
+                case 6: return Registers.ymm6;
+                case 7: return Registers.ymm7;
+                case 8: return Registers.ymm8;
+                case 9: return Registers.ymm9;
+                case 10: return Registers.ymm10;
+                case 11: return Registers.ymm11;
+                case 12: return Registers.ymm12;
+                case 13: return Registers.ymm13;
+                case 14: return Registers.ymm14;
+                case 15: return Registers.ymm15;
+                }
+            }
             switch (bits)
             {
             case 0: return Registers.xmm0;
@@ -478,7 +503,7 @@ namespace Reko.Arch.X86
             case 14: return Registers.xmm14;
             case 15: return Registers.xmm15;
             }
-            throw new NotImplementedException();
+            throw new InvalidOperationException();
         }
 
 		public static RegisterStorage SegFromBits(int bits)
@@ -719,6 +744,7 @@ namespace Reko.Arch.X86
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte)vvvv;
                 ctx.RegisterExtensionPrefixByte = (byte)r;
+                ctx.VexLong = (op & 4) != 0;
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
@@ -752,11 +778,11 @@ namespace Reko.Arch.X86
                 var w = op >> 7;
                 var vvvv = (~op >> 3) & 0xF;
                 var pp = op & 0x3;
-                //$TODO: L.
 
                 var ctx = disasm.currentDecodingContext;
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte)vvvv;
+                ctx.VexLong = (op & 4) != 0;
                 ctx.RegisterExtension.FlagWideValue = w != 0;
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
@@ -973,8 +999,6 @@ namespace Reko.Arch.X86
         {
             if (strFormat == null)
                 return null;
-            if (opcode == Opcode.call) //$DEBUG
-                opcode.ToString();
             MachineOperand pOperand;
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
@@ -1203,9 +1227,9 @@ namespace Reko.Arch.X86
             case 'p':
                 switch (fmt[i++])
                 {
-                case 'd': return PrimitiveType.Word128; //$TODO: this should be array[2] of double32
-                case 'i': return PrimitiveType.Word128; //$TODO: this should be array[4] of int32
-                case 's': return PrimitiveType.Word128; //$TODO: this should be array[4] of real32
+                case 'd': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[2] of double32
+                case 'i': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of int32
+                case 's': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of real32
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
@@ -1219,9 +1243,9 @@ namespace Reko.Arch.X86
                 default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
                 }
             case 'x':
-                return defaultDataWidth != dataWidth
-                    ? PrimitiveType.Word128
-                    : PrimitiveType.Word256;
+                return this.currentDecodingContext.VexLong
+                    ? PrimitiveType.Word256
+                    : PrimitiveType.Word128;
             case 'y':
                 return this.currentDecodingContext.SizeOverridePrefix
                     ? PrimitiveType.Word128

@@ -36,6 +36,7 @@ namespace Reko.Arch.X86
                 { Opcode.addpd, Opcode.vaddpd },
                 { Opcode.cvtsi2sd, Opcode.vcvtsi2sd },
                 { Opcode.cvtsi2ss, Opcode.vcvtsi2ss },
+                { Opcode.movapd, Opcode.vmovapd },
                 { Opcode.movaps, Opcode.vmovaps },
                 { Opcode.movsd, Opcode.vmovsd },
                 { Opcode.movss, Opcode.vmovss },
