@@ -396,6 +396,7 @@
     <Compile Include="Typing\TypedExpressionRewriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Typing\TypeStoreCycleFinder.cs" />
     <Compile Include="Typing\TypeTransformer.cs">
       <SubType>Code</SubType>
     </Compile>

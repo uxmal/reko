@@ -1,0 +1,38 @@
+// SelfRef
+// Return size: 0
+void SelfRef()
+SelfRef_entry:
+	// succ:  l1
+l1:
+	Mem0[a4 + 0x00000000:word32] = a4
+	return
+	// succ:  SelfRef_exit
+SelfRef_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_2: (struct (0 (ptr Eq_2) ptr0000))
+	T_2 (in a4 : word32)
+	T_5 (in Mem0[a4 + 0x00000000:word32] : word32)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in a4 : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (0 T_5 t0000)))
+T_3: (in 0x00000000 : word32)
+  Class: Eq_3
+  DataType: word32
+  OrigDataType: word32
+T_4: (in a4 + 0x00000000 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in Mem0[a4 + 0x00000000:word32] : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: word32

@@ -510,5 +510,34 @@ namespace Reko.UnitTests.Typing
             });
             RunTest(pb.BuildProgram());
         }
+
+        [Test]
+        public void TtranSelfArray()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("SelfArray", m =>
+            {
+                var d0 = m.Reg32("d0", 0);
+                var a4 = m.Reg32("a4", 12);
+
+                m.Store(m.IAdd(a4, m.Shl(d0, 2)), a4);
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
+
+        [Test]
+        public void TtranSelfRef()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("SelfRef", m =>
+            {
+                var a4 = m.Reg32("a4", 12);
+
+                m.Store(a4, a4);
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
     }
 }
