@@ -178,16 +178,26 @@ namespace Reko.Arch.X86
 
         private void RewritePackedBinop(string fnName, PrimitiveType elementType)
         {
-            var xmm1 = SrcOp(instrCur.op1);
-            var xmm2 = SrcOp(instrCur.op2);
-            int celem = xmm1.DataType.Size / elementType.Size;
+            var dst = SrcOp(instrCur.op1);
+            int celem = dst.DataType.Size / elementType.Size;
             var arrayType = new ArrayType(elementType, celem);
+            Expression src1;
+            Expression src2;
+            if (instrCur.op3 != null)
+            {
+                src1 = SrcOp(instrCur.op2);
+                src2 = SrcOp(instrCur.op3);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.op1);
+                src2 = SrcOp(instrCur.op2);
+            }
             var tmp1 = frame.CreateTemporary(arrayType);
             var tmp2 = frame.CreateTemporary(arrayType);
-            var result = frame.CreateTemporary(arrayType);
-            m.Assign(tmp1, xmm1);
-            m.Assign(tmp2, xmm2);
-            m.Assign(xmm1, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
+            m.Assign(tmp1, src1);
+            m.Assign(tmp2, src2);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
         }
     }
 }

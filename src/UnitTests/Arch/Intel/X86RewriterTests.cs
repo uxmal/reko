@@ -1954,9 +1954,9 @@ namespace Reko.UnitTests.Arch.Intel
             Run64bitTest(0xC5, 0xFD, 0x57, 0x09);   // vxorpd\tymm1,ymm0,[rcx]
             AssertCode(
              "0|L--|0000000140000000(4): 3 instructions",
-             "1|L--|v4 = ymm1",
-             "2|L--|v5 = ymm0",
-             "3|L--|ymm1 = __xorpd(v4, v5)");
+             "1|L--|v5 = ymm0",
+             "2|L--|v6 = Mem0[rcx:word256]",
+             "3|L--|ymm1 = __xorpd(v5, v6)");
         }
     }
 }
