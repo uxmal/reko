@@ -129,11 +129,7 @@ namespace Reko.Environments.MacOS
             if (this.ptrA5World != null)
                 return this.ptrA5World;
 
-            var a5world_t = new StructureType
-            {
-                Name = "A5World_t",
-                ForceStructure = true,
-            };
+            var a5world_t = new StructureType("A5World_t", 0, true);
             var ptr = new Pointer(a5world_t, PointerType.Size);
             this.ptrA5World = new Identifier("a5world", ptr, new MemoryStorage());
             return this.ptrA5World;
