@@ -85,7 +85,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt256(p, (long)value);
-                default: return new ConstantUInt128(p, (ulong)value);
+                default: return new ConstantUInt256(p, (ulong)value);
                 }
             }
             throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
@@ -1062,7 +1062,7 @@ namespace Reko.Core.Expressions
 
         public override Expression CloneExpression()
         {
-            return new ConstantUInt64(DataType, value);
+            return new ConstantUInt128(DataType, value);
         }
 
         public override object GetValue()
@@ -1174,7 +1174,7 @@ namespace Reko.Core.Expressions
 
         public override Expression CloneExpression()
         {
-            return new ConstantUInt64(DataType, value);
+            return new ConstantUInt256(DataType, value);
         }
 
         public override object GetValue()
