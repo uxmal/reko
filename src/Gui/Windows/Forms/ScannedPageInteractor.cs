@@ -28,18 +28,18 @@ using System.Linq;
 
 namespace Reko.Gui.Windows.Forms
 {
-    public interface ILoadedPageInteractor : IPhasePageInteractor
+    public interface IScannedPageInteractor : IPhasePageInteractor
     {
     }
 
-    public class LoadedPageInteractor : PhasePageInteractorImpl, ILoadedPageInteractor
+    public class ScannedPageInteractor : PhasePageInteractorImpl, IScannedPageInteractor
     {
         private Dictionary<int, MenuCommand> mpCmdidToCommand;
         private IDecompilerService decompilerSvc;
         private IStatusBarService sbSvc;
         private ILowLevelViewService memSvc;
 
-        public LoadedPageInteractor(IServiceProvider services) : base(services)
+        public ScannedPageInteractor(IServiceProvider services) : base(services)
         {
             decompilerSvc = services.RequireService<IDecompilerService>();
             sbSvc = services.RequireService<IStatusBarService>();

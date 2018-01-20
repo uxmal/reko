@@ -38,11 +38,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
     [Category(Categories.UserInterface)]
-    public class LoadedPageInteractorTests
+    public class ScannedPageInteractorTests
     {
         private IMainForm form;
         private Program program;
-        private LoadedPageInteractor interactor;
+        private ScannedPageInteractor interactor;
         private IDecompilerService decSvc;
         private ServiceContainer sc;
         private MockRepository mr;
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             decSvc.Decompiler = new DecompilerDriver(ldr, sc);
             decSvc.Decompiler.Load("test.exe");
 
-            interactor = new LoadedPageInteractor(sc);
+            interactor = new ScannedPageInteractor(sc);
         }
 
         [TearDown]

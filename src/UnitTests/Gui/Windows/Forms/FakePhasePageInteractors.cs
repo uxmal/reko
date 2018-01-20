@@ -128,9 +128,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         }
     }
 
-    public class FakeLoadedPageInteractor : FakePhasePageInteractor, ILoadedPageInteractor
+    public class FakeScannedPageInteractor : FakePhasePageInteractor, IScannedPageInteractor
     {
-        public FakeLoadedPageInteractor() 
+        public FakeScannedPageInteractor()
         {
         }
     }

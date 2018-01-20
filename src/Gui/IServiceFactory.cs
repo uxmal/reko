@@ -45,7 +45,7 @@ namespace Reko.Gui
         IDisassemblyViewService CreateDisassemblyViewService();
         IFileSystemService CreateFileSystemService();
         InitialPageInteractor CreateInitialPageInteractor();
-        ILoadedPageInteractor CreateLoadedPageInteractor();
+        IScannedPageInteractor CreateScannedPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
         ISearchResultService CreateSearchResultService(ListView listView);
@@ -119,9 +119,9 @@ namespace Reko.Gui
             return new InitialPageInteractorImpl(this.services);
         }
 
-        public ILoadedPageInteractor CreateLoadedPageInteractor()
+        public IScannedPageInteractor CreateScannedPageInteractor()
         {
-            return new LoadedPageInteractor(services);
+            return new ScannedPageInteractor(services);
         }
 
         public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()

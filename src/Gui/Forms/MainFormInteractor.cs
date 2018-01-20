@@ -64,7 +64,7 @@ namespace Reko.Gui.Forms
 
         private IPhasePageInteractor currentPhase;
         private InitialPageInteractor pageInitial;
-        private ILoadedPageInteractor pageLoaded;
+        private IScannedPageInteractor pageScanned;
         private IAnalyzedPageInteractor pageAnalyzed;
         private IFinalPageInteractor pageFinal;
 
@@ -93,7 +93,7 @@ namespace Reko.Gui.Forms
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
-            pageLoaded = svcFactory.CreateLoadedPageInteractor();
+            pageScanned = svcFactory.CreateScannedPageInteractor();
             pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
             pageFinal = new FinalPageInteractor(sc);
         }
@@ -423,9 +423,9 @@ namespace Reko.Gui.Forms
             get { return pageInitial; }
         }
 
-        public ILoadedPageInteractor LoadedPageInteractor
+        public IScannedPageInteractor ScannedPageInteractor
         {
-            get { return pageLoaded; }
+            get { return pageScanned; }
         }
 
         public IAnalyzedPageInteractor AnalyzedPageInteractor
@@ -483,9 +483,9 @@ namespace Reko.Gui.Forms
             IPhasePageInteractor next = null;
             if (phase == pageInitial)
             {
-                next = pageLoaded;
+                next = pageScanned;
             }
-            else if (phase == pageLoaded)
+            else if (phase == pageScanned)
             {
                 next = pageAnalyzed;
             }
