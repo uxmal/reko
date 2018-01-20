@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1803,26 +1803,6 @@ namespace Reko.Arch.M68k
                             dasm.instr.op1 = new RegisterSetOperand(w2 & 0xFF, PrimitiveType.Real96);
                         }
                         dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
-                        //$TODO: remove the below code after 2017-01-01
-                        //dasm.g_dasm_str = string.Format("fmovem.x   ");
-
-                        //for (i = 0; i < 8; i++)
-                        //{
-                        //    if ((w2 & (1 << i)) != 0)
-                        //    {
-                        //        if (((w2 >> 12) & 1) != 0)	// postincrement or control
-                        //        {
-                        //            temp = string.Format("FP{0} ", 7 - i);
-                        //        }
-                        //        else			// predecrement
-                        //        {
-                        //            temp = string.Format("FP{0} ", i);
-                        //        }
-                        //        dasm.g_dasm_str += temp;
-                        //    }
-                        //}
-                        //dasm.g_dasm_str += ", ";
-                        //dasm.g_dasm_str += dasm.get_ea_mode_str_32(dasm.instruction);
                     }
                     return dasm.instr;
                 }
