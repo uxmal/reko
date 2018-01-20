@@ -196,6 +196,27 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
 		}
 
+        [Test]
+        public void Mfi_FinishDecompilation()
+        {
+            Given_MainFormInteractor();
+            Given_LoadPreferences();
+            Given_DecompilerInstance();
+            Given_XmlWriter();
+            Given_SavePrompt(true);
+            dcSvc.Stub(d => d.Decompiler = null);
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            mr.ReplayAll();
+
+            When_CreateMainFormInteractor();
+            interactor.OpenBinary(null);
+            Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
+            interactor.FinishDecompilation();
+            Assert.AreSame(interactor.FinalPageInteractor, interactor.CurrentPhase);
+
+            mr.VerifyAll();
+        }
+
         private void Given_Loader()
         {
             var bytes = new byte[1000];
