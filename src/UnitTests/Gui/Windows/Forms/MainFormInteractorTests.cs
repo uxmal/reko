@@ -196,6 +196,27 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
 		}
 
+        [Test]
+        public void Mfi_FinishDecompilation()
+        {
+            Given_MainFormInteractor();
+            Given_LoadPreferences();
+            Given_DecompilerInstance();
+            Given_XmlWriter();
+            Given_SavePrompt(true);
+            dcSvc.Stub(d => d.Decompiler = null);
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            mr.ReplayAll();
+
+            When_CreateMainFormInteractor();
+            interactor.OpenBinary(null);
+            Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
+            interactor.FinishDecompilation();
+            Assert.AreSame(interactor.FinalPageInteractor, interactor.CurrentPhase);
+
+            mr.VerifyAll();
+        }
+
         private void Given_Loader()
         {
             var bytes = new byte[1000];
@@ -561,6 +582,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateScannedPageInteractor()).Return(new FakeScannedPageInteractor());
+            svcFactory.Stub(s => s.CreateAnalyzedPageInteractor()).Return(new FakeAnalyzedPageInteractor());
+            svcFactory.Stub(s => s.CreateFinalPageInteractor()).Return(new FakeFinalPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
