@@ -561,6 +561,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
             svcFactory.Stub(s => s.CreateScannedPageInteractor()).Return(new FakeScannedPageInteractor());
+            svcFactory.Stub(s => s.CreateAnalyzedPageInteractor()).Return(new FakeAnalyzedPageInteractor());
+            svcFactory.Stub(s => s.CreateFinalPageInteractor()).Return(new FakeFinalPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);

@@ -94,8 +94,8 @@ namespace Reko.Gui.Forms
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
             pageScanned = svcFactory.CreateScannedPageInteractor();
-            pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
-            pageFinal = new FinalPageInteractor(sc);
+            pageAnalyzed = svcFactory.CreateAnalyzedPageInteractor();
+            pageFinal = svcFactory.CreateFinalPageInteractor();
         }
 
         public virtual IDecompiler CreateDecompiler(ILoader ldr)
