@@ -215,20 +215,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        //$REFACTOR: copied from LoadedPageInteractor, should
-        // push to base class or utility class.
-        private MenuStatus QueryStatus(int cmdId)
-        {
-            CommandStatus status = new CommandStatus();
-            i.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null);
-            return status.Status;
-        }
-
-        private ILowLevelViewService AddFakeMemoryViewService()
-        {
-            return memSvc;
-        }
-
         private class TestInitialPageInteractor : InitialPageInteractorImpl
         {
             public IDecompiler decompiler;
