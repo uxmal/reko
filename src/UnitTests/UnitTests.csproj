@@ -477,7 +477,7 @@
     <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs">
+    <Compile Include="Gui\Windows\Forms\ScannedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />

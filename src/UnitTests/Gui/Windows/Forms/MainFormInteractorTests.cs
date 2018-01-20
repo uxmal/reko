@@ -191,7 +191,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 			interactor.OpenBinary(null);
 			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
 			interactor.NextPhase();
-			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPhase);
+			Assert.AreSame(interactor.ScannedPageInteractor, interactor.CurrentPhase);
 
             mr.VerifyAll();
 		}
@@ -560,7 +560,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateMemoryViewService()).Return(memSvc);
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
-            svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
+            svcFactory.Stub(s => s.CreateScannedPageInteractor()).Return(new FakeScannedPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);
