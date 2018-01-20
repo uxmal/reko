@@ -193,6 +193,28 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
+        [Test]
+        public void Ipi_FinishDecompilationButton()
+        {
+            program.NeedsScanning = false;
+            dec.Stub(d => d.Load("foo.exe")).Return(false);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Stub(b => b.Load(project));
+            mr.ReplayAll();
+            var status = new CommandStatus();
+            var cmd = new CommandID(
+                CmdSets.GuidReko, CmdIds.ActionFinishDecompilation);
+
+            Assert.IsTrue(i.QueryStatus(cmd, status, null));
+            Assert.AreEqual(MenuStatus.Visible, status.Status);
+
+            i.OpenBinary("foo.exe");
+
+            Assert.IsTrue(i.QueryStatus(cmd, status, null));
+            Assert.AreEqual(MenuStatus.Visible | MenuStatus.Enabled, status.Status);
+            mr.VerifyAll();
+        }
+
         //$REFACTOR: copied from LoadedPageInteractor, should
         // push to base class or utility class.
         private MenuStatus QueryStatus(int cmdId)
