@@ -513,6 +513,7 @@ namespace Reko.Gui.Forms
                     }
                 });
                 prev.EnterPage();
+                CurrentPhase = prev;
             }
             catch (Exception ex)
             {
