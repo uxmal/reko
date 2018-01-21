@@ -68,7 +68,7 @@ namespace Reko.Analysis
             {
                 if (Match(stm.Instruction))
                 {
-                    stm.Instruction = TransformInstruction();
+                    TransformInstruction();
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
-        public Assignment TransformInstruction()
+        public void TransformInstruction()
         {
             var eNum = dividend;
             if (bestRational.Numerator != 1)
@@ -206,7 +206,6 @@ namespace Reko.Analysis
                 m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
-            return sidDst.DefStatement.Instruction as Assignment;
         }
     }
 }
