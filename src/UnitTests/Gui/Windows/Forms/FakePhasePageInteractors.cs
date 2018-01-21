@@ -134,4 +134,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
         }
     }
+
+    public class FakeAnalyzedPageInteractor : FakePhasePageInteractor, IAnalyzedPageInteractor
+    {
+        public FakeAnalyzedPageInteractor()
+        {
+        }
+    }
+
+    public class FakeFinalPageInteractor : FakePhasePageInteractor, IFinalPageInteractor
+    {
+        public FakeFinalPageInteractor()
+        {
+        }
+    }
 }

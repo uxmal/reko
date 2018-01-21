@@ -67,6 +67,10 @@ namespace Reko.Gui.Windows.Forms
                 case CmdIds.ActionRestartDecompilation:
                     status.Status = 0;
                     return true;
+                case CmdIds.ActionFinishDecompilation:
+                    status.Status = CanAdvance
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible; return true;
                 case CmdIds.ActionNextPhase:
                     status.Status = CanAdvance 
                         ? MenuStatus.Visible | MenuStatus.Enabled
