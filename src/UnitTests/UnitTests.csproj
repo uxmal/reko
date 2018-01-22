@@ -88,14 +88,19 @@
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
-    <Compile Include="Arch\Microchip\Common\MemoryMapperTests.cs" />
+    <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
+    <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Enhd_Extd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Enhd_Trad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Extd_Extd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Extd_Trad_DisassemblerTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18RewriterTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdArchitectureTests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18ExtdArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18_Extd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18_Trad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PICDisassemblerTestsBase.cs" />
     <Compile Include="Arch\Microchip\PICSamples.cs" />
     <Compile Include="Arch\Microchip\PICSamplesTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
@@ -871,6 +876,7 @@
     </Content>
     <Content Include="Arch\Microchip\Samples\PIC18EnhSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Arch\Microchip\Samples\PIC18ExtdSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

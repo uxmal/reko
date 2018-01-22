@@ -45,8 +45,8 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC18State(PIC18Architecture arch)
         {
             this.arch = arch;
-            this.regs = new ulong[Registers.Max];
-            this.valid = new ulong[Registers.Max];
+            regs = new ulong[PIC18Registers.Max];
+            valid = new ulong[PIC18Registers.Max];
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace Reko.Arch.Microchip.PIC18
         public override void SetInstructionPointer(Address addr)
         {
             ulong off = addr.ToUInt32();
-            SetRegister(Registers.pcl, Constant.Byte((byte)(off & 0xFF)));
-            SetRegister(Registers.pclath, Constant.Byte((byte)((off>>8) & 0xFF)));
-            SetRegister(Registers.pclatu, Constant.Byte((byte)((off>>16) & 0xFF)));
+            SetRegister(PIC18Registers.PCL, Constant.Byte((byte)(off & 0xFF)));
+            SetRegister(PIC18Registers.PCLATH, Constant.Byte((byte)((off>>8) & 0xFF)));
+            SetRegister(PIC18Registers.PCLATU, Constant.Byte((byte)((off>>16) & 0xFF)));
         }
 
         public override void OnProcedureEntered()

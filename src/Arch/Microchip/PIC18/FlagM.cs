@@ -40,10 +40,6 @@ namespace Reko.Arch.Microchip.PIC18
         OV = 8,
         /// <summary>Negative flag.</summary>
         N = 16,
-        /// <summary>Power-down flag.</summary>
-        PD = 32,
-        /// <summary>Time-out flag.</summary>
-        TO = 64
     }
 
 }

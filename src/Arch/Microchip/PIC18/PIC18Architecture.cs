@@ -32,7 +32,7 @@ using System.Linq;
 using System.Text;
 
 using Microchip.Crownking;
-using Microchip.MemoryMapper;
+using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -52,7 +52,9 @@ namespace Reko.Arch.Microchip.PIC18
             base.FramePointerType = PrimitiveType.Offset16;
             base.InstructionBitSize = 16;
             base.PointerType = PrimitiveType.Pointer32;
-            base.WordWidth = PrimitiveType.UInt16;
+            base.WordWidth = PrimitiveType.UInt8;
+            var regs = PIC18Registers.Create(picDescr);
+            regs.LoadRegisters();
         }
 
         /// <summary>
@@ -75,16 +77,16 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the PIC memory mapper.
         /// </summary>
-        public IPICMemoryMapper MemoryMapper
+        public PIC18MemoryMapper MemoryMapper
         {
             get
             {
                 if (_memmapper == null)
-                    _memmapper = PICMemoryMapper.Create(PICDescriptor);
+                    _memmapper = PIC18MemoryMapper.Create(PICDescriptor);
                 return _memmapper;
             }
         }
-        IPICMemoryMapper _memmapper;
+        PIC18MemoryMapper _memmapper;
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
@@ -147,7 +149,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.status, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(PIC18Registers.STATUS, grf, GrfToString(grf), dt);
             flagGroups.Add(fl);
             return fl;
         }
@@ -164,8 +166,6 @@ namespace Reko.Arch.Microchip.PIC18
                     case 'D': grf |= FlagM.DC; break;
                     case 'O': grf |= FlagM.OV; break;
                     case 'N': grf |= FlagM.N; break;
-                    case 'P': grf |= FlagM.PD; break;
-                    case 'T': grf |= FlagM.TO; break;
                     default: return null;
                 }
             }
@@ -174,12 +174,12 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override RegisterStorage GetRegister(int i)
         {
-            return Registers.GetRegister(i);
+            return PIC18Registers.GetCoreRegister(i);
         }
 
         public override RegisterStorage GetRegister(string name)
         {
-            var r = Registers.GetRegister(name);
+            var r = PIC18Registers.GetRegister(name);
             if (r == RegisterStorage.None)
                 throw new ArgumentException($"'{name}' is not a register name.");
             return r;
@@ -192,7 +192,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override RegisterStorage[] GetRegisters()
         {
-            return Registers.RegsByAddr.Values.ToArray();
+            return PIC18Registers.GetRegisters;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -234,17 +234,24 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            reg = Registers.GetRegister(name);
+            reg = PIC18Registers.GetRegister(name);
             return (reg != RegisterStorage.None);
         }
 
         public override string GrfToString(uint grf)
         {
             StringBuilder s = new StringBuilder();
-            for (int r = Registers.status.Number; grf != 0; ++r, grf >>= 1)
+            uint bitPos = 0;
+            while (grf != 0)
             {
                 if ((grf & 1) != 0)
-                    s.Append(Registers.GetRegister(r).Name);
+                {
+                    var f = PIC18Registers.GetBitField(PIC18Registers.STATUS, bitPos, 1);
+                    if (f != null)
+                        s.Append(f.Name);
+                }
+                grf >>= 1;
+                bitPos++;
             }
             return s.ToString();
         }

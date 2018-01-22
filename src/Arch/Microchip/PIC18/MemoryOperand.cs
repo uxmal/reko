@@ -31,15 +31,27 @@ namespace Reko.Arch.Microchip.PIC18
     {
         public RegisterStorage Base;
         public Constant Offset;
+        public Constant IsAccess;
+
+        public MemoryOperand(PrimitiveType width) : base(width)
+        {
+            Base = RegisterStorage.None;
+        }
 
         public MemoryOperand(PrimitiveType width, RegisterStorage baseReg) : base(width)
         {
-            this.Base = baseReg;
+            Base = baseReg;
+        }
+
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseReg, Constant access) : base(width)
+        {
+            Base = baseReg;
+            IsAccess = access;
         }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(this.Base.Name);
+            writer.Write(Base.Name);
         }
     }
 }

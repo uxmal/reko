@@ -131,6 +131,54 @@ namespace Microchip.Crownking
     }
 
     /// <summary>
+    /// SFR bits access modes.
+    /// </summary>
+    public enum SFRBitAccess : byte
+    {
+        /// <summary>Bit is read-write ('n') </summary>
+        RW = 0,
+        /// <summary>Bit is read-write persistent ('N') (no longer used?) </summary>
+        RW_Persistant = 1,
+        /// <summary>Bit is read-only ('r') </summary>
+        ROnly = 2,
+        /// <summary>Bit is write-only ('w') </summary>
+        WOnly = 3,
+        /// <summary>Bit is settable only ('s') </summary>
+        Set = 4,
+        /// <summary>Bit is clear-able only ('c') </summary>
+        Clr = 5,
+        /// <summary>Bit is always 0 ('0') </summary>
+        Zero = 6,
+        /// <summary>Bit is always 1 ('1') </summary>
+        One = 7,
+        /// <summary>Bit is unimplemented ('-') </summary>
+        UnImpl = 8,
+        /// <summary>Bit is undetermined ('x') </summary>
+        UnDef = 9,
+        /// <summary>Bit access mode is unknown ('?') </summary>
+        Unknown = 10
+    }
+
+    /// <summary>
+    /// Values that represent SFR bit state at resets (Master Clear, Power-On, ...).
+    /// </summary>
+    public enum SFRBitReset
+    {
+        /// <summary>Bit is reset to 0 ('0'). </summary>
+        Zero = 0,
+        /// <summary>Bit is reset to 1 ('1'). </summary>
+        One = 1,
+        /// <summary>Bit is unchanged ('u'). </summary>
+        Unchanged = 2,
+        /// <summary>Bit depends on condition ('q'). </summary>
+        Cond = 3,
+        /// <summary>Bit is unknown ('x'). </summary>
+        Unknown = 4,
+        /// <summary>Bit is not implemented ('-'). </summary>
+        UnImpl = 5
+    }
+
+    /// <summary>
     /// The abstract class <see cref="MemoryAddrRange"/> represents a PIC memory address range [begin, end) (either in data, program or absolute space).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
@@ -212,14 +260,21 @@ namespace Microchip.Crownking
 
         public override int GetHashCode() => (BeginAddr.GetHashCode() + EndAddr.GetHashCode()) ^ MemoryDomain.GetHashCode();
 
-        public static bool operator ==(MemoryAddrRange reg1, MemoryAddrRange reg2) => reg1.Equals(reg2);
+        public static bool operator ==(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1,reg2) == 0;
 
-        public static bool operator !=(MemoryAddrRange reg1, MemoryAddrRange reg2) => !reg1.Equals(reg2);
+        public static bool operator !=(MemoryAddrRange reg1, MemoryAddrRange reg2) => _Compare(reg1, reg2) != 0;
 
         public int Compare(MemoryAddrRange x, MemoryAddrRange y)
         {
             if (ReferenceEquals(x, y)) return 0;
             return x?.CompareTo(y) ?? -1;
+        }
+
+        private static int _Compare(MemoryAddrRange x, MemoryAddrRange y)
+        {
+            if (ReferenceEquals(x, y)) return 0;
+            if ((object)x == null) return -1;
+            return x.CompareTo(y);
         }
 
         public bool Equals(MemoryAddrRange x, MemoryAddrRange y)
@@ -321,7 +376,7 @@ namespace Microchip.Crownking
         /// The size of the memory word in bytes.
         /// </value>
         [XmlIgnore]
-        public virtual int WordSize { get; private set; }
+        public virtual uint WordSize { get; private set; }
 
         /// <summary>
         /// Gets the memory location access size.
@@ -330,7 +385,7 @@ namespace Microchip.Crownking
         /// The size of the location in bytes.
         /// </value>
         [XmlIgnore]
-        public virtual int LocSize { get; private set; }
+        public virtual uint LocSize { get; private set; }
 
         /// <summary>
         /// Gets the memory word implementation (bit mask).
@@ -339,7 +394,7 @@ namespace Microchip.Crownking
         /// The memory word implementation bit mask.
         /// </value>
         [XmlIgnore]
-        public virtual int WordImpl { get; private set; }
+        public virtual uint WordImpl { get; private set; }
 
         /// <summary>
         /// Gets the initial (erased) memory word value.
@@ -348,7 +403,7 @@ namespace Microchip.Crownking
         /// The word initialize.
         /// </value>
         [XmlIgnore]
-        public virtual int WordInit { get; private set; }
+        public virtual uint WordInit { get; private set; }
 
         /// <summary>
         /// Gets the memory word safe value.
@@ -357,7 +412,7 @@ namespace Microchip.Crownking
         /// The memory word safe value.
         /// </value>
         [XmlIgnore]
-        public virtual int WordSafe { get; private set; }
+        public virtual uint WordSafe { get; private set; }
 
         #endregion
 
@@ -365,23 +420,23 @@ namespace Microchip.Crownking
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "locsize", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _locsizeformatted { get { return $"0x{LocSize:X}"; } set { LocSize = value.ToInt32Ex(); } }
+        public string _locsizeformatted { get { return $"0x{LocSize:X}"; } set { LocSize = value.ToUInt32Ex(); } }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordimpl", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordimplformatted { get { return $"0x{WordImpl:X}"; } set { WordImpl = value.ToInt32Ex(); } }
+        public string _wordimplformatted { get { return $"0x{WordImpl:X}"; } set { WordImpl = value.ToUInt32Ex(); } }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordinit", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordinitformatted { get { return $"0x{WordInit:X}"; } set { WordInit = value.ToInt32Ex(); } }
+        public string _wordinitformatted { get { return $"0x{WordInit:X}"; } set { WordInit = value.ToUInt32Ex(); } }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordsafe", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordsafeformatted { get { return $"0x{WordSafe:X}"; } set { WordSafe = value.ToInt32Ex(); } }
+        public string _wordsafeformatted { get { return $"0x{WordSafe:X}"; } set { WordSafe = value.ToUInt32Ex(); } }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordsize", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordsizeformatted { get { return $"0x{WordSize:X}"; } set { WordSize = value.ToInt32Ex(); } }
+        public string _wordsizeformatted { get { return $"0x{WordSize:X}"; } set { WordSize = value.ToUInt32Ex(); } }
 
         #endregion
 
@@ -437,7 +492,7 @@ namespace Microchip.Crownking
         /// The size of the memory word in bytes.
         /// </value>
         [XmlIgnore]
-        public override int WordSize => 1;
+        public override uint WordSize => 1;
 
         /// <summary>
         /// Gets the default memory location access size.
@@ -446,7 +501,7 @@ namespace Microchip.Crownking
         /// The size of the location in bytes.
         /// </value>
         [XmlIgnore]
-        public override int LocSize => 1;
+        public override uint LocSize => 1;
 
         /// <summary>
         /// Gets the default memory word implementation (bit mask).
@@ -455,7 +510,7 @@ namespace Microchip.Crownking
         /// The memory word implementation bit mask.
         /// </value>
         [XmlIgnore]
-        public override int WordImpl => 0xFF;
+        public override uint WordImpl => 0xFF;
 
         /// <summary>
         /// Gets the default initial (erased) memory word value.
@@ -464,7 +519,7 @@ namespace Microchip.Crownking
         /// The word initialize.
         /// </value>
         [XmlIgnore]
-        public override int WordInit => 0xFF;
+        public override uint WordInit => 0xFF;
 
         /// <summary>
         /// Gets the default memory word safe value.
@@ -473,7 +528,7 @@ namespace Microchip.Crownking
         /// The memory word safe value.
         /// </value>
         [XmlIgnore]
-        public override int WordSafe => 0x00;
+        public override uint WordSafe => 0x00;
 
         #endregion
 
@@ -1060,11 +1115,11 @@ namespace Microchip.Crownking
 
         #region Properties
 
-        public override int LocSize => 1;
-        public override int WordSize => 1;
-        public override int WordImpl => 0xFF;
-        public override int WordInit => 0xFF;
-        public override int WordSafe => 0xFF;
+        public override uint LocSize => 1;
+        public override uint WordSize => 1;
+        public override uint WordImpl => 0xFF;
+        public override uint WordInit => 0xFF;
+        public override uint WordSafe => 0xFF;
 
         /// <summary>
         /// Gets address magic offset in the binary image for EEPROM content.
@@ -1073,7 +1128,7 @@ namespace Microchip.Crownking
         /// The offset address as an integer.
         /// </value>
         [XmlIgnore]
-        public int MagicOffset { get; private set; }
+        public uint MagicOffset { get; private set; }
 
         #endregion
 
@@ -1081,7 +1136,7 @@ namespace Microchip.Crownking
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "magicoffset", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _magicoffsetformatted { get { return $"0x{MagicOffset:X}"; } set { MagicOffset = value.ToInt32Ex(); } }
+        public string _magicoffsetformatted { get { return $"0x{MagicOffset:X}"; } set { MagicOffset = value.ToUInt32Ex(); } }
 
         #endregion
 
@@ -1317,7 +1372,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "irq", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _irqformatted { get { return $"{IRQ}"; } set { IRQ = value.ToInt32Ex(); } }
+        public string _irqformatted { get { return $"{IRQ}"; } set { IRQ = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the IRQ number.
@@ -1326,7 +1381,7 @@ namespace Microchip.Crownking
         /// The IRQ number as an integer.
         /// </value>
         [XmlIgnore]
-        public int IRQ { get; private set; }
+        public uint IRQ { get; private set; }
 
         /// <summary>
         /// Gets the name of the interrupt request.
@@ -1610,47 +1665,6 @@ namespace Microchip.Crownking
             return $"Adjust 0x{Offset:X} bytes";
         }
 
-#if FULLPICXML
-
-        /// <summary>
-        /// Gets the byte address.
-        /// </summary>
-        /// <value>
-        /// The address as an integer.
-        /// </value>
-        [XmlIgnore]
-        public int Addr { get; private set; }
-
-        [XmlIgnore]
-        public int Begin { get; private set; }
-
-        [XmlIgnore]
-        public int End { get; private set; }
-
-        [XmlAttribute(AttributeName = "_modsrc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ModSrc { get; set; }
-
-        [XmlIgnore]
-        public int RefCount { get; private set; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _addrformatted        { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_begin", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginformatted        { get { return $"0x{Begin:X}"; } set { Begin = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_end", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endformatted        { get { return $"0x{End:X}"; } set { End = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_refcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _refcountformatted        { get { return $"{RefCount}"; } set { RefCount = value.ToInt32Ex(); ; } }
-
-#endif
-
     }
 
     /// <summary>
@@ -1737,47 +1751,6 @@ namespace Microchip.Crownking
             if (Offset < 10) return $"Adjust {Offset} bit(s)";
             return $"Adjust 0x{Offset:X} bit(s)";
         }
-
-#if FULLPICXML
-
-        /// <summary>
-        /// Gets the bit address.
-        /// </summary>
-        /// <value>
-        /// The address as an integer.
-        /// </value>
-        [XmlIgnore]
-        public int Addr { get; private set; }
-
-        [XmlIgnore]
-        public int Begin { get; private set; }
-
-        [XmlIgnore]
-        public int End { get; private set; }
-
-        [XmlAttribute(AttributeName = "_modsrc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ModSrc { get; set; }
-
-        [XmlIgnore]
-        public int RefCount { get; private set; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _addrformatted        { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_begin", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginformatted        { get { return $"0x{Begin:X}"; } set { Begin = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_end", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endformatted        { get { return $"0x{End:X}"; } set { End = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_refcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _refcountformatted        { get { return $"{RefCount}"; } set { RefCount = value.ToInt32Ex(); ; } }
-
-#endif
 
     }
 
@@ -2309,6 +2282,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "ishidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
 
         /// <summary>
         /// Gets or sets a value indicating whether this configuration pattern is hidden to language tools.
@@ -2318,6 +2294,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsLangHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
 
         /// <summary>
         /// Used to serialize <see cref="OscModeIDRef" /> property from/to hexadecimal string.
@@ -2328,6 +2307,9 @@ namespace Microchip.Crownking
         [XmlAttribute(AttributeName = "oscmodeidref", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         public string _oscmodeidrefformatted { get { return $"{OscModeIDRef}"; } set { OscModeIDRef = value.ToInt32Ex(); } }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool _oscmodeidrefformattedSpecified { get { return OscModeIDRef != 0; } set { } }
 
         /// <summary>
         /// Gets the oscillator mode identifier reference.
@@ -2510,6 +2492,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "ishidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this configuration field is hidden to language tools.
@@ -2519,6 +2504,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsLangHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this configuration field is hidden to the MPLAB IDE.
@@ -2528,6 +2516,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "isidehidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsIDEHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsIDEHiddenSpecified { get { return IsIDEHidden; } set { } }
 
         #endregion
 
@@ -2774,7 +2765,7 @@ namespace Microchip.Crownking
         public int Addr { get; private set; }
 
         /// <summary>
-        /// Gets the name of the register.
+        /// Gets the name of the configuration register.
         /// </summary>
         /// <value>
         /// The name as a string.
@@ -2783,13 +2774,16 @@ namespace Microchip.Crownking
         public string CName { get; set; }
 
         /// <summary>
-        /// Gets the name of the register.
+        /// Gets the name of the configuration register.
         /// </summary>
         /// <value>
         /// The name as a string.
         /// </value>
         [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
         public string Name { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool NameSpecified { get; set; }
 
         /// <summary>
         /// Gets the description of the configuration register.
@@ -2893,6 +2887,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsLangHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
 
         /// <summary>
         /// Used to serialize <see cref="UnimplVal" /> property from/to hexadecimal string.
@@ -3641,6 +3638,46 @@ namespace Microchip.Crownking
 
     }
 
+    public abstract class MemDataRegionAcceptor : IMemDataRegionAcceptor
+    {
+
+        #region IMemDataRegionAcceptor interface
+
+        /// <summary>
+        /// The <see cref="Accept"/> method accepts a data memory region visitor and calls the appropriate
+        /// "Visit()" method for this data memory region.
+        /// </summary>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        public abstract void Accept(IMemDataRegionVisitor v);
+
+        /// <summary>
+        /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this data memory region.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T>(IMemDataRegionVisitor<T> v);
+
+        /// <summary>
+        /// The <see cref="Accept{T, C}"/> function accepts a data memory region visitor and calls the
+        /// appropriate "Visit()" function for this data memory region with the specified context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="v">The data memory region visitor to accept.</param>
+        /// <param name="context">The context of generic type <typeparamref name="C"/>.</param>
+        /// <returns>
+        /// A result of generic type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context);
+
+        #endregion
+
+    }
+
     /// <summary>
     /// A data memory addresses range.
     /// </summary>
@@ -3810,7 +3847,7 @@ namespace Microchip.Crownking
         /// <returns>
         /// A result of type <typeparamref name="T"/>.
         /// </returns>
-        public override T Accept<T,C>(IMemDataSymbolVisitor<T,C> v, C context) => v.Visit(this, context);
+        public override T Accept<T, C>(IMemDataSymbolVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -3842,47 +3879,6 @@ namespace Microchip.Crownking
             if (Offset < 10) return $"Adjust {Offset} byte(s)";
             return $"Adjust 0x{Offset:X} byte(s)";
         }
-
-#if FULLPICXML
-
-        /// <summary>
-        /// Gets the byte address.
-        /// </summary>
-        /// <value>
-        /// The address as an integer.
-        /// </value>
-        [XmlIgnore]
-        public int Addr { get; private set; }
-
-        [XmlIgnore]
-        public int Begin { get; private set; }
-
-        [XmlIgnore]
-        public int End { get; private set; }
-
-        [XmlAttribute(AttributeName = "_modsrc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ModSrc { get; set; }
-
-        [XmlIgnore]
-        public int RefCount { get; private set; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _addrformatted        { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_begin", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginformatted        { get { return $"0x{Begin:X}"; } set { Begin = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_end", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endformatted        { get { return $"0x{End:X}"; } set { End = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_refcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _refcountformatted        { get { return $"{RefCount}"; } set { RefCount = value.ToInt32Ex(); ; } }
-
-#endif
 
     }
 
@@ -3965,47 +3961,6 @@ namespace Microchip.Crownking
             return $"Adjust 0x{Offset:X} bit(s)";
         }
 
-#if FULLPICXML
-
-        /// <summary>
-        /// Gets the byte address.
-        /// </summary>
-        /// <value>
-        /// The address as an integer.
-        /// </value>
-        [XmlIgnore]
-        public int Addr { get; private set; }
-
-        [XmlIgnore]
-        public int Begin { get; private set; }
-
-        [XmlIgnore]
-        public int End { get; private set; }
-
-        [XmlAttribute(AttributeName = "_modsrc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ModSrc { get; set; }
-
-        [XmlIgnore]
-        public int RefCount { get; private set; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _addrformatted        { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_begin", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginformatted        { get { return $"0x{Begin:X}"; } set { Begin = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_end", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endformatted        { get { return $"0x{End:X}"; } set { End = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_refcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _refcountformatted        { get { return $"{RefCount}"; } set { RefCount = value.ToInt32Ex(); ; } }
-
-#endif
-
     }
 
     /// <summary>
@@ -4086,6 +4041,7 @@ namespace Microchip.Crownking
     /// SFR bits-field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("SFRField = {Name}")]
     public sealed class SFRFieldDef : MemDataSymbolAcceptor
     {
         #region Constructors
@@ -4178,7 +4134,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the bit width of this SFR field.
@@ -4187,7 +4143,7 @@ namespace Microchip.Crownking
         /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
-        public int NzWidth { get; private set; }
+        public uint NzWidth { get; private set; }
 
         /// <summary>
         /// Used to serialize <see cref="Mask" /> property from/to hexadecimal string.
@@ -4197,7 +4153,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _maskformatted { get { return $"0x{Mask:X}"; } set { Mask = value.ToInt32Ex(); } }
+        public string _maskformatted { get { return $"0x{Mask:X}"; } set { Mask = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the bit mask of this SFR field.
@@ -4206,7 +4162,7 @@ namespace Microchip.Crownking
         /// The bit mask as an integer.
         /// </value>
         [XmlIgnore]
-        public int Mask { get; private set; }
+        public uint Mask { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this SFR Field is hidden to language tools.
@@ -4216,6 +4172,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsLangHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR Field is hidden.
@@ -4225,6 +4184,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "ishidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR Field is hidden to MPLAB IDE.
@@ -4234,6 +4196,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "isidehidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsIDEHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsIDEHiddenSpecified { get { return IsIDEHidden; } set { } }
 
         #endregion
 
@@ -4243,6 +4208,7 @@ namespace Microchip.Crownking
     /// SFR Fields definitions for a given mode.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("SFRMode = {ID}")]
     public sealed class SFRMode : MemDataSymbolAcceptor
     {
         #region Constructors
@@ -4389,6 +4355,7 @@ namespace Microchip.Crownking
     /// Special Function Register (SFR) definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("SFR = {Name}")]
     public sealed class SFRDef : MemDataSymbolAcceptor
     {
         #region Constructors
@@ -4455,7 +4422,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the data memory address of this SFR.
@@ -4464,7 +4431,7 @@ namespace Microchip.Crownking
         /// The address as an integer.
         /// </value>
         [XmlIgnore]
-        public int Addr { get; private set; }
+        public uint Addr { get; private set; }
 
         /// <summary>
         /// Gets the name of this SFR.
@@ -4501,7 +4468,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the bit width of this SFR.
@@ -4510,7 +4477,7 @@ namespace Microchip.Crownking
         /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
-        public int NzWidth { get; private set; }
+        public uint NzWidth { get; private set; }
 
         /// <summary>
         /// Gets the byte width of this SFR.
@@ -4519,7 +4486,7 @@ namespace Microchip.Crownking
         /// The width of the SFR in number of bytes.
         /// </value>
         [XmlIgnore]
-        public int ByteWidth => (NzWidth + 7) >> 3;
+        public uint ByteWidth => (NzWidth + 7) >> 3;
 
         /// <summary>
         /// Used to serialize <see cref="Impl" /> property from/to hexadecimal string.
@@ -4529,7 +4496,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _implformatted { get { return $"0x{Impl:X}"; } set { Impl = value.ToInt32Ex(); } }
+        public string _implformatted { get { return $"0x{Impl:X}"; } set { Impl = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the implemented bits mask of this SFR.
@@ -4538,11 +4505,13 @@ namespace Microchip.Crownking
         /// The implementation mask as an integer.
         /// </value>
         [XmlIgnore]
-        public int Impl { get; private set; }
+        public uint Impl { get; private set; }
 
         /// <summary>
-        /// Gets the access mode bits for this SFR.
+        /// Gets the access mode bits descriptor for this SFR.
         /// </summary>
+        /// <remarks>
+        /// </remarks>
         /// <value>
         /// The access mode bits descriptor as a string.
         /// </value>
@@ -4575,6 +4544,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "isindirect", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsIndirect { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsIndirectSpecified { get { return IsIndirect; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is volatile.
@@ -4584,6 +4556,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "isvolatile", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsVolatile { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsVolatileSpecified { get { return IsVolatile; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is hidden.
@@ -4593,6 +4568,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "ishidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is hidden to language tools.
@@ -4602,6 +4580,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "islanghidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsLangHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is hidden to MPLAB IDE.
@@ -4611,6 +4592,9 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "isidehidden", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
         public bool IsIDEHidden { get; set; }
+        [XmlIgnore]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public bool IsIDEHiddenSpecified { get { return IsIDEHidden; } set { } }
 
         /// <summary>
         /// Gets the name of the peripheral this SFR is the base address of.
@@ -4622,53 +4606,21 @@ namespace Microchip.Crownking
         public string BaseOfPeripheral { get; set; }
 
         /// <summary>
-        /// Used to serialize <see cref="NMMRID" /> property from/to hexadecimal string.
-        /// </summary>
-        /// <value>
-        /// The Non-Memory-Map-Register ID content as an hexadecimal string.
-        /// </value>
-        [XmlAttribute(AttributeName = "nmmrid", Form = XmlSchemaForm.None, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nmmridformatted { get { return $"0x{NMMRID:X}"; } set { NMMRID = value.ToInt32Ex(); } }
-
-        /// <summary>
         /// Gets the Non-Memory-Mapped-Register identifier of the SFR.
         /// </summary>
         /// <value>
         /// The identifier as an integer.
         /// </value>
+        [XmlAttribute(AttributeName = "nmmrid", Form = XmlSchemaForm.None, Namespace = "")]
+        public string NMMRID { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this SFR is Non-Memory-Mapped.
+        /// </summary>
         [XmlIgnore]
-        public int NMMRID { get; private set; }
+        public bool IsNMMR { get { return !String.IsNullOrEmpty(NMMRID); } set { } }
 
         #endregion
-
-#if FULLPICXML
-
-        [XmlAttribute(AttributeName = "_modsrc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string ModSrc { get; set; }
-
-        [XmlIgnore]
-        public int RefCount { get; private set; }
-
-        [XmlIgnore]
-        public int Begin { get; private set; }
-
-        [XmlIgnore]
-        public int End { get; private set; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_refcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _refcountformatted        { get { return $"{RefCount}"; } set { RefCount = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_begin", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _beginformatted        { get { return $"0x{Begin:X}"; } set { Begin = value.ToInt32Ex(); } }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        [XmlAttribute(AttributeName = "_end", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _endformatted        { get { return $"0x{End:X}"; } set { End = value.ToInt32Ex(); } }
-
-#endif
 
     }
 
@@ -4775,6 +4727,9 @@ namespace Microchip.Crownking
 
     }
 
+    /// <summary>
+    /// Joined SFR (e.g. FSR2 register composed of FSR2H:FSR2L registers).
+    /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class JoinedSFRDef : MemDataSymbolAcceptor
     {
@@ -4783,7 +4738,9 @@ namespace Microchip.Crownking
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public JoinedSFRDef() { }
+        public JoinedSFRDef()
+        {
+        }
 
         #endregion
 
@@ -4828,9 +4785,9 @@ namespace Microchip.Crownking
         /// Gets the individual SFRs composing the join.
         /// </summary>
         /// <value>
-        /// The SFRs.
+        /// The list of SFRDef.
         /// </value>
-        [XmlElement(ElementName = "SFRDef", Form = XmlSchemaForm.None, Namespace = "", Order = 1)]
+        [XmlElement("SFRDef", Form = XmlSchemaForm.None, Namespace = "")]
         public List<SFRDef> SFRs { get; set; }
 
         /// <summary>
@@ -4841,7 +4798,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the memory address of the joined SFRs.
@@ -4850,7 +4807,7 @@ namespace Microchip.Crownking
         /// The address as an integer.
         /// </value>s
         [XmlIgnore]
-        public int Addr { get; private set; }
+        public uint Addr { get; private set; }
 
         /// <summary>
         /// Gets the name of the joined SFRs.
@@ -4887,7 +4844,7 @@ namespace Microchip.Crownking
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToUInt32Ex(); } }
 
         /// <summary>
         /// Gets the bit width of the joined SFR.
@@ -4896,7 +4853,7 @@ namespace Microchip.Crownking
         /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
-        public int NzWidth { get; private set; }
+        public uint NzWidth { get; private set; }
 
         #endregion
 
@@ -5094,6 +5051,7 @@ namespace Microchip.Crownking
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DMARegisterMirror : MemDataSymbolAcceptor
     {
+
         #region Constructors
 
         /// <summary>
@@ -5166,6 +5124,7 @@ namespace Microchip.Crownking
     /// Special Function Registers data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{MemorySubDomain} sector")]
     public sealed class SFRDataSector : DataMemoryBankedRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.SFR;
@@ -5238,6 +5197,7 @@ namespace Microchip.Crownking
     /// General Purpose Registers (GPR) data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{MemorySubDomain} sector")]
     public sealed class GPRDataSector : DataMemoryBankedRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.GPR;
@@ -5324,6 +5284,7 @@ namespace Microchip.Crownking
     /// Dual Port Registers data memory sector.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{MemorySubDomain} sector")]
     public sealed class DPRDataSector : DataMemoryBankedRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.DPR;
@@ -5420,6 +5381,7 @@ namespace Microchip.Crownking
     /// Emulator memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{MemorySubDomain} sector")]
     public sealed class EmulatorZone : DataMemoryRegion
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Emulator;
@@ -5474,7 +5436,7 @@ namespace Microchip.Crownking
     /// Non-Memory-Mapped-Register (NMMR) definitions.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class NMMRPlace : IMemDataRegionAcceptor
+    public sealed class NMMRPlace : MemDataRegionAcceptor
     {
         #region Constructors
 
@@ -5492,7 +5454,7 @@ namespace Microchip.Crownking
         /// appropriate "Visit()" method for this Non-Memory-Mapped register definition.
         /// </summary>
         /// <param name="v">The data memory region visitor to accept.</param>
-        public void Accept(IMemDataRegionVisitor v) => v.Visit(this);
+        public override void Accept(IMemDataRegionVisitor v) => v.Visit(this);
 
         /// <summary>
         /// The <see cref="Accept{T}"/> function accepts a data memory region visitor and calls the
@@ -5503,7 +5465,7 @@ namespace Microchip.Crownking
         /// <returns>
         /// A result of generic type <typeparamref name="T"/>.
         /// </returns>
-        public T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
+        public override T Accept<T>(IMemDataRegionVisitor<T> v) => v.Visit(this);
 
         /// <summary>
         /// The <see cref="Accept{T,C}"/> function accepts a data memory region visitor and calls the
@@ -5516,7 +5478,7 @@ namespace Microchip.Crownking
         /// <returns>
         /// A result of generic type <typeparamref name="T"/>.
         /// </returns>
-        public T Accept<T,C>(IMemDataRegionVisitor<T,C> v, C context) => v.Visit(this, context);
+        public override T Accept<T, C>(IMemDataRegionVisitor<T, C> v, C context) => v.Visit(this, context);
 
         #endregion
 
@@ -5548,6 +5510,7 @@ namespace Microchip.Crownking
     /// Linear data memory region.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
+    [DebuggerDisplay("{MemorySubDomain} sector")]
     public sealed class LinearDataSector : DataMemoryRange, IMemDataRegionAcceptor
     {
         public override MemorySubDomain MemorySubDomain => MemorySubDomain.Linear;
@@ -5772,6 +5735,7 @@ namespace Microchip.Crownking
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [XmlRoot(Namespace = "", IsNullable = false)]
+    [DebuggerDisplay("{Name} - {Desc}")]
     public sealed class PIC
     {
         #region Locals
@@ -6011,8 +5975,71 @@ namespace Microchip.Crownking
 
     #region PICCrownking Extensions
 
-    public static partial class PICCrownkingExtensions
+    /// <summary>
+    /// Various extensions methods to manipulate PIC definitions.
+    /// </summary>
+    public static partial class PICCrownkingEx
     {
+
+        private static readonly Dictionary<string, SFRBitAccess> _xlat2Access = new Dictionary<string, SFRBitAccess>()
+        {
+            { "x", SFRBitAccess.RW },               // read-write
+            { "X", SFRBitAccess.RW_Persistant },    // read-write persistent
+            { "r", SFRBitAccess.ROnly },            // read-only
+            { "w", SFRBitAccess.WOnly },            // write-only
+            { "0", SFRBitAccess.Zero },             // 0-value
+            { "1", SFRBitAccess.One },              // 1-value
+            { "c", SFRBitAccess.Clr },              // clear-able only
+            { "s", SFRBitAccess.Set },              // settable only
+            { "-", SFRBitAccess.UnImpl },           // not implemented
+        };
+
+        /// <summary>
+        /// Translates the SFR access mode string to a value from the <see cref="SFRBitAccess"/> enumeration.
+        /// </summary>
+        /// <param name="sAccess">The access mode string.</param>
+        /// <returns>
+        /// A value from <see cref="SFRBitAccess"/> enumeration.
+        /// </returns>
+        public static SFRBitAccess SFRBitAccessMode(this string sAccess)
+        {
+            if (sAccess.Length >= 1)
+            {
+                SFRBitAccess bmode;
+                if (_xlat2Access.TryGetValue(sAccess.Substring(1, 1), out bmode))
+                    return bmode;
+            }
+            return SFRBitAccess.Unknown;
+        }
+
+        private static readonly Dictionary<string, SFRBitReset> _xlat2BitReset = new Dictionary<string, SFRBitReset>()
+        {
+            { "0", SFRBitReset.Zero },          // reset to 0.
+            { "1", SFRBitReset.One },           // reset to 1.
+            { "u", SFRBitReset.Unchanged },     // unchanged by reset.
+            { "x", SFRBitReset.Unknown },       // unknown after reset.
+            { "q", SFRBitReset.Cond },          // depends on condition.
+            { "-", SFRBitReset.UnImpl },        // no implemented.
+        };
+
+        /// <summary>
+        /// Translates the SFR bit reset mode string to a value from the <see cref="SFRBitReset"/> enumeration.
+        /// </summary>
+        /// <param name="sReset">The reset mode string.</param>
+        /// <returns>
+        /// A value from <see cref="SFRBitReset"/> enumeration.
+        /// </returns>
+        public static SFRBitReset SFRBitResetMode(this string sReset)
+        {
+            if (sReset.Length >= 1)
+            {
+                SFRBitReset bmode;
+                if (_xlat2BitReset.TryGetValue(sReset.Substring(1, 1), out bmode))
+                    return bmode;
+            }
+            return SFRBitReset.Unknown;
+        }
+
         /// <summary>
         /// A PICCrownking extension method that gets a PIC descriptor.
         /// </summary>

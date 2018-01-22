@@ -1,6 +1,23 @@
-﻿
-// summary:	Implements the Microchip PIC definition loading from the Microchip PIC XML database.
-// 
+﻿#region License
+/* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 namespace Microchip.Crownking
 {
     using Microsoft.Win32;
@@ -12,7 +29,10 @@ namespace Microchip.Crownking
     using System.IO.Compression;
     using System.Linq;
     using System.Reflection;
+    using System.Xml.Serialization;
     using System.Xml.Linq;
+    using Microchip.Utils;
+
 
     /// <summary>
     /// This factory class provides methods for loading Microchip PIC definition (XML) from the MPLAB X IDE (a.k.a. Crownking) database or a local copy of it.
@@ -47,15 +67,22 @@ namespace Microchip.Crownking
 
         private string _getIDECrownkingFilePath()
         {
-            RegistryKey MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW32);
-            if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW64);
-            string ideinstalldir = (string)(MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
-            if (ideinstalldir == null) return null;
-            string path = Path.Combine(ideinstalldir, _crownkingpath);
-            if (!String.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+            try
             {
-                path = Path.Combine(path, _crownkingfile);
-                return File.Exists(path) ? path : null;
+                RegistryKey MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW32);
+                if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW64);
+                string ideinstalldir = (string)(MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
+                if (ideinstalldir == null) return null;
+                string path = Path.Combine(ideinstalldir, _crownkingpath);
+                if (!String.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+                {
+                    path = Path.Combine(path, _crownkingfile);
+                    return File.Exists(path) ? path : null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceWarning($"Couldn't get path to Microchip MPLAB X IDE database : {ex.StackTrace}");
             }
             return null;
         }
@@ -114,6 +141,8 @@ namespace Microchip.Crownking
                 "MemoryModeList",
                 "PinList",
                 "LCD",
+                "AliasList",
+                "StimInfo",
             };
 
         private XDocument _defaultPruning(XDocument xdoc)
@@ -127,7 +156,10 @@ namespace Microchip.Crownking
 
             // Remove the unwanted elements
             foreach (string name in _unwantednodes)
-                xroot.Elements().Where(p => p.Name.LocalName == name).Remove();
+                xroot.DescendantElements(name).Remove();
+
+            // Remove unwanted sub-elements in various elements that we have no use of.
+            xroot.DescendantElements("SFRModeList").Where(p => p.IsEmpty).Remove();
 
             // Remove the namespaces and prefixes
             foreach (XElement e in xroot.DescendantsAndSelf())
@@ -141,9 +173,6 @@ namespace Microchip.Crownking
             // Remove the unwanted root's attribute
             xroot.Attribute("schemaLocation").Remove();
 
-            // Remove unwanted sub-elements in various elements that we have no use of.
-            xroot.Descendants().Where(p => p.Name.LocalName == "AliasList").Remove();
-            xroot.Descendants().Where(p => p.Name.LocalName == "StimInfo").Remove();
 
             return xdoc;
         }
@@ -160,7 +189,7 @@ namespace Microchip.Crownking
         #region Constructors
 
         /// <summary>
-        /// Specialised default constructor for use only by derived class.
+        /// Specialized default constructor for use only by derived class.
         /// </summary>
         protected PICCrownking()
         {
@@ -169,7 +198,7 @@ namespace Microchip.Crownking
 
         #endregion
 
-        #region API basic functions
+        #region Public API
 
         /// <summary>
         /// Gets the last error encountered.
@@ -201,7 +230,8 @@ namespace Microchip.Crownking
             if (path != null)
                 return File.GetCreationTime(path);
             _checkDBExist();
-            return File.GetCreationTime(CurrentDBPath);
+            if (CurrentDBPath != null) return File.GetCreationTime(CurrentDBPath);
+            return DateTime.Now;
         }
 
         /// <summary>
@@ -237,7 +267,7 @@ namespace Microchip.Crownking
         /// </summary>
         /// <param name="sPICName">The name of the PIC being looked for.</param>
         /// <returns>
-        /// The XML document as retrieved from the ctive Microchip database. Or null if not found or no database.
+        /// The XML document as retrieved from the active Microchip database. Or null if not found or no database.
         /// </returns>
         /// <remarks>
         /// </remarks>
@@ -285,7 +315,7 @@ namespace Microchip.Crownking
         /// </summary>
         /// <param name="filter">A filter predicate to select categories of PIC names.</param>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process PIC names list in this collection.
+        /// An enumerator that allows <code lang="C#">foreach</code> to be used to process PIC names list in this collection.
         /// </returns>
         /// <remarks>
         /// Only PIC16 and PIC18 are listed whatever database and filter used.
@@ -311,7 +341,7 @@ namespace Microchip.Crownking
         /// Enumerates all the PIC16 and PIC18 names contained in the current database.
         /// </summary>
         /// <returns>
-        /// An enumerator that allows 'foreach' to be used to process PIC names list in this collection.
+        /// An enumerator that allows <code lang="C#">foreach</code> to be used to process PIC names list in this collection.
         /// </returns>
         /// <remarks>
         /// Only PIC16 and PIC18 are listed whatever database content is.
@@ -322,9 +352,9 @@ namespace Microchip.Crownking
         /// Forcibly updates the local database for PICs selected via a filter on their names.
         /// </summary>
         /// <remarks>
-        /// Only PIC16 and PIC18 are kept whatever filter is provided.
+        /// The filter can only apply to a subset of PIC16 and PIC18 definition entries.
         /// </remarks>
-        /// <param name="filter">A filter function to select PICs by name.</param>
+        /// <param name="filter">(Optional) A filter function to select PICs by name. Default selects PIC16 and PIC18.</param>
         /// <param name="pruning">(Optional) The pruning function to simplify the PIC XML definition.</param>
         public void UpdateDB(Func<string, bool> filter = null, Func<XDocument, XDocument> pruning = null)
         {
@@ -348,14 +378,10 @@ namespace Microchip.Crownking
             // An MPLAB X IDE database exists. The caller considers we need to (re)generate the local database.
             try
             {
-#if false
-                XElement xpics = new XElement("PICS");   // For debugging purpose we wish a text-readable (uncompressed) version of the PIC database.
-                XDocument xconcat = new XDocument(xpics);
-#endif
                 // Create a new local database
                 using (FileStream outfile = new FileStream(localpath, FileMode.Create, FileAccess.Write))
                 {
-                    // Those database are compressed
+                    // Those database are compressed (ZIP format)
                     using (ZipArchive crownkingfile = ZipFile.OpenRead(idecrownkingpath),
                                       zoutfile = new ZipArchive(outfile, ZipArchiveMode.Create))
                     {
@@ -378,21 +404,17 @@ namespace Microchip.Crownking
                                     
                                     if (xdoc != null)
                                     {
-#if false
-                                        xpics.Add(xdoc.Root);
-#endif
+                                        PIC pic = xdoc.ToObject<PIC>();
+                                        XmlSerializer xs = new XmlSerializer(typeof(PIC));
                                         ZipArchiveEntry picentry = zoutfile.CreateEntry(entry.FullName);
                                         using (StreamWriter picw = new StreamWriter(picentry.Open()))
-                                            xdoc.Save(picw);
+                                            xs.Serialize(picw, pic);
                                     }
                                 }
                             }
                         }
                     }
                 }
-#if false
-                xconcat.Save(localpath.Replace(".zip", ".xml"), SaveOptions.None);
-#endif
                 CurrentDBPath = localpath;
                 Status = DBStatus.DBOK;
                 LastError = DBErrorCode.NoError;

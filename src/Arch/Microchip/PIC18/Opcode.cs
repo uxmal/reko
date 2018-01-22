@@ -148,13 +148,13 @@ namespace Reko.Arch.Microchip.PIC18
         SETF,
         ///<summary>Enter sleep mode</summary>
         SLEEP,
-        ///<summary>Substract f from WREG with Borrow</summary>
+        ///<summary>Subtracts f from WREG with Borrow</summary>
         SUBFWB,
-        ///<summary>Substract WREG from literal</summary>
+        ///<summary>Subtracts WREG from literal</summary>
         SUBLW,
-        ///<summary>Substract WREG from f</summary>
+        ///<summary>Subtracts WREG from f</summary>
         SUBWF,
-        ///<summary>Substract WREG from f with Borrow</summary>
+        ///<summary>Subtracts WREG from f with Borrow</summary>
         SUBWFB,
         ///<summary>Swap nibbles in f</summary>
         SWAPF,
@@ -183,9 +183,9 @@ namespace Reko.Arch.Microchip.PIC18
         MOVSS,
         ///<summary>Push literal at FSR2, decrement FSR2</summary>
         PUSHL,
-        ///<summary>Substract literal from FSR</summary>
+        ///<summary>Subtracts literal from FSR</summary>
         SUBFSR,
-        ///<summary>Substract literal from FSR2 and return</summary>
+        ///<summary>Subtracts literal from FSR2 and return</summary>
         SUBULNK,
         ///<summary>Move indexed to f (Long range - enhanced PIC18 only)</summary>
         MOVSFL

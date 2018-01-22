@@ -13,7 +13,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
     {
         #region Locals
 
-        private static PIC pic = PICSamples.GetSample(InstructionSetID.PIC18);
         private PIC18Architecture arch;
         private Address baseAddr = Address.Ptr32(0x200);
         private PIC18State state;
@@ -44,24 +43,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         // 
         private Dictionary<ushort[], ExpectResult> _anyPIC_anyMode_Instrs = new Dictionary<ushort[], ExpectResult>()
         {
-            { new ushort[] { 0x0003 }, new ExpectResult("SLEEP", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x0004 }, new ExpectResult("CLRWDT", "0|L--|00000200(2): 1 instructions") },
             { new ushort[] { 0x0005 }, new ExpectResult("PUSH", "0|L--|00000200(2): 1 instructions") },
             { new ushort[] { 0x0006 }, new ExpectResult("POP", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x0007 }, new ExpectResult("DAW", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x0008 }, new ExpectResult("TBLRD\t*", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x0009 }, new ExpectResult("TBLRD\t*+", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x000A }, new ExpectResult("TBLRD\t*-", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x000B }, new ExpectResult("TBLRD\t+*", "0|L--|00000200(2): 1 instructions") },
-            { new ushort[] { 0x000C }, new ExpectResult("TBLWT\t*") },
-            { new ushort[] { 0x000D }, new ExpectResult("TBLWT\t*+") },
-            { new ushort[] { 0x000E }, new ExpectResult("TBLWT\t*-") },
-            { new ushort[] { 0x000F }, new ExpectResult("TBLWT\t+*") },
             { new ushort[] { 0x0010 }, new ExpectResult("RETFIE") },
             { new ushort[] { 0x0011 }, new ExpectResult("RETFIE\tS") },
             { new ushort[] { 0x0012 }, new ExpectResult("RETURN") },
             { new ushort[] { 0x0013 }, new ExpectResult("RETURN\tS") },
-            { new ushort[] { 0x00FF }, new ExpectResult("RESET") },
 
             { new ushort[] { 0x0100 }, new ExpectResult("MOVLB\t0x00") },
             { new ushort[] { 0x0107 }, new ExpectResult("MOVLB\t0x07") },
@@ -76,22 +63,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             { new ushort[] { 0x0744 }, new ExpectResult("DECF\t0x44") },
             { new ushort[] { 0x07BB }, new ExpectResult("DECF\t0xBB") },
 
-            { new ushort[] { 0x0800 }, new ExpectResult("SUBLW\t0x00") },
-            { new ushort[] { 0x08AA }, new ExpectResult("SUBLW\t0xAA") },
-            { new ushort[] { 0x0922 }, new ExpectResult("IORLW\t0x22") },
-            { new ushort[] { 0x0977 }, new ExpectResult("IORLW\t0x77") },
-            { new ushort[] { 0x0A00 }, new ExpectResult("XORLW\t0x00") },
-            { new ushort[] { 0x0AAA }, new ExpectResult("XORLW\t0xAA") },
-            { new ushort[] { 0x0B22 }, new ExpectResult("ANDLW\t0x22") },
-            { new ushort[] { 0x0B77 }, new ExpectResult("ANDLW\t0x77") },
-            { new ushort[] { 0x0C00 }, new ExpectResult("RETLW\t0x00") },
-            { new ushort[] { 0x0CAA }, new ExpectResult("RETLW\t0xAA") },
-            { new ushort[] { 0x0D22 }, new ExpectResult("MULLW\t0x22") },
-            { new ushort[] { 0x0D77 }, new ExpectResult("MULLW\t0x77") },
-            { new ushort[] { 0x0E00 }, new ExpectResult("MOVLW\t0x00") },
-            { new ushort[] { 0x0EAA }, new ExpectResult("MOVLW\t0xAA") },
-            { new ushort[] { 0x0F33 }, new ExpectResult("ADDLW\t0x33") },
-            { new ushort[] { 0x0F88 }, new ExpectResult("ADDLW\t0x88") },
 
             { new ushort[] { 0x1123 }, new ExpectResult("IORWF\t0x23,W") },
             { new ushort[] { 0x115A }, new ExpectResult("IORWF\t0x5A,W") },
@@ -331,9 +302,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             { new ushort[] { 0xEF03, 0xF000 } , new ExpectResult("GOTO\t0x000006") },
             { new ushort[] { 0xEF56, 0xF789 } , new ExpectResult("GOTO\t0x0F12AC") },
 
-            { new ushort[] { 0xF000 } , new ExpectResult("NOP") },
-            { new ushort[] { 0xF123 } , new ExpectResult("NOP") },
-            { new ushort[] { 0xFEDC, 0xF256 } , new ExpectResult("NOP") },
         };
 
 
@@ -345,13 +313,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         }
 
         public override Address LoadAddress => baseAddr;
-
-        [SetUp]
-        public void Setup()
-        {
-            arch = new PIC18Architecture(pic) { ExecMode = PICExecMode.Traditional };
-            state = (PIC18State)arch.CreateProcessorState();
-        }
 
         protected override MemoryArea RewriteCode(uint[] words)
         {
@@ -365,8 +326,465 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         }
 
         [Test]
+        public void PIC18_NOP()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0000);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|nop"
+                );
+
+            Rewrite(0xF000);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|nop"
+                );
+
+            Rewrite(0xF123);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|nop"
+                );
+
+            Rewrite(0xFEDC, 0xF256);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|nop",
+                "2|L--|00000202(2): 1 instructions", "3|L--|nop"
+                );
+
+        }
+
+        [Test]
+        public void PIC18_SLEEP()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0003);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|RCON = DPB(RCON, false, 2)", "2|L--|RCON = DPB(RCON, true, 3)"
+                );
+        }
+
+        [Test]
+        public void PIC18_CLRWDT()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0004);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|RCON = DPB(RCON, true, 2)", "2|L--|RCON = DPB(RCON, true, 3)"
+                );
+        }
+
+        [Test]
+        public void PIC18_PUSH()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0005);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|call 0000000C (1)"
+                );
+        }
+
+        [Test]
+        public void PIC18_POP()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0006);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|call 0000000C (1)"
+                );
+        }
+
+        [Test]
+        public void PIC18_DAW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0007);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = __daw(WREG, C, DC)()"
+                );
+        }
+
+        [Test]
+        public void PIC18_TBLRD()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0008);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblrd(0x00)"
+                );
+            Rewrite(0x0009);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblrd(0x01)"
+                );
+            Rewrite(0x000A);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblrd(0x02)"
+                );
+            Rewrite(0x000B);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblrd(0x03)"
+                );
+        }
+
+        [Test]
+        public void PIC18_TBLWT()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x000C);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblwt(0x00)"
+                );
+            Rewrite(0x000D);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblwt(0x01)"
+                );
+            Rewrite(0x000E);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblwt(0x02)"
+                );
+            Rewrite(0x000F);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|__tblwt(0x03)"
+                );
+        }
+
+        [Test]
+        public void PIC18_RETFIE()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0010);
+            AssertCode(
+                "0|T--|00000200(2): 1 instructions", "1|T--|return (1,0)"
+                );
+            Rewrite(0x0011);
+            AssertCode(
+                "0|T--|00000200(2): 1 instructions", "1|T--|return (1,0)"
+                );
+        }
+
+        [Test]
+        public void PIC18_RETURN()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0012);
+            AssertCode(
+                "0|T--|00000200(2): 1 instructions", "1|T--|return (1,0)"
+                );
+            Rewrite(0x0013);
+            AssertCode(
+                "0|T--|00000200(2): 1 instructions", "1|T--|return (1,0)"
+                );
+        }
+
+        [Test]
+        public void PIC18_RESET()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x00FF);
+            AssertCode(
+                "0|H--|00000200(2): 1 instructions", "1|L--|__reset()"
+                );
+        }
+
+        [Test]
+        public void PIC18_MOVLB()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0100);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|BSR = 0x00"
+                );
+            Rewrite(0x0105);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|BSR = 0x05"
+                );
+        }
+
+        [Test]
+        public void PIC18_MULWF()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0344);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = Mem0[(BSR << 0x08) + 0x44:byte] *u WREG"
+                );
+            Rewrite(0x0389);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = Mem0[(BSR << 0x08) + 0x89:byte] *u WREG"
+                );
+            Rewrite(0x0200);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = Mem0[0x0000] *u WREG"
+                );
+            Rewrite(0x025F);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = Mem0[0x005F] *u WREG"
+                );
+            Rewrite(0x0289);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = Mem0[0x0089] *u WREG"
+                );
+        }
+
+        [Test]
+        public void PIC18_DECF()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0400);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = Mem *u WREG", "2|L--|CDCZOVN = cond(WREG)"
+                );
+            Rewrite(0x0500);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = Mem *u WREG", "2|L--|CDCZOVN = cond(WREG)"
+                );
+            Rewrite(0x0600);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = Mem *u WREG", "2|L--|CDCZOVN = cond(WREG)"
+                );
+            Rewrite(0x0700);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = Mem *u WREG", "2|L--|CDCZOVN = cond(WREG)"
+                );
+        }
+
+        [Test]
+        public void PIC18_SUBLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0800);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = 0x00 - WREG", "2|L--|CDCZOVN = cond(WREG)"
+                );
+            Rewrite(0x0855);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = 0x55 - WREG", "2|L--|CDCZOVN = cond(WREG)"
+                );
+        }
+
+        [Test]
+        public void PIC18_IORLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0900);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG | 0x00", "2|L--|ZN = cond(WREG)"
+                );
+            Rewrite(0x0955);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG | 0x55", "2|L--|ZN = cond(WREG)"
+                );
+        }
+
+        [Test]
+        public void PIC18_XORLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0A00);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG ^ 0x00", "2|L--|ZN = cond(WREG)"
+                );
+            Rewrite(0x0A55);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG ^ 0x55", "2|L--|ZN = cond(WREG)"
+                );
+        }
+
+        [Test]
+        public void PIC18_ANDLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0B00);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG & 0x00", "2|L--|ZN = cond(WREG)"
+                );
+            Rewrite(0x0B55);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG & 0x55", "2|L--|ZN = cond(WREG)"
+                );
+        }
+
+        [Test]
+        public void PIC18_RETLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0C00);
+            AssertCode(
+                "0|T--|00000200(2): 2 instructions", "1|L--|WREG = 0x00", "2|T--|return (1,0)"
+                );
+            Rewrite(0x0C55);
+            AssertCode(
+                "0|T--|00000200(2): 2 instructions", "1|L--|WREG = 0x55", "2|T--|return (1,0)"
+                );
+        }
+
+        [Test]
+        public void PIC18_MULLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0D00);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = WREG *u 0x00"
+                );
+            Rewrite(0x0D55);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|PRODH_PRODL = WREG *u 0x55"
+                );
+        }
+
+        [Test]
+        public void PIC18_MOVLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0E00);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|WREG = 0x00"
+                );
+            Rewrite(0x0E55);
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|L--|WREG = 0x55"
+                );
+        }
+
+        [Test]
+        public void PIC18_ADDLW()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0x0F00);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG + 0x00", "2|L--|CDCZOVN = cond(WREG)"
+                );
+            Rewrite(0x0F55);
+            AssertCode(
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG + 0x55", "2|L--|CDCZOVN = cond(WREG)"
+                );
+        }
+
+        [Test]
+        public void PIC18_CALL()
+        {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
+            Rewrite(0xEC06, 0xF000);
+            AssertCode(
+                "0|T--|00000200(4): 1 instructions", "1|T--|call 0x0000000C (1)"
+                );
+
+            Rewrite(0xEC12, 0xF345);
+            AssertCode(
+                "0|T--|00000200(4): 1 instructions", "1|T--|call 0x00068A24 (1)"
+                );
+
+            Rewrite(0xED06, 0xF000);
+            AssertCode(
+                "0|T--|00000200(4): 1 instructions", "1|T--|call 0x0000000C (1)"
+                );
+
+            Rewrite(0xED12, 0xF345);
+            AssertCode(
+                "0|T--|00000200(4): 1 instructions", "1|T--|call 0x00068A24 (1)"
+                );
+
+
+        }
+
+        [Test]
         public void PIC18_Invalid()
         {
+            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18))
+            {
+                ExecMode = PICExecMode.Traditional
+            };
+            state = (PIC18State)arch.CreateProcessorState();
             Rewrite(0x0001);
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
@@ -387,7 +805,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
                 "2|L--|00000202(2): 1 instructions", "3|L--|nop",
-                "4|L--|00000204(2): 2 instructions", "5|L--|0034 = WREG | 0x0034",""
+                "4|L--|00000204(2): 2 instructions", "5|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "6|L--|ZN = cond(Mem0[0x0034:byte])"
                 );
 
             Rewrite(0x0015);
@@ -460,12 +878,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0x0067, 0x1234);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
                 );
 
             Rewrite(0x006F, 0xF000);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 1 instructions", "3|L--|nop"
                 );
 
             Rewrite(0x0080);
@@ -479,7 +899,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
                 );
 
             Rewrite(0x0140);
-            AssertCode("0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
+            AssertCode(
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
                 );
 
             Rewrite(0x0180);
@@ -499,7 +920,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0xC000, 0x0123);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 1 instructions", "3|---|<invalid>"
                 );
 
             Rewrite(0xEB00);
@@ -509,7 +931,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0xEB00, 0x1234);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
                 );
 
             Rewrite(0xEB80);
@@ -519,7 +942,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0xEB80, 0x1234);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
                 );
 
             Rewrite(0xEC00);
@@ -529,7 +953,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0xEC00, 0x1234);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
                 );
 
             Rewrite(0xED00);
@@ -537,9 +962,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>"
                 );
 
-            Rewrite(0xED00, 0x9876);
+            Rewrite(0xED00, 0x989D);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                "2|L--|00000202(2): 1 instructions", "3|L--|BCF"
                 );
 
             Rewrite(0xEE00);
@@ -549,18 +975,21 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0xEE00, 0x6543);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                ""
                 );
 
 
             Rewrite(0xEE00, 0xF400);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                ""
                 );
 
             Rewrite(0xEE30, 0xF000);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                ""
                 );
 
             Rewrite(0xEE40);
@@ -580,62 +1009,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
             Rewrite(0xEF00, 0xEDCB);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>", ""
+                "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
+                ""
                 );
 
         }
 
-        [Test]
-        public void PIC18_NOP()
-        {
-            Rewrite(0x0000);
-            AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|L--|nop"
-                );
-
-            Rewrite(0xF000);
-            AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|L--|nop"
-                );
-
-            Rewrite(0xF123);
-            AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|L--|nop"
-                );
-
-            Rewrite(0xFEDC, 0xF256);
-            AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|L--|nop",
-                "2|L--|00000202(2): 1 instructions", "3|L--|nop"
-                );
-
-        }
-
-        [Test]
-        public void PIC18_CALL()
-        {
-            Rewrite(0xEC06, 0xF000);
-            AssertCode(
-                "0|T--|00000200(4): 1 instructions", "1|T--|call 0000000C (1)"
-                );
-
-            Rewrite(0xEC12, 0xF345);
-            AssertCode(
-                "0|T--|00000200(4): 1 instructions", "1|T--|call 00068A24 (1)"
-                );
-
-            Rewrite(0xED06, 0xF000);
-            AssertCode(
-                "0|T--|00000200(4): 1 instructions", "1|T--|call 0000000C (1)"
-                );
-
-            Rewrite(0xED12, 0xF345);
-            AssertCode(
-                "0|T--|00000200(4): 1 instructions", "1|T--|call 00068A24 (1)"
-                );
-
-
-        }
     }
 
 }

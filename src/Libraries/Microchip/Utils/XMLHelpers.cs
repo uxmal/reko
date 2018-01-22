@@ -595,7 +595,7 @@ namespace Microchip.Utils
         /// <param name="xElem">The <see cref="XElement"/> tree to act on.</param>
         /// <param name="nodeName">Local name of the node.</param>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process descendant elements in this
+        /// An enumerator that allows <code lang="C#">foreach</code> to be used to process descendant elements in this
         /// collection.
         /// </returns>
         public static IEnumerable<XElement> DescendantElements(this XElement xElem, string nodeName)
@@ -625,6 +625,19 @@ namespace Microchip.Utils
                 return default(T);
             }
         }
+
+        /// <summary>
+        /// An XDocument extension method that converts this XML tree (or starting at its descendant) to
+        /// an object.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="xdoc">The <see cref="XDocument"/> to act on.</param>
+        /// <param name="sDescendantLocalName">(Optional) Local name of the descendant.</param>
+        /// <returns>
+        /// The given XML data converted to an object of type T.
+        /// </returns>
+        public static T ToObject<T>(this XDocument xdoc, string sDescendantLocalName = null)
+            => xdoc.Root.ToObject<T>();
 
         /// <summary>
         /// An extension method that converts an object of type T to an XElement tree.

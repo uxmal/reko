@@ -25,152 +25,83 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Microchip.MemoryMapper;
 using System;
+using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
-    /// <summary>
-    /// Interface for PIC18 Operands' visitors.
-    /// </summary>
-    public interface IPIC18kOperand
-    {
-        T Accept<T>(IPIC18OperandVisitor<T> visitor);
-    }
 
     /// <summary>
-    /// Interface defining the permitted visitors on PIC18 Operands.
+    /// The notion of PIC18 immediate operand. Must be inherited.
     /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    public interface IPIC18OperandVisitor<T>
+    public abstract class PIC18ImmediateOperand : MachineOperand, IPIC18kOperand
     {
-        T Visit(PIC18Immed4Operand imm4);
-        T Visit(PIC18Immed6Operand imm6);
-        T Visit(PIC18Immed8Operand imm8);
-        T Visit(PIC18Immed12Operand imm12);
-        T Visit(PIC18Immed14Operand imm14);
-        T Visit(PIC18FSR2IdxOperand imm8);
-        T Visit(PIC18Memory12bitAbsAddrOperand addr12);
-        T Visit(PIC18Memory14bitAbsAddrOperand addr14);
-        T Visit(PIC18DataBitAccessOperand bitno);
-        T Visit(PIC18DataBankAccessOperand mem);
-        T Visit(PIC18DataByteAccessWithDestOperand mem);
-        T Visit(PIC18ProgRel8AddrOperand roff8);
-        T Visit(PIC18ProgRel11AddrOperand roff11);
-        T Visit(PIC18ProgAbsAddrOperand addr20);
-        T Visit(PIC18FSRNumOperand fsrnum);
-        T Visit(PIC18ShadowOperand shad);
-        T Visit(PIC18TableReadWriteOperand tblmode);
-
-    }
-
-    /// <summary>
-    /// A PIC18 operand with visitor mechanism interface.
-    /// </summary>
-    public abstract class PIC18OperandImpl : MachineOperand, IPIC18kOperand
-    {
-        public PICExecMode ExecMode { get; }
+        /// <summary>
+        /// The immediate value.
+        /// </summary>
+        public readonly Constant ImmediateValue;
 
         /// <summary>
-        /// Specialised constructor for use only by derived class.
+        /// Constructor.
         /// </summary>
-        /// <param name="dataWidth">Width of the data.</param>
-        protected PIC18OperandImpl(PrimitiveType dataWidth, PICExecMode execmod)
-            : base(dataWidth)
+        /// <param name="mode">The PIC execution mode.</param>
+        /// <param name="immValue">The immediate constant value.</param>
+        /// <param name="datawidth">The constant data width.</param>
+        public PIC18ImmediateOperand(Constant immValue, PrimitiveType datawidth) : base(datawidth)
         {
-            ExecMode = execmod;
+            ImmediateValue = immValue;
         }
 
+        /// <summary>
+        /// Accepts the given visitor method.
+        /// </summary>
+        /// <param name="visitor">The visitor method.</param>
+        public abstract void Accept(IPIC18OperandVisitor visitor);
+
+        /// <summary>
+        /// Accepts the given visitor function.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <param name="visitor">The visitor function.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
         public abstract T Accept<T>(IPIC18OperandVisitor<T> visitor);
 
-        public virtual bool IsVisible => true;
+        /// <summary>
+        /// Accepts the given visitor function with context.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter of the function result.</typeparam>
+        /// <typeparam name="C">Generic type parameter of the context.</typeparam>
+        /// <param name="visitor">The visitor function.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// A result of type <typeparamref name="T"/>.
+        /// </returns>
+        public abstract T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context);
 
-    }
-
-    public class DataAddressOperand : MachineOperand
-    {
-        public Address Address;
-
-        public DataAddressOperand(Address a) : base(PrimitiveType.Ptr16)
-        {
-            if (a == null) throw new ArgumentNullException(nameof(a));
-            Address = a;
-        }
-
-        public static DataAddressOperand Create(Address addr)
-        {
-            return new DataAddressOperand(addr);
-        }
-
-        public static DataAddressOperand Ptr16(ushort a)
-        {
-            return new DataAddressOperand(Address.Ptr16(a));
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.WriteAddress(Address.ToString(), Address);
-        }
-    }
-
-    public class ProgAddressOperand : MachineOperand
-    {
-        public Address Address;
-
-        public ProgAddressOperand(Address a) : base(PrimitiveType.Pointer32)
-        {
-            if (a == null) throw new ArgumentNullException(nameof(a));
-            Address = a;
-        }
-
-        public static ProgAddressOperand Create(Address addr)
-        {
-            return new ProgAddressOperand(addr);
-        }
-
-        public static ProgAddressOperand Ptr16(ushort a)
-        {
-            return new ProgAddressOperand(Address.Ptr32(a));
-        }
-
-        public static ProgAddressOperand Ptr32(uint a)
-        {
-            return new ProgAddressOperand(Address.Ptr32(a));
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.WriteAddress(Address.ToString(), Address);
-        }
     }
 
     /// <summary>
     /// A PIC18 4-bit unsigned immediate operand. Used by MOVLB instruction.
     /// </summary>
-    public class PIC18Immed4Operand : PIC18OperandImpl
+    public class PIC18Immed4Operand : PIC18ImmediateOperand
     {
-        /// <summary>
-        /// Gets the 4-bit immediate constant.
-        /// </summary>
-        public Constant Imm4 { get; }
-
         /// <summary>
         /// Instantiates a 4-bit unsigned immediate operand. Used by MOVLB instruction.
         /// </summary>
         /// <param name="b">The byte value.</param>
-        public PIC18Immed4Operand(PICExecMode mode, byte b) : base(PrimitiveType.Byte, mode)
+        public PIC18Immed4Operand(byte b) : base(Constant.Byte(b), PrimitiveType.Byte)
         {
-            Imm4 = Constant.Byte(b);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitImm4(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitImm4(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T,C > visitor, C context) => visitor.VisitImm4(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{Imm4.ToByte():X2}");
+            writer.Write($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -178,30 +109,23 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 6-bit unsigned immediate operand. Used by ADDFSR, SUBFSR, MOVLB instructions.
     /// </summary>
-    public class PIC18Immed6Operand : PIC18OperandImpl
+    public class PIC18Immed6Operand : PIC18ImmediateOperand
     {
-        /// <summary>
-        /// Gets the 6-bit immediate constant.
-        /// </summary>
-        public Constant Imm6 { get; }
-
         /// <summary>
         /// Instantiates a 6-bit unsigned immediate operand. Used by ADDFSR, SUBFSR instructions.
         /// </summary>
         /// <param name="b">The byte value.</param>
-        public PIC18Immed6Operand(PICExecMode mode, byte b) : base(PrimitiveType.Byte, mode)
+        public PIC18Immed6Operand(byte b) : base(Constant.Byte(b), PrimitiveType.Byte)
         {
-            Imm6 = Constant.Byte(b);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitImm6(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitImm6(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitImm6(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{Imm6.ToByte():X2}");
+            writer.Write($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -209,30 +133,23 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 8-bit unsigned immediate operand. Used by immediate instructions (ADDLW, SUBLW, RETLW, ...)
     /// </summary>
-    public class PIC18Immed8Operand : PIC18OperandImpl
+    public class PIC18Immed8Operand : PIC18ImmediateOperand
     {
-        /// <summary>
-        /// Gets the 8-bit immediate constant.
-        /// </summary>
-        public Constant Imm8 { get; }
-
         /// <summary>
         /// Instantiates a 8-bit unsigned immediate operand. Used by immediate instructions (ADDLW, SUBLW, RETLW, ...)
         /// </summary>
         /// <param name="b">The byte value.</param>
-        public PIC18Immed8Operand(PICExecMode mode, byte b) : base(PrimitiveType.Byte, mode)
+        public PIC18Immed8Operand(byte b) : base(Constant.Byte(b), PrimitiveType.Byte)
         {
-            Imm8 = Constant.Byte(b);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitImm8(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitImm8(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitImm8(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{Imm8}");
+            writer.Write($"{ImmediateValue}");
         }
 
     }
@@ -240,61 +157,57 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 12-bit unsigned immediate operand. Used by LFSR instruction.
     /// </summary>
-    public class PIC18Immed12Operand : PIC18OperandImpl
+    public class PIC18Immed12Operand : PIC18ImmediateOperand
     {
-        /// <summary>
-        /// Gets the 12-bit immediate constant.
-        /// </summary>
-        public Constant Imm12 { get; }
-
         /// <summary>
         /// Instantiates a 12-bit unsigned immediate operand. Used by LFSR instruction.
         /// </summary>
-        /// <param name="w">An ushort to process.</param>
-        public PIC18Immed12Operand(PICExecMode mode, ushort w) : base(PrimitiveType.UInt16, mode)
+        /// <param name="w">An unsigned 16-bit integer to process.</param>
+        public PIC18Immed12Operand(ushort w) : base(Constant.UInt16(w), PrimitiveType.UInt16)
         {
-            Imm12 = Constant.Word16(w);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitImm12(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitImm12(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitImm12(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{Imm12.ToUInt16():X3}");
+            ushort immAddr = ImmediateValue.ToUInt16();
+            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            if (sfr != RegisterStorage.None)
+                writer.Write($"{sfr.Name}");
+            else
+                writer.Write($"0x{immAddr:X4}");
         }
 
     }
 
     /// <summary>
-    /// A PIC18 14-bit unsigned immediate operand. Uused by LFSR instruction - PIC18 Enhanced.
+    /// A PIC18 14-bit unsigned immediate operand. Used by LFSR instruction - PIC18 Enhanced.
     /// </summary>
-    public class PIC18Immed14Operand : PIC18OperandImpl
+    public class PIC18Immed14Operand : PIC18ImmediateOperand
     {
-        /// <summary>
-        /// Gets the 14-bit immediate constant.
-        /// </summary>
-        public Constant Imm14 { get; }
-
         /// <summary>
         /// Instantiates a 14-bit unsigned immediate operand. Used by LFSR instruction - PIC18 Enhanced.
         /// </summary>
-        /// <param name="w">An ushort to process.</param>
-        public PIC18Immed14Operand(PICExecMode mode, ushort w) : base(PrimitiveType.UInt16, mode)
+        /// <param name="w">An unsigned 16-bit integer to process.</param>
+        public PIC18Immed14Operand(ushort w) : base(Constant.UInt16(w), PrimitiveType.UInt16)
         {
-            Imm14 = Constant.Word16(w);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitImm14(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitImm14(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitImm14(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{Imm14.ToUInt16():X4}");
+            ushort immAddr = ImmediateValue.ToUInt16();
+            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            if (sfr != RegisterStorage.None)
+                writer.Write($"{sfr.Name}");
+            else
+                writer.Write($"0x{immAddr:X4}");
         }
 
     }
@@ -302,26 +215,25 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 7-bit unsigned offset operand to FSR2. Used by MOVSF, MOVSFL, MOVSS instructions.
     /// </summary>
-    public class PIC18FSR2IdxOperand : PIC18OperandImpl
+    public class PIC18FSR2IdxOperand : MachineOperand, IPIC18kOperand
     {
         /// <summary>
         /// Gets the 7-bit unsigned offset constant.
         /// </summary>
-        public Constant Offset { get; }
+        public readonly Constant Offset;
 
         /// <summary>
         /// Instantiates a 7-bit unsigned offset operand. Used by MOVSF, MOVSFL, MOVSS instructions.
         /// </summary>
         /// <param name="b">The byte value.</param>
-        public PIC18FSR2IdxOperand(PICExecMode mode, byte b) : base(PrimitiveType.Byte, mode)
+        public PIC18FSR2IdxOperand(byte b) : base(PrimitiveType.Byte)
         {
             Offset = Constant.Byte(b);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitFSR2Idx(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitFSR2Idx(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitFSR2Idx(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -331,212 +243,59 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// A PIC18 12-bit data memory absolute address operand (used by MOVFF, MOVSF instruction)
-    /// </summary>
-    public class PIC18Memory12bitAbsAddrOperand : PIC18OperandImpl
-    {
-        /// <summary>
-        /// Gets the 12-bit data memory address.
-        /// </summary>
-        public DataAddressOperand DataTarget { get; }
-
-        public PIC18Memory12bitAbsAddrOperand(PICExecMode mode, ushort w) : base(PrimitiveType.UInt16, mode)
-        {
-            DataTarget = DataAddressOperand.Ptr16(w);
-        }
-
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write($"0x{DataTarget.Address.ToUInt16():X4}");
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC18 14-bit data memory absolute address operand (used by MOVFFL, MOVSFL instruction)
-    /// </summary>
-    public class PIC18Memory14bitAbsAddrOperand : PIC18OperandImpl
-    {
-        /// <summary>
-        /// Gets the 14-bit data memory address.
-        /// </summary>
-        public DataAddressOperand DataTarget { get; }
-
-        /// <summary>
-        /// Instantiates a 14-bit data memory address operand (used by MOVFFL, MOVSFL instruction)
-        /// </summary>
-        /// <param name="w">An ushort to process.</param>
-        public PIC18Memory14bitAbsAddrOperand(PICExecMode mode, ushort w) : base(PrimitiveType.UInt16, mode)
-        {
-            DataTarget = DataAddressOperand.Ptr16(w);
-        }
-
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write($"0x{DataTarget.Address.ToUInt16():X4}");
-        }
-
-    }
-
-    /// <summary>
     /// A PIC18 Registers Shadowing flag operand. Used by instructions RETFIE, RETURN, CALL.
     /// </summary>
-    public class PIC18ShadowOperand : PIC18OperandImpl
+    public class PIC18ShadowOperand : MachineOperand, IPIC18kOperand, IOperandVisible
     {
         /// <summary>
         /// Gets the indication if a Shadow Register(s) are used. If false, no Shadow Register(s) used.
         /// </summary>
-        public Constant IsShadow { get; }
+        public readonly Constant IsShadow;
 
         /// <summary>
         /// Instantiates a Registers Shadowing flag operand. Used by instructions RETFIE, RETURN, CALL.
         /// </summary>
         /// <param name="s">An int to process.</param>
-        public PIC18ShadowOperand(PICExecMode mode, uint s) : base(PrimitiveType.Bool, mode)
+        public PIC18ShadowOperand(uint s) : base(PrimitiveType.Bool)
         {
-            IsShadow = Constant.Bool(s == 1);
+            IsShadow = Constant.Bool(s != 0);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitShadow(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitShadow(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitShadow(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write(IsShadow.ToBoolean() ? "S" : "");
         }
 
-        public override bool IsVisible => IsShadow.ToBoolean();
+        public bool IsVisible => IsShadow.ToBoolean();
 
     }
 
     /// <summary>
-    /// A PIC18 Bank/Access Data Memory Address operand (like "f,a").
+    /// The notion of PIC18 program address operand. Must be inherited.
     /// </summary>
-    public class PIC18DataBankAccessOperand : PIC18OperandImpl
+    public abstract class PIC18ProgAddrOperand : MachineOperand, IPIC18kOperand
     {
 
         /// <summary>
-        /// Gets the 8-bit memory address.
+        /// Gets the target absolute code address. This is a word-aligned address.
         /// </summary>
-        public DataAddressOperand MemAddr { get; }
+        public Constant CodeTarget { get; protected set; }
 
-        /// <summary>
-        /// Gets the indication if RAM location is in Access RAM or specified by BSR register.
-        /// </summary>
-        public Constant IsAccessRAM { get; }
-
-        public PIC18DataBankAccessOperand(PICExecMode mode, byte addr, int a) : base(PrimitiveType.Byte, mode)
+        public PIC18ProgAddrOperand() : base(PrimitiveType.UInt32)
         {
-            MemAddr = DataAddressOperand.Ptr16(addr);
-            IsAccessRAM = Constant.Bool(a == 0);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public abstract void Accept(IPIC18OperandVisitor visitor);
+        public abstract T Accept<T>(IPIC18OperandVisitor<T> visitor);
+        public abstract T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (ExecMode == PICExecMode.Extended && IsAccessRAM.ToBoolean() && (MemAddr.Address.ToUInt16() < 0x60))
-            {
-                writer.Write($"[0x{MemAddr.Address.ToUInt16():X2}]");
-            }
-            else
-            {
-                writer.Write($"0x{MemAddr.Address.ToUInt16():X2}{(IsAccessRAM.ToBoolean() ? ",ACCESS" : "")}");
-            }
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC18 data memory bit access with destination operand (like "f,b,a").
-    /// Used by Bit-oriented instructions (BCF, BTFSS, ...)
-    /// </summary>
-    public class PIC18DataBitAccessOperand : PIC18DataBankAccessOperand
-    {
-         /// <summary>
-        /// Gets the bit number (value between 0 and 7).
-        /// </summary>
-        /// <value>
-        /// The bit number.
-        /// </value>
-        public Constant BitNumber { get; }
-
-        /// <summary>
-        /// Instantiates a bit number operand. Used by Bit-oriented instructions (BCF, BTFSS, ...).
-        /// </summary>
-        /// <param name="b">The byte value.</param>
-        public PIC18DataBitAccessOperand(PICExecMode mode, byte addr, int a, byte b) : base(mode,addr, a)
-        {
-            BitNumber = Constant.Byte(b);
-        }
-
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            if (ExecMode == PICExecMode.Extended && IsAccessRAM.ToBoolean() && (MemAddr.Address.ToUInt16() < 0x60))
-            {
-                writer.Write($"[0x{MemAddr.Address.ToUInt16():X2}],{BitNumber.ToByte()}");
-            }
-            else
-            {
-                writer.Write($"0x{MemAddr.Address.ToUInt16():X2},{BitNumber.ToByte()}{(IsAccessRAM.ToBoolean() ? ",ACCESS" : "")}");
-            }
-
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC18 Bank Data Memory Address with destination operand (like "f,d,a").
-    /// </summary>
-    public class PIC18DataByteAccessWithDestOperand : PIC18DataBankAccessOperand
-    {
-
-        /// <summary>
-        /// Gets the indication if the Working Register is the destination of the operation. If false, the File Register is the destination.
-        /// </summary>
-        public Constant WregIsDest { get; }
-
-        public PIC18DataByteAccessWithDestOperand(PICExecMode mode, byte addr, int a, int d) : base(mode, addr, a)
-        {
-            WregIsDest = Constant.Bool(d == 0);
-        }
-
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            if (ExecMode == PICExecMode.Extended && IsAccessRAM.ToBoolean() && (MemAddr.Address.ToUInt16() < 0x60))
-            {
-                writer.Write($"[0x{MemAddr.Address.ToUInt16():X2}]{(WregIsDest.ToBoolean() ? ",W" : "")}");
-            }
-            else
-            {
-                writer.Write($"0x{MemAddr.Address.ToUInt16():X2}{(WregIsDest.ToBoolean() ? ",W" : "")}{(IsAccessRAM.ToBoolean() ? ",ACCESS" : "")}");
-            }
-
+            writer.Write($"0x{CodeTarget.ToUInt32():X6}");
         }
 
     }
@@ -544,135 +303,101 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 8-bit relative code offset operand.
     /// </summary>
-    public class PIC18ProgRel8AddrOperand : PIC18OperandImpl
+    public class PIC18ProgRel8AddrOperand : PIC18ProgAddrOperand
     {
         /// <summary>
         /// Gets the relative offset. This a word offset.
         /// </summary>
-        public Constant RelativeWordOffset { get; }
-
-        /// <summary>
-        /// Gets the target absolute code address. This is a byte address.
-        /// </summary>
-        public ProgAddressOperand CodeTarget { get; }
+        public readonly Constant RelativeWordOffset;
 
         /// <summary>
         /// Instantiates a 8-bit relative code offset operand.
         /// </summary>
         /// <param name="off">The 8-bit signed offset value. (word offset)</param>
         /// <param name="instrAddr">The instruction address.</param>
-        public PIC18ProgRel8AddrOperand(PICExecMode mode, sbyte off, Address instrAddr) : base(PrimitiveType.SByte, mode)
+        public PIC18ProgRel8AddrOperand(sbyte off, Address instrAddr) 
         {
             RelativeWordOffset = Constant.SByte(off);
             uint absaddr = (uint)((long)instrAddr.ToUInt32() + 1 + off) & 0xFFFFFU;
-            CodeTarget = ProgAddressOperand.Ptr32(absaddr << 1); 
+            CodeTarget = Constant.UInt32(absaddr << 1);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write($"0x{CodeTarget.Address.ToUInt32():X6}");
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgRel8(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitProgRel8(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitProgRel8(this, context);
 
     }
 
     /// <summary>
     /// A PIC18 11-bit code relative offset operand.
     /// </summary>
-    public class PIC18ProgRel11AddrOperand : PIC18OperandImpl
+    public class PIC18ProgRel11AddrOperand : PIC18ProgAddrOperand
     {
         /// <summary>
         /// Gets the relative offset. This a word offset.
         /// </summary>
-        public Constant RelativeWordOffset { get; }
-
-        /// <summary>
-        /// Gets the target absolute code address. This is a byte address.
-        /// </summary>
-        public ProgAddressOperand CodeTarget { get; }
+        public readonly Constant RelativeWordOffset;
 
         /// <summary>
         /// Instantiates a 11-bit code relative offset operand.
         /// </summary>
         /// <param name="off">The off.</param>
         /// <param name="instrAddr">The instruction address.</param>
-        public PIC18ProgRel11AddrOperand(PICExecMode mode, short off, Address instrAddr) : base(PrimitiveType.Int16, mode)
+        public PIC18ProgRel11AddrOperand(short off, Address instrAddr) 
         {
             RelativeWordOffset = Constant.Int16(off);
             uint absaddr = (uint)((long)instrAddr.ToUInt32() + 1 + off) & 0xFFFFFU;
-            CodeTarget = ProgAddressOperand.Ptr32(absaddr << 1);
+            CodeTarget = Constant.UInt32(absaddr << 1);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write($"0x{CodeTarget.Address.ToUInt32():X6}");
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgRel11(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitProgRel11(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitProgRel11(this, context);
 
     }
 
     /// <summary>
     /// A PIC18 Absolute Code Address operand. Used by GOTO, CALL instructions.
     /// </summary>
-    public class PIC18ProgAbsAddrOperand : PIC18OperandImpl
+    public class PIC18ProgAbsAddrOperand : PIC18ProgAddrOperand
     {
-        /// <summary>
-        /// Gets the Program Memory Address. This is a byte address (21-bit, bit 0 = 0).
-        /// </summary>
-        public ProgAddressOperand CodeTarget { get; }
-
         /// <summary>
         /// Instantiates a Absolute Code Address operand. Used by GOTO, CALL instructions.
         /// </summary>
         /// <param name="addr">The program word address.</param>
-        public PIC18ProgAbsAddrOperand(PICExecMode mode, uint addr) : base(PrimitiveType.Pointer32, mode)
+        public PIC18ProgAbsAddrOperand(uint addr)
         {
-            CodeTarget = ProgAddressOperand.Ptr32(addr << 1);
+            CodeTarget = Constant.UInt32(addr << 1);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write($"0x{(CodeTarget.Address.ToUInt32()):X6}");
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgAbs(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitProgAbs(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitProgAbs(this, context);
 
     }
 
     /// <summary>
     /// A PIC18 FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
     /// </summary>
-    public class PIC18FSRNumOperand : PIC18OperandImpl
+    public class PIC18FSRNumOperand : MachineOperand, IPIC18kOperand
     {
         /// <summary>
         /// Gets the FSR register number.
         /// </summary>
-        public Constant FSRNum { get; }
+        public readonly Constant FSRNum;
 
         /// <summary>
         /// Instantiates a FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
         /// </summary>
-        /// <param name="fsrnum">Gets the FSR register number.</param>
-        public PIC18FSRNumOperand(PICExecMode mode, byte fsrnum) : base(PrimitiveType.Byte, mode)
+        /// <param name="fsrnum">The FSR register number [0, 1, 2].</param>
+        public PIC18FSRNumOperand(byte fsrnum) : base(PrimitiveType.Byte)
         {
             FSRNum = Constant.Byte(fsrnum);
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitFSRNum(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitFSRNum(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitFSRNum(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -685,26 +410,25 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 TBLRD/TBLWT Increment Change mode.
     /// </summary>
-    public class PIC18TableReadWriteOperand : PIC18OperandImpl
+    public class PIC18TableReadWriteOperand : MachineOperand, IPIC18kOperand
     {
         /// <summary>
         /// Gets the TBL increment mode.
         /// </summary>
-        public Constant TBLIncrMode { get; }
+        public readonly Constant TBLIncrMode;
 
         /// <summary>
         /// Instantiates a TBLRD/TBLWT Increment Change mode.
         /// </summary>
         /// <param name="mode">The mode.</param>
-        public PIC18TableReadWriteOperand(PICExecMode mode, uint incrmode) : base(PrimitiveType.Byte, mode)
+        public PIC18TableReadWriteOperand(uint incrmode) : base(PrimitiveType.Byte)
         {
             TBLIncrMode = Constant.Byte((byte)(incrmode & 3));
         }
 
-        public override T Accept<T>(IPIC18OperandVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitTblRW(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitTblRW(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitTblRW(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
@@ -727,6 +451,255 @@ namespace Reko.Arch.Microchip.PIC18
                     writer.Write($"Invalid TBLRD/TBLWT mode: {mode}");
                     break;
             }
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 12-bit data memory absolute address operand (used by MOVFF, MOVSF instruction)
+    /// </summary>
+    public class PIC18Data12bitAbsAddrOperand : MachineOperand, IPIC18kOperand
+    {
+        /// <summary>
+        /// Gets the 12-bit data memory absolute address.
+        /// </summary>
+        public readonly Constant DataTarget;
+
+        public PIC18Data12bitAbsAddrOperand(ushort w) : base(PrimitiveType.UInt16)
+        {
+            DataTarget = Constant.UInt16(w);
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs12(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataAbs12(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataAbs12(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            ushort immAddr = DataTarget.ToUInt16();
+            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            if (sfr != RegisterStorage.None)
+                writer.Write($"{sfr.Name}");
+            else
+                writer.Write($"0x{immAddr:X4}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 14-bit data memory absolute address operand (used by MOVFFL, MOVSFL instruction)
+    /// </summary>
+    public class PIC18Data14bitAbsAddrOperand : MachineOperand, IPIC18kOperand
+    {
+        /// <summary>
+        /// Gets the 14-bit data memory absolute address.
+        /// </summary>
+        public readonly Constant DataTarget;
+
+        /// <summary>
+        /// Instantiates a 14-bit data memory address operand (used by MOVFFL, MOVSFL instruction)
+        /// </summary>
+        /// <param name="w">An unsigned 16-bit integer to process.</param>
+        public PIC18Data14bitAbsAddrOperand(ushort w) : base(PrimitiveType.UInt16)
+        {
+            DataTarget = Constant.UInt16(w);
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs14(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataAbs14(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataAbs14(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            ushort immAddr = DataTarget.ToUInt16();
+            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            if (sfr != RegisterStorage.None)
+                writer.Write($"{sfr.Name}");
+            else
+                writer.Write($"0x{immAddr:X4}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 Bank/Access Data Memory Address operand (like "f,a").
+    /// </summary>
+    public class PIC18BankedAccessOperand : MachineOperand, IPIC18kOperand
+    {
+
+        /// <summary>
+        /// Gets the 8-bit memory address.
+        /// </summary>
+        public readonly Constant BankAddr;
+
+        /// <summary>
+        /// Gets the indication if RAM location is in Access RAM or specified by BSR register.
+        /// </summary>
+        public readonly Constant IsAccessRAM;
+
+        /// <summary>
+        /// The PIC execution mode.
+        /// </summary>
+        public readonly PICExecMode ExecMode;
+
+        public bool IsIndexedAddressing
+            => (ExecMode == PICExecMode.Extended &&
+                IsAccessRAM.ToBoolean() &&
+                PIC18MemoryMapper.BelongsToAccessRAMLow(BankAddr.ToByte()));
+
+        public PIC18BankedAccessOperand(PICExecMode mode, byte addr, int a) : base(PrimitiveType.Byte)
+        {
+            ExecMode = mode;
+            BankAddr = Constant.Byte(addr);
+            IsAccessRAM = Constant.Bool(a == 0);
+        }
+
+        public virtual void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataBanked(this);
+        public virtual T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataBanked(this);
+        public virtual T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataBanked(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            ushort uaddr = BankAddr.ToByte();
+
+            if (IsIndexedAddressing)
+            {
+                writer.Write($"[0x{uaddr:X2}]");
+                return;
+            }
+            if (!IsAccessRAM.ToBoolean())
+            {
+                writer.Write($"0x{uaddr:X2}");
+                return;
+            }
+            if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
+            {
+                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(Address.Ptr16(uaddr));
+                var sfr = PIC18Registers.GetRegister(aaddr);
+                if (sfr != RegisterStorage.None)
+                {
+                    writer.Write($"{sfr.Name},ACCESS");
+                    return;
+                }
+            }
+            writer.Write($"0x{uaddr:X2},ACCESS");
+
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 data memory bit access with destination operand (like "f,b,a").
+    /// Used by Bit-oriented instructions (BCF, BTFSS, ...)
+    /// </summary>
+    public class PIC18DataBitAccessOperand : PIC18BankedAccessOperand
+    {
+        /// <summary>
+        /// Gets the bit number (value between 0 and 7).
+        /// </summary>
+        /// <value>
+        /// The bit number.
+        /// </value>
+        public readonly Constant BitNumber;
+
+        /// <summary>
+        /// Instantiates a bit number operand. Used by Bit-oriented instructions (BCF, BTFSS, ...).
+        /// </summary>
+        /// <param name="b">The byte value.</param>
+        public PIC18DataBitAccessOperand(PICExecMode mode, byte addr, int a, byte b) : base(mode,addr, a)
+        {
+            BitNumber = Constant.Byte(b);
+        }
+
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataBit(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataBit(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataBit(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            ushort uaddr = BankAddr.ToByte();
+            byte bitpos = BitNumber.ToByte();
+
+            if (IsIndexedAddressing)
+            {
+                writer.Write($"[0x{uaddr:X2}],{bitpos}");
+                return;
+            }
+            if (!IsAccessRAM.ToBoolean())
+            {
+                writer.Write($"0x{uaddr:X2},{bitpos}");
+                return;
+            }
+            if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
+            {
+                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(Address.Ptr16(uaddr));
+                var sfr = PIC18Registers.GetRegister(aaddr);
+                if (sfr != RegisterStorage.None)
+                {
+                    var bitname = PIC18Registers.GetBitField(Address.Ptr16(uaddr), bitpos);
+                    if (bitname != null)
+                    {
+                        writer.Write($"{sfr.Name},{bitname.Name},ACCESS");
+                        return;
+                    }
+                    writer.Write($"{sfr.Name},{bitpos},ACCESS");
+                    return;
+                }
+            }
+            writer.Write($"0x{uaddr:X2},{bitpos},ACCESS");
+
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 Bank Data Memory Address with destination operand (like "f,d,a").
+    /// </summary>
+    public class PIC18DataByteAccessWithDestOperand : PIC18BankedAccessOperand
+    {
+
+        /// <summary>
+        /// Gets the indication if the Working Register is the destination of the operation.
+        /// If false, the File Register designated by the address is the destination.
+        /// </summary>
+        public readonly Constant WregIsDest;
+
+        public PIC18DataByteAccessWithDestOperand(PICExecMode mode, byte addr, int a, int d) : base(mode, addr, a)
+        {
+            WregIsDest = Constant.Bool(d == 0);
+        }
+
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataByteWDest(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataByteWDest(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataByteWDest(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            ushort uaddr = BankAddr.ToByte();
+            string wdest = (WregIsDest.ToBoolean() ? ",W" : ",F");
+
+            if (IsIndexedAddressing)
+            {
+                writer.Write($"[0x{uaddr:X2}]{wdest}");
+                return;
+            }
+            if (!IsAccessRAM.ToBoolean())
+            {
+                writer.Write($"0x{uaddr:X2}{wdest}");
+                return;
+            }
+            if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
+            {
+                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(Address.Ptr16(uaddr));
+                var sfr = PIC18Registers.GetRegister(aaddr);
+                if (sfr != RegisterStorage.None)
+                {
+                    writer.Write($"{sfr.Name}{wdest},ACCESS");
+                    return;
+                }
+            }
+            writer.Write($"0x{uaddr:X2}{wdest},ACCESS");
+
         }
 
     }

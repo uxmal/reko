@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using System.Collections.Generic;
 using System;
 using Microchip.Crownking;
+using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -41,8 +42,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private static Dictionary<Opcode, InstructionClass> classOf;
 
-        internal PIC18OperandImpl op1;
-        internal PIC18OperandImpl op2;
+        internal MachineOperand op1;
+        internal MachineOperand op2;
 
         /// <summary>
         /// Instantiates a new <see cref="PIC18Instruction"/> with given <see cref="Opcode"/>, execution mode and operands.
@@ -52,7 +53,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="isExecExtend">True if this PIC18 instruction is for extended execution mode.</param>
         /// <param name="ops">Zero, one or two instruction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
-        public PIC18Instruction(Opcode opc, PICExecMode execMode, params PIC18OperandImpl[] ops)
+        public PIC18Instruction(Opcode opc, PICExecMode execMode, params MachineOperand[] ops)
         {
             this.Opcode = opc;
             this.ExecMode = execMode;
@@ -118,7 +119,7 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Retrieves the i'th operand, or null if there is none at that position.
+        /// Retrieves the I'th operand, or null if there is none at that position.
         /// </summary>
         /// <param name="i">Operand's index..</param>
         /// <returns>
@@ -157,13 +158,13 @@ namespace Reko.Arch.Microchip.PIC18
             writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
-            if ((op1 as PIC18OperandImpl).IsVisible)
+            if ((op1 as IOperandVisible)?.IsVisible ?? true)
             {
                 writer.Tab();
                 op1.Write(writer, options);
                 if (op2 == null)
                     return;
-                if ((op2 as PIC18OperandImpl).IsVisible)
+                if ((op2 as IOperandVisible)?.IsVisible ?? true)
                 {
                     writer.Write(",");
                     op2.Write(writer, options);
