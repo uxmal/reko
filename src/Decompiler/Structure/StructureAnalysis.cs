@@ -207,8 +207,7 @@ namespace Reko.Structure
             {
                 if (b.Pred.Count == 0 && b != proc.EntryBlock)
                     continue;
-                Region from;
-                btor.TryGetValue(b, out from);
+                btor.TryGetValue(b, out var from);
                 foreach (var s in b.Succ)
                 {
                     if (s == proc.ExitBlock)
@@ -1308,8 +1307,7 @@ refinement on the loop body, which we describe below.
             FindReachableRegions(follow, head, excluded);
             var lexNodes = new HashSet<Region>();
             var wl = new  WorkList<Region>(loopNodes);
-            Region item;
-            while (wl.GetWorkItem(out item))
+            while (wl.GetWorkItem(out var item))
             {
                 if (loopNodes.Contains(item))
                 {
