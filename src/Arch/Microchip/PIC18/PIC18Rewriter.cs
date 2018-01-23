@@ -173,6 +173,8 @@ namespace Reko.Arch.Microchip.PIC18
             return binder.EnsureFlagGroup(PIC18Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
+        #region Helpers
+
         private Expression RewriteOp(MachineOperand op)
         {
             var imm = op as PIC18ImmediateOperand;
@@ -209,7 +211,8 @@ namespace Reko.Arch.Microchip.PIC18
                     case 2:
                         fsr = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
                         break;
-                    default: throw new InvalidOperationException();
+                    default:
+                        throw new InvalidOperationException($"Invalid FSR number: {fsrnumOp.FSRNum.ToByte()}");
                 }
                 return fsr;
             }
@@ -255,33 +258,34 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 // Address is BSR direct addressing.
                 Identifier bsr = binder.EnsureRegister(PIC18Registers.BSR);
-                return m.Load(PrimitiveType.Byte, m.IAdd(m.Shl(bsr, 8), offset));
+                return m.LoadB(m.IAdd(m.Shl(bsr, 8), offset));
             }
 
-            // We have some sort of Access RAM bank access.
-
-            var accAddr = PIC18MemoryMapper.TranslateAccessAddress(offset);
-
+            // We have some sort of Access RAM bank access; either Lower or Upper area.
+            //
             if (PIC18MemoryMapper.BelongsToAccessRAMLow(offset))
             {
                 if (mem.ExecMode == PICExecMode.Traditional)
                 {
-                    return accAddr;
+                    return m.LoadB(offset);
                 }
-                else
-                {
-                    // Address is in the form [FSR2]+offset.
-                    Identifier fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
-                    return m.IAdd(fsr2, offset);
-                }
+                // Address is in the form [FSR2]+offset.
+                Identifier fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
+                return m.LoadB(m.IAdd(fsr2, offset));
             }
 
-            // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR.
+            // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
+            // 
+            var accAddr = PIC18MemoryMapper.TranslateAccessAddress(offset);
             var sfr = PIC18Registers.GetRegister(accAddr);
             if (sfr != RegisterStorage.None)
                 return binder.EnsureRegister(sfr);
-            return accAddr;
+            return m.LoadB(accAddr);
         }
+
+        #endregion
+
+        #region Rewrite methods
 
         private void RewriteADDFSR()
         {
@@ -705,8 +709,11 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewritePOP()
         {
+            var stkptr = binder.EnsureRegister(PIC18Registers.STKPTR);
+            m.Assign(stkptr, m.USub(stkptr, 1));
+
+            //TODO: See TOS update
             var tos = binder.EnsureSequence(PIC18Registers.TOSL, PIC18Registers.TOSU, PrimitiveType.Word32);
-            //TODO: See stack update
         }
 
         private void RewritePUSH()
@@ -919,6 +926,8 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(dst, m.Xor(w, src));
             m.Assign(FlagGroup(FlagM.Z | FlagM.N), m.Cond(dst));
         }
+
+        #endregion
 
     }
 
