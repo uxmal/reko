@@ -60,17 +60,11 @@ namespace Reko.Arch.Microchip.PIC18
             valid = (ulong[])st.valid.Clone();
         }
 
-        public override IProcessorArchitecture Architecture { get { return arch; } }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override ProcessorState Clone()
-        {
-            return new PIC18State(this);
-        }
+        public override ProcessorState Clone() => new PIC18State(this);
 
-        public bool IsValid(RegisterStorage reg)
-        {
-            return (valid[reg.Number] & reg.BitMask) == reg.BitMask;
-        }
+        public bool IsValid(RegisterStorage reg) => (valid[reg.Number] & reg.BitMask) == reg.BitMask;
 
         public override Constant GetRegister(RegisterStorage reg)
         {

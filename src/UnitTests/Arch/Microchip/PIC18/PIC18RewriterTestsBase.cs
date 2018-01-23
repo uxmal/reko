@@ -21,43 +21,39 @@
 #endregion
 
 using Microchip.Crownking;
-using NUnit.Framework;
 using Reko.Arch.Microchip.PIC18;
 using Reko.Core;
-using Reko.Core.Machine;
+using Reko.Core.Rtl;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
+namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
 {
-    public class PICDisassemblerTestsBase
+    public class PIC18RewriterTestsBase : RewriterTestBase
     {
         protected static PIC18Architecture arch;
-        protected Address baseAddr = Address.Ptr32(0x100);
+        protected Address baseAddr = Address.Ptr32(0x200);
+        protected PIC18State state;
+        protected MemoryArea image;
 
-        private MachineInstruction _runTest(params ushort[] words)
+        public override IProcessorArchitecture Architecture => arch;
+
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        {
+            return new PIC18Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+        }
+
+        public override Address LoadAddress => baseAddr;
+
+        protected override MemoryArea RewriteCode(uint[] words)
         {
             byte[] bytes = words.SelectMany(w => new byte[]
             {
                 (byte) w,
                 (byte) (w >> 8),
             }).ToArray();
-            var image = new MemoryArea(baseAddr, bytes);
-            var rdr = new LeImageReader(image, 0);
-            var dasm = new PIC18Disassembler(arch, rdr);
-            return dasm.First();
-        }
-
-        private string _fmtBinary(string mesg, params ushort[] words)
-        {
-            string sPIC = $"{arch.PICDescriptor.Name}/{arch.ExecMode}";
-            if (words.Length < 1) return $"{sPIC} {mesg}";
-            return sPIC + "[" + string.Join("-", words.Select(w => w.ToString("X4"))) + "] " + mesg;
-        }
-
-        protected void VerifyDisasm(string sExpected, string sMesg, params ushort[] words)
-        {
-            var instr = _runTest(words);
-            Assert.AreEqual(sExpected, instr.ToString(), _fmtBinary(sMesg, words));
+            image = new MemoryArea(LoadAddress, bytes);
+            return image;
         }
 
         protected void SetPICMode(InstructionSetID id, PICExecMode mode)
@@ -66,6 +62,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             {
                 ExecMode = mode
             };
+            state = (PIC18State)arch.CreateProcessorState();
         }
 
     }

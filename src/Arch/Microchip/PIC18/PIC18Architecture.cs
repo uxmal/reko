@@ -47,14 +47,14 @@ namespace Reko.Arch.Microchip.PIC18
         {
             PICDescriptor = picDescr;
             flagGroups = new List<FlagGroupStorage>();
-            base.Name = picDescr.Name;
-            base.Description = picDescr.Desc;
-            base.FramePointerType = PrimitiveType.Offset16;
-            base.InstructionBitSize = 16;
-            base.PointerType = PrimitiveType.Pointer32;
-            base.WordWidth = PrimitiveType.UInt8;
-            var regs = PIC18Registers.Create(picDescr);
-            regs.LoadRegisters();
+            Name = picDescr.Name;
+            Description = picDescr.Desc;
+            PIC18Registers.Create(picDescr).LoadRegisters(); ;
+            FramePointerType = PrimitiveType.Offset16;
+            InstructionBitSize = 16;
+            PointerType = PrimitiveType.Pointer32;
+            WordWidth = PrimitiveType.Byte;
+            StackRegister = PIC18Registers.STKPTR;
         }
 
         /// <summary>
@@ -89,39 +89,25 @@ namespace Reko.Arch.Microchip.PIC18
         PIC18MemoryMapper _memmapper;
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
-        {
-            return new PIC18Disassembler(this, imageReader);
-        }
+            => new PIC18Disassembler(this, imageReader);
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
+            => new LeImageReader(image, addr);
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
+            => new LeImageReader(image, addrBegin, addrEnd);
 
         public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
+            => new LeImageReader(image, offset);
 
         public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
+            =>new LeImageWriter();
 
         public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
-        }
+            => new LeImageWriter(mem, addr);
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
-        {
-            return new PIC18InstructionComparer(norm);
-        }
+            => new PIC18InstructionComparer(norm);
 
         public override SortedList<string, int> GetOpcodeNames()
         {
@@ -173,9 +159,7 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         public override RegisterStorage GetRegister(int i)
-        {
-            return PIC18Registers.GetCoreRegister(i);
-        }
+            => PIC18Registers.GetCoreRegister(i);
 
         public override RegisterStorage GetRegister(string name)
         {
@@ -191,24 +175,16 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         public override RegisterStorage[] GetRegisters()
-        {
-            return PIC18Registers.GetRegisters;
-        }
+            => PIC18Registers.GetRegisters;
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
-        {
-            return CreateDisassemblerImpl(imageReader);
-        }
+            => CreateDisassemblerImpl(imageReader);
 
         public override ProcessorState CreateProcessorState()
-        {
-            return new PIC18State(this);
-        }
+            => new PIC18State(this);
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-        {
-            return new PIC18Rewriter(this, rdr, (PIC18State)state, frame, host);
-        }
+            => new PIC18Rewriter(this, rdr, (PIC18State)state, frame, host);
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
@@ -218,13 +194,11 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
-            throw new NotImplementedException("PIC18 has no explicit stack");
+            throw new NotImplementedException("PIC18 has no explicit argument stack");
         }
 
         public override Address MakeAddressFromConstant(Constant c)
-        {
-            return Address.Ptr32(c.ToUInt32());
-        }
+            => Address.Ptr32(c.ToUInt32());
 
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
@@ -257,9 +231,7 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
-        {
-            return Address.TryParse32(txtAddress, out addr);
-        }
+            => Address.TryParse32(txtAddress, out addr);
 
     }
 

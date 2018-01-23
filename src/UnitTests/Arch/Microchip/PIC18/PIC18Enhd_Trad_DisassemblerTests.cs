@@ -24,7 +24,7 @@ using Microchip.Crownking;
 using NUnit.Framework;
 using Reko.Arch.Microchip.PIC18;
 
-namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
+namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
     /// <summary>
     /// As of today there are 3 flavors of PIC18 :
@@ -36,65 +36,55 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
     /// execution mode only.
     /// </summary>
     [TestFixture]
-    public class PIC18_Trad_DisassemblerTests : PICDisassemblerTestsBase
+    public class PIC18Enhd_Trad_DisassemblerTests : PICDisassemblerTestsBase
     {
-        [Test]
-        [Explicit("For debugging purpose")]
-        [Ignore("For debugging purpose")]
-        public void Disasm_OneInstruction()
+        [SetUp]
+        public void Setup()
         {
             SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
-            VerifyDisasm("MULWF\tWREG,ACCESS", "", 0x02E8);
         }
 
         [Test]
-        public void Disasm_NOP()
+        public void Disasm_Enhd_Trad_CLRWDT()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
+            VerifyDisasm("CLRWDT", "", 0x0004);
+        }
+
+        [Test]
+        public void Disasm_Enhd_Trad_DAW()
+        {
+            VerifyDisasm("DAW", "", 0x0007);
+        }
+
+        [Test]
+        public void Disasm_Enhd_Trad_NOP()
+        {
             VerifyDisasm("NOP", "", 0x0000);
             VerifyDisasm("NOP", "", 0xF000);
             VerifyDisasm("NOP", "", 0xF528);
         }
 
         [Test]
-        public void Disasm_SLEEP()
+        public void Disasm_Enhd_Trad_PUSH()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
-            VerifyDisasm("SLEEP", "", 0x0003);
-        }
-
-        [Test]
-        public void Disasm_CLRWDT()
-        {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
-            VerifyDisasm("CLRWDT", "", 0x0004);
-        }
-
-        [Test]
-        public void Disasm_PUSH()
-        {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("PUSH", "", 0x0005);
         }
 
         [Test]
-        public void Disasm_POP()
+        public void Disasm_Enhd_Trad_POP()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("POP", "", 0x0006);
         }
 
         [Test]
-        public void Disasm_DAW()
+        public void Disasm_Enhd_Trad_SLEEP()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
-            VerifyDisasm("DAW", "", 0x0007);
+            VerifyDisasm("SLEEP", "", 0x0003);
         }
 
         [Test]
-        public void Disasm_TBLRD()
+        public void Disasm_Enhd_Trad_TBLRD()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("TBLRD\t*", "", 0x0008);
             VerifyDisasm("TBLRD\t*+", "", 0x0009);
             VerifyDisasm("TBLRD\t*-", "", 0x000A);
@@ -102,9 +92,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_TBLWT()
+        public void Disasm_Enhd_Trad_TBLWT()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("TBLWT\t*", "", 0x000C);
             VerifyDisasm("TBLWT\t*+", "", 0x000D);
             VerifyDisasm("TBLWT\t*-", "", 0x000E);
@@ -112,39 +101,34 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_RETFIE()
+        public void Disasm_Enhd_Trad_RETFIE()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RETFIE", "", 0x0010);
             VerifyDisasm("RETFIE\tS", "", 0x0011);
         }
 
         [Test]
-        public void Disasm_RETURN()
+        public void Disasm_Enhd_Trad_RETURN()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RETURN", "", 0x0012);
             VerifyDisasm("RETURN\tS", "", 0x0013);
         }
 
-        [Test]
-        public void Disasm_CALLW()
+       [Test]
+        public void Disasm_Enhd_Trad_CALLW()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("CALLW", "", 0x0014);
         }
 
         [Test]
-        public void Disasm_RESET()
+        public void Disasm_Enhd_Trad_RESET()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RESET", "", 0x00FF);
         }
 
         [Test]
-        public void Disasm_MOVLB()
+        public void Disasm_Enhd_Trad_MOVLB()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("MOVLB\t0x00", "", 0x0100);
             VerifyDisasm("MOVLB\t0x07", "", 0x0107);
             VerifyDisasm("MOVLB\t0x0F", "", 0x010F);
@@ -153,9 +137,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_MULWF()
+        public void Disasm_Enhd_Trad_MULWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("MULWF\t0x01,ACCESS", "", 0x0201);
             VerifyDisasm("MULWF\t0x43,ACCESS", "", 0x0243);
             VerifyDisasm("MULWF\tWREG,ACCESS", "", 0x02E8);
@@ -165,9 +148,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_DECF()
+        public void Disasm_Enhd_Trad_DECF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("DECF\t0x01,W,ACCESS", "", 0x0401);
             VerifyDisasm("DECF\t0x5F,W,ACCESS", "", 0x045F);
             VerifyDisasm("DECF\tPLUSW2,W,ACCESS", "", 0x04DB);
@@ -181,9 +163,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_INCF()
+        public void Disasm_Enhd_Trad_INCF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("INCF\t0x01,W,ACCESS", "", 0x2801);
             VerifyDisasm("INCF\t0x5F,W,ACCESS", "", 0x285F);
             VerifyDisasm("INCF\tPLUSW2,W,ACCESS", "", 0x28DB);
@@ -197,9 +178,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_xxxLW()
+        public void Disasm_Enhd_Trad_xxxLW()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SUBLW\t0x00", "", 0x0800);
             VerifyDisasm("SUBLW\t0xAA", "", 0x08AA);
             VerifyDisasm("IORLW\t0x22", "", 0x0922);
@@ -219,9 +199,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_IORWF()
+        public void Disasm_Enhd_Trad_IORWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("IORWF\t0x23,W,ACCESS", "", 0x1023);
             VerifyDisasm("IORWF\t0x5A,W,ACCESS", "", 0x105A);
             VerifyDisasm("IORWF\tT0CON1,W,ACCESS", "", 0x10B9);
@@ -237,9 +216,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_ANDWF()
+        public void Disasm_Enhd_Trad_ANDWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("ANDWF\t0x23,W,ACCESS", "", 0x1423);
             VerifyDisasm("ANDWF\t0x5A,W,ACCESS", "", 0x145A);
             VerifyDisasm("ANDWF\tT0CON1,W,ACCESS", "", 0x14B9);
@@ -255,9 +233,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_XORWF()
+        public void Disasm_Enhd_Trad_XORWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("XORWF\t0x23,W,ACCESS", "", 0x1823);
             VerifyDisasm("XORWF\t0x5A,W,ACCESS", "", 0x185A);
             VerifyDisasm("XORWF\tT0CON1,W,ACCESS", "", 0x18B9);
@@ -273,9 +250,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_COMF()
+        public void Disasm_Enhd_Trad_COMF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("COMF\t0x12,W,ACCESS", "", 0x1C12);
             VerifyDisasm("COMF\t0x5A,W,ACCESS", "", 0x1C5A);
             VerifyDisasm("COMF\tT0CON1,W,ACCESS", "", 0x1CB9);
@@ -291,9 +267,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_ADDWFC()
+        public void Disasm_Enhd_Trad_ADDWFC()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("ADDWFC\t0x12,W,ACCESS", "", 0x2012);
             VerifyDisasm("ADDWFC\t0x5A,W,ACCESS", "", 0x205A);
             VerifyDisasm("ADDWFC\tT3CLK,W,ACCESS", "", 0x20A9);
@@ -309,9 +284,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_ADDWF()
+        public void Disasm_Enhd_Trad_ADDWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("ADDWF\t0x12,W,ACCESS", "", 0x2412);
             VerifyDisasm("ADDWF\t0x5A,W,ACCESS", "", 0x245A);
             VerifyDisasm("ADDWF\tT3CLK,W,ACCESS", "", 0x24A9);
@@ -327,9 +301,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_DECFSZ()
+        public void Disasm_Enhd_Trad_DECFSZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("DECFSZ\t0x12,W,ACCESS", "", 0x2C12);
             VerifyDisasm("DECFSZ\t0x5A,W,ACCESS", "", 0x2C5A);
             VerifyDisasm("DECFSZ\tFSR0H,W,ACCESS", "", 0x2CEA);
@@ -345,9 +318,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_INCFSZ()
+        public void Disasm_Enhd_Trad_INCFSZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("INCFSZ\t0x12,W,ACCESS", "", 0x3C12);
             VerifyDisasm("INCFSZ\t0x5A,W,ACCESS", "", 0x3C5A);
             VerifyDisasm("INCFSZ\tFSR0L,W,ACCESS", "", 0x3CE9);
@@ -363,9 +335,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_RRCF()
+        public void Disasm_Enhd_Trad_RRCF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RRCF\t0x12,W,ACCESS", "", 0x3012);
             VerifyDisasm("RRCF\t0x5A,W,ACCESS", "", 0x305A);
             VerifyDisasm("RRCF\tFSR0L,W,ACCESS", "", 0x30E9);
@@ -381,9 +352,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_RLCF()
+        public void Disasm_Enhd_Trad_RLCF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RLCF\t0x12,W,ACCESS", "", 0x3412);
             VerifyDisasm("RLCF\t0x5A,W,ACCESS", "", 0x345A);
             VerifyDisasm("RLCF\tFSR0H,W,ACCESS", "", 0x34EA);
@@ -399,9 +369,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_SWAPF()
+        public void Disasm_Enhd_Trad_SWAPF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SWAPF\t0x12,W,ACCESS", "", 0x3812);
             VerifyDisasm("SWAPF\t0x5A,W,ACCESS", "", 0x385A);
             VerifyDisasm("SWAPF\tFSR0L,W,ACCESS", "", 0x38E9);
@@ -417,9 +386,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_RRNCF()
+        public void Disasm_Enhd_Trad_RRNCF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RRNCF\t0x12,W,ACCESS", "", 0x4012);
             VerifyDisasm("RRNCF\t0x5A,W,ACCESS", "", 0x405A);
             VerifyDisasm("RRNCF\tFSR0L,W,ACCESS", "", 0x40E9);
@@ -435,9 +403,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_RLNCF()
+        public void Disasm_Enhd_Trad_RLNCF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RLNCF\t0x12,W,ACCESS", "", 0x4412);
             VerifyDisasm("RLNCF\t0x5A,W,ACCESS", "", 0x445A);
             VerifyDisasm("RLNCF\tFSR0H,W,ACCESS", "", 0x44EA);
@@ -453,9 +420,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_INFSNZ()
+        public void Disasm_Enhd_Trad_INFSNZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("INFSNZ\t0x12,W,ACCESS", "", 0x4812);
             VerifyDisasm("INFSNZ\t0x5A,W,ACCESS", "", 0x485A);
             VerifyDisasm("INFSNZ\tFSR0H,W,ACCESS", "", 0x48EA);
@@ -471,9 +437,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_DCFSNZ()
+        public void Disasm_Enhd_Trad_DCFSNZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("DCFSNZ\t0x12,W,ACCESS", "", 0x4C12);
             VerifyDisasm("DCFSNZ\t0x5A,W,ACCESS", "", 0x4C5A);
             VerifyDisasm("DCFSNZ\tFSR0L,W,ACCESS", "", 0x4CE9);
@@ -489,9 +454,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_MOVF()
+        public void Disasm_Enhd_Trad_MOVF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("MOVF\t0x12,W,ACCESS", "", 0x5012);
             VerifyDisasm("MOVF\t0x5A,W,ACCESS", "", 0x505A);
             VerifyDisasm("MOVF\tFSR0L,W,ACCESS", "", 0x50E9);
@@ -507,9 +471,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_SUBFWB()
+        public void Disasm_Enhd_Trad_SUBFWB()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SUBFWB\t0x12,W,ACCESS", "", 0x5412);
             VerifyDisasm("SUBFWB\t0x5A,W,ACCESS", "", 0x545A);
             VerifyDisasm("SUBFWB\tFSR0H,W,ACCESS", "", 0x54EA);
@@ -525,9 +488,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_SUBWFB()
+        public void Disasm_Enhd_Trad_SUBWFB()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SUBWFB\t0x12,W,ACCESS", "", 0x5812);
             VerifyDisasm("SUBWFB\t0x5A,W,ACCESS", "", 0x585A);
             VerifyDisasm("SUBWFB\tFSR0H,W,ACCESS", "", 0x58EA);
@@ -543,9 +505,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_SUBWF()
+        public void Disasm_Enhd_Trad_SUBWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SUBWF\t0x12,W,ACCESS", "", 0x5C12);
             VerifyDisasm("SUBWF\t0x5A,W,ACCESS", "", 0x5C5A);
             VerifyDisasm("SUBWF\tFSR0L,W,ACCESS", "", 0x5CE9);
@@ -561,9 +522,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_CPFSLT()
+        public void Disasm_Enhd_Trad_CPFSLT()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("CPFSLT\t0x12,ACCESS", "", 0x6012);
             VerifyDisasm("CPFSLT\t0x5A,ACCESS", "", 0x605A);
             VerifyDisasm("CPFSLT\tFSR0L,ACCESS", "", 0x60E9);
@@ -573,9 +533,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_CPFSEQ()
+        public void Disasm_Enhd_Trad_CPFSEQ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("CPFSEQ\t0x12,ACCESS", "", 0x6212);
             VerifyDisasm("CPFSEQ\t0x5A,ACCESS", "", 0x625A);
             VerifyDisasm("CPFSEQ\tFSR0H,ACCESS", "", 0x62EA);
@@ -585,9 +544,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_CPFSGT()
+        public void Disasm_Enhd_Trad_CPFSGT()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("CPFSGT\t0x12,ACCESS", "", 0x6412);
             VerifyDisasm("CPFSGT\t0x5A,ACCESS", "", 0x645A);
             VerifyDisasm("CPFSGT\tFSR0H,ACCESS", "", 0x64EA);
@@ -597,9 +555,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_TSTFSZ()
+        public void Disasm_Enhd_Trad_TSTFSZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("TSTFSZ\t0x12,ACCESS", "", 0x6612);
             VerifyDisasm("TSTFSZ\t0x5A,ACCESS", "", 0x665A);
             VerifyDisasm("TSTFSZ\tFSR0L,ACCESS", "", 0x66E9);
@@ -609,9 +566,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_SETF()
+        public void Disasm_Enhd_Trad_SETF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SETF\t0x12,ACCESS", "", 0x6812);
             VerifyDisasm("SETF\t0x5A,ACCESS", "", 0x685A);
             VerifyDisasm("SETF\tFSR0L,ACCESS", "", 0x68E9);
@@ -621,9 +577,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_CLRF()
+        public void Disasm_Enhd_Trad_CLRF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("CLRF\t0x12,ACCESS", "", 0x6A12);
             VerifyDisasm("CLRF\t0x5A,ACCESS", "", 0x6A5A);
             VerifyDisasm("CLRF\tFSR0H,ACCESS", "", 0x6AEA);
@@ -633,9 +588,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_NEGF()
+        public void Disasm_Enhd_Trad_NEGF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("NEGF\t0x12,ACCESS", "", 0x6C12);
             VerifyDisasm("NEGF\t0x5A,ACCESS", "", 0x6C5A);
             VerifyDisasm("NEGF\tFSR0H,ACCESS", "", 0x6CEA);
@@ -645,9 +599,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_MOVWF()
+        public void Disasm_Enhd_Trad_MOVWF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("MOVWF\t0x12,ACCESS", "", 0x6E12);
             VerifyDisasm("MOVWF\t0x5A,ACCESS", "", 0x6E5A);
             VerifyDisasm("MOVWF\tFSR0L,ACCESS", "", 0x6EE9);
@@ -657,9 +610,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BTG()
+        public void Disasm_Enhd_Trad_BTG()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BTG\t0x03,0,ACCESS", "", 0x7003);
             VerifyDisasm("BTG\tT6TMR,7,ACCESS", "", 0x7E92);
             VerifyDisasm("BTG\tT6PR,0,ACCESS", "", 0x7093);
@@ -669,9 +621,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BSF()
+        public void Disasm_Enhd_Trad_BSF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BSF\t0x03,0,ACCESS", "", 0x8003);
             VerifyDisasm("BSF\tPORTB,7,ACCESS", "", 0x8ECB);
             VerifyDisasm("BSF\tPORTA,0,ACCESS", "", 0x80CA);
@@ -681,9 +632,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BCF()
+        public void Disasm_Enhd_Trad_BCF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BCF\t0x03,0,ACCESS", "", 0x9003);
             VerifyDisasm("BCF\tPORTA,7,ACCESS", "", 0x9ECA);
             VerifyDisasm("BCF\tPORTB,0,ACCESS", "", 0x90CB);
@@ -693,9 +643,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BTFSS()
+        public void Disasm_Enhd_Trad_BTFSS()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BTFSS\t0x03,0,ACCESS", "", 0xA003);
             VerifyDisasm("BTFSS\tPORTA,7,ACCESS", "", 0xAECA);
             VerifyDisasm("BTFSS\tPORTB,0,ACCESS", "", 0xA0CB);
@@ -705,9 +654,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BTFSC()
+        public void Disasm_Enhd_Trad_BTFSC()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BTFSC\t0x03,0,ACCESS", "", 0xB003);
             VerifyDisasm("BTFSC\tPORTA,7,ACCESS", "", 0xBECA);
             VerifyDisasm("BTFSC\tPORTB,0,ACCESS", "", 0xB0CB);
@@ -717,17 +665,15 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_MOVFF()
+        public void Disasm_Enhd_Trad_MOVFF()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("MOVFF\t0x0000,0x0123", "", 0xC000, 0xF123);
             VerifyDisasm("MOVFF\t0x0F80,0x0F81", "", 0xCF80, 0xFF81);
         }
 
         [Test]
-        public void Disasm_BRA()
+        public void Disasm_Enhd_Trad_BRA()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BRA\t0x000202", "", 0xD000);
             VerifyDisasm("BRA\t0x0002AC", "", 0xD055);
             VerifyDisasm("BRA\t0x0000AC", "", 0xD755);
@@ -735,9 +681,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_RCALL()
+        public void Disasm_Enhd_Trad_RCALL()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("RCALL\t0x000204", "", 0xD801);
             VerifyDisasm("RCALL\t0x000356", "", 0xD8AA);
             VerifyDisasm("RCALL\t0x000A00", "", 0xDBFF);
@@ -747,9 +692,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BZ()
+        public void Disasm_Enhd_Trad_BZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BZ\t0x000202", "", 0xE000);
             VerifyDisasm("BZ\t0x000248", "", 0xE023);
             VerifyDisasm("BZ\t0x00010E", "", 0xE086);
@@ -757,9 +701,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BNZ()
+        public void Disasm_Enhd_Trad_BNZ()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BNZ\t0x000202", "", 0xE100);
             VerifyDisasm("BNZ\t0x000248", "", 0xE123);
             VerifyDisasm("BNZ\t0x00010E", "", 0xE186);
@@ -767,9 +710,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BC()
+        public void Disasm_Enhd_Trad_BC()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BC\t0x000202", "", 0xE200);
             VerifyDisasm("BC\t0x000248", "", 0xE223);
             VerifyDisasm("BC\t0x00010E", "", 0xE286);
@@ -777,9 +719,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BNC()
+        public void Disasm_Enhd_Trad_BNC()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BNC\t0x000202", "", 0xE300);
             VerifyDisasm("BNC\t0x000248", "", 0xE323);
             VerifyDisasm("BNC\t0x00010E", "", 0xE386);
@@ -787,9 +728,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BOV()
+        public void Disasm_Enhd_Trad_BOV()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BOV\t0x000202", "", 0xE400);
             VerifyDisasm("BOV\t0x000248", "", 0xE423);
             VerifyDisasm("BOV\t0x00010E", "", 0xE486);
@@ -797,9 +737,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BNOV()
+        public void Disasm_Enhd_Trad_BNOV()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BNOV\t0x000202", "", 0xE500);
             VerifyDisasm("BNOV\t0x000248", "", 0xE523);
             VerifyDisasm("BNOV\t0x00010E", "", 0xE586);
@@ -807,9 +746,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BN()
+        public void Disasm_Enhd_Trad_BN()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BN\t0x000202", "", 0xE600);
             VerifyDisasm("BN\t0x000248", "", 0xE623);
             VerifyDisasm("BN\t0x00010E", "", 0xE686);
@@ -817,9 +755,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_BNN()
+        public void Disasm_Enhd_Trad_BNN()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("BNN\t0x000202", "", 0xE700);
             VerifyDisasm("BNN\t0x000248", "", 0xE723);
             VerifyDisasm("BNN\t0x00010E", "", 0xE786);
@@ -827,9 +764,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_CALL()
+        public void Disasm_Enhd_Trad_CALL()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("CALL\t0x00000C", "", 0xEC06, 0xF000);
             VerifyDisasm("CALL\t0x068A24", "", 0xEC12, 0xF345);
             VerifyDisasm("CALL\t0x00000C,S", "", 0xED06, 0xF000);
@@ -837,9 +773,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_LFSR()
+        public void Disasm_Enhd_Trad_LFSR()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("LFSR\tFSR0,0x0C00", "", 0xEE03, 0xF000);
             VerifyDisasm("LFSR\tFSR0,0x0034", "", 0xEE00, 0xF034);
             VerifyDisasm("LFSR\tFSR2,0x1889", "", 0xEE26, 0xF089);
@@ -847,41 +782,36 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Enhd.Traditional
         }
 
         [Test]
-        public void Disasm_GOTO()
+        public void Disasm_Enhd_Trad_GOTO()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("GOTO\t0x000006", "", 0xEF03, 0xF000);
             VerifyDisasm("GOTO\t0x0F12AC", "", 0xEF56, 0xF789);
         }
 
         [Test]
-        public void Disasm_ADDFSR()
+        public void Disasm_Enhd_Trad_ADDFSR()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("ADDFSR\tFSR0,0x00", "", 0xE800);
             VerifyDisasm("ADDFSR\tFSR1,0x35", "", 0xE875);
         }
 
         [Test]
-        public void Disasm_SUBFSR()
+        public void Disasm_Enhd_Trad_SUBFSR()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("SUBFSR\tFSR0,0x00", "", 0xE900);
             VerifyDisasm("SUBFSR\tFSR1,0x35", "", 0xE975);
         }
 
         [Test]
-        public void Disasm_MOVFFL()
+        public void Disasm_Enhd_Trad_MOVFFL()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("MOVFFL\t0x3C00,0x0000", "", 0x006F, 0xF000, 0xF000);
             VerifyDisasm("MOVFFL\tPORTB,PORTA", "", 0x006F, 0xFF2F, 0xFFCA);
         }
 
         [Test]
-        public void Disasm_Invalids()
+        public void Disasm_Enhd_Trad_Invalids()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Traditional);
             VerifyDisasm("invalid", "unknown opcode", 0x0001);
             VerifyDisasm("invalid", "missing second word", 0x0002);
             VerifyDisasm("invalid", "missing third word", 0x0002, 0xF000);
