@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Core.Output
                 "{" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Store(Word32(0x123456), Load(PrimitiveType.Byte, Word32(0x12348)));" + nl +
+                "    Store(Word32(0x123456), Mem(PrimitiveType.Byte, Word32(0x12348)));" + nl +
                 "    Return();" + nl +
                 "}" + nl +
                 "" + nl;
