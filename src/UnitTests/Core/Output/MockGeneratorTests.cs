@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Core.Output
         {
             CompileTest(m =>
             {
-                m.Store(m.Word32(0x123456), m.Load(PrimitiveType.Byte, m.Word32(0x12348)));
+                m.Store(m.Word32(0x123456), m.Mem(PrimitiveType.Byte, m.Word32(0x12348)));
                 m.Return();
             });
             string sExp =

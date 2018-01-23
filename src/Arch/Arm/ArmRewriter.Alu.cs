@@ -283,7 +283,7 @@ namespace Reko.Arch.Arm
                 else
             {
                     var dstReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
-                    m.Assign(dstReg, m.LoadDw(ea));
+                    m.Assign(dstReg, m.Mem32(ea));
             }
                 offset += 4;
             }
@@ -345,7 +345,7 @@ namespace Reko.Arch.Arm
                     ? m.ISub(dst, offset)
                     : (Expression)dst;
                 var reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
-                m.Assign(m.LoadDw(ea), reg);
+                m.Assign(m.Mem32(ea), reg);
                 offset += reg.DataType.Size;
             }
             m.Assign(dst, m.ISub(dst, offset));
@@ -374,7 +374,7 @@ namespace Reko.Arch.Arm
                     ? m.ISub(dst, offset)
                     : (Expression) dst;
                 var srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
-                m.Assign(m.LoadDw(ea), srcReg);
+                m.Assign(m.Mem32(ea), srcReg);
                 offset += srcReg.DataType.Size;
             }
             if (offset != 0 && instr.ArchitectureDetail.WriteBack)
@@ -392,7 +392,7 @@ namespace Reko.Arch.Arm
             {
                 Expression ea = m.IAdd(dst, Constant.Int32( offset));
                 var srcReg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[r.RegisterValue.Value]);
-                m.Assign(m.LoadDw(ea), srcReg);
+                m.Assign(m.Mem32(ea), srcReg);
                 offset += 4;
             }
             if (offset != 4 && instr.ArchitectureDetail.WriteBack)

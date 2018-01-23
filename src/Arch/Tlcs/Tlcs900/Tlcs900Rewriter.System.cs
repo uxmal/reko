@@ -74,7 +74,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var sr = binder.EnsureRegister(Registers.sr);
             var dst = Address.Ptr32(0xFFFF00u + ((ImmediateOperand)instr.op1).Value.ToUInt32() * 4);
             m.Assign(xsp, m.ISub(xsp, m.Int32(2)));
-            m.Assign(m.LoadW(xsp), sr);
+            m.Assign(m.Mem16(xsp), sr);
             m.Call(dst, 4);
         }
     }

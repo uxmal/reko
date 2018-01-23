@@ -164,7 +164,7 @@ namespace Reko.Arch.Arm
             case ArmInstructionOperandType.Memory:
                 var mem = op.MemoryValue;
                 var ea = EffectiveAddress(mem);
-                return m.Load(accessSize, ea);
+                return m.Mem(accessSize, ea);
             default:
                 throw new NotImplementedException(op.Type.ToString());
             }

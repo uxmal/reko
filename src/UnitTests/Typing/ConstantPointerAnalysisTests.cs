@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Typing
             program.Add("test", m=>
                {
                    var r1 = m.Register(1);
-                   m.Assign(r1, m.Load(PrimitiveType.Real32, m.Word32(0x10000000)));
+                   m.Assign(r1, m.Mem(PrimitiveType.Real32, m.Word32(0x10000000)));
                });
 			RunTest(program.BuildProgram(), "Typing/CpaSimple.txt");
 		}

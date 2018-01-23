@@ -149,8 +149,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var src = binder.EnsureRegister(Registers.xhl);
             var dst = binder.EnsureRegister(Registers.xde);
             var cnt = binder.EnsureRegister(Registers.bc);
-            m.Assign(tmp, m.Load(dt, src));
-            m.Assign(m.Load(dt, dst), tmp);
+            m.Assign(tmp, m.Mem(dt, src));
+            m.Assign(m.Mem(dt, dst), tmp);
             m.Assign(src, m.IAdd(src, m.Int32(dt.Size)));
             m.Assign(dst, m.IAdd(dst, m.Int32(dt.Size)));
             m.Assign(cnt, m.ISub(cnt, m.Int16(1)));
@@ -168,7 +168,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewritePop()
         {
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);
-            var op = m.Load(instr.op1.Width, xsp);
+            var op = m.Mem(instr.op1.Width, xsp);
             RewriteDst(instr.op1, op, (a, b) => b);
             m.Assign(xsp, m.IAdd(xsp, m.Int32(instr.op1.Width.Size)));
         }
@@ -178,7 +178,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var op = RewriteSrc(instr.op1);
             var xsp = binder.EnsureRegister(Tlcs900Registers.xsp);
             m.Assign(xsp, m.ISub(xsp, m.Int32(op.DataType.Size)));
-            m.Assign(m.Load(op.DataType, xsp), op);
+            m.Assign(m.Mem(op.DataType, xsp), op);
         }
 
         private void RewriteRcf()

@@ -53,7 +53,7 @@ namespace Reko.Arch.RiscV
             {
                 ea = m.IAdd(ea, offset);
             }
-            m.Assign(dst, m.Load(dt, ea));
+            m.Assign(dst, m.Mem(dt, ea));
         }
 
         private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub)

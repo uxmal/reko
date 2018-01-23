@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Typing
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
                 Store(IAdd(IAdd(r, 20), SMul(i, 10)), Int32(0));
-                Return(Load(PrimitiveType.Word16,
+                Return(Mem(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
             }
         }

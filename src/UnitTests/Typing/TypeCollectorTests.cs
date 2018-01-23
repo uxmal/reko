@@ -144,8 +144,8 @@ namespace Reko.UnitTests.Typing
                     }
                 };
                 var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
-                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
-                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+                m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
         }
 
@@ -213,8 +213,8 @@ namespace Reko.UnitTests.Typing
             buildEquivalenceClasses = true;
             RunTest(m =>
             {
-                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
-                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
+                m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
+                m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
             }, "Typing/TycoReg00300.txt");
         }
     }

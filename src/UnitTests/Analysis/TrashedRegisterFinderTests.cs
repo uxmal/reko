@@ -239,7 +239,7 @@ namespace Reko.UnitTests.Analysis
             var r2 = m.Register(2);
             var stm1 = m.Store(m.ISub(esp, 0x10), r2);
             var stm2 = m.Assign(r2, m.Int32(0));
-            var stm3 = m.Assign(r2, m.LoadDw(m.ISub(esp, 0x10)));
+            var stm3 = m.Assign(r2, m.Mem32(m.ISub(esp, 0x10)));
 
             trf = CreateTrashedRegisterFinder();
             var flow = CreateBlockFlow(m.Block, m.Frame);
@@ -404,8 +404,8 @@ namespace Reko.UnitTests.Analysis
             Identifier esp = m.Frame.EnsureRegister(Registers.esp);
             Identifier ebp = m.Frame.EnsureRegister(Registers.ebp);
             m.Store(esp, ebp);
-            m.Assign(ebp, m.LoadDw(m.Int32(0x12345678)));
-            m.Assign(ebp, m.LoadDw(esp));
+            m.Assign(ebp, m.Mem32(m.Int32(0x12345678)));
+            m.Assign(ebp, m.Mem32(esp));
             m.Return();
 
             Procedure proc = m.Procedure;
@@ -426,7 +426,7 @@ namespace Reko.UnitTests.Analysis
             Identifier esp = m.Procedure.Frame.EnsureRegister(Registers.esp);
             m.Store(m.ISub(esp, 4), eax);
             m.Assign(eax, m.Int32(3));
-            m.Assign(eax, m.LoadDw(m.ISub(esp, 4)));
+            m.Assign(eax, m.Mem32(m.ISub(esp, 4)));
 
             flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
             this.flow[this.m.Block].SymbolicIn.SetValue(esp, (Expression)this.m.Frame.FramePointer);
@@ -468,7 +468,7 @@ namespace Reko.UnitTests.Analysis
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
                 m.Assign(ebx, m.Word32(0x1231313));
-                m.Assign(eax, m.LoadDw(ebx));
+                m.Assign(eax, m.Mem32(ebx));
                 m.Return();
             });
 
@@ -543,7 +543,7 @@ const eax:<invalid>
                 m.Assign(eax, 1);
                 m.Assign(m.Flags("SCZO"), m.Cond(eax));
                 m.Store(m.Word32(0x12340000), eax);
-                m.Assign(eax, m.LoadDw(esp));
+                m.Assign(eax, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
@@ -597,7 +597,7 @@ const eax:<invalid>
                 m.Return();
 
                 m.Label("zero");
-                m.Assign(cx, m.LoadW(ax));
+                m.Assign(cx, m.Mem16(ax));
                 m.Return();
             });
             var sExp =

@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Typing
             Identifier globals = m.Local32("globals");
             Identifier i = m.Local32("idx");
             Expression ea = m.IAdd(globals, m.IAdd(m.Shl(i, 4), 0x30000));
-            Expression e = m.Load(PrimitiveType.Int32, ea);
+            Expression e = m.Mem(PrimitiveType.Int32, ea);
             e = e.Accept(aen);
             Assert.AreEqual("(globals + 0x00030000)[idx * 0x00000010]", e.ToString());
         }
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Typing
         {
             Identifier p = m.Local32("p");
             Identifier i = m.Local32("i");
-            Expression e = m.Load(PrimitiveType.Int32,
+            Expression e = m.Mem(PrimitiveType.Int32,
                 m.IAdd(p, m.IAdd(m.SMul(i, 8), 4)));
             e = e.Accept(aen);
             Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Typing
         public void EnIdentifierPointer()
         {
             Identifier p = m.Local32("p");
-            Expression e = m.Load(PrimitiveType.Word16, p);
+            Expression e = m.Mem(PrimitiveType.Word16, p);
             e = e.Accept(aen);
             Assert.AreEqual("Mem0[p + 0x00000000:word16]", e.ToString());
         }
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Typing
         public void EnAccessZeroBasedArray()
         {
             Identifier a1 = m.Local32("a1");
-            Expression e = m.Load(PrimitiveType.Int32, m.Shl(a1, 2));
+            Expression e = m.Mem(PrimitiveType.Int32, m.Shl(a1, 2));
             Assert.AreEqual("Mem0[a1 << 0x02:int32]", e.ToString());
             e = e.Accept(aen);
             Assert.AreEqual("0x00000000[a1 * 0x00000004]", e.ToString());

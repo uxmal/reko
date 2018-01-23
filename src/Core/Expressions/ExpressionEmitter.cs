@@ -553,7 +553,7 @@ namespace Reko.Core.Expressions
         /// <param name="dt">Data type of the memory access.</param>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess Load(DataType dt, Expression ea)
+        public MemoryAccess Mem(DataType dt, Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, dt);
         }
@@ -564,7 +564,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public Expression LoadB(Expression ea)
+        public Expression Mem8(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Byte);
         }
@@ -575,7 +575,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess LoadDw(Expression ea)
+        public MemoryAccess Mem32(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word32);
         }
@@ -586,7 +586,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess LoadW(Expression ea)
+        public MemoryAccess Mem16(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word16);
         }

@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier eax = f.EnsureRegister(Registers.eax);
 
 			m.Store(m.Int32(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
-			m.Assign(ax, m.Load(ax.DataType, eax)).Accept(rl);	// eax should be live in here.
+			m.Assign(ax, m.Mem(ax.DataType, eax)).Accept(rl);	// eax should be live in here.
 			Assert.AreEqual(" eax", Dump(rl.IdentifierLiveness));
 		}
 

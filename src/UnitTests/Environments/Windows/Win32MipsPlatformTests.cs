@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Environments.Windows
             var rtl = new RtlTrace(0x123460)
             {
                 m => m.Assign(r9, 0x00030000),
-                m => m.Assign(r9, m.LoadDw(m.IAdd(r9, 0x1234))),
+                m => m.Assign(r9, m.Mem32(m.IAdd(r9, 0x1234))),
                 m => m.Goto(r9)
             };
 

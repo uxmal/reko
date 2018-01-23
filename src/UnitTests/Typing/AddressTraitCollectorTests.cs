@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Typing
 		public void AtrcoTestIdPlusConst()
 		{
 			var r = m.Local32("r");
-			var mem = m.Load(PrimitiveType.Word32, m.IAdd(r, 4));
+			var mem = m.Mem(PrimitiveType.Word32, m.IAdd(r, 4));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestIdPlusConst.txt");
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Typing
 		public void AtrcoTestId()
 		{
 			var r = m.Local32("r");
-			var mem = m.Load(PrimitiveType.Byte, r);
+			var mem = m.Mem(PrimitiveType.Byte, r);
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoTestId.txt");
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Typing
 		{
 			Identifier r = m.Local32("r");
 			Identifier s = m.Local32("s");
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.IAdd(r, s));
+			MemoryAccess mem = m.Mem(PrimitiveType.Byte, m.IAdd(r, s));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 		}
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Typing
 		public void AtrcoIdMinusConst()
 		{
 			Identifier r = m.Local32("r");
-			MemoryAccess mem = m.Load(PrimitiveType.Word32, m.ISub(r, 4));
+			MemoryAccess mem = m.Mem(PrimitiveType.Word32, m.ISub(r, 4));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoIdMinusConst.txt");
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Typing
 		public void AtrcoMem()
 		{
 			Identifier pp = m.Local32("pp");
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.Load(PrimitiveType.Word32, pp));
+			MemoryAccess mem = m.Mem(PrimitiveType.Byte, m.Mem(PrimitiveType.Word32, pp));
 			mem.Accept(eqb);
 			atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoMem.txt");
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Typing
 			LinearInductionVariable iv = Liv32(1);
             program.InductionVariables.Add(id, iv);
             Constant zero = m.Word32(0);
-			MemoryAccess mem = m.Load(PrimitiveType.Byte, m.IAdd(id, zero));
+			MemoryAccess mem = m.Mem(PrimitiveType.Byte, m.IAdd(id, zero));
 			mem.Accept(eqb);
             atrco.Collect(null, 0, mem, mem.EffectiveAddress);
 			Verify(null, "Typing/AtrcoInductionVariableIncr.txt");
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Typing
         {
             Identifier id = m.Local32("ebx");
             LinearInductionVariable iv = Liv32(-1);
-            MemoryAccess mem = m.Load(PrimitiveType.Byte, id);
+            MemoryAccess mem = m.Mem(PrimitiveType.Byte, id);
             mem.Accept(eqb);
             atrco.VisitInductionVariable(id, iv, null);
             Verify(null, "Typing/AtrcoInductionVariableDecr.txt");

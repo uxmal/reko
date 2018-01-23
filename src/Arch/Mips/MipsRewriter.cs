@@ -273,7 +273,7 @@ namespace Reko.Arch.Mips
                     ea = m.IAdd(baseReg, indOp.Offset);
                 else
                     ea = m.ISub(baseReg, -indOp.Offset);
-                return m.Load(indOp.Width, ea);
+                return m.Mem(indOp.Width, ea);
             }
             var addrOp = op as AddressOperand;
             if (addrOp != null)
@@ -308,7 +308,7 @@ namespace Reko.Arch.Mips
                     ea = m.IAdd(baseReg, indOp.Offset);
                 else
                     ea = m.ISub(baseReg, -indOp.Offset);
-                return m.Load(indOp.Width, ea);
+                return m.Mem(indOp.Width, ea);
             }
             var addrOp = op as AddressOperand;
             if (addrOp != null)

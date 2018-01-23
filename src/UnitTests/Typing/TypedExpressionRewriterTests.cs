@@ -435,9 +435,9 @@ namespace Reko.UnitTests.Typing
                 m.Store(
                     m.IAdd(ds, m.Word32(0x5400)),
                     m.Lt(
-                        m.LoadW(m.IAdd(m.LoadDw(m.IAdd(ds, m.Word32(0x5404))), 4)),
+                        m.Mem16(m.IAdd(m.Mem32(m.IAdd(ds, m.Word32(0x5404))), 4)),
                         m.Word16(20)));
-                m.Store(m.IAdd(m.LoadDw(m.IAdd(ds2, m.Word32(0x5404))), 4), m.Word16(0));
+                m.Store(m.IAdd(m.Mem32(m.IAdd(ds2, m.Word32(0x5404))), 4), m.Word16(0));
             });
             RunTest(prog.BuildProgram(), "Typing/TerFlatDereferenceSignedCompare.txt");
         }
@@ -449,7 +449,7 @@ namespace Reko.UnitTests.Typing
             prog.Add("proc1", m =>
             {
                 Identifier p = m.Local32("p");
-                Expression fetch = m.Load(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
+                Expression fetch = m.Mem(new Pointer(new StructureType("foo", 8), 4), m.IAdd(p, 4));
                 m.Assign(m.LocalBool("f"), m.Lt(fetch, m.Word32(0x00001028)));
             });
             RunTest(prog.BuildProgram(), "Typing/TerComparison.txt");
@@ -604,9 +604,9 @@ namespace Reko.UnitTests.Typing
                     var eax = m.Reg32("eax", 0);
 
                     m.Assign(ebp, m.ISub(m.Frame.FramePointer, 4));
-                    m.Assign(eax, m.LoadDw(m.IAdd(ebp, 0x0C)));
-                    m.Assign(ecx, m.LoadDw(m.IAdd(ebp, 0x08)));
-                    m.Assign(eax, m.Cast(PrimitiveType.Int32, m.Load(PrimitiveType.Int16,
+                    m.Assign(eax, m.Mem32(m.IAdd(ebp, 0x0C)));
+                    m.Assign(ecx, m.Mem32(m.IAdd(ebp, 0x08)));
+                    m.Assign(eax, m.Cast(PrimitiveType.Int32, m.Mem(PrimitiveType.Int16,
                         m.IAdd(ecx, m.IMul(eax, 2)))));
                     m.Store(m.Word32(0x1234), eax);
                 });
@@ -627,7 +627,7 @@ namespace Reko.UnitTests.Typing
                 m.Assign(
                     eax_2,
                     m.Cast(PrimitiveType.Int32,
-                    m.Load(PrimitiveType.Int16,
+                    m.Mem(PrimitiveType.Int16,
                         m.IAdd(
                             ecx,
                             m.IAdd(
@@ -681,7 +681,7 @@ proc1_exit:
             pm.Add("proc1", m =>
             {
                 var eax = m.Reg32("eax", 0);
-                m.Store(m.Word32(0x01000), m.LoadW(eax));
+                m.Store(m.Word32(0x01000), m.Mem16(eax));
             });
             var sExp =
             #region Expected String
@@ -718,8 +718,8 @@ proc1_exit:
             {
                 var eax = m.Reg32("eax", 0);
                 m.Declare(eax, null);
-                m.Store(m.Word32(0x01000), m.LoadW(eax));
-                m.Store(m.Word32(0x01002), m.LoadW(m.IAdd(eax, 2)));
+                m.Store(m.Word32(0x01000), m.Mem16(eax));
+                m.Store(m.Word32(0x01002), m.Mem16(m.IAdd(eax, 2)));
             });
             var sExp =
             #region Expected String
@@ -762,9 +762,9 @@ proc1_exit:
                 var eax2 = m.Reg32("eax2", 0);
                 var eax3 = m.Reg32("eax3", 0);
                 m.Declare(eax1, null);
-                m.Assign(eax2, m.LoadDw(eax1));
-                m.Assign(eax3, m.LoadDw(eax2));
-                m.Store(m.Word32(0x01004), m.Load(PrimitiveType.Real32, eax3));
+                m.Assign(eax2, m.Mem32(eax1));
+                m.Assign(eax3, m.Mem32(eax2));
+                m.Store(m.Word32(0x01004), m.Mem(PrimitiveType.Real32, eax3));
             });
             var sExp =
             #region Expected String
@@ -807,12 +807,12 @@ proc1_exit:
             {
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, null);
-                m.Assign(r1, m.LoadDw(r1));
-                m.Store(m.Word32(0x01004), m.Load(
+                m.Assign(r1, m.Mem32(r1));
+                m.Store(m.Word32(0x01004), m.Mem(
                     PrimitiveType.Char,
                     m.IAdd(
-                        m.LoadDw(
-                            m.LoadDw(r1)),
+                        m.Mem32(
+                            m.Mem32(r1)),
                         4)));
             });
             var sExp =
@@ -856,12 +856,12 @@ proc1_exit:
                 var r2 = m.Reg32("r2", 2);
                 m.Declare(r1, null);
                 m.Declare(r2, null);
-                m.Assign(r1, m.LoadDw(r1));
-                m.Store(m.Word32(0x01004), m.Load(
+                m.Assign(r1, m.Mem32(r1));
+                m.Store(m.Word32(0x01004), m.Mem(
                     PrimitiveType.Char,
                     m.IAdd(
-                        m.LoadDw(
-                            m.LoadDw(r1)),
+                        m.Mem32(
+                            m.Mem32(r1)),
                         4)));
                 m.Assign(r2, m.IAdd(r1, 4));
             });
@@ -935,7 +935,7 @@ test_exit:
             RunStringTest(m =>
             {
                 var eax = m.Reg32("eax", 0);
-                m.Assign(eax, m.LoadDw(m.Word32(0x1200)));
+                m.Assign(eax, m.Mem32(m.Word32(0x1200)));
                 m.Store(eax, eax);
                 m.Store(m.IAdd(eax, 4), eax);
             },sExp);
@@ -1081,8 +1081,8 @@ test_exit:
                     }
                 };
                 var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
-                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
-                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+                m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
             });
             RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }

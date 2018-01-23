@@ -179,7 +179,7 @@ namespace Reko.Arch.Z80
             var de = frame.EnsureRegister(Registers.de);
             var hl = frame.EnsureRegister(Registers.hl);
             var V =  FlagGroup(FlagM.PF);
-            m.Assign(m.LoadB(de), m.LoadB(hl));
+            m.Assign(m.Mem8(de), m.Mem8(hl));
             m.Assign(hl, incdec(hl, Constant.Int16(1)));
             m.Assign(de, incdec(de, Constant.Int16(1)));
             m.Assign(bc, m.ISub(bc, 1));
@@ -348,7 +348,7 @@ namespace Reko.Arch.Z80
             var bc = frame.EnsureRegister(Registers.bc);
             var hl = frame.EnsureRegister(Registers.hl);
             var z = FlagGroup(FlagM.ZF);
-            m.Assign(z, m.Cond(m.ISub(a, m.LoadB(hl))));
+            m.Assign(z, m.Cond(m.ISub(a, m.Mem8(hl))));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(bc, m.ISub(bc, m.Int16(1)));
             if (repeat)
@@ -527,26 +527,26 @@ namespace Reko.Arch.Z80
                     bReg = frame.EnsureRegister(memOp.Base);
                 if (memOp.Offset == null)
                 {
-                    return m.Load(memOp.Width, bReg);
+                    return m.Mem(memOp.Width, bReg);
                 }
                 else if (bReg == null)
                 {
-                    return m.Load(memOp.Width, memOp.Offset);
+                    return m.Mem(memOp.Width, memOp.Offset);
                 }
                 else
                 {
                     int s = memOp.Offset.ToInt32();
                     if (s > 0)
                     {
-                        return m.Load(memOp.Width, m.IAdd(bReg, s));
+                        return m.Mem(memOp.Width, m.IAdd(bReg, s));
                     }
                     else if (s < 0)
                     {
-                        return m.Load(memOp.Width, m.ISub(bReg, -s));
+                        return m.Mem(memOp.Width, m.ISub(bReg, -s));
                     }
                     else
                     {
-                        return m.Load(memOp.Width, bReg);
+                        return m.Mem(memOp.Width, bReg);
                     }
                 }
             }
@@ -567,7 +567,7 @@ namespace Reko.Arch.Z80
             var b = frame.EnsureRegister(Registers.b);
             var Z = frame.EnsureFlagGroup(arch.GetFlagGroup("Z"));
             m.Assign(
-                m.LoadB(hl),
+                m.Mem8(hl),
                 host.PseudoProcedure("__in", PrimitiveType.Byte, c));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(b, m.ISub(b, 1));
@@ -589,7 +589,7 @@ namespace Reko.Arch.Z80
         {
             var sp = frame.EnsureRegister(Registers.sp);
             var op = RewriteOp(dasm.Current.Op1);
-            m.Assign(op, m.Load(PrimitiveType.Word16, sp));
+            m.Assign(op, m.Mem(PrimitiveType.Word16, sp));
             m.Assign(sp, m.IAdd(sp, op.DataType.Size));
         }
 
@@ -598,7 +598,7 @@ namespace Reko.Arch.Z80
             var sp = frame.EnsureRegister(Registers.sp);
             var op = RewriteOp(instr.Op1);
             m.Assign(sp, m.ISub(sp, op.DataType.Size));
-            m.Assign(m.Load(PrimitiveType.Word16, sp), op);
+            m.Assign(m.Mem(PrimitiveType.Word16, sp), op);
         }
 
         private void RewriteBit()

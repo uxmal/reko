@@ -424,7 +424,7 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
-            trace.Add(m => m.Call(m.LoadDw(m.IAdd(reg0, -32)), 4));
+            trace.Add(m => m.Call(m.Mem32(m.IAdd(reg0, -32)), 4));
             var wi = CreateWorkItem(Address.Ptr32(0x100000), arch.CreateProcessorState());
             wi.Process();
 
@@ -443,7 +443,7 @@ testProc_exit:
             scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
             mr.ReplayAll();
 
-            trace.Add(m => m.Goto(m.LoadDw(sp)));
+            trace.Add(m => m.Goto(m.Mem32(sp)));
             var wi = CreateWorkItem(Address.Ptr32(0x0100000), arch.CreateProcessorState());
             wi.Process();
 
@@ -719,7 +719,7 @@ testProc_exit:
                 Arg<ProcessorState>.Is.Anything)).Return(blockOther);
             mr.ReplayAll();
 
-            trace.Add(m => m.Branch(m.LoadB(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
+            trace.Add(m => m.Branch(m.Mem8(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
 
             var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
             wi.Process();
@@ -739,8 +739,8 @@ testProc_exit:
                 new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
                 new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
             };
-            trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
-            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });
+            trace.Add(m => { m.Assign(r1, m.Mem32(m.Word32(0x112200))); });
+            trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x112204)), r1); });
             scanner.Stub(s => s.FindContainingBlock(null)).IgnoreArguments().Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
@@ -761,7 +761,7 @@ testProc_exit:
         {
             var addrStart = Address.Ptr32(0x00100000);
             var blockCallRet = new Block(proc, "callRetStub");
-            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x00123400)), m.Word32(1)); });
+            trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x00123400)), m.Word32(1)); });
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
             scanner.Expect(s => s.CreateCallRetThunk(null, null, null)).IgnoreArguments().Return(blockCallRet);

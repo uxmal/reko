@@ -86,10 +86,10 @@ namespace Reko.UnitTests.Structure
 
             Label("ok");
             BranchIf(Ne(al,0x0D), "LoopTest");
-            Store(Word16(0x302), IAdd(LoadW(Word16(0x0302)), 1));
+            Store(Word16(0x302), IAdd(Mem16(Word16(0x0302)), 1));
 
             Label("LoopTest");
-            Assign(al, LoadB(si));
+            Assign(al, Mem8(si));
             Assign(si, IAdd(si, 1));
             BranchIf(Eq(al, Byte(0x20)), "LoopBody");
             Assign(ax, ISub(si,bx)); 

@@ -66,8 +66,8 @@ namespace Reko.UnitTests.Analysis
                 {
                     var r1 = m.Reg32("r1", 1);
                     var r2 = m.Reg32("r2", 2);
-                    m.Assign(r1, m.LoadDw(m.Word32(0x010000)));
-                    m.Assign(r2, m.LoadDw(m.Word32(0x010004)));
+                    m.Assign(r1, m.Mem32(m.Word32(0x010000)));
+                    m.Assign(r2, m.Mem32(m.Word32(0x010004)));
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
@@ -98,8 +98,8 @@ test_exit:
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
-                m.Assign(r2, m.LoadDw(m.IAdd(sp, 8)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
+                m.Assign(r2, m.Mem32(m.IAdd(sp, 8)));
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Store(m.Word32(0x010008), r1);
                 m.Return();
@@ -204,8 +204,8 @@ test_exit:
                     var r1 = m.Reg32("r1", 1);
                     var r2 = m.Reg32("r2", 2);
                     var fp = m.Frame.FramePointer;
-                    m.Assign(r1, m.LoadDw(m.IAdd(fp, 4)));
-                    m.Assign(r2, m.LoadDw(m.IAdd(fp, 8)));
+                    m.Assign(r1, m.Mem32(m.IAdd(fp, 4)));
+                    m.Assign(r2, m.Mem32(m.IAdd(fp, 8)));
                     m.Assign(r1, m.IAdd(r1, r2));
                     m.Store(m.Word32(0x010008), r1);
                     m.Return();

@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Analysis
                 var ebx = m.Frame.EnsureRegister(new RegisterStorage("ebx", 3, 0, PrimitiveType.Word32));
                 var v4 = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
-                m.Assign(v4, m.IAdd(m.LoadW(ebx), 1));
+                m.Assign(v4, m.IAdd(m.Mem16(ebx), 1));
                 m.Store(ebx, v4);
                 m.Assign(szo, m.Cond(v4));
                 m.Return();
@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Analysis
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 var r1 = m.Register(1);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 8)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 8)));
                 m.Return();
             });
 

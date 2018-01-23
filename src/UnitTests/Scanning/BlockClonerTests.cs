@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Scanning
             {
                 var r1 = m.Register("r1");
                 var r2 = m.Register("r2");
-                m.Assign(r1, m.LoadDw(r2));
+                m.Assign(r1, m.Mem32(r2));
                 m.Return();
             });
             var block = proc.ControlGraph.Blocks[2];
@@ -118,10 +118,10 @@ namespace Reko.UnitTests.Scanning
             var proc = BuildTest("fn01010", m =>
             {
                 var r1 = m.Register("r1");
-                m.Assign(r1, m.LoadDw(r1));
+                m.Assign(r1, m.Mem32(r1));
                 m.Goto("next");
                 m.Label("next");
-                m.Assign(r1, m.LoadDw(m.Word32(0x123123)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123123)));
                 m.Return();
             });
 

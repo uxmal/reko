@@ -417,7 +417,7 @@ namespace Reko.Arch.Vax
                 m.Assign(t, op0);
                 op0 = t;
             }
-            m.Assign(m.Load(width, sp), op0);
+            m.Assign(m.Mem(width, sp), op0);
             NZ00(op0);
         }
 
@@ -438,7 +438,7 @@ namespace Reko.Arch.Vax
                 m.Assign(t, ea);
                 ea = t;
             }
-            m.Assign(m.Load(PrimitiveType.Word32, sp), ea);
+            m.Assign(m.Mem(PrimitiveType.Word32, sp), ea);
             NZ00(ea);
         }
 
