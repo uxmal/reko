@@ -189,7 +189,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
-        public void TransformInstruction()
+        public Assignment TransformInstruction()
         {
             var eNum = dividend;
             if (bestRational.Numerator != 1)
@@ -201,11 +201,14 @@ namespace Reko.Analysis
             var sidOrig = ssa.Identifiers[idOrig];
             var sidDst = ssa.Identifiers[idDst];
             sidOrig.Uses.Remove(sidDst.DefStatement);
-            sidDst.DefStatement.Instruction = new Assignment(
+            var ass = new Assignment(
                 idDst,
                 m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
+
+            sidDst.DefStatement.Instruction = ass;
+            return ass;
         }
     }
 }
