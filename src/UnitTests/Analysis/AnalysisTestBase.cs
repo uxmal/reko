@@ -306,8 +306,8 @@ namespace Reko.UnitTests.Analysis
         protected void Given_FakeWin32Platform(MockRepository mr)
         {
             var platform = mr.StrictMock<IPlatform>();
-            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
-            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
+            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Ptr32);
+            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Ptr32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
             platform.Stub(p => p.LookupProcedureByName(
                 Arg<string>.Is.Anything,
@@ -355,7 +355,7 @@ namespace Reko.UnitTests.Analysis
                 Arg<IRewriterHost>.Is.NotNull))
                 .Return(null);
 
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
                 new HashSet<RegisterStorage>());
             platform.Stub(p => p.MakeAddressFromLinear(0ul))

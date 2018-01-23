@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Evaluation
         public void Mem_Valid()
         {
             var id = m.Register(3);
-            var e = m.LoadW(id);
+            var e = m.Mem16(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
             ctx.Replay();
 
@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Evaluation
         public void Mem_Invalid()
         {
             var id = m.Register(3);
-            var e = m.LoadW(id);
+            var e = m.Mem16(id);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
             ctx.Replay();
 
@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Evaluation
         {
             var es = m.Frame.CreateTemporary("es", PrimitiveType.Word16);
             var bx = m.Frame.CreateTemporary("bx", PrimitiveType.Word16);
-            var e = m.SegMemW(es, bx);
+            var e = m.SegMem16(es, bx);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(es))).Return(es);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(bx))).Return(bx);
             ctx.Replay();
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Evaluation
         {
             var es = m.Frame.CreateTemporary("es", PrimitiveType.Word16);
             var bx = m.Frame.CreateTemporary("bx", PrimitiveType.Word16);
-            var e = m.SegMemW(es, bx);
+            var e = m.SegMem16(es, bx);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(es))).Return(es);
             ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(bx))).Return(Constant.Invalid);
             ctx.Replay();

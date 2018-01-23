@@ -42,8 +42,8 @@ namespace Reko.Arch.Tlcs
         public Tlcs90Architecture()
         {
             base.InstructionBitSize = 8;
-            this.FramePointerType = PrimitiveType.Pointer32;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.StackRegister = Registers.sp;
         }

@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Evaluation
                 PrimitiveType.Real32,
                 m.Cast(
                     PrimitiveType.Real64,
-                    m.Load(PrimitiveType.Real32, m.Word32(0x123400))));
+                    m.Mem(PrimitiveType.Real32, m.Word32(0x123400))));
             Assert.AreEqual("Mem0[0x00123400:real32]", expr.Accept(simplifier).ToString());
         }
 
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_AddAddress32Constant()
         {
             Given_ExpressionSimplifier();
-            var expr = m.LoadDw(m.IAdd(Address.Ptr32(0x00123400), 0x56));
+            var expr = m.Mem32(m.IAdd(Address.Ptr32(0x00123400), 0x56));
             Assert.AreEqual("Mem0[0x00123456:word32]", expr.Accept(simplifier).ToString());
         }
 

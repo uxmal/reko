@@ -38,17 +38,17 @@ namespace Reko.UnitTests.Fragments
             var real96 = PrimitiveType.Real96;
             var int32 = PrimitiveType.Int32;
             var fp0 = m.Register(new RegisterStorage("fp0", 32, 0, real80));
-            var a6 = m.Register(new RegisterStorage("a6", 14, 0, PrimitiveType.Pointer32));
+            var a6 = m.Register(new RegisterStorage("a6", 14, 0, PrimitiveType.Ptr32));
             var flags = m.Frame.EnsureIdentifier(
                 new FlagRegister("flags", 42, PrimitiveType.Word32));
 
-            m.Assign(fp0, m.Cast(real80, m.Load(int32, m.ISub(a6, 0x10))));
+            m.Assign(fp0, m.Cast(real80, m.Mem(int32, m.ISub(a6, 0x10))));
             m.Assign(
                 flags,
                 m.Cond(
                     m.FSub(
                         m.Cast(real96, fp0),
-                        m.Load(real96, m.IAdd(a6, 0x08)))));
+                        m.Mem(real96, m.IAdd(a6, 0x08)))));
             m.BranchIf(m.Test(ConditionCode.EQ, flags), "l1");
             m.Return();
         }

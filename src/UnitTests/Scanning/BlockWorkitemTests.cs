@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Scanning
             program.Platform = new DefaultPlatform(null, arch);
             arch.BackToRecord();
             arch.StackRegister = (RegisterStorage)sp.Storage;
-            arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(s => s.PointerType).Return(PrimitiveType.Ptr32);
             scanner.Stub(s => s.Services).Return(sc);
             sc.AddService<DecompilerEventListener>(listener);
         }
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Scanning
             Block next = block.Procedure.AddBlock("next");
             using (mr.Record())
             {
-                arch.Stub(x => x.PointerType).Return(PrimitiveType.Pointer32);
+                arch.Stub(x => x.PointerType).Return(PrimitiveType.Ptr32);
                 arch.Stub(x => x.CreateRewriter(
                     Arg<EndianImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Scanning
             ProcessorState s2 = null;
             using (mr.Record())
             {
-                arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
+                arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
                 arch.Stub(x => x.CreateRewriter(
                     Arg<EndianImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<ProcessorState>.Is.Anything,
                     Arg<IStorageBinder>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
-                arch.Stub(x => x.PointerType).Return(PrimitiveType.Pointer32);
+                arch.Stub(x => x.PointerType).Return(PrimitiveType.Ptr32);
                 scanner.Stub(x => x.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -324,8 +324,8 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallTerminatingProcedure_StopScanning()
         {
-            proc = Procedure.Create("proc", Address.Ptr32(0x102000), new Frame(PrimitiveType.Pointer32));
-            var terminator = Procedure.Create("terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Pointer32));
+            proc = Procedure.Create("proc", Address.Ptr32(0x102000), new Frame(PrimitiveType.Ptr32));
+            var terminator = Procedure.Create("terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Ptr32));
             terminator.Characteristics = new ProcedureCharacteristics {
                 Terminates = true,
             };
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Scanning
                 Arg<ProcessorState>.Is.Anything))
                 .Return(terminator);
             scanner.Expect(s => s.TerminateBlock(Arg<Block>.Is.NotNull, Arg<Address>.Is.NotNull));
-            arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
@@ -356,7 +356,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallProcedureWithSignature()
         {
-            var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
+            var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Ptr32));
             var sig = new FunctionType(
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 new[] {
@@ -366,7 +366,7 @@ namespace Reko.UnitTests.Scanning
             proc2.Signature = sig;
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             scanner.Expect(s => s.FindContainingBlock(Address.Ptr32(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
             scanner.Expect(s => s.FindContainingBlock(Address.Ptr32(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
             scanner.Expect(s => s.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
@@ -408,15 +408,15 @@ testProc_exit:
         public void Bwi_IndirectCallMatchedByPlatform()
         {
             var platform = mr.StrictMock<IPlatform>();
-            var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, 0, PrimitiveType.Pointer32));
-            var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
+            var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, 0, PrimitiveType.Ptr32));
+            var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Ptr32));
             var sysSvc = new SystemService {
                 Name = "SysSvc",
                 Signature = FunctionType.Action(new[] { reg1 }),
                 Characteristics = new ProcedureCharacteristics()
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
             program.Platform = platform;
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
@@ -424,7 +424,7 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
-            trace.Add(m => m.Call(m.LoadDw(m.IAdd(reg0, -32)), 4));
+            trace.Add(m => m.Call(m.Mem32(m.IAdd(reg0, -32)), 4));
             var wi = CreateWorkItem(Address.Ptr32(0x100000), arch.CreateProcessorState());
             wi.Process();
 
@@ -436,14 +436,14 @@ testProc_exit:
         public void Bwi_IndirectJump()
         {
             var platform = mr.StrictMock<IPlatform>();
-            var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, 0, PrimitiveType.Pointer32));
+            var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, 0, PrimitiveType.Ptr32));
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(null);
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
             mr.ReplayAll();
 
-            trace.Add(m => m.Goto(m.LoadDw(sp)));
+            trace.Add(m => m.Goto(m.Mem32(sp)));
             var wi = CreateWorkItem(Address.Ptr32(0x0100000), arch.CreateProcessorState());
             wi.Process();
 
@@ -541,7 +541,7 @@ testProc_exit:
             scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
                 .IgnoreArguments()
                 .Return(l00100100);
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             mr.ReplayAll();
 
             trace.Add(m => m.CallD(Address.Ptr32(0x0100100), 0));
@@ -664,7 +664,7 @@ testProc_exit:
             var addrCall = Address.Ptr32(0x00100000);
             var addrCallee = Address.Ptr32(0x00102000);
             var l00100000 = new Block(proc, "l00100000");
-            var procCallee = new Procedure(null, new Frame(PrimitiveType.Pointer32))
+            var procCallee = new Procedure(null, new Frame(PrimitiveType.Ptr32))
             {
                 Name = "testFn",
                 Signature = new FunctionType(
@@ -719,7 +719,7 @@ testProc_exit:
                 Arg<ProcessorState>.Is.Anything)).Return(blockOther);
             mr.ReplayAll();
 
-            trace.Add(m => m.Branch(m.LoadB(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
+            trace.Add(m => m.Branch(m.Mem8(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
 
             var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
             wi.Process();
@@ -739,8 +739,8 @@ testProc_exit:
                 new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
                 new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
             };
-            trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
-            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });
+            trace.Add(m => { m.Assign(r1, m.Mem32(m.Word32(0x112200))); });
+            trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x112204)), r1); });
             scanner.Stub(s => s.FindContainingBlock(null)).IgnoreArguments().Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
@@ -761,11 +761,11 @@ testProc_exit:
         {
             var addrStart = Address.Ptr32(0x00100000);
             var blockCallRet = new Block(proc, "callRetStub");
-            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x00123400)), m.Word32(1)); });
+            trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x00123400)), m.Word32(1)); });
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
             scanner.Expect(s => s.CreateCallRetThunk(null, null, null)).IgnoreArguments().Return(blockCallRet);
-            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Pointer32)));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Ptr32)));
             mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
@@ -786,7 +786,7 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
             scanner.Expect(s => s.Warn(null, null, null)).IgnoreArguments();
-            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Pointer32)));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Ptr32)));
             mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));

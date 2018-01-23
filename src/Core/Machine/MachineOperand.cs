@@ -238,12 +238,12 @@ namespace Reko.Core.Machine
 
         public static AddressOperand Ptr32(uint a)
         {
-            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Pointer32);
+            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Ptr32);
         }
 
         public static AddressOperand Ptr64(ulong a)
         {
-            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
+            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Ptr64);
         }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

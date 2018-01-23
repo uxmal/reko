@@ -125,13 +125,13 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Match_AddRegMem()
         {
-            var addAxMem = m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
+            var addAxMem = m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
             var adcDxMem = m.Assign(
                 dx,
                 m.IAdd(
                     m.IAdd(
                         dx,
-                        m.LoadDw(m.IAdd(bx, 0x302))),
+                        m.Mem32(m.IAdd(bx, 0x302))),
                     CF));
 
             var instr = CreateLongInstruction(addAxMem, adcDxMem);
@@ -161,13 +161,13 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Match_RegMem()
         {
-            var addAxMem = m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
+            var addAxMem = m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
             var adcDxMem = m.Assign(
                 dx,
                 m.IAdd(
                     m.IAdd(
                         dx,
-                        m.LoadW(m.IAdd(bx, 0x302))),
+                        m.Mem16(m.IAdd(bx, 0x302))),
                     CF));
 
             var instr = CreateLongInstruction(addAxMem, adcDxMem);
@@ -195,9 +195,9 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Replace_AddReg()
         {
-            m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
+            m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
             m.Assign(CF, m.Cond(ax));
-            m.Assign(dx, m.IAdd(m.IAdd(dx, m.LoadW(m.IAdd(bx, 0x302))), CF));
+            m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 0x302))), CF));
             m.Assign(CF, m.Cond(dx));
             var block = m.Block;
             m.Return();

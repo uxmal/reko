@@ -31,7 +31,7 @@ namespace Reko.Arch.X86
     public class X86AddressOperand : AddressOperand
     {
         public X86AddressOperand(Address a)
-            : base(a, PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
+            : base(a, PrimitiveType.Ptr32)	//$BUGBUG: P6 pointers?
         {
         }
 

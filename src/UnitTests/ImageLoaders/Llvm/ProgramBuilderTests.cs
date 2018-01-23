@@ -51,7 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.globals = new Dictionary<string, Identifier>();
             this.sc = new ServiceContainer();
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var cfgSvc = mr.Stub<IConfigurationService>();
             var openv = mr.Stub<OperatingEnvironment>();
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-64")).Return(arch);
@@ -173,8 +173,8 @@ foo_exit:
         {
             Global("curch", PrimitiveType.Char);
             Global("curln", PrimitiveType.Int32);
-            Global("input", PrimitiveType.Pointer32);
-            Global("fgetc", PrimitiveType.Pointer32);
+            Global("input", PrimitiveType.Ptr32);
+            Global("fgetc", PrimitiveType.Ptr32);
             var proc = RunFuncTest(
 @"define signext i8 @next_char() #0 {
   %1 = load i8, i8* @curch, align 1
@@ -228,7 +228,7 @@ next_char_exit:
         [Test]
         public void LLPB_GetElementPtr()
         {
-            Global("puts", PrimitiveType.Pointer32);
+            Global("puts", PrimitiveType.Ptr32);
             Global("msg", new Pointer(new ArrayType(PrimitiveType.Char, 13), 4));
             var proc = RunFuncTest( 
 @"define i32 @foo() { 

@@ -33,7 +33,7 @@ namespace Reko.Arch.Sparc
     {
         public readonly Address Address;
 
-        public AddressOperand(Address address) : base(PrimitiveType.Pointer32)
+        public AddressOperand(Address address) : base(PrimitiveType.Ptr32)
         {
             this.Address = address;
         }

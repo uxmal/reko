@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var ppp = program.EnsurePseudoProcedure(name, returnType, args);
             return new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                 returnType,
                 args);
         }
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Arch.Intel
             var ppp = program.EnsurePseudoProcedure(name, returnType, args);
             ppp.Characteristics = c;
             return new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                 returnType,
                 args);
         }

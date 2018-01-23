@@ -268,8 +268,8 @@ namespace Reko.Arch.Vax
             var fp = binder.EnsureRegister(Registers.fp);
             var ap = binder.EnsureRegister(Registers.ap);
             m.Assign(sp, m.ISub(fp, 4));
-            m.Assign(fp, m.LoadDw(m.IAdd(sp, 16)));
-            m.Assign(ap, m.LoadDw(m.IAdd(sp, 12)));
+            m.Assign(fp, m.Mem32(m.IAdd(sp, 16)));
+            m.Assign(ap, m.Mem32(m.IAdd(sp, 12)));
             m.Return(4, 0);
             rtlc = RtlClass.Transfer;
         }

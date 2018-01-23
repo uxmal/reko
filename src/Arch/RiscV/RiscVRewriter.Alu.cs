@@ -99,7 +99,7 @@ namespace Reko.Arch.RiscV
             {
                 ea = m.IAdd(ea, offset);
             }
-            Expression src = m.Load(dt, ea);
+            Expression src = m.Mem(dt, ea);
             if (dst.DataType.Size != src.DataType.Size)
             {
                 src = m.Cast(arch.WordWidth, src);
@@ -178,7 +178,7 @@ namespace Reko.Arch.RiscV
             {
                 ea = m.IAdd(ea, offset);
             }
-            m.Assign(m.Load(dt, ea), src);
+            m.Assign(m.Mem(dt, ea), src);
         }
 
         private void RewriteSub()

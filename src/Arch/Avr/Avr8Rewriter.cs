@@ -303,7 +303,7 @@ namespace Reko.Arch.Avr
             }
             else
             {
-                val = m.Load(mop.Width, ea);
+                val = m.Mem(mop.Width, ea);
             }
             write(val, src);
             if (mop.PostIncrement)
@@ -448,7 +448,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteLds()
         {
-            m.Assign(RewriteOp(0), m.LoadB(RewriteOp(1)));
+            m.Assign(RewriteOp(0), m.Mem8(RewriteOp(1)));
         }
 
         private void RewriteLpm()
@@ -458,7 +458,7 @@ namespace Reko.Arch.Avr
             {
                 var z = binder.EnsureRegister(arch.z);
                 var r0 = binder.EnsureRegister(arch.GetRegister(0));
-                m.Assign(r0, m.SegMemB(codeSel, z));
+                m.Assign(r0, m.SegMem8(codeSel, z));
             }
             else
             {
@@ -488,7 +488,7 @@ namespace Reko.Arch.Avr
         private void RewritePop()
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(RewriteOp(0), m.LoadB(sp));
+            m.Assign(RewriteOp(0), m.Mem8(sp));
             m.Assign(sp, m.IAdd(sp, Constant.Int16(1)));
         }
 
@@ -496,7 +496,7 @@ namespace Reko.Arch.Avr
         {
             var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(sp, m.ISub(sp, Constant.Int16(1)));
-            m.Assign(m.LoadB(sp), RewriteOp(0));
+            m.Assign(m.Mem8(sp), RewriteOp(0));
         }
 
         private void RewriteRet()
@@ -552,7 +552,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteSts()
         {
-            m.Assign(m.LoadB(RewriteOp(0)), RewriteOp(1));
+            m.Assign(m.Mem8(RewriteOp(0)), RewriteOp(1));
         }
 
         private void RewriteSwap()

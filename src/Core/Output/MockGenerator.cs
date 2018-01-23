@@ -247,7 +247,7 @@ namespace Reko.Core.Output
         {
             var addr16 = addr as Address16;
             if (addr16!= null)
-                writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt32());       //$REVIEW: need a ToUInt16
+                writer.Write("Address.Ptr16(0x{0:X}", addr16.ToUInt16());
             if (addr.Selector.HasValue)
                 writer.Write("Address.SegPtr(0x{0:X}, 0x{1:X}", addr.Selector, addr.Offset);
             var addr32 = addr as Address32;
@@ -313,14 +313,14 @@ namespace Reko.Core.Output
             }
             else if (c.DataType==PrimitiveType.Int32)
             {
-                writer.Write("new Constant(Primitive.Int32, ");
+                writer.Write("Constant.Create(Primitive.Int32, ");
             } else if (c.DataType == PrimitiveType.Word16)
             {
                 writer.Write("Word16(");
             }
             else
             {
-                writer.Write("new Constant(");
+                writer.Write("Constant.Create(");
                 c.DataType.Accept(this);
                 writer.Write(", ");
             }
@@ -358,7 +358,7 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitMemoryAccess(MemoryAccess access)
         {
-            writer.Write("Load(");
+            writer.Write("Mem(");
             access.DataType.Accept(this);
             writer.Write(", ");
             access.EffectiveAddress.Accept(this);
@@ -532,10 +532,9 @@ namespace Reko.Core.Output
 
         public int VisitVoidType(VoidType vt)
         {
-            throw new NotImplementedException();
+            writer.Write("VoidType.Instance");
+            return 0;
         }
-
-
         #endregion
     }
 }

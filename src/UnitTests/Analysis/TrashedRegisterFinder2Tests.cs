@@ -156,10 +156,10 @@ Trashed: Global memory,Local -0004
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);        // push r1
 
-                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Store(m.Word32(0x123400), r1);
 
-                m.Assign(r1, m.LoadDw(sp)); // pop r1
+                m.Assign(r1, m.Mem32(sp)); // pop r1
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -181,7 +181,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x0C00));
-                m.Assign(ds, m.LoadW(sp));
+                m.Assign(ds, m.Mem16(sp));
                 m.Assign(sp, m.IAdd(sp, 2));
                 m.Return();
             });
@@ -206,7 +206,7 @@ Trashed: cl,cx
                 m.Return();
 
                 m.Label("zero");
-                m.Assign(cx, m.LoadW(ax));
+                m.Assign(cx, m.Mem16(ax));
                 m.Return();
             });
         }
@@ -259,8 +259,8 @@ Constants: cl:0x00
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
-                m.Assign(r2 ,m.LoadDw(m.IAdd(r1, 4)));
-                m.Assign(r1, m.LoadDw(m.IAdd(r1, 8)));
+                m.Assign(r2 ,m.Mem32(m.IAdd(r1, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(r1, 8)));
                 m.Call("Addition", 4);
                 m.Store(m.Word32(0x123000), r1);
                 m.Return();

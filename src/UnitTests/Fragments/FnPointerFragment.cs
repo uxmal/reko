@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Fragments
             Identifier pfn = Local32("pfn");
             Assign(pfn, Word32(0x1213130));
             Store(Word32(0x10000000), pfn);
-            Call(LoadDw(Word32(0x10000000)), 4);
+            Call(Mem32(Word32(0x10000000)), 4);
             Return();
         }
     }

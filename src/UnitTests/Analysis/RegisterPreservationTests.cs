@@ -149,7 +149,7 @@ test:
             pb.Add("test", m =>
             {
                 var r1 = m.Register(1);
-                m.Assign(r1, m.LoadDw(m.Word32(0x3000)));
+                m.Assign(r1, m.Mem32(m.Word32(0x3000)));
                 m.Return();
             });
             program = pb.BuildProgram();

@@ -302,7 +302,7 @@ namespace Reko.Arch.Alpha
                         ea = m.ISub(ea, -offset);
                     }
                 }
-                return m.Load(mop.Width, ea);
+                return m.Mem(mop.Width, ea);
             }
             throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
         }

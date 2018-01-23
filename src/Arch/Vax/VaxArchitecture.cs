@@ -61,9 +61,9 @@ namespace Reko.Arch.Vax
         {
             var x = Registers.r0;
             InstructionBitSize = 8;
-            this.FramePointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.PointerType = PrimitiveType.Ptr32;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)

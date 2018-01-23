@@ -129,7 +129,7 @@ namespace Reko.Analysis
                         param.Name);
                     var fp = proc.Frame.FramePointer;
                     stmts.Insert(i, linAddr, new Store(
-                        m.Load(param.DataType, m.IAdd(fp, starg.StackOffset)),
+                        m.Mem(param.DataType, m.IAdd(fp, starg.StackOffset)),
                         param));
                 }
                 else

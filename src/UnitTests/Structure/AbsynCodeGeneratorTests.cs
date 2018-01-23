@@ -409,7 +409,7 @@ namespace Reko.UnitTests.Structure
                 var a1 = m.Local16("a1"); 
                 m.Assign(a1, m.Fn("fn0540"));
                 var tmp = m.Local16("tmp");
-                m.Assign(tmp, m.LoadW(m.Word16(0x8416)));
+                m.Assign(tmp, m.Mem16(m.Word16(0x8416)));
                 m.BranchIf(m.Ne(tmp, 0), "branch_c");
 
                 m.Label("Branch_a");
@@ -459,10 +459,10 @@ namespace Reko.UnitTests.Structure
             CompileTest(m =>
             {
                 m.Label("Infinity");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x1234)), 0), "hop");
                 m.SideEffect(m.Fn("foo"));
                 m.Label("hop");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x5123)), 1), "Infinity");
                 m.SideEffect(m.Fn("bar"));
                 m.Goto("Infinity");
                 m.Return();

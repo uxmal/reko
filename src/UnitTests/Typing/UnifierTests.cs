@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Typing
             var s2 = new StructureType
             {
                 Fields = {
-                    { 0, PrimitiveType.Pointer32 },
+                    { 0, PrimitiveType.Ptr32 },
                     { 4, PrimitiveType.Word32 },
                     { 8, PrimitiveType.Real32 },
                 }

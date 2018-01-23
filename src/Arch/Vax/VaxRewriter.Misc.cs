@@ -73,8 +73,8 @@ namespace Reko.Arch.Vax
         private void RewriteCmpc3()
         {
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
-            var str1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
-            var str2 = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var str1 = RewriteSrcOp(1, PrimitiveType.Ptr32);
+            var str2 = RewriteSrcOp(2, PrimitiveType.Ptr32);
             var addrCur = dasm.Current.Address;
             var r0 = binder.EnsureRegister(Registers.r0);
             var r1 = binder.EnsureRegister(Registers.r1);
@@ -91,8 +91,8 @@ namespace Reko.Arch.Vax
         private void RewriteScanc()
         {
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
-            var addr = RewriteSrcOp(1, PrimitiveType.Pointer32);
-            var tbl = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var addr = RewriteSrcOp(1, PrimitiveType.Ptr32);
+            var tbl = RewriteSrcOp(2, PrimitiveType.Ptr32);
             var mask = RewriteSrcOp(3, PrimitiveType.Byte);
             var r0 = binder.EnsureRegister(Registers.r0);
             var r1 = binder.EnsureRegister(Registers.r1);

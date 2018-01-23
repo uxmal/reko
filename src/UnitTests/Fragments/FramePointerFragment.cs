@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Fragments
             Identifier frame = Declare(new StructureType("frame_t", 0), "frame");
             Identifier fp = Local32("fp");
             Assign(fp, AddrOf(frame));
-            Store(IAdd(fp, 4), Load(PrimitiveType.Word32, IAdd(fp, 8)));
+            Store(IAdd(fp, 4), Mem(PrimitiveType.Word32, IAdd(fp, 8)));
         }
     }
 }

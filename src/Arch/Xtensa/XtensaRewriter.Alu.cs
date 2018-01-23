@@ -133,7 +133,7 @@ namespace Reko.Arch.Xtensa
                         ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32());
             m.Assign(
                 dst,
-                m.LoadDw(
+                m.Mem32(
                     m.IAdd(
                         RewriteOp(dasm.Current.Operands[1]),
                         offset)));
@@ -145,7 +145,7 @@ namespace Reko.Arch.Xtensa
             var tmp = binder.CreateTemporary(dt);
             m.Assign(
                 tmp,
-                m.Load(
+                m.Mem(
                     dt,
                     m.IAdd(
                         RewriteOp(instr.Operands[1]),
@@ -170,7 +170,7 @@ namespace Reko.Arch.Xtensa
                 ea = binder.CreateTemporary(a.DataType);
                 m.Assign(ea, m.IAdd(a, off));
             }
-            m.Assign(dst, m.Load(PrimitiveType.Real32, ea));
+            m.Assign(dst, m.Mem(PrimitiveType.Real32, ea));
             if (!off.IsZero)
             { 
                 m.Assign(a, ea);
@@ -183,7 +183,7 @@ namespace Reko.Arch.Xtensa
             var tmp = binder.CreateTemporary(dt);
             m.Assign(
                 tmp,
-                m.Load(
+                m.Mem(
                     dt,
                     m.IAdd(
                         RewriteOp(instr.Operands[1]),
@@ -235,7 +235,7 @@ namespace Reko.Arch.Xtensa
                 ea = m.IAdd(ea, off);
             }
             m.Assign(
-                m.Load(dt, ea),
+                m.Mem(dt, ea),
                 src);
         }
 

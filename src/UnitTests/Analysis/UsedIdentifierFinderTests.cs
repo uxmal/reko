@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void FindNoOutParams()
         {
-            Assert.AreEqual(0, UsedIdentifierFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Pointer32, m.Local32("tmp")))).Count);
+            Assert.AreEqual(0, UsedIdentifierFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Ptr32, m.Local32("tmp")))).Count);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Pointer32);
+            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Ptr32);
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Core
             sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("0x12345678", sce.GetValue(m.LoadDw(idSp)).ToString());
+            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp)).ToString());
         }
 
         public class FakeArchitecture : IProcessorArchitecture

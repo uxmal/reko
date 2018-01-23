@@ -65,7 +65,7 @@ namespace Reko.Arch.M68k
             rtlc = RtlClass.System;
             var sp = binder.EnsureRegister(Registers.a7);
             var sr = binder.EnsureRegister(Registers.sr);
-            m.Assign(sr, m.LoadW(sp));
+            m.Assign(sr, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, m.Int32(2)));
             m.Return(4, 0);
         }
