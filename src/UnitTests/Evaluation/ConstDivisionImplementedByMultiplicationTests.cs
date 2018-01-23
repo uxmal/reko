@@ -62,8 +62,8 @@ namespace Reko.UnitTests.Evaluation
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
             Assert.IsTrue(rule.Match(ass));
-            rule.TransformInstruction();
-            Assert.AreEqual(sExp, ((Assignment)ctx.Statement.Instruction).Src.ToString());
+            var instr = rule.TransformInstruction();
+            Assert.AreEqual(sExp, instr.Src.ToString());
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> bld)
