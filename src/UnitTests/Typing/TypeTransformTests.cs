@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -433,7 +433,7 @@ namespace Reko.UnitTests.Typing
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 m.SegStore(
                     ds, m.Word16( 0x1234),
-                    m.SegMemW(
+                    m.SegMem16(
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
             });
@@ -506,6 +506,35 @@ namespace Reko.UnitTests.Typing
                 m.Declare(r1, m.AddrOf(foo));
                 m.Store(r1, m.Word16(0x1234));
                 m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
+
+        [Test]
+        public void TtranSelfArray()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("SelfArray", m =>
+            {
+                var d0 = m.Reg32("d0", 0);
+                var a4 = m.Reg32("a4", 12);
+
+                m.Store(m.IAdd(a4, m.Shl(d0, 2)), a4);
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
+
+        [Test]
+        public void TtranSelfRef()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("SelfRef", m =>
+            {
+                var a4 = m.Reg32("a4", 12);
+
+                m.Store(a4, a4);
                 m.Return();
             });
             RunTest(pb.BuildProgram());

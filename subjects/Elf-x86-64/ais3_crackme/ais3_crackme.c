@@ -24,57 +24,53 @@ void call_gmon_start()
 	word64 rax_4 = globals->qw600FE0;
 	if (rax_4 != 0x00)
 	{
-		word64 rsp_17;
-		byte SCZO_18;
-		word64 rax_19;
-		byte SZO_20;
-		byte C_21;
-		byte Z_22;
-		word32 eax_23;
-		eax();
+		word64 rsp_15;
+		byte SCZO_16;
+		word64 rax_17;
+		byte SZO_18;
+		byte C_19;
+		byte Z_20;
+		__gmon_start__();
 	}
 }
 
 // 0000000000400460: void deregister_tm_clones(Register word64 r8)
 void deregister_tm_clones(word64 r8)
 {
-	if (false && 0x00 != 0x00)
-	{
-		word64 rsp_42;
-		word32 eax_43;
-		word64 rax_44;
-		word64 rbp_45;
-		word64 r8_46;
-		byte SCZO_47;
-		byte CZ_48;
-		byte SZO_49;
-		byte C_50;
-		byte Z_51;
-		word32 edi_52;
-		word64 rdi_53;
-		eax();
-	}
+	if (true || 0x00 == 0x00)
+		return;
+	word64 rsp_42;
+	word32 eax_43;
+	word64 rax_44;
+	word64 rbp_45;
+	word64 r8_46;
+	byte SCZO_47;
+	byte CZ_48;
+	byte SZO_49;
+	byte C_50;
+	byte Z_51;
+	word32 edi_52;
+	word64 rdi_53;
+	null();
 }
 
 // 0000000000400490: void register_tm_clones(Register word64 r8)
 void register_tm_clones(word64 r8)
 {
-	if (true && 0x00 != 0x00)
-	{
-		word64 rsp_47;
-		word64 rax_48;
-		word64 rbp_49;
-		word64 r8_50;
-		byte SCZO_51;
-		word64 rdx_52;
-		byte Z_53;
-		byte SZO_54;
-		byte C_55;
-		word64 rsi_56;
-		word64 rdi_57;
-		word32 edx_58;
-		edx();
-	}
+	if (false || 0x00 == 0x00)
+		return;
+	word64 rsp_45;
+	word64 rax_46;
+	word64 rbp_47;
+	word64 r8_48;
+	byte SCZO_49;
+	word64 rdx_50;
+	byte Z_51;
+	byte SZO_52;
+	byte C_53;
+	word64 rsi_54;
+	word64 rdi_55;
+	null();
 }
 
 // 00000000004004D0: void __do_global_dtors_aux(Register word64 r8)
@@ -108,13 +104,13 @@ void frame_dummy(word64 r8)
 		word64 rdx_55;
 		word32 edx_56;
 		word64 rsi_57;
-		eax();
+		null();
 		register_tm_clones(r8_54);
 	}
 }
 
-// 0000000000400520: Register word32 verify(Register (arr Eq_136) rdi)
-word32 verify(Eq_136 rdi[])
+// 0000000000400520: Register word32 verify(Register (arr Eq_134) rdi)
+word32 verify(Eq_134 rdi[])
 {
 	word32 dwLoc0C_126 = 0x00;
 	while (true)
@@ -135,8 +131,8 @@ word32 verify(Eq_136 rdi[])
 	return eax_122;
 }
 
-// 00000000004005C5: void main(Register (ptr Eq_221) rsi, Register word32 edi)
-void main(Eq_221 * rsi, word32 edi)
+// 00000000004005C5: void main(Register (ptr Eq_219) rsi, Register word32 edi)
+void main(Eq_219 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
@@ -171,7 +167,7 @@ void __libc_csu_init(word32 edi)
 			byte Z_74;
 			word32 ebx_75;
 			word64 rdi_76;
-			globals->u600DF8();
+			globals->ptr600DF8();
 		} while (rbx_66 + 0x01 != rbp_61);
 	}
 }

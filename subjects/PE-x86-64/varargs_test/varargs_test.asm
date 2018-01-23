@@ -55,7 +55,7 @@ fn00000001400010D0 proc
 	mov	rdi,rcx
 	lea	rsi,[rsp+58]
 	xor	ecx,ecx
-	call	dword ptr [rip+0000107D]                              ; 0000000140002178
+	call	qword ptr [rip+0000107D]                              ; 0000000140002178
 	mov	rbx,rax
 	call	00000001400010C0
 	xor	r9d,r9d
@@ -63,7 +63,7 @@ fn00000001400010D0 proc
 	mov	r8,rdi
 	mov	rdx,rbx
 	mov	rcx,[rax]
-	call	dword ptr [rip+0000104E]                              ; 0000000140002168
+	call	qword ptr [rip+0000104E]                              ; 0000000140002168
 	add	rsp,30
 	pop	rdi
 	pop	rsi
@@ -90,7 +90,7 @@ fn0000000140001140 proc
 	mov	rdi,rcx
 	lea	rsi,[rsp+58]
 	mov	ecx,00000001
-	call	dword ptr [rip+0000100A]                              ; 0000000140002178
+	call	qword ptr [rip+0000100A]                              ; 0000000140002178
 	mov	rbx,rax
 	call	0000000140001130
 	xor	r9d,r9d
@@ -98,7 +98,7 @@ fn0000000140001140 proc
 	mov	r8,rdi
 	mov	rdx,rbx
 	mov	rcx,[rax]
-	call	dword ptr [rip+00000FE3]                              ; 0000000140002170
+	call	qword ptr [rip+00000FE3]                              ; 0000000140002170
 	add	rsp,30
 	pop	rdi
 	pop	rsi
@@ -291,7 +291,7 @@ l000000014000137F:
 	xor	r8d,r8d
 	lea	edx,[rax+02]
 	xor	ecx,ecx
-	call	ebx
+	call	rbx
 
 l0000000140001395:
 	call	000000014000196C
@@ -367,10 +367,10 @@ fn0000000140001448 proc
 	sub	rsp,20
 	mov	rbx,rcx
 	xor	ecx,ecx
-	call	dword ptr [rip+00000C0F]                              ; 0000000140002068
+	call	qword ptr [rip+00000C0F]                              ; 0000000140002068
 	mov	rcx,rbx
-	call	dword ptr [rip+00000BAE]                              ; 0000000140002010
-	call	dword ptr [rip+00000BF8]                              ; 0000000140002060
+	call	qword ptr [rip+00000BAE]                              ; 0000000140002010
+	call	qword ptr [rip+00000BF8]                              ; 0000000140002060
 	mov	rcx,rax
 	mov	edx,C0000409
 	add	rsp,20
@@ -430,7 +430,7 @@ fn0000000140001550 proc
 	push	rdi
 	sub	rsp,40
 	mov	rbx,rcx
-	call	dword ptr [rip+00000B0F]                              ; 0000000140002070
+	call	qword ptr [rip+00000B0F]                              ; 0000000140002070
 	mov	rsi,[rbx+000000F8]
 	xor	edi,edi
 
@@ -438,7 +438,7 @@ l000000014000156A:
 	xor	r8d,r8d
 	lea	rdx,[rsp+60]
 	mov	rcx,rsi
-	call	dword ptr [rip+00000A85]                              ; 0000000140002000
+	call	qword ptr [rip+00000A85]                              ; 0000000140002000
 	test	rax,rax
 	jz	00000001400015B9
 
@@ -453,7 +453,7 @@ l0000000140001580:
 	mov	[rsp+28],rcx
 	xor	ecx,ecx
 	mov	[rsp+20],rbx
-	call	dword ptr [rip+00000A56]                              ; 0000000140002008
+	call	qword ptr [rip+00000A56]                              ; 0000000140002008
 	inc	edi
 	cmp	edi,02
 	jl	000000014000156A
@@ -804,17 +804,17 @@ fn000000014000186C proc
 
 l0000000140001894:
 	lea	rcx,[rbp+18]
-	call	dword ptr [rip+00000792]                              ; 0000000140002030
+	call	qword ptr [rip+00000792]                              ; 0000000140002030
 	mov	rax,[rbp+18]
 	mov	[rbp+10],rax
-	call	dword ptr [rip+0000078C]                              ; 0000000140002038
+	call	qword ptr [rip+0000078C]                              ; 0000000140002038
 	mov	eax,eax
 	xor	[rbp+10],rax
-	call	dword ptr [rip+00000788]                              ; 0000000140002040
+	call	qword ptr [rip+00000788]                              ; 0000000140002040
 	mov	eax,eax
 	lea	rcx,[rbp+20]
 	xor	[rbp+10],rax
-	call	dword ptr [rip+00000780]                              ; 0000000140002048
+	call	qword ptr [rip+00000780]                              ; 0000000140002048
 	mov	eax,[rbp+20]
 	lea	rcx,[rbp+10]
 	shl	rax,20
@@ -913,12 +913,12 @@ l000000014000199D:
 	mov	r8d,000004D0
 	call	0000000140001DE6
 	lea	rcx,[rbp-10]
-	call	dword ptr [rip+000006B1]                              ; 0000000140002070
+	call	qword ptr [rip+000006B1]                              ; 0000000140002070
 	mov	rbx,[rbp+000000E8]
 	lea	rdx,[rbp+000004D8]
 	mov	rcx,rbx
 	xor	r8d,r8d
-	call	dword ptr [rip+00000627]                              ; 0000000140002000
+	call	qword ptr [rip+00000627]                              ; 0000000140002000
 	test	rax,rax
 	jz	0000000140001A1A
 
@@ -934,7 +934,7 @@ l00000001400019DE:
 	lea	rcx,[rbp-10]
 	mov	[rsp+20],rcx
 	xor	ecx,ecx
-	call	dword ptr [rip+000005EE]                              ; 0000000140002008
+	call	qword ptr [rip+000005EE]                              ; 0000000140002008
 
 l0000000140001A1A:
 	mov	rax,[rbp+000004C8]
@@ -950,7 +950,7 @@ l0000000140001A1A:
 	mov	[rsp+60],rax
 	mov	dword ptr [rsp+50],40000015
 	mov	dword ptr [rsp+54],00000001
-	call	dword ptr [rip+000005B2]                              ; 0000000140002020
+	call	qword ptr [rip+000005B2]                              ; 0000000140002020
 	cmp	eax,01
 	lea	rax,[rsp+50]
 	mov	[rsp+40],rax
@@ -958,9 +958,9 @@ l0000000140001A1A:
 	setz	bl
 	mov	[rsp+48],rax
 	xor	ecx,ecx
-	call	dword ptr [rip+000005D9]                              ; 0000000140002068
+	call	qword ptr [rip+000005D9]                              ; 0000000140002068
 	lea	rcx,[rsp+40]
-	call	dword ptr [rip+00000576]                              ; 0000000140002010
+	call	qword ptr [rip+00000576]                              ; 0000000140002010
 	test	eax,eax
 	jnz	0000000140001AA8
 
@@ -986,7 +986,7 @@ fn0000000140001ABC proc
 fn0000000140001AC0 proc
 	sub	rsp,28
 	xor	ecx,ecx
-	call	dword ptr [rip+0000054C]                              ; 0000000140002018
+	call	qword ptr [rip+0000054C]                              ; 0000000140002018
 	mov	rcx,rax
 	test	rax,rax
 	jnz	0000000140001AD8
@@ -1077,7 +1077,7 @@ l0000000140001B7B:
 l0000000140001B83:
 	mov	rcx,rdi
 	call	0000000140001BF4
-	call	edi
+	call	rdi
 
 l0000000140001B8D:
 	add	rbx,08
@@ -1112,7 +1112,7 @@ l0000000140001BC7:
 l0000000140001BCF:
 	mov	rcx,rdi
 	call	0000000140001BF4
-	call	edi
+	call	rdi
 
 l0000000140001BD9:
 	add	rbx,08
@@ -1306,11 +1306,7 @@ fn0000000140001DD0 proc
 0000000140001E20 00 00 FF 25 F0 02 00 00 FF 25 52 03 00 00 FF 25 ...%.....%R....%
 0000000140001E30 D4 02 00 00 FF 25 C6 02 00 00 FF 25 88 02 00 00 .....%.....%....
 0000000140001E40 FF 25 CA 02 00 00 FF 25 AC 02 00 00 FF 25 56 02 .%.....%.....%V.
-0000000140001E50 00 00                                           ..             
-
-l0000000140001E52:
-	jmp	dword ptr [rip+00000240]                               ; 0000000140002098
-0000000140001E58                         FF 25 02 03 00 00 FF 25         .%.....%
+0000000140001E50 00 00 FF 25 40 02 00 00 FF 25 02 03 00 00 FF 25 ...%@....%.....%
 0000000140001E60 EC 02 00 00 FF 25 66 02 00 00 FF 25 68 02 00 00 .....%f....%h...
 0000000140001E70 FF 25 6A 02 00 00 FF 25 D4 01 00 00             .%j....%....   
 
@@ -1369,7 +1365,7 @@ l0000000140001EE9:
 
 ;; fn0000000140001F10: 0000000140001F10
 fn0000000140001F10 proc
-	jmp	eax
+	jmp	rax
 
 ;; fn0000000140001F12: 0000000140001F12
 fn0000000140001F12 proc

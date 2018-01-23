@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ namespace Reko.Arch.Arm
         public Arm32ProcessorArchitecture()
         {
             InstructionBitSize = 32;
-            FramePointerType = PrimitiveType.Pointer32;
-            PointerType = PrimitiveType.Pointer32;
+            FramePointerType = PrimitiveType.Ptr32;
+            PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             StackRegister = A32Registers.sp;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();

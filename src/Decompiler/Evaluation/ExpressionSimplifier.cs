@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -254,17 +254,32 @@ namespace Reko.Evaluation
                 return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
             }
 
-            // (== (- e c1) c2) => (== e c1+c2)
+            // (rel (- e c1) c2) => (rel e c1+c2)
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
                 IsIntComparison(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
-                Changed = true;
-                ctx.RemoveIdentifierUse(idLeft);
-                var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
-                var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
-                return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
+                // (>u (- e c1) c2) => (>u e c1+c2) || (<u e c2)
+                if (binExp.Operator == Operator.Ugt && 
+                    binLeft.Operator == Operator.ISub &&
+                    !cRight.IsIntegerZero)
+                {
+                    Changed = true;
+                    ctx.UseExpression(binLeft.Left);
+                    var c = ExpressionSimplifier.SimplifyTwoConstants(Operator.IAdd, cLeftRight, cRight);
+                    return new BinaryExpression(Operator.Cor, PrimitiveType.Bool,
+                        new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
+                        new BinaryExpression(Operator.Ult, PrimitiveType.Bool, binLeft.Left, cLeftRight));
+                }
+                else
+                {
+                    Changed = true;
+                    ctx.RemoveIdentifierUse(idLeft);
+                    var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
+                    var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
+                    return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
+                }
             }
 
             if (addMici.Match(binExp))

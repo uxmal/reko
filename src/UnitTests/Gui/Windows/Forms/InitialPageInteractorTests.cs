@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,18 +193,26 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mr.VerifyAll();
         }
 
-        //$REFACTOR: copied from LoadedPageInteractor, should
-        // push to base class or utility class.
-        private MenuStatus QueryStatus(int cmdId)
+        [Test]
+        public void Ipi_FinishDecompilationButton()
         {
-            CommandStatus status = new CommandStatus();
-            i.QueryStatus(new CommandID(CmdSets.GuidReko, cmdId), status, null);
-            return status.Status;
-        }
+            program.NeedsScanning = false;
+            dec.Stub(d => d.Load("foo.exe")).Return(false);
+            dec.Stub(d => d.Project).Return(project);
+            browserSvc.Stub(b => b.Load(project));
+            mr.ReplayAll();
+            var status = new CommandStatus();
+            var cmd = new CommandID(
+                CmdSets.GuidReko, CmdIds.ActionFinishDecompilation);
 
-        private ILowLevelViewService AddFakeMemoryViewService()
-        {
-            return memSvc;
+            Assert.IsTrue(i.QueryStatus(cmd, status, null));
+            Assert.AreEqual(MenuStatus.Visible, status.Status);
+
+            i.OpenBinary("foo.exe");
+
+            Assert.IsTrue(i.QueryStatus(cmd, status, null));
+            Assert.AreEqual(MenuStatus.Visible | MenuStatus.Enabled, status.Status);
+            mr.VerifyAll();
         }
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl

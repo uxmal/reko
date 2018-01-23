@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Arch.RiscV
             {
                 ea = m.IAdd(ea, offset);
             }
-            m.Assign(dst, m.Load(dt, ea));
+            m.Assign(dst, m.Mem(dt, ea));
         }
 
         private void RewriteFmadd(PrimitiveType dt, Func<Expression,Expression,Expression> addsub)

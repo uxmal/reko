@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ namespace Reko.Arch.Arm
             case ArmInstructionOperandType.Memory:
                 var mem = op.MemoryValue;
                 var ea = EffectiveAddress(mem);
-                return m.Load(accessSize, ea);
+                return m.Mem(accessSize, ea);
             default:
                 throw new NotImplementedException(op.Type.ToString());
             }

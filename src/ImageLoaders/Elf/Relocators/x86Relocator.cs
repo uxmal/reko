@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,9 +42,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private void LoadImportReferencesFromRelPlt(Dictionary<Address,ImportReference> importReferences)
         {
             var rel_plt = loader.GetSectionInfoByName(".rel.plt");
+            if (rel_plt == null)
+                return;
             var symtab = rel_plt.LinkedSection;
-
-            var plt = loader.GetSectionInfoByName(".plt");
             var relRdr = loader.CreateReader(rel_plt.FileOffset);
 
             uint entries = rel_plt.EntryCount();

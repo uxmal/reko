@@ -229,7 +229,7 @@ l0000000000400D15:
 l0000000000400D1F:
 	pop	rbp
 	mov	edi,006020F8
-	jmp	eax
+	jmp	rax
 0000000000400D27                      66 0F 1F 84 00 00 00 00 00        f........
 
 l0000000000400D30:
@@ -258,7 +258,7 @@ l0000000000400D63:
 l0000000000400D6D:
 	pop	rbp
 	mov	edi,006020F8
-	jmp	eax
+	jmp	rax
 0000000000400D75                0F 1F 00                              ...       
 
 l0000000000400D78:
@@ -300,7 +300,7 @@ l0000000000400DB0:
 l0000000000400DBA:
 	push	rbp
 	mov	rbp,rsp
-	call	eax
+	call	rax
 	pop	rbp
 	jmp	0000000000400D40
 
@@ -341,7 +341,7 @@ component proc
 l0000000000400E2D:
 	mov	eax,[rbp-24]
 	mov	rax,[00401828+rax*8]
-	jmp	eax
+	jmp	rax
 0000000000400E3A                               48 8B 45 E8 0F B6           H.E...
 0000000000400E40 00 0F B6 D0 B8 07 00 00 00 2B 45 FC 89 C1 D3 FA .........+E.....
 0000000000400E50 89 D0 83 E0 01 E9 8D 00 00 00 48 8B 45 E8 0F B6 ..........H.E...
@@ -398,7 +398,7 @@ print_pixel proc
 l0000000000400F4C:
 	mov	eax,eax
 	mov	rax,[00401958+rax*8]
-	jmp	eax
+	jmp	rax
 0000000000400F58                         8B 55 C0 8B 75 94 48 8B         .U..u.H.
 0000000000400F60 45 98 41 B8 01 00 00 00 89 D1 BA 00 00 00 00 48 E.A............H
 0000000000400F70 89 C7 E8 4F FE FF FF 89 C6 BF B0 18 40 00 B8 00 ...O........@...
@@ -913,7 +913,7 @@ l00000000004017C0:
 	mov	rdx,r13
 	mov	rsi,r14
 	mov	edi,r15d
-	call	dword ptr [r12+rbx*8]
+	call	qword ptr [r12+rbx*8]
 	add	rbx,01
 	cmp	rbx,rbp
 	jnz	00000000004017C0

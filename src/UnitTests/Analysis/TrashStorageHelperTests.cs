@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier es = frame.EnsureRegister(Registers.es);
             Identifier bx = frame.EnsureRegister(Registers.bx);
-            Identifier es_bx = frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Pointer32);
+            Identifier es_bx = frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Ptr32);
             tsh.Trash(es_bx, trash);
             Assert.AreEqual("(bx:TRASH) (es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
         }

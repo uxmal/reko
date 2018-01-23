@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
             var plt = loader.GetSectionInfoByName(".plt");
+            if (rela_plt == null || plt == null)
+                return;
             var relaRdr = loader.CreateReader(rela_plt.FileOffset);
             for (ulong i = 0; i < rela_plt.EntryCount(); ++i)
             {

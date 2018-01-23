@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Arch.Intel
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
                 return new Application(
-                    new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                     returnType,
                     args);
             }
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Arch.Intel
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
                 ppp.Characteristics = c;
                 return new Application(
-                    new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                     returnType,
                     args);
             }
@@ -1765,14 +1765,14 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|rArg0 = pow(2.0, rArg0) - 1.0");
         }
 
-		[Test]
-		public void X86rw_fninit()
-		{
-			Run32bitTest(0xDB, 0xE3);
-			AssertCode(     // fninit
-				"0|L--|10000000(2): 1 instructions",
-				"1|L--|__fninit()");
-		}
+        [Test]
+        public void X86rw_fninit()
+        {
+            Run32bitTest(0xDB, 0xE3);
+            AssertCode(     // fninit
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|__fninit()");
+        }
 
         [Test]
         public void X86rw_x64_push_immediate()
@@ -1841,6 +1841,122 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|L--|0000000140000000(4): 1 instructions",
                 "1|L--|__prefetcht0(Mem0[rax:byte])");
         }
+
+        [Test]
+        public void X86rw_xorps()
+        {
+            Run64bitTest(0x0F, 0x57, 0xC0); // xorps\txmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(3): 3 instructions",
+                "1|L--|v3 = xmm0",
+                "2|L--|v4 = xmm0",
+                "3|L--|xmm0 = __xorps(v3, v4)");
+        }
+
+        [Test]
+        public void X86rw_aesimc()
+        {
+            Run32bitTest(0x66, 0x0F, 0x38, 0xDB, 0xC0); // aesimc\txmm0,xmm0
+            AssertCode(
+                "0|L--|10000000(5): 1 instructions",
+                "1|L--|xmm0 = __aesimc(xmm0)");
+        }
+
+        [Test]
+        public void X86rw_vmovss_load()
+        {
+            Run64bitTest(0xC5, 0xFA, 0x10, 0x05, 0x51, 0x03, 0x00, 0x00); // vmovss txmm0,dword ptr [rip+00000351]
+            AssertCode(
+                "0|L--|0000000140000000(8): 1 instructions",
+                "1|L--|xmm0 = DPB(xmm0, Mem0[0x0000000140000359:real32], 0)");
+        }
+
+        [Test]
+        public void X86rw_vmovss_store()
+        {
+            Run64bitTest(0xC5, 0xFA, 0x11, 0x85, 0x2C, 0xFF, 0xFF, 0xFF); // vmovss dword ptr [rbp-0xd4], xmm0
+            AssertCode(
+                "0|L--|0000000140000000(8): 1 instructions",
+                "1|L--|Mem0[rbp - 0x00000000000000D4:real32] = (real32) xmm0");
+        }
+
+        [Test]
+        public void X86rw_vcvtsi2ss()
+        {
+            Run64bitTest(0xC4, 0xE1, 0xFA, 0x2A, 0xC0);     // vcvtsi2ss\txmm0,xmm0,rax
+            AssertCode(
+             "0|L--|0000000140000000(5): 2 instructions",
+             "1|L--|v4 = (real32) rax",
+             "2|L--|xmm0 = DPB(xmm0, v4, 0)");
+        }
+
+        [Test]
+        public void X86rw_vcvtsi2sd()
+        {
+            Run64bitTest(0xC4, 0xE1, 0xFB, 0x2A, 0xC2); // vcvtsi2sd\txmm0,xmm0,rdx
+            AssertCode(
+                "0|L--|0000000140000000(5): 2 instructions",
+                "1|L--|v4 = (real64) rdx",
+                "2|L--|xmm0 = DPB(xmm0, v4, 0)");
+        }
+
+        [Test]
+        public void X86rw_vmovsd()
+        {
+            Run64bitTest(0xC5, 0xFB, 0x11, 0x01); // vmovsd double ptr[rcx], xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|Mem0[rcx:real64] = (real64) xmm0");
+        }
+
+        [Test]
+        public void X86rw_vmovaps_xmm()
+        {
+            Run64bitTest(0xC5, 0xF9, 0x28, 0x00); // vmovaps xmm0,[rax]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = Mem0[rax:word128]");
+        }
+
+        [Test]
+        public void X86rw_vmovaps_ymm()
+        {
+            Run64bitTest(0xC5, 0xFD, 0x28, 0x00); // vmovaps ymm0,[rax]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ymm0 = Mem0[rax:word256]");
+        }
+
+        [Test]
+        public void X86rw_vaddsd()
+        {
+            Run64bitTest(0xC5, 0xFB, 0x58, 0xC0);   // vaddsd xmm0,xmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|v3 = (real64) xmm0 + (real64) xmm0",
+                "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+        [Test]
+        public void X86rw_vxorpd()
+        {
+            Run64bitTest(0xC5, 0xF9, 0x57, 0xC0);   // vxorpd xmm0,xmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 3 instructions",
+                "1|L--|v3 = xmm0",
+                "2|L--|v4 = xmm0",
+                "3|L--|xmm0 = __xorpd(v3, v4)");
+        }
+
+        [Test]
+        public void X86rw_vxorpd_mem_256()
+        {
+            Run64bitTest(0xC5, 0xFD, 0x57, 0x09);   // vxorpd\tymm1,ymm0,[rcx]
+            AssertCode(
+             "0|L--|0000000140000000(4): 3 instructions",
+             "1|L--|v5 = ymm0",
+             "2|L--|v6 = Mem0[rcx:word256]",
+             "3|L--|ymm1 = __xorpd(v5, v6)");
+        }
     }
 }
-

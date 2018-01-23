@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -580,7 +580,7 @@ namespace Reko.Arch.X86
 
             m.Assign(
                 frame.EnsureSequence(seg, reg.Register,
-                PrimitiveType.Pointer32),
+                PrimitiveType.Ptr32),
                 SrcOp(mem, PrimitiveType.SegPtr32));
         }
 

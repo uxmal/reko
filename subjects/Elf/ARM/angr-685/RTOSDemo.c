@@ -314,23 +314,22 @@ void xTaskResumeAll(word32 ip, word32 pc)
 void vTaskDelay(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp, word32 lr, word32 * pc)
 {
 	__syscall(0x00B940B5);
-	if (Z)
-	{
-		__syscall(0x00601A4B);
-		__syscall(0x008F4FF3);
-		*pc = r0;
-		*(pc - 0x04) = r1;
-		*(pc - 0x08) = r4;
-		*(pc - 0x0C) = r5;
-		*(pc - 0x10) = r6;
-		*(pc - 0x14) = r7;
-		*(pc - 0x18) = r8;
-		*(pc - 0x1C) = r9;
-		*(pc - 0x20) = r10;
-		*(pc - 0x24) = fp;
-		*(pc - 0x28) = fp;
-		*(pc - 44) = lr;
-	}
+	if (!Z)
+		return;
+	__syscall(0x00601A4B);
+	__syscall(0x008F4FF3);
+	*pc = r0;
+	*(pc - 0x04) = r1;
+	*(pc - 0x08) = r4;
+	*(pc - 0x0C) = r5;
+	*(pc - 0x10) = r6;
+	*(pc - 0x14) = r7;
+	*(pc - 0x18) = r8;
+	*(pc - 0x1C) = r9;
+	*(pc - 0x20) = r10;
+	*(pc - 0x24) = fp;
+	*(pc - 0x28) = fp;
+	*(pc - 44) = lr;
 }
 
 // 00000F81: void vTaskDelayUntil(Register (ptr word32) r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 pc)
@@ -498,10 +497,10 @@ void vPortStoreTaskMPUSettings(Eq_579 r0, Eq_579 * r9, word32 fp)
 	*r9 = (union Eq_579 *) r0;
 }
 
-// 00001689: void xPortPendSVHandler(Register (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_603))))))))))))))))))))))))))))))))))))))))))))))))))) r0, Register (ptr word64) r1, Register word32 r2, Register word32 r3, Register Eq_607 r5, Register word32 r6, Register word32 r8, Register (ptr Eq_13) r9, Register word32 r10, Register word32 fp, Register ui32 pc)
-void xPortPendSVHandler( * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * r0, word64 * r1, word32 r2, word32 r3, Eq_607 r5, word32 r6, word32 r8, Eq_13 * r9, word32 r10, word32 fp, ui32 pc)
+// 00001689: void xPortPendSVHandler(Register (ptr Eq_603) r0, Register (ptr word64) r1, Register word32 r2, Register word32 r3, Register Eq_607 r5, Register word32 r6, Register word32 r8, Register (ptr Eq_13) r9, Register word32 r10, Register word32 fp, Register ui32 pc)
+void xPortPendSVHandler(Eq_603 * r0, word64 * r1, word32 r2, word32 r3, Eq_607 r5, word32 r6, word32 r8, Eq_13 * r9, word32 r10, word32 fp, ui32 pc)
 {
-	Mem3[r0 + 0x00:word32] = r0;
+	r0->ptr0000 = r0;
 	__syscall(6822475);
 	*r1 = r2_r1;
 	if (!Z)
@@ -815,16 +814,15 @@ void vApplicationIdleHook(Eq_949 * r0, ui32 r1, word32 r2, Eq_952 * r7, Eq_953 *
 		word32 lr_88;
 		fnFFC084ED();
 	}
-	if (NV)
+	if (!NV)
+		return;
+	r7->t0AFF = pc;
+	if (C)
+		PDCInit(r0, r1, r2, r8);
+	else
 	{
-		r7->t0AFF = pc;
-		if (C)
-			PDCInit(r0, r1, r2, r8);
-		else
-		{
-			struct Eq_949 * r0_72 = r0 & r1 << 0x01;
-			PDCInit(r0_72, r1, r2, r8);
-		}
+		struct Eq_949 * r0_72 = r0 & r1 << 0x01;
+		PDCInit(r0_72, r1, r2, r8);
 	}
 }
 
@@ -905,9 +903,7 @@ void vListInsert(uint32 r0, Eq_1055 r1, ui64 * r2, word32 r8, ui32 ip)
 		r1 = DPB(r1, 0x6AE0, 16);
 	union Eq_1055 * r8_33 = r8 + -0x0C68;
 	*r8_33 = (union Eq_1055 *) r1;
-	if (Z)
-		;
-	else
+	if (!Z)
 	{
 		word32 sp_35;
 		byte V_36;
@@ -1466,14 +1462,14 @@ void GPIOIntTypeSet(ui32 r0, word32 r4, word32 r8, word32 pc)
 		word32 lr_42;
 		fn010CC069();
 	}
-	if (Z)
+	if (!Z)
 		;
 }
 
 // 00009195: void GPIOIntTypeGet(Register word32 r8)
 void GPIOIntTypeGet(word32 r8)
 {
-	if (Z)
+	if (!Z)
 		;
 }
 
@@ -1715,9 +1711,7 @@ void OSRAMWriteFirst()
 // 000096C5: void OSRAMWriteArray(Register (ptr Eq_1914) r5)
 void OSRAMWriteArray(Eq_1914 * r5)
 {
-	if (Z)
-		;
-	else
+	if (!Z)
 	{
 		word32 sp_6;
 		word32 r5_7;
@@ -2218,9 +2212,7 @@ void UARTIntRegister(Eq_2182 r0, word32 r4, Eq_2182 * ip)
 void UARTIntUnregister(Eq_2189 r0, word32 r4, Eq_2189 * ip)
 {
 	*ip = (union Eq_2189 *) r0;
-	if (NZV)
-		;
-	else
+	if (!NZV)
 	{
 		word32 sp_13;
 		word32 r0_14;
@@ -2300,9 +2292,7 @@ void CPUwfi(word32 r2, word32 r6, Eq_2253 r7, Eq_2213 * pc)
 // 0000A0F5: void I2CMasterInit(Register word32 r2, Register word32 r6, Register (ptr Eq_2272) r7)
 void I2CMasterInit(word32 r2, word32 r6, Eq_2272 * r7)
 {
-	if (V)
-		;
-	else
+	if (!V)
 	{
 		word32 sp_13;
 		word32 r0_14;

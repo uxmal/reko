@@ -4,91 +4,52 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-int8 g_bFFFFFFFE;
-int8 g_bFFFFFFFF;
-Eq_401 g_t0001;
-Eq_500 g_t0005;
-word32 g_dw0008;
-word32 g_dw000C;
-word32 g_dw0010;
-Eq_156 g_t0014;
-int8 g_b0021;
-Eq_769 g_t002C;
-Eq_156 g_t0030;
-ptr32 g_ptr0034;
-word32 g_dw0038;
-word32 g_dw003C;
-word32 g_dw0040;
-word32 g_dw0048;
-int8 g_b004C;
-int8 * g_ptr0050;
-word32 g_dw0054;
-Eq_4004 g_t007B;
-Eq_625 g_t3000;
-int8 * g_ptr16F14 = &g_b16F30;
-int8 g_b16F30 = 115;
+Eq_679 g_tFFFFFFFF;
+char g_b0002;
+char g_b0004;
+char g_b0022;
+Eq_5190 g_t007B;
+Eq_857 g_t3000;
+Eq_2 g_t16EE4 = Unexpected function type (fn void ())
+;
+char g_str16F00[] = ".X";
+Eq_214 g_t16F14 = 
+	{
+		&g_t16F30
+	};
+Eq_9621 g_t16F30 = 
+	{
+		's',
+		116,
+		114,
+	};
+Eq_9621 g_t17040 = 
+	{
+		'/',
+		111,
+		112,
+	};
 int8 g_b17468 = 46;
-word32 g_dw1753C = 0x00017598;
-word32 g_a17540[] = 
+Eq_214 g_t1753C = 
+	{
+		&g_t17598
+	};
+Eq_214 g_a17540[] = 
 	{
 	};
+Eq_9621 g_t17598 = 
+	{
+		'i',
+		102,
+		0,
+	};
+char g_str17800[] = "e";
 int8 g_b17838 = 99;
-int8 g_b17888 = 80;
-struct Eq_5582 g_t178E8 = 
-	{
-		0x4D,
-		0x50,
-		0x44,
-		0x49,
-		0x52,
-		0x00,
-		0x00,
-		0x54,
-	};
-struct Eq_5582 g_t178F0 = 
-	{
-		0x4D,
-		0x50,
-		0x00,
-		0x01,
-		0x00,
-		0x00,
-		0x00,
-		0x54,
-	};
-struct Eq_5582 g_t178F8 = 
-	{
-		0x45,
-		0x4D,
-		0x50,
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x2F,
-	};
-struct Eq_5582 g_t17900 = 
-	{
-		0x76,
-		0x61,
-		0x72,
-		0x2F,
-		0x74,
-		0x6D,
-		0x70,
-		0x2F,
-	};
-struct Eq_5582 g_t17910 = 
-	{
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x63,
-	};
+char g_str17888[] = "PWD";
+char g_str178D0[] = "memory exhausted\n";
+char g_str178E8[] = "TMPDIR";
+char g_str178F0[] = "TMP";
+char g_str178F8[] = "TEMP";
 byte g_b17918 = 0x63;
 byte g_b17919 = 0x63;
 byte g_b1791A = 0x58;
@@ -98,121 +59,82 @@ byte g_b1791D = 0x58;
 byte g_b1791E = 0x58;
 byte g_b1791F = 0x58;
 byte g_b17920 = 0x00;
-Eq_6076 g_t17A28 = 
-	{
-		0,
-		0,
-		0,
-	};
-Eq_401 g_t27C00 = 
-	{
-		0x00017040,
-	};
+char g_str17928[] = "POSIXLY_CORRECT";
 <anonymous> g_t27E3C = <code>;
 <anonymous> g_t27E48 = <code>;
+Eq_214 g_t27ED0 = 
+	{
+		&g_t17040
+	};
 word32 g_dw27F20 = 0x00000000;
 word32 g_dw27F24 = 0x00017098;
 word32 g_dw27F28 = 0x00000000;
 word32 g_dw27F2C = 0x00000000;
-Eq_156 g_t27F3C = 
+Eq_214 g_t27F3C = 
 	{
 		null
 	};
-ui32 g_dw27F44 = 0x00000000;
+word32 g_dw27F44 = 0x00000000;
 ui32 g_dw27F48 = 0x00000000;
 ui32 g_dw27F4C = 0x00000000;
-Eq_156 g_t27F50 = 
+Eq_214 g_t27F50 = 
 	{
 		null
 	};
-int32 g_dw27F54 = 0;
-Eq_4459 g_t27F58 = 
+Eq_214 g_t27F54 = 
 	{
-		0x00017808,
-		0x00000000,
-		null,
-		86,
+		null
 	};
-Eq_6013 g_a28000[] = 
+Eq_4368 g_t28000 = 
 	{
+		0x00000000,
 	};
 <anonymous> * g_ptr2802C = print_and_abort;
-struct Eq_5582 g_t28038 = 
+int32 g_dw28030 = 1;
+Eq_214 g_t28064 = 
 	{
-		0x74,
-		0x6D,
-		0x70,
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x2F,
+		null
 	};
-struct Eq_5582 g_t28040 = 
-	{
-		0x75,
-		0x73,
-		0x72,
-		0x2F,
-		0x74,
-		0x6D,
-		0x70,
-		0x00,
-	};
-struct Eq_5582 g_t28050 = 
-	{
-		0x74,
-		0x6D,
-		0x70,
-		0x00,
-		0x00,
-		0x00,
-		0x00,
-		0x2F,
-	};
-struct Eq_5582 g_t28058 = 
-	{
-		0x75,
-		0x73,
-		0x72,
-		0x2F,
-		0x74,
-		0x6D,
-		0x70,
-		0x00,
-	};
-struct Eq_6076 * g_ptr28064 = null;
 int32 g_dw28068 = 1;
 word32 g_dw2806C = 0x00000000;
 word32 g_dw28070 = 0x00000001;
 int32 g_dw28074 = 63;
-struct Eq_2971 * g_ptr28120 = null;
-Eq_26 g_t28130 = 
+Eq_3863 g_t28120 = 
 	{
 		null
 	};
-struct Eq_2971 * g_ptr28140 = null;
-word32 g_dw28150 = 0x00000000;
-Eq_156 g_t28160 = 
+Eq_214 g_t28130 = 
 	{
 		null
 	};
-Eq_156 g_t28180 = 
+Eq_3863 g_t28140 = 
 	{
 		null
 	};
-Eq_156 g_t28190 = 
+Eq_4785 g_t28150 = 
+	{
+		0
+	};
+Eq_214 g_t28160 = 
+	{
+		null
+	};
+Eq_214 g_t28180 = 
+	{
+		null
+	};
+Eq_214 g_t28190 = 
 	{
 		null
 	};
 word32 g_dw281A0 = 0x00000000;
-struct Eq_2971 * g_ptr281C0 = null;
-uint32 g_dw281D0 = 0x00000000;
-Eq_26 g_t281E0 = 
+Eq_3863 g_t281C0 = 
 	{
 		null
 	};
-Eq_156 g_t281F0 = 
+uint32 g_dw281D0 = 0x00000000;
+uint32 g_dw281E0 = 0x00000000;
+Eq_214 g_t281F0 = 
 	{
 		null
 	};
@@ -220,37 +142,45 @@ uint32 g_dw28200 = 0x00000000;
 uint32 g_dw28210 = 0x00000000;
 int8 * g_ptr28220 = null;
 int32 g_dw28230 = 0;
-Eq_7777 g_a28240[] = 
+Eq_857 g_t28240 = 
 	{
+		0x00000000,
 	};
-word32 g_dw28248 = 0x00000000;
-Eq_7777 g_a29A40[] = 
-	{
-	};
-struct Eq_2149 * g_ptr29A48 = null;
-Eq_156 g_t2B270 = 
+Eq_214 g_t2B270 = 
 	{
 		null
 	};
-Eq_26 g_t2B280 = 
-	{
-		null
-	};
+uint32 g_dw2B280 = 0x00000000;
 uint32 g_dw2B290 = 0x00000000;
-word32 g_dw2B2A0 = 0x00000000;
-word32 g_dw2B2B0 = 0x00000000;
-struct Eq_6076 * g_ptr2B2C0 = null;
+Eq_214 g_t2B2A0 = 
+	{
+		null
+	};
+char * g_ptr2B2B0 = null;
+Eq_214 g_t2B2C0 = 
+	{
+		null
+	};
 word32 g_dw2B2D0 = 0x00000000;
-word32 g_dw2B2E0 = 0x00000000;
+Eq_214 g_t2B2E0 = 
+	{
+		null
+	};
 int32 g_dw2B2F0 = 0;
 int32 g_dw2B300 = 0;
-word32 g_dw2B310 = 0x00000000;
-Eq_7499 g_t2B400 = 
+Eq_214 g_t2B310 = 
+	{
+		null
+	};
+Eq_9095 g_t2B400 = 
 	{
 		0x0000000000000000
 	};
-struct Eq_575 * g_ptr2B408 = null;
+struct Eq_790 * g_ptr2B408 = null;
 ptr32 g_ptr2B40C = 0x00000000;
-word32 g_dw2B760 = 0x00000000;
-struct Eq_500 * g_ptr2B764 = null;
+Eq_6998 g_t2B640 = 
+	{
+	};
+char * g_ptr2B760 = null;
+struct Eq_708 * g_ptr2B764 = null;
 

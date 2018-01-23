@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -278,7 +278,7 @@ namespace Reko.Arch.Sparc
         private Expression SimplifySum(Expression srcLeft, Expression srcRight)
         {
             if (srcLeft == null && srcRight == null)
-                return Constant.Zero(PrimitiveType.Pointer32);
+                return Constant.Zero(PrimitiveType.Ptr32);
             else if (srcLeft == null)
                 return srcRight;
             else if (srcRight == null)

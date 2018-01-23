@@ -809,7 +809,7 @@ l0000000000402B5A:
 	ja	00000000004031F9
 
 l0000000000402B6A:
-	jmp	dword ptr [00412330+rax*8]
+	jmp	qword ptr [00412330+rax*8]
 0000000000402B71    C6 05 CD 85 21 00 01 C7 05 CE 85 21 00 00 00  ....!......!...
 0000000000402B80 00 00 EB AC 41 BE 01 00 00 00 EB A4 C6 05 81 85 ....A...........
 0000000000402B90 21 00 01 EB 9B C7 05 A1 85 21 00 B0 00 00 00 C7 !........!......
@@ -2455,7 +2455,7 @@ l00000000004044FA:
 
 l0000000000404528:
 	mov	eax,edx
-	jmp	dword ptr [00412BC8+rax*8]
+	jmp	qword ptr [00412BC8+rax*8]
 
 l0000000000404531:
 	mov	edi,004138E4
@@ -2608,7 +2608,7 @@ l00000000004048D7:
 l00000000004048E1:
 	pop	rbp
 	mov	edi,0061A5F8
-	jmp	eax
+	jmp	rax
 00000000004048E9                            0F 1F 80 00 00 00 00          .......
 00000000004048F0 B8 F8 A5 61 00 55 48 2D F8 A5 61 00 48 C1 F8 03 ...a.UH-..a.H...
 0000000000404900 48 89 E5 48 89 C2 48 C1 EA 3F 48 01 D0 48 D1 F8 H..H..H..?H..H..
@@ -2784,7 +2784,7 @@ l0000000000404B29:
 
 l0000000000404B35:
 	movzx	ecx,al
-	jmp	dword ptr [00411F40+rcx*8]
+	jmp	qword ptr [00411F40+rcx*8]
 0000000000404B3F                                              90                .
 
 l0000000000404B40:
@@ -6221,7 +6221,7 @@ l00000000004079F9:
 	push	rbx
 	sub	rsp,38
 	mov	eax,[rip+00213743]                                     ; 000000000061B150
-	jmp	dword ptr [00412308+rax*8]
+	jmp	qword ptr [00412308+rax*8]
 0000000000407A14             0F 1F 40 00 48 8B 3D F1 2B 21 00 48     ..@.H.=.+!.H
 0000000000407A20 8B 47 28 48 3B 47 30 0F 83 0C 04 00 00 48 8D 50 .G(H;G0......H.P
 0000000000407A30 01 48 89 57 28 C6 00 0A 48 83 C4 38 5B 5D 41 5C .H.W(...H..8[]A\
@@ -8512,7 +8512,7 @@ l000000000040A165:
 	mov	rsi,rbp
 	mov	rdi,rbx
 	call	000000000040A000
-	call	r13d
+	call	r13
 	mov	rax,-00000001
 	jmp	000000000040A156
 000000000040A18D                                        0F 1F 00              ...
@@ -9261,7 +9261,7 @@ fn000000000040AC80 proc
 	mov	rbx,rdi
 	mov	rdi,rsi
 	mov	rsi,[rbx+10]
-	call	dword ptr [rbx+30]
+	call	qword ptr [rbx+30]
 	cmp	rax,[rbx+10]
 	jnc	000000000040AC9D
 
@@ -9299,7 +9299,7 @@ l000000000040ACD7:
 
 l000000000040ACDC:
 	mov	rdi,r12
-	call	dword ptr [rbp+38]
+	call	qword ptr [rbp+38]
 	test	al,al
 	jz	000000000040AD46
 
@@ -9342,7 +9342,7 @@ l000000000040AD30:
 
 l000000000040AD38:
 	mov	rdi,r12
-	call	dword ptr [rbp+38]
+	call	qword ptr [rbp+38]
 	test	al,al
 	jnz	000000000040AD60
 
@@ -9931,7 +9931,7 @@ l000000000040B6E0:
 	mov	rdi,[rbx]
 
 l000000000040B6E3:
-	call	dword ptr [rbp+40]
+	call	qword ptr [rbp+40]
 	mov	rbx,[rbx+08]
 	test	rbx,rbx
 	jnz	000000000040B6E0
@@ -12652,7 +12652,7 @@ l000000000040D537:
 l000000000040D53B:
 	mov	rsi,r13
 	mov	rdi,r12
-	call	ebp
+	call	rbp
 	test	eax,eax
 	jg	000000000040D520
 
@@ -12697,7 +12697,7 @@ l000000000040D5B3:
 l000000000040D5B7:
 	mov	rsi,r13
 	mov	rdi,r12
-	call	ebp
+	call	rbp
 	test	eax,eax
 	jg	000000000040D5A0
 
@@ -12754,7 +12754,7 @@ l000000000040D660:
 	mov	r12,[r15]
 	mov	rsi,r13
 	mov	rdi,r12
-	call	ecx
+	call	rcx
 	test	eax,eax
 	jle	000000000040D479
 
@@ -13043,7 +13043,7 @@ fn000000000040D8A0 proc
 l000000000040D92D:
 	mov	eax,r14d
 	mov	r11,[rsp+20]
-	jmp	dword ptr [00416020+rax*8]
+	jmp	qword ptr [00416020+rax*8]
 000000000040D93C                                     0F 1F 40 00             ..@.
 
 l000000000040D940:
@@ -13123,7 +13123,7 @@ l000000000040DA20:
 
 l000000000040DA2F:
 	movzx	eax,r12b
-	jmp	dword ptr [00416068+rax*8]
+	jmp	qword ptr [00416068+rax*8]
 000000000040DA3A                               66 0F 1F 44 00 00           f..D..
 000000000040DA40 8B 44 24 34 83 F8 02 0F 84 E3 01 00 00 83 F8 03 .D$4............
 000000000040DA50 0F 85 A2 00 00 00 F6 84 24 90 00 00 00 04 0F 84 ........$.......
@@ -14509,7 +14509,7 @@ l000000000040EE52:
 
 l000000000040EE60:
 	movzx	edx,dil
-	jmp	dword ptr [004164E8+rdx*8]
+	jmp	qword ptr [004164E8+rdx*8]
 000000000040EE6B                                  0F 1F 44 00 00            ..D..
 
 l000000000040EE70:
@@ -15121,7 +15121,7 @@ l000000000041066A:
 	ja	0000000000410A50
 
 l00000000004106BE:
-	jmp	dword ptr [00416B48]
+	jmp	qword ptr [00416B48]
 00000000004106C6                   66 2E 0F 1F 84 00 00 00 00 00       f.........
 00000000004106D0 4C 8B 4B 38 4C 8B 43 08 BA 05 00 00 00 48 8B 43 L.K8L.C......H.C
 00000000004106E0 10 BE A0 6A 41 00 31 FF 4C 8B 6B 30 4C 8B 63 28 ...jA.1.L.k0L.c(
@@ -15288,28 +15288,14 @@ fn0000000000410B30 proc
 	jz	0000000000410B7C
 
 l0000000000410B45:
-	illegal
-	and	al,50
-	illegal
-	and	r8b,60
-	illegal
-	push	rsp
-	and	al,70
-	illegal
-	pushf
-	and	al,80
-	add	[rax],al
-	add	[rdi],cl
-	sub	[rsp+00000090],esp
-	illegal
-	lodsb
-	and	al,A0
-	add	[rax],al
-	add	[rdi],cl
-	sub	[rsp+000000B0],esi
-	illegal
-	mov	esp,0000C024
-	add	[rax-73],cl
+	movaps	[rsp+50],xmm0
+	movaps	[rsp+60],xmm1
+	movaps	[rsp+70],xmm2
+	movaps	[rsp+00000080],xmm3
+	movaps	[rsp+00000090],xmm4
+	movaps	[rsp+000000A0],xmm5
+	movaps	[rsp+000000B0],xmm6
+	movaps	[rsp+000000C0],xmm7
 
 l0000000000410B7C:
 	lea	rax,[rsp+000000E0]
@@ -15699,7 +15685,7 @@ l0000000000410FD5:
 
 l0000000000410FDD:
 	movzx	edx,dl
-	jmp	dword ptr [00416C18+rdx*8]
+	jmp	qword ptr [00416C18+rdx*8]
 
 l0000000000410FE7:
 	test	r12,r12
@@ -16226,7 +16212,7 @@ l00000000004114AD:
 
 l00000000004114B5:
 	movzx	edx,dl
-	jmp	dword ptr [00416E38+rdx*8]
+	jmp	qword ptr [00416E38+rdx*8]
 
 l00000000004114BF:
 	test	r12,r12

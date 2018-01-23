@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -262,23 +262,8 @@ namespace Reko.Core.Output
         {
             var offset = rdr.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
-            var fmt = codeFormatter.InnerFormatter;
             //$TODO: appropriate prefix for UTF16-encoded strings.
-            fmt.Write('"');
-            foreach (var ch in s.ToString())
-            {
-                if (Char.IsControl(ch))
-                {
-                    fmt.Write("\\x{0:X2}", (int) ch);
-                }
-                else
-                {
-                    if (ch == '\\' || ch == '"')
-                        fmt.Write(ch);
-                    fmt.Write(ch);
-                }
-            }
-            fmt.Write('"');
+            codeFormatter.VisitConstant(s);
             if (str.Length > 0)
             {
                 rdr.Offset = offset + str.Length * str.ElementType.Size;
@@ -353,7 +338,9 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitVoidType(VoidType voidType)
         {
-            throw new NotImplementedException();
+            // This "can't happen": data can't have void type.
+            codeFormatter.InnerFormatter.Write("??void??");
+            return codeFormatter;
         }
     }
 }

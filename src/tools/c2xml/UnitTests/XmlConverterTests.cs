@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         {
             public FakeArchitecture()
             {
-                base.PointerType = PrimitiveType.Pointer32;
+                base.PointerType = PrimitiveType.Ptr32;
             }
 
             public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)

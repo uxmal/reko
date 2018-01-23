@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,17 @@ namespace Reko.Structure
         public RegionType Type { get; set; }
         public List<AbsynStatement> Statements { get; set; }
         public Expression Expression { get; set; }
+
+        /// <summary>
+        /// Return true if region consists of a single AbsynReturn statement.
+        /// </summary>
+        public bool IsReturn
+        {
+            get
+            {
+                return Statements.Count == 1 && Statements[0] is AbsynReturn;
+            }
+        }
 
         public Region(Block block) : this(block, new List<AbsynStatement>())
         {

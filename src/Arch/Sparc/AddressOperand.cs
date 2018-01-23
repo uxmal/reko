@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.Sparc
     {
         public readonly Address Address;
 
-        public AddressOperand(Address address) : base(PrimitiveType.Pointer32)
+        public AddressOperand(Address address) : base(PrimitiveType.Ptr32)
         {
             this.Address = address;
         }

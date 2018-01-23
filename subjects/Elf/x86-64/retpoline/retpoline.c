@@ -10,22 +10,21 @@ void _init()
 	word64 rax_4 = globals->qw600FF8;
 	if (rax_4 != 0x00)
 	{
-		word64 rsp_17;
-		byte SCZO_18;
-		word64 rax_19;
-		byte SZO_20;
-		byte C_21;
-		byte Z_22;
-		word32 eax_23;
-		eax();
+		word64 rsp_15;
+		byte SCZO_16;
+		word64 rax_17;
+		byte SZO_18;
+		byte C_19;
+		byte Z_20;
+		__gmon_start__();
 	}
 }
 
-// 0000000000400480: void _start(Register (ptr Eq_17) rdx, Stack Eq_18 qwArg00)
-void _start( * rdx, Eq_18 qwArg00)
+// 0000000000400480: void _start(Register (ptr Eq_16) rdx, Stack Eq_17 qwArg00)
+void _start( * rdx, Eq_17 qwArg00)
 {
-	__align(fp + 0x08);
-	__libc_start_main(&globals->t400660, qwArg00, fp + 0x08, &globals->t400710, &globals->t400780, rdx, ptrLoc04);
+	__align((char *) fp + 0x08);
+	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
 	__hlt();
 }
 
@@ -33,55 +32,45 @@ void _start( * rdx, Eq_18 qwArg00)
 void deregister_tm_clones(word64 r8)
 {
 	if (r8 == 0x00601040 || 0x00 == 0x00)
-		;
-	else
-	{
-		word64 rsp_39;
-		word64 rbp_40;
-		word32 eax_41;
-		word64 rax_42;
-		word64 r8_43;
-		byte SCZO_44;
-		byte Z_45;
-		byte SZO_46;
-		byte C_47;
-		word32 edi_48;
-		word64 rdi_49;
-		eax();
-	}
+		return;
+	word64 rsp_39;
+	word64 rbp_40;
+	word32 eax_41;
+	word64 rax_42;
+	word64 r8_43;
+	byte SCZO_44;
+	byte Z_45;
+	byte SZO_46;
+	byte C_47;
+	word32 edi_48;
+	word64 rdi_49;
+	null();
 }
 
 // 00000000004004E0: void register_tm_clones()
 void register_tm_clones()
 {
 	if (0x00 == 0x00 || 0x00 == 0x00)
-		;
-	else
-	{
-		word64 rsp_42;
-		word64 rsi_43;
-		word64 rbp_44;
-		byte SCZO_45;
-		word64 rax_46;
-		byte Z_47;
-		byte SZO_48;
-		byte C_49;
-		word64 rdi_50;
-		word32 eax_51;
-		eax();
-	}
+		return;
+	word64 rsp_40;
+	word64 rsi_41;
+	word64 rbp_42;
+	byte SCZO_43;
+	word64 rax_44;
+	byte Z_45;
+	byte SZO_46;
+	byte C_47;
+	word64 rdi_48;
+	null();
 }
 
 // 0000000000400520: void __do_global_dtors_aux(Register word64 r8)
 void __do_global_dtors_aux(word64 r8)
 {
 	if (globals->b601040 != 0x00)
-		;
-	else
-	{
-		deregister_tm_clones(r8);
-		globals->b601040 = 0x01;
-	}
+		return;
+	deregister_tm_clones(r8);
+	globals->b601040 = 0x01;
 }
 
 // 0000000000400550: void frame_dummy()
@@ -156,7 +145,7 @@ void __libc_csu_init(word32 edi)
 			byte Z_86;
 			word32 ebx_87;
 			word64 rdi_88;
-			globals->u600E10();
+			globals->ptr600E10();
 		} while (rbp_79 != rbx_80 + 0x01);
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Mocks
             platform = mr.Stub<IPlatform>();
 
             platform.Stub(p => p.Name).Return("TestPlatform");
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Return(2);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -435,6 +435,41 @@ namespace Reko.Scanning
                 {
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                     GenerateCallToOutsideProcedure(jmpSite, addrTarget);
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
+                var trampoline = scanner.GetTrampoline(addrTarget);
+                if (trampoline != null)
+                {
+                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    var sig = trampoline.Signature;
+                    var chr = trampoline.Characteristics;
+                    // Adjust stack to "hide" any pushed return value since
+                    // currently Reko treats the return value as an implicit detail
+                    // of the calling convention. Had the x86 rewriter explicity
+                    // generated code to predecrement the stack pointer
+                    // when encountering CALL instructions this would 
+                    // not be necessary.
+                    if (sig.ReturnAddressOnStack != 0)
+                    {
+                        Emit(new Assignment(stackReg, new BinaryExpression(
+                            Operator.IAdd,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                    }
+                    EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
+                    if (sig.ReturnAddressOnStack != 0)
+                    {
+                        //$TODO: make x86 calls' implicit storage explicit
+                        // to avoid this hacky dance,
+                        Emit(new Assignment(stackReg, new BinaryExpression(
+                            Operator.ISub,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                    }
                     Emit(new ReturnInstruction());
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;

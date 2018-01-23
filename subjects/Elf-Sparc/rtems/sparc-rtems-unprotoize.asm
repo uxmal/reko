@@ -365,9 +365,7 @@ l000114BC:
 	call	00014EA4
 	sethi	0x00000000,%g0
 	call	00027C74
-	sethi	0x00000000,%g0
-	call	00027C80
-	sethi	0x00000000,%g0
+00011500 01 00 00 00 40 00 59 DF 01 00 00 00             ....@.Y.....   
 
 ;; fn0001150C: 0001150C
 fn0001150C proc
@@ -516,7 +514,7 @@ l0001168C:
 	call	0001162C
 	or	%o0,0x000000A8,%o0
 	call	00027C74
-	or	%g0,0x00000021,%o0
+000116A4             90 10 20 21                             .. !       
 
 l000116A8:
 	jmpl	%i7,8,%g0
@@ -551,7 +549,7 @@ l000116E4:
 	call	0001162C
 	or	%o0,0x000000A8,%o0
 	call	00027C74
-	or	%g0,0x00000021,%o0
+000116FC                                     90 10 20 21             .. !
 
 l00011700:
 	jmpl	%i7,8,%g0
@@ -609,7 +607,7 @@ fancy_abort proc
 	call	0001162C
 	or	%o0,0x000000C8,%o0
 	call	00027C74
-	or	%g0,0x00000021,%o0
+0001179C                                     90 10 20 21             .. !
 
 ;; dupnstr: 000117A0
 dupnstr proc
@@ -824,7 +822,7 @@ usage proc
 	call	0001162C
 	or	%g0,%o1,%o2
 	call	00027C74
-	or	%g0,0x00000021,%o0
+000119B8                         90 10 20 21                     .. !   
 
 ;; in_system_include_dir: 000119BC
 in_system_include_dir proc
@@ -834,17 +832,15 @@ in_system_include_dir proc
 	be	000119E0
 	sethi	0x0000009F,%o0
 
-;; fn000119D0: 000119D0
-fn000119D0 proc
+l000119D0:
 	call	00027D10
-	sethi	0x00000000,%g0
+000119D4             01 00 00 00                             ....       
 
 l000119D8:
 	ba	00011A44
 	or	%g0,0x00000001,%i0
 
-;; fn000119E0: 000119E0
-fn000119E0 proc
+l000119E0:
 	ld	[%o0+720],%o1
 	subcc	%o1,0x00000000,%g0
 	be	00011A40
@@ -1523,7 +1519,7 @@ l000120E0:
 	call	0001162C
 	or	%o5,0x00000148,%o0
 	call	00027C74
-	or	%g0,0x00000021,%o0
+000120F8                         90 10 20 21                     .. !   
 
 l000120FC:
 	ba	00012110
@@ -1807,7 +1803,7 @@ aux_info_corrupted proc
 	call	0001162C
 	or	%o0,0x00000190,%o0
 	call	00027C74
-	or	%g0,0x00000021,%o0
+000123F4             90 10 20 21                             .. !       
 
 ;; check_aux_info: 000123F8
 check_aux_info proc
@@ -2247,7 +2243,7 @@ l000128F4:
 	call	0001162C
 	ld	[%l2+8],%o2
 	call	00027C74
-	or	%g0,0x00000021,%o0
+00012914             90 10 20 21                             .. !       
 
 l00012918:
 	subcc	%o2,0x00000000,%g0
@@ -2666,18 +2662,74 @@ l00012F10:
 l00012F6C:
 	call	00016C2C
 	or	%g0,0x00000000,%o2
-00012F74             80 A2 3F FF 12 80 00 0C D0 07 BF E4     ..?.........
-00012F80 E2 04 21 50 13 00 00 AD D0 02 63 60 21 00 00 5C ..!P......c`!..\
-00012F90 7F FF F9 B4 A0 14 22 78 94 10 00 08 90 10 00 10 ......"x........
-00012FA0 10 80 00 0E 92 10 00 11 80 8A 20 FF 02 80 00 0E .......... .....
-00012FB0 94 10 00 08 11 00 00 3F 90 12 23 00 80 8A 80 08 .......?..#.....
-00012FC0 12 80 00 0A 80 8A A0 FF D2 04 21 50 11 00 00 5C ..........!P...\
-00012FD0 90 12 22 88 94 0A A0 7F 7F FF F9 95 B0 10 20 00 .."........... .
-00012FE0 30 80 00 13 80 8A A0 FF 12 80 00 0F 91 3A A0 08 0............:..
-00012FF0 98 8A 20 FF 02 80 00 0A D6 06 23 3C 11 00 00 5C .. .......#<...\
-00013000 D4 02 C0 00 90 12 22 B0 D2 04 21 50 7F FF F9 88 ......"...!P....
-00013010 96 10 00 0C 10 80 00 06 B0 10 20 00 10 80 00 04 .......... .....
-00013020 B0 10 20 01 40 00 53 3B 01 00 00 00             .. .@.S;....   
+	subcc	%o0,0xFFFFFFFF,%g0
+	bne	00012FA8
+	ld	[%i6-28],%o0
+
+l00012F80:
+	ld	[%l0+336],%l1
+	sethi	0x000000AD,%o1
+	ld	[%o1+864],%o0
+	sethi	0x0000005C,%l0
+	call	00011660
+	or	%l0,0x00000278,%l0
+	or	%g0,%o0,%o2
+	or	%g0,%l0,%o0
+	ba	00012FD8
+	or	%g0,%l1,%o1
+
+l00012FA8:
+	andcc	%o0,0x000000FF,%g0
+	be	00012FE4
+	or	%g0,%o0,%o2
+
+l00012FB4:
+	sethi	0x0000003F,%o0
+	or	%o0,0x00000300,%o0
+	andcc	%o2,%o0,%g0
+	bne	00012FE8
+	andcc	%o2,0x000000FF,%g0
+
+l00012FC8:
+	ld	[%l0+336],%o1
+	sethi	0x0000005C,%o0
+	or	%o0,0x00000288,%o0
+	and	%o2,0x0000007F,%o2
+
+l00012FD8:
+	call	0001162C
+	or	%g0,0x00000000,%i0
+	ba,a	0001302C
+
+l00012FE4:
+	andcc	%o2,0x000000FF,%g0
+
+l00012FE8:
+	bne	00013024
+	sra	%o2,0x00000008,%o0
+
+l00012FF0:
+	andcc	%o0,0x000000FF,%o4
+	be	0001301C
+	ld	[%i0+828],%o3
+
+l00012FFC:
+	sethi	0x0000005C,%o0
+	ld	[%o3+%g0],%o2
+	or	%o0,0x000002B0,%o0
+	ld	[%l0+336],%o1
+	call	0001162C
+	or	%g0,%o4,%o3
+	ba	0001302C
+	or	%g0,0x00000000,%i0
+
+l0001301C:
+	ba	0001302C
+	or	%g0,0x00000001,%i0
+
+l00013024:
+	call	00027D10
+00013028                         01 00 00 00                     ....   
 
 l0001302C:
 	jmpl	%i7,8,%g0
@@ -3117,7 +3169,7 @@ seek_to_line proc
 
 l00013718:
 	call	00027D10
-	sethi	0x00000000,%g0
+0001371C                                     01 00 00 00             ....
 
 l00013720:
 	ble	000137A0
@@ -4397,7 +4449,7 @@ l00014F14:
 	call	0001162C
 	or	%g0,%l1,%o1
 	call	00027C74
-	or	%g0,0x00000021,%o0
+00014F44             90 10 20 21                             .. !       
 
 l00014F48:
 	or	%g0,%o1,%o0
@@ -4589,50 +4641,18 @@ l00015200:
 
 l00015204:
 	call	00027C74
-	or	%g0,%o1,%o0
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
+00015208                         90 10 00 09 00 01 50 3C         ......P<
+00015210 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 6C ..Pl..Pl..Pl..Pl
+00015220 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 10 ..Pl..Pl..Pl..P.
+00015230 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 6C ..Pl..Pl..Pl..Pl
+00015240 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 6C ..Pl..Pl..Pl..Pl
+00015250 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 6C ..Pl..Pl..Pl..Pl
+00015260 00 01 50 54 00 01 4F E0 00 01 50 6C 00 01 50 6C ..PT..O...Pl..Pl
+00015270 00 01 50 6C 00 01 50 6C 00 01 50 60 00 01 50 6C ..Pl..Pl..P`..Pl
+00015280 00 01 50 48 00 01 50 6C 00 01 50 6C 00 01 50 2C ..PH..Pl..Pl..P,
+00015290 00 01 50 6C 00 01 4F D0 00 01 50 20 00 01 50 6C ..Pl..O...P ..Pl
+000152A0 00 01 50 6C 00 01 50 6C 00 01 50 6C 00 01 50 10 ..Pl..Pl..Pl..P.
+000152B0 00 01 50 6C 00 01 4F FC                         ..Pl..O.       
 
 ;; getpwd: 000152B8
 getpwd proc
@@ -5103,7 +5123,7 @@ l000157BC:
 
 l000157C4:
 	call	00027D10
-	sethi	0x00000000,%g0
+000157C8                         01 00 00 00                     ....   
 
 l000157CC:
 	jmpl	%i7,8,%g0
@@ -5174,7 +5194,7 @@ l0001586C:
 
 l00015874:
 	call	00027D10
-	sethi	0x00000000,%g0
+00015878                         01 00 00 00                     ....   
 
 l0001587C:
 	jmpl	%i7,8,%g0
@@ -5209,7 +5229,7 @@ print_and_abort proc
 	or	%o0,0x000000D0,%o0
 	sethi	0x000000A0,%o1
 	call	00027C74
-	ld	[%o1+48],%o0
+000158D4             D0 02 60 30                             ..`0       
 
 ;; try: 000158D8
 try proc
@@ -5342,7 +5362,7 @@ l00015A04:
 
 l00015A6C:
 	call	00027D10
-	sethi	0x00000000,%g0
+00015A70 01 00 00 00                                     ....           
 
 l00015A74:
 	jmpl	%i7,8,%g0
@@ -5468,7 +5488,7 @@ l00015BE0:
 
 l00015BF8:
 	call	00027D10
-	sethi	0x00000000,%g0
+00015BFC                                     01 00 00 00             ....
 
 l00015C00:
 	call	00027D94
@@ -5479,7 +5499,7 @@ l00015C00:
 
 l00015C14:
 	call	00027D10
-	sethi	0x00000000,%g0
+00015C18                         01 00 00 00                     ....   
 
 l00015C1C:
 	jmpl	%i7,8,%g0
@@ -6139,8 +6159,6 @@ l000162B8:
 	call	00027D64
 	ld	[%l3+%g0],%o4
 	ld	[%l6+704],%o0
-
-l000162D8:
 	call	00027D1C
 	or	%g0,0x0000003F,%i0
 	ld	[%l6+704],%o1
@@ -6282,8 +6300,6 @@ l00016458:
 
 l00016474:
 	ld	[%l5+104],%o0
-
-l00016478:
 	sethi	0x0000005E,%o1
 	or	%o1,0x00000228,%o1
 	add	%o0,0x00000001,%o0
@@ -6359,8 +6375,6 @@ l00016538:
 
 l00016550:
 	sll	%i0,0x00000018,%o0
-
-l00016554:
 	sra	%o0,0x00000018,%o0
 	sethi	0x000000A0,%o1
 	st	%o0,[%o1+116]
@@ -7456,312 +7470,47 @@ _fini proc
 ; DT_RELASZ                 660
 ; DT_RELAENT                 12
 ;;; Segment .plt (00027C38)
-
-;; _PROCEDURE_LINKAGE_TABLE_: 00027C38
-_PROCEDURE_LINKAGE_TABLE_ proc
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-	unimp
-
-;; atexit: 00027C68
-atexit proc
-	sethi	0x00000030,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; exit: 00027C74
-exit proc
-	sethi	0x0000003C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; _exit: 00027C80
-_exit proc
-	sethi	0x00000048,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; fn00027C8C: 00027C8C
-fn00027C8C proc
-	sethi	0x00000054,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; fn00027C98: 00027C98
-fn00027C98 proc
-	sethi	0x00000060,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; vfprintf: 00027CA4
-vfprintf proc
-	sethi	0x0000006C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strerror: 00027CB0
-strerror proc
-	sethi	0x00000078,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; malloc: 00027CBC
-malloc proc
-	sethi	0x00000084,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; realloc: 00027CC8
-realloc proc
-	sethi	0x00000090,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; free: 00027CD4
-free proc
-	sethi	0x0000009C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strcpy: 00027CE0
-strcpy proc
-	sethi	0x000000A8,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strncpy: 00027CEC
-strncpy proc
-	sethi	0x000000B4,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; read: 00027CF8
-read proc
-	sethi	0x000000C0,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; write: 00027D04
-write proc
-	sethi	0x000000CC,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; abort: 00027D10
-abort proc
-	sethi	0x000000D8,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strlen: 00027D1C
-strlen proc
-	sethi	0x000000E4,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strncmp: 00027D28
-strncmp proc
-	sethi	0x000000F0,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strcmp: 00027D34
-strcmp proc
-	sethi	0x000000FC,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; stat: 00027D40
-stat proc
-	sethi	0x00000108,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; atoi: 00027D4C
-atoi proc
-	sethi	0x00000114,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; memcpy: 00027D58
-memcpy proc
-	sethi	0x00000120,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; fprintf: 00027D64
-fprintf proc
-	sethi	0x0000012C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strcat: 00027D70
-strcat proc
-	sethi	0x00000138,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; access: 00027D7C
-access proc
-	sethi	0x00000144,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; open: 00027D88
-open proc
-	sethi	0x00000150,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; close: 00027D94
-close proc
-	sethi	0x0000015C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; unlink: 00027DA0
-unlink proc
-	sethi	0x00000168,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; strrchr: 00027DAC
-strrchr proc
-	sethi	0x00000174,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; longjmp: 00027DB8
-longjmp proc
-	sethi	0x00000180,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; setjmp: 00027DC4
-setjmp proc
-	sethi	0x0000018C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; fflush: 00027DD0
-fflush proc
-	sethi	0x00000198,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; link: 00027DDC
-link proc
-	sethi	0x000001A4,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; creat: 00027DE8
-creat proc
-	sethi	0x000001B0,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; chmod: 00027DF4
-chmod proc
-	sethi	0x000001BC,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; setlocale: 00027E00
-setlocale proc
-	sethi	0x000001C8,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; getenv: 00027E0C
-getenv proc
-	sethi	0x000001D4,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; getcwd: 00027E18
-getcwd proc
-	sethi	0x000001E0,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; fputs: 00027E24
-fputs proc
-	sethi	0x000001EC,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; mktemp: 00027E30
-mktemp proc
-	sethi	0x000001F8,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-00027E3C                                     03 00 02 04             ....
+00027C38                         00 00 00 00 00 00 00 00         ........
+00027C40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+00027C60 00 00 00 00 00 00 00 00 03 00 00 30 30 BF FF F3 ...........00...
+00027C70 01 00 00 00 03 00 00 3C 30 BF FF F0 01 00 00 00 .......<0.......
+00027C80 03 00 00 48 30 BF FF ED 01 00 00 00 03 00 00 54 ...H0..........T
+00027C90 30 BF FF EA 01 00 00 00 03 00 00 60 30 BF FF E7 0..........`0...
+00027CA0 01 00 00 00 03 00 00 6C 30 BF FF E4 01 00 00 00 .......l0.......
+00027CB0 03 00 00 78 30 BF FF E1 01 00 00 00 03 00 00 84 ...x0...........
+00027CC0 30 BF FF DE 01 00 00 00 03 00 00 90 30 BF FF DB 0...........0...
+00027CD0 01 00 00 00 03 00 00 9C 30 BF FF D8 01 00 00 00 ........0.......
+00027CE0 03 00 00 A8 30 BF FF D5 01 00 00 00 03 00 00 B4 ....0...........
+00027CF0 30 BF FF D2 01 00 00 00 03 00 00 C0 30 BF FF CF 0...........0...
+00027D00 01 00 00 00 03 00 00 CC 30 BF FF CC 01 00 00 00 ........0.......
+00027D10 03 00 00 D8 30 BF FF C9 01 00 00 00 03 00 00 E4 ....0...........
+00027D20 30 BF FF C6 01 00 00 00 03 00 00 F0 30 BF FF C3 0...........0...
+00027D30 01 00 00 00 03 00 00 FC 30 BF FF C0 01 00 00 00 ........0.......
+00027D40 03 00 01 08 30 BF FF BD 01 00 00 00 03 00 01 14 ....0...........
+00027D50 30 BF FF BA 01 00 00 00 03 00 01 20 30 BF FF B7 0.......... 0...
+00027D60 01 00 00 00 03 00 01 2C 30 BF FF B4 01 00 00 00 .......,0.......
+00027D70 03 00 01 38 30 BF FF B1 01 00 00 00 03 00 01 44 ...80..........D
+00027D80 30 BF FF AE 01 00 00 00 03 00 01 50 30 BF FF AB 0..........P0...
+00027D90 01 00 00 00 03 00 01 5C 30 BF FF A8 01 00 00 00 .......\0.......
+00027DA0 03 00 01 68 30 BF FF A5 01 00 00 00 03 00 01 74 ...h0..........t
+00027DB0 30 BF FF A2 01 00 00 00 03 00 01 80 30 BF FF 9F 0...........0...
+00027DC0 01 00 00 00 03 00 01 8C 30 BF FF 9C 01 00 00 00 ........0.......
+00027DD0 03 00 01 98 30 BF FF 99 01 00 00 00 03 00 01 A4 ....0...........
+00027DE0 30 BF FF 96 01 00 00 00 03 00 01 B0 30 BF FF 93 0...........0...
+00027DF0 01 00 00 00 03 00 01 BC 30 BF FF 90 01 00 00 00 ........0.......
+00027E00 03 00 01 C8 30 BF FF 8D 01 00 00 00 03 00 01 D4 ....0...........
+00027E10 30 BF FF 8A 01 00 00 00 03 00 01 E0 30 BF FF 87 0...........0...
+00027E20 01 00 00 00 03 00 01 EC 30 BF FF 84 01 00 00 00 ........0.......
+00027E30 03 00 01 F8 30 BF FF 81 01 00 00 00 03 00 02 04 ....0...........
 00027E40 30 BF FF 7E 01 00 00 00 03 00 02 10 30 BF FF 7B 0..~........0..{
-00027E50 01 00 00 00                                     ....           
-
-;; pipe: 00027E54
-pipe proc
-	sethi	0x0000021C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; sleep: 00027E60
-sleep proc
-	sethi	0x00000228,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; vfork: 00027E6C
-vfork proc
-	sethi	0x00000234,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; dup: 00027E78
-dup proc
-	sethi	0x00000240,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; wait: 00027E84
-wait proc
-	sethi	0x0000024C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; gettimeofday: 00027E90
-gettimeofday proc
-	sethi	0x00000258,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; getpid: 00027E9C
-getpid proc
-	sethi	0x00000264,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; __urem64: 00027EA8
-__urem64 proc
-	sethi	0x00000270,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
-
-;; __udiv64: 00027EB4
-__udiv64 proc
-	sethi	0x0000027C,%g1
-	ba,a	00027C38
-	sethi	0x00000000,%g0
+00027E50 01 00 00 00 03 00 02 1C 30 BF FF 78 01 00 00 00 ........0..x....
+00027E60 03 00 02 28 30 BF FF 75 01 00 00 00 03 00 02 34 ...(0..u.......4
+00027E70 30 BF FF 72 01 00 00 00 03 00 02 40 30 BF FF 6F 0..r.......@0..o
+00027E80 01 00 00 00 03 00 02 4C 30 BF FF 6C 01 00 00 00 .......L0..l....
+00027E90 03 00 02 58 30 BF FF 69 01 00 00 00 03 00 02 64 ...X0..i.......d
+00027EA0 30 BF FF 66 01 00 00 00 03 00 02 70 30 BF FF 63 0..f.......p0..c
+00027EB0 01 00 00 00 03 00 02 7C 30 BF FF 60 01 00 00 00 .......|0..`....
 00027EC0 01 00 00 00                                     ....           
 ;;; Segment .data (00027EC8)
 00027EC8                         00 02 80 88 00 00 00 00         ........

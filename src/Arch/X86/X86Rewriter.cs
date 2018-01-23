@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,8 +97,10 @@ namespace Reko.Arch.X86
                 case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
                 case Opcode.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
-                case Opcode.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
+                case Opcode.addsd:
+                case Opcode.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
                 case Opcode.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
+                case Opcode.aesimc: RewriteAesimc(); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
@@ -135,8 +137,10 @@ namespace Reko.Arch.X86
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
                 case Opcode.cvtpi2ps: RewriteCvtPackedToReal(PrimitiveType.Real32); break;
-                case Opcode.cvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
-                case Opcode.cvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
+                case Opcode.cvtsi2sd:
+                case Opcode.vcvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Opcode.cvtsi2ss:
+                case Opcode.vcvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
                 case Opcode.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
@@ -264,15 +268,20 @@ namespace Reko.Arch.X86
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mfence: RewriteMfence(); break;
                 case Opcode.mov: RewriteMov(); break;
-                case Opcode.movaps: RewriteMov(); break;
+                case Opcode.movapd:
+                case Opcode.movaps:
+                case Opcode.vmovapd:
+                case Opcode.vmovaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movlhps: RewriteMovlhps(); break;
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
-                case Opcode.movsd: RewriteMovssd(PrimitiveType.Real64); break;
-                case Opcode.movss: RewriteMovssd(PrimitiveType.Real32); break;
+                case Opcode.movsd:
+                case Opcode.vmovsd:  RewriteMovssd(PrimitiveType.Real64); break;
+                case Opcode.movss:
+                case Opcode.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
                 case Opcode.movups: RewriteMov(); break;
                 case Opcode.movupd: RewriteMov(); break;
@@ -357,6 +366,10 @@ namespace Reko.Arch.X86
                 case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
+                case Opcode.xorpd:
+                case Opcode.vxorpd: RewritePackedBinop("__xorpd", PrimitiveType.Word64); break;
+                case Opcode.xorps: RewritePackedBinop("__xorps", PrimitiveType.Word32); break;
+
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }

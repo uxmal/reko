@@ -275,6 +275,7 @@
     <Compile Include="Pascal\SymbolTable.cs" />
     <Compile Include="Pascal\Token.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="CustomDecoderFallback.cs" />
     <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />

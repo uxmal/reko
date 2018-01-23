@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -288,10 +288,17 @@ namespace Reko.Core.Output
                     case '\"': writer.Write("\\\""); break;
                     case '\\': writer.Write("\\\\"); break;
                     default:
-                        //$REVIEW: these are ASCII codes. EBCDIC?
-                        if (0 <= ch && ch < ' ' || ch >= 0x7F)
+                        // The awful hack allows us to reuse .NET encodings
+                        // while encoding the original untranslateable 
+                        // code points into the Private use area.
+                        //$TODO: Clearly if the string was UTF8 or 
+                        // UTF-16 to begin with, we want to preserve the
+                        // private use area points.
+                        if (0xE000 <= ch && ch <= 0xE100)
+                            writer.Write("\\x{0:X2}", (ch - 0xE000));
+                        else if (0 <= ch && ch < ' ' || ch >= 0x7F)
                             writer.Write("\\x{0:X2}", (int)ch);
-                        else
+                        else 
                             writer.Write(ch);
                         break;
                     }

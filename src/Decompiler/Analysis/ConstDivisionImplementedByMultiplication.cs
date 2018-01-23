@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ namespace Reko.Analysis
             {
                 if (Match(stm.Instruction))
                 {
-                    stm.Instruction = TransformInstruction();
+                    TransformInstruction();
                 }
             }
         }
@@ -201,12 +201,14 @@ namespace Reko.Analysis
             var sidOrig = ssa.Identifiers[idOrig];
             var sidDst = ssa.Identifiers[idDst];
             sidOrig.Uses.Remove(sidDst.DefStatement);
-            sidDst.DefStatement.Instruction = new Assignment(
+            var ass = new Assignment(
                 idDst,
                 m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
-            return sidDst.DefStatement.Instruction as Assignment;
+
+            sidDst.DefStatement.Instruction = ass;
+            return ass;
         }
     }
 }

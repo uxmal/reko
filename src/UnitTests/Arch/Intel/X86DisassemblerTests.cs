@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86Dis_Sequence()
+        public void X86dis_Sequence()
         {
             X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             var program = asm.AssembleFragment(
@@ -343,7 +343,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0xC4, 0x5E, 0x6);		// les bx,[bp+06]
             Assert.AreEqual("les\tbx,[bp+06]", instr.ToString());
-            Assert.AreSame(PrimitiveType.Pointer32, instr.op2.Width);
+            Assert.AreSame(PrimitiveType.Ptr32, instr.op2.Width);
         }
 
         [Test]
@@ -358,7 +358,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_bswap()
+        public void X86dis_bswap()
         {
             var instr = Disassemble32(0x0F, 0xC8); ;		// bswap eax
             Assert.AreEqual("bswap\teax", instr.ToString());
@@ -367,7 +367,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_RelocatedOperand()
+        public void X86dis_RelocatedOperand()
         {
             byte[] image = new byte[] { 0xB8, 0x78, 0x56, 0x34, 0x12 };	// mov eax,0x12345678
             MemoryArea img = new MemoryArea(Address.Ptr32(0x00100000), image);
@@ -398,7 +398,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_TestWithImmediateOperands()
+        public void X86dis_TestWithImmediateOperands()
         {
             var instr = Disassemble16(0xF6, 0x06, 0x26, 0x54, 0x01);     // test byte ptr [5426],01
             Assert.AreEqual("test\tbyte ptr [5426],01", instr.ToString());
@@ -408,7 +408,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_RelativeCallTest()
+        public void X86dis_RelativeCallTest()
         {
             var instr = Disassemble16(0xE8, 0x00, 0xF0);
             Assert.AreEqual("call\tF003", instr.ToString());
@@ -416,14 +416,14 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_FarCall()
+        public void X86dis_farCall()
         {
             var instr = Disassemble16(0x9A, 0x78, 0x56, 0x34, 0x12, 0x90, 0x90);
             Assert.AreEqual("call\tfar 1234:5678", instr.ToString());
         }
 
         [Test]
-        public void X86Dis_Xlat16()
+        public void X86dis_Xlat16()
         {
             var instr = Disassemble16(0xD7);
             Assert.AreEqual("xlat", instr.ToString());
@@ -680,7 +680,17 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("movlhps\txmm3,xmm3", 0x0f, 0x16, 0xdb);
             AssertCode32("pshuflw\txmm3,xmm3,00", 0xf2, 0x0f, 0x70, 0xdb, 0x00);
+        }
+
+        [Test]
+        public void X86dis_pcmpeqb()
+        {
             AssertCode32("pcmpeqb\txmm0,[eax]", 0x66, 0x0f, 0x74, 0x00);
+        }
+
+        [Test]
+        public void Dis_x86_more3()
+        {
             AssertCode32("stmxcsr\tdword ptr [ebp-0C]", 0x0f, 0xae, 0x5d, 0xf4);
             AssertCode32("palignr\txmm3,xmm1,00", 0x66, 0x0f, 0x3a, 0x0f, 0xd9, 0x00);
             AssertCode32("movq\t[edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
@@ -731,12 +741,6 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_repz_ret()
         {
             AssertCode64("ret", 0xF3, 0xC3);
-        }
-
-        [Test]
-        public void Dis_x86_invalid_les()
-        {
-            AssertCode64("illegal", 0xC4, 0xC0);
         }
 
         [Test]
@@ -936,6 +940,102 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("lfence", 0x0F, 0xAE, 0xE8);
         }
-	}
+
+        [Test]
+        public void X86dis_xorps()
+        {
+            AssertCode32("xorps\txmm0,xmm0", 0x0F, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_xorpd()
+        {
+            AssertCode32("xorpd\txmm0,xmm0", 0x66, 0x0F, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_aesimc()
+        {
+            AssertCode64("aesimc\txmm0,xmm0", 0x66, 0x0F, 0x38, 0xDB, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vmovss()
+        {
+            AssertCode64("vmovss\txmm0,dword ptr [rip+00000351]", 0xC5, 0xFA, 0x10, 0x05, 0x51, 0x03, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_vcvtsi2ss()
+        {
+            AssertCode64("vcvtsi2ss\txmm0,xmm0,rax", 0xC4, 0xE1, 0xFA, 0x2A, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vcvtsi2sd()
+        {
+            AssertCode64("vcvtsi2sd\txmm0,xmm0,rdx", 0xC4, 0xE1, 0xFB, 0x2A, 0xC2);
+        }
+
+        [Test]
+        public void X86dis_call_Ev()
+        {
+            AssertCode64("call\trax", 0xFF, 0xD0);
+        }
+
+        [Test]
+        public void X86dis_vaddsd()
+        {
+            AssertCode64("vaddsd\txmm0,xmm0,xmm0", 0xC5, 0xFB, 0x58, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vmovapd()
+        {
+            AssertCode64("vmovapd\tymm1,[rax]", 0xC5, 0xFD, 0x28, 0x08);
+        }
+
+        [Test]
+        public void X86dis_vmovaps()
+        {
+            AssertCode64("vmovaps\t[rcx+4D],xmm4", 0xC5, 0xF8, 0x29, 0x61, 0x4D);
+        }
+
+        [Test]
+        public void X86dis_vmovsd()
+        {
+            AssertCode64("vmovsd\tdouble ptr [rcx],xmm0", 0xC5, 0xFB, 0x11, 0x01);
+        }
+
+        [Test]
+        public void X86dis_vxorps()
+        {
+            AssertCode64("vxorpd\txmm0,xmm0,xmm0", 0xC5, 0xF9, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vaddpd()
+        {
+            AssertCode64("vaddpd\tymm0,ymm0,[rbp-00000090]", 0xC5, 0xFD, 0x58, 0x85, 0x70, 0xFF, 0xFF, 0xFF);
+        }
+
+        [Test]
+        public void X86dis_64_lea()
+        {
+            AssertCode64("lea\trdi,[rip+000000DA]", 0x48, 0x8D, 0x3D, 0xDA, 0x00, 0x00, 0x00);
+        }
+
+        [Test]
+        public void X86dis_vxorpd_256()
+        {
+            AssertCode64("vxorpd\tymm0,ymm0,ymm0", 0xC5, 0xFD, 0x57, 0xC0);
+        }
+
+        [Test]
+        public void X86dis_vxorpd_mem_256()
+        {
+            AssertCode64("vxorpd\tymm1,ymm0,[rcx]", 0xC5, 0xFD, 0x57, 0x09);
+        }
+    }
 }
 

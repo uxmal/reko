@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Arch.M68k
 {
     public class M68kAddressOperand : Core.Machine.AddressOperand, M68kOperand
     {
-        public M68kAddressOperand(Address addr) : base(addr, PrimitiveType.Pointer32)
+        public M68kAddressOperand(Address addr) : base(addr, PrimitiveType.Ptr32)
         {
         }
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,9 @@ namespace Reko.Scanning
         Address EnqueueUserProcedure(Procedure_v1 sp);
 
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
+
+        ProcedureBase GetTrampoline(Address addr);
+
         void TerminateBlock(Block block, Address addrEnd);
 
         /// <summary>

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			var p = new Procedure("foo", null);
 			var a = new Application(
-				new ProcedureConstant(PrimitiveType.Pointer32, p), 
+				new ProcedureConstant(PrimitiveType.Ptr32, p), 
 				PrimitiveType.Word32,
 				Constant.Word32(3));
 			Assert.AreEqual("foo(0x00000003)", a.ToString());

@@ -115,7 +115,7 @@ l0000000000400491:
 	byte Z_51
 	word32 edi_52
 	word64 rdi_53
-	call eax (retsize: 4; depth: 4)
+	call 0x0000000000000000 (retsize: 4; depth: 4)
 		uses: C_38,CZ_9,eax,edi,qwLoc08_5,r8_7,rax_35,rbp_39,rdi_41,rsp_40,SCZO_8,SZO_36,Z_37
 		defs: C_50,CZ_48,eax_43,edi_52,r8_46,rax_44,rbp_45,rdi_53,rsp_42,SCZO_47,SZO_49,Z_51
 	return
@@ -162,21 +162,20 @@ l00000000004004C4:
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
 
 l00000000004004CE:
-	word64 rsp_47
-	word64 rax_48
-	word64 rbp_49
-	word64 r8_50
-	byte SCZO_51
-	word64 rdx_52
-	byte Z_53
-	byte SZO_54
-	byte C_55
-	word64 rsi_56
-	word64 rdi_57
-	word32 edx_58
-	call edx (retsize: 4; depth: 4)
-		uses: C_42,edx,qwLoc08_5,r8_7,rax_13,rbp_43,rdi_46,rdx_39,rsi_45,rsp_44,SCZO_14,SZO_40,Z_41
-		defs: C_55,edx_58,r8_50,rax_48,rbp_49,rdi_57,rdx_52,rsi_56,rsp_47,SCZO_51,SZO_54,Z_53
+	word64 rsp_45
+	word64 rax_46
+	word64 rbp_47
+	word64 r8_48
+	byte SCZO_49
+	word64 rdx_50
+	byte Z_51
+	byte SZO_52
+	byte C_53
+	word64 rsi_54
+	word64 rdi_55
+	call 0x0000000000000000 (retsize: 4; depth: 4)
+		uses: C_40,qwLoc08_5,r8_7,rax_13,rbp_41,rdi_44,rdx_37,rsi_43,rsp_42,SCZO_14,SZO_38,Z_39
+		defs: C_53,r8_48,rax_46,rbp_47,rdi_55,rdx_50,rsi_54,rsp_45,SCZO_49,SZO_52,Z_51
 	return
 // DataOut:
 // DataOut (flags): 
@@ -289,7 +288,7 @@ l0000000000400514:
 	word64 rdx_55
 	word32 edx_56
 	word64 rsi_57
-	call eax (retsize: 4; depth: 12)
+	call 0x0000000000000000 (retsize: 8; depth: 16)
 		uses: C_39,eax,edi,edx,qwLoc08_41,r8,rax_36,rbp_43,rdi_42,rdx,rsi,rsp_40,SCZO_3,SZO_37,Z_38
 		defs: C_50,eax_47,edi_52,edx_56,r8_54,rax_48,rbp_51,rdi_53,rdx_55,rsi_57,rsp_44,SCZO_45,SZO_49,Z_46
 // DataOut: r8
@@ -409,7 +408,7 @@ l0000000000400590:
 	byte C_83
 	byte Z_84
 	word64 rdi_85
-	call Mem0[0x0000000000600E10:word32] (retsize: 4; depth: 60)
+	call Mem0[0x0000000000600E10:word64] (retsize: 8; depth: 64)
 		uses: C_37,ebx_31,edi,qwLoc08_4,qwLoc10_10,qwLoc18_15,qwLoc20_20,qwLoc28_24,qwLoc30_28,r12_21,r13_63,r14_64,r15_6,r15d_62,rbp_32,rbx_30,rdi_67,rdx_65,rsi_66,rsp_33,SCZO_34,SZO_35,Z_36
 		defs: C_83,ebx_81,edi_72,r12_77,r13_75,r14_73,r15_70,r15d_71,rbp_78,rbx_79,rdi_85,rdx_76,rsi_74,rsp_69,SCZO_80,SZO_82,Z_84
 	branch rbx_79 + 0x0000000000000001 != rbp_78 l0000000000400590

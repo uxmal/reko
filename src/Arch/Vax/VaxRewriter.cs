@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -576,9 +576,9 @@ namespace Reko.Arch.Vax
                     }
                     Expression load;
                     if (memOp.Deferred)
-                        load = m.Load(width, m.LoadDw(ea));
+                        load = m.Mem(width, m.Mem32(ea));
                     else
-                        load = m.Load(width, ea);
+                        load = m.Mem(width, ea);
                     if (memOp.AutoIncrement)
                     {
                         if (memOp.AutoIncrement)
@@ -661,12 +661,12 @@ namespace Reko.Arch.Vax
                         ea = m.IAdd(ea, memOp.Offset);
                     }
                     var tmp = frame.CreateTemporary(width);
-                    m.Assign(tmp, fn(m.Load(width, ea)));
+                    m.Assign(tmp, fn(m.Mem(width, ea)));
                     Expression load; 
                     if (memOp.Deferred)
-                        load = m.Load(width, m.LoadDw(ea));
+                        load = m.Mem(width, m.Mem32(ea));
                     else
-                        load = m.Load(width, ea);
+                        load = m.Mem(width, ea);
                     m.Assign(load, tmp);
 
                     if (memOp.AutoIncrement)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Typing
             program.Add("test", m=>
                {
                    var r1 = m.Register(1);
-                   m.Assign(r1, m.Load(PrimitiveType.Real32, m.Word32(0x10000000)));
+                   m.Assign(r1, m.Mem(PrimitiveType.Real32, m.Word32(0x10000000)));
                });
 			RunTest(program.BuildProgram(), "Typing/CpaSimple.txt");
 		}
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 
 			m.Assign(bx, 0x1234);
-			m.Store(m.SegMemW(ds, bx), m.Word16(0x0042));
+			m.Store(m.SegMem16(ds, bx), m.Word16(0x0042));
 			program.Add(m);
 
 			RunTest(program.BuildProgram(), "Typing/CpaConstantMemberPointer.txt");

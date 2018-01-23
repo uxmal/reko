@@ -405,7 +405,7 @@
     </Compile>
     <Compile Include="Windows\Forms\FindStringsDialogInteractor.cs" />
     <Compile Include="Windows\Forms\InitialPageInteractor.cs" />
-    <Compile Include="Windows\Forms\LoadedPageInteractor.cs" />
+    <Compile Include="Windows\Forms\ScannedPageInteractor.cs" />
     <Compile Include="Windows\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

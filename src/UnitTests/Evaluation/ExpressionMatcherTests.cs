@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,8 +97,8 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Emt_MemAccess()
         {
-            var mem = m.LoadW(m.IAdd(Id("ebx"), 4));
-            Create(m.LoadW(m.IAdd(AnyId("idx"), AnyC("offset"))));
+            var mem = m.Mem16(m.IAdd(Id("ebx"), 4));
+            Create(m.Mem16(m.IAdd(AnyId("idx"), AnyC("offset"))));
             Assert.IsTrue(matcher.Match(mem));
             Assert.AreEqual("ebx", matcher.CapturedExpression("idx").ToString());
         }

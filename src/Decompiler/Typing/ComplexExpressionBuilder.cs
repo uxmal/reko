@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -440,11 +440,11 @@ namespace Reko.Typing
 
         private Expression ScaleDownIndex(Expression exp, int elementSize)
         {
-            if (exp == null || elementSize == 1)
+            if (exp == null || elementSize <= 1)
                 return exp;
             BinaryExpression bin;
             Constant cRight = null;
-            if (!exp.As(out bin) ||
+           if (!exp.As(out bin) ||
                 (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul) ||
                 !bin.Right.As(out cRight) ||
                 cRight.ToInt32() % elementSize != 0)

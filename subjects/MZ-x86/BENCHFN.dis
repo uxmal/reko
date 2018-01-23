@@ -7393,7 +7393,7 @@ l0800_1BA4:
 // LocalsOut: fp(16)
 
 l0800_1BA9:
-	branch bl >u 0x5A l0800_1BB3
+	branch bl >u 0x5A || bl <u 0x30 l0800_1BB3
 // DataOut: bl cl cx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 bl:bl - 0x30 -2(fp):bx

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,7 +97,7 @@ namespace Reko.Arch.M68k
             var reg = orw.RewriteSrc(di.op2, di.Address);
             var lowBound = orw.RewriteSrc(di.op1, di.Address);
             var ea = ((MemoryAccess)lowBound).EffectiveAddress;
-            var hiBound = m.Load(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+            var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
             m.Branch(
                 m.Cand(
                     m.Ge(reg, lowBound),

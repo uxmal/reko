@@ -495,7 +495,7 @@
     <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs">
+    <Compile Include="Gui\Windows\Forms\ScannedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
@@ -579,6 +579,7 @@
     <Compile Include="Structure\MockWhileGoto.cs" />
     <Compile Include="Structure\MockWhileWithDeclarations.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
+    <Compile Include="Structure\ProcedurePrettifierTests.cs" />
     <Compile Include="Structure\StructureAnalysisTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />

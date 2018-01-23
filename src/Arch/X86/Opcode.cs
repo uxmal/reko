@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,8 @@ namespace Reko.Arch.X86
         addps,
         addpd,
         addss,
-        addsd,    
+        addsd,
+        aesimc,
         and,
         arpl,
         bound,
@@ -215,6 +216,7 @@ namespace Reko.Arch.X86
         loopne,
         mfence,
         mov,
+        movapd,
         movaps,
         movd,
         movdqa,
@@ -313,6 +315,18 @@ namespace Reko.Arch.X86
         ucomiss,
         ucomisd,
         vmfunc,
+
+        vaddpd,
+        vaddsd,
+        vcvtsi2sd,
+        vcvtsi2ss,
+        vmovapd,
+        vmovaps,
+        vmovsd,
+        vmovss,
+        vxorpd,
+        vxorps,
+
         wait,
         xadd,
         xchg,
@@ -320,6 +334,8 @@ namespace Reko.Arch.X86
         xgetbv,
         xlat,
         xor,
+        xorpd,
+        xorps,
         xrstor,
         xsaveopt,
         xsetbv,

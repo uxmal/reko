@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,12 +59,13 @@ namespace Reko.Arch.X86
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
-            m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
+            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
         }
 
         private void RewriteCvtToReal(PrimitiveType size)
         {
-            var src = SrcOp(instrCur.op2);
+            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
             var dst = SrcOp(instrCur.op1);
             var tmp = frame.CreateTemporary(size);
             m.Assign(tmp, m.Cast(size, src));
@@ -75,7 +76,7 @@ namespace Reko.Arch.X86
         {
             var dtSrc = PrimitiveType.Real32;
             var dtDst = PrimitiveType.Int32;
-            var src = SrcOp(instrCur.op2);
+            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
 
             var tmp1 = frame.CreateTemporary(dtDst);
             m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
@@ -157,24 +158,46 @@ namespace Reko.Arch.X86
 
         private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size)
         {
-            var xmm = SrcOp(instrCur.op1);
+            var dst = SrcOp(instrCur.op1);
             var tmp = frame.CreateTemporary(size);
-            m.Assign(tmp, fn(m.Cast(size, xmm), SrcOp(instrCur.op2)));
-            m.Assign(xmm, m.Dpb(xmm, tmp, 0));
+            if (instrCur.op3 != null)
+            {
+                var src1 = SrcOp(instrCur.op2);
+                var src2 = SrcOp(instrCur.op3);
+                src1 = m.Cast(size, src1);
+                src2 = m.Cast(size, src2);
+                m.Assign(tmp, fn(src1, src2));
+                m.Assign(dst, m.Dpb(dst, tmp, 0));
+            }
+            else
+            {
+                m.Assign(tmp, fn(m.Cast(size, dst), SrcOp(instrCur.op2)));
+                m.Assign(dst, m.Dpb(dst, tmp, 0));
+            }
         }
 
         private void RewritePackedBinop(string fnName, PrimitiveType elementType)
         {
-            var xmm1 = SrcOp(instrCur.op1);
-            var xmm2 = SrcOp(instrCur.op2);
-            int celem = xmm1.DataType.Size / elementType.Size;
+            var dst = SrcOp(instrCur.op1);
+            int celem = dst.DataType.Size / elementType.Size;
             var arrayType = new ArrayType(elementType, celem);
+            Expression src1;
+            Expression src2;
+            if (instrCur.op3 != null)
+            {
+                src1 = SrcOp(instrCur.op2);
+                src2 = SrcOp(instrCur.op3);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.op1);
+                src2 = SrcOp(instrCur.op2);
+            }
             var tmp1 = frame.CreateTemporary(arrayType);
             var tmp2 = frame.CreateTemporary(arrayType);
-            var result = frame.CreateTemporary(arrayType);
-            m.Assign(tmp1, xmm1);
-            m.Assign(tmp2, xmm2);
-            m.Assign(xmm1, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
+            m.Assign(tmp1, src1);
+            m.Assign(tmp2, src2);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
         }
     }
 }

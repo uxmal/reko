@@ -1,6 +1,6 @@
 ﻿#region License
 /*
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -273,7 +273,7 @@ namespace Reko.Arch.Mips
                     ea = m.IAdd(baseReg, indOp.Offset);
                 else
                     ea = m.ISub(baseReg, -indOp.Offset);
-                return m.Load(indOp.Width, ea);
+                return m.Mem(indOp.Width, ea);
             }
             var addrOp = op as AddressOperand;
             if (addrOp != null)
@@ -308,7 +308,7 @@ namespace Reko.Arch.Mips
                     ea = m.IAdd(baseReg, indOp.Offset);
                 else
                     ea = m.ISub(baseReg, -indOp.Offset);
-                return m.Load(indOp.Width, ea);
+                return m.Mem(indOp.Width, ea);
             }
             var addrOp = op as AddressOperand;
             if (addrOp != null)
