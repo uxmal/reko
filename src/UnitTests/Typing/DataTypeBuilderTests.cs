@@ -490,8 +490,8 @@ namespace Reko.UnitTests.Typing
             m.Assign(ds2, ds);
             m.Store(
                 m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
-                m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
-            m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
+                m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
+            m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);

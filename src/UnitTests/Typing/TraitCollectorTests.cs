@@ -409,7 +409,7 @@ namespace Reko.UnitTests.Typing
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
-			Expression e = m.SegMemW(ds, m.Word16(0xC002U));
+			Expression e = m.SegMem16(ds, m.Word16(0xC002U));
 
             coll = CreateCollector();
 			e.Accept(eqb);

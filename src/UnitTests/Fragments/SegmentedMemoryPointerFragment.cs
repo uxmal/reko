@@ -38,11 +38,11 @@ namespace Reko.UnitTests.Fragments
             Identifier si = Local16("si");
             Identifier si2 = Local16("si2");
             Assign(si, Word16(0x0001));
-            Assign(ax, SegMemW(cs, si));
+            Assign(ax, SegMem16(cs, si));
             Assign(si2, Word16(0x0005));
-            Assign(ax, SegMemW(cs, si2));
-            Store(SegMemW(cs, Word16(0x1234)), ax);
-            Store(SegMemW(cs, IAdd(si, 2)), ax);
+            Assign(ax, SegMem16(cs, si2));
+            Store(SegMem16(cs, Word16(0x1234)), ax);
+            Store(SegMem16(cs, IAdd(si, 2)), ax);
         }
     }
     public class SegmentedMemoryPointerMock2 : ProcedureBuilder
@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Fragments
             ds.DataType = PrimitiveType.SegmentSelector;
             Identifier ax = Local16("ax");
             Identifier bx = Local16("bx");
-            Assign(ax, SegMemW(ds, bx));
-            Assign(ax, SegMemW(ds, IAdd(bx, 4)));
+            Assign(ax, SegMem16(ds, bx));
+            Assign(ax, SegMem16(ds, IAdd(bx, 4)));
         }
     }
 

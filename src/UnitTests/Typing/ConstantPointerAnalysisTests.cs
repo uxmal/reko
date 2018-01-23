@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Typing
 			Identifier bx = m.Local16("bx");
 
 			m.Assign(bx, 0x1234);
-			m.Store(m.SegMemW(ds, bx), m.Word16(0x0042));
+			m.Store(m.SegMem16(ds, bx), m.Word16(0x0042));
 			program.Add(m);
 
 			RunTest(program.BuildProgram(), "Typing/CpaConstantMemberPointer.txt");

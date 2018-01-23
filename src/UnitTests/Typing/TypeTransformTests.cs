@@ -433,7 +433,7 @@ namespace Reko.UnitTests.Typing
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 m.SegStore(
                     ds, m.Word16( 0x1234),
-                    m.SegMemW(
+                    m.SegMem16(
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
             });

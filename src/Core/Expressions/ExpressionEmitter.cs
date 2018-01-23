@@ -45,7 +45,8 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Integer addition.
+        /// Generates an integer two's complement addition expression. Signedness
+        /// doesn't matter here.
         /// </summary>
         /// <param name="left">Augend</param>
         /// <param name="right">Addend</param>
@@ -744,7 +745,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generate the integer modulus ('%' in the C language family).
+        /// Generate the integer remainder ('%' in the C language family).
         /// </summary>
         /// <param name="opLeft">Dividend.</param>
         /// <param name="opRight">Divisor.</param>
@@ -806,7 +807,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public SegmentedAccess SegMemB(Expression basePtr, Expression ptr)
+        public SegmentedAccess SegMem8(Expression basePtr, Expression ptr)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Byte);
         }
@@ -818,7 +819,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public SegmentedAccess SegMemW(Expression basePtr, Expression ptr)
+        public SegmentedAccess SegMem16(Expression basePtr, Expression ptr)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Word16);
         }
@@ -1031,7 +1032,8 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates an integer subtraction expression.
+        /// Generates an integer two's complement subtraction expression. Signedness
+        /// doesn't matter here.
         /// </summary>
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
@@ -1058,9 +1060,9 @@ namespace Reko.Core.Expressions
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
-        /// <param name="primitiveType"></param>
-        /// <param name="value"></param>
-        /// <param name="bitOffset"></param>
+        /// <param name="primitiveType">The type of the bit slice</param>
+        /// <param name="value">The value being sliced</param>
+        /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
         public Slice Slice(PrimitiveType primitiveType, Expression value, int bitOffset)
         {

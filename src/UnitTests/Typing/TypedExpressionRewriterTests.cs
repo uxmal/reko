@@ -395,8 +395,8 @@ namespace Reko.UnitTests.Typing
                 m.Assign(ds2, ds);
                 m.Store(
                     m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
-                    m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
-                m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
+                    m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
+                m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
             });
             RunTest(prog.BuildProgram(), "Typing/TerSignedCompare.txt");
         }
@@ -415,9 +415,9 @@ namespace Reko.UnitTests.Typing
                 m.Store(
                     m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
                     m.Lt(
-                        m.SegMemW(ds, m.IAdd(m.SegMemW(ds, m.Word16(0x5404)), 4)),
+                        m.SegMem16(ds, m.IAdd(m.SegMem16(ds, m.Word16(0x5404)), 4)),
                         m.Word16(20)));
-                m.Store(m.SegMemW(ds2, m.IAdd(m.SegMemW(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
+                m.Store(m.SegMem16(ds2, m.IAdd(m.SegMem16(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
                 m.Return();
             });
             RunTest(prog.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");
@@ -497,7 +497,7 @@ namespace Reko.UnitTests.Typing
             {
                 var ds = m.Local(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Local(PrimitiveType.Word16, "bx");
-                m.SegStore(ds, m.Word16(0x300), m.SegMemW(ds, m.SegMemW(ds, bx)));
+                m.SegStore(ds, m.Word16(0x300), m.SegMem16(ds, m.SegMem16(ds, bx)));
                 m.Return();
             });
             RunTest(pm, "Typing/TerSegmentedLoadLoad.txt");

@@ -499,7 +499,7 @@ const eax:<invalid> ebx:0x01231313
                 m.Assign(sp, m.ISub(sp, 2));
                 m.SegStore(ss, sp, ax);
                 m.Assign(ax, 1);
-                m.Assign(ax, m.SegMemW(ss, sp));
+                m.Assign(ax, m.SegMem16(ss, sp));
                 m.Assign(sp, m.IAdd(sp, 2));
                 m.Return();
             });

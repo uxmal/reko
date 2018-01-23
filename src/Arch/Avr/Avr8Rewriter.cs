@@ -458,7 +458,7 @@ namespace Reko.Arch.Avr
             {
                 var z = binder.EnsureRegister(arch.z);
                 var r0 = binder.EnsureRegister(arch.GetRegister(0));
-                m.Assign(r0, m.SegMemB(codeSel, z));
+                m.Assign(r0, m.SegMem8(codeSel, z));
             }
             else
             {

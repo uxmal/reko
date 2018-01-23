@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Core.Output
 "    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
-"    BranchIf(Eq(i, new Constant(Primitive.Int32, 0x0)), \"skip\");" + nl + 
+"    BranchIf(Eq(i, Constant.Create(Primitive.Int32, 0x0)), \"skip\");" + nl + 
 "    " + nl + 
 "    Label(\"fade\");" + nl + 
 "    Store(Word32(0x123456), i);" + nl + 

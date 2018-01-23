@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Typing
                 var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 var si = m.Temp(PrimitiveType.Int16, "si");
-                m.Assign(bx, m.SegMemW(ds, m.Word16(0xC00)));
+                m.Assign(bx, m.SegMem16(ds, m.Word16(0xC00)));
                 m.SegStore(ds, m.IAdd(
                                 m.IAdd(bx, 10),
                                 si),
