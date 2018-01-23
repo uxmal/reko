@@ -225,13 +225,13 @@ namespace Reko.UnitTests.Analysis
 				new Identifier[] {
 					f.EnsureRegister(Registers.ebx),
 					f.EnsureRegister(Registers.ecx),
-					f.EnsureOutArgument(f.EnsureRegister(Registers.edi), PrimitiveType.Pointer32)
+					f.EnsureOutArgument(f.EnsureRegister(Registers.edi), PrimitiveType.Ptr32)
 				});
 			
 			rl.IdentifierLiveness.Identifiers.Add(Registers.eax);
 			rl.IdentifierLiveness.Identifiers.Add(Registers.esi);
 			rl.IdentifierLiveness.Identifiers.Add(Registers.edi);
-			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0));
+			CallInstruction ci = new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, callee), new CallSite(4, 0));
 			rl.VisitCallInstruction(ci);
 			Assert.AreEqual(" ebx ecx esi", Dump(rl.IdentifierLiveness));
 		}
@@ -250,7 +250,7 @@ namespace Reko.UnitTests.Analysis
 
 			Identifier b04 = m.Frame.EnsureStackLocal(-4, PrimitiveType.Word32);
 			Identifier w08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
-			new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, callee), new CallSite(4, 0)).Accept(rl);
+			new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, callee), new CallSite(4, 0)).Accept(rl);
 
 			foreach (object o in rl.IdentifierLiveness.LiveStorages.Keys)
 			{
@@ -279,7 +279,7 @@ namespace Reko.UnitTests.Analysis
 			m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
 			rl.CurrentState = new RegisterLiveness.ByPassState(program.Architecture);
             var ci = new CallInstruction(
-                new ProcedureConstant(PrimitiveType.Pointer32, callee),
+                new ProcedureConstant(PrimitiveType.Ptr32, callee),
                 new CallSite(4, 0) { StackDepthOnEntry = 16 });
 			rl.Procedure = m.Procedure;
 			rl.MarkLiveStackParameters(ci);

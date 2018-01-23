@@ -651,7 +651,7 @@ const ax:0x0000 cx:<invalid>
 
         private void Given_Contexts()
         {
-            frame = new Frame(PrimitiveType.Pointer32);
+            frame = new Frame(PrimitiveType.Ptr32);
             ctx = new SymbolicEvaluationContext(arch, frame);
             blockflow = new BlockFlow(null, new HashSet<RegisterStorage>(), ctx);
             trf.EnsureEvaluationContext(blockflow);

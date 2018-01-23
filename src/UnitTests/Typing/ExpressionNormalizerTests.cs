@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Typing
         public void Setup()
         {
             m = new ProcedureBuilder();
-            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
+            aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
         }
 
         [Test]

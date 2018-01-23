@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void DereferenceTest()
 		{
-			Assert.IsTrue(ci.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Pointer32, Id32("foo"))));
+			Assert.IsTrue(ci.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Ptr32, Id32("foo"))));
 		}
 
 		[Test]
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(PrimitiveType.Pointer32, null), new CallSite(0, 0))));
+			Assert.IsTrue(ci.IsCritical(new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, null), new CallSite(0, 0))));
 		}
 
 		[Test]

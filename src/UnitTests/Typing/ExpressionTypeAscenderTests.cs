@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Typing
 
         private void RunTest(Expression e)
         {
-            var globals = new Identifier("globals", PrimitiveType.Pointer32, RegisterStorage.None);
+            var globals = new Identifier("globals", PrimitiveType.Ptr32, RegisterStorage.None);
             store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);
@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Typing
         {
             Given_GlobalVariable(
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
-            RunTest(Constant.Create(PrimitiveType.Pointer32, 0x10001200));
+            RunTest(Constant.Create(PrimitiveType.Ptr32, 0x10001200));
         }
 
         [Test(Description = "Reals should not be processed as globals")]

@@ -233,7 +233,7 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Pointer32) { }
+        public MipsBe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
@@ -268,7 +268,7 @@ namespace Reko.Arch.Mips
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
-        public MipsLe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Pointer32) { }
+        public MipsLe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
@@ -303,7 +303,7 @@ namespace Reko.Arch.Mips
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Pointer64)
+        public MipsBe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Ptr64)
         { }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
@@ -339,7 +339,7 @@ namespace Reko.Arch.Mips
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Pointer64)
+        public MipsLe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Ptr64)
         {
         }
 

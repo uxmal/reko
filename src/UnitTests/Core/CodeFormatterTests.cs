@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Core
 		{
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
             Expression e = new FieldAccess(
-                PrimitiveType.Pointer32,
+                PrimitiveType.Ptr32,
                 m.Deref(id1),
                 new StructureField(4, PrimitiveType.Word32, "foo"));
 			e.Accept(cf);
@@ -227,7 +227,7 @@ namespace Reko.UnitTests.Core
             var c = new Identifier("c", PrimitiveType.Int32, RegisterStorage.None);
             var e = m.Array(
                 PrimitiveType.Byte,
-                m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), new StructureField(4, PrimitiveType.Pointer32, "a0004")),
+                m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), new StructureField(4, PrimitiveType.Ptr32, "a0004")),
                 c);
             e.Accept(cf);
             Assert.AreEqual("(a->*b).a0004[c]", sw.ToString());

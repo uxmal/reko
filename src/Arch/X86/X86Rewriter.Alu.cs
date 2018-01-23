@@ -580,7 +580,7 @@ namespace Reko.Arch.X86
 
             m.Assign(
                 frame.EnsureSequence(seg, reg.Register,
-                PrimitiveType.Pointer32),
+                PrimitiveType.Ptr32),
                 SrcOp(mem, PrimitiveType.SegPtr32));
         }
 

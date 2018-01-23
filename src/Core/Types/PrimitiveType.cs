@@ -349,14 +349,14 @@ namespace Reko.Core.Types
 			Word32 = CreateWord(4);
 			Int32 = Create(Domain.SignedInt, 4);
 			UInt32 = Create(Domain.UnsignedInt, 4);
-			Pointer32 = Create(Domain.Pointer, 4);
+			Ptr32 = Create(Domain.Pointer, 4);
             SegPtr32 = Create(Domain.SegPointer, 4);
             Real32 = Create(Domain.Real, 4);
 
 			Word64 = CreateWord(8);
 			Int64 = Create(Domain.SignedInt, 8);
 			UInt64 = Create(Domain.UnsignedInt, 8);
-			Pointer64 = Create(Domain.Pointer, 8);
+			Ptr64 = Create(Domain.Pointer, 8);
 			Real64 = Create(Domain.Real, 8);
 
             Word80 = CreateWord(10);
@@ -392,14 +392,14 @@ namespace Reko.Core.Types
 		public static PrimitiveType Word32 { get; private set; }
 		public static PrimitiveType Int32 { get; private set; }
 		public static PrimitiveType UInt32 { get; private set; }
-		public static PrimitiveType Pointer32 { get; private set; }
+		public static PrimitiveType Ptr32 { get; private set; }
 		public static PrimitiveType Real32 { get; private set; }
         public static PrimitiveType SegPtr32 { get; private set; }
 
 		public static PrimitiveType Word64 { get; private set; }
 		public static PrimitiveType Int64 { get; private set; }
 		public static PrimitiveType UInt64 { get; private set; }
-		public static PrimitiveType Pointer64 { get; private set; }
+		public static PrimitiveType Ptr64 { get; private set; }
         public static PrimitiveType Real64 { get; private set; }
 
         public static PrimitiveType Word80 { get; private set; }

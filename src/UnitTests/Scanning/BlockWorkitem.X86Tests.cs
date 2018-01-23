@@ -118,14 +118,14 @@ namespace Reko.UnitTests.Scanning
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
             }
 
             public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
                 ppp.Characteristics = c;
-                return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
             }
 
             public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, FunctionType signature)

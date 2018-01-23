@@ -58,7 +58,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.sc = new ServiceContainer();
             var cfgSvc = mr.Stub<IConfigurationService>();
             this.arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch);
             cfgSvc.Stub(c => c.GetArchitecture("mips-be-32")).Return(arch);
             sc.AddService<IConfigurationService>(cfgSvc);

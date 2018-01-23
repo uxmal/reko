@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Typing
         {
             store = new TypeStore();
             factory = new TypeFactory();
-            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
+            aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
             eqb = new EquivalenceClassBuilder(factory, store);
             arch = new FakeArchitecture();
             program = new Program();

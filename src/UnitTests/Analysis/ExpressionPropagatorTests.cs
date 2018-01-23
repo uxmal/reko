@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Analysis
                 r2 = m.Register("r2");
                 r3 = m.Register("r3");
                 m.Assign(r2, 0x1234);                       // after which R2 has a definite value
-                m.SideEffect(m.Fn("Foo", m.Out(PrimitiveType.Pointer32, r2)));    // Can't promise R2 is preserved after call, so should be invalid.
+                m.SideEffect(m.Fn("Foo", m.Out(PrimitiveType.Ptr32, r2)));    // Can't promise R2 is preserved after call, so should be invalid.
                 m.Assign(r3, r2);
             });
 

@@ -37,9 +37,9 @@ namespace Reko.Arch.SuperH
     {
         public SuperHArchitecture()
         {
-            this.FramePointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             // No architecture-defined stack register -- defined by platform.
         }

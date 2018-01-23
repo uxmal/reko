@@ -73,7 +73,7 @@ namespace Reko.Core.Expressions
         /// <returns>A unary expresssion representing the address-of operation.</returns>
         public UnaryExpression AddrOf(Expression e)
         {
-            return new UnaryExpression(UnaryOperator.AddrOf, PrimitiveType.Pointer32, e);
+            return new UnaryExpression(UnaryOperator.AddrOf, PrimitiveType.Ptr32, e);
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace Reko.Core.Expressions
                 ? ep.Signature.ReturnValue.DataType
                 : VoidType.Instance;
             return new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, ep), 
+                new ProcedureConstant(PrimitiveType.Ptr32, ep), 
                 retType,
                 args);
         }
@@ -430,7 +430,7 @@ namespace Reko.Core.Expressions
         /// <returns>A function application</returns>
         public Application Fn(PseudoProcedure ppp, params Expression[] args)
         {
-            return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
+            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), ppp.ReturnType, args);
         }
 
         /// <summary>
@@ -662,7 +662,7 @@ namespace Reko.Core.Expressions
         /// <returns>A member pointer dereference.</returns>
         public MemberPointerSelector MembPtr8(Expression ptr, Expression membPtr)
         {
-            return new MemberPointerSelector(PrimitiveType.Byte, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);
+            return new MemberPointerSelector(PrimitiveType.Byte, new Dereference(PrimitiveType.Ptr32, ptr), membPtr);
         }
 
         /// <summary>
@@ -674,7 +674,7 @@ namespace Reko.Core.Expressions
         /// <returns>A member pointer dereference.</returns>
         public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
         {
-            return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);
+            return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Ptr32, ptr), membPtr);
         }
 
         /// <summary>

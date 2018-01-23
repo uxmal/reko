@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Pointer32);
+            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Ptr32);
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 

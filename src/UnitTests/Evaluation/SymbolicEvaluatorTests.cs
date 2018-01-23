@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Evaluation
             {
                 r1 = m.Register(1);
                 m.Assign(r1, 1);
-                m.SideEffect(m.Fn("foo", m.Out(PrimitiveType.Pointer32, r1)));
+                m.SideEffect(m.Fn("foo", m.Out(PrimitiveType.Ptr32, r1)));
             });
             Assert.AreEqual("<invalid>", GetRegisterState(se, r1).ToString());
         }

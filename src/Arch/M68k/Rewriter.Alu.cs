@@ -138,7 +138,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(di.op2, di.Address);
             m.Assign(
                 orw.FlagGroup(FlagM.ZF),
-                host.PseudoProcedure(name, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Pointer32, opDst)));
+                host.PseudoProcedure(name, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
         }
 
         public void RewriteExg()

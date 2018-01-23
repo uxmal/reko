@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Analysis
         {
             ProcedureBuilder m = new ProcedureBuilder("foo");
             Identifier r4 = m.Register(4);
-            m.Store(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Pointer32, r4)));
+            m.Store(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Ptr32, r4)));
             m.Return();
 
             RunFileTest(m, "Analysis/SsaOutParameters.txt");

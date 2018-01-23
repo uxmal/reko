@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Typing
                 m.IAdd(
                     Id("p", PrimitiveType.Word32),
                     Constant.Word32(4)),
-                PrimitiveType.Pointer32);
+                PrimitiveType.Ptr32);
         }
 
         [Test]

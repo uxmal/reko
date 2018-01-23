@@ -814,7 +814,7 @@ ProcedureBuilder_exit:
         public void VpIndirectCall()
         {
             var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
-            var pc = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+            var pc = new ProcedureConstant(PrimitiveType.Ptr32, callee);
 
             var m = new ProcedureBuilder();
             var r1 = m.Reg32("r1", 1);
