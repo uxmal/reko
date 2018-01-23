@@ -383,7 +383,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             Rewrite(0x0006);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|L--|call 0000000C (1)"
+                "0|L--|00000200(2): 1 instructions", "1|L--|STKPTR = STKPTR - 0x01"
                 );
         }
 
@@ -392,7 +392,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             Rewrite(0x0005);
             AssertCode(
-                "0|L--|00000200(2): 1 instructions", "1|L--|call 0000000C (1)"
+                "0|L--|00000200(2): 1 instructions", "1|L--|STKPTR = STKPTR + 0x01"
                 );
         }
 
@@ -401,7 +401,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             Rewrite(0x00FF);
             AssertCode(
-                "0|H--|00000200(2): 1 instructions", "1|L--|__reset()"
+                "0|H--|00000200(2): 2 instructions", "1|L--|STKPTR = 0x00", "2|L--|__reset()"
                 );
         }
 
@@ -526,11 +526,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             Rewrite(0x1800);
             AssertCode(
-                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG ^ Mem0[null:byte]", "2|L--|ZN = cond(WREG)"
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG ^ Mem0[0x00:byte]", "2|L--|ZN = cond(WREG)"
                 );
             Rewrite(0x1801);
             AssertCode(
-                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG ^ Mem0[0x00000001:byte]", "2|L--|ZN = cond(WREG)"
+                "0|L--|00000200(2): 2 instructions", "1|L--|WREG = WREG ^ Mem0[0x01:byte]", "2|L--|ZN = cond(WREG)"
                 );
             Rewrite(0x18C3);
             AssertCode(
@@ -546,7 +546,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             Rewrite(0x1A01);
             AssertCode(
-                "0|L--|00000200(2): 2 instructions", "1|L--|Mem0[0x00000001:byte] = WREG ^ Mem0[0x00000001:byte]", "2|L--|ZN = cond(Mem0[0x00000001:byte])"
+                "0|L--|00000200(2): 2 instructions", "1|L--|Mem0[0x01:byte] = WREG ^ Mem0[0x01:byte]", "2|L--|ZN = cond(Mem0[0x01:byte])"
                 );
             Rewrite(0x1B01);
             AssertCode(
@@ -581,7 +581,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
                 "2|L--|00000202(2): 1 instructions", "3|L--|nop",
-                "4|L--|00000204(2): 2 instructions", "5|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "6|L--|ZN = cond(Mem0[0x0034:byte])"
+                "4|L--|00000204(2): 2 instructions", "5|L--|Mem0[0x34:byte] = WREG | Mem0[0x34:byte]", "6|L--|ZN = cond(Mem0[0x34:byte])"
                 );
 
             Rewrite(0x0015);
@@ -655,7 +655,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             Rewrite(0x0067, 0x1234);
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
-                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x34:byte] = WREG | Mem0[0x34:byte]", "4|L--|ZN = cond(Mem0[0x34:byte])"
                 );
 
             Rewrite(0x006F, 0xF000);
@@ -708,7 +708,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             Rewrite(0xEB00, 0x1234);
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
-                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x34:byte] = WREG | Mem0[0x34:byte]", "4|L--|ZN = cond(Mem0[0x34:byte])"
                 );
 
             Rewrite(0xEB80);
@@ -719,7 +719,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             Rewrite(0xEB80, 0x1234);
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
-                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x34:byte] = WREG | Mem0[0x34:byte]", "4|L--|ZN = cond(Mem0[0x34:byte])"
                 );
 
             Rewrite(0xEC00);
@@ -730,7 +730,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             Rewrite(0xEC00, 0x1234);
             AssertCode(
                 "0|L--|00000200(2): 1 instructions", "1|---|<invalid>",
-                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x0034:byte] = WREG | Mem0[0x0034:byte]", "4|L--|ZN = cond(Mem0[0x0034:byte])"
+                "2|L--|00000202(2): 2 instructions", "3|L--|Mem0[0x34:byte] = WREG | Mem0[0x34:byte]", "4|L--|ZN = cond(Mem0[0x34:byte])"
                 );
 
             Rewrite(0xED00);

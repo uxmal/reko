@@ -21,12 +21,11 @@
 #endregion
 
 using Microchip.Crownking;
+using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
-using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -245,7 +244,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 Registers Shadowing flag operand. Used by instructions RETFIE, RETURN, CALL.
     /// </summary>
-    public class PIC18ShadowOperand : MachineOperand, IPIC18kOperand, IOperandVisible
+    public class PIC18ShadowOperand : MachineOperand, IPIC18kOperand, IOperandShadow
     {
         /// <summary>
         /// Gets the indication if a Shadow Register(s) are used. If false, no Shadow Register(s) used.
@@ -267,10 +266,10 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(IsShadow.ToBoolean() ? "S" : "");
+            writer.Write(IsPresent ? "FAST" : "");
         }
 
-        public bool IsVisible => IsShadow.ToBoolean();
+        public bool IsPresent => IsShadow.ToBoolean();
 
     }
 

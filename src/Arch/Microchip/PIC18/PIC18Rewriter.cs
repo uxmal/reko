@@ -128,7 +128,7 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.MULWF: RewriteMULWF(); break;
                     case Opcode.NEGF: RewriteNEGF(); break;
                     case Opcode.NOP: m.Nop(); break;
-                    case Opcode.POP: RewritePUSHL(); break;
+                    case Opcode.POP: RewritePOP(); break;
                     case Opcode.PUSH: RewritePUSH(); break;
                     case Opcode.PUSHL: RewritePUSHL(); break;
                     case Opcode.RCALL: RewriteRCALL(); break;
@@ -718,8 +718,11 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewritePUSH()
         {
+            var stkptr = binder.EnsureRegister(PIC18Registers.STKPTR);
+            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+
+            //TODO: see TOS update
             var tos = binder.EnsureSequence(PIC18Registers.TOSL, PIC18Registers.TOSU, PrimitiveType.Word32);
-            //TODO: see stack update
         }
 
         private void RewritePUSHL()
@@ -739,6 +742,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteRESET()
         {
+            var stkptr = binder.EnsureRegister(PIC18Registers.STKPTR);
+            m.Assign(stkptr, Constant.Byte(0));
             rtlc = RtlClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
         }
@@ -861,7 +866,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
             var k = RewriteOp(instr.op1);
-            m.Assign(fsr2, m.USub(fsr2, k));
+            m.Assign(fsr2, m.ISub(fsr2, k));
             rtlc = RtlClass.Transfer;
             m.Return(1, 0);
         }

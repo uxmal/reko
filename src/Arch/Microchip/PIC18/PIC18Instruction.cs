@@ -28,7 +28,7 @@ using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
-    
+
 
     /// <summary>
     /// Models an PIC18 instruction.
@@ -158,18 +158,33 @@ namespace Reko.Arch.Microchip.PIC18
             writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
-            if ((op1 as IOperandVisible)?.IsVisible ?? true)
+            IOperandShadow opshad = op1 as IOperandShadow;
+            if (opshad != null)
             {
-                writer.Tab();
-                op1.Write(writer, options);
-                if (op2 == null)
-                    return;
-                if ((op2 as IOperandVisible)?.IsVisible ?? true)
+                if (opshad.IsPresent)
+                {
+                    writer.Write(",");
+                    writer.Tab();
+                    op1.Write(writer, options);
+                }
+                return;
+            }
+            writer.Tab();
+            op1.Write(writer, options);
+            if (op2 == null)
+                return;
+            opshad = op2 as IOperandShadow;
+            if (opshad != null)
+            {
+                if (opshad.IsPresent)
                 {
                     writer.Write(",");
                     op2.Write(writer, options);
                 }
+                return;
             }
+            writer.Write(",");
+            op2.Write(writer, options);
         }
 
         /// <summary>

@@ -22,12 +22,17 @@
 
 namespace Reko.Arch.Microchip.Common
 {
-    public interface IOperandVisible
+
+    /// <summary>
+    /// Interface for shadow flag operand. Used for CALL, RETURN and RETFIE instructions.
+    /// </summary>
+    public interface IOperandShadow
     {
         /// <summary>
-        /// Gets a value indicating whether this operand is visible (displayed).
+        /// Gets a value indicating whether this shadow flag is present (to be displayed).
         /// </summary>
-        bool IsVisible { get; }
+        bool IsPresent { get; }
+
     }
 
 }

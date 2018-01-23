@@ -227,8 +227,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         {
             VerifyDisasm("CALL\t0x00000C", "", 0xEC06, 0xF000);
             VerifyDisasm("CALL\t0x068A24", "", 0xEC12, 0xF345);
-            VerifyDisasm("CALL\t0x00000C,S", "", 0xED06, 0xF000);
-            VerifyDisasm("CALL\t0x068A24,S", "", 0xED12, 0xF345);
+            VerifyDisasm("CALL\t0x00000C,FAST", "", 0xED06, 0xF000);
+            VerifyDisasm("CALL\t0x068A24,FAST", "", 0xED12, 0xF345);
         }
 
         [Test]
@@ -549,14 +549,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Trad_Extd_RETFIE()
         {
             VerifyDisasm("RETFIE", "", 0x0010);
-            VerifyDisasm("RETFIE\tS", "", 0x0011);
+            VerifyDisasm("RETFIE,\tFAST", "", 0x0011);
         }
 
         [Test]
         public void Disasm_Trad_Extd_RETURN()
         {
             VerifyDisasm("RETURN", "", 0x0012);
-            VerifyDisasm("RETURN\tS", "", 0x0013);
+            VerifyDisasm("RETURN,\tFAST", "", 0x0013);
         }
 
         [Test]
