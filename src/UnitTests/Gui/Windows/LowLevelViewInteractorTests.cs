@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Gui.Windows
             var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
             var e = mr.Stub<IEnumerator<MachineInstruction>>();
             arch.Stub(a => a.InstructionBitSize).Return(8);
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             arch.Stub(a => a.CreateImageReader(null, null))
                 .IgnoreArguments()
                 .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));

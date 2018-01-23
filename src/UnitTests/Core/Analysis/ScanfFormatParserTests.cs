@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core.Analysis
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             this.program = new Program { Platform = platform };
         }
 

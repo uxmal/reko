@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Mocks
 
         public new MemoryAccess LoadDw(Expression ea)
         {
-            var access = base.LoadDw(ea);
+            var access = base.Mem32(ea);
             AddMemIdToSsa(access);
             return access;
         }

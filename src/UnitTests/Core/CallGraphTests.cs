@@ -41,9 +41,9 @@ namespace Reko.UnitTests.Core
 			Procedure p3 = new Procedure("p3000", null);
 			Procedure p4 = new Procedure("p4000", null);
 
-            var pc2 = new ProcedureConstant(PrimitiveType.Pointer32, p2);
-            var pc3 = new ProcedureConstant(PrimitiveType.Pointer32, p3);
-            var pc4 = new ProcedureConstant(PrimitiveType.Pointer32, p4);
+            var pc2 = new ProcedureConstant(PrimitiveType.Ptr32, p2);
+            var pc3 = new ProcedureConstant(PrimitiveType.Ptr32, p3);
+            var pc4 = new ProcedureConstant(PrimitiveType.Ptr32, p4);
 
             Statement s11 = new Statement(0, CreateCall(pc2), p1.EntryBlock);
             Statement s12 = new Statement(0, CreateCall(pc2), p1.EntryBlock);

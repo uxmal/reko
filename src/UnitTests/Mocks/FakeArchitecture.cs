@@ -281,12 +281,12 @@ namespace Reko.UnitTests.Mocks
 
         public PrimitiveType FramePointerType
         {
-            get { return PrimitiveType.Pointer32; }
+            get { return PrimitiveType.Ptr32; }
         }
 
         public PrimitiveType PointerType
         {
-            get { return PrimitiveType.Pointer32; }
+            get { return PrimitiveType.Ptr32; }
         }
 
 		public PrimitiveType WordWidth

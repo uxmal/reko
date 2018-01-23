@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder();
             m.Label("block");
 			var foo = new Identifier("foo", PrimitiveType.Word32, null);
-			var pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
+			var pfoo = new Identifier("pfoo", PrimitiveType.Ptr32, null);
             m.Assign(foo, 3);
 			var sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
 
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Analysis
 			var foo1 = new Identifier("foo1", PrimitiveType.Word32, null);
 			var foo2 = new Identifier("foo2", PrimitiveType.Word32, null);
 			var foo3 = new Identifier("foo3", PrimitiveType.Word32, null);
-			var pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
+			var pfoo = new Identifier("pfoo", PrimitiveType.Ptr32, null);
 
             m.Label("block1");
             m.Assign(foo1, Constant.Word32(1));
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Analysis
             ProcedureBuilder m = new ProcedureBuilder();
 			Identifier foo = new Identifier("foo", PrimitiveType.Word32, null);
 			Identifier bar = new Identifier("bar", PrimitiveType.Word32, null);
-			Identifier pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
+			Identifier pfoo = new Identifier("pfoo", PrimitiveType.Ptr32, null);
 
             Block block = m.Label("block");
             m.Assign(foo, 1);

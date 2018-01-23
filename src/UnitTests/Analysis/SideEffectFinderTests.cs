@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			var p = new Procedure("foo", null);
 			var a = new Application(
-				new ProcedureConstant(PrimitiveType.Pointer32, p), 
+				new ProcedureConstant(PrimitiveType.Ptr32, p), 
 				PrimitiveType.Word32,
 				Constant.Word32(3));
 			Assert.AreEqual("foo(0x00000003)", a.ToString());

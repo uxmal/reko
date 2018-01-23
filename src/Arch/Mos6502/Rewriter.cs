@@ -326,7 +326,7 @@ namespace Reko.Arch.Mos6502
         {
             var s = frame.EnsureRegister(arch.StackRegister);
             m.Assign(s, m.ISub(s, 1));
-            m.Assign(m.LoadB(s), reg);
+            m.Assign(m.Mem8(s), reg);
         }
 
         private void Pull(RegisterStorage reg)
@@ -334,7 +334,7 @@ namespace Reko.Arch.Mos6502
             var s = frame.EnsureRegister(arch.StackRegister);
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
             var r = frame.EnsureRegister(reg);
-            m.Assign(r, m.LoadB(s));
+            m.Assign(r, m.Mem8(s));
             m.Assign(s, m.IAdd(s, 1));
             m.Assign(c, m.Cond(r));
         }
@@ -343,7 +343,7 @@ namespace Reko.Arch.Mos6502
         {
             var s = frame.EnsureRegister(arch.StackRegister);
             var c = AllRegs();
-            m.Assign(c, m.LoadB(s));
+            m.Assign(c, m.Mem8(s));
             m.Assign(s, m.IAdd(s, 1));
         }
 
@@ -423,34 +423,34 @@ namespace Reko.Arch.Mos6502
             case AddressMode.IndirectIndexed:
                 var y = frame.EnsureRegister(Registers.y);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
-                return m.LoadB(
+                return m.Mem8(
                     m.IAdd(
-                        m.Load(PrimitiveType.Ptr16, offset),
+                        m.Mem(PrimitiveType.Ptr16, offset),
                         m.Cast(PrimitiveType.UInt16, y)));
             case AddressMode.IndexedIndirect:
                 var x = frame.EnsureRegister(Registers.x);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
-                return m.LoadB(
-                    m.Load(
+                return m.Mem8(
+                    m.Mem(
                         PrimitiveType.Ptr16,
                         m.IAdd(
                             offset,
                             m.Cast(PrimitiveType.UInt16, x))));
             case AddressMode.Absolute:
-                return m.LoadB(op.Offset);
+                return m.Mem8(op.Offset);
             case AddressMode.AbsoluteX:
-                return m.LoadB(m.IAdd(op.Offset, frame.EnsureRegister(Registers.x)));
+                return m.Mem8(m.IAdd(op.Offset, frame.EnsureRegister(Registers.x)));
             case AddressMode.ZeroPage:
                 if (op.Register != null)
                 {
-                    return m.LoadB(
+                    return m.Mem8(
                         m.IAdd(
                             Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()),
                             frame.EnsureRegister(op.Register)));
                 }
                 else
                 {
-                    return m.LoadB(
+                    return m.Mem8(
                         Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()));
                 }
             }

@@ -121,7 +121,7 @@ namespace Reko.Arch.Pdp11
                 Constant.Int16((short)(2 *
                 ((ImmediateOperand)instr.op1).Value.ToInt16()))));
             m.Assign(tmp, r5);
-            m.Assign(r5, m.LoadW(sp));
+            m.Assign(r5, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
             m.Goto(tmp);
         }
@@ -152,7 +152,7 @@ namespace Reko.Arch.Pdp11
                 var sp = binder.EnsureRegister(Registers.sp);
                 var reg = binder.EnsureRegister(regLink.Register);
                 m.Assign(tmp, reg);
-                m.Assign(reg, m.Load(regLink.Width, sp));
+                m.Assign(reg, m.Mem(regLink.Width, sp));
                 m.Assign(sp, m.IAdd(sp, reg.DataType.Size));
                 m.Call(tmp, 0);
                 m.Return(0, 0);

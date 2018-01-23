@@ -53,7 +53,7 @@ namespace Reko.Core
 
         public void AddPointerReference(ulong linAddress, uint pointer)
 		{
-			var c = Constant.Create(PrimitiveType.Pointer32, pointer);
+			var c = Constant.Create(PrimitiveType.Ptr32, pointer);
 			map.Add(linAddress, c);
 		}
 

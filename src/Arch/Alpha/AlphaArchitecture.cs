@@ -36,8 +36,8 @@ namespace Reko.Arch.Alpha
         public AlphaArchitecture()
         {
             this.WordWidth = PrimitiveType.Word64;
-            this.PointerType = PrimitiveType.Pointer64;
-            this.FramePointerType = PrimitiveType.Pointer64;
+            this.PointerType = PrimitiveType.Ptr64;
+            this.FramePointerType = PrimitiveType.Ptr64;
             this.InstructionBitSize = 32;
         }
 

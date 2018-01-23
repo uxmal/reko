@@ -38,8 +38,8 @@ namespace Reko.Arch.Arm
         public AArch64()
         {
             this.InstructionBitSize = 32;
-            this.FramePointerType = PrimitiveType.Pointer64;
-            this.PointerType = PrimitiveType.Pointer64;
+            this.FramePointerType = PrimitiveType.Ptr64;
+            this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
             this.StackRegister = A64Registers.x31;
             this.CarryFlagMask = 0;

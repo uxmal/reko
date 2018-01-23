@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Typing
 			c = m.Int32(16);
 			off = m.Int32(42);
 			r = m.Local32("r");
-			aem = new ArrayExpressionMatcher(PrimitiveType.Pointer32);
+			aem = new ArrayExpressionMatcher(PrimitiveType.Ptr32);
 		}
 	}
 }

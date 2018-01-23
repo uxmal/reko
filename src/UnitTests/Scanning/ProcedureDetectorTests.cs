@@ -225,7 +225,7 @@ namespace Reko.UnitTests.Scanning
             Given_DirectCall(1);
             Given_Instrs(1, m =>
             {
-                m.Assign(m.LoadW(m.Word16(0x1234)), m.Word16(0x5678));
+                m.Assign(m.Mem16(m.Word16(0x1234)), m.Word16(0x5678));
             });
         }
         

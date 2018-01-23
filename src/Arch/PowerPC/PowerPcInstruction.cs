@@ -218,7 +218,7 @@ namespace Reko.Arch.PowerPC
         public Address Address;
 
         public AddressOperand(Address a)
-            : base(PrimitiveType.Pointer32)	//$BUGBUG: 64-bit pointers?
+            : base(PrimitiveType.Ptr32)	//$BUGBUG: 64-bit pointers?
         {
             Address = a;
         }

@@ -35,9 +35,9 @@ namespace Reko.UnitTests.Fragments
 			var sum = Local32("mod");
 			PrimitiveType fl = PrimitiveType.Real32;
 
-			Assign(sum, IAdd(Load(fl, v),
-						IAdd(Load(fl, IAdd(v, 4)),
-							Load(fl, IAdd(v, 8)))));
+			Assign(sum, IAdd(Mem(fl, v),
+						IAdd(Mem(fl, IAdd(v, 4)),
+							Mem(fl, IAdd(v, 8)))));
 
 		}
 	}

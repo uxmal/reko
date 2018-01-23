@@ -175,7 +175,7 @@ struct a {
 		{
             FunctionType fn = FunctionType.Action(
                 new Identifier[] {
-                    new Identifier("", PrimitiveType.Pointer32,  null),
+                    new Identifier("", PrimitiveType.Ptr32,  null),
                     new Identifier("", PrimitiveType.Int64 , null)});
 			tyreffo.WriteDeclaration(fn, "fn");
 			Assert.AreEqual("void fn(ptr32, int64)", sw.ToString());

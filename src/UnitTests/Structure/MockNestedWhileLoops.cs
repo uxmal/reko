@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Structure
                 Label("inner");
                 BranchIf(Ge(j, 10), "done_inner");
 
-                Store(Word32(0x1234), IAdd(Load(PrimitiveType.Int32, Word32(0x1234)), j));
+                Store(Word32(0x1234), IAdd(Mem(PrimitiveType.Int32, Word32(0x1234)), j));
                     Assign(j,IAdd(j,1));
                     Goto("inner");
                 Label("done_inner");

@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(Opcode.beq, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
             VerifyRegisterOperand(instr.op2, Registers.r6, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x100008), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op3, Address.Ptr32(0x100008), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(Opcode.beql, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
             VerifyRegisterOperand(instr.op2, Registers.r6, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x100008), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op3, Address.Ptr32(0x100008), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bgez\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bgez, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bgezal\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bgezal, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bgezall\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bgezall, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bgezl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bgezl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -248,7 +248,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bgtz\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bgtz, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bgtzl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bgtzl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("blez\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.blez, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -278,7 +278,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("blezl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.blezl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -288,7 +288,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bltz\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bltz, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bltzal\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bltzal, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -308,7 +308,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bltzall\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bltzall, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bltzl\tr3,000FFFFC", instr.ToString());
             Assert.AreEqual(Opcode.bltzl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -329,7 +329,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(Opcode.bne, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
             VerifyRegisterOperand(instr.op2, Registers.r2, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op3, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(Opcode.bnel, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
             VerifyRegisterOperand(instr.op2, Registers.r2, PrimitiveType.Word32);
-            VerifyAddressOperand(instr.op3, Address.Ptr32(0x000FFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op3, Address.Ptr32(0x000FFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -602,7 +602,7 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleBits("000010 11111111111111111111111111");
             Assert.AreEqual("j\t0FFFFFFC", instr.ToString());
             Assert.AreEqual(Opcode.j, instr.opcode);
-            VerifyAddressOperand(instr.op1, Address.Ptr32(0x0FFFFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op1, Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -611,7 +611,7 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleBits("000011 11111111111111111111111111");
             Assert.AreEqual("jal\t0FFFFFFC", instr.ToString());
             Assert.AreEqual(Opcode.jal, instr.opcode);
-            VerifyAddressOperand(instr.op1, Address.Ptr32(0x0FFFFFFC), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op1, Address.Ptr32(0x0FFFFFFC), PrimitiveType.Ptr32);
         }
 
         [Test]
@@ -1131,7 +1131,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("bc1f\tcc0,0010004C", instr.ToString());
             Assert.AreEqual(Opcode.bc1f, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Bool);
-            VerifyAddressOperand(instr.op2, Address.Ptr32(0x0010004C), PrimitiveType.Pointer32);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x0010004C), PrimitiveType.Ptr32);
         }
 
         [Test]

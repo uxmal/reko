@@ -120,7 +120,7 @@ namespace Reko.Arch.X86
     internal class RealMode : ProcessorMode
     {
         public RealMode()
-            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Pointer32)
+            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Ptr32)
         {
         }
 
@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
     internal class SegmentedMode : ProcessorMode
     {
         public SegmentedMode()
-            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Pointer32)
+            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Ptr32)
         {
         }
 
@@ -213,7 +213,7 @@ namespace Reko.Arch.X86
     internal class FlatMode32 : ProcessorMode
     {
         internal FlatMode32()
-            : base(PrimitiveType.Word32, PrimitiveType.Pointer32, PrimitiveType.Pointer32)
+            : base(PrimitiveType.Word32, PrimitiveType.Ptr32, PrimitiveType.Ptr32)
         {
         }
 
@@ -277,7 +277,7 @@ namespace Reko.Arch.X86
     internal class FlatMode64 : ProcessorMode
     {
         internal FlatMode64()
-            : base(PrimitiveType.Word64, PrimitiveType.Pointer64, PrimitiveType.Pointer64)
+            : base(PrimitiveType.Word64, PrimitiveType.Ptr64, PrimitiveType.Ptr64)
         {
         }
 

@@ -42,7 +42,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         {
             public FakeArchitecture()
             {
-                base.PointerType = PrimitiveType.Pointer32;
+                base.PointerType = PrimitiveType.Ptr32;
             }
 
             public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)

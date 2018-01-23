@@ -37,8 +37,8 @@ namespace Reko.UnitTests.Fragments
             var r2 = Register(2);
             var r3 = Register(3);
             var r4 = Register(4);
-            Assign(r2, Cast(r2.DataType, LoadB(IAdd(LoadDw(IAdd(LoadDw(IAdd(r1, 4)), 8)), 16))));
-            Assign(r4, Cast(r4.DataType, LoadW(LoadDw(LoadDw(LoadDw(r3))))));
+            Assign(r2, Cast(r2.DataType, Mem8(IAdd(Mem32(IAdd(Mem32(IAdd(r1, 4)), 8)), 16))));
+            Assign(r4, Cast(r4.DataType, Mem16(Mem32(Mem32(Mem32(r3))))));
             Return();
         }
     }

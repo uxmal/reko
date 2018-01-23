@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Typing
             {
             };
             var globals_t = new TypeVariable("globals_t", 1) { DataType = globalStruct };
-            var globals = new Identifier("globals", PrimitiveType.Pointer32, null);
+            var globals = new Identifier("globals", PrimitiveType.Ptr32, null);
 
             eqLink = new EquivalenceClass(new TypeVariable(2));
             StructureType str = new StructureType

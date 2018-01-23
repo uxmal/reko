@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Typing
         public void StrFldMerger_FindOverLappingClusterWithEqv()
         {
             StructureType str = new StructureType("foo", 0);
-            UnionType u = new UnionType(null, null, PrimitiveType.Pointer32, PrimitiveType.Word16);
+            UnionType u = new UnionType(null, null, PrimitiveType.Ptr32, PrimitiveType.Word16);
             EquivalenceClass eq = Eqv(u);
             str.Fields.Add(2, eq);
             str.Fields.Add(4, PrimitiveType.SegmentSelector);
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Typing
         public void StrFldMerger_BuildOverlappedStructure()
         {
             List<StructureField> fields = new List<StructureField>();
-            fields.Add(new StructureField(0, PrimitiveType.Pointer32));
+            fields.Add(new StructureField(0, PrimitiveType.Ptr32));
             fields.Add(new StructureField(0, PrimitiveType.Word16));
             fields.Add(new StructureField(2, PrimitiveType.SegmentSelector));
             
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Typing
         public void StrFldMerger_Merge()
         {
             StructureType str = new StructureType("foo", 0);
-            UnionType u = new UnionType(null, null, PrimitiveType.Pointer32, PrimitiveType.Word16);
+            UnionType u = new UnionType(null, null, PrimitiveType.Ptr32, PrimitiveType.Word16);
             EquivalenceClass eq = Eqv(u);
             str.Fields.Add(2, eq);
             str.Fields.Add(4, PrimitiveType.SegmentSelector);

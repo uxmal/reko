@@ -50,7 +50,7 @@ namespace Reko.UnitTests.TestCode
                 m.Store(sp, r2);
                 m.Assign(r1, m.ISub(r2, r1));
                 m.Call("fact", 0);
-                m.Assign(r2, m.LoadDw(sp));
+                m.Assign(r2, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Assign(r1, m.IMul(r1, r2));
 

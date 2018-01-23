@@ -51,8 +51,8 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void Jprjs_Programs()
         {
-            var proc1 = new Procedure("fn00123400", new Frame(PrimitiveType.Pointer32));
-            var proc2 = new Procedure("fn00123500", new Frame(PrimitiveType.Pointer32));
+            var proc1 = new Procedure("fn00123400", new Frame(PrimitiveType.Ptr32));
+            var proc2 = new Procedure("fn00123500", new Frame(PrimitiveType.Ptr32));
             var project = new Project
             {
                 Programs =

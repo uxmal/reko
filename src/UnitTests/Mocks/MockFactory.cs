@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Mocks
             platform = mr.Stub<IPlatform>();
 
             platform.Stub(p => p.Name).Return("TestPlatform");
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Return(2);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);

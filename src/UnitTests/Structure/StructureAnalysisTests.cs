@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Structure
             m.BranchIf(m.Eq(r1, r2), "done");
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
+            m.Store(r1, m.Mem32(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
             m.Goto("head");
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Structure
             m.Goto("head");
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
+            m.Store(r1, m.Mem32(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
 
@@ -304,7 +304,7 @@ failed:
             m.BranchIf(m.Eq(r1, r2), "done");
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
+            m.Store(r1, m.Mem32(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
             m.Goto("head");
@@ -334,7 +334,7 @@ failed:
             var r2 = m.Reg32("r2", 2);
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
+            m.Store(r1, m.Mem32(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
             m.BranchIf(m.Ne(r1, r2), "loop");
@@ -360,7 +360,7 @@ failed:
             var r2 = m.Reg32("r2", 2);
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
+            m.Store(r1, m.Mem32(r2));
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
             m.BranchIf(m.Ne(r1, r2), "done");
@@ -440,8 +440,8 @@ failed:
             m.BranchIf(m.Eq(r1, r2), "done");
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
-            m.BranchIf(m.LoadDw(r2), "done");
+            m.Store(r1, m.Mem32(r2));
+            m.BranchIf(m.Mem32(r2), "done");
             m.Assign(r1, m.IAdd(r1, 4));
             m.Assign(r2, m.IAdd(r2, 4));
             m.Goto("head");
@@ -475,8 +475,8 @@ failed:
             m.BranchIf(m.Eq(r1, r2), "done");
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
-            m.BranchIf(m.Not(m.LoadDw(r2)), "rest");
+            m.Store(r1, m.Mem32(r2));
+            m.BranchIf(m.Not(m.Mem32(r2)), "rest");
 
             m.Label("leaving");
             m.Assign(r2, 0);
@@ -520,8 +520,8 @@ failed:
             m.BranchIf(m.Eq(r1, r2), "done");
 
             m.Label("loop");
-            m.Store(r1, m.LoadDw(r2));
-            m.BranchIf(m.Not(m.LoadDw(r2)), "rest");
+            m.Store(r1, m.Mem32(r2));
+            m.BranchIf(m.Not(m.Mem32(r2)), "rest");
 
             m.Label("leaving");
             m.Assign(r2, 0);
@@ -1202,11 +1202,11 @@ m.Label("l0800_0544");
                 m.Assign(ah_13, 0x00);
 m.Label("l0800_054A");
                     m.Assign(si_12, m.IAdd(si_12, 0x01));
-                    m.BranchIf(m.Eq0(m.SegMemB(ds, si_12)), "l0800_0557");
+                    m.BranchIf(m.Eq0(m.SegMem8(ds, si_12)), "l0800_0557");
  m.Label("l0800_054F");
                         m.Assign(ah_13, 0x01);
-                        m.Assign(Z_26, m.Cond(m.ISub(si_12, m.SegMemW(ds, m.Word16(0x8F0B)))));
-                        m.BranchIf(m.Ne(si_12, m.SegMemW(ds, m.Word16(0x8F0B))), "l0800_055F");
+                        m.Assign(Z_26, m.Cond(m.ISub(si_12, m.SegMem16(ds, m.Word16(0x8F0B)))));
+                        m.BranchIf(m.Ne(si_12, m.SegMem16(ds, m.Word16(0x8F0B))), "l0800_055F");
  m.Label("l0800_0557");
             m.Assign(Z_26, m.Cond(m.ISub(si_12, 0x8F0A)));
             m.BranchIf(m.Eq(si_12, 0x8F0A), "l0800_055F");
@@ -1216,7 +1216,7 @@ m.Label("l0800_055F");
             m.BranchIf(Z_26, "l0800_0578");
 m.Label("l0800_0561");
             m.SegStore(ds, m.Word16(0x8F0B), si_12);
-            m.Assign(al_43, m.SegMemB(ds, m.ISub(si_12, 0x8E31)));
+            m.Assign(al_43, m.SegMem8(ds, m.ISub(si_12, 0x8E31)));
             m.BranchIf(m.Eq0(al_43), "l0800_0576");
 m.Label("l0800_0571");
             m.BranchIf(m.Ge(al_43, 0x00), "l0800_0575");
@@ -1294,12 +1294,12 @@ m.Label("l0800_0585");
             m.Return();
 
             m.Label("m4F7");
-            m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x0808A0A4))), "m502");
+            m.BranchIf(m.Eq0(m.Mem32(m.Word32(0x0808A0A4))), "m502");
             m.Label("m500");
             m.Goto("m50D");
 
             m.Label("m502");
-            m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x0808A0A8))), "m4E4");
+            m.BranchIf(m.Eq0(m.Mem32(m.Word32(0x0808A0A8))), "m4E4");
             m.Goto("m50D");
             m.Label("m50D");
             m.SideEffect(m.Fn(puts, Constant.String("Goodbye", StringType.NullTerminated(PrimitiveType.Byte))));

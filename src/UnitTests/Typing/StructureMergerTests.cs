@@ -34,8 +34,8 @@ namespace Reko.UnitTests.Typing
 		{
 			TypeVariable tv1 = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
-            StructureType s1 = new StructureType { Fields = { { 4, PrimitiveType.Pointer32 } } };
-            StructureType s2 = new StructureType { Fields = { { 4, PrimitiveType.Pointer32 } } };
+            StructureType s1 = new StructureType { Fields = { { 4, PrimitiveType.Ptr32 } } };
+            StructureType s2 = new StructureType { Fields = { { 4, PrimitiveType.Ptr32 } } };
 			EquivalenceClass c1 = new EquivalenceClass(tv1);
 			EquivalenceClass c2 = new EquivalenceClass(tv2);
 			c1.DataType = s1;

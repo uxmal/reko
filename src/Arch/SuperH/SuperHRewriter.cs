@@ -232,24 +232,24 @@ namespace Reko.Arch.SuperH
                 default:
                     throw new NotImplementedException(mem.mode.ToString());
                 case AddressingMode.Indirect:
-                    return m.Load(mem.Width, binder.EnsureRegister(mem.reg));
+                    return m.Mem(mem.Width, binder.EnsureRegister(mem.reg));
                 case AddressingMode.IndirectPreDecr:
                     reg = binder.EnsureRegister(mem.reg);
                     m.Assign(reg, m.IAdd(reg, Constant.Int32(mem.Width.Size)));
-                    return m.Load(mem.Width, reg);
+                    return m.Mem(mem.Width, reg);
                 case AddressingMode.IndirectPostIncr:
                     var t = binder.CreateTemporary(mem.Width);
                     reg = binder.EnsureRegister(mem.reg);
-                    m.Assign(t, m.Load(mem.Width, reg));
+                    m.Assign(t, m.Mem(mem.Width, reg));
                     m.Assign(reg, m.IAdd(reg, Constant.Int32(t.DataType.Size)));
                     return t;
                 case AddressingMode.IndirectDisplacement:
                     reg = binder.EnsureRegister(mem.reg);
-                    return m.Load(
+                    return m.Mem(
                         mem.Width,
                         m.IAdd(reg, Constant.Int32(mem.disp)));
                 case AddressingMode.IndexedIndirect:
-                    return m.Load(mem.Width, m.IAdd(
+                    return m.Mem(mem.Width, m.IAdd(
                         binder.EnsureRegister(Registers.r0),
                         binder.EnsureRegister(mem.reg)));
                 case AddressingMode.PcRelativeDisplacement:
@@ -259,7 +259,7 @@ namespace Reko.Arch.SuperH
                         addr &= ~3u;
                     }
                     addr += (uint)(mem.disp + 4);
-                    return m.Load(mem.Width, Address.Ptr32(addr));
+                    return m.Mem(mem.Width, Address.Ptr32(addr));
                 }
             }
             throw new NotImplementedException(op.GetType().Name);
@@ -285,9 +285,9 @@ namespace Reko.Arch.SuperH
                 case AddressingMode.GbrIndexedIndirect:
                     r0 = binder.EnsureRegister(Registers.r0);
                     gbr = binder.EnsureRegister(Registers.gbr);
-                    m.Assign(tmp, m.Load(tmp.DataType, m.IAdd(r0, gbr)));
+                    m.Assign(tmp, m.Mem(tmp.DataType, m.IAdd(r0, gbr)));
                     m.Assign(
-                        m.Load(tmp.DataType, m.IAdd(r0, gbr)),
+                        m.Mem(tmp.DataType, m.IAdd(r0, gbr)),
                         fn(tmp, src));
                     return tmp;
                 default:throw new NotImplementedException();
@@ -317,25 +317,25 @@ namespace Reko.Arch.SuperH
                 case AddressingMode.Indirect:
                     reg = binder.EnsureRegister(mem.reg);
                     m.Assign(
-                        m.Load(mem.Width, reg),
+                        m.Mem(mem.Width, reg),
                         fn(src));
                     return null;
                 case AddressingMode.IndirectDisplacement:
                     reg = binder.EnsureRegister(mem.reg);
                     m.Assign(
-                        m.Load(mem.Width, m.IAdd(reg, Constant.Int32(mem.disp))),
+                        m.Mem(mem.Width, m.IAdd(reg, Constant.Int32(mem.disp))),
                         fn(src));
                     return null;
                 case AddressingMode.IndirectPreDecr:
                     reg = binder.EnsureRegister(mem.reg);
                     m.Assign(reg, m.ISub(reg, Constant.Int32(mem.Width.Size)));
                     m.Assign(
-                        m.Load(tmp.DataType, reg),
+                        m.Mem(tmp.DataType, reg),
                         fn(src));
                     return null;
                 case AddressingMode.IndexedIndirect:
                     m.Assign(
-                        m.Load(mem.Width, m.IAdd(
+                        m.Mem(mem.Width, m.IAdd(
                             binder.EnsureRegister(Registers.r0),
                             binder.EnsureRegister(mem.reg))),
                         fn(src));
@@ -343,9 +343,9 @@ namespace Reko.Arch.SuperH
                 case AddressingMode.GbrIndexedIndirect:
                     r0 = binder.EnsureRegister(Registers.r0);
                     gbr = binder.EnsureRegister(Registers.gbr);
-                    m.Assign(tmp, m.Load(tmp.DataType, m.IAdd(r0, gbr)));
+                    m.Assign(tmp, m.Mem(tmp.DataType, m.IAdd(r0, gbr)));
                     m.Assign(
-                        m.Load(tmp.DataType, m.IAdd(r0, gbr)),
+                        m.Mem(tmp.DataType, m.IAdd(r0, gbr)),
                         fn(src));
                     return tmp;
                 default: throw new NotImplementedException(mem.mode.ToString());

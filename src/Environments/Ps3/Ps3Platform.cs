@@ -54,7 +54,7 @@ namespace Reko.Environments.Ps3
 
         public override string DefaultCallingConvention { get { return ""; } }
 
-        public override PrimitiveType PointerType { get { return PrimitiveType.Pointer32; } }
+        public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
 
         public override HashSet<RegisterStorage>  CreateImplicitArgumentRegisters()
         {

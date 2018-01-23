@@ -106,7 +106,7 @@ namespace Reko.Arch.Arm
                 Expression baseReg = GetReg(mem.BaseRegister);
                 Expression ea = EffectiveAddress(mem);
                 Predicate(itStateCondition, baseReg, ea);
-                src = m.Load(dtSrc, ea);
+                src = m.Mem(dtSrc, ea);
             }
             else
             {
@@ -195,7 +195,7 @@ namespace Reko.Arch.Arm
                 Predicate(
                     ArmCodeCondition.AL,
                     GetReg(op.RegisterValue.Value),
-                    m.LoadDw(m.ISub(sp, Constant.Int32(offset))));
+                    m.Mem32(m.ISub(sp, Constant.Int32(offset))));
                 offset -= 4;
             }
         }
@@ -209,7 +209,7 @@ namespace Reko.Arch.Arm
             {
                 Predicate(
                     ArmCodeCondition.AL,
-                    m.LoadDw(m.IAdd(sp, Constant.Int32(offset))),
+                    m.Mem32(m.IAdd(sp, Constant.Int32(offset))),
                     GetReg(op.RegisterValue.Value));
                 offset += 4;
             }
@@ -230,7 +230,7 @@ namespace Reko.Arch.Arm
             foreach (var op in ops.Skip(1).OrderBy(o => o.RegisterValue.Value))
             {
                 m.Assign(
-                    m.LoadDw(m.IAdd(ptr, Constant.Int32(offset))),
+                    m.Mem32(m.IAdd(ptr, Constant.Int32(offset))),
                     GetReg(op.RegisterValue.Value));
                 offset += 4;
             }
@@ -253,7 +253,7 @@ namespace Reko.Arch.Arm
                 Expression baseReg = GetReg(mem.BaseRegister);
                 Expression ea = EffectiveAddress(mem);
                 Predicate(itStateCondition, baseReg, ea);
-                dst = m.Load(dtDst, baseReg);
+                dst = m.Mem(dtDst, baseReg);
             }
             else
             {

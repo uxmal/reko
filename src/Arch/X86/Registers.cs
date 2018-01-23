@@ -325,7 +325,7 @@ namespace Reko.Arch.X86
             ymm15 = new RegisterStorage("ymm15", 75, 0, PrimitiveType.Word256);
 
 
-            rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Pointer64);
+            rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Ptr64);
 
             All = new RegisterStorage[] {
 				eax,

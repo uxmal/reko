@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 Arg<Expression[]>.Is.NotNull))
                 .Return(new Application(
                      new ProcedureConstant(
-                        PrimitiveType.Pointer32,
+                        PrimitiveType.Ptr32,
                         new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2)),
                 VoidType.Instance,
                 Constant.Word32(0x19)));
@@ -348,7 +348,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 Arg<Expression[] >.Is.NotNull))
                 .Return(new Application(
                     new ProcedureConstant(
-                        PrimitiveType.Pointer32,
+                        PrimitiveType.Ptr32,
                         new PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 1)),
                     VoidType.Instance,
                     Constant.Word32(0x19)));

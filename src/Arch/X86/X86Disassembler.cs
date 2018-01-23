@@ -1190,7 +1190,7 @@ namespace Reko.Arch.X86
 				dataWidth = PrimitiveType.Word32;
 				break;
 			case 'p':
-				dataWidth = PrimitiveType.Pointer32;		// Far pointer.
+				dataWidth = PrimitiveType.Ptr32;		// Far pointer.
 				break;
 			case 'f':
 				dataWidth = PrimitiveType.Real32;
@@ -1349,7 +1349,7 @@ namespace Reko.Arch.X86
                         }
                         else
                         {
-                            offsetWidth = PrimitiveType.Pointer32;
+                            offsetWidth = PrimitiveType.Ptr32;
                             b = RegisterStorage.None;
                         }
 					}

@@ -222,7 +222,7 @@ namespace Reko.UnitTests.Mocks
 
 		public override void Update(Procedure proc)
 		{
-			appl.Procedure = new ProcedureConstant(PrimitiveType.Pointer32, proc);
+			appl.Procedure = new ProcedureConstant(PrimitiveType.Ptr32, proc);
 		}
 	}
 }

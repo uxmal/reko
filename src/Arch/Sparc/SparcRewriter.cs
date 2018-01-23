@@ -278,7 +278,7 @@ namespace Reko.Arch.Sparc
         private Expression SimplifySum(Expression srcLeft, Expression srcRight)
         {
             if (srcLeft == null && srcRight == null)
-                return Constant.Zero(PrimitiveType.Pointer32);
+                return Constant.Zero(PrimitiveType.Ptr32);
             else if (srcLeft == null)
                 return srcRight;
             else if (srcRight == null)

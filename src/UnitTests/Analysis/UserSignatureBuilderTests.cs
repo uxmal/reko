@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_UnscannedProcedure(uint address)
         {
-            this.proc = Procedure.Create("fnTest", Address.Ptr32(address), new Frame(PrimitiveType.Pointer32));
+            this.proc = Procedure.Create("fnTest", Address.Ptr32(address), new Frame(PrimitiveType.Ptr32));
             this.program.Procedures[Address.Ptr32(address)] = this.proc;
         }
 
@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Analysis
 
             var usb = new UserSignatureBuilder(program);
             usb.ApplySignatureToProcedure(
-                Address.Create(PrimitiveType.Pointer32, 0x1000),
+                Address.Create(PrimitiveType.Ptr32, 0x1000),
                 FunctionType.Action(
                     new Identifier[] {
                         new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
