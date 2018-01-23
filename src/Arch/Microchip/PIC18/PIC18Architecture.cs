@@ -43,24 +43,44 @@ namespace Reko.Arch.Microchip.PIC18
     {
         private List<FlagGroupStorage> flagGroups;
 
-        public PIC18Architecture(PIC picDescr)
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public PIC18Architecture()
+        {
+            flagGroups = new List<FlagGroupStorage>();
+            FramePointerType = PrimitiveType.Offset16;
+            InstructionBitSize = 16;
+            PointerType = PrimitiveType.Ptr32;
+            WordWidth = PrimitiveType.Byte;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="picDescr">PIC descriptor.</param>
+        public PIC18Architecture(PIC picDescr) : this()
+        {
+            LoadConfiguration(picDescr);
+        }
+
+        /// <summary>
+        /// Loads the PICa configuration.
+        /// </summary>
+        /// <param name="picDescr">PIC descriptor.</param>
+        public void LoadConfiguration(PIC picDescr)
         {
             PICDescriptor = picDescr;
-            flagGroups = new List<FlagGroupStorage>();
             Name = picDescr.Name;
             Description = picDescr.Desc;
             PIC18Registers.Create(picDescr).LoadRegisters(); ;
-            FramePointerType = PrimitiveType.Offset16;
-            InstructionBitSize = 16;
-            PointerType = PrimitiveType.Pointer32;
-            WordWidth = PrimitiveType.Byte;
             StackRegister = PIC18Registers.STKPTR;
         }
 
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC PICDescriptor { get; }
+        public PIC PICDescriptor { get; private set; }
 
         /// <summary>
         /// Gets or sets the PIC execution mode.

@@ -193,7 +193,7 @@ namespace Reko.Arch.Microchip.PIC18
             if (fsridxOp != null)
             {
                 var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.Ptr16);
-                return m.Load(PrimitiveType.Byte, m.IAdd(fsr2, fsridxOp.Offset));
+                return m.Mem8(m.IAdd(fsr2, fsridxOp.Offset));
             }
 
             var fsrnumOp = op as PIC18FSRNumOperand;
@@ -258,7 +258,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 // Address is BSR direct addressing.
                 Identifier bsr = binder.EnsureRegister(PIC18Registers.BSR);
-                return m.LoadB(m.IAdd(m.Shl(bsr, 8), offset));
+                return m.Mem8(m.IAdd(m.Shl(bsr, 8), offset));
             }
 
             // We have some sort of Access RAM bank access; either Lower or Upper area.
@@ -267,11 +267,11 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (mem.ExecMode == PICExecMode.Traditional)
                 {
-                    return m.LoadB(offset);
+                    return m.Mem8(offset);
                 }
                 // Address is in the form [FSR2]+offset.
                 Identifier fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
-                return m.LoadB(m.IAdd(fsr2, offset));
+                return m.Mem8(m.IAdd(fsr2, offset));
             }
 
             // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
@@ -280,7 +280,7 @@ namespace Reko.Arch.Microchip.PIC18
             var sfr = PIC18Registers.GetRegister(accAddr);
             if (sfr != RegisterStorage.None)
                 return binder.EnsureRegister(sfr);
-            return m.LoadB(accAddr);
+            return m.Mem8(accAddr);
         }
 
         #endregion
@@ -657,7 +657,7 @@ namespace Reko.Arch.Microchip.PIC18
             var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
             var zs = RewriteOp(instr.op1);
             var fd = RewriteOp(instr.op2);
-            m.Assign(fd, m.LoadB(m.IAdd(fsr2, zs)));
+            m.Assign(fd, m.Mem8(m.IAdd(fsr2, zs)));
         }
 
         private void RewriteMOVSFL()
@@ -665,7 +665,7 @@ namespace Reko.Arch.Microchip.PIC18
             var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
             var zs = RewriteOp(instr.op1);
             var fd = RewriteOp(instr.op2);
-            m.Assign(fd, m.LoadB(m.IAdd(fsr2, zs)));
+            m.Assign(fd, m.Mem8(m.IAdd(fsr2, zs)));
         }
 
         private void RewriteMOVSS()
@@ -673,7 +673,7 @@ namespace Reko.Arch.Microchip.PIC18
             var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
             var zs = RewriteOp(instr.op1);
             var zd = RewriteOp(instr.op2);
-            m.Assign(m.Deref(m.IAdd(fsr2, zd)), m.LoadB(m.IAdd(fsr2, zs)));
+            m.Assign(m.Deref(m.IAdd(fsr2, zd)), m.Mem8(m.IAdd(fsr2, zs)));
         }
 
         private void RewriteMOVWF()
@@ -710,7 +710,7 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewritePOP()
         {
             var stkptr = binder.EnsureRegister(PIC18Registers.STKPTR);
-            m.Assign(stkptr, m.USub(stkptr, 1));
+            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
 
             //TODO: See TOS update
             var tos = binder.EnsureSequence(PIC18Registers.TOSL, PIC18Registers.TOSU, PrimitiveType.Word32);
