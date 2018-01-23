@@ -49,14 +49,14 @@ namespace Reko.UnitTests.Environments.C64
             get { throw new NotImplementedException(); }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             var addr = Address.Ptr16(10);
             var image = new MemoryArea(addr, new byte[1]);
             return arch.CreateRewriter(
                 arch.CreateImageReader(image, addr),
                 arch.CreateProcessorState(),
-                frame,
+                binder,
                 host);
         }
 

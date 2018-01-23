@@ -34,7 +34,7 @@ namespace Reko.Arch.X86
     {
         private void RewriteComis(PrimitiveType size)
         {
-            var grf = frame.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
             m.Assign(grf, m.Cond(m.FSub(
                 m.Cast(size, SrcOp(instrCur.op1)),
                 SrcOp(instrCur.op2))));
@@ -46,10 +46,10 @@ namespace Reko.Arch.X86
             var dtDst = PrimitiveType.Real32;
             var src = SrcOp(instrCur.op2);
 
-            var tmp1 = frame.CreateTemporary(dtSrc);
+            var tmp1 = binder.CreateTemporary(dtSrc);
             m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
 
-            var tmp2 = frame.CreateTemporary(dtSrc);
+            var tmp2 = binder.CreateTemporary(dtSrc);
             m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
 
             m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
@@ -67,7 +67,7 @@ namespace Reko.Arch.X86
         {
             var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
             var dst = SrcOp(instrCur.op1);
-            var tmp = frame.CreateTemporary(size);
+            var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(size, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
         }
@@ -78,10 +78,10 @@ namespace Reko.Arch.X86
             var dtDst = PrimitiveType.Int32;
             var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
 
-            var tmp1 = frame.CreateTemporary(dtDst);
+            var tmp1 = binder.CreateTemporary(dtDst);
             m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
 
-            var tmp2 = frame.CreateTemporary(dtDst);
+            var tmp2 = binder.CreateTemporary(dtDst);
             m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
 
             m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
@@ -159,7 +159,7 @@ namespace Reko.Arch.X86
         private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size)
         {
             var dst = SrcOp(instrCur.op1);
-            var tmp = frame.CreateTemporary(size);
+            var tmp = binder.CreateTemporary(size);
             if (instrCur.op3 != null)
             {
                 var src1 = SrcOp(instrCur.op2);
@@ -193,8 +193,8 @@ namespace Reko.Arch.X86
                 src1 = SrcOp(instrCur.op1);
                 src2 = SrcOp(instrCur.op2);
             }
-            var tmp1 = frame.CreateTemporary(arrayType);
-            var tmp2 = frame.CreateTemporary(arrayType);
+            var tmp1 = binder.CreateTemporary(arrayType);
+            var tmp2 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));

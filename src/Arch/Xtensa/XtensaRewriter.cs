@@ -31,7 +31,7 @@ namespace Reko.Arch.Xtensa
 {
     public partial class XtensaRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private EndianImageReader rdr;
         private ProcessorState state;
@@ -42,12 +42,12 @@ namespace Reko.Arch.Xtensa
         private RtlEmitter m;
         private XtensaInstruction instr;
 
-        public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = state;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = new XtensaDisassembler(this.arch, rdr).GetEnumerator();
         }
@@ -199,7 +199,7 @@ namespace Reko.Arch.Xtensa
             var rOp = op as RegisterOperand;
             if (rOp != null)
             {
-                return frame.EnsureRegister(rOp.Register);
+                return binder.EnsureRegister(rOp.Register);
             }
             var aOp = op as AddressOperand;
             if (aOp != null)

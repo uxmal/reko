@@ -65,8 +65,8 @@ namespace Reko.Arch.PowerPC
         private void RewriteRfi()
         {
             this.rtlc = RtlClass.Transfer;
-            var srr0 = frame.EnsureRegister(arch.SpRegisters[26]);
-            var srr1 = frame.EnsureRegister(arch.SpRegisters[27]);
+            var srr0 = binder.EnsureRegister(arch.SpRegisters[26]);
+            var srr1 = binder.EnsureRegister(arch.SpRegisters[27]);
             m.SideEffect(host.PseudoProcedure("__write_msr", PrimitiveType.Word32, srr1));
             m.Goto(srr0);
         }

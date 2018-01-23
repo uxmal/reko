@@ -34,7 +34,7 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private EndianImageReader rdr;
         private ProcessorState state;
@@ -44,12 +44,12 @@ namespace Reko.Arch.Vax
         private RtlEmitter m;
         private IEnumerator<VaxInstruction> dasm;
 
-        public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = state;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = new VaxDisassembler(arch, rdr).GetEnumerator();
         }
@@ -511,7 +511,7 @@ namespace Reko.Arch.Vax
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
-                var reg = frame.EnsureRegister(regOp.Register);
+                var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
                     return null;
                 if (width.Size == 4)
@@ -523,18 +523,18 @@ namespace Reko.Arch.Vax
                     var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
                     if (rHi == null)
                         return null;
-                    var regHi = frame.EnsureRegister(rHi);
-                    return frame.EnsureSequence(regHi.Storage, reg.Storage, width);
+                    var regHi = binder.EnsureRegister(rHi);
+                    return binder.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
                 {
-                    var regHi1 = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
-                    var regHi2 = frame.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
-                    var regHi3 = frame.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
+                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
+                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
 
-                    var regLo = frame.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
-                    var regHi = frame.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
-                    return frame.EnsureSequence(regHi.Storage, regLo.Storage, width);
+                    var regLo = binder.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
+                    var regHi = binder.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
+                    return binder.EnsureSequence(regHi.Storage, regLo.Storage, width);
                 }
                 else
                 {
@@ -552,13 +552,13 @@ namespace Reko.Arch.Vax
                 Expression ea;
                 if (memOp.Base != null)
                 {
-                    var reg = frame.EnsureRegister(memOp.Base);
+                    var reg = binder.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(reg, m.ISub(reg, width.Size));
                     } else if (memOp.AutoIncrement)
                     {
-                        var tmp = frame.CreateTemporary(reg.DataType);
+                        var tmp = binder.CreateTemporary(reg.DataType);
                         m.Assign(tmp, reg);
                         reg = tmp;
                     }
@@ -569,7 +569,7 @@ namespace Reko.Arch.Vax
                     }
                     if (memOp.Index != null)
                     {
-                        Expression idx = frame.EnsureRegister(memOp.Index);
+                        Expression idx = binder.EnsureRegister(memOp.Index);
                         if (width.Size != 1)
                             idx = m.IMul(idx, Constant.Int32(width.Size));
                         ea = m.IAdd(ea, idx);
@@ -583,7 +583,7 @@ namespace Reko.Arch.Vax
                     {
                         if (memOp.AutoIncrement)
                         {
-                            reg = frame.EnsureRegister(memOp.Base);
+                            reg = binder.EnsureRegister(memOp.Base);
                             int inc = (memOp.Deferred) ? 4 : width.Size;
                             m.Assign(reg, m.IAdd(reg, inc));
                         }
@@ -608,12 +608,12 @@ namespace Reko.Arch.Vax
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
-                var reg = frame.EnsureRegister(regOp.Register);
+                var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
                     return null;
                 if (width.Size < 4)
                 {
-                    var tmp = frame.CreateTemporary(width);
+                    var tmp = binder.CreateTemporary(width);
                     m.Assign(tmp, fn(m.Cast(width, reg)));
                     m.Assign(reg, m.Dpb(reg, tmp, 0));
                     return tmp;
@@ -623,18 +623,18 @@ namespace Reko.Arch.Vax
                     var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
                     if (rHi == null)
                         return null;
-                    var regHi = frame.EnsureRegister(rHi);
-                    reg = frame.EnsureSequence(regHi.Storage, reg.Storage, width);
+                    var regHi = binder.EnsureRegister(rHi);
+                    reg = binder.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
                 {
-                    var regHi1 = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
-                    var regHi2 = frame.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
-                    var regHi3 = frame.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
+                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
+                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
 
-                    var regLo = frame.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
-                    var regHi = frame.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
-                    reg = frame.EnsureSequence(regHi.Storage, regLo.Storage, width);
+                    var regLo = binder.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
+                    var regHi = binder.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
+                    reg = binder.EnsureSequence(regHi.Storage, regLo.Storage, width);
                 }
                 m.Assign(reg, fn(reg));
                 return reg;
@@ -650,7 +650,7 @@ namespace Reko.Arch.Vax
                 Expression ea;
                 if (memOp.Base != null)
                 {
-                    var reg = frame.EnsureRegister(memOp.Base);
+                    var reg = binder.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(reg, m.ISub(reg, width.Size));
@@ -660,7 +660,7 @@ namespace Reko.Arch.Vax
                     {
                         ea = m.IAdd(ea, memOp.Offset);
                     }
-                    var tmp = frame.CreateTemporary(width);
+                    var tmp = binder.CreateTemporary(width);
                     m.Assign(tmp, fn(m.Load(width, ea)));
                     Expression load; 
                     if (memOp.Deferred)
@@ -685,7 +685,7 @@ namespace Reko.Arch.Vax
 
         private Identifier FlagGroup(FlagM flags)
         {
-            return frame.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
         private bool AllFlags(Expression dst)

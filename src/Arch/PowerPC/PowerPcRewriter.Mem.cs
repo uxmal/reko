@@ -102,15 +102,15 @@ namespace Reko.Arch.PowerPC
         {
             var r = ((RegisterOperand)instr.op1).Register.Number;
             var ea = EffectiveAddress_r0(instr.op2, m);
-            var tmp = frame.CreateTemporary(ea.DataType);
+            var tmp = binder.CreateTemporary(ea.DataType);
             m.Assign(tmp, ea);
             while (r <= 31)
             {
-                var reg = frame.EnsureRegister(arch.GetRegister(r));
+                var reg = binder.EnsureRegister(arch.GetRegister(r));
                 Expression w = reg;
                 if (reg.DataType.Size > 4)
                 {
-                    var tmp2 = frame.CreateTemporary(PrimitiveType.Word32);
+                    var tmp2 = binder.CreateTemporary(PrimitiveType.Word32);
                     m.Assign(tmp2, m.LoadDw(tmp));
                     m.Assign(reg, m.Dpb(reg, tmp2, 0));
                 }
@@ -237,11 +237,11 @@ namespace Reko.Arch.PowerPC
         {
             var r = ((RegisterOperand)instr.op1).Register.Number;
             var ea = EffectiveAddress_r0(instr.op2, m);
-            var tmp = frame.CreateTemporary(ea.DataType);
+            var tmp = binder.CreateTemporary(ea.DataType);
             while (r <= 31)
             {
                 var reg = arch.GetRegister(r);
-                Expression w = frame.EnsureRegister(reg);
+                Expression w = binder.EnsureRegister(reg);
                 if (reg.DataType.Size > 4)
                 {
                     w = m.Slice(PrimitiveType.Word32, w, 0);

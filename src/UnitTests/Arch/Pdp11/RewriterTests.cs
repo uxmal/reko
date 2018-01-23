@@ -42,10 +42,10 @@ namespace Reko.UnitTests.Arch.Pdp11
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             var dasm = new Pdp11Disassembler(arch.CreateImageReader(image, 0), arch);
-            return new Pdp11Rewriter(arch, dasm, frame, base.CreateHost());
+            return new Pdp11Rewriter(arch, dasm, binder, base.CreateHost());
         }
 
         public override Address LoadAddress

@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+            public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
             {
                 throw new NotImplementedException();
             }
@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+            public Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
             {
                 throw new NotImplementedException();
             }

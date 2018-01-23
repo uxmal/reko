@@ -52,7 +52,7 @@ namespace Reko.Scanning
         private DecompilerEventListener eventListener;
         private IStorageBinder storageBinder;
         private RtlBlock invalidBlock;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
 
         public HeuristicScanner(
             IServiceProvider services,
@@ -66,18 +66,10 @@ namespace Reko.Scanning
             this.storageBinder = program.Architecture.CreateFrame();
             this.eventListener = eventListener;
             this.invalidBlock = new RtlBlock(null, "<invalid>");
-            this.frame = program.Architecture.CreateFrame();
+            this.binder = program.Architecture.CreateFrame();
         }
 
         public IServiceProvider Services { get; private set; }
-
-        //IServiceProvider IScanner.Services
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
 
         public ScanResults ScanImage(ScanResults sr)
         {
@@ -338,7 +330,7 @@ namespace Reko.Scanning
             };
             var dasm = new HeuristicDisassembler(
                 program, 
-                frame,
+                binder,
                 sr,
                 proc.IsValidAddress,
                 true,
@@ -452,7 +444,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        IEnumerable<RtlInstructionCluster> IScanner.GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame)
+        IEnumerable<RtlInstructionCluster> IScanner.GetTrace(Address addrStart, ProcessorState state, IStorageBinder binder)
         {
             throw new NotImplementedException();
         }

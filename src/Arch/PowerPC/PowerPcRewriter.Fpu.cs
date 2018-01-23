@@ -33,7 +33,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr1 = frame.EnsureFlagGroup(arch.cr, 0x2, "cr1", PrimitiveType.Byte);
+            var cr1 = binder.EnsureFlagGroup(arch.cr, 0x2, "cr1", PrimitiveType.Byte);
             m.Assign(cr1, m.Cond(e));
         }
 
@@ -143,7 +143,7 @@ namespace Reko.Arch.PowerPC
         public void RewriteMffs()
         {
             var opD = RewriteOperand(instr.op1);
-            m.Assign(opD, frame.EnsureRegister(arch.fpscr));
+            m.Assign(opD, binder.EnsureRegister(arch.fpscr));
             MaybeEmitCr1(opD);
         }
 

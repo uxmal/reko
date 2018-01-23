@@ -204,12 +204,12 @@ namespace Reko.Scanning
                 addrStart);
         }
 
-        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame)
+        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder binder)
         {
             return Program.Architecture.CreateRewriter(
                 Program.CreateImageReader(addrStart),
                 state,
-                frame,
+                binder,
                 this);
         }
 

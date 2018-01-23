@@ -251,7 +251,7 @@ namespace Reko.Arch.Pdp11
 			return s.ToString();
 		}
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

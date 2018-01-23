@@ -46,11 +46,11 @@ namespace Reko.Arch.M68k
         private RtlEmitter m;
         private IStorageBinder binder;
 
-        public OperandRewriter(M68kArchitecture arch, RtlEmitter emitter, IStorageBinder frame, PrimitiveType dataWidth)
+        public OperandRewriter(M68kArchitecture arch, RtlEmitter emitter, IStorageBinder binder, PrimitiveType dataWidth)
         {
             this.arch = arch;
             this.m = emitter;
-            this.binder = frame;
+            this.binder = binder;
             this.DataWidth = dataWidth;
         }
 

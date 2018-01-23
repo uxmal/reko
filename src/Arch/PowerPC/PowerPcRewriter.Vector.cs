@@ -33,7 +33,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr6 = frame.EnsureRegister(arch.CrRegisters[6]);
+            var cr6 = binder.EnsureRegister(arch.CrRegisters[6]);
             m.Assign(cr6, m.Cond(e));
         }
 

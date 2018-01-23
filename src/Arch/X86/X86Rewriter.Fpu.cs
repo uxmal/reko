@@ -279,7 +279,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFsincos()
         {
-            Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);
+            Identifier itmp = binder.CreateTemporary(PrimitiveType.Real64);
             m.Assign(itmp, FpuRegister(0));
 
             state.GrowFpuStack(instrCur.Address);
