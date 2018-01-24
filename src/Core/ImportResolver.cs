@@ -135,12 +135,10 @@ namespace Reko.Core
         {
             foreach (var program in project.Programs)
             {
-                ModuleDescriptor mod;
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out var mod))
                     continue;
 
-                SystemService svc;
-                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
                     EnsureSignature(program, svc);
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
@@ -173,19 +171,16 @@ namespace Reko.Core
         {
             foreach (var program in project.Programs)
             {
-                ModuleDescriptor mod;
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
                     continue;
 
-                SystemService svc;
-                if (mod.ServicesByName.TryGetValue(name, out svc))
+                if (mod.ServicesByName.TryGetValue(name, out SystemService svc))
                 {
                     var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                     return new ProcedureConstant(platform.PointerType, ep);
                 }
 
-                ImageSymbol sym;
-                if (mod.GlobalsByName.TryGetValue(name, out sym))
+                if (mod.GlobalsByName.TryGetValue(name, out ImageSymbol sym))
                 {
                     return CreateReferenceToImport(sym);
                 }

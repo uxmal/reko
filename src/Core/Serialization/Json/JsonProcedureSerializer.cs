@@ -97,8 +97,7 @@ namespace Reko.Core.Serialization.Json
 
         private void WriteType(DataType dt)
         {
-            string primitiveName;
-            if (JsonSymbols.PrimitiveNames.TryGetValue(dt, out primitiveName))
+            if (JsonSymbols.PrimitiveNames.TryGetValue(dt, out var primitiveName))
             {
                 js.Write(primitiveName);
             }

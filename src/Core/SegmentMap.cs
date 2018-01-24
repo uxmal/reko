@@ -139,8 +139,7 @@ namespace Reko.Core
 
         public bool IsExecutableAddress(Address addr)
         {
-            ImageSegment seg;
-            return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
+            return (TryFindSegment(addr, out var seg) && (seg.Access & AccessMode.Execute) != 0);
         }
 
         /// <summary>
