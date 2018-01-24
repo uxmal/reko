@@ -36,9 +36,7 @@ namespace Reko.Core
 
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
-            if (addrBase == null)
-                throw new ArgumentNullException("addrBase");
-            this.BaseAddress = addrBase;
+            this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");
             this.segments = new SortedList<Address, ImageSegment>();
             foreach (var seg in segments)
             {

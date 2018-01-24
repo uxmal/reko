@@ -340,8 +340,8 @@ namespace Reko.Analysis
             if (condId == null)
                 return a;
             var sidOrigHi = ssaIds[condId];
-            var shift = sidOrigHi.DefExpression as BinaryExpression;
-            if (shift == null || shift.Operator != Operator.Shr)
+            if (!(sidOrigHi.DefExpression is BinaryExpression shift &&
+                  shift.Operator == Operator.Shr))
                 return a;
 
             var block = sidOrigLo.DefStatement.Block;

@@ -242,8 +242,7 @@ namespace Reko.Analysis
             foreach (var stm in stms)
             {
                 Expression src;
-                var store = stm.Instruction as Store;
-                if (store != null)
+                if (stm.Instruction is Store store)
                 {
                     src = store.Src;
                 }
@@ -271,8 +270,7 @@ namespace Reko.Analysis
                     value = app.Arguments[1],
                     mem = mem
                 };
-                List<UnalignedAccess> accesses;
-                if (!dict.TryGetValue(reg, out accesses))
+                if (!dict.TryGetValue(reg, out var accesses))
                 {
                     accesses = new List<UnalignedAccess>();
                     dict.Add(reg, accesses);

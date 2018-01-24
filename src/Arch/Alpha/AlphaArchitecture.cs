@@ -118,8 +118,7 @@ namespace Reko.Arch.Alpha
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            return Registers.AllRegisters.TryGetValue(name, out reg)
+            return Registers.AllRegisters.TryGetValue(name, out var reg)
                 ? reg
                 : null;
         }

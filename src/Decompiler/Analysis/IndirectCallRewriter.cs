@@ -72,8 +72,7 @@ namespace Reko.Analysis
             changed = false;
             foreach (Statement stm in proc.Statements.ToList())
             {
-                CallInstruction ci = stm.Instruction as CallInstruction;
-                if (ci != null)
+                if (stm.Instruction is CallInstruction ci)
                 {
                     try
                     {
@@ -206,11 +205,10 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
                 if (sid.DefStatement != null &&
-                    sid.DefStatement.Instruction.As(out var ass) &&
+                    sid.DefStatement.Instruction is Assignment ass &&
                     ass.Dst == id)
                 {
                     return Expand(ass.Src);

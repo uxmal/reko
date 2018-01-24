@@ -53,9 +53,7 @@ namespace Reko.Core
 
         public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
         {
-            if (project == null)
-                throw new ArgumentNullException("project");
-            this.project = project;
+            this.project = project ?? throw new ArgumentNullException("project");
             this.program = program;
             this.eventListener = eventListener;
         }

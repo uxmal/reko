@@ -453,12 +453,8 @@ namespace Reko.Core
 
         public int SubregisterOffset(RegisterStorage subReg)
         {
-            var sub = subReg as RegisterStorage;
-            if (sub != null)
-            {
-                if (Number == sub.Number)
-                    return 0;
-            }
+            if (subReg is RegisterStorage sub && Number == sub.Number)
+                return 0;
             return -1;
         }
 
@@ -481,8 +477,7 @@ namespace Reko.Core
             
         public Expression GetSlice(Expression value)
         {
-            var c = value as Constant;
-            if (c != null && c.IsValid)
+            if (value is Constant c && c.IsValid)
             {
                 var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
                 return Constant.Create(this.DataType, newValue);

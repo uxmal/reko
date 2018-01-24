@@ -94,8 +94,7 @@ namespace Reko.UnitTests
             int i = 0;
             if (tokens.Length > 1 && line[0] != ' ')
             {
-                Address address;
-                Address.TryParse32(tokens[0], out address);
+                Address.TryParse32(tokens[0], out var address);
                 if (this.addrStart == null)
                 {
                     addrStart = address;

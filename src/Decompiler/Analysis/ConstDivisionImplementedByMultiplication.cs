@@ -155,13 +155,16 @@ namespace Reko.Analysis
                 .OfType<Assignment>()
                 .Select(a =>
                 {
-                    var b = a.Src as BinaryExpression;
-                    if (b == null ||
-                        b.Left != idSlice ||
-                        (b.Operator != Operator.Sar &&
-                         b.Operator != Operator.Shr))
+                    if (a.Src is BinaryExpression b &&
+                        b.Left == idSlice &&
+                        (b.Operator == Operator.Sar || b.Operator == Operator.Shr))
+                    {
+                        return b.Right as Constant;
+                    }
+                    else
+                    {
                         return null;
-                    return b.Right as Constant;
+                    }
                 })
                 .Where(x => x != null)
                 .FirstOrDefault();

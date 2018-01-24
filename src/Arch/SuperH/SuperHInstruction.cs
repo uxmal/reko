@@ -83,8 +83,7 @@ namespace Reko.Arch.SuperH
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string sOpcode;
-            if (!opcodes.TryGetValue(Opcode, out sOpcode))
+            if (!opcodes.TryGetValue(Opcode, out var sOpcode))
                 sOpcode = Opcode.ToString();
             writer.WriteOpcode(sOpcode);
             if (op1 == null)
