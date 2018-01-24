@@ -67,6 +67,7 @@ namespace Reko.Core
 
     public static class StorageEx
     {
+        [Obsolete("Use new C# 7 features to avoid this")]
         public static bool As<T>(this Storage self, out T t) where T : Storage
         {
             t = self as T;

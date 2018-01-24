@@ -168,8 +168,7 @@ namespace Reko.Analysis
 					Branch b = u.Instruction as Branch;
                     if (b == null)
                         continue;
-					BinaryExpression bin;
-					if (b.Condition.As<BinaryExpression>(out bin) && 
+					if (b.Condition is BinaryExpression bin && 
                         bin.Left is Identifier && 
                         bin.Operator is ConditionalOperator)
 					{

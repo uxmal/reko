@@ -90,6 +90,7 @@ namespace Reko.Core.Expressions
 
     public static class ExpressionEx
     {
+        [Obsolete("Use C# 7 language constructs instead of this")]
         public static bool As<T>(this Expression self, out T value) where T : Expression
         {
             value = self as T;

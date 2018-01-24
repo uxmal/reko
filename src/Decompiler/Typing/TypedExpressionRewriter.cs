@@ -132,8 +132,7 @@ namespace Reko.Typing
                     src = new Cast(dtDst, src);
                 }
             }
-            var idDst = dst as Identifier;
-            if (idDst != null)
+            if (dst is Identifier idDst)
                 return new Assignment(idDst, src);
             else
                 return new Store(dst, src);
@@ -174,10 +173,9 @@ namespace Reko.Typing
 
         public Expression RewriteComplexExpression(Expression complex, Expression index, int offset, bool dereferenced)
         {
-            var cOther = index as Constant;
-            if (cOther != null)
+            if (index is Constant cOther)
             {
-                offset += (int) cOther.ToUInt32();
+                offset += cOther.ToInt32();
                 index = null;
             }
             var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
@@ -191,11 +189,9 @@ namespace Reko.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            BinaryExpression bin;
-            Constant c;
-            if (acc.Array.As(out bin) &&
+            if (acc.Array is BinaryExpression bin &&
                 bin.Operator == Operator.IAdd &&
-                bin.Right.As(out c))
+                bin.Right is Constant c)
             {
                 // (x + C)[...]
                 var arrayPtr = Rewrite(bin.Left, false);
@@ -313,9 +309,8 @@ namespace Reko.Typing
             var oldBase = this.basePtr;
             this.basePtr = null;
             var basePtr = Rewrite(access.BasePointer, false);
-            Constant cEa;
             Expression result;
-            if (access.EffectiveAddress.As(out cEa))
+            if (access.EffectiveAddress is Constant cEa)
             {
                 uint uOffset = cEa.ToUInt32();
                 result = RewriteComplexExpression(basePtr, Constant.UInt32(uOffset), 0, true);

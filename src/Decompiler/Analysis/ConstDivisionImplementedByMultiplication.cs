@@ -101,17 +101,12 @@ namespace Reko.Analysis
         /// <returns></returns>
         public bool Match(Instruction instr)
         {
-            Assignment ass;
-            SequenceStorage dst;
-            BinaryExpression bin;
-            Constant cRight;
-
             // Look for hi:lo = a * C
-            if (!instr.As(out ass) ||
-                !ass.Dst.Storage.As(out dst) ||
-                !ass.Src.As(out bin) ||
+            if (!(instr is Assignment ass) ||
+                !(ass.Dst.Storage is SequenceStorage dst) ||
+                !(ass.Src is BinaryExpression bin) ||
                 !(bin.Operator is IMulOperator) ||
-                !bin.Right.As(out cRight) ||
+                !(bin.Right is Constant cRight) ||
                 ass.Dst.DataType.Size <= bin.Left.DataType.Size)
             {
                 return false;

@@ -293,13 +293,11 @@ namespace Reko.Analysis
 
         private Identifier GetRegisterOf(Expression e)
         {
-            MemoryAccess mem = e as MemoryAccess;
-            if (mem != null)
+            if (e is MemoryAccess mem)
             {
-                Identifier id;
-                if (mem.EffectiveAddress.As(out id))
+                if (mem.EffectiveAddress is Identifier id)
                     return id;
-                else 
+                else
                     return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
             }
             else

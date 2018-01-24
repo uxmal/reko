@@ -349,11 +349,9 @@ namespace Reko.Evaluation
             if (exp != Constant.Invalid)
             {
                 var ptCast = cast.DataType.ResolveAs<PrimitiveType>();
-                Constant c = exp as Constant;
-                if (c != null && ptCast != null)
+                if (exp is Constant c && ptCast != null)
                 {
-                    PrimitiveType ptSrc = c.DataType as PrimitiveType;
-                    if (ptSrc != null)
+                    if (c.DataType is PrimitiveType ptSrc)
                     {
                         if (ptCast.Domain == Domain.Real)
                         {
@@ -371,9 +369,9 @@ namespace Reko.Evaluation
                         }
                     }
                 }
-                Identifier id;
-                DepositBits dpb;
-                if (exp.As(out id) && ctx.GetDefiningExpression(id).As(out dpb) && dpb.BitPosition == 0)
+                if (exp is Identifier id && 
+                    ctx.GetDefiningExpression(id) is DepositBits dpb && 
+                    dpb.BitPosition == 0)
                 {
                     // If we are casting the result of a DPB, and the deposited part is >= 
                     // the size of the cast, then use deposited part directly.
@@ -408,8 +406,7 @@ namespace Reko.Evaluation
             var cond = c.Condition.Accept(this);
             var t = c.ThenExp.Accept(this);
             var f = c.FalseExp.Accept(this);
-            var cCond = cond as Constant;
-            if (cCond != null && cCond.DataType == PrimitiveType.Bool)
+            if (cond is Constant cCond && cCond.DataType == PrimitiveType.Bool)
             {
                 if (cCond.IsZero)
                     return f;
@@ -611,13 +608,11 @@ namespace Reko.Evaluation
         /// </summary
         private Expression SimplifyPhiArg(Expression arg)
         {
-            BinaryExpression bin, binLeft;
-            Identifier idLeft;
-            if (
-                !arg.As(out bin) || !bin.Left.As(out idLeft) ||
-                !ctx.GetValue(idLeft).As(out binLeft)
-            )
+            if (!(arg is BinaryExpression bin &&
+                  bin.Left is Identifier idLeft &&
+                  ctx.GetValue(idLeft) is BinaryExpression binLeft))
                 return arg;
+
             ctx.RemoveIdentifierUse(idLeft);
             ctx.UseExpression(binLeft);
             bin = new BinaryExpression(

@@ -108,26 +108,23 @@ namespace Reko.Core.Serialization.Json
         private void WriteStorage(Storage stg)
         {
             js.BeginObject();
-            RegisterStorage reg;
-            MemoryStorage mem;
-            FlagGroupStorage flg;
-            if (stg.As(out reg))
+            switch (stg)
             {
+            case RegisterStorage reg:
                 js.WriteKeyValue("kind", "reg");
                 js.WriteKeyValue("name", reg.Name);
-            }
-            else if (stg.As(out mem))
-            {
+                break;
+            case MemoryStorage mem:
                 js.WriteKeyValue("kind", "mem");
-            }
-            else if (stg.As(out flg))
-            {
+                break;
+            case FlagGroupStorage flg:
                 js.WriteKeyValue("kind", "flg");
                 js.WriteKeyValue("grf", flg.FlagGroupBits);
                 js.WriteKeyValue("reg", flg.FlagRegister.Name);
-            }
-            else
+                break;
+            default:
                 throw new NotImplementedException(string.Format("Unimplemented storage: {0}.", stg));
+            }
             js.EndObject();
         }
 

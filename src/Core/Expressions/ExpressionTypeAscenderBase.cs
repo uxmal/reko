@@ -161,15 +161,15 @@ namespace Reko.Core.Expressions
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
         private Pointer GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
         {
-            Constant cOffset;
-            if (!right.As(out cOffset))
-                return null;
-            var ptRight = dtRight as PrimitiveType;
-            if (ptRight == null || ptRight.Domain == Domain.Pointer)
-                return null;
-            int offset = cOffset.ToInt32();
-
-            return GetPossibleFieldType(dtLeft, offset);
+            if (right is Constant cOffset)
+            {
+                if (dtRight is PrimitiveType ptRight && ptRight.Domain != Domain.Pointer)
+                {
+                    int offset = cOffset.ToInt32();
+                    return GetPossibleFieldType(dtLeft, offset);
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -360,8 +360,7 @@ namespace Reko.Core.Expressions
             }
             else 
             {
-                var ptHead = dtHead as PrimitiveType;
-                if (ptHead != null && ptHead.IsIntegral)
+                if (dtHead is PrimitiveType ptHead && ptHead.IsIntegral)
                 {
                     dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.Size);
                 }
