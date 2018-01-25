@@ -175,7 +175,10 @@ namespace Reko.Typing
         {
             if (index is Constant cOther)
             {
-                offset += cOther.ToInt32();
+                //$REVIEW: changing this to:
+                // offset += cOther.ToInt32() causes a regression.
+                // This needs further investigation.
+                offset += (int) cOther.ToUInt32();
                 index = null;
             }
             var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
