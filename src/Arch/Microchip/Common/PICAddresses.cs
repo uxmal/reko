@@ -21,6 +21,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Expressions;
+using System;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -28,19 +31,71 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A PIC 21-bit program address.
     /// </summary>
-    public class PICProgAddress : Address32
+    public class PICProgAddress : Address
     {
+        private uint uValue;
         public const uint MAXPROGBYTADDR = 0x1FFFFFU;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="addr">The program byte address.</param>
-        public PICProgAddress(uint addr) : base(addr & MAXPROGBYTADDR) { }
+        public PICProgAddress(uint addr) : base(PrimitiveType.Ptr32)
+        {
+            uValue = addr & MAXPROGBYTADDR;
+        }
 
         public override bool IsNull => false;
+        public override ulong Offset { get { return uValue; } }
+        public override ushort? Selector { get { return null; } }
 
-        public override string ToString() => $"0x{ToUInt32():X6}";
+        public override Address Add(long offset)
+        {
+            var uNew = uValue + offset;
+            return new PICProgAddress((uint)uNew);
+        }
+
+        public override Address Align(int alignment)
+        {
+            return new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new PICProgAddress(uValue);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return $"{prefix}{uValue:X6}{suffix}";
+        }
+
+        public override Address NewOffset(ulong offset)
+        {
+            return new PICProgAddress((uint)offset);
+        }
+
+        public override Constant ToConstant()
+        {
+            return Constant.UInt32(uValue);
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new InvalidOperationException("Returning UInt16 would lose precision.");
+        }
+
+        public override uint ToUInt32()
+        {
+            return uValue;
+        }
+
+        public override ulong ToLinear()
+        {
+            return uValue;
+        }
+
+        public override string ToString() => $"0x{uValue:X6}";
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.
@@ -49,7 +104,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The <see cref="PICProgAddress"/>.
         /// </returns>
-        public static PICProgAddress Ptr(uint addr)            => new PICProgAddress(addr);
+        public static PICProgAddress Ptr(uint addr) => new PICProgAddress(addr);
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified address.
@@ -58,21 +113,74 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The <see cref="PICProgAddress"/>.
         /// </returns>
-        public static PICProgAddress Ptr(Address aaddr)            => new PICProgAddress(aaddr.ToUInt32());
+        public static PICProgAddress Ptr(Address aaddr) => new PICProgAddress(aaddr.ToUInt32());
     }
 
     /// <summary>
     /// A PIC 12/14-bit data address.
     /// </summary>
-    public class PICDataAddress : Address32
+    public class PICDataAddress : Address
     {
-        public const uint MAXDATABYTADDR = 0x3FFFFU;
+        private ushort uValue;
+        public const uint MAXDATABYTADDR = 0x3FFF;
 
-        public PICDataAddress(uint addr) : base(addr & MAXDATABYTADDR) { }
+        public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)
+        {
+            uValue = (ushort)(addr & MAXDATABYTADDR);
+        }
 
         public override bool IsNull => false;
+        public override ulong Offset { get { return uValue; } }
+        public override ushort? Selector { get { return null; } }
 
-        public override string ToString() => $"{ToUInt32():X4}";
+        public override Address Add(long offset)
+        {
+            var uNew = uValue + offset;
+            return new PICProgAddress((uint)uNew);
+        }
+
+        public override Address Align(int alignment)
+        {
+            return new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new PICProgAddress(uValue);
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            return $"{prefix}{uValue:X4}{suffix}";
+        }
+
+        public override Address NewOffset(ulong offset)
+        {
+            return new PICProgAddress((uint)offset);
+        }
+
+        public override Constant ToConstant()
+        {
+            return Constant.UInt16(uValue);
+        }
+
+        public override ushort ToUInt16()
+        {
+            return uValue;
+        }
+
+        public override uint ToUInt32()
+        {
+            return uValue;
+        }
+
+        public override ulong ToLinear()
+        {
+            return uValue;
+        }
+
+
+        public override string ToString() => $"0x{uValue:X4}";
 
         public static PICDataAddress Ptr(uint addr) => new PICDataAddress(addr);
 
@@ -90,9 +198,7 @@ namespace Reko.Arch.Microchip.Common
         public override bool IsNull => false;
 
         public override string ToString()
-        {
-            return string.Format("0x{0:X2}", ToUInt32());
-        }
+            => $"0x{ToUInt32():X2}";
 
         public static PICBankAddress Ptr(byte addr)
             => new PICBankAddress(addr);
