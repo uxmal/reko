@@ -184,7 +184,7 @@ namespace Reko.Arch.Microchip.PIC18
 
             var paddr = op as PIC18ProgAddrOperand;
             if (paddr != null)
-                return paddr.CodeTarget;
+                return PICProgAddress.Ptr(paddr.CodeTarget);
 
             var bankaccess = op as PIC18BankedAccessOperand;
             if (bankaccess != null)
@@ -291,11 +291,10 @@ namespace Reko.Arch.Microchip.PIC18
 
         private Expression GetMemoryAbsAccess(PIC18DataAbsAddrOperand mem)
         {
-            var target = mem.DataTarget;
-            var sfr = PIC18Registers.GetRegister(target);
+            var sfr = PIC18Registers.GetRegister(mem.DataTarget);
             if (sfr != RegisterStorage.None)
                 return binder.EnsureRegister(sfr);
-            return m.Mem8(target);
+            return m.Mem8(Address.Ptr16(mem.DataTarget));
         }
 
         #endregion
@@ -310,7 +309,7 @@ namespace Reko.Arch.Microchip.PIC18
             var brop = instr.op1 as PIC18ProgRel8AddrOperand;
             if (brop == null)
                 throw new InvalidOperationException("Wrong 8-bit relative PIC address");
-            m.Branch(test, brop.CodeTarget, rtlc);
+            m.Branch(test, PICProgAddress.Ptr( brop.CodeTarget), rtlc);
         }
 
         private void _setStatusFlags(Expression dst)
@@ -443,7 +442,7 @@ namespace Reko.Arch.Microchip.PIC18
             var brop = instr.op1 as PIC18ProgRel11AddrOperand;
             if (brop == null)
                 throw new InvalidOperationException("Wrong 11-bit relative PIC address");
-            m.Goto(brop.CodeTarget);
+            m.Goto(PICProgAddress.Ptr(brop.CodeTarget));
         }
 
         private void RewriteBSF()

@@ -494,8 +494,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void Disasm_Enhd_Extd_MOVFF()
         {
-            VerifyDisasm("MOVFF\t0x0000,0x0123", "", 0xC000, 0xF123);
-            VerifyDisasm("MOVFF\t0x0FCA,0x0FCB", "", 0xCFCA, 0xFFCB);
+            VerifyDisasm("MOVFF\t0x000,0x123", "", 0xC000, 0xF123);
+            VerifyDisasm("MOVFF\t0xFCA,0xFCB", "", 0xCFCA, 0xFFCB);
         }
 
         [Test]
@@ -512,9 +512,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void Disasm_Enhd_Extd_MOVSF()
         {
-            VerifyDisasm("MOVSF\t[0x00],0x0000", "", 0xEB00, 0xF000);
-            VerifyDisasm("MOVSF\t[0x75],0x0033", "", 0xEB75, 0xF033);
-            VerifyDisasm("MOVSF\t[0x75],0x0FE3", "", 0xEB75, 0xFFE3);
+            VerifyDisasm("MOVSF\t[0x00],0x000", "", 0xEB00, 0xF000);
+            VerifyDisasm("MOVSF\t[0x75],0x033", "", 0xEB75, 0xF033);
+            VerifyDisasm("MOVSF\t[0x75],0xFE3", "", 0xEB75, 0xFFE3);
         }
 
         [Test]

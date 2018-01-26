@@ -180,28 +180,11 @@ namespace Reko.Arch.Microchip.Common
         }
 
 
-        public override string ToString() => $"0x{uValue:X4}";
+        public override string ToString() => $"{uValue:X4}";
 
         public static PICDataAddress Ptr(uint addr) => new PICDataAddress(addr);
 
         public static PICDataAddress Ptr(Address aaddr) => new PICDataAddress(aaddr.ToUInt32());
-
-    }
-
-    /// <summary>
-    /// A PIC 8-bit data bank address.
-    /// </summary>
-    public class PICBankAddress : Address32
-    {
-        public PICBankAddress(byte addr) : base(addr) { }
-
-        public override bool IsNull => false;
-
-        public override string ToString()
-            => $"0x{ToUInt32():X2}";
-
-        public static PICBankAddress Ptr(byte addr)
-            => new PICBankAddress(addr);
 
     }
 

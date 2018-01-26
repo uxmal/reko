@@ -471,7 +471,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void Disasm_Trad_Extd_MOVFF()
         {
-            VerifyDisasm("MOVFF\t0x0000,0x0123", "", 0xC000, 0xF123);
+            VerifyDisasm("MOVFF\t0x000,0x123", "", 0xC000, 0xF123);
             VerifyDisasm("MOVFF\tPORTA,PORTB", "", 0xCF80, 0xFF81);
         }
 

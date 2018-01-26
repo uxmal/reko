@@ -281,9 +281,9 @@ namespace Reko.Arch.Microchip.PIC18
     {
 
         /// <summary>
-        /// Gets the target absolute code byte address. This is a word-aligned address.
+        /// Gets the target absolute code target address. This is a word-aligned address.
         /// </summary>
-        public PICProgAddress CodeTarget { get; protected set; }
+        public uint CodeTarget { get; protected set; }
 
         public PIC18ProgAddrOperand() : base(PrimitiveType.Ptr32)
         {
@@ -292,11 +292,6 @@ namespace Reko.Arch.Microchip.PIC18
         public abstract void Accept(IPIC18OperandVisitor visitor);
         public abstract T Accept<T>(IPIC18OperandVisitor<T> visitor);
         public abstract T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context);
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write($"{CodeTarget}");
-        }
 
     }
 
@@ -308,7 +303,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the relative offset. This a word offset.
         /// </summary>
-        public readonly Constant RelativeWordOffset;
+        public readonly sbyte RelativeWordOffset;
 
         /// <summary>
         /// Instantiates a 8-bit relative code offset operand.
@@ -317,9 +312,13 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="instrAddr">The instruction address.</param>
         public PIC18ProgRel8AddrOperand(sbyte off, Address instrAddr) 
         {
-            RelativeWordOffset = Constant.SByte(off);
-            uint absaddr = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
-            CodeTarget = PICProgAddress.Ptr(absaddr);
+            RelativeWordOffset = off;
+            CodeTarget = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgRel8(this);
@@ -336,18 +335,22 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the relative offset. This a word offset.
         /// </summary>
-        public readonly Constant RelativeWordOffset;
+        public readonly short RelativeWordOffset;
 
         /// <summary>
         /// Instantiates a 11-bit code relative offset operand.
         /// </summary>
         /// <param name="off">The off.</param>
         /// <param name="instrAddr">The instruction address.</param>
-        public PIC18ProgRel11AddrOperand(short off, Address instrAddr) 
+        public PIC18ProgRel11AddrOperand(short off, Address instrAddr)   
         {
-            RelativeWordOffset = Constant.Int16(off);
-            uint absaddr = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
-            CodeTarget = PICProgAddress.Ptr(absaddr);
+            RelativeWordOffset = off;
+            CodeTarget = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgRel11(this);
@@ -361,13 +364,19 @@ namespace Reko.Arch.Microchip.PIC18
     /// </summary>
     public class PIC18ProgAbsAddrOperand : PIC18ProgAddrOperand
     {
+
         /// <summary>
         /// Instantiates a Absolute Code Address operand. Used by GOTO, CALL instructions.
         /// </summary>
         /// <param name="absaddr">The program word address.</param>
-        public PIC18ProgAbsAddrOperand(uint absaddr)
+        public PIC18ProgAbsAddrOperand(uint absaddr) 
         {
-            CodeTarget = PICProgAddress.Ptr((absaddr << 1) & PICProgAddress.MAXPROGBYTADDR);
+            CodeTarget = (absaddr << 1) & PICProgAddress.MAXPROGBYTADDR;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgAbs(this);
@@ -455,14 +464,17 @@ namespace Reko.Arch.Microchip.PIC18
 
     }
 
+    /// <summary>
+    /// The notion of PIC18 data address operand. Must be inherited.
+    /// </summary>
     public abstract class PIC18DataAbsAddrOperand : MachineOperand, IPIC18kOperand
     {
         /// <summary>
-        /// Gets the 12/14-bit data memory absolute address.
+        /// Gets the 12/14-bit data memory absolute target address.
         /// </summary>
-        public PICDataAddress DataTarget { get; protected set; }
+        public ushort DataTarget { get; protected set; }
 
-        public PIC18DataAbsAddrOperand() : base(PrimitiveType.UInt16)
+        public PIC18DataAbsAddrOperand() : base(PrimitiveType.Ptr16)
         {
         }
 
@@ -488,7 +500,16 @@ namespace Reko.Arch.Microchip.PIC18
     {
         public PIC18Data12bitAbsAddrOperand(ushort w)
         {
-            DataTarget = PICDataAddress.Ptr(w & 0xFFFU);
+            DataTarget = (ushort)(w & 0xFFFU);
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            RegisterStorage sfr = PIC18Registers.GetRegister(DataTarget);
+            if (sfr != RegisterStorage.None)
+                writer.Write($"{sfr.Name}");
+            else
+                writer.Write($"0x{DataTarget:X3}");
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs12(this);
@@ -502,13 +523,23 @@ namespace Reko.Arch.Microchip.PIC18
     /// </summary>
     public class PIC18Data14bitAbsAddrOperand : PIC18DataAbsAddrOperand
     {
+
         /// <summary>
         /// Instantiates a 14-bit data memory address operand (used by MOVFFL, MOVSFL instruction)
         /// </summary>
         /// <param name="w">An unsigned 16-bit integer to process.</param>
         public PIC18Data14bitAbsAddrOperand(ushort w) 
         {
-            DataTarget = PICDataAddress.Ptr(w & 0x3FFFU);
+            DataTarget = (ushort)(w & 0x3FFFU);
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            RegisterStorage sfr = PIC18Registers.GetRegister(DataTarget);
+            if (sfr != RegisterStorage.None)
+                writer.Write($"{sfr.Name}");
+            else
+                writer.Write($"0x{DataTarget:X4}");
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs14(this);
