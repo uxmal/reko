@@ -139,14 +139,14 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public Address XlateAccessAddress(Address addr)
+        public PICDataAddress XlateAccessAddress(PICDataAddress addr)
         {
             if (!IsAccessRAMHigh(addr))
                 return addr;
             ulong uaddr = addr.ToLinear();
             uaddr -= AccessRAMLow.LogicalByteAddress.End.ToLinear();
             uaddr += AccessRAMHigh.LogicalByteAddress.Begin.ToLinear();
-            return Address.Create(addr.DataType, uaddr);
+            return PICDataAddress.Ptr((uint)uaddr);
         }
 
         /// <summary>
@@ -157,9 +157,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public Address XlateAccessAddress(Constant cAddr)
+        public PICDataAddress XlateAccessAddress(Constant cAddr)
         {
-            return XlateAccessAddress(Address.Ptr32(cAddr.ToUInt32()));
+            return XlateAccessAddress(PICDataAddress.Ptr(cAddr.ToUInt32()));
         }
 
         /// <summary>
@@ -170,9 +170,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public Address XlateAccessAddress(uint uAddr)
+        public PICDataAddress XlateAccessAddress(uint uAddr)
         {
-            return XlateAccessAddress(Address.Ptr32(uAddr));
+            return XlateAccessAddress(PICDataAddress.Ptr(uAddr));
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM Low, false if not.
         /// </returns>
-        public bool IsAccessRAMLow(Address addr) => AccessRAMLow.Contains(addr);
+        public bool IsAccessRAMLow(PICDataAddress addr) => AccessRAMLow.Contains(addr);
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
@@ -209,7 +209,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM High, false if not.
         /// </returns>
-        public bool IsAccessRAMHigh(Address addr) => IsAccessRAMHigh(addr.ToUInt32());
+        public bool IsAccessRAMHigh(PICDataAddress addr) => IsAccessRAMHigh(addr.ToUInt32());
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM High range.
@@ -245,7 +245,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static Address TranslateAccessAddress(Address addr) => _mapper?.XlateAccessAddress(addr);
+        public static PICDataAddress TranslateAccessAddress(PICDataAddress addr) => _mapper?.XlateAccessAddress(addr);
 
         /// <summary>
         /// Translates an Access Bank address to actual data memory address.
@@ -255,7 +255,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static Address TranslateAccessAddress(Constant cAddr) => _mapper?.XlateAccessAddress(cAddr);
+        public static PICDataAddress TranslateAccessAddress(Constant cAddr) => _mapper?.XlateAccessAddress(cAddr);
 
         /// <summary>
         /// Translates an Access Bank address to actual data memory address.
@@ -265,7 +265,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static Address TranslateAccessAddress(uint uAddr) => _mapper?.XlateAccessAddress(uAddr);
+        public static PICDataAddress TranslateAccessAddress(uint uAddr) => _mapper?.XlateAccessAddress(uAddr);
 
         /// <summary>
         /// Query if data memory address <paramref name="addr"/> belongs to Access RAM Low range.
@@ -274,7 +274,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM Low, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMLow(Address addr) => _mapper?.IsAccessRAMLow(addr) ?? false;
+        public static bool BelongsToAccessRAMLow(PICDataAddress addr) => _mapper?.IsAccessRAMLow(addr) ?? false;
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
@@ -301,7 +301,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM High, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMHigh(Address addr) => _mapper?.IsAccessRAMHigh(addr) ?? false;
+        public static bool BelongsToAccessRAMHigh(PICDataAddress addr) => _mapper?.IsAccessRAMHigh(addr) ?? false;
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM High range.

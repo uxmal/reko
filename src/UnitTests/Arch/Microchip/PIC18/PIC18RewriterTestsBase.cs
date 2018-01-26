@@ -25,14 +25,17 @@ using Reko.Arch.Microchip.PIC18;
 using Reko.Core;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
+using System;
 using System.Linq;
+using NUnit.Framework;
+using Reko.Arch.Microchip.Common;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
 {
     public class PIC18RewriterTestsBase : RewriterTestBase
     {
         protected static PIC18Architecture arch;
-        protected Address baseAddr = Address.Ptr32(0x200);
+        protected Address baseAddr = PICProgAddress.Ptr(0x200);
         protected PIC18State state;
         protected MemoryArea image;
 
@@ -56,6 +59,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             return image;
         }
 
+        protected string _fmtBinary(uint[] words)
+        {
+            string sPIC = $"{arch.PICDescriptor.Name}/{arch.ExecMode}";
+            if (words.Length < 1) return $"{sPIC}";
+            return sPIC + "[" + string.Join("-", words.Select(w => w.ToString("X4"))) + "] ";
+        }
+
         protected void SetPICMode(InstructionSetID id, PICExecMode mode)
         {
             arch = new PIC18Architecture(PICSamples.GetSample(id))
@@ -63,6 +73,40 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 ExecMode = mode
             };
             state = (PIC18State)arch.CreateProcessorState();
+        }
+
+        protected void AssertCode(string mesg, params string[] expected)
+        {
+            int i = 0;
+            var frame = Architecture.CreateFrame();
+            var host = CreateRewriterHost();
+            var rewriter = GetInstructionStream(frame, host).GetEnumerator();
+            while (i < expected.Length && rewriter.MoveNext())
+            {
+                Assert.AreEqual(expected[i], $"{i}|{RtlInstruction.FormatClass(rewriter.Current.Class)}|{rewriter.Current}", mesg);
+                ++i;
+                var ee = rewriter.Current.Instructions.OfType<RtlInstruction>().GetEnumerator();
+                while (i < expected.Length && ee.MoveNext())
+                {
+                    Assert.AreEqual(expected[i], $"{i}|{RtlInstruction.FormatClass(ee.Current.Class)}|{ee.Current}", mesg);
+                    ++i;
+                }
+            }
+            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.", mesg);
+            Assert.IsFalse(rewriter.MoveNext(), "More instructions were emitted than were expected.", mesg);
+        }
+
+        protected uint[] Words(params uint[] words)
+        {
+            if (words.Length > 0)
+                return words.ToArray();
+            return null;
+        }
+
+        public void ExecTest(uint[] words, params string[] expected)
+        {
+            RewriteCode(words);
+            AssertCode(_fmtBinary(words), expected);
         }
 
     }

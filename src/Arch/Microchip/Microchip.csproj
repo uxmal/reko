@@ -11,6 +11,7 @@
     <AssemblyName>Microchip</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Common\ILinearRegion.cs" />
     <Compile Include="Common\IMemoryRegion.cs" />
+    <Compile Include="Common\PICAddresses.cs" />
     <Compile Include="PIC18\IOperandShadow.cs" />
     <Compile Include="Common\IPICMemoryMap.cs" />
     <Compile Include="Common\IPICMemoryMapper.cs" />

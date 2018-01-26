@@ -624,8 +624,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Enhd_Trad_BSF()
         {
             VerifyDisasm("BSF\t0x03,0,ACCESS", "", 0x8003);
-            VerifyDisasm("BSF\tPORTB,7,ACCESS", "", 0x8ECB);
-            VerifyDisasm("BSF\tPORTA,0,ACCESS", "", 0x80CA);
+            VerifyDisasm("BSF\tPORTB,RB7,ACCESS", "", 0x8ECB);
+            VerifyDisasm("BSF\tPORTA,RA0,ACCESS", "", 0x80CA);
             VerifyDisasm("BSF\t0x00,0", "", 0x8100);
             VerifyDisasm("BSF\t0x5A,1", "", 0x835A);
             VerifyDisasm("BSF\t0x8A,5", "", 0x8B8A);
@@ -635,33 +635,33 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Enhd_Trad_BCF()
         {
             VerifyDisasm("BCF\t0x03,0,ACCESS", "", 0x9003);
-            VerifyDisasm("BCF\tPORTA,7,ACCESS", "", 0x9ECA);
-            VerifyDisasm("BCF\tPORTB,0,ACCESS", "", 0x90CB);
+            VerifyDisasm("BCF\tPORTA,RA7,ACCESS", "", 0x9ECA);
+            VerifyDisasm("BCF\tPORTB,RB0,ACCESS", "", 0x90CB);
             VerifyDisasm("BCF\t0x00,0", "", 0x9100);
             VerifyDisasm("BCF\t0x5A,1", "", 0x935A);
             VerifyDisasm("BCF\t0x8A,5", "", 0x9B8A);
         }
 
         [Test]
-        public void Disasm_Enhd_Trad_BTFSS()
-        {
-            VerifyDisasm("BTFSS\t0x03,0,ACCESS", "", 0xA003);
-            VerifyDisasm("BTFSS\tPORTA,7,ACCESS", "", 0xAECA);
-            VerifyDisasm("BTFSS\tPORTB,0,ACCESS", "", 0xA0CB);
-            VerifyDisasm("BTFSS\t0x00,0", "", 0xA100);
-            VerifyDisasm("BTFSS\t0x5A,1", "", 0xA35A);
-            VerifyDisasm("BTFSS\t0x8A,5", "", 0xAB8A);
-        }
-
-        [Test]
         public void Disasm_Enhd_Trad_BTFSC()
         {
             VerifyDisasm("BTFSC\t0x03,0,ACCESS", "", 0xB003);
-            VerifyDisasm("BTFSC\tPORTA,7,ACCESS", "", 0xBECA);
-            VerifyDisasm("BTFSC\tPORTB,0,ACCESS", "", 0xB0CB);
+            VerifyDisasm("BTFSC\tPORTA,RA7,ACCESS", "", 0xBECA);
+            VerifyDisasm("BTFSC\tPORTB,RB0,ACCESS", "", 0xB0CB);
             VerifyDisasm("BTFSC\t0x00,0", "", 0xB100);
             VerifyDisasm("BTFSC\t0x5A,1", "", 0xB35A);
             VerifyDisasm("BTFSC\t0x8A,5", "", 0xBB8A);
+        }
+
+        [Test]
+        public void Disasm_Enhd_Trad_BTFSS()
+        {
+            VerifyDisasm("BTFSS\t0x03,0,ACCESS", "", 0xA003);
+            VerifyDisasm("BTFSS\tPORTA,RA7,ACCESS", "", 0xAECA);
+            VerifyDisasm("BTFSS\tPORTB,RB0,ACCESS", "", 0xA0CB);
+            VerifyDisasm("BTFSS\t0x00,0", "", 0xA100);
+            VerifyDisasm("BTFSS\t0x5A,1", "", 0xA35A);
+            VerifyDisasm("BTFSS\t0x8A,5", "", 0xAB8A);
         }
 
         [Test]

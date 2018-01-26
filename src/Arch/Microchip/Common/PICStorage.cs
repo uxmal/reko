@@ -83,7 +83,7 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// The address or null.
         /// </value>
-        public Address Address { get; }
+        public PICDataAddress Address { get; }
 
         /// <summary>
         /// Gets a value indicating whether this register is Non-Memory-Mapped.
@@ -127,7 +127,7 @@ namespace Reko.Arch.Microchip.Common
             : base(sfr.Name, number, PICRegisterEx.Size2PrimitiveType(sfr.NzWidth))
         {
             SFRDef = sfr;
-            Address = (IsNMMR ? null : Address.Ptr16((ushort)sfr.Addr));
+            Address = (IsNMMR ? null : PICDataAddress.Ptr(sfr.Addr));
         }
 
         public PICRegisterStorage(string name, int number, PrimitiveType dt)

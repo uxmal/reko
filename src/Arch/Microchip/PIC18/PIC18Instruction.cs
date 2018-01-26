@@ -29,7 +29,6 @@ using Reko.Arch.Microchip.Common;
 namespace Reko.Arch.Microchip.PIC18
 {
 
-
     /// <summary>
     /// Models an PIC18 instruction.
     /// </summary>
@@ -102,10 +101,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <value>
         /// True if this instruction is valid, false if not.
         /// </value>
-        public override bool IsValid
-        {
-            get { return Opcode != Opcode.invalid; }
-        }
+        public override bool IsValid => (Opcode != Opcode.invalid);
 
         /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.
@@ -113,10 +109,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <value>
         /// The opcode as integer.
         /// </value>
-        public override int OpcodeAsInteger
-        {
-            get { return (int)Opcode; }
-        }
+        public override int OpcodeAsInteger => (int)Opcode; 
 
         /// <summary>
         /// Retrieves the I'th operand, or null if there is none at that position.

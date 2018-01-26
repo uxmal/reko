@@ -107,8 +107,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Extd_Trad_BCF()
         {
             VerifyDisasm("BCF\t0x03,0,ACCESS", "", 0x9003);
-            VerifyDisasm("BCF\tPORTA,7,ACCESS", "", 0x9E80);
-            VerifyDisasm("BCF\tPORTB,0,ACCESS", "", 0x9081);
+            VerifyDisasm("BCF\tPORTA,RA7,ACCESS", "", 0x9E80);
+            VerifyDisasm("BCF\tPORTB,RB0,ACCESS", "", 0x9081);
             VerifyDisasm("BCF\t0x00,0", "", 0x9100);
             VerifyDisasm("BCF\t0x5A,1", "", 0x935A);
             VerifyDisasm("BCF\t0x8A,5", "", 0x9B8A);
@@ -181,8 +181,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Extd_Trad_BSF()
         {
             VerifyDisasm("BSF\t0x03,0,ACCESS", "", 0x8003);
-            VerifyDisasm("BSF\tPORTB,7,ACCESS", "", 0x8E81);
-            VerifyDisasm("BSF\tPORTA,0,ACCESS", "", 0x8080);
+            VerifyDisasm("BSF\tPORTB,RB7,ACCESS", "", 0x8E81);
+            VerifyDisasm("BSF\tPORTA,RA0,ACCESS", "", 0x8080);
             VerifyDisasm("BSF\t0x00,0", "", 0x8100);
             VerifyDisasm("BSF\t0x5A,1", "", 0x835A);
             VerifyDisasm("BSF\t0x8A,5", "", 0x8B8A);
@@ -192,8 +192,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Extd_Trad_BTFSC()
         {
             VerifyDisasm("BTFSC\t0x03,0,ACCESS", "", 0xB003);
-            VerifyDisasm("BTFSC\tPORTA,7,ACCESS", "", 0xBE80);
-            VerifyDisasm("BTFSC\tPORTB,0,ACCESS", "", 0xB081);
+            VerifyDisasm("BTFSC\tPORTA,RA7,ACCESS", "", 0xBE80);
+            VerifyDisasm("BTFSC\tPORTB,RB0,ACCESS", "", 0xB081);
             VerifyDisasm("BTFSC\t0x00,0", "", 0xB100);
             VerifyDisasm("BTFSC\t0x5A,1", "", 0xB35A);
             VerifyDisasm("BTFSC\t0x8A,5", "", 0xBB8A);
@@ -203,8 +203,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Extd_Trad_BTFSS()
         {
             VerifyDisasm("BTFSS\t0x03,0,ACCESS", "", 0xA003);
-            VerifyDisasm("BTFSS\tPORTA,7,ACCESS", "", 0xAE80);
-            VerifyDisasm("BTFSS\tPORTB,0,ACCESS", "", 0xA081);
+            VerifyDisasm("BTFSS\tPORTA,RA7,ACCESS", "", 0xAE80);
+            VerifyDisasm("BTFSS\tPORTB,RB0,ACCESS", "", 0xA081);
             VerifyDisasm("BTFSS\t0x00,0", "", 0xA100);
             VerifyDisasm("BTFSS\t0x5A,1", "", 0xA35A);
             VerifyDisasm("BTFSS\t0x8A,5", "", 0xAB8A);
@@ -214,8 +214,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         public void Disasm_Extd_Trad_BTG()
         {
             VerifyDisasm("BTG\t0x03,0,ACCESS", "", 0x7003);
-            VerifyDisasm("BTG\tTRISA,7,ACCESS", "", 0x7E92);
-            VerifyDisasm("BTG\tTRISB,0,ACCESS", "", 0x7093);
+            VerifyDisasm("BTG\tTRISA,TRISA7,ACCESS", "", 0x7E92);
+            VerifyDisasm("BTG\tTRISB,TRISB0,ACCESS", "", 0x7093);
             VerifyDisasm("BTG\t0x00,0", "", 0x7100);
             VerifyDisasm("BTG\t0x5A,1", "", 0x735A);
             VerifyDisasm("BTG\t0x8A,5", "", 0x7B8A);

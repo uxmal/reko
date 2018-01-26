@@ -22,8 +22,8 @@
 
 using Microchip.Crownking;
 using Microchip.Utils;
+using Reko.Arch.Microchip.Common;
 using Reko.Core;
-using Reko.Core.Machine;
 using System;
 
 namespace Reko.Arch.Microchip.PIC18
@@ -35,7 +35,7 @@ namespace Reko.Arch.Microchip.PIC18
         private EndianImageReader rdr;
         private PIC18Architecture arch;
         private PIC18Instruction instrCur;
-        private Address addrCur;
+        private PICProgAddress addrCur;
 
         #endregion
 
@@ -82,7 +82,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             if (!rdr.IsValid)
                 return null;
-            addrCur = rdr.Address;
+            addrCur = PICProgAddress.Ptr(rdr.Address.ToUInt32());
             if ((addrCur.Offset & 1) != 0)
                 throw new AddressCorrelatedException(addrCur, $"Attempt to disassemble at odd address : {addrCur.ToString()}.");
 

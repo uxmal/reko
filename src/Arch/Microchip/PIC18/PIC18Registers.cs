@@ -400,7 +400,7 @@ namespace Reko.Arch.Microchip.PIC18
             return fld;
         }
 
-        private FlagGroupStorage _peekBitField(Address regAddress, uint bitPos, uint bitWidth = 0)
+        private FlagGroupStorage _peekBitField(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
         {
             lock (_symtabLock)
             {
@@ -600,7 +600,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The register or null.
         /// </returns>
-        public static RegisterStorage GetRegister(Address address)
+        public static RegisterStorage GetRegister(PICDataAddress address)
         {
             RegAddress addr = new RegAddress(address);
             RegisterStorage reg = _registers?._peekRegister(addr);
@@ -671,7 +671,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The bit field or null.
         /// </returns>
-        public static FlagGroupStorage GetBitField(Address regAddress, uint bitPos, uint bitWidth = 0)
+        public static FlagGroupStorage GetBitField(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
         {
             return _registers?._peekBitField(regAddress, bitPos, bitWidth);
         }

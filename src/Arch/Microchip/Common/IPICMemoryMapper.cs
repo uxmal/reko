@@ -52,7 +52,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        Address XlateAccessAddress(Address addr);
+        PICDataAddress XlateAccessAddress(PICDataAddress addr);
 
         /// <summary>
         /// Translates an Access RAM Bank address to actual data memory address.
@@ -62,7 +62,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        Address XlateAccessAddress(Constant cAddr);
+        PICDataAddress XlateAccessAddress(Constant cAddr);
 
         /// <summary>
         /// Translates an Access RAM Bank address to actual data memory address.
@@ -72,7 +72,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        Address XlateAccessAddress(uint uAddr);
+        PICDataAddress XlateAccessAddress(uint uAddr);
 
         /// <summary>
         /// Query if data memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
@@ -90,7 +90,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM Low, false if not.
         /// </returns>
-        bool IsAccessRAMLow(Address addr);
+        bool IsAccessRAMLow(PICDataAddress addr);
 
         /// <summary>
         /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM Low range.
@@ -108,7 +108,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM High, false if not.
         /// </returns>
-        bool IsAccessRAMHigh(Address addr);
+        bool IsAccessRAMHigh(PICDataAddress addr);
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM High range.

@@ -30,6 +30,7 @@ using Reko.Core.Types;
 namespace Reko.Arch.Microchip.PIC18
 {
 
+
     /// <summary>
     /// The notion of PIC18 immediate operand. Must be inherited.
     /// </summary>
@@ -280,11 +281,11 @@ namespace Reko.Arch.Microchip.PIC18
     {
 
         /// <summary>
-        /// Gets the target absolute code address. This is a word-aligned address.
+        /// Gets the target absolute code byte address. This is a word-aligned address.
         /// </summary>
-        public Constant CodeTarget { get; protected set; }
+        public PICProgAddress CodeTarget { get; protected set; }
 
-        public PIC18ProgAddrOperand() : base(PrimitiveType.UInt32)
+        public PIC18ProgAddrOperand() : base(PrimitiveType.Ptr32)
         {
         }
 
@@ -294,7 +295,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{CodeTarget.ToUInt32():X6}");
+            writer.Write($"{CodeTarget}");
         }
 
     }
@@ -317,8 +318,8 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC18ProgRel8AddrOperand(sbyte off, Address instrAddr) 
         {
             RelativeWordOffset = Constant.SByte(off);
-            uint absaddr = (uint)((long)instrAddr.ToUInt32() + 1 + off) & 0xFFFFFU;
-            CodeTarget = Constant.UInt32(absaddr << 1);
+            uint absaddr = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
+            CodeTarget = PICProgAddress.Ptr(absaddr);
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgRel8(this);
@@ -345,8 +346,8 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC18ProgRel11AddrOperand(short off, Address instrAddr) 
         {
             RelativeWordOffset = Constant.Int16(off);
-            uint absaddr = (uint)((long)instrAddr.ToUInt32() + 1 + off) & 0xFFFFFU;
-            CodeTarget = Constant.UInt32(absaddr << 1);
+            uint absaddr = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
+            CodeTarget = PICProgAddress.Ptr(absaddr);
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgRel11(this);
@@ -363,10 +364,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Instantiates a Absolute Code Address operand. Used by GOTO, CALL instructions.
         /// </summary>
-        /// <param name="addr">The program word address.</param>
-        public PIC18ProgAbsAddrOperand(uint addr)
+        /// <param name="absaddr">The program word address.</param>
+        public PIC18ProgAbsAddrOperand(uint absaddr)
         {
-            CodeTarget = Constant.UInt32(addr << 1);
+            CodeTarget = PICProgAddress.Ptr((absaddr << 1) & PICProgAddress.MAXPROGBYTADDR);
         }
 
         public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitProgAbs(this);
@@ -454,69 +455,65 @@ namespace Reko.Arch.Microchip.PIC18
 
     }
 
-    /// <summary>
-    /// A PIC18 12-bit data memory absolute address operand (used by MOVFF, MOVSF instruction)
-    /// </summary>
-    public class PIC18Data12bitAbsAddrOperand : MachineOperand, IPIC18kOperand
+    public abstract class PIC18DataAbsAddrOperand : MachineOperand, IPIC18kOperand
     {
         /// <summary>
-        /// Gets the 12-bit data memory absolute address.
+        /// Gets the 12/14-bit data memory absolute address.
         /// </summary>
-        public readonly Constant DataTarget;
+        public PICDataAddress DataTarget { get; protected set; }
 
-        public PIC18Data12bitAbsAddrOperand(ushort w) : base(PrimitiveType.UInt16)
+        public PIC18DataAbsAddrOperand() : base(PrimitiveType.UInt16)
         {
-            DataTarget = Constant.UInt16(w);
         }
 
-        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs12(this);
-        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataAbs12(this);
-        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataAbs12(this, context);
+        public abstract void Accept(IPIC18OperandVisitor visitor);
+        public abstract T Accept<T>(IPIC18OperandVisitor<T> visitor);
+        public abstract T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            ushort immAddr = DataTarget.ToUInt16();
-            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            RegisterStorage sfr = PIC18Registers.GetRegister(DataTarget);
             if (sfr != RegisterStorage.None)
                 writer.Write($"{sfr.Name}");
             else
-                writer.Write($"0x{immAddr:X4}");
+                writer.Write($"{DataTarget}");
         }
+
+    }
+
+    /// <summary>
+    /// A PIC18 12-bit data memory absolute address operand (used by MOVFF, MOVSF instruction)
+    /// </summary>
+    public class PIC18Data12bitAbsAddrOperand : PIC18DataAbsAddrOperand
+    {
+        public PIC18Data12bitAbsAddrOperand(ushort w)
+        {
+            DataTarget = PICDataAddress.Ptr(w & 0xFFFU);
+        }
+
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs12(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataAbs12(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataAbs12(this, context);
 
     }
 
     /// <summary>
     /// A PIC18 14-bit data memory absolute address operand (used by MOVFFL, MOVSFL instruction)
     /// </summary>
-    public class PIC18Data14bitAbsAddrOperand : MachineOperand, IPIC18kOperand
+    public class PIC18Data14bitAbsAddrOperand : PIC18DataAbsAddrOperand
     {
-        /// <summary>
-        /// Gets the 14-bit data memory absolute address.
-        /// </summary>
-        public readonly Constant DataTarget;
-
         /// <summary>
         /// Instantiates a 14-bit data memory address operand (used by MOVFFL, MOVSFL instruction)
         /// </summary>
         /// <param name="w">An unsigned 16-bit integer to process.</param>
-        public PIC18Data14bitAbsAddrOperand(ushort w) : base(PrimitiveType.UInt16)
+        public PIC18Data14bitAbsAddrOperand(ushort w) 
         {
-            DataTarget = Constant.UInt16(w);
+            DataTarget = PICDataAddress.Ptr(w & 0x3FFFU);
         }
 
-        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs14(this);
-        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataAbs14(this);
-        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataAbs14(this, context);
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            ushort immAddr = DataTarget.ToUInt16();
-            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
-            if (sfr != RegisterStorage.None)
-                writer.Write($"{sfr.Name}");
-            else
-                writer.Write($"0x{immAddr:X4}");
-        }
+        public override void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDataAbs14(this);
+        public override T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDataAbs14(this);
+        public override T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDataAbs14(this, context);
 
     }
 
@@ -573,7 +570,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
             {
-                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(Address.Ptr16(uaddr));
+                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
                 var sfr = PIC18Registers.GetRegister(aaddr);
                 if (sfr != RegisterStorage.None)
                 {
@@ -616,7 +613,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            ushort uaddr = BankAddr.ToByte();
+            byte uaddr = BankAddr.ToByte();
             byte bitpos = BitNumber.ToByte();
 
             if (IsIndexedAddressing)
@@ -631,11 +628,11 @@ namespace Reko.Arch.Microchip.PIC18
             }
             if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
             {
-                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(Address.Ptr16(uaddr));
+                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
                 var sfr = PIC18Registers.GetRegister(aaddr);
                 if (sfr != RegisterStorage.None)
                 {
-                    var bitname = PIC18Registers.GetBitField(Address.Ptr16(uaddr), bitpos);
+                    var bitname = PIC18Registers.GetBitField(aaddr, bitpos);
                     if (bitname != null)
                     {
                         writer.Write($"{sfr.Name},{bitname.Name},ACCESS");
@@ -674,7 +671,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            ushort uaddr = BankAddr.ToByte();
+            byte uaddr = BankAddr.ToByte();
             string wdest = (WregIsDest.ToBoolean() ? ",W" : ",F");
 
             if (IsIndexedAddressing)
@@ -689,7 +686,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
             {
-                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(Address.Ptr16(uaddr));
+                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
                 var sfr = PIC18Registers.GetRegister(aaddr);
                 if (sfr != RegisterStorage.None)
                 {
