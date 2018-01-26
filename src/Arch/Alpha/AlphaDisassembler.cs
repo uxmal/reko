@@ -268,9 +268,8 @@ namespace Reko.Arch.Alpha
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                RegOpRec decoder;
                 var functionCode = ((int)uInstr >> 5) & 0x7F;
-                if (!decoders.TryGetValue(functionCode, out decoder))
+                if (!decoders.TryGetValue(functionCode, out var decoder))
                     return dasm.Invalid();
                 else
                     return decoder.Decode(uInstr, dasm);
@@ -288,9 +287,8 @@ namespace Reko.Arch.Alpha
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                Decoder decoder;
                 var functionCode = ((int)uInstr >> 5) & 0x7FF;
-                if (!decoders.TryGetValue(functionCode, out decoder))
+                if (!decoders.TryGetValue(functionCode, out var decoder))
                     return dasm.Nyi(uInstr, functionCode);
                 else
                     return decoder.Decode(uInstr, dasm);

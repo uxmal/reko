@@ -67,6 +67,7 @@ namespace Reko.Core
 
     public static class StorageEx
     {
+        [Obsolete("Use new C# 7 features to avoid this")]
         public static bool As<T>(this Storage self, out T t) where T : Storage
         {
             t = self as T;
@@ -452,12 +453,8 @@ namespace Reko.Core
 
         public int SubregisterOffset(RegisterStorage subReg)
         {
-            var sub = subReg as RegisterStorage;
-            if (sub != null)
-            {
-                if (Number == sub.Number)
-                    return 0;
-            }
+            if (subReg is RegisterStorage sub && Number == sub.Number)
+                return 0;
             return -1;
         }
 
@@ -480,8 +477,7 @@ namespace Reko.Core
             
         public Expression GetSlice(Expression value)
         {
-            var c = value as Constant;
-            if (c != null && c.IsValid)
+            if (value is Constant c && c.IsValid)
             {
                 var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
                 return Constant.Create(this.DataType, newValue);

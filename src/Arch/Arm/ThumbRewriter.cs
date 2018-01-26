@@ -246,8 +246,7 @@ namespace Reko.Arch.Arm
         private void Predicate(ArmCodeCondition cond, Expression dst, Expression src)
         {
             RtlInstruction instr;
-            Identifier id;
-            if (dst.As<Identifier>(out id) && id.Storage == A32Registers.pc)
+            if (dst is Identifier id && id.Storage == A32Registers.pc)
             {
                 rtlc = RtlClass.Transfer;
                 instr = new RtlGoto(src, RtlClass.Transfer);

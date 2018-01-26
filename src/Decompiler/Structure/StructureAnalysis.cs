@@ -1152,11 +1152,9 @@ refinement on the loop body, which we describe below.
         private bool RefineLoop(Region head, ISet<Region> loopNodes)
         {
             head = EnsureSingleEntry(head, loopNodes);
-            var fl = DetermineFollowLatch(head, loopNodes);
-            if (fl == null)
+            var (follow, latch) = DetermineFollowLatch(head, loopNodes);
+            if (follow == null && latch == null)
                 return false;
-            var follow = fl.Item1;
-            var latch = fl.Item2;
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
@@ -1248,7 +1246,7 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private Tuple<Region, Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
+        private (Region follow, Region latch) DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
@@ -1271,7 +1269,7 @@ refinement on the loop body, which we describe below.
                     {
                         if (IsBackEdge(latch, head) && LinearSuccessor(latch) == head)
                         {
-                            return Tuple.Create(follow, latch);
+                            return (follow, latch);
                         }
                     }
                 }
@@ -1284,13 +1282,13 @@ refinement on the loop body, which we describe below.
                     if (latchSuccs.Length == 2)
                     {
                         if (!loopNodes.Contains(latchSuccs[0]))
-                            return Tuple.Create(latchSuccs[0], latch);
+                            return (latchSuccs[0], latch);
                         if (!loopNodes.Contains(latchSuccs[1]))
-                            return Tuple.Create(latchSuccs[1], latch);
+                            return (latchSuccs[1], latch);
                     }
                 }
             }
-            return null;
+            return (null, null);
         }
         
         /// <summary>
