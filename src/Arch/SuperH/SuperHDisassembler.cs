@@ -267,9 +267,8 @@ namespace Reko.Arch.SuperH
 
             public override SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr)
             {
-                OprecBase or;
                 var mask = (1 << bitcount) - 1;
-                if (!oprecs.TryGetValue((uInstr >> shift) & mask, out or))
+                if (!oprecs.TryGetValue((uInstr >> shift) & mask, out OprecBase or))
                     return dasm.Decode(uInstr, Opcode.invalid, "");
                 return or.Decode(dasm, uInstr);
             }

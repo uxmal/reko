@@ -203,8 +203,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 DtFormat fmt;
                 string entryName;
-                Entry dser;
-                if (!machineSpecific.TryGetValue(entry.d_tag, out dser) &&
+                if (!machineSpecific.TryGetValue(entry.d_tag, out Entry dser) &&
                     !entries.TryGetValue(entry.d_tag, out dser))
                 {
                     entryName = string.Format("{0:X8}    ", entry.d_tag);

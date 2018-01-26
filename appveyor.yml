@@ -3,6 +3,8 @@ version: 0.7.2.{build}
 init: 
   - git config --global core.autocrlf true 
 
+image: Visual Studio 2017
+
 configuration: Release
 
 build:

@@ -48,8 +48,7 @@ namespace Reko.Environments.AtariTOS
         public override Program Load(Address addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
-            PrgHeader hdr;
-            if (!TryLoadHeader(rdr, out hdr))
+            if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
             var mem = new MemoryArea(addrLoad, new byte[ hdr.TextSize + hdr.DataSize + hdr.BssSize ]);
