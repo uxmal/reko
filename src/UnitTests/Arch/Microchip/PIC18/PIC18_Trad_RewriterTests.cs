@@ -4654,7 +4654,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0xE812),
                 "0|L--|0x000200(2): 1 instructions",
-                    "1|L--|FSR0H_FSR0_L = FSR0H_FSR0_L + 0x12"
+                    "1|L--|FSR0H_FSR0L = FSR0H_FSR0L + 0x12"
                 );
 
         }
@@ -6328,7 +6328,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0xE823),
                 "0|L--|0x000200(2): 1 instructions",
-                    "1|L--|FSR0H_FSR0_L = FSR0H_FSR0_L + 0x23"
+                    "1|L--|FSR0H_FSR0L = FSR0H_FSR0L + 0x23"
                 );
 
         }
