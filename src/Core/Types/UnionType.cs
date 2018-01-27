@@ -185,7 +185,7 @@ namespace Reko.Core.Types
 	public class UnionAlternativeCollection : SortedList<DataType,UnionAlternative>
 	{
         public UnionAlternativeCollection()
-            : base(new DataTypeComparer())
+            : base(DataTypeComparer.getGlobalComparer())
         {
         }
 		public void Add(UnionAlternative a)

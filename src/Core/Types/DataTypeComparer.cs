@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John K�ll�n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,24 +30,26 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>, IEqualityComparer<DataType>
 	{
-        private const int Prim = 0;
-        private const int Enum = 1;
-        private const int Ptr = 2;
-        private const int MemPtr = 3;
-        private const int Fn = 4;
-        private const int Array = 5;
+        private const int Prim   = 0;
+        private const int Enum   = 1;
+		private const int Ptr =    2;
+		private const int MemPtr = 3;
+		private const int Fn =     4;
+		private const int Array =  5;
         private const int String = 6;
-        private const int Struct = 7;
-        private const int Union = 8;
-        private const int TRef = 9;
-        private const int TVar = 10;
+		private const int Struct = 7;
+		private const int Union =  8;
+        private const int TRef =   9;
+        private const int TVar =   10;
         private const int EqClass = 11;
-        private const int Code = 12;
-        private const int Ref = 13;
-        private const int Unk = 14;
-        private const int Void = 15;
+        private const int Code =   12;
+        private const int Ref =    13;
+        private const int Unk =    14;
+        private const int Void =   15;
 
         private IDictionary<Tuple<DataType, DataType>, int> compareResult;
+
+		private static DataTypeComparer ourGlobalComparer = new DataTypeComparer();
 
         public DataTypeComparer()
         {
@@ -430,5 +432,10 @@ namespace Reko.Core.Types
             return Void;
         }
 		#endregion
+
+		public static DataTypeComparer getGlobalComparer()
+		{
+			return ourGlobalComparer;
+		}
 	}
 }
