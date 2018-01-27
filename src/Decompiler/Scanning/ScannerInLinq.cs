@@ -266,10 +266,15 @@ namespace Reko.Scanning
                 select string.Format("{0:X8}:{1}", g.Key, g.Count())));
         }
 
+        /// <summary>
+        /// From the "soup" of instructions and links, we construct
+        /// basic blocks by finding those instructions that have 0 or more than
+        /// 1 predecessor or successors. These instructions delimit the start and 
+        /// end of the basic blocks.
+        /// </summary>
         public Dictionary<Address, block> BuildBasicBlocks(ScanResults sr)
         {
-            // Count and save the # of predecessors and successors for each
-            // instruction.
+            // Count and save the # of successors for each instruction.
             foreach (var cSucc in
                     from link in sr.FlatEdges
                     group link by link.first into g
@@ -279,6 +284,7 @@ namespace Reko.Scanning
                 if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr))
                     instr.succ = cSucc.Count;
             }
+            // Count and save the # of predecessors for each instruction.
             foreach (var cPred in
                     from link in sr.FlatEdges
                     group link by link.second into g
@@ -294,9 +300,16 @@ namespace Reko.Scanning
             {
                 if (instr.type != (ushort)RtlClass.Linear)
                     continue;
-                ScanResults.instr succ;
+                // Find the instruction that is located directly after instr.
+                instr succ;
                 if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out succ))
                     continue;
+                // If succ follows instr and it's not the entry of a known procedure
+                // or a called address, we don't need the edge between them since they're inside
+                // a basic block. We also succ as belonging to the same block as instr.
+                // Since we're iterating through FlatInstructions in ascending address order,
+                // the block_id's will propagate from the first instruction in each block 
+                // to the next.
                 if (instr.succ == 1 && succ.pred == 1 &&
                     !sr.KnownProcedures.Contains(succ.addr) &&
                     !sr.DirectlyCalledAddresses.ContainsKey(succ.addr))
@@ -306,7 +319,7 @@ namespace Reko.Scanning
                 }
             }
 
-            // Build global block graph
+            // Build the blocks by grouping the instructions.
             var the_blocks =
                 (from i in sr.FlatInstructions.Values
                  group i by i.block_id into g
@@ -316,6 +329,7 @@ namespace Reko.Scanning
                      instrs = g.OrderBy(ii => ii.addr).ToArray()
                  })
                 .ToDictionary(b => b.id);
+            // Exclude the now useless edges.
             sr.FlatEdges = 
                 (from link in sr.FlatEdges
                 join f in sr.FlatInstructions.Values on link.first equals f.addr

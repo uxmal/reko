@@ -170,7 +170,7 @@ namespace Reko.Scanning
             public Address block_id;
             public int pred;
             public int succ;
-            internal RtlInstructionCluster rtl;
+            public RtlInstructionCluster rtl;
         }
 
         public class link
