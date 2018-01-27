@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ namespace Reko.Core.Types
 	public class Unifier
 	{
 		private TypeFactory factory;
+		private IDictionary<Tuple<DataType, DataType>, bool> cache = new Dictionary<Tuple<DataType, DataType>, bool>();
 
         public Unifier()
             : this(new TypeFactory())
@@ -45,9 +46,32 @@ namespace Reko.Core.Types
 
 		public bool AreCompatible(DataType a, DataType b)
 		{
+			return AreCompatible(a, b, 0);
+		}
+		
+		private bool AreCompatible(DataType a, DataType b, int depth)
+		{
+			var typePair = new Tuple<DataType, DataType>(a, b);
+
+			bool d;
+
+			if (cache.TryGetValue(typePair, out d))
+				return d;
+
+			d = DoAreCompatible(a, b, depth);
+			cache[typePair] = d;
+
+			return d;
+		}
+
+		private bool DoAreCompatible(DataType a, DataType b, int depth)
+		{
 			if (a == null || b == null)
 				return false;
 
+			if (depth > 20)
+				throw new StackOverflowException("Way too deep");     //$BUG: discover why datatypes recurse so deep.
+			
 			PrimitiveType pa = a as PrimitiveType;
 			PrimitiveType pb = b as PrimitiveType;
 			if (pa != null && pb != null)
@@ -62,9 +86,9 @@ namespace Reko.Core.Types
             if (tra != null && trb != null)
                 return tra == trb;
             if (tra != null)
-                return AreCompatible(tra.Referent, b);
+                return AreCompatible(tra.Referent, b, ++depth);
             if (trb != null)
-                return AreCompatible(a, trb.Referent);
+                return AreCompatible(a, trb.Referent, ++depth);
 
 			TypeVariable tva = a as TypeVariable;
 			TypeVariable tvb = b as TypeVariable;
@@ -83,16 +107,16 @@ namespace Reko.Core.Types
 			Pointer ptrA = a as Pointer;
 			Pointer ptrB = b as Pointer;
 			if (ptrA != null)
-				return IsCompatibleWithPointer(ptrA, b);
+				return IsCompatibleWithPointer(ptrA, b, ++depth);
 			if (ptrB != null)
-				return IsCompatibleWithPointer(ptrB, a);
+				return IsCompatibleWithPointer(ptrB, a, ++depth);
 
 			MemberPointer mpA = a as MemberPointer;
 			MemberPointer mpB = b as MemberPointer;
 			if (mpA != null)
-				return IsCompatibleWithMemberPointer(mpA, b);
+				return IsCompatibleWithMemberPointer(mpA, b, ++depth);
 			if (mpB != null)
-				return IsCompatibleWithMemberPointer(mpB, a);
+				return IsCompatibleWithMemberPointer(mpB, a, ++depth);
 
 			StructureType sa = a as StructureType;
 			StructureType sb = b as StructureType;
@@ -105,7 +129,7 @@ namespace Reko.Core.Types
 			ArrayType ab = b as ArrayType;
 			if (aa != null && ab != null)
 			{
-				return AreCompatible(aa.ElementType, ab.ElementType);
+				return AreCompatible(aa.ElementType, ab.ElementType, ++depth);
 			}
 
 			UnionType ua = a as UnionType;
@@ -129,7 +153,7 @@ namespace Reko.Core.Types
 			return a is UnknownType || b is UnknownType;
 		}
 
-		public bool AreCompatible(StructureType a, StructureType b)
+		private bool AreCompatible(StructureType a, StructureType b)
 		{
 			if (a.Size > 0 && b.Size > 0)
 			{
@@ -138,19 +162,19 @@ namespace Reko.Core.Types
 			return true;
 		}
 
-		public bool IsCompatibleWithPointer(Pointer ptrA, DataType b)
+		private bool IsCompatibleWithPointer(Pointer ptrA, DataType b, int depth)
 		{
 			Pointer ptrB = b as Pointer;
             if (ptrB != null)
             {
-                if (AreCompatible(ptrA.Pointee, ptrB.Pointee))
+                if (AreCompatible(ptrA.Pointee, ptrB.Pointee, ++depth))
                     return true;
                 var arrayA = ptrA.Pointee as ArrayType;
                 var arrayB = ptrB.Pointee as ArrayType;
                 if (arrayA != null)
-                    return AreCompatible(arrayA.ElementType, ptrB.Pointee);
+                    return AreCompatible(arrayA.ElementType, ptrB.Pointee, ++depth);
                 else if (arrayB != null)
-                    return AreCompatible(ptrA.Pointee, arrayB.ElementType);
+                    return AreCompatible(ptrA.Pointee, arrayB.ElementType, ++depth);
                 else
                     return false;
             }
@@ -163,13 +187,13 @@ namespace Reko.Core.Types
 			return false;
 		}
 
-		public bool IsCompatibleWithMemberPointer(MemberPointer mpA, DataType b)
+		private bool IsCompatibleWithMemberPointer(MemberPointer mpA, DataType b, int depth)
 		{
 			MemberPointer mpB = b as MemberPointer;
             if (mpB != null)
                 return
-                    AreCompatible(mpA.BasePointer, mpB.BasePointer) && 
-				    AreCompatible(mpA.Pointee, mpB.Pointee);
+                    AreCompatible(mpA.BasePointer, mpB.BasePointer, ++depth) && 
+				    AreCompatible(mpA.Pointee, mpB.Pointee, ++depth);
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
