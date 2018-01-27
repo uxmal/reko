@@ -294,7 +294,7 @@ namespace Reko.Arch.Microchip.PIC18
             var sfr = PIC18Registers.GetRegister(mem.DataTarget);
             if (sfr != RegisterStorage.None)
                 return binder.EnsureRegister(sfr);
-            return m.Mem8(Address.Ptr16(mem.DataTarget));
+            return m.Mem8(PICDataAddress.Ptr(mem.DataTarget));
         }
 
         #endregion

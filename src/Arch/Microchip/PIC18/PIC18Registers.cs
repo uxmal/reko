@@ -49,7 +49,7 @@ namespace Reko.Arch.Microchip.PIC18
             /// <summary>
             /// The register address if memory-mapped.
             /// </summary>
-            public readonly Address Addr;
+            public readonly PICDataAddress Addr;
 
             /// <summary>
             /// The register ID is non-memory-mapped.
@@ -62,7 +62,7 @@ namespace Reko.Arch.Microchip.PIC18
             /// Constructor.
             /// </summary>
             /// <param name="regAddr">The register address.</param>
-            public RegAddress(Address regAddr)
+            public RegAddress(PICDataAddress regAddr)
             {
                 Addr = regAddr;
                 NMMRID = String.Empty;
@@ -74,7 +74,7 @@ namespace Reko.Arch.Microchip.PIC18
             /// <param name="regAddr">The register absolute 16-bit address.</param>
             public RegAddress(ushort regAddr)
             {
-                Addr = Address.Ptr16(regAddr);
+                Addr = PICDataAddress.Ptr(regAddr);
                 NMMRID = String.Empty;
             }
 
@@ -121,10 +121,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         private sealed class BitFieldAddr : IEquatable<BitFieldAddr>
         {
-            public readonly Address RegAddr;
+            public readonly PICDataAddress RegAddr;
             public readonly ulong BitPos;
 
-            public BitFieldAddr(Address regaddr, ulong bitpos)
+            public BitFieldAddr(PICDataAddress regaddr, ulong bitpos)
             {
                 RegAddr = regaddr;
                 BitPos = bitpos;
