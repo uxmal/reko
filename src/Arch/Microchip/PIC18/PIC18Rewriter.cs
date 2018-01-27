@@ -193,7 +193,7 @@ namespace Reko.Arch.Microchip.PIC18
             var fsridxOp = op as PIC18FSR2IdxOperand;
             if (fsridxOp != null)
             {
-                var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.Ptr16);
+                var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
                 return m.Mem8(m.IAdd(fsr2, fsridxOp.Offset));
             }
 
@@ -342,7 +342,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteADDULNK()
         {
-            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
+            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.UInt16);
             var k = RewriteSrcOp(instr.op1);
             m.Assign(fsr2, m.IAdd(fsr2, k));
             _setStatusFlags(fsr2);
@@ -708,26 +708,24 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteMOVSF()
         {
-            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
             var zs = RewriteSrcOp(instr.op1);
             var fd = RewriteSrcOp(instr.op2);
-            m.Assign(fd, m.Mem8(m.IAdd(fsr2, zs)));
+            m.Assign(fd, zs);
         }
 
         private void RewriteMOVSFL()
         {
-            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
             var zs = RewriteSrcOp(instr.op1);
             var fd = RewriteSrcOp(instr.op2);
-            m.Assign(fd, m.Mem8(m.IAdd(fsr2, zs)));
+            m.Assign(fd, zs);
         }
 
         private void RewriteMOVSS()
         {
-            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
+            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.UInt16);
             var zs = RewriteSrcOp(instr.op1);
             var zd = RewriteSrcOp(instr.op2);
-            m.Assign(m.Deref(m.IAdd(fsr2, zd)), m.Mem8(m.IAdd(fsr2, zs)));
+            m.Assign(zd, zs);
         }
 
         private void RewriteMOVWF()
@@ -768,7 +766,7 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
 
             //TODO: See TOS update
-            var tos = binder.EnsureSequence(PIC18Registers.TOSL, PIC18Registers.TOSU, PrimitiveType.Word32);
+            var tos = binder.EnsureSequence(PIC18Registers.TOSU, PIC18Registers.TOSL, PrimitiveType.Word32);
         }
 
         private void RewritePUSH()
@@ -777,12 +775,12 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
 
             //TODO: see TOS update
-            var tos = binder.EnsureSequence(PIC18Registers.TOSL, PIC18Registers.TOSU, PrimitiveType.Word32);
+            var tos = binder.EnsureSequence(PIC18Registers.TOSU, PIC18Registers.TOSL, PrimitiveType.Word32);
         }
 
         private void RewritePUSHL()
         {
-            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
+            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.UInt16);
             var k = RewriteSrcOp(instr.op1);
             m.Assign(m.Deref(fsr2), k);
             m.Assign(fsr2, m.IAdd(fsr2, Constant.UInt16(1)));
@@ -806,7 +804,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteRETFIE()
         {
-            var tos = binder.EnsureSequence(PIC18Registers.TOSL, PIC18Registers.TOSU, PrimitiveType.Word32);
+            var tos = binder.EnsureSequence(PIC18Registers.TOSU, PIC18Registers.TOSL, PrimitiveType.Word32);
             //TODO: See TOS restore and stack update
             rtlc = RtlClass.Transfer;
             m.Return(1, 0);
@@ -927,7 +925,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteSUBULNK()
         {
-            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2L, PIC18Registers.FSR2H, PrimitiveType.UInt16);
+            var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.UInt16);
             var k = RewriteSrcOp(instr.op1);
             m.Assign(fsr2, m.ISub(fsr2, k));
             _setStatusFlags(fsr2);

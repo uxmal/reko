@@ -37,6 +37,8 @@ namespace Reko.Arch.Microchip.PIC18
     public class PIC18Registers : PICRegistersBuilder, IPICRegisterSymTable
     {
 
+        //TODO: Revert joined registers' numbering to allow EnsureSequence to work.
+        
         #region Helper classes
 
         /// <summary>

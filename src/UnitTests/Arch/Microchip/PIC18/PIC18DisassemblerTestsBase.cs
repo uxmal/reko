@@ -29,7 +29,7 @@ using System.Linq;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
-    public class PICDisassemblerTestsBase
+    public class PIC18DisassemblerTestsBase
     {
         protected static PIC18Architecture arch;
         protected Address baseAddr = Address.Ptr32(0x200);

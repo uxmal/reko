@@ -92,8 +92,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                     ++i;
                 }
             }
-            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.", mesg);
-            Assert.IsFalse(rewriter.MoveNext(), "More instructions were emitted than were expected.", mesg);
+            Assert.AreEqual(expected.Length, i, mesg + " Expected " + expected.Length + " instructions.");
+            Assert.IsFalse(rewriter.MoveNext(), mesg + " More instructions were emitted than were expected. ");
         }
 
         protected uint[] Words(params uint[] words)
