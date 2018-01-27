@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ namespace Reko.Core
             {
                 // Outside of range.
                 Items.Add(itemNew.Address, itemNew);
-                MapChanged.Fire(this);
+                FireMapChanged();
                 return itemNew;
             }
             else
@@ -79,13 +79,13 @@ namespace Reko.Core
                         itemNew.Size = (uint)(item.Size - delta);
                         item.Size = (uint)delta;
                         Items.Add(itemNew.Address, itemNew);
-                        MapChanged.Fire(this);
+                        FireMapChanged();
                         return itemNew;
                     }
                     else
                     {
                         Items.Add(itemNew.Address, itemNew);
-                        MapChanged.Fire(this);
+                        FireMapChanged();
                         return itemNew;
                     }
                 }
@@ -98,7 +98,7 @@ namespace Reko.Core
                         item.Address += itemNew.Size;
                         Items[itemNew.Address] = itemNew;
                         Items[item.Address] = item;
-                        MapChanged.Fire(this);
+                        FireMapChanged();
                         return itemNew;
                     }
                     if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
@@ -106,13 +106,23 @@ namespace Reko.Core
                         Items[itemNew.Address] = itemNew;
                         itemNew.Size = item.Size;
                     }
-                    MapChanged.Fire(this);
+                    FireMapChanged();
                     return item;
                 }
             }
 		}
 
-        public void AddItemWithSize(Address addr, ImageMapItem itemNew)
+	    public void FireMapChanged()
+	    {
+	        if (!EventHandlerPaused)
+	        {
+	            MapChanged.Fire(this);	            
+	        }
+	    }
+
+	    public bool EventHandlerPaused { get; set; }
+
+	    public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
             ImageMapItem item;
             if (!TryFindItem(addr, out item))
@@ -158,7 +168,7 @@ namespace Reko.Core
                     Items.Add(item.Address, item);
                 }
             }
-            MapChanged.Fire(this);
+            FireMapChanged();
         }
 
         private DataType ChopAfter(DataType type, int offset)
@@ -227,7 +237,7 @@ namespace Reko.Core
                 Items.Remove(nextItem.Address);
             }
 
-            MapChanged.Fire(this);
+            FireMapChanged();
         }
 
         /// <summary>

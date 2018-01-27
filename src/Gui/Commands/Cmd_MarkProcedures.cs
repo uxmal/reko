@@ -40,24 +40,34 @@ namespace Reko.Gui.Commands
         {
             var decSvc = Services.RequireService<IDecompilerService>();
             var brSvc = Services.RequireService<IProjectBrowserService>();
-            var userProcs =
-                from hit in addresses
-                    //$TODO: do this in a worker procedure.
-                let proc = decSvc.Decompiler.ScanProcedure(hit)
-                select new
-                {
-                    Program = hit.Program,
-                    Address = hit.Address,
-                    UserProc = new Core.Serialization.Procedure_v1
-                    {
-                        Address = hit.Address.ToString(),
-                        Name = proc.Name
-                    }
-                };
-            foreach (var up in userProcs)
+            try
             {
-                up.Program.EnsureUserProcedure(up.Address, up.UserProc.Name);
+                brSvc.CurrentProgram.ImageMap.EventHandlerPaused = true;
+                var userProcs =
+                    from hit in addresses
+                    //$TODO: do this in a worker procedure.
+                    let proc = decSvc.Decompiler.ScanProcedure(hit)
+                    select new
+                    {
+                        Program = hit.Program,
+                        Address = hit.Address,
+                        UserProc = new Core.Serialization.Procedure_v1
+                        {
+                            Address = hit.Address.ToString(),
+                            Name = proc.Name
+                        }
+                    };
+                foreach (var up in userProcs)
+                {
+                    up.Program.EnsureUserProcedure(up.Address, up.UserProc.Name);
+                }
             }
+            finally
+            {
+                brSvc.CurrentProgram.ImageMap.EventHandlerPaused = false;
+                brSvc.CurrentProgram.ImageMap.FireMapChanged();
+            }
+
             //$REVIEW: browser service should listen to changes in UserProcedures, no?
             brSvc.Reload();
         }
