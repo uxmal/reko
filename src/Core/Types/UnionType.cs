@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -188,7 +188,7 @@ namespace Reko.Core.Types
 	public class UnionAlternativeCollection : SortedList<DataType,UnionAlternative>
 	{
         public UnionAlternativeCollection()
-            : base(new DataTypeComparer())
+            : base(DataTypeComparer.getGlobalComparer())
         {
         }
 		public void Add(UnionAlternative a)
