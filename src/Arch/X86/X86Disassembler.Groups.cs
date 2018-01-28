@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,13 +76,13 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.inc, "Ev"),
 				new SingleByteOpRec(Opcode.dec, "Ev"),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.call, "Ev"),
-                    new SingleByteOpRec(Opcode.call, "Eq")),
-                new SingleByteOpRec(Opcode.call, "Ep"),
+                    new SingleByteOpRec(Opcode.call, "Ev", InstructionClass.Transfer|InstructionClass.Call),
+                    new SingleByteOpRec(Opcode.call, "Eq", InstructionClass.Transfer|InstructionClass.Call)),
+                new SingleByteOpRec(Opcode.call, "Ep", InstructionClass.Transfer|InstructionClass.Call),
                 new Alternative64OpRec(
-				    new SingleByteOpRec(Opcode.jmp, "Ev"),
-				    new SingleByteOpRec(Opcode.jmp, "Eq")),
-				new SingleByteOpRec(Opcode.jmp, "Ep"),
+				    new SingleByteOpRec(Opcode.jmp, "Ev", InstructionClass.Transfer),
+				    new SingleByteOpRec(Opcode.jmp, "Eq", InstructionClass.Transfer)),
+				new SingleByteOpRec(Opcode.jmp, "Ep", InstructionClass.Transfer),
                 new Alternative64OpRec(
 				    new SingleByteOpRec(Opcode.push, "Ev"),
 				    new SingleByteOpRec(Opcode.push, "Eq")),

@@ -47,7 +47,7 @@ namespace Reko.Arch.Z80
                 {
                     ct = InstructionClass.Linear;
                 }
-                else if (( Op1 as ConditionOperand) != null)
+                else if ((Op1 as ConditionOperand) != null)
                 {
                     ct |= InstructionClass.Conditional;
                 }

@@ -41,15 +41,20 @@ namespace Reko.Core.Machine
         public int Length;
 
         /// <summary>
-        /// The kind of instruction
+        /// The kind of instruction.
         /// </summary>
         public abstract InstructionClass InstructionClass { get; }
 
         /// <summary>
         /// Returns true if the instruction is valid.
         /// </summary>
+        [Obsolete("Use InstructionClass.Invalid for this purpose.")]
         public abstract bool IsValid { get; }
 
+        /// <summary>
+        /// Returns true if <paramref name="addr"/> is contained
+        /// inside the instruction.
+        /// </summary>
         public bool Contains(Address addr)
         {
             ulong ulInstr = Address.ToLinear();

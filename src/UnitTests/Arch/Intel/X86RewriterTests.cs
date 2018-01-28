@@ -122,10 +122,6 @@ namespace Reko.UnitTests.Arch.Intel
 
         private PrimitiveType Word16 { get { return PrimitiveType.Word16; } }
 
-        private X86Instruction Instr(Opcode op, PrimitiveType dSize, PrimitiveType aSize, params MachineOperand[] ops)
-        {
-            return new X86Instruction(op, dSize, aSize, ops);
-        }
 
         private class RewriterHost : IRewriterHost
         {

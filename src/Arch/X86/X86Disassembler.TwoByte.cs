@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,11 +40,11 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.illegal),
-                    new SingleByteOpRec(Opcode.syscall)),
+                    new SingleByteOpRec(Opcode.syscall, "", InstructionClass.Transfer|InstructionClass.Call)),
                 new SingleByteOpRec(Opcode.clts),
                 new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.illegal),
-                    new SingleByteOpRec(Opcode.sysret)),
+                    new SingleByteOpRec(Opcode.sysret, "", InstructionClass.Transfer)),
 
                 new SingleByteOpRec(Opcode.invd),
                 new SingleByteOpRec(Opcode.wbinvd),
@@ -90,14 +91,14 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.nop, "Ev"),
+                new SingleByteOpRec(Opcode.nop, "Ev", InstructionClass.Linear|InstructionClass.Padding),
 
 				// 0F 20
 				new SingleByteOpRec(Opcode.mov, "Rv,Cd"),
                 new SingleByteOpRec(Opcode.mov, "Rv,Dd"),
                 new SingleByteOpRec(Opcode.mov, "Cd,Rv"),
                 new SingleByteOpRec(Opcode.mov, "Dd,Rv"),
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
@@ -153,26 +154,26 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
 
 				// 0F 40
-				new SingleByteOpRec(Opcode.cmovo,  "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovno, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovc,  "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovnc, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovz,  "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovnz, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovbe, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmova,  "Gv,Ev"),
+				new SingleByteOpRec(Opcode.cmovo,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovno, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovc,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovnc, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovz,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovnz, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovbe, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmova,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
 
-                new SingleByteOpRec(Opcode.cmovs,  "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovns, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovpe, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovpo, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovl,  "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovge, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovle, "Gv,Ev"),
-                new SingleByteOpRec(Opcode.cmovg,  "Gv,Ev"),
+                new SingleByteOpRec(Opcode.cmovs,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovns, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovpe, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovpo, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovl,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovge, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovle, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovg,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
 
 				// 0F 50
-				new PrefixedOpRec(
+                new PrefixedOpRec(
                     Opcode.movmskps, "Gy,Ups",
                     Opcode.movmskpd, "Gy,Upd"),
                 new PrefixedOpRec(
@@ -213,7 +214,7 @@ namespace Reko.Arch.X86
                     Opcode.mulpd, "Vpd,Hpd,Wpd",
                     Opcode.mulss, "Vss,Hss,Wss",
                     Opcode.mulsd, "Vsd,Hsd,Wsd"),
-                new PrefixedOpRec(
+				new PrefixedOpRec(
                     Opcode.cvtps2pd, "Vpd,Wps",
                     Opcode.cvtpd2ps, "Vps,Wpd",
                     Opcode.cvtss2sd, "Vsd,Hx,Wss",
@@ -254,7 +255,7 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.punpckldq, "Pq,Qd",
                     Opcode.punpckldq, "Vx,Hx,Wx"),
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
                 new PrefixedOpRec(
                     Opcode.pcmpgtb, "Pq,Qd",
                     Opcode.pcmpgtb, "Vx,Hx,Wx"),
@@ -280,7 +281,7 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.packssdw, "Pq,Qd",
                     Opcode.vpackssdw, "Vx,Hx,Wx"),
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.movd, "Vy,Ey"),
 				new SingleByteOpRec(Opcode.movdqa, "Vx,Wx"),
@@ -318,23 +319,23 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.movdqa, "Wx,Vx"),
 
 				// 0F 80
-				new SingleByteOpRec(Opcode.jo,	"Jv"),
-				new SingleByteOpRec(Opcode.jno,   "Jv"),
-				new SingleByteOpRec(Opcode.jc,	"Jv"),
-				new SingleByteOpRec(Opcode.jnc,	"Jv"),
-				new SingleByteOpRec(Opcode.jz,	"Jv"),
-				new SingleByteOpRec(Opcode.jnz,   "Jv"),
-				new SingleByteOpRec(Opcode.jbe,   "Jv"),
-				new SingleByteOpRec(Opcode.ja,    "Jv"),
+				new SingleByteOpRec(Opcode.jo,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jno,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jc,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jnc,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jz,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jnz,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jbe,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.ja,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
 
-				new SingleByteOpRec(Opcode.js,    "Jv"),
-				new SingleByteOpRec(Opcode.jns,   "Jv"),
-				new SingleByteOpRec(Opcode.jpe,   "Jv"),
-				new SingleByteOpRec(Opcode.jpo,   "Jv"),
-				new SingleByteOpRec(Opcode.jl,    "Jv"),
-				new SingleByteOpRec(Opcode.jge,   "Jv"),
-				new SingleByteOpRec(Opcode.jle,   "Jv"),
-				new SingleByteOpRec(Opcode.jg,    "Jv"),
+				new SingleByteOpRec(Opcode.js,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jns,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jpe,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jpo,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jl,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jge,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jle,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jg,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
 
 				// 0F 90
 				new SingleByteOpRec(Opcode.seto, "Eb"),
@@ -413,7 +414,7 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.vshufps, "Vps,Hps,Wps,Ib",
                     Opcode.vshufpd, "Vpd,Hpd,Wpd,Ib"),
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
 
 				new SingleByteOpRec(Opcode.bswap, "rv"),
 				new SingleByteOpRec(Opcode.bswap, "rv"),
@@ -441,7 +442,7 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.pmullw, "Pq,Qq",
                     Opcode.vpmullw, "Vx,Hx,Wx"),
-                new SingleByteOpRec(Opcode.movq, "Wx,Vx"),
+				new SingleByteOpRec(Opcode.movq, "Wx,Vx"),
                 new PrefixedOpRec(
                     Opcode.pmovmskb, "Gd,Nq",
                     Opcode.vpmovmskb, "Gd,Ux"),
@@ -490,7 +491,7 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.pmulhw, "Pq,Qq",
                     Opcode.vpmulhw, "Vx,Hx,Wx"),
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
                 new PrefixedOpRec(
                     Opcode.movntq, "Mq,Pq",
                     Opcode.vmovntq, "Mx,Vx"),
@@ -521,7 +522,7 @@ namespace Reko.Arch.X86
                     Opcode.vpxor, "Vx,Hx,Wx"),
 
 				// F0
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
                 new PrefixedOpRec(
                     Opcode.psllw, "Pq,Qq",
                     Opcode.vpsllw, "Vx,Hx,Wx"),
@@ -565,7 +566,7 @@ namespace Reko.Arch.X86
                 new PrefixedOpRec(
                     Opcode.paddd, "Pq,Qq",
                     Opcode.vpaddd, "Vx,Hx,Wx"),
-                new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.illegal),
 			};
         }
     }
