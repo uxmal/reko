@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch.Intel
                     new ImageSegment(".text", mem, AccessMode.ReadExecute))
             };
             var procAddress = Address.Ptr32(0x10000000);
-            instr = new X86Instruction(Opcode.nop, PrimitiveType.Word32, PrimitiveType.Word32)
+            instr = new X86Instruction(Opcode.nop, InstructionClass.Linear,  PrimitiveType.Word32, PrimitiveType.Word32)
             {
                 Address = procAddress,
             };
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Arch.Intel
 			mem.Offset = Constant.Word32(4);
 			Expression expr = orw.Transform(instr, mem, PrimitiveType.Word32, state);
 			Assert.AreEqual("Mem0[ecx + 0x00000004:word32]", expr.ToString());
-		}	
+		}
 
 		[Test]
 		public void X86Orw32_IndexedAccess()

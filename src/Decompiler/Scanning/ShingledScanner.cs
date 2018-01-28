@@ -594,7 +594,6 @@ namespace Reko.Scanning
             }
         }
 
-
         private bool IsExecutable(Address address)
         {
             ImageSegment seg;

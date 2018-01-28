@@ -79,10 +79,7 @@ namespace Reko.Core.Rtl
         }
     }
 
-    /// <summary>
-    /// Classifies an RTL instruction based on certain architectural features involving
-    /// delay slots on architectures like MIPS and SPARC.
-    /// </summary>
+   
     [Flags]
     [NativeInterop]
     public enum RtlClass
