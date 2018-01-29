@@ -213,11 +213,19 @@ namespace Reko.Core.Expressions
                 if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
-            
-            if (ptLeft != null && ptLeft.IsIntegral)
+
+            if (ptLeft != null && ptLeft.IsIntegral && ptRight != null && ptRight.IsIntegral)
             {
-                if (ptRight != null)
+                // According to the C language definition, the sum
+                // of unsigned and signed integers is always unsigned.
+                if (ptLeft.Domain == Domain.UnsignedInt && ptRight.IsIntegral)
+                {
+                    return ptLeft;
+                }
+                if (ptRight.Domain == Domain.UnsignedInt && ptLeft.IsIntegral)
+                {
                     return ptRight;
+                }
             }
             if (dtLeft is Pointer)
             {

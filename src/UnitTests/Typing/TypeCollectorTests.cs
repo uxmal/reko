@@ -217,5 +217,22 @@ namespace Reko.UnitTests.Typing
                 m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
             }, "Typing/TycoReg00300.txt");
         }
+
+
+        [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
+        public void TycoSignedUnsignedAdd()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier b = m.Local32("b");
+                Identifier c = m.Local32("c");
+                a.DataType = PrimitiveType.Int32;
+                b.DataType = PrimitiveType.UInt32;
+                m.Assign(c, m.IAdd(a, b));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoSignedUnsignedAdd.txt");
+        }
     }
 }

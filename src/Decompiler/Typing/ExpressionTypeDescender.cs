@@ -219,9 +219,11 @@ namespace Reko.Typing
             if (binExp.Operator == Operator.IAdd)
             {
                 var dt = PushAddendDataType(binExp.TypeVariable.DataType, eRight.TypeVariable.DataType);
-                MeetDataType(eLeft, dt);
+                if (dt != null)
+                    MeetDataType(eLeft, dt);
                 dt = PushAddendDataType(binExp.TypeVariable.DataType, eLeft.TypeVariable.DataType);
-                MeetDataType(eRight, dt);
+                if (dt != null)
+                    MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.ISub)
             {
@@ -354,8 +356,9 @@ namespace Reko.Typing
             }
             if (ptSum != null && ptSum.IsIntegral)
             {
-                if (ptOther != null && ptOther.Domain == Domain.Pointer || dtOther is Pointer)
-                    return factory.CreateUnionType(null, null, new List<DataType> {dtSum, dtOther});
+                // With integral types, type information flows only from leaves
+                // to root.
+                return null;
             }
             if (ptSum != null && ptSum.Domain == Domain.Pointer || dtSum is Pointer)
             {

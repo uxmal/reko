@@ -60,6 +60,8 @@ namespace Reko.Typing
         {
             foreach (Procedure proc in program.Procedures.Values)
             {
+                if (proc.Name == "register_tm_clones")  //$DEBUG
+                    proc.ToString();
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {

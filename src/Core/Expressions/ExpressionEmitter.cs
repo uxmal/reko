@@ -53,7 +53,9 @@ namespace Reko.Core.Expressions
         /// <returns>A binary expression for the sum.</returns>
         public BinaryExpression IAdd(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.IAdd, left.DataType, left, right);
+            var size = left.DataType.Size;
+            var dtResult = size > 0 ? PrimitiveType.CreateWord(size) : (DataType) new UnknownType();
+            return new BinaryExpression(Operator.IAdd, dtResult, left, right);
         }
 
         /// <summary>
@@ -571,6 +573,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a memory access of the 16-bit word at the specified effective address
+        /// <paramref name="ea"/>.
+        /// </summary>
+        /// <param name="ea">The address of the memory being accessed.</param>
+        /// <returns>A memory access expression.</returns>
+        public MemoryAccess Mem16(Expression ea)
+        {
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word16);
+        }
+
+        /// <summary>
         /// Generates a memory access of the 32-bit word at the specified effective address
         /// <paramref name="ea"/>.
         /// </summary>
@@ -582,14 +595,14 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a memory access of the 16-bit word at the specified effective address
+        /// Generates a memory access of the 64-bit word at the specified effective address
         /// <paramref name="ea"/>.
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess Mem16(Expression ea)
+        public MemoryAccess Mem64(Expression ea)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word16);
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word64);
         }
 
         /// <summary>
@@ -1228,6 +1241,16 @@ namespace Reko.Core.Expressions
         public Constant Word32(uint n)
         {
             return Constant.Word32(n);
+        }
+
+        /// <summary>
+        /// Generates an 64-bit constant from a bit pattern.
+        /// </summary>
+        /// <param name="n">64 bits</param>
+        /// <returns>64-bit constant</returns>
+        public Constant Word64(ulong n)
+        {
+            return Constant.Word64(n);
         }
 
         /// <summary>
