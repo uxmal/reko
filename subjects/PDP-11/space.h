@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFF95B3 word16 wFFFF95B3) (0 (ptr cui16) ptr0000) (2 (ptr (ptr (ptr (ptr (ptr cui16))))) ptr0002) (4 (struct "Eq_2072" 0002 (0 word16 w0000) (2 (ptr code) ptr0002)) t0004) (A (struct "Eq_2072" 0002) t000A) (10 (struct "Eq_2072" 0002) t0010) (1E word16 w001E) (20 word16 w0020) (22 ptr16 ptr0022) (24 cui16 w0024) (26 word16 w0026) (28 cu16 w0028) (2A byte b002A) (2B cui16 w002B) (36 (union "Eq_214" (byte u0) ((ptr Eq_18527) u1) ((ptr code) u2)) u0036) (38 (union "Eq_214") u0038) (3A (union "Eq_214") u003A) (3C (union "Eq_214") u003C) (3D (union "Eq_214") u003D) (48 (union "Eq_214") u0048) (4A (union "Eq_214") u004A) (50 (struct "Eq_2072" 0002) t0050) (62 (union "Eq_214") u0062) (A2 (union "Eq_214") u00A2) (A6 (union "Eq_214") u00A6) (A8 (union "Eq_214") u00A8) (AA (union "Eq_214") u00AA) (AC (union "Eq_214") u00AC) (AE (union "Eq_214") u00AE) (B0 (union "Eq_214") u00B0) (B2 (union "Eq_214") u00B2) (397 Eq_132 t0397) (3B8 char b03B8) (3BC char b03BC) (592 char b0592) (5E4 byte b05E4) (5EF byte b05EF) (601 byte b0601) (BEC word16 w0BEC) (11EC code t11EC) (151E Eq_2836 t151E) (15FF word16 w15FF) (1DAA (ptr code) ptr1DAA) (46C4 (arr (ptr code)) a46C4) (474C code t474C) (47E0 word16 w47E0) (47E4 (arr Eq_18524) a47E4) (487E (arr word16) a487E) (48BA word16 w48BA) (48BC word16 w48BC) (48C8 word16 w48C8) (48D0 word16 w48D0) (48DA word16 w48DA) (48E4 word16 w48E4) (48EE word16 w48EE) (48F8 word16 w48F8) (4902 word16 w4902) (490C word16 w490C) (4910 word16 w4910) (491A word16 w491A) (4924 word16 w4924) (492E word16 w492E) (4938 word16 w4938) (4942 word16 w4942) (494C word16 w494C) (4956 word16 w4956) (495A word16 w495A) (495E word16 w495E) (4964 word16 w4964) (4D3E (arr (ptr Eq_7605)) a4D3E) (4D88 word16 w4D88) (4D8A word16 w4D8A) (4D96 word16 w4D96) (4D9E word16 w4D9E) (501C word16 w501C) (501E word16 w501E) (5022 word16 w5022) (5028 word16 w5028) (502C word16 w502C) (5032 word16 w5032) (5038 word16 w5038) (5042 word16 w5042) (504C word16 w504C) (5056 word16 w5056) (5060 word16 w5060) (506A word16 w506A) (5074 word16 w5074) (5096 word16 w5096) (50A0 word16 w50A0) (50A4 word16 w50A4) (50AE word16 w50AE) (515E word16 w515E) (5164 word16 w5164) (516A word16 w516A) (5174 word16 w5174) (51FE (arr word16) a51FE) (520A word16 w520A) (5214 word16 w5214) (521E word16 w521E) (5228 word16 w5228) (5232 word16 w5232) (523C word16 w523C) (5246 word16 w5246) (5250 word16 w5250) (525A word16 w525A) (5264 word16 w5264) (529C Eq_2199 t529C) (52A2 Eq_1035 t52A2) (52A6 word16 w52A6) (52B0 word16 w52B0) (52BA word16 w52BA) (52C0 Eq_1035 t52C0) (52C4 word16 w52C4) (52CE word16 w52CE) (52D8 word16 w52D8) (52F8 word16 w52F8) (52FC word16 w52FC) (5306 word16 w5306) (531E (arr ui16) a531E) (532A word16 w532A) (533E word16 w533E) (534E word16 w534E) (5362 word16 w5362) (5376 Eq_1600 t5376) (53D2 word16 w53D2) (53E4 word16 w53E4) (53E8 cu16 w53E8) (53EA cu16 w53EA) (53EC cui16 w53EC) (53F0 (ptr code) ptr53F0) (5414 (ptr code) ptr5414) (541C (arr word16) a541C) (5424 (ptr Eq_510) ptr5424) (5426 word16 w5426) (542C word16 w542C) (5450 (arr word16) a5450) (5464 (arr byte) a5464) (54BA (ptr ui16) ptr54BA) (54BC word16 w54BC) (54C2 word16 w54C2) (54C4 word16 w54C4) (54C6 word16 w54C6) (54C8 word16 w54C8) (54CA word16 w54CA) (54CC word16 w54CC) (54CE word16 w54CE) (54D0 word16 w54D0) (54D2 word16 w54D2) (54D4 word16 w54D4) (54D6 word16 w54D6) (54D8 word16 w54D8) (54DA word16 w54DA) (54DE word16 w54DE) (54E0 word16 w54E0) (54E2 word16 w54E2) (54E4 word16 w54E4) (54E6 ci16 w54E6) (54E8 ci16 w54E8) (54EA ci16 w54EA) (54EC word16 w54EC) (54EE ci16 w54EE) (54F0 word16 w54F0) (54F2 word16 w54F2) (54F4 word16 w54F4) (54F6 word16 w54F6) (54FA word16 w54FA) (54FC word16 w54FC) (5508 byte b5508) (550A (arr ci16) a550A) (551C word16 w551C) (5668 (arr byte) a5668) (569E word16 w569E) (56A0 word16 w56A0) (56A2 (union "Eq_7593" (int16 u0) (ptr16 u1)) u56A2) (56A4 word16 w56A4) (56A6 word16 w56A6) (56AA word16 w56AA) (56AC word16 w56AC) (56B6 (union "Eq_11175" (int16 u0) (byte u1)) u56B6) (56B8 word16 w56B8) (56BA word16 w56BA) (56BC word16 w56BC) (56BE word16 w56BE) (56C0 word16 w56C0) (56C4 (ptr ci16) ptr56C4) (56C6 (arr byte) a56C6) (56D6 int16 w56D6) (56D8 word16 w56D8) (56DA word16 w56DA) (56FE (ptr word16) ptr56FE) (5700 (ptr word16) ptr5700) (5706 (ptr word16) ptr5706) (5708 word16 w5708) (570A word16 w570A) (570C ci16 w570C) (570E word16 w570E) (5710 word16 w5710) (5712 (union "Eq_1690" (wchar_t u0) (int16 u1) (uint16 u2) (ptr16 u3)) u5712) (5714 word16 w5714) (5716 word16 w5716) (5718 word16 w5718) (575E byte b575E) (5760 word16 w5760) (5762 word16 w5762) (5764 word16 w5764) (5766 word16 w5766) (5768 word16 w5768) (576A word16 w576A) (576C word16 w576C) (576E word16 w576E) (5770 word16 w5770) (5772 word16 w5772) (5774 word16 w5774) (5776 word16 w5776) (5778 word16 w5778) (577A (union "Eq_1299" (byte u0) ((ptr Eq_18529) u1)) u577A) (577C word16 w577C) (577E word16 w577E) (5780 word16 w5780) (5782 word16 w5782) (5788 word16 w5788) (578A word16 w578A) (578C word16 w578C) (578E word16 w578E) (5790 word16 w5790) (5792 word16 w5792) (5794 word16 w5794) (5796 word16 w5796) (5798 word16 w5798) (579A word16 w579A) (579C word16 w579C) (579E word16 w579E) (57A0 word16 w57A0) (57A2 word16 w57A2) (57A4 word16 w57A4) (57A6 word16 w57A6) (57A8 word16 w57A8) (57AA word16 w57AA) (57AE (ptr word16) ptr57AE) (57B0 byte b57B0) (57B2 word16 w57B2) (57B4 word16 w57B4) (57B6 word16 w57B6) (57B8 word16 w57B8) (57BA word16 w57BA) (57BC word16 w57BC) (57C0 word16 w57C0) (57C2 (ptr word16) ptr57C2) (57C4 (ptr word16) ptr57C4) (57C6 byte b57C6) (57C8 word16 w57C8) (57CA word16 w57CA) (57CC word16 w57CC) (57CE word16 w57CE) (57D0 word16 w57D0) (57D4 byte b57D4) (57D5 byte b57D5) (57D6 byte b57D6) (57D7 byte b57D7) (57DA (ptr word16) ptr57DA) (57DC (ptr word16) ptr57DC) (57DD byte b57DD) (57DE ci16 w57DE) (57DF (union "Eq_1299") u57DF) (57E0 word16 w57E0) (57E2 word16 w57E2) (57E4 (ptr word16) ptr57E4) (57E6 byte b57E6) (57E7 byte b57E7) (57E8 Eq_1606 t57E8) (57F8 word16 w57F8) (57FA word16 w57FA) (57FC word16 w57FC) (57FE word16 w57FE) (5800 word16 w5800) (5802 word16 w5802) (5806 word16 w5806) (5808 word16 w5808) (580A (ptr word16) ptr580A) (580C (ptr word16) ptr580C) (580E (ptr word16) ptr580E) (5810 byte b5810) (5811 byte b5811) (5812 byte b5812) (5813 (union "Eq_16959" (int16 u0) (byte u1)) u5813) (5814 (union "Eq_1299") u5814) (5815 byte b5815) (5816 (arr byte) a5816) (581B (arr byte) a581B) (5821 (arr byte) a5821) (5828 (arr byte) a5828) (5854 ci16 w5854) (5856 word16 w5856) (5858 word16 w5858) (585A word16 w585A) (586E byte b586E) (586F byte b586F) (5870 byte b5870) (5871 byte b5871) (5872 word16 w5872) (5874 word16 w5874) (5875 byte b5875) (5876 word16 w5876) (5898 (arr byte) a5898) (58B6 word16 w58B6) (58B8 word16 w58B8) (58BA word16 w58BA) (58BC word16 w58BC) (58BE word16 w58BE) (58C0 word16 w58C0) (58C2 (arr word16) a58C2) (5926 (arr ci16) a5926) (598A (arr word16) a598A) (5A2C (arr word16) a5A2C) (5A3E (arr word16) a5A3E) (5A66 (arr word16) a5A66) (8880 code t8880) (8890 code t8890) (15508 (arr ci16) a15508))
+Eq_1: (struct "Globals" (FFFF95B3 word16 wFFFF95B3) (0 (ptr cui16) ptr0000) (2 (ptr (ptr (ptr (ptr (ptr cui16))))) ptr0002) (4 (struct "Eq_2072" 0002 (0 word16 w0000) (2 (ptr code) ptr0002)) t0004) (A (struct "Eq_2072" 0002) t000A) (10 (struct "Eq_2072" 0002) t0010) (1E word16 w001E) (20 word16 w0020) (22 ptr16 ptr0022) (24 cui16 w0024) (26 word16 w0026) (28 cu16 w0028) (2A byte b002A) (2B cui16 w002B) (36 (union "Eq_214" (byte u0) ((ptr Eq_18527) u1) ((ptr code) u2)) u0036) (38 (union "Eq_214") u0038) (3A (union "Eq_214") u003A) (3C (union "Eq_214") u003C) (3D (union "Eq_214") u003D) (48 (union "Eq_214") u0048) (4A (union "Eq_214") u004A) (50 (struct "Eq_2072" 0002) t0050) (62 (union "Eq_214") u0062) (A2 (union "Eq_214") u00A2) (A6 (union "Eq_214") u00A6) (A8 (union "Eq_214") u00A8) (AA (union "Eq_214") u00AA) (AC (union "Eq_214") u00AC) (AE (union "Eq_214") u00AE) (B0 (union "Eq_214") u00B0) (B2 (union "Eq_214") u00B2) (397 Eq_132 t0397) (3B8 char b03B8) (3BC char b03BC) (592 char b0592) (5E4 byte b05E4) (5EF byte b05EF) (601 byte b0601) (BEC word16 w0BEC) (11EC code t11EC) (151E Eq_2836 t151E) (15FF word16 w15FF) (1DAA (ptr code) ptr1DAA) (46C4 (arr (ptr code)) a46C4) (474C code t474C) (47E0 word16 w47E0) (47E4 (arr Eq_18524) a47E4) (487E (arr word16) a487E) (48BA word16 w48BA) (48BC word16 w48BC) (48C8 word16 w48C8) (48D0 word16 w48D0) (48DA word16 w48DA) (48E4 word16 w48E4) (48EE word16 w48EE) (48F8 word16 w48F8) (4902 word16 w4902) (490C word16 w490C) (4910 word16 w4910) (491A word16 w491A) (4924 word16 w4924) (492E word16 w492E) (4938 word16 w4938) (4942 word16 w4942) (494C word16 w494C) (4956 word16 w4956) (495A word16 w495A) (495E word16 w495E) (4964 word16 w4964) (4D3E (arr (ptr Eq_7605)) a4D3E) (4D88 word16 w4D88) (4D8A word16 w4D8A) (4D96 word16 w4D96) (4D9E word16 w4D9E) (501C word16 w501C) (501E word16 w501E) (5022 word16 w5022) (5028 word16 w5028) (502C word16 w502C) (5032 word16 w5032) (5038 word16 w5038) (5042 word16 w5042) (504C word16 w504C) (5056 word16 w5056) (5060 word16 w5060) (506A word16 w506A) (5074 word16 w5074) (5096 word16 w5096) (50A0 word16 w50A0) (50A4 word16 w50A4) (50AE word16 w50AE) (515E word16 w515E) (5164 word16 w5164) (516A word16 w516A) (5174 word16 w5174) (51FE (arr word16) a51FE) (520A word16 w520A) (5214 word16 w5214) (521E word16 w521E) (5228 word16 w5228) (5232 word16 w5232) (523C word16 w523C) (5246 word16 w5246) (5250 word16 w5250) (525A word16 w525A) (5264 word16 w5264) (529C Eq_2199 t529C) (52A2 Eq_1035 t52A2) (52A6 word16 w52A6) (52B0 word16 w52B0) (52BA word16 w52BA) (52C0 Eq_1035 t52C0) (52C4 word16 w52C4) (52CE word16 w52CE) (52D8 word16 w52D8) (52F8 word16 w52F8) (52FC word16 w52FC) (5306 word16 w5306) (531E (arr word16) a531E) (532A word16 w532A) (533E word16 w533E) (534E word16 w534E) (5362 word16 w5362) (5376 Eq_1600 t5376) (53D2 word16 w53D2) (53E4 word16 w53E4) (53E8 cu16 w53E8) (53EA cu16 w53EA) (53EC cui16 w53EC) (53F0 (ptr code) ptr53F0) (5414 (ptr code) ptr5414) (541C (arr word16) a541C) (5424 (ptr Eq_510) ptr5424) (5426 word16 w5426) (542C word16 w542C) (5450 (arr word16) a5450) (5464 (arr byte) a5464) (54BA (ptr word16) ptr54BA) (54BC word16 w54BC) (54C2 word16 w54C2) (54C4 word16 w54C4) (54C6 word16 w54C6) (54C8 word16 w54C8) (54CA word16 w54CA) (54CC word16 w54CC) (54CE word16 w54CE) (54D0 word16 w54D0) (54D2 word16 w54D2) (54D4 word16 w54D4) (54D6 word16 w54D6) (54D8 word16 w54D8) (54DA word16 w54DA) (54DE word16 w54DE) (54E0 word16 w54E0) (54E2 word16 w54E2) (54E4 word16 w54E4) (54E6 ci16 w54E6) (54E8 ci16 w54E8) (54EA ci16 w54EA) (54EC word16 w54EC) (54EE ci16 w54EE) (54F0 word16 w54F0) (54F2 word16 w54F2) (54F4 word16 w54F4) (54F6 word16 w54F6) (54FA word16 w54FA) (54FC word16 w54FC) (5508 byte b5508) (550A (arr ci16) a550A) (551C word16 w551C) (5668 (arr byte) a5668) (569E word16 w569E) (56A0 word16 w56A0) (56A2 (union "Eq_7593" (int16 u0) (ptr16 u1)) u56A2) (56A4 word16 w56A4) (56A6 word16 w56A6) (56AA word16 w56AA) (56AC word16 w56AC) (56B6 (union "Eq_11175" (int16 u0) (byte u1)) u56B6) (56B8 word16 w56B8) (56BA word16 w56BA) (56BC word16 w56BC) (56BE word16 w56BE) (56C0 word16 w56C0) (56C4 (ptr ci16) ptr56C4) (56C6 (arr byte) a56C6) (56D6 int16 w56D6) (56D8 word16 w56D8) (56DA int16 w56DA) (56FE (ptr word16) ptr56FE) (5700 (ptr word16) ptr5700) (5706 (ptr word16) ptr5706) (5708 word16 w5708) (570A word16 w570A) (570C ci16 w570C) (570E word16 w570E) (5710 word16 w5710) (5712 (union "Eq_1690" (wchar_t u0) (int16 u1) (uint16 u2) (ptr16 u3)) u5712) (5714 word16 w5714) (5716 word16 w5716) (5718 word16 w5718) (575E byte b575E) (5760 word16 w5760) (5762 word16 w5762) (5764 word16 w5764) (5766 word16 w5766) (5768 word16 w5768) (576A word16 w576A) (576C word16 w576C) (576E word16 w576E) (5770 word16 w5770) (5772 word16 w5772) (5774 word16 w5774) (5776 word16 w5776) (5778 word16 w5778) (577A (union "Eq_1299" (byte u0) ((ptr Eq_18529) u1)) u577A) (577C word16 w577C) (577E word16 w577E) (5780 word16 w5780) (5782 word16 w5782) (5788 word16 w5788) (578A word16 w578A) (578C word16 w578C) (578E word16 w578E) (5790 word16 w5790) (5792 word16 w5792) (5794 word16 w5794) (5796 word16 w5796) (5798 word16 w5798) (579A int16 w579A) (579C word16 w579C) (579E word16 w579E) (57A0 word16 w57A0) (57A2 word16 w57A2) (57A4 word16 w57A4) (57A6 word16 w57A6) (57A8 word16 w57A8) (57AA word16 w57AA) (57AE (ptr word16) ptr57AE) (57B0 byte b57B0) (57B2 word16 w57B2) (57B4 word16 w57B4) (57B6 word16 w57B6) (57B8 word16 w57B8) (57BA word16 w57BA) (57BC word16 w57BC) (57C0 word16 w57C0) (57C2 (ptr word16) ptr57C2) (57C4 (ptr word16) ptr57C4) (57C6 byte b57C6) (57C8 word16 w57C8) (57CA word16 w57CA) (57CC word16 w57CC) (57CE word16 w57CE) (57D0 word16 w57D0) (57D4 byte b57D4) (57D5 byte b57D5) (57D6 byte b57D6) (57D7 byte b57D7) (57DA (ptr word16) ptr57DA) (57DC (ptr word16) ptr57DC) (57DD byte b57DD) (57DE ci16 w57DE) (57DF (union "Eq_1299") u57DF) (57E0 word16 w57E0) (57E2 word16 w57E2) (57E4 (ptr word16) ptr57E4) (57E6 byte b57E6) (57E7 byte b57E7) (57E8 Eq_1606 t57E8) (57F8 word16 w57F8) (57FA word16 w57FA) (57FC word16 w57FC) (57FE word16 w57FE) (5800 word16 w5800) (5802 word16 w5802) (5806 word16 w5806) (5808 word16 w5808) (580A (ptr word16) ptr580A) (580C (ptr word16) ptr580C) (580E (ptr word16) ptr580E) (5810 byte b5810) (5811 byte b5811) (5812 byte b5812) (5813 (union "Eq_16959" (int16 u0) (byte u1)) u5813) (5814 (union "Eq_1299") u5814) (5815 byte b5815) (5816 (arr byte) a5816) (581B (arr byte) a581B) (5821 (arr byte) a5821) (5828 (arr byte) a5828) (5854 ci16 w5854) (5856 word16 w5856) (5858 word16 w5858) (585A word16 w585A) (586E byte b586E) (586F byte b586F) (5870 byte b5870) (5871 byte b5871) (5872 word16 w5872) (5874 word16 w5874) (5875 byte b5875) (5876 word16 w5876) (5898 (arr byte) a5898) (58B6 word16 w58B6) (58B8 word16 w58B8) (58BA word16 w58BA) (58BC word16 w58BC) (58BE word16 w58BE) (58C0 word16 w58C0) (58C2 (arr word16) a58C2) (5926 (arr ci16) a5926) (598A (arr word16) a598A) (5A2C (arr word16) a5A2C) (5A3E (arr word16) a5A3E) (5A66 (arr word16) a5A66) (8880 code t8880) (8890 code t8890) (15508 (arr ci16) a15508))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_22: (fn void ((ptr char)))
 	T_22 (in FnSubfn : ptr16)
@@ -8600,8 +8600,8 @@ T_1631: (in 1 : int16)
   OrigDataType: int16
 T_1632: (in fp - 0x0006 << 1 : word16)
   Class: Eq_1632
-  DataType: int16
-  OrigDataType: int16
+  DataType: ui16
+  OrigDataType: ui16
 T_1633: (in fp - 0x0006 : word16)
   Class: Eq_1633
   DataType: ptr16
@@ -8609,7 +8609,7 @@ T_1633: (in fp - 0x0006 : word16)
 T_1634: (in (fp - 0x0006 << 1) + (fp - 0x0006) : word16)
   Class: Eq_1628
   DataType: (ptr Eq_1628)
-  OrigDataType: ptr16
+  OrigDataType: ui16
 T_1635: (in 0x0D4F : word16)
   Class: Eq_1635
   DataType: word16
@@ -11089,7 +11089,7 @@ T_2253: (in Mem0[v15_29 + 0x0000:word16] : word16)
 T_2254: (in (r1_33 << 1) + *v15_29 : word16)
   Class: Eq_2215
   DataType: uint16
-  OrigDataType: word16
+  OrigDataType: ui16
 T_2255: (in 0x0000 : word16)
   Class: Eq_2215
   DataType: uint16
@@ -11180,8 +11180,8 @@ T_2276: (in 0x00 : byte)
   OrigDataType: byte
 T_2277: (in DPB(r1_40, 0x00, 0) : word16)
   Class: Eq_2277
-  DataType: cu16
-  OrigDataType: cu16
+  DataType: uint16
+  OrigDataType: uint16
 T_2278: (in DPB(r1_40, 0x00, 0) | r0_39 : word16)
   Class: Eq_117
   DataType: Eq_117
@@ -20148,8 +20148,8 @@ T_4518: (in 0x1CC2 : word16)
   OrigDataType: word16
 T_4519: (in r0_39 + 0x1CC2 : word16)
   Class: Eq_4519
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_4520: (in Mem32[r0_39 + 0x1CC2:ptr16] : ptr16)
   Class: Eq_4520
   DataType: (ptr code)
@@ -25744,7 +25744,7 @@ T_5917: (in 0x58C2 : word16)
   OrigDataType: (ptr (struct (0 (arr T_18485) a0000)))
 T_5918: (in 54D8 : ptr16)
   Class: Eq_5918
-  DataType: (ptr ui16)
+  DataType: (ptr word16)
   OrigDataType: (ptr (struct (0 T_5921 t0000)))
 T_5919: (in 0x0000 : word16)
   Class: Eq_5919
@@ -25756,11 +25756,11 @@ T_5920: (in 0x54D8 + 0x0000 : word16)
   OrigDataType: ptr16
 T_5921: (in Mem452[0x54D8 + 0x0000:word16] : word16)
   Class: Eq_5921
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: word16
+  OrigDataType: word16
 T_5922: (in 54BA : ptr16)
   Class: Eq_5922
-  DataType: (ptr (ptr ui16))
+  DataType: (ptr (ptr word16))
   OrigDataType: (ptr (struct (0 T_5925 t0000)))
 T_5923: (in 0x0000 : word16)
   Class: Eq_5923
@@ -25772,7 +25772,7 @@ T_5924: (in 0x54BA + 0x0000 : word16)
   OrigDataType: ptr16
 T_5925: (in Mem452[0x54BA + 0x0000:ptr16] : ptr16)
   Class: Eq_5925
-  DataType: (ptr ui16)
+  DataType: (ptr word16)
   OrigDataType: (ptr (struct (0 T_5928 t0000)))
 T_5926: (in 0x0000 : word16)
   Class: Eq_5926
@@ -25784,8 +25784,8 @@ T_5927: (in Mem452[0x54BA + 0x0000:ptr16] + 0x0000 : word16)
   OrigDataType: ptr16
 T_5928: (in Mem452[Mem452[0x54BA + 0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_5928
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: word16
+  OrigDataType: word16
 T_5929: (in globals->w54D8 + *globals->ptr54BA : word16)
   Class: Eq_5929
   DataType: ui16
@@ -49044,11 +49044,11 @@ T_11742: (in 0x0001 : word16)
   OrigDataType: word16
 T_11743: (in (globals->w56D6 - 0x0001) *s 0x0005 + 0x0001 : word16)
   Class: Eq_11743
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_11744: (in 56DA : ptr16)
   Class: Eq_11744
-  DataType: (ptr word16)
+  DataType: (ptr int16)
   OrigDataType: (ptr (struct (0 T_11747 t0000)))
 T_11745: (in 0x0000 : word16)
   Class: Eq_11745
@@ -49060,7 +49060,7 @@ T_11746: (in 0x56DA + 0x0000 : word16)
   OrigDataType: ptr16
 T_11747: (in Mem100[0x56DA + 0x0000:word16] : word16)
   Class: Eq_11743
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_11748: (in r2_104 : word16)
   Class: Eq_11748
@@ -60716,11 +60716,11 @@ T_14660: (in 0x0032 : word16)
   OrigDataType: word16
 T_14661: (in fn0AAE(&globals->t52C0, out r2_215, out r4_216) *s 0x0019 + 0x0032 : word16)
   Class: Eq_14661
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_14662: (in 579A : ptr16)
   Class: Eq_14662
-  DataType: (ptr word16)
+  DataType: (ptr int16)
   OrigDataType: (ptr (struct (0 T_14665 t0000)))
 T_14663: (in 0x0000 : word16)
   Class: Eq_14663
@@ -60732,7 +60732,7 @@ T_14664: (in 0x579A + 0x0000 : word16)
   OrigDataType: ptr16
 T_14665: (in Mem222[0x579A + 0x0000:word16] : word16)
   Class: Eq_14661
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_14666: (in 5426 : ptr16)
   Class: Eq_14666
@@ -64606,13 +64606,13 @@ T_15633: (in Mem137[Mem129[0x5426 + 0x0000:ptr16] + 0x0000:word16] : word16)
   Class: Eq_15626
   DataType: word16
   OrigDataType: word16
-T_15634: (in r1_138 : int16)
+T_15634: (in r1_138 : ci16)
   Class: Eq_15634
-  DataType: int16
-  OrigDataType: int16
+  DataType: ci16
+  OrigDataType: ci16
 T_15635: (in 57CA : ptr16)
   Class: Eq_15635
-  DataType: (ptr int16)
+  DataType: (ptr ci16)
   OrigDataType: (ptr (struct (0 T_15638 t0000)))
 T_15636: (in 0x0000 : word16)
   Class: Eq_15636
@@ -64624,7 +64624,7 @@ T_15637: (in 0x57CA + 0x0000 : word16)
   OrigDataType: ptr16
 T_15638: (in Mem137[0x57CA + 0x0000:word16] : word16)
   Class: Eq_15634
-  DataType: int16
+  DataType: ci16
   OrigDataType: word16
 T_15639: (in 0xFFFF : word16)
   Class: Eq_15639
@@ -64634,10 +64634,10 @@ T_15640: (in 0x5A66 : word16)
   Class: Eq_15640
   DataType: (ptr (arr word16))
   OrigDataType: (ptr (struct (0 (arr T_18518) a0000)))
-T_15641: (in r5_131 : (ptr ui16))
+T_15641: (in r5_131 : (ptr word16))
   Class: Eq_15641
-  DataType: (ptr ui16)
-  OrigDataType: (ptr (struct 0002 (0 ui16 w0000)))
+  DataType: (ptr word16)
+  OrigDataType: (ptr (struct 0002 (0 word16 w0000)))
 T_15642: (in 0x0000 : word16)
   Class: Eq_15642
   DataType: word16
@@ -64648,8 +64648,8 @@ T_15643: (in r5_131 + 0x0000 : word16)
   OrigDataType: word16
 T_15644: (in Mem137[r5_131 + 0x0000:word16] : word16)
   Class: Eq_15644
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: word16
+  OrigDataType: word16
 T_15645: (in r1_138 + *r5_131 : word16)
   Class: Eq_15645
   DataType: ui16
@@ -64704,7 +64704,7 @@ T_15657: (in 0x0002 : word16)
   OrigDataType: int16
 T_15658: (in r5_131 + 0x0002 : word16)
   Class: Eq_15641
-  DataType: (ptr ui16)
+  DataType: (ptr word16)
   OrigDataType: ptr16
 T_15659: (in r4_130 : ci16)
   Class: Eq_15659
@@ -64828,7 +64828,7 @@ T_15688: (in 0x0004 : word16)
   OrigDataType: word16
 T_15689: (in 0x531E : word16)
   Class: Eq_15641
-  DataType: (ptr ui16)
+  DataType: (ptr word16)
   OrigDataType: word16
 T_15690: (in r1_7 : word16)
   Class: Eq_15690
@@ -74901,7 +74901,7 @@ T_18206: (in r4_43 * 0x0028 > 0x0000 : bool)
 T_18207: (in r4_17 + r2_294 : word16)
   Class: Eq_18185
   DataType: ui16
-  OrigDataType: word16
+  OrigDataType: ui16
 T_18208: (in 0xFFE2 : word16)
   Class: Eq_18188
   DataType: word16
@@ -76148,7 +76148,7 @@ T_18518:
   OrigDataType: (struct 0002 (0 T_15648 t0000))
 T_18519:
   Class: Eq_18519
-  DataType: ui16
+  DataType: word16
   OrigDataType: (struct 0002 (0 T_15644 t0000))
 T_18520:
   Class: Eq_18520
@@ -76414,7 +76414,7 @@ union Eq_214 {
 	word16 w52F8;	// 52F8
 	word16 w52FC;	// 52FC
 	word16 w5306;	// 5306
-	ui16 a531E[];	// 531E
+	word16 a531E[];	// 531E
 	word16 w532A;	// 532A
 	word16 w533E;	// 533E
 	word16 w534E;	// 534E
@@ -76433,7 +76433,7 @@ union Eq_214 {
 	word16 w542C;	// 542C
 	word16 a5450[];	// 5450
 	byte a5464[];	// 5464
-	ui16 * ptr54BA;	// 54BA
+	word16 * ptr54BA;	// 54BA
 	word16 w54BC;	// 54BC
 	word16 w54C2;	// 54C2
 	word16 w54C4;	// 54C4
@@ -76484,7 +76484,7 @@ union Eq_214 {
 	byte a56C6[];	// 56C6
 	int16 w56D6;	// 56D6
 	word16 w56D8;	// 56D8
-	word16 w56DA;	// 56DA
+	int16 w56DA;	// 56DA
 	word16 * ptr56FE;	// 56FE
 	word16 * ptr5700;	// 5700
 	word16 * ptr5706;	// 5706
@@ -76525,7 +76525,7 @@ union Eq_214 {
 	word16 w5794;	// 5794
 	word16 w5796;	// 5796
 	word16 w5798;	// 5798
-	word16 w579A;	// 579A
+	int16 w579A;	// 579A
 	word16 w579C;	// 579C
 	word16 w579E;	// 579E
 	word16 w57A0;	// 57A0

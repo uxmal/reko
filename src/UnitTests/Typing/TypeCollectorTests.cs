@@ -207,6 +207,13 @@ namespace Reko.UnitTests.Typing
             RunTest(mock, "Typing/TycoFramePointer.txt");
         }
 
+
+        [Test]
+        public void TycoReg00014()
+        {
+            RunTest32("Fragments/regressions/r00014.asm", "Typing/TycoReg00014.txt");
+        }
+
         [Test]
         public void TycoReg00300()
         {

@@ -993,7 +993,7 @@ T_201: (in 0x00000001 : word32)
 T_202: (in dwLoc08_12 + 0x00000001 : word32)
   Class: Eq_173
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_203: (in dwArg04 : word32)
   Class: Eq_203
   DataType: word32
@@ -1153,7 +1153,7 @@ T_241: (in 0x00000001 : word32)
 T_242: (in ((eax_26 & 0x80000001) - 0x00000001 | 0xFFFFFFFE) + 0x00000001 : word32)
   Class: Eq_228
   DataType: ui32
-  OrigDataType: word32
+  OrigDataType: ui32
 T_243: (in 0x00000008 : word32)
   Class: Eq_243
   DataType: word32

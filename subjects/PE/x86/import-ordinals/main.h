@@ -110,7 +110,7 @@ Eq_465: (fn void (int32))
 Eq_486: (fn void ((ptr Eq_94), byte))
 	T_486 (in fn004015E6 : ptr32)
 	T_487 (in signature of fn004015E6 : void)
-Eq_512: (struct "Eq_512" 0028 (8 uint32 dw0008) (C uint32 dw000C))
+Eq_512: (struct "Eq_512" 0028 (8 word32 dw0008) (C uint32 dw000C))
 	T_512 (in eax : (ptr Eq_512))
 	T_515 (in eax_26 : (ptr Eq_512))
 	T_521 (in edx_16 : (ptr Eq_512))
@@ -239,8 +239,6 @@ Eq_867: (union "Eq_867" (int32 u0) (word16 u1))
 Eq_871: (struct "Eq_871" (0 word32 dw0000) (18 word16 w0018) (74 uint32 dw0074) (E8 word32 dw00E8))
 	T_871 (in eax_42 : (ptr Eq_871))
 	T_875 (in Mem0[eax_4 + 0x0000003C:word32] + eax_4 : word32)
-Eq_873: HMODULE
-	T_873 (in eax_4 + 0x0000003C : word32)
 Eq_937: (segment "Eq_937" (0 ptr32 ptr0000))
 	T_937 (in fs : selector)
 Eq_947: (segment "Eq_947" (0 word32 dw0000))
@@ -2315,7 +2313,7 @@ T_514: (in dwArg08 : uint32)
 T_515: (in eax_26 : (ptr Eq_512))
   Class: Eq_512
   DataType: (ptr Eq_512)
-  OrigDataType: (ptr (struct 0028 (8 uint32 dw0008) (C uint32 dw000C)))
+  OrigDataType: (ptr (struct 0028 (8 word32 dw0008) (C word32 dw000C)))
 T_516: (in ecx_13 : (ptr Eq_516))
   Class: Eq_516
   DataType: (ptr Eq_516)
@@ -2339,7 +2337,7 @@ T_520: (in Mem0[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
 T_521: (in edx_16 : (ptr Eq_512))
   Class: Eq_512
   DataType: (ptr Eq_512)
-  OrigDataType: (ptr (struct 0028 (8 uint32 dw0008) (C uint32 dw000C)))
+  OrigDataType: (ptr (struct 0028 (8 word32 dw0008) (C uint32 dw000C)))
 T_522: (in 0x00000018 : word32)
   Class: Eq_522
   DataType: word32
@@ -2371,7 +2369,7 @@ T_528: (in ecx_13 + 0x00000018 + (word32) ecx_13->w0014 : word32)
 T_529: (in esi_19 : (ptr Eq_512))
   Class: Eq_512
   DataType: (ptr Eq_512)
-  OrigDataType: word32
+  OrigDataType: int32
 T_530: (in 0x00000006 : word32)
   Class: Eq_530
   DataType: word32
@@ -2399,7 +2397,7 @@ T_535: (in (word32) ecx_13->w0006 *s 0x00000028 : int32)
 T_536: (in (word32) ecx_13->w0006 *s 0x00000028 + edx_16 : word32)
   Class: Eq_512
   DataType: (ptr Eq_512)
-  OrigDataType: word32
+  OrigDataType: int32
 T_537: (in edx_16 == esi_19 : bool)
   Class: Eq_537
   DataType: bool
@@ -2430,8 +2428,8 @@ T_543: (in edx_16 + 0x00000008 : word32)
   OrigDataType: word32
 T_544: (in Mem0[edx_16 + 0x00000008:word32] : word32)
   Class: Eq_544
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_545: (in 0x0000000C : word32)
   Class: Eq_545
   DataType: word32
@@ -2442,8 +2440,8 @@ T_546: (in edx_16 + 0x0000000C : word32)
   OrigDataType: word32
 T_547: (in Mem0[edx_16 + 0x0000000C:word32] : word32)
   Class: Eq_547
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_548: (in edx_16->dw0008 + edx_16->dw000C : word32)
   Class: Eq_225
   DataType: uint32
@@ -2458,8 +2456,8 @@ T_550: (in 0x0000000C : word32)
   OrigDataType: word32
 T_551: (in edx_16 + 0x0000000C : word32)
   Class: Eq_551
-  DataType: (ptr uint32)
-  OrigDataType: (ptr uint32)
+  DataType: (ptr word32)
+  OrigDataType: (ptr word32)
 T_552: (in Mem0[edx_16 + 0x0000000C:word32] : word32)
   Class: Eq_225
   DataType: uint32
@@ -3746,16 +3744,16 @@ T_872: (in 0x0000003C : word32)
   OrigDataType: word32
 T_873: (in eax_4 + 0x0000003C : word32)
   Class: Eq_873
-  DataType: Eq_873
-  OrigDataType: HMODULE
+  DataType: ptr32
+  OrigDataType: ptr32
 T_874: (in Mem0[eax_4 + 0x0000003C:word32] : word32)
   Class: Eq_874
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_875: (in Mem0[eax_4 + 0x0000003C:word32] + eax_4 : word32)
   Class: Eq_871
   DataType: (ptr Eq_871)
-  OrigDataType: int32
+  OrigDataType: word32
 T_876: (in 0x00000000 : word32)
   Class: Eq_876
   DataType: word32
@@ -4864,7 +4862,7 @@ typedef void (Eq_465)(int32);
 typedef void (Eq_486)(Eq_94 *, byte);
 
 typedef struct Eq_512 {	// size: 40 28
-	uint32 dw0008;	// 8
+	word32 dw0008;	// 8
 	uint32 dw000C;	// C
 } Eq_512;
 
@@ -4969,8 +4967,6 @@ typedef struct Eq_871 {
 	uint32 dw0074;	// 74
 	word32 dw00E8;	// E8
 } Eq_871;
-
-typedef HMODULE Eq_873;
 
 typedef struct Eq_937 {
 	ptr32 ptr0000;	// 0

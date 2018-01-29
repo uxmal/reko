@@ -4264,11 +4264,11 @@ void fn3F42(Eq_1299 r0, Eq_2072 * r4, word16 * r5, Eq_4649 * pc)
 			*globals->w5426 = 0x0F;
 			globals->w57CE = 0x01;
 			ci16 r4_130 = 0x04;
-			ui16 * r5_131 = globals->a531E;
+			word16 * r5_131 = globals->a531E;
 			do
 			{
 				*globals->w5426 = 0x10;
-				int16 r1_138 = globals->w57CA;
+				ci16 r1_138 = globals->w57CA;
 				globals->a5A66[(r1_138 + *r5_131) * 0x02] = ~0x00;
 				*globals->w5426 = 0x11;
 				r5_131 = r5_131 + 0x01;

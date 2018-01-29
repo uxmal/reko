@@ -305,21 +305,21 @@ T_65: (in 0x00000000 == 0x00000000 : bool)
   Class: Eq_65
   DataType: bool
   OrigDataType: bool
-T_66: (in d0_107 : ui32)
+T_66: (in d0_107 : uint32)
   Class: Eq_66
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: uint32
+  OrigDataType: uint32
 T_67: (in 0x00000001 : word32)
   Class: Eq_67
   DataType: word32
   OrigDataType: word32
 T_68: (in d0_105 + 0x00000001 : word32)
   Class: Eq_66
-  DataType: ui32
-  OrigDataType: word32
+  DataType: uint32
+  OrigDataType: uint32
 T_69: (in 80002726 : ptr32)
   Class: Eq_69
-  DataType: (ptr ui32)
+  DataType: (ptr uint32)
   OrigDataType: (ptr (struct (0 T_72 t0000)))
 T_70: (in 0x00000000 : word32)
   Class: Eq_70
@@ -331,7 +331,7 @@ T_71: (in 0x80002726 + 0x00000000 : word32)
   OrigDataType: ptr32
 T_72: (in Mem110[0x80002726 + 0x00000000:word32] : word32)
   Class: Eq_66
-  DataType: ui32
+  DataType: uint32
   OrigDataType: word32
 T_73: (in a0_112 : (ptr code))
   Class: Eq_73
@@ -716,7 +716,7 @@ T_167: (in 0x00000001 : word32)
 T_168: (in dwLoc08_15 + 0x00000001 : word32)
   Class: Eq_165
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_169: (in dwLoc08_15 - dwArg04 : word32)
   Class: Eq_169
   DataType: int32
@@ -836,7 +836,7 @@ T_197: (in 0x00000004 : word32)
 T_198: (in dwLoc08_24 + 0x00000004 : word32)
   Class: Eq_164
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_199: (in dwLoc08_24 - dwArg0C : word32)
   Class: Eq_199
   DataType: int32
@@ -876,7 +876,7 @@ T_207: (in 0x00000004 : word32)
 T_208: (in dwLoc08_104 + 0x00000004 : word32)
   Class: Eq_164
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_209: (in dwLoc08_104 - dwArg0C : word32)
   Class: Eq_209
   DataType: int32
@@ -1045,18 +1045,18 @@ T_250: (in Mem150[tArg14 + 0x00000000:word32] : word32)
   Class: Eq_245
   DataType: Eq_222
   OrigDataType: word32
-T_251: (in v24_77 : word32)
+T_251: (in v24_77 : int32)
   Class: Eq_251
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_252: (in 0x00000001 : word32)
   Class: Eq_252
   DataType: word32
   OrigDataType: word32
 T_253: (in dwLoc20_132 + 0x00000001 : word32)
   Class: Eq_251
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_254: (in (real80) rLoc0C_117 : real80)
   Class: Eq_254
   DataType: real80
@@ -1088,7 +1088,7 @@ T_260: (in 0x00000003 : word32)
 T_261: (in v24_77 + 0x00000003 : word32)
   Class: Eq_241
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_262: (in rLoc14 : real64)
   Class: Eq_262
   DataType: Eq_262
@@ -1119,8 +1119,8 @@ T_268: (in 0x00000001 : word32)
   OrigDataType: word32
 T_269: (in v24_77 + 0x00000001 : word32)
   Class: Eq_269
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_270: (in (real80) (v24_77 + 0x00000001) : real80)
   Class: Eq_270
   DataType: real80
@@ -1143,8 +1143,8 @@ T_274: (in 0x00000002 : word32)
   OrigDataType: word32
 T_275: (in v24_77 + 0x00000002 : word32)
   Class: Eq_275
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_276: (in (real80) (v24_77 + 0x00000002) : real80)
   Class: Eq_276
   DataType: real80
@@ -1163,8 +1163,8 @@ T_279: (in (real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLo
   OrigDataType: real80
 T_280: (in v24_77 + 0x00000003 : word32)
   Class: Eq_280
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_281: (in (real80) (v24_77 + 0x00000003) : real80)
   Class: Eq_281
   DataType: real80
@@ -1181,7 +1181,7 @@ T_284: (in (real80) rLoc0C_117 : real80)
   Class: Eq_284
   DataType: real80
   OrigDataType: real80
-T_285: (in (real80) rLoc0C_117 / rLoc14 : real64)
+T_285: (in (real80) rLoc0C_117 / rLoc14 : real80)
   Class: Eq_285
   DataType: real80
   OrigDataType: real80

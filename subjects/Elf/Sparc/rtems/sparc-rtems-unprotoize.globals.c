@@ -139,7 +139,7 @@ Eq_214 g_t281F0 =
 		null
 	};
 uint32 g_dw28200 = 0x00000000;
-uint32 g_dw28210 = 0x00000000;
+word32 g_dw28210 = 0x00000000;
 int8 * g_ptr28220 = null;
 int32 g_dw28230 = 0;
 Eq_857 g_t28240 = 
@@ -151,7 +151,7 @@ Eq_214 g_t2B270 =
 		null
 	};
 uint32 g_dw2B280 = 0x00000000;
-uint32 g_dw2B290 = 0x00000000;
+word32 g_dw2B290 = 0x00000000;
 Eq_214 g_t2B2A0 = 
 	{
 		null

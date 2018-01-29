@@ -175,7 +175,7 @@ Eq_556: BOOL
 	T_1074 (in IsDebuggerPresent() : BOOL)
 	T_1243 (in IsProcessorFeaturePresent(0x0000000A) : BOOL)
 	T_1244 (in 0x00000000 : word32)
-Eq_557: (struct "Eq_557" 0028 (8 uint32 dw0008) (C uint32 dw000C))
+Eq_557: (struct "Eq_557" 0028 (8 word32 dw0008) (C uint32 dw000C))
 	T_557 (in eax : (ptr Eq_557))
 	T_560 (in eax_26 : (ptr Eq_557))
 	T_566 (in edx_16 : (ptr Eq_557))
@@ -305,8 +305,6 @@ Eq_1115: (union "Eq_1115" (int32 u0) (word16 u1))
 Eq_1119: (struct "Eq_1119" (0 word32 dw0000) (18 word16 w0018) (74 uint32 dw0074) (E8 word32 dw00E8))
 	T_1119 (in eax_42 : (ptr Eq_1119))
 	T_1123 (in Mem0[eax_4 + 0x0000003C:word32] + eax_4 : word32)
-Eq_1121: HMODULE
-	T_1121 (in eax_4 + 0x0000003C : word32)
 Eq_1211: (segment "Eq_1211" (0 ptr32 ptr0000))
 	T_1211 (in fs : selector)
 Eq_1221: (segment "Eq_1221" (0 word32 dw0000))
@@ -2561,7 +2559,7 @@ T_559: (in dwArg08 : uint32)
 T_560: (in eax_26 : (ptr Eq_557))
   Class: Eq_557
   DataType: (ptr Eq_557)
-  OrigDataType: (ptr (struct 0028 (8 uint32 dw0008) (C uint32 dw000C)))
+  OrigDataType: (ptr (struct 0028 (8 word32 dw0008) (C word32 dw000C)))
 T_561: (in ecx_13 : (ptr Eq_561))
   Class: Eq_561
   DataType: (ptr Eq_561)
@@ -2585,7 +2583,7 @@ T_565: (in Mem0[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
 T_566: (in edx_16 : (ptr Eq_557))
   Class: Eq_557
   DataType: (ptr Eq_557)
-  OrigDataType: (ptr (struct 0028 (8 uint32 dw0008) (C uint32 dw000C)))
+  OrigDataType: (ptr (struct 0028 (8 word32 dw0008) (C uint32 dw000C)))
 T_567: (in 0x00000018 : word32)
   Class: Eq_567
   DataType: word32
@@ -2617,7 +2615,7 @@ T_573: (in ecx_13 + 0x00000018 + (word32) ecx_13->w0014 : word32)
 T_574: (in esi_19 : (ptr Eq_557))
   Class: Eq_557
   DataType: (ptr Eq_557)
-  OrigDataType: word32
+  OrigDataType: int32
 T_575: (in 0x00000006 : word32)
   Class: Eq_575
   DataType: word32
@@ -2645,7 +2643,7 @@ T_580: (in (word32) ecx_13->w0006 *s 0x00000028 : int32)
 T_581: (in (word32) ecx_13->w0006 *s 0x00000028 + edx_16 : word32)
   Class: Eq_557
   DataType: (ptr Eq_557)
-  OrigDataType: word32
+  OrigDataType: int32
 T_582: (in edx_16 == esi_19 : bool)
   Class: Eq_582
   DataType: bool
@@ -2676,8 +2674,8 @@ T_588: (in edx_16 + 0x00000008 : word32)
   OrigDataType: word32
 T_589: (in Mem0[edx_16 + 0x00000008:word32] : word32)
   Class: Eq_589
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_590: (in 0x0000000C : word32)
   Class: Eq_590
   DataType: word32
@@ -2688,8 +2686,8 @@ T_591: (in edx_16 + 0x0000000C : word32)
   OrigDataType: word32
 T_592: (in Mem0[edx_16 + 0x0000000C:word32] : word32)
   Class: Eq_592
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_593: (in edx_16->dw0008 + edx_16->dw000C : word32)
   Class: Eq_249
   DataType: uint32
@@ -2704,8 +2702,8 @@ T_595: (in 0x0000000C : word32)
   OrigDataType: word32
 T_596: (in edx_16 + 0x0000000C : word32)
   Class: Eq_596
-  DataType: (ptr uint32)
-  OrigDataType: (ptr uint32)
+  DataType: (ptr word32)
+  OrigDataType: (ptr word32)
 T_597: (in Mem0[edx_16 + 0x0000000C:word32] : word32)
   Class: Eq_249
   DataType: uint32
@@ -4804,16 +4802,16 @@ T_1120: (in 0x0000003C : word32)
   OrigDataType: word32
 T_1121: (in eax_4 + 0x0000003C : word32)
   Class: Eq_1121
-  DataType: Eq_1121
-  OrigDataType: HMODULE
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1122: (in Mem0[eax_4 + 0x0000003C:word32] : word32)
   Class: Eq_1122
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_1123: (in Mem0[eax_4 + 0x0000003C:word32] + eax_4 : word32)
   Class: Eq_1119
   DataType: (ptr Eq_1119)
-  OrigDataType: int32
+  OrigDataType: word32
 T_1124: (in 0x00000000 : word32)
   Class: Eq_1124
   DataType: word32
@@ -6074,7 +6072,7 @@ typedef HANDLE (Eq_552)();
 typedef BOOL Eq_556;
 
 typedef struct Eq_557 {	// size: 40 28
-	uint32 dw0008;	// 8
+	word32 dw0008;	// 8
 	uint32 dw000C;	// C
 } Eq_557;
 
@@ -6181,8 +6179,6 @@ typedef struct Eq_1119 {
 	uint32 dw0074;	// 74
 	word32 dw00E8;	// E8
 } Eq_1119;
-
-typedef HMODULE Eq_1121;
 
 typedef struct Eq_1211 {
 	ptr32 ptr0000;	// 0

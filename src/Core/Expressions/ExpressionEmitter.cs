@@ -249,7 +249,8 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point sum expression.</returns>
         public Expression FAdd(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.FAdd, PrimitiveType.Real64, a, b);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            return new BinaryExpression(Operator.FAdd, dtSum, a, b);
         }
 
         /// <summary>
@@ -260,7 +261,8 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point division expression.</returns>
         public Expression FDiv(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.FDiv, PrimitiveType.Real64, a, b);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            return new BinaryExpression(Operator.FDiv, dtSum, a, b);
         }
 
         /// <summary>
@@ -271,7 +273,8 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point multiplication expression.</returns>
         public Expression FMul(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.FMul, a.DataType, a, b);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            return new BinaryExpression(Operator.FMul, dtSum, a, b);
         }
 
         /// <summary>
@@ -353,7 +356,8 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point subtraction expression.</returns>
         public BinaryExpression FSub(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            return new BinaryExpression(Operator.FSub, dtSum, a, b);
         }
 
         // Field access: "point.x"

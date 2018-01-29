@@ -162,7 +162,7 @@ T_31: (in 0x00000001 : word32)
 T_32: (in dwLoc14_19 + 0x00000001 : word32)
   Class: Eq_25
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_33: (in (real80) dwLoc14_19 : real80)
   Class: Eq_33
   DataType: real80
@@ -270,7 +270,7 @@ T_58: (in 0x00000002 : word32)
 T_59: (in dwLoc20_28 + 0x00000002 : word32)
   Class: Eq_39
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_60: (in 100 : int32)
   Class: Eq_60
   DataType: int32
@@ -390,7 +390,7 @@ T_88: (in 0x00000002 : word32)
 T_89: (in dwLoc20_27 + 0x00000002 : word32)
   Class: Eq_68
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_90: (in 100 : int32)
   Class: Eq_90
   DataType: int32

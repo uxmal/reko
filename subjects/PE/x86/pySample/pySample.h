@@ -308,7 +308,7 @@ Eq_994: (fn word32 ((ptr Eq_172), ptr32, word32))
 Eq_1024: (struct "Eq_1024" (0 word32 dw0000) (18 word16 w0018))
 	T_1024 (in eax_21 : (ptr Eq_1024))
 	T_1028 (in Mem0[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
-Eq_1041: (struct "Eq_1041" 0028 (0 word32 dw0000) (8 uint32 dw0008))
+Eq_1041: (struct "Eq_1041" 0028 (0 word32 dw0000) (8 word32 dw0008))
 	T_1041 (in eax : (ptr Eq_1041))
 	T_1056 (in eax_22 : (ptr Eq_1041))
 	T_1065 (in (word32) ecx_6->w0014 + 0x00000018 + ecx_6 + 0x0000000C : word32)
@@ -827,7 +827,7 @@ T_116: (in 0x00000001 : word32)
 T_117: (in eax_24->ob_refcnt + 0x00000001 : word32)
   Class: Eq_117
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_118: (in 0x00000000 : word32)
   Class: Eq_118
   DataType: word32
@@ -4583,7 +4583,7 @@ T_1055: (in 0x00000000 : word32)
 T_1056: (in eax_22 : (ptr Eq_1041))
   Class: Eq_1041
   DataType: (ptr Eq_1041)
-  OrigDataType: (ptr (struct 0028 (0 word32 dw0000) (8 uint32 dw0008)))
+  OrigDataType: (ptr (struct 0028 (0 word32 dw0000) (8 word32 dw0008)))
 T_1057: (in 0x00000014 : word32)
   Class: Eq_1057
   DataType: word32
@@ -4658,8 +4658,8 @@ T_1074: (in eax_22 + 0x00000008 : word32)
   OrigDataType: word32
 T_1075: (in Mem0[eax_22 + 0x00000008:word32] : word32)
   Class: Eq_1075
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: word32
+  OrigDataType: word32
 T_1076: (in ecx_49 : uint32)
   Class: Eq_137
   DataType: uint32
@@ -5740,7 +5740,7 @@ typedef struct Eq_1024 {
 
 typedef struct Eq_1041 {	// size: 40 28
 	word32 dw0000;	// 0
-	uint32 dw0008;	// 8
+	word32 dw0008;	// 8
 } Eq_1041;
 
 typedef struct Eq_1044 {

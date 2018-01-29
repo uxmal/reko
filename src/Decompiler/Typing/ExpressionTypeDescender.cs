@@ -284,9 +284,9 @@ namespace Reko.Typing
             }
             else if (binExp.Operator is UnsignedIntOperator)
             {
-                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt|Domain.Character);
+                dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||

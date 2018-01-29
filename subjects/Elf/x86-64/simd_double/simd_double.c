@@ -50,7 +50,7 @@ void deregister_tm_clones()
 // 0000000000000690: void register_tm_clones()
 void register_tm_clones()
 {
-	word64 rsi_7 = 0x0000000000201048 - 0x0000000000201048;
+	int64 rsi_7 = 2101320 - 2101320;
 	if ((rsi_7 >> 0x03) + ((rsi_7 >> 0x03) >>u 0x3F) >> 0x01 == 0x00)
 		return;
 	<anonymous> * rax_34 = globals->ptr200FF0;
@@ -201,7 +201,7 @@ void main(Eq_181 xmm0)
 void __libc_csu_init(word32 edi)
 {
 	_init();
-	if (0x0000000000200DF0 - 0x0000000000200DE8 >> 0x03 != 0x00)
+	if (0x00200DF0 - 2100712 >> 0x03 != 0x00)
 	{
 		do
 		{

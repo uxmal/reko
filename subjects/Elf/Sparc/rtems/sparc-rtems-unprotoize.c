@@ -406,7 +406,7 @@ void safe_write(int32 o0, void, Eq_214 o2, Eq_214 o3)
 // 00011914: void save_pointers()
 void save_pointers()
 {
-	uint32 o1_6 = globals->dw28210;
+	word32 o1_6 = globals->dw28210;
 	globals->dw2B280 = globals->dw281E0;
 	globals->dw2B290 = o1_6;
 }
@@ -414,7 +414,7 @@ void save_pointers()
 // 00011938: void restore_pointers()
 void restore_pointers()
 {
-	uint32 o1_6 = globals->dw2B290;
+	word32 o1_6 = globals->dw2B290;
 	globals->dw281E0 = globals->dw2B280;
 	globals->dw28210 = o1_6;
 }
@@ -670,7 +670,7 @@ Eq_214 lookup(Eq_214 o0, Eq_214 o1, ptr32 & spOut, ptr32 & l1Out, ptr32 & i1Out)
 	ptr32 i6_15 = fp;
 	word32 l1_21;
 	*l1Out = o0;
-	int32 o3_108 = 0x00;
+	ui32 o3_108 = 0x00;
 	if ((int32) *o1 != 0x00)
 	{
 		Eq_214 o2_106 = o1;
@@ -1096,7 +1096,7 @@ l00012238:
 		}
 		else
 		{
-			word32 l2_117 = l2_186 + ~0x00 + ~0x00;
+			ui32 l2_117 = l2_186 + ~0x00 + ~0x00;
 			*l2Out = l2_117;
 			uint32 o3_129;
 			if (l2_117 == ~0x00)
@@ -1370,7 +1370,7 @@ void save_def_or_dec()
 	strncpy(l3_83, i0_84, l0_95);
 	Mem100[l3_83 + l0_95:byte] = 0x00;
 	l2_82->dw0008 = atoi(l3_83);
-	ui32 o1_106 = (word32) *((word32) i0_620 + 0x01);
+	word32 o1_106 = (word32) *((word32) i0_620 + 0x01);
 	if ((o1_106 + ~0x4D & 0xFF) > 0x01)
 	{
 		o2_112 = 0x00;
@@ -2241,7 +2241,7 @@ uint32 output_bytes(Eq_214 o0, Eq_214 o1, ptr32 & l1Out, ptr32 & l2Out, ptr32 & 
 		word32 i2_64;
 		word32 i6_65;
 		Eq_214 o0_66 = xrealloc(o0_58, l0_59 << 0x01, out i0_30, out i1_31, out i2_64, out i6_65);
-		uint32 o1_67 = globals->dw28210;
+		word32 o1_67 = globals->dw28210;
 		l0_23 = (word32) o0_66 + (l0_59 << 0x01);
 		Eq_214 o2_69 = globals->t281F0;
 		globals->dw28200 = l0_23;
@@ -2676,7 +2676,7 @@ void do_cleaning(byte * o0, uint32 o1)
 	byte * i0_4 = o0;
 	if (o0 - o1 >= 0x00)
 		return;
-	ui32 o1_50 = (word32) *o0;
+	word32 o1_50 = (word32) *o0;
 	while (o1_50 + ~0x07 << 0x18 >> 0x18 >= 0x54)
 	{
 		i0_4 = i0_4 + 0x01;
@@ -3048,7 +3048,7 @@ ui32 main(Eq_31 o1, word32 dwArg44, word32 dwArg48)
 					word32 i1_215;
 					Eq_214 o0_217 = abspath(0x00, i6_142->ptr0048[l7_122->dw0068], out sp_213, out l0_214, out i1_215, out i6_142);
 					word32 o1_221 = strlen(o0_217) + o0_217;
-					if ((int32) (&o1_221->tFFFFFFFF.bFFFFFFFE)[0x02] == 99 && (int32) o1_221->bFFFFFFFE == 0x2E)
+					if ((int32) o1_221->bFFFFFFFF == 99 && (int32) o1_221->bFFFFFFFE == 0x2E)
 					{
 						ui32 o0_280 = l4_197->dw034C;
 						*((word32) globals->t28160 + o0_280 * 0x04) = o0_217;
@@ -3467,8 +3467,8 @@ void _obstack_begin_1(Eq_6277 * o0, word32 o1, word32 o2, code * o3, word32 o4, 
 	}
 }
 
-// 00015550: void _obstack_newchunk(Register (ptr Eq_6431) o0, Register int32 o1)
-void _obstack_newchunk(Eq_6431 * o0, int32 o1)
+// 00015550: void _obstack_newchunk(Register (ptr Eq_6431) o0, Register word32 o1)
+void _obstack_newchunk(Eq_6431 * o0, word32 o1)
 {
 	int32 l2_22 = o0->dw000C - o0->dw0008;
 	int32 o2_25 = o0->dw0000;
@@ -4006,7 +4006,7 @@ l00015A04:
 			abort();
 		}
 		Mem151[o0_59 + o0_67:byte] = 0x2F;
-		l1_136 = o0_59 + 0x01;
+		l1_136 = (word32) o0_59 + 0x01;
 	}
 	o0_143 = (word32) globals->b17918;
 	goto l00015A04;
@@ -4299,7 +4299,7 @@ l0001600C:
 					if (o0_1099 != 0x00)
 					{
 						struct Eq_7613 * o2_1104 = i6_1042->ptr0050;
-						int32 o1_1111;
+						word32 o1_1111;
 						if (o2_1104 != null)
 							o1_1111 = 0x01 - (0x00 - (o0_1099 ^ 0x2D) < 0x00);
 						else
@@ -5192,9 +5192,9 @@ Eq_214 mkstemps(Eq_214 o0, Eq_214 o1)
 			word32 l2_171;
 			byte NV_172;
 			getpid();
-			uint32 o1_181 = dwLoc14 >> 0x1F << 0x10;
+			ui32 o1_181 = dwLoc14 >> 0x1F << 0x10;
 			int32 g2_187 = (word32) fp - 0x0018 >> 0x1F;
-			uint32 o5_192 = dwLoc14 << 0x10 ^ dwLoc18 ^ (word32) fp - 0x0018;
+			ui32 o5_192 = dwLoc14 << 0x10 ^ dwLoc18 ^ (word32) fp - 0x0018;
 			Eq_9086 o4_196 = (dwLoc14 >> 0x10 | o1_181) ^ dwLoc18 >> 0x1F ^ g2_187;
 			Mem203[0x0002B400:word64] = Mem0[0x0002B400:word64] + o4_196 + (o1_181 + o5_192 <u 0x00);
 			while (true)

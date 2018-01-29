@@ -206,7 +206,7 @@ namespace Reko.Core.Expressions
 
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
-            var ptLeft = dtLeft as PrimitiveType;
+            var ptLeft = dtLeft.ResolveAs<PrimitiveType>();
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer)
             {
@@ -218,18 +218,21 @@ namespace Reko.Core.Expressions
             {
                 // According to the C language definition, the sum
                 // of unsigned and signed integers is always unsigned.
-                if (ptLeft.Domain == Domain.UnsignedInt && ptRight.IsIntegral)
+                if (ptLeft.Domain == Domain.UnsignedInt)
                 {
                     return ptLeft;
                 }
-                if (ptRight.Domain == Domain.UnsignedInt && ptLeft.IsIntegral)
+                if (ptRight.Domain == Domain.UnsignedInt)
                 {
                     return ptRight;
                 }
             }
-            if (dtLeft is Pointer)
+            if (dtLeft.ResolveAs<Pointer>() != null)
             {
-                return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+                if (dtLeft is TypeReference)
+                    return dtLeft;
+                else 
+                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
             return dtLeft;
         }

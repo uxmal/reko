@@ -50,8 +50,8 @@ T_8: (in 0x00000001 : word32)
   OrigDataType: word32
 T_9: (in n + 0x00000001 : word32)
   Class: Eq_9
-  DataType: word32
-  OrigDataType: word32
+  DataType: uint32
+  OrigDataType: uint32
 T_10: (in 0x10072018 : ptr32)
   Class: Eq_2
   DataType: (ptr char)

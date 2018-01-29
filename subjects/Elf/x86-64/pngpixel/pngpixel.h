@@ -4016,7 +4016,7 @@ T_968: (in 0x00000001 : word32)
 T_969: (in dwLoc68_450 + 0x00000001 : word32)
   Class: Eq_603
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_970: (in (uint64) dwLoc64_586 : uint64)
   Class: Eq_970
   DataType: uint64
@@ -4036,7 +4036,7 @@ T_973: (in (word32) (uint64) dwLoc5C_588 : word32)
 T_974: (in dwLoc54_603 + (word32) ((uint64) dwLoc5C_588) : word32)
   Class: Eq_826
   DataType: uint32
-  OrigDataType: word32
+  OrigDataType: uint32
 T_975: (in dwLoc50_677 : uint32)
   Class: Eq_975
   DataType: uint32
@@ -4080,7 +4080,7 @@ T_984: (in (word32) (uint64) dwLoc58_587 : word32)
 T_985: (in dwLoc50_677 + (word32) ((uint64) dwLoc58_587) : word32)
   Class: Eq_975
   DataType: uint32
-  OrigDataType: word32
+  OrigDataType: uint32
 T_986: (in print_pixel : ptr64)
   Class: Eq_986
   DataType: (ptr Eq_986)
@@ -4115,11 +4115,11 @@ T_993: (in _init() : void)
   OrigDataType: void
 T_994: (in 0000000000601E08 : ptr64)
   Class: Eq_994
-  DataType: Eq_994
+  DataType: int64
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_995: (in 0000000000601E00 : ptr64)
   Class: Eq_995
-  DataType: Eq_995
+  DataType: int64
   OrigDataType: (union (int64 u1) (ptr64 u0))
 T_996: (in 0x0000000000601E08 - 0x0000000000601E00 : word64)
   Class: Eq_996

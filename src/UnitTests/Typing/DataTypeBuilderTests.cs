@@ -58,14 +58,14 @@ namespace Reko.UnitTests.Typing
             dtb = new DataTypeBuilder(factory, store, program.Platform);
         }
 
-        protected override void RunTest(Program prog, string outputFile)
+        protected override void RunTest(Program program, string outputFile)
         {
-            aen.Transform(prog);
-            eqb.Build(prog);
-            TypeCollector trco = new TypeCollector(factory, store, prog, new FakeDecompilerEventListener());
+            aen.Transform(program);
+            eqb.Build(program);
+            TypeCollector trco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
-            Verify(prog, outputFile);
+            Verify(program, outputFile);
         }
 
         private void Verify(string outputFile)

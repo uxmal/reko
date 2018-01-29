@@ -82,7 +82,7 @@ void register_tm_clones()
 {
 	int32 r5_10 = globals->dw10AA4 - (globals->ptr10AA8 + 2692);
 	Eq_87 r2_12 = r5_10 >> 0x02 >> 0x1F;
-	if ((word32) r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00)
+	if (r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_22 = globals->ptr10AD4;
 	if (r25_22 == null)
@@ -122,12 +122,12 @@ void __do_global_dtors_aux()
 	struct Eq_64 * r2_50 = globals->ptr10AA8;
 	Eq_129 r2_56 = r17_52[0x0AF4];
 	Eq_129 r16_58 = (globals->dw10AB0 - (r2_50 + 2664) >> 0x02) + -0x01;
-	int32 r18_54 = r2_50 + 2664;
+	word32 r18_54 = r2_50 + 2664;
 	if ((word32) (r2_56 < r16_58) != 0x00)
 	{
 		do
 		{
-			int32 r2_78 = (word32) r2_56 + 0x01;
+			uint32 r2_78 = (word32) r2_56.u1 + 0x01;
 			r17_52[0x0AF4] = (struct Eq_64) r2_78;
 			<anonymous> ** r2_81 = r18_54 + (r2_78 << 0x02);
 			<anonymous> * r25_82 = *r2_81;

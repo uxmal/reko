@@ -1426,7 +1426,7 @@ T_313: (in fp + -56 : word32)
 T_314: (in dwLoc20_138 : Eq_10)
   Class: Eq_10
   DataType: Eq_10
-  OrigDataType: (union (int32 u1) (uint32 u0))
+  OrigDataType: uint32
 T_315: (in 0x00000000 : word32)
   Class: Eq_10
   DataType: int32
@@ -1886,7 +1886,7 @@ T_428: (in 512 : int32)
 T_429: (in dwLoc20_138 + 512 : word32)
   Class: Eq_10
   DataType: Eq_10
-  OrigDataType: int32
+  OrigDataType: uint32
 T_430: (in 0x00000014 : word32)
   Class: Eq_430
   DataType: word32

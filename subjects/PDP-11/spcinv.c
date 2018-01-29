@@ -388,8 +388,8 @@ l0588:
 	return r1;
 }
 
-// 05D4: FlagGroup bool fn05D4(Register Eq_137 r0, Register Eq_99 r1, Register Eq_14 r3, Register Eq_2 r4, Register (ptr Eq_3) r5, Register (ptr Eq_4) pc, Stack byte bArg00, Register out Eq_759 r0Out, Register out ptr16 r1Out, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out (ptr Eq_763) r5Out)
-bool fn05D4(Eq_137 r0, Eq_99 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, Eq_4 * pc, byte bArg00, Eq_759 & r0Out, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, Eq_763 * & r5Out)
+// 05D4: FlagGroup bool fn05D4(Register Eq_137 r0, Register Eq_99 r1, Register Eq_14 r3, Register Eq_2 r4, Register (ptr Eq_3) r5, Register (ptr Eq_4) pc, Stack byte bArg00, Register out Eq_759 r0Out, Register out Eq_760 r1Out, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out (ptr Eq_763) r5Out)
+bool fn05D4(Eq_137 r0, Eq_99 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, Eq_4 * pc, byte bArg00, Eq_759 & r0Out, Eq_760 & r1Out, ptr16 & r3Out, ptr16 & r4Out, Eq_763 * & r5Out)
 {
 	*r3Out = r3;
 	*r1Out = r1;
@@ -483,8 +483,8 @@ l0676:
 	return Z_30;
 }
 
-// 067C: FlagGroup bool fn067C(Register Eq_137 r0, Register Eq_14 r3, Register Eq_2 r4, Register (ptr Eq_3) r5, Stack byte bArg00, Register out Eq_720 r0Out, Register out ptr16 r1Out, Register out (ptr Eq_722) r3Out, Register out ptr16 r4Out, Register out (ptr Eq_724) r5Out)
-bool fn067C(Eq_137 r0, Eq_14 r3, Eq_2 r4, Eq_3 * r5, byte bArg00, Eq_720 & r0Out, ptr16 & r1Out, Eq_722 * & r3Out, ptr16 & r4Out, Eq_724 * & r5Out)
+// 067C: FlagGroup bool fn067C(Register Eq_137 r0, Register Eq_14 r3, Register Eq_2 r4, Register (ptr Eq_3) r5, Stack byte bArg00, Register out Eq_720 r0Out, Register out Eq_721 r1Out, Register out (ptr Eq_722) r3Out, Register out ptr16 r4Out, Register out (ptr Eq_724) r5Out)
+bool fn067C(Eq_137 r0, Eq_14 r3, Eq_2 r4, Eq_3 * r5, byte bArg00, Eq_720 & r0Out, Eq_721 & r1Out, Eq_722 * & r3Out, ptr16 & r4Out, Eq_724 * & r5Out)
 {
 	*r3Out = r3;
 	*r0Out = r0;
@@ -970,10 +970,10 @@ Eq_137 fn0A7C(Eq_137 r0, Eq_99 r1, byte * r4, Eq_3 * r5, Eq_4 * pc, ptr16 & r1Ou
 	return r0_31;
 }
 
-// 0A94: Register word16 fn0A94()
-word16 fn0A94()
+// 0A94: Register ui16 fn0A94()
+ui16 fn0A94()
 {
-	word16 r0_10 = ((DPB(__swab(globals->w0AB2), 0x00, 0) << 0x01) + globals->w0AB2 << 0x02) + globals->w0AB2;
+	ui16 r0_10 = ((DPB(__swab(globals->w0AB2), 0x00, 0) << 0x01) + globals->w0AB2 << 0x02) + globals->w0AB2;
 	globals->w0AB4 = r0_10 + 0x3619;
 	return r0_10 + 0x3619;
 }
@@ -1035,8 +1035,8 @@ void fn0AF6(Eq_99 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, byte bArg00)
 	PRINT(&globals->b1178);
 }
 
-// 0B1A: Register Eq_137 fn0B1A(Register Eq_99 r1, Register Eq_2 r4, Register (ptr Eq_3) r5, Stack byte bArg00, Register out ptr16 r1Out, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out (ptr Eq_1017) r5Out)
-Eq_137 fn0B1A(Eq_99 r1, Eq_2 r4, Eq_3 * r5, byte bArg00, ptr16 & r1Out, ptr16 & r3Out, ptr16 & r4Out, Eq_1017 * & r5Out)
+// 0B1A: Register Eq_137 fn0B1A(Register Eq_99 r1, Register Eq_2 r4, Register (ptr Eq_3) r5, Stack byte bArg00, Register out Eq_1014 r1Out, Register out ptr16 r3Out, Register out ptr16 r4Out, Register out (ptr Eq_1017) r5Out)
+Eq_137 fn0B1A(Eq_99 r1, Eq_2 r4, Eq_3 * r5, byte bArg00, Eq_1014 & r1Out, ptr16 & r3Out, ptr16 & r4Out, Eq_1017 * & r5Out)
 {
 	Eq_137 r0_3 = globals->w0B5A;
 	word16 wLoc02_8 = DPB(wLoc02, 0x2B, 8);

@@ -214,8 +214,8 @@ void fn002004F2(byte w)
 	while (*(byte *) 0x4004 != w);
 }
 
-// 0020050A: Register byte fn0020050A(Register byte w, Register byte a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_480 deOut, Register out Eq_481 hOut)
-byte fn0020050A(byte w, byte a, word16 bc, word16 de, word16 hl, Eq_480 & deOut, Eq_481 & hOut)
+// 0020050A: Register byte fn0020050A(Register byte w, Register uint8 a, Register word16 bc, Register word16 de, Register word16 hl, Register out Eq_480 deOut, Register out Eq_481 hOut)
+byte fn0020050A(byte w, uint8 a, word16 bc, word16 de, word16 hl, Eq_480 & deOut, Eq_481 & hOut)
 {
 	struct Eq_482 * xde_27 = DPB(0x9800, (word16) (DPB(bc, 0x00, 8) * 0x02) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x40), 0);
 	xde_27->b0000 = a;
