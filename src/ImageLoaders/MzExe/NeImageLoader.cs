@@ -56,6 +56,8 @@ namespace Reko.ImageLoaders.MzExe
             ADDITIVE = 4,
         }
 
+        // Segment table flags
+        const ushort NE_STFLAGS_RELOCATIONS       =0x0100;
 
         // Resource types
         const ushort NE_RSCTYPE_CURSOR            =0x8001;
@@ -529,7 +531,7 @@ namespace Reko.ImageLoaders.MzExe
             var rdr = new LeImageReader(RawImage, offset);
             uint linAddress = 0x2000;
             Debug.Print("== Segment table ");
-            Debug.Print("Offs Len  Flag Alloc");
+            Debug.Print("  Address:Offs Len  Flag Alloc");
             for (int iSeg = 0; iSeg < cSeg; ++iSeg)
             {
                 var seg = new NeSegment
@@ -582,6 +584,8 @@ namespace Reko.ImageLoaders.MzExe
                 mem,
                 seg.Address.Selector.Value.ToString("X4"),
                 access);
+            if ((seg.Flags & NE_STFLAGS_RELOCATIONS) == 0)
+                return true;
             var rdr = new LeImageReader(
                 RawImage,
                 seg.DataLength + ((uint)seg.DataOffset << this.cbFileAlignmentShift));
