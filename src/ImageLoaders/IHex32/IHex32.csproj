@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A959C1A2-A622-4600-81AD-29E08545B2F7}</ProjectGuid>
+    <ProjectGuid>{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microchip</RootNamespace>
-    <AssemblyName>Microchip</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.IHex32</RootNamespace>
+    <AssemblyName>IHex32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,8 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,31 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ILinearRegion.cs" />
-    <Compile Include="Common\IMemoryRegion.cs" />
-    <Compile Include="Common\PICAddresses.cs" />
-    <Compile Include="PIC18\IOperandShadow.cs" />
-    <Compile Include="Common\IPICMemoryMap.cs" />
-    <Compile Include="Common\IPICMemoryMapper.cs" />
-    <Compile Include="Common\IPICRegisterSymTable.cs" />
-    <Compile Include="Common\PICMemoryMap.cs" />
-    <Compile Include="Common\PICRegistersBuilder.cs" />
-    <Compile Include="Common\PICStorage.cs" />
-    <Compile Include="PIC16\Opcode.cs" />
-    <Compile Include="PIC18\FlagM.cs" />
-    <Compile Include="PIC18\IPIC18OperandVisitor.cs" />
-    <Compile Include="PIC18\MemoryOperand.cs" />
-    <Compile Include="PIC18\Opcode.cs" />
-    <Compile Include="PIC18\PIC18BankedAddress.cs" />
-    <Compile Include="PIC18\PIC18Disassembler.cs" />
-    <Compile Include="PIC18\PIC18Instruction.cs" />
-    <Compile Include="PIC18\PIC18Architecture.cs" />
-    <Compile Include="PIC18\PIC18InstructionComparer.cs" />
-    <Compile Include="PIC18\PIC18Operand.cs" />
-    <Compile Include="PIC18\PIC18Registers.cs" />
-    <Compile Include="PIC18\PIC18Rewriter.cs" />
-    <Compile Include="PIC18\PIC18State.cs" />
-    <Compile Include="PIC18\PIC18MemoryMapper.cs" />
+    <Compile Include="IHex32AddressType.cs" />
+    <Compile Include="IHex32Exception.cs" />
+    <Compile Include="IHex32Loader.cs" />
+    <Compile Include="IHex32Reader.cs" />
+    <Compile Include="IHex32Record.cs" />
+    <Compile Include="IHex32RecordType.cs" />
+    <Compile Include="IHex32Writer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,15 +55,6 @@
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj">
-      <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
-      <Name>Microchip.Crownking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
-      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
-      <Name>Microchip.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -188,4 +188,113 @@ namespace Reko.Arch.Microchip.Common
 
     }
 
+    /// <summary>
+    /// A PIC banked data memory address. Bank size depends on PIC family.
+    /// </summary>
+    public abstract class PICBankedAddress : Address
+    {
+
+        #region Constructors
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public PICBankedAddress() : base(PrimitiveType.Ptr16)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the data memory bank selector value or null..
+        /// </summary>
+        public byte? BankSelect { get; protected set; }
+
+        /// <summary>
+        /// Gets the offset in the data memory bank..
+        /// </summary>
+        public ushort BankOffset
+        {
+            get { return _bankoff; }
+            protected set { _bankoff = (ushort)(value & (BankSize - 1)); }
+        }
+        private ushort _bankoff;
+
+        #endregion
+
+        #region Overridden 'Address' methods
+
+        public override bool IsNull => false;
+
+        public override ulong Offset => BankOffset;
+
+        public override ushort? Selector => BankSelect;
+
+        public override Constant ToConstant()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ushort ToUInt16()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override uint ToUInt32()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ulong ToLinear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Address Add(long offset)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Address Align(int alignment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GenerateName(string prefix, string suffix)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Expression CloneExpression()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Address NewOffset(ulong offset)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsZero => false;
+
+        public override Expression Invert()
+        {
+            return base.Invert();
+        }
+
+        #endregion
+
+        #region Abstract methods/properties
+
+        /// <summary>
+        /// Gets the size of the data memory bank. Must be a power of 2.
+        /// </summary>
+        public abstract ushort BankSize { get; }
+
+        #endregion
+
+    }
+
 }

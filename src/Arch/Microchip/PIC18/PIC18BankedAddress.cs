@@ -23,76 +23,74 @@
 using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
 
 namespace Reko.Arch.Microchip.PIC18
 {
+
     /// <summary>
-    /// The PIC18 Banked Data memory address.
+    /// The PIC18 Banked Data memory address with Access RAM.
     /// </summary>
-    public class PIC18BankedAddress : Address
+    public class PIC18BankedAddress : PICBankedAddress
     {
 
         #region Locals
 
         /// <summary>
-        /// The memory bank select index; null if Access RAM.
+        /// True if address is pointing to Access RAM, false if not.
         /// </summary>
-        public readonly byte? BankSelect;
-
-        /// <summary>
-        /// The memory bank offset.
-        /// </summary>
-        public readonly ushort BankOffset;
-
         public readonly bool IsAccessRAM;
 
         #endregion
 
         #region Constructors
 
-        public PIC18BankedAddress()
-            : base(PrimitiveType.Ptr16)
-        {
-            BankSelect = null;
-            BankOffset = 0;
-            IsAccessRAM = true;
-        }
-
-        public PIC18BankedAddress(ushort bankOffset)
-            : base(PrimitiveType.Ptr16)
-        {
-            BankSelect = null;
-            BankOffset = bankOffset;
-            IsAccessRAM = true;
-        }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="bankSelect">The bank select.</param>
+        /// <param name="bankOffset">The bank offset.</param>
+        /// <param name="access">(Optional) True if address is to access RAM.</param>
         public PIC18BankedAddress(byte? bankSelect, ushort bankOffset, bool access = false)
-            : base(PrimitiveType.Ptr16)
         {
             IsAccessRAM = access;
             BankSelect = (access ? bankSelect : null);
             BankOffset = bankOffset;
         }
 
+        /// <summary>
+        /// Default constructor. Instantiates an access RAM slot 0 address.
+        /// </summary>
+        public PIC18BankedAddress()
+            : this(null, 0, true)
+        {
+        }
+
+        /// <summary>
+        /// Default constructor. Instantiates an access RAM address.
+        /// </summary>
+        /// <param name="bankOffset">The offset in the access RAM.</param>
+        public PIC18BankedAddress(ushort bankOffset)
+            : this(null, bankOffset, true)
+        {
+        }
+
         #endregion
 
         /// <summary>
-        /// Gets the data memory bank size for PIC18 family.
+        /// Gets the data memory bank size (in number of bytes) for PIC18 family.
         /// </summary>
-        /// <value>
-        /// The size in bytes of the memory bank.
-        /// </value>
-        public ushort BankSize => 256;
+        public override ushort BankSize => 256;
 
         #region Overridden 'Address' methods
 
-        public override bool IsNull => false;
-
-        public override ulong Offset => BankOffset;
-
-        public override ushort? Selector => BankSelect;
-
+        /// <summary>
+        /// Generates a symbolic name with given prefix and suffix.
+        /// </summary>
+        /// <param name="prefix">The prefix to use.</param>
+        /// <param name="suffix">The suffix to use.</param>
+        /// <returns>
+        /// The name as a string.
+        /// </returns>
         public override string GenerateName(string prefix, string suffix)
         {
             if (IsAccessRAM)
@@ -126,10 +124,6 @@ namespace Reko.Arch.Microchip.PIC18
             return BankOffset;
         }
 
-        #endregion
-
-        #region Methods
-
         public override Address NewOffset(ulong offset)
         {
             if (BankSelect.HasValue)
@@ -139,7 +133,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override Address Add(long offset)
         {
-            ushort newOff = (ushort)(BankOffset + offset);
+            // Simply rollover offset in same memory bank.
+            ushort newOff = (ushort)((BankOffset + offset) & (BankSize - 1));
             return new PIC18BankedAddress(BankSelect, newOff, IsAccessRAM);
         }
 
@@ -147,7 +142,7 @@ namespace Reko.Arch.Microchip.PIC18
             => new PIC18BankedAddress(BankSelect, BankOffset, IsAccessRAM);
 
         public override Address Align(int alignment)
-            => new PIC18BankedAddress(BankSelect, ((byte)(alignment * ((BankOffset + alignment - 1) / alignment))), IsAccessRAM);
+            => new PIC18BankedAddress(BankSelect, ((ushort)(alignment * ((BankOffset + alignment - 1) / alignment))), IsAccessRAM);
 
         #endregion
 

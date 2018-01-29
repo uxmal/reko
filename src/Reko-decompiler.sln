@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
 	ProjectSection(SolutionItems) = preProject
@@ -419,6 +419,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip.Crownking", "Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj", "{9B13FBCE-EC34-495B-B464-C80FF86E61E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip.Utils", "Libraries\Microchip\Utils\Microchip.Utils.csproj", "{45E095E9-D7C2-40AA-913B-AB77582AFBB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHex32", "ImageLoaders\IHex32\IHex32.csproj", "{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2394,6 +2396,36 @@ Global
 		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{45E095E9-D7C2-40AA-913B-AB77582AFBB4}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|.NET.Build.0 = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|Win32.Build.0 = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Debug|x86.Build.0 = Debug|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|.NET.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|.NET.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|Win32.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|x86.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.Release|x86.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2470,6 +2502,7 @@ Global
 		{A959C1A2-A622-4600-81AD-29E08545B2F7} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 		{9B13FBCE-EC34-495B-B464-C80FF86E61E0} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{45E095E9-D7C2-40AA-913B-AB77582AFBB4} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
+		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B012B36-B0A2-4412-A22A-023C9B7C2EDD}
