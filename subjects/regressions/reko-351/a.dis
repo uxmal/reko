@@ -179,7 +179,7 @@ l80000114:
 	byte CVZNX_123
 	byte VZ_124
 	word32 a0_125
-	bcuiposr0 None_126
+	bcuisposr0 None_126
 	byte CZ_127
 	call a0_112 (retsize: 4; depth: 16)
 		uses: a0_112,a2_106,a6_5,a7_11,C_18,CVZN_111,CVZNX_108,CZ,d0_107,d2_49,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10,None,V_19,VZ_53,Z_17,ZN_16
@@ -213,7 +213,7 @@ l8000013A:
 	byte CVZNX_99
 	byte VZ_100
 	word32 a0_101
-	bcuiposr0 None_102
+	bcuisposr0 None_102
 	byte CZ_103
 	call null (retsize: 4; depth: 20)
 		uses: a0_64,a2_61,a6_62,a7_87,C_67,CVZN_60,CVZNX_57,CZ_54,d0_58,d2_59,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10_88,None_55,V_68,VZ_56,Z_66,ZN_65

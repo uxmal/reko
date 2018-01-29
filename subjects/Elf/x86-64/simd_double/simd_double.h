@@ -828,7 +828,7 @@ T_176: (in (uint64) (rdx_rax_25 /u rcx_22) : uint64)
 T_177: (in 0x0000000000000000 : word64)
   Class: Eq_174
   DataType: uint64
-  OrigDataType: uint64
+  OrigDataType: up64
 T_178: (in 0x0000000000000000 < rax_29 : bool)
   Class: Eq_178
   DataType: bool
@@ -919,8 +919,8 @@ T_199: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_200: (in 0x0000000000000400 : word64)
   Class: Eq_198
-  DataType: uint64
-  OrigDataType: uint64
+  DataType: int64
+  OrigDataType: up64
 T_201: (in qwLoc10_163 < 0x0000000000000400 : bool)
   Class: Eq_201
   DataType: bool
@@ -968,7 +968,7 @@ T_211: (in 0x0000000000000001 : word64)
 T_212: (in 0x00000000000003FF : word64)
   Class: Eq_210
   DataType: uint64
-  OrigDataType: uint64
+  OrigDataType: up64
 T_213: (in qwLoc18_133 < 0x00000000000003FF : bool)
   Class: Eq_213
   DataType: bool
@@ -1051,12 +1051,12 @@ T_232: (in rax_117 : Eq_232)
   OrigDataType: (union (int64 u1) (uint64 u0))
 T_233: (in 0x0000000000000000 : word64)
   Class: Eq_233
-  DataType: word64
-  OrigDataType: word64
+  DataType: up64
+  OrigDataType: up64
 T_234: (in qwLoc18_133 + 0x0000000000000000 : word64)
   Class: Eq_232
   DataType: Eq_232
-  OrigDataType: uint64
+  OrigDataType: up64
 T_235: (in eax_118 : ui32)
   Class: Eq_235
   DataType: ui32
@@ -1287,12 +1287,12 @@ T_291: (in printf("%g\n", rsp_69->tFFFFFFF8) : int32)
   OrigDataType: int32
 T_292: (in 0x0000000000000001 : word64)
   Class: Eq_292
-  DataType: word64
-  OrigDataType: word64
+  DataType: up64
+  OrigDataType: up64
 T_293: (in qwLoc28_103 + 0x0000000000000001 : word64)
   Class: Eq_198
   DataType: Eq_198
-  OrigDataType: uint64
+  OrigDataType: up64
 T_294: (in _mm_free : ptr64)
   Class: Eq_294
   DataType: (ptr Eq_294)

@@ -15,14 +15,14 @@ void _init(Eq_2 * ra)
 		word32 r25_27;
 		struct Eq_21 * ra_28;
 		word32 r2_29;
-		bcuiposr0 None_30;
+		bcuisposr0 None_30;
 		(ra->ptr104F4 + 2004)();
 		word32 sp_36;
 		word32 r28_37;
 		word32 r25_38;
 		word32 ra_39;
 		word32 r2_40;
-		bcuiposr0 None_41;
+		bcuisposr0 None_41;
 		(ra_28->ptr104D0 + 0x0970)();
 	}
 	else
@@ -33,7 +33,7 @@ void _init(Eq_2 * ra)
 		word32 r25_15;
 		word32 ra_16;
 		word32 r2_17;
-		bcuiposr0 None_18;
+		bcuisposr0 None_18;
 		r25_12();
 	}
 }
@@ -238,7 +238,7 @@ void _fini(Eq_300 * ra)
 	word32 r28_17;
 	word32 r25_18;
 	word32 ra_19;
-	bcuiposr0 None_20;
+	bcuisposr0 None_20;
 	(ra->ptr10084 + 0x06F4)();
 }
 

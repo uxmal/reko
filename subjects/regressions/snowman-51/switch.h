@@ -35,7 +35,7 @@ T_4: (in n : uint32)
 T_5: (in 0xFFFFFFFE : word32)
   Class: Eq_4
   DataType: uint32
-  OrigDataType: uint32
+  OrigDataType: up32
 T_6: (in n > 0xFFFFFFFE : bool)
   Class: Eq_6
   DataType: bool

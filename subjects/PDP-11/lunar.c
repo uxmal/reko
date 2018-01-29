@@ -1156,7 +1156,7 @@ void fn103C(word16 r0, Eq_3311 * r3, Eq_3312 * r5, Eq_3313 * wArg00)
 		int16 r4_83 = (r4_76 >> 0x01) + wArg00->w0002;
 		globals->w0084 = wArg00->w0004;
 		r5->w0004 = r4_83;
-		cu16 v39_88 = r3->w0002 - r3->w0000;
+		cup16 v39_88 = r3->w0002 - r3->w0000;
 		if (v39_88 != 0x00)
 		{
 			if (v39_88 <= 0x00)
@@ -1177,7 +1177,7 @@ void fn103C(word16 r0, Eq_3311 * r3, Eq_3312 * r5, Eq_3313 * wArg00)
 bool fn114A(Eq_2 r0, Eq_2 r1, ptr16 & r2Out, ptr16 & r3Out)
 {
 	Eq_2 r2_300;
-	cu16 v10_5 = r0 - r1;
+	cup16 v10_5 = r0 - r1;
 	uint16 r3_103 = 0x00;
 	*r3Out = r3_103;
 	bool C_25 = cond(v10_5);
@@ -1371,7 +1371,7 @@ l122E:
 														bool C_46 = cond(r2_44);
 														if (r2_44 < 0x00)
 														{
-															cu16 r3_59 = (word16) r1 + r3_43;
+															cup16 r3_59 = (word16) r1 + r3_43;
 															*r3Out = r3_59;
 															word16 r2_62 = r2_44 + (r3_59 <u 0x00);
 															*r2Out = r2_62;

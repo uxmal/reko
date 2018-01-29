@@ -190,7 +190,7 @@ void main(Eq_181 xmm0)
 	while (qwLoc28_103 < 0x0400)
 	{
 		printf("%g\n", rsp_69->tFFFFFFF8);
-		qwLoc28_103 = (word64) qwLoc28_103.u1 + 0x01;
+		qwLoc28_103 = (word64) qwLoc28_103 + 0x01;
 	}
 	_mm_free(rax_13);
 	_mm_free(rax_20);

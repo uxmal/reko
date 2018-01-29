@@ -3965,7 +3965,7 @@ T_559: (in r14_169 + 4 + dwLoc0284_174 : ptr32)
   Class: Eq_559
   DataType: (ptr (arr Eq_6275))
   OrigDataType: (ptr (struct (0 (arr T_6275) a0000)))
-T_560: (in 0x00000008 : bcuipr32)
+T_560: (in 0x00000008 : word32)
   Class: Eq_560
   DataType: ui32
   OrigDataType: ui32
@@ -11321,7 +11321,7 @@ T_2398: (in Test(EQ,cr0) : bool)
   Class: Eq_2398
   DataType: bool
   OrigDataType: bool
-T_2399: (in 0x00000010 : bcuipr32)
+T_2399: (in 0x00000010 : word32)
   Class: Eq_2399
   DataType: ui32
   OrigDataType: ui32
@@ -11361,7 +11361,7 @@ T_2408: (in r3_29 + 7 & -8 : word32)
   Class: Eq_2373
   DataType: int32
   OrigDataType: ui32
-T_2409: (in 0x00000010 : bcuipr32)
+T_2409: (in 0x00000010 : word32)
   Class: Eq_2409
   DataType: ui32
   OrigDataType: ui32
@@ -11749,7 +11749,7 @@ T_2505: (in r8_144 : (ptr Eq_2505))
   Class: Eq_2505
   DataType: (ptr Eq_2505)
   OrigDataType: word32
-T_2506: (in 0x00000010 : bcuipr32)
+T_2506: (in 0x00000010 : word32)
   Class: Eq_2506
   DataType: ui32
   OrigDataType: ui32
@@ -12093,7 +12093,7 @@ T_2591: (in Mem141[r11_125 + 4:word32] : word32)
   Class: Eq_2490
   DataType: word32
   OrigDataType: word32
-T_2592: (in 0x00000010 : bcuipr32)
+T_2592: (in 0x00000010 : word32)
   Class: Eq_2592
   DataType: ui32
   OrigDataType: ui32
@@ -12237,7 +12237,7 @@ T_2627: (in Mem9[r11_15 + 0x00000000:word32] : word32)
   Class: Eq_2388
   DataType: (ptr (arr Eq_6290))
   OrigDataType: (ptr (struct (0 (arr T_6294) a0000)))
-T_2628: (in 0x00000010 : bcuipr32)
+T_2628: (in 0x00000010 : word32)
   Class: Eq_2628
   DataType: ui32
   OrigDataType: ui32
@@ -12277,7 +12277,7 @@ T_2637: (in 0 : int32)
   Class: Eq_2373
   DataType: int32
   OrigDataType: int32
-T_2638: (in 0x00000010 : bcuipr32)
+T_2638: (in 0x00000010 : word32)
   Class: Eq_2638
   DataType: ui32
   OrigDataType: ui32
@@ -13953,7 +13953,7 @@ T_3056: (in Mem23[r2 + 156:word32] : word32)
   Class: Eq_3056
   DataType: (ptr (arr int32))
   OrigDataType: (ptr (struct (0 (arr T_6312) a0000)))
-T_3057: (in 0x00000004 : bcuipr32)
+T_3057: (in 0x00000004 : word32)
   Class: Eq_3057
   DataType: ui32
   OrigDataType: ui32
@@ -20001,7 +20001,7 @@ T_4568: (in r8_5 + 2 : word32)
   Class: Eq_4568
   DataType: (ptr Eq_2864)
   OrigDataType: (ptr T_6353)
-T_4569: (in 0x00000004 : bcuipr32)
+T_4569: (in 0x00000004 : word32)
   Class: Eq_4569
   DataType: ui32
   OrigDataType: ui32
@@ -23845,7 +23845,7 @@ T_5529: (in Mem19[r2 + 156:word32] : word32)
   Class: Eq_3056
   DataType: (ptr (arr int32))
   OrigDataType: word32
-T_5530: (in 0x00000004 : bcuipr32)
+T_5530: (in 0x00000004 : word32)
   Class: Eq_5530
   DataType: ui32
   OrigDataType: ui32

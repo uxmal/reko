@@ -33,13 +33,15 @@ Eq_92: (union "Eq_92" (int32 u0) (uint32 u1))
 	T_92 (in r5_10 >> 0x02 : word32)
 Eq_93: (union "Eq_93" (int32 u0) (uint32 u1))
 	T_93 (in r2_12 + (r5_10 >> 0x02) : word32)
-Eq_129: (union "Eq_129" (int32 u0) (uint32 u1))
+Eq_129: (union "Eq_129" (int32 u0) (up32 u1))
 	T_129 (in r2_56 : Eq_129)
 	T_132 (in Mem0[r17_52 + 0x00000AF4:word32] : word32)
 	T_133 (in r16_58 : Eq_129)
 	T_142 (in (globals->dw10AB0 - (r2_50 + 2664) >> 0x02) + -1 : word32)
 	T_182 (in r16_90 : Eq_129)
 	T_188 (in Mem80[r17_52 + 0x00000AF4:word32] : word32)
+Eq_165: (union "Eq_165" (int32 u0) (up32 u1))
+	T_165 (in 1 : int32)
 Eq_193: (fn void ())
 	T_193 (in deregister_tm_clones : ptr32)
 	T_194 (in signature of deregister_tm_clones : void)
@@ -139,10 +141,10 @@ T_16: (in r2_17 : word32)
   Class: Eq_16
   DataType: word32
   OrigDataType: word32
-T_17: (in None_18 : bcuiposr0)
+T_17: (in None_18 : bcuisposr0)
   Class: Eq_17
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_18: (in sp_25 : word32)
   Class: Eq_18
   DataType: word32
@@ -163,10 +165,10 @@ T_22: (in r2_29 : word32)
   Class: Eq_22
   DataType: word32
   OrigDataType: word32
-T_23: (in None_30 : bcuiposr0)
+T_23: (in None_30 : bcuisposr0)
   Class: Eq_23
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_24: (in 0x000104F4 : word32)
   Class: Eq_24
   DataType: word32
@@ -211,10 +213,10 @@ T_34: (in r2_40 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_35: (in None_41 : bcuiposr0)
+T_35: (in None_41 : bcuisposr0)
   Class: Eq_35
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_36: (in 0x000104D0 : word32)
   Class: Eq_36
   DataType: word32
@@ -606,7 +608,7 @@ T_132: (in Mem0[r17_52 + 0x00000AF4:word32] : word32)
 T_133: (in r16_58 : Eq_129)
   Class: Eq_129
   DataType: Eq_129
-  OrigDataType: (union (int32 u0) (uint32 u1))
+  OrigDataType: (union (int32 u0) (up32 u1))
 T_134: (in 0x00010AB0 : word32)
   Class: Eq_134
   DataType: (ptr int32)
@@ -734,11 +736,11 @@ T_164: (in r2_78 : uint32)
 T_165: (in 1 : int32)
   Class: Eq_165
   DataType: int32
-  OrigDataType: int32
+  OrigDataType: (union (int32 u0) (up32 u1))
 T_166: (in r2_56 + 1 : word32)
   Class: Eq_164
   DataType: uint32
-  OrigDataType: uint32
+  OrigDataType: up32
 T_167: (in 0x00000AF4 : word32)
   Class: Eq_167
   DataType: word32
@@ -802,7 +804,7 @@ T_181: (in ra_87 : word32)
 T_182: (in r16_90 : Eq_129)
   Class: Eq_129
   DataType: Eq_129
-  OrigDataType: uint32
+  OrigDataType: up32
 T_183: (in r2_91 : word32)
   Class: Eq_183
   DataType: word32
@@ -1295,10 +1297,10 @@ T_305: (in ra_19 : word32)
   Class: Eq_305
   DataType: word32
   OrigDataType: word32
-T_306: (in None_20 : bcuiposr0)
+T_306: (in None_20 : bcuisposr0)
   Class: Eq_306
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_307: (in 0x00010084 : word32)
   Class: Eq_307
   DataType: word32
@@ -1374,8 +1376,13 @@ typedef union Eq_93 {
 
 typedef union Eq_129 {
 	int32 u0;
-	uint32 u1;
+	up32 u1;
 } Eq_129;
+
+typedef union Eq_165 {
+	int32 u0;
+	up32 u1;
+} Eq_165;
 
 typedef void (Eq_193)();
 

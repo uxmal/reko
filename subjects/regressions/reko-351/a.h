@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (8000270C (ptr code) ptr8000270C) (80002714 (arr (ptr code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dw80002726) (FFFFFFFF code tFFFFFFFF))
+Eq_1: (struct "Globals" (8000270C (ptr code) ptr8000270C) (80002714 (arr (ptr code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 up32 dw80002726) (FFFFFFFF code tFFFFFFFF))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_60: (fn void ())
 	T_60 (in deregister_tm_clones : ptr32)
@@ -237,13 +237,13 @@ T_48: (in globals->b80002724 != 0x00 : bool)
   Class: Eq_48
   DataType: bool
   OrigDataType: bool
-T_49: (in d0_105 : uint32)
+T_49: (in d0_105 : up32)
   Class: Eq_49
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_50: (in 80002726 : ptr32)
   Class: Eq_50
-  DataType: (ptr uint32)
+  DataType: (ptr up32)
   OrigDataType: (ptr (struct (0 T_53 t0000)))
 T_51: (in 0x00000000 : word32)
   Class: Eq_51
@@ -255,7 +255,7 @@ T_52: (in 0x80002726 + 0x00000000 : word32)
   OrigDataType: ptr32
 T_53: (in Mem0[0x80002726 + 0x00000000:word32] : word32)
   Class: Eq_49
-  DataType: uint32
+  DataType: up32
   OrigDataType: word32
 T_54: (in a2_106 : (arr (ptr code)))
   Class: Eq_54
@@ -267,16 +267,16 @@ T_55: (in 80002714 : ptr32)
   OrigDataType: ptr32
 T_56: (in 0x00000000 : word32)
   Class: Eq_56
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_57: (in 0x00000000 - d0_105 : word32)
   Class: Eq_57
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_58: (in 0x00000000 : word32)
   Class: Eq_57
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_59: (in 0x00000000 - d0_105 <= 0x00000000 : bool)
   Class: Eq_59
   DataType: bool
@@ -311,12 +311,12 @@ T_66: (in d0_107 : uint32)
   OrigDataType: uint32
 T_67: (in 0x00000001 : word32)
   Class: Eq_67
-  DataType: word32
-  OrigDataType: word32
+  DataType: up32
+  OrigDataType: up32
 T_68: (in d0_105 + 0x00000001 : word32)
   Class: Eq_66
   DataType: uint32
-  OrigDataType: uint32
+  OrigDataType: up32
 T_69: (in 80002726 : ptr32)
   Class: Eq_69
   DataType: (ptr uint32)
@@ -397,17 +397,17 @@ T_88: (in a0_125 : word32)
   Class: Eq_88
   DataType: word32
   OrigDataType: word32
-T_89: (in None_126 : bcuiposr0)
+T_89: (in None_126 : bcuisposr0)
   Class: Eq_89
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_90: (in CZ_127 : byte)
   Class: Eq_90
   DataType: byte
   OrigDataType: byte
 T_91: (in 80002726 : ptr32)
   Class: Eq_91
-  DataType: (ptr uint32)
+  DataType: (ptr up32)
   OrigDataType: (ptr (struct (0 T_94 t0000)))
 T_92: (in 0x00000000 : word32)
   Class: Eq_92
@@ -419,20 +419,20 @@ T_93: (in 0x80002726 + 0x00000000 : word32)
   OrigDataType: ptr32
 T_94: (in Mem110[0x80002726 + 0x00000000:word32] : word32)
   Class: Eq_49
-  DataType: uint32
+  DataType: up32
   OrigDataType: word32
 T_95: (in 0x00000000 : word32)
   Class: Eq_95
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_96: (in 0x00000000 - d0_105 : word32)
   Class: Eq_96
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_97: (in 0x00000000 : word32)
   Class: Eq_96
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_98: (in 0x00000000 - d0_105 > 0x00000000 : bool)
   Class: Eq_98
   DataType: bool
@@ -509,10 +509,10 @@ T_116: (in a0_101 : word32)
   Class: Eq_116
   DataType: word32
   OrigDataType: word32
-T_117: (in None_102 : bcuiposr0)
+T_117: (in None_102 : bcuisposr0)
   Class: Eq_117
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_118: (in CZ_103 : byte)
   Class: Eq_118
   DataType: byte
@@ -1303,7 +1303,7 @@ typedef struct Globals {
 	<anonymous> * a80002714[];	// 80002714
 	word32 dw8000271C;	// 8000271C
 	byte b80002724;	// 80002724
-	uint32 dw80002726;	// 80002726
+	up32 dw80002726;	// 80002726
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 } Eq_1;
 

@@ -572,8 +572,8 @@ byte fn0000000140001600(word32 ecx, word32 edx, ptr64 r13)
 	return al_33;
 }
 
-// 000000014000164C: Register word32 fn000000014000164C(Register uint32 ecx, Register ui64 r8, Register ptr64 r13, Register word128 xmm1, Stack word64 qwArg08)
-word32 fn000000014000164C(uint32 ecx, ui64 r8, ptr64 r13, word128 xmm1, word64 qwArg08)
+// 000000014000164C: Register word32 fn000000014000164C(Register up32 ecx, Register ui64 r8, Register ptr64 r13, Register word128 xmm1, Stack word64 qwArg08)
+word32 fn000000014000164C(up32 ecx, ui64 r8, ptr64 r13, word128 xmm1, word64 qwArg08)
 {
 	uint64 rbx_10 = (uint64) ecx;
 	word32 ebx_11 = (word32) rbx_10;
@@ -976,7 +976,7 @@ void fn0000000140001B5C(word64 qwArg08, word64 qwArg10)
 			word64 rcx_55;
 			rdi_32();
 		}
-		rbx_11 = rbx_11 + 0x08;
+		rbx_11 = rbx_11 + 0x01;
 	}
 }
 
@@ -1000,7 +1000,7 @@ void fn0000000140001BA8(word64 qwArg08, word64 qwArg10)
 			word64 rcx_55;
 			rdi_32();
 		}
-		rbx_11 = rbx_11 + 0x08;
+		rbx_11 = rbx_11 + 0x01;
 	}
 }
 

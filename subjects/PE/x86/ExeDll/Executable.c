@@ -255,8 +255,8 @@ void fn004012D8(_EXCEPTION_POINTERS * dwArg04)
 	TerminateProcess(GetCurrentProcess(), 0xC0000409);
 }
 
-// 004013FB: Register (ptr Eq_557) fn004013FB(Stack (ptr Eq_118) dwArg04, Stack uint32 dwArg08)
-Eq_557 * fn004013FB(Eq_118 * dwArg04, uint32 dwArg08)
+// 004013FB: Register (ptr Eq_557) fn004013FB(Stack (ptr Eq_118) dwArg04, Stack up32 dwArg08)
+Eq_557 * fn004013FB(Eq_118 * dwArg04, up32 dwArg08)
 {
 	struct Eq_557 * eax_26;
 	struct Eq_561 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
@@ -641,8 +641,8 @@ ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, word32 dwArg00, word32 dwArg0
 	return fp + 0x08;
 }
 
-// 004019C6: Register word32 fn004019C6(Register (ptr Eq_89) ebp, Stack word32 dwArg00, Stack (ptr Eq_118) dwArg04, Stack uint32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 esiOut, Register out ptr32 ediOut)
-word32 fn004019C6(Eq_89 * ebp, word32 dwArg00, Eq_118 * dwArg04, uint32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & esiOut, ptr32 & ediOut)
+// 004019C6: Register word32 fn004019C6(Register (ptr Eq_89) ebp, Stack word32 dwArg00, Stack (ptr Eq_118) dwArg04, Stack up32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 esiOut, Register out ptr32 ediOut)
+word32 fn004019C6(Eq_89 * ebp, word32 dwArg00, Eq_118 * dwArg04, up32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ebp->dw0000 = dwArg00;

@@ -166,7 +166,7 @@ l0370:
 				goto l02A2;
 			}
 l03AE:
-			cu16 v67_144 = globals->w0B5A - globals->w0B5A;
+			cup16 v67_144 = globals->w0B5A - globals->w0B5A;
 			if (v67_144 > 0x00)
 			{
 				globals->w0B5E = globals->w0B5A;
@@ -356,7 +356,7 @@ l0524:
 					} while (r1 != 0x00);
 					break;
 				}
-				cu16 v43_336 = r2_159[0x06DC] - r1;
+				cup16 v43_336 = r2_159[0x06DC] - r1;
 				if (v43_336 < 0x00)
 					break;
 				if (v43_336 == 0x00)
@@ -397,7 +397,7 @@ bool fn05D4(Eq_137 r0, Eq_99 r1, Eq_14 r3, Eq_2 r4, Eq_3 * r5, Eq_4 * pc, byte b
 	*r5Out = r5;
 	*r0Out = r0;
 	word16 v9_6 = r3 - globals->w0F02;
-	cu16 v12_10 = 0x04 - v9_6;
+	cup16 v12_10 = 0x04 - v9_6;
 	bool Z_122 = cond(v12_10);
 	if (v12_10 <= 0x00)
 	{
@@ -522,7 +522,7 @@ void fn06A2()
 		{
 			if (r5_25[0x0EF0] == 0x00)
 			{
-				cu16 r0_37 = globals->w0F14;
+				cup16 r0_37 = globals->w0F14;
 				if (0x08 - r0_37 >= 0x00)
 				{
 					r5_25[0x0EF0] = (struct Eq_1343) (r0_37 + 0x02);
@@ -1104,7 +1104,7 @@ Eq_137 fn0B60(Eq_137 r0, Eq_99 r1, Eq_14 r3, byte * r4, ptr16 & r3Out, ptr16 & r
 		do
 		{
 			word16 r5_65 = 0x30;
-			cu16 v22_68 = *r2_56;
+			cup16 v22_68 = *r2_56;
 			r2_56 = r2_56 + 0x01;
 			if (v22_68 == 0x00)
 				return r0;
