@@ -14,5 +14,12 @@ include_directories(
 	${CMAKE_SOURCE_DIR}
 )
 
+if(UNIX OR MINGW)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(CAPSTONE REQUIRED capstone)
+else()
+	find_library(CAPSTONE_LIBRARIES capstone)
+endif()
+
 add_subdirectory(common)
 add_subdirectory(ArmNative)

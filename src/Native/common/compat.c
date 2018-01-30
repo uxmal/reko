@@ -6,6 +6,6 @@ void OutputDebugString(char *lpOutputString){
 }
 
 void DebugBreak(){
-
+	
 }
 #endif
