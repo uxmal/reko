@@ -21,7 +21,7 @@
 namespace Reko.ImageLoaders.IHex32
 {
     /// <summary>
-    /// Values that represent Intel Hexadecimal record types.
+    /// Values that represent Intel Hexadecimal 32-bit record types.
     /// </summary>
     public enum IHex32RecordType : byte
     {

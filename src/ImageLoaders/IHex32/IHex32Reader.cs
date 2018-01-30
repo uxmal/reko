@@ -19,9 +19,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Reko.ImageLoaders.IHex32
 {
@@ -51,6 +49,7 @@ namespace Reko.ImageLoaders.IHex32
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             _streamReader = new StreamReader(str);
+            _linenum = 0;
         }
 
         #endregion

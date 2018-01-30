@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.IHex32
             }
             catch (Exception ex)
             {
-                throw new IHex32Exception($"Unable to extract bytes for [{hexData}]", ex, lineNum);
+                throw new IHex32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
             }
         }
 
