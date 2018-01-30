@@ -612,6 +612,7 @@
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ProcedureDetectorTests.cs" />
+    <Compile Include="Scanning\ProcedurePaddingFinderTests.cs" />
     <Compile Include="Scanning\RtlBackwalkHost.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerInLinqTests.cs" />
