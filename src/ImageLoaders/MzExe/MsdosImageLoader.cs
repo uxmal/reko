@@ -135,7 +135,14 @@ namespace Reko.ImageLoaders.MzExe
                 ep.NoDecompile = true;
             }
 
-            LoadDebugSymbols(results.Symbols, addrLoad);
+			try
+			{
+				LoadDebugSymbols(results.Symbols, addrLoad);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Failed to load Borland debug symbols: {0}", e.Message);
+			}
             return results;
 		}
 
