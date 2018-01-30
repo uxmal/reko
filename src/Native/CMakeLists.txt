@@ -37,7 +37,7 @@ else()
 	list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_PATH}/external/Capstone/X86")
 endif()
 
-if(UNIX OR MINGW)
+if((UNIX OR MINGW) AND NOT MSVC)
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(CAPSTONE REQUIRED capstone)
 else()

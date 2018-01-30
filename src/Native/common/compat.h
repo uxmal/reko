@@ -5,11 +5,9 @@
 extern "C" {
 #endif
 
-#ifndef _WINDOWS
+#ifndef _MSC_VER
 void OutputDebugString(char *lpOutputString);
 void DebugBreak();
-#else
-extern void DebugBreak();
 #endif
 
 #endif

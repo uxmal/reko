@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#ifndef _WINDOWS
+#ifndef _MSC_VER
 void OutputDebugString(char *lpOutputString){
 	fputs(lpOutputString, stderr);
 }
