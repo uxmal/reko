@@ -904,8 +904,7 @@ namespace Reko.ImageLoaders.Elf
                 {
                     if (section.Name == null || section.Address == null)
                         continue;
-                    MemoryArea mem;
-                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                    if (segMap.TryGetLowerBound(section.Address, out var mem) &&
                         section.Address < mem.EndAddress)
                     {
                         AccessMode mode = AccessModeOf(section.Flags);
@@ -1402,13 +1401,14 @@ namespace Reko.ImageLoaders.Elf
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32(ph.p_vaddr);
-                MemoryArea mem;
-                segMap.TryGetLowerBound(vaddr, out mem);
+                segMap.TryGetLowerBound(vaddr, out var mem);
                 if (ph.p_filesz > 0)
+                {
                     Array.Copy(
                         rawImage,
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
+                }
             }
             var segmentMap = new SegmentMap(addrPreferred);
             if (Sections.Count > 0)
@@ -1418,8 +1418,7 @@ namespace Reko.ImageLoaders.Elf
                     if (section.Name == null || section.Address == null)
                         continue;
 
-                    MemoryArea mem;
-                    if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                    if (segMap.TryGetLowerBound(section.Address, out var mem) &&
                         section.Address < mem.EndAddress)
                     {
                         AccessMode mode = AccessModeOf(section.Flags);

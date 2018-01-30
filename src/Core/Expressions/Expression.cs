@@ -47,7 +47,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Data type of this expression.
         /// </summary>
-        public DataType DataType { get { return dt; } set { if (value == null) throw new ArgumentNullException(); dt = value; } }
+        public DataType DataType { get { return dt; } set { dt = value ?? throw new ArgumentNullException(); } }
         private DataType dt;
 
         /// <summary>
@@ -90,6 +90,7 @@ namespace Reko.Core.Expressions
 
     public static class ExpressionEx
     {
+        [Obsolete("Use C# 7 language constructs instead of this")]
         public static bool As<T>(this Expression self, out T value) where T : Expression
         {
             value = self as T;

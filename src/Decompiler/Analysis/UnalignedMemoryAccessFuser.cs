@@ -242,8 +242,7 @@ namespace Reko.Analysis
             foreach (var stm in stms)
             {
                 Expression src;
-                var store = stm.Instruction as Store;
-                if (store != null)
+                if (stm.Instruction is Store store)
                 {
                     src = store.Src;
                 }
@@ -271,8 +270,7 @@ namespace Reko.Analysis
                     value = app.Arguments[1],
                     mem = mem
                 };
-                List<UnalignedAccess> accesses;
-                if (!dict.TryGetValue(reg, out accesses))
+                if (!dict.TryGetValue(reg, out var accesses))
                 {
                     accesses = new List<UnalignedAccess>();
                     dict.Add(reg, accesses);
@@ -293,13 +291,11 @@ namespace Reko.Analysis
 
         private Identifier GetRegisterOf(Expression e)
         {
-            MemoryAccess mem = e as MemoryAccess;
-            if (mem != null)
+            if (e is MemoryAccess mem)
             {
-                Identifier id;
-                if (mem.EffectiveAddress.As(out id))
+                if (mem.EffectiveAddress is Identifier id)
                     return id;
-                else 
+                else
                     return (Identifier)((BinaryExpression)mem.EffectiveAddress).Left;
             }
             else

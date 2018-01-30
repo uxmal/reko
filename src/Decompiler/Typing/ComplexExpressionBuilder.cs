@@ -442,11 +442,9 @@ namespace Reko.Typing
         {
             if (exp == null || elementSize <= 1)
                 return exp;
-            BinaryExpression bin;
-            Constant cRight = null;
-           if (!exp.As(out bin) ||
+            if (!(exp is BinaryExpression bin) ||
                 (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul) ||
-                !bin.Right.As(out cRight) ||
+               !(bin.Right is Constant cRight) ||
                 cRight.ToInt32() % elementSize != 0)
             {
                 return new BinaryExpression(

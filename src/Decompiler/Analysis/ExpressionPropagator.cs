@@ -152,11 +152,9 @@ namespace Reko.Analysis
             var spVal = ctx.RegisterState[platform.Architecture.StackRegister];
             if (ctx.IsFramePointer(spVal))
                 return 0;
-            var bin = spVal as BinaryExpression;
-            if (bin == null || !ctx.IsFramePointer(bin.Left))
+            if (!(spVal is BinaryExpression bin && ctx.IsFramePointer(bin.Left)))
                 return 0;
-            var c = bin.Right as Constant;
-            if (c == null)
+            if (!(bin.Right is Constant c))
                 throw new NotImplementedException("Expected stack depth to be known.");
             int depth = c.ToInt32();
             if (bin.Operator == Operator.ISub)

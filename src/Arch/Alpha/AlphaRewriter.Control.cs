@@ -106,8 +106,7 @@ namespace Reko.Arch.Alpha
             if (ret.Number == ZeroRegister)
             {
                 rtlc = RtlClass.Transfer;
-                Identifier id;
-                if (dst.As(out id) && ((RegisterStorage)id.Storage).Number == ReturnAddress)
+                if (dst is Identifier id && ((RegisterStorage)id.Storage).Number == ReturnAddress)
                     m.Return(0, 0);
                 else 
                     m.Goto(dst);
