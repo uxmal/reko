@@ -32,7 +32,7 @@ namespace Reko.Core.Rtl
         {
             this.Dst = dst;
             this.Src = src;
-            this.Class = RtlClass.Linear;
+            this.Class = InstrClass.Linear;
         }
 
         public Expression Dst { get; private set; }

@@ -18,16 +18,16 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.SuperH
 {
     public class SuperHInstruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get { throw new NotImplementedException(); }
         }

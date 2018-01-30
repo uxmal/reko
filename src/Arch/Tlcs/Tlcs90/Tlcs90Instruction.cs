@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -34,9 +35,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         public Opcode Opcode { get; set; }
 
-        public override InstructionClass InstructionClass 
+        public override InstrClass InstructionClass 
         {
-            get { return InstructionClass.Linear; }
+            get { return InstrClass.Linear; }
         }
 
         public override bool IsValid

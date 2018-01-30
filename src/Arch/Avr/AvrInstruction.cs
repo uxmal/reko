@@ -18,8 +18,9 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.Avr
 {
@@ -28,7 +29,7 @@ namespace Reko.Arch.Avr
         public Opcode opcode;
         public MachineOperand[] operands;
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {

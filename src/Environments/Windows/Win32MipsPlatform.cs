@@ -94,7 +94,7 @@ namespace Reko.Environments.Windows
                         ExpressionMatcher.AnyConstant("lo")),
                     PrimitiveType.Word32))),
             new RtlInstructionMatcher(
-                new RtlGoto(ExpressionMatcher.AnyId("r2s"), RtlClass.Delay|RtlClass.Transfer))
+                new RtlGoto(ExpressionMatcher.AnyId("r2s"), InstrClass.Delay|InstrClass.Transfer))
         };
 
         /// <summary>

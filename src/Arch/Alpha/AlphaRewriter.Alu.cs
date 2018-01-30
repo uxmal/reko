@@ -18,15 +18,11 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Alpha
 {
@@ -61,7 +57,7 @@ namespace Reko.Arch.Alpha
             m.BranchInMiddleOfInstruction(
                 m.Not(host.PseudoProcedure("OV", PrimitiveType.Bool, dst)),
                 instr.Address + instr.Length, 
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             var ch = new ProcedureCharacteristics { Terminates = true };
             m.SideEffect(host.PseudoProcedure("__trap_overflow", ch, VoidType.Instance));
         }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -46,7 +47,7 @@ namespace Reko.Arch.Vax
 
         private void RewriteHalt()
         {
-            rtlc = RtlClass.Terminates;
+            rtlc = InstrClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
         }
 

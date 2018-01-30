@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_HandleBranch()
         {
             trace.Add(m =>
-                m.Branch(r1, Address.Ptr32(0x00104000), RtlClass.ConditionalTransfer));
+                m.Branch(r1, Address.Ptr32(0x00104000), InstrClass.ConditionalTransfer));
             trace.Add(m =>
                 m.Assign(r1, r2));
             var blockElse = new Block(proc, "else");
@@ -558,7 +558,7 @@ testProc_exit:
                 Arg<ProcessorState>.Is.NotNull)).Return(l00100008);
             mr.ReplayAll();
 
-            trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), RtlClass.ConditionalTransfer | RtlClass.Delay));
+            trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), InstrClass.ConditionalTransfer | InstrClass.Delay));
             trace.Add(m => m.Assign(r0, r1));   // 100004
             trace.Add(m => m.Assign(r2, r1));   // 100008
 
@@ -662,7 +662,7 @@ testProc_exit:
                 Arg<ProcessorState>.Is.NotNull)).Return(l00100008);
             mr.ReplayAll();
 
-            trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), RtlClass.ConditionalTransfer | RtlClass.Delay | RtlClass.Annul));
+            trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), InstrClass.ConditionalTransfer | InstrClass.Delay | InstrClass.Annul));
             trace.Add(m => m.Assign(r0, r1));   // 100004
             trace.Add(m => m.Assign(r2, r1));   // 100008
 
@@ -775,7 +775,7 @@ testProc_exit:
                 Arg<ProcessorState>.Is.Anything)).Return(blockOther);
             mr.ReplayAll();
 
-            trace.Add(m => m.Branch(m.Mem8(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
+            trace.Add(m => m.Branch(m.Mem8(m.Word32(0x12340)), addrNext, InstrClass.ConditionalTransfer));
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();

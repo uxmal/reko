@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.NativeInterface;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +38,7 @@ namespace Reko.Core.Rtl
         /// <summary>
         /// The RtlClass of this instruction.
         /// </summary>
-        public virtual RtlClass Class { get; internal set; }
+        public virtual InstrClass Class { get; internal set; }
 
         /// <summary>
         /// If true, the next statement needs a label. This is required in cases where the original machine code 
@@ -62,40 +63,21 @@ namespace Reko.Core.Rtl
 
         protected abstract void WriteInner(TextWriter writer);
 
-        public static string FormatClass(RtlClass rtlClass)
+        public static string FormatClass(InstrClass rtlClass)
         {
             var sb = new StringBuilder();
-            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear|RtlClass.Terminates|RtlClass.System))
+            switch (rtlClass & (InstrClass.Transfer|InstrClass.Linear|InstrClass.Terminates|InstrClass.System))
             {
-            case RtlClass.Linear: sb.Append('L'); break;
-            case RtlClass.Transfer: sb.Append('T'); break;
-            case RtlClass.Terminates: sb.Append('H'); break;
-            case RtlClass.System: sb.Append('S'); break;
+            case InstrClass.Linear: sb.Append('L'); break;
+            case InstrClass.Transfer: sb.Append('T'); break;
+            case InstrClass.Terminates: sb.Append('H'); break;
+            case InstrClass.System: sb.Append('S'); break;
             default: sb.Append('-'); break;
             }
-            sb.Append((rtlClass & RtlClass.Delay) != 0 ? 'D' : '-');
-            sb.Append((rtlClass & RtlClass.Annul) != 0 ? 'A' : '-');
+            sb.Append((rtlClass & InstrClass.Delay) != 0 ? 'D' : '-');
+            sb.Append((rtlClass & InstrClass.Annul) != 0 ? 'A' : '-');
             return sb.ToString();
         }
-    }
-
-   
-    [Flags]
-    [NativeInterop]
-    public enum RtlClass
-    {
-        None,
-        Linear = 1,         // Non-transfer instruction, e.g. ALU operation.
-        Transfer = 2,       // Transfer instruction.
-        Conditional = 4,    // Instruction is gated on a condition.
-        Call = 8,           // Instruction saves its continuation.
-        Delay = 16,         // Next instruction is in the delay slot and may be executed.
-        Annul = 32,         // Next instruction is annulled (see SPARC architecture)
-        Terminates = 64,    // Instruction terminates execution (e.g. x86 and ARM HLT)
-        System = 128,       // Privileged instruction.
-        Padding = 256,      // Instruction _may_ be used as alignment padding between procedures.
-        Invalid = 512,      // Invalid instruction
-        ConditionalTransfer = Conditional | Transfer,
     }
 
     /// <summary>
@@ -116,7 +98,7 @@ namespace Reko.Core.Rtl
         /// </summary>
         public Address Address { get; private set; }
 
-        public RtlClass Class { get; set; }
+        public InstrClass Class { get; set; }
 
         public RtlInstruction[] Instructions { get; private set; }
 

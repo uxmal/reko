@@ -43,7 +43,7 @@ namespace Reko.Arch.SuperH
         private IEnumerator<SuperHInstruction> dasm;
         private SuperHInstruction instr;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public SuperHRewriter(SuperHArchitecture arch, EndianImageReader rdr, SuperHState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -126,7 +126,7 @@ namespace Reko.Arch.SuperH
                 case Opcode.neg: RewriteUnary(m.Neg); break;
                 case Opcode.negc: RewriteNegc(); break;
                 case Opcode.not: RewriteUnary(m.Comp); break;
-                case Opcode.nop: this.rtlc = RtlClass.Linear; m.Nop(); break;
+                case Opcode.nop: this.rtlc = InstrClass.Linear; m.Nop(); break;
                 case Opcode.or: RewriteBinOp(m.Or, u => (byte)u); break;
                 case Opcode.rotcl: RewriteRotc(PseudoProcedure.RolC); break;
                 case Opcode.rotcr: RewriteRotc(PseudoProcedure.RorC); break;
@@ -176,7 +176,7 @@ namespace Reko.Arch.SuperH
                     "Rewriting of SuperH instruction {0} not implemented yet.",
                 dasm.Current.Opcode));
 
-            this.rtlc = RtlClass.Invalid;
+            this.rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -357,7 +357,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteAddcSubc(Func<Expression,Expression,Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var src = SrcOp(instr.op1, null);
             var dst = DstOp(instr.op2, src, (a, b) =>
@@ -366,7 +366,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteNegc()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var src = SrcOp(instr.op1, null);
             var dst = DstOp(instr.op2, src, (d, s) =>
@@ -375,7 +375,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteAddv(Func<Expression, Expression, Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var src = SrcOp(instr.op1, null);
             var dst = DstOp(instr.op2, src, fn);
@@ -386,7 +386,7 @@ namespace Reko.Arch.SuperH
             Func<Expression, Expression, Expression> fn,
             Func<int, int> immediateFn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1, immediateFn);
             var dst = DstOp(instr.op2, src, fn);
         }
@@ -394,8 +394,8 @@ namespace Reko.Arch.SuperH
         private void RewriteBranch(bool takenOnTset, bool delaySlot)
         {
             rtlc = delaySlot
-                ? RtlClass.ConditionalTransfer | RtlClass.Delay
-                : RtlClass.ConditionalTransfer;
+                ? InstrClass.ConditionalTransfer | InstrClass.Delay
+                : InstrClass.ConditionalTransfer;
             Expression cond = binder.EnsureFlagGroup(Registers.T);
             var addr = ((AddressOperand)instr.op1).Address;
             if (!takenOnTset)
@@ -405,27 +405,27 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBraf()
         {
-            rtlc = RtlClass.Delay | RtlClass.Transfer;
+            rtlc = InstrClass.Delay | InstrClass.Transfer;
             var reg = binder.EnsureRegister(((RegisterOperand)instr.op1).Register);
             m.GotoD(m.IAdd(instr.Address + 4, reg));
         }
 
         private void RewriteBrk()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance));
         }
 
         private void RewriteBsr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Call | InstrClass.Delay;
             var dst = SrcOp(instr.op1, null);
             m.CallD(dst, 0);
         }
 
         private void RewriteBsrf()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.op1, null);
             var reg = binder.EnsureRegister(((RegisterOperand)instr.op1).Register);
             m.CallD(m.IAdd(instr.Address + 4, src), 0);
@@ -433,14 +433,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteGoto()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var addr = ((AddressOperand)instr.op1).Address;
             m.GotoD(addr);
         }
 
         private void RewriteCmp(Func<Expression,Expression,Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var op1 = SrcOp(instr.op1, n => (sbyte)n);
             var op2 = SrcOp(instr.op2, null);
@@ -450,7 +450,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteClr(RegisterStorage reg)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var dst = binder.EnsureRegister(reg);
             var z = Constant.Zero(dst.DataType);
             m.Assign(dst, z);
@@ -458,7 +458,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteClrtSetT(Expression e)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             m.Assign(t, e);
         }
@@ -466,7 +466,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteCmp0(Func<Expression, Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var op1 = SrcOp(instr.op1, n => (sbyte)n);
             m.Assign(t, fn(op1));
@@ -474,7 +474,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteDiv0s()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1);
             var dst = SrcOp(instr.op2);
             var t = binder.EnsureFlagGroup(Registers.T);
@@ -483,7 +483,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteDiv0u()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             m.Assign(t, host.PseudoProcedure("__div0u", PrimitiveType.Bool));
         }
@@ -491,7 +491,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteDiv1()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1);
             var dst = SrcOp(instr.op2);
             var t = binder.EnsureFlagGroup(Registers.T);
@@ -500,7 +500,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteDmul(Func<Expression, Expression, Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var op1 = SrcOp(instr.op1);
             var op2 = SrcOp(instr.op2);
             var mac = binder.EnsureRegister(Registers.mac);
@@ -509,7 +509,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteDt()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var r = DstOp(instr.op1, Constant.Word32(1), m.ISub);
             m.Assign(t, m.Eq0(r));
@@ -517,62 +517,62 @@ namespace Reko.Arch.SuperH
 
         private void RewriteExt(PrimitiveType width)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1, null);
             var dst = DstOp(instr.op2, src, (a, b) => m.Cast(width, b));
         }
 
         private void RewriteFabs()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1, null);
             var dst = DstOp(instr.op1, src, (a, b) => host.PseudoProcedure("fabs", src.DataType, b));
         }
 
         private void RewriteFldi(float f)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             DstOp(instr.op1, Constant.Real32(f), a => a);
         }
 
         private void RewriteJmp()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.op1);
             m.GotoD(((MemoryAccess)src).EffectiveAddress);
         }
 
         private void RewriteJsr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             var dst = SrcOp(instr.op1, null);
             m.CallD(dst, 0);
         }
 
         private void RewriteMov()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1, a => (sbyte)a);
             var dst = DstOp(instr.op2, src, a => a);
         }
 
         private void RewriteMova()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = (MemoryAccess)SrcOp(instr.op1, a => (sbyte)a);
             var dst = DstOp(instr.op2, src.EffectiveAddress, a => a);
         }
 
         private void RewriteMovt()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var dst = DstOp(instr.op1, t, a => m.Cast(PrimitiveType.Int32, a));
         }
 
         private void RewriteMul_l()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var macl = binder.EnsureRegister(Registers.macl);
             var op1 = SrcOp(instr.op1);
             var op2 = SrcOp(instr.op2);
@@ -581,7 +581,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteMul_w(DataType dt, Func<Expression, Expression, Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var macl = binder.EnsureRegister(Registers.macl);
             var op1 = m.Cast(dt, SrcOp(instr.op1));
             var op2 = m.Cast(dt, SrcOp(instr.op2));
@@ -590,14 +590,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteRot(string intrinsic)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var op1 = SrcOp(instr.op1);
             m.Assign(op1, host.PseudoProcedure(intrinsic, op1.DataType, op1, m.Int32(1)));
         }
 
         private void RewriteRotc(string intrinsic)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var t = binder.EnsureFlagGroup(Registers.T);
             var op1 = SrcOp(instr.op1);
             m.Assign(op1, host.PseudoProcedure(intrinsic, op1.DataType, op1, m.Int32(1), t));
@@ -605,13 +605,13 @@ namespace Reko.Arch.SuperH
 
         private void RewriteRts()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Delay;
+            rtlc = InstrClass.Transfer | InstrClass.Delay;
             m.Return(0, 0);
         }
 
         private void RewriteShd(Func<Expression, Expression, Expression> fnLeft, Func<Expression, Expression, Expression> fnRight)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var sh = SrcOp(instr.op1);
             var dst = DstOp(instr.op2, sh, (d, s) =>
                 m.Conditional(d.DataType, m.Ge0(s), fnLeft(d, s), fnRight(d, s)));
@@ -619,14 +619,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteShift(Func<Expression, Expression, Expression> fn, int c)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = Constant.Int32(c);
             var dst = DstOp(instr.op1, src, fn);
         }
 
         private void RewriteSwapW()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1);
             var dst = SrcOp(instr.op2);
             m.Assign(dst, host.PseudoProcedure("__swap_w", dst.DataType, src));
@@ -634,7 +634,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteTst()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var op1 = SrcOp(instr.op1, u => (byte)u);
             var op2 = SrcOp(instr.op2);
             var t = binder.EnsureFlagGroup(Registers.T);
@@ -643,14 +643,14 @@ namespace Reko.Arch.SuperH
 
         private void RewriteUnary(Func<Expression, Expression> fn)
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1);
             var dst = DstOp(instr.op2, src, fn);
         }
 
         private void RewriteXtrct()
         {
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             var src = SrcOp(instr.op1);
             var dst = SrcOp(instr.op2);
             m.Assign(dst, host.PseudoProcedure("__xtrct", dst.DataType, dst, src));

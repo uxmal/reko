@@ -438,11 +438,11 @@ namespace Reko.Arch.PowerPC
                 m.Invalid();
                 return;
             }
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             m.BranchInMiddleOfInstruction(
                 op(ra, rb).Invert(),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.SideEffect(
                 host.PseudoProcedure(
                     "__trap",

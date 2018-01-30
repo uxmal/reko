@@ -486,7 +486,7 @@ namespace Reko.Arch.X86
 
         private void Branch(ConditionCode code, MachineOperand op)
         {
-            m.Branch(m.Test(code, orw.FlagGroup(FlagM.FPUF)), OperandAsCodeAddress( op), RtlClass.ConditionalTransfer);
+            m.Branch(m.Test(code, orw.FlagGroup(FlagM.FPUF)), OperandAsCodeAddress( op), InstrClass.ConditionalTransfer);
         }
 
         private void RewriteFtst()

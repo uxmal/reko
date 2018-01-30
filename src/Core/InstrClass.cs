@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Machine
+namespace Reko.Core
 {
     /// <summary>
     /// Classifies an instruction based on certain architectural features involving
@@ -32,7 +32,7 @@ namespace Reko.Core.Machine
     /// </summary>
     [Flags]
     [NativeInterop]
-    public enum InstructionClass
+    public enum InstrClass
     {
         None,
         Linear  = 1,            // ALU instruction, computational (like ADD, SHR, or MOVE)
@@ -45,5 +45,6 @@ namespace Reko.Core.Machine
         System = 128,           // Privileged instruction
         Padding = 256,          // Instruction _could_ be used as alignment padding between procedures.
         Invalid = 512,          // The instruction is invalid
+        ConditionalTransfer = Conditional | Transfer,
     }
 }

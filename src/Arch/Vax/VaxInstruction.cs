@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -29,16 +30,16 @@ namespace Reko.Arch.Vax
     public class VaxInstruction : MachineInstruction
     {
         internal MachineOperand[] Operands;
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass c;
+                InstrClass c;
                 if (!classOf.TryGetValue(Opcode, out c))
                 {
-                    c = InstructionClass.Linear;
+                    c = InstrClass.Linear;
                 }
                 return c;
             }
@@ -104,35 +105,35 @@ namespace Reko.Arch.Vax
 
         static VaxInstruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.Invalid, InstructionClass.Invalid },
-                { Opcode.aobleq,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.aoblss,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.beql ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgeq ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgequ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgtr ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgtru,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bleq ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blequ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blss ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blssu,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bneq ,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bvc,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bvs,    InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blbc,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blbs,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.brb,    InstructionClass.Transfer },
-                { Opcode.brw,    InstructionClass.Transfer },
-                { Opcode.callg,  InstructionClass.Transfer|InstructionClass.Call },
-                { Opcode.calls,  InstructionClass.Transfer|InstructionClass.Call },
-                { Opcode.jmp,    InstructionClass.Transfer },
-                { Opcode.jsb,    InstructionClass.Transfer|InstructionClass.Call },
-                { Opcode.ret,    InstructionClass.Transfer },
-                { Opcode.rsb,    InstructionClass.Transfer },
-                { Opcode.sobgeq, InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.sobgtr, InstructionClass.Transfer|InstructionClass.Conditional }
+                { Opcode.Invalid, InstrClass.Invalid },
+                { Opcode.aobleq,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.aoblss,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.beql ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bgeq ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bgequ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bgtr ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bgtru,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bleq ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blequ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blss ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blssu,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bneq ,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bvc,    InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bvs,    InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blbc,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blbs,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.brb,    InstrClass.Transfer },
+                { Opcode.brw,    InstrClass.Transfer },
+                { Opcode.callg,  InstrClass.Transfer|InstrClass.Call },
+                { Opcode.calls,  InstrClass.Transfer|InstrClass.Call },
+                { Opcode.jmp,    InstrClass.Transfer },
+                { Opcode.jsb,    InstrClass.Transfer|InstrClass.Call },
+                { Opcode.ret,    InstrClass.Transfer },
+                { Opcode.rsb,    InstrClass.Transfer },
+                { Opcode.sobgeq, InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.sobgtr, InstrClass.Transfer|InstrClass.Conditional }
             };
         }
     }

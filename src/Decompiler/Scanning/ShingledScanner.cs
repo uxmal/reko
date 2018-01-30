@@ -47,14 +47,14 @@ namespace Reko.Scanning
         private const byte MaybeCode = 1;
         private const byte Data = 0;
 
-        private const RtlClass L = RtlClass.Linear;
-        private const RtlClass T = RtlClass.Transfer;
+        private const InstrClass L = InstrClass.Linear;
+        private const InstrClass T = InstrClass.Transfer;
         
-        private const RtlClass CL = RtlClass.Linear | RtlClass.Conditional;
-        private const RtlClass CT = RtlClass.Transfer | RtlClass.Conditional;
+        private const InstrClass CL = InstrClass.Linear | InstrClass.Conditional;
+        private const InstrClass CT = InstrClass.Transfer | InstrClass.Conditional;
         
-        private const RtlClass DT = RtlClass.Transfer | RtlClass.Delay;
-        private const RtlClass DCT = RtlClass.Transfer | RtlClass.Conditional | RtlClass.Delay;
+        private const InstrClass DT = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass DCT = InstrClass.Transfer | InstrClass.Conditional | InstrClass.Delay;
 
         public readonly Address Bad;
 
@@ -175,7 +175,7 @@ namespace Reko.Scanning
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
-            var delaySlot = RtlClass.None;
+            var delaySlot = InstrClass.None;
             var rewriterPool = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
             for (var a = 0; a < y.Length; a += step)
             {
@@ -192,9 +192,9 @@ namespace Reko.Scanning
                 if (IsInvalid(mem, i))
                 {
                     AddEdge(G, Bad, i.Address);
-                    i.Class = RtlClass.Invalid;
+                    i.Class = InstrClass.Invalid;
                     AddInstruction(i);
-                    delaySlot = RtlClass.None;
+                    delaySlot = InstrClass.None;
                     y[a] = Data;
                 }
                 else
@@ -212,13 +212,13 @@ namespace Reko.Scanning
                             {
                                 // Fell off segment, i must be a bad instruction.
                                 AddEdge(G, Bad, i.Address);
-                                i.Class = RtlClass.Invalid;
+                                i.Class = InstrClass.Invalid;
                                 AddInstruction(i);
                                 y[a] = Data;
                             }
                         }
                     }
-                    if ((i.Class & RtlClass.Transfer) != 0)
+                    if ((i.Class & InstrClass.Transfer) != 0)
                     {
                         var addrDest = DestinationAddress(i);
                         if (addrDest != null)
@@ -226,7 +226,7 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
-                                if ((i.Class & RtlClass.Call) != 0)
+                                if ((i.Class & InstrClass.Call) != 0)
                                 {
                                     // Don't add edges to other procedures.
                                     if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out int callTally))
@@ -242,14 +242,14 @@ namespace Reko.Scanning
                             {
                                 // Jump to data / hyperspace.
                                 AddEdge(G, Bad, i.Address);
-                                i.Class = RtlClass.Invalid;
+                                i.Class = InstrClass.Invalid;
                                 AddInstruction(i);
                                 y[a] = Data;
                             }
                         }
                         else
                         {
-                            if ((i.Class & RtlClass.Call) != 0)
+                            if ((i.Class & InstrClass.Call) != 0)
                             {
                                 this.sr.IndirectCalls.Add(i.Address);
                             }
@@ -419,7 +419,7 @@ namespace Reko.Scanning
                             addFallthroughEdgeDeferred = (instr.Class & DT) == DT;
                         }
                         var addrDst = DestinationAddress(instr);
-                        if (addrDst != null && (instr.Class & RtlClass.Call) == 0)
+                        if (addrDst != null && (instr.Class & InstrClass.Call) == 0)
                         {
                             edges.Add(Tuple.Create(block, addrDst));
                         }
@@ -433,7 +433,7 @@ namespace Reko.Scanning
                             endBlockNow = true;
                         }
                     }
-                    else if (instr.Class == RtlClass.Terminates)
+                    else if (instr.Class == InstrClass.Terminates)
                     {
                         endBlockNow = true;
                         addFallthroughEdge = false;
@@ -515,7 +515,7 @@ namespace Reko.Scanning
 
         private bool IsInvalid(MemoryArea mem, RtlInstructionCluster instr)
         {
-            if (instr.Class == RtlClass.Invalid)
+            if (instr.Class == InstrClass.Invalid)
                 return true;
             // If an instruction straddles a relocation, it can't be 
             // a real instruction.
@@ -532,12 +532,12 @@ namespace Reko.Scanning
         private bool MayFallThrough(RtlInstructionCluster i)
         {
             return 
-                (i.Class & RtlClass.Terminates) == 0
+                (i.Class & InstrClass.Terminates) == 0
                 &&
                 (i.Class &
-                  (RtlClass.Linear 
-                   | RtlClass.Conditional 
-                   | RtlClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
+                  (InstrClass.Linear 
+                   | InstrClass.Conditional 
+                   | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }
 
         private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)

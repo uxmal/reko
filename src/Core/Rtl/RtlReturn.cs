@@ -28,7 +28,7 @@ namespace Reko.Core.Rtl
 {
     public class RtlReturn : RtlInstruction
     {
-        public RtlReturn(int returnAddressBytes, int extraBytesPopped, RtlClass rtlClass)
+        public RtlReturn(int returnAddressBytes, int extraBytesPopped, InstrClass rtlClass)
         {
             this.ReturnAddressBytes = returnAddressBytes;
             this.ExtraBytesPopped = extraBytesPopped;

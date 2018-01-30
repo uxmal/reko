@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -40,11 +41,11 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.illegal),
-                    new SingleByteOpRec(Opcode.syscall, "", InstructionClass.Transfer|InstructionClass.Call)),
+                    new SingleByteOpRec(Opcode.syscall, "", InstrClass.Transfer|InstrClass.Call)),
                 new SingleByteOpRec(Opcode.clts),
                 new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.illegal),
-                    new SingleByteOpRec(Opcode.sysret, "", InstructionClass.Transfer)),
+                    new SingleByteOpRec(Opcode.sysret, "", InstrClass.Transfer)),
 
                 new SingleByteOpRec(Opcode.invd),
                 new SingleByteOpRec(Opcode.wbinvd),
@@ -91,7 +92,7 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.nop, "Ev", InstructionClass.Linear|InstructionClass.Padding),
+                new SingleByteOpRec(Opcode.nop, "Ev", InstrClass.Linear|InstrClass.Padding),
 
 				// 0F 20
 				new SingleByteOpRec(Opcode.mov, "Rv,Cd"),
@@ -154,23 +155,23 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
 
 				// 0F 40
-				new SingleByteOpRec(Opcode.cmovo,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovno, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovc,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovnc, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovz,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovnz, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovbe, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmova,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.cmovo,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovno, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovc,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovnc, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovz,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovnz, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovbe, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmova,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
 
-                new SingleByteOpRec(Opcode.cmovs,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovns, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovpe, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovpo, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovl,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovge, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovle, "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
-                new SingleByteOpRec(Opcode.cmovg,  "Gv,Ev", InstructionClass.Linear|InstructionClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovs,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovns, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovpe, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovpo, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovl,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovge, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovle, "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
+                new SingleByteOpRec(Opcode.cmovg,  "Gv,Ev", InstrClass.Linear|InstrClass.Conditional),
 
 				// 0F 50
                 new PrefixedOpRec(
@@ -319,23 +320,23 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.movdqa, "Wx,Vx"),
 
 				// 0F 80
-				new SingleByteOpRec(Opcode.jo,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jno,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jc,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jnc,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jz,	"Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jnz,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jbe,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.ja,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jo,	"Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jno,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jc,	"Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jnc,	"Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jz,	"Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jnz,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jbe,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.ja,    "Jv", InstrClass.Transfer|InstrClass.Conditional),
 
-				new SingleByteOpRec(Opcode.js,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jns,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jpe,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jpo,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jl,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jge,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jle,   "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jg,    "Jv", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.js,    "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jns,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jpe,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jpo,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jl,    "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jge,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jle,   "Jv", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jg,    "Jv", InstrClass.Transfer|InstrClass.Conditional),
 
 				// 0F 90
 				new SingleByteOpRec(Opcode.seto, "Eb"),

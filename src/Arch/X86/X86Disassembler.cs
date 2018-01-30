@@ -311,7 +311,7 @@ namespace Reko.Arch.X86
 
         private X86Instruction Illegal()
         {
-            return new X86Instruction(Opcode.illegal, InstructionClass.Invalid, dataWidth, addressWidth);
+            return new X86Instruction(Opcode.illegal, InstrClass.Invalid, dataWidth, addressWidth);
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
@@ -539,17 +539,17 @@ namespace Reko.Arch.X86
 		{
 			public Opcode	opcode;
 			public string	format;
-			public InstructionClass	iclass;
+			public InstrClass	iclass;
 
-            public SingleByteOpRec(Opcode op): this(op, "", InstructionClass.None)
+            public SingleByteOpRec(Opcode op): this(op, "", InstrClass.None)
             {
             }
 
-			public SingleByteOpRec(Opcode op, string fmt) : this(op, fmt, InstructionClass.None)
+			public SingleByteOpRec(Opcode op, string fmt) : this(op, fmt, InstrClass.None)
 			{
 			}
 
-			public SingleByteOpRec(Opcode op, string fmt, InstructionClass icl)
+			public SingleByteOpRec(Opcode op, string fmt, InstrClass icl)
 			{
 				opcode = op;
 				format = fmt;
@@ -877,7 +877,7 @@ namespace Reko.Arch.X86
             private string op66Fmt;
             private string opF3Fmt;
             private string opF2Fmt;
-            private InstructionClass iclass;
+            private InstrClass iclass;
 
             public PrefixedOpRec(
                 Opcode op,
@@ -888,7 +888,7 @@ namespace Reko.Arch.X86
                 string opF3Fmt = null,
                 Opcode opF2 = Opcode.illegal,
                 string opF2Fmt = null,
-                InstructionClass iclass = InstructionClass.Linear)
+                InstrClass iclass = InstrClass.Linear)
             {
                 this.op =   this.opWide = op;
                 this.op66 = this.op66Wide = op66;
@@ -910,7 +910,7 @@ namespace Reko.Arch.X86
                 string op66Fmt,
                 Opcode opF3 = Opcode.illegal,
                 string opF3Fmt = null,
-                InstructionClass iclass = InstructionClass.Linear)
+                InstrClass iclass = InstrClass.Linear)
             {
                 this.op = op;
                 this.opWide = opWide;
@@ -1000,7 +1000,7 @@ namespace Reko.Arch.X86
             return true;
 		}
 
-        private X86Instruction DecodeOperands(Opcode opcode, byte op, string strFormat, InstructionClass iclass)
+        private X86Instruction DecodeOperands(Opcode opcode, byte op, string strFormat, InstrClass iclass)
         {
             if (strFormat == null)
                 return null;
@@ -1492,7 +1492,7 @@ namespace Reko.Arch.X86
         private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
         private static Dictionary<Opcode, Opcode> s_mpVex;
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         static X86Disassembler()
 		{
