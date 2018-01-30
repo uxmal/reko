@@ -19,13 +19,14 @@
 #endregion
 
 using System;
+using Reko.Core;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Alpha
 {
     public class AlphaInstruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass {  get { return InstructionClass.Invalid; } }
+        public override InstrClass InstructionClass {  get { return InstrClass.Invalid; } }
 
         public Opcode Opcode;
         public MachineOperand op1;

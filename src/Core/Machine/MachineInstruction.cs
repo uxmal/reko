@@ -43,7 +43,7 @@ namespace Reko.Core.Machine
         /// <summary>
         /// The kind of instruction.
         /// </summary>
-        public abstract InstructionClass InstructionClass { get; }
+        public abstract InstrClass InstructionClass { get; }
 
         /// <summary>
         /// Returns true if the instruction is valid.

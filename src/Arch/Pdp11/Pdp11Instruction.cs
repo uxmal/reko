@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -28,7 +29,7 @@ namespace Reko.Arch.Pdp11
 {
     public class Pdp11Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         public Opcode Opcode;
         public PrimitiveType DataWidth;
@@ -49,14 +50,14 @@ namespace Reko.Arch.Pdp11
                 return null;
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass ct;
+                InstrClass ct;
                 if (!classOf.TryGetValue(Opcode, out ct))
                 {
-                    ct = InstructionClass.Linear;
+                    ct = InstrClass.Linear;
                 }
                 return ct;
             }
@@ -94,32 +95,32 @@ namespace Reko.Arch.Pdp11
 
         static Pdp11Instruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.bcc,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bcs,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.beq,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bge,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bgt,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bhi,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.ble,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blos,  InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.blt,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bmi,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bne,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bpl,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bpt,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.br,    InstructionClass.Transfer },
-                { Opcode.bvc,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.bvs,   InstructionClass.Transfer|InstructionClass.Conditional },
-                { Opcode.halt,  InstructionClass.Transfer },
-                { Opcode.jmp,   InstructionClass.Transfer },
-                { Opcode.jsr,   InstructionClass.Transfer },
-                { Opcode.reset, InstructionClass.Transfer },
-                { Opcode.rti,   InstructionClass.Transfer },
-                { Opcode.rtt,   InstructionClass.Transfer },
-                { Opcode.rts,   InstructionClass.Transfer },
-                { Opcode.trap,  InstructionClass.Transfer },
+                { Opcode.bcc,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bcs,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.beq,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bge,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bgt,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bhi,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.ble,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blos,  InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.blt,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bmi,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bne,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bpl,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bpt,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.br,    InstrClass.Transfer },
+                { Opcode.bvc,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.bvs,   InstrClass.Transfer|InstrClass.Conditional },
+                { Opcode.halt,  InstrClass.Transfer },
+                { Opcode.jmp,   InstrClass.Transfer },
+                { Opcode.jsr,   InstrClass.Transfer },
+                { Opcode.reset, InstrClass.Transfer },
+                { Opcode.rti,   InstrClass.Transfer },
+                { Opcode.rtt,   InstrClass.Transfer },
+                { Opcode.rts,   InstrClass.Transfer },
+                { Opcode.trap,  InstrClass.Transfer },
             };
         }
     }

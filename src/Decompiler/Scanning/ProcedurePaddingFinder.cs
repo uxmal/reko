@@ -26,6 +26,14 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This class is used to find the padding between procedures that
+    /// often appears between procedures in binaries. For instance, on
+    /// x86 platforms we often see the byte 90 (nop), CC (int 3) or zeroes
+    /// (which disassemble to x86 ADD instructions). We rely on the rewriters
+    /// to set the RtlClass.Padding bit on instructions that might be used
+    /// as padding.
+    /// </summary>
     public class ProcedurePaddingFinder
     {
         private ScanResults sr;
@@ -41,8 +49,9 @@ namespace Reko.Scanning
                 .Where(block =>
                 {
                     var iFirst = block.Instructions[0];
-                    return ((iFirst.Class & RtlClass.Padding) != 0) &&
-                        sr.ICFG.Predecessors(block).Count == 0;
+                    var nPred = sr.ICFG.Predecessors(block).Count;
+                    return ((iFirst.Class & InstrClass.Padding) != 0) &&
+                        nPred == 0;
                 })
                 .ToList();
         }

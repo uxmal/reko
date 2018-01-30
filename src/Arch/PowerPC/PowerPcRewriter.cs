@@ -37,7 +37,7 @@ namespace Reko.Arch.PowerPC
     {
         private IStorageBinder binder;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private PowerPcArchitecture arch;
         private IEnumerator<PowerPcInstruction> dasm;
@@ -70,7 +70,7 @@ namespace Reko.Arch.PowerPC
                 this.instr = dasm.Current;
                 var addr = this.instr.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
@@ -80,7 +80,7 @@ namespace Reko.Arch.PowerPC
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Opcode.illegal;
-                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.addi: RewriteAddi(); break;
                 case Opcode.addc: RewriteAddc(); break;
                 case Opcode.addic: RewriteAddic(); break;

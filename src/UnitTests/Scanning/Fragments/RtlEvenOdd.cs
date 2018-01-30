@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Scanning.Fragments
                 new RtlTrace(0x1100)    // odd
                 {
                     m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
-                    m => { m.Branch(m.Eq0(r1), Address.Ptr32(0x1120), RtlClass.ConditionalTransfer); },
+                    m => { m.Branch(m.Eq0(r1), Address.Ptr32(0x1120), InstrClass.ConditionalTransfer); },
                     m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
                     m => { m.Assign(r1, m.ISub(r1, 1)); },
                     m => { m.Assign(m.Mem32(m.IAdd(sp, 4)), r1); },
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Scanning.Fragments
                 new RtlTrace(0x1200)    // event
                 {
                     m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
-                    m => { m.Branch(m.Eq0(r1), Address.Ptr32(0x1220), RtlClass.ConditionalTransfer); },
+                    m => { m.Branch(m.Eq0(r1), Address.Ptr32(0x1220), InstrClass.ConditionalTransfer); },
                     m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
                     m => { m.Assign(r1, m.ISub(r1, 1)); },
                     m => { m.Assign(m.Mem32(m.IAdd(sp, 4)), r1); },

@@ -40,7 +40,7 @@ namespace Reko.Arch.Alpha
         private IEnumerator<AlphaInstruction> dasm;
         private IRewriterHost host;
         private AlphaInstruction instr;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
 
         public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -59,7 +59,7 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 switch (instr.Opcode)
                 {
                 default:
@@ -253,7 +253,7 @@ namespace Reko.Arch.Alpha
         private void Invalid()
         {
             m.Invalid();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
         }
 
         private Expression Rewrite(MachineOperand op, bool highWord = false)

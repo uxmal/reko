@@ -18,8 +18,9 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
+using System;
 using System.Text;
 using System.IO;
 
@@ -45,11 +46,11 @@ namespace Reko.Environments.Trs80.Basic
             return null;
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                return InstructionClass.Linear;
+                return InstrClass.Linear;
             }
         }
 

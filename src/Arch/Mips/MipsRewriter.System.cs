@@ -61,11 +61,11 @@ namespace Reko.Arch.Mips
             var op2 = RewriteOperand(instr.op2);
             if (op != m.Eq || !cmp.Equals(op1, op2))
             {
-                this.rtlc = RtlClass.ConditionalTransfer;
+                this.rtlc = InstrClass.ConditionalTransfer;
                 m.BranchInMiddleOfInstruction(
                         op(op1, op2).Invert(),
                         instr.Address + instr.Length,
-                        RtlClass.ConditionalTransfer);
+                        InstrClass.ConditionalTransfer);
             }
             var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
             m.SideEffect(trap);

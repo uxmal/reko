@@ -170,7 +170,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var dasm = dlg.Program.CreateDisassembler(addr);
                 text = string.Join(
                     Environment.NewLine,
-                    dasm.TakeWhile(i => (i.InstructionClass & InstructionClass.Transfer) == 0)
+                    dasm.TakeWhile(i => (i.InstructionClass & InstrClass.Transfer) == 0)
                         .Select(i => i.ToString()));
             }
             else

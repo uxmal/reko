@@ -409,7 +409,7 @@ namespace Reko.Scanning
 
         private bool NonLocalTransferInstruction(RtlInstructionCluster cluster)
         {
-            if (cluster.Class == RtlClass.Linear)
+            if (cluster.Class == InstrClass.Linear)
                 return false;
             var last = cluster.Instructions.Last();
             if (last is RtlCall)

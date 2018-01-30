@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -51,11 +52,11 @@ namespace Reko.Environments.C64
             return null;
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                return InstructionClass.Linear;
+                return InstrClass.Linear;
             }
         }
 

@@ -351,11 +351,11 @@ namespace Reko.Arch.PowerPC
                 instr.Address,
                 string.Format("Unsupported trap operand {0:X2}.", c.ToInt32()));
             }
-            rtlc = RtlClass.Linear;
+            rtlc = InstrClass.Linear;
             m.BranchInMiddleOfInstruction(
                 op(ra, rb).Invert(),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.SideEffect(
                 host.PseudoProcedure(
                     "__trap",

@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Scanning
                 platform);
         }
 
-        private void Inst(int uAddr, int len, RtlClass rtlc)
+        private void Inst(int uAddr, int len, InstrClass rtlc)
         {
             var addr = Address.Ptr32((uint)uAddr);
             sr.FlatInstructions.Add(addr, new ScanResults.instr
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)RtlClass.Linear
+                type = (ushort)InstrClass.Linear
             });
             Link(addr, next);
         }
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)(RtlClass.Transfer|RtlClass.Call)
+                type = (ushort)(InstrClass.Transfer|InstrClass.Call)
             });
             Link(addr, next);
         }
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)RtlClass.Linear
+                type = (ushort)InstrClass.Linear
             });
             Link(addr, a);
             Link(addr, b);
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)RtlClass.Invalid,
+                type = (ushort)InstrClass.Invalid,
             });
         }
 
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)RtlClass.Transfer,
+                type = (ushort)InstrClass.Transfer,
             });
         }
 
@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)(RtlClass.Linear | RtlClass.Padding),
+                type = (ushort)(InstrClass.Linear | InstrClass.Padding),
             });
             Link(addr, next);
         }

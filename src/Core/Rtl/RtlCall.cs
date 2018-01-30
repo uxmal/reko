@@ -30,9 +30,9 @@ namespace Reko.Core.Rtl
 {
     public class RtlCall : RtlTransfer
     {
-        public RtlCall(Expression target, byte stackPushedReturnAddressSize, RtlClass rtlClass) : base(target, rtlClass)
+        public RtlCall(Expression target, byte stackPushedReturnAddressSize, InstrClass rtlClass) : base(target, rtlClass)
         {
-            Debug.Assert((rtlClass & (RtlClass.Call | RtlClass.Transfer)) != 0);
+            Debug.Assert((rtlClass & (InstrClass.Call | InstrClass.Transfer)) != 0);
             this.ReturnAddressSize = stackPushedReturnAddressSize;
         }
 

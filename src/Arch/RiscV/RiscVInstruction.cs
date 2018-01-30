@@ -18,8 +18,10 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
+
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.RiscV
@@ -27,7 +29,7 @@ namespace Reko.Arch.RiscV
     public class RiscVInstruction : MachineInstruction
     {
         private static Dictionary<Opcode, string> opcodeNames;
-        private static Dictionary<Opcode, InstructionClass> instrClasses;
+        private static Dictionary<Opcode, InstrClass> instrClasses;
 
         internal Opcode opcode;
         internal MachineOperand op1;
@@ -49,26 +51,26 @@ namespace Reko.Arch.RiscV
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };
 
-            instrClasses = new Dictionary<Opcode, InstructionClass>
+            instrClasses = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.jal, InstructionClass.Transfer },
-                { Opcode.jalr, InstructionClass.Transfer },
-                { Opcode.beq, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bne, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.blt, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bltu, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bge, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bgeu, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.jal, InstrClass.Transfer },
+                { Opcode.jalr, InstrClass.Transfer },
+                { Opcode.beq, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bne, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.blt, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bltu, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bge, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bgeu, InstrClass.Transfer | InstrClass.Conditional },
             };
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get {
-                InstructionClass c;
+                InstrClass c;
                 if (!instrClasses.TryGetValue(opcode, out c))
                 {
-                    return InstructionClass.Linear;
+                    return InstrClass.Linear;
                 }
                 return c;
             }

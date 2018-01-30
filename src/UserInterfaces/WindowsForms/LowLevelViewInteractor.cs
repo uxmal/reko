@@ -196,7 +196,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.ActionCallTerminates:
                         if (instr != null)
                         {
-                            if ((instr.InstructionClass &  InstructionClass.Call) != 0)
+                            if ((instr.InstructionClass &  InstrClass.Call) != 0)
                             {
                                 status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                             }

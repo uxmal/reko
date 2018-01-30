@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Scanning
         {
             var addr = Address.Ptr32(uAddr);
             var otherAddr = Address.Ptr32(uOtherAddr);
-            Instr(addr, byteSize, RtlClass.Transfer, new RtlBranch(null, otherAddr,  RtlClass.ConditionalTransfer));
+            Instr(addr, byteSize, InstrClass.Transfer, new RtlBranch(null, otherAddr,  InstrClass.ConditionalTransfer));
             sr.FlatEdges.Add(new ScanResults.link { first = addr, second = addr + byteSize });
             sr.FlatEdges.Add(new ScanResults.link { first = addr, second = otherAddr });
         }
@@ -59,24 +59,24 @@ namespace Reko.UnitTests.Scanning
         private void Ret(uint uAddr, int byteSize)
         {
             var addr = Address.Ptr32(uAddr);
-            Instr(addr, byteSize, RtlClass.Transfer, new RtlReturn(0, 0, RtlClass.Transfer));
+            Instr(addr, byteSize, InstrClass.Transfer, new RtlReturn(0, 0, InstrClass.Transfer));
         }
 
         private void Pad(uint uAddr, int byteSize)
         {
             var addr = Address.Ptr32(uAddr);
-            Instr(addr, byteSize, RtlClass.Padding | RtlClass.Linear, new RtlNop());
+            Instr(addr, byteSize, InstrClass.Padding | InstrClass.Linear, new RtlNop());
             sr.FlatEdges.Add(new ScanResults.link { first = addr, second = addr + byteSize });
         }
 
         private void Lin(uint uAddr, int byteSize)
         {
             var addr = Address.Ptr32(uAddr);
-            Instr(addr, byteSize, RtlClass.Linear, new RtlAssignment(null,null));
+            Instr(addr, byteSize, InstrClass.Linear, new RtlAssignment(null,null));
             sr.FlatEdges.Add(new ScanResults.link { first = addr, second = addr + byteSize });
         }
 
-        void Instr(Address addr, int byteSize, RtlClass rtlc, params RtlInstruction [] rtls)
+        void Instr(Address addr, int byteSize, InstrClass rtlc, params RtlInstruction [] rtls)
         {
             var instr = new ScanResults.instr
             {
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Scanning
                 size = byteSize,
                 type = (ushort)rtlc,
                 block_id = addr,
-                rtl = new RtlInstructionCluster(addr, byteSize, new RtlReturn(0, 0, RtlClass.Transfer))
+                rtl = new RtlInstructionCluster(addr, byteSize, new RtlReturn(0, 0, InstrClass.Transfer))
                 {
                     Class = rtlc,
                 }
@@ -192,5 +192,24 @@ namespace Reko.UnitTests.Scanning
             ppf.Remove(padding);
             Assert.IsFalse(sr.ICFG.Nodes.Any(block => block.Address.ToLinear() == 0x1001), "Padding block should be gone.");
         }
+
+        [Test]
+        public void Ppf_OverlappingPadding()
+        {
+            Lin(0x1000, 2); // 
+            Lin(0x1001, 2); // Garbage translation
+            Ret(0x1002, 1); // end of preceding function.
+
+            Pad(0x1003, 1); // Unreachable padding.
+            Lin(0x1004, 1);
+
+            BuildTest();
+            var ppf = new ProcedurePaddingFinder(sr);
+            var padding = ppf.FindPaddingBlocks().ToList();
+            Assert.AreEqual(1, padding.Count, "There should be one padding block...");
+            Assert.AreEqual(2, padding[0].Instructions.Count, "...with two instructions inside...");
+            Assert.AreEqual(0x1003, padding[0].Address.ToLinear());
+        }
+
     }
 }

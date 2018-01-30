@@ -114,19 +114,19 @@ namespace Reko.Scanning
                     Address addrOp;
                     switch (instr.Class)
                     {
-                    case RtlClass.Invalid:
-                    case RtlClass.None:
+                    case InstrClass.Invalid:
+                    case InstrClass.None:
                         current.IsValid = false;
                         return current;
-                    case RtlClass.Linear:
-                    case RtlClass.Linear | RtlClass.Conditional:
+                    case InstrClass.Linear:
+                    case InstrClass.Linear | InstrClass.Conditional:
                         if (FallthroughToInvalid(instr))
                         {
                             current.IsValid = false;
                             return current;
                         }
                         break;
-                    case RtlClass.Transfer | RtlClass.Call:
+                    case InstrClass.Transfer | InstrClass.Call:
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
@@ -155,7 +155,7 @@ namespace Reko.Scanning
                         block = Disassemble(instr.Address + instr.Length);
                         AddEdge(current, block);
                         return current;
-                    case RtlClass.Transfer:
+                    case InstrClass.Transfer:
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
@@ -174,7 +174,7 @@ namespace Reko.Scanning
                             return current;
                         }
                         return current;
-                    case RtlClass.Transfer | RtlClass.Conditional:
+                    case InstrClass.Transfer | InstrClass.Conditional:
                         FallthroughToInvalid(instr);
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))

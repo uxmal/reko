@@ -198,9 +198,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 writer.WriteOpcode("opcode.l");
             }
 
-            public override InstructionClass InstructionClass
+            public override InstrClass InstructionClass
             {
-                get { return InstructionClass.Invalid; } 
+                get { return InstrClass.Invalid; } 
             }
 
             public override bool IsValid

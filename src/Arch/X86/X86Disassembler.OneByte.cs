@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Reko.Arch.X86
         {
             return new OpRec[] { 
 				// 00
-				new SingleByteOpRec(Opcode.add, "Eb,Gb", InstructionClass.Linear|InstructionClass.Padding),
+				new SingleByteOpRec(Opcode.add, "Eb,Gb", InstrClass.Linear|InstrClass.Padding),
 				new SingleByteOpRec(Opcode.add, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.add, "Gb,Eb"),
 				new SingleByteOpRec(Opcode.add, "Gv,Ev"),
@@ -227,23 +228,23 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.outs),
 
 				// 70
-				new SingleByteOpRec(Opcode.jo, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jno, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jc, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jnc, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jz, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jnz, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jbe, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.ja, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.jo, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jno, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jc, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jnc, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jz, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jnz, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jbe, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.ja, "Jb", InstrClass.Transfer|InstrClass.Conditional),
 
-				new SingleByteOpRec(Opcode.js, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jns, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jpe, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jpo, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jl, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jge, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jle, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.jg, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.js, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jns, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jpe, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jpo, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jl, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jge, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jle, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.jg, "Jb", InstrClass.Transfer|InstrClass.Conditional),
 
 				// 80
 				new GroupOpRec(1, "Eb,Ib"),
@@ -271,7 +272,7 @@ namespace Reko.Arch.X86
                     Opcode.nop, "",
                     Opcode.nop, "",
                     Opcode.pause, "",
-                    iclass:InstructionClass.Linear|InstructionClass.Padding),
+                    iclass:InstrClass.Linear|InstrClass.Padding),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
@@ -283,7 +284,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.cbw),
 				new SingleByteOpRec(Opcode.cwd),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.call, "Ap", InstructionClass.Transfer|InstructionClass.Call),
+                    new SingleByteOpRec(Opcode.call, "Ap", InstrClass.Transfer|InstrClass.Call),
                     new SingleByteOpRec(Opcode.illegal)),
 				new SingleByteOpRec(Opcode.wait),
 				new SingleByteOpRec(Opcode.pushf),
@@ -332,8 +333,8 @@ namespace Reko.Arch.X86
 				// C0
 				new GroupOpRec(2, "Eb,Ib"),
 				new GroupOpRec(2, "Ev,Ib"),
-				new SingleByteOpRec(Opcode.ret,	"Iw", InstructionClass.Transfer),
-				new SingleByteOpRec(Opcode.ret, "", InstructionClass.Transfer),
+				new SingleByteOpRec(Opcode.ret,	"Iw", InstrClass.Transfer),
+				new SingleByteOpRec(Opcode.ret, "", InstrClass.Transfer),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.les,	"Gv,Mp"),
                     new VexDecoder3()),
@@ -345,14 +346,14 @@ namespace Reko.Arch.X86
 
 				new SingleByteOpRec(Opcode.enter, "Iw,Ib"),
 				new SingleByteOpRec(Opcode.leave),
-				new SingleByteOpRec(Opcode.retf, "Iw", InstructionClass.Transfer),
-				new SingleByteOpRec(Opcode.retf, "", InstructionClass.Transfer),
-				new SingleByteOpRec(Opcode.@int, "3", InstructionClass.Linear|InstructionClass.Padding),
+				new SingleByteOpRec(Opcode.retf, "Iw", InstrClass.Transfer),
+				new SingleByteOpRec(Opcode.retf, "", InstrClass.Transfer),
+				new SingleByteOpRec(Opcode.@int, "3", InstrClass.Linear|InstrClass.Padding),
 				new InterruptOpRec(Opcode.@int, "Ib"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.into, ""),
                     new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.iret,	"", InstructionClass.Transfer),
+				new SingleByteOpRec(Opcode.iret,	"", InstrClass.Transfer),
 
 				// D0
 				new GroupOpRec(2, "Eb,1"),
@@ -378,21 +379,21 @@ namespace Reko.Arch.X86
 				new FpuOpRec(),
 
 				// E0
-				new SingleByteOpRec(Opcode.loopne,"Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.loope, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
-				new SingleByteOpRec(Opcode.loop, "Jb", InstructionClass.Transfer|InstructionClass.Conditional),
+				new SingleByteOpRec(Opcode.loopne,"Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.loope, "Jb", InstrClass.Transfer|InstrClass.Conditional),
+				new SingleByteOpRec(Opcode.loop, "Jb", InstrClass.Transfer|InstrClass.Conditional),
 				new SingleByteOpRec(Opcode.jcxz, "Jb"),
 				new SingleByteOpRec(Opcode.@in, "ab,Ib"),
 				new SingleByteOpRec(Opcode.@in, "av,Ib"),
 				new SingleByteOpRec(Opcode.@out, "Ib,ab"),
 				new SingleByteOpRec(Opcode.@out, "Ib,av"),
 
-				new SingleByteOpRec(Opcode.call, "Jv", InstructionClass.Transfer|InstructionClass.Call),
-				new SingleByteOpRec(Opcode.jmp, "Jv", InstructionClass.Transfer),
+				new SingleByteOpRec(Opcode.call, "Jv", InstrClass.Transfer|InstrClass.Call),
+				new SingleByteOpRec(Opcode.jmp, "Jv", InstrClass.Transfer),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.jmp, "Ap", InstructionClass.Transfer),
+                    new SingleByteOpRec(Opcode.jmp, "Ap", InstrClass.Transfer),
                     new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.jmp, "Jb", InstructionClass.Transfer),
+				new SingleByteOpRec(Opcode.jmp, "Jb", InstrClass.Transfer),
 				new SingleByteOpRec(Opcode.@in, "ab,dw"),
 				new SingleByteOpRec(Opcode.@in, "av,dw"),
 				new SingleByteOpRec(Opcode.@out, "dw,ab"),
@@ -403,7 +404,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new F2ByteOpRec(),
 				new F3ByteOpRec(),
-				new SingleByteOpRec(Opcode.hlt, "", InstructionClass.Terminates),
+				new SingleByteOpRec(Opcode.hlt, "", InstrClass.Terminates),
 				new SingleByteOpRec(Opcode.cmc),
 				new GroupOpRec(3, "Eb"),
 				new GroupOpRec(3, "Ev"),

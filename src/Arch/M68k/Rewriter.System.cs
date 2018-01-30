@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -32,14 +33,14 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBkpt()
         {
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             var src = this.orw.RewriteSrc(di.op1, di.Address);
             m.SideEffect(host.PseudoProcedure("__bkpt", VoidType.Instance, src));
         }
 
         private void RewriteMoves()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             var src = this.orw.RewriteSrc(di.op1, di.Address);
             var dst = orw.RewriteDst(di.op2, di.Address, di.dataWidth, src, (s, d) =>
                 host.PseudoProcedure("__moves", VoidType.Instance, s));
@@ -47,14 +48,14 @@ namespace Reko.Arch.M68k
 
         private void RewritePflushr()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             var src = this.orw.RewriteSrc(di.op1, di.Address);
             m.SideEffect(host.PseudoProcedure("__pflushr", VoidType.Instance, src));
         }
 
         private void RewritePtest()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             var src1 = this.orw.RewriteSrc(di.op1, di.Address);
             var src2 = this.orw.RewriteSrc(di.op2, di.Address);
             m.SideEffect(host.PseudoProcedure("__ptest", VoidType.Instance, src2, src1));
@@ -62,7 +63,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteRte()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             var sp = binder.EnsureRegister(Registers.a7);
             var sr = binder.EnsureRegister(Registers.sr);
             m.Assign(sr, m.Mem16(sp));

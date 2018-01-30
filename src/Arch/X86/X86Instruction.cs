@@ -32,14 +32,14 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86Instruction : MachineInstruction
 	{
-        private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
-        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
-        private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
-        private const InstructionClass Transfer = InstructionClass.Transfer;
+        private const InstrClass CondLinear = InstrClass.Conditional | InstrClass.Linear;
+        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
+        private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
+        private const InstrClass Transfer = InstrClass.Transfer;
 
 
 		public Opcode code;		        // Opcode of the instruction.
-        public InstructionClass iclass; // Instruction class.
+        public InstrClass iclass; // Instruction class.
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	// Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	// width of the address mode.	// TODO: belongs in MemoryOperand
@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
 		public MachineOperand op2;
 		public MachineOperand op3;
 
-		public X86Instruction(Opcode code, InstructionClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+		public X86Instruction(Opcode code, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
             this.iclass = iclass;
@@ -210,7 +210,7 @@ namespace Reko.Arch.X86
             op.Write(writer, options);
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get { return iclass; }
         }

@@ -30,13 +30,13 @@ namespace Reko.Arch.M68k
 {
     public class M68kInstruction : MachineInstruction
     {
-        private const InstructionClass Linear = InstructionClass.Linear;
-        private const InstructionClass Transfer = InstructionClass.Transfer;
-        private const InstructionClass Cond = InstructionClass.Conditional;
-        private const InstructionClass CallTransfer = InstructionClass.Call | InstructionClass.Transfer;
-        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
+        private const InstrClass Linear = InstrClass.Linear;
+        private const InstrClass Transfer = InstrClass.Transfer;
+        private const InstrClass Cond = InstrClass.Conditional;
+        private const InstrClass CallTransfer = InstrClass.Call | InstrClass.Transfer;
+        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
 
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         public Opcode code;
         public PrimitiveType dataWidth;
@@ -143,22 +143,22 @@ namespace Reko.Arch.M68k
             throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass cl;
+                InstrClass cl;
                 if (!classOf.TryGetValue(code, out cl))
-                    cl = InstructionClass.Linear;
+                    cl = InstrClass.Linear;
                 return cl;
             }
         }
 
         static M68kInstruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.illegal, InstructionClass.Invalid },
+                { Opcode.illegal, InstrClass.Invalid },
 
                 { Opcode.bcc,      CondTransfer },
                 { Opcode.bcs,      CondTransfer },

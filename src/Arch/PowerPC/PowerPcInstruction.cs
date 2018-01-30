@@ -29,12 +29,12 @@ namespace Reko.Arch.PowerPC
 {
     public class PowerPcInstruction : MachineInstruction
     {
-        private const InstructionClass Transfer = InstructionClass.Transfer;
-        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
-        private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
-        private const InstructionClass LinkCondTransfer = InstructionClass.Call | InstructionClass.Transfer | InstructionClass.Conditional;
+        private const InstrClass Transfer = InstrClass.Transfer;
+        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
+        private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
+        private const InstrClass LinkCondTransfer = InstrClass.Call | InstrClass.Transfer | InstrClass.Conditional;
 
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         private Opcode opcode;
         public MachineOperand op1;
@@ -62,12 +62,12 @@ namespace Reko.Arch.PowerPC
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get {
-                InstructionClass cl;
+                InstrClass cl;
                 if (!classOf.TryGetValue(opcode, out cl))
-                    cl = InstructionClass.Linear;
+                    cl = InstrClass.Linear;
                 return cl; 
             }
         }
@@ -150,9 +150,9 @@ namespace Reko.Arch.PowerPC
 
         static PowerPcInstruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.illegal,   InstructionClass.Invalid },
+                { Opcode.illegal,   InstrClass.Invalid },
 
                 { Opcode.b,         Transfer },
                 { Opcode.bc,        CondTransfer },

@@ -48,7 +48,7 @@ namespace Reko.Arch.X86
         private RtlEmitter m;
         private OperandRewriter orw;
         private X86Instruction instrCur;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private int len;
         private List<RtlInstruction> rtlInstructions;
         private X86State state;
@@ -82,7 +82,7 @@ namespace Reko.Arch.X86
                 var addr = instrCur.Address;
                 this.len = instrCur.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.code)
@@ -94,7 +94,7 @@ namespace Reko.Arch.X86
                         "Rewriting x86 opcode '{0}' is not supported yet.",
                         instrCur.code);
                     goto case Opcode.illegal;
-                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
                 case Opcode.aam: RewriteAam(); break;

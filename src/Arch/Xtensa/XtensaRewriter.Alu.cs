@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -200,7 +201,7 @@ namespace Reko.Arch.Xtensa
             m.BranchInMiddleOfInstruction(
                 fn(cond, Constant.Zero(cond.DataType)).Invert(),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
         }
 

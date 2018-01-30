@@ -148,6 +148,7 @@ namespace Reko.Scanning
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
+            sr.RemovedPadding = pads;
             return sr;
         }
 
@@ -229,12 +230,12 @@ namespace Reko.Scanning
                 // Find all links that connect instructions that have
                 // different components
                 var components_to_merge_raw =
-                    (from link in sr.FlatEdges
-                     join t1 in the_blocks.Values on link.first equals t1.id
-                     join t2 in the_blocks.Values on link.second equals t2.id
-                     where t1.component_id != t2.component_id
-                     select new link { first = t1.component_id, second = t2.component_id })
-                    .Distinct();
+                (from link in sr.FlatEdges
+                 join t1 in the_blocks.Values on link.first equals t1.id
+                 join t2 in the_blocks.Values on link.second equals t2.id
+                 where t1.component_id != t2.component_id
+                 select new link { first = t1.component_id, second = t2.component_id })
+                .Distinct();
                 // Ensure symmetry (only for WCC, SCC should remove this)
                 var components_to_merge =
                     components_to_merge_raw
@@ -255,7 +256,7 @@ namespace Reko.Scanning
                             source = g.Key,
                             target = g.Min(gg => gg.second)
                         }) on bb.component_id equals cc.source
-                     select new { block = bb, target = cc.target }))
+                     select new { block = bb, cc.target }))
                 {
                     bc.block.component_id = Address.Min(bc.block.component_id, bc.target);
                 }
@@ -282,8 +283,7 @@ namespace Reko.Scanning
                     group link by link.first into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                instr instr;
-                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr))
+                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out instr instr))
                     instr.succ = cSucc.Count;
             }
             // Count and save the # of predecessors for each instruction.
@@ -292,8 +292,7 @@ namespace Reko.Scanning
                     group link by link.second into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                instr instr;
-                if (sr.FlatInstructions.TryGetValue(cPred.addr, out instr))
+                if (sr.FlatInstructions.TryGetValue(cPred.addr, out instr instr))
                     instr.pred = cPred.Count;
             }
 
@@ -301,15 +300,14 @@ namespace Reko.Scanning
             foreach (var instr in sr.FlatInstructions.Values)
             {
                 // All blocks must start with a linear instruction.
-                if ((instr.type & (ushort)RtlClass.Linear) == 0)
+                if ((instr.type & (ushort)InstrClass.Linear) == 0)
                     continue;
                 // Find the instruction that is located directly after instr.
-                instr succ;
-                if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out succ))
+                if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out instr succ))
                     continue;
                 // If the first instruction was padding the next one must also be padding, 
                 // otherwise we start a new block.
-                if (((instr.type ^ succ.type) & (ushort)RtlClass.Padding) != 0)
+                if (((instr.type ^ succ.type) & (ushort)InstrClass.Padding) != 0)
                     continue;
                 // If succ follows instr and it's not the entry of a known procedure
                 // or a called address, we don't need the edge between them since they're inside
@@ -353,7 +351,7 @@ namespace Reko.Scanning
 
             var bad_blocks =
                 (from i in sr.FlatInstructions.Values
-                 where i.type == (ushort)RtlClass.Invalid
+                 where i.type == (ushort)InstrClass.Invalid
                  select i.block_id).ToHashSet();
             var new_bad = bad_blocks;
             var preds = sr.FlatEdges.ToLookup(e => e.second);
@@ -409,7 +407,7 @@ namespace Reko.Scanning
             int len = block.instrs.Length;
             if (len < 1)
                 return false;
-            if (block.instrs[len - 1].type == (uint)(RtlClass.Call | RtlClass.Transfer))
+            if (block.instrs[len - 1].type == (uint)(InstrClass.Call | InstrClass.Transfer))
                 return true;
             return false;
         }
@@ -434,9 +432,8 @@ namespace Reko.Scanning
             }
             foreach (var edge in sr.FlatEdges)
             {
-                RtlBlock from, to;
-                if (!map.TryGetValue(edge.first, out from) ||
-                    !map.TryGetValue(edge.second, out to))
+                if (!map.TryGetValue(edge.first, out var from) ||
+                    !map.TryGetValue(edge.second, out var to))
                     continue;
                 icfg.AddEdge(from, to);
             }

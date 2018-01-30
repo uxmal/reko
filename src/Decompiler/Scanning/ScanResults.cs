@@ -93,6 +93,11 @@ namespace Reko.Scanning
         public List<link> FlatEdges { get; set; }
 
         /// <summary>
+        /// All the places that were identified as padding.
+        /// </summary>
+        public List<RtlBlock> RemovedPadding { get; set; }
+
+        /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
         /// excluding relocations which are known to be addresses.
         /// </summary>

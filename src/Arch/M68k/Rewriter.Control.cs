@@ -36,22 +36,22 @@ namespace Reko.Arch.M68k
             var addr = ((M68kAddressOperand)di.op1).Address;
             if ((addr.ToUInt32() & 1) != 0)
             {
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
             }
             else
             {
-                rtlc = RtlClass.ConditionalTransfer;
+                rtlc = InstrClass.ConditionalTransfer;
                 m.Branch(
                     m.Test(cc, orw.FlagGroup(flags)),
                     addr,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
         }
 
         private void RewriteBra()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Goto(orw.RewriteSrc(di.op1, di.Address, true));
         }
 
@@ -60,12 +60,12 @@ namespace Reko.Arch.M68k
             var addr = ((M68kAddressOperand)di.op1).Address;
             if ((addr.ToUInt32() & 1) != 0)
             {
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
             }
             else
             {
-                rtlc = RtlClass.Transfer | RtlClass.Call;
+                rtlc = InstrClass.Transfer | InstrClass.Call;
                 m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
             }
         }
@@ -79,21 +79,21 @@ namespace Reko.Arch.M68k
 
         private void RewriteChk()
         {
-            rtlc = RtlClass.Conditional | RtlClass.Linear;
+            rtlc = InstrClass.Conditional | InstrClass.Linear;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var bound = orw.RewriteSrc(di.op2, di.Address, true);
             m.Branch(m.Cand(
                     m.Ge0(src),
                     m.Le(src, bound)),
                 di.Address + di.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.SideEffect(
                 host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteChk2()
         {
-            rtlc = RtlClass.Conditional | RtlClass.Linear;
+            rtlc = InstrClass.Conditional | InstrClass.Linear;
             var reg = orw.RewriteSrc(di.op2, di.Address);
             var lowBound = orw.RewriteSrc(di.op1, di.Address);
             var ea = ((MemoryAccess)lowBound).EffectiveAddress;
@@ -103,14 +103,14 @@ namespace Reko.Arch.M68k
                     m.Ge(reg, lowBound),
                     m.Le(reg, hiBound)),
                 di.Address + di.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
                 new RtlSideEffect(
                     host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteJmp()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
@@ -120,7 +120,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteJsr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             var src = orw.RewriteSrc(di.op1, di.Address, true);
             var mem = src as MemoryAccess;
             if (mem != null)
@@ -135,16 +135,16 @@ namespace Reko.Arch.M68k
             var addr = (Address)orw.RewriteSrc(di.op2, di.Address, true);
             if (cc == ConditionCode.ALWAYS)
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = InstrClass.Transfer;
                 m.Goto(addr);
             }
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
                 m.BranchInMiddleOfInstruction(
                     m.Test(cc, orw.FlagGroup(flags)),
                     di.Address + 4,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
             var src = orw.RewriteSrc(di.op1, di.Address);
 
@@ -152,7 +152,7 @@ namespace Reko.Arch.M68k
             m.Branch(
                 m.Ne(src, m.Word32(-1)),
                 addr,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteIllegal()
@@ -160,11 +160,11 @@ namespace Reko.Arch.M68k
             if (dasm.Current.op1 != null)
             {
                 m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
-                rtlc = RtlClass.Call | RtlClass.Transfer;
+                rtlc = InstrClass.Call | InstrClass.Transfer;
             }
             else
             {
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
             }
         }
@@ -178,7 +178,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteRts()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Return(4, 0);
         }
 
@@ -189,7 +189,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteTrap()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             var vector = orw.RewriteSrc(di.op1, di.Address);
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
         }
@@ -201,14 +201,14 @@ namespace Reko.Arch.M68k
                 m.Nop();
                 return;
             }
-            rtlc = RtlClass.Transfer|RtlClass.Call;
+            rtlc = InstrClass.Transfer|InstrClass.Call;
             if (cc != ConditionCode.ALWAYS)
             {
-                rtlc |= RtlClass.Conditional;
+                rtlc |= InstrClass.Conditional;
                 m.BranchInMiddleOfInstruction(
                     m.Test(cc, orw.FlagGroup(flags)).Invert(),
                     di.Address + di.Length,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
             var args = new List<Expression> { Constant.UInt16(7) };
             if (di.op1 != null)

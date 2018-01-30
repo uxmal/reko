@@ -83,7 +83,7 @@ namespace Reko.Arch.X86
 
         private void RewriteHlt()
         {
-            rtlc = RtlClass.Terminates;
+            rtlc = InstrClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,
@@ -332,7 +332,7 @@ namespace Reko.Arch.X86
             m.BranchInMiddleOfInstruction(
                 test,
                 instrCur.Address + instrCur.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             var opSrc = SrcOp(src);
             var opDst = SrcOp(dst);
             m.Assign(opDst, opSrc);
@@ -992,7 +992,7 @@ namespace Reko.Arch.X86
             if (instrCur.repPrefix != 0)
             {
                 regCX = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
-                m.BranchInMiddleOfInstruction(m.Eq0(regCX), instrCur.Address + instrCur.Length, RtlClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Eq0(regCX), instrCur.Address + instrCur.Length, InstrClass.ConditionalTransfer);
             }
 
             bool incSi = false;
@@ -1075,7 +1075,7 @@ namespace Reko.Arch.X86
                     var cc = (instrCur.repPrefix == 2)
                         ? ConditionCode.NE
                         : ConditionCode.EQ;
-                    m.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, RtlClass.ConditionalTransfer);
+                    m.Branch(new TestCondition(cc, orw.FlagGroup(FlagM.ZF)).Invert(), topOfLoop, InstrClass.ConditionalTransfer);
                     break;
                 }
             default:

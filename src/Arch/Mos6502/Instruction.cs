@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -28,21 +29,21 @@ namespace Reko.Arch.Mos6502
 {
     public class Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        private static Dictionary<Opcode, InstrClass> classOf;
 
         public Opcode Code;
         public Operand Operand;
 
         public override bool IsValid { get { return Code != Opcode.illegal; } }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass ct;
+                InstrClass ct;
                 if (!classOf.TryGetValue(Code, out ct))
                 {
-                    ct = InstructionClass.Linear;
+                    ct = InstrClass.Linear;
                 }
                 return ct;
             }
@@ -150,22 +151,22 @@ namespace Reko.Arch.Mos6502
 
         static Instruction()
         {
-            classOf = new Dictionary<Opcode, InstructionClass>
+            classOf = new Dictionary<Opcode, InstrClass>
             {
-                { Opcode.illegal, InstructionClass.Linear },
+                { Opcode.illegal, InstrClass.Linear },
 
-                { Opcode.bcc, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bcs, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.beq, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bit, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bmi, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bne, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bpl, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.brk, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bvc, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bvs, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.jmp, InstructionClass.Transfer },
-                { Opcode.jsr, InstructionClass.Transfer | InstructionClass.Call },
+                { Opcode.bcc, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bcs, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.beq, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bit, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bmi, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bne, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bpl, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.brk, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bvc, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.bvs, InstrClass.Transfer | InstrClass.Conditional },
+                { Opcode.jmp, InstrClass.Transfer },
+                { Opcode.jsr, InstrClass.Transfer | InstrClass.Call },
             };
         }
     }
