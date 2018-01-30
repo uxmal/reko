@@ -6,6 +6,21 @@ if(CMAKE_BUILD_TYPE STREQUAL "")
 	set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+if(NOT REKO_PATH)
+	get_filename_component(
+		REKO_PATH "../../"
+		REALPATH
+		BASE_DIR "${CMAKE_SOURCE_DIR}"
+	)
+	message(STATUS "Reko directory: ${REKO_PATH}")
+endif()
+
+set(IS_AMD64 FALSE)
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(IS_AMD64 TRUE)
+endif()
+
 include (CheckSymbolExists)
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/config.h)
 
@@ -14,11 +29,19 @@ include_directories(
 	${CMAKE_SOURCE_DIR}
 )
 
+set(REKO_BUNDLED_LIBDIRS "")
+
+if(IS_AMD64)
+	list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_PATH}/external/Capstone/X64")
+else()
+	list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_PATH}/external/Capstone/X86")
+endif()
+
 if(UNIX OR MINGW)
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(CAPSTONE REQUIRED capstone)
 else()
-	find_library(CAPSTONE_LIBRARIES capstone)
+	find_library(CAPSTONE_LIBRARIES capstone PATHS ${REKO_BUNDLED_LIBDIRS})
 endif()
 
 add_subdirectory(common)
