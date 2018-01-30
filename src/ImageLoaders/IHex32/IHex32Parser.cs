@@ -32,10 +32,10 @@ namespace Reko.ImageLoaders.IHex32
         /// <param name="hexRecord">The hexadecimal record as a string.</param>
         /// <param name="lineNum">(Optional) The line number in the IHex32 binary stream.</param>
         /// <returns>
-        /// An <see cref="IHEX32Record"/> .
+        /// An <see cref="IHEX32BinRecord"/> .
         /// </returns>
         /// <exception cref="IHEX32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
-        public static IHEX32Record ParseRecord(string hexRecord, int lineNum = 0)
+        public static IHEX32BinRecord ParseRecord(string hexRecord, int lineNum = 0)
         {
             if (hexRecord == null)
                 throw new IHEX32Exception("Hex record line can not be null", lineNum);
@@ -61,7 +61,7 @@ namespace Reko.ImageLoaders.IHex32
 
             var dataSize = hexData[0];
 
-            var newRecord = new IHEX32Record
+            var newRecord = new IHEX32BinRecord
             {
                 ByteCount = dataSize,
                 Address = ((uint)(hexData[1] << 8) | hexData[2]),

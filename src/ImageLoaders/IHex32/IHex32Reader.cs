@@ -137,7 +137,7 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Helpers
 
-        private uint _handleAddress(IHEX32Record hexRecord)
+        private uint _handleAddress(IHEX32BinRecord hexRecord)
         {
             switch (hexRecord.RecordType)
             {

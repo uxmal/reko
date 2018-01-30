@@ -25,7 +25,7 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// Represents a single Intel HEX 32 record. Used as an intermediate representation.
     /// </summary>
-    public struct IHEX32Record
+    public struct IHEX32BinRecord
     {
         /// <summary>
         ///     The record type
