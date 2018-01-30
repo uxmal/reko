@@ -44,6 +44,7 @@
     <Compile Include="IHex32AddressType.cs" />
     <Compile Include="IHex32Exception.cs" />
     <Compile Include="IHex32Loader.cs" />
+    <Compile Include="IHex32Parser.cs" />
     <Compile Include="IHex32Reader.cs" />
     <Compile Include="IHex32Record.cs" />
     <Compile Include="IHex32RecordType.cs" />

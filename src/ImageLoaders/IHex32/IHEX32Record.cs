@@ -22,7 +22,10 @@ using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.IHex32
 {
-    internal struct IHex32Record
+    /// <summary>
+    /// Represents a single Intel HEX 32 record. Used as an intermediate representation.
+    /// </summary>
+    public struct IHex32Record
     {
         /// <summary>
         ///     The record type
@@ -48,6 +51,7 @@ namespace Reko.ImageLoaders.IHex32
         ///     The record checksum
         /// </summary>
         public int CheckSum { get; set; }
+
     }
 
 }

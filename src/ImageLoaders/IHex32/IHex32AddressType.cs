@@ -23,7 +23,7 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// The Address type for address values written to an Intel hex file stream
     /// </summary>
-    public enum IHex32AddressType
+    public enum IHex32AddressType : byte
     {
         /// <summary>
         /// Indicates the record data field contains a 16-bit segment:base address

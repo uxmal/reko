@@ -35,8 +35,9 @@ namespace Reko.ImageLoaders.IHex32
     public class IHex32Loader : ImageLoader
     {
 
-        //TODO: See how to adapt for Microchip PIC IHex32 loading (with memory mapping).
-        
+        //TODO: See how to adapt for Microchip PIC IHex32 loading (with memory mapping/checking).
+    
+            //TODO: Add at tail, add at head, add inside...
 
         #region Helper classes
 
@@ -44,6 +45,7 @@ namespace Reko.ImageLoaders.IHex32
         {
             public readonly Address BaseAddress;
             public List<byte> Datum;
+            public Address EndAddress => BaseAddress + Datum.Count;
 
             public MemChunk(Address bAddr)
             {
@@ -53,6 +55,22 @@ namespace Reko.ImageLoaders.IHex32
             public MemChunk(uint address) : this (Address.Ptr32(address))
             {
             }
+
+            public bool Contains(Address addr)
+            {
+                return (BaseAddress <= addr && EndAddress > addr);
+            }
+
+            public bool IsAtTail(Address addr)
+            {
+                return addr == EndAddress;
+            }
+
+            public bool IsAtHeadOf(Address addr)
+            {
+                return EndAddress == addr;
+            }
+
         }
 
         /// <summary>
@@ -62,7 +80,6 @@ namespace Reko.ImageLoaders.IHex32
         {
             private Address currAddr = null;
             private Address nextAddr = null;
-            private int offset;
             private SortedList<Address, MemChunk> memChunks;
             private MemChunk currMemChunk;
 
@@ -70,6 +87,16 @@ namespace Reko.ImageLoaders.IHex32
             {
                 memChunks = new SortedList<Address, MemChunk>();
                 currMemChunk = null;
+            }
+
+            private MemChunk _getPredChunk(Address addr)
+            {
+                foreach (var ch in memChunks.Values)
+                {
+                    if (ch.IsAtHeadOf(addr))
+                        return ch;
+                }
+                return null;
             }
 
             /// <summary>
@@ -90,21 +117,22 @@ namespace Reko.ImageLoaders.IHex32
                     currAddr = Address.Ptr32(address);
                     currMemChunk = new MemChunk(currAddr);
                     memChunks.Add(currAddr, currMemChunk);
-                    offset = 0;
                 }
                 else
                 {
                     currAddr = Address.Ptr32(address);
                     if (nextAddr != currAddr)
                     {
-                        currMemChunk = new MemChunk(currAddr);
-                        memChunks.Add(currAddr, currMemChunk);
-                        offset = 0;
+                        currMemChunk = _getPredChunk(currAddr);
+                        if (currMemChunk == null)
+                        {
+                            currMemChunk = new MemChunk(currAddr);
+                            memChunks.Add(currAddr, currMemChunk);
+                        }
                     }
                 }
 
                 currMemChunk.Datum.AddRange(data);
-                offset += data.Length;
                 nextAddr = currAddr + data.Length;
             }
 

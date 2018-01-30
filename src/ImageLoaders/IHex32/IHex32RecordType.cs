@@ -23,32 +23,32 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// Values that represent Intel Hexadecimal record types.
     /// </summary>
-    internal enum IHex32RecordType
+    public enum IHex32RecordType : byte
     {
         /// <summary>
         /// Indicates the record contains data and a 16-bit loading address for the data.
         /// </summary>
-        Data,
+        Data = 0,
         /// <summary>
         /// Indicates the record is the marker of End-of-File.
         /// </summary>
-        EndOfFile,
+        EndOfFile = 1,
         /// <summary>
         /// Indicates the record data field contains a 16-bit segment base address.
         /// </summary>
-        ExtendedSegmentAddress,
+        ExtendedSegmentAddress = 2,
         /// <summary>
         /// Indicates the record specifies the initial content of the CS:IP registers.
         /// </summary>
-        StartSegmentAddress,
+        StartSegmentAddress = 3,
         /// <summary>
         /// Indicates the record contains the upper 16-bit address of a linear address.
         /// </summary>
-        ExtendedLinearAddress,
+        ExtendedLinearAddress = 4,
         /// <summary>
-        /// Indicates the record contains a 32 bit start address.
+        /// Indicates the record contains a 32 bit start linear address.
         /// </summary>
-        StartLinearAddress
+        StartLinearAddress = 5
     }
 
 }

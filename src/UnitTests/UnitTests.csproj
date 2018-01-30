@@ -153,6 +153,7 @@
     <Compile Include="Environments\Windows\X86_64CallingConventionTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
+    <Compile Include="ImageLoaders\IHex32\IHex32LoaderTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
@@ -789,6 +790,10 @@
     <ProjectReference Include="..\ImageLoaders\Hunk\Hunk.csproj">
       <Project>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</Project>
       <Name>Hunk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\IHex32\IHex32.csproj">
+      <Project>{a66cf7a5-a033-4eef-b2ef-cbfae7d2b711}</Project>
+      <Name>IHex32</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\IntelHex\IntelHex.csproj">
       <Project>{72641087-68D2-41E7-9B29-BC9D4213940A}</Project>
