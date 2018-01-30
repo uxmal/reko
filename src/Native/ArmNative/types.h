@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2017 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,7 @@ struct IUnknown {
 #define S_OK    0
 #define S_FALSE 1
 #define E_NOINTERFACE 0x80004002
+#define E_NOTIMPL 0x80004001
  
 #endif 
 

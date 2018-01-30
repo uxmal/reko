@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2017 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ INativeInstruction * Arm64Disassembler::NextInstruction()
 {
 	if (length == 0)
 	{
-		return false;
+		return nullptr;
 	}
 	uint64_t uAddr = this->uAddr;
 	auto instr = cs_malloc(hcapstone);

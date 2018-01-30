@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2017 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "functions.h"
 #include "ComBase.h"
 #include "ThumbRewriter.h"
+
+#include "common/compat.h"
 
 
 ThumbRewriter::ThumbRewriter(
