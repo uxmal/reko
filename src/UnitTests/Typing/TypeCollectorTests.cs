@@ -241,5 +241,21 @@ namespace Reko.UnitTests.Typing
             });
             RunTest(pp.BuildProgram(), "Typing/TycoSignedUnsignedAdd.txt");
         }
+
+        [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
+        public void TycoStructMembers()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier ptr = m.Local32("ptr");
+                Identifier b16 = m.Local16("b16");
+                Identifier c16 = m.Local16("c16");
+                m.Store(m.IAdd(ptr, 200), m.Word32(0x1234));
+                m.Store(m.IAdd(ptr, 12), m.Word32(0x5678));
+                m.Assign(b16, m.Or(m.Mem16(m.IAdd(ptr, 14)), m.Word16(0x00FF)));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoStructMembers.txt");
+        }
     }
 }

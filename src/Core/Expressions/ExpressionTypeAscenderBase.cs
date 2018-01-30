@@ -198,8 +198,9 @@ namespace Reko.Core.Expressions
             var dtField = field.DataType.ResolveAs<DataType>();
             if (dtField == null)
                 return null;
-            //$BUG: offset != field.Offset?
-            if (offset >= field.Offset + dtField.Size)
+            // If we are accessing exactly at the field offset,
+            // we cannot use the type of that field.
+            if (offset != field.Offset)
                 return null;
             return factory.CreatePointer(dtField, dtLeft.Size);
         }
