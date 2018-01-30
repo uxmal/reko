@@ -142,7 +142,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteLsi(DataType dt)
         {
             var dst = RewriteOp(this.instr.Operands[0]);
-            var tmp = frame.CreateTemporary(dt);
+            var tmp = binder.CreateTemporary(dt);
             m.Assign(
                 tmp,
                 m.Mem(
@@ -167,7 +167,7 @@ namespace Reko.Arch.Xtensa
             }
             else
             {
-                ea = frame.CreateTemporary(a.DataType);
+                ea = binder.CreateTemporary(a.DataType);
                 m.Assign(ea, m.IAdd(a, off));
             }
             m.Assign(dst, m.Mem(PrimitiveType.Real32, ea));
@@ -180,7 +180,7 @@ namespace Reko.Arch.Xtensa
         private void RewriteLui(DataType dt)
         {
             var dst = RewriteOp(this.instr.Operands[0]);
-            var tmp = frame.CreateTemporary(dt);
+            var tmp = binder.CreateTemporary(dt);
             m.Assign(
                 tmp,
                 m.Mem(
@@ -217,8 +217,8 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            var tmp1 = frame.CreateTemporary(PrimitiveType.Create(dom, 2));
-            var tmp2 = frame.CreateTemporary(PrimitiveType.Create(dom, 2));
+            var tmp1 = binder.CreateTemporary(PrimitiveType.Create(dom, 2));
+            var tmp2 = binder.CreateTemporary(PrimitiveType.Create(dom, 2));
             m.Assign(tmp1, m.Cast(tmp1.DataType, src1));
             m.Assign(tmp2, m.Cast(tmp2.DataType, src2));
             m.Assign(dst, mul(tmp1, tmp2));
@@ -244,7 +244,7 @@ namespace Reko.Arch.Xtensa
             //$REVIEW: the Xtensa spec is unclear on left shifts, shouild it be
             // a[0] = a[1] << (32 - SAR)?
             var src1 = RewriteOp(dasm.Current.Operands[1]);
-            var sa = frame.EnsureRegister(Registers.SAR);
+            var sa = binder.EnsureRegister(Registers.SAR);
             var dst = RewriteOp(dasm.Current.Operands[0]);
             m.Assign(dst, fn(src1, sa));
         }
@@ -262,8 +262,8 @@ namespace Reko.Arch.Xtensa
             var src1 = (Identifier)RewriteOp(instr.Operands[1]);
             var src2 = (Identifier)RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            var sa = frame.EnsureRegister(Registers.SAR);
-            var cat = frame.EnsureSequence(
+            var sa = binder.EnsureRegister(Registers.SAR);
+            var cat = binder.EnsureSequence(
                 src1.Storage, 
                 src2.Storage, 
                 PrimitiveType.CreateWord(src1.DataType.Size + src2.DataType.Size));
@@ -275,21 +275,21 @@ namespace Reko.Arch.Xtensa
         private void RewriteSsa()
         {
             var src = RewriteOp(instr.Operands[0]);
-            var dst = frame.EnsureRegister(Registers.SAR);
+            var dst = binder.EnsureRegister(Registers.SAR);
             m.Assign(dst, src);
         }
 
         private void RewriteSsl()
         {
             var src = RewriteOp(instr.Operands[0]);
-            var dst = frame.EnsureRegister(Registers.SAR);
+            var dst = binder.EnsureRegister(Registers.SAR);
             m.Assign(dst, m.ISub(Constant.Create(src.DataType, 32), src));
         }
 
         private void RewriteSsa8l()
         {
             var src = RewriteOp(instr.Operands[0]);
-            var dst = frame.EnsureRegister(Registers.SAR);
+            var dst = binder.EnsureRegister(Registers.SAR);
             m.Assign(dst, m.IMul(src, 8));
         }
 

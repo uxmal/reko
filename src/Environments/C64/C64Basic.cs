@@ -96,7 +96,7 @@ namespace Reko.Environments.C64
             return new C64BasicState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new C64BasicRewriter(this, rdr.Address, program, host);
         }

@@ -34,19 +34,19 @@ namespace Reko.Arch.RiscV
         private RiscVArchitecture arch;
         private IEnumerator<RiscVInstruction> dasm;
         private RtlEmitter m;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private RiscVInstruction instr;
         private List<RtlInstruction> rtlInstructions;
         private RtlClass rtlc;
         private ProcessorState state;
 
-        public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = new RiscVDisassembler(arch, rdr).GetEnumerator();
             this.state = state;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
         }
 
@@ -146,7 +146,7 @@ namespace Reko.Arch.RiscV
                     //$TODO: 32-bit!
                     return Constant.Word64(0);
                 }
-                return frame.EnsureRegister(rop.Register);
+                return binder.EnsureRegister(rop.Register);
             }
             var immop = op as ImmediateOperand;
             if (immop != null)

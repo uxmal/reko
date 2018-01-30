@@ -63,13 +63,13 @@ namespace Reko.UnitTests.Arch.Intel
             return new FakeRewriterHost(null);
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return new X86Rewriter(
                 arch,
                 host, 
                 new X86State(arch),
-                asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), frame);
+                asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), binder);
         }
 
         public override Address LoadAddress

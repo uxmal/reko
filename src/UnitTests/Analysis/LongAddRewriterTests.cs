@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class LongAddRewriterTests : AnalysisTestBase
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private LongAddRewriter rw;
         private IProcessorArchitecture arch;
         private Identifier ax;
@@ -83,14 +83,14 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             m = new ProcedureBuilder(arch);
-            frame = m.Frame;
-            ax = frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-            bx = frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-            cx = frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
-            dx = frame.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
+            binder = m.Frame;
+            ax = binder.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+            bx = binder.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+            cx = binder.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
+            dx = binder.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
             flags = new FlagRegister("flags", 4, PrimitiveType.Word16);
-            SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
-            CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
+            SCZ = binder.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
+            CF = binder.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
             rw = new LongAddRewriter(m.Procedure, arch);
         }
 

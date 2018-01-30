@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return new Rewriter(arch, image.CreateLeReader(0), new Mos6502ProcessorState(arch), new Frame(arch.FramePointerType), host);
         }

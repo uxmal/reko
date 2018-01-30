@@ -33,14 +33,14 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class TrashStorageHelperTests
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private TrashStorageHelper tsh;
         private TemporaryStorage trash;
 
         [SetUp]
         public void Setup()
         {
-            frame = new Frame(PrimitiveType.Word32);
+            binder = new Frame(PrimitiveType.Word32);
             trash = new TemporaryStorage("v0", 1, PrimitiveType.Word32);
             tsh = new TrashStorageHelper(trash);
         }
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrashIdentifier()
         {
-            var eax = frame.EnsureRegister(Registers.eax);
+            var eax = binder.EnsureRegister(Registers.eax);
             tsh.Trash(eax, trash);
             Assert.AreEqual(1, tsh.TrashedRegisters.Count);
             Assert.AreSame(trash, tsh.TrashedRegisters[eax.Storage]);
@@ -57,8 +57,8 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void CopyIdentifier()
         {
-            var eax = frame.EnsureRegister(Registers.eax);
-            var ebx = frame.EnsureRegister(Registers.ebx);
+            var eax = binder.EnsureRegister(Registers.eax);
+            var ebx = binder.EnsureRegister(Registers.ebx);
             tsh.Copy(eax, ebx);
             Assert.AreEqual(1, tsh.TrashedRegisters.Count);
             Assert.AreEqual("ebx", ((RegisterStorage) tsh.TrashedRegisters[eax.Storage]).Name);
@@ -67,9 +67,9 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrashSequence()
         {
-            Identifier es = frame.EnsureRegister(Registers.es);
-            Identifier bx = frame.EnsureRegister(Registers.bx);
-            Identifier es_bx = frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Ptr32);
+            Identifier es = binder.EnsureRegister(Registers.es);
+            Identifier bx = binder.EnsureRegister(Registers.bx);
+            Identifier es_bx = binder.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Ptr32);
             tsh.Trash(es_bx, trash);
             Assert.AreEqual("(bx:TRASH) (es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
         }

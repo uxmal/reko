@@ -37,6 +37,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
 
             var dynsect = loader.GetSectionInfoByName(".dynamic");
+            if (dynsect == null)
+                return;
+
             var dynentries = loader.GetDynEntries(dynsect.FileOffset).ToDictionary(k => k.d_tag);
             var symtab = dynentries[DynamicSectionRenderer.DT_SYMTAB];
             var pltgot = dynentries[DynamicSectionRenderer.DT_PLTGOT].d_val;

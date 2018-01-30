@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
             RtlTrace trace;
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
+        public Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             throw new NotImplementedException();
         }

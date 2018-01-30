@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
     {
         private IRewriterHost host;
         private IntelArchitecture arch;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
@@ -55,13 +55,13 @@ namespace Reko.Arch.X86
             IRewriterHost host,
             X86State state,
             EndianImageReader rdr,
-            IStorageBinder frame)
+            IStorageBinder binder)
         {
             if (host == null)
                 throw new ArgumentNullException("host");
             this.arch = arch;
             this.host = host;
-            this.frame = frame;
+            this.binder = binder;
             this.state = state;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
@@ -80,7 +80,7 @@ namespace Reko.Arch.X86
                 this.rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = RtlClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
-                orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, frame, host);
+                orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.code)
                 {
                 default:
@@ -438,7 +438,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                var tmp = frame.CreateTemporary(opDst.Width);
+                var tmp = binder.CreateTemporary(opDst.Width);
                 m.Assign(tmp, src);
                 var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
                 m.Assign(ea, tmp);
@@ -460,7 +460,7 @@ namespace Reko.Arch.X86
             {
                 // Special case for X86-64: 
                 var reg = (RegisterStorage)idDst.Storage;
-                idDst = frame.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
+                idDst = binder.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
                 src = m.Cast(PrimitiveType.UInt64, src);
             }
             m.Assign(idDst, src);

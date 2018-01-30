@@ -34,7 +34,7 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private RtlEmitter m;
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
@@ -43,19 +43,19 @@ namespace Reko.Arch.PowerPC
         private IRewriterHost host;
         private PowerPcInstruction instr;
 
-        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder frame, IRewriterHost host)
+        public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = instrs.GetEnumerator();
         }
 
-        public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder frame, IRewriterHost host)
+        public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             //this.state = ppcState;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
         }
@@ -300,7 +300,7 @@ namespace Reko.Arch.PowerPC
             {
                 if (maybe0 && rOp.Register.Number == 0)
                     return Constant.Zero(rOp.Register.DataType);
-                return frame.EnsureRegister(rOp.Register);
+                return binder.EnsureRegister(rOp.Register);
             }
             var iOp = op as ImmediateOperand;
             if (iOp != null)
@@ -324,7 +324,7 @@ namespace Reko.Arch.PowerPC
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
         {
             var mop = (MemoryOperand) operand;
-            var reg = frame.EnsureRegister(mop.BaseRegister);
+            var reg = binder.EnsureRegister(mop.BaseRegister);
             var offset = mop.Offset;
             return emitter.IAdd(reg, offset);
         }
@@ -338,7 +338,7 @@ namespace Reko.Arch.PowerPC
             }
             else
             {
-                var reg = frame.EnsureRegister(mop.BaseRegister);
+                var reg = binder.EnsureRegister(mop.BaseRegister);
                 var offset = mop.Offset;
                 return emitter.IAdd(reg, offset);
             }

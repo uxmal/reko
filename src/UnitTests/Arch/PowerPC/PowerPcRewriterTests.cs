@@ -48,9 +48,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             ppcInstrs = b.Instructions;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new PowerPcRewriter(arch, ppcInstrs, frame, host);
+            return new PowerPcRewriter(arch, ppcInstrs, binder, host);
         }
 
         protected override MemoryArea RewriteCode(uint[] words)

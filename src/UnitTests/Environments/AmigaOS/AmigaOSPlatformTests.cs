@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
         private RtlEmitter m;
         private AmigaOSPlatform platform;
         private List<RtlInstruction> rtls;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
 
         [SetUp]
         public void Setup()
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(cfgSvc);
             this.services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(fsSvc);
             this.services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tllSvc);
-            this.frame = new Frame(arch.FramePointerType);
+            this.binder = new Frame(arch.FramePointerType);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             mr.ReplayAll();
 
             When_Create_Platform();
-            m.Call(m.IAdd(frame.EnsureRegister(Registers.a6), -512), 4);
+            m.Call(m.IAdd(binder.EnsureRegister(Registers.a6), -512), 4);
             var state = arch.CreateProcessorState();
             var svc = platform.FindService(rtls.Last(), state);
 

@@ -151,8 +151,8 @@ namespace Reko.Scanning
         {
             var ranges = FindUnscannedRanges().ToList();
             DumpRanges(ranges);
-            var frame = new StorageBinder();
-            var shsc = new ShingledScanner(this.program, this.host, frame, sr, this.eventListener);
+            var binder = new StorageBinder();
+            var shsc = new ShingledScanner(this.program, this.host, binder, sr, this.eventListener);
             bool unscanned = false;
             foreach (var range in ranges)
             {

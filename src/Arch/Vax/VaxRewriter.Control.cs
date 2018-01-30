@@ -128,7 +128,7 @@ namespace Reko.Arch.Vax
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
             var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
-            var tst = frame.CreateTemporary(PrimitiveType.Word32);
+            var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
             if (updateBit)
             {
@@ -150,7 +150,7 @@ namespace Reko.Arch.Vax
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
             var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
-            var tst = frame.CreateTemporary(PrimitiveType.Word32);
+            var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.SideEffect(host.PseudoProcedure("__set_interlock", VoidType.Instance));
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
             if (testBit)
@@ -264,9 +264,9 @@ namespace Reko.Arch.Vax
         // last saved reg                  <-- sp
         private void RewriteRet()
         {
-            var sp = frame.EnsureRegister(Registers.sp);
-            var fp = frame.EnsureRegister(Registers.fp);
-            var ap = frame.EnsureRegister(Registers.ap);
+            var sp = binder.EnsureRegister(Registers.sp);
+            var fp = binder.EnsureRegister(Registers.fp);
+            var ap = binder.EnsureRegister(Registers.ap);
             m.Assign(sp, m.ISub(fp, 4));
             m.Assign(fp, m.Mem32(m.IAdd(sp, 16)));
             m.Assign(ap, m.Mem32(m.IAdd(sp, 12)));

@@ -51,9 +51,9 @@ namespace Reko.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new ThumbRewriter(arch, new LeImageReader(image, 0), state, frame, host);
+            return new ThumbRewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
         private void BuildTest(params ushort[] words)

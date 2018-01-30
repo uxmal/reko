@@ -68,7 +68,7 @@ namespace Reko.Scanning
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
-        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame);
+        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder binder);
         void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint);
     }
 }
