@@ -178,6 +178,19 @@ namespace Reko.UnitTests.Scanning
             });
         }
 
+        private void Pad(uint uAddr, int len, int next)
+        {
+            var addr = Address.Ptr32((uint)uAddr);
+            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            {
+                addr = addr,
+                size = len,
+                block_id = addr,
+                type = (ushort)(RtlClass.Linear | RtlClass.Padding),
+            });
+            Link(addr, next);
+        }
+
         private void Link(Address addrFrom ,int uAddrTo)
         {
             var addrTo = Address.Ptr32((uint)uAddrTo);
@@ -204,7 +217,7 @@ namespace Reko.UnitTests.Scanning
             Given_OverlappingLinearTraces();
 
             CreateScanner();
-            var blocks = siq.BuildBasicBlocks(sr);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
 
             Assert.AreEqual(2, blocks.Count);
         }
@@ -215,8 +228,8 @@ namespace Reko.UnitTests.Scanning
             Given_OverlappingLinearTraces();
 
             CreateScanner();
-            var blocks = siq.BuildBasicBlocks(sr);
-            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
 
             var sExp =
             #region Expected
@@ -242,7 +255,7 @@ namespace Reko.UnitTests.Scanning
             End(0x0001B0DE, 2);
 
             CreateScanner();
-            var blocks = siq.BuildBasicBlocks(sr);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             var sExp =
             #region Expected
 @"0001B0D7-0001B0DD (6): 0001B0DD, 0001B0DE
@@ -278,8 +291,8 @@ namespace Reko.UnitTests.Scanning
             Bad(0x00010002, 3);
             End(0x00010004, 1);
             CreateScanner();
-            var blocks = siq.BuildBasicBlocks(sr);
-            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
             var sExp =
             #region Expected
 @"00010001-00010005 (4): 
@@ -306,8 +319,8 @@ namespace Reko.UnitTests.Scanning
             CreateScanner();
             var seg = program.SegmentMap.Segments.Values.First();
             var scseg = siq.ScanInstructions(sr);
-            var blocks = siq.BuildBasicBlocks(sr);
-            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
             var sExp =
                 "00010000-00010003 (3): 00010003" + nl +
                 "00010002-00010003 (1): 00010003" + nl +
@@ -350,8 +363,8 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             siq.ScanInstructions(sr);
-            var blocks = siq.BuildBasicBlocks(sr);
-            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
 
             var from = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100000));
             var to = blocks.Values.Single(n => n.id == Address.Ptr32(0x00100001));
@@ -368,8 +381,8 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             CreateScanner();
-            var blocks = siq.BuildBasicBlocks(sr);
-            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
 
             var sExp =
             #region Expected
@@ -390,8 +403,8 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             CreateScanner();
-            var blocks = siq.BuildBasicBlocks(sr);
-            blocks = siq.RemoveInvalidBlocks(sr, blocks);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
 
             var sExp =
             #region Expected
@@ -416,8 +429,32 @@ namespace Reko.UnitTests.Scanning
             {
                 { Address.Ptr32(0x1008), 2 }
             };
-            var blocks = siq.BuildBasicBlocks(sr);
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             Assert.IsTrue(blocks.ContainsKey(Address.Ptr32(0x1008)));
+        }
+
+        [Test]
+        public void Siq_PaddingBlocks()
+        {
+            Lin(0x1000, 4, 0x1004);
+            End(0x1004, 4);
+            Pad(0x1008, 4, 0x100C);
+            Pad(0x100C, 4, 0x1010);
+            Lin(0x1010, 4, 0x1014);
+            End(0x1014, 4);
+            mr.ReplayAll();
+
+            CreateScanner();
+            var blocks = ScannerInLinq.BuildBasicBlocks(sr);
+            var sExp =
+            #region Expected
+@"00001000-00001008 (8): 
+00001008-00001010 (8): 00001010
+00001010-00001018 (8): 
+";
+            #endregion
+
+            AssertBlocks(sExp, blocks);
         }
     }
 }
