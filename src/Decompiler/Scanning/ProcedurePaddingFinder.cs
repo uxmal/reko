@@ -35,7 +35,7 @@ namespace Reko.Scanning
             this.sr = sr;
         }
 
-        public IEnumerable<RtlBlock> FindPaddingBlocks()
+        public List<RtlBlock> FindPaddingBlocks()
         {
             return sr.ICFG.Nodes
                 .Where(block =>
@@ -43,11 +43,16 @@ namespace Reko.Scanning
                     var iFirst = block.Instructions[0];
                     return ((iFirst.Class & RtlClass.Padding) != 0) &&
                         sr.ICFG.Predecessors(block).Count == 0;
-                });
+                })
+                .ToList();
         }
 
-        public void Remove(object pads)
+        public void Remove(List<RtlBlock> paddingBlocks)
         {
+            foreach (var padding in paddingBlocks)
+            {
+                sr.ICFG.RemoveNode(padding);
+            }
         }
     }
 }
