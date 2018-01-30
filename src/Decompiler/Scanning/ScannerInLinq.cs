@@ -122,9 +122,13 @@ namespace Reko.Scanning
             // Remove blocks that fall off the end of the segment
             // or into data.
             Probe(sr);
-            sr.ICFG = BuildIcfg(the_blocks);
+            sr.ICFG = BuildIcfg(sr, the_blocks);
             Probe(sr);
             sr.Dump("After shingle scan");
+
+            var ppf = new ProcedurePaddingFinder(sr);
+            var pads = ppf.FindPaddingBlocks();
+            ppf.Remove(pads);
 
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
@@ -272,7 +276,7 @@ namespace Reko.Scanning
         /// 1 predecessor or successors. These instructions delimit the start and 
         /// end of the basic blocks.
         /// </summary>
-        public Dictionary<Address, block> BuildBasicBlocks(ScanResults sr)
+        public static Dictionary<Address, block> BuildBasicBlocks(ScanResults sr)
         {
             // Count and save the # of successors for each instruction.
             foreach (var cSucc in
@@ -298,11 +302,16 @@ namespace Reko.Scanning
             var the_excluded_edges = new HashSet<link>();
             foreach (var instr in sr.FlatInstructions.Values)
             {
-                if (instr.type != (ushort)RtlClass.Linear)
+                // All blocks must start with a linear instruction.
+                if ((instr.type & (ushort)RtlClass.Linear) == 0)
                     continue;
                 // Find the instruction that is located directly after instr.
                 instr succ;
                 if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out succ))
+                    continue;
+                // If the first instruction was padding the next one must also be padding, 
+                // otherwise we start a new block.
+                if (((instr.type ^ succ.type) & (ushort)RtlClass.Padding) != 0)
                     continue;
                 // If succ follows instr and it's not the entry of a known procedure
                 // or a called address, we don't need the edge between them since they're inside
@@ -340,7 +349,7 @@ namespace Reko.Scanning
             return the_blocks;
         }
 
-        public Dictionary<Address, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, block> blocks)
+        public static Dictionary<Address, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, block> blocks)
         {
             // Find transitive closure of bad instructions 
 
@@ -397,7 +406,7 @@ namespace Reko.Scanning
             return blocks;
         }
 
-        private bool BlockEndsWithCall(block block)
+        private static bool BlockEndsWithCall(block block)
         {
             int len = block.instrs.Length;
             if (len < 1)
@@ -407,7 +416,7 @@ namespace Reko.Scanning
             return false;
         }
 
-        public DiGraph<RtlBlock> BuildIcfg(Dictionary<Address, block> blocks)
+        public static DiGraph<RtlBlock> BuildIcfg(ScanResults sr, Dictionary<Address, block> blocks)
         {
             var icfg = new DiGraph<RtlBlock>();
             var map = new Dictionary<Address, RtlBlock>();
