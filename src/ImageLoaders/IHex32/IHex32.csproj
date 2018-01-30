@@ -46,7 +46,6 @@
     <Compile Include="IHex32Loader.cs" />
     <Compile Include="IHex32Parser.cs" />
     <Compile Include="IHex32Reader.cs" />
-    <Compile Include="IHex32BinRecord.cs" />
     <Compile Include="IHex32Record.cs" />
     <Compile Include="IHex32RecordType.cs" />
     <Compile Include="IHex32Writer.cs" />
