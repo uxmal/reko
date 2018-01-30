@@ -28,6 +28,8 @@ namespace Microchip.Utils
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.Serialization;
+    using System.IO;
+    using System.Text;
 
     #region Interface
 
@@ -100,7 +102,7 @@ namespace Microchip.Utils
         #region XLINQ extensions methods
 
         /// <summary>
-        /// An XElement extension method that query if 'xelem' has an attribute of given name in given
+        /// An XElement extension method that query if <paramref name="xelem"/> has an attribute of given name in given
         /// namespace.
         /// </summary>
         /// <param name="xelem">The element to act on.</param>
@@ -113,7 +115,7 @@ namespace Microchip.Utils
             => xelem.Attribute(ns + sLocalName) != null;
 
         /// <summary>
-        /// An XElement extension method that query if 'xelem' has an attribute of given name in xelem namespace.
+        /// An XElement extension method that query if <paramref name="xelem"/> has an attribute of given name in <paramref name="xelem"/> namespace.
         /// </summary>
         /// <param name="xelem">The element to act on.</param>
         /// <param name="sLocalName">The local name of the attribute.</param>
@@ -389,7 +391,7 @@ namespace Microchip.Utils
             => (xelem.HasAttribute(strLocalName) ? xelem.Get(strLocalName)._str2Float() : fDefault);
 
         /// <summary>
-        /// Gets the value of the attribute with the specified local name and xelem namespace.
+        /// Gets the value of the attribute with the specified local name and <paramref name="xelem"/> namespace.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="xelem">The element to act on.</param>
@@ -583,7 +585,7 @@ namespace Microchip.Utils
         /// <param name="xDoc">The <see cref="XDocument"/> tree to act on.</param>
         /// <param name="nodeLocalName">The local name of the node.</param>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process descendant elements in this
+        /// An enumerator that allows <code>foreach</code> to be used to process descendant elements in this
         /// collection.
         /// </returns>
         public static IEnumerable<XElement> DescendantElements(this XDocument xDoc, string nodeLocalName)
@@ -670,6 +672,26 @@ namespace Microchip.Utils
                 Trace.TraceError($"{ex.StackTrace}");
                 return default(XElement);
             }
+        }
+
+        public static T FromXElement<T>(this XElement xElement, string sNamespae = null)
+        {
+            T result = default(T);
+            try
+            {
+                using (var memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(xElement.ToString()), false))
+                {
+                    var xmlSerializer = new XmlSerializer(typeof(T), sNamespae);
+                    result = (T)xmlSerializer.Deserialize(memoryStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError($"Failed to translate from object type '{typeof(T).FullName}' to XElement");
+                Trace.TraceError($"Exception is: {ex.StackTrace}");
+            }
+            return result;
+
         }
 
         #endregion

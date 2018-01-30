@@ -88,9 +88,8 @@ namespace Reko.Arch.Microchip.PIC18
 
             // A PIC18 instruction can be 1, 2 or 3 words long. The 1st word (opcode) determines the actual length of the instruction.
             
-            ushort uInstr;
             var offset = rdr.Offset;
-            if (!rdr.TryReadUInt16(out uInstr))
+            if (!rdr.TryReadUInt16(out ushort uInstr))
                 return null;
             try
             {
@@ -387,8 +386,7 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                ushort lsw;
-                if (!_getAddlWord(dasm.rdr, out lsw))
+                if (!_getAddlWord(dasm.rdr, out ushort lsw))
                     return null;
                 if (lsw >= 256)  // second word must be <xxxx 0000 kkkk kkkk>
                     return null;
@@ -509,8 +507,8 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                ushort word2;  // This a 2-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2))
+                // This a 2-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
 
                 return new PIC18Instruction(
@@ -536,8 +534,8 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                ushort word2;  // This a 2-words instruction.
-                if (!_getAddlWord(dasm.rdr, out word2))
+                // This a 2-words instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
 
@@ -563,8 +561,8 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                ushort word2;  // This is a 2-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2))
+                // This is a 2-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
 
@@ -593,8 +591,8 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_ENHANCED) // Only supported by PIC18 Enhanced.
                     return null;
-                ushort word2, word3;  // This is a 3-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2) || !_getAddlWord(dasm.rdr, out word3))
+                // This is a 3-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2) || !_getAddlWord(dasm.rdr, out ushort word3))
                     return null;
                 ushort srcaddr = (ushort)((uInstr.Extract(0, 4) << 10) | word2.Extract(2, 10));
                 ushort dstaddr = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
@@ -626,8 +624,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (fsrnum >= 3)
                     return null;
 
-                ushort word2;  // This is a 2-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2))
+                // This is a 2-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
 
                 switch (dasm.InstructionSetID)
@@ -751,8 +749,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED) // Only supported by PIC18 Extended and later.
                     return null;
 
-                ushort word2;  // This is a 2-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2))
+                // This is a 2-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
 
                 return new PIC18Instruction(
@@ -783,8 +781,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_ENHANCED) // ... and being a PIC18 Enhanced.
                     return null;
 
-                ushort word2, word3;  // This is a 3-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2) || !_getAddlWord(dasm.rdr, out word3))
+                // This is a 3-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2) || !_getAddlWord(dasm.rdr, out ushort word3))
                     return null;
                 byte zssource = (byte)word2.Extract(2, 7);
                 ushort fsdest = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
@@ -817,8 +815,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED) // ... and being a PIC18 Extended and later?
                     return null;
 
-                ushort word2;  // This is a 2-word instruction.
-                if (!_getAddlWord(dasm.rdr, out word2))
+                // This is a 2-word instruction.
+                if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
 
                 return new PIC18Instruction(

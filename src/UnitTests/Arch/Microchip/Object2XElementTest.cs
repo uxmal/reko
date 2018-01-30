@@ -1,8 +1,7 @@
-﻿using System;
-using System.Xml.Serialization;
-using System.Xml.Linq;
+﻿using NUnit.Framework;
+using System;
 using System.Collections;
-using NUnit.Framework;
+using System.Xml.Linq;
 
 namespace Microchip.Utils
 {
@@ -58,7 +57,7 @@ namespace Microchip.Utils
 
             res = xmlTree.FromXElement<SerializableClass>();
             Assert.IsNotNull(res);
-            Assert.IsInstanceOfType(res, typeof(SerializableClass));
+            Assert.IsInstanceOfType(typeof(SerializableClass), res);
             scl = res as SerializableClass;
             Assert.IsNotNull(scl);
             Assert.AreEqual(1, scl.prop1);
@@ -66,7 +65,7 @@ namespace Microchip.Utils
 
             res = xmlTree2.FromXElement<SerializableClass>();
             Assert.IsNotNull(res);
-            Assert.IsInstanceOfType(res, typeof(SerializableClass));
+            Assert.IsInstanceOfType(typeof(SerializableClass),res);
             scl = res as SerializableClass;
             Assert.IsNotNull(scl);
             Assert.AreEqual(0, scl.prop1);

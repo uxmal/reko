@@ -178,83 +178,65 @@ namespace Reko.Arch.Microchip.PIC18
 
         private Expression RewriteSrcOp(MachineOperand op)
         {
-            var imm = op as PIC18ImmediateOperand;
-            if (imm != null)
-                return imm.ImmediateValue;
-
-            var paddr = op as PIC18ProgAddrOperand;
-            if (paddr != null)
-                return PICProgAddress.Ptr(paddr.CodeTarget);
-
-            var bankaccess = op as PIC18BankedAccessOperand;
-            if (bankaccess != null)
-                return GetMemoryBankAccess(bankaccess);
-
-            var fsridxOp = op as PIC18FSR2IdxOperand;
-            if (fsridxOp != null)
+            switch (op)
             {
-                var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
-                return m.Mem8(m.IAdd(fsr2, fsridxOp.Offset));
+                case PIC18ImmediateOperand imm:
+                    return imm.ImmediateValue;
+
+                case PIC18ProgAddrOperand paddr:
+                    return PICProgAddress.Ptr(paddr.CodeTarget);
+
+                case PIC18BankedAccessOperand bankaccess:
+                    return GetMemoryBankAccess(bankaccess);
+
+                case PIC18FSR2IdxOperand fsr2idx:
+                    var fsr2 = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
+                    return m.Mem8(m.IAdd(fsr2, fsr2idx.Offset));
+
+                case PIC18FSRNumOperand fsrnum:
+                    switch (fsrnum.FSRNum.ToByte())
+                    {
+                        case 0:
+                            return binder.EnsureSequence(PIC18Registers.FSR0H, PIC18Registers.FSR0L, PrimitiveType.Ptr16);
+                        case 1:
+                            return binder.EnsureSequence(PIC18Registers.FSR1H, PIC18Registers.FSR1L, PrimitiveType.Ptr16);
+                        case 2:
+                            return binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
+                        default:
+                            throw new InvalidOperationException($"Invalid FSR number: {fsrnum.FSRNum.ToByte()}");
+                    }
+
+                case PIC18DataAbsAddrOperand memabsaddr:
+                    return GetMemoryAbsAccess(memabsaddr);
+
+                case PIC18ShadowOperand shadow:
+                    return shadow.IsShadow;
+
+                case PIC18TableReadWriteOperand tblincrmod:
+                    return tblincrmod.TBLIncrMode;
+
+                default:
+                    throw new NotImplementedException($"Rewriting of PIC18 source operand type {op.GetType().FullName} is not implemented yet.");
             }
 
-            var fsrnumOp = op as PIC18FSRNumOperand;
-            if (fsrnumOp != null)
-            {
-                Identifier fsr;
-                switch (fsrnumOp.FSRNum.ToByte())
-                {
-                    case 0:
-                        fsr = binder.EnsureSequence(PIC18Registers.FSR0H, PIC18Registers.FSR0L, PrimitiveType.Ptr16);
-                        break;
-                    case 1:
-                        fsr = binder.EnsureSequence(PIC18Registers.FSR1H, PIC18Registers.FSR1L, PrimitiveType.Ptr16);
-                        break;
-                    case 2:
-                        fsr = binder.EnsureSequence(PIC18Registers.FSR2H, PIC18Registers.FSR2L, PrimitiveType.Ptr16);
-                        break;
-                    default:
-                        throw new InvalidOperationException($"Invalid FSR number: {fsrnumOp.FSRNum.ToByte()}");
-                }
-                return fsr;
-            }
-
-            var memabsaddr = op as PIC18DataAbsAddrOperand;
-            if (memabsaddr != null)
-                return GetMemoryAbsAccess(memabsaddr);
-
-            var fsr2idx = op as PIC18FSR2IdxOperand;
-            if (fsr2idx != null)
-                return fsr2idx.Offset;
-
-            var shadow = op as PIC18ShadowOperand;
-            if (shadow != null)
-                return shadow.IsShadow;
-
-            var tblincrmod = op as PIC18TableReadWriteOperand;
-            if (tblincrmod != null)
-                return tblincrmod.TBLIncrMode;
-
-            throw new NotImplementedException($"Rewriting of PIC18 source operand type {op.GetType().FullName} is not implemented yet.");
         }
 
         private Expression RewriteDstOp(MachineOperand op)
         {
-            Expression dst = null;
-            var dstop = op as PIC18DataByteAccessWithDestOperand;
-            if (dstop != null)
+            switch (op)
             {
-                dst = (dstop.WregIsDest.ToBoolean() ? binder.EnsureRegister(PIC18Registers.WREG) : GetMemoryBankAccess(dstop));
-                return dst;
+                case PIC18DataByteAccessWithDestOperand dstop:
+                    return (dstop.WregIsDest.ToBoolean() ? binder.EnsureRegister(PIC18Registers.WREG) : GetMemoryBankAccess(dstop));
+
+                case PIC18BankedAccessOperand dstmem:
+                    return GetMemoryBankAccess(dstmem);
+
+                case PIC18DataAbsAddrOperand memabsaddr:
+                    return GetMemoryAbsAccess(memabsaddr);
+
+                default:
+                    throw new NotImplementedException($"Rewriting of PIC18 destination operand type {op.GetType().FullName} is not implemented yet.");
             }
-            var dstmem = op as PIC18BankedAccessOperand;
-            if (dstmem != null)
-                return GetMemoryBankAccess(dstmem);
-
-            var memabsaddr = op as PIC18DataAbsAddrOperand;
-            if (memabsaddr != null)
-                return GetMemoryAbsAccess(memabsaddr);
-
-            throw new NotImplementedException($"Rewriting of PIC18 destination operand type {op.GetType().FullName} is not implemented yet.");
         }
 
         private Expression GetMemoryBankAccess(PIC18BankedAccessOperand mem)
@@ -309,7 +291,7 @@ namespace Reko.Arch.Microchip.PIC18
             var brop = instr.op1 as PIC18ProgRel8AddrOperand;
             if (brop == null)
                 throw new InvalidOperationException("Wrong 8-bit relative PIC address");
-            m.Branch(test, PICProgAddress.Ptr( brop.CodeTarget), rtlc);
+            m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget), rtlc);
         }
 
         private void _setStatusFlags(Expression dst)
