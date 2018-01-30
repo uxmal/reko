@@ -56,7 +56,7 @@ namespace Reko.UnitTests.ImageLoaders.IHex32
             Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(":00XX0001FF"));
             Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(":00000002FF"));
 
-            IHEX32BinRecord rec;
+            IHex32Record rec;
             rec = IHEX32Parser.ParseRecord(":020000040000FA");
             Assert.AreEqual(IHEX32RecordType.ExtendedLinearAddress, rec.RecordType, $"Not an extended linear address: {rec.RecordType}");
             Assert.AreEqual(0, rec.Address, "Expecting null address");
