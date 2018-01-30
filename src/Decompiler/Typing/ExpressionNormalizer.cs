@@ -78,8 +78,7 @@ namespace Reko.Typing
                 }
                 return aem.Transform(null, access.DataType);
             }
-            BinaryExpression bin;
-            if (access.EffectiveAddress.As(out bin) && bin.Operator == Operator.IAdd)
+            if (access.EffectiveAddress is BinaryExpression bin && bin.Operator == Operator.IAdd)
                 return access;
             if (access.EffectiveAddress is Constant)
                 return access;
@@ -94,8 +93,7 @@ namespace Reko.Typing
             {
                 return aem.Transform(access.BasePointer, access.DataType);
             }
-            BinaryExpression bin;
-            if (access.EffectiveAddress.As(out bin) && bin.Operator == Operator.IAdd)
+            if (access.EffectiveAddress is BinaryExpression bin && bin.Operator == Operator.IAdd)
                 return access;
             if (access.EffectiveAddress is Constant)
                 return access;

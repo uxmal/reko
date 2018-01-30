@@ -13,7 +13,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -44,7 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -87,27 +87,6 @@
   <ItemGroup>
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
-    <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
-    <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
-    <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
-    <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
-    <Compile Include="Arch\Microchip\CrownkingTests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler _Enhd_Extd_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Enhd_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Enhd_Extd_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Enhd_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Extd_Extd_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Extd_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Extd_Extd_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Extd_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Lgcy_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18RewriterTestsBase.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Lgcy_Extd_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Lgcy_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTestsBase.cs" />
-    <Compile Include="Arch\Microchip\PICSamples.cs" />
-    <Compile Include="Arch\Microchip\PICSamplesTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -153,7 +132,6 @@
     <Compile Include="Environments\Windows\X86_64CallingConventionTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
-    <Compile Include="ImageLoaders\IHex32\IHex32LoaderTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
@@ -663,10 +641,6 @@
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Microchip\Microchip.csproj">
-      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
-      <Name>Microchip</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
       <Name>Mips</Name>
@@ -751,10 +725,6 @@
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
       <Name>MacOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj">
-      <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
-      <Name>Microchip.Crownking</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos</Name>
@@ -791,10 +761,6 @@
       <Project>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</Project>
       <Name>Hunk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\IHex32\IHex32.csproj">
-      <Project>{a66cf7a5-a033-4eef-b2ef-cbfae7d2b711}</Project>
-      <Name>IHex32</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\IntelHex\IntelHex.csproj">
       <Project>{72641087-68D2-41E7-9B29-BC9D4213940A}</Project>
       <Name>IntelHex</Name>
@@ -814,10 +780,6 @@
     <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
       <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
       <Name>Libc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
-      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
-      <Name>Microchip.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
@@ -842,7 +804,6 @@
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Arch\Microchip\PIC16\" />
     <Folder Include="Core\Machine\" />
   </ItemGroup>
   <ItemGroup>
@@ -874,32 +835,6 @@
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC16EnhV1Sample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC16Sample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC18EnhSample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC18ExtdSample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC18Sample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="picdb.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

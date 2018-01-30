@@ -48,8 +48,7 @@ namespace Reko.Arch.Sparc
             if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
             this.rtlc = rtlClass;
-            Constant c;
-            if (cond.As(out c) && c.ToBoolean())
+            if (cond is Constant c && c.ToBoolean())
             {
                 m.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
             }

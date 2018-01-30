@@ -98,8 +98,7 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                RtlBlock node;
-                if (!mpAddrToBlock.TryGetValue(calldest, out node))
+                if (!mpAddrToBlock.TryGetValue(calldest, out var node))
                     continue;
                 var preds = sr.ICFG.Predecessors(node).ToList();
                 foreach (var p in preds)
@@ -267,8 +266,7 @@ namespace Reko.Scanning
         public void FuseLinearBlocks(Cluster cluster)
         {
             var wl = new WorkList<RtlBlock>(cluster.Blocks);
-            RtlBlock block;
-            while (wl.GetWorkItem(out block))
+            while (wl.GetWorkItem(out var block))
             {
                 if (sr.ICFG.Successors(block).Count != 1)
                     continue;
@@ -479,8 +477,7 @@ namespace Reko.Scanning
                     roots.Add(de.Key.Address);
                 else
                 {
-                    SortedSet<Address> kids;
-                    if (!tree.TryGetValue(de.Value.Address, out kids))
+                    if (!tree.TryGetValue(de.Value.Address, out var kids))
                     {
                         kids = new SortedSet<Address>();
                         tree.Add(de.Value.Address, kids);
@@ -498,8 +495,7 @@ namespace Reko.Scanning
         private void DumpDominatorTree(Address node, SortedList<Address, SortedSet<Address>> tree, string sIndent)
         {
             Debug.Print("{0}+ {1}", sIndent, node);
-            SortedSet<Address> kids;
-            if (tree.TryGetValue(node, out kids))
+            if (tree.TryGetValue(node, out var kids))
             {
                 sIndent = sIndent + "  ";
                 foreach (var kid in kids)
@@ -527,7 +523,7 @@ namespace Reko.Scanning
                 join de in domGraph on n equals de.Value into des
                 from de in des.DefaultIfEmpty()
                 orderby n.Name, de.Key != null ? de.Key.Name : ""
-                select new { Name = n.Name, Kid = de.Key != null ? de.Key.Name : "*" };
+                select new { n.Name, Kid = de.Key != null ? de.Key.Name : "*" };
             foreach (var item in q)
             {
                 Debug.Print("{0}: {1}", item.Name, item.Kid);
