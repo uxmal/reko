@@ -25,12 +25,12 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// Represents a single Intel HEX 32 record. Used as an intermediate representation.
     /// </summary>
-    public struct IHex32Record
+    public struct IHEX32Record
     {
         /// <summary>
         ///     The record type
         /// </summary>
-        public IHex32RecordType RecordType { get; set; }
+        public IHEX32RecordType RecordType { get; set; }
 
         /// <summary>
         ///     The number of bytes in the record
@@ -53,5 +53,4 @@ namespace Reko.ImageLoaders.IHex32
         public int CheckSum { get; set; }
 
     }
-
 }

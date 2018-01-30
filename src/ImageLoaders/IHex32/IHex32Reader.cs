@@ -27,7 +27,7 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// A reader capable of reading a Intel HEX32 stream
     /// </summary>
-    public class IHex32Reader : IDisposable
+    public class IHEX32Reader : IDisposable
     {
 
         #region Locals
@@ -40,11 +40,11 @@ namespace Reko.ImageLoaders.IHex32
         #region Constructors
 
         /// <summary>
-        /// Constructs instance of an <see cref="IHex32Reader" />.
+        /// Constructs instance of an <see cref="IHEX32Reader" />.
         /// </summary>
         /// <param name="str">The source stream of the hex file.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IHex32Reader(Stream str)
+        public IHEX32Reader(Stream str)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.IHex32
         private bool _disposedValue; // To detect redundant calls
 
         /// <summary>
-        /// Dispose the <see cref="IHex32Reader"/>
+        /// Dispose the <see cref="IHEX32Reader"/>
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.IHex32
         }
 
         /// <summary>
-        /// Dispose the <see cref="IHex32Reader"/>
+        /// Dispose the <see cref="IHEX32Reader"/>
         /// </summary>
         public void Dispose()
         {
@@ -118,13 +118,13 @@ namespace Reko.ImageLoaders.IHex32
             }
             if (_streamReader.EndOfStream) return false;
 
-            var hexRecord = IHex32Parser.ParseRecord(hexLine, _linenum);
+            var hexRecord = IHEX32Parser.ParseRecord(hexLine, _linenum);
 
-            if (hexRecord.RecordType != IHex32RecordType.EndOfFile)
+            if (hexRecord.RecordType != IHEX32RecordType.EndOfFile)
             {
                 address = _handleAddress(hexRecord);
 
-                if (hexRecord.RecordType == IHex32RecordType.Data)
+                if (hexRecord.RecordType == IHEX32RecordType.Data)
                     data = hexRecord.Data.ToArray();
 
                 return true;
@@ -137,31 +137,31 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Helpers
 
-        private uint _handleAddress(IHex32Record hexRecord)
+        private uint _handleAddress(IHEX32Record hexRecord)
         {
             switch (hexRecord.RecordType)
             {
-                case IHex32RecordType.Data:
+                case IHEX32RecordType.Data:
                     return AddressBase + hexRecord.Address;
 
-                case IHex32RecordType.ExtendedSegmentAddress:
+                case IHEX32RecordType.ExtendedSegmentAddress:
                     AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 4;
                     return AddressBase;
 
-                case IHex32RecordType.StartSegmentAddress:
+                case IHEX32RecordType.StartSegmentAddress:
                     return AddressBase;
 
-                case IHex32RecordType.ExtendedLinearAddress:
+                case IHEX32RecordType.ExtendedLinearAddress:
                     AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 16;
                     return AddressBase;
 
-                case IHex32RecordType.StartLinearAddress:
+                case IHEX32RecordType.StartLinearAddress:
                     AddressBase = (((uint)hexRecord.Data[0] << 24) | ((uint)hexRecord.Data[1] << 16) |
                                            ((uint)hexRecord.Data[2] << 8) | hexRecord.Data[3]);
                     return AddressBase;
 
                 default:
-                    throw new IHex32Exception($"Unknown value read for [{nameof(hexRecord.RecordType)}]", _linenum);
+                    throw new IHEX32Exception($"Unknown value read for [{nameof(hexRecord.RecordType)}]", _linenum);
             }
 
         }

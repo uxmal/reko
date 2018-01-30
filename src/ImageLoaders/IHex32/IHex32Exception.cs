@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 
 namespace Reko.ImageLoaders.IHex32
 {
-    public class IHex32Exception : Exception
+    public class IHEX32Exception : Exception
     {
         #region Properties
 
@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.IHex32
         /// Constructor.
         /// </summary>
         /// <param name="lineNo">(Optional) The line number in the HEX32 datum.</param>
-        public IHex32Exception(int lineNo = 0)
+        public IHEX32Exception(int lineNo = 0)
             : base()
         {
             LineNum = lineNo;
@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.IHex32
         /// </summary>
         /// <param name="message">The message as a string.</param>
         /// <param name="lineNo">(Optional) The line number in the HEX32 datum.</param>
-        public IHex32Exception(string message, int lineNo = 0)
+        public IHEX32Exception(string message, int lineNo = 0)
             : base(message)
         {
             LineNum = lineNo;
@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.IHex32
         /// <param name="message">The message as a string.</param>
         /// <param name="innerException">The inner exception.</param>
         /// <param name="lineNo">(Optional) The line number in the HEX32 datum.</param>
-        public IHex32Exception(string message, Exception innerException, int lineNo = 0)
+        public IHEX32Exception(string message, Exception innerException, int lineNo = 0)
             : base(message, innerException)
         {
             LineNum = lineNo;
@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.IHex32
         ///                    holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that
         ///                       contains contextual information about the source or destination.</param>
-        public IHex32Exception(SerializationInfo info, StreamingContext context)
+        public IHEX32Exception(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             LineNum = (int)info.GetValue(nameof(LineNum), typeof(int));

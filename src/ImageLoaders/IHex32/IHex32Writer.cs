@@ -29,7 +29,7 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// A writer capable of writing a Intel HEX32 stream
     /// </summary>
-    public class IHex32Writer : IDisposable
+    public class IHEX32Writer : IDisposable
     {
         #region Locals
 
@@ -41,11 +41,11 @@ namespace Reko.ImageLoaders.IHex32
         #region Constructors
 
         /// <summary>
-        ///     Construct instance of an <see cref="IHex32Writer" />.
+        ///     Construct instance of an <see cref="IHEX32Writer" />.
         /// </summary>
         /// <param name="str">The target stream of the hex file.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IHex32Writer(Stream str)
+        public IHEX32Writer(Stream str)
         {
             if (str == null) throw new ArgumentNullException(nameof(str));
 
@@ -59,22 +59,22 @@ namespace Reko.ImageLoaders.IHex32
         /// <summary>
         /// Write an address record (type 02, 04 or 05) to the underlying stream
         /// </summary>
-        /// <param name="addressType">The <see cref="IHex32AddressType" /> address record type to write to the stream</param>
+        /// <param name="addressType">The <see cref="IHEX32AddressType" /> address record type to write to the stream</param>
         /// <param name="address">The address value to write to the stream. This is either the segment address (type 02) or the upper word of a 32 bit address (type 04 or 05).</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="IHex32AddressType"/></exception>
-        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="IHex32AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x10000</exception>
-        public void WriteAddress(IHex32AddressType addressType, int address)
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="IHEX32AddressType"/></exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="IHEX32AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x10000</exception>
+        public void WriteAddress(IHEX32AddressType addressType, int address)
         {
-            if (!Enum.IsDefined(typeof(IHex32AddressType), addressType))
+            if (!Enum.IsDefined(typeof(IHEX32AddressType), addressType))
                 throw new ArgumentOutOfRangeException(nameof(addressType),
-                    $"Value [{addressType}] in not a value of [{nameof(IHex32AddressType)}]");
+                    $"Value [{addressType}] in not a value of [{nameof(IHEX32AddressType)}]");
 
-            if ((addressType == IHex32AddressType.ExtendedSegmentAddress) && (address > 0x10000))
+            if ((addressType == IHEX32AddressType.ExtendedSegmentAddress) && (address > 0x10000))
                 throw new ArgumentOutOfRangeException(nameof(address), "Value must be less than 0x10000");
 
             var addressData = _formatAddress(addressType, address);
 
-            _writeHexRecord((IHex32RecordType)addressType, 0, addressData);
+            _writeHexRecord((IHEX32RecordType)addressType, 0, addressData);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Reko.ImageLoaders.IHex32
             if (data.Count > 0xFF)
                 throw new ArgumentOutOfRangeException(nameof(data), "Must be less than 255");
 
-            _writeHexRecord(IHex32RecordType.Data, address, data);
+            _writeHexRecord(IHEX32RecordType.Data, address, data);
         }
 
         /// <summary>
@@ -114,15 +114,15 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Helpers
 
-        private static List<byte> _formatAddress(IHex32AddressType addressType, int address)
+        private static List<byte> _formatAddress(IHEX32AddressType addressType, int address)
         {
             var result = new List<byte>();
-            var shift = (byte)(addressType == IHex32AddressType.ExtendedSegmentAddress ? 4 : 0);
-            shift = (byte)(addressType == IHex32AddressType.ExtendedLinearAddress ? 16 : shift);
+            var shift = (byte)(addressType == IHEX32AddressType.ExtendedSegmentAddress ? 4 : 0);
+            shift = (byte)(addressType == IHEX32AddressType.ExtendedLinearAddress ? 16 : shift);
 
             var addressBytes = BitConverter.GetBytes(address >> shift);
 
-            if (addressType == IHex32AddressType.StartLinearAddress)
+            if (addressType == IHEX32AddressType.StartLinearAddress)
             {
                 result.Add(addressBytes[3]);
                 result.Add(addressBytes[2]);
@@ -154,7 +154,7 @@ namespace Reko.ImageLoaders.IHex32
 
             return new string(result);
         }
-        private void _writeHexRecord(IHex32RecordType recordType, ushort address, IList<byte> data)
+        private void _writeHexRecord(IHEX32RecordType recordType, ushort address, IList<byte> data)
         {
             var addresBytes = BitConverter.GetBytes(address);
             var hexRecordData = new List<byte>

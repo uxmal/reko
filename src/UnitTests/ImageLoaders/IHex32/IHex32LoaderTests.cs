@@ -48,35 +48,35 @@ namespace Reko.UnitTests.ImageLoaders.IHex32
         [Test]
         public void IHex32_ParserTests()
         {
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord(null));
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord(""));
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord("?"));
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord(":"));
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord(":00000001F"));
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord(":00XX0001FF"));
-            Assert.Throws<IHex32Exception>(() => IHex32Parser.ParseRecord(":00000002FF"));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(null));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(""));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord("?"));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(":"));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(":00000001F"));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(":00XX0001FF"));
+            Assert.Throws<IHEX32Exception>(() => IHEX32Parser.ParseRecord(":00000002FF"));
 
-            IHex32Record rec;
-            rec = IHex32Parser.ParseRecord(":020000040000FA");
-            Assert.AreEqual(IHex32RecordType.ExtendedLinearAddress, rec.RecordType, $"Not an extended linear address: {rec.RecordType}");
+            IHEX32Record rec;
+            rec = IHEX32Parser.ParseRecord(":020000040000FA");
+            Assert.AreEqual(IHEX32RecordType.ExtendedLinearAddress, rec.RecordType, $"Not an extended linear address: {rec.RecordType}");
             Assert.AreEqual(0, rec.Address, "Expecting null address");
             Assert.AreEqual(2, rec.ByteCount, $"Wrong data count. Was {rec.ByteCount}");
             Assert.AreEqual(new List<byte>() { 0, 0 }, rec.Data, "Invalid data content for extended address.");
 
-            rec = IHex32Parser.ParseRecord(":020000040030CA");
-            Assert.AreEqual(IHex32RecordType.ExtendedLinearAddress, rec.RecordType, $"Expecting extended linear address, but was: {rec.RecordType}");
+            rec = IHEX32Parser.ParseRecord(":020000040030CA");
+            Assert.AreEqual(IHEX32RecordType.ExtendedLinearAddress, rec.RecordType, $"Expecting extended linear address, but was: {rec.RecordType}");
             Assert.AreEqual(0, rec.Address, $"Invalid extended linear address. Was 0x{rec.Address:X}");
             Assert.AreEqual(2, rec.ByteCount, $"Wrong data count. Was {rec.ByteCount}");
             Assert.AreEqual(new List<byte>() { 0, 0x30 }, rec.Data, $"Invalid data content for extended linear address");
 
-            rec = IHex32Parser.ParseRecord(":060008000CEF18F01200DD");
-            Assert.AreEqual(IHex32RecordType.Data, rec.RecordType, $"Expecting data record, but was: {rec.RecordType}");
+            rec = IHEX32Parser.ParseRecord(":060008000CEF18F01200DD");
+            Assert.AreEqual(IHEX32RecordType.Data, rec.RecordType, $"Expecting data record, but was: {rec.RecordType}");
             Assert.AreEqual(8, rec.Address, $"Invalid data record address. Was 0x{rec.Address:X}");
             Assert.AreEqual(6, rec.ByteCount, $"Wrong data count. Was {rec.ByteCount}");
             Assert.AreEqual(new List<byte>() { 0xC, 0xEF, 0x18, 0xF0, 0x12, 0x00 }, rec.Data, $"Invalid data content for data record");
 
-            rec = IHex32Parser.ParseRecord(":00000001FF");
-            Assert.AreEqual(IHex32RecordType.EndOfFile, rec.RecordType, $"Not an EOF record: {rec.RecordType}");
+            rec = IHEX32Parser.ParseRecord(":00000001FF");
+            Assert.AreEqual(IHEX32RecordType.EndOfFile, rec.RecordType, $"Not an EOF record: {rec.RecordType}");
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.ImageLoaders.IHex32
 :100130003F0156702B5E712B722B732146013421C7
 :00000001FF
 ";
-            var hex = new IHex32Loader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
+            var hex = new IHEX32Loader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
             var arch = new FakeArchitecture();
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count, "Wrong number of segments");
@@ -133,7 +133,7 @@ namespace Reko.UnitTests.ImageLoaders.IHex32
 :10007000F550056E0900F550066E015013E0D95099
 :00000001FF
 ";
-            var hex = new IHex32Loader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
+            var hex = new IHEX32Loader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
             var arch = new FakeArchitecture();
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(5, program.SegmentMap.Segments.Count, "Wrong number of segments");

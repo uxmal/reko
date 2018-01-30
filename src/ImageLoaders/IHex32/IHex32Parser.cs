@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace Reko.ImageLoaders.IHex32
 {
-    public class IHex32Parser
+    public class IHEX32Parser
     {
         /// <summary>
         /// Parse a single IHex32 hexadecimal record.
@@ -32,40 +32,40 @@ namespace Reko.ImageLoaders.IHex32
         /// <param name="hexRecord">The hexadecimal record as a string.</param>
         /// <param name="lineNum">(Optional) The line number in the IHex32 binary stream.</param>
         /// <returns>
-        /// An <see cref="IHex32Record"/> .
+        /// An <see cref="IHEX32Record"/> .
         /// </returns>
-        /// <exception cref="IHex32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
-        public static IHex32Record ParseRecord(string hexRecord, int lineNum = 0)
+        /// <exception cref="IHEX32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
+        public static IHEX32Record ParseRecord(string hexRecord, int lineNum = 0)
         {
             if (hexRecord == null)
-                throw new IHex32Exception("Hex record line can not be null", lineNum);
+                throw new IHEX32Exception("Hex record line can not be null", lineNum);
             if (hexRecord.Length < 11)
-                throw new IHex32Exception($"Hex record line length [{hexRecord}] is less than 11", lineNum);
+                throw new IHEX32Exception($"Hex record line length [{hexRecord}] is less than 11", lineNum);
             if (hexRecord.Length % 2 == 0)
-                throw new IHex32Exception($"Hex record has an even number of characters [{hexRecord}]", lineNum);
+                throw new IHEX32Exception($"Hex record has an even number of characters [{hexRecord}]", lineNum);
             if (!hexRecord.StartsWith(":"))
-                throw new IHex32Exception($"Illegal line start character [{hexRecord}]", lineNum);
+                throw new IHEX32Exception($"Illegal line start character [{hexRecord}]", lineNum);
             var hexData = _tryParseData(hexRecord.Substring(1), lineNum);
 
             if (hexData.Count != hexData[0] + 5)
-                throw new IHex32Exception($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]", lineNum);
+                throw new IHEX32Exception($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]", lineNum);
 
-            if (!Enum.IsDefined(typeof(IHex32RecordType), hexData[3]))
-                throw new IHex32Exception($"Invalid record type value: [{hexData[3]}]", lineNum);
+            if (!Enum.IsDefined(typeof(IHEX32RecordType), hexData[3]))
+                throw new IHEX32Exception($"Invalid record type value: [{hexData[3]}]", lineNum);
 
             var checkSum = hexData.Last();
             hexData.RemoveAt(hexData[0] + 4);
 
             if (!_verifyChecksum(hexData, checkSum))
-                throw new IHex32Exception($"Checksum for line [{hexRecord}] is incorrect", lineNum);
+                throw new IHEX32Exception($"Checksum for line [{hexRecord}] is incorrect", lineNum);
 
             var dataSize = hexData[0];
 
-            var newRecord = new IHex32Record
+            var newRecord = new IHEX32Record
             {
                 ByteCount = dataSize,
                 Address = ((uint)(hexData[1] << 8) | hexData[2]),
-                RecordType = (IHex32RecordType)hexData[3],
+                RecordType = (IHEX32RecordType)hexData[3],
                 Data = hexData,
                 CheckSum = checkSum
             };
@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.IHex32
             }
             catch (Exception ex)
             {
-                throw new IHex32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
+                throw new IHEX32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
             }
         }
 

@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.IHex32
     /// <summary>
     /// An Intel HEX32 image loader.
     /// </summary>
-    public class IHex32Loader : ImageLoader
+    public class IHEX32Loader : ImageLoader
     {
 
         //TODO: See how to adapt for Microchip PIC IHex32 loading (with memory mapping/checking).
@@ -155,7 +155,7 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Constructors
 
-        public IHex32Loader(IServiceProvider services, string filename, byte[] imgRaw)
+        public IHEX32Loader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
         }
@@ -200,7 +200,7 @@ namespace Reko.ImageLoaders.IHex32
             listener = Services.RequireService<DecompilerEventListener>();
             MemoryChunksList memChunks = new MemoryChunksList();
 
-            using (var rdr = new IHex32Reader(new MemoryStream(RawImage)))
+            using (var rdr = new IHEX32Reader(new MemoryStream(RawImage)))
             {
                 try
                 {
@@ -215,7 +215,7 @@ namespace Reko.ImageLoaders.IHex32
                     }
 
                 }
-                catch (IHex32Exception ex)
+                catch (IHEX32Exception ex)
                 {
                     listener.Error(new NullCodeLocation(""), ex.Message);
                 }

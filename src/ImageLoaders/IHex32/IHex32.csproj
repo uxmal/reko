@@ -41,14 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IHex32AddressType.cs" />
-    <Compile Include="IHex32Exception.cs" />
-    <Compile Include="IHex32Loader.cs" />
-    <Compile Include="IHex32Parser.cs" />
-    <Compile Include="IHex32Reader.cs" />
-    <Compile Include="IHex32Record.cs" />
-    <Compile Include="IHex32RecordType.cs" />
-    <Compile Include="IHex32Writer.cs" />
+    <Compile Include="IHEX32AddressType.cs" />
+    <Compile Include="IHEX32Exception.cs" />
+    <Compile Include="IHEX32Loader.cs" />
+    <Compile Include="IHEX32Parser.cs" />
+    <Compile Include="IHEX32Reader.cs" />
+    <Compile Include="IHEX32Record.cs" />
+    <Compile Include="IHEX32RecordType.cs" />
+    <Compile Include="IHEX32Writer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
