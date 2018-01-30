@@ -27,6 +27,7 @@ using Reko.Core.Configuration;
 using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -139,9 +140,13 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				LoadDebugSymbols(results.Symbols, addrLoad);
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				Console.WriteLine("Failed to load Borland debug symbols: {0}", e.Message);
+                var listener = Services.RequireService<DecompilerEventListener>();
+                listener.Error(
+                    new NullCodeLocation(Filename),
+                    ex,
+                    "Detected Borland debug symbols but failed to load them.");
 			}
             return results;
 		}
