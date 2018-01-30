@@ -703,7 +703,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             case 0x05: return "__far __pascal";
             case 0x07: return "__interrupt";
             }
-            throw new ArgumentOutOfRangeException(nameof(n), n, $"Unsupported function type {n:X2}");
+            throw new ArgumentOutOfRangeException(nameof(n), n, $"Unsupported function type {n:X2}.");
         }
 
         private string[] CreateNameIndex(long name_pool_offset)
