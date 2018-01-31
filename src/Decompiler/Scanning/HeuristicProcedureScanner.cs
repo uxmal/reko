@@ -35,7 +35,7 @@ namespace Reko.Scanning
     /// Given a heuristically discovered procedure, attempt to discard as 
     /// many basic blocks as possible.
     /// </summary>
-    public class HeuristicProcedureScanner
+    public class BlockConflictResolver
     {
         private Program program;
         private IRewriterHost host;
@@ -44,8 +44,8 @@ namespace Reko.Scanning
         private Func<Address, bool> isAddressValid;
         private HashSet<Tuple<RtlBlock, RtlBlock>> conflicts;
 
-        public HeuristicProcedureScanner(
-            Program program, 
+        public BlockConflictResolver(
+            Program program,
             ScanResults sr,
             Func<Address,bool> isAddressValid,
             IRewriterHost host)
@@ -128,6 +128,8 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void ComputeStatistics(ISet<RtlBlock> valid)
         {
+            if (program == null || program.Architecture == null)
+                return;
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
             if (cmp == null)
                 return;
@@ -413,11 +415,11 @@ namespace Reko.Scanning
         {
             if (cluster.Class == InstrClass.Linear)
                 return false;
-            var last = cluster.Instructions.Last();
-            if (last is RtlCall)
-                return true;
-            if (last is RtlGoto rtlGoto && rtlGoto.Target is Address target)
+            switch (cluster.Instructions.Last())
             {
+            case RtlCall _:
+                return true;
+            case RtlGoto rtlGoto when rtlGoto.Target is Address target:
                 return !isAddressValid(target);
             }
             return true;

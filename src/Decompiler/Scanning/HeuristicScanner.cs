@@ -118,7 +118,7 @@ namespace Reko.Scanning
             // by the processor. Starting with known "roots", try to
             // remove as many invalid blocks as possible.
 
-            var hsc = new HeuristicProcedureScanner(
+            var hsc = new BlockConflictResolver(
                 program,
                 sr,
                 program.SegmentMap.IsValidAddress,
