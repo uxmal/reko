@@ -126,7 +126,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
         {
-            BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
+            //BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
 
             return;     // This is horribly verbose, so only use it when debugging unit tests.
 #if VERBOSE

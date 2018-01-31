@@ -266,6 +266,8 @@ namespace Reko.Scanning
                 FuseLinearBlocks(cluster);
                 // cluster.Dump(sr.ICFG);
                 sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
+                var bcr = new BlockConflictResolver(null, sr, a => true, null);
+                bcr.ResolveBlockConflicts(new Address[0]);
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));
@@ -342,9 +344,8 @@ namespace Reko.Scanning
                 // This is disabled as we get a lot of false positives.
                 // If we can generate a cross reference lookup then perhaps
                 // this will improve.
-                //cluster.Entries.UnionWith(nopreds);
-                //return true;
-                return false;
+                cluster.Entries.UnionWith(nopreds);
+                return true;
             }
 
             /*
