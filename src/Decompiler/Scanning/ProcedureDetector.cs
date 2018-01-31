@@ -151,6 +151,11 @@ namespace Reko.Scanning
             [Conditional("DEBUG")]
             public void Dump(DirectedGraph<RtlBlock> icfg)
             {
+                Debug.Print("Cluster with sources: [{0}]", string.Join(",",
+                    from b in Blocks
+                    where icfg.Predecessors(b).Count == 0
+                    orderby b.Address
+                    select b));
                 foreach (var b in Blocks)
                 {
                     var isEntry = Entries.Contains(b);
@@ -169,6 +174,12 @@ namespace Reko.Scanning
                     Debug.Print("  succ: {0}",
                         string.Join(",", icfg.Successors(b)));
                 }
+                Debug.Print("Cluster with sinks: [{0}]", string.Join(",",
+                    from b in Blocks
+                    where icfg.Successors(b).Count == 0
+                    orderby b.Address
+                    select b));
+                Debug.WriteLine("");
             }
         }
 
@@ -253,6 +264,7 @@ namespace Reko.Scanning
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
+                // cluster.Dump(sr.ICFG);
                 sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
                 if (FindClusterEntries(cluster))
                 {
