@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Scanning
                 addr = addr,
                 size = len,
                 block_id = addr,
-                type = (ushort)InstrClass.Linear
+                type = (ushort)InstrClass.ConditionalTransfer
             });
             Link(addr, a);
             Link(addr, b);
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Scanning
 
             var sExp =
             #region Expected
-@"00000100-00000106 (6): 
+@"00000100-00000106 (6): End
 ";
             #endregion
 
@@ -258,11 +258,11 @@ namespace Reko.UnitTests.Scanning
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             var sExp =
             #region Expected
-@"0001B0D7-0001B0DD (6): 0001B0DD, 0001B0DE
-0001B0D8-0001B0DE (6): 0001B0DE
-0001B0DC-0001B0DE (2): 0001B0DE
-0001B0DD-0001B0DE (1): 0001B0DE
-0001B0DE-0001B0E0 (2): 
+@"0001B0D7-0001B0DD (6): Bra 0001B0DD, 0001B0DE
+0001B0D8-0001B0DE (6): Lin 0001B0DE
+0001B0DC-0001B0DE (2): Lin 0001B0DE
+0001B0DD-0001B0DE (1): Lin 0001B0DE
+0001B0DE-0001B0E0 (2): End
 ";
             #endregion
             AssertBlocks(sExp, blocks);
@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Scanning
             blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
             var sExp =
             #region Expected
-@"00010001-00010005 (4): 
+@"00010001-00010005 (4): End
 ";
             #endregion
             AssertBlocks(sExp, blocks);
@@ -305,15 +305,15 @@ namespace Reko.UnitTests.Scanning
         public void Siq_Regression_0001()
         {
             Given_x86_Image(
-                0x55,
-                0x8B, 0xEC,
-                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00,
-                0x53,
-                0x56,
-                0x57,
-                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF,
-                0xB9, 0x5A, 0x00, 0x00, 0x00,
-                0xC3,
+                0x55,                               // 0000
+                0x8B, 0xEC,                         // 0001
+                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00, // 0003
+                0x53,                               // 0009
+                0x56,                               // 000A
+                0x57,                               // 000B
+                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF, // 000C
+                0xB9, 0x5A, 0x00, 0x00, 0x00,       // 0012
+                0xC3,                               // 0017
                 0xC3,
                 0xC3);
             CreateScanner();
@@ -322,21 +322,24 @@ namespace Reko.UnitTests.Scanning
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             blocks = ScannerInLinq.RemoveInvalidBlocks(sr, blocks);
             var sExp =
-                "00010000-00010003 (3): 00010003" + nl +
-                "00010002-00010003 (1): 00010003" + nl +
-                "00010003-00010009 (6): 00010009" + nl +
-                "00010004-0001000A (6): 0001000A" + nl +
-                "00010006-0001000B (5): 0001000B" + nl +
-                "00010007-00010009 (2): 00010009" + nl +
-                "00010009-0001000A (1): 0001000A" + nl +
-                "0001000A-0001000B (1): 0001000B" + nl +
-                "0001000B-00010012 (7): 00010012" + nl +
-                "0001000D-00010012 (5): 00010012" + nl +
-                "00010012-00010017 (5): 00010017" + nl +
-                "00010013-00010019 (6): " + nl +
-                "00010015-00010017 (2): 00010017" + nl +
-                "00010017-00010018 (1): " + nl +
-                "00010019-0001001A (1): " + nl;
+                "00010000-00010003 (3): Lin 00010003" + nl +
+                "00010002-00010003 (1): Lin 00010003" + nl +
+                "00010003-00010009 (6): Lin 00010009" + nl +
+                "00010004-0001000A (6): Lin 0001000A" + nl +
+                "00010006-00010008 (2): Lin 00010008" + nl +
+                "00010007-00010009 (2): Pad 00010009" + nl +
+                "00010008-0001000B (3): Pad 0001000B" + nl +
+                "00010009-0001000A (1): Lin 0001000A" + nl +
+                "0001000A-0001000B (1): Lin 0001000B" + nl +
+                "0001000B-00010012 (7): Lin 00010012" + nl +
+                "0001000D-00010012 (5): Lin 00010012" + nl +
+                "00010012-00010017 (5): Lin 00010017" + nl +
+                "00010013-00010014 (1): Lin 00010014" + nl +
+                "00010014-00010018 (4): Pad 00010018" + nl +
+                "00010015-00010017 (2): Pad 00010017" + nl +
+                "00010017-00010018 (1): End" + nl +
+                "00010018-00010019 (1): End" + nl +
+                "00010019-0001001A (1): End" + nl;
             AssertBlocks(sExp, blocks);
         }
 
@@ -386,8 +389,8 @@ namespace Reko.UnitTests.Scanning
 
             var sExp =
             #region Expected
-@"00001000-0000100A (10): 0000100A
-0000100A-0000100B (1): 
+@"00001000-0000100A (10): Cal 0000100A
+0000100A-0000100B (1): End
 ";
             #endregion
             AssertBlocks(sExp, blocks);
@@ -408,7 +411,7 @@ namespace Reko.UnitTests.Scanning
 
             var sExp =
             #region Expected
-@"00001000-0000100A (10): 
+@"00001000-0000100A (10): Cal 
 ";
             #endregion
             AssertBlocks(sExp, blocks);
@@ -448,9 +451,9 @@ namespace Reko.UnitTests.Scanning
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
             var sExp =
             #region Expected
-@"00001000-00001008 (8): 
-00001008-00001010 (8): 00001010
-00001010-00001018 (8): 
+@"00001000-00001008 (8): End
+00001008-00001010 (8): Pad 00001010
+00001010-00001018 (8): End
 ";
             #endregion
 
