@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Typing
 {
@@ -186,7 +187,7 @@ namespace Reko.Typing
 
         public void VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            Debug.Print("Phi functions are unexpected: they should have been removed by now");
         }
 
         public void VisitReturnInstruction(ReturnInstruction ret)
