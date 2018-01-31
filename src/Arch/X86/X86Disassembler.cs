@@ -673,7 +673,7 @@ namespace Reko.Arch.X86
                     {
                         return regInstrs[i].Decode(disasm, op, opFormat);
                     }
-                    else
+                else
                     {
                         return disasm.Illegal();
                     }
@@ -681,8 +681,8 @@ namespace Reko.Arch.X86
                 else
                 {
                     return memInstr.Decode(disasm, op, opFormat);
-                }
             }
+        }
         }
         
         public class FpuOpRec : OpRec
@@ -756,9 +756,9 @@ namespace Reko.Arch.X86
                 var instr = s_aOpRec0F[op].Decode(disasm, op, opFormat);
                 if (instr == null)
                     return instr;
-                if (!s_mpVex.TryGetValue(instr.code, out var vexCode))
+                if (!s_mpVex.TryGetValue(instr.code, out Opcode vexCode))
                 {
-                    Debug.Print("Failed to map {0} to VEX counterpart", instr.code);
+                    Debug.Print("{0} Failed to map {1} to VEX counterpart", instr.Address, instr.code);
                     return null;
                 }
                 instr.code = vexCode;
@@ -990,7 +990,7 @@ namespace Reko.Arch.X86
 		{
             if (!this.currentDecodingContext.IsModRegMemByteActive())
             {
-                if (!rdr.TryReadByte(out var modrm))
+                if (!rdr.TryReadByte(out byte modrm))
                 {
                     modRm = 0;
                     return false;
@@ -1252,7 +1252,7 @@ namespace Reko.Arch.X86
                 }
                 else
                 {
-                    dataWidth = PrimitiveType.Ptr32;        // Far pointer.
+				dataWidth = PrimitiveType.Ptr32;		// Far pointer.
                 }
 				break;
 			case 'f':
@@ -1347,14 +1347,14 @@ namespace Reko.Arch.X86
 
 		public ImmediateOperand CreateImmediateOperand(PrimitiveType immWidth, PrimitiveType instrWidth)
 		{
-            if (!rdr.TryReadLe(immWidth, out var c))
+            if (!rdr.TryReadLe(immWidth, out Constant c))
                 return null;
 			return new ImmediateOperand(c);
 		}
 
 		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
 		{
-            if (!TryEnsureModRM(out var modRm))
+            if (!TryEnsureModRM(out byte modRm))
                 return null;
 
 			int  rm = this.currentDecodingContext.ModRegMemByte & 0x07;

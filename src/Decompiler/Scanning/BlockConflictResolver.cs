@@ -70,7 +70,7 @@ namespace Reko.Scanning
             this.sr.Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
             this.sr.Dump("After parents of conflicting blocks removed");
-            //RemoveBlocksWithFewPredecessors();
+            RemoveBlocksWithFewPredecessors();
             //DumpGraph();
             RemoveBlocksWithFewSuccessors();
             this.sr.Dump("After few successor removal");
@@ -245,6 +245,8 @@ namespace Reko.Scanning
 
         private void RemoveBlocksWithFewPredecessors()
         {
+            var there = blocks.Nodes.Any(c => c.Address.ToLinear() == 0x00404F92);
+            there = blocks.Nodes.Any(c => c.Address.ToLinear() == 0x00404F92);
             conflicts = BuildConflictGraph(blocks.Nodes);
             //    if (u.pred.Count < v.pred.Count)
             //      remove u
@@ -252,10 +254,16 @@ namespace Reko.Scanning
             //      remove v
             foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
-                var uCount = blocks.Predecessors(conflict.Item1).Count;
-                var vCount = blocks.Predecessors(conflict.Item2).Count;
+                var uCount = GetAncestors(conflict.Item1).Count;
+                var vCount = GetAncestors(conflict.Item2).Count;
                 if (uCount < vCount)
+                {
                     RemoveBlockFromGraph(conflict.Item1);
+                }
+                else if (uCount > vCount)
+                {
+                    RemoveBlockFromGraph(conflict.Item2);
+                }
             }
         }
 
