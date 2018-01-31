@@ -102,9 +102,16 @@ namespace Reko.Arch.X86
                     {
                         // call $+5,pop<reg> idiom
                         dasm.MoveNext();
-                        m.Assign(
-                            orw.AluRegister(reg),
-                            addr);
+                        var r = orw.AluRegister(reg);
+                        if (addr.Selector.HasValue)
+                        {
+                            var offset = Constant.Create(PrimitiveType.Offset16, addr.Offset);
+                            m.Assign(r, offset);
+                        }
+                        else
+                        {
+                            m.Assign(r, addr);
+                        }
                         this.len += 1;
                         rtlc = InstrClass.Linear;
                         return;
