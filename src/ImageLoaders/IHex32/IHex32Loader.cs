@@ -149,7 +149,6 @@ namespace Reko.ImageLoaders.IHex32
         #region Locals
 
         private DecompilerEventListener listener;
-        private SortedList<Address, MemoryArea> memAreas;
 
         #endregion
 
@@ -193,7 +192,7 @@ namespace Reko.ImageLoaders.IHex32
         /// <param name="arch">Processor architecture.</param>
         /// <param name="platform">Platform/operating environment.</param>
         /// <returns>
-        /// A Program.
+        /// A <see cref="Program"/>.
         /// </returns>
         public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
@@ -204,11 +203,9 @@ namespace Reko.ImageLoaders.IHex32
             {
                 try
                 {
-                    uint address;
-                    byte[] data;
                     for (; ; )
                     {
-                        if (!rdr.Read(out address, out data))
+                        if (!rdr.Read(out uint address, out byte[] data))
                             break;
                         if (data != null)
                             memChunks.AddData(address, data);

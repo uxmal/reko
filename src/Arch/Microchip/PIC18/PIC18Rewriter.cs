@@ -20,19 +20,16 @@
  */
 #endregion
 
+using Microchip.Crownking;
+using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
-using Microchip.Crownking;
-using Reko.Arch.Microchip.Common;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -47,7 +44,6 @@ namespace Reko.Arch.Microchip.PIC18
         private PIC18Instruction instr;
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
-        private List<RtlInstructionCluster> clusters;
         private RtlEmitter m;
 
         public PIC18Rewriter(PIC18Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

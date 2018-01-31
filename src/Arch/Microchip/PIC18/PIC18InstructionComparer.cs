@@ -35,7 +35,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// 
     public class PIC18InstructionComparer : InstructionComparer
     {
-        public PIC18InstructionComparer(Normalize norm) 
+        public PIC18InstructionComparer(Normalize norm)
             : base(norm)
         {
         }
@@ -45,35 +45,31 @@ namespace Reko.Arch.Microchip.PIC18
             if (opA.GetType() != opB.GetType())
                 return false;
 
-            RegisterOperand regOpA = opA as RegisterOperand;
-            if (regOpA != null)
+            switch (opA)
             {
-                RegisterOperand regOpB = (RegisterOperand)opB;
-                return NormalizeRegisters || regOpA.Register == regOpB.Register;
+                case RegisterOperand regOpA:
+                    RegisterOperand regOpB = (RegisterOperand)opB;
+                    return NormalizeRegisters || regOpA.Register == regOpB.Register;
+
+                case ImmediateOperand immOpA:
+                    var immOpB = (ImmediateOperand)opB;
+                    return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
+
+                case AddressOperand addrOpA:
+                    var addrOpB = (AddressOperand)opB;
+                    return NormalizeConstants || addrOpA.Address == addrOpB.Address;
+
+                case MemoryOperand memOpA:
+                    var memOpB = (MemoryOperand)opB;
+                    if (!base.CompareRegisters(memOpA.Base, memOpB.Base))
+                        return false;
+                    if (memOpA.Width != memOpB.Width)
+                        return false;
+                    return true;
+
+                default:
+                    throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
             }
-            ImmediateOperand immOpA = opA as ImmediateOperand;
-            if (immOpA != null)
-            {
-                var immOpB = (ImmediateOperand)opB;
-                return NormalizeConstants || immOpA.Value.Equals(immOpB.Value);         // disregard immediate values.
-            }
-            var addrOpA = opA as AddressOperand;
-            if (addrOpA != null)
-            {
-                var addrOpB = (AddressOperand)opB;
-                return NormalizeConstants || addrOpA.Address == addrOpB.Address;
-            }
-            var memOpA = opA as MemoryOperand;
-            if (memOpA != null)
-            {
-                var memOpB = (MemoryOperand)opB;
-                if (!base.CompareRegisters(memOpA.Base, memOpB.Base))
-                    return false;
-                if (memOpA.Width != memOpB.Width)
-                    return false;
-                return true;
-            }
-            throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
         }
 
         /// <summary>
@@ -121,35 +117,28 @@ namespace Reko.Arch.Microchip.PIC18
 
         private int GetHashCode(MachineOperand op)
         {
-            int h;
-            RegisterOperand regOp = op as RegisterOperand;
-            if (regOp != null)
+            switch (op)
             {
-                return base.GetRegisterHash(regOp.Register);
+                case RegisterOperand regOp:
+                    return base.GetRegisterHash(regOp.Register);
+
+                case ImmediateOperand immOp:
+                    return base.GetConstantHash(immOp.Value);
+
+                case AddressOperand addrOp:
+                    return base.NormalizeConstants
+                        ? 1
+                        : addrOp.Address.GetHashCode();
+
+                case MemoryOperand memOp:
+                    return (memOp.Base != null
+                        ? base.GetRegisterHash(memOp.Base)
+                        : 0);
+
+                default:
+                    throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
             }
-            ImmediateOperand immOp = op as ImmediateOperand;
-            if (immOp != null)
-            {
-                return base.GetConstantHash(immOp.Value);
-            }
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
-            {
-                return base.NormalizeConstants
-                    ? 1
-                    : addrOp.Address.GetHashCode();
-            }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
-            {
-                h = 0;
-                if (memOp.Base != null)
-                {
-                    h = base.GetRegisterHash(memOp.Base);
-                }
-                return h;
-            }
-            throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);
+
         }
 
     }

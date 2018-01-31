@@ -876,7 +876,6 @@
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Arch\Microchip\PIC18\PIC18Tests.playlist" />
     <None Include="picdb.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

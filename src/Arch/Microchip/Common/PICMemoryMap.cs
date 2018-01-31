@@ -114,9 +114,8 @@ namespace Reko.Arch.Microchip.Common
             /// <param name="thePIC">the PIC definition.</param>
             public MemTraits(PIC thePIC)
             {
-                if (thePIC == null) throw new ArgumentNullException(nameof(thePIC));
-                _pic = thePIC;
-                _pic.ArchDef.MemTraits.Traits.ForEach((e) => { var ee = e as IMemTraitsSymbolAcceptor; if (ee != null) ee.Accept(this); });
+                _pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
+                _pic.ArchDef.MemTraits.Traits.ForEach((e) => { if (e is IMemTraitsSymbolAcceptor ee) ee.Accept(this); });
             }
 
             #endregion
@@ -256,7 +255,7 @@ namespace Reko.Arch.Microchip.Common
             /// <value>
             /// The size in number of bytes.
             /// </value>
-            public uint Size => (PhysicalByteAddress== null ? 0 : (uint)(PhysicalByteAddress.End - PhysicalByteAddress.Begin));
+            public uint Size => (PhysicalByteAddress == null ? 0 : (uint)(PhysicalByteAddress.End - PhysicalByteAddress.Begin));
 
             #endregion
 
@@ -278,19 +277,18 @@ namespace Reko.Arch.Microchip.Common
                 RegionName = sRegion;
                 if (regnAddr != null)
                 {
-                LogicalByteAddress = regnAddr;
-                PhysicalByteAddress = regnAddr;
+                    LogicalByteAddress = regnAddr;
+                    PhysicalByteAddress = regnAddr;
                 }
                 else
                 {
                     LogicalByteAddress = PhysicalByteAddress = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
                 }
-            TypeOfMemory = memDomain;
+                TypeOfMemory = memDomain;
                 SubtypeOfMemory = memSubDomain;
                 if (SubtypeOfMemory != MemorySubDomain.NNMR)  // Non-Memory-Mapped-Registers have no memory characteristics.
                 {
-                    MemTrait trait;
-                    if (!_traits.GetTrait(memDomain, memSubDomain, out trait))
+                    if (!_traits.GetTrait(memDomain, memSubDomain, out MemTrait trait))
                         throw new InvalidOperationException($"Missing characteristics for [{memDomain}/{memSubDomain}] memory region '{RegionName}'");
                     Trait = trait;
                 }
@@ -437,8 +435,7 @@ namespace Reko.Arch.Microchip.Common
             public Address RemapAddress(Address aFSRAddr)
             {
                 if (!Contains(aFSRAddr)) return null;
-                Tuple<byte, uint> add;
-                if (!RemapFSRIndirect(aFSRAddr, out add)) return null;
+                if (!RemapFSRIndirect(aFSRAddr, out Tuple<byte, uint> add)) return null;
                 return Address.Ptr16((ushort)(add.Item1 * BankSize + add.Item2));
             }
 
@@ -481,8 +478,7 @@ namespace Reko.Arch.Microchip.Common
                 BankSize = bankSz;
                 FSRByteAddress = regnAddr;
                 BlockByteRange = blockRng;
-                MemTrait trait;
-                if (!_traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out trait))
+                if (!_traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out MemTrait trait))
                     throw new InvalidOperationException($"Missing characteristics for [{TypeOfMemory}/{SubtypeOfMemory}] linear region");
                 Trait = trait;
             }
@@ -574,7 +570,7 @@ namespace Reko.Arch.Microchip.Common
             {
                 this.traits = traits;
                 _memregions = new List<ProgMemRegion>();
-                oPIC.ProgramSpace.Sectors?.ForEach((e) => { var ee = e as IMemProgramRegionAcceptor; if (ee != null) ee.Accept(this); });
+                oPIC.ProgramSpace.Sectors?.ForEach((e) => { if (e is IMemProgramRegionAcceptor ee) ee.Accept(this); });
             }
 
             /// <summary>
@@ -825,18 +821,18 @@ namespace Reko.Arch.Microchip.Common
                 _remaptable = new Address[datasize];
                 for (int i = 0; i < _remaptable.Length; i++)
                     _remaptable[i] = null;
-                oPIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                oPIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
                 switch (mode)
                 {
                     case PICExecMode.Traditional:
-                        oPIC.DataSpace.TraditionalModeOnly?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                        oPIC.DataSpace.TraditionalModeOnly?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
                         break;
                     case PICExecMode.Extended:
                         if (!oPIC.IsExtended) throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
-                        oPIC.DataSpace.ExtendedModeOnly?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                        oPIC.DataSpace.ExtendedModeOnly?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
                         break;
                 }
-                oPIC.IndirectSpace?.ForEach((e) => { var ee = e as IMemDataRegionAcceptor; if (ee != null) ee.Accept(this); });
+                oPIC.IndirectSpace?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
 
             }
 
@@ -965,9 +961,7 @@ namespace Reko.Arch.Microchip.Common
                 _isNMMR = false;
                 foreach (var ent in xmlRegion.SFRs)
                 {
-                    var ient = ent as IMemDataSymbolAcceptor;
-                    if (ient != null)
-                        ient.Accept(this);
+                    if (ent is IMemDataSymbolAcceptor ient) ient.Accept(this);
                 }
             }
 

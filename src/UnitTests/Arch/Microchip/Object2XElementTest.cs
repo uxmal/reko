@@ -12,22 +12,23 @@ namespace Microchip.Utils
         [Serializable]
         public class SerializableClass
         {
-            public int prop1 { get; set; }
-            public bool test;
+            public int Prop1 { get; set; }
+            public bool Test;
         }
 
         public class WrongSerializableClass
         {
-            public ArrayList list { get; set; }
+            public ArrayList List { get; set; }
 
             public WrongSerializableClass()
             {
-                list = new ArrayList();
-                list.Add(1);
-                list.Add(new SerializableClass());
+                List = new ArrayList()
+                {
+                    1,
+                    new SerializableClass()
+                };
             }
         }
-
 
         [Test]
         public void ToXElement_Test()
@@ -57,19 +58,19 @@ namespace Microchip.Utils
 
             res = xmlTree.FromXElement<SerializableClass>();
             Assert.IsNotNull(res);
-            Assert.IsInstanceOfType(typeof(SerializableClass), res);
+            Assert.That(res, Is.InstanceOf(typeof(SerializableClass)));
             scl = res as SerializableClass;
             Assert.IsNotNull(scl);
-            Assert.AreEqual(1, scl.prop1);
-            Assert.AreEqual(true, scl.test);
+            Assert.AreEqual(1, scl.Prop1);
+            Assert.AreEqual(true, scl.Test);
 
             res = xmlTree2.FromXElement<SerializableClass>();
             Assert.IsNotNull(res);
-            Assert.IsInstanceOfType(typeof(SerializableClass),res);
+            Assert.That(res, Is.InstanceOf(typeof(SerializableClass)));
             scl = res as SerializableClass;
             Assert.IsNotNull(scl);
-            Assert.AreEqual(0, scl.prop1);
-            Assert.AreEqual(false, scl.test);
+            Assert.AreEqual(0, scl.Prop1);
+            Assert.AreEqual(false, scl.Test);
 
             res = xmlTree3.FromXElement<SerializableClass>();
             Assert.IsNull(res);

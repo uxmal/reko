@@ -92,19 +92,16 @@ namespace Reko.Arch.Microchip.Common
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="registersSymTable"/> is null.</exception>
         public virtual void LoadRegisters(IPICRegisterSymTable registersSymTable)
         {
-            if (registersSymTable == null) throw new ArgumentNullException(nameof(registersSymTable));
-            _symTable = registersSymTable;
+            _symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
 
             foreach (var e in _pic.DataSpace.RegardlessOfMode.Regions)
             {
-                SFRDataSector sfrsect = e as SFRDataSector;
-                if (sfrsect != null)
+                if (e is SFRDataSector sfrsect)
                 {
                     sfrsect.Accept(this);
                     continue;
                 }
-                NMMRPlace nmmrs = e as NMMRPlace;
-                if (nmmrs != null)
+                if (e is NMMRPlace nmmrs)
                 {
                     nmmrs.Accept(this);
                     continue;
@@ -122,23 +119,19 @@ namespace Reko.Arch.Microchip.Common
         {
             foreach (var e in xmlRegion.SFRs)
             {
-                var sfr = e as SFRDef;
-                if (sfr != null)
+                switch (e)
                 {
-                    sfr.Accept(this);
-                    continue;
-                }
-                var join = e as JoinedSFRDef;
-                if (join != null)
-                {
-                    join.Accept(this);
-                    continue;
-                }
-                var mux = e as MuxedSFRDef;
-                if (mux != null)
-                {
-                    mux.Accept(this);
-                    continue;
+                    case SFRDef sfr:
+                        sfr.Accept(this);
+                        continue;
+
+                    case JoinedSFRDef join:
+                        join.Accept(this);
+                        continue;
+
+                    case MuxedSFRDef mux:
+                        mux.Accept(this);
+                        continue;
                 }
             }
         }
@@ -234,17 +227,15 @@ namespace Reko.Arch.Microchip.Common
             _bitAddr = 0;
             foreach (var e in xmlSymb.Fields)
             {
-                var adj = e as DataBitAdjustPoint;
-                if (adj != null)
+                switch (e)
                 {
-                    adj.Accept(this);
-                    continue;
-                }
-                var sfrfield = e as SFRFieldDef;
-                if (sfrfield != null)
-                {
-                    sfrfield.Accept(this);
-                    continue;
+                    case DataBitAdjustPoint adj:
+                        adj.Accept(this);
+                        continue;
+
+                    case SFRFieldDef sfrfield:
+                        sfrfield.Accept(this);
+                        continue;
                 }
 
             }

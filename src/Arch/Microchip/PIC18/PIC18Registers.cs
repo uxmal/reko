@@ -92,8 +92,8 @@ namespace Reko.Arch.Microchip.PIC18
 
             public bool Equals(RegAddress other)
             {
+                if (other is null) return false;
                 if (ReferenceEquals(this, other)) return true;
-                if (ReferenceEquals(other, null)) return false;
                 if (!String.IsNullOrEmpty(NMMRID)) return (NMMRID == other.NMMRID);
                 return Addr == other.Addr;
             }
@@ -406,8 +406,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             lock (_symtabLock)
             {
-                BitFieldList flist;
-                if (RegsBitFields.TryGetValue(new BitFieldAddr(regAddress, bitPos), out flist))
+                if (RegsBitFields.TryGetValue(new BitFieldAddr(regAddress, bitPos), out BitFieldList flist))
                 {
                     if (bitWidth == 0)
                         return flist.LastOrDefault().Value;

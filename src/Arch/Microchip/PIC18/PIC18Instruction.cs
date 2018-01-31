@@ -88,8 +88,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             get
             {
-                InstructionClass il;
-                if (!classOf.TryGetValue(Opcode, out il))
+                if (!classOf.TryGetValue(Opcode, out InstructionClass il))
                     il = InstructionClass.Linear;
                 return il;
             }
@@ -151,10 +150,9 @@ namespace Reko.Arch.Microchip.PIC18
             writer.WriteOpcode(Opcode.ToString());
             if (op1 == null)
                 return;
-            IOperandShadow opshad = op1 as IOperandShadow;
-            if (opshad != null)
+            if (op1 is IOperandShadow opshad1)
             {
-                if (opshad.IsPresent)
+                if (opshad1.IsPresent)
                 {
                     writer.Write(",");
                     writer.Tab();
@@ -166,10 +164,9 @@ namespace Reko.Arch.Microchip.PIC18
             op1.Write(writer, options);
             if (op2 == null)
                 return;
-            opshad = op2 as IOperandShadow;
-            if (opshad != null)
+            if (op2 is IOperandShadow opshad2)
             {
-                if (opshad.IsPresent)
+                if (opshad2.IsPresent)
                 {
                     writer.Write(",");
                     op2.Write(writer, options);
