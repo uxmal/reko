@@ -24,6 +24,7 @@ using Microchip.Crownking;
 using Reko.Core;
 using Reko.Core.Expressions;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -115,7 +116,8 @@ namespace Reko.Arch.Microchip.Common
             public MemTraits(PIC thePIC)
             {
                 _pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
-                _pic.ArchDef.MemTraits.Traits.ForEach((e) => { if (e is IMemTraitsSymbolAcceptor ee) ee.Accept(this); });
+//                _pic.ArchDef.MemTraits.Traits.ForEach((e) => { if (e is IMemTraitsSymbolAcceptor ee) ee.Accept(this); });
+                _pic.ArchDef.MemTraits.Traits.OfType<IMemTraitsSymbolAcceptor>().Select((e) => { e.Accept(this); return true; });
             }
 
             #endregion
