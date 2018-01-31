@@ -24,6 +24,7 @@ using Microchip.Crownking;
 using Reko.Core;
 using Reko.Core.Types;
 using System;
+using System.Linq;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -180,10 +181,7 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(JoinedSFRDef xmlSymb)
         {
-            foreach (var e in xmlSymb.SFRs)
-            {
-                e.Accept(this);
-            }
+            xmlSymb.SFRs.ForEach(e => e.Accept(this));
         }
 
         public void Visit(MuxedSFRDef xmlSymb)
@@ -212,14 +210,12 @@ namespace Reko.Arch.Microchip.Common
                 _regIndex++;
             _currentSFRDef = xmlSymb;
 
-            foreach (var e in xmlSymb.SFRModes)
-                e.Accept(this);
+            xmlSymb.SFRModes.ForEach(e => e.Accept(this));
         }
 
         public void Visit(SFRModeList xmlSymb)
         {
-            foreach (var e in xmlSymb.SFRModes)
-                e.Accept(this);
+            xmlSymb.SFRModes.ForEach(e => e.Accept(this));
         }
 
         public void Visit(SFRMode xmlSymb)

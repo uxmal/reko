@@ -5946,8 +5946,7 @@ namespace Microchip.Crownking
             {
                 if (InstructionSet == null)
                     return InstructionSetID.UNDEFINED;
-                InstructionSetID id;
-                if (!_mapInstrID.TryGetValue(InstructionSet.ID, out id))
+                if (!_mapInstrID.TryGetValue(InstructionSet.ID, out InstructionSetID id))
                 {
                     id = InstructionSetID.UNDEFINED;
                     if (Arch == "16xxxx") id = InstructionSetID.PIC16;
@@ -6005,8 +6004,7 @@ namespace Microchip.Crownking
         {
             if (sAccess.Length >= 1)
             {
-                SFRBitAccess bmode;
-                if (_xlat2Access.TryGetValue(sAccess.Substring(1, 1), out bmode))
+                if (_xlat2Access.TryGetValue(sAccess.Substring(1, 1), out SFRBitAccess bmode))
                     return bmode;
             }
             return SFRBitAccess.Unknown;
@@ -6023,7 +6021,7 @@ namespace Microchip.Crownking
         };
 
         /// <summary>
-        /// Translates the SFR bit reset mode string to a value from the <see cref="SFRBitReset"/> enumeration.
+        /// Translates the SFR bit reset mode string (MCLR, POR) to a value from the <see cref="SFRBitReset"/> enumeration.
         /// </summary>
         /// <param name="sReset">The reset mode string.</param>
         /// <returns>
@@ -6033,8 +6031,7 @@ namespace Microchip.Crownking
         {
             if (sReset.Length >= 1)
             {
-                SFRBitReset bmode;
-                if (_xlat2BitReset.TryGetValue(sReset.Substring(1, 1), out bmode))
+                if (_xlat2BitReset.TryGetValue(sReset.Substring(1, 1), out SFRBitReset bmode))
                     return bmode;
             }
             return SFRBitReset.Unknown;

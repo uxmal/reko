@@ -28,12 +28,10 @@ namespace Reko.UnitTests.Arch.Microchip
 
         public static PIC GetSample(InstructionSetID instrID)
         {
-            PIC _pic = null;
 
-            if (!_samples.TryGetValue(instrID, out _pic))
+            if (!_samples.TryGetValue(instrID, out PIC _pic))
             {
-                string xmlfname;
-                if (!_xmlsamples.TryGetValue(instrID, out xmlfname))
+                if (!_xmlsamples.TryGetValue(instrID, out string xmlfname))
                     throw new NotImplementedException($"Unsupported instruction set: {instrID}");
                 string xmlfpath = Path.Combine(@"Arch/Microchip/Samples", xmlfname);
                 if (!File.Exists(xmlfpath))

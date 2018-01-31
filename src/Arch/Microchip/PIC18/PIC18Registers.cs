@@ -163,13 +163,21 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Locals
 
-        private Dictionary<string, PICRegisterStorage> UniqueRegNames = new Dictionary<string, PICRegisterStorage>();
-        private Dictionary<string, PICBitFieldStorage> UniqueFieldNames = new Dictionary<string, PICBitFieldStorage>();
-        private Dictionary<RegAddress, RegisterStorage> RegsByAddr = new Dictionary<RegAddress, RegisterStorage>();
-        private Dictionary<BitFieldAddr, BitFieldList> RegsBitFields = new Dictionary<BitFieldAddr, BitFieldList>();
-
+        private static object _symtabLock = new object(); // lock to allow concurrent access.
         private static PIC18Registers _registers;
-        private static object _symtabLock = new object(); // to allow concurrent access.
+
+        private static Dictionary<string, PICRegisterStorage> UniqueRegNames
+            = new Dictionary<string, PICRegisterStorage>();
+        private static Dictionary<string, PICBitFieldStorage> UniqueFieldNames
+            = new Dictionary<string, PICBitFieldStorage>();
+        private static Dictionary<RegAddress, RegisterStorage> RegsByAddr
+            = new Dictionary<RegAddress, RegisterStorage>();
+        private static Dictionary<BitFieldAddr, BitFieldList> RegsBitFields
+            = new Dictionary<BitFieldAddr, BitFieldList>();
+
+
+        internal static readonly Dictionary<PICRegisterStorage, Dictionary<uint, PICRegisterStorage>> SubRegisters
+            = new Dictionary<PICRegisterStorage, Dictionary<uint, PICRegisterStorage>>();
 
         #endregion
 
@@ -299,13 +307,43 @@ namespace Reko.Arch.Microchip.PIC18
         public static PICRegisterStorage STKPTR { get; private set; }
 
         /// <summary>TOSL special function register. </summary>
-        public static RegisterStorage TOSL { get; private set; }
+        public static PICRegisterStorage TOSL { get; private set; }
 
         /// <summary>TOSH special function register. </summary>
         public static PICRegisterStorage TOSH { get; private set; }
 
         /// <summary>TOSU special function register. </summary>
         public static PICRegisterStorage TOSU { get; private set; }
+
+        /// <summary>
+        /// Gets the FSR0 pseudo-register
+        /// </summary>
+        public static PICRegisterStorage FSR0 { get; private set; }
+
+        /// <summary>
+        /// Gets the FSR1 pseudo-register
+        /// </summary>
+        public static PICRegisterStorage FSR1 { get; private set; }
+
+        /// <summary>
+        /// Gets the FSR2 pseudo-register
+        /// </summary>
+        public static PICRegisterStorage FSR2 { get; private set; }
+
+        /// <summary>
+        /// Gets the TOS pseudo-register (alias to TOSU:TOSH:TOSL).
+        /// </summary>
+        public static PICRegisterStorage TOS { get; private set; }
+
+        /// <summary>
+        /// Gets the PC pseudo-register (alias to PCLATU:PCLATH:PCL).
+        /// </summary>
+        public static PICRegisterStorage PC { get; private set; }
+
+        /// <summary>
+        /// Gets the TBLPTR pseudo-register (alias to TBLPTRL:TBLPTRH:TBLPTRL).
+        /// </summary>
+        public static PICRegisterStorage TBLPTR { get; private set; }
 
         #endregion
 
@@ -323,6 +361,7 @@ namespace Reko.Arch.Microchip.PIC18
                 UniqueFieldNames.Clear();
                 RegsByAddr.Clear();
                 RegsBitFields.Clear();
+                SubRegisters.Clear();
             }
         }
 
@@ -332,33 +371,30 @@ namespace Reko.Arch.Microchip.PIC18
 
         private PICRegisterStorage _getRegister(string name)
         {
-            PICRegisterStorage reg;
             lock (_symtabLock)
             {
-                if (!UniqueRegNames.TryGetValue(name, out reg))
+                if (!UniqueRegNames.TryGetValue(name, out PICRegisterStorage reg))
                     throw new InvalidOperationException($"Missing definition of register '{name}' in symbol table.");
+                return reg;
             }
-            return reg;
         }
 
         private PICRegisterStorage _peekRegister(string name)
         {
-            PICRegisterStorage reg;
             lock (_symtabLock)
             {
-                UniqueRegNames.TryGetValue(name, out reg);
+                UniqueRegNames.TryGetValue(name, out PICRegisterStorage reg);
+                return reg;
             }
-            return reg;
         }
 
         private PICRegisterStorage _peekRegister(RegAddress aAddr)
         {
-            RegisterStorage reg;
             lock (_symtabLock)
             {
-                RegsByAddr.TryGetValue(aAddr, out reg);
+                RegsByAddr.TryGetValue(aAddr, out RegisterStorage reg);
+                return reg as PICRegisterStorage;
             }
-            return reg as PICRegisterStorage;
         }
 
         private RegisterStorage _peekRegister(int number)
@@ -383,23 +419,21 @@ namespace Reko.Arch.Microchip.PIC18
 
         private PICBitFieldStorage _getBitField(string name)
         {
-            PICBitFieldStorage fld;
             lock (_symtabLock)
             {
-                if (!UniqueFieldNames.TryGetValue(name, out fld))
+                if (!UniqueFieldNames.TryGetValue(name, out PICBitFieldStorage fld))
                     throw new InvalidOperationException($"Missing definition of bit field '{name}' in symbol table.");
+                return fld;
             }
-            return fld;
         }
 
         private PICBitFieldStorage _peekBitField(string name)
         {
-            PICBitFieldStorage fld;
             lock (_symtabLock)
             {
-                UniqueFieldNames.TryGetValue(name, out fld);
+                UniqueFieldNames.TryGetValue(name, out PICBitFieldStorage fld);
+                return fld;
             }
-            return fld;
         }
 
         private FlagGroupStorage _peekBitField(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
@@ -477,6 +511,8 @@ namespace Reko.Arch.Microchip.PIC18
             TOSL = _getRegister("TOSL");
             TOSH = _getRegister("TOSH");
             TOSU = _getRegister("TOSU");
+
+            
         }
 
         #endregion
@@ -577,7 +613,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <value>
         /// An array of PIC registers.
         /// </value>
-        public static RegisterStorage[] GetRegisters => _registers?.RegsByAddr.Values.ToArray();
+        public static RegisterStorage[] GetRegisters => RegsByAddr.Values.ToArray();
 
         /// <summary>
         /// Gets a register by its name or <seealso cref="RegisterStorage.None"/>.
@@ -711,7 +747,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the maximum number of registers.
         /// </summary>
-        public static int Max => _registers?.RegsByAddr.Count ?? 0;
+        public static int Max => RegsByAddr.Count;
 
         #endregion
 

@@ -53,7 +53,7 @@ namespace Reko.Arch.Microchip.Common
         #region Helper classes
 
         /// <summary>
-        /// This class defines the current PIC memory traits.
+        /// This class defines the current PIC memory traits (characteristics).
         /// </summary>
         internal class MemTraits : IMemTraitsSymbolVisitor
         {
@@ -116,8 +116,7 @@ namespace Reko.Arch.Microchip.Common
             public MemTraits(PIC thePIC)
             {
                 _pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
-//                _pic.ArchDef.MemTraits.Traits.ForEach((e) => { if (e is IMemTraitsSymbolAcceptor ee) ee.Accept(this); });
-                _pic.ArchDef.MemTraits.Traits.OfType<IMemTraitsSymbolAcceptor>().Select((e) => { e.Accept(this); return true; });
+                foreach (var mt in _pic.ArchDef.MemTraits.Traits.OfType<IMemTraitsSymbolAcceptor>()) mt.Accept(this);
             }
 
             #endregion
@@ -142,28 +141,28 @@ namespace Reko.Arch.Microchip.Common
 
             #endregion
 
-            #region IMemTraitsSymbolVisitor implementation
+            #region IMemTraitsSymbolVisitor<bool> implementation
 
             void IMemTraitsSymbolVisitor.Visit(CalDataMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Calib), mTraits);
+                 { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Calib), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(CodeMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Code), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Code), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(ConfigFuseMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Config), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Config), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(ExtCodeMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.ExtCode), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.ExtCode), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(EEDataMemTraits mTraits)
-            => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.EEData), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.EEData), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(BackgroundDebugMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Debugger), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Debugger), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(ConfigWORMMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Other), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.Other), mTraits); }
 
             void IMemTraitsSymbolVisitor.Visit(DataMemTraits mTraits)
             {
@@ -180,10 +179,11 @@ namespace Reko.Arch.Microchip.Common
                 maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.RevisionID), mTraits);
             }
 
-            void IMemTraitsSymbolVisitor.Visit(TestMemTraits mTraits) { }
+            void IMemTraitsSymbolVisitor.Visit(TestMemTraits mTraits)
+                {  }
 
             void IMemTraitsSymbolVisitor.Visit(UserIDMemTraits mTraits)
-                => maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.UserID), mTraits);
+                { maptraits.Add(new MemoryDomainKey(MemoryDomain.Prog, MemorySubDomain.UserID), mTraits); }
 
             #endregion
 
@@ -553,6 +553,9 @@ namespace Reko.Arch.Microchip.Common
 
         }
 
+        /// <summary>
+        /// This class defines the program memory map of current PIC.
+        /// </summary>
         private class ProgMemoryMap : MemoryMapBase, IMemProgramRegionVisitor
         {
 
@@ -563,6 +566,8 @@ namespace Reko.Arch.Microchip.Common
 
             #endregion
 
+            #region Constructors
+
             /// <summary>
             /// Constructor.
             /// </summary>
@@ -572,8 +577,15 @@ namespace Reko.Arch.Microchip.Common
             {
                 this.traits = traits;
                 _memregions = new List<ProgMemRegion>();
-                oPIC.ProgramSpace.Sectors?.ForEach((e) => { if (e is IMemProgramRegionAcceptor ee) ee.Accept(this); });
+                foreach (var pmr in oPIC.ProgramSpace.Sectors?.OfType<IMemProgramRegionAcceptor>())
+                {
+                    pmr.Accept(this);
+                }
             }
+
+            #endregion
+
+            #region Properties/Methods
 
             /// <summary>
             /// Gets the memory regions contained in this program memory map.
@@ -691,6 +703,8 @@ namespace Reko.Arch.Microchip.Common
             /// </value>
             public bool HasDCI { get; private set; } = false;
 
+            #endregion
+
             #region IMemProgramRegionVisitor implementation
 
             protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
@@ -786,6 +800,9 @@ namespace Reko.Arch.Microchip.Common
 
         }
 
+        /// <summary>
+        /// This class defines the data memory map of current PIC.
+        /// </summary>
         private class DataMemoryMap : MemoryMapBase, IMemDataRegionVisitor, IMemDataSymbolVisitor
         {
 
@@ -806,6 +823,8 @@ namespace Reko.Arch.Microchip.Common
 
             #endregion
 
+            #region Constructors
+
             /// <summary>
             /// Constructor.
             /// </summary>
@@ -823,20 +842,24 @@ namespace Reko.Arch.Microchip.Common
                 _remaptable = new Address[datasize];
                 for (int i = 0; i < _remaptable.Length; i++)
                     _remaptable[i] = null;
-                oPIC.DataSpace.RegardlessOfMode.Regions?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
+                foreach (var dmr in oPIC.DataSpace.RegardlessOfMode.Regions?.OfType<IMemDataRegionAcceptor>()) dmr.Accept(this);
                 switch (mode)
                 {
                     case PICExecMode.Traditional:
-                        oPIC.DataSpace.TraditionalModeOnly?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
+                        foreach (var dmr in oPIC.DataSpace.TraditionalModeOnly?.OfType<IMemDataRegionAcceptor>()) dmr.Accept(this);
                         break;
                     case PICExecMode.Extended:
                         if (!oPIC.IsExtended) throw new InvalidOperationException("Extended execution mode is not supported by this PIC");
-                        oPIC.DataSpace.ExtendedModeOnly?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
+                        foreach (var dmr in oPIC.DataSpace.ExtendedModeOnly?.OfType<IMemDataRegionAcceptor>()) dmr.Accept(this);
                         break;
                 }
-                oPIC.IndirectSpace?.ForEach((e) => { if (e is IMemDataRegionAcceptor ee) ee.Accept(this); });
+                foreach (var dmr in oPIC.IndirectSpace?.OfType<IMemDataRegionAcceptor>()) dmr.Accept(this);
 
             }
+
+            #endregion
+
+            #region Methods/Properties
 
             /// <summary>
             /// Gets a value indicating whether this PIC data memory map has one or more SFR (Special
@@ -919,6 +942,8 @@ namespace Reko.Arch.Microchip.Common
             public override IMemoryRegion GetRegion(Address virtAddr)
                 => _memregions.Find((regn) => regn.Contains(virtAddr));
 
+            #endregion
+
             #region IMemDataRegionVisitor implementation
 
             #region Helpers
@@ -961,10 +986,7 @@ namespace Reko.Arch.Microchip.Common
                 HasSFR = true;
                 _resetAddrs(regn.LogicalByteAddress.Begin.ToUInt16());
                 _isNMMR = false;
-                foreach (var ent in xmlRegion.SFRs)
-                {
-                    if (ent is IMemDataSymbolAcceptor ient) ient.Accept(this);
-                }
+                foreach (var sds in xmlRegion.SFRs.OfType<IMemDataSymbolAcceptor>()) sds.Accept(this);
             }
 
             void IMemDataRegionVisitor.Visit(GPRDataSector xmlRegion)
@@ -1016,8 +1038,7 @@ namespace Reko.Arch.Microchip.Common
                 _memregions.Add(regn);
                 HasNMMR = true;
                 _isNMMR = true;
-                foreach (var ent in xmlRegion.SFRDefs)
-                    ent.Accept(this);
+                foreach (var nmmr in xmlRegion.SFRDefs.OfType<IMemDataSymbolAcceptor>()) nmmr.Accept(this);
                 _isNMMR = false;
             }
 
@@ -1031,7 +1052,7 @@ namespace Reko.Arch.Microchip.Common
 
             #endregion
 
-            #region IMemDataSymbolVisitor implementation
+            #region IMemDataSymbolVisitor<bool> implementation
 
             void IMemDataSymbolVisitor.Visit(DataBitAdjustPoint xmlSymb)
             {
@@ -1083,7 +1104,7 @@ namespace Reko.Arch.Microchip.Common
 
             void IMemDataSymbolVisitor.Visit(JoinedSFRDef xmlSymb)
             {
-                xmlSymb.SFRs?.ForEach((e) => e.Accept(this));
+                foreach (var sfr in xmlSymb.SFRs?.OfType<IMemDataSymbolAcceptor>()) sfr.Accept(this);
             }
 
             void IMemDataSymbolVisitor.Visit(MuxedSFRDef xmlSymb)

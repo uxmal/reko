@@ -73,7 +73,7 @@ namespace Reko.Arch.Microchip.PIC18
             PICDescriptor = picDescr;
             Name = picDescr.Name;
             Description = picDescr.Desc;
-            PIC18Registers.Create(picDescr).LoadRegisters(); ;
+            PIC18Registers.Create(picDescr).LoadRegisters(); 
             StackRegister = PIC18Registers.STKPTR;
         }
 
