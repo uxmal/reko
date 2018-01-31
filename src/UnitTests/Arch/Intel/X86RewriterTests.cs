@@ -547,7 +547,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.JmpF(Address.SegPtr(0xF000, 0xFFF0));
             });
             AssertCode(
-                "0|L--|0C00:0000(5): 1 instructions",
+                "0|T--|0C00:0000(5): 1 instructions",
                 "1|L--|__bios_reboot()");
         }
 

@@ -541,11 +541,11 @@ namespace Reko.Arch.X86
 			public string	format;
 			public InstrClass	iclass;
 
-            public SingleByteOpRec(Opcode op): this(op, "", InstrClass.None)
+            public SingleByteOpRec(Opcode op): this(op, "", InstrClass.Linear)
             {
             }
 
-			public SingleByteOpRec(Opcode op, string fmt) : this(op, fmt, InstrClass.None)
+			public SingleByteOpRec(Opcode op, string fmt) : this(op, fmt, InstrClass.Linear)
 			{
 			}
 
@@ -922,6 +922,7 @@ namespace Reko.Arch.X86
                 this.op66Fmt = op66Fmt;
                 this.opF3Fmt = opF3Fmt;
                 this.opF2Fmt = null;
+                this.iclass = InstrClass.Linear;
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
