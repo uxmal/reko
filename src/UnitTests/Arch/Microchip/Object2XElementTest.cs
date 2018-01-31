@@ -50,7 +50,7 @@ namespace Microchip.Utils
         [Test]
         public void FromXElement_Test()
         {
-            XElement xmlTree = new XElement("SerializableClass", new XElement("prop1", 1), new XElement("test", true));
+            XElement xmlTree = new XElement("SerializableClass", new XElement("Prop1", 1), new XElement("Test", true));
             XElement xmlTree2 = new XElement("SerializableClass", new XElement("prop2", 1), new XElement("testA", true));
             XElement xmlTree3 = new XElement("WrongSerializableClass", new XElement("propW", 1), new XElement("testW", true));
             object res;
