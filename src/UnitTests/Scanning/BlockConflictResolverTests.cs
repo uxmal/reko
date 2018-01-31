@@ -33,7 +33,7 @@ using Reko.Core.Lib;
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
-    public class HeuristicProcedureScannerTests : HeuristicTestBase
+    public class BlockConflictResolverTests : HeuristicTestBase
     {
         private HeuristicProcedure proc;
 
