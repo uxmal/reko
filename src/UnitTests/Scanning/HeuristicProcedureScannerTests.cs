@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var conflicts = HeuristicProcedureScanner.BuildConflictGraph(proc.Cfg.Nodes);
+            var conflicts = BlockConflictResolver.BuildConflictGraph(proc.Cfg.Nodes);
             var sExp =
 @"(l00010001-l00010002)
 (l00010002-l00010003)
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var conflicts = HeuristicProcedureScanner.BuildConflictGraph(proc.Cfg.Nodes);
+            var conflicts = BlockConflictResolver.BuildConflictGraph(proc.Cfg.Nodes);
             var sExp =
 @"(l00010001-l00010002)
 (l00010001-l00010003)
@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
+            var hps = new BlockConflictResolver(program,CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
             hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =
@@ -168,7 +168,7 @@ l00010009:  // pred: l00010008
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
+            var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
             hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =

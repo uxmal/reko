@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Scanning
 
         private void RemoveConflictingBlocks(params uint[] wProcStarts)
         {
-            var hs = new HeuristicProcedureScanner(null, sr, null, null);
+            var hs = new BlockConflictResolver(null, sr, null, null);
             hs.ResolveBlockConflicts(wProcStarts.Select(w => Address.Ptr32(w)));
         }
         
