@@ -50,7 +50,7 @@ spare time, so adjust your response-time expectations accordingly.
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
 `Reko-decompiler.sln`. If you are an IDE user, use Visual
-Studio 2013 or later, or MonoDevelop version 5.10 or later. If you
+Studio 2017 or later, or MonoDevelop version 5.10 or later. If you
 wish to build using the command line, use the command
 
 ```cmd
