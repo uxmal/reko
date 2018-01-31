@@ -126,10 +126,6 @@ namespace Reko.Scanning
             Probe(sr);
             sr.Dump("After shingle scan");
 
-            var ppf = new ProcedurePaddingFinder(sr);
-            var pads = ppf.FindPaddingBlocks();
-            ppf.Remove(pads);
-
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
             // "real" blocks that would actually have been executed
@@ -143,8 +139,16 @@ namespace Reko.Scanning
                 host);
             Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
+            var stillAlive = sr.ICFG.Nodes.Any(n => n.Address.ToLinear() == 0x4017BA || n.Address.ToLinear() == 0x4017B5);  //$DEBUG
             Probe(sr);
             sr.Dump("After block conflict resolution");
+
+            // If we detect padding bytes between blocks, 
+            // we remove them now.
+            var ppf = new ProcedurePaddingFinder(sr);
+            var pads = ppf.FindPaddingBlocks();
+            ppf.Remove(pads);
+
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
@@ -461,7 +465,7 @@ namespace Reko.Scanning
             DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
         }
 
-        // Writes the start and end addresses, size, and successor edge of each block, 
+        // Writes the start and end addresses, size, and successor edges of each block, 
         public void DumpBlocks(ScanResults sr, Dictionary<Address, block> blocks, Action<string> writeLine)
         {
             writeLine(
@@ -472,16 +476,34 @@ namespace Reko.Scanning
                     group ii by ii.block_id into g
                     select new { block_id = g.Key, max = g.Max(iii => iii.addr.ToLinear() + (uint) iii.size ) })
                     on b.id equals i.block_id
+               join l in sr.FlatInstructions.Values on b.id equals l.addr
                join e in sr.FlatEdges on b.id equals e.first into es
                from e in new[] { string.Join(", ", es.Select(ee => string.Format("{0:X8}", ee.second))) }
                orderby b.id
                select string.Format(
-                   "{0:X8}-{1:X8} ({2}): {3}",
+                   "{0:X8}-{1:X8} ({2}): {3}{4}",
                        b.id,
                        b.id + (i.max - b.id.ToLinear()),
                        i.max - b.id.ToLinear(),
+                       RenderType(b.instrs.Last().type),
                        e)));
+
+            string RenderType(ushort type)
+            {
+                var t = (InstrClass)type;
+                if ((t & InstrClass.Padding) != 0)
+                    return "Pad ";
+                if ((t & InstrClass.Call) != 0)
+                    return "Cal ";
+                if ((t & InstrClass.ConditionalTransfer) == InstrClass.ConditionalTransfer)
+                    return "Bra ";
+                if ((t & InstrClass.Transfer) != 0)
+                    return "End";
+                return "Lin ";
+            }
         }
+
+
 
         private void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<Address> bad_blocks)
         {

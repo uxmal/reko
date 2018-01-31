@@ -100,6 +100,12 @@ namespace Reko.UnitTests.Scanning
             sr.ICFG = ScannerInLinq.BuildIcfg(sr, blocks);
         }
 
+        private void RemoveConflictingBlocks(params uint[] wProcStarts)
+        {
+            var hs = new HeuristicProcedureScanner(null, sr, null, null);
+            hs.ResolveBlockConflicts(wProcStarts.Select(w => Address.Ptr32(w)));
+        }
+        
         private void RunTest(string sExp)
         {
             var ppf = new ProcedurePaddingFinder(sr);
@@ -204,11 +210,12 @@ namespace Reko.UnitTests.Scanning
             Lin(0x1004, 1);
 
             BuildTest();
+            RemoveConflictingBlocks(0x1000);
             var ppf = new ProcedurePaddingFinder(sr);
             var padding = ppf.FindPaddingBlocks().ToList();
             Assert.AreEqual(1, padding.Count, "There should be one padding block...");
-            Assert.AreEqual(2, padding[0].Instructions.Count, "...with two instructions inside...");
             Assert.AreEqual(0x1003, padding[0].Address.ToLinear());
+            Assert.AreEqual(1, padding[0].Instructions.Count, "...with two instructions inside...");
         }
 
     }

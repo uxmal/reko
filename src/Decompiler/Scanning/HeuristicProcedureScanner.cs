@@ -61,10 +61,11 @@ namespace Reko.Scanning
         public void ResolveBlockConflicts(IEnumerable<Address> procedureStarts)
         {
             var reachable = TraceReachableBlocks(procedureStarts);
-            ComputeStatistics(reachable);
+            // We're never using these stats, so disable them for now.
+            //ComputeStatistics(reachable);
             this.sr.Dump("Before conflict resolution");
             RemoveBlocksEndingWithInvalidInstruction();
-            this.sr.Dump("After invalid instruction eliminiation");
+            this.sr.Dump("After invalid instruction elimination");
             RemoveBlocksConflictingWithValidBlocks(reachable);
             this.sr.Dump("After conflicting block removal");
             RemoveParentsOfConflictingBlocks();
@@ -83,7 +84,8 @@ namespace Reko.Scanning
         public void BlockConflictResolution(Address addrProcedureStart)
         {
             var valid = TraceReachableBlocks(new[] { addrProcedureStart });
-            ComputeStatistics(valid);
+            // We're never using these stats, so disable them for now.
+            //ComputeStatistics(valid);
             this.sr.Dump();
             RemoveBlocksEndingWithInvalidInstruction();
             this.sr.Dump();
