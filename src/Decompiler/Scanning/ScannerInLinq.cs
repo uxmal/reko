@@ -105,7 +105,7 @@ namespace Reko.Scanning
         {
             this.sr = sr;
 
-           // sr.WatchedAddresses.Add(Address.Ptr64(0x0000000000405EF3)); //$DEBUG
+            // sr.WatchedAddresses.Add(Address.Ptr64(0x0000000000405EF3)); //$DEBUG
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -139,7 +139,6 @@ namespace Reko.Scanning
                 host);
             Probe(sr);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
-            var stillAlive = sr.ICFG.Nodes.Any(n => n.Address.ToLinear() == 0x4017BA || n.Address.ToLinear() == 0x4017B5);  //$DEBUG
             Probe(sr);
             sr.Dump("After block conflict resolution");
 
