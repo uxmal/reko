@@ -106,6 +106,7 @@ namespace Reko.Arch.X86
                             orw.AluRegister(reg),
                             addr);
                         this.len += 1;
+                        rtlc = InstrClass.Linear;
                         return;
                     }
                 }
@@ -139,7 +140,7 @@ namespace Reko.Arch.X86
         private void RewriteInt()
         {
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.op1)));
-            rtlc = InstrClass.Call | InstrClass.Transfer;
+            rtlc |= InstrClass.Call | InstrClass.Transfer;
         }
 
         private void RewriteInto()

@@ -82,7 +82,7 @@ namespace Reko.Arch.X86
                 var addr = instrCur.Address;
                 this.len = instrCur.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                this.rtlc = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.code)
