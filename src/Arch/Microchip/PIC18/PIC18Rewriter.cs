@@ -284,10 +284,12 @@ namespace Reko.Arch.Microchip.PIC18
         private void _rewriteCondBranch(TestCondition test)
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var brop = instr.op1 as PIC18ProgRel8AddrOperand;
-            if (brop == null)
+            if (instr.op1 is PIC18ProgRel8AddrOperand brop)
+            {
+                m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget), rtlc);
+            }
+            else
                 throw new InvalidOperationException("Wrong 8-bit relative PIC address");
-            m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget), rtlc);
         }
 
         private void _setStatusFlags(Expression dst)
@@ -297,7 +299,7 @@ namespace Reko.Arch.Microchip.PIC18
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
-        private PICProgAddress _skipaddr()
+        private PICProgAddress _skipToAddr()
             => PICProgAddress.Ptr(instr.Address + 4);
 
         #endregion
@@ -417,10 +419,12 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteBRA()
         {
             rtlc = RtlClass.Transfer;
-            var brop = instr.op1 as PIC18ProgRel11AddrOperand;
-            if (brop == null)
+            if (instr.op1 is PIC18ProgRel11AddrOperand brop)
+            {
+                m.Goto(PICProgAddress.Ptr(brop.CodeTarget));
+            }
+            else
                 throw new InvalidOperationException("Wrong 11-bit relative PIC address");
-            m.Goto(PICProgAddress.Ptr(brop.CodeTarget));
         }
 
         private void RewriteBSF()
@@ -436,7 +440,7 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteSrcOp(instr.op1);
             byte mask = (byte)(1 << ((PIC18DataBitAccessOperand)instr.op1).BitNumber.ToByte());
-            m.Branch(m.Eq(m.And(src, mask), Constant.Zero(src.DataType)), _skipaddr(), rtlc);
+            m.Branch(m.Eq(m.And(src, mask), Constant.Zero(src.DataType)), _skipToAddr(), rtlc);
         }
 
         private void RewriteBTFSS()
@@ -444,7 +448,7 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteSrcOp(instr.op1);
             byte mask = (byte)(1 << ((PIC18DataBitAccessOperand)instr.op1).BitNumber.ToByte());
-            m.Branch(m.Ne(m.And(src, mask), Constant.Zero(src.DataType)), _skipaddr(), rtlc);
+            m.Branch(m.Ne(m.And(src, mask), Constant.Zero(src.DataType)), _skipToAddr(), rtlc);
         }
 
         private void RewriteBTG()
@@ -526,7 +530,7 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteSrcOp(instr.op1);
             var w = binder.EnsureRegister(PIC18Registers.WREG);
-            m.Branch(m.Eq(src, w), _skipaddr(), rtlc);
+            m.Branch(m.Eq(src, w), _skipToAddr(), rtlc);
         }
 
         private void RewriteCPFSGT()
@@ -534,7 +538,7 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteSrcOp(instr.op1);
             var w = binder.EnsureRegister(PIC18Registers.WREG);
-            m.Branch(m.Ugt(src, w), _skipaddr(), rtlc);
+            m.Branch(m.Ugt(src, w), _skipToAddr(), rtlc);
         }
 
         private void RewriteCPFSLT()
@@ -542,7 +546,7 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteSrcOp(instr.op1);
             var w = binder.EnsureRegister(PIC18Registers.WREG);
-            m.Branch(m.Ult(src, w), _skipaddr(), rtlc);
+            m.Branch(m.Ult(src, w), _skipToAddr(), rtlc);
         }
 
         private void RewriteDAW()
@@ -570,7 +574,7 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = RewriteDstOp(instr.op1);
             m.Assign(dst, m.ISub(src, Constant.Byte(1)));
             _setStatusFlags(dst);
-            m.Branch(m.Eq0(dst), _skipaddr(), RtlClass.ConditionalTransfer);
+            m.Branch(m.Eq0(dst), _skipToAddr(), rtlc);
         }
 
         private void RewriteDCFSNZ()
@@ -580,7 +584,7 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = RewriteDstOp(instr.op1);
             m.Assign(dst, m.ISub(src, Constant.Byte(1)));
             _setStatusFlags(dst);
-            m.Branch(m.Ne0(dst), _skipaddr(), RtlClass.ConditionalTransfer);
+            m.Branch(m.Ne0(dst), _skipToAddr(), rtlc);
         }
 
         private void RewriteGOTO()
@@ -606,7 +610,7 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = RewriteDstOp(instr.op1);
             m.Assign(dst, m.IAdd(src, Constant.Byte(1)));
             _setStatusFlags(dst);
-            m.Branch(m.Eq0(dst), _skipaddr(), RtlClass.ConditionalTransfer);
+            m.Branch(m.Eq0(dst), _skipToAddr(), rtlc);
         }
 
         private void RewriteINFSNZ()
@@ -616,7 +620,7 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = RewriteDstOp(instr.op1);
             m.Assign(dst, m.IAdd(src, Constant.Byte(1)));
             _setStatusFlags(dst);
-            m.Branch(m.Ne0(dst), _skipaddr(), RtlClass.ConditionalTransfer);
+            m.Branch(m.Ne0(dst), _skipToAddr(), rtlc);
         }
 
         private void RewriteIORLW()
@@ -953,7 +957,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             rtlc = RtlClass.ConditionalTransfer;
             var src = RewriteSrcOp(instr.op1);
-            m.Branch(m.Eq0(src), _skipaddr(), RtlClass.ConditionalTransfer);
+            m.Branch(m.Eq0(src), _skipToAddr(), RtlClass.ConditionalTransfer);
         }
 
         private void RewriteXORLW()
