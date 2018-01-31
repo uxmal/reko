@@ -106,8 +106,7 @@ namespace Reko.Core.Expressions
 		{
 			if (writeStorage)
 			{
-				OutArgumentStorage os = Storage as OutArgumentStorage;
-				if (os != null)
+				if (Storage is OutArgumentStorage os)
 				{
 					writer.Write(os.OriginalIdentifier.Storage.Kind);
 					writer.Write(" out ");
@@ -122,16 +121,29 @@ namespace Reko.Core.Expressions
 		}
     }
 
-	/// <summary>
-	/// A special class that represents memory locations. Initially,
-	/// all memory accesses can be considered to be made from one global
-	/// variable, MEM0. Later, SSA analysis will break apart MEM references 
-	/// after each store operation, giving rise to MEM1, MEM2 &c. 
-	/// If ambitious, memory alias analysis can be done. In this case,
-	/// we will have several MEMx variables before SSA, each MEMx variable
-	/// will be an alias class. 
-	/// </summary>
-	public class MemoryIdentifier : Identifier
+    /// <summary>
+    /// This class identifies an address space within a program.
+    /// </summary>
+    /// <remarks>
+    /// Instances of <see cref="Reko.Core.Expressions.MemoryAccess"/> need to
+    /// indicate what address space is being used to perform the memory access.
+    /// On von Neumann architectures, where all of memory is treated equal,
+    /// there is only need for the <see cref="GlobalMemory"/>. On
+    /// Harvard architectures, where there may be two or more separate address
+    /// spaces (e.g. one for instructions and one for data), the corresponding 
+    /// <see cref="IProcessorArchitecture"/> implementation must define an 
+    /// appropriate MemoryIdentifier for each separate address space. The 
+    /// IProcessorarchitecture must then ensure that when RtlInstructions for
+    /// memory accesses are generated, they refer to the correct address space.
+    /// <para>
+    /// Later, SSA analysis will break apart memory access
+    /// after each store operation, giving rise to new address space identifiers
+    /// MEM1, MEM2 &c. If ambitious, memory alias analysis can be done. In this
+    /// case, we will have several MEMx variables before SSA, each MEMx variable
+    /// will be an alias class. 
+    /// </para>
+    /// </remarks>
+    public class MemoryIdentifier : Identifier
 	{
 		private static MemoryIdentifier g;
 
@@ -145,12 +157,9 @@ namespace Reko.Core.Expressions
         }
 		static MemoryIdentifier()
 		{
-			g = new MemoryIdentifier(0, new UnknownType());
+			GlobalMemory = new MemoryIdentifier(0, new UnknownType());
 		}
 
-		public static MemoryIdentifier GlobalMemory
-		{
-			get { return g; }
-		}
+		public static MemoryIdentifier GlobalMemory { get; }
 	}
 }

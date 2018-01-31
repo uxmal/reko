@@ -30,6 +30,13 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class MemoryAccess : Expression
     {
+        /// <summary>
+        /// Creates an access to the memory whose effective address is <paramref name="ea"/>.
+        /// The data type of the accessed memory is <paramref name="dt"/>. The memory access
+        /// takes place in the <see cref="MemoryIdentifier.GlobalMemory"/> address space.
+        /// </summary>
+        /// <param name="ea">Effective address of the access.</param>
+        /// <param name="dt">Data type of the access.</param>
         public MemoryAccess(Expression ea, DataType dt)
             : base(dt)
         {
@@ -37,10 +44,17 @@ namespace Reko.Core.Expressions
             this.EffectiveAddress = ea;
         }
 
-        public MemoryAccess(MemoryIdentifier id, Expression ea, DataType dt)
+        /// <summary>
+        /// Creates an access to the memory whose effective address is <paramref name="ea"/>.
+        /// The data type of the accessed memory is <paramref name="dt"/>. The memory access
+        /// takes place in the address space <paramref name="space"/>.
+        /// </summary>
+        /// <param name="ea">Effective address of the access.</param>
+        /// <param name="dt">Data type of the access.</param>
+        public MemoryAccess(MemoryIdentifier space, Expression ea, DataType dt)
             : base(dt)
         {
-            this.MemoryId = id;
+            this.MemoryId = space;
             this.EffectiveAddress = ea;
         }
 
