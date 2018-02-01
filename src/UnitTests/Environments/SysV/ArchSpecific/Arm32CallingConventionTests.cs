@@ -60,25 +60,6 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             this.ccr = new CallingConventionEmitter();
         }
 
-        private Argument_v1 RegArg(SerializedType type, string regName)
-        {
-            return new Argument_v1
-            {
-                Type = type,
-                Kind = new Register_v1 { Name = regName },
-                Name = regName
-            };
-        }
-
-        private Argument_v1 FpuArg(SerializedType type, string name)
-        {
-            return new Argument_v1(
-                name,
-                type,
-                new Register_v1 { Name = name },
-                false);
-        }
-
         [Test]
         public void SvArm32Cc_DeserializeFpuReturnValue()
         {

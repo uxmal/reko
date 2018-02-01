@@ -194,7 +194,7 @@ namespace Reko.Arch.Avr
             case 'X': reg = arch.x; break;
             case 'Y': reg = arch.y; break;
             case 'Z': reg = arch.z; break;
-            default: Debug.Assert(false, "Must be X,y, or Z");
+            default: Debug.Assert(false, "Must be X, Y, or Z");
                 reg = null;
                 break;
             }
@@ -407,8 +407,8 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.elpm, "D,+Z"),
 
                 new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.ld, "D,+y"),
-                new BOpRec(Opcode.ld, "D,-y"),
+                new BOpRec(Opcode.ld, "D,+Y"),
+                new BOpRec(Opcode.ld, "D,-Y"),
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.ld, "D,X"),

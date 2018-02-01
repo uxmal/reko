@@ -40,6 +40,7 @@ namespace Reko.Arch.Avr
         public Avr8Architecture()
         {
             this.PointerType = PrimitiveType.Ptr16;
+            this.WordWidth = PrimitiveType.Word16;
             this.FramePointerType = PrimitiveType.UInt8;
             this.InstructionBitSize = 16;
             this.x = new RegisterStorage("x", 33, 0, PrimitiveType.Word16);
