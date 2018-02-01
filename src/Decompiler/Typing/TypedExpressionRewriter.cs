@@ -280,12 +280,12 @@ namespace Reko.Typing
         {
             var head = Rewrite(seq.Head, false);
             var tail = Rewrite(seq.Tail, false);
-            Constant c = seq.Tail as Constant;
-            var ptHead = DataTypeOf(head) as PrimitiveType;
-            if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
+            var dtHead = DataTypeOf(head);
+            if (dtHead is Pointer || (dtHead is PrimitiveType ptHead && ptHead.Domain == Domain.Selector))
             {
-                if (c != null)
+                if (seq.Tail is Constant c)
                 {
+                    // reg:CCCC => reg->fldCCCC
                     return RewriteComplexExpression(head, null, c.ToInt32(), dereferenced);
                 }
                 else
@@ -304,7 +304,10 @@ namespace Reko.Typing
             else
             {
             }
-            return new MkSequence(seq.DataType, head, tail);
+            return new MkSequence(seq.DataType, head, tail)
+            {
+                TypeVariable = seq.TypeVariable,
+            };
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)

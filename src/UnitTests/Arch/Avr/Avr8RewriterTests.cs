@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Arch.Avr
             Rewrite(0x9407); // "ror\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = __rcr(r0, C)",
+                "1|L--|r0 = __rcr(r0, C, 1)",
                 "2|L--|HSVNZC = cond(r0)");
         }
 
