@@ -28,8 +28,8 @@ namespace Reko.Arch.Avr
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base ;
-        public int Displacement;
+        public RegisterStorage Base;
+        public short Displacement;
         public bool PreDecrement;
         public bool PostIncrement;
 

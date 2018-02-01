@@ -28,6 +28,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System.Diagnostics;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Avr
 {
@@ -36,7 +38,8 @@ namespace Reko.Arch.Avr
         private Avr8Architecture arch;
         private IStorageBinder binder;
         private IRewriterHost host;
-        private IEnumerator<AvrInstruction> dasm;
+        private LookaheadEnumerator<AvrInstruction> dasm;
+        private EndianImageReader rdr;
         private ProcessorState state;
         private AvrInstruction instr;
         private RtlClass rtlc;
@@ -44,10 +47,13 @@ namespace Reko.Arch.Avr
         private List<RtlInstructionCluster> clusters;
         private RtlEmitter m;
 
+        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+
         public Avr8Rewriter(Avr8Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.dasm = new Avr8Disassembler(arch, rdr).GetEnumerator();
+            this.rdr = rdr;
+            this.dasm = new LookaheadEnumerator<AvrInstruction>(new Avr8Disassembler(arch, rdr).GetEnumerator());
             this.state = state;
             this.binder = binder;
             this.host = host;
@@ -83,14 +89,17 @@ namespace Reko.Arch.Avr
             case Opcode.brcc: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
             case Opcode.brcs: RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
             case Opcode.breq: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
+            case Opcode.brge: RewriteBranch(ConditionCode.GE, FlagM.NF|FlagM.VF); break;
             case Opcode.brid: RewriteBranch(FlagM.IF, false); break;
             case Opcode.brne: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
+            case Opcode.brpl: RewriteBranch(ConditionCode.GE, FlagM.NF); break;
             case Opcode.call: RewriteCall(); break;
             case Opcode.cli: RewriteCli(); break;
             case Opcode.com: RewriteUnary(m.Comp, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF); break;
             case Opcode.cp: RewriteCp(); break;
             case Opcode.cpi: RewriteCp(); break;
             case Opcode.cpc: RewriteCpc(); break;
+            case Opcode.cpse: SkipIf(m.Eq); break;
             case Opcode.dec: RewriteIncDec(m.ISub); break;
             case Opcode.des: RewriteDes(); break;
             case Opcode.eor: RewriteBinOp(m.Xor, LogicalFlags, FlagM.VF); break;
@@ -100,12 +109,14 @@ namespace Reko.Arch.Avr
             case Opcode.ijmp: RewriteIjmp(); break;
             case Opcode.jmp: RewriteJmp(); break;
             case Opcode.ld: RewriteLd(); break;
+            case Opcode.ldd: RewriteLd(); break;
             case Opcode.ldi: RewriteLdi(); break;
             case Opcode.lds: RewriteLds(); break;
             case Opcode.lpm: RewriteLpm(); break;
             case Opcode.lsr: RewriteLsr(); break;
             case Opcode.mov: RewriteMov(); break;
             case Opcode.movw: RewriteMovw(); break;
+            case Opcode.muls: RewriteMuls(); break;
             case Opcode.neg: RewriteUnary(m.Neg, CmpFlags); break;
             case Opcode.@out: RewriteOut(); break;
             case Opcode.or: RewriteBinOp(m.Or, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF); break;
@@ -121,15 +132,19 @@ namespace Reko.Arch.Avr
             case Opcode.sbci: RewriteAdcSbc(m.ISub); break;
             case Opcode.sbis: RewriteSbis(); return; // We've already added ourself to clusters.
             case Opcode.sbiw: RewriteAddSubIW(m.ISub); break;
+            case Opcode.sbrc: SkipIf(Sbrc); break;
+            case Opcode.sbrs: SkipIf(Sbrs); break;
             case Opcode.sec: RewriteSetBit(FlagM.CF, true); break;
             case Opcode.sei: RewriteSei(); break;
             case Opcode.st: RewriteSt(); break;
+            case Opcode.std: RewriteSt(); break;
             case Opcode.sts: RewriteSts(); break;
             case Opcode.sub: RewriteBinOp(m.ISub, CmpFlags); break;
             case Opcode.subi: RewriteBinOp(m.ISub, CmpFlags); break;
             case Opcode.swap: RewriteSwap(); break;
             default:
                 host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.opcode));
+                EmitUnitTest();
                 m.Invalid();
                 break;
             }
@@ -145,6 +160,31 @@ namespace Reko.Arch.Avr
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest()
+        {
+            if (seen.Contains(dasm.Current.opcode))
+                return;
+            seen.Add(dasm.Current.opcode);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var bytes = r2.ReadBytes(dasm.Current.Length);
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void Avr8_rw_" + dasm.Current.opcode + "()");
+            Debug.WriteLine("        {");
+            Debug.Write("            Rewrite(");
+            Debug.Write(string.Join(
+                ", ",
+                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
+            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine("            AssertCode(");
+            Debug.WriteLine("                \"0|L--|{0}(2): 1 instructions\",", dasm.Current.Address);
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
         }
 
         private void EmitFlags(Expression e, FlagM mod = 0, FlagM clr = 0, FlagM set = 0)
@@ -268,19 +308,13 @@ namespace Reko.Arch.Avr
         private Expression RewriteOp(int iOp)
         {
             var op = instr.operands[iOp];
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            switch (op)
             {
+            case RegisterOperand rop:
                 return binder.EnsureRegister(rop.Register);
-            }
-            var iop = op as ImmediateOperand;
-            if (iop != null)
-            {
+            case ImmediateOperand iop:
                 return iop.Value;
-            }
-            var aop = op as AddressOperand;
-            if (aop != null)
-            {
+            case AddressOperand aop:
                 return aop.Address;
             }
             throw new NotImplementedException(string.Format("Rewriting {0}s not implemented yet.", op.GetType().Name));
@@ -295,6 +329,9 @@ namespace Reko.Arch.Avr
             if (mop.PreDecrement)
             {
                 m.Assign(baseReg, m.ISub(baseReg, Constant.Int16(1)));
+            } else if (mop.Displacement != 0)
+            {
+                ea = m.IAdd(ea, m.Int16(mop.Displacement));
             }
             Expression val;
             if (seg != null)
@@ -403,6 +440,29 @@ namespace Reko.Arch.Avr
             m.Assign(flags, m.ISub(m.ISub(left, right), c));
         }
 
+        private void SkipIf(Func<Expression, Expression,Expression> cond)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            //$BUG: may boom if there is no next instruction.
+            var nextInstr = dasm.Peek(1);
+            var left = RewriteOp(0);
+            var right = RewriteOp(1);
+            m.Branch(cond(left,right), nextInstr.Address + nextInstr.Length, rtlc);
+
+        }
+
+        private Expression Sbrc(Expression a, Expression b)
+        {
+            var imm = ((Constant)b).ToInt32();
+            return m.Eq0(m.And(a, m.Byte((byte)(1 << imm))));
+        }
+
+        private Expression Sbrs(Expression a, Expression b)
+        {
+            var imm = ((Constant)b).ToInt32();
+            return m.Ne0(m.And(a, m.Byte((byte)(1 << imm))));
+        }
+
         private void RewriteDes()
         {
             var h = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.HF));
@@ -477,7 +537,26 @@ namespace Reko.Arch.Avr
         private void RewriteJmp()
         {
             rtlc = RtlClass.Transfer;
-            m.Goto(RewriteOp(0));
+            var op = RewriteOp(0);
+            if (op is Constant c)
+            {
+                op = arch.MakeAddressFromConstant(c);
+            }
+            m.Goto(op);
+        }
+
+        private void RewriteMuls()
+        {
+            var r1_r0 = binder.EnsureSequence(arch.ByteRegs[1], arch.ByteRegs[0], PrimitiveType.Word16);
+            var op0 = RewriteOp(0);
+            var op1 = RewriteOp(1);
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var z = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.ZF));
+            var smul = m.SMul(op0, op1);
+            smul.DataType = PrimitiveType.Int16;
+            m.Assign(r1_r0, smul);
+            m.Assign(c, m.Lt0(r1_r0));
+            m.Assign(z, m.Eq0(r1_r0));
         }
 
         private void RewriteOut()

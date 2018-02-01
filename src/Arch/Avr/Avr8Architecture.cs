@@ -48,13 +48,16 @@ namespace Reko.Arch.Avr
             this.z = new RegisterStorage("z", 35, 0, PrimitiveType.Word16);
             this.sreg = new FlagRegister("sreg", 36, PrimitiveType.Byte);
             this.code = new RegisterStorage("code", 100, 0, PrimitiveType.SegmentSelector);
-            this.StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16); 
-            this.regs = Enumerable.Range(0, 32)
+            this.StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16);
+            this.ByteRegs = Enumerable.Range(0, 32)
                 .Select(n => new RegisterStorage(
                     string.Format("r{0}", n),
                     n,
                     0,
                     PrimitiveType.Byte))
+                .ToArray();
+            this.regs =
+                ByteRegs
                 .Concat(new[] { this.x, this.y, this.z, this.sreg })
                 .ToArray();
             this.grfs = new Dictionary<uint, FlagGroupStorage>();
@@ -76,6 +79,8 @@ namespace Reko.Arch.Avr
         public RegisterStorage y { get; private set; }
         public RegisterStorage z { get; private set; }
         public RegisterStorage code { get; private set; }
+
+        public RegisterStorage[] ByteRegs { get; }
 
 		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {

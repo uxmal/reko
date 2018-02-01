@@ -435,5 +435,86 @@ namespace Reko.UnitTests.Arch.Avr
                   "1|L--|r25 = Mem0[code:z:byte]",
                   "2|L--|z = z + 1");
         }
+
+        [Test]
+        public void Avr8_rw_cpse()
+        {
+            Rewrite(0x1181, 0x8180);	// cpse	r24,r1; ld r24,X
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (r24 == r1) branch 0104",
+                "2|L--|0102(2): 1 instructions",
+                "3|L--|r24 = Mem0[x:byte]");
+        }
+
+        [Test]
+        public void Avr8_rw_ldd()
+        {
+            Rewrite(0x818E);	// ldd	r24,y+06
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|r24 = Mem0[y + 6:byte]");
+        }
+
+                [Test]
+        public void Avr8_rw_ldd_z()
+        {
+            Rewrite(0x8964);	
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|r22 = Mem0[z + 20:byte]");
+        }
+
+        [Test]
+        public void Avr8_rw_std()
+        {
+            Rewrite(0x8213);	// std	z+0B,r1
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|Mem0[z + 3:byte] = r1");
+        }
+
+        [Test]
+        public void Avr8_rw_brpl()
+        {
+            Rewrite(0xF7E2);	// brpl	0364
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (Test(GE,N)) branch 00F8");
+        }
+
+        [Test]
+        public void Avr8_rw_sbrs()
+        {
+            Rewrite(0xFF84, 0x8213);	// sbrs	r24,04; std	z+0B,r1
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if ((r24 & 0x10) != 0x00) branch 0104",
+                "2|L--|0102(2): 1 instructions",
+                "3|L--|Mem0[z + 3:byte] = r1");
+        }
+
+
+        [Test]
+        public void Avr8_rw_sbrc()
+        {
+            Rewrite(0xFD84, 0x8213);	// sbrc	r24,04; std	z+0B,r1
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if ((r24 & 0x10) == 0x00) branch 0104",
+                "2|L--|0102(2): 1 instructions",
+                "3|L--|Mem0[z + 3:byte] = r1");
+        }
+
+        [Test]
+        public void Avr8_rw_muls()
+        {
+            Rewrite(0x02E2);	// muls	r30,r18
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|r1_r0 = r30 *s r18",
+                "2|L--|C = r1_r0 < 0x0000",
+                "3|L--|Z = r1_r0 == 0x0000");
+        }
     }
 }

@@ -252,7 +252,7 @@ namespace Reko.Core.Expressions
 			{
                 p = PrimitiveType.Create(Domain.SignedInt, p.Size);
 				if (p.BitSize <= 8)				
-					return Constant.Create(p, -Convert.ToSByte(c));
+					return Constant.Create(p, (sbyte) -Convert.ToInt32(c));
 				if (p.BitSize <= 16)
                     return Constant.Create(p, -Convert.ToInt32(c) & 0xFFFF);
 				if (p.BitSize <= 32)
