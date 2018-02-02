@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -80,6 +81,13 @@ namespace Reko.Environments.Windows
         private void Error(string format, params object[] args)
         {
             throw new FormatException(string.Format(format, args));
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(int i)
+        {
+            Debug.WriteLine(str);
+            Debug.Print("{0}^", new string(' ', i));
         }
 
         private void Expect(char ch)
@@ -177,7 +185,7 @@ namespace Reko.Environments.Windows
                 break;  // Integer value.
             case '2': throw new NotSupportedException();    // real value
             case 'D': throw new NotSupportedException();    // Anonymous
-            default: Error("Unknown template argument {0}.", str[i - 1]); break;
+            default: Dump(i); Error("Unknown template argument {0}.", str[i - 1]); break;
             }
         }
 
@@ -455,6 +463,13 @@ namespace Reko.Environments.Windows
             case 'N': return "operator <=";
             case 'O': return "operator >";
             case 'P': return "operator >=";
+            case 'Q': return "operator,";
+            case 'R': return "operator ()";
+            case 'S': return "operator ~";
+            case 'T': return "operator ^";
+            case 'U': return "operator |";
+            case 'V': return "operator &&";
+            case 'W': return "operator ||";
             case 'X': return "operator *=";
             case 'Y': return "operator +=";
             case 'Z': return "operator -=";
@@ -472,9 +487,23 @@ namespace Reko.Environments.Windows
                 case '8': return "`vbtable'";
                 case '9': return "`vcall'";
                 case 'A': return "typeof";
+                case 'B': return "`local static guard'";
+                case 'D': return "`vbase destructor'";
+                case 'E': return "`vector deleting destructor'";
+                case 'F': return "`default constructor closure'";
+                case 'G': return "`scalar deleting destructor'";
+                case 'H': return "`vector constructor iterator'";
+                case 'I': return "`vector destructor iterator'";
+                case 'J': return "`vector vbase constructor iterator'";
+                case 'K': return "`virtual displacement map'";
                 case 'L': return "`eh vector constructor iterator'";
                 case 'M': return "`eh vector destructor iterator'";
                 case 'N': return "`eh vector vbase constructor iterator'";
+                case 'O': return "`copy constructor closure'";
+                case 'P': return "`udt returning'";
+                case 'R': throw new NotSupportedException("RTTI Codes not supported yet");
+                case 'S': return "`local vftable'";
+                case 'T': return "`local vftable constructor closure'";
                 case 'U': return "operator new[]";
                 case 'V': return "operator delete[]";
                 default: Error("Unknown operator code '_{0}'.", str[i - 1]);

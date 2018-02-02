@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void EvcApplication()
         {
-            Identifier pfn = new Identifier("pfn", PrimitiveType.Pointer32, new TemporaryStorage("pfn", 1, PrimitiveType.Pointer32));
+            Identifier pfn = new Identifier("pfn", PrimitiveType.Ptr32, new TemporaryStorage("pfn", 1, PrimitiveType.Ptr32));
             Application a1 = new Application(pfn, PrimitiveType.Int32, pfn);
             Application a2 = new Application(pfn, PrimitiveType.Int32, pfn);
             Assert.IsTrue(eq.Equals(a1, a2));

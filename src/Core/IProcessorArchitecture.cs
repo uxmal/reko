@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -145,7 +145,7 @@ namespace Reko.Core
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
-        Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
+        Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -246,7 +246,7 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState(SegmentMap map);
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        public abstract Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
+        public abstract Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,8 +108,7 @@ namespace Reko.Scanning
             var mpAddrToBlock = blocks.Nodes.ToDictionary(k => k.Address);
             foreach (var addrProcStart in procstarts)
             {
-                RtlBlock entry;
-                if (mpAddrToBlock.TryGetValue(addrProcStart ,out entry))
+                if (mpAddrToBlock.TryGetValue(addrProcStart,out var entry))
                 {
                     var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
                     reachable.UnionWith(r);
@@ -415,15 +414,9 @@ namespace Reko.Scanning
             var last = cluster.Instructions.Last();
             if (last is RtlCall)
                 return true;
-            var rtlGoto = last as RtlGoto;
-            if (rtlGoto != null)
+            if (last is RtlGoto rtlGoto && rtlGoto.Target is Address target)
             {
-                Address target;
-                if (rtlGoto.Target.As<Address>(out target))
-                {
-                    return !isAddressValid(target);
-                }
-                return true;
+                return !isAddressValid(target);
             }
             return true;
         }

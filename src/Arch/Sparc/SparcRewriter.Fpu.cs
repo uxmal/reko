@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,9 @@ namespace Reko.Arch.Sparc
             var dst = (RegisterOperand)instrCur.Op3;
             var src1 = (RegisterOperand)instrCur.Op1;
             var src2 = (RegisterOperand)instrCur.Op2;
-            var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc1 = binder.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
+            var fsrc2 = binder.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
             m.Assign(fdst, m.FAdd(fsrc1, fsrc2));
         }
 
@@ -59,9 +59,9 @@ namespace Reko.Arch.Sparc
             var r1 = (RegisterOperand)instrCur.Op1;
             var r2 = (RegisterOperand)instrCur.Op2;
 
-            var f1 = frame.EnsureRegister(Registers.GetFpuRegister(r1.Register.Number)); 
-            var f2 = frame.EnsureRegister(Registers.GetFpuRegister(r2.Register.Number));
-            var grf = frame.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            var f1 = binder.EnsureRegister(Registers.GetFpuRegister(r1.Register.Number)); 
+            var f2 = binder.EnsureRegister(Registers.GetFpuRegister(r2.Register.Number));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
@@ -70,19 +70,19 @@ namespace Reko.Arch.Sparc
             var dst = (RegisterOperand)instrCur.Op3;
             var src1 = (RegisterOperand)instrCur.Op1;
             var src2 = (RegisterOperand)instrCur.Op2;
-            var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc1 = binder.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
+            var fsrc2 = binder.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
             m.Assign(fdst, m.FDiv(fsrc1, fsrc2));
         }
 
         private void RewriteFitod()
         {
             var dst = (RegisterOperand) instrCur.Op2;
-            var r0 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var r1 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
+            var r0 = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var r1 = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
             var dt = PrimitiveType.Real64;
-            var fpDst = frame.EnsureSequence(r0.Storage, r1.Storage, dt);
+            var fpDst = binder.EnsureSequence(r0.Storage, r1.Storage, dt);
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 
@@ -100,7 +100,7 @@ namespace Reko.Arch.Sparc
         private void RewriteFitos()
         {
             var dst = (RegisterOperand) instrCur.Op2;
-            var fpDst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fpDst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var dt = PrimitiveType.Real32;
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
@@ -109,8 +109,8 @@ namespace Reko.Arch.Sparc
         {
             var dst = (RegisterOperand)instrCur.Op2;
             var src = (RegisterOperand)instrCur.Op1;
-            var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc = frame.EnsureRegister(Registers.GetFpuRegister(src.Register.Number));
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc = binder.EnsureRegister(Registers.GetFpuRegister(src.Register.Number));
             m.Assign(fdst, fsrc);
         }
 
@@ -119,9 +119,9 @@ namespace Reko.Arch.Sparc
             var dst = (RegisterOperand)instrCur.Op3;
             var src1 = (RegisterOperand)instrCur.Op1;
             var src2 = (RegisterOperand)instrCur.Op2;
-            var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc1 = binder.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
+            var fsrc2 = binder.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
             m.Assign(fdst, m.FMul(fsrc1, fsrc2));
         }
 
@@ -129,8 +129,8 @@ namespace Reko.Arch.Sparc
         {
             var dst = (RegisterOperand)instrCur.Op2;
             var src = (RegisterOperand)instrCur.Op1;
-            var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc = frame.EnsureRegister(Registers.GetFpuRegister(src.Register.Number));
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc = binder.EnsureRegister(Registers.GetFpuRegister(src.Register.Number));
             m.Assign(fdst, m.Neg(fsrc));
         }
 
@@ -139,9 +139,9 @@ namespace Reko.Arch.Sparc
             var dst = (RegisterOperand)instrCur.Op3;
             var src1 = (RegisterOperand)instrCur.Op1;
             var src2 = (RegisterOperand)instrCur.Op2;
-            var fdst = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = frame.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = frame.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
+            var fdst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fsrc1 = binder.EnsureRegister(Registers.GetFpuRegister(src1.Register.Number));
+            var fsrc2 = binder.EnsureRegister(Registers.GetFpuRegister(src2.Register.Number));
             m.Assign(fdst, m.FSub(fsrc1, fsrc2));
         }
     }

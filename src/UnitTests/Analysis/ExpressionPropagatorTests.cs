@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Analysis
                 var ebx = m.Frame.EnsureRegister(new RegisterStorage("ebx", 3, 0, PrimitiveType.Word32));
                 var v4 = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
-                m.Assign(v4, m.IAdd(m.LoadW(ebx), 1));
+                m.Assign(v4, m.IAdd(m.Mem16(ebx), 1));
                 m.Store(ebx, v4);
                 m.Assign(szo, m.Cond(v4));
                 m.Return();
@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Analysis
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 var r1 = m.Register(1);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 8)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 8)));
                 m.Return();
             });
 
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Analysis
                 r2 = m.Register("r2");
                 r3 = m.Register("r3");
                 m.Assign(r2, 0x1234);                       // after which R2 has a definite value
-                m.SideEffect(m.Fn("Foo", m.Out(PrimitiveType.Pointer32, r2)));    // Can't promise R2 is preserved after call, so should be invalid.
+                m.SideEffect(m.Fn("Foo", m.Out(PrimitiveType.Ptr32, r2)));    // Can't promise R2 is preserved after call, so should be invalid.
                 m.Assign(r3, r2);
             });
 

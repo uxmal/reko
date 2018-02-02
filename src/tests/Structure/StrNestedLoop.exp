@@ -42,6 +42,5 @@ void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 		} while (cx_18 != 0x0000);
 		dx_15 = dx_15 - 0x0001;
 	} while (dx_15 != 0x0000);
-	return;
 }
 ===========================

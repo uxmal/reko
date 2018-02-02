@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -351,7 +351,7 @@ namespace Reko.Core
 		public static readonly Address NULL = Address32.Ptr32(0);
 
         public Address32(uint addr)
-            : base(PrimitiveType.Pointer32)
+            : base(PrimitiveType.Ptr32)
         {
             this.uValue = addr;
         }
@@ -486,52 +486,57 @@ namespace Reko.Core
         }
     }
 
+    /// <summary>
+    /// Implements an Intel 80286+ protected segmented address.
+    /// </summary>
+    /// <remarks>
+    /// Starting with the 80386, the offset could be 32-bit. It's possible 
+    /// we may need a separate ProtectedSegmentedAddress48 class for such
+    /// "long" segmented addresses. See discussion in #498.
+    /// </remarks>
     public class ProtectedSegmentedAddress : Address
     {
-        private ushort uSegment;
+        private ushort uSelector;
         private ushort uOffset;
 
         public ProtectedSegmentedAddress(ushort segment, ushort offset)
             : base(PrimitiveType.SegPtr32)
         {
-            this.uSegment = segment;
+            this.uSelector = segment;
             this.uOffset = offset;
         }
 
-        public override bool IsNull { get { return uSegment == 0 && uOffset == 0; } }
+        public override bool IsNull { get { return uSelector == 0 && uOffset == 0; } }
         public override ulong Offset { get { return uOffset; } }
-        public override ushort? Selector { get { return uSegment; } }
+        public override ushort? Selector { get { return uSelector; } }
 
         public override Address Add(long offset)
         {
-            ushort sel = this.uSegment;
-            uint newOff = (uint)(uOffset + offset);
-            if (newOff > 0xFFFF)
-            {
-                sel += 0x1000;
-                newOff &= 0xFFFF;
-            }
-            return new ProtectedSegmentedAddress(sel, (ushort)newOff);
+            ushort sel = this.uSelector;
+            // As per discussion in #498, we allow the offset to overflow
+            // quietly.
+            ushort newOff = (ushort)(uOffset + offset);
+            return new ProtectedSegmentedAddress(sel, newOff);
         }
 
         public override Address Align(int alignment)
         {
-            return new RealSegmentedAddress(uSegment, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
+            return new ProtectedSegmentedAddress(uSelector, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
         }
 
         public override Expression CloneExpression()
         {
-            return new ProtectedSegmentedAddress(uSegment, uOffset);
+            return new ProtectedSegmentedAddress(uSelector, uOffset);
         }
 
         public override string GenerateName(string prefix, string suffix)
         {
-            return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSegment, uOffset, suffix);
+            return string.Format("{0}{1:X4}_{2:X4}{3}", prefix, uSelector, uOffset, suffix);
         }
 
         public override Address NewOffset(ulong offset)
         {
-            return new ProtectedSegmentedAddress(uSegment, (ushort)offset);
+            return new ProtectedSegmentedAddress(uSelector, (ushort)offset);
         }
 
         public override Constant ToConstant()
@@ -546,17 +551,17 @@ namespace Reko.Core
 
         public override uint ToUInt32()
         {
-            return (((uint)(uSegment & ~7)) << 9) + uOffset;
+            return (((uint)(uSelector & ~7)) << 9) + uOffset;
         }
 
         public override ulong ToLinear()
         {
-            return (((ulong)(uSegment & ~7)) << 9) + uOffset;
+            return (((ulong)(uSelector & ~7)) << 9) + uOffset;
         }
 
         public override string ToString()
         {
-            return string.Format("{0:X4}:{1:X4}", uSegment, uOffset);
+            return string.Format("{0:X4}:{1:X4}", uSelector, uOffset);
         }
     }
 
@@ -566,7 +571,7 @@ namespace Reko.Core
 		public static readonly Address NULL = Address32.Ptr64(0);
 
 		public Address64(ulong addr)
-            : base(PrimitiveType.Pointer64)
+            : base(PrimitiveType.Ptr64)
         {
             this.uValue = addr;
         }

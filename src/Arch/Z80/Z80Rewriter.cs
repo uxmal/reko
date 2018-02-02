@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,17 +35,17 @@ namespace Reko.Arch.Z80
     public class Z80Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Z80ProcessorArchitecture arch;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private IEnumerator<Z80Instruction> dasm;
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
 
-        public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = new Z80Disassembler(rdr).GetEnumerator();
         }
@@ -175,11 +175,11 @@ namespace Reko.Arch.Z80
 
         private void RewriteBlockInstruction(Func<Expression, Expression, Expression> incdec, bool repeat)
         {
-            var bc = frame.EnsureRegister(Registers.bc);
-            var de = frame.EnsureRegister(Registers.de);
-            var hl = frame.EnsureRegister(Registers.hl);
+            var bc = binder.EnsureRegister(Registers.bc);
+            var de = binder.EnsureRegister(Registers.de);
+            var hl = binder.EnsureRegister(Registers.hl);
             var V =  FlagGroup(FlagM.PF);
-            m.Assign(m.LoadB(de), m.LoadB(hl));
+            m.Assign(m.Mem8(de), m.Mem8(hl));
             m.Assign(hl, incdec(hl, Constant.Int16(1)));
             m.Assign(de, incdec(de, Constant.Int16(1)));
             m.Assign(bc, m.ISub(bc, 1));
@@ -192,7 +192,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteNeg()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             m.Assign(a, m.Neg(a));
             AssignCond(FlagM.SF | FlagM.ZF | FlagM.PF | FlagM.CF, a);
         }
@@ -223,7 +223,7 @@ namespace Reko.Arch.Z80
             }
             else
             {
-                reg = frame.EnsureRegister(Registers.a);
+                reg = binder.EnsureRegister(Registers.a);
             }
             var C = FlagGroup(FlagM.CF);
             Expression src;
@@ -272,7 +272,7 @@ namespace Reko.Arch.Z80
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return frame.EnsureFlagGroup(Registers.f,(uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.f,(uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -344,11 +344,11 @@ namespace Reko.Arch.Z80
         private void RewriteCp(Func<Expression , Expression, Expression> incDec, bool repeat)
         {
             var addr = dasm.Current.Address;
-            var a = frame.EnsureRegister(Registers.a);
-            var bc = frame.EnsureRegister(Registers.bc);
-            var hl = frame.EnsureRegister(Registers.hl);
+            var a = binder.EnsureRegister(Registers.a);
+            var bc = binder.EnsureRegister(Registers.bc);
+            var hl = binder.EnsureRegister(Registers.hl);
             var z = FlagGroup(FlagM.ZF);
-            m.Assign(z, m.Cond(m.ISub(a, m.LoadB(hl))));
+            m.Assign(z, m.Cond(m.ISub(a, m.Mem8(hl))));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(bc, m.ISub(bc, m.Int16(1)));
             if (repeat)
@@ -360,13 +360,13 @@ namespace Reko.Arch.Z80
 
         private void RewriteCpl()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             m.Assign(a, m.Comp(a));
         }
 
         private void RewriteDaa()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             m.Assign(
                 a,
                 host.PseudoProcedure("__daa", PrimitiveType.Byte, a));
@@ -384,7 +384,7 @@ namespace Reko.Arch.Z80
         private void RewriteDjnz(MachineOperand dst)
         {
             rtlc = RtlClass.Linear;
-            var b = frame.EnsureRegister(Registers.b);
+            var b = binder.EnsureRegister(Registers.b);
             m.Assign(b, m.ISub(b, 1));
             m.Branch(m.Ne0(b), ((AddressOperand)dst).Address, RtlClass.Transfer);
         }
@@ -401,7 +401,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteEx()
         {
-            var t = frame.CreateTemporary(dasm.Current.Op1.Width);
+            var t = binder.CreateTemporary(dasm.Current.Op1.Width);
             m.Assign(t, RewriteOp(dasm.Current.Op1));
             m.Assign(RewriteOp(dasm.Current.Op1), RewriteOp(dasm.Current.Op2));
             m.Assign(RewriteOp(dasm.Current.Op2), t);
@@ -409,9 +409,9 @@ namespace Reko.Arch.Z80
 
         private void RewriteExAf()
         {
-            var t = frame.CreateTemporary(Registers.af.DataType);
-            var af = frame.EnsureRegister(Registers.af);
-            var af_ = frame.EnsureRegister(Registers.af_);
+            var t = binder.CreateTemporary(Registers.af.DataType);
+            var af = binder.EnsureRegister(Registers.af);
+            var af_ = binder.EnsureRegister(Registers.af_);
             m.Assign(t, af);
             m.Assign(af, af_);
             m.Assign(af_, t);
@@ -421,9 +421,9 @@ namespace Reko.Arch.Z80
         {
             foreach (var r in new[] { "bc", "de", "hl" })
             {
-                var t = frame.CreateTemporary(PrimitiveType.Word16);
-                var reg = frame.EnsureRegister(arch.GetRegister(r));
-                var reg_ = frame.EnsureRegister(arch.GetRegister(r + "'"));
+                var t = binder.CreateTemporary(PrimitiveType.Word16);
+                var reg = binder.EnsureRegister(arch.GetRegister(r));
+                var reg_ = binder.EnsureRegister(arch.GetRegister(r + "'"));
                 m.Assign(t, reg);
                 m.Assign(reg, reg_);
                 m.Assign(reg_, t);
@@ -464,7 +464,7 @@ namespace Reko.Arch.Z80
                 var mTarget = instr.Op1 as MemoryOperand;
                 if(mTarget != null)
                 {
-                    m.Goto(frame.EnsureRegister(mTarget.Base));
+                    m.Goto(binder.EnsureRegister(mTarget.Base));
                 }
             }
         }
@@ -494,7 +494,7 @@ namespace Reko.Arch.Z80
                 m.Branch(
                     m.Test(
                         cc, 
-                        frame.EnsureFlagGroup(arch.GetFlagGroup((uint)cr))),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup((uint)cr))),
                     target.Address, 
                     RtlClass.ConditionalTransfer);
             }
@@ -515,7 +515,7 @@ namespace Reko.Arch.Z80
         {
             var rOp = op as RegisterOperand;
             if (rOp != null)
-                return frame.EnsureRegister(rOp.Register);
+                return binder.EnsureRegister(rOp.Register);
             var immOp = op as ImmediateOperand;
             if (immOp != null)
                 return immOp.Value;
@@ -524,29 +524,29 @@ namespace Reko.Arch.Z80
             {
                 Identifier bReg = null;
                 if (memOp.Base != null)
-                    bReg = frame.EnsureRegister(memOp.Base);
+                    bReg = binder.EnsureRegister(memOp.Base);
                 if (memOp.Offset == null)
                 {
-                    return m.Load(memOp.Width, bReg);
+                    return m.Mem(memOp.Width, bReg);
                 }
                 else if (bReg == null)
                 {
-                    return m.Load(memOp.Width, memOp.Offset);
+                    return m.Mem(memOp.Width, memOp.Offset);
                 }
                 else
                 {
                     int s = memOp.Offset.ToInt32();
                     if (s > 0)
                     {
-                        return m.Load(memOp.Width, m.IAdd(bReg, s));
+                        return m.Mem(memOp.Width, m.IAdd(bReg, s));
                     }
                     else if (s < 0)
                     {
-                        return m.Load(memOp.Width, m.ISub(bReg, -s));
+                        return m.Mem(memOp.Width, m.ISub(bReg, -s));
                     }
                     else
                     {
-                        return m.Load(memOp.Width, bReg);
+                        return m.Mem(memOp.Width, bReg);
                     }
                 }
             }
@@ -562,12 +562,12 @@ namespace Reko.Arch.Z80
 
         private void RewriteIn(Func<Expression,Expression,Expression> incDec, bool repeat)
         {
-            var hl = frame.EnsureRegister(Registers.hl);
-            var c = frame.EnsureRegister(Registers.c);
-            var b = frame.EnsureRegister(Registers.b);
-            var Z = frame.EnsureFlagGroup(arch.GetFlagGroup("Z"));
+            var hl = binder.EnsureRegister(Registers.hl);
+            var c = binder.EnsureRegister(Registers.c);
+            var b = binder.EnsureRegister(Registers.b);
+            var Z = binder.EnsureFlagGroup(arch.GetFlagGroup("Z"));
             m.Assign(
-                m.LoadB(hl),
+                m.Mem8(hl),
                 host.PseudoProcedure("__in", PrimitiveType.Byte, c));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(b, m.ISub(b, 1));
@@ -587,18 +587,18 @@ namespace Reko.Arch.Z80
 
         private void RewritePop()
         {
-            var sp = frame.EnsureRegister(Registers.sp);
+            var sp = binder.EnsureRegister(Registers.sp);
             var op = RewriteOp(dasm.Current.Op1);
-            m.Assign(op, m.Load(PrimitiveType.Word16, sp));
+            m.Assign(op, m.Mem(PrimitiveType.Word16, sp));
             m.Assign(sp, m.IAdd(sp, op.DataType.Size));
         }
 
         private void RewritePush(Z80Instruction instr)
         {
-            var sp = frame.EnsureRegister(Registers.sp);
+            var sp = binder.EnsureRegister(Registers.sp);
             var op = RewriteOp(instr.Op1);
             m.Assign(sp, m.ISub(sp, op.DataType.Size));
-            m.Assign(m.Load(PrimitiveType.Word16, sp), op);
+            m.Assign(m.Mem(PrimitiveType.Word16, sp), op);
         }
 
         private void RewriteBit()
@@ -614,7 +614,7 @@ namespace Reko.Arch.Z80
             var op = RewriteOp(dasm.Current.Op2);
             Expression dst;
             if (op is MemoryAccess)
-                dst = frame.CreateTemporary(op.DataType);
+                dst = binder.CreateTemporary(op.DataType);
             else
                 dst = op;
             m.Assign(dst, host.PseudoProcedure(pseudocode, dst.DataType, op, bit));

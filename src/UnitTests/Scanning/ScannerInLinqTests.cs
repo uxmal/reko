@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -335,11 +337,16 @@ namespace Reko.UnitTests.Scanning
                 m.Ret();
             });
             CreateScanner();
-            host.Stub(h => h.EnsurePseudoProcedure(
+            host.Stub(h => h.PseudoProcedure(
                 Arg<string>.Is.Equal("__hlt"),
+                Arg<ProcedureCharacteristics>.Is.NotNull,
                 Arg<DataType>.Is.NotNull,
-                Arg<int>.Is.Equal(0))).
-                Return(new PseudoProcedure("__hlt", VoidType.Instance, 0));
+                Arg<Expression>.Is.Anything)).
+                Return(new Application(
+                    new ProcedureConstant(
+                        new UnknownType(),
+                        new PseudoProcedure("__hlt", VoidType.Instance, 0)),
+                    VoidType.Instance));
             mr.ReplayAll();
 
             siq.ScanInstructions(sr);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,13 +105,11 @@ namespace Reko.Core
                 return true;
             }
 
-            var bin = ea as BinaryExpression;
-            if (bin != null && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub) && IsStackRegister(bin.Left))
+            if (ea is BinaryExpression bin && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub) && IsStackRegister(bin.Left))
             {
-                var cOffset = bin.Right as Constant;
-                if (cOffset != null)
+                if (bin.Right is Constant cOffset)
                 {
-                    offset = ((Constant)bin.Right).ToInt32();
+                    offset = cOffset.ToInt32();
                     if (bin.Operator == Operator.ISub)
                         offset = -offset;
                     return true;
@@ -257,8 +255,7 @@ namespace Reko.Core
                 linearDerived.Remove(reg);
                 return constVal;
             }
-            var binVal = value as BinaryExpression;
-            if (binVal != null)
+            if (value is BinaryExpression binVal)
             {
                 if ((binVal.Operator == Operator.IAdd || binVal.Operator == Operator.ISub) &&
                     binVal.Left is Identifier &&
@@ -275,8 +272,7 @@ namespace Reko.Core
 
         public void SetValueEa(Expression ea, Expression value)
         {
-            int stackOffset;
-            if (GetStackOffset(ea, out stackOffset))
+            if (GetStackOffset(ea, out int stackOffset))
                 stackState[stackOffset] = value;
         }
 

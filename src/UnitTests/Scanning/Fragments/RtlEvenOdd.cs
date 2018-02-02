@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,21 +41,21 @@ namespace Reko.UnitTests.Scanning.Fragments
                 new RtlTrace(0x1000)    // main
                 {
                     m => {m.Assign(r1, 3); },
-                    m => { m.Assign(sp, m.ISub(sp, 4)); m.Assign(m.LoadDw(sp), r1); },
+                    m => { m.Assign(sp, m.ISub(sp, 4)); m.Assign(m.Mem32(sp), r1); },
                     m => { m.Call(Address.Ptr32(0x1200), 4); },
                     m => { m.Assign(r1, 3); },
-                    m => { m.Assign(sp, m.ISub(sp, 4)); m.Assign(m.LoadDw(sp), r1); },
+                    m => { m.Assign(sp, m.ISub(sp, 4)); m.Assign(m.Mem32(sp), r1); },
                     m => { m.Call(Address.Ptr32(0x1100), 4); },
                     m => { m.Return(4, 4); }
                 },
 
                 new RtlTrace(0x1100)    // odd
                 {
-                    m => { m.Assign(r1, m.LoadDw(m.IAdd(sp, 4))); },
+                    m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
                     m => { m.Branch(m.Eq0(r1), Address.Ptr32(0x1120), RtlClass.ConditionalTransfer); },
-                    m => { m.Assign(r1, m.LoadDw(m.IAdd(sp, 4))); },
+                    m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
                     m => { m.Assign(r1, m.ISub(r1, 1)); },
-                    m => { m.Assign(m.LoadDw(m.IAdd(sp, 4)), r1); },
+                    m => { m.Assign(m.Mem32(m.IAdd(sp, 4)), r1); },
                     m => { m.Goto(Address.Ptr32(0x1200)); }
                 },
                 new RtlTrace(0x1120)
@@ -66,11 +66,11 @@ namespace Reko.UnitTests.Scanning.Fragments
 
                 new RtlTrace(0x1200)    // event
                 {
-                    m => { m.Assign(r1, m.LoadDw(m.IAdd(sp, 4))); },
+                    m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
                     m => { m.Branch(m.Eq0(r1), Address.Ptr32(0x1220), RtlClass.ConditionalTransfer); },
-                    m => { m.Assign(r1, m.LoadDw(m.IAdd(sp, 4))); },
+                    m => { m.Assign(r1, m.Mem32(m.IAdd(sp, 4))); },
                     m => { m.Assign(r1, m.ISub(r1, 1)); },
-                    m => { m.Assign(m.LoadDw(m.IAdd(sp, 4)), r1); },
+                    m => { m.Assign(m.Mem32(m.IAdd(sp, 4)), r1); },
                     m => { m.Goto(Address.Ptr32(0x1100)); }
                 },
                 new RtlTrace(0x1220)

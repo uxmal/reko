@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,10 +53,10 @@ namespace Reko.UnitTests.Core
         private void Given_ArchitectureStub()
         {
             arch = mr.DynamicMock<IProcessorArchitecture>();
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
-            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Pointer32);
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
+            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Ptr32);
             platform = mr.DynamicMock<IPlatform>();
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Replay();
             this.procSer = new ProcedureSerializer(platform, null, "");
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Core
         public void Tlldr_typedef_ptr_int()
         {
             Given_ArchitectureStub();
-            Given_Arch_PointerDataType(PrimitiveType.Pointer32);
+            Given_Arch_PointerDataType(PrimitiveType.Ptr32);
             mr.ReplayAll();
 
             var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
@@ -352,6 +352,33 @@ namespace Reko.UnitTests.Core
             var globalByName = stdlib.GlobalsByName["errno"];
             var globalByOrdinal = stdlib.GlobalsByOrdinal[42];
             Assert.AreSame(globalByName, globalByOrdinal);
+        }
+
+        [Test]
+        public void Tlldr_typedef_empty_enum()
+        {
+            Given_ArchitectureStub();
+            mr.ReplayAll();
+
+            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var slib = new SerializedLibrary
+            {
+                Types = new SerializedType[]
+                {
+                    new SerializedTypedef
+                    {
+                        Name ="empty_enum",
+                        DataType =new SerializedEnumType
+                        {
+                            Name = "empty",
+                            Size = 4,
+                        }
+                    }
+                }
+            };
+            var lib = tlLdr.Load(slib);
+
+            Assert.AreEqual("(enum empty,())", lib.LookupType("empty_enum").ToString());
         }
     }
 }

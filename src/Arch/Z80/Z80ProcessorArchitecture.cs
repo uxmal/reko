@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,9 +92,9 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Z80Rewriter(this, rdr, state, frame, host);
+            return new Z80Rewriter(this, rdr, state, binder, host);
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -200,7 +200,7 @@ namespace Reko.Arch.Z80
             return GetFlagGroup((uint)flags);
         }
 
-        public override Core.Expressions.Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Core.Expressions.Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

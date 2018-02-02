@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_moveQ()
         {
-            RunTest("moveq\t#$+01,d1", 0x7201);
+            RunTest("moveq\t#$01,d1", 0x7201);
         }
 
         [Test]
@@ -328,9 +328,9 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_or()
         {
-            RunTest("or.b\td0,$-0008(a0)", 0x8128, 0xFFF8);
-            RunTest("or.w\td0,$-0008(a0)", 0x8168, 0xFFF8);
-            RunTest("or.l\td0,$-0008(a0)", 0x81A8, 0xFFF8);
+            RunTest("or.b\td0,-$0008(a0)", 0x8128, 0xFFF8);
+            RunTest("or.w\td0,-$0008(a0)", 0x8168, 0xFFF8);
+            RunTest("or.l\td0,-$0008(a0)", 0x81A8, 0xFFF8);
         }
 
         [Test]
@@ -689,13 +689,13 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_fmovem_to_reg()
         {
-            RunTest("fmovem.x\t$-0018(a6),fp2", 0xF22E, 0xD020, 0xFFE8); 
+            RunTest("fmovem.x\t-$0018(a6),fp2", 0xF22E, 0xD020, 0xFFE8); 
         }
 
         [Test]
         public void M68kdis_fmoved()
         {
-            RunTest("fmove.d\tfp0,$-0008(a6)", 0xF22E, 0x7400, 0xFFF8);
+            RunTest("fmove.d\tfp0,-$0008(a6)", 0xF22E, 0x7400, 0xFFF8);
         }
 
         [Test]
@@ -717,6 +717,12 @@ namespace Reko.UnitTests.Arch.M68k
             // which is not valid with a 68k FPU; it should
             // decode to an illegal instruction
             RunTest("illegal\t", 0xF2BC, 0x00E0);
+        }
+
+        [Test]
+        public void M68kdis_cmpi_pc_relative_indexing()
+        {
+            RunTest("cmpi.b\t#$04,(pc,d0.w,+002C)", 0x0C3B, 0x0004, 0x0028);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,8 +148,11 @@ namespace Reko.Core
 
         public byte[] ReadBytes(uint length)
         {
-            byte[] dst = new byte[length];
-            Array.Copy(bytes,(int) off, dst, 0, length);
+            int avail = Math.Min((int) length, bytes.Length -(int) off);
+            if (avail <= 0)
+                return new byte[0];
+            byte[] dst = new byte[avail];
+            Array.Copy(bytes,(int) off, dst, 0, avail);
             Offset += length;
             return dst;
         }

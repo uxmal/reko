@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,20 +142,23 @@ namespace Reko.Analysis
 
         private int GetStackDepthBeforeCall()
         {
+            // We often see crashes on this statement due to flaws earlier in
+            // the Reko process. The register state is cleared when this analysis
+            // encounters a procedure that terminates/diverges. The most common
+            // cause for this is encountering invalid instructions from the 
+            // architecture rewriter. If you see an exception here, look for 
+            // unimplemented machine instruction rewriters for the relevant 
+            // architecture.
             var spVal = ctx.RegisterState[platform.Architecture.StackRegister];
             if (ctx.IsFramePointer(spVal))
                 return 0;
-            var bin = spVal as BinaryExpression;
-            if (bin == null || !ctx.IsFramePointer(bin.Left))
+            if (!(spVal is BinaryExpression bin && ctx.IsFramePointer(bin.Left)))
                 return 0;
-            var c = bin.Right as Constant;
-            if (c == null)
+            if (!(bin.Right is Constant c))
                 throw new NotImplementedException("Expected stack depth to be known.");
             int depth = c.ToInt32();
             if (bin.Operator == Operator.ISub)
                 depth = -depth;
-            if (depth > 0)
-                throw new NotImplementedException("Expected stack depth to be negative.");
             return -depth;
         }
 

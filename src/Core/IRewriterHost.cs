@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ namespace Reko.Core
 {
     public interface IRewriterHost 
     {
-        PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
         Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 

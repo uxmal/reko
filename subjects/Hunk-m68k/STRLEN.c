@@ -57,14 +57,14 @@ void fn00001000(int32 d0, byte * a0)
 			d0_23->dw0000 = d0_93 + 0x11;
 			d0_23->dw000C = d4_410 - 0x01;
 			d0_23->ptr0008 = (byte *) (&d0_23->ptr0010 + d0_91 / 0x0014);
-			Mem118[0x00:word32] = 0x00;
+			null = null;
 			struct Eq_67 * d0_119 = d0_19->ptr00AC;
 			if (d0_119 == null)
 			{
 				fn00001214(d0_19);
 				globals->ptr13D4 = d0_119;
 				globals->ptr13D8 = d0_119;
-				Mem354[0x00:word32] = 0x00;
+				null = null;
 				dwLoc0C_127 = d0_119;
 				ui32 d0_357 = d0_119->dw0024;
 				if (d0_357 != 0x00)
@@ -90,21 +90,20 @@ l000011F8:
 			}
 			ui32 d0_169 = ((ui32[]) 0x0010)[d0_119];
 			byte * a1_172 = d0_23->ptr0008;
-			Eq_172 (* a0_177)[] = (d0_169 << 0x02) + 0x01;
+			Eq_172 a0_177[] = (d0_169 << 0x02) + 0x01;
 			int32 d0_178 = (int32) null[d0_169].b0000;
-			Mem179[a0_177 + d0_178:byte] = 0x00;
+			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&a0_177[d0_178].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_172) 0x00;
 			d0_23->ptr0010 = a0_177;
 			word32 * a6_182 = (char *) &d0_23->ptr0010 + 0x04;
 			int32 d3_183 = 0x01;
 			struct Eq_183 * a0_185 = a0 + d2_187;
-l000010DA:
-			a0_185 = a0_185 - 0x01;
-			if (a0_185->b0000 > 0x20)
+			do
 			{
+				a0_185 = a0_185 - 0x01;
+				if (a0_185->b0000 > 0x20)
+					break;
 				d2_187 = d2_187 - 0x01;
-				if (d2_187 != ~0x00)
-					goto l000010DA;
-			}
+			} while (d2_187 != ~0x00);
 			a0_185[0x01] = (struct Eq_183) 0x00;
 			do
 			{
@@ -211,7 +210,6 @@ l00001202:
 		fn00001214(d0_19);
 		fn0000126C(d0_23);
 	}
-	return;
 }
 
 // 00001214: void fn00001214(Register (ptr Eq_25) a3)
@@ -219,7 +217,6 @@ void fn00001214(Eq_25 * a3)
 {
 	WaitPort((char *) &a3->dw003A + 0x0022);
 	GetMsg((char *) &a3->dw003A + 0x0022);
-	return;
 }
 
 // 0000126C: void fn0000126C(Register (ptr Eq_31) a2)
@@ -227,14 +224,12 @@ void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
-	return;
 }
 
 // 00001278: void fn00001278(Stack int32 dwArg04)
 void fn00001278(int32 dwArg04)
 {
 	fn0000127C(dwArg04);
-	return;
 }
 
 // 0000127C: void fn0000127C(Register int32 d2)
@@ -249,7 +244,6 @@ void fn0000127C(int32 d2)
 	if (v6_5 != null)
 		fn0000126C(v6_5);
 	FreeMem(v8_8, v8_8->dw0000);
-	return;
 }
 
 // 000012D0: void fn000012D0(Stack int32 dwArg04)
@@ -288,7 +282,6 @@ void fn000012D0(int32 dwArg04)
 		}
 	}
 	fn00001278(dwArg04);
-	return;
 }
 
 // 0000131C: void fn0000131C(Stack int32 dwArg04)
@@ -318,7 +311,6 @@ void fn0000131C(int32 dwArg04)
 		}
 		fn000012D0(dwArg04);
 	}
-	return;
 }
 
 // 00001354: void fn00001354(Stack int32 dwArg04, Stack (ptr Eq_67) dwArg08)
@@ -341,7 +333,6 @@ void fn00001354(int32 dwArg04, Eq_67 * dwArg08)
 		} while (*a3_45 != null);
 	}
 	fn0000131C(fn00001390());
-	return;
 }
 
 // 00001390: Register word32 fn00001390()

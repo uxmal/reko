@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Loading
         void Given_File(string name, byte[] content)
         {
             fsSvc.Stub(f => f.FileExists(name)).Return(true);
-            fsSvc.Stub(f => f.CreateFileStream(name, FileMode.Open))
+            fsSvc.Stub(f => f.CreateFileStream(name, FileMode.Open, FileAccess.Read))
                 .Return(new MemoryStream(content));
         }
 

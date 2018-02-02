@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,10 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof (SerializedLibrary));
 			SerializedLibrary lib;
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(
+                FileUnitTester.MapTestPath("Core/SlibOneProcedure.xml"),
+                FileMode.Open,
+                FileAccess.Read))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
@@ -65,15 +68,21 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        //$REVIEW: consider removing this unit test. It sole function is counting the
+        // number of reconstituted function. This changes each time msvcrt.xml is modified,
+        // and provides no value.
 		public void SlibReadMsvcrtXml()
 		{
             XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
 			SerializedLibrary lib;
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(
+                FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"),
+                FileMode.Open,
+                FileAccess.Read))
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(45, lib.Procedures.Count);
+			Assert.AreEqual(47, lib.Procedures.Count);
 		}
 
         [Test(Description = "Validates that the realmodeintservices file (in format 1) can be read properly")]

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -242,13 +242,11 @@ namespace Reko.ImageLoaders.LLVM
                 long? idx = null;
                 var dt = builder.TranslateType(index.Item1);
                 var i = MakeValueExpression(index.Item2, dt);
-                var con = i as IrConstant;
-                if (con != null)
+                if (i is IrConstant con)
                 {
                     idx = Convert.ToInt64(con.ToInt64());
                 }
-                var ptr = type as Pointer;
-                if (ptr != null)
+                if (type is Pointer ptr)
                 {
                     if (idx.HasValue && idx.Value == 0)
                     {
@@ -262,8 +260,7 @@ namespace Reko.ImageLoaders.LLVM
                     type = ptr.Pointee;
                     continue;
                 }
-                var a = type as ArrayType;
-                if (a != null)
+                if (type is ArrayType a)
                 {
                     e = m.Array(a.ElementType, e, i);
                     e.DataType = a.ElementType;
@@ -368,9 +365,9 @@ namespace Reko.ImageLoaders.LLVM
 
         private Expression MakeValueExpression(Value value, DataType dt)
         {
-            var c = value as Constant;
-            if (c != null)
+            switch (value)
             {
+            case Constant c:
                 if (c.Value == null)
                 {
                     var w = PrimitiveType.CreateWord(dt.Size);
@@ -382,35 +379,22 @@ namespace Reko.ImageLoaders.LLVM
                 {
                     return IrConstant.Create(dt, Convert.ToInt64(c.Value));
                 }
-            }
-            var l = value as Literal;
-            if (l != null)
-            {
+            case Literal l:
                 if (l.Type == TokenType.HexInteger)
                 {
-                    var ptr = dt as Pointer;
                     var val = Convert.ToInt64(l.Value, 16);
-                    if (ptr != null)
+                    if (dt is Pointer ptr)
                     {
                         return Address.Create(ptr, (ulong)val);
                     }
                     return IrConstant.Create(dt, val);
                 }
                 throw new NotImplementedException();
-            }
-            var local = value as LocalId;
-            if (local != null)
-            {
+            case LocalId local:
                 return m.GetLocalId(local.Name);
-            }
-            var global = value as GlobalId;
-            if (global != null)
-            {
+            case GlobalId global:
                 return builder.Globals[global.Name];
-            }
-            var get = value as GetElementPtrExpr;
-            if (get != null)
-            {
+            case GetElementPtrExpr get:
                 return GetElementPtr(get.PointerType, get.Pointer, get.Indices);
             }
             throw new NotImplementedException(string.Format("MakeValueExpression: {0} {1}", value.GetType().Name, value.ToString() ?? "(null)"));

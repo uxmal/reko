@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -401,6 +401,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble32(0x979FF103);
             Assert.AreEqual("ldrls\tpc,[pc,r3,lsl #2]", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_mrsgt()
+        {
+            var instr = Disassemble32(0xC1431903);
+            Assert.AreEqual("mrsgt\tr1,spsr", instr.ToString());
         }
     }
 }

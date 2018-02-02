@@ -36,6 +36,5 @@ void fn0C00_0000(word16 bx, selector ds)
 		else
 			ax_11 = ax_11 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16];
 	}
-	return;
 }
 ===========================

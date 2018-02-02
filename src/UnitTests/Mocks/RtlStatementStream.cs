@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,16 +28,16 @@ namespace Reko.UnitTests.Mocks
 {
     public class RtlStatementStream : ExpressionEmitter
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private List<RtlInstructionCluster> stms;
         private IProcessorArchitecture arch;
         private uint linAddress;
 
-        public RtlStatementStream(uint address, IStorageBinder frame)
+        public RtlStatementStream(uint address, IStorageBinder binder)
         {
             this.linAddress = address;
             this.arch = new FakeArchitecture();
-            this.frame = frame;
+            this.binder = this.binder;
             this.stms = new List<RtlInstructionCluster>();   
         }
 
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Mocks
 
         public Identifier Register(int iReg)
         {
-            return frame.EnsureRegister(arch.GetRegister(iReg));
+            return binder.EnsureRegister(arch.GetRegister(iReg));
         }
 
         public RtlInstruction Return()

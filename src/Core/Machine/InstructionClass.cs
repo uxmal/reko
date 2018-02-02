@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,5 +39,6 @@ namespace Reko.Core.Machine
         Annul = 16,             // The following instruction is anulled.
         Invalid = 32,           // The instruction is invalid
         Call = 64,              // The instruction saves a return address somewhere
+        System = 128,           // Privileged instruction
     }
 }

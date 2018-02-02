@@ -8,8 +8,12 @@
 from optparse import OptionParser
 import os
 import os.path
+import re
 import subprocess
 import sys
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+os.chdir(script_dir)
 
 parser = OptionParser()
 parser.add_option("-c", "--configuration", dest="configuration",
@@ -20,10 +24,10 @@ parser.add_option("-o", "--check-output", dest="check_output",
                   help="check output files", default=False)
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
-    dirs = ["."]
+    dirs = [script_dir]
 (options, args) = parser.parse_args()
 
-reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
+reko_cmdline_dir = os.path.abspath(script_dir + "/../src/Drivers/CmdLine")
 
 start_dir = os.getcwd()
 
@@ -89,6 +93,11 @@ def execute_in_dir(fn, dir, fname):
 def execute_reko_project(dir, pname):
     execute_command([reko_cmdline, pname], pname)
 
+
+# Remove any comment on the line
+def strip_comment(line):
+    return re.sub('#.*', '', line)
+
 # Find all commands to execute.
 def execute_command_file(dir, scr_name):
     f = open("subject.cmd")
@@ -97,6 +106,7 @@ def execute_command_file(dir, scr_name):
     if (lines is None):
         return
     for line in lines:
+        line = strip_comment(line)
         exe_and_args = cmdline_split(line)
         if len(exe_and_args) <= 1:
             continue
@@ -105,7 +115,6 @@ def execute_command_file(dir, scr_name):
         execute_command(exe_and_args, exe_and_args[-1])
 
 def execute_command(exe_and_args, pname):
-
     rel_pname = os.path.join(os.path.relpath(os.getcwd(), start_dir), pname)
     
     if sys.platform == "linux2":

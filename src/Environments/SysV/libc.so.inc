@@ -64,6 +64,8 @@ void free(void * p);
 
 void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function);
 
+int atoi(const char *);
+long atol(const char *);
 
 int getpagesize(void);
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -168,8 +168,7 @@ namespace Reko.Analysis
 					Branch b = u.Instruction as Branch;
                     if (b == null)
                         continue;
-					BinaryExpression bin;
-					if (b.Condition.As<BinaryExpression>(out bin) && 
+					if (b.Condition is BinaryExpression bin && 
                         bin.Left is Identifier && 
                         bin.Operator is ConditionalOperator)
 					{
@@ -214,14 +213,11 @@ namespace Reko.Analysis
                 Assignment ass = sid.DefStatement.Instruction as Assignment;
                 if (ass == null)
                     continue;
-                BinaryExpression bin = ass.Src as BinaryExpression;
-                if (bin != null && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
+                if (ass.Src is BinaryExpression bin && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
                 {
-                    Identifier idLeft = bin.Left as Identifier;
-                    if (idLeft != null && IsSccMember(idLeft, sids))
+                    if (bin.Left is Identifier idLeft && IsSccMember(idLeft, sids))
                     {
-                        Constant c = bin.Right as Constant;
-                        if (c != null)
+                        if (bin.Right is Constant c)
                         {
                             ctx.DeltaStatement = sid.DefStatement;
                             ctx.DeltaValue = (bin.Operator == Operator.ISub)
@@ -230,7 +226,6 @@ namespace Reko.Analysis
                             return ctx.DeltaValue;
                         }
                     }
-
                 }
             }
 			return null;
@@ -242,11 +237,10 @@ namespace Reko.Analysis
             {
                 if (sid.DefStatement == null)
                     continue;
-                PhiAssignment phi = sid.DefStatement.Instruction as PhiAssignment;
-                if (phi != null)
+                if (sid.DefStatement.Instruction is PhiAssignment phi)
                 {
                     ctx.PhiStatement = sid.DefStatement;
-                    ctx.PhiIdentifier = (Identifier) phi.Dst;
+                    ctx.PhiIdentifier = (Identifier)phi.Dst;
                     return phi.Src;
                 }
             }

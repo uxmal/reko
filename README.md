@@ -28,12 +28,29 @@ other reverse engineering of their machine code binaries. Use this
 decompiler only if you have legal rights to decompile the binary
 (for instance if the binary is your own.)
 
+## Downloading Reko
+
+Official releases are published every few months on [Github](https://github.com/uxmal/reko/releases)
+and [SourceForge](https://sourceforge.net/projects/decompiler/files/). 
+Users who can't or won't build Reko themselves can download the output
+of the [AppVeyor integration builder](https://ci.appveyor.com/project/uxmal/reko/build/artifacts).
+Naturally you can build the project from the sources: see "Hacking" 
+below.
+
+## Getting support
+
+You can report any issues you encounter or ask any Reko-related question
+on the [issue tracker](https://github.com/uxmal/reko/issues).
+You can also try the Reko [Gitter.im](https://gitter.im/uxmal/reko)
+chatroom. Reko is built by volunteers' efforts on their
+spare time, so adjust your response-time expectations accordingly.
+
 ## Hacking
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
 `Reko-decompiler.sln`. If you are an IDE user, use Visual
-Studio 2013 or later, or MonoDevelop version 5.10 or later. If you
+Studio 2017 or later, or MonoDevelop version 5.10 or later. If you
 wish to build using the command line, use the command
 
 ```cmd
@@ -45,6 +62,11 @@ needed to build Reko are included in the `external` directory.
 
 **Note**: please let us know if you still are not able to compile,
 so we can help you fix the issue.
+
+If you're interested in contributing code, see the
+[road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
+The [Wiki](https://github.com/uxmal/reko/wiki) has more information
+about the Reko project's internal workings.
 
 ### Warnings and errors related to WiX
 
@@ -64,11 +86,6 @@ The solution folder `Drivers` contains the executables that act
 as user interfaces: the directory `WindowsDecompiler` contains
 the GUI client for Windows users; `MonoDecompiler` contains the GUI
 client for Mono users; `CmdLine` is a command line driver.
-
-If you're interested in contributing code, see the
-[road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
-The [Wiki](https://github.com/uxmal/reko/wiki) has more information
-about the Reko project's internal workings.
 
 ## Recent versions
 

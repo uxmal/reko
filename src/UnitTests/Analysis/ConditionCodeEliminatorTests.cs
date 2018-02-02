@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -482,5 +482,112 @@ done:
             p.Add(new FCmpFragment());
             RunTest(p, "Analysis/CceFCmp.txt");
         }
-	}
+
+        [Test]
+        public void CceUnsignedRange()
+        {
+            var sExp =
+            #region Expected
+@"r2:r2
+    def:  def r2
+    uses: Mem4[0x00123400:word32] = r2
+          branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
+          branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
+r1_1: orig: r1
+SCZ_2: orig: SCZ
+CZ_3: orig: CZ
+Mem4: orig: Mem0
+    def:  Mem4[0x00123400:word32] = r2
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder(word32 r2)
+ProcedureBuilder_entry:
+	def r2
+	// succ:  l1
+l1:
+	branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
+	// succ:  mDo mElse
+mDo:
+	Mem4[0x00123400:word32] = r2
+	// succ:  mElse
+mElse:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+
+            RunStringTest(sExp, m =>
+            {
+                var r1 = MockReg(m, 1);
+                var r2 = MockReg(m, 2);
+                var SCZ = m.Flags("SCZ");
+                var CZ = m.Flags("CZ");
+
+                m.Assign(r1, m.ISub(r2, 2));
+                m.Assign(SCZ, m.Cond(m.ISub(r1, 5)));
+                m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
+
+                m.Label("mDo");
+                m.Store(m.Word32(0x00123400), r2);
+
+                m.Label("mElse");
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void CceUInt64()
+        {
+            var sExp =
+            #region Expected
+@"rax:rax
+    def:  def rax
+    uses: branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
+          branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
+rdx_1: orig: rdx
+rax_2: orig: rax
+CZ_3: orig: CZ
+Mem4: orig: Mem0
+    def:  Mem4[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder(word64 rax)
+ProcedureBuilder_entry:
+	def rax
+	// succ:  l1
+l1:
+	branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
+	// succ:  mDo mElse
+mDo:
+	Mem4[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+	// succ:  mElse
+mElse:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+
+            RunStringTest(sExp, m =>
+            {
+                var rdx = m.Reg64("rdx", 2);
+                var rax = m.Reg64("rax", 0);
+                var CZ = m.Flags("CZ");
+
+                m.Assign(rdx, m.ISub(rax, 1));
+                m.Assign(rax, Constant.Word64(0x1FFFFFFFFFFFFFFE));
+                m.Assign(CZ, m.Cond(m.ISub(rdx, rax)));
+                m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
+
+                m.Label("mDo");
+                m.Store(m.Word32(0x00123400), rax);
+
+                m.Label("mElse");
+                m.Return();
+            });
+        }
+    }
 }

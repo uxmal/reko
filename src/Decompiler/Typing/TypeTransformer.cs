@@ -1,6 +1,6 @@
- #region License
+#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -252,10 +252,10 @@ namespace Reko.Typing
                     if (eventListener.IsCanceled())
                         return;
 					EquivalenceClass eq = tv.Class;
-					if (eq.DataType != null)
-					{
-						eq.DataType = eq.DataType.Accept(this);
-					}
+                    if (eq.DataType != null)
+                    {
+                        eq.DataType = eq.DataType.Accept(this);
+                    }
                     if (tv.DataType != null)
                     {
                         tv.DataType = tv.DataType.Accept(this);
@@ -374,11 +374,29 @@ namespace Reko.Typing
 			if (strNew.Fields.Count != str.Fields.Count)
 				Changed = true;
 			MergeStaggeredArrays(strNew);
-			DataType dt = strNew.Simplify();
-			if (dt != strNew)
-				Changed = true;
-			return dt;
+            if (ShouldSimplify(strNew))
+            {
+                DataType dt = strNew.Simplify();
+                if (dt != strNew)
+                    Changed = true;
+                return dt;
+            }
+            return strNew;
 		}
+
+        private bool ShouldSimplify(StructureType strNew)
+        {
+            if (strNew.Fields.Count != 1)
+                return false;
+            if (strNew.Fields[0].Offset != 0)
+                return false;
+            // Make sure this field is not in a cycle.
+            if (TypeStoreCycleFinder.IsInCycle(store, strNew))
+                return false;
+
+            return true;
+        }
+
 
         public DataType VisitTypeReference(TypeReference typeref)
         {

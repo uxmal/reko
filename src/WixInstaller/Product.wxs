@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2018 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -117,6 +117,7 @@
         <File Source="$(var.RT11.TargetPath)" />
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
         <File Source="$(var.SegaGenesis.TargetPath)" />
+        <File Source="$(var.SegaGenesis.ProjectDir)SegaGenesis.xml" />
         <File Source="$(var.SysV.TargetPath)" />
         <File Source="$(var.SysV.ProjectDir)lp32.xml" />
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
@@ -137,6 +138,7 @@
         <!-- Architectures -->
         <File Source="$(var.Alpha.TargetPath)" />
         <File Source="$(var.Arm.TargetPath)" />
+        <File Source="$(var.Avr.TargetPath)" />
         <File Source="$(var.M68k.TargetPath)" />
         <File Source="$(var.M68k.Design.TargetPath)" />
         <File Source="$(var.Mips.TargetPath)" />

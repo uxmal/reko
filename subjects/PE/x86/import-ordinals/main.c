@@ -7,7 +7,6 @@
 // 00401000: void fn00401000()
 void fn00401000()
 {
-	return;
 }
 
 // 00401010: Register word32 fn00401010(Stack word32 dwArg04)
@@ -296,24 +295,18 @@ Eq_512 * fn004013F6(Eq_94 * dwArg04, uint32 dwArg08)
 // 0040143A: Register byte fn0040143A()
 byte fn0040143A()
 {
-	if (fn00401B98() != 0x00)
+	if (fn00401B98() == 0x00)
+		return 0x00;
+	word32 edx_32 = fs->ptr0018->dw0004;
+	do
 	{
-		word32 edx_32 = fs->ptr0018->dw0004;
-l0040145B:
 		__lock();
 		word32 eax_37;
 		__cmpxchg(globals->dw403338, edx_32, 0x00, out eax_37);
-		if (eax_37 != 0x00)
-		{
-			if (edx_32 != eax_37)
-				goto l0040145B;
-			return 0x01;
-		}
-		else
+		if (eax_37 == 0x00)
 			return 0x00;
-	}
-	else
-		return 0x00;
+	} while (edx_32 != eax_37);
+	return 0x01;
 }
 
 // 0040146F: Register byte fn0040146F(Register word32 edx, Stack (ptr Eq_94) dwArg04)
@@ -323,23 +316,22 @@ byte fn0040146F(word32 edx, Eq_94 * dwArg04)
 		globals->b403354 = 0x01;
 	fn004019FE(edx);
 	fn00401C46();
+	if (false)
+		return 0x00;
+	fn00401C46();
 	if (true)
-	{
-		fn00401C46();
-		if (true)
-			return 0x01;
-		fn00401C46();
-	}
+		return 0x01;
+	fn00401C46();
 	return 0x00;
 }
 
-// 0040153F: Register (ptr Eq_603) fn0040153F(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-Eq_603 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+// 0040153F: Register (ptr Eq_609) fn0040153F(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Register out ptr32 ebxOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+Eq_609 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_603 * eax_31;
+	struct Eq_609 * eax_31;
 	struct Eq_65 * ebp_10 = fn00401980(ebx, esi, edi, dwLoc0C, 0x00402528, 0x08);
 	*(ebp_10 - 0x04) = *(ebp_10 - 0x04) & 0x00;
-	struct Eq_623 * eax_15 = (struct Eq_623 *) 23117;
+	struct Eq_629 * eax_15 = (struct Eq_629 *) 23117;
 	if (globals->w400000 == 23117)
 	{
 		eax_15 = globals->ptr40003C;
@@ -351,7 +343,7 @@ Eq_603 * fn0040153F(word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & es
 			if (eax_15 != null && eax_15->dw0024 >= 0x00)
 			{
 				*(ebp_10 - 0x04) = ~0x01;
-				eax_31 = (struct Eq_603 *) DPB(eax_15, 0x01, 0);
+				eax_31 = (struct Eq_609 *) DPB(eax_15, 0x01, 0);
 l004015C3:
 				word32 esi_37;
 				word32 edi_38;
@@ -362,7 +354,7 @@ l004015C3:
 		}
 	}
 	*(ebp_10 - 0x04) = ~0x01;
-	eax_31 = (struct Eq_603 *) DPB(eax_15, 0x00, 0);
+	eax_31 = (struct Eq_609 *) DPB(eax_15, 0x00, 0);
 	goto l004015C3;
 }
 
@@ -371,7 +363,6 @@ void fn004015C9(byte bArg04)
 {
 	if (fn00401B98() != 0x00 && bArg04 == 0x00)
 		globals->dw403338 = 0x00;
-	return;
 }
 
 // 004015E6: void fn004015E6(Stack (ptr Eq_94) dwArg04, Stack byte bArg08)
@@ -382,7 +373,6 @@ void fn004015E6(Eq_94 * dwArg04, byte bArg08)
 		fn00401C46();
 		fn00401C46();
 	}
-	return;
 }
 
 // 0040165E: void fn0040165E()
@@ -404,13 +394,11 @@ void fn0040165E()
 		globals->dw403004 = ecx_69;
 		globals->dw403000 = ~ecx_69;
 	}
-	return;
 }
 
 // 00401761: void fn00401761()
 void fn00401761()
 {
-	return;
 }
 
 // 00401767: Register ptr32 fn00401767()
@@ -431,7 +419,6 @@ void fn0040176D(word32 dwArg00, Eq_94 * dwArg04)
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
 			globals->dw403368 = globals->dw403368 & 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
-		return;
 	}
 	else
 		__fastfail(dwArg04);
@@ -440,14 +427,13 @@ void fn0040176D(word32 dwArg00, Eq_94 * dwArg04)
 // 0040188B: Register bool fn0040188B()
 bool fn0040188B()
 {
-	Eq_851 eax_4 = GetModuleHandleW(null);
-	if (eax_4 != null && eax_4->unused == 23117)
-	{
-		struct Eq_865 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
-		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
-			return eax_42->dw00E8 != 0x00;
-	}
-	return 0x00;
+	Eq_857 eax_4 = GetModuleHandleW(null);
+	if (eax_4 == null || eax_4->unused != 23117)
+		return 0x00;
+	struct Eq_871 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+	if (eax_42->dw0000 != 0x4550 || (eax_42->w0018 != 0x010B || eax_42->dw0074 <= 0x0E))
+		return 0x00;
+	return eax_42->dw00E8 != 0x00;
 }
 
 // 00401972: void fn00401972()
@@ -455,7 +441,6 @@ void fn00401972()
 {
 	word32 esp_3;
 	globals->ptr4020D4();
-	return;
 }
 
 // 00401980: Register ptr32 fn00401980(Register word32 ebx, Register ptr32 esi, Register ptr32 edi, Stack word32 dwArg00, Stack word32 dwArg04, Stack ui32 dwArg08)
@@ -538,7 +523,6 @@ void fn004019FE(word32 edx)
 			}
 		}
 	}
-	return;
 }
 
 // 00401B98: Register word32 fn00401B98()
@@ -550,6 +534,5 @@ word32 fn00401B98()
 // 00401C46: void fn00401C46()
 void fn00401C46()
 {
-	return;
 }
 

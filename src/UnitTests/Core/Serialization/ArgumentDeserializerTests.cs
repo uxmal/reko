@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,21 +77,6 @@ namespace Reko.UnitTests.Core.Serialization
             Identifier id = argser.Deserialize(arg);
             Assert.AreEqual("eax", id.Name);
             Assert.AreEqual(32, id.DataType.BitSize);
-        }
-
-        [Test]
-        [Category(Categories.FailedTests)]
-        [Ignore(Categories.FailedTests)]
-        public void ArgSer_DeserializeReturnRegisterWithType()
-        {
-            throw new NotImplementedException();
-            //var arg = new Argument_v1
-            //{
-            //    Kind = new Register_v1("eax"),
-            //    Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
-            //};
-            //var id = argser.DeserializeReturnValue(arg);
-            //Assert.AreEqual("(ptr char)", id.DataType.ToString());
         }
 
         [Test]

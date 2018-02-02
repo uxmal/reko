@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,6 +70,13 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteCallm()
+        {
+            // CALLM was very rarely used, only existed on 68020.
+            // Until someone really needs it, we just give up.
+            EmitInvalid();
+        }
+
         private void RewriteChk()
         {
             rtlc = RtlClass.Conditional | RtlClass.Linear;
@@ -90,7 +97,7 @@ namespace Reko.Arch.M68k
             var reg = orw.RewriteSrc(di.op2, di.Address);
             var lowBound = orw.RewriteSrc(di.op1, di.Address);
             var ea = ((MemoryAccess)lowBound).EffectiveAddress;
-            var hiBound = m.Load(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
+            var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
             m.Branch(
                 m.Cand(
                     m.Ge(reg, lowBound),
@@ -125,6 +132,12 @@ namespace Reko.Arch.M68k
 
         private void RewriteDbcc(ConditionCode cc, FlagM flags)
         {
+            var addr = (Address)orw.RewriteSrc(di.op2, di.Address, true);
+            if (cc == ConditionCode.ALWAYS)
+            {
+                rtlc = RtlClass.Transfer;
+                m.Goto(addr);
+            }
             rtlc = RtlClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
@@ -138,7 +151,7 @@ namespace Reko.Arch.M68k
             m.Assign(src, m.ISub(src, 1));
             m.Branch(
                 m.Ne(src, m.Word32(-1)),
-                (Address)orw.RewriteSrc(di.op2, di.Address, true),
+                addr,
                 RtlClass.ConditionalTransfer);
         }
 
@@ -156,6 +169,13 @@ namespace Reko.Arch.M68k
             }
         }
 
+        private void RewriteRtm()
+        {
+            // RTM was very rarely used, only existed on 68020.
+            // Until someone really needs it, we just give up.
+            EmitInvalid();
+        }
+
         private void RewriteRts()
         {
             rtlc = RtlClass.Transfer;
@@ -169,9 +189,33 @@ namespace Reko.Arch.M68k
 
         private void RewriteTrap()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = RtlClass.Transfer | RtlClass.Call;
             var vector = orw.RewriteSrc(di.op1, di.Address);
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
+        }
+
+        private void RewriteTrapCc(ConditionCode cc, FlagM flags)
+        {
+            if (cc == ConditionCode.NEVER)
+            {
+                m.Nop();
+                return;
+            }
+            rtlc = RtlClass.Transfer|RtlClass.Call;
+            if (cc != ConditionCode.ALWAYS)
+            {
+                rtlc |= RtlClass.Conditional;
+                m.BranchInMiddleOfInstruction(
+                    m.Test(cc, orw.FlagGroup(flags)).Invert(),
+                    di.Address + di.Length,
+                    RtlClass.ConditionalTransfer);
+            }
+            var args = new List<Expression> { Constant.UInt16(7) };
+            if (di.op1 != null)
+            {
+                args.Add(orw.RewriteSrc(di.op1, di.Address));
+            }
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, args.ToArray()));
         }
     }
 }

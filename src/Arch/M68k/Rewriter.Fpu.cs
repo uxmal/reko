@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,13 +37,23 @@ namespace Reko.Arch.M68k
 
         private void RewriteFbcc(ConditionCode cc)
         {
-            rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(
-                m.Test(cc, binder.EnsureRegister(Registers.fpsr)),
-                ((M68kAddressOperand)di.op1).Address,
-                RtlClass.ConditionalTransfer);
+            var addr = ((M68kAddressOperand)di.op1).Address;
+            if (cc == ConditionCode.NEVER)
+            {
+                m.Nop();
+            }
+            else if (cc == ConditionCode.ALWAYS)
+            {
+                rtlc = RtlClass.Transfer;
+                m.Goto(addr);
+            }
+            else
+            {
+                rtlc = RtlClass.ConditionalTransfer;
+                var test = m.Test(cc, binder.EnsureRegister(Registers.fpsr));
+                m.Branch(test, addr, rtlc);
+            }
         }
-
         private void RewriteFbcc(Func<Expression, Expression> fnTest)
         {
             rtlc = RtlClass.ConditionalTransfer;
@@ -112,6 +122,14 @@ namespace Reko.Arch.M68k
             var dst = orw.RewriteSrc(di.op2, di.Address);
             m.Assign(dst, src);
             m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
+        }
+
+        private void RewriteFtan()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("tan", s.DataType, s));
         }
 
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)

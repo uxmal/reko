@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,10 +50,10 @@ namespace Reko.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             ArmProcessorState state = new ArmProcessorState(arch, new SegmentMap(baseAddress));
-            return new ThumbRewriter(arch, new LeImageReader(image, 0), state, frame, host);
+            return new ThumbRewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
         private void BuildTest(params ushort[] words)
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         private class FakeRewriterHost : IRewriterHost
         {
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            public PseudoProcedure EnsurePseudoProcedure_DEAD(string name, DataType returnType, int arity)
             {
                 return new PseudoProcedure(name, returnType, arity);
             }

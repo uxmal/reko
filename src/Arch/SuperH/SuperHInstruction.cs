@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,8 +83,7 @@ namespace Reko.Arch.SuperH
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string sOpcode;
-            if (!opcodes.TryGetValue(Opcode, out sOpcode))
+            if (!opcodes.TryGetValue(Opcode, out var sOpcode))
                 sOpcode = Opcode.ToString();
             writer.WriteOpcode(sOpcode);
             if (op1 == null)

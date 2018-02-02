@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,12 +48,12 @@ namespace Reko.UnitTests.Environments.Windows
         public void W32Mips_Trampoline()
         {
             var instrs = new List<RtlInstructionCluster>();
-            var frame = new Frame(PrimitiveType.Pointer32);
+            var frame = new Frame(PrimitiveType.Ptr32);
             var r9 = frame.EnsureRegister(new RegisterStorage("r9", 9, 0, PrimitiveType.Word32));
             var rtl = new RtlTrace(0x123460)
             {
                 m => m.Assign(r9, 0x00030000),
-                m => m.Assign(r9, m.LoadDw(m.IAdd(r9, 0x1234))),
+                m => m.Assign(r9, m.Mem32(m.IAdd(r9, 0x1234))),
                 m => m.Goto(r9)
             };
 

@@ -20,6 +20,7 @@ time_t time(time_t * ptime);
 void srand(unsigned int);
 [[reko::returns(register,"eax")]]int _ftol([[reko::arg(fpu)]]double);
 double floor(double);
+int puts(const char * s);
 int printf(char *, ...);
 int scanf(char * format, ...);
 int sprintf(char *, char *, ...);
@@ -49,6 +50,10 @@ int __getmainargs(int *, char ***, char ***, int);
 void __setusermatherr(_HANDLE_MATH_ERROR pf);
 void exit(int code);
 void _assert(char cond, char * file, int line);
+void (__cdecl *signal(  
+   int sig,   
+   void (__cdecl *func ) (int, ...)))   
+   (int);  
 
 void _amsg_exit(int n);
 void _initterm(PVFV * fStart, PVFV * fEnd);

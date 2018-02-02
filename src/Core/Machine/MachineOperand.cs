@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,26 +55,44 @@ namespace Reko.Core.Machine
 
         public abstract void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options);
 
-		public static string FormatSignedValue(Constant c)
-		{
-			string s = "+";
-			int tmp = c.ToInt32();
-			if (tmp < 0)
-			{
-				s = "-";
-				tmp = -tmp;
-			}
-			return s + tmp.ToString(FormatString(c.DataType));
-		}
+        /// <summary>
+        /// Converts a signed integer constant to string representatioon.
+        /// </summary>
+        /// <param name="forceSign">sign Should signed integers always be formatted with a leading sign character?
+        /// Setting this to true allows chaining a sequence of numbers into an expression,
+        ///  like "+5+7-3+9".
+        /// Setting this to false will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
+        /// <param name="format">Format string; allows injecting platform-specific characters before/between/after sign and value
+        /// when printing an integer value as hex. {0} will be the sign character (if any) and {1} will be the absolute value.</param>
+        public static string FormatSignedValue(Constant c, bool forceSign = true, string format = "{0}{1}")
+        {
+            string s = (forceSign ? "+" : "");
+            int tmp = c.ToInt32();
+            if (tmp < 0)
+            {
+                s = "-";
+                tmp = -tmp;
+            }
+            return string.Format(format, s, tmp.ToString(FormatString(c.DataType)));
+        }
 
         private static readonly char[] floatSpecials = new char[] { '.', 'e', 'E' };
 
-        public static string FormatValue(Constant c)
+        /// <summary>
+        /// Converts a numeric constant to string representatioon.
+        /// </summary>
+        /// <param name="forceSignForSignedIntegers">sign Should signed integers always be formatted with a leading sign character?
+        /// Setting this to true allows chaining a sequence of numbers into an expression,
+        ///  like "+5+7-3+9".
+        /// Setting this to false will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
+        /// <param name="integerFormat">Format string; allows injecting platform-specific characters before/between/after sign and value
+        /// when printing an integer value as hex. {0} will be the sign character (if any) and {1} will be the absolute value.</param>
+        public static string FormatValue(Constant c, bool forceSignForSignedIntegers = true, string integerFormat = "{0}{1}")
         {
             var pt = (PrimitiveType)c.DataType;
             if (pt.Domain == Domain.SignedInt)
             {
-                return FormatSignedValue(c);
+                return FormatSignedValue(c, forceSignForSignedIntegers, integerFormat);
             }
             else if (pt.Domain == Domain.Real)
             {
@@ -86,7 +104,7 @@ namespace Reko.Core.Machine
                 return str;
             }
             else
-                return FormatUnsignedValue(c);
+                return FormatUnsignedValue(c, integerFormat);
         }
 
 		private static string FormatString(DataType dt)
@@ -101,9 +119,9 @@ namespace Reko.Core.Machine
 			}
 		}
 
-		public static string FormatUnsignedValue(Constant c)
+		public static string FormatUnsignedValue(Constant c, string format = "{0}{1}")
 		{
-			return c.ToUInt64().ToString(FormatString(c.DataType));
+			return string.Format(format, "", c.ToUInt64().ToString(FormatString(c.DataType)));
 		}
 	}
 
@@ -208,7 +226,9 @@ namespace Reko.Core.Machine
 
         public static AddressOperand Create(Address addr)
         {
-            return new AddressOperand(addr, PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
+            return new AddressOperand(
+                addr,
+                PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
         }
 
         public static AddressOperand Ptr16(ushort a)
@@ -218,12 +238,12 @@ namespace Reko.Core.Machine
 
         public static AddressOperand Ptr32(uint a)
         {
-            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Pointer32);
+            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Ptr32);
         }
 
         public static AddressOperand Ptr64(ulong a)
         {
-            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
+            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Ptr64);
         }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

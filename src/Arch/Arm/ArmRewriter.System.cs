@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@
 #endregion
 
 using Gee.External.Capstone.Arm;
+using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -81,6 +83,16 @@ namespace Reko.Arch.Arm
         {
             ConditionalSkip();
             m.SideEffect(host.PseudoProcedure("__msr", PrimitiveType.Word32, Operand(Dst), Operand(Src1)));
+        }
+
+        private void RewriteSvc()
+        {
+            rtlc = RtlClass.Call | RtlClass.Transfer;
+            var svcNum = Operand(Dst);
+            m.SideEffect(host.PseudoProcedure(
+                PseudoProcedure.Syscall,
+                VoidType.Instance,
+                Operand(Dst)));
         }
     }
 }

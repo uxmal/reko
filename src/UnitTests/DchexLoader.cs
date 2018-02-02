@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,8 +94,7 @@ namespace Reko.UnitTests
             int i = 0;
             if (tokens.Length > 1 && line[0] != ' ')
             {
-                Address address;
-                Address.TryParse32(tokens[0], out address);
+                Address.TryParse32(tokens[0], out var address);
                 if (this.addrStart == null)
                 {
                     addrStart = address;

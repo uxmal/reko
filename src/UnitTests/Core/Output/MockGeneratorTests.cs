@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Core.Output
         {
             CompileTest(m =>
             {
-                m.Store(m.Word32(0x123456), m.Load(PrimitiveType.Byte, m.Word32(0x12348)));
+                m.Store(m.Word32(0x123456), m.Mem(PrimitiveType.Byte, m.Word32(0x12348)));
                 m.Return();
             });
             string sExp =
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Core.Output
                 "{" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Store(Word32(0x123456), Load(PrimitiveType.Byte, Word32(0x12348)));" + nl +
+                "    Store(Word32(0x123456), Mem(PrimitiveType.Byte, Word32(0x12348)));" + nl +
                 "    Return();" + nl +
                 "}" + nl +
                 "" + nl;
@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Core.Output
 "    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
-"    BranchIf(Eq(i, new Constant(Primitive.Int32, 0x0)), \"skip\");" + nl + 
+"    BranchIf(Eq(i, Constant.Create(Primitive.Int32, 0x0)), \"skip\");" + nl + 
 "    " + nl + 
 "    Label(\"fade\");" + nl + 
 "    Store(Word32(0x123456), i);" + nl + 

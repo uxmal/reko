@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,8 +132,7 @@ namespace Reko.Typing
                     src = new Cast(dtDst, src);
                 }
             }
-            var idDst = dst as Identifier;
-            if (idDst != null)
+            if (dst is Identifier idDst)
                 return new Assignment(idDst, src);
             else
                 return new Store(dst, src);
@@ -174,9 +173,11 @@ namespace Reko.Typing
 
         public Expression RewriteComplexExpression(Expression complex, Expression index, int offset, bool dereferenced)
         {
-            var cOther = index as Constant;
-            if (cOther != null)
+            if (index is Constant cOther)
             {
+                //$REVIEW: changing this to:
+                // offset += cOther.ToInt32() causes a regression.
+                // This needs further investigation.
                 offset += (int) cOther.ToUInt32();
                 index = null;
             }
@@ -191,11 +192,9 @@ namespace Reko.Typing
 
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
-            BinaryExpression bin;
-            Constant c;
-            if (acc.Array.As(out bin) &&
+            if (acc.Array is BinaryExpression bin &&
                 bin.Operator == Operator.IAdd &&
-                bin.Right.As(out c))
+                bin.Right is Constant c)
             {
                 // (x + C)[...]
                 var arrayPtr = Rewrite(bin.Left, false);
@@ -281,12 +280,12 @@ namespace Reko.Typing
         {
             var head = Rewrite(seq.Head, false);
             var tail = Rewrite(seq.Tail, false);
-            Constant c = seq.Tail as Constant;
-            var ptHead = DataTypeOf(head) as PrimitiveType;
-            if (head.TypeVariable.DataType is Pointer || (ptHead != null && ptHead.Domain == Domain.Selector))
+            var dtHead = DataTypeOf(head);
+            if (dtHead is Pointer || (dtHead is PrimitiveType ptHead && ptHead.Domain == Domain.Selector))
             {
-                if (c != null)
+                if (seq.Tail is Constant c)
                 {
+                    // reg:CCCC => reg->fldCCCC
                     return RewriteComplexExpression(head, null, c.ToInt32(), dereferenced);
                 }
                 else
@@ -305,7 +304,10 @@ namespace Reko.Typing
             else
             {
             }
-            return new MkSequence(seq.DataType, head, tail);
+            return new MkSequence(seq.DataType, head, tail)
+            {
+                TypeVariable = seq.TypeVariable,
+            };
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -313,9 +315,8 @@ namespace Reko.Typing
             var oldBase = this.basePtr;
             this.basePtr = null;
             var basePtr = Rewrite(access.BasePointer, false);
-            Constant cEa;
             Expression result;
-            if (access.EffectiveAddress.As(out cEa))
+            if (access.EffectiveAddress is Constant cEa)
             {
                 uint uOffset = cEa.ToUInt32();
                 result = RewriteComplexExpression(basePtr, Constant.UInt32(uOffset), 0, true);

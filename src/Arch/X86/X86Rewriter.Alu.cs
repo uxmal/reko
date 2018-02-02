@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,12 +84,12 @@ namespace Reko.Arch.X86
         private void RewriteHlt()
         {
             rtlc = RtlClass.Terminates;
-            var ppp = host.EnsurePseudoProcedure("__hlt", VoidType.Instance, 0);
-            ppp.Characteristics = new ProcedureCharacteristics
+            var c = new ProcedureCharacteristics
             {
                 Terminates = true,
             };
-            m.SideEffect(PseudoProc(ppp, VoidType.Instance));
+            var ppp = host.PseudoProcedure("__hlt", c, VoidType.Instance);
+            m.SideEffect(ppp);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Reko.Arch.X86
 
         private void RewriteXgetbv()
         {
-            Identifier edx_eax = frame.EnsureSequence(
+            Identifier edx_eax = binder.EnsureSequence(
                 Registers.edx,
                 Registers.eax,
                 PrimitiveType.Word64);
@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
 
         private void RewriteXsetbv()
         {
-            var edx_eax = frame.EnsureSequence(
+            var edx_eax = binder.EnsureSequence(
                 Registers.edx,
                 Registers.eax,
                 PrimitiveType.Word64);
@@ -182,7 +182,7 @@ namespace Reko.Arch.X86
 
         private void RewriteRdtsc()
         {
-            Identifier edx_eax = frame.EnsureSequence(
+            Identifier edx_eax = binder.EnsureSequence(
                 Registers.edx,
                 Registers.eax,
                 PrimitiveType.Word64);
@@ -315,7 +315,7 @@ namespace Reko.Arch.X86
         {
             if (instrCur.dataWidth == PrimitiveType.Word32)
             {
-                Identifier edx_eax = frame.EnsureSequence(
+                Identifier edx_eax = binder.EnsureSequence(
                     Registers.edx,
                     Registers.eax,
                     PrimitiveType.Int64);
@@ -324,7 +324,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                Identifier dx_ax = frame.EnsureSequence(
+                Identifier dx_ax = binder.EnsureSequence(
                     Registers.dx,
                     Registers.ax,
                     PrimitiveType.Int32);
@@ -360,23 +360,23 @@ namespace Reko.Arch.X86
             case 2:
                 regQuotient = orw.AluRegister(Registers.ax);
                 regRemainder = orw.AluRegister(Registers.dx);
-                regDividend = frame.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word32);
+                regDividend = binder.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word32);
                 break;
             case 4:
                 regQuotient = orw.AluRegister(Registers.eax);
                 regRemainder = orw.AluRegister(Registers.edx);
-                regDividend = frame.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word64);
+                regDividend = binder.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word64);
                 break;
             case 8:
                 regQuotient = orw.AluRegister(Registers.rax);
                 regRemainder = orw.AluRegister(Registers.rdx);
-                regDividend = frame.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word128);
+                regDividend = binder.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word128);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
             };
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
-            var tmp = frame.CreateTemporary(regDividend.DataType);
+            var tmp = binder.CreateTemporary(regDividend.DataType);
             m.Assign(tmp, regDividend);
             m.Assign(
                 regRemainder, 
@@ -404,7 +404,7 @@ namespace Reko.Arch.X86
 
         private void RewriteExchange()
         {
-            Identifier itmp = frame.CreateTemporary(instrCur.dataWidth);
+            Identifier itmp = binder.CreateTemporary(instrCur.dataWidth);
             m.Assign(itmp, SrcOp(instrCur.op1));
             m.Assign(SrcOp(instrCur.op1), SrcOp(instrCur.op2));
             m.Assign(SrcOp(instrCur.op2), itmp);
@@ -473,17 +473,17 @@ namespace Reko.Arch.X86
                     break;
                 case 2:
                     multiplicator = orw.AluRegister(Registers.ax);
-                    product = frame.EnsureSequence(
+                    product = binder.EnsureSequence(
                         Registers.dx, multiplicator.Storage, PrimitiveType.Word32);
                     break;
                 case 4:
                     multiplicator = orw.AluRegister(Registers.eax);
-                    product = frame.EnsureSequence(
+                    product = binder.EnsureSequence(
                         Registers.edx, multiplicator.Storage, PrimitiveType.Word64);
                     break;
                 case 8:
                     multiplicator = orw.AluRegister(Registers.rax);
-                    product = frame.EnsureSequence(
+                    product = binder.EnsureSequence(
                         Registers.rdx, multiplicator.Storage, PrimitiveType.Word64);
                     break;
                 default:
@@ -579,8 +579,8 @@ namespace Reko.Arch.X86
             }
 
             m.Assign(
-                frame.EnsureSequence(seg, reg.Register,
-                PrimitiveType.Pointer32),
+                binder.EnsureSequence(seg, reg.Register,
+                PrimitiveType.Ptr32),
                 SrcOp(mem, PrimitiveType.SegPtr32));
         }
 
@@ -659,12 +659,14 @@ namespace Reko.Arch.X86
                     return;
                 }
             }
+            var imm = instrCur.op1 as ImmediateOperand;
+            var value = SrcOp(dasm.Current.op1, arch.StackRegister.DataType);
             Debug.Assert(
-                dasm.Current.dataWidth == PrimitiveType.Word16 ||
-                dasm.Current.dataWidth == PrimitiveType.Word32 ||
-                dasm.Current.dataWidth == PrimitiveType.Word64,
+                value.DataType.Size == 2 ||
+                value.DataType.Size == 4 ||
+                value.DataType.Size == 8,
                 string.Format("Unexpected size {0}", dasm.Current.dataWidth));
-            RewritePush(dasm.Current.dataWidth, SrcOp(dasm.Current.op1));
+            RewritePush(PrimitiveType.CreateWord(value.DataType.Size), value);
         }
 
         private void RewritePush(RegisterStorage reg)
@@ -676,7 +678,7 @@ namespace Reko.Arch.X86
         {
             if (instrCur.dataWidth == PrimitiveType.Word16)
             {
-                Identifier temp = frame.CreateTemporary(Registers.sp.DataType);
+                Identifier temp = binder.CreateTemporary(Registers.sp.DataType);
                 m.Assign(temp, orw.AluRegister(Registers.sp));
                 RewritePush(Registers.ax);
                 RewritePush(Registers.cx);
@@ -689,7 +691,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                Identifier temp = frame.CreateTemporary(Registers.esp.DataType);
+                Identifier temp = binder.CreateTemporary(Registers.esp.DataType);
                 m.Assign(temp, orw.AluRegister(Registers.esp));
                 RewritePush(Registers.eax);
                 RewritePush(Registers.ecx);
@@ -706,7 +708,7 @@ namespace Reko.Arch.X86
         {
             RewritePush(
                 dasm.Current.dataWidth,
-                frame.EnsureFlagGroup(
+                binder.EnsureFlagGroup(
                     Registers.eflags,
                     (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                     "SCZDOP", 
@@ -725,11 +727,15 @@ namespace Reko.Arch.X86
 
         private void RewriteOut()
         {
-            var ppp = host.EnsurePseudoProcedure("__out" + instrCur.op2.Width.Prefix, VoidType.Instance, 2);
-            m.SideEffect(m.Fn(ppp, 
-                SrcOp(instrCur.op1),
-                SrcOp(instrCur.op2)));
+            var port = SrcOp(instrCur.op1);
+            var val = SrcOp(instrCur.op2);
+            var ppp = host.PseudoProcedure(
+                "__out" + instrCur.op2.Width.Prefix,
+                VoidType.Instance,
+                port, val);
+            m.SideEffect(ppp);
         }
+
         private void RewritePop()
         {
             RewritePop(dasm.Current.op1, dasm.Current.op1.Width);
@@ -786,7 +792,7 @@ namespace Reko.Arch.X86
         {
             var width = instrCur.dataWidth;
             var sp = StackPointer();
-            m.Assign(frame.EnsureFlagGroup(
+            m.Assign(binder.EnsureFlagGroup(
                     Registers.eflags,
                     (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.DF | FlagM.OF | FlagM.PF),
                     "SCZDOP",
@@ -795,7 +801,7 @@ namespace Reko.Arch.X86
             m.Assign(sp, m.IAdd(sp, width.Size));
         }
 
-        private void RewritePush(PrimitiveType dataWidth, Expression expr)
+        private void RewritePush(DataType dataWidth, Expression expr)
         {
             Constant c = expr as Constant;
             if (c != null && c.DataType != dataWidth)
@@ -814,7 +820,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                rhs = frame.CreateTemporary(sp.DataType);
+                rhs = binder.CreateTemporary(sp.DataType);
                 m.Assign(rhs, expr);
             }
             m.Assign(sp, m.ISub(sp, dataWidth.Size));
@@ -836,7 +842,7 @@ namespace Reko.Arch.X86
                 sh = SrcOp(instrCur.op2);
             }
             sh = m.Shl(Constant.Create(instrCur.op1.Width, 1), sh);
-            t = frame.CreateTemporary(PrimitiveType.Bool);
+            t = binder.CreateTemporary(PrimitiveType.Bool);
             m.Assign(t, m.Ne0(m.And(SrcOp(instrCur.op1), sh)));
             Expression p;
             if (useCarry)
@@ -866,14 +872,10 @@ namespace Reko.Arch.X86
 
         private void RewriteShxd(string name)
         {
-            var ppp = host.EnsurePseudoProcedure(name, instrCur.op1.Width, 3);
-            m.Assign(
-                SrcOp(instrCur.op1), 
-                m.Fn(
-                    ppp,
-                    SrcOp(instrCur.op1),
-                    SrcOp(instrCur.op2),
-                    SrcOp(instrCur.op3)));
+            var arg1 = SrcOp(instrCur.op1);
+            var arg2 = SrcOp(instrCur.op2);
+            var arg3 = SrcOp(instrCur.op3);
+            m.Assign(arg1, host.PseudoProcedure(name, arg1.DataType, arg1, arg2, arg3));
         }
 
         public MemoryAccess MemDi()
@@ -969,7 +971,7 @@ namespace Reko.Arch.X86
                 break;
             case Opcode.movs:
             case Opcode.movsb:
-                Identifier tmp = frame.CreateTemporary(instrCur.dataWidth);
+                Identifier tmp = binder.CreateTemporary(instrCur.dataWidth);
                 m.Assign(tmp, MemSi());
                 m.Assign(MemDi(), tmp);
                 incSi = true;
@@ -977,16 +979,14 @@ namespace Reko.Arch.X86
                 break;
             case Opcode.ins:
             case Opcode.insb:
-                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__in", instrCur.dataWidth, 1);
-                m.Assign(MemDi(), m.Fn(ppp, regDX));
+                regDX = binder.EnsureRegister(Registers.dx);
+                m.Assign(MemDi(), host.PseudoProcedure("__in", instrCur.dataWidth, regDX));
                 incDi = true;
                 break;
             case Opcode.outs:
             case Opcode.outsb:
-                regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-                ppp = host.EnsurePseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, 2);
-                m.SideEffect(m.Fn(ppp, regDX, RegAl));
+                regDX = binder.EnsureRegister(Registers.dx);
+                m.SideEffect(host.PseudoProcedure("__out" + RegAl.DataType.Prefix, VoidType.Instance, regDX, RegAl));
                 incSi = true;
                 break;
             case Opcode.scas:
@@ -1093,7 +1093,7 @@ namespace Reko.Arch.X86
 
         private Identifier StackPointer()
         {
-            return frame.EnsureRegister(arch.ProcessorMode.StackRegister);
+            return binder.EnsureRegister(arch.ProcessorMode.StackRegister);
         }
     }
 }

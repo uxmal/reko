@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,6 +166,7 @@ namespace Reko.Environments.Windows
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 4;
@@ -300,7 +301,7 @@ namespace Reko.Environments.Windows
 		{
             SystemService svc;
             if (!services.TryGetValue(vector, out svc))
-                throw new NotImplementedException("INT service {0} is not supported by Windows.");
+                throw new NotImplementedException($"INT service {vector:X4} is not supported by Windows.");
             return svc;
 		}
 

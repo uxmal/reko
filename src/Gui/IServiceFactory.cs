@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2018 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,9 @@ namespace Reko.Gui
         IDisassemblyViewService CreateDisassemblyViewService();
         IFileSystemService CreateFileSystemService();
         InitialPageInteractor CreateInitialPageInteractor();
-        ILoadedPageInteractor CreateLoadedPageInteractor();
+        IScannedPageInteractor CreateScannedPageInteractor();
+        IAnalyzedPageInteractor CreateAnalyzedPageInteractor();
+        IFinalPageInteractor CreateFinalPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
         IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
         ISearchResultService CreateSearchResultService(ListView listView);
@@ -119,9 +121,19 @@ namespace Reko.Gui
             return new InitialPageInteractorImpl(this.services);
         }
 
-        public ILoadedPageInteractor CreateLoadedPageInteractor()
+        public IScannedPageInteractor CreateScannedPageInteractor()
         {
-            return new LoadedPageInteractor(services);
+            return new ScannedPageInteractor(services);
+        }
+
+        public IAnalyzedPageInteractor CreateAnalyzedPageInteractor()
+        {
+            return new AnalyzedPageInteractorImpl(services);
+        }
+
+        public IFinalPageInteractor CreateFinalPageInteractor()
+        {
+            return new FinalPageInteractor(services);
         }
 
         public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()

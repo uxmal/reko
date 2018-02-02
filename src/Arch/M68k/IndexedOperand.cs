@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,6 +110,8 @@ namespace Reko.Arch.M68k
             {
                 writer.Write(sep);
                 writer.Write(index_reg.Name);
+                if (index_reg_width.BitSize == 16)
+                    writer.Write(".w");
                 if (index_scale > 1)
                     writer.Write("*{0}", index_scale);
                 sep = ",";

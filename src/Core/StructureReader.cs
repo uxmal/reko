@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,9 +59,13 @@ namespace Reko.Core
 			}
         }
 
-        public T Read()
+        public T? Read()
         {
-			return this.BytesToStruct(this.reader);
+            var cbToRead = Marshal.SizeOf(typeof(T));
+            byte[] bytes = reader.ReadBytes(cbToRead);
+            if (bytes.Length < cbToRead)
+                return null;
+            return this.BytesToStruct(bytes);
         }
 
         private int GetAlignment(FieldInfo f)

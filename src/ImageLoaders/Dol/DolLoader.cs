@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,15 +105,13 @@ namespace Reko.ImageLoaders.Dol
 			return Load(addrLoad, arch, platform);
 		}
 
-		public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
-			BeImageReader rdr = new BeImageReader(this.RawImage, 0);
-			try {
-				this.hdr = new DolHeader(new StructureReader<DolStructure>(rdr).Read());
-			} catch (Exception ex) {
-				throw new BadImageFormatException("Invalid DOL header. " + ex.Message);
-			}
-
-			var segments = new List<ImageSegment>();
+        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
+            BeImageReader rdr = new BeImageReader(this.RawImage, 0);
+            DolStructure? str = new StructureReader<DolStructure>(rdr).Read();
+            if (!str.HasValue)
+                throw new BadImageFormatException("Invalid DOL header.");
+            this.hdr = new DolHeader(str.Value);
+            var segments = new List<ImageSegment>();
 
 			// Create code segments
 			for (uint i = 0, snum = 1; i < 7; i++, snum++) {

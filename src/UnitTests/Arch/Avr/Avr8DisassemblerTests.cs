@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,8 +159,8 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr8_dis_brcc()
         {
-            AssertCode("brcs\t0000", 0xF000);
-            AssertCode("brid\t003E", 0xF4FF);
+            AssertCode("brcs\t0002", 0xF000);
+            AssertCode("brid\t0040", 0xF4FF);
         }
 
         [Test]
@@ -220,6 +220,53 @@ namespace Reko.UnitTests.Arch.Avr
         {
             AssertCode("lpm", 0x95C8);
             AssertCode("lpm\tr25,z+", 0x9195);
+        }
+
+        [Test]
+        public void Avr8_dis_858F()
+        {
+            AssertCode("ldd\tr24,y+0F", 0x858F);
+        }
+
+        [Test]
+        public void Avr8_dis_878F()
+        {
+            AssertCode("std\ty+0F,r24", 0x878F);
+        }
+
+        [Test]
+        public void Avr8_dis_muls()
+        {
+            AssertCode("muls\tr16,r16", 0x0200);
+            AssertCode("muls\tr30,r18", 0x02E2);
+            AssertCode("muls\tr30,r31", 0x02EF);
+        }
+
+        public void Avr8_dis_FF84()
+        {
+            AssertCode("sbrs\tr24,4", 0xFF84);
+        }
+
+        [Test]
+        public void Avr8_dis_8B4B()
+        {
+            AssertCode("std\ty+13,r20", 0x8B4B);
+        }
+
+        [Test]
+        public void Avr8_dis_8A1C()
+        {
+            AssertCode("std\ty+14,r1", 0x8A1C);
+        }
+
+        [Test]
+        public void Avr8_dis_sbrs()
+        {
+            AssertCode("sbrc\tr8,04", 0xFC84);
+            AssertCode("sbrc\tr15,07", 0xFCF7);
+            AssertCode("invalid", 0xFCF8);
+            AssertCode("sbrc\tr30,07", 0xFDE7);
+            AssertCode("invalid", 0xFCE8);
         }
     }
 }

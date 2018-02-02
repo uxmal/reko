@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Analysis
         public void AliasStackArgument()
         {
             Identifier argOff = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
-            Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
+            Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Ptr32);
             Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0) (alias)", ass.ToString());
         }

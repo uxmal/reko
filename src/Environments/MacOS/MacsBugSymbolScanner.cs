@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,50 +135,50 @@ namespace Reko.Environments.MacOS
             ushort us;
             var addrStart = rdr.Address;
             sym = null;
-            for (;;)
+            while (rdr.TryReadBeUInt16(out us))
             {
-                if (!rdr.TryReadBeUInt16(out us))
-                    return false;
-                if (us == RTS || us == JMP_A0)
+                switch (us)
                 {
+                case RTS:
+                case JMP_A0:
                     // Found what looks like a terminator.
                     break;
-                }
-                if (us == RTD)
-                {
+                case RTD:
+                    // Read uint16 of bytes to pop.
                     if (!rdr.TryReadBeUInt16(out us))
                     {
                         return false;
                     }
                     // looks like a RTD xxx instruction.
                     break;
+                default:
+                    // Any other words are quietly eaten.
+                    continue;
                 }
-            }
 
-            // Remember the end of the procedure.
-            var position = rdr.Offset;
+                // Remember the end of the procedure.
+                var position = rdr.Offset;
 
-            // We think we saw the end of the procedure. Could there be a MacsBug symbol?
-            string symbol;
-            if (!TryReadMacsBugSymbol(out symbol))
-            {
-                // Don't really want a symbol in this case.
-                sym = new ImageSymbol { Type = SymbolType.Unknown };
-                // But there might be more procedures.
+                // We think we saw the end of the procedure. Could there be a MacsBug symbol?
+                string symbol;
+                if (!TryReadMacsBugSymbol(out symbol))
+                {
+                    // Don't really want a symbol in this case.
+                    // But there might be more procedures.
+                    continue;
+                }
+
+                if (!SkipConstantData())
+                {
+                    // That wasn't valid constant data, but there might be more procedures.
+                    // But there might be more procedures.
+                    continue;
+                }
+                
+                sym = new ImageSymbol(addrStart) { Type = SymbolType.Procedure, Name = symbol };
                 return true;
             }
-
-            if (!SkipConstantData())
-            {
-                // That wasn't valid constant data, but there might be more procedures.
-                sym = new ImageSymbol { Type = SymbolType.Unknown };
-                // But there might be more procedures.
-            }
-            else
-            {
-                sym = new ImageSymbol(addrStart) { Type = SymbolType.Procedure, Name = symbol };
-            }
-            return true;
+            return false;
         }
 
         private bool TryReadMacsBugSymbol(out string symbol)

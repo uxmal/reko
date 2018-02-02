@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,8 +106,7 @@ namespace Reko.Arch.Alpha
             if (ret.Number == ZeroRegister)
             {
                 rtlc = RtlClass.Transfer;
-                Identifier id;
-                if (dst.As(out id) && ((RegisterStorage)id.Storage).Number == ReturnAddress)
+                if (dst is Identifier id && ((RegisterStorage)id.Storage).Number == ReturnAddress)
                     m.Return(0, 0);
                 else 
                     m.Goto(dst);

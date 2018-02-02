@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -322,7 +322,7 @@ namespace Reko.UnitTests.Core.CLanguage
                     "((Int)" +
                     " (((func (__Stdcall (ptr Do)) " +
                         "((Int x)" +
-                        " (bool (func (__Stdcall (ptr cont)))))))))) " +
+                        " (Bool (func (__Stdcall (ptr cont)))))))))) " +
                     "((init-decl myVtbl)))";
             Assert.AreEqual(sExp, decl.ToString());
         }
@@ -1261,7 +1261,19 @@ int x = 3;
             Lex("float func(int x, bool (__thiscall * fn)());");
             var decl = parser.Parse_Decl();
             Assert.AreEqual(
-                "(decl Float ((init-decl (func func ((Int x) (bool (func (__Thiscall (ptr fn))))))))))",
+                "(decl Float ((init-decl (func func ((Int x) (Bool (func (__Thiscall (ptr fn))))))))))",
+                decl.ToString());
+        }
+
+        [Test(Description = "#506 on Github")]
+        public void CParser_Issue_506()
+        {
+            Lex("[[reko::returns(register, \"d0\")]] bool _DATAINIT([[reko::arg(register, \"a5\")]] long a5);");
+            var decl = parser.Parse_Decl();
+            Assert.AreEqual(
+                "(decl (attr reko::returns (Register Comma StringLiteral d0)) " +
+                  "Bool ((init-decl (func _DATAINIT " +
+                  "(((attr reko::arg (Register Comma StringLiteral a5)) Long a5))))))",
                 decl.ToString());
         }
     }

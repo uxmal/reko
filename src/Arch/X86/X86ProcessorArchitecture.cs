@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,9 +166,9 @@ namespace Reko.Arch.X86
 			return new X86State(this, map);
 		}
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new X86Rewriter(this, host, (X86State) state, rdr, frame);
+            return new X86Rewriter(this, host, (X86State) state, rdr, binder);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -176,9 +176,9 @@ namespace Reko.Arch.X86
             return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            return mode.CreateStackAccess(frame, offset, dataType);
+            return mode.CreateStackAccess(binder, offset, dataType);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

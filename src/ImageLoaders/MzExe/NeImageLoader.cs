@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,8 @@ namespace Reko.ImageLoaders.MzExe
             ADDITIVE = 4,
         }
 
+        // Segment table flags
+        const ushort NE_STFLAGS_RELOCATIONS       =0x0100;
 
         // Resource types
         const ushort NE_RSCTYPE_CURSOR            =0x8001;
@@ -71,6 +73,10 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_RSCTYPE_GROUP_CURSOR      =0x800c;
         const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
+
+        // Lowest 3 bits of a selector to the Local Descriptor Table requesting
+        // ring-3 privilege level.
+        const ushort LDT_RPL3 = 0x7;
 
         private MemoryArea mem;
         private SegmentMap segmentMap;
@@ -525,7 +531,7 @@ namespace Reko.ImageLoaders.MzExe
             var rdr = new LeImageReader(RawImage, offset);
             uint linAddress = 0x2000;
             Debug.Print("== Segment table ");
-            Debug.Print("Offs Len  Flag Alloc");
+            Debug.Print("  Address:Offs Len  Flag Alloc");
             for (int iSeg = 0; iSeg < cSeg; ++iSeg)
             {
                 var seg = new NeSegment
@@ -542,7 +548,7 @@ namespace Reko.ImageLoaders.MzExe
                 // Align to 4kb boundary.
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
-                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
+                seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
                 Debug.Print("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
                     seg.Address,
                     seg.DataOffset,
@@ -555,7 +561,7 @@ namespace Reko.ImageLoaders.MzExe
 
             // Generate pseudo-segment for imports with in a segment that isn't
             // one of the "real" segments loaded above.
-            addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | 7), 0);
+            addrImportStubs = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | LDT_RPL3), 0);
 
             return segs.ToArray();
         }
@@ -578,6 +584,8 @@ namespace Reko.ImageLoaders.MzExe
                 mem,
                 seg.Address.Selector.Value.ToString("X4"),
                 access);
+            if ((seg.Flags & NE_STFLAGS_RELOCATIONS) == 0)
+                return true;
             var rdr = new LeImageReader(
                 RawImage,
                 seg.DataLength + ((uint)seg.DataOffset << this.cbFileAlignmentShift));

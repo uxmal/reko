@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,8 +42,8 @@ namespace Reko.Arch.Tlcs
         public Tlcs900Architecture()
         {
             this.InstructionBitSize = 8;        // Instruction alignment, really.
-            this.FramePointerType = PrimitiveType.Pointer32;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.StackRegister = Registers.xsp;
         }
@@ -93,12 +93,12 @@ namespace Reko.Arch.Tlcs
             return new Tlcs900ProcessorState(this, map);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Tlcs900.Tlcs900Rewriter(this, rdr, state, frame, host);
+            return new Tlcs900.Tlcs900Rewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -161,12 +161,10 @@ namespace Reko.Arch.Tlcs
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            Dictionary<int, RegisterStorage> subs;
-            if (!Registers.Subregisters.TryGetValue(reg, out subs))
+            if (!Registers.Subregisters.TryGetValue(reg, out var subs))
                 return null;
             int key = (width << 4) | offset;
-            RegisterStorage subreg;
-            if (!subs.TryGetValue(key, out subreg))
+            if (!subs.TryGetValue(key, out var subreg))
                 return null;
             return subreg;
         }

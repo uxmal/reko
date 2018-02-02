@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,22 +79,50 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, m.Shr(opSrc, opShift));
         }
 
-        private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        private void RewriteCopy(MipsInstruction instr)
         {
-            var hi = binder.EnsureRegister(Registers.hi);
-            var lo = binder.EnsureRegister(Registers.lo);
-            var opLeft = RewriteOperand0(instr.op1);
-            var opRight = RewriteOperand0(instr.op2);
-            m.Assign(lo, ctor(opLeft, opRight));
-            m.Assign(hi, m.Mod(opLeft, opRight));
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            m.Assign(dst, src);
         }
 
-        private void RewriteLoad(MipsInstruction instr)
+        private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
         {
-            var opSrc = RewriteOperand0(instr.op2);
-            var opDst = RewriteOperand0(instr.op1);
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (instr.op3 != null)
+            {
+                var op3 = RewriteOperand(instr.op3);
+                m.Assign(op1, ctor(op2, op3));
+            }
+            else
+            {
+                var hi = binder.EnsureRegister(arch.hi);
+                var lo = binder.EnsureRegister(arch.lo);
+                m.Assign(lo, ctor(op1, op2));
+                m.Assign(hi, m.Mod(op1, op2));
+            }
+        }
+
+        private void RewriteDshift32(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            var sh = m.IAdd(RewriteOperand(instr.op3), 32);
+            m.Assign(dst, ctor(src, sh));
+        }
+
+        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall)
+        {
+            var opSrc = RewriteOperand(instr.op2);
+            var opDst = RewriteOperand(instr.op1);
             if (opDst.DataType.Size != opSrc.DataType.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension.
+                opSrc.DataType = dtSmall;
                 opSrc = m.Cast(arch.WordWidth, opSrc);
+            }
             m.Assign(opDst, opSrc);
         }
 
@@ -110,6 +138,20 @@ namespace Reko.Arch.Mips
             var opSrc = RewriteOperand0(instr.op2);
             var opDst = RewriteOperand0(instr.op1);
             m.Assign(opDst, host.PseudoProcedure("__load_linked_64", PrimitiveType.Word64, opSrc));
+        }
+
+        private void RewriteStoreConditional32(MipsInstruction instr)
+        {
+            var opMem = RewriteOperand(instr.op2);
+            var opReg = RewriteOperand(instr.op1);
+            m.Assign(opReg, host.PseudoProcedure("__store_conditional_32", PrimitiveType.Word32, opMem, opReg));
+        }
+
+        private void RewriteStoreConditional64(MipsInstruction instr)
+        {
+            var opMem = RewriteOperand(instr.op2);
+            var opReg = RewriteOperand(instr.op1);
+            m.Assign(opReg, host.PseudoProcedure("__store_conditional_64", PrimitiveType.Word64, opMem, opReg));
         }
 
         private void RewriteLui(MipsInstruction instr)
@@ -133,6 +175,13 @@ namespace Reko.Arch.Mips
             var opDst = RewriteOperand0(instr.op1);
             var opSrc = RewriteOperand0(instr.op2);
             m.Assign(opDst, host.PseudoProcedure("__lwr", PrimitiveType.Word32, opDst, opSrc));
+        }
+
+        private void RewriteLdc1(MipsInstruction instr)
+        {
+            var opDstFloat = RewriteOperand(instr.op1);
+            var opSrcMem = RewriteOperand(instr.op2);
+            m.Assign(opDstFloat, opSrcMem);
         }
 
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
@@ -159,14 +208,22 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
-        private void RewriteMul(MipsInstruction instr, Func<Expression,Expression,Expression> fn, PrimitiveType ret)
+        private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> ctor, PrimitiveType dt)
         {
-            var hilo = binder.EnsureSequence(Registers.hi, Registers.lo, ret);
-            m.Assign(
-                hilo,
-                fn(RewriteOperand0(instr.op1), RewriteOperand0(instr.op2)));
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (instr.op3 != null)
+            {
+                var op3 = RewriteOperand(instr.op3);
+                m.Assign(op1, ctor(op2, op3));
+            }
+            else
+            {
+                var hilo = binder.EnsureSequence(arch.hi, arch.lo, dt);
+                m.Assign(hilo, ctor(op1, op2));
+            }
         }
-        
+
         private void RewriteNor(MipsInstruction instr)
         {
             var opLeft = RewriteOperand0(instr.op2);
@@ -307,7 +364,7 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, host.PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, opDst, opSrc));
         }
 
-        private void RewriteSxx(MipsInstruction instr, Func<Expression,Expression,Expression> op)
+        private void RewriteSxx(MipsInstruction instr, Func<Expression, Expression, Expression> op)
         {
             var dst = RewriteOperand0(instr.op1);
             var src1 = RewriteOperand0(instr.op2);

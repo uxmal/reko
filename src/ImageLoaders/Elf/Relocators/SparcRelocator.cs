@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,19 +30,35 @@ namespace Reko.ImageLoaders.Elf.Relocators
     // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
     public class SparcRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
+        private Dictionary<Address,ImportReference> importReferences;
 
-        public SparcRelocator(ElfLoader32 loader) : base(loader)
+        public SparcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
+        }
+
+        public override void Relocate(Program program)
+        {
+            this.importReferences=  program.ImportReferences;
+            base.Relocate(program);
         }
 
         public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return; 
-            if (sym.SectionIndex == 0)
                 return;
+            var rt = (SparcRt)(rela.r_info & 0xFF);
+            if (sym.SectionIndex == 0)
+            {
+                if (rt == SparcRt.R_SPARC_GLOBDAT ||
+                    rt == SparcRt.R_SPARC_JMPSLOT)
+                {
+                    var addrPfn = Address.Ptr32(rela.r_offset);
+
+                    importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name));
+                    return;
+                }
+            }
+
             var symSection = loader.Sections[(int)sym.SectionIndex];
             uint S = (uint)sym.Value + symSection.Address.ToUInt32();
             int A = 0;
@@ -60,7 +76,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 (int)(rela.r_info >> 8),
                 symSection.Name);
 
-            var rt = (SparcRt)(rela.r_info & 0xFF);
             switch (rt)
             {
             case 0:

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.Arch.Mos6502
     public class Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private ProcessorState state;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private Mos6502ProcessorArchitecture arch;
         private IEnumerable<Instruction> instrs;
@@ -41,11 +41,11 @@ namespace Reko.Arch.Mos6502
         private RtlClass rtlc;
         private RtlEmitter m;
 
-        public Rewriter(Mos6502ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public Rewriter(Mos6502ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.instrs = new Disassembler(rdr.CreateLeReader());
         }
@@ -148,11 +148,11 @@ namespace Reko.Arch.Mos6502
 
         private void Copy(RegisterStorage regDst, RegisterStorage regSrc)
         {
-            var dst = frame.EnsureRegister(regDst);
-            var src = frame.EnsureRegister(regSrc);
+            var dst = binder.EnsureRegister(regDst);
+            var src = binder.EnsureRegister(regSrc);
             m.Assign(dst, src);
             m.Assign(
-                frame.EnsureFlagGroup(
+                binder.EnsureFlagGroup(
                     Registers.p,
                     (uint) (FlagM.NF | FlagM.ZF),
                     "NZ",
@@ -179,13 +179,13 @@ namespace Reko.Arch.Mos6502
                 if ((f & 1) != 0)
                     sb.Append(Registers.GetRegister(iReg));
             }
-            return frame.EnsureFlagGroup(Registers.p, (uint)flags, sb.ToString(), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.p, (uint)flags, sb.ToString(), PrimitiveType.Byte);
         }
 
         private void Asl()
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(tmp, m.Shl(mem, 1));
             m.Assign(mem, tmp);
@@ -195,7 +195,7 @@ namespace Reko.Arch.Mos6502
         private void Lsr()
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(tmp, m.Shr(mem, 1));
             m.Assign(mem, tmp);
@@ -204,9 +204,9 @@ namespace Reko.Arch.Mos6502
 
         private void Bit()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOperand(instrCur.Operand);
-            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var flags = FlagGroupStorage(FlagM.NF | FlagM.VF | FlagM.CF);
             m.Assign(tmp, m.And(a, mem));
             m.Assign(flags, m.Cond(tmp));
@@ -214,16 +214,12 @@ namespace Reko.Arch.Mos6502
 
         private void Brk()
         {
-            m.Call(
-                new ProcedureConstant(
-                    new Pointer(new CodeType(), 2),
-                    host.EnsurePseudoProcedure("__brk", VoidType.Instance, 0)),
-                2);
+            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance));
         }
 
         private void Cmp(RegisterStorage r)
         {
-            var a = frame.EnsureRegister(r);
+            var a = binder.EnsureRegister(r);
             var mem = RewriteOperand(instrCur.Operand);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             m.Assign(c, m.Cond(m.ISub(a, mem)));
@@ -232,7 +228,7 @@ namespace Reko.Arch.Mos6502
         private void Dec()
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
             m.Assign(tmp, m.ISub(mem, 1));
             m.Assign(RewriteOperand(instrCur.Operand), tmp);
@@ -241,7 +237,7 @@ namespace Reko.Arch.Mos6502
 
         private void Dec(RegisterStorage reg)
         {
-            var id = frame.EnsureRegister(reg);
+            var id = binder.EnsureRegister(reg);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(id, m.ISub(id, 1));
             m.Assign(c, m.Cond(id));
@@ -250,7 +246,7 @@ namespace Reko.Arch.Mos6502
         private void Inc()
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var tmp = frame.CreateTemporary(PrimitiveType.Byte);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(tmp, m.IAdd(mem, 1));
             m.Assign(RewriteOperand(instrCur.Operand), tmp);
@@ -259,7 +255,7 @@ namespace Reko.Arch.Mos6502
 
         private void Inc(RegisterStorage reg)
         {
-            var id = frame.EnsureRegister(reg);
+            var id = binder.EnsureRegister(reg);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(id, m.IAdd(id, 1));
             m.Assign(c, m.Cond(id));
@@ -281,7 +277,7 @@ namespace Reko.Arch.Mos6502
 
         private void Ld(RegisterStorage reg)
         {
-            var r = frame.EnsureRegister(reg);
+            var r = binder.EnsureRegister(reg);
             var mem = RewriteOperand(instrCur.Operand);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(r, mem);
@@ -290,7 +286,7 @@ namespace Reko.Arch.Mos6502
 
         private void And()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOperand(instrCur.Operand);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(
@@ -301,7 +297,7 @@ namespace Reko.Arch.Mos6502
 
         private void Eor()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOperand(instrCur.Operand);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(
@@ -312,7 +308,7 @@ namespace Reko.Arch.Mos6502
 
         private void Ora()
         {
-            var a = frame.EnsureRegister(Registers.a);
+            var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOperand(instrCur.Operand);
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF);
             m.Assign(
@@ -323,42 +319,39 @@ namespace Reko.Arch.Mos6502
 
         private void Push(RegisterStorage reg)
         {
-            Push(frame.EnsureRegister(reg));
+            Push(binder.EnsureRegister(reg));
         }
 
         private void Push(Identifier reg)
         {
-            var s = frame.EnsureRegister(arch.StackRegister);
+            var s = binder.EnsureRegister(arch.StackRegister);
             m.Assign(s, m.ISub(s, 1));
-            m.Assign(m.LoadB(s), reg);
+            m.Assign(m.Mem8(s), reg);
         }
 
         private void Pull(RegisterStorage reg)
         {
-            var s = frame.EnsureRegister(arch.StackRegister);
+            var s = binder.EnsureRegister(arch.StackRegister);
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
-            var r = frame.EnsureRegister(reg);
-            m.Assign(r, m.LoadB(s));
+            var r = binder.EnsureRegister(reg);
+            m.Assign(r, m.Mem8(s));
             m.Assign(s, m.IAdd(s, 1));
             m.Assign(c, m.Cond(r));
         }
 
         private void Plp()
         {
-            var s = frame.EnsureRegister(arch.StackRegister);
+            var s = binder.EnsureRegister(arch.StackRegister);
             var c = AllRegs();
-            m.Assign(c, m.LoadB(s));
+            m.Assign(c, m.Mem8(s));
             m.Assign(s, m.IAdd(s, 1));
         }
 
         private void Rotate(string rot)
         {
-            var fn = new ProcedureConstant(
-                new Pointer(new CodeType(), 2),
-                host.EnsurePseudoProcedure(rot, PrimitiveType.Byte, 2));
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operand);
-            m.Assign(arg, m.Fn(fn, arg, Constant.Byte(1)));
+            m.Assign(arg, host.PseudoProcedure(rot, arg.DataType, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
 
@@ -377,30 +370,30 @@ namespace Reko.Arch.Mos6502
         private void Adc()
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var a = frame.EnsureRegister(Registers.a);
-            var c = frame.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            var a = binder.EnsureRegister(Registers.a);
+            var c = binder.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             m.Assign(
                 a,
                 m.IAdd(
                     m.IAdd(a, mem),
                     c));
             m.Assign(
-                frame.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
                 m.Cond(a));
         }
 
         private void Sbc()
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var a = frame.EnsureRegister(Registers.a);
-            var c = frame.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            var a = binder.EnsureRegister(Registers.a);
+            var c = binder.EnsureFlagGroup(Registers.p, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             m.Assign(
                 a,
                 m.ISub(
                     m.ISub(a, mem),
                     m.Not(c)));
             m.Assign(
-                frame.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
+                binder.EnsureFlagGroup(Registers.p, (uint) Instruction.DefCc(instrCur.Code), "NVZC", PrimitiveType.Byte),
                 m.Cond(a));
         }
 
@@ -413,7 +406,7 @@ namespace Reko.Arch.Mos6502
         private void St(RegisterStorage reg)
         {
             var mem = RewriteOperand(instrCur.Operand);
-            var id = frame.EnsureRegister(reg);
+            var id = binder.EnsureRegister(reg);
             m.Assign(mem, id);
         }
 
@@ -424,40 +417,40 @@ namespace Reko.Arch.Mos6502
             {
             default: throw new NotImplementedException("Unimplemented address mode " + op.Mode);
             case AddressMode.Accumulator:
-                return frame.EnsureRegister(Registers.a);
+                return binder.EnsureRegister(Registers.a);
             case AddressMode.Immediate:
                 return op.Offset;
             case AddressMode.IndirectIndexed:
-                var y = frame.EnsureRegister(Registers.y);
+                var y = binder.EnsureRegister(Registers.y);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
-                return m.LoadB(
+                return m.Mem8(
                     m.IAdd(
-                        m.Load(PrimitiveType.Ptr16, offset),
+                        m.Mem(PrimitiveType.Ptr16, offset),
                         m.Cast(PrimitiveType.UInt16, y)));
             case AddressMode.IndexedIndirect:
-                var x = frame.EnsureRegister(Registers.x);
+                var x = binder.EnsureRegister(Registers.x);
                 offset = Constant.Word16((ushort) op.Offset.ToByte());
-                return m.LoadB(
-                    m.Load(
+                return m.Mem8(
+                    m.Mem(
                         PrimitiveType.Ptr16,
                         m.IAdd(
                             offset,
                             m.Cast(PrimitiveType.UInt16, x))));
             case AddressMode.Absolute:
-                return m.LoadB(op.Offset);
+                return m.Mem8(op.Offset);
             case AddressMode.AbsoluteX:
-                return m.LoadB(m.IAdd(op.Offset, frame.EnsureRegister(Registers.x)));
+                return m.Mem8(m.IAdd(op.Offset, binder.EnsureRegister(Registers.x)));
             case AddressMode.ZeroPage:
                 if (op.Register != null)
                 {
-                    return m.LoadB(
+                    return m.Mem8(
                         m.IAdd(
                             Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()),
-                            frame.EnsureRegister(op.Register)));
+                            binder.EnsureRegister(op.Register)));
                 }
                 else
                 {
-                    return m.LoadB(
+                    return m.Mem8(
                         Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()));
                 }
             }

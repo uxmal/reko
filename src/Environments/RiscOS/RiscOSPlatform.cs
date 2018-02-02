@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ namespace Reko.Environments.RiscOS
                     },
                     Signature = FunctionType.Action(
                         new Identifier[] {
-                            new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0)
+                            new Identifier("r0", PrimitiveType.Ptr32, A32Registers.r0)
                         })
                 };
             }
@@ -87,6 +87,7 @@ namespace Reko.Environments.RiscOS
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;  //$REVIEW: Does RiscOS support wchar_t?
             case CBasicType.Short: return 2;

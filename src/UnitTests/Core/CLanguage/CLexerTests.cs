@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -420,6 +420,20 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             Lex("// foo\nid");
             AssertToken(CTokenType.Id);
+        }
+
+        [Test]
+        public void CLexer_Bool_C()
+        {
+            Lex("_Bool");   // This is a C keyword
+            AssertToken(CTokenType._Bool);
+        }
+
+        [Test]
+        public void CLexer_Bool_CPlusPlus()
+        {
+            Lex("bool");   // This is a C++ keyword
+            AssertToken(CTokenType.Bool);
         }
     }
 }

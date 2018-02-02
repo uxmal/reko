@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,19 +213,19 @@ namespace Reko.Arch.Pdp11
             case AddressMode.Absolute:
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
-                m.Assign(tmp, m.Load(PrimitiveType.Ptr16, r));
+                m.Assign(tmp, m.Mem(PrimitiveType.Ptr16, r));
                 m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoIncrDef:
-                m.Assign(tmp, m.Load(op.Width, r));
+                m.Assign(tmp, m.Mem(op.Width, r));
                 m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoDecr:
                 m.Assign(r, m.ISub(r, memOp.Width.Size));
-                return m.Load(op.Width, r);
+                return m.Mem(op.Width, r);
             case AddressMode.AutoDecrDef:
                 m.Assign(r, m.ISub(r, memOp.Width.Size));
-                m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r)));
                 return tmp;
             case AddressMode.Indexed:
                 if (memOp.Register == Registers.pc)
@@ -237,7 +237,7 @@ namespace Reko.Arch.Pdp11
                 }
                 else
                 {
-                    return m.Load(
+                    return m.Mem(
                         this.dasm.Current.DataWidth,
                         m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                 }
@@ -247,13 +247,13 @@ namespace Reko.Arch.Pdp11
                     var offset = (short)memOp.EffectiveAddress;
                     var addrBase = (long)instr.Address.ToLinear() + instr.Length;
                     var addr = Constant.Word16((ushort) (addrBase + offset));
-                    return m.Load(
+                    return m.Mem(
                         PrimitiveType.Word16,
                         addr);
                 }
                 else
                 {
-                    return m.Load(
+                    return m.Mem(
                         PrimitiveType.Ptr16,
                         m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                 }
@@ -289,25 +289,25 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.", 
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    return m.Load(this.dasm.Current.DataWidth, r);
+                    return m.Mem(this.dasm.Current.DataWidth, r);
                 case AddressMode.Absolute:
-                    return m.Load(
+                    return m.Mem(
                            dasm.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress));
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, m.Load(op.Width, r));
+                    m.Assign(tmp, m.Mem(op.Width, r));
                     m.Assign(r, m.IAdd(r, memOp.Width.Size));
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r)));
                     m.Assign(r, m.IAdd(r, memOp.Width.Size));
                     break;
                 case AddressMode.AutoDecr:
                     m.Assign(r, m.ISub(r, memOp.Width.Size));
-                    return m.Load(op.Width, r);
+                    return m.Mem(op.Width, r);
                 case AddressMode.AutoDecrDef:
                     m.Assign(r, m.ISub(r, memOp.Width.Size));
-                    m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r)));
                     return tmp;
                 case AddressMode.Indexed:
                     if (memOp.Register == Registers.pc)
@@ -315,11 +315,11 @@ namespace Reko.Arch.Pdp11
                         var offset = (short)memOp.EffectiveAddress;
                         var addrBase = (long) instr.Address.ToLinear();
                         var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
-                        return m.Load(memOp.Width, addr);
+                        return m.Mem(memOp.Width, addr);
                     }
                     else
                     {
-                        return m.Load(
+                        return m.Mem(
                             this.dasm.Current.DataWidth,
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                     }
@@ -327,15 +327,15 @@ namespace Reko.Arch.Pdp11
                     if (memOp.Register == Registers.pc)
                     {
                         var addr = this.dasm.Current.Address + this.dasm.Current.Length + memOp.EffectiveAddress;
-                        m.Assign(tmp, m.Load(PrimitiveType.Ptr16, addr));
-                        m.Assign(tmp, m.Load(memOp.Width, tmp));
+                        m.Assign(tmp, m.Mem(PrimitiveType.Ptr16, addr));
+                        m.Assign(tmp, m.Mem(memOp.Width, tmp));
                         return tmp;
                     }
                     else
                     {
-                    return m.Load(
+                    return m.Mem(
                         this.dasm.Current.DataWidth,
-                        m.Load(
+                        m.Mem(
                             PrimitiveType.Ptr16,
                             m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
                 }
@@ -395,35 +395,35 @@ namespace Reko.Arch.Pdp11
                         memOp.Mode);
                 case AddressMode.Absolute:
                     m.Assign(
-                        m.Load(
+                        m.Mem(
                             dasm.Current.DataWidth,
                             Address.Ptr16(memOp.EffectiveAddress)),
                         gen(src));
                     break;
                 case AddressMode.RegDef:
                     m.Assign(tmp, gen(src));
-                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncr:
                     m.Assign(tmp, gen(src));
-                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoIncrDef:
                     m.Assign(tmp, gen(src));
-                    m.Assign(m.Load(PrimitiveType.Ptr16, m.Load(tmp.DataType, r)), tmp);
+                    m.Assign(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r)), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(m.Load(tmp.DataType, r), gen(src));
+                    m.Assign(m.Mem(tmp.DataType, r), gen(src));
                     break;
                 case AddressMode.AutoDecrDef:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
                     m.Assign(
-                        m.Load(
+                        m.Mem(
                             tmp.DataType, 
-                            m.Load(PrimitiveType.Ptr16, r)),
+                            m.Mem(PrimitiveType.Ptr16, r)),
                         gen(src));
                     break;
                 case AddressMode.Indexed:
@@ -431,13 +431,13 @@ namespace Reko.Arch.Pdp11
                     {
                         var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
-                            m.Load(dasm.Current.DataWidth, addr),
+                            m.Mem(dasm.Current.DataWidth, addr),
                             gen(src));
                     }
                     else
                     {
                         m.Assign(
-                            m.Load(
+                            m.Mem(
                                 this.dasm.Current.DataWidth,
                                 m.IAdd(
                                     r,
@@ -452,17 +452,17 @@ namespace Reko.Arch.Pdp11
                         var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             tmp,
-                            m.Load(PrimitiveType.Ptr16, addr));
+                            m.Mem(PrimitiveType.Ptr16, addr));
                         m.Assign(
-                            m.Load(dasm.Current.DataWidth, tmp),
+                            m.Mem(dasm.Current.DataWidth, tmp),
                             gen(src));
                     }
                     else
                     {
                         m.Assign(
-                            m.Load(
+                            m.Mem(
                                 PrimitiveType.Ptr16,
-                                m.Load(
+                                m.Mem(
                                     this.dasm.Current.DataWidth,
                                     m.IAdd(
                                         r,
@@ -498,39 +498,39 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
-                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r), src));
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
-                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r), src));
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
-                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r), src));
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, gen(src, m.Load(PrimitiveType.Ptr16, m.Load(tmp.DataType, r))));
-                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(tmp, gen(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r)), src));
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecrDef:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r))));
-                    m.Assign(m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r)), tmp);
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, m.Mem(PrimitiveType.Ptr16, r)), src));
+                    m.Assign(m.Mem(tmp.DataType, m.Mem(PrimitiveType.Ptr16, r)), tmp);
                     break;
                 case AddressMode.Absolute:
                     m.Assign(
                         tmp,
                         gen(
-                            m.Load(
+                            m.Mem(
                                 dasm.Current.DataWidth,
                                 Address.Ptr16(memOp.EffectiveAddress)),
                             src));
                     m.Assign(
-                        m.Load(
+                        m.Mem(
                            dasm.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress)),
                         tmp);
@@ -539,13 +539,13 @@ namespace Reko.Arch.Pdp11
                     m.Assign(
                         tmp,
                         gen(
-                            m.Load(
+                            m.Mem(
                                 dasm.Current.DataWidth,
                                 m.IAdd(
                                     r, memOp.EffectiveAddress)),
                             src));
                     m.Assign(
-                        m.Load(
+                        m.Mem(
                             dasm.Current.DataWidth,
                             m.IAdd(
                                 r, memOp.EffectiveAddress)),
@@ -559,10 +559,10 @@ namespace Reko.Arch.Pdp11
                         m.Assign(
                             tmp,
                             gen(
-                                m.Load(dasm.Current.DataWidth, addr),
+                                m.Mem(dasm.Current.DataWidth, addr),
                                 src));
                         m.Assign(
-                            m.Load(dasm.Current.DataWidth, addr),
+                            m.Mem(dasm.Current.DataWidth, addr),
                             tmp);
                     }
                     else
@@ -570,17 +570,17 @@ namespace Reko.Arch.Pdp11
                         m.Assign(
                            tmp,
                            gen(
-                               m.Load(
+                               m.Mem(
                                    dasm.Current.DataWidth,
-                                   m.Load(
+                                   m.Mem(
                                        PrimitiveType.Ptr16,
                                        m.IAdd(
                                            r, memOp.EffectiveAddress))),
                                    src));
                         m.Assign(
-                            m.Load(
+                            m.Mem(
                                 dasm.Current.DataWidth,
-                                m.Load(
+                                m.Mem(
                                     PrimitiveType.Ptr16,
                                     m.IAdd(
                                         r, memOp.EffectiveAddress))),

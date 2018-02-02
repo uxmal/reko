@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,12 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Core.Lib;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {
     /*
+     * https://gcc.gnu.org/wiki/avr-gcc
      * http://www.atmel.com/webdoc/AVRLibcReferenceManual/FAQ_1faq_reg_usage.html
      * 
      * What registers are used by the C compiler?
@@ -82,13 +84,135 @@ char - just clr r25). Arguments to functions with variable argument lists
 */
     public class Avr8CallingConvention : CallingConvention
     {
+        private IProcessorArchitecture arch;
+        private RegisterStorage[] argRegs;
+
         public Avr8CallingConvention(IProcessorArchitecture arch)
         {
+            this.arch = arch;
+            this.argRegs = (from reg in arch.GetRegisters()
+                     where 8 <= reg.Number && reg.Number <= 26
+                     orderby reg.Number
+                     select reg).ToArray();
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
         {
-            throw new NotImplementedException();
+            /*
+             * To find the register where a function argument is passed, initialize the register number 
+Rn with R26 and follow this procedure: 
+
+If the argument size is an odd number of bytes, round up the size to the next even number. 
+Subtract the rounded size from the register number Rn. 
+
+If the new Rn is at least R8 and the size of the object is non-zero, then the low-byte of 
+the argument is passed in Rn. Subsequent bytes of the argument are passed in the subsequent
+registers, i.e. in increasing register numbers. 
+
+If the new register number Rn is smaller than R8 or the size of the argument is zero, the
+argument will be passed in memory. 
+
+If the current argument is passed in memory, stop the procedure: All subsequent arguments
+will also be passed in memory. 
+If there are arguments left, goto 1. and proceed with the next argument.
+
+Return values with a size of 1 byte up to and including a size of 8 bytes will be returned
+in registers. Return values whose size is outside that range will be returned in memory. 
+If a return value cannot be returned in registers, the caller will allocate stack space and
+pass the address as implicit first pointer argument to the callee. The callee will put the 
+return value into the space provided by the caller. 
+
+If the return value of a function is returned in registers, the same registers are used as 
+if the value was the first parameter of a non-varargs function. For example, an 8-bit value is returned in R24 and an 32-bit value is returned R22...R25. 
+Arguments of varargs functions are passed on the stack. This applies even to the named arguments. 
+*/
+            ccr.LowLevelDetails(1, 2);
+
+            if (dtRet != null || dtRet == VoidType.Instance)
+            {
+                GenerateReturnValue(dtRet, ccr);
+            }
+
+            int iReg = 26;
+            foreach (var dtParam in dtParams)
+            {
+                int size = dtParam.Size;
+                if ((size & 1) != 0) // odd sized register occupies two regs
+                {
+                    // Round size to even # of bytes.
+                    size = dtParam.Size + 1;
+                }
+                iReg -= size;
+                if (iReg >= 8)
+                {
+                    var reg = argRegs[iReg - 8];
+                    if (dtParam.Size == 1)
+                    {
+                        ccr.RegParam(reg);
+                        continue;
+                    }
+
+                    SequenceStorage seq = null;
+                    for (int r = iReg + 1, i = 1; i < dtParam.Size; ++i, ++r)
+                    {
+                        var regNext = argRegs[r - 8];
+                        if (seq != null)
+                        {
+                            seq = new SequenceStorage(regNext, seq);
+                        }
+                        else
+                        {
+                            seq = new SequenceStorage(regNext, reg);
+                        }
+                    }
+                    ccr.SequenceParam(seq);
+                }
+                else
+                {
+                    ccr.StackParam(dtParam);
+                }
+            }
+     
+        }
+
+        private void GenerateReturnValue(DataType dtRet, ICallingConventionEmitter ccr)
+        {
+            int size = dtRet.Size;
+            if ((size & 1) != 0) // odd sized register occupies two regs
+            {
+                // Round size to even # of bytes.
+                size = dtRet.Size + 1;
+            }
+
+            var iReg = 26 - size;
+            if (dtRet.Size <= 8)
+            {
+                var reg = argRegs[iReg - 8];
+                if (dtRet.Size == 1)
+                {
+                    ccr.RegReturn(reg);
+                    return;
+                }
+
+                SequenceStorage seq = null;
+                for (int r = iReg + 1, i = 1; i < dtRet.Size; ++i, ++r)
+                {
+                    var regNext = argRegs[r - 8];
+                    if (seq != null)
+                    {
+                        seq = new SequenceStorage(regNext, seq);
+                    }
+                    else
+                    {
+                        seq = new SequenceStorage(regNext, reg);
+                    }
+                }
+                ccr.SequenceReturn(seq);
+            }
+            else
+            {
+                throw new NotImplementedException("Large AVR8 return values not implemented yet.");
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,7 +85,6 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "ProcedureBuilder()" + nl +
                 "{" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -106,7 +105,6 @@ namespace Reko.UnitTests.Structure
                 "\tif (!foo())" + nl+ 
                 "\t\tbar();" + nl +
                 "\tbaz();" + nl+ 
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -132,7 +130,6 @@ namespace Reko.UnitTests.Structure
                 "\t\tThen();" + nl +
                 "\telse"  + nl +
                 "\t\tElse();" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -155,7 +152,6 @@ namespace Reko.UnitTests.Structure
                 "		if (ax < -12)" + nl +
                 "			ax = -12;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
 
         }
@@ -193,7 +189,6 @@ namespace Reko.UnitTests.Structure
                 "			break;" + nl +
                 "		LoopWork();" + nl +
                 "	}" + nl +
-                "	return;" + nl + 
                 "}" + nl);
 
         }
@@ -208,7 +203,6 @@ namespace Reko.UnitTests.Structure
                 "	do" + nl +
                 "		Frobulate();" + nl +
                 "	while (!DoneFrobbing());" + nl +
-                "	return;" + nl + 
                 "}" + nl);
         }
 
@@ -225,7 +219,6 @@ namespace Reko.UnitTests.Structure
                 "		if (NeedsBork())" + nl + 
                 "			Bork();" + nl + 
                 "	} while (!Done());" + nl + 
-                "	return;" + nl + 
                 "}" + nl);
         }
 
@@ -249,7 +242,6 @@ namespace Reko.UnitTests.Structure
                 "	bar3();" + nl +
                 "end:" + nl + 
                 "	bar4();" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -268,7 +260,6 @@ namespace Reko.UnitTests.Structure
                 "		return;" + nl +
                 "	}" + nl +
                 "	niz();" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -315,7 +306,6 @@ namespace Reko.UnitTests.Structure
                 "		print(n);" + nl +
                 "		break;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -338,7 +328,6 @@ namespace Reko.UnitTests.Structure
                 "		fn2();" + nl +
                 "		break;" + nl +
                 "	}" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
@@ -360,12 +349,10 @@ namespace Reko.UnitTests.Structure
                 "		}" + nl +
                 "		i = i + 1;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void AcgWhileReturn()
         {
             CompileTest(m =>
@@ -392,7 +379,6 @@ namespace Reko.UnitTests.Structure
                 "		grux = foo();" + nl +
                 "\t}" + nl +
                 "\textra();" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -412,7 +398,6 @@ namespace Reko.UnitTests.Structure
                 "			break;" + nl +
                 "		Mem0[0x00300000:byte] = v;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
@@ -424,7 +409,7 @@ namespace Reko.UnitTests.Structure
                 var a1 = m.Local16("a1"); 
                 m.Assign(a1, m.Fn("fn0540"));
                 var tmp = m.Local16("tmp");
-                m.Assign(tmp, m.LoadW(m.Word16(0x8416)));
+                m.Assign(tmp, m.Mem16(m.Word16(0x8416)));
                 m.BranchIf(m.Ne(tmp, 0), "branch_c");
 
                 m.Label("Branch_a");
@@ -444,16 +429,13 @@ namespace Reko.UnitTests.Structure
 "{" + nl +
 "	a1 = fn0540();" + nl +
 "	tmp = Mem0[0x8416:word16];" + nl +
-"	if (tmp == 0x0000)" + nl +
-"	{" + nl +
-"		Mem0[0x8414:word16] = 0x0000;" + nl +
-"		if (0x8414 != 0x0000)" + nl +
-"		{" + nl +
-"			fn02A9(&ax_96);" + nl +
-"			return ax_96;" + nl +
-"		}" + nl +
-"	}" + nl +
-"	return a1;" + nl +
+"	if (tmp != 0x0000)" + nl +
+"		return a1;" + nl +
+"	Mem0[0x8414:word16] = 0x0000;" + nl +
+"	if (0x8414 == 0x0000)" + nl +
+"		return a1;" + nl +
+"	fn02A9(&ax_96);" + nl +
+"	return ax_96;" + nl +
 "}" + nl);
 
 
@@ -477,10 +459,10 @@ namespace Reko.UnitTests.Structure
             CompileTest(m =>
             {
                 m.Label("Infinity");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x1234)), 0), "hop");
                 m.SideEffect(m.Fn("foo"));
                 m.Label("hop");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x5123)), 1), "Infinity");
                 m.SideEffect(m.Fn("bar"));
                 m.Goto("Infinity");
                 m.Return();

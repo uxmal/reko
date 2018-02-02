@@ -36,7 +36,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
@@ -58,6 +58,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -202,6 +203,7 @@
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
+    <Compile Include="DebugEx.cs" />
     <Compile Include="Dfa\Automaton.cs" />
     <Compile Include="Dfa\DfaBuilder.cs" />
     <Compile Include="Dfa\PatternParser.cs" />
@@ -274,6 +276,7 @@
     <Compile Include="Pascal\SymbolTable.cs" />
     <Compile Include="Pascal\Token.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="CustomDecoderFallback.cs" />
     <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
@@ -634,6 +637,7 @@
     <Compile Include="StorageBinder.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
+    <Compile Include="TypeInferenceException.cs" />
     <Compile Include="TypeLibrary.cs">
       <SubType>Code</SubType>
     </Compile>

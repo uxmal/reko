@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,9 @@ namespace Reko.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch, new SegmentMap(image.BaseAddress)), frame, host);
+            return new ArmRewriter(arch, new LeImageReader(image, 0), new ArmProcessorState(arch, new SegmentMap(image.BaseAddress)), binder, host);
         }
 
         private void BuildTest(params string[] bitStrings)
@@ -682,5 +682,14 @@ means
                 "1|T--|if (Test(UGT,ZC)) branch 00100004",
                 "2|T--|goto Mem0[0x00100008 + r3 * 0x00000004:word32]");
         }
+
+        [Test]
+        public void ArmRw_svc()
+        {
+            BuildTest(0xEF001234); // svc 0x1234
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|L--|__syscall(0x00001234)");
+    }
     }
 }

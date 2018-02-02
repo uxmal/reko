@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.Core.Serialization
                 var ser = SerializedLibrary.CreateSerializer(
                     typeof(MemoryMap_v1),
                     SerializedLibrary.Namespace_v4);
-                using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open))
+                using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var mmap = (MemoryMap_v1)ser.Deserialize(stm);
                     return mmap;

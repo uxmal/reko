@@ -19,8 +19,8 @@
 0800:0110 88 00 FF 36 86 00 FF 36 84 00 E8 48 01 50 E8 E0 ...6...6...H.P..
 0800:0120 01                                              .              
 
-;; fn0800_0121: 0800:0121
-fn0800_0121 proc
+;; __exit: 0800:0121
+__exit proc
 	mov	ds,cs:[01F8]
 	call	01A5
 	push	cs
@@ -83,8 +83,8 @@ fn0800_0162 proc
 	pop	ds
 	ret
 
-;; fn0800_01A5: 0800:01A5
-fn0800_01A5 proc
+;; __restorezero: 0800:01A5
+__restorezero proc
 	push	ds
 	mov	ax,2500
 	lds	dx,[0074]
@@ -115,8 +115,8 @@ fn0800_01DA proc
 	int	21
 	ret
 
-;; fn0800_01E2: 0800:01E2
-fn0800_01E2 proc
+;; _abort: 0800:01E2
+_abort proc
 	mov	cx,001E
 	nop
 	mov	dx,0056
@@ -130,15 +130,15 @@ fn0800_01E9 proc
 	call	0121
 	add	[bx+si],al
 
-;; fn0800_01FA: 0800:01FA
-fn0800_01FA proc
+;; _f3: 0800:01FA
+_f3 proc
 	push	bp
 	mov	bp,sp
 	pop	bp
 	ret
 
-;; fn0800_01FF: 0800:01FF
-fn0800_01FF proc
+;; _f2: 0800:01FF
+_f2 proc
 	push	bp
 	mov	bp,sp
 	call	01FA
@@ -171,8 +171,8 @@ fn0800_0222 proc
 	pop	bp
 	ret
 
-;; fn0800_0245: 0800:0245
-fn0800_0245 proc
+;; _f0: 0800:0245
+_f0 proc
 	push	bp
 	mov	bp,sp
 	call	0222
@@ -187,8 +187,8 @@ fn0800_0245 proc
 	pop	bp
 	ret
 
-;; main: 0800:0265
-main proc
+;; _main: 0800:0265
+_main proc
 	push	bp
 	mov	bp,sp
 	sub	sp,08
@@ -240,8 +240,8 @@ l0800_02B9:
 	pop	bp
 	ret
 
-;; fn0800_02C5: 0800:02C5
-fn0800_02C5 proc
+;; __IOERROR: 0800:02C5
+__IOERROR proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -283,8 +283,8 @@ l0800_02FB:
 	ret	0002
 0800:0300 C3                                              .              
 
-;; fn0800_0301: 0800:0301
-fn0800_0301 proc
+;; _exit: 0800:0301
+_exit proc
 	push	bp
 	mov	bp,sp
 	jmp	0310
@@ -311,8 +311,8 @@ l0800_031B:
 	ret
 0800:0330 00 00 00 00 00 00                               ......         
 
-;; fn0800_0336: 0800:0336
-fn0800_0336 proc
+;; __setargv: 0800:0336
+__setargv proc
 	pop	word ptr cs:[0330]
 	mov	cs:[0332],ds
 	cld
@@ -493,8 +493,8 @@ l0800_0417:
 	mov	[bp+00],ax
 	jmp	word ptr cs:[0330]
 
-;; fn0800_0421: 0800:0421
-fn0800_0421 proc
+;; __setenvp: 0800:0421
+__setenvp proc
 	mov	cx,[008A]
 	push	cx
 	call	0570
@@ -553,8 +553,8 @@ l0800_0468:
 0800:0480 02 D1 E3 89 87 E8 05 FF 06 3E 02 33 C0 EB 00 5D .........>.3...]
 0800:0490 C3                                              .              
 
-;; fn0800_0491: 0800:0491
-fn0800_0491 proc
+;; ___pull_free_block: 0800:0491
+___pull_free_block proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -696,8 +696,8 @@ l0800_056D:
 	pop	bp
 	ret
 
-;; fn0800_0570: 0800:0570
-fn0800_0570 proc
+;; _malloc: 0800:0570
+_malloc proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -780,8 +780,8 @@ l0800_05DF:
 	pop	bp
 	ret
 
-;; fn0800_05E3: 0800:05E3
-fn0800_05E3 proc
+;; ___brk: 0800:05E3
+___brk proc
 	push	bp
 	mov	bp,sp
 	mov	ax,[bp+04]
@@ -804,8 +804,8 @@ l0800_0605:
 	pop	bp
 	ret
 
-;; fn0800_0607: 0800:0607
-fn0800_0607 proc
+;; ___sbrk: 0800:0607
+___sbrk proc
 	push	bp
 	mov	bp,sp
 	mov	ax,[bp+04]
@@ -835,8 +835,8 @@ l0800_0639:
 	pop	bp
 	ret
 
-;; fn0800_063B: 0800:063B
-fn0800_063B proc
+;; _brk: 0800:063B
+_brk proc
 	push	bp
 	mov	bp,sp
 	push	word ptr [bp+04]
@@ -900,8 +900,8 @@ l0800_069A:
 	pop	bp
 	ret	0002
 
-;; fn0800_06A2: 0800:06A2
-fn0800_06A2 proc
+;; _fseek: 0800:06A2
+_fseek proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -1064,8 +1064,8 @@ l0800_07DA:
 0800:07E0 8B EC 56 8B 76 04 FF 04 56 E8 06 00 59 EB 00 5E ..V.v...V...Y..^
 0800:07F0 5D C3                                           ].             
 
-;; fn0800_07F2: 0800:07F2
-fn0800_07F2 proc
+;; _fgetc: 0800:07F2
+_fgetc proc
 	push	bp
 	mov	bp,sp
 	sub	sp,02
@@ -1224,8 +1224,8 @@ l0800_08E2:
 0800:08E7                      B8 42 03 50 E8 04 FF 59 EB        .B.P...Y.
 0800:08F0 00 C3                                           ..             
 
-;; fn0800_08F2: 0800:08F2
-fn0800_08F2 proc
+;; _isatty: 0800:08F2
+_isatty proc
 	push	bp
 	mov	bp,sp
 	mov	ax,4400
@@ -1236,8 +1236,8 @@ fn0800_08F2 proc
 	pop	bp
 	ret
 
-;; fn0800_0904: 0800:0904
-fn0800_0904 proc
+;; _setvbuf: 0800:0904
+_setvbuf proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -1367,8 +1367,8 @@ l0800_09D2:
 0800:09E0 F7 44 02 03 00 74 05 56 E8 E2 03 59 4F 83 C6 10 .D...t.V...YO...
 0800:09F0 0B FF 75 EC 5F 5E C3                            ..u._^.        
 
-;; fn0800_09F7: 0800:09F7
-fn0800_09F7 proc
+;; _read: 0800:09F7
+_read proc
 	push	bp
 	mov	bp,sp
 	sub	sp,04
@@ -1494,8 +1494,8 @@ l0800_0AAD:
 	pop	bp
 	ret
 
-;; fn0800_0AB3: 0800:0AB3
-fn0800_0AB3 proc
+;; __read: 0800:0AB3
+__read proc
 	push	bp
 	mov	bp,sp
 	mov	ah,3F
@@ -1517,8 +1517,8 @@ l0800_0ACD:
 	pop	bp
 	ret
 
-;; fn0800_0ACF: 0800:0ACF
-fn0800_0ACF proc
+;; _write: 0800:0ACF
+_write proc
 	push	bp
 	mov	bp,sp
 	sub	sp,008A
@@ -1668,8 +1668,8 @@ l0800_0BDC:
 	pop	bp
 	ret
 
-;; fn0800_0BE2: 0800:0BE2
-fn0800_0BE2 proc
+;; __write: 0800:0BE2
+__write proc
 	push	bp
 	mov	bp,sp
 	mov	bx,[bp+04]
@@ -1712,8 +1712,8 @@ l0800_0C26:
 	pop	bp
 	ret
 
-;; fn0800_0C28: 0800:0C28
-fn0800_0C28 proc
+;; _lseek: 0800:0C28
+_lseek proc
 	push	bp
 	mov	bp,sp
 	mov	bx,[bp+04]
@@ -1740,8 +1740,8 @@ l0800_0C51:
 	pop	bp
 	ret
 
-;; fn0800_0C53: 0800:0C53
-fn0800_0C53 proc
+;; __LONGTOA: 0800:0C53
+__LONGTOA proc
 	push	bp
 	mov	bp,sp
 	sub	sp,22
@@ -1849,8 +1849,8 @@ l0800_0CCA:
 0800:0D40 04 EB 03 BA B3 04 B9 05 00 90 B4 40 BB 02 00 CD ...........@....
 0800:0D50 21 B9 27 00 90 BA B8 04 B4 40 CD 21 E9 83 F4    !.'......@.!...
 
-;; fn0800_0D5F: 0800:0D5F
-fn0800_0D5F proc
+;; _eof: 0800:0D5F
+_eof proc
 	push	bp
 	mov	bp,sp
 	sub	sp,04
@@ -1928,8 +1928,8 @@ l0800_0DC9:
 	pop	bp
 	ret
 
-;; fn0800_0DCD: 0800:0DCD
-fn0800_0DCD proc
+;; _fflush: 0800:0DCD
+_fflush proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -2010,8 +2010,8 @@ l0800_0E47:
 	pop	bp
 	ret
 
-;; fn0800_0E4B: 0800:0E4B
-fn0800_0E4B proc
+;; _printf: 0800:0E4B
+_printf proc
 	push	bp
 	mov	bp,sp
 	mov	ax,0F81
@@ -2028,8 +2028,8 @@ l0800_0E62:
 	pop	bp
 	ret
 
-;; fn0800_0E64: 0800:0E64
-fn0800_0E64 proc
+;; __fputc: 0800:0E64
+__fputc proc
 	push	bp
 	mov	bp,sp
 	mov	bx,[bp+06]
@@ -2046,8 +2046,8 @@ l0800_0E7B:
 	pop	bp
 	ret
 
-;; fn0800_0E7D: 0800:0E7D
-fn0800_0E7D proc
+;; _fputc: 0800:0E7D
+_fputc proc
 	push	bp
 	mov	bp,sp
 	sub	sp,02
@@ -2209,8 +2209,8 @@ l0800_0F66:
 0800:1030 8B C7 4F 0B C0 75 C9 8B 46 FE EB 00 5F 5E 8B E5 ..O..u..F..._^..
 0800:1040 5D C2 06 00                                     ]...           
 
-;; fn0800_1044: 0800:1044
-fn0800_1044 proc
+;; __REALCVT: 0800:1044
+__REALCVT proc
 	jmp	word ptr [05E0]
 
 ;; fn0800_1048: 0800:1048
@@ -2243,8 +2243,8 @@ l0800_106F:
 	pop	bp
 	ret	0002
 
-;; fn0800_1073: 0800:1073
-fn0800_1073 proc
+;; __VPRINTER: 0800:1073
+__VPRINTER proc
 	push	bp
 	mov	bp,sp
 	sub	sp,0098
@@ -2726,8 +2726,8 @@ l0800_16A7:
 	pop	bp
 	ret
 
-;; fn0800_16AD: 0800:16AD
-fn0800_16AD proc
+;; _free: 0800:16AD
+_free proc
 	push	bp
 	mov	bp,sp
 	push	si
@@ -2759,8 +2759,8 @@ l0800_16D1:
 	pop	bp
 	ret
 
-;; fn0800_16D4: 0800:16D4
-fn0800_16D4 proc
+;; _scanf: 0800:16D4
+_scanf proc
 	push	bp
 	mov	bp,sp
 	lea	ax,[bp+06]
@@ -2780,8 +2780,8 @@ l0800_16F1:
 	pop	bp
 	ret
 
-;; fn0800_16F3: 0800:16F3
-fn0800_16F3 proc
+;; __scanner: 0800:16F3
+__scanner proc
 	push	bp
 	mov	bp,sp
 	sub	sp,2A
@@ -3522,16 +3522,16 @@ l0800_1B8C:
 	pop	bp
 	ret
 
-;; fn0800_1B92: 0800:1B92
-fn0800_1B92 proc
+;; __scantod: 0800:1B92
+__scantod proc
 	jmp	word ptr [05E2]
 
-;; fn0800_1B96: 0800:1B96
-fn0800_1B96 proc
+;; __scanrslt: 0800:1B96
+__scanrslt proc
 	jmp	word ptr [05E4]
 
-;; fn0800_1B9A: 0800:1B9A
-fn0800_1B9A proc
+;; __scanpop: 0800:1B9A
+__scanpop proc
 	jmp	word ptr [05E6]
 
 ;; fn0800_1B9E: 0800:1B9E
@@ -3579,8 +3579,8 @@ l0800_1BC7:
 l0800_1BCB:
 	ret
 
-;; fn0800_1BCC: 0800:1BCC
-fn0800_1BCC proc
+;; __scantol: 0800:1BCC
+__scantol proc
 	push	bp
 	mov	bp,sp
 	sub	sp,06
@@ -3839,8 +3839,8 @@ l0800_1D48:
 	pop	bp
 	ret
 
-;; fn0800_1D4E: 0800:1D4E
-fn0800_1D4E proc
+;; _tell: 0800:1D4E
+_tell proc
 	push	bp
 	mov	bp,sp
 	mov	ax,0001

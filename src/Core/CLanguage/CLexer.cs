@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ namespace Reko.Core.CLanguage
             { "#line", CTokenType.LineDirective },
             { "#pragma", CTokenType.PragmaDirective },
             { "auto", CTokenType.Auto },
+            { "bool", CTokenType.Bool },
             { "char", CTokenType.Char },
             { "class", CTokenType.Class },
             { "const", CTokenType.Const },
@@ -64,6 +65,7 @@ namespace Reko.Core.CLanguage
             { "wchar_t", CTokenType.Wchar_t },
             { "while", CTokenType.While },
 
+            { "_Bool", CTokenType._Bool },
             { "_cdecl", CTokenType.__Cdecl },
             { "_far", CTokenType._Far },
             { "_near", CTokenType._Near },
@@ -833,6 +835,7 @@ namespace Reko.Core.CLanguage
         Pipe,
 
         Auto,
+        Bool,
         Case,
         Char,
         Class,
@@ -862,6 +865,7 @@ namespace Reko.Core.CLanguage
         Volatile,
         Wchar_t,
         Xor,
+        _Bool,
         _Far,
         _Near,
         __Asm,

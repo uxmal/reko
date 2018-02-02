@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Arch.X86
     public class X86AddressOperand : AddressOperand
     {
         public X86AddressOperand(Address a)
-            : base(a, PrimitiveType.Pointer32)	//$BUGBUG: P6 pointers?
+            : base(a, PrimitiveType.Ptr32)	//$BUGBUG: P6 pointers?
         {
         }
 

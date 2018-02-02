@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProjectGuid>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</ProjectGuid>
@@ -20,7 +20,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -57,6 +57,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -404,7 +405,7 @@
     </Compile>
     <Compile Include="Windows\Forms\FindStringsDialogInteractor.cs" />
     <Compile Include="Windows\Forms\InitialPageInteractor.cs" />
-    <Compile Include="Windows\Forms\LoadedPageInteractor.cs" />
+    <Compile Include="Windows\Forms\ScannedPageInteractor.cs" />
     <Compile Include="Windows\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -502,7 +503,7 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-   <ProjectReference Include="..\tools\xslt\xslt.csproj">
+    <ProjectReference Include="..\tools\xslt\xslt.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}</Project>
     </ProjectReference>

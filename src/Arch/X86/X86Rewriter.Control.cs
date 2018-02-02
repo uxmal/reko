@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -155,10 +156,18 @@ namespace Reko.Arch.X86
         {
             if (IsRealModeReboot(instrCur))
 			{
-                PseudoProcedure reboot = host.EnsurePseudoProcedure("__bios_reboot", VoidType.Instance, 0);
-                reboot.Characteristics = new Core.Serialization.ProcedureCharacteristics();
-                reboot.Characteristics.Terminates = true;
-                m.SideEffect(PseudoProc(reboot, VoidType.Instance));
+                //$BUG: this should really live in MsdosPlatform.
+                var reboot = new ExternalProcedure(
+                    "__bios_reboot",
+                    new FunctionType(
+                        new Identifier("", VoidType.Instance, null)))
+                {
+                    Characteristics = new ProcedureCharacteristics
+                    {
+                        Terminates = true,
+                    }
+                };
+                m.SideEffect(m.Fn(reboot));
 				return;
 			}
 

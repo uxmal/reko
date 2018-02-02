@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Typing
         {
             store = new TypeStore();
             factory = new TypeFactory();
-            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
+            aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
             eqb = new EquivalenceClassBuilder(factory, store);
             arch = new FakeArchitecture();
             program = new Program();
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Typing
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
                 Store(IAdd(IAdd(r, 20), SMul(i, 10)), Int32(0));
-                Return(Load(PrimitiveType.Word16,
+                Return(Mem(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
             }
         }
@@ -490,8 +490,8 @@ namespace Reko.UnitTests.Typing
             m.Assign(ds2, ds);
             m.Store(
                 m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
-                m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
-            m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
+                m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
+            m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);

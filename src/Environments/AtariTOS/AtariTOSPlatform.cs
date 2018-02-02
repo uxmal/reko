@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,11 +72,10 @@ namespace Reko.Environments.AtariTOS
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in this.Metadata.Modules.Values)
             {
-                List<SystemService> svc;
-                if (!module.ServicesByVector.TryGetValue(vector, out svc))
+                if (!module.ServicesByVector.TryGetValue(vector, out var svc))
                     continue;
-
             }
+            //$BUG: does no work?
             return null;
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Scanning
             fakeArch.Test_AddTrace(new RtlTrace(addr.ToUInt32())
             {
                 m => {
-                    m.Assign(m.LoadDw(m.Word32(0x3000)), m.Word32(42));
+                    m.Assign(m.Mem32(m.Word32(0x3000)), m.Word32(42));
                 }
             });
             scan.EnqueueJumpTarget(addr, addr, proc, arch.CreateProcessorState(program.SegmentMap));
@@ -464,12 +464,12 @@ fn0C00_0000_exit:
             Given_Trace(new RtlTrace(0x1000)
             {
                 m => { m.Assign(reg1, m.Word32(0)); },
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1004)
             {
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1100)
@@ -527,7 +527,7 @@ fn00001100_exit:
             program.Platform = platform;
             Given_Trace(new RtlTrace(0x1000)
             {
-                m => { m.Goto(m.LoadDw(m.Word32(0x2000))); }
+                m => { m.Goto(m.Mem32(m.Word32(0x2000))); }
             });
             program.ImportReferences.Add(
                 Address.Ptr32(0x2000),

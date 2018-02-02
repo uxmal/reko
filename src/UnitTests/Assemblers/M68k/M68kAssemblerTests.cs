@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Assemblers.M68k
             {
                 m.Lea(m.Mem(-8,  m.a2), m.a4);
             });
-            Expect("lea\t$-0008(a2),a4");
+            Expect("lea\t-$0008(a2),a4");
         }
     }
 }

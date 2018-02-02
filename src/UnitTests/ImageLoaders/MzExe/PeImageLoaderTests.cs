@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,9 +93,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         private void Given_i386_Architecture()
         {
             this.arch_386 = mr.StrictMock<IProcessorArchitecture>();
-            arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Pointer32));
+            arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Ptr32));
             arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
-            arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var state = new Mocks.FakeProcessorState(this.arch_386, new SegmentMap(addrLoad));
             arch_386.Stub(a => a.CreateProcessorState(null)).IgnoreArguments().Return(state);
             arch_386.Replay();

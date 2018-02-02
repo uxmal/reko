@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,10 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 		}
 
-		[TestFixtureSetUp]
+        // Once the project has been ported to use NUnit 3.0, remove this comment and uncomment the line containing "[OneTimeSetup]" and remove the line containing "[TestFixtureSetUp]".
+        // 
+        // [OneTimeSetUp]
+        [TestFixtureSetUp]
 		public void GlobalSetup()
 		{
 			arch = new X86ArchitectureFlat32();
@@ -171,28 +174,21 @@ namespace Reko.UnitTests.Arch.Intel
 			throw new NotImplementedException();
 		}
 
-		public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int args)
-		{
-            if (program == null)
-			    throw new NotImplementedException();
-            return program.EnsurePseudoProcedure(name, returnType, args);
-		}
-
         public Expression PseudoProcedure(string name , DataType returnType, params Expression[] args)
         {
-            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args);
             return new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                 returnType,
                 args);
         }
 
         public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args);
             ppp.Characteristics = c;
             return new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                 returnType,
                 args);
         }
