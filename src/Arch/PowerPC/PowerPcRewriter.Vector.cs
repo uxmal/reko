@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr6 = frame.EnsureRegister(arch.CrRegisters[6]);
+            var cr6 = binder.EnsureRegister(arch.CrRegisters[6]);
             m.Assign(cr6, m.Cond(e));
         }
 

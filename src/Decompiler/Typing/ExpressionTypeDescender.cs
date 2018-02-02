@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -288,7 +288,8 @@ namespace Reko.Typing
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
-                binExp.Operator == Operator.Xor)
+                binExp.Operator == Operator.Xor || binExp.Operator == Operator.Cand ||
+                binExp.Operator == Operator.Cor)
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Scanning
                             m.Assign(SCZO, m.Cond(reg));
                         },
                         (m) => {
-                            m.Assign(m.Load(PrimitiveType.Word32, m.Word32(0x1234)), reg);
+                            m.Assign(m.Mem(PrimitiveType.Word32, m.Word32(0x1234)), reg);
                         },
                         (m) => {
                             m.Return(0, 0);

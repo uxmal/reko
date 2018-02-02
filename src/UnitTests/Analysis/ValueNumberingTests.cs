@@ -337,14 +337,14 @@ looptest:
                 var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 8)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 8)));
                 m.BranchIf(m.Le(r1, 1), "m00002");
 
                 m.Label("m00001");
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, m.ISub(r1, 1));
                 m.Call("foo", 0);
-                m.Assign(r1, m.IMul(r1, m.LoadDw(m.ISub(sp, 8))));
+                m.Assign(r1, m.IMul(r1, m.Mem32(m.ISub(sp, 8))));
                 m.Goto("m00003");
 
                 m.Label("m00002");
@@ -478,7 +478,7 @@ Identifiers:
                 m.Assign(j, m.IAdd(j, 4));
 
                 m.Label("m1");
-                m.BranchIf(m.Ne0(m.LoadDw(m.Word32(0x00123404))), "m2");
+                m.BranchIf(m.Ne0(m.Mem32(m.Word32(0x00123404))), "m2");
 
                 m.Label("m3");
                 m.Store(m.Word32(0x00123408), i);
@@ -508,7 +508,7 @@ Identifiers:
                 m.Assign(j, i);
 
                 m.Label("m1");
-                m.BranchIf(m.Ne0(m.LoadDw(m.Word32(0x00123404))), "m2");
+                m.BranchIf(m.Ne0(m.Mem32(m.Word32(0x00123404))), "m2");
 
                 m.Label("m3");
                 m.Store(m.Word32(0x00123408), i);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Reko.Gui.Forms
 
         private IPhasePageInteractor currentPhase;
         private InitialPageInteractor pageInitial;
-        private ILoadedPageInteractor pageLoaded;
+        private IScannedPageInteractor pageScanned;
         private IAnalyzedPageInteractor pageAnalyzed;
         private IFinalPageInteractor pageFinal;
 
@@ -93,9 +93,9 @@ namespace Reko.Gui.Forms
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
-            pageLoaded = svcFactory.CreateLoadedPageInteractor();
-            pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
-            pageFinal = new FinalPageInteractor(sc);
+            pageScanned = svcFactory.CreateScannedPageInteractor();
+            pageAnalyzed = svcFactory.CreateAnalyzedPageInteractor();
+            pageFinal = svcFactory.CreateFinalPageInteractor();
         }
 
         public virtual IDecompiler CreateDecompiler(ILoader ldr)
@@ -423,9 +423,9 @@ namespace Reko.Gui.Forms
             get { return pageInitial; }
         }
 
-        public ILoadedPageInteractor LoadedPageInteractor
+        public IScannedPageInteractor ScannedPageInteractor
         {
-            get { return pageLoaded; }
+            get { return pageScanned; }
         }
 
         public IAnalyzedPageInteractor AnalyzedPageInteractor
@@ -483,9 +483,9 @@ namespace Reko.Gui.Forms
             IPhasePageInteractor next = null;
             if (phase == pageInitial)
             {
-                next = pageLoaded;
+                next = pageScanned;
             }
-            else if (phase == pageLoaded)
+            else if (phase == pageScanned)
             {
                 next = pageAnalyzed;
             }
@@ -513,6 +513,7 @@ namespace Reko.Gui.Forms
                     }
                 });
                 prev.EnterPage();
+                CurrentPhase = prev;
             }
             catch (Exception ex)
             {

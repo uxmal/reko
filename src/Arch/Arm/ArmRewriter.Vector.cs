@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm
                     offset != 0
                         ? m.IAdd(rSrc, Constant.Int32(offset))
                         : rSrc;
-                m.Assign(dst, m.Load(dst.DataType, ea));
+                m.Assign(dst, m.Mem(dst.DataType, ea));
                     offset += dst.DataType.Size;
             }
             if (instr.ArchitectureDetail.WriteBack)
@@ -76,7 +76,7 @@ namespace Reko.Arch.Arm
                     offset != 0
                         ? m.IAdd(rSrc, Constant.Int32(offset))
                         : rSrc;
-                m.Assign(m.Load(dst.DataType, ea), dst);
+                m.Assign(m.Mem(dst.DataType, ea), dst);
                 offset += dst.DataType.Size;
             }
             if (instr.ArchitectureDetail.WriteBack)

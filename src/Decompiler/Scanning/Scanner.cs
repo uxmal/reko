@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,9 +105,7 @@ namespace Reko.Scanning
             /// <param name="end">Linear address of the byte/word beyond the block's end.</param>
             public BlockRange(Block block, ulong start, ulong end)
             {
-                if (block == null)
-                    throw new ArgumentNullException("block");
-                this.Block = block;
+                this.Block = block ?? throw new ArgumentNullException("block");
                 this.Start = start;
                 this.End = end;
                 Debug.Assert(start < end);
@@ -133,8 +131,7 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            BlockRange br;
-            if (!blocks.TryGetUpperBound(addr, out br))
+            if (!blocks.TryGetUpperBound(addr, out var br))
             {
                 var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
                 blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
@@ -168,8 +165,7 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         public void TerminateBlock(Block block, Address addr)
         {
-            BlockRange range;
-            if (blocks.TryGetLowerBound(addr, out range) && range.Start < addr.ToLinear())
+            if (blocks.TryGetLowerBound(addr, out var range) && range.Start < addr.ToLinear())
                 range.End = addr.ToLinear();
             imageMap.TerminateItem(addr);
         }
@@ -204,12 +200,12 @@ namespace Reko.Scanning
                 addrStart);
         }
 
-        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame)
+        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder binder)
         {
             return Program.Architecture.CreateRewriter(
                 Program.CreateImageReader(addrStart),
                 state,
-                frame,
+                binder,
                 this);
         }
 
@@ -356,11 +352,9 @@ namespace Reko.Scanning
 
         protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(Procedure_v1 sp)
         {
-            Address addr;
-            if (!Program.Architecture.TryParseAddress(sp.Address, out addr))
+            if (!Program.Architecture.TryParseAddress(sp.Address, out var addr))
                 return null;
-            Procedure proc;
-            if (Program.Procedures.TryGetValue(addr, out proc))
+            if (Program.Procedures.TryGetValue(addr, out var proc))
                 return null; // Already scanned. Do nothing.
             if (!sp.Decompile)
                 return null;
@@ -513,8 +507,7 @@ namespace Reko.Scanning
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
-            ExternalProcedure ep;
-            if (TryGetNoDecompiledProcedure(addr, out ep))
+            if (TryGetNoDecompiledProcedure(addr, out var ep))
                 return ep;
             if (Program.InterceptedCalls.TryGetValue(addr, out ep))
                 return ep;
@@ -592,8 +585,7 @@ namespace Reko.Scanning
 
         public Block FindContainingBlock(Address address)
         {
-            BlockRange b;
-            if (blocks.TryGetLowerBound(address, out b) && address.ToLinear() < b.End)
+            if (blocks.TryGetLowerBound(address, out var b) && address.ToLinear() < b.End)
             {
                 if (b.Block.Succ.Count == 0)
                     return b.Block;
@@ -609,8 +601,7 @@ namespace Reko.Scanning
 
         public Block FindExactBlock(Address address)
         {
-            BlockRange b;
-            if (blocks.TryGetValue(address, out b))
+            if (blocks.TryGetValue(address, out var b))
                 return b.Block;
             else
                 return null;
@@ -642,8 +633,7 @@ namespace Reko.Scanning
 
         public Expression GetImport(Address addrImportThunk, Address addrInstruction)
         {
-            ImportReference impref;
-            if (importReferences.TryGetValue(addrImportThunk, out impref))
+            if (importReferences.TryGetValue(addrImportThunk, out var impref))
             {
                 var global = impref.ResolveImport(
                     importResolver,
@@ -665,8 +655,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
-            ImportReference impref;
-            if (importReferences.TryGetValue(addrImportThunk, out impref))
+            if (importReferences.TryGetValue(addrImportThunk, out var impref))
             {
                 var extProc = impref.ResolveImportedProcedure(
                     importResolver,
@@ -675,8 +664,7 @@ namespace Reko.Scanning
                 return extProc;
             }
 
-            ExternalProcedure ep;
-            if (Program.InterceptedCalls.TryGetValue(addrImportThunk, out ep))
+            if (Program.InterceptedCalls.TryGetValue(addrImportThunk, out var ep))
                 return ep;
             return GetInterceptedCall(addrImportThunk);
         }
@@ -690,15 +678,14 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
-            ExternalProcedure ep;
             if (!segmentMap.IsValidAddress(addrImportThunk))
                 return null;
             var rdr = Program.CreateImageReader(addrImportThunk);
-            uint uDest;
-            if (!rdr.TryReadUInt32(out uDest))
+            //$REVIEW: WHOA! This is 32-bit code!
+            if (!rdr.TryReadUInt32(out var uDest))
                 return null;
             var addrDest = Address.Ptr32(uDest);
-            Program.InterceptedCalls.TryGetValue(addrDest, out ep);
+            Program.InterceptedCalls.TryGetValue(addrDest, out var ep);
             return ep;
         }
 
@@ -845,8 +832,7 @@ namespace Reko.Scanning
         
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
-            Procedure_v1 userProc;
-            if (!Program.User.Procedures.TryGetValue(addr, out userProc) ||
+            if (!Program.User.Procedures.TryGetValue(addr, out var userProc) ||
                 userProc.Assume == null)
                 return;
             foreach (var rv in userProc.Assume)
@@ -1076,8 +1062,7 @@ namespace Reko.Scanning
                 return false;
             }
 
-            Procedure_v1 sProc;
-            if (Program.User.Procedures.TryGetValue(addrRtlProc, out sProc))
+            if (Program.User.Procedures.TryGetValue(addrRtlProc, out var sProc))
             {
                 return sProc.Decompile;
             }

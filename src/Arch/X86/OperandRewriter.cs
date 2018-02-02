@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,14 +36,14 @@ namespace Reko.Arch.X86
     {
         protected readonly IntelArchitecture arch;
         private readonly ExpressionEmitter m;
-        private readonly IStorageBinder frame;
+        private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
 
-        public OperandRewriter(IntelArchitecture arch, ExpressionEmitter emitter, IStorageBinder frame, IRewriterHost host)
+        public OperandRewriter(IntelArchitecture arch, ExpressionEmitter emitter, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.m = emitter;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
         }
 
@@ -69,17 +69,17 @@ namespace Reko.Arch.X86
 
         public Identifier AluRegister(RegisterOperand reg)
         {
-            return frame.EnsureRegister(reg.Register);
+            return binder.EnsureRegister(reg.Register);
         }
 
         public Identifier AluRegister(RegisterStorage reg)
         {
-            return frame.EnsureRegister(reg);
+            return binder.EnsureRegister(reg);
         }
 
         public Identifier AluRegister(RegisterStorage reg, PrimitiveType vt)
         {
-            return frame.EnsureRegister(arch.GetSubregister(reg, 0, vt.BitSize));
+            return binder.EnsureRegister(arch.GetSubregister(reg, 0, vt.BitSize));
         }
 
         public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)
@@ -206,7 +206,7 @@ namespace Reko.Arch.X86
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return frame.EnsureFlagGroup(Registers.eflags, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.eflags, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
 
@@ -219,7 +219,7 @@ namespace Reko.Arch.X86
         /// <returns></returns>
         public Expression FpuRegister(int reg, X86State state)
         {
-            Expression idx = frame.EnsureRegister(Registers.Top);
+            Expression idx = binder.EnsureRegister(Registers.Top);
             if (reg != 0)
             {
                 idx = m.IAdd(idx, reg);
@@ -267,7 +267,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter16 : OperandRewriter
     {
-        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host) : base(arch, m, frame, host) { }
+        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch, m, binder, host) { }
 
         public override bool IsSegmentedAccessRequired { get { return true; } }
 
@@ -284,7 +284,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter32 : OperandRewriter
     {
-        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host) : base(arch,m, frame, host) { }
+        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch,m, binder, host) { }
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
@@ -294,7 +294,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter64 : OperandRewriter
     {
-        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host) : base(arch, m, frame, host) { }
+        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host) : base(arch, m, binder, host) { }
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {

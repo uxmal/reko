@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Sparc
             return host;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return e;
         }
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 Arg<Expression[]>.Is.NotNull))
                 .Return(new Application(
                      new ProcedureConstant(
-                        PrimitiveType.Pointer32,
+                        PrimitiveType.Ptr32,
                         new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2)),
                 VoidType.Instance,
                 Constant.Word32(0x19)));
@@ -348,7 +348,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 Arg<Expression[] >.Is.NotNull))
                 .Return(new Application(
                     new ProcedureConstant(
-                        PrimitiveType.Pointer32,
+                        PrimitiveType.Ptr32,
                         new PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 1)),
                     VoidType.Instance,
                     Constant.Word32(0x19)));

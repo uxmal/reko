@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -346,7 +346,7 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProcedureBuilder("CrwSinglePredecessorToExitBlock");
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            m.Assign(eax, m.LoadDw(eax));
+            m.Assign(eax, m.Mem32(eax));
             m.Return();
 
             var flow = new ProgramDataFlow(program);
@@ -469,7 +469,7 @@ CrwManyPredecessorsToExitBlock_exit:
         [Test(Description = "Pops three values off FPU stack and places one back.")]
         public void CrwFpuMultiplyAdd()
         {
-            var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+            var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
             var dt = PrimitiveType.Real64;
             var _top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
 
@@ -493,7 +493,7 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.Store(ST, Top, Constant.Real64(5.0));
                 // At this point there are 3 values on the FPU stack
                 m.Call("FpuMultiplyAdd", 0);
-                m.Store(m.Word32(0x00123400), m.Load(ST, dt, Top));
+                m.Store(m.Word32(0x00123400), m.Mem(ST, dt, Top));
                 m.Assign(Top, m.IAdd(Top, 1));
                 m.Return();
             });
@@ -504,12 +504,12 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
                 m.Store(ST, m.IAdd(Top, 1), m.FMul(
-                    m.Load(ST, dt, m.IAdd(Top, 1)),
-                    m.Load(ST, dt, Top)));
+                    m.Mem(ST, dt, m.IAdd(Top, 1)),
+                    m.Mem(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
                 m.Store(ST, m.IAdd(Top, 1), m.FAdd(
-                    m.Load(ST, dt, m.IAdd(Top, 1)),
-                    m.Load(ST, dt, Top)));
+                    m.Mem(ST, dt, m.IAdd(Top, 1)),
+                    m.Mem(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
 
                 // At this point two values have been popped from the

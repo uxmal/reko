@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -400,7 +400,7 @@ ProcedureBuilder_exit:
             var tmp = m.Frame.CreateTemporary(r2_r1.DataType);
 
             m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-            m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+            m.Assign(r1, m.Mem32(m.Word32(0x123400)));
             m.Assign(r2_r1, m.Seq(m.Word32(0), r1));
             m.Assign(tmp, r2_r1);
             m.Assign(r1, m.UDiv(tmp, m.Word32(42)));

@@ -36,7 +36,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
@@ -58,6 +58,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -277,6 +278,7 @@
     <Compile Include="Pascal\Token.cs" />
     <Compile Include="FrameApplicationBuilder.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="CustomDecoderFallback.cs" />
     <Compile Include="Rtl\RtlIf.cs" />
     <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />

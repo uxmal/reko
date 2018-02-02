@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Core
             {
                 StackDepthOnEntry = 6
             };
-            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), true);
+            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Ptr32, callee), true);
             var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }
@@ -104,11 +104,11 @@ namespace Reko.UnitTests.Core
         [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
         public void AppBld_BindByteToRegister()
         {
-            var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 callee.Frame,
                 new CallSite(4, 0),
-                new Identifier("foo", PrimitiveType.Pointer32, null));
+                new Identifier("foo", PrimitiveType.Ptr32, null));
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
@@ -117,12 +117,12 @@ namespace Reko.UnitTests.Core
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
         public void AppBld_NoVariadic_Characteristics()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
-            var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Ptr32));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
-                new ProcedureConstant(PrimitiveType.Pointer32, callee));
+                new ProcedureConstant(PrimitiveType.Ptr32, callee));
             var unk = new UnknownType();
             var sig = FunctionType.Action(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
             var instr = ab.CreateInstruction(sig, null);
@@ -132,12 +132,12 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
-            var rand = new Procedure("rand", new Frame(PrimitiveType.Pointer32));
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Ptr32));
+            var rand = new Procedure("rand", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
-                new ProcedureConstant(PrimitiveType.Pointer32, rand));
+                new ProcedureConstant(PrimitiveType.Ptr32, rand));
 
             var sig = FunctionType.Func(new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32)));
             var instr = ab.CreateInstruction(sig, null);
@@ -147,16 +147,16 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue_WithArgs()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
-            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Pointer32));
+            var caller = new Procedure("caller", new Frame(PrimitiveType.Ptr32));
+            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
-                new ProcedureConstant(PrimitiveType.Pointer32, fputs));
+                new ProcedureConstant(PrimitiveType.Ptr32, fputs));
             var sig = FunctionType.Func(
                     new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(12, PrimitiveType.Int32)),
-                    new Identifier("str", PrimitiveType.Pointer32, new StackArgumentStorage(8, PrimitiveType.Int32)),
-                    new Identifier("stm", PrimitiveType.Pointer32, new StackArgumentStorage(4, PrimitiveType.Int32)));
+                    new Identifier("str", PrimitiveType.Ptr32, new StackArgumentStorage(8, PrimitiveType.Int32)),
+                    new Identifier("stm", PrimitiveType.Ptr32, new StackArgumentStorage(4, PrimitiveType.Int32)));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("Mem0[esp + 8:int32] = fputs(Mem0[esp + 4:int32], Mem0[esp:int32])", instr.ToString());
         }

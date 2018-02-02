@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,14 +37,14 @@ namespace Reko.UnitTests.Mocks
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 			Label("l0_seek");
 			BranchIf(Eq(t, 0), "l5_found"); 
-			Assign(vv, Load(PrimitiveType.Word32, t));
+			Assign(vv, Mem(PrimitiveType.Word32, t));
 			BranchIf(Eq(v, vv), "l5_found");
 			BranchIf(Lt(v, vv), "l4_lt");
-			Assign(t, Load(PrimitiveType.Word32, IAdd(t, 8)));
+			Assign(t, Mem(PrimitiveType.Word32, IAdd(t, 8)));
 			Goto("l0_seek");
 
 			Label("l4_lt");
-			Assign(t, Load(PrimitiveType.Word32, IAdd(t, 4)));
+			Assign(t, Mem(PrimitiveType.Word32, IAdd(t, 4)));
 
 			Label("l5_found");
 			Return(t);

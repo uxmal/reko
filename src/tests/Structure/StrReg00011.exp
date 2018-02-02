@@ -82,15 +82,12 @@ define Reg00011Mock
 	ax_88 = fn1B96_0540(loc02_26, ds);
 	v19_89 = Mem0[0x8416:word16] - 0x0001;
 	Mem0[0x8416:word16] = v19_89;
-	if (v19_89 == 0x0000)
-	{
-		Mem0[0x8414:word16] = 0x0000;
-		if (Mem0[0x8414:word16] != 0x0000)
-		{
-			fn1B96_02A9(ds, &ax_96);
-			return ax_96;
-		}
-	}
-	return ax_88;
+	if (v19_89 != 0x0000)
+		return ax_88;
+	Mem0[0x8414:word16] = 0x0000;
+	if (Mem0[0x8414:word16] == 0x0000)
+		return ax_88;
+	fn1B96_02A9(ds, &ax_96);
+	return ax_96;
 }
 ===========================

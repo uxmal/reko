@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,9 +53,7 @@ namespace Reko.Core
 
         public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
         {
-            if (project == null)
-                throw new ArgumentNullException("project");
-            this.project = project;
+            this.project = project ?? throw new ArgumentNullException("project");
             this.program = program;
             this.eventListener = eventListener;
         }
@@ -135,12 +133,10 @@ namespace Reko.Core
         {
             foreach (var program in project.Programs)
             {
-                ModuleDescriptor mod;
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out var mod))
                     continue;
 
-                SystemService svc;
-                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
                     EnsureSignature(program, svc);
                     return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
@@ -173,19 +169,16 @@ namespace Reko.Core
         {
             foreach (var program in project.Programs)
             {
-                ModuleDescriptor mod;
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
                     continue;
 
-                SystemService svc;
-                if (mod.ServicesByName.TryGetValue(name, out svc))
+                if (mod.ServicesByName.TryGetValue(name, out SystemService svc))
                 {
                     var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                     return new ProcedureConstant(platform.PointerType, ep);
                 }
 
-                ImageSymbol sym;
-                if (mod.GlobalsByName.TryGetValue(name, out sym))
+                if (mod.GlobalsByName.TryGetValue(name, out ImageSymbol sym))
                 {
                     return CreateReferenceToImport(sym);
             }

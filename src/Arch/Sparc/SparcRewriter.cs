@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.Arch.Sparc
     public partial class SparcRewriter : IEnumerable<RtlInstructionCluster>
     {
         private SparcArchitecture arch;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private LookaheadEnumerator<SparcInstruction> dasm;
         private SparcInstruction instrCur;
@@ -45,18 +45,18 @@ namespace Reko.Arch.Sparc
         private List<RtlInstruction> rtlInstructions;
         private RtlClass rtlc;
 
-        public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
         }
 
-        public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
         }
@@ -213,7 +213,7 @@ namespace Reko.Arch.Sparc
         private void EmitCc(Expression dst)
         {
             m.Assign(
-                frame.EnsureFlagGroup(
+                binder.EnsureFlagGroup(
                     Registers.psr,
                     0xF, "NZVC",
                     PrimitiveType.Byte),
@@ -238,7 +238,7 @@ namespace Reko.Arch.Sparc
                         return Constant.Zero(PrimitiveType.Word32);
                 }
                 else
-                    return frame.EnsureRegister(r.Register);
+                    return binder.EnsureRegister(r.Register);
             }
             var imm = op as ImmediateOperand;
             if (imm != null)
@@ -248,7 +248,7 @@ namespace Reko.Arch.Sparc
 
         private Expression RewriteRegister(MachineOperand op)
         {
-            return frame.EnsureRegister(((RegisterOperand)op).Register);
+            return binder.EnsureRegister(((RegisterOperand)op).Register);
         }
         
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
@@ -258,7 +258,7 @@ namespace Reko.Arch.Sparc
             Expression offset;
             if (mem != null)
             {
-                baseReg = mem.Base == Registers.g0 ? null : frame.EnsureRegister(mem.Base);
+                baseReg = mem.Base == Registers.g0 ? null : binder.EnsureRegister(mem.Base);
                 offset = mem.Offset.IsIntegerZero ? null : mem.Offset;
             }
             else
@@ -266,19 +266,19 @@ namespace Reko.Arch.Sparc
                 var i = op as IndexedMemoryOperand;
                 if (i != null)
                 {
-                    baseReg = i.Base == Registers.g0 ? null : frame.EnsureRegister(i.Base);
-                    offset = i.Index == Registers.g0 ? null : frame.EnsureRegister(i.Index);
+                    baseReg = i.Base == Registers.g0 ? null : binder.EnsureRegister(i.Base);
+                    offset = i.Index == Registers.g0 ? null : binder.EnsureRegister(i.Index);
                 }
                 else
                     throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));
             }
-            return m.Load(size, SimplifySum(baseReg, offset));
+            return m.Mem(size, SimplifySum(baseReg, offset));
         }
 
         private Expression SimplifySum(Expression srcLeft, Expression srcRight)
         {
             if (srcLeft == null && srcRight == null)
-                return Constant.Zero(PrimitiveType.Pointer32);
+                return Constant.Zero(PrimitiveType.Ptr32);
             else if (srcLeft == null)
                 return srcRight;
             else if (srcRight == null)

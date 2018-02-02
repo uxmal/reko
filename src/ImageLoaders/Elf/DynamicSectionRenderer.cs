@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -203,8 +203,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 DtFormat fmt;
                 string entryName;
-                Entry dser;
-                if (!machineSpecific.TryGetValue(entry.d_tag, out dser) &&
+                if (!machineSpecific.TryGetValue(entry.d_tag, out Entry dser) &&
                     !entries.TryGetValue(entry.d_tag, out dser))
                 {
                     entryName = string.Format("{0:X8}    ", entry.d_tag);

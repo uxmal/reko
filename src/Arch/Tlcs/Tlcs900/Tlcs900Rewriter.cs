@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -168,7 +168,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 Expression ea = RewriteSrcEa(mem);
                 var tmp = binder.CreateTemporary(mem.Width);
-                m.Assign(tmp, m.Load(mem.Width, ea));
+                m.Assign(tmp, m.Mem(mem.Width, ea));
                 return tmp;
             }
 
@@ -231,10 +231,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     m.Assign(ea, m.ISub(ea, mem.Width.Size));
                 }
-                var load = m.Load(mem.Width, ea);
+                var load = m.Mem(mem.Width, ea);
                 var tmp = binder.CreateTemporary(ea.DataType);
                 m.Assign(tmp, fn(load, src));
-                m.Assign(m.Load(mem.Width, ea), tmp);
+                m.Assign(m.Mem(mem.Width, ea), tmp);
                 if (mem.Increment > 0)
                 {
                     m.Assign(ea, m.IAdd(ea, mem.Width.Size));

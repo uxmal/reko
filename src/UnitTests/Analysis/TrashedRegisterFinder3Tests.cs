@@ -215,10 +215,10 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);        // push r1
 
-                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Store(m.Word32(0x123400), r1);
 
-                m.Assign(r1, m.LoadDw(sp)); // pop r1
+                m.Assign(r1, m.Mem32(sp)); // pop r1
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x0C00));
-                m.Assign(ds, m.LoadW(sp));
+                m.Assign(ds, m.Mem16(sp));
                 m.Assign(sp, m.IAdd(sp, 2));
                 m.Return();
             });
@@ -264,7 +264,7 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
 
                 m.Label("zero");
-                m.Assign(cx, m.LoadW(ax));
+                m.Assign(cx, m.Mem16(ax));
                 m.Return();
             });
             RunTest();
@@ -335,8 +335,8 @@ Constants: cl:0x00
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r2, m.LoadDw(m.IAdd(r1, 4)));
-                m.Assign(r1, m.LoadDw(m.IAdd(r1, 8)));
+                m.Assign(r2, m.Mem32(m.IAdd(r1, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(r1, 8)));
                 m.Call("Addition", 4);
                 m.Store(m.Word32(0x123000), r1);
                 m.Return();
@@ -369,7 +369,7 @@ Constants: cl:0x00
                 m.Label("m1Recursive");
                 m.Assign(r2, m.ISub(r2, 1));
                 m.Call("fact", 0);
-                m.Assign(r2, m.LoadDw(m.ISub(fp, 4)));
+                m.Assign(r2, m.Mem32(m.ISub(fp, 4)));
                 m.Assign(r1, m.IMul(r1, r2));   // r1 clobbered as it is the return value.
                 m.Goto("m3Done");
 
@@ -377,7 +377,7 @@ Constants: cl:0x00
                 m.Assign(r1, 1);
 
                 m.Label("m3Done");
-                m.Assign(r2, m.LoadDw(m.ISub(fp, 4)));    // restore r2
+                m.Assign(r2, m.Mem32(m.ISub(fp, 4)));    // restore r2
                 m.Return();
             });
             RunTest();
@@ -397,7 +397,7 @@ Constants: cl:0x00
                 var r1 = m.Reg32("r1", 1);
                 m.Label("m1");
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);
                 m.Call(fnExit, 4);
@@ -416,7 +416,7 @@ Constants: cl:0x00
                 var r2 = m.Reg32("r2", 2);
                 m.Label("m1");
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.BranchIf(m.Eq0(r1), "m3return");
 
                 m.Label("m2exit");
@@ -444,8 +444,8 @@ Constants: cl:0x00
                 var r3 = m.Reg32("r3", 3);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Store(m.ISub(sp, 4), r3);
-                m.Assign(r2, m.LoadDw(m.Word32(0x123400)));
-                m.Assign(r3, m.LoadDw(m.ISub(sp, 4)));
+                m.Assign(r2, m.Mem32(m.Word32(0x123400)));
+                m.Assign(r3, m.Mem32(m.ISub(sp, 4)));
                 m.Return();
 
                 m.Procedure.Signature = FunctionType.Func(
@@ -478,7 +478,7 @@ Constants: cl:0x00
                 m.Call("fnSig", 0);                 // recurse
 
                 m.Label("m3");
-                m.Assign(r1, m.LoadDw(sp));
+                m.Assign(r1, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -497,7 +497,7 @@ Constants: cl:0x00
             builder.Add("TrfFpuReturn", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
 
                 m.Assign(sp, m.Frame.FramePointer); // establish frame
@@ -521,7 +521,7 @@ Constants: cl:0x00
             builder.Add("TrfFpuReturnTwoValues", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
 
 
@@ -547,19 +547,19 @@ Constants: cl:0x00
             builder.Add("TrfFpuMultiplyAdd", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
                 var dt = PrimitiveType.Real64;
 
                 m.Assign(sp, m.Frame.FramePointer); // establish frame
                 m.Assign(Top, 0);
                 m.Store(ST, m.IAdd(Top, 1), m.FAdd(
-                    m.Load(ST, dt, m.IAdd(Top, 1)),
-                    m.Load(ST, dt, Top)));
+                    m.Mem(ST, dt, m.IAdd(Top, 1)),
+                    m.Mem(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
                 m.Store(ST, m.IAdd(Top, 1), m.FAdd(
-                    m.Load(ST, dt, m.IAdd(Top, 1)),
-                    m.Load(ST, dt, Top)));
+                    m.Mem(ST, dt, m.IAdd(Top, 1)),
+                    m.Mem(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
 
                 m.Return();
@@ -590,18 +590,18 @@ Constants: cl:0x00
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
-                m.BranchIf(m.LoadB(m.Word32(0x123400)), "m2base_case");
+                m.BranchIf(m.Mem8(m.Word32(0x123400)), "m2base_case");
 
                 m.Label("m1recursive");
                 m.Call("recursive", 4);
                 m.Assign(esp, ebp);
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Goto("m3done");
 
                 m.Label("m2base_case");
                 m.Assign(esp, ebp);
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
 
                 m.Label("m3done");
@@ -630,10 +630,10 @@ Constants: cl:0x00
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.BranchIf(m.Lt(m.LoadDw(m.IAdd(ebp, 8)), 2), "m2base_case");
+                m.BranchIf(m.Lt(m.Mem32(m.IAdd(ebp, 8)), 2), "m2base_case");
 
                 m.Label("m1recursive");
-                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.Assign(eax, m.ISub(eax, 1));
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
@@ -641,23 +641,23 @@ Constants: cl:0x00
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Store(m.ISub(ebp, 4), eax);
 
-                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.Assign(eax, m.ISub(eax, 2));
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
                 m.Call("recursive", 4);
                 m.Assign(esp, m.IAdd(esp, 4));
-                m.Assign(eax, m.IAdd(eax, m.LoadDw(m.ISub(ebp, 4))));
+                m.Assign(eax, m.IAdd(eax, m.Mem32(m.ISub(ebp, 4))));
 
                 m.Assign(esp, ebp);
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Goto("m3done");
 
                 m.Label("m2base_case");
                 m.Assign(eax, 1);
                 m.Assign(esp, ebp);
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
 
                 m.Label("m3done");
@@ -711,8 +711,8 @@ Constants: cl:0x00
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
-                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
@@ -734,18 +734,18 @@ Constants: cl:0x00
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, ebp);
                 m.Assign(ebp, esp);
-                m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));
+                m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.BranchIf(m.Eq0(eax), "zero");
 
                 m.Label("not_zero");
                 m.Assign(eax, 1);
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
 
                 m.Label("zero");
                 m.Assign(eax, 0);
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
             });
@@ -850,7 +850,7 @@ Constants: cl:0x00
                 var ecx = m.Frame.EnsureRegister(arch.GetRegister("ecx"));
                 var cl = m.Frame.EnsureRegister(arch.GetRegister("cl"));
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(cl, m.LoadB(m.Word32(0x00123400)));
+                m.Assign(cl, m.Mem8(m.Word32(0x00123400)));
                 m.Assign(ecx, m.Dpb(ecx, cl, 0));
                 m.Return();
             });
@@ -869,8 +869,8 @@ Constants: cl:0x00
                 var ecx = m.Frame.EnsureRegister(arch.GetRegister("ecx"));
                 var cl = m.Frame.EnsureRegister(arch.GetRegister("cl"));
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(ecx, m.LoadDw(m.Word32(0x00123480)));
-                m.Assign(cl, m.LoadB(m.Word32(0x00123400)));
+                m.Assign(ecx, m.Mem32(m.Word32(0x00123480)));
+                m.Assign(cl, m.Mem8(m.Word32(0x00123400)));
                 m.Return();
             });
             RunTest();

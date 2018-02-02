@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -409,7 +409,7 @@ namespace Reko.UnitTests.Structure
                 var a1 = m.Local16("a1"); 
                 m.Assign(a1, m.Fn("fn0540"));
                 var tmp = m.Local16("tmp");
-                m.Assign(tmp, m.LoadW(m.Word16(0x8416)));
+                m.Assign(tmp, m.Mem16(m.Word16(0x8416)));
                 m.BranchIf(m.Ne(tmp, 0), "branch_c");
 
                 m.Label("Branch_a");
@@ -429,16 +429,13 @@ namespace Reko.UnitTests.Structure
 "{" + nl +
 "	a1 = fn0540();" + nl +
 "	tmp = Mem0[0x8416:word16];" + nl +
-"	if (tmp == 0x0000)" + nl +
-"	{" + nl +
-"		Mem0[0x8414:word16] = 0x0000;" + nl +
-"		if (0x8414 != 0x0000)" + nl +
-"		{" + nl +
-"			fn02A9(&ax_96);" + nl +
-"			return ax_96;" + nl +
-"		}" + nl +
-"	}" + nl +
-"	return a1;" + nl +
+"	if (tmp != 0x0000)" + nl +
+"		return a1;" + nl +
+"	Mem0[0x8414:word16] = 0x0000;" + nl +
+"	if (0x8414 == 0x0000)" + nl +
+"		return a1;" + nl +
+"	fn02A9(&ax_96);" + nl +
+"	return ax_96;" + nl +
 "}" + nl);
 
 
@@ -462,10 +459,10 @@ namespace Reko.UnitTests.Structure
             CompileTest(m =>
             {
                 m.Label("Infinity");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x1234)), 0), "hop");
                 m.SideEffect(m.Fn("foo"));
                 m.Label("hop");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x5123)), 1), "Infinity");
                 m.SideEffect(m.Fn("bar"));
                 m.Goto("Infinity");
                 m.Return();

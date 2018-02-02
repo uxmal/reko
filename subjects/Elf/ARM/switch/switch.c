@@ -54,46 +54,42 @@ word32 call_gmon_start(word32 pc, word32 dwArg00)
 {
 	<anonymous> ** r10_11 = pc + globals->dw8394;
 	<anonymous> * r3_12 = *r10_11;
-	if (Z)
-	{
-		word32 sp_26;
-		word32 r10_27;
-		word32 lr_28;
-		word32 r3_29;
-		word32 pc_30;
-		byte NZCV_31;
-		byte Z_32;
-		r3_12();
-		return r10_27;
-	}
-	else
+	if (!Z)
 		return dwLoc08;
+	word32 sp_26;
+	word32 r10_27;
+	word32 lr_28;
+	word32 r3_29;
+	word32 pc_30;
+	byte NZCV_31;
+	byte Z_32;
+	r3_12();
+	return r10_27;
 }
 
 // 0000839C: void __do_global_dtors_aux(Stack word32 dwArg00)
 void __do_global_dtors_aux(word32 dwArg00)
 {
 	union Eq_120 * r5_10 = globals->ptr83F4;
+	if (!Z)
+		return;
+	<anonymous> *** r4_29 = globals->ptr83F8;
+	<anonymous> * r2_31 = **r4_29;
 	if (Z)
+		*r5_10 = 0x01;
+	else
 	{
-		<anonymous> *** r4_29 = globals->ptr83F8;
-		<anonymous> * r2_31 = **r4_29;
-		if (Z)
-			*r5_10 = 0x01;
-		else
-		{
-			*r4_29 = (<anonymous> ***) ((char *) *r4_29 + 0x04);
-			word32 sp_37;
-			word32 r4_38;
-			word32 r5_39;
-			word32 lr_40;
-			word32 pc_41;
-			word32 r3_42;
-			byte NZCV_43;
-			byte Z_44;
-			word32 r2_45;
-			r2_31();
-		}
+		*r4_29 = (<anonymous> ***) ((char *) *r4_29 + 0x04);
+		word32 sp_37;
+		word32 r4_38;
+		word32 r5_39;
+		word32 lr_40;
+		word32 pc_41;
+		word32 r3_42;
+		byte NZCV_43;
+		byte Z_44;
+		word32 r2_45;
+		r2_31();
 	}
 }
 
@@ -105,19 +101,17 @@ void call___do_global_dtors_aux()
 // 00008404: void frame_dummy()
 void frame_dummy()
 {
-	if (Z)
-	{
-		if (Z)
-		{
-			word32 sp_16;
-			word32 pc_17;
-			word32 r0_18;
-			word32 r3_19;
-			byte NZCV_20;
-			byte Z_21;
-			fn00000000();
-		}
-	}
+	if (!Z)
+		return;
+	if (!Z)
+		return;
+	word32 sp_16;
+	word32 pc_17;
+	word32 r0_18;
+	word32 r3_19;
+	byte NZCV_20;
+	byte Z_21;
+	fn00000000();
 }
 
 // 0000842C: void call_frame_dummy()
@@ -148,22 +142,19 @@ word32 switcheroo(ui32 r0, word32 lr, word32 dwArg00)
 {
 	if (ZC)
 		return *bazulate(0x00, 0x00, lr, r0);
-	else
-	{
-		word32 sp_32;
-		word32 ip_33;
-		word32 fp_34;
-		word32 lr_35;
-		word32 pc_36;
-		word32 r0_37;
-		word32 r3_38;
-		byte NZCV_39;
-		byte ZC_40;
-		bcuiposr0 None_41;
-		word32 r1_42;
-		(*((char *) globals->a84F8 + r0 * 0x04))();
-		return fp_34;
-	}
+	word32 sp_32;
+	word32 ip_33;
+	word32 fp_34;
+	word32 lr_35;
+	word32 pc_36;
+	word32 r0_37;
+	word32 r3_38;
+	byte NZCV_39;
+	byte ZC_40;
+	bcuiposr0 None_41;
+	word32 r1_42;
+	(*((char *) globals->a84F8 + r0 * 0x04))();
+	return fp_34;
 }
 
 // 0000855C: void main(Register ui32 r0, Register word32 r1, Register word32 lr, Stack word32 dwArg00)
@@ -218,8 +209,9 @@ ui32 __divsi3(ui32 r0, word32 r1, word32 lr)
 void __div0(ui32 r0, word32 dwArg00)
 {
 	__syscall(0x00900014);
-	if (C)
-		__syscall(0x00900025);
+	if (!C)
+		return;
+	__syscall(0x00900025);
 }
 
 // 00008654: void __libc_csu_init(Register word32 lr, Register word32 pc, Stack word32 dwArg00)
@@ -228,23 +220,22 @@ void __libc_csu_init(word32 lr, word32 pc, word32 dwArg00)
 	<anonymous> *** r10_18;
 	word32 r4_19 = _init(lr, pc, out r10_18);
 	<anonymous> ** r1_22 = *r10_18;
-	if (C)
-	{
-		word32 sp_49;
-		word32 r4_50;
-		word32 r5_51;
-		word32 r6_52;
-		word32 r10_53;
-		word32 lr_54;
-		word32 pc_55;
-		word32 r3_56;
-		word32 r2_57;
-		word32 r1_58;
-		byte NZCV_59;
-		byte C_60;
-		bcuiposr0 None_61;
-		(*r1_22)();
-	}
+	if (!C)
+		return;
+	word32 sp_49;
+	word32 r4_50;
+	word32 r5_51;
+	word32 r6_52;
+	word32 r10_53;
+	word32 lr_54;
+	word32 pc_55;
+	word32 r3_56;
+	word32 r2_57;
+	word32 r1_58;
+	byte NZCV_59;
+	byte C_60;
+	bcuiposr0 None_61;
+	(*r1_22)();
 }
 
 // 000086B0: void __libc_csu_fini(Register word32 r5, Register word32 pc, Stack word32 dwArg00)

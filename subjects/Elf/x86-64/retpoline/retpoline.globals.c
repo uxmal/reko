@@ -4,11 +4,14 @@
 
 #include "retpoline.h"
 
-char g_str4007A8[] = "done\x0A";
-union Eq_221 g_u600E10 = 
-	{
-		0x00400550
-	};
+Eq_27 g_t400660 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+;
+Eq_30 g_t400710 = Unexpected function type (fn void ())
+;
+Eq_31 g_t400780 = Unexpected function type (fn void ())
+;
+char g_str4007A8[] = "done\n";
+<anonymous> * g_ptr600E10 = frame_dummy;
 word64 g_qw600FF8 = 0x0000000000000000;
 byte g_b601040 = 0x00;
 

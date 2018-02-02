@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -238,12 +238,12 @@ namespace Reko.Core.Machine
 
         public static AddressOperand Ptr32(uint a)
         {
-            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Pointer32);
+            return new AddressOperand(Address.Ptr32(a), PrimitiveType.Ptr32);
         }
 
         public static AddressOperand Ptr64(ulong a)
         {
-            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
+            return new AddressOperand(Address.Ptr64(a), PrimitiveType.Ptr64);
         }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

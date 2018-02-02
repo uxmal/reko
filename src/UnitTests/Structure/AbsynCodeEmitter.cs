@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,13 +36,19 @@ namespace Reko.UnitTests.Structure
             this.stmts = stmts;
         }
 
+        public void Assign(Expression dst, Expression src)
+        {
+            var ass = new AbsynAssignment(dst, src);
+            stmts.Add(ass);
+        }
+
         public void Return()
         {
             var ret = new AbsynReturn(null);
             stmts.Add(ret);
         }
 
-        public void If(Identifier id, Action<AbsynCodeEmitter> then)
+        public void If(Expression id, Action<AbsynCodeEmitter> then)
         {
             var thenStmts = new List<AbsynStatement>();
             var thenEmitter = new AbsynCodeEmitter(thenStmts);
@@ -50,10 +56,23 @@ namespace Reko.UnitTests.Structure
             stmts.Add(new AbsynIf(id, thenStmts));
         }
 
+        public void If(Expression id, Action<AbsynCodeEmitter> then, Action<AbsynCodeEmitter> els)
+        {
+            var thenStmts = new List<AbsynStatement>();
+            var thenEmitter = new AbsynCodeEmitter(thenStmts);
+            then(thenEmitter);
+            var elseStmts = new List<AbsynStatement>();
+            var elseEmitter = new AbsynCodeEmitter(elseStmts);
+            els(elseEmitter);
+            stmts.Add(new AbsynIf(id, thenStmts, elseStmts));
+        }
+
         public void SideEffect(Expression e)
         {
             var s = new AbsynSideEffect(e);
             stmts.Add(s);
         }
+
+      
     }
 }

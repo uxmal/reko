@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Store(m.Word16(0x123408), r1);
                 m.Return();
             });
@@ -149,9 +149,9 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Store(m.Word32(0x123408), r1);
-                m.Assign(r2, m.LoadDw(m.Word32(0x123410)));
+                m.Assign(r2, m.Mem32(m.Word32(0x123410)));
                 m.Store(m.Word32(0x123418), r2);
                 m.Return();
             });
@@ -213,9 +213,9 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Store(m.Word32(0x123408), r1);
-                m.Assign(r2, m.LoadDw(m.Word32(0x123410)));
+                m.Assign(r2, m.Mem32(m.Word32(0x123410)));
                 m.Store(m.Word32(0x123418), r2);
                 m.Return();
 
@@ -292,7 +292,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(r2));
+                m.Assign(r1, m.Mem32(r2));
                 m.Return();
             });
             pb.BuildProgram();

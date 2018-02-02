@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Core
 					new Identifier("arg1", PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)));
 
 			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
-			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
+			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new PseudoProcedure("foo", sig));
 			var ab = arch.CreateFrameApplicationBuilder(f, cs, fn);
             Instruction instr = ab.CreateInstruction(sig, null); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Core
                 cx,
                 new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
 			var cs = new CallSite(stack, 0);
-			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));
+			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new PseudoProcedure("bar", sig));
 			var ab = new FrameApplicationBuilder(arch, f, cs, fn, true);
             Instruction instr = ab.CreateInstruction(sig, null);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
@@ -196,9 +196,9 @@ namespace Reko.UnitTests.Core
 		{
 			var f = new Frame(PrimitiveType.Word32);
 			Identifier r = f.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-			Identifier arg = f.EnsureOutArgument(r, PrimitiveType.Pointer32);
+			Identifier arg = f.EnsureOutArgument(r, PrimitiveType.Ptr32);
 			Assert.AreEqual("r1Out", arg.Name);
-			Assert.AreSame(PrimitiveType.Pointer32, arg.DataType);
+			Assert.AreSame(PrimitiveType.Ptr32, arg.DataType);
 		}
 	}
 }

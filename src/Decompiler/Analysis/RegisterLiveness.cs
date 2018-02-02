@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -183,8 +183,7 @@ namespace Reko.Analysis
 		{
 			InitializeWorkList();
 			int initial = worklist.Count;
-            BlockFlow item;
-            while (worklist.GetWorkItem(out item))
+            while (worklist.GetWorkItem(out BlockFlow item))
 			{
                 if (eventListener.IsCanceled())
                     break;
@@ -431,8 +430,7 @@ namespace Reko.Analysis
 
 		public override void VisitAssignment(Assignment a)
 		{
-			Identifier idSrc = a.Src as Identifier;
-			if (idSrc != null)
+            if (a.Src is Identifier idSrc)
 			{
 				VisitCopy(a.Dst, idSrc);
 			}
@@ -449,16 +447,11 @@ namespace Reko.Analysis
 			{
 				bitUseOffset = 0;
 				cbitsUse = 0;
-				var outArg = appl.Arguments[i] as OutArgument;
-                if (outArg != null)
+                if (appl.Arguments[i] is OutArgument outArg && outArg.Expression is Identifier id)
                 {
-					Identifier id = outArg.Expression as Identifier;
-                    if (id != null)
-                    {
                         Def(id);
                     }
 				}
-			}
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{	
 				OutArgument u = appl.Arguments[i] as OutArgument;
@@ -622,9 +615,7 @@ namespace Reko.Analysis
             get { return state; }
             set
             {
-                if (value == null) 
-                    throw new ArgumentNullException();
-                state = value;
+                state = value ?? throw new ArgumentNullException();
                 foreach (ProcedureFlow pi in mpprocData.ProcedureFlows.Values)
                 {
                     state.InitializeProcedureFlow(pi);
@@ -713,17 +704,14 @@ namespace Reko.Analysis
 					Identifier ret = block.Procedure.Signature.ReturnValue;
 					if (ret != null)
 					{
-						RegisterStorage rs = ret.Storage as RegisterStorage;
-                        if (rs != null)
+                        if (ret.Storage is RegisterStorage rs)
                             bf.DataOut.UnionWith(arch.GetAliases(rs));
 					}
 					foreach (Identifier id in block.Procedure.Signature.Parameters)
 					{
-						OutArgumentStorage os = id.Storage as OutArgumentStorage;
-						if (os == null)
+						if (!(id.Storage is OutArgumentStorage os))
 							continue;
-						RegisterStorage rs = os.OriginalIdentifier.Storage as RegisterStorage;
-						if (rs != null) 
+                        if (os.OriginalIdentifier.Storage is RegisterStorage rs)
 						{
                             bf.DataOut.UnionWith(arch.GetAliases(rs));
 						}

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,8 +63,7 @@ namespace Reko.Analysis
 
         private void SetDefStatement(Statement stm, SsaIdentifier sid)
         {
-            List<SsaIdentifier> sids;
-            if (defsByStatement.TryGetValue(sid.DefStatement, out sids))
+            if (defsByStatement.TryGetValue(sid.DefStatement, out var sids))
             {
                 sids.Remove(sid);
             }
@@ -95,8 +94,7 @@ namespace Reko.Analysis
 				return false;
 
             //$PERFORMANCE: this loop might be slow and should be improved if possible.
-            List<SsaIdentifier> sids;
-            if (defsByStatement.TryGetValue(def, out sids))
+            if (defsByStatement.TryGetValue(def, out var sids))
             {
                 foreach (SsaIdentifier sidOther in sids)
                 {
@@ -124,8 +122,7 @@ namespace Reko.Analysis
 			def.Instruction.Accept(new UsedIdentifierAdjuster(def, ssa.Identifiers, use));
             use.Instruction.Accept(new IdentifierReplacer(ssa.Identifiers, use, sid.Identifier, defExpr, false));
 
-			List<SsaIdentifier> sids;
-			if (defsByStatement.TryGetValue(def, out sids))
+			if (defsByStatement.TryGetValue(def, out var sids))
 			{
 				foreach (SsaIdentifier s in sids)
 				{
@@ -185,8 +182,7 @@ namespace Reko.Analysis
 				for (int i = 0; i < block.Statements.Count; ++i)
 				{
 					Statement stmDef = block.Statements[i];
-					Assignment ass = stmDef.Instruction as Assignment;
-					if (ass != null && !visited.Contains(ass.Dst))
+					if (stmDef.Instruction is Assignment ass && !visited.Contains(ass.Dst))
 					{
 						visited.Add(ass.Dst);
 						SsaIdentifier sidDef = ssa.Identifiers[ass.Dst];

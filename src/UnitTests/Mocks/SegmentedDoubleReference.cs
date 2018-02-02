@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,10 +36,10 @@ namespace Reko.UnitTests.Mocks
 			Identifier si2 = Local16("si2");
 
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
-            Assign(si1, SegMemW(ds, offset));
-			Store(SegMemW(ds, Word16(0x100)), SegMemW(ds, IAdd(si1, 0x0004)));
-			Assign(si2, SegMemW(ds, offset));
-			Store(SegMemW(ds, Word16(0x102)), SegMemW(ds, IAdd(si2, 0x0004)));
+            Assign(si1, SegMem16(ds, offset));
+			Store(SegMem16(ds, Word16(0x100)), SegMem16(ds, IAdd(si1, 0x0004)));
+			Assign(si2, SegMem16(ds, offset));
+			Store(SegMem16(ds, Word16(0x102)), SegMem16(ds, IAdd(si2, 0x0004)));
 		}
 	}
 }

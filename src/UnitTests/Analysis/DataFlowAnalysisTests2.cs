@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,8 +116,8 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                     m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                    m.Assign(r1, m.LoadDw(m.Word32(0x010000)));
-                    m.Assign(r2, m.LoadDw(m.Word32(0x010004)));
+                    m.Assign(r1, m.Mem32(m.Word32(0x010000)));
+                    m.Assign(r2, m.Mem32(m.Word32(0x010004)));
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
@@ -149,8 +149,8 @@ test_exit:
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
-                m.Assign(r2, m.LoadDw(m.IAdd(sp, 8)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
+                m.Assign(r2, m.Mem32(m.IAdd(sp, 8)));
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Store(m.Word32(0x010008), r1);
                 m.Return();
@@ -241,8 +241,8 @@ test_exit:
                     var r1 = m.Reg32("r1", 1);
                     var r2 = m.Reg32("r2", 2);
                     var fp = m.Frame.FramePointer;
-                    m.Assign(r1, m.LoadDw(m.IAdd(fp, 4)));
-                    m.Assign(r2, m.LoadDw(m.IAdd(fp, 8)));
+                    m.Assign(r1, m.Mem32(m.IAdd(fp, 4)));
+                    m.Assign(r2, m.Mem32(m.IAdd(fp, 8)));
                     m.Assign(r1, m.IAdd(r1, r2));
                     m.Store(m.Word32(0x010008), r1);
                     m.Return();
@@ -291,7 +291,7 @@ test_exit:
             {
                 var r1 = m.Register(1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.Call("level1", 0);
                 m.Store(m.Word32(0x123400), r1);
                 m.Return();
@@ -364,7 +364,7 @@ level2_exit:
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, m.LoadDw(m.Word32(0x123400)));
+                m.Store(sp, m.Mem32(m.Word32(0x123400)));
                 m.Call("level1", 4);
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Store(m.Word32(0x123404), r1);
@@ -375,7 +375,7 @@ level2_exit:
                 var r1 = m.Register(1);
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);
                 m.Call("level2", 4);
@@ -388,7 +388,7 @@ level2_exit:
                 var r2 = m.Register(2);
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Assign(r1, m.IAdd(r1, 1));
                 m.Return();
             });
@@ -444,7 +444,7 @@ level2_exit:
                 var r1 = m.Register(1);
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Call("level1", 4);
                 m.Return();
             });

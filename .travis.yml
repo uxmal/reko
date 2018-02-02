@@ -11,3 +11,4 @@ script:
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests
 # Disabled temporarily as per discussion in #320
 #  - cd subjects; python regressionTests.py --check-output --configuration=TravisRelease
+#  - python ./subjects/regressionTests.py --check-output --configuration=TravisRelease

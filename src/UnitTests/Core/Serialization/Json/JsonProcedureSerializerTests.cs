@@ -185,8 +185,8 @@ namespace Reko.UnitTests.Core.Serialization.Json
                 var f1 = m.Reg64("f1", 2);
                 var f2 = m.Reg64("f1", 2);
                 m.Label("l1000");
-                m.Assign(f1, m.Fn(cos, m.Load(PrimitiveType.Real64, r1)));
-                m.Assign(f2, m.Fn(sin, m.Load(PrimitiveType.Real64, r2)));
+                m.Assign(f1, m.Fn(cos, m.Mem(PrimitiveType.Real64, r1)));
+                m.Assign(f2, m.Fn(sin, m.Mem(PrimitiveType.Real64, r2)));
                 m.Assign(f1, m.FSub(f1, f2));
                 m.Return(f1);
             });

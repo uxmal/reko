@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -231,7 +231,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     ea = arch.MakeAddressFromConstant(mem.Offset);
                 }
                 var tmp = binder.CreateTemporary(mem.Width);
-                m.Assign(tmp, m.Load(mem.Width, ea));
+                m.Assign(tmp, m.Mem(mem.Width, ea));
                 return tmp;
             }
             throw new NotImplementedException(op.GetType().Name);
@@ -276,18 +276,18 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 {
                     ea = arch.MakeAddressFromConstant(mem.Offset);
                 }
-                var load = m.Load(mem.Width, ea);
+                var load = m.Mem(mem.Width, ea);
                 src = fn(load, src);
                 if (src is Identifier || src is Constant)
                 {
-                    m.Assign(m.Load(mem.Width, ea), src);
+                    m.Assign(m.Mem(mem.Width, ea), src);
                     return src;
                 }
                 else
                 {
                     var tmp = binder.CreateTemporary(ea.DataType);
                     m.Assign(tmp, src);
-                m.Assign(m.Load(mem.Width, ea), tmp);
+                    m.Assign(m.Mem(mem.Width, ea), tmp);
                 return tmp;
             }
             }

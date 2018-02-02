@@ -7,4 +7,10 @@
 <anonymous> g_tFFFFFFFF;
 Eq_48 g_t0000;
 Eq_1921 g_t0FF8;
+word16 g_a1758[] = 
+	{
+	};
+word16 g_a2C58[] = 
+	{
+	};
 

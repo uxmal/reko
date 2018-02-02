@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Scanning
             this.addrInstr = Address.Ptr32(0x123400);
             this.listener = new FakeDecompilerEventListener();
             sc.AddService<DecompilerEventListener>(listener);
-            this.dummyPc = new ProcedureConstant(PrimitiveType.Pointer32, new ExternalProcedure("dummy", x86PrintfSig));
+            this.dummyPc = new ProcedureConstant(PrimitiveType.Ptr32, new ExternalProcedure("dummy", x86PrintfSig));
         }
 
         private SegmentMap CreateSegmentMap(uint uiAddr, uint size)

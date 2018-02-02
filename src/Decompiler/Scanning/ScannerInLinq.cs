@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ namespace Reko.Scanning
         {
             this.sr = sr;
 
-            //sr.WatchedAddresses.Add(Address.Ptr32(0x9D34)); //$DEBUG
+           // sr.WatchedAddresses.Add(Address.Ptr64(0x0000000000405EF3)); //$DEBUG
 
             // At this point, we have some entries in the image map
             // that are data, and unscanned ranges in betweeen. We
@@ -151,8 +151,8 @@ namespace Reko.Scanning
         {
             var ranges = FindUnscannedRanges().ToList();
             DumpRanges(ranges);
-            var frame = new StorageBinder();
-            var shsc = new ShingledScanner(this.program, this.host, frame, sr, this.eventListener);
+            var binder = new StorageBinder();
+            var shsc = new ShingledScanner(this.program, this.host, binder, sr, this.eventListener);
             bool unscanned = false;
             foreach (var range in ranges)
             {

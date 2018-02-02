@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -260,17 +260,32 @@ namespace Reko.Evaluation
                 return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
             }
 
-            // (== (- e c1) c2) => (== e c1+c2)
+            // (rel (- e c1) c2) => (rel e c1+c2)
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
                 IsIntComparison(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
-                Changed = true;
-                ctx.RemoveIdentifierUse(idLeft);
-                var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
-                var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
-                return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
+                // (>u (- e c1) c2) => (>u e c1+c2) || (<u e c2)
+                if (binExp.Operator == Operator.Ugt && 
+                    binLeft.Operator == Operator.ISub &&
+                    !cRight.IsIntegerZero)
+                {
+                    Changed = true;
+                    ctx.UseExpression(binLeft.Left);
+                    var c = ExpressionSimplifier.SimplifyTwoConstants(Operator.IAdd, cLeftRight, cRight);
+                    return new BinaryExpression(Operator.Cor, PrimitiveType.Bool,
+                        new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
+                        new BinaryExpression(Operator.Ult, PrimitiveType.Bool, binLeft.Left, cLeftRight));
+                }
+                else
+                {
+                    Changed = true;
+                    ctx.RemoveIdentifierUse(idLeft);
+                    var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
+                    var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
+                    return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
+                }
             }
 
             if (addMici.Match(binExp))
@@ -340,11 +355,9 @@ namespace Reko.Evaluation
             if (exp != Constant.Invalid)
             {
                 var ptCast = cast.DataType.ResolveAs<PrimitiveType>();
-                Constant c = exp as Constant;
-                if (c != null && ptCast != null)
+                if (exp is Constant c && ptCast != null)
                 {
-                    PrimitiveType ptSrc = c.DataType as PrimitiveType;
-                    if (ptSrc != null)
+                    if (c.DataType is PrimitiveType ptSrc)
                     {
                         if (ptCast.Domain == Domain.Real)
                         {
@@ -362,9 +375,9 @@ namespace Reko.Evaluation
                         }
                     }
                 }
-                Identifier id;
-                DepositBits dpb;
-                if (exp.As(out id) && ctx.GetDefiningExpression(id).As(out dpb) && dpb.BitPosition == 0)
+                if (exp is Identifier id && 
+                    ctx.GetDefiningExpression(id) is DepositBits dpb && 
+                    dpb.BitPosition == 0)
                 {
                     // If we are casting the result of a DPB, and the deposited part is >= 
                     // the size of the cast, then use deposited part directly.
@@ -399,8 +412,7 @@ namespace Reko.Evaluation
             var cond = c.Condition.Accept(this);
             var t = c.ThenExp.Accept(this);
             var f = c.FalseExp.Accept(this);
-            var cCond = cond as Constant;
-            if (cCond != null && cCond.DataType == PrimitiveType.Bool)
+            if (cond is Constant cCond && cCond.DataType == PrimitiveType.Bool)
             {
                 if (cCond.IsZero)
                     return f;
@@ -605,13 +617,11 @@ namespace Reko.Evaluation
         /// </summary
         private Expression SimplifyPhiArg(Expression arg)
         {
-            BinaryExpression bin, binLeft;
-            Identifier idLeft;
-            if (
-                !arg.As(out bin) || !bin.Left.As(out idLeft) ||
-                !ctx.GetValue(idLeft).As(out binLeft)
-            )
+            if (!(arg is BinaryExpression bin &&
+                  bin.Left is Identifier idLeft &&
+                  ctx.GetValue(idLeft) is BinaryExpression binLeft))
                 return arg;
+
             ctx.RemoveIdentifierUse(idLeft);
             ctx.UseExpression(binLeft);
             bin = new BinaryExpression(

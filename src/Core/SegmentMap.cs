@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,9 +36,7 @@ namespace Reko.Core
 
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
-            if (addrBase == null)
-                throw new ArgumentNullException("addrBase");
-            this.BaseAddress = addrBase;
+            this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");
             this.segments = new SortedList<Address, ImageSegment>();
             foreach (var seg in segments)
             {
@@ -139,8 +137,7 @@ namespace Reko.Core
 
         public bool IsExecutableAddress(Address addr)
         {
-            ImageSegment seg;
-            return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Execute) != 0);
+            return (TryFindSegment(addr, out var seg) && (seg.Access & AccessMode.Execute) != 0);
         }
 
         /// <summary>

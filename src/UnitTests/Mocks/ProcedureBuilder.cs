@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Mocks
 
         public CallInstruction Call(ProcedureBase callee, int retSizeOnStack)
         {
-            var c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+            var c = new ProcedureConstant(PrimitiveType.Ptr32, callee);
             var ci = new CallInstruction(c, new CallSite(retSizeOnStack, 0));  
             Emit(ci);
             return ci;
@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Mocks
         public Application Fn(string name, params Expression[] exps)
         {
             Application appl = new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure(name, VoidType.Instance, 0)),
+                new ProcedureConstant(PrimitiveType.Ptr32, new PseudoProcedure(name, VoidType.Instance, 0)),
                 PrimitiveType.Word32, exps);
             unresolvedProcedures.Add(new ApplicationUpdater(name, appl));
             return appl;

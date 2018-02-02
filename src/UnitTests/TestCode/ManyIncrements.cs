@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,21 +38,21 @@ namespace Reko.UnitTests.TestCode
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 
             Label("loopTop");
-            Assign(r1, Load(PrimitiveType.Byte, r0));
+            Assign(r1, Mem(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
             BranchIf(Ne(r1, base.Int8(1)), "not1");
 
-            Assign(r1, Load(PrimitiveType.Byte, r0));
+            Assign(r1, Mem(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
             Store(Word32(0x33333330), r1);
-            Assign(r1, Load(PrimitiveType.Byte, r0));
+            Assign(r1, Mem(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
             Store(Word32(0x33333331), r1);
             Goto("loopTop");
 
             Label("not1");
             BranchIf(Ne(r1, base.Int8(2)), "done");
-            Assign(r1, Load(PrimitiveType.Byte, r0));
+            Assign(r1, Mem(PrimitiveType.Byte, r0));
             Assign(r0, IAdd(r0, 1));
             Store(Word32(0x33333330), r1);
             Goto("loopTop");

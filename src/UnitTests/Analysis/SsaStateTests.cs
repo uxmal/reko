@@ -215,7 +215,7 @@ m3: [r2:r2_3,r1:r1_2]
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 m.Label("m1");
-                m.Assign(r1, m.LoadDw(m.IAdd(r0, 32)));
+                m.Assign(r1, m.Mem32(m.IAdd(r0, 32)));
                 m.Assign(r2, 314159);
                 m.Label("m2");
                 m.Use(r0);

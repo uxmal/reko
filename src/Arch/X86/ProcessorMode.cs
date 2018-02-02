@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Reko.Arch.X86
 
         public abstract X86Disassembler CreateDisassembler(EndianImageReader rdr, X86Options options);
 
-        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host);
+        public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host);
 
         public abstract Address CreateSegmentedAddress(ushort seg, uint offset);
 
@@ -120,7 +120,7 @@ namespace Reko.Arch.X86
     internal class RealMode : ProcessorMode
     {
         public RealMode()
-            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Pointer32)
+            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Ptr32)
         {
         }
 
@@ -140,9 +140,9 @@ namespace Reko.Arch.X86
             return dasm;
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
         {
-            return new OperandRewriter16(arch, m, frame, host);
+            return new OperandRewriter16(arch, m, binder, host);
         }
 
         public override Address CreateSegmentedAddress(ushort seg, uint offset)
@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
     internal class SegmentedMode : ProcessorMode
     {
         public SegmentedMode()
-            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Pointer32)
+            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.Ptr32)
         {
         }
 
@@ -184,9 +184,9 @@ namespace Reko.Arch.X86
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
         {
-            return new OperandRewriter16(arch, m, frame, host);
+            return new OperandRewriter16(arch, m, binder, host);
         }
 
         public override Address CreateSegmentedAddress(ushort seg, uint offset)
@@ -213,7 +213,7 @@ namespace Reko.Arch.X86
     internal class FlatMode32 : ProcessorMode
     {
         internal FlatMode32()
-            : base(PrimitiveType.Word32, PrimitiveType.Pointer32, PrimitiveType.Pointer32)
+            : base(PrimitiveType.Word32, PrimitiveType.Ptr32, PrimitiveType.Ptr32)
         {
         }
 
@@ -247,9 +247,9 @@ namespace Reko.Arch.X86
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
         {
-            return new OperandRewriter32(arch, m, frame, host);
+            return new OperandRewriter32(arch, m, binder, host);
         }
 
         public override Address CreateSegmentedAddress(ushort seg, uint offset)
@@ -277,7 +277,7 @@ namespace Reko.Arch.X86
     internal class FlatMode64 : ProcessorMode
     {
         internal FlatMode64()
-            : base(PrimitiveType.Word64, PrimitiveType.Pointer64, PrimitiveType.Pointer64)
+            : base(PrimitiveType.Word64, PrimitiveType.Ptr64, PrimitiveType.Ptr64)
         {
         }
 
@@ -307,9 +307,9 @@ namespace Reko.Arch.X86
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }
 
-        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host)
+        public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host)
         {
-            return new OperandRewriter64(arch, m, frame, host);
+            return new OperandRewriter64(arch, m, binder, host);
         }
 
         public override Address CreateSegmentedAddress(ushort seg, uint offset)

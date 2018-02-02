@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Evaluation
             RunBlockTest(m =>
             {
                 CreateSymbolicEvaluator(frame);
-                m.Assign(al, m.Load(al.DataType, ebx));
+                m.Assign(al, m.Mem(al.DataType, ebx));
             });
             Assert.AreEqual("<invalid>", ctx.TemporaryState[al.Storage].ToString());
         }
@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Evaluation
                 m.Assign(esp, m.ISub(esp, 4));
                 m.Store(esp, eax);
                 m.Assign(eax, m.Word32(1));
-                m.Assign(eax, m.LoadDw(esp));
+                m.Assign(eax, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
             });
             Assert.AreEqual("eax", GetRegisterState(se, eax).ToString());
@@ -180,10 +180,10 @@ namespace Reko.UnitTests.Evaluation
                 m.Assign(esp, m.ISub(esp, 20));
 
                 m.Store(m.IAdd(ebp, 8), m.Word32(1));
-                m.Assign(eax, m.LoadDw(m.IAdd(esp, 28)));
+                m.Assign(eax, m.Mem32(m.IAdd(esp, 28)));
 
                 m.Assign(esp, m.IAdd(esp, 20));
-                m.Assign(ebp, m.LoadDw(esp));
+                m.Assign(ebp, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
             });
             Assert.AreEqual("ebp", GetRegisterState(se, ebp).ToString());
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Evaluation
             {
                 r1 = m.Register(1);
                 m.Assign(r1, 1);
-                m.SideEffect(m.Fn("foo", m.Out(PrimitiveType.Pointer32, r1)));
+                m.SideEffect(m.Fn("foo", m.Out(PrimitiveType.Ptr32, r1)));
             });
             Assert.AreEqual("<invalid>", GetRegisterState(se, r1).ToString());
         }
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Evaluation
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 m.Store(m.ISub(esp, 4), ax);
                 m.Store(m.ISub(esp, 2), ds);
-                m.Assign(eax, m.LoadDw(m.ISub(esp, 4)));
+                m.Assign(eax, m.Mem32(m.ISub(esp, 4)));
             });
             Assert.AreEqual("SEQ(ds, ax)", GetRegisterState(se, eax).ToString());
         }
@@ -248,8 +248,8 @@ namespace Reko.UnitTests.Evaluation
                 esp = m.Frame.EnsureRegister(Registers.esp);
 
                 m.Store(m.ISub(esp, 4), ebx);
-                m.Assign(ax, m.LoadW(m.ISub(esp, 4)));
-                m.Assign(cx, m.LoadW(m.ISub(esp, 2)));
+                m.Assign(ax, m.Mem16(m.ISub(esp, 4)));
+                m.Assign(cx, m.Mem16(m.ISub(esp, 2)));
             });
             Assert.AreEqual("ebx", ctx.StackState[-4].ToString());
             Assert.AreEqual("(word16) ebx", GetRegisterState(se, ax).ToString());
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Evaluation
             {
                 si = m.Frame.EnsureRegister(Registers.si);
 
-                m.Assign(si,m.LoadW(m.Word16(0x0032)));
+                m.Assign(si,m.Mem16(m.Word16(0x0032)));
                 m.Assign(si, m.IAdd(si,2));
             });
             Assert.AreEqual("<invalid>", ctx.RegisterState[(RegisterStorage)si.Storage].ToString());

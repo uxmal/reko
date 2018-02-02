@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,9 +39,9 @@ namespace Reko.UnitTests.Fragments
         {
             Identifier ds = base.Local(PrimitiveType.SegmentSelector, "ds");
 
-            base.Store(SegMemW(Seg(0x1796), Word16(0x0001)), Seg(0x0800));
-            Store(SegMemW(Seg(0x800), Word16(0x5422)), ds);
-            Store(SegMemW(Seg(0x800), Word16(0x0066)), SegMemW(Seg(0x0800), Word16(0x5420)));
+            base.Store(SegMem16(Seg(0x1796), Word16(0x0001)), Seg(0x0800));
+            Store(SegMem16(Seg(0x800), Word16(0x5422)), ds);
+            Store(SegMem16(Seg(0x800), Word16(0x0066)), SegMem16(Seg(0x0800), Word16(0x5420)));
         }
     }
 }

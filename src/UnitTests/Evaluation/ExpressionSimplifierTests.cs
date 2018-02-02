@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Reko.UnitTests.Mocks;
+using System.Linq;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -135,7 +136,7 @@ namespace Reko.UnitTests.Evaluation
                 PrimitiveType.Real32,
                 m.Cast(
                     PrimitiveType.Real64,
-                    m.Load(PrimitiveType.Real32, m.Word32(0x123400))));
+                    m.Mem(PrimitiveType.Real32, m.Word32(0x123400))));
             Assert.AreEqual("Mem0[0x00123400:real32]", expr.Accept(simplifier).ToString());
         }
 
@@ -143,7 +144,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_AddAddress32Constant()
         {
             Given_ExpressionSimplifier();
-            var expr = m.LoadDw(m.IAdd(Address.Ptr32(0x00123400), 0x56));
+            var expr = m.Mem32(m.IAdd(Address.Ptr32(0x00123400), 0x56));
             Assert.AreEqual("Mem0[0x00123456:word32]", expr.Accept(simplifier).ToString());
         }
 
@@ -161,6 +162,14 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Conditional(PrimitiveType.Word32, Constant.False(), Constant.Word32(1), Constant.Word32(0));
             Assert.AreEqual("0x00000000", expr.Accept(simplifier).ToString());
+        }
+       
+        [Test]
+        public void Ecs_UnsignedRangeComparison()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Ugt(m.ISub(foo, 2), m.Word32(5));
+            Assert.AreEqual("foo_0 >u 0x00000007 || foo_0 <u 0x00000002", expr.Accept(simplifier).ToString());
         }
     }
 }

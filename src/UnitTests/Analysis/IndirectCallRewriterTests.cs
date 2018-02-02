@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,9 +68,9 @@ namespace Reko.UnitTests.Analysis
             var ecx = m.Frame.EnsureIdentifier(this.ecx.Storage);
 
             m.Assign(esp, m.Frame.FramePointer);
-            m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
-            m.Assign(ecx, m.LoadDw(eax));
-            m.Call(m.LoadDw(ecx), 4);
+            m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
+            m.Assign(ecx, m.Mem32(eax));
+            m.Call(m.Mem32(ecx), 4);
             m.Return();
         }
 
@@ -81,11 +81,11 @@ namespace Reko.UnitTests.Analysis
             var ecx = m.Frame.EnsureIdentifier(this.ecx.Storage);
 
             m.Assign(esp, m.Frame.FramePointer);
-            m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
-            m.Assign(ecx, m.LoadDw(eax));
+            m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
+            m.Assign(ecx, m.Mem32(eax));
             m.Assign(esp, m.ISub(esp, 4));
             m.Store(esp, m.Word32(0x000A));
-            var c = m.Call(m.LoadDw(m.IAdd(ecx, 4)), 4);
+            var c = m.Call(m.Mem32(m.IAdd(ecx, 4)), 4);
             c.CallSite.StackDepthOnEntry = 8;
             m.Return();
         }
@@ -97,13 +97,13 @@ namespace Reko.UnitTests.Analysis
             var ecx = m.Frame.EnsureIdentifier(this.ecx.Storage);
 
             m.Assign(esp, m.Frame.FramePointer);
-            m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
-            m.Assign(ecx, m.LoadDw(eax));
+            m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
+            m.Assign(ecx, m.Mem32(eax));
             m.Assign(esp, m.ISub(esp, 4));
             m.Store(esp, m.Word32(0x000B));
             m.Assign(esp, m.ISub(esp, 4));
             m.Store(esp, m.Word32(0x000A));
-            var c = m.Call(m.LoadDw(m.IAdd(ecx, 8)), 4);
+            var c = m.Call(m.Mem32(m.IAdd(ecx, 8)), 4);
             c.CallSite.StackDepthOnEntry = 12;
             m.Return();
         }

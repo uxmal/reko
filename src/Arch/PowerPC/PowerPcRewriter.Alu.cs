@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.Arch.PowerPC
         {
             if (!instr.setsCR0)
                 return;
-            var cr0 = frame.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
             m.Assign(cr0, m.Cond(e));
         }
 
@@ -53,7 +53,7 @@ namespace Reko.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
-            var xer = frame.EnsureRegister(arch.xer);
+            var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
         }
 
@@ -62,7 +62,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2, true);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            var xer = frame.EnsureRegister(arch.xer);
+            var xer = binder.EnsureRegister(arch.xer);
             m.Assign(opD,
                 m.IAdd(
                     m.IAdd(opL, opR),
@@ -75,7 +75,7 @@ namespace Reko.Arch.PowerPC
         {
             var opD = RewriteOperand(instr.op1);
             var opS = RewriteOperand(instr.op2);
-            var cr0 = frame.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
+            var cr0 = binder.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
             m.Assign(opD,
                 m.ISub(
                     m.IAdd(opS, cr0),
@@ -96,7 +96,7 @@ namespace Reko.Arch.PowerPC
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
-            var xer = frame.EnsureRegister(arch.xer);
+            var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
         }
 
@@ -111,7 +111,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteAddze()
         {
             var opL = RewriteOperand(instr.op2);
-            var opR = frame.EnsureRegister(arch.xer);
+            var opR = binder.EnsureRegister(arch.xer);
             var opD = RewriteOperand(instr.op1);
             RewriteAdd(opD, opL, opR);
             m.Assign(opR, m.Cond(opD));
@@ -292,7 +292,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            var tmp = frame.CreateTemporary(size);
+            var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(tmp.DataType, opS));
             m.Assign(
                 opD, 
@@ -312,13 +312,13 @@ namespace Reko.Arch.PowerPC
         private void RewriteMfcr()
         {
             var dst = RewriteOperand(instr.op1);
-            var src = frame.EnsureRegister(arch.cr);
+            var src = binder.EnsureRegister(arch.cr);
             m.Assign(dst, src);
         }
 
         private void RewriteMfctr()
         {
-            var src = frame.EnsureRegister(arch.ctr);
+            var src = binder.EnsureRegister(arch.ctr);
             var dst = RewriteOperand(instr.op1);
             m.Assign(dst, src);
         }
@@ -333,7 +333,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteMflr()
         {
             var dst = RewriteOperand(instr.op1);
-            var src = frame.EnsureRegister(arch.lr);
+            var src = binder.EnsureRegister(arch.lr);
             m.Assign(dst, src);
         }
 
@@ -347,14 +347,14 @@ namespace Reko.Arch.PowerPC
         private void RewriteMtctr()
         {
             var src = RewriteOperand(instr.op1);
-            var dst = frame.EnsureRegister(arch.ctr);
+            var dst = binder.EnsureRegister(arch.ctr);
             m.Assign(dst, src);
         }
 
         private void RewriteMtlr()
         {
             var src= RewriteOperand(instr.op1);
-            var dst = frame.EnsureRegister(arch.lr);
+            var dst = binder.EnsureRegister(arch.lr);
             m.Assign(dst, src);
         }
 
@@ -719,7 +719,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.op1);
             m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
-            var xer = frame.EnsureRegister(arch.xer);
+            var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
         }
 
@@ -728,7 +728,7 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.op2);
             var opR = RewriteOperand(instr.op3);
             var opD = RewriteOperand(instr.op1);
-            var xer = frame.EnsureRegister(arch.xer);
+            var xer = binder.EnsureRegister(arch.xer);
             m.Assign(opD, m.IAdd(m.ISub(opR, opL), xer));
             MaybeEmitCr0(opD);
         }
@@ -746,7 +746,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.op2);
             var opD = RewriteOperand(instr.op1);
-            var xer = frame.EnsureRegister(arch.xer);
+            var xer = binder.EnsureRegister(arch.xer);
             m.Assign(
                 opD, 
                 m.IAdd(

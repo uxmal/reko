@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -593,9 +593,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     {
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
-                        var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7F);
+                        var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7);
+                        var nested = (b2 & 0x40) != 0 ? " nested" : "";
                         var varargs = (b2 & 0x80) != 0 ? " varargs" : "";
-                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: returns {w:X4} ({lang}{varargs})");
+                        var additional = (b2 & 0x38) != 0 ? $" additional bits: {(b2 & 0x38):X2}" : "";
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: returns {w:X4} ({lang}{varargs}{nested}{additional})");
                         bt = new Callable { };
                         break;
                     }
@@ -701,7 +703,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             case 0x05: return "__far __pascal";
             case 0x07: return "__interrupt";
             }
-            throw new ArgumentOutOfRangeException("n");
+            throw new ArgumentOutOfRangeException(nameof(n), n, $"Unsupported function type {n:X2}.");
         }
 
         private string[] CreateNameIndex(long name_pool_offset)

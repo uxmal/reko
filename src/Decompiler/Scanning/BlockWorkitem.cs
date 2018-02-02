@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,6 +125,8 @@ namespace Reko.Scanning
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
+            if (ric.Address.ToLinear() == 0x30C)        //$DEBUG
+                ric.Address.ToString();
             state.SetInstructionPointer(ric.Address);
             SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)
@@ -146,8 +148,7 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         public void SetAssumedRegisterValues(Address addr)
         {
-            List<UserRegisterValue> regValues;
-            if (!program.User.RegisterValues.TryGetValue(addr, out regValues))
+            if (!program.User.RegisterValues.TryGetValue(addr, out var regValues))
                 return;
             foreach (var rv in regValues)
             {
@@ -158,8 +159,7 @@ namespace Reko.Scanning
 
         private Block FallenThroughNextProcedure(Address addrInstr, Address addrTo)
         {
-            Procedure procOther;
-            if (program.Procedures.TryGetValue(addrTo, out procOther) &&
+            if (program.Procedures.TryGetValue(addrTo, out var procOther) &&
                 procOther != blockCur.Procedure)
             {
                 // Fell into another procedure. 
@@ -202,22 +202,17 @@ namespace Reko.Scanning
 
         public void SetValue(Expression dst, Expression value)
         {
-            var id = dst as Identifier;
-            if (id != null)
+            if (dst is Identifier id)
             {
                 state.SetValue(id, value);
-                return;
             }
-            var smem = dst as SegmentedAccess;
-            if (smem != null)
+            else if (dst is SegmentedAccess smem)
             {
                 state.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
             }
-            var mem = dst as MemoryAccess;
-            if (mem != null)
+            else if (dst is MemoryAccess mem)
             {
                 state.SetValueEa(GetValue(mem.EffectiveAddress), value);
-                return;
             }
         }
 
@@ -427,6 +422,41 @@ namespace Reko.Scanning
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
+                var trampoline = scanner.GetTrampoline(addrTarget);
+                if (trampoline != null)
+                {
+                    var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    var sig = trampoline.Signature;
+                    var chr = trampoline.Characteristics;
+                    // Adjust stack to "hide" any pushed return value since
+                    // currently Reko treats the return value as an implicit detail
+                    // of the calling convention. Had the x86 rewriter explicity
+                    // generated code to predecrement the stack pointer
+                    // when encountering CALL instructions this would 
+                    // not be necessary.
+                    if (sig.ReturnAddressOnStack != 0)
+                    {
+                        Emit(new Assignment(stackReg, new BinaryExpression(
+                            Operator.IAdd,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                    }
+                    EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
+                    if (sig.ReturnAddressOnStack != 0)
+                    {
+                        //$TODO: make x86 calls' implicit storage explicit
+                        // to avoid this hacky dance,
+                        Emit(new Assignment(stackReg, new BinaryExpression(
+                            Operator.ISub,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
+                    }
+                    Emit(new ReturnInstruction());
+                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                 var blockSource = blockCur.IsSynthesized
                     ? blockCur
@@ -449,8 +479,7 @@ namespace Reko.Scanning
                 }
                 return false;
             }
-            var mem = g.Target as MemoryAccess;
-            if (mem != null)
+            if (g.Target is MemoryAccess mem)
             {
                 if (mem.EffectiveAddress is Constant)
                 {
@@ -509,16 +538,14 @@ namespace Reko.Scanning
                 sig = callee.Signature;
                 chr = callee.Characteristics;
                 EmitCall(pcCallee, sig, chr, site);
-                var pCallee = callee as Procedure;
-                if (pCallee != null)
+                if (callee is Procedure pCallee)
                 {
                     program.CallGraph.AddEdge(blockCur.Statements.Last, pCallee);
                 }
                 return OnAfterCall(sig, chr);
             }
 
-            var procCallee = call.Target as ProcedureConstant;
-            if (procCallee != null)
+            if (call.Target is ProcedureConstant procCallee)
             {
                 sig = procCallee.Procedure.Signature;
                 chr = procCallee.Procedure.Characteristics;
@@ -532,8 +559,7 @@ namespace Reko.Scanning
                 return OnAfterCall(sig, chr);
             }
 
-            Identifier id; 
-            if (call.Target.As<Identifier>(out id))
+            if (call.Target is Identifier id)
             {
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
@@ -634,8 +660,7 @@ namespace Reko.Scanning
 
         private bool OnAfterCall(FunctionType sigCallee, ProcedureCharacteristics characteristics)
         {
-            UserCallData userCall = null;
-            if (program.User.Calls.TryGetUpperBound(ric.Address, out userCall))
+            if (program.User.Calls.TryGetUpperBound(ric.Address, out var userCall))
             {
                 var linStart = ric.Address.ToLinear();
                 var linEnd = linStart + ric.Length;
@@ -701,8 +726,7 @@ namespace Reko.Scanning
 
         private FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
         {
-            UserCallData call = null;
-            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
+            if (!program.User.Calls.TryGetValue(addrCallInstruction, out var call))
                 return null;
             return call.Signature;
         }
@@ -751,17 +775,13 @@ namespace Reko.Scanning
             else
             {
                 Emit(new SideEffect(side.Expression));
-                var appl = side.Expression as Application;
-                if (appl != null)
+                if (side.Expression is Application appl &&
+                    appl.Procedure is ProcedureConstant fn)
                 {
-                    var fn = appl.Procedure as ProcedureConstant;
-                    if (fn != null)
+                    if (fn.Procedure.Characteristics.Terminates)
                     {
-                        if (fn.Procedure.Characteristics.Terminates)
-                        {
-                            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                            return false;
-                        }
+                        scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+                        return false;
                     }
                 }
             }
@@ -820,8 +840,7 @@ namespace Reko.Scanning
             var id = target as Identifier;
             if (id == null)
                 throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
-            Constant c = state.GetValue(id) as Constant;
-            if (c != null && c.IsValid)
+            if (state.GetValue(id) is Constant c && c.IsValid)
             {
                 Emit(new Assignment(stackReg, new BinaryExpression(Operator.ISub, stackReg.DataType, stackReg, c)));
             }
@@ -839,10 +858,9 @@ namespace Reko.Scanning
             List<Address> vector;
             ImageMapVectorTable imgVector;
             Expression switchExp;
-            UserIndirectJump indJump;
 
             var listener = scanner.Services.RequireService<DecompilerEventListener>();
-            if (program.User.IndirectJumps.TryGetValue(addrSwitch, out indJump))
+            if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
                 vector = indJump.Table.Addresses;
                 switchExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
@@ -860,7 +878,7 @@ namespace Reko.Scanning
                     ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
                     : null;
 
-                VectorBuilder builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
+                var builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
                 if (bw.VectorAddress == null)
                     return false;
 
@@ -887,7 +905,6 @@ namespace Reko.Scanning
                     listener.Warn(nav, msg);
                     if (vector.Count == 0)
                         return false;
-
                 }
                 imgVector = new ImageMapVectorTable(
                     bw.VectorAddress,
@@ -942,8 +959,7 @@ namespace Reko.Scanning
             {
                 var st = state.Clone();
                 var pbase = scanner.ScanProcedure(addr, null, st);
-                var pcallee = pbase as Procedure;
-                if (pcallee != null)
+                if (pbase is Procedure pcallee)
                 {
                     program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
                 }
@@ -991,8 +1007,11 @@ namespace Reko.Scanning
 
         private Block AddIntraStatementBlock(Procedure proc)
         {
-            var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
-            fallthru.IsSynthesized = true;
+            var label = ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels));
+            var fallthru = new Block(proc, label)
+            {
+                IsSynthesized = true
+            };
             proc.ControlGraph.Blocks.Add(fallthru);
             return fallthru;
         }
@@ -1026,8 +1045,7 @@ namespace Reko.Scanning
                     var idAss = ass.Dst ;
                     if (idAss != null && idAss == id)
                     {
-                        ProcedureConstant pc = ass.Src as ProcedureConstant;
-                        if (pc != null)
+                        if (ass.Src is ProcedureConstant pc)
                         {
                             return pc.Procedure;
                         }
@@ -1097,25 +1115,22 @@ namespace Reko.Scanning
                 TrashVariable(sig.ReturnValue.Storage);
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
-                var os = sig.Parameters[i].Storage as OutArgumentStorage;
-                if (os != null)
+                if (sig.Parameters[i].Storage is OutArgumentStorage os)
                 {
                     TrashVariable(os.OriginalIdentifier.Storage);
                 }
             }
         }
 
-        public void TrashVariable(Storage id)
+        public void TrashVariable(Storage stg)
         {
-            if (id == null)
+            if (stg == null)
                 return;
-            var reg = id as RegisterStorage;
-            if (reg != null)
+            if (stg is RegisterStorage reg)
             {
                 state.SetValue(reg, Constant.Invalid);
             }
-            SequenceStorage seq = id as SequenceStorage;
-            if (seq != null)
+            else if (stg is SequenceStorage seq)
             {
                 TrashVariable(seq.Head);
                 TrashVariable(seq.Tail);

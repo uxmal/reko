@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Structure
         {
             var m = new ProcedureBuilder();
             var c = m.Temp(PrimitiveType.Bool, "c");
-            var pfn = m.Temp(PrimitiveType.Pointer32, "pfn");
+            var pfn = m.Temp(PrimitiveType.Ptr32, "pfn");
             m.Label("m1");
             m.BranchIf(c, "m3");
             m.Label("m2");

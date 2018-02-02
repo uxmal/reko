@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core
 			Assert.AreEqual("uint32", PrimitiveType.UInt32.ToString());
 			Assert.AreEqual("real32", PrimitiveType.Real32.ToString());
 			Assert.AreEqual("real64", PrimitiveType.Real64.ToString());
-			Assert.AreEqual("ptr32", PrimitiveType.Pointer32.ToString());
+			Assert.AreEqual("ptr32", PrimitiveType.Ptr32.ToString());
             Assert.AreEqual("segptr32", PrimitiveType.SegPtr32.ToString());
 		}
 
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core
 		public void IsIntegral()
 		{
 			Assert.IsTrue(PrimitiveType.Int32.IsIntegral);
-			Assert.IsFalse(PrimitiveType.Pointer64.IsIntegral);
+			Assert.IsFalse(PrimitiveType.Ptr64.IsIntegral);
 			Assert.IsFalse(PrimitiveType.Real32.IsIntegral);
 		}
 

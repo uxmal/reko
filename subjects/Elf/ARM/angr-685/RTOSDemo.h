@@ -175,8 +175,8 @@ Eq_585: (fn void (Eq_579, (ptr Eq_579), word32))
 	T_586 (in signature of vPortStoreTaskMPUSettings : void)
 	T_591 (in vPortStoreTaskMPUSettings : ptr32)
 	T_598 (in vPortStoreTaskMPUSettings : ptr32)
-Eq_603: (ptr Eq_603)
-	T_603 (in r0 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_603))))))))))))))))))))))))))))))))))))))))))))))))))))
+Eq_603: (struct "Eq_603" (0 (ptr Eq_603) ptr0000))
+	T_603 (in r0 : (ptr Eq_603))
 	T_616 (in Mem3[r0 + 0x00000000:word32] : word32)
 Eq_607: (union "Eq_607" (int16 u0) ((ptr code) u1))
 	T_607 (in r5 : Eq_607)
@@ -424,7 +424,7 @@ Eq_2189: (union "Eq_2189" (word16 u0) (word32 u1))
 	T_2194 (in Mem3[ip + 0x00000000:word16] : word16)
 Eq_2209: (union "Eq_2209" (byte u0) ((ptr code) u1))
 	T_2209 (in Mem3[r7 + 0x00000000:byte] : byte)
-Eq_2212: (union "Eq_2212" (word16 u0) ((ptr Eq_2212) u1))
+Eq_2212: (union "Eq_2212" (word16 u0) ((ptr Eq_2487) u1))
 	T_2212 (in r7 : Eq_2212)
 	T_2219 (in r7 : Eq_2212)
 	T_2224 (in r7 - 0x00000064 : word32)
@@ -443,7 +443,7 @@ Eq_2230: (fn void (word32, word32, Eq_2234, (ptr Eq_2213)))
 	T_2231 (in signature of CPUcpsid : void)
 	T_2239 (in CPUcpsid : ptr32)
 	T_2242 (in CPUcpsid : ptr32)
-Eq_2234: (union "Eq_2234" (word16 u0) ((ptr Eq_2234) u1))
+Eq_2234: (union "Eq_2234" (word16 u0) ((ptr Eq_2488) u1))
 	T_2234 (in r7 : Eq_2234)
 	T_2237 (in r7 + 0xFFFFFFFA : word32)
 	T_2240 (in r7 + 0xFFFFFFFA : word32)
@@ -454,7 +454,7 @@ Eq_2249: (fn void (word32, word32, Eq_2253, (ptr Eq_2213)))
 	T_2250 (in signature of CPUwfi : void)
 	T_2258 (in CPUwfi : ptr32)
 	T_2261 (in CPUwfi : ptr32)
-Eq_2253: (union "Eq_2253" (word16 u0) ((ptr Eq_2253) u1))
+Eq_2253: (union "Eq_2253" (word16 u0) ((ptr Eq_2489) u1))
 	T_2253 (in r7 : Eq_2253)
 	T_2256 (in r7 + 0xFFFFFFFA : word32)
 	T_2259 (in r7 + 0xFFFFFFFA : word32)
@@ -520,6 +520,12 @@ Eq_2452: (fn void ())
 	T_2452 (in I2CSlaveDataGet : ptr32)
 	T_2453 (in signature of I2CSlaveDataGet : void)
 	T_2460 (in I2CSlaveDataGet : ptr32)
+Eq_2487: (struct "Eq_2487" (0 Eq_2212 t0000))
+	T_2487
+Eq_2488: (struct "Eq_2488" (0 Eq_2234 t0000))
+	T_2488
+Eq_2489: (struct "Eq_2489" (0 Eq_2253 t0000))
+	T_2489
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -2929,9 +2935,9 @@ T_602: (in Mem5[r9 + 0x00000000:word16] : word16)
   Class: Eq_579
   DataType: Eq_579
   OrigDataType: word16
-T_603: (in r0 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_603))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_603: (in r0 : (ptr Eq_603))
   Class: Eq_603
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_603)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_603)
   OrigDataType: (ptr (struct (0 T_616 t0000)))
 T_604: (in r1 : (ptr word64))
   Class: Eq_604
@@ -2983,7 +2989,7 @@ T_615: (in r0 + 0x00000000 : word32)
   OrigDataType: word32
 T_616: (in Mem3[r0 + 0x00000000:word32] : word32)
   Class: Eq_603
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_603)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr Eq_603)
   OrigDataType: word32
 T_617: (in __syscall : ptr32)
   Class: Eq_24
@@ -10465,6 +10471,18 @@ T_2486: (in signature of fn010CB1D5 : void)
   Class: Eq_2485
   DataType: (ptr code)
   OrigDataType: 
+T_2487:
+  Class: Eq_2487
+  DataType: Eq_2487
+  OrigDataType: 
+T_2488:
+  Class: Eq_2488
+  DataType: Eq_2488
+  OrigDataType: 
+T_2489:
+  Class: Eq_2489
+  DataType: Eq_2489
+  OrigDataType: 
 */
 typedef struct Globals {
 	ptr32 ptr0541;	// 541
@@ -10551,7 +10569,9 @@ typedef union Eq_584 {
 
 typedef void (Eq_585)(Eq_579, Eq_579 *, word32);
 
-typedef  * Eq_603;
+typedef struct Eq_603 {
+	struct Eq_603 * ptr0000;	// 0
+} Eq_603;
 
 typedef union Eq_607 {
 	int16 u0;
@@ -10879,7 +10899,7 @@ typedef union Eq_2209 {
 
 typedef union Eq_2212 {
 	word16 u0;
-	union Eq_2212 * u1;
+	struct Eq_2487 * u1;
 } Eq_2212;
 
 typedef struct Eq_2213 {
@@ -10893,14 +10913,14 @@ typedef void (Eq_2230)(word32, word32, Eq_2234, Eq_2213 *);
 
 typedef union Eq_2234 {
 	word16 u0;
-	union Eq_2234 * u1;
+	struct Eq_2488 * u1;
 } Eq_2234;
 
 typedef void (Eq_2249)(word32, word32, Eq_2253, Eq_2213 *);
 
 typedef union Eq_2253 {
 	word16 u0;
-	union Eq_2253 * u1;
+	struct Eq_2489 * u1;
 } Eq_2253;
 
 typedef void (Eq_2268)(word32, word32, Eq_2272 *);
@@ -10950,4 +10970,16 @@ typedef void (Eq_2426)(word32, ptr32);
 typedef void (Eq_2439)();
 
 typedef void (Eq_2452)();
+
+typedef struct Eq_2487 {
+	Eq_2212 t0000;	// 0
+} Eq_2487;
+
+typedef struct Eq_2488 {
+	Eq_2234 t0000;	// 0
+} Eq_2488;
+
+typedef struct Eq_2489 {
+	Eq_2253 t0000;	// 0
+} Eq_2489;
 

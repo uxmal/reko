@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,8 +144,8 @@ namespace Reko.UnitTests.Analysis
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            __lwl(r8, m.LoadDw(m.IAdd(r4, 0x2B)));
-            __lwr(r8, m.LoadDw(m.IAdd(r4, 0x28)));
+            __lwl(r8, m.Mem32(m.IAdd(r4, 0x2B)));
+            __lwr(r8, m.Mem32(m.IAdd(r4, 0x28)));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -184,8 +184,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            __lwl(r8, m.LoadDw(m.IAdd(r4, 0x3)));
-            __lwr(r8, m.LoadDw(r4));
+            __lwl(r8, m.Mem32(m.IAdd(r4, 0x3)));
+            __lwr(r8, m.Mem32(r4));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -224,8 +224,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            __lwl(r8, m.LoadDw(m.IAdd(r4, 0xA5E4)));
-            __lwr(r8, m.LoadDw(m.IAdd(r4, 0xA5E7)));
+            __lwl(r8, m.Mem32(m.IAdd(r4, 0xA5E4)));
+            __lwr(r8, m.Mem32(m.IAdd(r4, 0xA5E7)));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -271,8 +271,8 @@ ProcedureBuilder_exit:
                     m.Fn(
                         new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
                         r8,
-                        m.LoadDw(m.IAdd(r4, 0x2B))),
-                    m.LoadDw(m.IAdd(r4, 0x28))));
+                        m.Mem32(m.IAdd(r4, 0x2B))),
+                    m.Mem32(m.IAdd(r4, 0x28))));
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -310,8 +310,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            __swl(m.LoadDw(m.IAdd(r4, 0x2B)), r8);
-            __swr(m.LoadDw(m.IAdd(r4, 0x28)), r8);
+            __swl(m.Mem32(m.IAdd(r4, 0x2B)), r8);
+            __swr(m.Mem32(m.IAdd(r4, 0x28)), r8);
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -351,21 +351,21 @@ ProcedureBuilder_exit:
             var r9 = m.Reg32("r9", 9);
             var r4 = m.Reg32("r4", 4);
 
-            __swl(m.LoadDw(m.IAdd(r8, 0x13)), r14);
-            __swl(m.LoadDw(m.IAdd(r8, 0x17)), r13);
-            __swl(m.LoadDw(m.IAdd(r8, 0x1B)), m.Word32(0x00));
-            __swl(m.LoadDw(m.IAdd(r8, 0x1F)), m.Word32(0x00));
-            __swl(m.LoadDw(m.IAdd(r8, 0x2B)), m.Word32(0x00));
-            __swl(m.LoadDw(m.IAdd(r8, 0x2F)), r9);
-            __swl(m.LoadDw(m.IAdd(r8, 0x33)), m.Word32(0x00));
+            __swl(m.Mem32(m.IAdd(r8, 0x13)), r14);
+            __swl(m.Mem32(m.IAdd(r8, 0x17)), r13);
+            __swl(m.Mem32(m.IAdd(r8, 0x1B)), m.Word32(0x00));
+            __swl(m.Mem32(m.IAdd(r8, 0x1F)), m.Word32(0x00));
+            __swl(m.Mem32(m.IAdd(r8, 0x2B)), m.Word32(0x00));
+            __swl(m.Mem32(m.IAdd(r8, 0x2F)), r9);
+            __swl(m.Mem32(m.IAdd(r8, 0x33)), m.Word32(0x00));
             m.Assign(r4, m.IAdd(r8, 0x0010));
-            __swr(m.LoadDw(m.IAdd(r8, 0x10)), r14);
-            __swr(m.LoadDw(m.IAdd(r8, 0x14)), r13);
-            __swr(m.LoadDw(m.IAdd(r8, 0x18)), m.Word32(0x00));
-            __swr(m.LoadDw(m.IAdd(r8, 0x1C)), m.Word32(0x00));
-            __swr(m.LoadDw(m.IAdd(r8, 0x28)), m.Word32(0x00));
-            __swr(m.LoadDw(m.IAdd(r8, 44)), r9);
-            __swr(m.LoadDw(m.IAdd(r8, 0x30)), m.Word32(0x00));
+            __swr(m.Mem32(m.IAdd(r8, 0x10)), r14);
+            __swr(m.Mem32(m.IAdd(r8, 0x14)), r13);
+            __swr(m.Mem32(m.IAdd(r8, 0x18)), m.Word32(0x00));
+            __swr(m.Mem32(m.IAdd(r8, 0x1C)), m.Word32(0x00));
+            __swr(m.Mem32(m.IAdd(r8, 0x28)), m.Word32(0x00));
+            __swr(m.Mem32(m.IAdd(r8, 44)), r9);
+            __swr(m.Mem32(m.IAdd(r8, 0x30)), m.Word32(0x00));
             m.Return();
 
             var ssa = RunTest(m);
@@ -446,10 +446,10 @@ ProcedureBuilder_exit:
         public void UfuserAggressiveLittleEndianConstantStores()
         {
             var r8 = m.Reg32("r8", 8);
-            __swl(m.LoadDw(m.IAdd(r8, 0x13)), m.Word32(0x12345678));
-            __swl(m.LoadDw(m.IAdd(r8, 0x17)), m.Word32(0x9ABCDEF0u));
-            __swr(m.LoadDw(m.IAdd(r8, 0x10)), m.Word32(0x12345678));
-            __swr(m.LoadDw(m.IAdd(r8, 0x14)), m.Word32(0x9ABCDEF0u));
+            __swl(m.Mem32(m.IAdd(r8, 0x13)), m.Word32(0x12345678));
+            __swl(m.Mem32(m.IAdd(r8, 0x17)), m.Word32(0x9ABCDEF0u));
+            __swr(m.Mem32(m.IAdd(r8, 0x10)), m.Word32(0x12345678));
+            __swr(m.Mem32(m.IAdd(r8, 0x14)), m.Word32(0x9ABCDEF0u));
             m.Return();
 
             var ssa = RunTest(m);
@@ -491,8 +491,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            __swl(m.LoadDw(m.IAdd(r4, 3)), r8);
-            __swr(m.LoadDw(r4), r8);
+            __swl(m.Mem32(m.IAdd(r4, 3)), r8);
+            __swr(m.Mem32(r4), r8);
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -529,8 +529,8 @@ ProcedureBuilder_exit:
             var r4 = m.Reg32("r4", 4);
             var r8 = m.Reg32("r8", 8);
 
-            __lwl(r8, m.LoadDw(m.IAdd(r4, 3)));
-            __lwr(r8, m.LoadDw(r4));
+            __lwl(r8, m.Mem32(m.IAdd(r4, 3)));
+            __lwr(r8, m.Mem32(r4));
             var ssa = RunTest(m);
             var sExp =
             #region Expected

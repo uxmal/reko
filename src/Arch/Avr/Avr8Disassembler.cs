@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ namespace Reko.Arch.Avr
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
     {
         private static OpRec[] oprecs;
+        private static HashSet<ushort> seen = new HashSet<ushort>();
 
         private Avr8Architecture arch;
         private Address addr;
@@ -46,14 +47,16 @@ namespace Reko.Arch.Avr
 
         public override AvrInstruction DisassembleInstruction()
         {
-            ushort wInstr;
             this.addr = rdr.Address;
-            if (!rdr.TryReadUInt16(out wInstr))
+            if (!rdr.TryReadUInt16(out ushort wInstr))
                 return null;
             var instr = oprecs[wInstr >> 12].Decode(this, wInstr);
             instr.Address = addr;
             var length = rdr.Address - addr;
             instr.Length = (int)length;
+#if DEBUG
+            if (instr.opcode == Opcode.invalid) EmitUnitTest(wInstr);
+#endif
             return instr;
         }
 
@@ -102,13 +105,23 @@ namespace Reko.Arch.Avr
                     op = Register((wInstr >> 4) & 0x1F);
                     break;
                 case 'd': // Destination register (r16-r31)
-                    op = Register(0x10 | (wInstr >> 4) & 0x1F);
+                    op = Register(0x10 | (wInstr >> 4) & 0x0F);
                     break;
                 case 'R': // source register (5 bits)
                     op = Register((wInstr >> 5) & 0x10 | (wInstr) & 0x0F);
                     break;
-                case 'r': // source register (4 bits)
-                    op = Register((wInstr >> 4) & 0x10 | (wInstr >> 4) & 0x0F);
+                case 'r': 
+                    if (i < fmt.Length && fmt[i] == '4')
+                    {
+                        ++i;
+                        // source register (r16-r31)
+                        op = Register(0x10 | wInstr & 0x0F);
+                    }
+                    else
+                    {
+                        // source register (5 bits)
+                        op = Register((wInstr >> 4) & 0x10 | (wInstr >> 4) & 0x0F);
+                    }
                     break;
                 case 'K':
                     op = ImmediateOperand.Byte((byte)(((wInstr >> 4) & 0xF0) | (wInstr & 0xF)));
@@ -143,7 +156,7 @@ namespace Reko.Arch.Avr
                     offset = (short)(offset << 6);
                     offset = (short)(offset >> 8);
                     offset = (short)(offset & ~1);
-                    op = AddressOperand.Create(this.addr + offset);
+                    op = AddressOperand.Create(this.addr + offset + 2);
                     break;
                 case 'X':
                     op = MemD(arch.x, 0);
@@ -177,7 +190,7 @@ namespace Reko.Arch.Avr
             return new RegisterOperand(arch.GetRegister(v & 0x1F));
         }
 
-        private MachineOperand MemD(RegisterStorage baseReg, int displacement)
+        private MachineOperand MemD(RegisterStorage baseReg, short displacement)
         {
             return new MemoryOperand(PrimitiveType.Byte)
             {
@@ -194,7 +207,7 @@ namespace Reko.Arch.Avr
             case 'X': reg = arch.x; break;
             case 'Y': reg = arch.y; break;
             case 'Z': reg = arch.z; break;
-            default: Debug.Assert(false, "Must be X,y, or Z");
+            default: Debug.Assert(false, "Must be X, Y, or Z");
                 reg = null;
                 break;
             }
@@ -206,22 +219,37 @@ namespace Reko.Arch.Avr
             };
         }
 
-        private int Displacement(ushort wInstr)
+        private short Displacement(ushort wInstr)
         {
-            return
+            var d = 
                 ((wInstr >> 8) & 0x20)
-                | ((wInstr >> 6) & 0x18)
+                | ((wInstr >> 7) & 0x18)
                 | (wInstr & 7);
+            return (short)d;
+        }
+
+        private void EmitUnitTest(ushort wInstr)
+        {
+            if (seen.Contains(wInstr))
+                return;
+            seen.Add(wInstr);
+
+            Debug.Print("        [Test]");
+            Debug.Print("        public void Avr8_dis_{0:X4}()", wInstr);
+            Debug.Print("        {");
+            Debug.Print("            AssertCode(\"@@@\", 0x{0:X4});", wInstr);
+            Debug.Print("        }");
+            Debug.Print("");
         }
 
         static Avr8Disassembler()
         {
-            var oprecs0 = new OpRec[]
+            var oprecs0 = new OpRec[16]
             {
                 new BOpRec(Opcode.invalid, ""),
                 new BOpRec(Opcode.movw, "p,P"),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.muls, "d,r4"),
+                new BOpRec(Opcode.muls, "d,r4"),
 
                 new BOpRec(Opcode.cpc, "D,R"),
                 new BOpRec(Opcode.cpc, "D,R"),
@@ -278,7 +306,7 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.ldd, "D,y"),
             };
 
-            var oprecs82 = new OpRec[]
+            var decoders_std_Z = new OpRec[]
             {
                 new BOpRec(Opcode.st, "Z,D"),
                 new BOpRec(Opcode.std, "z,D"),
@@ -301,17 +329,63 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.std, "y,D"),
             };
 
-            var oprecs8 = new OpRec[]
+            var decoders_ldd = new OpRec[]
+            {
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+         };
+
+            var decoders_std = new OpRec[]
+            {
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+
+                new BOpRec(Opcode.st, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+            };
+
+            var oprecs8 = new OpRec[8]
             {
                 new GrpOpRec(0, 4, oprecs80),
-                new GrpOpRec(0, 4, oprecs82),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new GrpOpRec(0, 4, decoders_std_Z),
+                new GrpOpRec(0, 4, decoders_ldd),
+                new GrpOpRec(0, 4, decoders_std),
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new GrpOpRec(0, 4, decoders_ldd),
+                new GrpOpRec(0, 4, decoders_std),
+                new GrpOpRec(0, 4, decoders_ldd),
+                new GrpOpRec(0, 4, decoders_std),
             };
 
             var oprecs94_8 = new OpRec[]
@@ -407,8 +481,8 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.elpm, "D,+Z"),
 
                 new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.ld, "D,+y"),
-                new BOpRec(Opcode.ld, "D,-y"),
+                new BOpRec(Opcode.ld, "D,+Y"),
+                new BOpRec(Opcode.ld, "D,-Y"),
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.ld, "D,X"),
@@ -516,6 +590,18 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.@out, "A,D"),
             };
 
+            var decoders_sbrc = new OpRec[2]
+            {
+                new BOpRec(Opcode.sbrc, "D,I"),
+                new BOpRec(Opcode.invalid, ""),
+            };
+
+            var decoders_sbrs = new OpRec[2]
+            {
+                new BOpRec(Opcode.sbrs, "D,I"),
+                new BOpRec(Opcode.invalid, ""),
+            };
+
             var oprecsF = new OpRec[]
             {
                 new CondOpRec(),
@@ -533,10 +619,10 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.invalid, ""),
                 new BOpRec(Opcode.invalid, ""),
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new GrpOpRec(3, 1, decoders_sbrc),
+                new GrpOpRec(3, 1, decoders_sbrc),
+                new GrpOpRec(3, 1, decoders_sbrs),
+                new GrpOpRec(3, 1, decoders_sbrs),
             };
 
             oprecs = new OpRec[]

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -349,7 +349,7 @@ namespace Reko.Core
 		public static readonly Address NULL = Address32.Ptr32(0);
 
         public Address32(uint addr)
-            : base(PrimitiveType.Pointer32)
+            : base(PrimitiveType.Ptr32)
         {
             this.uValue = addr;
         }
@@ -569,7 +569,7 @@ namespace Reko.Core
 		public static readonly Address NULL = Address32.Ptr64(0);
 
 		public Address64(ulong addr)
-            : base(PrimitiveType.Pointer64)
+            : base(PrimitiveType.Ptr64)
         {
             this.uValue = addr;
         }

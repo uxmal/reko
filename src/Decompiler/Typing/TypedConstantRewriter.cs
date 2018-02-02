@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -387,7 +387,8 @@ namespace Reko.Typing
 
 		public Expression VisitStructure(StructureType str)
 		{
-			throw new NotImplementedException();
+            c.TypeVariable.DataType = str;
+            return c;
 		}
 
 		public Expression VisitUnion(UnionType ut)

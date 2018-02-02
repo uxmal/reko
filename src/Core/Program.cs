@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ namespace Reko.Core
     public class Program
     {
         private Identifier globals;
+        private Encoding encoding;
 
         public Program()
         {
@@ -140,9 +141,18 @@ namespace Reko.Core
         {
             get
             {
+                if (this.encoding != null)
+                    return this.encoding;
+                Encoding e;
                 if (User.TextEncoding != null)
-                    return User.TextEncoding;
-                return Platform.DefaultTextEncoding;
+                    e = User.TextEncoding;
+                else
+                    e = Platform.DefaultTextEncoding;
+                this.encoding = Encoding.GetEncoding(
+                    e.CodePage,
+                    new EncoderReplacementFallback(),
+                    new CustomDecoderFallback());
+                return this.encoding;
             }
         }
 

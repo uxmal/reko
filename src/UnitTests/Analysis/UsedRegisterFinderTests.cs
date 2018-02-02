@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var fp = m.Frame.FramePointer;
                 var r1 = m.Reg32("r1", 1);
-                m.Assign(r1, m.LoadDw(m.IAdd(fp, 4)));
+                m.Assign(r1, m.Mem32(m.IAdd(fp, 4)));
                 m.Store(m.Word32(0x2000), r1);
                 m.Return();
             });
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Analysis
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
-                m.BranchIf(m.Ge(m.LoadB(m.Word32(0x02000)), 4), "mge");
+                m.BranchIf(m.Ge(m.Mem8(m.Word32(0x02000)), 4), "mge");
                 m.Label("mlt");
                 m.Store(m.Word32(0x02004), r1);
                 m.Goto("mxit");
@@ -231,8 +231,8 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 m.Assign(r1, 0);
-                m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x00123400))), "skip");
-                m.Assign(r2, m.LoadDw(m.Word32(0x0123408)));
+                m.BranchIf(m.Eq0(m.Mem32(m.Word32(0x00123400))), "skip");
+                m.Assign(r2, m.Mem32(m.Word32(0x0123408)));
                 m.Assign(r1, m.IMul(r2, 9));
                 m.Label("skip");
                 m.Return();

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Mocks
 
         public new MemoryAccess LoadDw(Expression ea)
         {
-            var access = base.LoadDw(ea);
+            var access = base.Mem32(ea);
             AddMemIdToSsa(access);
             return access;
         }

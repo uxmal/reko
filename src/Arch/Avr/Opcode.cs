@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,10 @@ namespace Reko.Arch.Avr
     public enum Opcode
     {
         invalid,
+
+        and,
+        andi,
+
         cli,
         eor,
         @in,
@@ -85,7 +89,6 @@ namespace Reko.Arch.Avr
         add,
         sbc,
         cpc,
-        and,
 
 
         brcc,
@@ -108,23 +111,25 @@ namespace Reko.Arch.Avr
         brhs,
         brts,
         brie,
-        movw,
         adiw,
         cpse,
         cp,
-        sub,
         adc,
         sbci,
         subi,
-        ori,
-        andi,
-        sts,
-        st,
         ld,
-        lds,
-        std,
-        sbis,
         ldd,
+        lds,
+        movw,
+        muls,
+        ori,
+        sbis,
         sbiw,
+        sbrc,
+        sbrs,
+        st,
+        std,
+        sts,
+        sub,
     }
 }

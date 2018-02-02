@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -315,8 +315,8 @@ proc1_exit:
                 m.Store(sp, r1);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r2);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
-                m.Assign(r2, m.LoadDw(sp));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
+                m.Assign(r2, m.Mem32(sp));
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Store(m.Word32(0x010008), r1);
                 m.Return();
@@ -436,7 +436,7 @@ proc1_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.Cond(m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3)));
+                m.Assign(cr, m.Cond(m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3)));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Assign(r1, 0);
@@ -446,7 +446,7 @@ proc1_exit:
                 m.Assign(r1, 1);
 
                 m.Label("done");
-                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(bp, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -578,7 +578,7 @@ proc1_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Store(m.IAdd(bp, 8), m.Word16(3));
@@ -589,7 +589,7 @@ proc1_exit:
                 m.Assign(r1, 1);
 
                 m.Label("done");
-                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(bp, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -791,7 +791,7 @@ proc1_exit:
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
                 m.Store(m.IAdd(bp, -8), m.Word32(0));
-                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Store(m.IAdd(bp, -8), r1);
@@ -801,8 +801,8 @@ proc1_exit:
                 m.Store(m.IAdd(bp, -8), r1);
 
                 m.Label("done");
-                m.Assign(r1, m.LoadDw(m.IAdd(bp, -8)));
-                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(r1, m.Mem32(m.IAdd(bp, -8)));
+                m.Assign(bp, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -1051,11 +1051,11 @@ proc1_exit:
                 var r3 = m.Reg32("r3", 3);
                 var r4 = m.Reg32("r4", 4);
                 m.Assign(sp, m.Frame.FramePointer);   // Establish frame.
-                m.Assign(r4, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r4, m.Mem32(m.IAdd(sp, 4)));
                 m.BranchIf(m.Eq0(r4), "m1Base");
 
                 m.Label("m0Induction");
-                m.Assign(r4, m.LoadDw(m.IAdd(r4, 4)));
+                m.Assign(r4, m.Mem32(m.IAdd(r4, 4)));
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r4);
                 m.Call(m.Procedure, 0);
@@ -1242,7 +1242,7 @@ proc1_exit:
                 var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
-                m.Assign(eax, m.LoadDw(eax));
+                m.Assign(eax, m.Mem32(eax));
                 m.Store(m.Word32(0x1234), ah);
                 m.Return();
             });
@@ -1306,8 +1306,8 @@ proc1_exit:
                 var ecx = m.Frame.EnsureRegister(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
                 var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
 
-                m.Assign(ecx, m.LoadDw(m.Word32(0x542300)));
-                m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x10042)), "mBranch2");
+                m.Assign(ecx, m.Mem32(m.Word32(0x542300)));
+                m.BranchIf(m.Mem(PrimitiveType.Bool, m.Word32(0x10042)), "mBranch2");
 
                 m.Label("mBranch1");
                 m.Assign(cl, 42);
@@ -1365,8 +1365,8 @@ proc1_exit:
                 var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
 
-                m.Assign(eax, m.LoadDw(m.Word32(0x543200)));
-                m.Assign(edx, m.LoadDw(m.Word32(0x543208)));
+                m.Assign(eax, m.Mem32(m.Word32(0x543200)));
+                m.Assign(edx, m.Mem32(m.Word32(0x543208)));
                 m.Assign(eax, m.IAdd(eax, edx));
                 m.Store(m.Word32(0x642300), eax);
                 m.Return();
@@ -1423,9 +1423,9 @@ proc1_exit:
                 var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
                 var dl = m.Frame.EnsureRegister(new RegisterStorage("dl", 2, 0, PrimitiveType.Byte));
 
-                m.Assign(edx, m.LoadDw(m.Word32(0x543200)));
+                m.Assign(edx, m.Mem32(m.Word32(0x543200)));
                 m.Store(m.Word32(0x642300), dl);
-                m.Assign(edx, m.LoadDw(m.Word32(0x543208)));
+                m.Assign(edx, m.Mem32(m.Word32(0x543208)));
                 m.Store(m.Word32(0x642308), dl);
                 m.Return();
             });
@@ -1580,7 +1580,7 @@ proc1_exit:
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
 
-                m.Assign(eax, m.LoadDw(eax));
+                m.Assign(eax, m.Mem32(eax));
                 m.Store(m.Word32(0x123100), al);            // store the low-order byte
                 m.Store(m.Word32(0x123108), al);            // ...twice.
             });
@@ -1632,7 +1632,7 @@ proc1_exit:
                 Arg<Statement>.Is.Anything,
                 Arg<Constant>.Matches(c => c.ToUInt32() == 0x00031234)))
                 .Return(new ProcedureConstant(
-                    PrimitiveType.Pointer32,
+                    PrimitiveType.Ptr32,
                     new ExternalProcedure(
                         "ImportedFunc",
                         FunctionType.Func(Reg(14), Reg(6)))));
@@ -1642,7 +1642,7 @@ proc1_exit:
                 var r13 = m.Reg32("r13", 13);
                 var r12 = m.Reg32("r12", 12);
                 m.Assign(r13, 0x00030000);
-                m.Assign(r12, m.LoadDw(m.IAdd(r13, 0x1234)));
+                m.Assign(r12, m.Mem32(m.IAdd(r13, 0x1234)));
                 m.Call(r12, 0);
                 m.Return();
             });
@@ -1725,8 +1725,8 @@ proc1_exit:
                 m.Goto("l3Head");
 
                 m.Label("l2Body");
-                m.Assign(eax, m.IAdd(eax, m.LoadDw(ebx)));
-                m.Assign(ebx, m.LoadDw(m.IAdd(ebx, 4)));
+                m.Assign(eax, m.IAdd(eax, m.Mem32(ebx)));
+                m.Assign(ebx, m.Mem32(m.IAdd(ebx, 4)));
 
                 m.Label("l3Head");
                 m.Assign(SCZ, m.Cond(m.ISub(ebx, 0)));
@@ -1797,9 +1797,9 @@ proc1_exit:
                 var es_cx = m.Frame.EnsureSequence(es.Storage, cx.Storage, PrimitiveType.SegPtr32);
 
                 m.Label("m0");
-                m.Assign(cx, m.LoadW(m.Word16(0x1234)));
+                m.Assign(cx, m.Mem16(m.Word16(0x1234)));
                 m.Store(m.Word32(0x1236), cx);
-                m.Assign(es_cx, m.LoadDw(m.Word32(0x1238)));
+                m.Assign(es_cx, m.Mem32(m.Word32(0x1238)));
                 m.Assign(cl, m.Byte(45));
                 m.Return();
             });
@@ -1861,7 +1861,7 @@ proc1_exit:
                 m.BranchIf(m.Eq0(r1), "m3done");
 
                 m.Label("m1notdone");
-                m.Assign(r1, m.IAdd(r1, m.LoadDw(r2)));
+                m.Assign(r1, m.IAdd(r1, m.Mem32(r2)));
                 m.Goto("m0");
 
                 m.Label("m3done");
@@ -1924,7 +1924,7 @@ proc1_exit:
                 var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
 
                 m.Label("m0");
-                m.Assign(bl, m.LoadW(m.Word16(0x1234)));
+                m.Assign(bl, m.Mem16(m.Word16(0x1234)));
                 m.Label("m1");
                 m.Assign(bh, 0);
                 m.Store(m.Word16(0x1236), bx);
@@ -1996,7 +1996,7 @@ proc1_exit:
                 var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
 
                 m.Label("m0");
-                m.Assign(bl, m.LoadW(m.Word16(0x1234)));
+                m.Assign(bl, m.Mem16(m.Word16(0x1234)));
                 m.BranchIf(m.Gt(bl, 3), "m2");
 
                 m.Label("m1");
@@ -2078,7 +2078,7 @@ proc1_exit:
                 var SCZO = m.Flags("SCZO");
 
                 m.Label("m0");
-                m.Assign(bl, m.LoadB(si));
+                m.Assign(bl, m.Mem8(si));
                 m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
                 m.BranchIf(m.Test(ConditionCode.UGT, SCZO), "m2");
 
@@ -2248,10 +2248,10 @@ proc1_exit:
                 var r1 = m.Reg32("r1", 1);
 
                 m.Label("m1");
-                m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x04010)), "m4");
+                m.BranchIf(m.Mem(PrimitiveType.Bool, m.Word32(0x04010)), "m4");
 
                 m.Label("m2");
-                m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x04011)), "m4");
+                m.BranchIf(m.Mem(PrimitiveType.Bool, m.Word32(0x04011)), "m4");
 
                 m.Label("m3");
                 m.Store(m.Word32(0x04020), Constant.True());
@@ -2327,8 +2327,8 @@ proc1_exit:
                 var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
                 var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
 
-                m.Assign(ax, m.Load(ax.DataType, m.Word32(0x2000)));
-                m.Assign(bx, m.Load(bx.DataType, m.Word32(0x2002)));
+                m.Assign(ax, m.Mem(ax.DataType, m.Word32(0x2000)));
+                m.Assign(bx, m.Mem(bx.DataType, m.Word32(0x2002)));
 
                 m.Label("m0");
                 m.Assign(al, bh);
@@ -2560,7 +2560,7 @@ proc1_exit:
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
                 var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
 
-                m.Assign(al, m.LoadB(m.Word16(0x1234)));
+                m.Assign(al, m.Mem8(m.Word16(0x1234)));
                 m.Assign(ah, 3);
                 m.Store(m.Word16(0x1236), m.UMul(al, ah));
                 m.Return();
@@ -2601,7 +2601,7 @@ proc1_exit:
 
             RunTest_FrameAccesses(sExp, m =>
             {
-                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
 
                 m.Assign(Top, 0);
@@ -2679,7 +2679,7 @@ proc1_exit:
                 m.Store(sp, m.Word16(0x1234));
                 m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x5678));
-                m.Assign(r1, m.LoadDw(sp));
+                m.Assign(r1, m.Mem32(sp));
                 m.Return();
             });
         }
@@ -2742,7 +2742,7 @@ proc1_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);
                 m.Store(sp, m.Word16(0));
-                m.Assign(t2, m.LoadW(sp));
+                m.Assign(t2, m.Mem16(sp));
                 m.Return();
             });
         }
@@ -2849,10 +2849,10 @@ proc1_exit:
                 var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 0, PrimitiveType.Byte));
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
                 m.Assign(sp, m.Frame.FramePointer);
-                m.Assign(ax, m.LoadW(m.Word32(0x00123400)));
+                m.Assign(ax, m.Mem16(m.Word32(0x00123400)));
                 m.Store(m.Word32(0x00123402), ax);
-                m.Assign(al, m.LoadB(m.Word32(0x00123404)));
-                m.Assign(ah, m.LoadB(m.Word32(0x00123405)));
+                m.Assign(al, m.Mem8(m.Word32(0x00123404)));
+                m.Assign(ah, m.Mem8(m.Word32(0x00123405)));
                 m.Store(m.Word32(0x00123406), al);
                 m.Store(m.Word32(0x00123407), ah);
                 m.Return();
@@ -2965,7 +2965,7 @@ proc1_exit:
 
                 m.Assign(eax, 4);
                 m.Store(m.Word32(0x00123400), eax);
-                m.Assign(al, m.LoadB(m.Word32(0x00123408)));
+                m.Assign(al, m.Mem8(m.Word32(0x00123408)));
                 m.Assign(flags, m.Cond(m.ISub(al, 0x30)));
                 m.BranchIf(m.Test(ConditionCode.LT, flags), "m4_not_number");
                 m.Label("m1_maybe_number");

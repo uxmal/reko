@@ -83,8 +83,7 @@ Eq_95 fn03E6(Eq_95 c, byte l, Eq_98 & cOut)
 	byte C_10 = fn03BB((byte) globals->t1659, out a_8, out c_9);
 	if (__ror(a_8, C_10) >= 0x00)
 		return globals->t1659;
-	else
-		return (word16) globals->t1659 + 0x005F;
+	return (word16) globals->t1659 + 0x005F;
 }
 
 // 0400: void fn0400()
@@ -123,15 +122,12 @@ ptr16 fn040D(Eq_129 c, byte b, cu8 e, word16 wArg00, word16 wArg02)
 // 045B: Register byte fn045B()
 byte fn045B()
 {
-	if (globals->b0080 != 0x00)
-	{
-		globals->b0080 = globals->b0080 - 0x01;
-		struct Eq_125 * hl_15 = globals->ptr164E;
-		globals->ptr164E = &hl_15->b0001;
-		return hl_15->b0001;
-	}
-	else
+	if (globals->b0080 == 0x00)
 		return 0x00;
+	globals->b0080 = globals->b0080 - 0x01;
+	struct Eq_125 * hl_15 = globals->ptr164E;
+	globals->ptr164E = &hl_15->b0001;
+	return hl_15->b0001;
 }
 
 // 0473: void fn0473(Register byte c)
@@ -1182,9 +1178,8 @@ void fn0BE4(word16 af, byte b, byte d, Eq_358 e, byte h, Eq_428 l)
 		if (a_138 != 0x02)
 		{
 			if (globals->b138A != 0x03)
-				;
-			else
-				fn0105();
+				return;
+			fn0105();
 		}
 		else
 		{
@@ -1828,15 +1823,12 @@ byte fn12D8(word16 af, Eq_3210 b, Eq_3210 c, Eq_358 e, byte d, Eq_428 l, byte h,
 void fn130B(Eq_3210 c, Eq_3210 b, Eq_358 e, byte d, Eq_428 l, byte h)
 {
 	if (C)
-		;
-	else
-	{
-		byte b_14;
-		byte l_15;
-		byte h_16;
-		word16 sp_17;
-		fn130E(c, b, e, d, l, h, out b_14, out l_15, out h_16, out sp_17);
-	}
+		return;
+	byte b_14;
+	byte l_15;
+	byte h_16;
+	word16 sp_17;
+	fn130E(c, b, e, d, l, h, out b_14, out l_15, out h_16, out sp_17);
 }
 
 // 130E: Register cu8 fn130E(Register Eq_3210 c, Register Eq_3210 b, Register Eq_358 e, Register byte d, Register Eq_428 l, Register byte h, Register out Eq_3927 bOut, Register out Eq_3928 lOut, Register out Eq_3929 hOut, Register out ptr16 spOut)
@@ -1903,7 +1895,7 @@ byte fn1348(Eq_835 * de, Eq_821 * hl, ptr16 & deOut, Eq_838 & lOut, Eq_839 & hOu
 {
 	uint8 c_4 = hl->b0000;
 	uint8 a_14 = de->b0001;
-	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x01:byte], c_4);
+	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(hl->b0001, c_4);
 	byte l_12;
 	*lOut = de->b0000 - c_4;
 	word16 de_13;

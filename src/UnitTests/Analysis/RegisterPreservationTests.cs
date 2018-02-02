@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -145,7 +145,7 @@ test:
             pb.Add("test", m =>
             {
                 var r1 = m.Register(1);
-                m.Assign(r1, m.LoadDw(m.Word32(0x3000)));
+                m.Assign(r1, m.Mem32(m.Word32(0x3000)));
                 m.Return();
             });
             program = pb.BuildProgram();

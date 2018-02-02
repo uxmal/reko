@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ namespace Reko.Analysis
             {
                 if (Match(stm.Instruction))
                 {
-                    stm.Instruction = TransformInstruction();
+                    TransformInstruction();
                 }
             }
         }
@@ -101,17 +101,12 @@ namespace Reko.Analysis
         /// <returns></returns>
         public bool Match(Instruction instr)
         {
-            Assignment ass;
-            SequenceStorage dst;
-            BinaryExpression bin;
-            Constant cRight;
-
             // Look for hi:lo = a * C
-            if (!instr.As(out ass) ||
-                !ass.Dst.Storage.As(out dst) ||
-                !ass.Src.As(out bin) ||
+            if (!(instr is Assignment ass) ||
+                !(ass.Dst.Storage is SequenceStorage dst) ||
+                !(ass.Src is BinaryExpression bin) ||
                 !(bin.Operator is IMulOperator) ||
-                !bin.Right.As(out cRight) ||
+                !(bin.Right is Constant cRight) ||
                 ass.Dst.DataType.Size <= bin.Left.DataType.Size)
             {
                 return false;
@@ -160,13 +155,16 @@ namespace Reko.Analysis
                 .OfType<Assignment>()
                 .Select(a =>
                 {
-                    var b = a.Src as BinaryExpression;
-                    if (b == null ||
-                        b.Left != idSlice ||
-                        (b.Operator != Operator.Sar &&
-                         b.Operator != Operator.Shr))
+                    if (a.Src is BinaryExpression b &&
+                        b.Left == idSlice &&
+                        (b.Operator == Operator.Sar || b.Operator == Operator.Shr))
+                    {
+                        return b.Right as Constant;
+                    }
+                    else
+                    {
                         return null;
-                    return b.Right as Constant;
+                    }
                 })
                 .Where(x => x != null)
                 .FirstOrDefault();
@@ -201,12 +199,14 @@ namespace Reko.Analysis
             var sidOrig = ssa.Identifiers[idOrig];
             var sidDst = ssa.Identifiers[idDst];
             sidOrig.Uses.Remove(sidDst.DefStatement);
-            sidDst.DefStatement.Instruction = new Assignment(
+            var ass = new Assignment(
                 idDst,
                 m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
-            return sidDst.DefStatement.Instruction as Assignment;
+
+            sidDst.DefStatement.Instruction = ass;
+            return ass;
         }
     }
 }

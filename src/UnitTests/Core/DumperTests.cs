@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core
         private void Given_32bit_Program(int size = 32)
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
+            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
             this.platform = mr.Stub<IPlatform>();
             this.program = new Program(
                 new SegmentMap(
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core
                 platform);
             arch.Stub(a => a.CreateFrame()).Do(
                 new Func<Frame>(
-                    () => new Frame(PrimitiveType.Pointer32)));
+                    () => new Frame(PrimitiveType.Ptr32)));
             arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
                 .Do(new Func<MemoryArea, Address, EndianImageReader>(
                     (m, a) => new LeImageReader(m, a)));
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Core
         private void Given_32bit_Program_Zeros(int size = 32)
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
+            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
             this.platform = mr.Stub<IPlatform>();
             this.program = new Program(
                 new SegmentMap(

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -335,8 +335,8 @@ namespace Reko.UnitTests.Analysis
         {
             var arch = new X86ArchitectureFlat32();
             var platform = mr.StrictMock<IPlatform>();
-            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
-            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
+            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Ptr32);
+            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Ptr32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.LookupProcedureByName(
@@ -385,7 +385,7 @@ namespace Reko.UnitTests.Analysis
                 Arg<IRewriterHost>.Is.NotNull))
                 .Return(null);
 
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
                 new HashSet<RegisterStorage>());
             platform.Stub(p => p.MakeAddressFromLinear(0ul))

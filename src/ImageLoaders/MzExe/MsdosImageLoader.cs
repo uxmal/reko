@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Core.Configuration;
 using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -135,7 +136,18 @@ namespace Reko.ImageLoaders.MzExe
                 ep.NoDecompile = true;
             }
 
-            LoadDebugSymbols(results.Symbols, addrLoad);
+			try
+			{
+				LoadDebugSymbols(results.Symbols, addrLoad);
+			}
+			catch (Exception ex)
+			{
+                var listener = Services.RequireService<DecompilerEventListener>();
+                listener.Error(
+                    new NullCodeLocation(Filename),
+                    ex,
+                    "Detected Borland debug symbols but failed to load them.");
+			}
             return results;
 		}
 

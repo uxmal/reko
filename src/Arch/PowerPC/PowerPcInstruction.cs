@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -218,7 +218,7 @@ namespace Reko.Arch.PowerPC
         public Address Address;
 
         public AddressOperand(Address a)
-            : base(PrimitiveType.Pointer32)	//$BUGBUG: 64-bit pointers?
+            : base(PrimitiveType.Ptr32)	//$BUGBUG: 64-bit pointers?
         {
             Address = a;
         }

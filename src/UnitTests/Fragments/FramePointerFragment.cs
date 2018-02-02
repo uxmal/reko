@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Fragments
             Identifier framep = Local32("framep");
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
             Assign(framep, AddrOf(frame));
-            Store(IAdd(framep, 4), Load(PrimitiveType.Word32, IAdd(framep, 8)));
+            Store(IAdd(framep, 4), Mem(PrimitiveType.Word32, IAdd(framep, 8)));
         }
     }
 }

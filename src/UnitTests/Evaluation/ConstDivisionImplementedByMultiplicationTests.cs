@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,14 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -71,8 +73,34 @@ namespace Reko.UnitTests.Evaluation
             var rule = new ConstDivisionImplementedByMultiplication(sst.SsaState);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
             Assert.IsTrue(rule.Match(ctx.Statement.Instruction));
-            ass = rule.TransformInstruction();
-            Assert.AreEqual(sExp, ass.Src.ToString());
+            var instr = rule.TransformInstruction();
+            Assert.AreEqual(sExp, instr.Src.ToString());
+        }
+
+        private void RunTest(string sExp, Action<ProcedureBuilder> bld)
+        {
+            var m = new ProcedureBuilder();
+            bld(m);
+            var proc = m.Procedure;
+            var alias = new Aliases(proc, m.Architecture);
+            alias.Transform();
+            var ssa = new SsaTransform(
+                null,
+                proc,
+                null,
+                null,
+                null).Transform();
+            var vp = new ValuePropagator(m.Architecture, ssa, null);
+            vp.Transform();
+            var rule = new ConstDivisionImplementedByMultiplication(ssa);
+            rule.Transform();
+            var sw = new StringWriter();
+            proc.Write(false, sw);
+            if (sExp != sw.ToString())
+            {
+                Debug.Print("{0}", sw);
+                Assert.AreEqual(sExp, sw.ToString());
+            }
         }
 
         [Test]
@@ -134,5 +162,61 @@ namespace Reko.UnitTests.Evaluation
             Frac(13, 10000);
             Frac(7, 100000);
         }
+
+        [Test]
+        public void Cdiv_DivBy7_Issue_554()
+        {
+            var sExp =
+            #region 
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def ecx
+	// succ:  l1
+l1:
+	edx_0 = 0x24924925
+	eax_2 = ecx
+	edx_eax_3 = ecx *u 0x24924925
+	edx_4 = ecx / 7
+	eax_5 = ecx
+	eax_6 = ecx - edx_4
+	eax_7 = eax_6 >>u 0x01
+	eax_8 = (eax_6 >>u 0x01) + edx_4
+	eax_9 = eax_8 >>u 0x02
+	edx_eax_10 = SEQ(edx_4, eax_8 >>u 0x02) (alias)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var edx = m.Reg32("edx", 2);
+                var r2_r0 = m.Frame.EnsureSequence(edx.Storage, eax.Storage, PrimitiveType.Word64);
+                m.Assign(edx, 0x24924925);
+                m.Assign(eax, ecx);
+                m.Assign(r2_r0, m.UMul(edx, eax));
+                m.Assign(eax, ecx);
+                m.Assign(eax, m.ISub(eax, edx));
+                m.Assign(eax, m.Shr(eax, 1));
+                m.Assign(eax, m.IAdd(eax, edx));
+                m.Assign(eax, m.Shr(eax, 2));
+                m.Return();
+            });
+ //8048490: 8b 4c 24 04     mov   0x4(% esp),%ecx
+ //8048494: ba 25 49 92 24  mov   $0x24924925,%edx
+ //8048499: 89 c8           mov   %ecx,%eax
+ //804849b: f7 e2           mul   %edx
+ //804849d: 89 c8           mov   %ecx,%eax
+ //804849f: 29 d0           sub   %edx,%eax
+ //80484a1: d1 e8           shr   1,%eax
+ //80484a3: 01 d0           add   %edx,%eax
+ //80484a5: c1 e8 02        shr   $0x2,%eax
+ //80484a8: c3 ret
+    }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,8 @@ namespace Reko.Arch.X86
         addps,
         addpd,
         addss,
-        addsd,    
+        addsd,
+        aesimc,
         and,
         arpl,
         bound,
@@ -48,6 +49,7 @@ namespace Reko.Arch.X86
         cbw,
         clc,
         cld,
+        clflush,
         cli,
         cmc,
         cmova,
@@ -202,6 +204,7 @@ namespace Reko.Arch.X86
         lea,
         leave,
         les,
+        lfence,
         lfs,
         lgs,
         lss,
@@ -211,7 +214,9 @@ namespace Reko.Arch.X86
         loop,
         loope,
         loopne,
+        mfence,
         mov,
+        movapd,
         movaps,
         movd,
         movdqa,
@@ -246,6 +251,10 @@ namespace Reko.Arch.X86
         pop,
         popa,
         popf,
+        prefetchnta,
+        prefetcht0,
+        prefetcht1,
+        prefetcht2,
         pshufd,
         pshufhw,
         pshuflw,
@@ -284,6 +293,7 @@ namespace Reko.Arch.X86
         setpo,
         sets,
         setz,
+        sfence,
         shl,
         shld,
         shr,
@@ -305,6 +315,18 @@ namespace Reko.Arch.X86
         ucomiss,
         ucomisd,
         vmfunc,
+
+        vaddpd,
+        vaddsd,
+        vcvtsi2sd,
+        vcvtsi2ss,
+        vmovapd,
+        vmovaps,
+        vmovsd,
+        vmovss,
+        vxorpd,
+        vxorps,
+
         wait,
         xadd,
         xchg,
@@ -312,6 +334,10 @@ namespace Reko.Arch.X86
         xgetbv,
         xlat,
         xor,
+        xorpd,
+        xorps,
+        xrstor,
+        xsaveopt,
         xsetbv,
         xtest,
 

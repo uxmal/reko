@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,7 +129,7 @@ namespace Reko.Analysis
                         param.Name);
                     var fp = proc.Frame.FramePointer;
                     stmts.Insert(i, linAddr, new Store(
-                        m.Load(param.DataType, m.IAdd(fp, starg.StackOffset)),
+                        m.Mem(param.DataType, m.IAdd(fp, starg.StackOffset)),
                         param));
                 }
                 else

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,11 +75,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public abstract class ElfRelocator32 : ElfRelocator
     {
-        private ElfLoader32 loader;
+        protected ElfLoader32 loader;
+        protected SortedList<Address, ImageSymbol> imageSymbols;
 
-        public ElfRelocator32(ElfLoader32 loader)
+        public ElfRelocator32(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) 
         {
             this.loader = loader;
+            this.imageSymbols = imageSymbols;
         }
 
         public override void Relocate(Program program)
@@ -91,26 +93,25 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 if (relSection.Type == SectionHeaderType.SHT_REL)
                 {
-                    var symbols = loader.Symbols[relSection.LinkedSection];
+                    var sectionSymbols = loader.Symbols[relSection.LinkedSection];
                     var referringSection = relSection.RelocatedSection;
                     var rdr = loader.CreateReader(relSection.FileOffset);
                     for (uint i = 0; i < relSection.EntryCount(); ++i)
                     {
                         var rel = Elf32_Rel.Read(rdr);
-                        var sym = symbols[(int)(rel.r_info >> 8)];
+                        var sym = sectionSymbols[(int)(rel.r_info >> 8)];
                         RelocateEntry(program, sym, referringSection, rel);
                     }
                 }
                 else if (relSection.Type == SectionHeaderType.SHT_RELA)
                 {
-
-                    var symbols = loader.Symbols[relSection.LinkedSection];
+                    var sectionSymbols = loader.Symbols[relSection.LinkedSection];
                     var referringSection = relSection.RelocatedSection;
                     var rdr = loader.CreateReader(relSection.FileOffset);
                     for (uint i = 0; i < relSection.EntryCount(); ++i)
                     {
                         var rela = Elf32_Rela.Read(rdr);
-                        var sym = symbols[(int)(rela.r_info >> 8)];
+                        var sym = sectionSymbols[(int)(rela.r_info >> 8)];
                         RelocateEntry(program, sym, referringSection, rela);
                     }
                 }
@@ -173,11 +174,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public abstract class ElfRelocator64 : ElfRelocator
     {
-        ElfLoader64 loader;
+        protected ElfLoader64 loader;
+        protected SortedList<Address, ImageSymbol> imageSymbols;
 
-        public ElfRelocator64(ElfLoader64 loader)
+        public ElfRelocator64(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols)
         {
             this.loader = loader;
+            this.imageSymbols = imageSymbols;
         }
 
         public override void Relocate(Program program)

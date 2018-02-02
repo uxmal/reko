@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,6 +116,7 @@ namespace Reko.Core
 
     public static class StorageEx
     {
+        [Obsolete("Use new C# 7 features to avoid this")]
         public static bool As<T>(this Storage self, out T t) where T : Storage
         {
             t = self as T;
@@ -641,12 +642,8 @@ namespace Reko.Core
 
         public int SubregisterOffset(RegisterStorage subReg)
         {
-            var sub = subReg as RegisterStorage;
-            if (sub != null)
-            {
-                if (Number == sub.Number)
+            if (subReg is RegisterStorage sub && Number == sub.Number)
                     return 0;
-            }
             return -1;
         }
 
@@ -669,8 +666,7 @@ namespace Reko.Core
 
         public Expression GetSlice(Expression value)
         {
-            var c = value as Constant;
-            if (c != null && c.IsValid)
+            if (value is Constant c && c.IsValid)
             {
                 var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
                 return Constant.Create(this.DataType, newValue);
@@ -687,6 +683,7 @@ namespace Reko.Core
 		{
 			this.Head = head;
 			this.Tail = tail;
+            this.Name = $"{head.Name}:{tail.Name}";
 		}
 
         public Storage Head { get; private set; }
@@ -778,7 +775,7 @@ namespace Reko.Core
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("Sequence {0}:{1}", Head.Name, Tail.Name);
+			writer.Write("Sequence {0}", Name);
         }
     }
 

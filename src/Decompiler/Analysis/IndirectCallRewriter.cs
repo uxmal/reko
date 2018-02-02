@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,8 +78,7 @@ namespace Reko.Analysis
             changed = false;
             foreach (Statement stm in proc.Statements.ToList())
             {
-                CallInstruction ci = stm.Instruction as CallInstruction;
-                if (ci != null)
+                if (stm.Instruction is CallInstruction ci)
                 {
                     try
                     {
@@ -209,12 +208,10 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
-                Assignment ass;
                 if (sid.DefStatement != null &&
-                    sid.DefStatement.Instruction.As(out ass) &&
+                    sid.DefStatement.Instruction is Assignment ass &&
                     ass.Dst == id)
                 {
                     return Expand(ass.Src);
@@ -235,7 +232,7 @@ namespace Reko.Analysis
     class SsaIdentifierTransformer : InstructionTransformer
     {
         private SsaState ssa;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private Statement stm;
         private CallInstruction call;
         private ArgumentTransformer argumentTransformer;
@@ -243,7 +240,7 @@ namespace Reko.Analysis
         public SsaIdentifierTransformer(SsaState ssa)
         {
             this.ssa = ssa;
-            this.frame = ssa.Procedure.Frame;
+            this.binder = ssa.Procedure.Frame;
             this.argumentTransformer = new ArgumentTransformer(this);
         }
 

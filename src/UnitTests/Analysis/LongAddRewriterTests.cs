@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class LongAddRewriterTests : AnalysisTestBase
     {
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private LongAddRewriter2 rw;
         private IProcessorArchitecture arch;
         private Program program;
@@ -64,14 +64,14 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             m = new ProcedureBuilder(arch);
-            frame = m.Frame;
-            ax = frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-            bx = frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-            cx = frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
-            dx = frame.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
+            binder = m.Frame;
+            ax = binder.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+            bx = binder.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+            cx = binder.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
+            dx = binder.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
             flags = new FlagRegister("flags", 70, PrimitiveType.Word16);
-            SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
-            CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
+            SCZ = binder.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
+            CF = binder.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
         }
 
         private Identifier GetId(string idName)
@@ -182,13 +182,13 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
+                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
                 m.Assign(
                     dx,
                     m.IAdd(
                         m.IAdd(
                             dx,
-                            m.LoadDw(m.IAdd(bx, 0x302))),
+                        m.Mem32(m.IAdd(bx, 0x302))),
                         CF));
                 block = m.Block;
                 m.Return();
@@ -232,13 +232,13 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
+                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
                 m.Assign(
                     dx,
                     m.IAdd(
                         m.IAdd(
                             dx,
-                            m.LoadW(m.IAdd(bx, 0x302))),
+                        m.Mem16(m.IAdd(bx, 0x302))),
                         CF));
                 block = m.Block;
                 m.Return();
@@ -280,9 +280,9 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                m.Assign(ax, m.IAdd(ax, m.LoadW(m.IAdd(bx, 0x300))));
+                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 0x300))));
                 m.Assign(CF, m.Cond(ax));
-                m.Assign(dx, m.IAdd(m.IAdd(dx, m.LoadW(m.IAdd(bx, 0x302))), CF));
+            m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 0x302))), CF));
                 m.Assign(CF, m.Cond(dx));
                 block = m.Block;
                 m.Return();

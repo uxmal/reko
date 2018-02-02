@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,9 +53,9 @@ namespace Reko.Arch.RiscV
         {
             this.InstructionBitSize = 16;
             //$TODO: what about 32-bit version of arch?
-            this.PointerType = PrimitiveType.Pointer64;
+            this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
-            this.FramePointerType = PrimitiveType.Pointer64;
+            this.FramePointerType = PrimitiveType.Ptr64;
             this.regs = regnames
                 .Select((n, i) => new RegisterStorage(
                     n,
@@ -119,12 +119,12 @@ namespace Reko.Arch.RiscV
             return new RiscVState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new RiscVRewriter(this, rdr, state, frame, host);
+            return new RiscVRewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

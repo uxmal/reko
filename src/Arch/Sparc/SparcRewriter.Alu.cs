@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
-            var C = frame.EnsureFlagGroup(Registers.C);
+            var C = binder.EnsureFlagGroup(Registers.C);
             m.Assign(
                 dst,
                 op(op(src1, src2), C));
@@ -102,7 +102,7 @@ namespace Reko.Arch.Sparc
             Identifier tmp = null;
             if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
             {
-                tmp = frame.CreateTemporary(dst.DataType);
+                tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
             Copy(Registers.i0, Registers.o0);
@@ -127,7 +127,7 @@ namespace Reko.Arch.Sparc
             Identifier tmp = null;
             if (((Identifier)dst).Storage != Registers.g0)
             {
-                tmp = frame.CreateTemporary(dst.DataType);
+                tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
             Copy(Registers.o0, Registers.i0);
@@ -148,8 +148,8 @@ namespace Reko.Arch.Sparc
         private void Copy(RegisterStorage src, RegisterStorage dst)
         {
             m.Assign(
-                frame.EnsureRegister(dst),
-                frame.EnsureRegister(src));
+                binder.EnsureRegister(dst),
+                binder.EnsureRegister(src));
         }
 
         private void RewriteSethi()
@@ -162,7 +162,7 @@ namespace Reko.Arch.Sparc
             else
             {
                 //$TODO: check relocations for a symbol at instrCur.Address.
-                var dst = frame.EnsureRegister(rDst.Register);
+                var dst = binder.EnsureRegister(rDst.Register);
                 var src = (ImmediateOperand)instrCur.Op1;
                 m.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
             }

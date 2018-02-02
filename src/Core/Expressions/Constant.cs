@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,6 +80,12 @@ namespace Reko.Core.Expressions
                 {
                 case Domain.SignedInt: return new ConstantInt128(p, (long)value);
                 default: return new ConstantUInt128(p, (ulong)value);
+                }
+            case 32:
+                switch (p.Domain)
+                {
+                case Domain.SignedInt: return new ConstantInt256(p, (long)value);
+                default: return new ConstantUInt256(p, (ulong)value);
                 }
             }
             throw new NotSupportedException(string.Format("Constants of type {0} are not supported.", dt));
@@ -246,7 +252,7 @@ namespace Reko.Core.Expressions
 			{
                 p = PrimitiveType.Create(Domain.SignedInt, p.Size);
 				if (p.BitSize <= 8)				
-					return Constant.Create(p, -Convert.ToSByte(c));
+					return Constant.Create(p, (sbyte) -Convert.ToInt32(c));
 				if (p.BitSize <= 16)
                     return Constant.Create(p, -Convert.ToInt32(c) & 0xFFFF);
 				if (p.BitSize <= 32)
@@ -1056,7 +1062,7 @@ namespace Reko.Core.Expressions
 
         public override Expression CloneExpression()
         {
-            return new ConstantUInt64(DataType, value);
+            return new ConstantUInt128(DataType, value);
         }
 
         public override object GetValue()
@@ -1099,6 +1105,119 @@ namespace Reko.Core.Expressions
             return (long)value;
         }
     }
+
+    internal class ConstantInt256 : Constant
+    {
+        private long value;
+
+        public ConstantInt256(DataType dt, long value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantInt128(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return (ulong)value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long)value;
+        }
+    }
+
+    internal class ConstantUInt256 : Constant
+    {
+        private ulong value;
+
+        public ConstantUInt256(DataType dt, ulong value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantUInt256(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override byte ToByte()
+        {
+            return (byte)value;
+        }
+
+        public override ushort ToUInt16()
+        {
+            return (ushort)value;
+        }
+
+        public override uint ToUInt32()
+        {
+            return (uint)value;
+        }
+
+        public override ulong ToUInt64()
+        {
+            return value;
+        }
+
+        public override short ToInt16()
+        {
+            return (short)value;
+        }
+
+        public override int ToInt32()
+        {
+            return (int)value;
+        }
+
+        public override long ToInt64()
+        {
+            return (long)value;
+        }
+    }
+
 
     public abstract class ConstantReal : Constant
     {

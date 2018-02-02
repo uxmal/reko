@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,8 +49,7 @@ namespace Reko.Core.CLanguage
 
         public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
         {
-            if (platform == null) throw new ArgumentNullException("platform");
-            this.platform = platform;
+            this.platform = platform ?? throw new ArgumentNullException("platform");
             this.specs = specs;
             this.symbolTable = converter;
             this.callingConvention = CTokenType.None;
@@ -253,8 +252,7 @@ namespace Reko.Core.CLanguage
         /// <returns></returns>
         private NamedDataType ConvertArrayToPointer(NamedDataType nt)
         {
-            var at = nt.DataType as ArrayType_v1;
-            if (at != null)
+            if (nt.DataType is ArrayType_v1 at)
             {
                 return new NamedDataType
                 {
@@ -392,11 +390,9 @@ namespace Reko.Core.CLanguage
 
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
-            SerializedType type;
-            if (!symbolTable.NamedTypes.TryGetValue(typeDefName.Name, out type))
+            if (!symbolTable.NamedTypes.TryGetValue(typeDefName.Name, out var type))
             {
-                throw new ApplicationException(
-                    string.Format(
+                throw new ApplicationException(string.Format(
                         "error: type name {0} not defined.",
                         typeDefName.Name ?? "(null)"));
             }
@@ -408,13 +404,10 @@ namespace Reko.Core.CLanguage
         {
             if (complexType.Type == CTokenType.Struct)
             {
-                StructType_v1 str;
-                if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out str))
+                if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out var str))
                 {
                     str = new StructType_v1 {
-                        Name = complexType.Name != null
-                            ? complexType.Name
-                            : string.Format("struct_{0}", symbolTable.StructsSeen.Count)
+                        Name = complexType.Name ?? string.Format("struct_{0}", symbolTable.StructsSeen.Count)
                     };
                     symbolTable.StructsSeen.Add(str.Name, str);
                 }
@@ -433,8 +426,7 @@ namespace Reko.Core.CLanguage
             }
             else if (complexType.Type == CTokenType.Union)
             {
-                UnionType_v1 un;
-                if (complexType.Name == null || !symbolTable.UnionsSeen.TryGetValue(complexType.Name, out un))
+                if (complexType.Name == null || !symbolTable.UnionsSeen.TryGetValue(complexType.Name, out var un))
                 {
                     un = new UnionType_v1 { Name = complexType.Name };
                     if (un.Name != null)
@@ -460,13 +452,10 @@ namespace Reko.Core.CLanguage
 
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
-            SerializedEnumType en;
-            if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out en))
+            if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out var en))
             {
                 en = new SerializedEnumType {
-                    Name = e.Tag != null 
-                        ? e.Tag 
-                        : string.Format("enum_{0}", symbolTable.EnumsSeen.Count)
+                    Name = e.Tag ?? string.Format("enum_{0}", symbolTable.EnumsSeen.Count)
                 };
                 symbolTable.EnumsSeen.Add(en.Name, en);
                 var enumEvaluator = new EnumEvaluator(new CConstantEvaluator(platform, symbolTable.Constants));

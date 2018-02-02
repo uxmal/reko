@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Typing
         public void ExdMem()
         {
             RunTest(
-                m.LoadW(
+                m.Mem16(
                     Id("x", PrimitiveType.Word32)),
                 PrimitiveType.WChar);
         }
@@ -152,14 +152,14 @@ namespace Reko.UnitTests.Typing
                 m.IAdd(
                     Id("p", PrimitiveType.Word32),
                     Constant.Word32(4)),
-                PrimitiveType.Pointer32);
+                PrimitiveType.Ptr32);
         }
 
         [Test]
         public void ExdFieldAccess()
         {
             RunTest(
-                m.LoadDw(
+                m.Mem32(
                     m.IAdd(
                         Id("p", PrimitiveType.Word32),
                         Constant.Word32(4))),
@@ -192,8 +192,8 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
-                Test(m.LoadDw(m.IAdd(p, 8)), PrimitiveType.Int32),
-                Test(m.LoadDw(m.IAdd(p, 12)), PrimitiveType.Real32));
+                Test(m.Mem32(m.IAdd(p, 8)), PrimitiveType.Int32),
+                Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
 
         [Test]
@@ -201,8 +201,8 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
-                Test(m.LoadDw(m.IAdd(p, 12)), PrimitiveType.Int32),
-                Test(m.LoadDw(m.IAdd(p, 12)), PrimitiveType.Real32));
+                Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Int32),
+                Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace Reko.UnitTests.Typing
             var sig = FunctionType.Action(Id("r", PrimitiveType.Real32));
             var ep = new ExternalProcedure("test", sig);
             RunTest(
-                Test(m.Fn(ep, m.Load(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
+                Test(m.Fn(ep, m.Mem(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
         }
 
         [Test]
@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Typing
                     m.Fn(
                         p,
                         VoidType.Instance,
-                        m.Load(PrimitiveType.Word32, m.Word32(0x0300400))),
+                        m.Mem(PrimitiveType.Word32, m.Word32(0x0300400))),
                     VoidType.Instance));
         }
 
@@ -252,7 +252,7 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
-                m.Load(
+                m.Mem(
                     PrimitiveType.Word32,
                     m.IAdd(m.ISub(p, m.Word32(4)), m.Word32(0))),
                 PrimitiveType.Word32);
@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Typing
             p.TypeVariable.DataType = PointerTo(
                 new TypeReference("UNKNOWN_TYPE", new UnknownType()));
             RunTest(
-                m.Load(
+                m.Mem(
                     PrimitiveType.Word32,
                     m.IAdd(p, m.Word32(4))),
                 PrimitiveType.Word32);

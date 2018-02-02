@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ namespace Reko.Arch.Arm
         public AArch64()
         {
             this.InstructionBitSize = 32;
-            this.FramePointerType = PrimitiveType.Pointer64;
-            this.PointerType = PrimitiveType.Pointer64;
+            this.FramePointerType = PrimitiveType.Ptr64;
+            this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
             this.StackRegister = A64Registers.x31;
             this.CarryFlagMask = 0;

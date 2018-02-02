@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,8 +42,8 @@ namespace Reko.Arch.M68k
         public M68kArchitecture()
         {
             InstructionBitSize = 16;
-            FramePointerType = PrimitiveType.Pointer32;
-            PointerType = PrimitiveType.Pointer32;
+            FramePointerType = PrimitiveType.Ptr32;
+            PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             CarryFlagMask = (uint)FlagM.CF;
             StackRegister = Registers.a7;
@@ -165,11 +165,11 @@ namespace Reko.Arch.M68k
             return new Rewriter(this, rdr, (M68kState)state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
                 Operator.IAdd, FramePointerType,
-                frame.EnsureRegister(StackRegister), Constant.Word32(offset)),
+                binder.EnsureRegister(StackRegister), Constant.Word32(offset)),
                 dataType);
         }
 

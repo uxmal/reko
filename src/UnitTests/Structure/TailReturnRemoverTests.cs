@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var proc = new Procedure("test", new Frame(PrimitiveType.Pointer32));
+            var proc = new Procedure("test", new Frame(PrimitiveType.Ptr32));
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Structure
             RunTest(sExp, m =>
             {
                 var id = new Identifier("id", PrimitiveType.Bool, null);
-                var fn = new Identifier("fn", PrimitiveType.Pointer32, null);
+                var fn = new Identifier("fn", PrimitiveType.Ptr32, null);
                 m.If(id, t =>
                 {
                     t.Return();
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Structure
             #endregion
             RunTest(sExp, m =>
             {
-                var fn = new Identifier("fn", PrimitiveType.Pointer32, null);
+                var fn = new Identifier("fn", PrimitiveType.Ptr32, null);
                 m.SideEffect(m.Fn(fn));
                 m.Return();
                 m.Return();
@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Structure
             RunTest(sExp, m =>
             {
                 var id = new Identifier("id", PrimitiveType.Bool, null);
-                var fn = new Identifier("fn", PrimitiveType.Pointer32, null);
+                var fn = new Identifier("fn", PrimitiveType.Ptr32, null);
                 m.If(id, t =>
                 {
                     t.SideEffect(m.Fn(fn));

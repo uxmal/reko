@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -136,7 +136,7 @@ namespace Reko.Arch.X86
                 ? FpuRegister(1)
                 : SrcOp(instrCur.op1);
             m.Assign(
-                frame.EnsureRegister(Registers.FPUF),
+                binder.EnsureRegister(Registers.FPUF),
                 m.Cond(
                     m.FSub(op1, op2)));
             ShrinkFpuStack(pops);
@@ -279,7 +279,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFsincos()
         {
-            Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);
+            Identifier itmp = binder.CreateTemporary(PrimitiveType.Real64);
             m.Assign(itmp, FpuRegister(0));
 
             GrowFpuStack(1);
@@ -541,13 +541,13 @@ namespace Reko.Arch.X86
             //{
             //    Debug.WriteLine(string.Format("Possible FPU stack overflow at address {0}", addrInstr));    //$BUGBUG: should be an exception
             //}
-            var top = frame.EnsureRegister(Registers.Top);
+            var top = binder.EnsureRegister(Registers.Top);
             m.Assign(top, m.ISub(top, amount));
         }
 
         private void ShrinkFpuStack(int amount)
         {
-            var top = frame.EnsureRegister(Registers.Top);
+            var top = binder.EnsureRegister(Registers.Top);
             m.Assign(top, m.IAdd(top, amount));
         }
 

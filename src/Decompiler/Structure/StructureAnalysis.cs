@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,6 +78,8 @@ namespace Reko.Structure
             // Post processing steps
             var trrm = new TailReturnRemover(proc);
             trrm.Transform();
+            var pp = new ProcedurePrettifier(proc);
+            pp.Transform();
         }
 
         /// <summary>
@@ -205,8 +207,7 @@ namespace Reko.Structure
             {
                 if (b.Pred.Count == 0 && b != proc.EntryBlock)
                     continue;
-                Region from;
-                btor.TryGetValue(b, out from);
+                btor.TryGetValue(b, out var from);
                 foreach (var s in b.Succ)
                 {
                     if (s == proc.ExitBlock)
@@ -306,6 +307,11 @@ namespace Reko.Structure
             var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
             foreach (var n in postOrder)
             {
+                if (VirtualizeReturn(n))
+                    return true;
+            }
+            foreach (var n in postOrder)
+            {
                 if (CoalesceTailRegion(n, regionGraph.Nodes))
                     return true;
             }
@@ -313,6 +319,23 @@ namespace Reko.Structure
             {
                 if (LastResort(n))
                     return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Replace edge to return statement with just return statement
+        /// </summary>
+        private bool VirtualizeReturn(Region n)
+        {
+            VirtualEdge returnEdge = null;
+            foreach (var s in regionGraph.Successors(n))
+                if (s.IsReturn)
+                    returnEdge = new VirtualEdge(n, s, VirtualEdgeType.Goto);
+            if (returnEdge != null)
+            {
+                VirtualizeEdge(returnEdge);
+                return true;
             }
             return false;
         }
@@ -844,11 +867,11 @@ doing future pattern matches.
         /// <param name="to"></param>
         public void VirtualizeEdge(VirtualEdge vEdge)
         {
-            AbsynReturn ret;
             AbsynStatement stm;
-            if (vEdge.To.Statements.Count > 0 && vEdge.To.Statements[0].As<AbsynReturn>(out ret))
+            if (vEdge.To.IsReturn)
             {
                 // Goto to a return statement => just a return statement.
+                var ret = (AbsynReturn)vEdge.To.Statements[0];
                 Expression v = ret.Value != null ? ret.Value.CloneExpression() : null;
                 stm = new AbsynReturn(v);
             }
@@ -873,13 +896,15 @@ doing future pattern matches.
             regionGraph.RemoveEdge(vEdge.From, vEdge.To);
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
-                eventListener.Error(
-                    eventListener.CreateProcedureNavigator(program, proc),
-                    string.Format(
-                        "Removing edge ({0}, {1}) caused losing of some code blocks",
-                        vEdge.From.Block.Name,
-                        vEdge.To.Block.Name));
-
+                if (vEdge.To.IsReturn)
+                    RemoveRegion(vEdge.To);
+                else
+                    eventListener.Error(
+                        eventListener.CreateProcedureNavigator(program, proc),
+                        string.Format(
+                            "Removing edge ({0}, {1}) caused losing of some code blocks",
+                            vEdge.From.Block.Name,
+                            vEdge.To.Block.Name));
 
                 Probe();
             }
@@ -1127,11 +1152,9 @@ refinement on the loop body, which we describe below.
         private bool RefineLoop(Region head, ISet<Region> loopNodes)
         {
             head = EnsureSingleEntry(head, loopNodes);
-            var fl = DetermineFollowLatch(head, loopNodes);
-            if (fl == null)
+            var (follow, latch) = DetermineFollowLatch(head, loopNodes);
+            if (follow == null && latch == null)
                 return false;
-            var follow = fl.Item1;
-            var latch = fl.Item2;
             var lexicalNodes = GetLexicalNodes(head, follow, loopNodes);
             var virtualized = VirtualizeIrregularExits(head, latch, follow, lexicalNodes);
             if (virtualized)
@@ -1223,7 +1246,7 @@ refinement on the loop body, which we describe below.
                     .Count();
         }
 
-        private Tuple<Region, Region> DetermineFollowLatch(Region head, ISet<Region> loopNodes)
+        private (Region follow, Region latch) DetermineFollowLatch(Region head, ISet<Region> loopNodes)
         {
             var headSucc = regionGraph.Successors(head).ToArray();
             if (headSucc.Length == 2)
@@ -1246,7 +1269,7 @@ refinement on the loop body, which we describe below.
                     {
                         if (IsBackEdge(latch, head) && LinearSuccessor(latch) == head)
                         {
-                            return Tuple.Create(follow, latch);
+                            return (follow, latch);
                         }
                     }
                 }
@@ -1259,13 +1282,13 @@ refinement on the loop body, which we describe below.
                     if (latchSuccs.Length == 2)
                     {
                         if (!loopNodes.Contains(latchSuccs[0]))
-                            return Tuple.Create(latchSuccs[0], latch);
+                            return (latchSuccs[0], latch);
                         if (!loopNodes.Contains(latchSuccs[1]))
-                            return Tuple.Create(latchSuccs[1], latch);
+                            return (latchSuccs[1], latch);
                     }
                 }
             }
-            return null;
+            return (null, null);
         }
         
         /// <summary>
@@ -1282,8 +1305,7 @@ refinement on the loop body, which we describe below.
             FindReachableRegions(follow, head, excluded);
             var lexNodes = new HashSet<Region>();
             var wl = new  WorkList<Region>(loopNodes);
-            Region item;
-            while (wl.GetWorkItem(out item))
+            while (wl.GetWorkItem(out var item))
             {
                 if (loopNodes.Contains(item))
                 {

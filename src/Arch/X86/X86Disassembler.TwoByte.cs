@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Reko.Arch.X86
                     Opcode.movshdup, "Vx,Wx"),
                 new SingleByteOpRec(Opcode.illegal),
 
-                new SingleByteOpRec(Opcode.illegal),
+                new GroupOpRec(16, ""),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
@@ -94,8 +94,12 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
 
-                new SingleByteOpRec(Opcode.movaps, "Vps,Wps"),
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.movaps, "Vps,Wps",
+                    Opcode.movapd, "Vpd,Wpd"),
+                new PrefixedOpRec(
+                    Opcode.movaps, "Wps,Vps",
+                    Opcode.movapd, "Wpd,Vpd"),
                 new PrefixedOpRec(
                     Opcode.cvtpi2ps, "Vps,Qpi",
                     Opcode.cvtpi2pd, "Vpd,Qpi",
@@ -123,7 +127,7 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
 
-                new SingleByteOpRec(Opcode.illegal),
+                new ThreeByteOpRec(),
                 new SingleByteOpRec(Opcode.illegal),
                 new ThreeByteOpRec(),
                 new SingleByteOpRec(Opcode.illegal),
@@ -159,7 +163,9 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.xorps, "Vps,Hps,Wps",
+                    Opcode.xorpd, "Vpd,Hpd,Wpd"),
 
                 new PrefixedOpRec(
                     Opcode.addps, "Vps,Hps,Wps",

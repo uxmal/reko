@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -676,7 +676,7 @@ namespace Reko.Arch.Arm
                         else
                             throw new NotImplementedException();
                     }
-                    return m.Load(SizeFromLoadStore(instr), ea);
+                    return m.Mem(SizeFromLoadStore(instr), ea);
                 }
                 if (op.MemoryValue.Displacement != 0 && instrs.Current.IsLastOperand(op))
                 {
@@ -690,7 +690,7 @@ namespace Reko.Arch.Arm
                     m.Assign(baseReg, ea);
                     ea = baseReg;
                 }
-                return m.Load(SizeFromLoadStore(instr), ea);
+                return m.Mem(SizeFromLoadStore(instr), ea);
             case ArmInstructionOperandType.FloatingPoint:
                 return Constant.Real64(op.FloatingPointValue.Value);
             }

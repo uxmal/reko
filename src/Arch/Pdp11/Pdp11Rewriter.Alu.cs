@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -201,7 +201,7 @@ namespace Reko.Arch.Pdp11
             var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(tmp, host.PseudoProcedure("__mfpd", tmp.DataType, src));
             m.Assign(sp, m.ISub(sp, 2));
-            m.Assign(m.LoadW(sp), tmp);
+            m.Assign(m.Mem16(sp), tmp);
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
@@ -218,7 +218,7 @@ namespace Reko.Arch.Pdp11
             var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(tmp, host.PseudoProcedure("__mfpi", tmp.DataType, src));
             m.Assign(sp, m.ISub(sp, 2));
-            m.Assign(m.LoadW(sp), tmp);
+            m.Assign(m.Mem16(sp), tmp);
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
@@ -233,7 +233,7 @@ namespace Reko.Arch.Pdp11
             }
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(tmp, m.LoadW(sp));
+            m.Assign(tmp, m.Mem16(sp));
             m.Assign(sp, m.ISub(sp, 2));
             m.SideEffect(host.PseudoProcedure("__mtpi", tmp.DataType, src, tmp));
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);

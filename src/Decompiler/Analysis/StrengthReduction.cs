@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,12 +89,9 @@ namespace Reko.Analysis
         {
             if (ctx.TestStatement == null)
                 return;
-            Branch branch;
-            BinaryExpression exp ;
-            Constant c ;
-            if (ctx.TestStatement.Instruction.As(out branch) &&
-                branch.Condition.As(out exp) &&
-                exp.Right.As(out c))
+            if (ctx.TestStatement.Instruction is Branch branch &&
+                branch.Condition is BinaryExpression exp &&
+                exp.Right is Constant c)
             {
                 exp.Right = Operator.ISub.ApplyConstants(c, use.Increment);
             }
@@ -107,8 +104,7 @@ namespace Reko.Analysis
             Assignment ass = ctx.InitialStatement.Instruction as Assignment;
             if (ass == null)
                 return false;
-            Constant c = ass.Src as Constant;
-            if (c != null)
+            if (ass.Src is Constant c)
             {
                 ass.Src = Operator.IAdd.ApplyConstants(c, use.Increment);
             }
@@ -180,8 +176,7 @@ namespace Reko.Analysis
                     return;
                 if (binExp.Left != id)
                     return;
-                Constant c = binExp.Right as Constant;
-                if (c != null)
+                if (binExp.Right is Constant c)
                 {
                     uses.Add(new IncrementedUse(stmCur, binExp, c));
                 }

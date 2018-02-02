@@ -225,7 +225,7 @@ Eq_390: (union "Eq_390" (byte u0) (ptr16 u1))
 Eq_409: (fn word16 (Eq_207, byte, Eq_209, byte, Eq_207, byte, word16, word16, Eq_215, Eq_216))
 	T_409 (in fn0483 : ptr16)
 	T_410 (in signature of fn0483 : void)
-Eq_428: (union "Eq_428" (byte u0) ((ptr Eq_428) u1))
+Eq_428: (union "Eq_428" (byte u0) ((ptr Eq_4118) u1))
 	T_428 (in c : Eq_428)
 	T_431 (in l : Eq_428)
 	T_440 (in Mem6[0x166C:byte] : byte)
@@ -565,7 +565,7 @@ Eq_750: (union "Eq_750" (byte u0) (word16 u1))
 	T_797 (in c_65 : Eq_750)
 	T_800 (in (byte) ((word16) hl_48.u1 + 48) : byte)
 	T_803 (in Mem67[hl_60 + 0x0000:byte] : byte)
-Eq_752: (union "Eq_752" (byte u0) ((ptr Eq_4118) u1))
+Eq_752: (union "Eq_752" (byte u0) ((ptr Eq_4119) u1))
 	T_752 (in e : Eq_752)
 	T_759 (in Mem7[0x1678:byte] : byte)
 	T_770 (in Mem16[0x1678:word16] : word16)
@@ -745,7 +745,7 @@ Eq_1411: (fn byte (Eq_358, byte, Eq_428, byte, Eq_1202, Eq_1203, Eq_1204))
 	T_1411 (in fn07B3 : ptr16)
 	T_1412 (in signature of fn07B3 : void)
 	T_3576 (in fn07B3 : ptr16)
-Eq_1418: (union "Eq_1418" (byte u0) ((ptr Eq_4119) u1))
+Eq_1418: (union "Eq_1418" (byte u0) ((ptr Eq_4120) u1))
 	T_1418 (in c : Eq_1418)
 	T_1432 (in Mem10[0x168B:byte] : byte)
 	T_1617 (in hl_124 : Eq_1418)
@@ -894,7 +894,7 @@ Eq_1774: (fn void (cu8, byte, Eq_358, byte, byte, byte))
 	T_1788 (in fn0930 : ptr16)
 Eq_1796: (fn cu8 (byte, bool))
 	T_1796 (in __ror : ptr32)
-Eq_1888: (union "Eq_1888" (byte u0) ((ptr Eq_4120) u1))
+Eq_1888: (union "Eq_1888" (byte u0) ((ptr Eq_4121) u1))
 	T_1888 (in c : byte)
 	T_1890 (in Mem13[0x1692:byte] : byte)
 	T_1910 (in Mem13[0x1692:word16] : word16)
@@ -1423,12 +1423,14 @@ Eq_4082: (fn void (byte, word16, word16, byte))
 Eq_4101: (fn void ())
 	T_4101 (in fn140B : ptr16)
 	T_4102 (in signature of fn140B : void)
-Eq_4118: (struct "Eq_4118" (0 byte b0000) (27 byte b0027))
+Eq_4118: (struct "Eq_4118" (0 Eq_428 t0000))
 	T_4118
-Eq_4119: (struct "Eq_4119" (0 cu8 b0000) (7 cu8 b0007) (20 byte b0020))
+Eq_4119: (struct "Eq_4119" (0 byte b0000) (27 byte b0027))
 	T_4119
-Eq_4120: (struct "Eq_4120" (0 Eq_80 t0000) (2 byte b0002))
+Eq_4120: (struct "Eq_4120" (0 cu8 b0000) (7 cu8 b0007) (20 byte b0020))
 	T_4120
+Eq_4121: (struct "Eq_4121" (0 Eq_80 t0000) (2 byte b0002))
+	T_4121
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -17582,7 +17584,7 @@ T_4038: (in SEQ(Mem0[hl + 0x0001:byte], c_4) : ui16)
   Class: Eq_4038
   DataType: ui16
   OrigDataType: ui16
-T_4039: (in SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x0001:byte], c_4) : ui16)
+T_4039: (in SEQ(a_14, a_14) - SEQ(hl->b0001, c_4) : ui16)
   Class: Eq_4033
   DataType: ui16
   OrigDataType: ui16
@@ -17910,6 +17912,10 @@ T_4120:
   Class: Eq_4120
   DataType: Eq_4120
   OrigDataType: 
+T_4121:
+  Class: Eq_4121
+  DataType: Eq_4121
+  OrigDataType: 
 */
 typedef struct Globals {
 	word16 w0006;	// 6
@@ -18140,7 +18146,7 @@ typedef word16 (Eq_409)(Eq_207, byte, Eq_209, byte, Eq_207, byte, word16, word16
 
 typedef union Eq_428 {
 	byte u0;
-	union Eq_428 * u1;
+	struct Eq_4118 * u1;
 } Eq_428;
 
 typedef union Eq_433 {
@@ -18235,7 +18241,7 @@ typedef union Eq_750 {
 
 typedef union Eq_752 {
 	byte u0;
-	struct Eq_4118 * u1;
+	struct Eq_4119 * u1;
 } Eq_752;
 
 typedef union Eq_754 {
@@ -18396,7 +18402,7 @@ typedef byte (Eq_1411)(Eq_358, byte, Eq_428, byte, Eq_1202, Eq_1203, Eq_1204);
 
 typedef union Eq_1418 {
 	byte u0;
-	struct Eq_4119 * u1;
+	struct Eq_4120 * u1;
 } Eq_1418;
 
 typedef union Eq_1436 {
@@ -18490,7 +18496,7 @@ typedef cu8 (Eq_1796)(byte, bool);
 
 typedef union Eq_1888 {
 	byte u0;
-	struct Eq_4120 * u1;
+	struct Eq_4121 * u1;
 } Eq_1888;
 
 typedef struct Eq_1901 {
@@ -18754,18 +18760,22 @@ typedef void (Eq_4082)(byte, word16, word16, byte);
 typedef void (Eq_4101)();
 
 typedef struct Eq_4118 {
-	byte b0000;	// 0
-	byte b0027;	// 27
+	Eq_428 t0000;	// 0
 } Eq_4118;
 
 typedef struct Eq_4119 {
-	cu8 b0000;	// 0
-	cu8 b0007;	// 7
-	byte b0020;	// 20
+	byte b0000;	// 0
+	byte b0027;	// 27
 } Eq_4119;
 
 typedef struct Eq_4120 {
+	cu8 b0000;	// 0
+	cu8 b0007;	// 7
+	byte b0020;	// 20
+} Eq_4120;
+
+typedef struct Eq_4121 {
 	Eq_80 t0000;	// 0
 	byte b0002;	// 2
-} Eq_4120;
+} Eq_4121;
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,12 +129,12 @@ namespace Reko.Arch.Xtensa
             var rDst = dst as Identifier;
             if (rDst != null && rDst.Storage == Registers.a0)
             {
-                var tmp = frame.CreateTemporary(rDst.DataType);
+                var tmp = binder.CreateTemporary(rDst.DataType);
                 m.Assign(tmp, dst);
                 dst = tmp;
             }
             var cont = instr.Address + instr.Length;
-            m.Assign(frame.EnsureRegister(Registers.a0), cont);
+            m.Assign(binder.EnsureRegister(Registers.a0), cont);
             m.Call(dst, 0);
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -355,7 +355,7 @@ namespace Reko.UnitTests.Analysis
             ProcedureBuilder m = new ProcedureBuilder();
 			Identifier x = m.Reg32("x", 0);
 			Identifier y = m.Reg32("y", 1);
-            m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
+            m.Assign(x, m.Mem32(Constant.Word32(0x1000300)));
             m.Assign(y, m.ISub(x, 2));
 			m.BranchIf(m.Eq(y, 0), "test");
             m.Return();
@@ -638,8 +638,8 @@ namespace Reko.UnitTests.Analysis
             var d1 = m.Reg32("d32",0);
             var a1 = m.Reg32("a32",1);
 
-            m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0));
-            m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0));
+            m.Assign(d1, m.Dpb(d1, m.Mem16(a1), 0));
+            m.Assign(d1, m.Dpb(d1, m.Mem16(m.IAdd(a1, 4)), 0));
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
@@ -674,7 +674,7 @@ namespace Reko.UnitTests.Analysis
             var d3 = m.Reg32("d3", 3);
             var tmp = m.Temp(PrimitiveType.Byte, "tmp");
 
-            m.Assign(tmp, m.LoadB(a2));
+            m.Assign(tmp, m.Mem8(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
             m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
 
@@ -728,7 +728,7 @@ ProcedureBuilder_exit:
             var d3 = m.Reg32("d3", 3);
             var tmp = m.Temp(PrimitiveType.Word16, "tmp");
 
-            m.Assign(tmp, m.LoadW(a2));
+            m.Assign(tmp, m.Mem16(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
             m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
 
@@ -920,7 +920,7 @@ ProcedureBuilder_exit:
         public void VpIndirectCall()
         {
             var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
-            var pc = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+            var pc = new ProcedureConstant(PrimitiveType.Ptr32, callee);
 
             var m = new ProcedureBuilder();
             var r1 = m.Reg32("r1", 1);
@@ -930,13 +930,13 @@ ProcedureBuilder_exit:
             m.Assign(sp, m.ISub(sp, 4));
             m.Store(sp, m.Word32(3));
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.LoadW(m.Word32(0x1231230)));
+            m.Store(sp, m.Mem16(m.Word32(0x1231230)));
             m.Call(r1, 4);
             m.Return();
 
             arch.Stub(a => a.CreateStackAccess(null, 0, null))
                 .IgnoreArguments()
-                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(f.EnsureRegister((RegisterStorage)sp.Storage), off))));
+                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Mem(dt, m.IAdd(f.EnsureRegister((RegisterStorage)sp.Storage), off))));
             arch.Stub(s => s.CreateFrameApplicationBuilder(null, null, null)).IgnoreArguments().Do(
                 new Func<IStorageBinder, CallSite, Expression, FrameApplicationBuilder>(
                 (frame, site, c) => new FrameApplicationBuilder(arch, frame, site, c, false)));
@@ -1005,7 +1005,7 @@ ProcedureBuilder_exit:
                     PrimitiveType.Real32,
                     m.Cast(
                         PrimitiveType.Real64, 
-                        m.Load(PrimitiveType.Real32, m.Word32(0x123400)))));
+                        m.Mem(PrimitiveType.Real32, m.Word32(0x123400)))));
             m.Return();
             mr.ReplayAll();
 
@@ -1030,7 +1030,7 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder("VpAddress32Const");
             var r1 = m.Reg32("r1", 1);
             m.Assign(r1, Address.Ptr32(0x00123400));
-            m.Assign(r1, m.Load(r1.DataType, m.IAdd(r1, 0x56)));
+            m.Assign(r1, m.Mem(r1.DataType, m.IAdd(r1, 0x56)));
             m.Return();
 
             mr.ReplayAll();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core
 					new Identifier(Registers.cl.Name, PrimitiveType.Byte, Registers.cl) } );
 			var ep = new ExternalProcedure("foo", sig);
 			Assert.AreEqual("Register word16 foo(Register word16 bx, Register byte cl)", ep.ToString());
-			var fn = new ProcedureConstant(PrimitiveType.Pointer32, ep);
+			var fn = new ProcedureConstant(PrimitiveType.Ptr32, ep);
             var arch = new FakeArchitecture();
             var frame = arch.CreateFrame();
 			var ab = arch.CreateFrameApplicationBuilder(frame, new CallSite(0, 0), fn);
