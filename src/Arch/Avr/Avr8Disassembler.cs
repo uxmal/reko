@@ -156,7 +156,7 @@ namespace Reko.Arch.Avr
                     offset = (short)(offset << 6);
                     offset = (short)(offset >> 8);
                     offset = (short)(offset & ~1);
-                    op = AddressOperand.Create(this.addr + offset);
+                    op = AddressOperand.Create(this.addr + offset + 2);
                     break;
                 case 'X':
                     op = MemD(arch.x, 0);

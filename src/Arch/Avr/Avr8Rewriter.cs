@@ -588,7 +588,7 @@ namespace Reko.Arch.Avr
         {
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             var reg = RewriteOp(0);
-            m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte,  reg, m.Int32(1), c));
+            m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte, reg, m.Int32(1), c));
             EmitFlags(reg, CmpFlags);
         }
 

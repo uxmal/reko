@@ -639,7 +639,7 @@ Eq_954 ___sbrk(Eq_426 * ds, cui16 wArg02, ui16 wArg04)
 {
 	Eq_954 ax_31;
 	Eq_954 ax_12 = (word32) ds->t009E + wArg02;
-	ui32 dx_cx_18 = SEQ(wArg04 + (ax_12 <u 0x00), ax_12 + 0x0100);
+	ui32 dx_cx_18 = SEQ((byte) (ax_12 < 0x00) + wArg04, (word16) ax_12.u0 + 0x0100);
 	Eq_1154 cx_22 = (word16) (dx_cx_18 + 0x0100);
 	if (SEQ(SLICE(dx_cx_18 + 0x0100, word16, 16), cx_22) == 0x00 && cx_22 < fp - 0x02)
 	{

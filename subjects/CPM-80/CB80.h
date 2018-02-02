@@ -17584,7 +17584,7 @@ T_4038: (in SEQ(Mem0[hl + 0x0001:byte], c_4) : ui16)
   Class: Eq_4038
   DataType: ui16
   OrigDataType: ui16
-T_4039: (in SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x0001:byte], c_4) : ui16)
+T_4039: (in SEQ(a_14, a_14) - SEQ(hl->b0001, c_4) : ui16)
   Class: Eq_4033
   DataType: ui16
   OrigDataType: ui16

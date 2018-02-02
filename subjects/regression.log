@@ -887,7 +887,7 @@ Parameter name: bitOffset
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 554
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 427
    at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 46
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 125
@@ -900,7 +900,7 @@ Parameter name: bitOffset
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 554
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 213
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
@@ -911,7 +911,7 @@ Parameter name: bitOffset
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 554
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 137
@@ -1286,7 +1286,7 @@ fn0AE6: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 206
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 62
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -1299,7 +1299,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 206
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 62
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -1322,7 +1322,7 @@ fn0FB2: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 554
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 213
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
@@ -1555,7 +1555,7 @@ fn0AF6: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 207
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 62
+   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -1806,7 +1806,7 @@ fn0800_9F92: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitSegmentedAccess(SegmentedAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 116
+   at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 130
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -1819,7 +1819,7 @@ fn1483_0CA1: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitSegmentedAccess(SegmentedAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 116
+   at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 130
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -1832,7 +1832,7 @@ fn1483_0CFC: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 148
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitSegmentedAccess(SegmentedAccess access) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 249
-   at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 116
+   at Reko.Core.Expressions.SegmentedAccess.Accept(IExpressionVisitor visit) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 130
    at Reko.Analysis.DeadCode.VisitStore(Store store) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 155
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
@@ -2120,7 +2120,7 @@ fn291C: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 335
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 330
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 301
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
@@ -2485,7 +2485,7 @@ fn291C: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 335
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 330
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 81
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 301
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157

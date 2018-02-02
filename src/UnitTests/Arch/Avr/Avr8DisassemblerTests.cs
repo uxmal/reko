@@ -159,8 +159,8 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr8_dis_brcc()
         {
-            AssertCode("brcs\t0000", 0xF000);
-            AssertCode("brid\t003E", 0xF4FF);
+            AssertCode("brcs\t0002", 0xF000);
+            AssertCode("brid\t0040", 0xF4FF);
         }
 
         [Test]

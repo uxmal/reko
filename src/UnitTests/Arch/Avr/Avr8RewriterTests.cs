@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Arch.Avr
             Rewrite(0x9407); // "ror\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = __rcr(r0, C, 1)",
+                "1|L--|r0 = __rcr(r0, 1, C)",
                 "2|L--|HSVNZC = cond(r0)");
         }
 
@@ -326,14 +326,14 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr8_rw_brcc()
         {
-            Rewrite(0xF000); // "brcs\t0000"
+            Rewrite(0xF000); // "brcs\t0102"
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if (Test(ULT,C)) branch 0100");
+                "1|T--|if (Test(ULT,C)) branch 0102");
             Rewrite(0xF4FF); // "brid\t003E"
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if (!I) branch 013E");
+                "1|T--|if (!I) branch 0140");
         }
 
         [Test]
@@ -480,7 +480,7 @@ namespace Reko.UnitTests.Arch.Avr
             Rewrite(0xF7E2);	// brpl	0364
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if (Test(GE,N)) branch 00F8");
+                "1|T--|if (Test(GE,N)) branch 00FA");
         }
 
         [Test]

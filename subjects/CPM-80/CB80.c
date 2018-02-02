@@ -1895,7 +1895,7 @@ byte fn1348(Eq_835 * de, Eq_821 * hl, ptr16 & deOut, Eq_838 & lOut, Eq_839 & hOu
 {
 	uint8 c_4 = hl->b0000;
 	uint8 a_14 = de->b0001;
-	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x01:byte], c_4);
+	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(hl->b0001, c_4);
 	byte l_12;
 	*lOut = de->b0000 - c_4;
 	word16 de_13;
