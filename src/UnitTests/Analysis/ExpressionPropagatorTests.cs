@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var proc = p.BuildProgram().Procedures.Values.First();
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new FakePlatform(null, arch);
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx, listener);

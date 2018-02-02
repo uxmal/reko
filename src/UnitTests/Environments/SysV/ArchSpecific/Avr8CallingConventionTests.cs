@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            this.arch = new Avr8Architecture();
+            this.arch = new Avr8Architecture("avr8");
         }
 
         private void Given_CallingConvention()

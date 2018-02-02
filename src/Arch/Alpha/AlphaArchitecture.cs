@@ -33,7 +33,7 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaArchitecture : ProcessorArchitecture
     {
-        public AlphaArchitecture()
+        public AlphaArchitecture(string archId) : base(archId)
         {
             this.WordWidth = PrimitiveType.Word64;
             this.PointerType = PrimitiveType.Ptr64;

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Sparc
     [TestFixture]
     public class SparcRewriterTests : RewriterTestBase
     {
-        private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
+        private SparcArchitecture arch = new SparcArchitecture("sparc", PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
         private IRewriterHost host;

@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
             this.scan = this.CreateScanner(this.program);
@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Scanning
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new FakePlatform(null, arch);
             platform.Test_DefaultCallingConvention = "__cdecl";
             this.program = new Program
@@ -312,7 +312,7 @@ namespace Reko.UnitTests.Scanning
         {
             program = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
             m.i86();
 
             m.Proc("main");
@@ -394,7 +394,7 @@ fn0C00_0000_exit:
 
         private void Given_x86_Flat32()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
         }
 
         [Test]

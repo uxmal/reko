@@ -352,7 +352,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.arch32be = mr.Stub<IProcessorArchitecture>();
             this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
-            this.arch.Name = "x86-protected-32";
             cfgSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
             cfgSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
             {

@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new SparcArchitecture32();
+            arch = new SparcArchitecture32("sparc");
         }
 
         private void Given_CallingConvention()

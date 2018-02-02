@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.Intel
         [TestFixtureSetUp]
 		public void GlobalSetup()
 		{
-			arch = new X86ArchitectureFlat32();
+			arch = new X86ArchitectureFlat32("x86-protected-32");
 		}
 
 		[SetUp]

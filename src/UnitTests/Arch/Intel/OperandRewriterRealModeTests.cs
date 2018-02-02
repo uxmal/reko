@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Intel
         [TestFixtureSetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureReal();
+            arch = new X86ArchitectureReal("x86-real-16");
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var prog = new Program(
                 new SegmentMap(

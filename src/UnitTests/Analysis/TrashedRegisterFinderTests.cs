@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             m = new ProcedureBuilder(arch);
             program = new Program();
             program.Architecture = arch;
@@ -490,7 +490,7 @@ const eax:<invalid> ebx:0x01231313
         [Test]
         public void PreservedValues()
         {
-            arch = new X86ArchitectureReal();
+            arch = new X86ArchitectureReal("x86-real-16");
             p.Add("main", m =>
             {
                 var sp = m.Frame.EnsureRegister(Registers.sp);

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         public RiscVDisassemblerTests()
         {
-            this.arch = new RiscVArchitecture();
+            this.arch = new RiscVArchitecture("riscV");
         }
 
         public override IProcessorArchitecture Architecture

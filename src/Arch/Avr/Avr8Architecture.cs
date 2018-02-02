@@ -37,7 +37,7 @@ namespace Reko.Arch.Avr
         private Dictionary<uint, FlagGroupStorage> grfs;
         private List<Tuple<FlagM, char>> grfToString;
 
-        public Avr8Architecture()
+        public Avr8Architecture(string archId) : base(archId)
         {
             this.PointerType = PrimitiveType.Ptr16;
             this.WordWidth = PrimitiveType.Word16;

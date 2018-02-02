@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Arm32ProcessorArchitecture()
+        public Arm32ProcessorArchitecture(string archId) : base(archId)
         {
             InstructionBitSize = 32;
             FramePointerType = PrimitiveType.Ptr32;
@@ -127,8 +127,7 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out  Opcode result))
                 return null;
             return (int)result;
         }
@@ -141,8 +140,7 @@ namespace Reko.Arch.Arm
         public override RegisterStorage GetRegister(string name)
         {
             if (name == null) throw new ArgumentNullException("name");
-            RegisterStorage reg;
-            if (!A32Registers.RegistersByName.TryGetValue(name, out reg))
+            if (!A32Registers.RegistersByName.TryGetValue(name, out var reg))
                 reg = null;
             return reg;
         }
@@ -172,8 +170,7 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out var f))
             {
                 return f;
             }

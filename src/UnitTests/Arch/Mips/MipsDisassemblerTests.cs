@@ -36,8 +36,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture();
-            arch.Name = "mips-be-32";
+            this.arch = new MipsBe32Architecture("mips-be-32");
             Registers = this;
         }
 
@@ -73,20 +72,17 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips_v6_Architecture()
         {
-            arch = new MipsBe32Architecture();
-            arch.Name = "mipsv6-be-32";
+            arch = new MipsBe32Architecture("mipsv6-be-32");
         }
 
         private void Given_Mips64_Architecture()
         {
-            arch = new MipsBe64Architecture();
-            arch.Name = "mips-be-64";
+            arch = new MipsBe64Architecture("mips-be-64");
         }
 
         private void Given_Mips64_v6_Architecture()
         {
-            arch = new MipsBe64Architecture();
-            arch.Name = "mipsv6-be-32";
+            arch = new MipsBe64Architecture("mipsv6-be-32");
         }
 
         private void VerifyRegisterOperand(MachineOperand op, RegisterStorage reg, PrimitiveType type)

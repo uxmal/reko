@@ -30,8 +30,8 @@ namespace Reko.WindowsItp
             disassemblyControl1.Model = new DisassemblyTextModel(
                 new CoreProgram
                 {
-                    //new Decompiler.Arch.X86.X86ArchitectureFlat32();
-                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture(),
+                    //new Decompiler.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture("ppc-be-32"),
                     SegmentMap = segmentMap
                 },
                 seg);

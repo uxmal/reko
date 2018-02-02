@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Arch.Z80
     [TestFixture]
     class RewriterTests : RewriterTestBase
     {
-        private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture();
+        private Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture("z80");
         private Address baseAddr = Address.Ptr16(0x0100);
         private Z80ProcessorState state;
         private MemoryArea image;

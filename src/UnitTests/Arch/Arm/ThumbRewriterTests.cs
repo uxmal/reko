@@ -5741,7 +5741,7 @@ namespace Reko.UnitTests.Arch.Arm
         [SetUp]
         public void Setup()
         {
-            arch = new ThumbProcessorArchitecture();
+            arch = new ThumbProcessorArchitecture("arm-thumb");
             state = new ArmProcessorState(arch);
         }
 

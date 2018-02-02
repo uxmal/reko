@@ -130,8 +130,9 @@ namespace Reko.UnitTests.Environments.SysV
             {
                 Architectures =
                 {
-                    new PlatformArchitectureElement
+                    new PlatformArchitectureElement()
                     {
+                         Name = "mmix",
                          TrashedRegisters =
                          {
                              "r2", "r3"

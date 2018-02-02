@@ -345,7 +345,7 @@ namespace Reko.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
-            var arch = new Reko.Arch.X86.X86ArchitectureReal();
+            var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
             Program prog = new Program
             {
                 Architecture = arch,
@@ -371,7 +371,7 @@ namespace Reko.UnitTests.Typing
         public void DtbSegmentedDirectAddress()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            var arch = new Reko.Arch.X86.X86ArchitectureReal();
+            var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
             var prog = new Program
             {
                 Architecture = arch,

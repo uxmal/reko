@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core
 
 		public ApplicationBuilderTests()
 		{
-			arch = new X86ArchitectureFlat32();
+			arch = new X86ArchitectureFlat32("x86-protected-32");
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
 			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));

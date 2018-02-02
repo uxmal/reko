@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Sparc
 
         private static SparcInstruction Disassemble(MemoryArea img)
         {
-            var arch = new SparcArchitecture(PrimitiveType.Word32);
+            var arch = new SparcArchitecture("sparc", PrimitiveType.Word32);
             var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));
             return dasm.First();
         }

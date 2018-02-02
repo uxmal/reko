@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/PsigArguments.txt"))
 			{
-				IntelArchitecture arch = new X86ArchitectureReal();
+				IntelArchitecture arch = new X86ArchitectureReal("x86-real-16");
 				uint f = (uint)(FlagM.CF|FlagM.ZF);
 				Identifier argF = new Identifier(arch.GrfToString(f), PrimitiveType.Bool, new FlagGroupStorage(Registers.eflags, f, "CZ", PrimitiveType.Byte));
 				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);

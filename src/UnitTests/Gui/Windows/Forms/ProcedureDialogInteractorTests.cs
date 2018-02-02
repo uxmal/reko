@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             proc = new Procedure_v1();
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new Win32Platform(null, arch);
             var program = new Program
             {

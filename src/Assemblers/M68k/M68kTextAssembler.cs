@@ -57,7 +57,7 @@ namespace Reko.Assemblers.M68k
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
-            this.arch = new M68kArchitecture();
+            this.arch = new M68kArchitecture("m68k");
             asm = new M68kAssembler(arch, addrBase, entryPoints);
             this.emitter = asm.Emitter;
 
