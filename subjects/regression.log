@@ -443,12 +443,8 @@ SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting
 UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === Elf\ARM\switch\switch
-=== Elf\MIPS\swlswr\test
-=== Elf\x86-64\retpoline\retpoline.elf
-=== Elf\x86-64\retpoline\retpoline_stripped.elf
-=== Elf\x86-64\simd_double\simd_double
-=== Elf-MIPS\redir
-*** Elf-MIPS\redir
+=== Elf\MIPS\redir\redir
+*** Elf\MIPS\redir\redir
 00400BB8: warning: Unable to resolve imported reference __xpg_basename.
 00400E38: warning: Unable to resolve imported reference bzero.
 00400E78: warning: Unable to resolve imported reference inet_addr.
@@ -510,8 +506,9 @@ client_read_reply: error: An error occurred during data flow analysis.
 1000002C: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
 
-=== Elf-RiscV\ipcalc\ipcalc.dcproject
-*** Elf-RiscV\ipcalc\ipcalc.dcproject
+=== Elf\MIPS\swlswr\test
+=== Elf\RiscV\ipcalc\ipcalc.dcproject
+*** Elf\RiscV\ipcalc\ipcalc.dcproject
 fn0000000000016864: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -522,8 +519,8 @@ fn0000000000016864: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 
-=== Elf-Sparc\rtems\sparc-rtems-unprotoize
-*** Elf-Sparc\rtems\sparc-rtems-unprotoize
+=== Elf\Sparc\rtems\sparc-rtems-unprotoize
+*** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
 00014EF0: warning: Unable to resolve imported reference setlocale.
 00015318: warning: Unable to resolve imported reference stat.
@@ -636,8 +633,9 @@ Parameter name: index
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 
-=== Elf-x86-64\ls
-*** Elf-x86-64\ls
+=== Elf\x86-64\ais3_crackme\ais3_crackme
+=== Elf\x86-64\ls\ls
+*** Elf\x86-64\ls\ls
 00000000004028FB: warning: Unable to resolve imported reference setlocale.
 000000000040290A: warning: Unable to resolve imported reference bindtextdomain.
 0000000000411EF1: warning: Unable to resolve imported reference __cxa_atexit.
@@ -927,9 +925,8 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 312
 fn00000000004028C0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
-=== Elf-x86-64\ais3_crackme\ais3_crackme
-=== Elf-x86-64\pngpixel\pngpixel
-*** Elf-x86-64\pngpixel\pngpixel
+=== Elf\x86-64\pngpixel\pngpixel
+*** Elf\x86-64\pngpixel\pngpixel
 00000000004013B1: warning: Unable to resolve imported reference png_create_read_struct.
 00000000004013CE: warning: Unable to resolve imported reference png_create_info_struct.
 00000000004013F2: warning: Unable to resolve imported reference png_init_io.
@@ -957,6 +954,9 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 00401828: warning: Expected sizes of arrays to have been determined by now
 00401958: warning: Expected sizes of arrays to have been determined by now
 
+=== Elf\x86-64\retpoline\retpoline.elf
+=== Elf\x86-64\retpoline\retpoline_stripped.elf
+=== Elf\x86-64\simd_double\simd_double
 === Hunk-m68k\BENCHFN
 === Hunk-m68k\BENCHLNG
 *** Hunk-m68k\BENCHLNG
@@ -1652,13 +1652,13 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 
 === PE\x86\demo_upx\Demo.exe
+=== PE\x86\ExeDll\Executable.exe
 === PE\x86\import-ordinals\import-ordinals.dcproject
-=== PE-x86\ExeDll\Executable.exe
-=== PE-x86\pySample\pySample.dcproject
-=== PE-x86\RussianText\RussianText.exe
-=== PE-x86\VCExeSample\VCExeSample.dcproject
-=== PE-x86-64\varargs_test\varargs_test.exe
-*** PE-x86-64\varargs_test\varargs_test.exe
+=== PE\x86\pySample\pySample.dcproject
+=== PE\x86\RussianText\RussianText.exe
+=== PE\x86\VCExeSample\VCExeSample.dcproject
+=== PE\x86-64\varargs_test\varargs_test.exe
+*** PE\x86-64\varargs_test\varargs_test.exe
 0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
 0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
