@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             var expr = m.Ugt(m.ISub(foo, 2), m.Word32(5));
-            Assert.AreEqual("foo_0 >u 0x00000007 || foo_0 <u 0x00000002", expr.Accept(simplifier).ToString());
+            Assert.AreEqual("foo_1 >u 0x00000007 || foo_1 <u 0x00000002", expr.Accept(simplifier).ToString());
         }
     }
 }

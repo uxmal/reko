@@ -493,17 +493,17 @@ done:
             #region Expected
 @"r2:r2
     def:  def r2
-    uses: Mem4[0x00123400:word32] = r2
+    uses: Mem5[0x00123400:word32] = r2
           branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
           branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
-r1_1: orig: r1
-SCZ_2: orig: SCZ
-CZ_3: orig: CZ
-Mem4: orig: Mem0
-    def:  Mem4[0x00123400:word32] = r2
+r1_2: orig: r1
+SCZ_3: orig: SCZ
+CZ_4: orig: CZ
+Mem5: orig: Mem0
+    def:  Mem5[0x00123400:word32] = r2
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder(word32 r2)
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def r2
 	// succ:  l1
@@ -511,7 +511,7 @@ l1:
 	branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
 	// succ:  mDo mElse
 mDo:
-	Mem4[0x00123400:word32] = r2
+	Mem5[0x00123400:word32] = r2
 	// succ:  mElse
 mElse:
 	return
@@ -576,14 +576,14 @@ ProcedureBuilder_exit:
     def:  def rax
     uses: branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
           branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
-rdx_1: orig: rdx
-rax_2: orig: rax
-CZ_3: orig: CZ
-Mem4: orig: Mem0
-    def:  Mem4[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+rdx_2: orig: rdx
+rax_3: orig: rax
+CZ_4: orig: CZ
+Mem5: orig: Mem0
+    def:  Mem5[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder(word64 rax)
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def rax
 	// succ:  l1
@@ -591,7 +591,7 @@ l1:
 	branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
 	// succ:  mDo mElse
 mDo:
-	Mem4[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+	Mem5[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
 	// succ:  mElse
 mElse:
 	return

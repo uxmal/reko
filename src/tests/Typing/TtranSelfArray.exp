@@ -1,6 +1,6 @@
 // SelfArray
 // Return size: 0
-void SelfArray()
+define SelfArray
 SelfArray_entry:
 	// succ:  l1
 l1:
@@ -30,7 +30,7 @@ T_3: (in d0 : word32)
   Class: Eq_3
   DataType: ui32
   OrigDataType: ui32
-T_4: (in 0x00000004 : bcuipr32)
+T_4: (in 0x00000004 : ui32)
   Class: Eq_4
   DataType: ui32
   OrigDataType: ui32

@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Analysis
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
             var sst = new SsaTransform(
-                program,
+                new Program { Architecture = arch },
                 proc,
                 new HashSet<Procedure>(),
                 importResolver,

@@ -1,6 +1,6 @@
 // SelfRef
 // Return size: 0
-void SelfRef()
+define SelfRef
 SelfRef_entry:
 	// succ:  l1
 l1:
