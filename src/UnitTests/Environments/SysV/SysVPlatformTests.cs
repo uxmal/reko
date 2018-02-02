@@ -124,6 +124,7 @@ namespace Reko.UnitTests.Environments.SysV
         [Test]
         public void SysV_LoadTrashedRegisters()
         {
+            arch.Stub(a => a.Name).Return("mmix");
             arch.Stub(a => a.GetRegister((string)null)).IgnoreArguments()
                 .Do(new Func<string, RegisterStorage>(r => new RegisterStorage(r, (int)r[1], 0, PrimitiveType.Word32)));
             var env = new OperatingEnvironmentElement
