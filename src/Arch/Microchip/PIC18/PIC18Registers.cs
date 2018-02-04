@@ -23,6 +23,8 @@
 using Microchip.Crownking;
 using Reko.Arch.Microchip.Common;
 using Reko.Core;
+using Reko.Core.Types;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,7 @@ namespace Reko.Arch.Microchip.PIC18
     public class PIC18Registers : PICRegistersBuilder, IPICRegisterSymTable
     {
 
-        //TODO: Revert joined registers' numbering to allow EnsureSequence to work.
+        //TODO: Should I revert joined registers' numbering to allow EnsureSequence to work? To be clarified w/John.
         
         #region Helper classes
 
@@ -153,7 +155,7 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// List of bit fields. Permits to get bit fields with different widths at same register's position.
+        /// List of bit fields. Permits to get bit fields with different widths at same register's bit position.
         /// </summary>
         private sealed class BitFieldList : SortedList<uint, PICBitFieldStorage>
         {
@@ -176,174 +178,276 @@ namespace Reko.Arch.Microchip.PIC18
             = new Dictionary<BitFieldAddr, BitFieldList>();
 
 
-        internal static readonly Dictionary<PICRegisterStorage, Dictionary<uint, PICRegisterStorage>> SubRegisters
-            = new Dictionary<PICRegisterStorage, Dictionary<uint, PICRegisterStorage>>();
+        internal static readonly Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters
+            = new Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>>();
 
         #endregion
 
         #region PIC18 standard (core) registers and bit fields
 
-        /// <summary>STATUS register. </summary>
+        /// <summary>
+        /// STATUS register.
+        /// </summary>
         public static PICRegisterStorage STATUS { get; private set; }
 
-        /// <summary>Carry bit in STATUS register. </summary>
+        /// <summary>
+        /// Carry bit in STATUS register.
+        /// </summary>
         public static PICBitFieldStorage C { get; private set; }
 
-        /// <summary>Digit-Carry bit in STATUS register.. </summary>
+        /// <summary>
+        /// Digit-Carry bit in STATUS register..
+        /// </summary>
         public static PICBitFieldStorage DC { get; private set; }
 
-        /// <summary>Zero bit in STATUS register.. </summary>
+        /// <summary>
+        /// Zero bit in STATUS register..
+        /// </summary>
         public static PICBitFieldStorage Z { get; private set; }
 
-        /// <summary>Overflow bit in STATUS register.. </summary>
+        /// <summary>
+        /// Overflow bit in STATUS register..
+        /// </summary>
         public static PICBitFieldStorage OV { get; private set; }
 
-        /// <summary>Negative bit in STATUS register.. </summary>
+        /// <summary>
+        /// Negative bit in STATUS register..
+        /// </summary>
         public static PICBitFieldStorage N { get; private set; }
 
-        /// <summary>Power-Down bit in STATUS or PCON register.. </summary>
+        /// <summary>
+        /// Power-Down bit in STATUS or PCON register..
+        /// </summary>
         public static PICBitFieldStorage PD { get; private set; }
 
-        /// <summary>Timed-Out bit in STATUS or PCON register.. </summary>
+        /// <summary>
+        /// Timed-Out bit in STATUS or PCON register..
+        /// </summary>
         public static PICBitFieldStorage TO { get; private set; }
 
-        /// <summary>FSR2L special function register. </summary>
+        /// <summary>
+        /// FSR2L special function register.
+        /// </summary>
         public static PICRegisterStorage FSR2L { get; private set; }
 
-        /// <summary>FSR2H special function register. </summary>
+        /// <summary>
+        /// FSR2H special function register.
+        /// </summary>
         public static PICRegisterStorage FSR2H { get; private set; }
 
-        /// <summary>PLUSW2 special function register. </summary>
+        /// <summary>
+        /// PLUSW2 special function register.
+        /// </summary>
         public static PICRegisterStorage PLUSW2 { get; private set; }
 
-        /// <summary>PREINC2 special function register. </summary>
+        /// <summary>
+        /// PREINC2 special function register.
+        /// </summary>
         public static PICRegisterStorage PREINC2 { get; private set; }
 
-        /// <summary>POSTDEC2 special function register. </summary>
+        /// <summary>
+        /// POSTDEC2 special function register.
+        /// </summary>
         public static PICRegisterStorage POSTDEC2 { get; private set; }
 
-        /// <summary>POSTINC2 special function register. </summary>
+        /// <summary>
+        /// POSTINC2 special function register.
+        /// </summary>
         public static PICRegisterStorage POSTINC2 { get; private set; }
 
-        /// <summary>INDF2 special function register. </summary>
+        /// <summary>
+        /// INDF2 special function register.
+        /// </summary>
         public static PICRegisterStorage INDF2 { get; private set; }
 
-        /// <summary>BSR special function register. </summary>
+        /// <summary>
+        /// BSR special function register.
+        /// </summary>
         public static PICRegisterStorage BSR { get; private set; }
 
-        /// <summary>FSR1L special function register. </summary>
+        /// <summary>
+        /// FSR1L special function register.
+        /// </summary>
         public static PICRegisterStorage FSR1L { get; private set; }
 
-        /// <summary>FSR1H special function register. </summary>
+        /// <summary>
+        /// FSR1H special function register.
+        /// </summary>
         public static PICRegisterStorage FSR1H { get; private set; }
 
-        /// <summary>PLUSW1 special function register. </summary>
+        /// <summary>
+        /// PLUSW1 special function register.
+        /// </summary>
         public static PICRegisterStorage PLUSW1 { get; private set; }
 
-        /// <summary>PREINC1 special function register. </summary>
+        /// <summary>
+        /// PREINC1 special function register.
+        /// </summary>
         public static PICRegisterStorage PREINC1 { get; private set; }
 
-        /// <summary>POSTDEC1 special function register. </summary>
+        /// <summary>
+        /// POSTDEC1 special function register.
+        /// </summary>
         public static PICRegisterStorage POSTDEC1 { get; private set; }
 
-        /// <summary>POSTINC1 special function register. </summary>
+        /// <summary>
+        /// POSTINC1 special function register.
+        /// </summary>
         public static PICRegisterStorage POSTINC1 { get; private set; }
 
-        /// <summary>INDF1 special function register. </summary>
+        /// <summary>
+        /// INDF1 special function register.
+        /// </summary>
         public static PICRegisterStorage INDF1 { get; private set; }
 
-        /// <summary>WREG special function register. </summary>
+        /// <summary>
+        /// WREG special function register.
+        /// </summary>
         public static PICRegisterStorage WREG { get; private set; }
 
-        /// <summary>FSR0L special function register. </summary>
+        /// <summary>
+        /// FSR0L special function register.
+        /// </summary>
         public static PICRegisterStorage FSR0L { get; private set; }
 
-        /// <summary>FSR0H special function register. </summary>
+        /// <summary>
+        /// FSR0H special function register.
+        /// </summary>
         public static PICRegisterStorage FSR0H { get; private set; }
 
-        /// <summary>PLUSW0 special function register. </summary>
+        /// <summary>
+        /// PLUSW0 special function register.
+        /// </summary>
         public static PICRegisterStorage PLUSW0 { get; private set; }
 
-        /// <summary>PREINC0 special function register. </summary>
+        /// <summary>
+        /// PREINC0 special function register.
+        /// </summary>
         public static PICRegisterStorage PREINC0 { get; private set; }
 
-        /// <summary>POSTDEC0 special function register. </summary>
+        /// <summary>
+        /// POSTDEC0 special function register.
+        /// </summary>
         public static PICRegisterStorage POSTDEC0 { get; private set; }
 
-        /// <summary>POSTINC0 special function register. </summary>
+        /// <summary>
+        /// POSTINC0 special function register.
+        /// </summary>
         public static PICRegisterStorage POSTINC0 { get; private set; }
 
-        /// <summary>INDF0 special function register. </summary>
+        /// <summary>
+        /// INDF0 special function register.
+        /// </summary>
         public static PICRegisterStorage INDF0 { get; private set; }
 
-        /// <summary>PRODL special function register. </summary>
+        /// <summary>
+        /// PRODL special function register.
+        /// </summary>
         public static PICRegisterStorage PRODL { get; private set; }
 
-        /// <summary>PRODH special function register. </summary>
+        /// <summary>
+        /// PRODH special function register.
+        /// </summary>
         public static PICRegisterStorage PRODH { get; private set; }
 
-        /// <summary>TABLAT special function register. </summary>
+        /// <summary>
+        /// TABLAT special function register.
+        /// </summary>
         public static PICRegisterStorage TABLAT { get; private set; }
 
-        /// <summary>TBLPTRL special function register. </summary>
+        /// <summary>
+        /// TBLPTRL special function register.
+        /// </summary>
         public static PICRegisterStorage TBLPTRL { get; private set; }
 
-        /// <summary>TBLPTRH special function register. </summary>
+        /// <summary>
+        /// TBLPTRH special function register.
+        /// </summary>
         public static PICRegisterStorage TBLPTRH { get; private set; }
 
-        /// <summary>TBLPTRU special function register. </summary>
+        /// <summary>
+        /// TBLPTRU special function register.
+        /// </summary>
         public static PICRegisterStorage TBLPTRU { get; private set; }
 
-        /// <summary>PCL special function register. </summary>
+        /// <summary>
+        /// PCL special function register.
+        /// </summary>
         public static PICRegisterStorage PCL { get; private set; }
 
-        /// <summary>PCLH special function register. </summary>
+        /// <summary>
+        /// PCLH special function register.
+        /// </summary>
         public static PICRegisterStorage PCLATH { get; private set; }
 
-        /// <summary>PCLU special function register. </summary>
+        /// <summary>
+        /// PCLU special function register.
+        /// </summary>
         public static PICRegisterStorage PCLATU { get; private set; }
 
-        /// <summary>STKPTR special function register. </summary>
+        /// <summary>
+        /// STKPTR special function register.
+        /// </summary>
         public static PICRegisterStorage STKPTR { get; private set; }
 
-        /// <summary>TOSL special function register. </summary>
+        /// <summary>
+        /// TOSL special function register.
+        /// </summary>
         public static PICRegisterStorage TOSL { get; private set; }
 
-        /// <summary>TOSH special function register. </summary>
+        /// <summary>
+        /// TOSH special function register.
+        /// </summary>
         public static PICRegisterStorage TOSH { get; private set; }
 
-        /// <summary>TOSU special function register. </summary>
+        ///<summary>
+        /// TOSU special function register.
+        ///</summary>
         public static PICRegisterStorage TOSU { get; private set; }
 
+        #region Pseudo-registers
+
         /// <summary>
-        /// Gets the FSR0 pseudo-register
+        /// PROD pseudo-register (alias to PRODH:PRODL).
+        /// </summary>
+        public static PICRegisterStorage PROD { get; private set; }
+
+        /// <summary>
+        /// FSR0 pseudo-register (alias to FSR0H:FSR0L).
         /// </summary>
         public static PICRegisterStorage FSR0 { get; private set; }
 
         /// <summary>
-        /// Gets the FSR1 pseudo-register
+        /// FSR1 pseudo-register (alias to FSR1H:FSR1L).
         /// </summary>
         public static PICRegisterStorage FSR1 { get; private set; }
 
         /// <summary>
-        /// Gets the FSR2 pseudo-register
+        /// FSR2 pseudo-register (alias to FSR2H:FSR2L).
         /// </summary>
         public static PICRegisterStorage FSR2 { get; private set; }
 
         /// <summary>
-        /// Gets the TOS pseudo-register (alias to TOSU:TOSH:TOSL).
+        /// TOS pseudo-register (alias to TOSU:TOSH:TOSL).
         /// </summary>
         public static PICRegisterStorage TOS { get; private set; }
 
         /// <summary>
-        /// Gets the PC pseudo-register (alias to PCLATU:PCLATH:PCL).
+        /// PC pseudo-register (alias to PCLATU:PCLATH:PCL).
         /// </summary>
         public static PICRegisterStorage PC { get; private set; }
 
         /// <summary>
-        /// Gets the TBLPTR pseudo-register (alias to TBLPTRL:TBLPTRH:TBLPTRL).
+        /// TBLPTR pseudo-register (alias to TBLPTRL:TBLPTRH:TBLPTRL).
         /// </summary>
         public static PICRegisterStorage TBLPTR { get; private set; }
+
+        #endregion
+
+        /// <summary>
+        /// Return Address Stack of the PIC.
+        /// </summary>
+        public static MemoryIdentifier RAS { get; private set; }
 
         #endregion
 
@@ -392,8 +496,11 @@ namespace Reko.Arch.Microchip.PIC18
         {
             lock (_symtabLock)
             {
-                RegsByAddr.TryGetValue(aAddr, out RegisterStorage reg);
-                return reg as PICRegisterStorage;
+                if (RegsByAddr.TryGetValue(aAddr, out RegisterStorage reg))
+                {
+                    return reg as PICRegisterStorage;
+                }
+                return null;
             }
         }
 
@@ -401,7 +508,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             lock (_symtabLock)
             {
-                var reg = RegsByAddr.Where(e => e.Value.Number == number)
+                var reg = RegsByAddr.Where(l => l.Value.Number == number)
                     .Select(e => (KeyValuePair<RegAddress, RegisterStorage>?)e)
                     .FirstOrDefault()?.Value;
                 return reg ?? RegisterStorage.None;
@@ -512,7 +619,32 @@ namespace Reko.Arch.Microchip.PIC18
             TOSH = _getRegister("TOSH");
             TOSU = _getRegister("TOSU");
 
-            
+            PROD = new PICRegisterStorage("PROD", PRODL.Number, PrimitiveType.Word16) { Address = PRODL.Address };
+            PRODH.BitAddress = 8;
+            FSR0 = new PICRegisterStorage("FSR0", FSR0L.Number, PrimitiveType.Ptr16) { Address = FSR0L.Address };
+            FSR0H.BitAddress = 8;
+            FSR1 = new PICRegisterStorage("FSR1", FSR1L.Number, PrimitiveType.Ptr16) { Address = FSR1L.Address };
+            FSR1H.BitAddress = 8;
+            FSR2 = new PICRegisterStorage("FSR2", FSR2L.Number, PrimitiveType.Ptr16) { Address = FSR2L.Address };
+            FSR2H.BitAddress = 8;
+            TOS = new PICRegisterStorage("TOS", TOSL.Number, PrimitiveType.Word32) { Address = TOSL.Address };
+            TOSH.BitAddress = 8;
+            TOSU.BitAddress = 16;
+            PC = new PICRegisterStorage("PC", PCL.Number, PrimitiveType.Ptr32) { Address = PCL.Address };
+            PCLATH.BitAddress = 8;
+            PCLATU.BitAddress = 16;
+            TBLPTR = new PICRegisterStorage("TBLPTR", TBLPTRL.Number, PrimitiveType.Word32) { Address = TBLPTRL.Address };
+            TBLPTRH.BitAddress = 8;
+            TBLPTRU.BitAddress = 16;
+
+            SubRegisters.Add(PROD, new Dictionary<uint, RegisterStorage> { { 0x0008, PRODL }, { 0x0808, PRODH } });
+            SubRegisters.Add(FSR0, new Dictionary<uint, RegisterStorage> { { 0x0008, FSR0L }, { 0x0808, FSR0H } });
+            SubRegisters.Add(FSR1, new Dictionary<uint, RegisterStorage> { { 0x0008, FSR1L }, { 0x0808, FSR1H } });
+            SubRegisters.Add(FSR2, new Dictionary<uint, RegisterStorage> { { 0x0008, FSR2L }, { 0x0808, FSR2H } });
+            SubRegisters.Add(TOS, new Dictionary<uint, RegisterStorage> { { 0x0008, TOSL }, { 0x0808, TOSH }, { 0x1008, TOSU } });
+            SubRegisters.Add(PC, new Dictionary<uint, RegisterStorage> { { 0x0008, PCL }, { 0x0808, PCLATH }, { 0x1008, PCLATU } });
+            SubRegisters.Add(TBLPTR, new Dictionary<uint, RegisterStorage> { { 0x0008, TBLPTRL }, { 0x0808, TBLPTRH }, { 0x1008, TBLPTRU } });
+
         }
 
         #endregion

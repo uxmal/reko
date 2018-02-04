@@ -21,14 +21,13 @@
 #endregion
 
 using Microchip.Crownking;
+using NUnit.Framework;
+using Reko.Arch.Microchip.Common;
 using Reko.Arch.Microchip.PIC18;
 using Reko.Core;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
-using System;
 using System.Linq;
-using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
 {

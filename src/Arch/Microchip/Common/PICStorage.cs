@@ -31,14 +31,14 @@ namespace Reko.Arch.Microchip.Common
     {
 
         /// <summary>
-        /// Converts bit size to most appropriate Reko primitive type.
+        /// Converts bit size to most appropriate Reko primitive word type.
         /// </summary>
         /// <param name="bitSize">The bit size.</param>
         /// <returns>
         /// A PrimitiveType value.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when bit size is outside the required range.</exception>
-        internal static PrimitiveType Size2PrimitiveType(uint bitSize)
+        internal static PrimitiveType Size2PrimitiveType(this uint bitSize)
         {
             if (bitSize == 0)
                 throw new ArgumentOutOfRangeException(nameof(bitSize));
@@ -83,7 +83,7 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// The address or null.
         /// </value>
-        public PICDataAddress Address { get; }
+        public PICDataAddress Address { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this register is Non-Memory-Mapped.
@@ -124,7 +124,7 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="isNMMR">(Optional)
         ///                      True if this register is Non-Memory-Mapped, false if not.</param>
         public PICRegisterStorage(SFRDef sfr, int number)
-            : base(sfr.Name, number, PICRegisterEx.Size2PrimitiveType(sfr.NzWidth))
+            : base(sfr.Name, number, sfr.NzWidth.Size2PrimitiveType())
         {
             SFRDef = sfr;
             Address = (IsNMMR ? null : PICDataAddress.Ptr(sfr.Addr));
@@ -209,7 +209,7 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="bitPos">The least significant bit number as a byte.</param>
         /// <param name="uMask">The bit field mask.</param>
         public PICBitFieldStorage(PICRegisterStorage reg, SFRFieldDef sfrdef, byte bitPos, uint uMask)
-            : base(reg, (uMask << bitPos), sfrdef.Name, PICRegisterEx.Size2PrimitiveType(sfrdef.NzWidth))
+            : base(reg, (uMask << bitPos), sfrdef.Name, sfrdef.NzWidth.Size2PrimitiveType())
         {
             SFRField = sfrdef;
             BitPos = bitPos;

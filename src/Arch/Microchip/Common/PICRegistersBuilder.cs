@@ -86,8 +86,8 @@ namespace Reko.Arch.Microchip.Common
 
         #region Methods
 
-         /// <summary>
-        /// Loads the PIC registers into the registers symbol table.
+        /// <summary>
+        /// Loads the PIC registers, as found in the PIC definition, into the registers symbol table.
         /// </summary>
         /// <param name="registersSymTable">The registers symbol table interface.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="registersSymTable"/> is null.</exception>

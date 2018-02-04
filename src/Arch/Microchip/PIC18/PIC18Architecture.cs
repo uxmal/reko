@@ -196,6 +196,22 @@ namespace Reko.Arch.Microchip.PIC18
         public override RegisterStorage[] GetRegisters()
             => PIC18Registers.GetRegisters;
 
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+        {
+            throw new NotImplementedException("There is no wider register for PIC18");
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && reg.BitSize == (ulong)width)
+                return reg;
+            if (!PIC18Registers.SubRegisters.TryGetValue(reg, out Dictionary<uint, RegisterStorage> dict))
+                return null;
+            if (!dict.TryGetValue((uint)(offset * 256 + width), out RegisterStorage subReg))
+                return null;
+            return subReg;
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             => CreateDisassemblerImpl(imageReader);
 

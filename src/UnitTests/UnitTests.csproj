@@ -101,6 +101,12 @@
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Extd_Trad_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Lgcy_Extd_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Lgcy_Trad_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Registers_Extd_Extd_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Registers_Enhd_Extd_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Registers_Lgcy_Extd_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Registers_Enhd_Trad_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Registers_Extd_Trad_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Registers_Lgcy_Trad_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18RewriterTestsBase.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Enhd_Extd_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Enhd_Trad_Tests.cs" />
