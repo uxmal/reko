@@ -1,8 +1,9 @@
 # Reko coding style document
 
-This document formalizes the programming style conventions in use in the Reko project. When many contributors make changes to a shared 
-codebase it becomes to state the coding conventions in use to avoid unneccesary merge conflicts and disputes. None of these
-rules are absolute, but in general please adhere to these style rules unless you have a very good reason not to.
+This document formalizes the programming style conventions in use in the Reko project. When many 
+contributors make changes to a shared codebase it becomes necessary to state the coding conventions 
+in use to avoid unneccesary merge conflicts and disputes. None of these rules are absolute, but in
+general please adhere to these style rules unless you have a very good reason not to.
 
 ### Formatting
 Indentation in the source code is written with spaces, not tabs. Indentation stops are 4 spaces.
@@ -26,27 +27,30 @@ if (foo)
     bar();
 }
 
-if (foo) {              // Please don't
+// Please don't:
+if (foo) {
     bar();
 }
 ```
 
 Spaces used to separate terms in expressions go 'inside' the expression, not outside:
 ```C#
-a = b * c + (a / c);    // Preferred
+a = b * c + (a / c);
 
-a = b*c + ( a/c );      // Please don't
+// Please don't:
+a = b*c + ( a/c );
 ```
 
 No spaces after function applications, but spaces after C# keywords that are followed by parentheses:
 ```C#
-myclass.MyMethod(foo);  // Preferred
+myclass.MyMethod(foo);
 if (foo.bar)  // ...
 while (bar.baz()) // ...
 return (a + b) * c;
 return x;
 
-myclass.MyMethod (foo)    // Please don't
+// Please don't:
+myclass.MyMethod (foo);
 if(foo.bar) // ...
 while( bar.baz ()) // ...
 return(a+b)*c;
@@ -75,7 +79,7 @@ if (bar != foo)
 while (!done())
     ;
 
-// Please don't
+// Please don't:
 if (foo == null)
     bar();
 while (foo.bar()) bar.foo();
@@ -108,10 +112,17 @@ public class MyClass
 
     // Properties
 
-    public string Foo { get{ return this.foo; } }
+    public string Foo { get { return this.foo; } }
 
     // Methods:
     // Public methods first, then internal, protected, and finally private.
+    public IExpansion FindExpansion(string expansionName) // ...
+
+    protected IExpansion DoFindExpansion(
+        string expansionName, 
+        IEnumerable<IExpansion> items) // ...
+
+    private bool IsValidExpansion(IExpansion expansion) // ...
 }
 ```
 
@@ -120,12 +131,29 @@ We use camel-case consistently, unless using symbols from external sources that 
 Private C# fields and local variables are written with an initial lower case letter:
 ```C#
 private int xRange;
-private int _xRange;        // please don't
-private int m_xRange;		// please don't
+```
+Avoid using prefixes or suffixes to distinguish member varaibles from local variables. Use "this." to 
+disambiguate:
+```C#
+private int xRange;
+public void SetXRange(int xRange) 
+{
+    this.xRange = xRange;
+}
+
+// Please don't:
+private int _xRange;
+private int m_xRange; 
+
+public void SetXRange(int xRange)
+{
+    m_xRange = xRange;
+}
 ```
 Public members are written with initial upper case letters, as are class and namespaces:
 ```C#
 public int XRange { get { return xRange; } }
+public virtual void Reset() {}
 public class Modulator // ...
 ```
 Prefer making member variable names longer and self-documenting and avoid cryptic abbreviations.
@@ -133,30 +161,30 @@ Method parameters and local variables can be shorter, especially index or enumer
 ```C#
 public class Accumulator
 {
-	private int totalSum;
-	private IEnvironment environment;
+    private int totalSum;
+    private IEnvironment environment;
 
-	public TheClass(IEnvironment env)
-	{
-		this.environment = env;
-		this.totalSum = 0;
-		foreach (var item in env.Items)
-		{
-			this.totalSum += item;
-		}
-	}
+    public TheClass(IEnvironment env)
+    {
+        this.environment = env;
+        this.totalSum = 0;
+        foreach (var item in env.Items)
+        {
+            this.totalSum += item;
+        }
+    }
 }
 
-// Please don't
+// Please don't:
 public class Acc
 {
-	private int n;
-	private IEnvironment e;
+    private int n;
+    private IEnvironment e;
 
-	public Acc(IEnvironment e)
-	{
-		// ...
-	}
+    public Acc(IEnvironment e)
+    {
+        // ...
+    }
 }
 ```
 
@@ -164,14 +192,13 @@ Well-established acronyms are fine:
 ```C#
 public void RenderHtml()
 {
-	// ...
+    // ...
 }
 
-
-// Please don't
+// Please don't:
 public void RenderHyperTextMarkupLanguage()
 {
-	// ...
+    // ...
 }
 ```
 
@@ -207,27 +234,27 @@ smaller methods:
 ```C#
 void LargeMethod()
 {
-	// INitialize the state
-	/* Large amounts of code elided for clarity */
+    // INitialize the state
+    /* Large amounts of code elided for clarity */
 
-	// Process input
-	/* Large amounts of code elided for clarity */
+    // Process input
+    /* Large amounts of code elided for clarity */
 
-	// Validate state
-	/* Large amounts of code elided for clarity */
+    // Validate state
+    /* Large amounts of code elided for clarity */
 
-	// Clean up
-	/* Large amounts of code elided for clarity */
+    // Clean up
+    /* Large amounts of code elided for clarity */
 }
 ```
 can be refactored to become:
 ```C#
 void LargeMethod()
 {
-	InitializeState();
-	ProcessInput();
-	ValidateState();
-	CleanUp();
+    InitializeState();
+    ProcessInput();
+    ValidateState();
+    CleanUp();
 }
 ```
 
@@ -235,56 +262,124 @@ Prefer "quick" exits from methods using `return` over nested if statements:
 ```C#
 int Method(int arg1, float arg2)
 {
-	if (arg1 < 0)
-		return 0;
-	if (arg2 < 0.0F)
-		return 1;
-	//...
+    if (arg1 < 0)
+        return 0;
+    if (arg2 < 0.0F)
+        return 1;
+    //...
 }
 
 // Please don't:
 int Method(int arg1, float arg2)
 {
-	if (arg1 < 0)
-	{
-		return 0;
-	}
-	else
-	{
-		if (arg2 < 0.0F)
-		{
-			return 1;
-		}
-	}
-	//...
+    if (arg1 < 0)
+    {
+        return 0;
+    }
+    else
+    {
+        if (arg2 < 0.0F)
+        {
+            return 1;
+        }
+    }
+    //...
 }
+```
+Unit tests names are a little different. Due to limitations in the NUnit test runner extension in VisualStudio,
+individual test methods should be named after the following schema:
+```
+{abbreviated class name}_{method being tested}_{special circumstances being tested}
+```
+E.g.
+```C#
+[Test]
+public void X86DRw_mov() { /* ... */ }
+public void X86DRw_call_importedFunction() { /* ... */ }
 ```
 
 ### Comments
 Comments are tricky. We want them to explain the code without pointlessly duplicating the code itself.
 Comments are not checked by the compiler, and they can grow stale when the code they are commenting is
-changed but the comments themselves are not. Making an effort to use clear variable and function names
-helps in this regard. Well chosen names alleviate the need for comments.
-
-Prefer writing comments on "why", not "what".
+changed but the comments themselves are not:
 ```C#
-int x = 1;				// Lua arrays start at offset 1.
+// The following two parameters must be no larger than 100
+public int AddTogether(params int[] args) // confusion????
+```
+ Making an effort to use clear variable and function names
+helps in this regard. Well chosen names alleviate the need for comments:
+```C#
+public int SumOf(params int[] summands)
+```
+Prefer writing comments that explain "why", not "what".
+```C#
+int x = 1;                // Lua arrays start at offset 1.
+// or even better:
+const int LuaStartIndex = 1;
+int x = LuaStartIndex;
 
 // Please don't:
-int x = 1;				// Set x to 1
+int x = 1;                // Set x to 1
 ```
-
-Clarifying subtle details in algorithms with a comment is encouraged. However, if you wish to document
-that the code is making assumptions about the current state of the program, consider using Debug.Assert
-or throwing an `InvalidOperationException` instead:
+Clarifying subtle details in algorithms with a comment is encouraged:
+```C#
+// We use the Lengauer-Tarjan algorithm to compute the dominator tree
+// because its performance has been measured and been found best for
+// code graphs typically found in binaries.
+```
+However, if you wish to document that the code is making assumptions about 
+the current state of the program, consider using Debug.Assert or throwing
+an `InvalidOperationException` instead:
 ```C#
 Debug.Assert(x != null, "x should be initialized before starting the frobulation process");
+// or:
 if (x != null)
-	throw new InvalidOperationException("x should have been initialized before starting the frobulation process.")
+    throw new InvalidOperationException("x should have been initialized before starting the frobulation process.")
 
-// Please don't
+// Please don't:
 
 // x should be initialized here.
 ```
 
 See here for more examples: [Putting comments in code: the good, the bad, and the ugly](https://medium.freecodecamp.org/code-comments-the-good-the-bad-and-the-ugly-be9cc65fbf83)
+
+### Exceptions
+We throw exceptions for a few things. One is to catch programmer errors, typically when checking 
+input parameters to constructors, methods, and property setters:
+```C#
+public void ReplaceWidget(Widget w)
+{
+    if (w == null)
+        throw new ArgumentNullException(nameof(w));
+    if (state == null || !state.Ready())
+        throw new InvalidOperationException("A call to ReplaceWidget is not correct at this point.");
+    // ...
+}
+```
+We do _not_ use exceptions to signal the end of an enumeration (I'm looking at you, Python!)
+
+We do _not_ use exceptions to perform non-local control flow. If you want `setjmp`/`longjmp`, you know where to find
+them:
+```C#
+// Please don't:
+public bool CleverSearchAlgorithm<T>(Tree<T> tree, T value)
+{
+    try 
+    {
+        CleverImpl(tree, value);
+    }
+    catch (FoundItemException e)
+    {
+        return true;
+    }
+    return false;
+}
+
+private void CleverImpl<T>(Tree<T> tree, T value)
+{
+    if (t.Value == value)
+        throw new FoundItemException();
+    CleverImpl(tree.Left, value);
+    CleverImpl(tree.Right, value);
+}
+```
