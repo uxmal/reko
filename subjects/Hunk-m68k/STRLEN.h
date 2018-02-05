@@ -6,7 +6,7 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (0 (ptr Eq_124) ptr0000) (8 (arr word32) a0008) (10 (arr ui32) a0010) (13A4 byte b13A4) (13C8 ptr32 ptr13C8) (13CC (ptr Eq_4) ptr13CC) (13D0 (ptr Eq_31) ptr13D0) (13D4 (ptr Eq_67) ptr13D4) (13D8 (ptr Eq_67) ptr13D8) (13DC int32 dw13DC))
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_4: (struct "Eq_4" (14 cu16 w0014))
+Eq_4: (struct "Eq_4" (14 cup16 w0014))
 	T_4 (in a6_8 : (ptr Eq_4))
 	T_8 (in Mem0[0x00000004 + 0x00000000:word32] : word32)
 	T_24 (in Mem16[0x000013CC + 0x00000000:word32] : word32)
@@ -81,7 +81,7 @@ Eq_208: (fn void ())
 Eq_215: (fn void ())
 	T_215 (in execPrivate5 : ptr32)
 	T_216 (in signature of execPrivate5 : void)
-Eq_228: (struct "Eq_228" (14 cu16 w0014))
+Eq_228: (struct "Eq_228" (14 cup16 w0014))
 	T_228 (in Mem232[0x000013CC + 0x00000000:word32] : word32)
 Eq_314: (fn void ((ptr Eq_31)))
 	T_314 (in fn0000126C : ptr32)
@@ -202,12 +202,12 @@ T_12: (in a6_8 + 20 : word32)
   OrigDataType: word32
 T_13: (in Mem0[a6_8 + 20:word16] : word16)
   Class: Eq_13
-  DataType: cu16
-  OrigDataType: cu16
+  DataType: cup16
+  OrigDataType: cup16
 T_14: (in 0x0024 : word16)
   Class: Eq_13
-  DataType: cu16
-  OrigDataType: cu16
+  DataType: cup16
+  OrigDataType: cup16
 T_15: (in a6_8->w0014 >= 0x0024 : bool)
   Class: Eq_15
   DataType: bool
@@ -1074,12 +1074,12 @@ T_230: (in Mem232[0x000013CC + 0x00000000:word32] + 20 : word32)
   OrigDataType: word32
 T_231: (in Mem232[Mem232[0x000013CC + 0x00000000:word32] + 20:word16] : word16)
   Class: Eq_231
-  DataType: cu16
-  OrigDataType: cu16
+  DataType: cup16
+  OrigDataType: cup16
 T_232: (in 0x0024 : word16)
   Class: Eq_231
-  DataType: cu16
-  OrigDataType: cu16
+  DataType: cup16
+  OrigDataType: cup16
 T_233: (in globals->ptr13CC->w0014 < 0x0024 : bool)
   Class: Eq_233
   DataType: bool
@@ -2799,7 +2799,7 @@ typedef struct Globals {
 } Eq_1;
 
 typedef struct Eq_4 {
-	cu16 w0014;	// 14
+	cup16 w0014;	// 14
 } Eq_4;
 
 typedef struct Eq_25 {
@@ -2856,7 +2856,7 @@ typedef void (Eq_208)();
 typedef void (Eq_215)();
 
 typedef struct Eq_228 {
-	cu16 w0014;	// 14
+	cup16 w0014;	// 14
 } Eq_228;
 
 typedef void (Eq_314)(Eq_31 *);

@@ -103,8 +103,7 @@ namespace Reko.Typing
 
         private FunctionType ExtractSignature(Expression proc)
         {
-            var pc = proc as ProcedureConstant;
-            if (pc != null)
+            if (proc is ProcedureConstant pc)
                 return pc.Procedure.Signature;
             return MatchFunctionPointer(proc.TypeVariable.DataType);
         }
@@ -157,12 +156,10 @@ namespace Reko.Typing
                 arr = acc.Array;
                 offset = 0;
             }
-            BinaryExpression bIndex = acc.Index as BinaryExpression;
             int stride = 1;
-            if (bIndex != null && (bIndex.Operator == Operator.IMul || bIndex.Operator == Operator.SMul || bIndex.Operator == Operator.UMul))
+            if (acc.Index is BinaryExpression bIndex && (bIndex.Operator == Operator.IMul || bIndex.Operator == Operator.SMul || bIndex.Operator == Operator.UMul))
             {
-                Constant c = bIndex.Right as Constant;
-                if (c != null)
+                if (bIndex.Right is Constant c)
                 {
                     stride = c.ToInt32();
                 }
@@ -344,9 +341,8 @@ namespace Reko.Typing
                     return PrimitiveType.Create(Domain.Pointer, dtSum.Size);
                 }
             }
-            if (dtSum is MemberPointer)
+            if (dtSum is MemberPointer mpSum)
             {
-                var mpSum  = dtSum as MemberPointer;
                 if (dtOther is MemberPointer)
                     return PrimitiveType.Create(Domain.SignedInt, dtOther.Size);
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
@@ -573,8 +569,7 @@ namespace Reko.Typing
 		{
 			var id = e as Identifier;
 			if (id == null) return null;
-            LinearInductionVariable iv;
-            if (!ivs.TryGetValue(id, out iv)) return null;
+            if (!ivs.TryGetValue(id, out var iv)) return null;
             return iv;
 		}
 
@@ -691,8 +686,7 @@ namespace Reko.Typing
                 if (IsSelector(seq.Head) || DataTypeOf(seq.Head) is Pointer)
                 {
                     MeetDataType(seq.Head, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seq.Head).Size));
-                    var ptr = DataTypeOf(seq) as Pointer;
-                    if (ptr != null)
+                    if (DataTypeOf(seq) is Pointer ptr)
                     {
                         MeetDataType(seq.Tail, MemberPointerTo(seq.Head.TypeVariable, ptr.Pointee, DataTypeOf(seq.Tail).Size));
                     }
@@ -701,8 +695,7 @@ namespace Reko.Typing
                     return false;
                 }
             }
-            var pt = tv.DataType as PrimitiveType;
-            if (pt != null && pt.IsIntegral)
+            if (tv.DataType is PrimitiveType pt && pt.IsIntegral)
             {
                 MeetDataType(seq.Head, PrimitiveType.Create(pt.Domain, seq.Head.DataType.Size));
                 MeetDataType(seq.Tail, PrimitiveType.Create(Domain.UnsignedInt, seq.Head.DataType.Size));
