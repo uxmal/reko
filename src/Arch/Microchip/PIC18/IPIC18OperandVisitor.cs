@@ -37,7 +37,7 @@ namespace Reko.Arch.Microchip.PIC18
         void VisitProgRel8(PIC18ProgRel8AddrOperand roff8);
         void VisitProgRel11(PIC18ProgRel11AddrOperand roff11);
         void VisitProgAbs(PIC18ProgAbsAddrOperand addr20);
-        void VisitFSRNum(PIC18FSRNumOperand fsrnum);
+        void VisitFSRNum(PIC18FSROperand fsrnum);
         void VisitShadow(PIC18ShadowOperand shad);
         void VisitTblRW(PIC18TableReadWriteOperand tblmode);
 
@@ -63,7 +63,7 @@ namespace Reko.Arch.Microchip.PIC18
         T VisitProgRel8(PIC18ProgRel8AddrOperand roff8);
         T VisitProgRel11(PIC18ProgRel11AddrOperand roff11);
         T VisitProgAbs(PIC18ProgAbsAddrOperand addr20);
-        T VisitFSRNum(PIC18FSRNumOperand fsrnum);
+        T VisitFSRNum(PIC18FSROperand fsrnum);
         T VisitShadow(PIC18ShadowOperand shad);
         T VisitTblRW(PIC18TableReadWriteOperand tblmode);
 
@@ -90,7 +90,7 @@ namespace Reko.Arch.Microchip.PIC18
         T VisitProgRel8(PIC18ProgRel8AddrOperand roff8, C context);
         T VisitProgRel11(PIC18ProgRel11AddrOperand roff11, C context);
         T VisitProgAbs(PIC18ProgAbsAddrOperand addr20, C context);
-        T VisitFSRNum(PIC18FSRNumOperand fsrnum, C context);
+        T VisitFSRNum(PIC18FSROperand fsrnum, C context);
         T VisitShadow(PIC18ShadowOperand shad, C context);
         T VisitTblRW(PIC18TableReadWriteOperand tblmode, C context);
 

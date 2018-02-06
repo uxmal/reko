@@ -461,6 +461,14 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         public static PICRegisterStorage TBLPTR { get; private set; }
 
+        #region Shadow registers for some PIC18
+
+        public static PICRegisterStorage STATUS_CSHAD { get; private set; }
+        public static PICRegisterStorage WREG_CSHAD { get; private set; }
+        public static PICRegisterStorage BSR_CSHAD { get; private set; }
+
+        #endregion
+
         #endregion
 
         public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
@@ -590,7 +598,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition.
         /// </summary>
         /// <remarks>
-        /// This permits to still get a direct reference to standard registers and keeps having the capability to get a dynamic definition
+        /// This permits to still get a direct reference to standard registers and keeps having flexibility on definitions.
         /// </remarks>
         /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
         private void _setCoreRegisters()
@@ -670,6 +678,9 @@ namespace Reko.Arch.Microchip.PIC18
             TBLPTRH.BitAddress = 8;
             TBLPTRU.BitAddress = 16;
 
+            STATUS_CSHAD = _peekRegisterByName("STATUS_CSHAD");
+            WREG_CSHAD = _peekRegisterByName("WREG_CSHAD");
+            BSR_CSHAD = _peekRegisterByName("BSR_CSHAD");
         }
 
         #endregion

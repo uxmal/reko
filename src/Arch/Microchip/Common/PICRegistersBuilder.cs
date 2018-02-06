@@ -266,7 +266,7 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(SFRFieldSemantic xmlSymb)
         {
-            //TODO?
+            //TODO? SFR Field semantics
         }
 
         public void Visit(Mirror xmlSymb)

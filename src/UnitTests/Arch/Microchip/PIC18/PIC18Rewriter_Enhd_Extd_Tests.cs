@@ -515,19 +515,25 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0xED06, 0xF000),
-                "0|T--|000200(4): 4 instructions",
+                "0|T--|000200(4): 7 instructions",
                     "1|L--|STKPTR = STKPTR + 0x01",
                     "2|L--|Stack[STKPTR] = 000204",
                     "3|L--|TOS = 000204",
-                    "4|T--|call 00000C (0)"
+                    "4|L--|STATUS_CSHAD = STATUS",
+                    "5|L--|WREG_CSHAD = WREG",
+                    "6|L--|BSR_CSHAD = BSR",
+                    "7|T--|call 00000C (0)"
                 );
 
             ExecTest(Words(0xED12, 0xF345),
-                "0|T--|000200(4): 4 instructions",
+                "0|T--|000200(4): 7 instructions",
                     "1|L--|STKPTR = STKPTR + 0x01",
                     "2|L--|Stack[STKPTR] = 000204",
                     "3|L--|TOS = 000204",
-                    "4|T--|call 068A24 (0)"
+                    "4|L--|STATUS_CSHAD = STATUS",
+                    "5|L--|WREG_CSHAD = WREG",
+                    "6|L--|BSR_CSHAD = BSR",
+                    "7|T--|call 068A24 (0)"
                 );
 
         }
@@ -1551,10 +1557,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                     "3|T--|return (0,0)"
                 );
             ExecTest(Words(0x0013),
-                "0|T--|000200(2): 3 instructions",
+                "0|T--|000200(2): 6 instructions",
                     "1|L--|STKPTR = STKPTR - 0x01",
                     "2|L--|TOS = Stack[STKPTR]",
-                    "3|T--|return (0,0)"
+                    "3|L--|BSR = BSR_CSHAD",
+                    "4|L--|WREG = WREG_CSHAD",
+                    "5|L--|STATUS = STATUS_CSHAD",
+                    "6|T--|return (0,0)"
                 );
         }
 

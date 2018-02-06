@@ -388,7 +388,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
     /// </summary>
-    public class PIC18FSRNumOperand : MachineOperand, IPIC18kOperand
+    public class PIC18FSROperand : MachineOperand, IPIC18kOperand
     {
         /// <summary>
         /// Gets the FSR register number.
@@ -399,7 +399,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Instantiates a FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
         /// </summary>
         /// <param name="fsrnum">The FSR register number [0, 1, 2].</param>
-        public PIC18FSRNumOperand(byte fsrnum) : base(PrimitiveType.Byte)
+        public PIC18FSROperand(byte fsrnum) : base(PrimitiveType.Byte)
         {
             FSRNum = Constant.Byte(fsrnum);
         }

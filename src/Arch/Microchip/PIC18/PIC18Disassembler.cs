@@ -637,7 +637,7 @@ namespace Reko.Arch.Microchip.PIC18
                         return new PIC18Instruction(
                             opcode,
                             dasm.ExecMode,
-                            new PIC18FSRNumOperand(fsrnum),
+                            new PIC18FSROperand(fsrnum),
                             new PIC18Immed12Operand((ushort)((uInstr.Extract(0, 4) << 8) | word2))
                             );
                     case InstructionSetID.PIC18_ENHANCED:
@@ -646,7 +646,7 @@ namespace Reko.Arch.Microchip.PIC18
                         return new PIC18Instruction(
                             opcode,
                             dasm.ExecMode,
-                            new PIC18FSRNumOperand(fsrnum),
+                            new PIC18FSROperand(fsrnum),
                             new PIC18Immed14Operand((ushort)((uInstr.Extract(0, 4) << 10) | word2))
                             );
                     default:
@@ -697,7 +697,7 @@ namespace Reko.Arch.Microchip.PIC18
                 return new PIC18Instruction(
                     opcode,
                     dasm.ExecMode,
-                    new PIC18FSRNumOperand(fsrnum),
+                    new PIC18FSROperand(fsrnum),
                     new PIC18Immed6Operand((byte)uInstr.Extract(0, 6))
                     );
             }

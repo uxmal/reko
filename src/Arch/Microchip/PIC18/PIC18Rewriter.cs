@@ -267,7 +267,7 @@ namespace Reko.Arch.Microchip.PIC18
                     var fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
                     return DataByteMemoryAccess(m.IAdd(fsr2, fsr2idx.Offset));
 
-                case PIC18FSRNumOperand fsrnum:
+                case PIC18FSROperand fsrnum:
                     switch (fsrnum.FSRNum.ToByte())
                     {
                         case 0:
@@ -509,17 +509,25 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCALL()
         {
-            //TODO: shadowing of WREG, STATUS, BSR
-            
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
             var target = RewriteSrcOp(instrCurr.op1);
-            var retaddr = instrCurr.Address + instrCurr.Length;
-            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+            Constant shad = RewriteSrcOp(instrCurr.op2) as Constant;
+            Address retaddr = instrCurr.Address + instrCurr.Length;
+            Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
+            Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
 
             var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
             m.Assign(tos, retaddr);
+            if (shad.ToBoolean() && !(statuss is null))
+            {
+                Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
+                Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
+                m.Assign(statuss, binder.EnsureRegister(PIC18Registers.STATUS));
+                m.Assign(wregs, binder.EnsureRegister(PIC18Registers.WREG));
+                m.Assign(bsrs, binder.EnsureRegister(PIC18Registers.BSR));
+            }
             m.Call(target, 0);
         }
 
@@ -875,13 +883,22 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteRETURN()
         {
-            //TODO: shadow WREG, BSR, STATUS
             rtlc = RtlClass.Transfer;
 
-            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+            Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
+            Constant shad = RewriteSrcOp(instrCurr.op1) as Constant;
+            Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
 
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
+            if (shad.ToBoolean() && !(statuss is null))
+            {
+                Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
+                Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
+                m.Assign(binder.EnsureRegister(PIC18Registers.BSR), bsrs);
+                m.Assign(binder.EnsureRegister(PIC18Registers.WREG), wregs);
+                m.Assign(binder.EnsureRegister(PIC18Registers.STATUS), statuss);
+            }
             m.Return(0, 0);
         }
 
