@@ -131,6 +131,7 @@
   </Target>
   -->
   <Target Name="AfterBuild">
+    <Message Text="Copy $(ProjectDir)$(OutDir)$(TargetFileName) to $(SolutionDir)tools" Importance="High" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools" />

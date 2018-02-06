@@ -35,7 +35,7 @@ namespace Reko.Arch.SuperH
     // NetBSD for dreamcast? http://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/dreamcast/7.0/All/
     public abstract class SuperHArchitecture : ProcessorArchitecture
     {
-        public SuperHArchitecture()
+        public SuperHArchitecture(string archId) : base(archId)
         {
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
@@ -138,6 +138,10 @@ namespace Reko.Arch.SuperH
 
     public class SuperHLeArchitecture : SuperHArchitecture
     {
+        public SuperHLeArchitecture(string archId) : base(archId)
+        {
+        }
+
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             return new LeImageReader(img, off);
@@ -166,6 +170,10 @@ namespace Reko.Arch.SuperH
 
     public class SuperHBeArchitecture : SuperHArchitecture
     {
+        public SuperHBeArchitecture(string arch) : base(arch)
+        {
+        }
+
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             return new BeImageReader(img, off);

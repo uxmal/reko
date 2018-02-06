@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void Return()
+        public void Acg_Return()
         {
             CompileTest(m =>
             {
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void IfThen()
+        public void Acg_IfThen()
         {
             CompileTest(m =>
             {
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void IfThenElse()
+        public void Acg_IfThenElse()
         {
             CompileTest(m =>
             {
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void NestedIfs()
+        public void Acg_NestedIfs()
         {
             CompileTest(new NestedIfs());
             RunTest(
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void WhileLoop()
+        public void Acg_WhileLoop()
         {
             CompileTest(new WhileLoopFragment());
             RunTest(
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Structure
         }
         
         [Test]
-        public void BigLoopHead()
+        public void Acg_BigLoopHead()
         {
             CompileTest(new BigLoopHeadFragment());
             RunTest(
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void DoWhile()
+        public void Acg_DoWhile()
         {
             CompileTest(new DoWhileFragment());
             RunTest(
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void DoWhileIf()
+        public void Acg_DoWhileIf()
         {
             CompileTest(new DoWhileIfFragment());
             RunTest(
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void WhileGoto()
+        public void Acg_WhileGoto()
         {
             CompileTest(new MockWhileGoto());
             RunTest(
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void UnstructuredIfs()
+        public void Acg_UnstructuredIfs()
         {
             CompileTest(new UnstructuredIfsMock());
             RunTest(
@@ -264,7 +264,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void WhileBreak()
+        public void Acg_WhileBreak()
         {
             CompileTest(new MockWhileBreak());
             RunTest(
@@ -285,7 +285,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void CaseJumpsBack()
+        public void Acg_CaseJumpsBack()
         {
             CompileTest(new MockCaseJumpsBack());
             RunTest(
@@ -310,7 +310,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void CaseStatement()
+        public void Acg_CaseStatement()
         {
             CompileTest(new MockCaseStatement());
             RunTest(
@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void NestedWhileLoops()
+        public void Acg_NestedWhileLoops()
         {
             CompileTest(new MockNestedWhileLoops());
             RunTest(
@@ -344,7 +344,7 @@ namespace Reko.UnitTests.Structure
                 "		int32 j = 0;" + nl +
                 "		while (j < 10)" + nl +
                 "		{" + nl +
-                "			Mem0[0x00001234:int32] = Mem0[0x00001234:int32] + j;" + nl +
+                "			Mem0[0x00001234:word32] = Mem0[0x00001234:int32] + j;" + nl +
                 "			j = j + 1;" + nl +
                 "		}" + nl +
                 "		i = i + 1;" + nl +
@@ -353,7 +353,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void AcgWhileReturn()
+        public void Acg_AcgWhileReturn()
         {
             CompileTest(m =>
             {
@@ -384,7 +384,7 @@ namespace Reko.UnitTests.Structure
 
 
         [Test]
-        public void AcgWhileWithDeclarations()
+        public void Acg_AcgWhileWithDeclarations()
         {
             CompileTest(new MockWhileWithDeclarations());
             RunTest(
@@ -402,7 +402,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void AcgBranchesToReturns()
+        public void Acg_AcgBranchesToReturns()
         {
             CompileTest(m =>
             {
@@ -442,7 +442,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void AcgInfiniteLoop()
+        public void Acg_AcgInfiniteLoop()
         {
             CompileTest(new MockInfiniteLoop());
             RunTest(
@@ -454,7 +454,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void AcgInfiniteLoop2()
+        public void Acg_AcgInfiniteLoop2()
         {
             CompileTest(m =>
             {

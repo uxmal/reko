@@ -1065,7 +1065,7 @@ byte fn0990(word16 af, word16 bc, Eq_1546 e, byte d, byte h, byte l, Eq_1550 & a
 		union Eq_95 * hl_339 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x01);
 		byte c_343;
 		byte a_344 = fn03E6(*hl_339, (byte) hl_339, out c_343);
-		int16 hl_347 = DPB(globals->t1697, 0x00, 8);
+		word16 hl_347 = DPB(globals->t1697, 0x00, 8);
 		((word16) globals->t168B + (hl_347 + 0x01))->u0 = a_344;
 		Eq_2104 a_362 = globals->t1697;
 		globals->t1697.u1 = (word16) a_362 + 0x01;
@@ -1758,7 +1758,7 @@ bui8 fn1279(word16 af, Eq_3210 b, Eq_3210 c, Eq_358 e, byte d, Eq_428 l, byte h,
 			break;
 		struct Eq_3780 * sp_36 = sp_1 - 0x02;
 		sp_36->w0000 = DPB(af_21, globals->b16AA * 0x02 * 0x02 * 0x02, 0);
-		Mem47[sp_36 + 0x00:word16] = DPB(af_21, Mem37[0x16AA:byte] * 0x02 + Mem37[sp_36 + 0x01:byte], 0);
+		sp_36->w0000 = DPB(af_21, (word16) sp_36->t0001 + globals->b16AA * 0x02, 0);
 		b = sp_36->t0001;
 		*bOut = b;
 		bui8 a_55 = (word16) b + ((word16) globals->t16A9 + 0x0F);
@@ -1895,7 +1895,7 @@ byte fn1348(Eq_835 * de, Eq_821 * hl, ptr16 & deOut, Eq_838 & lOut, Eq_839 & hOu
 {
 	uint8 c_4 = hl->b0000;
 	uint8 a_14 = de->b0001;
-	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x01:byte], c_4);
+	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(hl->b0001, c_4);
 	byte l_12;
 	*lOut = de->b0000 - c_4;
 	word16 de_13;

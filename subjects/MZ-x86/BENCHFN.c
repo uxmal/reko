@@ -343,7 +343,7 @@ void fn0800_0393(word16 cx, Eq_622 Eq_536::*dx, word16 bx, Eq_536 * bp, byte Eq_
 	word16 ax_29 = cx;
 	byte al_30 = (byte) cx;
 	word16 dx_31 = cx;
-	ui16 bx_32 = cx + 0x01;
+	word16 bx_32 = cx + 0x01;
 	while (true)
 	{
 		bool CZ_47 = fn0800_03BF(ax_29, cx_27, dx_31, bx_32, si_24, di_19, es, bp, out ax_29, out cx_27, out dx_31, out bx_32, out si_24, out di_19);
@@ -414,8 +414,8 @@ void fn0800_0393(word16 cx, Eq_622 Eq_536::*dx, word16 bx, Eq_536 * bp, byte Eq_
 	}
 }
 
-// 0800:03BF: FlagGroup bool fn0800_03BF(Register word16 ax, Register word16 cx, Register word16 dx, Register ui16 bx, Register (memptr (ptr Eq_536) Eq_622) si, Register (memptr (ptr Eq_600) byte) di, Register (ptr Eq_600) es, Register (ptr Eq_536) ds, Register out ptr16 axOut, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out Eq_692 diOut)
-bool fn0800_03BF(word16 ax, word16 cx, word16 dx, ui16 bx, Eq_622 Eq_536::*si, byte Eq_600::*di, Eq_600 * es, Eq_536 * ds, ptr16 & axOut, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & siOut, Eq_692 & diOut)
+// 0800:03BF: FlagGroup bool fn0800_03BF(Register word16 ax, Register word16 cx, Register word16 dx, Register word16 bx, Register (memptr (ptr Eq_536) Eq_622) si, Register (memptr (ptr Eq_600) byte) di, Register (ptr Eq_600) es, Register (ptr Eq_536) ds, Register out ptr16 axOut, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out ptr16 siOut, Register out Eq_692 diOut)
+bool fn0800_03BF(word16 ax, word16 cx, word16 dx, word16 bx, Eq_622 Eq_536::*si, byte Eq_600::*di, Eq_600 * es, Eq_536 * ds, ptr16 & axOut, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & siOut, Eq_692 & diOut)
 {
 	*dxOut = dx;
 	*diOut = di;
@@ -634,12 +634,12 @@ void ___brk(Eq_426 * ds, Eq_954 wArg02)
 		ds->t0094.u0 = 0x08;
 }
 
-// 0800:0607: Register Eq_954 ___sbrk(Register (ptr Eq_426) ds, Stack cui16 wArg02, Stack ui16 wArg04)
-Eq_954 ___sbrk(Eq_426 * ds, cui16 wArg02, ui16 wArg04)
+// 0800:0607: Register Eq_954 ___sbrk(Register (ptr Eq_426) ds, Stack cui16 wArg02, Stack word16 wArg04)
+Eq_954 ___sbrk(Eq_426 * ds, cui16 wArg02, word16 wArg04)
 {
 	Eq_954 ax_31;
 	Eq_954 ax_12 = (word32) ds->t009E + wArg02;
-	ui32 dx_cx_18 = SEQ(wArg04 + (ax_12 <u 0x00), ax_12 + 0x0100);
+	ui32 dx_cx_18 = SEQ(wArg04 + (ax_12 < 0x00), (word16) ax_12.u0 + 0x0100);
 	Eq_1154 cx_22 = (word16) (dx_cx_18 + 0x0100);
 	if (SEQ(SLICE(dx_cx_18 + 0x0100, word16, 16), cx_22) == 0x00 && cx_22 < fp - 0x02)
 	{
@@ -2792,7 +2792,7 @@ Eq_286 __scantol(Eq_286 ax, ui16 bx, Eq_284 * ds, Eq_286 wArg06, Eq_286 wArg08, 
 		struct Eq_5008 Eq_5003::* bp_37;
 		byte SCZO_39;
 		word16 si_40;
-		byte Eq_4987::* di_41;
+		Eq_4988 di_41;
 		struct Eq_5011 * es_42;
 		byte SZO_43;
 		struct Eq_5013 * cs_44;
@@ -2908,7 +2908,7 @@ l0800_1C5A:
 		goto l0800_1C66;
 	}
 l0800_1C24:
-	uint16 ax_408;
+	word16 ax_408;
 	Eq_286 si_303 = 0x00;
 	ui16 di_306 = 0x00;
 	cu8 cl_310 = (byte) wArg08;
@@ -2992,7 +2992,7 @@ l0800_1CCD:
 					cu8 cl_449 = (byte) wArg08;
 					cu8 bl_453 = (byte) ax_408;
 					bool C_454 = fn0800_1B9E(cl_449, bl_453);
-					uint16 ax_456 = ax_408;
+					word16 ax_456 = ax_408;
 					if (!C_454)
 					{
 l0800_1D03:
@@ -3060,7 +3060,7 @@ l0800_1D0F:
 							struct Eq_5343 * es_570;
 							byte SZO_571;
 							word16 cx_573;
-							uint16 ax_574;
+							word16 ax_574;
 							byte C_575;
 							byte SO_576;
 							byte al_577;

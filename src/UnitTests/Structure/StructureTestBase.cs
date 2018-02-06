@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
 
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
                 new X86TextAssembler(sc, arch) { Platform = new DefaultPlatform(sc, arch) },
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
+            var asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
+            var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(

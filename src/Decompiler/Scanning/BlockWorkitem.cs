@@ -125,6 +125,8 @@ namespace Reko.Scanning
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
+            if (ric.Address.ToLinear() == 0x30C)        //$DEBUG
+                ric.Address.ToString();
             state.SetInstructionPointer(ric.Address);
             SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)

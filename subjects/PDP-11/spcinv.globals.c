@@ -9,7 +9,7 @@ Eq_3 g_t0004 =
 		null,
 		
 		{
-			0x0000
+			0x00
 		},
 		0x00,
 	};
@@ -101,7 +101,7 @@ union Eq_14 g_u0F0C =
 cui16 g_w0F0E = 0x0000;
 word16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
-cu16 g_w0F14 = 0x0000;
+cup16 g_w0F14 = 0x0000;
 word16 g_w0F16 = 0x0000;
 word16 g_w0F18 = 0x0000;
 word16 g_w0F1A = 0x0000;

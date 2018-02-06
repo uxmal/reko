@@ -53,13 +53,13 @@ void __do_global_dtors_aux(word32 d2)
 {
 	if (globals->b80002724 == 0x00)
 	{
-		uint32 d0_105 = globals->dw80002726;
+		up32 d0_105 = globals->dw80002726;
 		<anonymous> * a2_106[] = globals->a80002714;
 		if (0x00 - d0_105 > 0x00)
 		{
 			do
 			{
-				ui32 d0_107 = d0_105 + 0x01;
+				uint32 d0_107 = d0_105 + 0x01;
 				globals->dw80002726 = d0_107;
 				<anonymous> * a0_112 = a2_106[d0_107];
 				word32 a7_113;
@@ -74,7 +74,7 @@ void __do_global_dtors_aux(word32 d2)
 				byte CVZNX_123;
 				byte VZ_124;
 				word32 a0_125;
-				bcuiposr0 None_126;
+				bcuisposr0 None_126;
 				byte CZ_127;
 				a0_112();
 				d0_105 = globals->dw80002726;
@@ -96,7 +96,7 @@ void __do_global_dtors_aux(word32 d2)
 			byte CVZNX_99;
 			byte VZ_100;
 			word32 a0_101;
-			bcuiposr0 None_102;
+			bcuisposr0 None_102;
 			byte CZ_103;
 			null();
 		}
@@ -213,7 +213,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_222 tArg14)
 	while ((real64) ((real80) rLoc0C_117 / rLoc14) >= rArg0C)
 	{
 		*tArg14 = (word32) *tArg14 + 0x01;
-		word32 v24_77 = dwLoc20_132 + 0x01;
+		int32 v24_77 = dwLoc20_132 + 0x01;
 		rLoc0C_117 = (real64) ((real80) (real64) ((real80) rLoc0C_117 * v9_28) * v9_28);
 		dwLoc20_132 = v24_77 + 0x03;
 		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_77) * (real80) (v24_77 + 0x01)) * (real80) (v24_77 + 0x02)) * (real80) (v24_77 + 0x03));

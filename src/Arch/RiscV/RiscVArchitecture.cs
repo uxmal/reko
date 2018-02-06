@@ -49,7 +49,7 @@ namespace Reko.Arch.RiscV
         private RegisterStorage[] regs;
         private Dictionary<string, RegisterStorage> regsByName;
 
-        public RiscVArchitecture()
+        public RiscVArchitecture(string archId) : base(archId)
         {
             this.InstructionBitSize = 16;
             //$TODO: what about 32-bit version of arch?

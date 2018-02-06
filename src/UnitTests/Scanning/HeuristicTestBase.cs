@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_x86_32()
         {
-            program.Architecture = new X86ArchitectureFlat32();
+            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Scanning
 
         internal void Given_x86_16()
         {
-            program.Architecture = new X86ArchitectureReal();
+            program.Architecture = new X86ArchitectureReal("x86-real-16");
         }
 
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)

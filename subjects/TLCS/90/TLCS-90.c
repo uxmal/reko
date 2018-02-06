@@ -7,7 +7,7 @@
 // 0000: void fn0000(Register byte a, Stack word16 wArg00)
 void fn0000(byte a, word16 wArg00)
 {
-	null + 0x00 = (ptr16) a;
+	*null = a;
 }
 
 // 0273: void fn0273(Register word16 af, Register byte b, Register ui8 c, Register word16 hl, Register (ptr Eq_12) ix)

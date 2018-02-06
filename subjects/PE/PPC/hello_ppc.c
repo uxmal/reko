@@ -22,7 +22,7 @@ Eq_2 * fn00400268(word32 r0, Eq_2 * r2, byte * r3, word32 r13, word32 r14, word3
 	v11->t0000 = r29;
 	v11->t0004 = r30;
 	v11->ptr0008 = r31;
-	int32 r31_33 = *((char *) r2 + 0x0048);
+	word32 r31_33 = *((char *) r2 + 0x0048);
 	Eq_18 r3_45;
 	word32 r25_46;
 	ptr32 r26_47;
@@ -64,7 +64,7 @@ Eq_2 * fn004002F8(word32 r0, Eq_2 * r2, Eq_18 r3, word32 r25, ptr32 r26, Eq_18 r
 	if (Test(NE,cond(fn00401474(r2, *((word32) r3 + 0x0010)))))
 	{
 		int32 r10_143;
-		int32 r11_66 = *((char *) r2 + 0x0048);
+		word32 r11_66 = *((char *) r2 + 0x0048);
 		if (Test(EQ,cond(r3 - (r11_66 + 0x0020))))
 			r10_143 = 0x00;
 		else
@@ -81,10 +81,10 @@ Eq_2 * fn004002F8(word32 r0, Eq_2 * r2, Eq_18 r3, word32 r25, ptr32 r26, Eq_18 r
 		*r4_72 = *r4_72 + 0x01;
 		if (Test(EQ,cr0))
 		{
-			Eq_18 (* r30_85)[] = *((char *) r2 + 0x0050);
-			Eq_18 (* r10_86)[] = r10_143 << 0x02;
-			word32 r11_131 = Mem75[r30_85 + r10_86:word32];
-			word32 r30_88 = r10_86 + r30_85;
+			Eq_18 r30_85[] = *((char *) r2 + 0x0050);
+			int32 r10_86 = r10_143 << 0x02;
+			Eq_18 r11_131 = r30_85[r10_86 / 0x04];
+			struct Eq_242 * r30_88 = r30_85 + r10_86 / 0x04;
 			if (Test(EQ,cond(r11_131)))
 			{
 				Eq_18 r3_121;
@@ -746,7 +746,7 @@ Eq_2 * fn00401598(word32 r0, Eq_2 * r2, Eq_18 r3, Eq_18 r4, word32 r25, ptr32 r2
 		int32 r28_111 = 0x00;
 		if (Test(EQ,cr0))
 		{
-			int32 r11_240 = *((char *) r2 + 0x0048);
+			word32 r11_240 = *((char *) r2 + 0x0048);
 			if (Test(NE,cond(r4 - (r11_240 + 0x0020))) && Test(NE,cond(r4 - (r11_240 + 0x0040))) || Test(EQ,cond(fn00401474(r2, r30_120))))
 			{
 				word32 r25_247;
@@ -936,7 +936,7 @@ word32 fn00401ADC(Eq_2 * r2, Eq_242 * r3, word32 r25, ptr32 r26, Eq_18 r27, Eq_1
 		} while (Test(LT,cond(r30_232 - r28_230->dw0000)));
 	}
 	struct Eq_1027 ** r29_82 = *((char *) r2 + 0x008C);
-	ui32 r11_83 = r28_230->dw0000;
+	word32 r11_83 = r28_230->dw0000;
 	struct Eq_1027 * r9_133 = *r29_82;
 	if (Test(EQ,cond(r27_166 - -0x01)))
 	{
@@ -1011,12 +1011,12 @@ word32 fn00401CE8(Eq_2 * r2, int32 r3, Eq_1027 * r4, Eq_1027 * r26, int32 r27, E
 		if (Test(NE,cr0))
 		{
 			r11_94[r3].dw0000 = r3_29 + 0x07 & -0x08;
-			r8_133 = (r3 << 0x04) + r11_94;
+			r8_133 = (struct Eq_2387 *) &(r11_94 + (r3 << 0x04) / 0x0010)->dw0000;
 		}
 		else
 		{
 			r11_94[r3].dw0000 = r3_29;
-			r8_133 = (r3 << 0x04) + r11_94;
+			r8_133 = (struct Eq_2387 *) &(r11_94 + (r3 << 0x04) / 0x0010)->dw0000;
 		}
 		r8_133->dw000C = r3_29;
 		r8_133->ptr0008 = r31_137;
@@ -1133,7 +1133,7 @@ Eq_242 * fn00401F40(Eq_2 * r2, Eq_242 * r3)
 				while (true)
 				{
 					struct Eq_242 * r10_110 = r11_106->ptr0000;
-					int32 r9_112 = r10_110->dw0004;
+					ui32 r9_112 = r10_110->dw0004;
 					if (Test(GE,cond((r9_112 & -0x04) - (r11_106->dw0004 & -0x04) + -0x08 - r3)))
 						break;
 					if (Test(NE,cond((r9_112 & 0x03) - 0x01)))
@@ -1159,7 +1159,7 @@ l00401FC0:
 				do
 				{
 					struct Eq_242 * r10_59 = r11_34->ptr0000;
-					int32 r9_61 = r10_59->dw0004;
+					ui32 r9_61 = r10_59->dw0004;
 					if (Test(GE,cond((r9_61 & -0x04) - (r11_34->dw0004 & -0x04) + -0x08 - r3)))
 					{
 						r4_12 = r11_34;
@@ -1697,10 +1697,10 @@ Eq_2 * fn00402BA0(Eq_2 * r2, Eq_18 r3, Eq_242 * r29, int32 r30, Eq_18 r31, byte 
 			word32 r29_82;
 			r2 = fn00401AB4(r2, r29, (struct Eq_242 *) -0x04, cr0, dwLoc38, out r29_82, out r30_51);
 		}
-		int32 * r10_60 = *((char *) r2 + 220);
+		ui32 * r10_60 = *((char *) r2 + 220);
 		struct Eq_2505 * r11_63 = r31_49->ptr0004 & -0x03 | 0x01;
 		r31_49->ptr0004 = r11_63;
-		int32 r10_65 = *r10_60;
+		ui32 r10_65 = *r10_60;
 		if (Test(NE,cond(r10_65 - -0x01)))
 		{
 			struct Eq_2018 * r9_68 = *((char *) r2 + 0x0068);
@@ -1754,7 +1754,7 @@ Eq_2 * fn00402CE0(Eq_2 * r2, Eq_2505 * r3, ui32 r4, Eq_1027 * r26, int32 r27, Eq
 		if (Test(NE,cond(r3_144)))
 		{
 			struct Eq_4101 * r30_159;
-			ui32 r3_153 = fn004036B0(r2_136, r3, fp + -0x0024);
+			word32 r3_153 = fn004036B0(r2_136, r3, fp + -0x0024);
 			if (Test(EQ,cond(r3_153)))
 			{
 				if (Test(NE,cond((dwLoc24->ptr0004 & 0x03) - 0x02)))

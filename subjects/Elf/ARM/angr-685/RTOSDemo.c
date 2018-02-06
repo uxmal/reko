@@ -959,7 +959,7 @@ void xQueueCRReceive(word32 r1, word32 r2, word32 r3, word32 r4, word32 r6, word
 	__syscall(0x008F6FF3);
 	globals->dw940C = r4;
 	if (!Z && !Z)
-		r2_r1 = SEQ(r9 + __ror(&globals->t3FF0, 0x001A) + C, r1);
+		r2_r1 = SEQ((byte) C + (r9 + __ror(&globals->t3FF0, 0x001A)), r1);
 	*r8 = r2_r1;
 }
 

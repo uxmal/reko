@@ -151,7 +151,7 @@ word32 switcheroo(ui32 r0, word32 lr, word32 dwArg00)
 	word32 r3_38;
 	byte NZCV_39;
 	byte ZC_40;
-	bcuiposr0 None_41;
+	bcuisposr0 None_41;
 	word32 r1_42;
 	(*((char *) globals->a84F8 + r0 * 0x04))();
 	return fp_34;
@@ -234,7 +234,7 @@ void __libc_csu_init(word32 lr, word32 pc, word32 dwArg00)
 	word32 r1_58;
 	byte NZCV_59;
 	byte C_60;
-	bcuiposr0 None_61;
+	bcuisposr0 None_61;
 	(*r1_22)();
 }
 

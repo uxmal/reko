@@ -153,6 +153,7 @@
     <Compile Include="Environments\MacOS\InlineCodeInterpreterTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\Avr8CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\AlphaCallingConventionTests.cs" />
     <Compile Include="Environments\Windows\BorlandMangledNameParserTests.cs" />

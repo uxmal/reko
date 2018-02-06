@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
             this.platform = new MsdosPlatform(sc, arch);
         }
 

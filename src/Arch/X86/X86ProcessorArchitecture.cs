@@ -58,7 +58,7 @@ namespace Reko.Arch.X86
 		private ProcessorMode mode;
         private List<FlagGroupStorage> flagGroups;
 
-        public IntelArchitecture(ProcessorMode mode)
+        public IntelArchitecture(string archId, ProcessorMode mode) : base(archId)
         {
             this.mode = mode;
             this.flagGroups = new List<FlagGroupStorage>();
@@ -333,37 +333,33 @@ namespace Reko.Arch.X86
 
     public class X86ArchitectureReal : IntelArchitecture
     {
-        public X86ArchitectureReal()
-            : base(ProcessorMode.Real)
+        public X86ArchitectureReal(string archId)
+            : base(archId, ProcessorMode.Real)
         {
-            this.Name = "x86-real-16";
         }
     }
 
     public class X86ArchitectureProtected16 : IntelArchitecture
     {
-        public X86ArchitectureProtected16()
-            : base(ProcessorMode.ProtectedSegmented)
+        public X86ArchitectureProtected16(string archId)
+            : base(archId, ProcessorMode.ProtectedSegmented)
         {
-            this.Name = "x86-protected-16";
         }
     }
 
     public class X86ArchitectureFlat32 : IntelArchitecture
     {
-        public X86ArchitectureFlat32()
-            : base(ProcessorMode.Protected32)
+        public X86ArchitectureFlat32(string archId)
+            : base(archId, ProcessorMode.Protected32)
         {
-            this.Name = "x86-protected-32";
         }
     }
 
     public class X86ArchitectureFlat64 : IntelArchitecture
     {
-        public X86ArchitectureFlat64()
-            : base(ProcessorMode.Protected64)
+        public X86ArchitectureFlat64(string archId)
+            : base(archId, ProcessorMode.Protected64)
         {
-            this.Name = "x86-protected-64";
         }
     }
 }

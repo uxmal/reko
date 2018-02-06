@@ -35,7 +35,7 @@ namespace hunktool
         public IProcessorArchitecture GetArchitecture(string archLabel)
         {
             if (archLabel == "m68k")
-                return new M68kArchitecture();
+                return new M68kArchitecture("m68k");
             throw new NotImplementedException();
         }
 

@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsRewriterTests : RewriterTestBase
     {
-        private MipsProcessorArchitecture arch = new MipsBe32Architecture();
+        private MipsProcessorArchitecture arch = new MipsBe32Architecture("mips-be-32");
         private MipsDisassembler dasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture();
+            this.arch = new MipsBe32Architecture("mips-be-32");
         }
 
         private void RunTest(params string[] bitStrings)
@@ -65,8 +65,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips64_Architecture()
         {
-            arch = new MipsBe64Architecture();
-            arch.Name = "mips-be-64";
+            arch = new MipsBe64Architecture("mips-be-64");
         }
 
         protected override MemoryArea RewriteCode(uint[] words)

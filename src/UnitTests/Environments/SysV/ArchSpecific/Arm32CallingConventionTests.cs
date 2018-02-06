@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new Arm32ProcessorArchitecture();
+            arch = new Arm32ProcessorArchitecture("arm32");
         }
 
         private Pointer Ptr(DataType dt)
@@ -58,25 +58,6 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         {
             this.cc = new Arm32CallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
-        }
-
-        private Argument_v1 RegArg(SerializedType type, string regName)
-        {
-            return new Argument_v1
-            {
-                Type = type,
-                Kind = new Register_v1 { Name = regName },
-                Name = regName
-            };
-        }
-
-        private Argument_v1 FpuArg(SerializedType type, string name)
-        {
-            return new Argument_v1(
-                name,
-                type,
-                new Register_v1 { Name = name },
-                false);
         }
 
         [Test]

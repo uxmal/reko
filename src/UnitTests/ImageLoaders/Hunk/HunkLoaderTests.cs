@@ -49,7 +49,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
             var opEnv = mr.Stub<OperatingEnvironment>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(opEnv);
-            cfgSvc.Stub(c => c.GetArchitecture("m68k")).Return(new M68kArchitecture());
+            cfgSvc.Stub(c => c.GetArchitecture("m68k")).Return(new M68kArchitecture("m68k"));
             opEnv.Stub(o => o.Load(null, null))
                 .IgnoreArguments()
                 .Do(new Func<IServiceProvider, IProcessorArchitecture, IPlatform>((sp, arch) =>

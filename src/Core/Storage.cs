@@ -494,6 +494,7 @@ namespace Reko.Core
 		{
 			this.Head = head;
 			this.Tail = tail;
+            this.Name = $"{head.Name}:{tail.Name}";
 		}
 
         public Storage Head { get; private set; }
@@ -540,7 +541,7 @@ namespace Reko.Core
 
 		public override void Write(TextWriter writer)
 		{
-			writer.Write("Sequence {0}:{1}", Head.Name, Tail.Name);
+			writer.Write("Sequence {0}", Name);
 		}
 	}
 

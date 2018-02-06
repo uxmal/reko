@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void Setup()
         {
             this.mr = new MockRepository();
-            this.arch = new MipsLe32Architecture();
+            this.arch = new MipsLe32Architecture("mips-le-32");
         }
 
         private Pointer Ptr(DataType dt)

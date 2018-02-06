@@ -381,7 +381,7 @@ namespace Reko.UnitTests.Gui.Windows
             var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
             var segmentMap = new SegmentMap(Address.Ptr32(0x12300000));
             segmentMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
-            var arch = mr.StrictMock<ProcessorArchitecture>();
+            var arch = mr.StrictMock<ProcessorArchitecture>("mmix");
             arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);
             this.program = new Program(segmentMap, arch, platform);

@@ -485,7 +485,7 @@ l000084F0_1:
 	word32 r3_38
 	byte NZCV_39
 	byte ZC_40
-	bcuiposr0 None_41
+	bcuisposr0 None_41
 	word32 r1_42
 	call Mem0[0x000084F8 + r0 * 0x00000004:word32] (retsize: 0; depth: 20)
 		uses: dwLoc04_5,dwLoc08_7,dwLoc0C_9,dwLoc14_14,fp_11,ip_2,lr,None,NZCV_16,pc,r0,r1,r3_15,sp_12,ZC
@@ -888,7 +888,7 @@ l00008684:
 	word32 r1_58
 	byte NZCV_59
 	byte C_60
-	bcuiposr0 None_61
+	bcuisposr0 None_61
 	call Mem0[r1_22:word32] (retsize: 0;)
 		uses: C,dwLoc04_5,dwLoc08_7,dwLoc0C_9,dwLoc10_11,lr_48,None,NZCV_25,pc,r1_22,r10_18,r2_21,r3_24,r4_19,r5_47,r6_46,sp_12
 		defs: C_60,lr_54,None_61,NZCV_59,pc_55,r1_58,r10_53,r2_57,r3_56,r4_50,r5_51,r6_52,sp_49

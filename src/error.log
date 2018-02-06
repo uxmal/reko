@@ -1,0 +1,817 @@
+Microsoft (R) Build Engine version 14.0.25420.1
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Building the projects in this solution one at a time. To enable parallel build, please add the "/m" switch.
+Build started 2/2/2018 4:14:12 PM.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" on node 1 (default targets).
+ValidateSolutionConfiguration:
+  Building solution configuration "Debug|Mixed Platforms".
+ValidateProjects:
+  The project "makesigs" is not selected for building in solution configuration "Debug|Mixed Platforms".
+  The project "WixInstaller" is not selected for building in solution configuration "Debug|Mixed Platforms".
+  The project "WixInstaller-2012" is not selected for building in solution configuration "Debug|Mixed Platforms".
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Core\Core.csproj" (2) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Core -> c:\dev\uxmal\reko\master\src\Core\bin\Debug\Reko.Core.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Core\Core.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.csproj" (3) on node 1 (default targets).
+CoreResGen:
+  No resources are out of date with respect to their source files. Skipping resource generation.
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Decompiler -> c:\dev\uxmal\reko\master\src\Decompiler\bin\Debug\Reko.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Decompiler\Decompiler.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\PowerPC\PowerPC.csproj" (4) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  PowerPC -> c:\dev\uxmal\reko\master\src\Arch\PowerPC\bin\Debug\Reko.Arch.PowerPC.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\PowerPC\PowerPC.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\M68k\M68k.csproj" (5) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  M68k -> c:\dev\uxmal\reko\master\src\Arch\M68k\bin\Debug\Reko.Arch.M68k.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\M68k\M68k.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Arm\Arm.csproj" (6) on node 1 (default targets).
+C:\Program Files (x86)\MSBuild\14.0\bin\Microsoft.Common.CurrentVersion.targets(1820,5): warning MSB3270: There was a mismatch between the processor architecture of the project being built "MSIL" and the processor architecture of the reference "Gee.External.Capstone", "x86". This mismatch may cause runtime failures. Please consider changing the targeted processor architecture of your project through the Configuration Manager so as to align the processor architectures between your project and references, or take a dependency on references with a processor architecture that matches the targeted processor architecture of your project. [c:\dev\uxmal\reko\master\src\Arch\Arm\Arm.csproj]
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Arm -> c:\dev\uxmal\reko\master\src\Arch\Arm\bin\Debug\Reko.Arch.Arm.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Arm\Arm.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Sparc\Sparc.csproj" (7) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Sparc -> c:\dev\uxmal\reko\master\src\Arch\Sparc\bin\Debug\Reko.Arch.Sparc.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Sparc\Sparc.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\X86\X86.csproj" (8) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  X86 -> c:\dev\uxmal\reko\master\src\Arch\X86\bin\Debug\Reko.Arch.X86.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\X86\X86.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Z80\Z80.csproj" (9) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Z80 -> c:\dev\uxmal\reko\master\src\Arch\Z80\bin\Debug\Reko.Arch.Z80.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Z80\Z80.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Mos6502\Mos6502.csproj" (10) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Mos6502 -> c:\dev\uxmal\reko\master\src\Arch\Mos6502\bin\Debug\Reko.Arch.Mos6502.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Mos6502\Mos6502.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Pdp11\Pdp11.csproj" (11) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Pdp11 -> c:\dev\uxmal\reko\master\src\Arch\Pdp11\bin\Debug\Reko.Arch.Pdp11.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Pdp11\Pdp11.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Mips\Mips.csproj" (12) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Mips -> c:\dev\uxmal\reko\master\src\Arch\Mips\bin\Debug\Reko.Arch.Mips.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Mips\Mips.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\Cil\Cil.csproj" (13) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Cil -> c:\dev\uxmal\reko\master\src\Arch\Cil\bin\Debug\Reko.Arch.Cil.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Cil\Cil.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Arch\M68k.Design\M68k.Design.csproj" (14) on node 1 (default targets).
+Project "c:\dev\uxmal\reko\master\src\Arch\M68k.Design\M68k.Design.csproj" (14) is building "c:\dev\uxmal\reko\master\src\Gui\Gui.csproj" (15) on node 1 (default targets).
+Project "c:\dev\uxmal\reko\master\src\Gui\Gui.csproj" (15) is building "c:\dev\uxmal\reko\master\src\tools\xslt\xslt.csproj" (16) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+_CopyAppConfigFile:
+Skipping target "_CopyAppConfigFile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  xslt -> c:\dev\uxmal\reko\master\src\tools\xslt\bin\Debug\xslt.exe
+AfterBuild:
+  Project dir = c:\dev\uxmal\reko\master\src\tools\xslt\
+  Copying file from "c:\dev\uxmal\reko\master\src\tools\xslt\bin\Debug\xslt.exe" to "c:\dev\uxmal\reko\master\src\tools\xslt\..\xslt.exe".
+Done Building Project "c:\dev\uxmal\reko\master\src\tools\xslt\xslt.csproj" (default targets).
+CoreResGen:
+  No resources are out of date with respect to their source files. Skipping resource generation.
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+GenerateCsFiles:
+  "c:\dev\uxmal\reko\master\src\tools\xslt.exe" "c:\dev\uxmal\reko\master\src\Gui\Windows\Forms\cmdids.xslt" "c:\dev\uxmal\reko\master\src\Gui\decompiler-menus.xml" "c:\dev\uxmal\reko\master\src\Gui\Windows\Forms\CmdIds.cs"
+  "c:\dev\uxmal\reko\master\src\tools\xslt.exe" "c:\dev\uxmal\reko\master\src\Gui\Windows\Forms\decompiler-menus.xslt" "c:\dev\uxmal\reko\master\src\Gui\decompiler-menus.xml" "c:\dev\uxmal\reko\master\src\Gui\Windows\Forms\DecompilerMenus.cs"
+CoreCompile:
+  C:\Program Files (x86)\MSBuild\14.0\bin\csc.exe /noconfig /nowarn:1701,1702 /langversion:7 /nostdlib+ /errorreport:prompt /warn:4 /baseaddress:285212672 /define:DEBUG;TRACE /highentropyva+ /reference:c:\dev\uxmal\reko\master\external\Msagl\Microsoft.Msagl.dll /reference:c:\dev\uxmal\reko\master\external\Msagl\Microsoft.Msagl.Drawing.dll /reference:c:\dev\uxmal\reko\master\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\mscorlib.dll" /reference:c:\dev\uxmal\reko\master\src\Core\bin\Debug\Reko.Core.dll /reference:c:\dev\uxmal\reko\master\src\Decompiler\bin\Debug\Reko.dll /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Configuration.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Core.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Data.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Drawing.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Windows.Forms.dll" /reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.Xml.dll" /debug+ /debug:full /filealign:4096 /optimize- /out:obj\Debug\Reko.Gui.dll /ruleset:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\\Rule Sets\AllRules.ruleset" /subsystemversion:6.00 /resource:obj\Debug\Reko.Gui.Resources.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.CombinedCodeView.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.DirtyManager.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.ImageMapControl.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.ImageMapView.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.ImageSegmentView.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.LowLevelView.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.MemoryControl.resources /resource:obj\Debug\Reko.Gui.Windows.Controls.TextView.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.AboutDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.AddressPromptDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.ArchiveBrowserDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.AssembleFileDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.AssumedRegisterValuesDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.CallSiteDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.DeclarationForm.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.EditProjectDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.EnvironmentSelectorDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.FindDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.FindStringsDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.JumpTableDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.MainForm.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.OpenAsDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.ProcedureDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.ProgramPropertiesDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.ResourceEditor.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.SearchDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.TextEncodingDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.UserPreferencesDialog.resources /resource:obj\Debug\Reko.Gui.Windows.Forms.WorkerDialog.resources /resource:obj\Debug\Reko.Gui.Windows.ViewImportsControl.resources /target:library /utf8output AddressNavigator.cs AddressSearchResult.cs Commands\Cmd_EditSignature.cs Commands\Cmd_MarkProcedures.cs Commands\Cmd_ViewWhatPointsHere.cs Commands\Command.cs Commands\CommandFactory.cs Commands\ICommand.cs Controls\IControl.cs Controls\ILabel.cs Controls\IListBox.cs Controls\INumericUpDownWrapper.cs Controls\IRadioButton.cs Controls\ITypeMarker.cs Design\ArchitectureDesigner.cs Design\ImportDesigner.cs Design\GlobalVariablesNodeDesigner.cs Design\PlatformDesigner.cs Design\ProgramResourceGroupDesigner.cs Design\ProgramResourceInstanceDesigner.cs Forms\CallSiteInteractor.cs Forms\IAssumedRegisterValuesDialog.cs Forms\IDeclarationForm.cs Forms\IJumpTableDialog.cs Forms\IProcedureDialog.cs Forms\IResourceEditor.cs Forms\ResourceEditorInteractor.cs ICallGraphViewService.cs ICommandFactory.cs IFindStringsDialog.cs IResourceEditorService.cs Forms\IWorkerDialog.cs Forms\ITextEncodingDialog.cs IViewImportsService.cs JumpVectorNavigator.cs Properties\AssemblyInfo.cs BlockNavigator.cs CommandGroup.cs Components\ITimer.cs Controls\IButton.cs Controls\ICheckBox.cs Controls\IComboBox.cs Controls\INavigableControl.cs Controls\ITextBox.cs Controls\ITreeView.cs Design\ImageMapSegmentNodeDesigner.cs Design\MetadataFileDesigner.cs Design\ProcedureDesigner.cs Design\ProgramDesigner.cs Design\SystemServiceDesigner.cs FileDropEventArgs.cs FindResult.cs Forms\IAddressPromptDialog.cs "Forms\IAssembleFileDialog .cs" Forms\IMainForm.cs Forms\IOpenAsDialog.cs Forms\IPatternSearchDialog.cs Forms\IProgramPropertiesDialog.cs Forms\IUserPreferencesDialog.cs Forms\MainFormInteractor.cs Forms\OpenAsInteractor.cs HtmlCodeFormatter.cs HtmlFormatter.cs HungarianParser.cs ICodeViewerService.cs ICommandTarget.cs IConsoleService.cs IDecompilerService.cs IDecompilerShellUiService.cs IDialog.cs IDialogFactory.cs IDisassemblyViewService.cs IListViewItem.cs ILoadedPage.cs ILowLevelViewService.cs ImageSegmentService.cs IMenuAdapter.cs IProgressBar.cs IProjectBrowserService.cs Forms\ISearchDialog.cs ISearchResult.cs ISearchResultService.cs IServiceFactory.cs ISettingsService.cs IStartPage.cs IStatusBarService.cs ITabControlHostService.cs IUiPreferencesService.cs IViewerService.cs IWindowFrame.cs IWindowPane.cs IWorkerDialogService.cs ListOption.cs MenuBuilder.cs MruList.cs ProcedureNavigator.cs ProcedureSearchResult.cs ProjectBrowserService.cs Resources.Designer.cs SearchService.cs SignatureParser.cs StatementNavigator.cs TreeNodeDesigner.cs Windows\ButtonWrapper.cs Windows\CallGraphGenerator.cs Windows\CallGraphPane.cs Windows\CallGraphViewService.cs Windows\CfgBlockNode.cs Windows\CheckBoxWrapper.cs Windows\CfgGraphGenerator.cs Windows\CodeViewerServiceImpl.cs Windows\CodeViewInteractor.cs Windows\CombinedCodeViewInteractor.cs Windows\ComboBoxWrapper.cs Windows\Controls\ByteMapView.cs Windows\Controls\MixedCodeDataControl.cs Windows\Controls\MixedCodeDataModel.cs Windows\Controls\CommandMenuItem.cs Windows\Controls\DirtyManager.cs Windows\Controls\DisassemblyControl.cs Windows\Controls\DisassemblyTextModel.cs Windows\Controls\ImageMapControl.cs Windows\Controls\ImageMapView.cs Windows\Controls\ImageMapView.Designer.cs Windows\Controls\ImageMapView.Painter.cs Windows\Controls\ImageSegmentView.cs Windows\Controls\ImageSegmentView.Designer.cs Windows\Controls\LowLevelView.cs Windows\Controls\LowLevelView.Designer.cs Windows\Controls\MemoryControl.cs Windows\Controls\MenuStatusSetter.cs Windows\Controls\MenuSystem.cs Windows\Controls\MixedCodeDataModel.SpanGenerator.cs Windows\Controls\NestedTextModel.cs Windows\Controls\ProcedureCodeModel.cs Windows\Controls\RegexValidator.cs Windows\ControlWrapper.cs Windows\Forms\CallSiteDialog.cs Windows\Forms\CallSiteDialog.Designer.cs Forms\ICallSiteDialog.cs Windows\Controls\CombinedCodeView.cs Windows\Controls\CombinedCodeView.Designer.cs Windows\Controls\TextViewLayout.cs Windows\Controls\TextViewPainter.cs Windows\Forms\DeclarationFormInteractor.cs Windows\Forms\DeclarationForm.cs Windows\Forms\DeclarationForm.Designer.cs Windows\Forms\JumpTableDialog.cs Windows\Forms\JumpTableDialog.Designer.cs Windows\Forms\JumpTableInteractor.cs Windows\Forms\TextEncodingDialog.cs Windows\Forms\TextEncodingDialog.Designer.cs Forms\TextEncodingInteractor.cs Windows\LabelWrapper.cs Windows\ListboxWrapper.cs Windows\NumericUpDownWrapper.cs Windows\PreviewInteractor.cs Windows\ProgressbarWrapper.cs Windows\RadioButtonWrapper.cs Windows\StyleStack.cs Windows\Controls\TextBuffer.cs Windows\Controls\TextPointer.cs Windows\Controls\TextSelection.cs Windows\Controls\TextView.cs Windows\Controls\TextView.Designer.cs Windows\Controls\TextViewModel.cs Windows\DecompilerShellUiService.cs Windows\DecompilerUiService.cs Windows\DisassemblyFormatter.cs Windows\DisassemblyViewInteractor.cs Windows\DisassemblyViewServiceImpl.cs Windows\Forms\AboutDialog.cs Windows\Forms\AboutDialog.Designer.cs Windows\Forms\AddressPromptDialog.cs Windows\Forms\AddressPromptDialog.Designer.cs Windows\Forms\AddressPromptInteractor.cs Windows\Forms\AnalyzedPageInteractor.cs Windows\Forms\ArchiveBrowserDialog.cs Windows\Forms\ArchiveBrowserDialog.Designer.cs Windows\Forms\ArchiveBrowserService.cs Windows\Forms\AssembleFileDialog.cs Windows\Forms\AssembleFileDialog.Designer.cs Windows\Forms\AssembleFileInteractor.cs Windows\Forms\AssumedRegisterValuesDialog.cs Windows\Forms\AssumedRegisterValuesDialog.Designer.cs Windows\Forms\AssumedRegisterValuesInteractor.cs Windows\Forms\CmdIds.cs Windows\Forms\DecompilerMenus.cs Windows\Forms\DiagnosticsInteractor.cs Windows\Forms\EditProjectDialog.cs Windows\Forms\EditProjectDialog.Designer.cs Windows\Forms\EditProjectInteractor.cs Windows\Forms\EnvironmentSelectorDialog.cs Windows\Forms\EnvironmentSelectorDialog.Designer.cs Windows\Forms\FinalPageInteractor.cs Windows\Forms\FindDialog.cs Windows\Forms\FindDialog.Designer.cs Windows\Forms\FindDialogInteractor.cs Windows\Forms\FindStringsDialog.cs Windows\Forms\FindStringsDialog.Designer.cs Windows\Forms\FindStringsDialogInteractor.cs Windows\Forms\InitialPageInteractor.cs Windows\Forms\ScannedPageInteractor.cs Windows\Forms\MainForm.cs Windows\Forms\MainForm.Designer.cs Windows\Forms\OpenAsDialog.cs Windows\Forms\OpenAsDialog.Designer.cs Windows\Forms\PhasePageInteractor.cs Windows\Forms\ProcedureDialog.cs Windows\Forms\ProcedureDialog.Designer.cs Windows\Forms\ProcedureDialogInteractor.cs Windows\Forms\ProgramPropertiesDialog.cs Windows\Forms\ProgramPropertiesDialog.Designer.cs Windows\Forms\ProgramPropertiesInteractor.cs Windows\Forms\ResourceEditor.cs Windows\Forms\ResourceEditor.Designer.cs Windows\Forms\SearchDialog.cs Windows\Forms\SearchDialog.Designer.cs Windows\Forms\SearchDialogInteractor.cs Windows\Forms\UserPreferencesDialog.cs Windows\Forms\UserPreferencesDialog.Designer.cs Windows\Forms\UserPreferencesInteractor.cs Windows\Forms\WorkerDialog.cs Windows\Forms\WorkerDialog.Designer.cs Windows\ImageSegmentPane.cs Windows\ImageSegmentServiceImpl.cs Windows\IRegistryService.cs Windows\ListViewItemWrapper.cs Windows\LowLevelViewInteractor.cs Windows\LowLevelViewServiceImpl.cs Windows\MenuItemAdapter.cs Windows\NavigationInteractor.cs Windows\SearchResultServiceImpl.cs Windows\TabControlHost.cs Windows\TabControlWindowFrame.cs Windows\TextBoxWrapper.cs Windows\TextSpanFormatter.cs Windows\ToolStripButtonWrapper.cs Windows\ToolStripItemAdapter.cs Windows\ToolStripTextBoxWrapper.cs Windows\Controls\TreeViewWrapper.cs Windows\Controls\TypeMarker.cs Windows\ViewImportsControl.cs Windows\ViewImportsControl.Designer.cs Windows\ViewImportsPane.cs Windows\ViewImportsService.cs Windows\ViewService.cs Windows\WindowsDecompilerEventListener.cs Windows\WindowsFormsDialogFactory.cs Windows\WindowsFormsRegistryService.cs Windows\WindowsFormsSettingsService.cs "C:\Users\jkl\AppData\Local\Temp\.NETFramework,Version=v4.7.AssemblyAttributes.cs"
+  Using shared compilation with compiler from directory: C:\Program Files (x86)\MSBuild\14.0\bin
+CSC : error CS1617: Invalid option '7' for /langversion; must be ISO-1, ISO-2, Default or an integer in range 1 to 6. [c:\dev\uxmal\reko\master\src\Gui\Gui.csproj]
+Done Building Project "c:\dev\uxmal\reko\master\src\Gui\Gui.csproj" (default targets) -- FAILED.
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\M68k.Design\M68k.Design.csproj" (default targets) -- FAILED.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\MacOS\MacOS.csproj" (17) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  MacOS -> c:\dev\uxmal\reko\master\src\Environments\MacOS\bin\Debug\Reko.Environments.MacOS.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\MacOS\MacOS.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\AmigaOS\AmigaOS.csproj" (18) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  AmigaOS -> c:\dev\uxmal\reko\master\src\Environments\AmigaOS\bin\Debug\Reko.Environments.AmigaOS.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\AmigaOS\AmigaOS.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\ZX81\ZX81.csproj" (19) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  ZX81 -> c:\dev\uxmal\reko\master\src\Environments\ZX81\bin\Debug\Reko.Environments.ZX81.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\ZX81\ZX81.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\Msdos\Msdos.csproj" (20) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Msdos -> c:\dev\uxmal\reko\master\src\Environments\Msdos\bin\Debug\Reko.Environments.Msdos.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Msdos\Msdos.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\C64\C64.csproj" (21) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  C64 -> c:\dev\uxmal\reko\master\src\Environments\C64\bin\Debug\Reko.Environments.C64.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\C64\C64.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\RiscOS\RiscOS.csproj" (22) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  RiscOS -> c:\dev\uxmal\reko\master\src\Environments\RiscOS\bin\Debug\Reko.Environments.RiscOS.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\RiscOS\RiscOS.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\Ps3\Ps3.csproj" (23) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Ps3 -> c:\dev\uxmal\reko\master\src\Environments\Ps3\bin\Debug\Reko.Environments.Ps3.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Ps3\Ps3.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\Cpm\Cpm.csproj" (24) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Cpm -> c:\dev\uxmal\reko\master\src\Environments\Cpm\bin\Debug\Reko.Environments.Cpm.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Cpm\Cpm.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Environments\Trs80\Trs80.csproj" (26) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Trs80 -> c:\dev\uxmal\reko\master\src\Environments\Trs80\bin\Debug\Reko.Environments.Trs80.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Trs80\Trs80.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\tools\c2xml\C2Xml.csproj" (27) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+_CopyAppConfigFile:
+Skipping target "_CopyAppConfigFile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  C2Xml -> c:\dev\uxmal\reko\master\src\tools\c2xml\bin\Debug\c2xml.exe
+AfterBuild:
+  Copying file from "c:\dev\uxmal\reko\master\src\tools\c2xml\bin\Debug\c2xml.exe" to "c:\dev\uxmal\reko\master\src\tools\c2xml.exe".
+  Copying file from "c:\dev\uxmal\reko\master\src\tools\c2xml\bin\Debug\c2xml.exe.config" to "c:\dev\uxmal\reko\master\src\tools\c2xml.exe.config".
+  Copying file from "c:\dev\uxmal\reko\master\src\tools\c2xml\bin\Debug\Reko.Core.dll" to "c:\dev\uxmal\reko\master\src\tools\Reko.Core.dll".
+  Copying file from "c:\dev\uxmal\reko\master\src\..\external\docopt.net-0.6.1.4\DocoptNet.dll" to "c:\dev\uxmal\reko\master\src\tools\DocoptNet.dll".
+Done Building Project "c:\dev\uxmal\reko\master\src\tools\c2xml\C2Xml.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\BinHex\BinHex.csproj" (28) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  BinHex -> c:\dev\uxmal\reko\master\src\ImageLoaders\BinHex\bin\Debug\Reko.ImageLoaders.BinHex.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\BinHex\BinHex.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\Elf\Elf.csproj" (29) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Elf -> c:\dev\uxmal\reko\master\src\ImageLoaders\Elf\bin\Debug\Reko.ImageLoaders.Elf.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\Elf\Elf.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\Coff\Coff.csproj" (30) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Coff -> c:\dev\uxmal\reko\master\src\ImageLoaders\Coff\bin\Debug\Reko.ImageLoaders.Coff.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\Coff\Coff.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\MachO\MachO.csproj" (31) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  MachO -> c:\dev\uxmal\reko\master\src\ImageLoaders\MachO\bin\Debug\Reko.ImageLoaders.MachO.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\MachO\MachO.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\Hunk\Hunk.csproj" (32) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Hunk -> c:\dev\uxmal\reko\master\src\ImageLoaders\Hunk\bin\Debug\Reko.ImageLoaders.Hunk.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\Hunk\Hunk.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\MzExe.csproj" (33) on node 1 (default targets).
+Project "c:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\MzExe.csproj" (33) is building "c:\dev\uxmal\reko\master\src\Environments\Windows\Windows.csproj" (34) on node 1 (default targets).
+Project "c:\dev\uxmal\reko\master\src\Environments\Windows\Windows.csproj" (34) is building "c:\dev\uxmal\reko\master\src\Libraries\Libc\Libc.csproj" (35) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Libc -> c:\dev\uxmal\reko\master\src\Libraries\Libc\bin\Debug\Reko.Libraries.Libc.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Libraries\Libc\Libc.csproj" (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Windows -> c:\dev\uxmal\reko\master\src\Environments\Windows\bin\Debug\Reko.Environments.Windows.dll
+AfterBuild:
+  Copying file from "c:\dev\uxmal\reko\master\src\Environments\Windows\bin\Debug\Reko.Environments.Windows.dll" to "c:\dev\uxmal\reko\master\src\tools\Reko.Environments.Windows.dll".
+  Copying file from "c:\dev\uxmal\reko\master\src\Arch\X86\bin\Debug\Reko.Arch.X86.dll" to "c:\dev\uxmal\reko\master\src\tools\Reko.Arch.X86.dll".
+  "c:\dev\uxmal\reko\master\src\tools\c2xml.exe" -a x86-protected-32 -e win32 msvcrt.inc > msvcrt.xml
+  
+  Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+     at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel)
+     at Reko.Tools.C2Xml.Program.Execute(String[] args)
+     at Reko.Tools.C2Xml.Program.Main(String[] args)
+c:\dev\uxmal\reko\master\src\Environments\Windows\Windows.csproj(188,5): error MSB3073: The command ""c:\dev\uxmal\reko\master\src\tools\c2xml.exe" -a x86-protected-32 -e win32 msvcrt.inc > msvcrt.xml" exited with code -1073741819.
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Windows\Windows.csproj" (default targets) -- FAILED.
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\MzExe.csproj" (default targets) -- FAILED.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\TypeLib\TypeLib.csproj" (37) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  TypeLib -> c:\dev\uxmal\reko\master\src\ImageLoaders\TypeLib\bin\Debug\TypeLib.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\TypeLib\TypeLib.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Assemblers\x86\X86Assembler.csproj" (38) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  X86Assembler -> c:\dev\uxmal\reko\master\src\Assemblers\x86\bin\Debug\Decompiler.Assemblers.x86.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Assemblers\x86\X86Assembler.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\Assemblers\Pdp11\Pdp11Assembler.csproj" (39) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Pdp11Assembler -> c:\dev\uxmal\reko\master\src\Assemblers\Pdp11\bin\Debug\Reko.Assemblers.Pdp11.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Assemblers\Pdp11\Pdp11Assembler.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) on node 1 (default targets).
+BeforeBuild:
+  Copying Decompiler metadata files to c:\dev\uxmal\reko\master\src\UnitTests\bin\Debug\
+  Copying file from "c:\dev\uxmal\reko\master\src\Environments\Windows\msvcrt.xml" to "c:\dev\uxmal\reko\master\src\UnitTests\bin\Debug\msvcrt.xml".
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\Alpha\Alpha.csproj" (43) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Alpha -> c:\dev\uxmal\reko\master\src\Arch\Alpha\bin\Debug\Reko.Arch.Alpha.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Alpha\Alpha.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\Avr\Avr.csproj" (44) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Avr -> c:\dev\uxmal\reko\master\src\Arch\Avr\bin\Debug\Reko.Arch.Avr.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Avr\Avr.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\RiscV\RiscV.csproj" (45) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  RiscV -> c:\dev\uxmal\reko\master\src\Arch\RiscV\bin\Debug\Reko.Arch.RiscV.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\RiscV\RiscV.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\SuperH\SuperH.csproj" (46) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  SuperH -> c:\dev\uxmal\reko\master\src\Arch\SuperH\bin\Debug\Reko.Arch.SuperH.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\SuperH\SuperH.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs.csproj" (47) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Tlcs -> c:\dev\uxmal\reko\master\src\Arch\Tlcs\bin\Debug\Reko.Arch.Tlcs.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\Vax\Vax.csproj" (48) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Vax -> c:\dev\uxmal\reko\master\src\Arch\Vax\bin\Debug\Reko.Arch.Vax.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Vax\Vax.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Arch\Xtensa\Xtensa.csproj" (49) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Xtensa -> c:\dev\uxmal\reko\master\src\Arch\Xtensa\bin\Debug\Reko.Arch.Xtensa.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Arch\Xtensa\Xtensa.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Assemblers\M68k\M68kAssembler.csproj" (50) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  M68kAssembler -> c:\dev\uxmal\reko\master\src\Assemblers\M68k\bin\Debug\Reko.Assemblers.M68k.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Assemblers\M68k\M68kAssembler.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (42) is building "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) on node 1 (default targets).
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Environments\SysV\SysV.csproj" (52) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  SysV -> c:\dev\uxmal\reko\master\src\Environments\SysV\bin\Debug\Reko.Environments.SysV.dll
+AfterBuild:
+  Copying file from "c:\dev\uxmal\reko\master\src\Environments\SysV\bin\Debug\Reko.Environments.SysV.dll" to "c:\dev\uxmal\reko\master\src\tools\Reko.Environments.SysV.dll".
+  Copying file from "c:\dev\uxmal\reko\master\src\Arch\X86\bin\Debug\Reko.Arch.X86.dll" to "c:\dev\uxmal\reko\master\src\tools\Reko.Arch.X86.dll".
+  "c:\dev\uxmal\reko\master\src\tools\c2xml.exe" -a x86-protected-32 -e elf-neutral lp32.inc > lp32.xml
+  
+  Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+     at Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(String archLabel)
+     at Reko.Tools.C2Xml.Program.Execute(String[] args)
+     at Reko.Tools.C2Xml.Program.Main(String[] args)
+c:\dev\uxmal\reko\master\src\Environments\SysV\SysV.csproj(98,5): error MSB3073: The command ""c:\dev\uxmal\reko\master\src\tools\c2xml.exe" -a x86-protected-32 -e elf-neutral lp32.inc > lp32.xml" exited with code -1073741819.
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\SysV\SysV.csproj" (default targets) -- FAILED.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\Dol\Dol.csproj" (53) on node 1 (default targets).
+Project "c:\dev\uxmal\reko\master\src\ImageLoaders\Dol\Dol.csproj" (53) is building "c:\dev\uxmal\reko\master\src\Environments\Wii\Wii.csproj" (54) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Wii -> c:\dev\uxmal\reko\master\src\Environments\Wii\bin\Debug\Reko.Environments.Wii.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Wii\Wii.csproj" (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Dol -> c:\dev\uxmal\reko\master\src\ImageLoaders\Dol\bin\Debug\Reko.ImageLoaders.Dol.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\Dol\Dol.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Environments\AtariTOS\AtariTOS.csproj" (55) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  AtariTOS -> c:\dev\uxmal\reko\master\src\Environments\AtariTOS\bin\Debug\Reko.Environments.AtariTOS.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\AtariTOS\AtariTOS.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Libraries\Python\Python.csproj" (56) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Python -> c:\dev\uxmal\reko\master\src\Libraries\Python\bin\Debug\Reko.Libraries.Python.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Libraries\Python\Python.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Environments\NeoGeo\NeoGeo.csproj" (57) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  NeoGeo -> c:\dev\uxmal\reko\master\src\Environments\NeoGeo\bin\Debug\Reko.Environments.NeoGeo.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\NeoGeo\NeoGeo.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\IntelHex\IntelHex.csproj" (59) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  IntelHex -> c:\dev\uxmal\reko\master\src\ImageLoaders\IntelHex\bin\Debug\Reko.ImageLoaders.IntelHex.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\IntelHex\IntelHex.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Environments\Dreamcast\Dreamcast.csproj" (60) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  Dreamcast -> c:\dev\uxmal\reko\master\src\Environments\Dreamcast\bin\Debug\Reko.Environments.Dreamcast.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\Dreamcast\Dreamcast.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\WindowsDecompiler.csproj" (61) on node 1 (default targets).
+BeforeBuild:
+  Copying Decompiler metadata files to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  c:\dev\uxmal\reko\master\src\Environments\AtariTOS\atariTOS.xml;c:\dev\uxmal\reko\master\src\Environments\Cpm\cpm_map.xml;c:\dev\uxmal\reko\master\src\Environments\Msdos\realmodeintservices.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\msvcrt.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\ntoskrnl.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\windows32.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\windows_CE.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\wsock32.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\windows64.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\oleaut32.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\win32characteristics.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\win64characteristics.xml;c:\dev\uxmal\reko\master\src\Environments\Windows\wince.inc;c:\dev\uxmal\reko\master\src\Environments\AmigaOS\exec.funcs;c:\dev\uxmal\reko\master\src\Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas;c:\dev\uxmal\reko\master\src\Environments\NeoGeo\NeoGeoPocket.xml;c:\dev\uxmal\reko\master\src\Environments\RT11\rt11_services.xml;c:\dev\uxmal\reko\master\src\Environments\SegaGenesis\SegaGenesis.xml;c:\dev\uxmal\reko\master\src\Environments\SysV\libc.so.xml;c:\dev\uxmal\reko\master\src\Environments\SysV\Xlib.xml;c:\dev\uxmal\reko\master\src\Environments\SysV\linux-syscalls-i386.xml;c:\dev\uxmal\reko\master\src\Environments\SysV\sysvcharacteristics.xml;c:\dev\uxmal\reko\master\src\Environments\Trs80\Trs80Rom.xml;c:\dev\uxmal\reko\master\src\..\external\reactos\coredll.def;c:\dev\uxmal\reko\master\src\Decompiler\Loading\Signatures\IMAGE_FILE_MACHINE_AMD64.xml;c:\dev\uxmal\reko\master\src\Decompiler\Loading\Signatures\IMAGE_FILE_MACHINE_ARM.xml;c:\dev\uxmal\reko\master\src\Decompiler\Loading\Signatures\IMAGE_FILE_MACHINE_I386.xml;c:\dev\uxmal\reko\master\src\Decompiler\Loading\Signatures\IMAGE_FILE_MACHINE_IA64.xml;c:\dev\uxmal\reko\master\src\Decompiler\Loading\Signatures\PLATFORM_INDEPENDENT.xml;c:\dev\uxmal\reko\master\src\..\external\wine\commdlg.dll16.spec;c:\dev\uxmal\reko\master\src\..\external\wine\gdi.exe16.spec;c:\dev\uxmal\reko\master\src\..\external\wine\krnl386.exe16.spec;c:\dev\uxmal\reko\master\src\..\external\wine\user.exe16.spec
+  Copying file from "c:\dev\uxmal\reko\master\src\Environments\Windows\msvcrt.xml" to "c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\msvcrt.xml".
+  Copying ImageLoaders c:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\bin\Debug\Reko.ImageLoaders.MzExe.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\bin\Debug\Reko.ImageLoaders.MzExe.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\BinHex\bin\Debug\Reko.ImageLoaders.BinHex.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\BinHex\bin\Debug\Reko.ImageLoaders.BinHex.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\Dol\bin\Debug\Reko.ImageLoaders.Dol.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\Dol\bin\Debug\Reko.ImageLoaders.Dol.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\Elf\bin\Debug\Reko.ImageLoaders.Elf.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\Elf\bin\Debug\Reko.ImageLoaders.Elf.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\Hunk\bin\Debug\Reko.ImageLoaders.Hunk.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\Hunk\bin\Debug\Reko.ImageLoaders.Hunk.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\IntelHex\bin\Debug\Reko.ImageLoaders.IntelHex.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\IntelHex\bin\Debug\Reko.ImageLoaders.IntelHex.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\Llvm\bin\Debug\Reko.ImageLoaders.LLVM.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\Llvm\bin\Debug\Reko.ImageLoaders.LLVM.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\MachO\bin\Debug\Reko.ImageLoaders.MachO.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\MachO\bin\Debug\Reko.ImageLoaders.MachO.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\OdbgScript\bin\Debug\Reko.ImageLoaders.OdbgScript.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\OdbgScript\bin\Debug\Reko.ImageLoaders.OdbgScript.pdb;c:\dev\uxmal\reko\master\src\ImageLoaders\VmsExe\bin\Debug\Reko.ImageLoaders.VmsExe.dll;c:\dev\uxmal\reko\master\src\ImageLoaders\VmsExe\bin\Debug\Reko.ImageLoaders.VmsExe.pdb to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying Architectures to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying Assemblers to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying Environments to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying Libraries to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying Odbg scripts to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying external binaries to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+  Copying configuration files to c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\bin\Debug\
+Done Building Project "c:\dev\uxmal\reko\master\src\Drivers\WindowsDecompiler\WindowsDecompiler.csproj" (default targets) -- FAILED.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\VmsExe\VmsExe.csproj" (62) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  VmsExe -> c:\dev\uxmal\reko\master\src\ImageLoaders\VmsExe\bin\Debug\Reko.ImageLoaders.VmsExe.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\VmsExe\VmsExe.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Environments\RT11\RT11.csproj" (63) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  RT11 -> c:\dev\uxmal\reko\master\src\Environments\RT11\bin\Debug\Reko.Environments.RT11.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\RT11\RT11.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\Environments\SegaGenesis\SegaGenesis.csproj" (64) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  SegaGenesis -> c:\dev\uxmal\reko\master\src\Environments\SegaGenesis\bin\Debug\Reko.Environments.SegaGenesis.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\Environments\SegaGenesis\SegaGenesis.csproj" (default targets).
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (51) is building "c:\dev\uxmal\reko\master\src\ImageLoaders\Llvm\LLVM.csproj" (65) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  LLVM -> c:\dev\uxmal\reko\master\src\ImageLoaders\Llvm\bin\Debug\Reko.ImageLoaders.LLVM.dll
+Done Building Project "c:\dev\uxmal\reko\master\src\ImageLoaders\Llvm\LLVM.csproj" (default targets).
+Done Building Project "c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (default targets) -- FAILED.
+Done Building Project "c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (default targets) -- FAILED.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+The target "_ConvertPdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,37)" does not exist in the project, and will be ignored.
+The target "_CollectPdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (34,70)" does not exist in the project, and will be ignored.
+The target "_CollectMdbFiles" listed in a BeforeTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,38)" does not exist in the project, and will be ignored.
+The target "_CopyMdbFiles" listed in an AfterTargets attribute at "C:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets (41,71)" does not exist in the project, and will be ignored.
+Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (1) is building "c:\dev\uxmal\reko\master\src\tools\hunktool\hunktool.csproj" (67) on node 1 (default targets).
+GenerateTargetFrameworkMonikerAttribute:
+Skipping target "GenerateTargetFrameworkMonikerAttribute" because all output files are up-to-date with respect to the input files.
+CoreCompile:
+Skipping target "CoreCompile" because all output files are up-to-date with respect to the input files.
+_CopyAppConfigFile:
+Skipping target "_CopyAppConfigFile" because all output files are up-to-date with respect to the input files.
+CopyFilesToOutputDirectory:
+  hunktool -> c:\dev\uxmal\reko\master\src\tools\hunktool\bin\Debug\hunktool.exe
+Done Building Project "c:\dev\uxmal\reko\master\src\tools\hunktool\hunktool.csproj" (default targets).
+Done Building Project "c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (default targets) -- FAILED.
+
+Build FAILED.
+
+"c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (default target) (1) ->
+"c:\dev\uxmal\reko\master\src\Arch\Arm\Arm.csproj" (default target) (6) ->
+(ResolveAssemblyReferences target) -> 
+  C:\Program Files (x86)\MSBuild\14.0\bin\Microsoft.Common.CurrentVersion.targets(1820,5): warning MSB3270: There was a mismatch between the processor architecture of the project being built "MSIL" and the processor architecture of the reference "Gee.External.Capstone", "x86". This mismatch may cause runtime failures. Please consider changing the targeted processor architecture of your project through the Configuration Manager so as to align the processor architectures between your project and references, or take a dependency on references with a processor architecture that matches the targeted processor architecture of your project. [c:\dev\uxmal\reko\master\src\Arch\Arm\Arm.csproj]
+
+
+"c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (default target) (1) ->
+"c:\dev\uxmal\reko\master\src\Arch\M68k.Design\M68k.Design.csproj" (default target) (14) ->
+"c:\dev\uxmal\reko\master\src\Gui\Gui.csproj" (default target) (15) ->
+(CoreCompile target) -> 
+  CSC : error CS1617: Invalid option '7' for /langversion; must be ISO-1, ISO-2, Default or an integer in range 1 to 6. [c:\dev\uxmal\reko\master\src\Gui\Gui.csproj]
+
+
+"c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (default target) (1) ->
+"c:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\MzExe.csproj" (default target) (33) ->
+"c:\dev\uxmal\reko\master\src\Environments\Windows\Windows.csproj" (default target) (34) ->
+(AfterBuild target) -> 
+  c:\dev\uxmal\reko\master\src\Environments\Windows\Windows.csproj(188,5): error MSB3073: The command ""c:\dev\uxmal\reko\master\src\tools\c2xml.exe" -a x86-protected-32 -e win32 msvcrt.inc > msvcrt.xml" exited with code -1073741819.
+
+
+"c:\dev\uxmal\reko\master\src\Reko-decompiler.sln" (default target) (1) ->
+"c:\dev\uxmal\reko\master\src\UnitTests\UnitTests.csproj" (default target) (42) ->
+"c:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLine.csproj" (default target) (51) ->
+"c:\dev\uxmal\reko\master\src\Environments\SysV\SysV.csproj" (default target) (52) ->
+  c:\dev\uxmal\reko\master\src\Environments\SysV\SysV.csproj(98,5): error MSB3073: The command ""c:\dev\uxmal\reko\master\src\tools\c2xml.exe" -a x86-protected-32 -e elf-neutral lp32.inc > lp32.xml" exited with code -1073741819.
+
+    1 Warning(s)
+    3 Error(s)
+
+Time Elapsed 00:00:07.82

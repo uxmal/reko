@@ -36,7 +36,7 @@ Eq_6: word32
 	T_9 (in Mem2[ptr_0 + 0x00000000:word32] : word32)
 Eq_7: word32
 	T_7 (in 0x00000000 : word32)
-Eq_8: word32
+Eq_8: up32
 	T_8 (in ptr_0 + 0x00000000 : word32)
 Eq_10: int32
 	T_10 (in 0x00000004 : word32)
@@ -58,7 +58,7 @@ T_3: (in 0x04000000 : word32)
 T_4: (in 0x04001000 : word32)
   Class: Eq_2
   DataType: (ptr (struct 0004 (0 word32 dw0000)))
-  OrigDataType: uint32
+  OrigDataType: up32
 T_5: (in ptr_0 >=u 0x04001000 : bool)
   Class: Eq_5
   DataType: bool
@@ -73,8 +73,8 @@ T_7: (in 0x00000000 : word32)
   OrigDataType: word32
 T_8: (in ptr_0 + 0x00000000 : word32)
   Class: Eq_8
-  DataType: word32
-  OrigDataType: word32
+  DataType: up32
+  OrigDataType: up32
 T_9: (in Mem2[ptr_0 + 0x00000000:word32] : word32)
   Class: Eq_6
   DataType: word32

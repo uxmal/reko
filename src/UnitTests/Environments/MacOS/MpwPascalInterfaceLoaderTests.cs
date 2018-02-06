@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Environments.MacOS
         [SetUp]
         public void Setup()
         {
-            this.platform = new MacOSClassic(null, new M68kArchitecture());
+            this.platform = new MacOSClassic(null, new M68kArchitecture("m68k"));
             this.tlib = new TypeLibrary();
         }
 

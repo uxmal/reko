@@ -2249,8 +2249,8 @@ T_430: (in 0x00000000 : word32)
   OrigDataType: word32
 T_431: (in r0 + 0x00000000 : word32)
   Class: Eq_431
-  DataType: word32
-  OrigDataType: word32
+  DataType: ui32
+  OrigDataType: ui32
 T_432: (in Mem20[r0 + 0x00000000:word32] : word32)
   Class: Eq_410
   DataType: word32

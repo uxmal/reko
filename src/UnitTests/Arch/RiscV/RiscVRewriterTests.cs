@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVRewriterTests : RewriterTestBase
     {
-        private RiscVArchitecture arch = new RiscVArchitecture();
+        private RiscVArchitecture arch = new RiscVArchitecture("riscV");
         private Address baseAddr = Address.Ptr64(0x0010000);
         private RiscVState state;
         private MemoryArea image;

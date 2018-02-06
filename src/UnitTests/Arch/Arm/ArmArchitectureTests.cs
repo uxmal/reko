@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmArch_GetPltEntry()
         {
-            this.arch = new Arm32ProcessorArchitecture();
+            this.arch = new Arm32ProcessorArchitecture("arm32");
         }
     }
 }
