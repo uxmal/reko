@@ -71,9 +71,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
         [Test]
         public void PIC18Lgcy_GetSubRegisterOfPC()
         {
-            Assert.AreSame(PIC18Registers.PCL, arch.GetSubregister(PIC18Registers.PC, 0, 8));
-            Assert.AreSame(PIC18Registers.PCLATH, arch.GetSubregister(PIC18Registers.PC, 8, 8));
-            Assert.AreSame(PIC18Registers.PCLATU, arch.GetSubregister(PIC18Registers.PC, 16, 8));
+            Assert.AreSame(PIC18Registers.PCL, arch.GetSubregister(PIC18Registers.PCLAT, 0, 8));
+            Assert.AreSame(PIC18Registers.PCLATH, arch.GetSubregister(PIC18Registers.PCLAT, 8, 8));
+            Assert.AreSame(PIC18Registers.PCLATU, arch.GetSubregister(PIC18Registers.PCLAT, 16, 8));
         }
 
         [Test]

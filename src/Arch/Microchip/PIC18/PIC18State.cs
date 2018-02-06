@@ -24,6 +24,9 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System.Collections.Generic;
+using System;
+using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -33,14 +36,12 @@ namespace Reko.Arch.Microchip.PIC18
     /// </summary>
     public class PIC18State : ProcessorState
     {
-        //TODO: use 'access' mask and 'impl' mask of PIC registers to amend GetRegister/SetRegister results.
-        //TODO: see stack evolution (push, pop, under/overflow)
 
         #region Locals
 
-        private byte[] regs;              // register values - all are 8-bit wide.
-        private bool[] isValid;           // validity of registers values
         private PIC18Architecture arch;
+        private Dictionary<PICRegisterStorage, uint> regs;  // Registers values. Only for valid registers.
+        private HashSet<RegisterStorage> isValid;           // Validity of registers. Note: if not valid, there is no corresponding entry in 'regs'.
 
         #endregion
 
@@ -53,8 +54,8 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC18State(PIC18Architecture arch)
         {
             this.arch = arch;
-            regs = new byte[PIC18Registers.Max];
-            isValid = new bool[PIC18Registers.Max];
+            regs = new Dictionary<PICRegisterStorage, uint>();
+            isValid = new HashSet<RegisterStorage>();
         }
 
         /// <summary>
@@ -64,47 +65,82 @@ namespace Reko.Arch.Microchip.PIC18
         public PIC18State(PIC18State st) : base(st)
         {
             arch = st.arch;
-            regs = (byte[])st.regs.Clone();
-            isValid = (bool[])st.isValid.Clone();
+            HWStackItems = st.HWStackItems;
+            regs = new Dictionary<PICRegisterStorage, uint>(st.regs);
+            isValid = new HashSet<RegisterStorage>(st.isValid);
         }
 
         #endregion
 
         #region ProcessorState interface
 
+        /// <summary>
+        /// Gets the processor architecture.
+        /// </summary>
         public override IProcessorArchitecture Architecture => arch;
 
+        /// <summary>
+        /// Makes a deep copy of this <see cref="PIC18State"/> instance.
+        /// </summary>
         public override ProcessorState Clone() => new PIC18State(this);
 
-        public bool IsValid(RegisterStorage reg) => isValid[reg.Number];
+        /// <summary>
+        /// Query if  '<paramref name="reg"/>' is valid.
+        /// </summary>
+        /// <param name="reg">The PIC register.</param>
+        /// <returns>
+        /// True if valid, false if not.
+        /// </returns>
+        public bool IsValid(RegisterStorage reg)
+        {
+            return isValid.Contains(reg);
+        }
 
+        //TODO: use 'access' mask of PIC registers to amend GetRegister/SetRegister results.
+
+        /// <summary>
+        /// Get the PIC register value.
+        /// </summary>
+        /// <param name="reg">The PIC register.</param>
+        /// <returns>
+        /// The register value as a constant or invalid..
+        /// </returns>
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (reg != null && isValid[reg.Number])
-                return Constant.Create(reg.DataType, regs[reg.Number]);
-            else
-                return Constant.Invalid;
+            if ((reg is PICRegisterStorage preg) && IsValid(preg))
+            {
+                return Constant.Create(reg.DataType, regs[preg] & preg.Impl);
+            }
+            return Constant.Invalid;
         }
 
+        /// <summary>
+        /// Sets a PIC register value.
+        /// </summary>
+        /// <param name="reg">The PIC register.</param>
+        /// <param name="c">A Constant to process.</param>
         public override void SetRegister(RegisterStorage reg, Constant c)
         {
-            if (reg != null && c != null && c.IsValid)
+            if (reg is PICRegisterStorage preg)
             {
-                isValid[reg.Number] = true;
-                regs[reg.Number] = c.ToByte();
+                if (c?.IsValid ?? false)
+                {
+                    isValid.Add(preg);
+                    regs[preg] = (byte)(c.ToByte() & preg.Impl);
+                    return;
+                }
             }
-            else
-            {
-                isValid[reg.Number] = false;
-            }
+            isValid.Remove(reg);
         }
 
+        /// <summary>
+        /// Sets the instruction pointer (PC - Program Counter).
+        /// </summary>
+        /// <param name="addr">The address to assign to the PC.</param>
         public override void SetInstructionPointer(Address addr)
         {
-            ulong off = addr.ToUInt32();
-            SetRegister(PIC18Registers.PCL, Constant.Byte((byte)(off & 0xFF)));
-            SetRegister(PIC18Registers.PCLATH, Constant.Byte((byte)((off >> 8) & 0xFF)));
-            SetRegister(PIC18Registers.PCLATU, Constant.Byte((byte)((off >> 16) & 0xFF)));
+            uint off = addr.ToUInt32();
+            SetRegister(PIC18Registers.PCLAT, Constant.Word32(off));
         }
 
         /// <summary>
@@ -133,7 +169,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)
         {
-            return new CallSite(returnAddressSize, 0);
+            return new CallSite(returnAddressSize, HWStackItems);
         }
 
         /// <summary>
@@ -143,7 +179,38 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="sigCallee">The signature of the called procedure.</param>
         public override void OnAfterCall(FunctionType sigCallee)
         {
+            ShrinkHWStack(-1);
         }
+
+        /// <summary>
+        /// Grow the hardware stack.
+        /// </summary>
+        /// <param name="addrInstr">The address instr.</param>
+        /// <exception cref="InvalidOperationException">Thrown if a stack overflow occurred.</exception>
+        public void GrowHWStack(Address addrInstr)
+        {
+            ++HWStackItems;
+            if (HWStackItems > PIC18Registers.HWStackDepth)
+                throw new InvalidOperationException($"PIC18 Hardware stack overflow at address {addrInstr}.");
+        }
+
+        /// <summary>
+        /// Shrink the hardware stack.
+        /// </summary>
+        /// <param name="cItems">The items.</param>
+        /// <exception cref="InvalidOperationException">Thrown if a stack underflow occurred.</exception>
+        public void ShrinkHWStack(int cItems)
+        {
+            HWStackItems--;
+            if (HWStackItems < 0)
+                throw new InvalidOperationException("PIC18 Hardware stack underflow.");
+        }
+
+        #endregion
+
+        #region Properties/Fields
+
+        public int HWStackItems { get; set; }
 
         #endregion
 

@@ -178,11 +178,11 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         public override RegisterStorage GetRegister(int i)
-            => PIC18Registers.GetCoreRegister(i);
+            => PIC18Registers.GetCoreRegisterByIdx(i);
 
         public override RegisterStorage GetRegister(string name)
         {
-            var r = PIC18Registers.GetRegister(name);
+            var r = PIC18Registers.GetRegisterByName(name);
             if (r == RegisterStorage.None)
                 throw new ArgumentException($"'{name}' is not a register name.");
             return r;
@@ -196,20 +196,47 @@ namespace Reko.Arch.Microchip.PIC18
         public override RegisterStorage[] GetRegisters()
             => PIC18Registers.GetRegisters;
 
+        /// <summary>
+        /// Find the widest sub-register that covers the register reg. Not implemented.
+        /// </summary>
+        /// <param name="reg">.</param>
+        /// <param name="bits">.</param>
+        /// <returns>
+        /// Not implemented.
+        /// </returns>
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
             throw new NotImplementedException("There is no wider register for PIC18");
         }
 
+        /// <summary>
+        /// Get the improper sub-register of <paramref name="reg" /> that starts at offset
+        /// <paramref name="offset" /> and is of size <paramref name="width"/>.
+        /// </summary>
+        /// <param name="reg">The parent register.</param>
+        /// <param name="offset">The bit offset.</param>
+        /// <param name="width">The bit width.</param>
+        /// <returns>
+        /// The sub-register or null.
+        /// </returns>
+        /// <remarks>
+        /// Most architectures do not have sub-registers, and will use a default implementation. This
+        /// method is overridden for architectures like x86 and Z80, where sub-registers (ah, al, etc)
+        /// do exist.
+        /// </remarks>
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
-            if (!PIC18Registers.SubRegisters.TryGetValue(reg, out Dictionary<uint, RegisterStorage> dict))
-                return null;
-            if (!dict.TryGetValue((uint)(offset * 256 + width), out RegisterStorage subReg))
-                return null;
-            return subReg;
+            if (reg is PICRegisterStorage preg)
+            {
+                foreach (var r in preg.SubRegs)
+                {
+                    if ((r.BitAddress == (ulong)offset) && (r.BitSize == (ulong)width))
+                        return r;
+                }
+            }
+            return null;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -243,7 +270,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            reg = PIC18Registers.GetRegister(name);
+            reg = PIC18Registers.GetRegisterByName(name);
             return (reg != RegisterStorage.None);
         }
 
@@ -255,7 +282,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if ((grf & 1) != 0)
                 {
-                    var f = PIC18Registers.GetBitField(PIC18Registers.STATUS, bitPos, 1);
+                    var f = PIC18Registers.GetBitFieldByReg(PIC18Registers.STATUS, bitPos, 1);
                     if (f != null)
                         s.Append(f.Name);
                 }

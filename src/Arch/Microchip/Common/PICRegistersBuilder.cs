@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -36,7 +37,6 @@ namespace Reko.Arch.Microchip.Common
     {
         #region Locals
 
-        private readonly PIC _pic;
         private int _byteAddr = 0;
         private int _bitAddr = 0;
         private int _regIndex = 0;
@@ -71,6 +71,12 @@ namespace Reko.Arch.Microchip.Common
 
         #endregion
 
+        #region Properties/Fields
+
+        public readonly PIC PIC;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -79,7 +85,7 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="pic">The PIC definition.</param>
         protected PICRegistersBuilder(PIC pic)
         {
-            _pic = pic;
+            PIC = pic;
         }
 
         #endregion
@@ -95,7 +101,7 @@ namespace Reko.Arch.Microchip.Common
         {
             _symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
 
-            foreach (var e in _pic.DataSpace.RegardlessOfMode.Regions)
+            foreach (var e in PIC.DataSpace.RegardlessOfMode.Regions)
             {
                 if (e is SFRDataSector sfrsect)
                 {
@@ -181,7 +187,17 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(JoinedSFRDef xmlSymb)
         {
-            xmlSymb.SFRs.ForEach(e => e.Accept(this));
+            SortedList<PICDataAddress, PICRegisterStorage> subregs = new SortedList<PICDataAddress, PICRegisterStorage>();
+            xmlSymb.SFRs.ForEach(e =>
+            {
+                e.Accept(this);
+                subregs.Add(_currentSFRRegister.Address, _currentSFRRegister);
+            });
+            if (subregs.Count > 0)
+            {
+                PICRegisterStorage joined = new PICRegisterStorage(xmlSymb, subregs.Values);
+                _symTable.AddRegister(joined);
+            }
         }
 
         public void Visit(MuxedSFRDef xmlSymb)

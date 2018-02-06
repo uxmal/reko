@@ -24,6 +24,8 @@ using Microchip.Crownking;
 using Reko.Core;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic ;
+using System.Linq;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -69,13 +71,7 @@ namespace Reko.Arch.Microchip.Common
 
         #region Properties
 
-        /// <summary>
-        /// Gets the SFR register definition as defined by Microchip (Crownking DB).
-        /// </summary>
-        /// <value>
-        /// The register definition.
-        /// </value>
-        public SFRDef SFRDef { get; }
+        public PICRegisterTraits Traits { get; }
 
         /// <summary>
         /// Gets the data memory address of this register (or null if Non-Memory-Mapped).
@@ -83,7 +79,12 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// The address or null.
         /// </value>
-        public PICDataAddress Address { get; set; }
+        public PICDataAddress Address => Traits.Address;
+
+        /// <summary>
+        /// Gets the Non-Memory-Mapped ID or null if register has a memory address.
+        /// </summary>
+        public string NMMRID => Traits.NMMRID;
 
         /// <summary>
         /// Gets a value indicating whether this register is Non-Memory-Mapped.
@@ -91,7 +92,7 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// True if this register is Non-Memory-Mapped, false if not.
         /// </value>
-        public bool IsNMMR => SFRDef?.IsNMMR ?? true;
+        public bool IsMemoryMapped => Traits.IsMemoryMapped; 
 
         /// <summary>
         /// Gets this register access bits descriptor.
@@ -99,7 +100,32 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// The access descriptor as a string (see <seealso cref="Microchip.Crownking.PIC"/>.
         /// </value>
-        public string Access => SFRDef?.Access;
+        public string Access => Traits.Access;
+
+        /// <summary>
+        /// Gets the state of each register's bit after a Master-Clear Reset.
+        /// </summary>
+        public string MCLR => Traits.MCLR;
+
+        /// <summary>
+        /// Gets the state of each register's bit after a Power-On Reset.
+        /// </summary>
+        public string POR => Traits.POR;
+
+        /// <summary>
+        /// Gets the implementation mask.
+        /// </summary>
+        public ulong Impl => Traits.Impl;
+
+        /// <summary>
+        /// Gets a value indicating whether this PIC register is volatile.
+        /// </summary>
+        public bool IsVolatile => Traits.IsVolatile;
+
+        /// <summary>
+        /// Gets a value indicating whether this PIC register is indirect.
+        /// </summary>
+        public bool IsIndirect => Traits.IsIndirect;
 
         /// <summary>
         /// Gets the actual bit width of this register.
@@ -107,34 +133,57 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// The width in number of bits.
         /// </value>
-        public uint BitWidth => SFRDef?.NzWidth ?? 0;
+        public int BitWidth => Traits.BitWidth;
 
-        public new static PICRegisterStorage None =
-            new PICRegisterStorage("None", -1, PrimitiveType.Ptr16);
+        /// <summary>
+        /// Gets the sub-registers of this PIC register, if any.
+        /// </summary>
+        /// <value>
+        /// The sub-registers enumeration.
+        /// </value>
+        public IEnumerable<PICRegisterStorage> SubRegs { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this PIC register has sub-registers.
+        /// </summary>
+        public bool HasSubRegs => ((SubRegs?.Count() ?? 0) > 0);
+
+        /// <summary>
+        /// The "None" PIC register.
+        /// </summary>
+        public new static PICRegisterStorage None = new PICRegisterStorage();
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Constructor.
+        /// Default constructor.
+        /// </summary>
+        public PICRegisterStorage() 
+            : base("None", -1, PrimitiveType.Byte)
+        {
+            Traits = new PICRegisterTraits();
+            SubRegs = null;
+        }
+
+        /// <summary>
+        /// Constructor of a named PIC register.
         /// </summary>
         /// <param name="sfr">The SFR definition.</param>
         /// <param name="number">The Reko index number of this register.</param>
-        /// <param name="isNMMR">(Optional)
-        ///                      True if this register is Non-Memory-Mapped, false if not.</param>
         public PICRegisterStorage(SFRDef sfr, int number)
             : base(sfr.Name, number, sfr.NzWidth.Size2PrimitiveType())
         {
-            SFRDef = sfr;
-            Address = (IsNMMR ? null : PICDataAddress.Ptr(sfr.Addr));
+            Traits = new PICRegisterTraits(sfr);
+            SubRegs = null;
         }
 
-        public PICRegisterStorage(string name, int number, PrimitiveType dt)
-            : base(name, number, dt)
+        public PICRegisterStorage(JoinedSFRDef jsfr, ICollection<PICRegisterStorage> subregs)
+            : base(jsfr.Name, subregs.First().Number, jsfr.NzWidth.Size2PrimitiveType())
         {
-            SFRDef = null;
-            Address = null;
+            Traits = new PICRegisterTraits(jsfr, subregs);
+            SubRegs = subregs;
         }
 
         #endregion
@@ -169,7 +218,7 @@ namespace Reko.Arch.Microchip.Common
     }
 
     /// <summary>
-    /// Defines a PIC register's named bit field storage.
+    /// Defines the storage of a PIC register's named bit field.
     /// </summary>
     public class PICBitFieldStorage : FlagGroupStorage
     {

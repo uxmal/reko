@@ -95,7 +95,7 @@ namespace Reko.Arch.Microchip.Common
             return uValue;
         }
 
-        public override string ToString() => $"0x{uValue:X6}";
+        public override string ToString() => $"{uValue:X6}";
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.

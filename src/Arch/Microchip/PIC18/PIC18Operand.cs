@@ -174,7 +174,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             ushort immAddr = ImmediateValue.ToUInt16();
-            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(immAddr, 8);
             if (sfr != RegisterStorage.None)
                 writer.Write($"{sfr.Name}");
             else
@@ -203,7 +203,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             ushort immAddr = ImmediateValue.ToUInt16();
-            RegisterStorage sfr = PIC18Registers.GetRegister(immAddr);
+            RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(immAddr, 8);
             if (sfr != RegisterStorage.None)
                 writer.Write($"{sfr.Name}");
             else
@@ -484,7 +484,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            RegisterStorage sfr = PIC18Registers.GetRegister(DataTarget);
+            RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(DataTarget, 8);
             if (sfr != RegisterStorage.None)
                 writer.Write($"{sfr.Name}");
             else
@@ -505,7 +505,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            RegisterStorage sfr = PIC18Registers.GetRegister(DataTarget);
+            RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(DataTarget, 8);
             if (sfr != RegisterStorage.None)
                 writer.Write($"{sfr.Name}");
             else
@@ -535,7 +535,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            RegisterStorage sfr = PIC18Registers.GetRegister(DataTarget);
+            RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(DataTarget, 8);
             if (sfr != RegisterStorage.None)
                 writer.Write($"{sfr.Name}");
             else
@@ -602,7 +602,7 @@ namespace Reko.Arch.Microchip.PIC18
             if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
             {
                 var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
-                var sfr = PIC18Registers.GetRegister(aaddr);
+                var sfr = PIC18Registers.GetRegisterBySizedAddr(aaddr, 8);
                 if (sfr != RegisterStorage.None)
                 {
                     writer.Write($"{sfr.Name},ACCESS");
@@ -660,10 +660,10 @@ namespace Reko.Arch.Microchip.PIC18
             if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
             {
                 var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
-                var sfr = PIC18Registers.GetRegister(aaddr);
+                var sfr = PIC18Registers.GetRegisterBySizedAddr(aaddr, 8);
                 if (sfr != RegisterStorage.None)
                 {
-                    var bitname = PIC18Registers.GetBitField(aaddr, bitpos);
+                    var bitname = PIC18Registers.GetBitFieldByAddr(aaddr, bitpos, 1);
                     if (bitname != null)
                     {
                         writer.Write($"{sfr.Name},{bitname.Name},ACCESS");
@@ -718,7 +718,7 @@ namespace Reko.Arch.Microchip.PIC18
             if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
             {
                 var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
-                var sfr = PIC18Registers.GetRegister(aaddr);
+                var sfr = PIC18Registers.GetRegisterBySizedAddr(aaddr, 8);
                 if (sfr != RegisterStorage.None)
                 {
                     writer.Write($"{sfr.Name}{wdest},ACCESS");

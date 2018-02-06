@@ -47,6 +47,7 @@
     <Compile Include="Common\ILinearRegion.cs" />
     <Compile Include="Common\IMemoryRegion.cs" />
     <Compile Include="Common\PICAddresses.cs" />
+    <Compile Include="Common\PICRegisterTraits.cs" />
     <Compile Include="PIC18\IOperandShadow.cs" />
     <Compile Include="Common\IPICMemoryMap.cs" />
     <Compile Include="Common\IPICMemoryMapper.cs" />

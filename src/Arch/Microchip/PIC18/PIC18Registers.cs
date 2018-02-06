@@ -39,15 +39,13 @@ namespace Reko.Arch.Microchip.PIC18
     public class PIC18Registers : PICRegistersBuilder, IPICRegisterSymTable
     {
 
-        //TODO: Should I revert joined registers' numbering to allow EnsureSequence to work? To be clarified w/John.
-        
         #region Helper classes
 
-        /// <summary>
-        /// A register address which can be an actual data memory address or a Non-Memory-Mapped Register ID.
-        /// </summary>
-        private sealed class RegAddress : IEquatable<RegAddress>
+        private sealed class RegSizedAddress : IEquatable<RegSizedAddress>
         {
+
+            #region Properties/Fields
+
             /// <summary>
             /// The register address if memory-mapped.
             /// </summary>
@@ -58,15 +56,24 @@ namespace Reko.Arch.Microchip.PIC18
             /// </summary>
             public readonly string NMMRID;
 
+            /// <summary>
+            /// The bit width of the register.
+            /// </summary>
+            public readonly int BitWidth;
+
+            #endregion
+
             #region Constructors
 
             /// <summary>
             /// Constructor.
             /// </summary>
             /// <param name="regAddr">The register address.</param>
-            public RegAddress(PICDataAddress regAddr)
+            /// <param name="width">The bit width of the register.</param>
+            public RegSizedAddress(PICDataAddress regAddr, int width = -1)
             {
                 Addr = regAddr;
+                BitWidth = width;
                 NMMRID = String.Empty;
             }
 
@@ -74,9 +81,11 @@ namespace Reko.Arch.Microchip.PIC18
             /// Constructor.
             /// </summary>
             /// <param name="regAddr">The register absolute 16-bit address.</param>
-            public RegAddress(ushort regAddr)
+            /// <param name="width">The bit width of the register.</param>
+            public RegSizedAddress(ushort regAddr, int width = -1)
             {
                 Addr = PICDataAddress.Ptr(regAddr);
+                BitWidth = width;
                 NMMRID = String.Empty;
             }
 
@@ -84,36 +93,50 @@ namespace Reko.Arch.Microchip.PIC18
             /// Constructor.
             /// </summary>
             /// <param name="nmmrID">The register ID if non-memory-mapped.</param>
-            public RegAddress(string nmmrID)
+            /// <param name="width">The bit width of the register.</param>
+            public RegSizedAddress(string nmmrID, int width = -1)
             {
                 Addr = null;
                 NMMRID = nmmrID;
+                BitWidth = width;
             }
 
             #endregion
 
-            public bool Equals(RegAddress other)
+            #region IEquatable implementation
+
+            public bool Equals(RegSizedAddress other)
             {
                 if (other is null) return false;
                 if (ReferenceEquals(this, other)) return true;
-                if (!String.IsNullOrEmpty(NMMRID)) return (NMMRID == other.NMMRID);
-                return Addr == other.Addr;
+                if (Addr is null)
+                {
+                    if (NMMRID != other.NMMRID) return false;
+                }
+                else
+                {
+                    if (Addr != other.Addr) return false;
+                }
+
+                return (BitWidth == -1) || (other.BitWidth == -1) || (BitWidth == other.BitWidth);
             }
 
             public override bool Equals(object obj)
             {
-                return Equals(obj as RegAddress);
+                return Equals(obj as RegSizedAddress);
             }
 
             public override int GetHashCode()
             {
-                return (Addr?.GetHashCode() ?? 0 * 17) ^ NMMRID.GetHashCode(); ;
+                return (Addr?.GetHashCode() ?? 0 * 17) ^ NMMRID.GetHashCode() ^ (BitWidth.GetHashCode() * 29);
             }
+
+            #endregion
 
             public override string ToString()
             {
-                if (Addr != null) return $"{Addr}";
-                return $"NMMRID({NMMRID})";
+                if (Addr != null) return $"{Addr}[{BitWidth}]";
+                return $"NMMRID({NMMRID}[{BitWidth}])";
             }
 
         }
@@ -172,14 +195,10 @@ namespace Reko.Arch.Microchip.PIC18
             = new Dictionary<string, PICRegisterStorage>();
         private static Dictionary<string, PICBitFieldStorage> UniqueFieldNames
             = new Dictionary<string, PICBitFieldStorage>();
-        private static Dictionary<RegAddress, RegisterStorage> RegsByAddr
-            = new Dictionary<RegAddress, RegisterStorage>();
+        private static Dictionary<RegSizedAddress, RegisterStorage> RegsByAddr
+            = new Dictionary<RegSizedAddress, RegisterStorage>();
         private static Dictionary<BitFieldAddr, BitFieldList> RegsBitFields
             = new Dictionary<BitFieldAddr, BitFieldList>();
-
-
-        internal static readonly Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters
-            = new Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>>();
 
         #endregion
 
@@ -435,7 +454,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// PC pseudo-register (alias to PCLATU:PCLATH:PCL).
         /// </summary>
-        public static PICRegisterStorage PC { get; private set; }
+        public static PICRegisterStorage PCLAT { get; private set; }
 
         /// <summary>
         /// TBLPTR pseudo-register (alias to TBLPTRL:TBLPTRH:TBLPTRL).
@@ -444,10 +463,19 @@ namespace Reko.Arch.Microchip.PIC18
 
         #endregion
 
+        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Byte);
+        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.UInt16);
+        public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
+
         /// <summary>
-        /// Return Address Stack of the PIC.
+        /// Hardware Return Address Stack of the PIC.
         /// </summary>
-        public static MemoryIdentifier RAS { get; private set; }
+        public static MemoryIdentifier HWStack { get; private set; }
+
+        /// <summary>
+        /// Gets the depth of the hardware stack.
+        /// </summary>
+        public static int HWStackDepth { get; private set; }
 
         #endregion
 
@@ -465,7 +493,6 @@ namespace Reko.Arch.Microchip.PIC18
                 UniqueFieldNames.Clear();
                 RegsByAddr.Clear();
                 RegsBitFields.Clear();
-                SubRegisters.Clear();
             }
         }
 
@@ -473,17 +500,17 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Helpers
 
-        private PICRegisterStorage _getRegister(string name)
+        private PICRegisterStorage _getRegisterByName(string name)
         {
             lock (_symtabLock)
             {
                 if (!UniqueRegNames.TryGetValue(name, out PICRegisterStorage reg))
-                    throw new InvalidOperationException($"Missing definition of register '{name}' in symbol table.");
+                    throw new InvalidOperationException($"Missing definition for register '{name}' in symbol table.");
                 return reg;
             }
         }
 
-        private PICRegisterStorage _peekRegister(string name)
+        private PICRegisterStorage _peekRegisterByName(string name)
         {
             lock (_symtabLock)
             {
@@ -492,7 +519,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private PICRegisterStorage _peekRegister(RegAddress aAddr)
+        private PICRegisterStorage _peekRegisterBySizedAddr(RegSizedAddress aAddr)
         {
             lock (_symtabLock)
             {
@@ -504,18 +531,18 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private RegisterStorage _peekRegister(int number)
+        private RegisterStorage _peekRegisterByNum(int number)
         {
             lock (_symtabLock)
             {
                 var reg = RegsByAddr.Where(l => l.Value.Number == number)
-                    .Select(e => (KeyValuePair<RegAddress, RegisterStorage>?)e)
+                    .Select(e => (KeyValuePair<RegSizedAddress, RegisterStorage>?)e)
                     .FirstOrDefault()?.Value;
                 return reg ?? RegisterStorage.None;
             }
         }
 
-        private RegisterStorage _peekCoreRegister(int i)
+        private RegisterStorage _peekCoreRegisterByIdx(int i)
         {
             lock (_symtabLock)
             {
@@ -524,7 +551,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private PICBitFieldStorage _getBitField(string name)
+        private PICBitFieldStorage _getBitFieldByName(string name)
         {
             lock (_symtabLock)
             {
@@ -534,7 +561,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private PICBitFieldStorage _peekBitField(string name)
+        private PICBitFieldStorage _peekBitFieldByName(string name)
         {
             lock (_symtabLock)
             {
@@ -559,91 +586,89 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// This method sets the standard "core" registers as retrieved from the registers symbol table populated by the PIC definition.
+        /// This method sets each of the standard "core" registers of the PIC18.
+        /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition.
         /// </summary>
         /// <remarks>
         /// This permits to still get a direct reference to standard registers and keeps having the capability to get a dynamic definition
         /// </remarks>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
         private void _setCoreRegisters()
         {
 
-            STATUS = _getRegister("STATUS");
-            C = _getBitField("C");
-            DC = _getBitField("DC");
-            Z = _getBitField("Z");
-            OV = _getBitField("OV");
-            N = _getBitField("Z");
+            // *True* PIC registers
 
-            PD = _peekBitField("PD");
+            STATUS = _getRegisterByName("STATUS");
+            C = _getBitFieldByName("C");
+            DC = _getBitFieldByName("DC");
+            Z = _getBitFieldByName("Z");
+            OV = _getBitFieldByName("OV");
+            N = _getBitFieldByName("Z");
+
+            PD = _peekBitFieldByName("PD");
             if (PD == null)
-                PD = _peekBitField("nPD");
-            TO = _peekBitField("TO");
+                PD = _peekBitFieldByName("nPD");
+            TO = _peekBitFieldByName("TO");
             if (TO == null)
-                TO = _peekBitField("nTO");
+                TO = _peekBitFieldByName("nTO");
 
-            FSR2L = _getRegister("FSR2L");
-            FSR2H = _getRegister("FSR2H");
-            PLUSW2 = _getRegister("PLUSW2");
-            PREINC2 = _getRegister("PREINC2");
-            POSTDEC2 = _getRegister("POSTDEC2");
-            POSTINC2 = _getRegister("POSTINC2");
-            INDF2 = _getRegister("INDF2");
-            BSR = _getRegister("BSR");
-            FSR1L = _getRegister("FSR1L");
-            FSR1H = _getRegister("FSR1H");
-            PLUSW1 = _getRegister("PLUSW1");
-            PREINC1 = _getRegister("PREINC1");
-            POSTDEC1 = _getRegister("POSTDEC1");
-            POSTINC1 = _getRegister("POSTINC1");
-            INDF1 = _getRegister("INDF1");
-            WREG = _getRegister("WREG");
-            FSR0L = _getRegister("FSR0L");
-            FSR0H = _getRegister("FSR0H");
-            PLUSW0 = _getRegister("PLUSW0");
-            PREINC0 = _getRegister("PREINC0");
-            POSTDEC0 = _getRegister("POSTDEC0");
-            POSTINC0 = _getRegister("POSTINC0");
-            INDF0 = _getRegister("INDF0");
-            PRODL = _getRegister("PRODL");
-            PRODH = _getRegister("PRODH");
-            TABLAT = _getRegister("TABLAT");
-            TBLPTRL = _getRegister("TBLPTRL");
-            TBLPTRH = _getRegister("TBLPTRH");
-            TBLPTRU = _getRegister("TBLPTRU");
-            PCL = _getRegister("PCL");
-            PCLATH = _getRegister("PCLATH");
-            PCLATU = _getRegister("PCLATU");
-            STKPTR = _getRegister("STKPTR");
-            TOSL = _getRegister("TOSL");
-            TOSH = _getRegister("TOSH");
-            TOSU = _getRegister("TOSU");
+            FSR2L = _getRegisterByName("FSR2L");
+            FSR2H = _getRegisterByName("FSR2H");
+            PLUSW2 = _getRegisterByName("PLUSW2");
+            PREINC2 = _getRegisterByName("PREINC2");
+            POSTDEC2 = _getRegisterByName("POSTDEC2");
+            POSTINC2 = _getRegisterByName("POSTINC2");
+            INDF2 = _getRegisterByName("INDF2");
+            BSR = _getRegisterByName("BSR");
+            FSR1L = _getRegisterByName("FSR1L");
+            FSR1H = _getRegisterByName("FSR1H");
+            PLUSW1 = _getRegisterByName("PLUSW1");
+            PREINC1 = _getRegisterByName("PREINC1");
+            POSTDEC1 = _getRegisterByName("POSTDEC1");
+            POSTINC1 = _getRegisterByName("POSTINC1");
+            INDF1 = _getRegisterByName("INDF1");
+            WREG = _getRegisterByName("WREG");
+            FSR0L = _getRegisterByName("FSR0L");
+            FSR0H = _getRegisterByName("FSR0H");
+            PLUSW0 = _getRegisterByName("PLUSW0");
+            PREINC0 = _getRegisterByName("PREINC0");
+            POSTDEC0 = _getRegisterByName("POSTDEC0");
+            POSTINC0 = _getRegisterByName("POSTINC0");
+            INDF0 = _getRegisterByName("INDF0");
+            PRODL = _getRegisterByName("PRODL");
+            PRODH = _getRegisterByName("PRODH");
+            TABLAT = _getRegisterByName("TABLAT");
+            TBLPTRL = _getRegisterByName("TBLPTRL");
+            TBLPTRH = _getRegisterByName("TBLPTRH");
+            TBLPTRU = _getRegisterByName("TBLPTRU");
+            PCL = _getRegisterByName("PCL");
+            PCLATH = _getRegisterByName("PCLATH");
+            PCLATU = _getRegisterByName("PCLATU");
+            STKPTR = _getRegisterByName("STKPTR");
+            TOSL = _getRegisterByName("TOSL");
+            TOSH = _getRegisterByName("TOSH");
+            TOSU = _getRegisterByName("TOSU");
 
-            PROD = new PICRegisterStorage("PROD", PRODL.Number, PrimitiveType.Word16) { Address = PRODL.Address };
+            // *Pseudo* (joined) registers
+
+            PROD = _getRegisterByName("PROD");
+            FSR0 = _getRegisterByName("FSR0");
+            FSR1 = _getRegisterByName("FSR1");
+            FSR2 = _getRegisterByName("FSR2");
+            TOS = _getRegisterByName("TOS");
+            PCLAT = _getRegisterByName("PCLAT");
+            TBLPTR = _getRegisterByName("TBLPTR");
+
             PRODH.BitAddress = 8;
-            FSR0 = new PICRegisterStorage("FSR0", FSR0L.Number, PrimitiveType.Ptr16) { Address = FSR0L.Address };
             FSR0H.BitAddress = 8;
-            FSR1 = new PICRegisterStorage("FSR1", FSR1L.Number, PrimitiveType.Ptr16) { Address = FSR1L.Address };
             FSR1H.BitAddress = 8;
-            FSR2 = new PICRegisterStorage("FSR2", FSR2L.Number, PrimitiveType.Ptr16) { Address = FSR2L.Address };
             FSR2H.BitAddress = 8;
-            TOS = new PICRegisterStorage("TOS", TOSL.Number, PrimitiveType.Word32) { Address = TOSL.Address };
             TOSH.BitAddress = 8;
             TOSU.BitAddress = 16;
-            PC = new PICRegisterStorage("PC", PCL.Number, PrimitiveType.Ptr32) { Address = PCL.Address };
             PCLATH.BitAddress = 8;
             PCLATU.BitAddress = 16;
-            TBLPTR = new PICRegisterStorage("TBLPTR", TBLPTRL.Number, PrimitiveType.Word32) { Address = TBLPTRL.Address };
             TBLPTRH.BitAddress = 8;
             TBLPTRU.BitAddress = 16;
-
-            SubRegisters.Add(PROD, new Dictionary<uint, RegisterStorage> { { 0x0008, PRODL }, { 0x0808, PRODH } });
-            SubRegisters.Add(FSR0, new Dictionary<uint, RegisterStorage> { { 0x0008, FSR0L }, { 0x0808, FSR0H } });
-            SubRegisters.Add(FSR1, new Dictionary<uint, RegisterStorage> { { 0x0008, FSR1L }, { 0x0808, FSR1H } });
-            SubRegisters.Add(FSR2, new Dictionary<uint, RegisterStorage> { { 0x0008, FSR2L }, { 0x0808, FSR2H } });
-            SubRegisters.Add(TOS, new Dictionary<uint, RegisterStorage> { { 0x0008, TOSL }, { 0x0808, TOSH }, { 0x1008, TOSU } });
-            SubRegisters.Add(PC, new Dictionary<uint, RegisterStorage> { { 0x0008, PCL }, { 0x0808, PCLATH }, { 0x1008, PCLATU } });
-            SubRegisters.Add(TBLPTR, new Dictionary<uint, RegisterStorage> { { 0x0008, TBLPTRL }, { 0x0808, TBLPTRH }, { 0x1008, TBLPTRU } });
 
         }
 
@@ -673,14 +698,15 @@ namespace Reko.Arch.Microchip.PIC18
         {
             base.LoadRegisters(this);
             _setCoreRegisters();
+            HWStackDepth = PIC?.ArchDef.MemTraits.HWStackDepth ?? 0;
         }
 
         #endregion
 
-        #region IRegisterSymTable interface
+        #region IPICRegisterSymTable interface
 
         /// <summary>
-        /// Adds a PIC register. Returns null if no addition done.
+        /// Adds a PIC register to the registers symbol table. Returns null if no addition done.
         /// </summary>
         /// <param name="reg">The register.</param>
         /// <returns>
@@ -688,12 +714,16 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         public RegisterStorage AddRegister(PICRegisterStorage reg)
         {
-            RegAddress addr = (reg.IsNMMR ? new RegAddress(reg.SFRDef.NMMRID) : new RegAddress(reg.Address));
+            RegSizedAddress addr =
+                (reg.IsMemoryMapped
+                    ? new RegSizedAddress(reg.Address, reg.BitWidth)
+                    : new RegSizedAddress(reg.NMMRID, reg.BitWidth)
+                );
 
             lock (_symtabLock)
             {
                 if (UniqueRegNames.ContainsKey(reg.Name)) return null;      // Do not duplicate name
-                if (RegsByAddr.ContainsKey(addr)) return null;   // Do not duplicate register with same address
+                if (RegsByAddr.ContainsKey(addr)) return null;   // Do not duplicate register with same address and bit width
                 UniqueRegNames[reg.Name] = reg;
                 RegsByAddr[addr] = reg;
             }
@@ -754,25 +784,25 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The register or null.
         /// </returns>
-        public static RegisterStorage GetRegister(string name)
+        public static RegisterStorage GetRegisterByName(string name)
         {
-            PICRegisterStorage reg = _registers?._peekRegister(name);
+            PICRegisterStorage reg = _registers?._peekRegisterByName(name);
             if (reg == null)
                 return RegisterStorage.None;
             return reg;
         }
 
         /// <summary>
-        /// Gets a register by its address or <seealso cref="RegisterStorage.None"/>.
+        /// Gets a register by its address and bit width or <seealso cref="RegisterStorage.None"/>.
         /// </summary>
-        /// <param name="address">The data memory address.</param>
+        /// <param name="address">The data memory address with bit width.</param>
         /// <returns>
         /// The register or null.
         /// </returns>
-        public static RegisterStorage GetRegister(PICDataAddress address)
+        public static RegisterStorage GetRegisterBySizedAddr(PICDataAddress address, int bwidth)
         {
-            RegAddress addr = new RegAddress(address);
-            RegisterStorage reg = _registers?._peekRegister(addr);
+            var regaddr = new RegSizedAddress(address, bwidth);
+            RegisterStorage reg = _registers?._peekRegisterBySizedAddr(regaddr);
             if (reg == null)
                 return RegisterStorage.None;
             return reg;
@@ -785,10 +815,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The register or <seealso cref="RegisterStorage.None"/>.
         /// </returns>
-        public static RegisterStorage GetRegister(ushort uAddr)
+        public static RegisterStorage GetRegisterBySizedAddr(ushort uAddr, int bwidth)
         {
-            var regaddr = new RegAddress(uAddr);
-            RegisterStorage reg = _registers?._peekRegister(regaddr);
+            var regaddr = new RegSizedAddress(uAddr, bwidth);
+            RegisterStorage reg = _registers?._peekRegisterBySizedAddr(regaddr);
             if (reg == null)
                 return RegisterStorage.None;
             return reg;
@@ -801,9 +831,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The register or <seealso cref="RegisterStorage.None"/>.
         /// </returns>
-        public static RegisterStorage GetRegister(int number)
+        public static RegisterStorage GetRegisterByNum(int number)
         {
-            return _registers?._peekRegister(number) ?? RegisterStorage.None;
+            return _registers?._peekRegisterByNum(number) ?? RegisterStorage.None;
         }
 
         /// <summary>
@@ -813,9 +843,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The register or <seealso cref="RegisterStorage.None"/>.
         /// </returns>
-        public static RegisterStorage GetCoreRegister(int i)
+        public static RegisterStorage GetCoreRegisterByIdx(int i)
         {
-            return _registers?._peekCoreRegister(i) ?? RegisterStorage.None;
+            return _registers?._peekCoreRegisterByIdx(i) ?? RegisterStorage.None;
         }
 
         /// <summary>
@@ -825,9 +855,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The bit field or null.
         /// </returns>
-        public static FlagGroupStorage GetBitField(string name)
+        public static FlagGroupStorage GetBitFieldByName(string name)
         {
-            return _registers?._peekBitField(name);
+            return _registers?._peekBitFieldByName(name);
         }
 
         /// <summary>
@@ -840,7 +870,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The bit field or null.
         /// </returns>
-        public static FlagGroupStorage GetBitField(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
+        public static FlagGroupStorage GetBitFieldByAddr(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
         {
             return _registers?._peekBitField(regAddress, bitPos, bitWidth);
         }
@@ -855,10 +885,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The bit field or null.
         /// </returns>
-        public static FlagGroupStorage GetBitField(PICRegisterStorage reg, uint bitPos, uint bitWidth = 0)
+        public static FlagGroupStorage GetBitFieldByReg(PICRegisterStorage reg, uint bitPos, uint bitWidth = 0)
         {
             if (reg == null) return null;
-            return GetBitField(reg.Address, bitPos, bitWidth);
+            return GetBitFieldByAddr(reg.Address, bitPos, bitWidth);
         }
 
         /// <summary>
@@ -871,9 +901,9 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The bit field or null.
         /// </returns>
-        public static FlagGroupStorage GetBitField(string name, uint bitPos, uint bitWidth = 0)
+        public static FlagGroupStorage GetBitFieldByName(string name, uint bitPos, uint bitWidth = 0)
         {
-            return GetBitField(GetRegister(name) as PICRegisterStorage, bitPos, bitWidth);
+            return GetBitFieldByReg(GetRegisterByName(name) as PICRegisterStorage, bitPos, bitWidth);
         }
 
         /// <summary>
