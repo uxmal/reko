@@ -103,6 +103,20 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an array access of the array <paramref name="array"/> at
+        /// element # <paramref name="index"/>. The type of the referenced array
+        /// element 
+        /// </summary>
+        /// <param name="elementType">The data type of the accessed element.</param>
+        /// <param name="array">Expression representing the array, typically a pointer.</param>
+        /// <param name="index">Expression for the index, which should be integral.</param>
+        /// <returns>An array access.</returns>
+        public ArrayAccess ARef(DataType elementType, Expression array, Expression index)
+        {
+            return new ArrayAccess(elementType, array, index);
+        }
+
+        /// <summary>
         /// Short-circuiting 'and' ('&&' in C family of languages)
         /// </summary>
         /// <param name="a">Antecedent expression.</param>
