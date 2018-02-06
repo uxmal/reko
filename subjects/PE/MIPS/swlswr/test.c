@@ -88,7 +88,7 @@ void fn000112A8(UINT r4, int32 r5, int32 r6, word32 dwArg00, word32 dwArg04, wor
 		fn00011460();
 		TerminateProcess((void *) 66, r4);
 	}
-	else if (globals->t13040 == 0x00)
+	else if (globals->ptr13040 == null)
 	{
 l00011374:
 		fn0001147C(&globals->dw12010, &globals->dw12014, r4, r5);
@@ -97,17 +97,17 @@ l00011374:
 	{
 		do
 		{
-			globals->t1303C = (word32) globals->t1303C - 0x04;
-			Eq_183 r9_31 = globals->t1303C;
-			if ((word32) (r9_31 < globals->t13040) != 0x00)
+			globals->ptr1303C = (<anonymous> **) ((char *) globals->ptr1303C - 0x04);
+			<anonymous> ** r9_31 = globals->ptr1303C;
+			if ((word32) (r9_31 < globals->ptr13040) != 0x00)
 			{
-				free(globals->t13040);
-				globals->t1303C.u0 = 0x00;
-				globals->t13040 = globals->t1303C;
+				free(globals->ptr13040);
+				globals->ptr1303C = null;
+				globals->ptr13040 = globals->ptr1303C;
 				goto l00011374;
 			}
-		} while (*globals->t1303C == null);
-		<anonymous> * r8_40 = *globals->t1303C;
+		} while (*globals->ptr1303C == null);
+		<anonymous> * r8_40 = *globals->ptr1303C;
 		word32 sp_41;
 		word32 ra_42;
 		word32 r6_43;
@@ -174,13 +174,13 @@ void fn000114E4()
 // 0001152C: Register (ptr code) fn0001152C(Register (ptr code) r2, Stack word32 dwArg00)
 code * fn0001152C(code * r2, word32 dwArg00)
 {
-	Eq_183 r8_10 = globals->t13040;
+	<anonymous> ** r8_10 = globals->ptr13040;
 	struct Eq_310 * sp_111 = fp + -0x0038;
 	Eq_10 dwLoc20_138 = 0x00;
-	Eq_316 r8_19 = globals->t1303C - r8_10;
+	Eq_316 r8_19 = globals->ptr1303C - r8_10;
 	if (r8_19 < 0x00)
 		return sp_111->ptr002C;
-	if (r8_10 != 0x00)
+	if (r8_10 != null)
 	{
 		word32 ra_132;
 		word32 r4_133;
@@ -193,7 +193,7 @@ code * fn0001152C(code * r2, word32 dwArg00)
 	}
 	if ((word32) (dwLoc20_138 < (word32) r8_19 + 0x04) != 0x00)
 	{
-		if (r8_10 == 0x00)
+		if (r8_10 == null)
 		{
 			malloc(0x0010);
 			sp_111 = fp + ~0x3B;
@@ -208,24 +208,24 @@ code * fn0001152C(code * r2, word32 dwArg00)
 				realloc(r8_10, dwLoc18_100);
 				sp_111 = fp + ~0x3B;
 			}
-			if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
+			if (sp_111->ptr0014 == null && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
 			{
 				sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
-				sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
+				sp_111->ptr0014 = realloc(sp_111->ptr001C, sp_111->t0024);
 			}
 		}
-		if (sp_111->t0014 == 0x00)
+		if (sp_111->ptr0014 == null)
 		{
 			sp_111->ptr002C = null;
 			return sp_111->ptr002C;
 		}
-		sp_111->t0028 = (word32) sp_111->t0014 + ((sp_111->t0028 - sp_111->t001C >> 0x02) << 0x02);
-		sp_111->t001C = sp_111->t0014;
+		sp_111->ptr0028 = (<anonymous> **) ((char *) sp_111->ptr0014 + ((sp_111->ptr0028 - sp_111->ptr001C >> 0x02) << 0x02));
+		sp_111->ptr001C = sp_111->ptr0014;
 	}
-	*sp_111->t0028 = sp_111->ptr0038;
-	sp_111->t0028 = (word32) sp_111->t0028 + 0x04;
-	globals->t1303C = sp_111->t0028;
-	globals->t13040 = sp_111->t001C;
+	*sp_111->ptr0028 = (<anonymous> **) sp_111->ptr0038;
+	sp_111->ptr0028 = (<anonymous> **) ((char *) sp_111->ptr0028 + 0x04);
+	globals->ptr1303C = sp_111->ptr0028;
+	globals->ptr13040 = sp_111->ptr001C;
 	sp_111->ptr002C = sp_111->ptr0038;
 	return sp_111->ptr002C;
 }

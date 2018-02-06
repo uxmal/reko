@@ -2208,9 +2208,9 @@ void request_save_line(Eq_3352 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 	{
 		r4->dw0558 = r4->dw0558 + 0x01;
 		malloc(r4_86);
-		r4->a0004->t0000.a0004[r4->dw0558 * 0x04 + 0x040C].t0000.u1 = r2_97;
+		r4->a0004->dw0000.a0004[r4->dw0558 * 0x04 + 0x040C].dw0000 = r2_97;
 		int32 r3_114 = (r4->dw0558 << 0x02) + 1040;
-		Eq_3411 r2_117 = (&r4->a0004->t0000)[r3_114 / 0x055C];
+		word32 r2_117 = (&r4->a0004->dw0000)[r3_114 / 0x055C];
 		if (r2_117 == 0x00)
 		{
 			<anonymous> * r25_124 = globals->ptr100009EC;
@@ -2230,7 +2230,7 @@ void request_save_line(Eq_3352 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 		}
 		else
 		{
-			(&r4->a0004->t0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_3352) (byte) (word32) bArg0B;
+			(&r4->a0004->dw0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_3352) (byte) (word32) bArg0B;
 			memcpy(r4_159, r5_160, r6_161);
 		}
 	}
@@ -5606,9 +5606,9 @@ void __unpack_d(Eq_8236 * r4, Eq_8237 * r5)
 				r9_38 = r9_38 << 0x01;
 				if ((word32) (0x0FFFFFFF < r8_37) != 0x00)
 					break;
-				r5->t0008 = (word32) r2_58.u0 - 0x01;
+				r5->t0008 = (word32) r2_58 - 0x01;
 			}
-			r5->t0008 = (word32) r2_58.u0 - 0x01;
+			r5->t0008 = (word32) r2_58 - 0x01;
 		}
 		else
 			r5->dw0000 = 0x03;

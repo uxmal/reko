@@ -6,5 +6,5 @@ globals_t: (in globals : ptr32)
   OrigDataType: 
 T_2: (in 0x10001200 : ptr32)
   Class: Eq_2
-  DataType: (ptr real32)
-  OrigDataType: (ptr real32)
+  DataType: ptr32
+  OrigDataType: ptr32

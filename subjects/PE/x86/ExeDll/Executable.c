@@ -580,12 +580,12 @@ void fn00401774(word32 dwArg00, Eq_118 * dwArg04)
 bool fn0040188F()
 {
 	Eq_1105 eax_4 = GetModuleHandleW(null);
-	if (eax_4 == null || eax_4->unused != 23117)
+	if (eax_4 == 0x00 || *eax_4 != 23117)
 		return 0x00;
-	struct Eq_1119 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
-	if (eax_42->dw0000 != 0x4550 || (eax_42->w0018 != 0x010B || eax_42->dw0074 <= 0x0E))
+	word32 eax_42 = Mem0[eax_4 + 0x3C:word32] + eax_4;
+	if (*eax_42 != 0x4550 || (*((word32) eax_42 + 0x0018) != 0x010B || *((word32) eax_42 + 116) <= 0x0E))
 		return 0x00;
-	return eax_42->dw00E8 != 0x00;
+	return *((word32) eax_42 + 232) != 0x00;
 }
 
 // 004018D3: void fn004018D3()

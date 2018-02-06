@@ -40,8 +40,8 @@ T_5: (in 0x00000000 : word32)
   OrigDataType: word32
 T_6: (in this + 0x00000000 : word32)
   Class: Eq_6
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr word32)
+  OrigDataType: (ptr T_7)
 T_7: (in Mem0[this + 0x00000000:word32] : word32)
   Class: Eq_7
   DataType: word32

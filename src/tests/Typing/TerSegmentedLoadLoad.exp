@@ -46,8 +46,8 @@ T_4: (in 0x0000 : word16)
   OrigDataType: word16
 T_5: (in bx + 0x0000 : word16)
   Class: Eq_5
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) (memptr (ptr Eq_2) word16))
+  OrigDataType: (memptr T_2 T_6)
 T_6: (in Mem0[ds:bx + 0x0000:word16] : word16)
   Class: Eq_6
   DataType: (memptr (ptr Eq_2) word16)
@@ -58,8 +58,8 @@ T_7: (in 0x0000 : word16)
   OrigDataType: word16
 T_8: (in Mem0[ds:bx + 0x0000:word16] + 0x0000 : word16)
   Class: Eq_8
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) word16)
+  OrigDataType: (memptr T_2 T_9)
 T_9: (in Mem0[ds:Mem0[ds:bx + 0x0000:word16] + 0x0000:word16] : word16)
   Class: Eq_9
   DataType: word16

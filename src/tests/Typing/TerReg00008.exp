@@ -112,8 +112,8 @@ T_13: (in 0x0000 : word16)
   OrigDataType: word16
 T_14: (in si_10 + 0x0000 : word16)
   Class: Eq_14
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_12) word16)
+  OrigDataType: (memptr T_12 T_15)
 T_15: (in Mem12[0x5CE1:si_10 + 0x0000:word16] : word16)
   Class: Eq_11
   DataType: word16
@@ -144,12 +144,12 @@ T_21: (in Mem16[ds:0x9A26:word16] : word16)
   OrigDataType: word16
 T_22: (in 0x0026 : word16)
   Class: Eq_22
-  DataType: int16
-  OrigDataType: int16
+  DataType: mp16
+  OrigDataType: mp16
 T_23: (in si_10 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 0026 (0 word16 w0000)))
+  OrigDataType: mp16
 T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16

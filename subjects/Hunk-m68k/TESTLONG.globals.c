@@ -4,35 +4,7 @@
 
 #include "TESTLONG.h"
 
-struct Eq_128 * g_ptr0000;
-Eq_933 g_t0001;
-word32 g_a0008[];
-ui32 g_a0010[];
-union Eq_32 g_u12BC = 
-	{
-		0x64
-	};
-Eq_4522 g_a2815[] = 
-	{
-	};
-ptr32 g_ptr3D70 = 0x00000000;
-struct Eq_5 * g_ptr3D74 = &g_t4000;
-union Eq_32 * g_ptr3D78 = null;
-struct Eq_70 * g_ptr3D7C = &g_t10202;
-struct Eq_70 * g_ptr3D80 = &g_t3030303;
-int32 g_dw3D84 = 67372036;
-int32 g_dw3D88 = 67372036;
-ui32 g_dw3D8C = 0x05050505;
-word32 g_dw3D98 = 0x05050505;
-ptr32 g_ptr3D9C = 0x06060606;
-word32 g_dw3DA0 = 0x06060606;
-struct Eq_3071 * g_ptr3DA4 = &g_t6060606;
-word32 g_dw3DA8 = 0x06060606;
-Eq_3619 g_a3DAC[] = 
-	{
-	};
-Eq_5 g_t4000;
-Eq_70 g_t10202;
-Eq_70 g_t3030303;
-Eq_3071 g_t6060606;
+struct <anonymous> * g_ptr0000;
+Eq_353 g_t0008;
+Eq_157 g_t0010;
 

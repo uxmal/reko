@@ -72,8 +72,8 @@ T_10: (in 0x0004 : word16)
   OrigDataType: word16
 T_11: (in bx + 0x0004 : word16)
   Class: Eq_11
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_3) (memptr (ptr Eq_3) Eq_2))
+  OrigDataType: (memptr T_3 T_12)
 T_12: (in Mem0[ds:bx + 0x0004:word16] : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_3) Eq_2)

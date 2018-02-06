@@ -667,50 +667,50 @@ word32 fn000000014000164C(up32 ecx, ui64 r8, ptr64 r13, word128 xmm1, word64 qwA
 	}
 }
 
-// 0000000140001718: Register (ptr Eq_1032) fn0000000140001718(Register (ptr (ptr code)) rcx)
-Eq_1032 * fn0000000140001718(code * * rcx)
+// 0000000140001718: Register Eq_1032 fn0000000140001718(Register (ptr (ptr code)) rcx)
+Eq_1032 fn0000000140001718(code * * rcx)
 {
-	struct Eq_1032 * rax_101;
+	Eq_1032 rax_101;
 	word32 * rax_33 = (word32 *) 23117;
 	if (globals->w40000000 == 23117)
 	{
 		rax_33 = (int64) globals->dw4000003C;
 		word64 rcx_51 = rax_33 + 0x0000000140000000;
-		if (rcx_51->dw0000 == 0x4550)
+		if (*rcx_51 == 0x4550)
 		{
 			rax_33 = (word32 *) 0x020B;
-			if (rcx_51->w0018 == 0x020B)
+			if (*((word64) rcx_51 + 0x0018) == 0x020B)
 			{
-				struct Eq_1063 * rax_61 = DPB(0x020B, (word32) rcx_51->w0014, 0);
+				Eq_1063 rax_61 = DPB(0x020B, (word32) *((word64) rcx_51 + 0x0014), 0);
 				word64 rdx_116 = rcx_51 + 0x18 + rax_61;
-				struct Eq_1074 * rax_114 = DPB(rax_61, (word32) rcx_51->w0006, 0);
-				struct Eq_1074 * r8_59 = rcx - 0x140000000;
+				Eq_1074 rax_114 = DPB(rax_61, (word32) *((word64) rcx_51 + 0x06), 0);
+				Eq_1074 r8_59 = rcx - 0x140000000;
 				word64 r9_69 = rdx_116 + (rax_114 * 0x05) * 0x08;
 				while (rdx_116 != r9_69)
 				{
-					struct Eq_1074 * rcx_109 = (uint64) rdx_116->dw000C;
+					Eq_1074 rcx_109 = (uint64) rdx_116.u0[0x03];
 					word32 ecx_110 = (word32) rcx_109;
 					if (r8_59 >= rcx_109)
 					{
-						rax_114 = (uint64) ((word32) (uint64) rdx_116->dw0008 + ecx_110);
+						rax_114 = (uint64) ((word32) (uint64) rdx_116.u0[0x02] + ecx_110);
 						if (r8_59 < rax_114)
 							goto l000000014000178F;
 					}
 					rdx_116 = rdx_116 + 0x28;
 				}
-				rdx_116 = null;
+				rdx_116.u0 = 0x00;
 l000000014000178F:
-				if (rdx_116 == null)
-					rax_101 = (struct Eq_1032 *) DPB(rax_114, 0x00, 0);
-				else if (rdx_116->dw0024 < 0x00)
-					rax_101 = (struct Eq_1032 *) DPB(rax_114, 0x00, 0);
+				if (rdx_116 == 0x00)
+					rax_101 = DPB(rax_114, 0x00, 0);
+				else if (rdx_116.u0[0x09] < 0x00)
+					rax_101 = DPB(rax_114, 0x00, 0);
 				else
-					rax_101 = (struct Eq_1032 *) DPB(rax_114, 0x01, 0);
+					rax_101 = DPB(rax_114, 0x01, 0);
 				return rax_101;
 			}
 		}
 	}
-	rax_101 = (struct Eq_1032 *) DPB(rax_33, 0x00, 0);
+	rax_101 = DPB(rax_33, 0x00, 0);
 	return rax_101;
 }
 

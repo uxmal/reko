@@ -38,8 +38,8 @@ T_3: (in 0x00000000 : word32)
   OrigDataType: word32
 T_4: (in v + 0x00000000 : word32)
   Class: Eq_4
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr real32)
+  OrigDataType: (ptr T_5)
 T_5: (in Mem0[v + 0x00000000:real32] : real32)
   Class: Eq_5
   DataType: real32
@@ -50,8 +50,8 @@ T_6: (in 0x00000004 : word32)
   OrigDataType: word32
 T_7: (in v + 0x00000004 : word32)
   Class: Eq_7
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr real32)
+  OrigDataType: (ptr T_8)
 T_8: (in Mem0[v + 0x00000004:real32] : real32)
   Class: Eq_8
   DataType: real32
@@ -62,8 +62,8 @@ T_9: (in 0x00000008 : word32)
   OrigDataType: word32
 T_10: (in v + 0x00000008 : word32)
   Class: Eq_10
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr real32)
+  OrigDataType: (ptr T_11)
 T_11: (in Mem0[v + 0x00000008:real32] : real32)
   Class: Eq_11
   DataType: real32

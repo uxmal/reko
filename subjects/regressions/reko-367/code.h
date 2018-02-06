@@ -477,8 +477,8 @@ T_110: (in 0x00000000 : word32)
   OrigDataType: word32
 T_111: (in 0x80000538 + 0x00000000 : word32)
   Class: Eq_111
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr real96)
+  OrigDataType: (ptr T_112)
 T_112: (in Mem0[0x80000538 + 0x00000000:real96] : real96)
   Class: Eq_112
   DataType: real96

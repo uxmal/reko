@@ -6,22 +6,7 @@
 
 word16 g_wFFFF95B3;
 cui16 * g_ptr0000 = null;
-cui16 ***** g_ptr0002 = null;
-struct Eq_2072 g_t0004 = 
-	{
-		0x0000,
-		null,
-	};
-struct Eq_2072 g_t000A = 
-	{
-		0x0000,
-		null,
-	};
-struct Eq_2072 g_t0010 = 
-	{
-		0x0000,
-		null,
-	};
+cui16 **** g_ptr0002 = null;
 word16 g_w001E = 0x0000;
 word16 g_w0020 = 0x1DAE;
 ptr16 g_ptr0022 = 0x0200;
@@ -57,11 +42,6 @@ union Eq_214 g_u0048 =
 union Eq_214 g_u004A = 
 	{
 		0x00
-	};
-struct Eq_2072 g_t0050 = 
-	{
-		0x0000,
-		null,
 	};
 union Eq_214 g_u0062 = 
 	{
@@ -416,7 +396,7 @@ Eq_1606 g_t57E8 =
 		},
 		
 		{
-			false
+			null
 		},
 		0x00,
 		0x00,

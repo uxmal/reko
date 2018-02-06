@@ -15,12 +15,6 @@ word32 g_dw1201C = 0x00000000;
 ui32 g_dw13030 = 0x0000B064;
 ui32 g_dw13034 = 0xFFFF4F9B;
 byte g_b13038 = 0x00;
-Eq_183 g_t1303C = 
-	{
-		null
-	};
-Eq_183 g_t13040 = 
-	{
-		null
-	};
+<anonymous> ** g_ptr1303C = null;
+<anonymous> ** g_ptr13040 = null;
 

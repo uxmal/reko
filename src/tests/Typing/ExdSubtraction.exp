@@ -22,8 +22,8 @@ T_5: (in 0x00000000 : word32)
   OrigDataType: word32
 T_6: (in p - 0x00000004 + 0x00000000 : word32)
   Class: Eq_6
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr T_7)
+  OrigDataType: (ptr T_7)
 T_7: (in Mem0[p - 0x00000004 + 0x00000000:word32] : word32)
   Class: Eq_7
   DataType: word32

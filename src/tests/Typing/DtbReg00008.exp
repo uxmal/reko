@@ -51,13 +51,13 @@ Eq_12: (ptr (segment (0 (arr T_26) a0000)))
 	T_12 (in 0x5CE1 : selector)
 Eq_13: word16
 	T_13 (in 0x0000 : word16)
-Eq_14: word16
+Eq_14: (memptr T_12 T_15)
 	T_14 (in si_10 + 0x0000 : word16)
 Eq_17: (memptr T_2 (struct (0 T_6 t0000)))
 	T_17 (in 0x9A26 : word16)
 Eq_19: word16
 	T_19 (in 0x0001 : word16)
-Eq_22: int16
+Eq_22: mp16
 	T_22 (in 0x0026 : word16)
 Eq_25: bool
 	T_25 (in v9_15 != 0x0000 : bool)
@@ -118,8 +118,8 @@ T_13: (in 0x0000 : word16)
   OrigDataType: word16
 T_14: (in si_10 + 0x0000 : word16)
   Class: Eq_14
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr T_12 T_15)
+  OrigDataType: (memptr T_12 T_15)
 T_15: (in Mem12[0x5CE1:si_10 + 0x0000:word16] : word16)
   Class: Eq_11
   DataType: word16
@@ -150,12 +150,12 @@ T_21: (in Mem16[ds:0x9A26:word16] : word16)
   OrigDataType: word16
 T_22: (in 0x0026 : word16)
   Class: Eq_22
-  DataType: int16
-  OrigDataType: int16
+  DataType: mp16
+  OrigDataType: mp16
 T_23: (in si_10 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr T_12 (struct 0026 (0 word16 w0000)))
-  OrigDataType: (memptr T_12 (struct 0026 (0 word16 w0000)))
+  OrigDataType: mp16
 T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16

@@ -443,10 +443,10 @@ Eq_2 * fn0040105C(word32 r0, Eq_2 * r2, Eq_242 * r3, word32 r25, ptr32 r26, Eq_1
 			r3_101->dw0004 = r3_101->dw0004 & -0x03 | 0x01;
 	}
 	struct Eq_242 * r5_80 = r31_103->ptr0000;
-	struct Eq_1125 * r6_81 = *((char *) r2 + 0x0068);
+	Eq_1125 r6_81 = *((char *) r2 + 0x0068);
 	ui32 r4_82 = r31_103->dw0004 & r29_102;
 	r31_103->dw0004 = r4_82;
-	r6_81->ptr0004 = (struct Eq_242 ************) r5_80;
+	*((word32) r6_81 + 0x04) = r5_80;
 	word32 r3_86;
 	*r3Out = (r4_82 & r29_102) + 0x08;
 	word32 r29_89;
@@ -829,8 +829,8 @@ word32 fn004017F0(Eq_2 * r2, Eq_242 * r3, word32 dwArg08, ptr32 & r2Out, ptr32 &
 word32 fn004019CC(Eq_2 * r2, word32 dwArg08, ptr32 & r2Out, ptr32 & r3Out)
 {
 	*r2Out = r2;
-	struct Eq_1125 * r31_8 = *((char *) r2 + 0x0068);
-	if (Test(EQ,cond(r31_8->ptr0008)))
+	Eq_1125 r31_8 = *((char *) r2 + 0x0068);
+	if (Test(EQ,cond(*((word32) r31_8 + 0x08))))
 	{
 		word32 r2_39;
 		word32 r3_40;
@@ -842,8 +842,8 @@ word32 fn004019CC(Eq_2 * r2, word32 dwArg08, ptr32 & r2Out, ptr32 & r3Out)
 			return r0;
 		}
 	}
-	struct Eq_242 * r4_30 = r31_8->ptr0008;
-	r31_8->ptr0008 = (struct Eq_242 ************) r4_30->ptr0000;
+	struct Eq_242 * r4_30 = *((word32) r31_8 + 0x08);
+	*((word32) r31_8 + 0x08) = r4_30->ptr0000;
 	word32 r3_35;
 	*r3Out = r4_30;
 	return r0;
@@ -1121,9 +1121,9 @@ word32 fn00401ED4(Eq_2 * r2, ui32 r3, ui32 r30, word32 r31, word32 dwArg08, ptr3
 // 00401F40: Register (ptr Eq_242) fn00401F40(Register (ptr Eq_2) r2, Register (ptr Eq_242) r3)
 Eq_242 * fn00401F40(Eq_2 * r2, Eq_242 * r3)
 {
-	struct Eq_1125 * r7_4 = *((char *) r2 + 0x0068);
+	Eq_1125 r7_4 = *((char *) r2 + 0x0068);
 	struct Eq_242 * r4_12 = null;
-	struct Eq_242 * r11_106 = r7_4->ptr0004;
+	struct Eq_242 * r11_106 = *((word32) r7_4 + 0x04);
 	if (Test(NE,cond(Mem0[r7_4 + 0x04:word32] - (r7_4 + 0x0C))))
 	{
 		do
@@ -1139,18 +1139,18 @@ Eq_242 * fn00401F40(Eq_2 * r2, Eq_242 * r3)
 					if (Test(NE,cond((r9_112 & 0x03) - 0x01)))
 						goto l00401FC0;
 					r11_106->ptr0000 = r10_110->ptr0000;
-					r10_110->ptr0000 = (struct Eq_242 *) r7_4->ptr0008;
-					r7_4->ptr0008 = (struct Eq_242 ************) r10_110;
+					r10_110->ptr0000 = (struct Eq_242 *) *((word32) r7_4 + 0x08);
+					*((word32) r7_4 + 0x08) = r10_110;
 				}
 				r4_12 = r11_106;
 				return r4_12;
 			}
 l00401FC0:
 			r11_106 = r11_106->ptr0000;
-		} while (Test(NE,cond(r11_106 - ((char *) (&r7_4->ptr0008) + 0x04))));
+		} while (Test(NE,cond(r11_106 - ((word32) r7_4 + 0x0C))));
 	}
-	struct Eq_242 * r11_34 = r7_4->ptr0000;
-	if (Test(NE,cond(r7_4->ptr0004 - r11_34)))
+	struct Eq_242 * r11_34 = *r7_4;
+	if (Test(NE,cond(*((word32) r7_4 + 0x04) - r11_34)))
 	{
 		do
 		{
@@ -1168,17 +1168,17 @@ l00401FC0:
 					if (Test(NE,cond((r9_61 & 0x03) - 0x01)))
 						goto l00402064;
 					r11_34->ptr0000 = r10_59->ptr0000;
-					r10_59->ptr0000 = (struct Eq_242 *) r7_4->ptr0008;
-					r7_4->ptr0008 = (struct Eq_242 ************) r10_59;
-				} while (Test(NE,cond(r7_4->ptr0004 - r10_59)));
-				r7_4->ptr0004 = (struct Eq_242 ************) r11_34;
+					r10_59->ptr0000 = (struct Eq_242 *) *((word32) r7_4 + 0x08);
+					*((word32) r7_4 + 0x08) = r10_59;
+				} while (Test(NE,cond(*((word32) r7_4 + 0x04) - r10_59)));
+				*((word32) r7_4 + 0x04) = r11_34;
 				if (Test(GE,cond((r11_34->ptr0000->dw0004 & -0x04) - (r11_34->dw0004 & -0x04) + -0x08 - r3)))
 					r4_12 = r11_34;
 				return r4_12;
 			}
 l00402064:
 			r11_34 = r11_34->ptr0000;
-		} while (Test(NE,cond(r7_4->ptr0004 - r11_34)));
+		} while (Test(NE,cond(*((word32) r7_4 + 0x04) - r11_34)));
 	}
 	return r4_12;
 }
@@ -1703,9 +1703,9 @@ Eq_2 * fn00402BA0(Eq_2 * r2, Eq_18 r3, Eq_242 * r29, int32 r30, Eq_18 r31, byte 
 		ui32 r10_65 = *r10_60;
 		if (Test(NE,cond(r10_65 - -0x01)))
 		{
-			struct Eq_2018 * r9_68 = *((char *) r2 + 0x0068);
-			if (Test(GT,cond(r9_68->ptr0004->ptr0004 - r11_63)) && Test(GE,cond(((((r31_49->ptr0000)->ptr0004 & r30_51) - (r11_63 & r30_51)) + -0x08) - r10_65)))
-				r9_68->ptr0004 = r31_49;
+			Eq_2018 r9_68 = *((char *) r2 + 0x0068);
+			if (Test(GT,cond(*((word32) *((word32) r9_68 + 0x04) + 0x04) - r11_63)) && Test(GE,cond(((((r31_49->ptr0000)->ptr0004 & r30_51) - (r11_63 & r30_51)) + -0x08) - r10_65)))
+				*((word32) r9_68 + 0x04) = r31_49;
 		}
 	}
 	word32 r30_39;
@@ -1766,35 +1766,35 @@ Eq_2 * fn00402CE0(Eq_2 * r2, Eq_2505 * r3, ui32 r4, Eq_1027 * r26, int32 r27, Eq
 				dwLoc28_124 = fp + -0x0034;
 				r30_159 = r3_41;
 			}
-			struct Eq_2018 * r31_175;
+			Eq_2018 r31_175;
 			r30_159->ptr0004 = r3;
 			r30_159->ptr0004 = r3 & -0x03 | 0x01;
 			r3->ptr0000 = r30_159;
 			if (Test(LT,cond(r3_153 - 0x01)))
 			{
 				fn00402DEC(r3_153 + 0x03 << 0x02, lr);
-				r31_175 = (struct Eq_2018 *) *((char *) r2_136 + 0x0068);
-				r31_175->dw0010 = r3 + r4 / 0x04;
-				fn00403070(r30_159, r4, &r31_175->dw0008 + 0x01, fp + -0x0028);
-				r31_175->ptr0004 = r30_159;
-				r31_175->ptr0000 = r30_159;
+				r31_175 = *((char *) r2_136 + 0x0068);
+				*((word32) r31_175 + 0x0010) = r3 + r4 / 0x04;
+				fn00403070(r30_159, r4, (word32) r31_175 + 0x0C, fp + -0x0028);
+				*((word32) r31_175 + 0x04) = r30_159;
+				*r31_175 = r30_159;
 				goto l00402FB8;
 			}
 			if (Test(EQ,cond((dwLoc24->ptr0004 & 0x03) - 0x02)))
 			{
-				r31_175 = (struct Eq_2018 *) *((char *) r2_136 + 0x0068);
+				r31_175 = *((char *) r2_136 + 0x0068);
 				struct Eq_4101 * r5_234 = dwLoc24->ptr0000;
 				if (Test(EQ,cond(r5_234 - (r31_175 + 0x0C))))
 				{
 					ui32 r11_258 = (r30_159->ptr0004 & -0x04) + r4;
-					if (Test(LT,cond(r31_175->dw0010 - r11_258)))
-						r31_175->dw0010 = r11_258;
+					if (Test(LT,cond(*((word32) r31_175 + 0x0010) - r11_258)))
+						*((word32) r31_175 + 0x0010) = r11_258;
 				}
 				fn00403070(r30_159, r4, r5_234, fp + -0x0028);
 				fn00403070(dwLoc24, (dwLoc24->ptr0000->ptr0004 & -0x04) - (dwLoc24->ptr0004 & -0x04), r30_159, fp + -0x0028);
 l00402FB8:
-				if (Test(GT,cond((r31_175->ptr0004->ptr0004 & -0x04) - r3)) && Test(GE,cond(((((r30_159->ptr0000)->ptr0004 & -0x04) - (r30_159->ptr0004 & -0x04)) + -0x08) - *(*((char *) r2_136 + 220)))))
-					r31_175->ptr0004 = r30_159;
+				if (Test(GT,cond((*((word32) *((word32) r31_175 + 0x04) + 0x04) & -0x04) - r3)) && Test(GE,cond(((((r30_159->ptr0000)->ptr0004 & -0x04) - (r30_159->ptr0004 & -0x04)) + -0x08) - *(*((char *) r2_136 + 220)))))
+					*((word32) r31_175 + 0x04) = r30_159;
 				word32 r3_201;
 				*r3Out = 0x00;
 				return r2_136;
@@ -1805,11 +1805,11 @@ l00403014:
 	int32 * r11_125 = *dwLoc28_124;
 	if (Test(NE,cond(r11_125)))
 	{
-		struct Eq_2018 * r4_122 = *((char *) r2_136 + 0x0068);
+		Eq_2018 r4_122 = *((char *) r2_136 + 0x0068);
 		do
 		{
-			*r11_125 = r4_122->dw0008;
-			r4_122->dw0008 = *dwLoc28_124;
+			*r11_125 = (int32) *((word32) r4_122 + 0x08);
+			*((word32) r4_122 + 0x08) = *dwLoc28_124;
 			word32 * r5_130 = dwLoc28_124 + 0x01;
 			r11_125 = *r5_130;
 			dwLoc28_124 = r5_130;
@@ -2154,17 +2154,17 @@ Eq_2 * fn00403618(Eq_2 * r2, Eq_18 r3, Eq_242 * r29, Eq_242 * r30, Eq_18 r31, by
 	*r29Out = r29;
 	*r30Out = r30;
 	*r31Out = r31;
-	struct Eq_5184 * r8_6 = *((char *) r2 + 0x00EC);
+	Eq_5184 r8_6 = *((char *) r2 + 0x00EC);
 	int32 r10_12 = 0x00;
-	struct Eq_5184 * r11_13 = r8_6;
-	while (Test(NE,cond(r11_13->a0000[0x00] - r3)))
+	Eq_5184 r11_13 = r8_6;
+	while (Test(NE,cond(*r11_13 - r3)))
 	{
-		r11_13 = r11_13 + 0x01;
+		r11_13 = (word32) r11_13 + 0x08;
 		r10_12 = r10_12 + 0x01;
 		if (Test(GE,cond(r11_13 - (r8_6 + 88))))
 			break;
 	}
-	struct Eq_5191 * r11_20 = r10_12 << 0x03;
+	Eq_5191 r11_20 = r10_12 << 0x03;
 	if (Test(EQ,cond(Mem0[r8_6 + r11_20:word32] - r3)))
 	{
 		word32 r4_48 = Mem0[r8_6 + 0x04 + r11_20:word32];
@@ -2187,13 +2187,13 @@ Eq_2 * fn00403618(Eq_2 * r2, Eq_18 r3, Eq_242 * r29, Eq_242 * r30, Eq_18 r31, by
 // 004036B0: Register (ptr Eq_2505) fn004036B0(Register (ptr Eq_2) r2, Register (ptr Eq_2505) r3, Register (ptr (ptr Eq_4101)) r4)
 Eq_2505 * fn004036B0(Eq_2 * r2, Eq_2505 * r3, Eq_4101 * * r4)
 {
-	struct Eq_2018 * r10_4 = *((char *) r2 + 0x0068);
-	struct Eq_4101 * r11_5 = r10_4->ptr0000;
+	Eq_2018 r10_4 = *((char *) r2 + 0x0068);
+	struct Eq_4101 * r11_5 = *r10_4;
 	if (Test(EQ,cond(r11_5 - (r10_4 + 0x0C))))
 		return (struct Eq_2505 *) -0x03;
 	if (Test(GT,cond((r11_5->ptr0004 & -0x04) - r3)))
 		return (struct Eq_2505 *) -0x01;
-	if (Test(LE,cond((r10_4->dw0010 & -0x04) - r3)))
+	if (Test(LE,cond((*((word32) r10_4 + 0x0010) & -0x04) - r3)))
 		return (struct Eq_2505 *) -0x02;
 	struct Eq_4101 * r10_26 = r11_5;
 	while (true)

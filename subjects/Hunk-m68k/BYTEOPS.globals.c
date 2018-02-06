@@ -5,9 +5,16 @@
 #include "BYTEOPS.h"
 
 struct Eq_127 * g_ptr0000;
-Eq_822 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
+struct Eq_109 g_t1DB8 = 
+	{
+		0x3435,
+	};
+struct Eq_109 g_t1DC8 = 
+	{
+		0x242F,
+	};
 ptr32 g_ptr2B88 = 0x00000000;
 struct Eq_4 * g_ptr2B8C = &g_t4000;
 struct Eq_31 * g_ptr2B90 = null;

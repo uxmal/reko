@@ -1065,7 +1065,7 @@ Eq_145 * fn0E98(Eq_2935 * r5, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out)
 			word16 r2_97;
 			word16 r3_98;
 			r0_32 = fn125E(r4_34, globals->u004A, out r2_97, out r3_98);
-			word16 * r5_92 = &r5->w0002;
+			ci16 * r5_92 = &r5->w0002;
 			ci16 r2_100 = r2_97 + globals->w34B6;
 			if (r2_100 >= 0x00)
 			{
@@ -1867,11 +1867,11 @@ void fn1674(Eq_2 r0, Eq_4152 * r1, word16 pc)
 		fn15F2(r0, r1, pc);
 	else
 	{
-		word16 * r0_21 = fn15F2(-r0, r1, pc);
+		union Eq_4305 * r0_21 = fn15F2(-r0, r1, pc);
 		do
 			r0_21 = r0_21 - 0x02;
 		while (*r0_21 != 0x20);
-		*r0_21 = (word16) 0x2D;
+		*r0_21 = (union Eq_4305 *) 0x2D;
 	}
 }
 

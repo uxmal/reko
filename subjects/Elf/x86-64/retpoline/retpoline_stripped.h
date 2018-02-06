@@ -63,8 +63,8 @@ T_4: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_5: (in 0x0000000000600FF8 + 0x0000000000000000 : word64)
   Class: Eq_5
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr word64)
+  OrigDataType: (ptr T_6)
 T_6: (in Mem0[0x0000000000600FF8 + 0x0000000000000000:word64] : word64)
   Class: Eq_2
   DataType: word64

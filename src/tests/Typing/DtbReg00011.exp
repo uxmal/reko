@@ -83,7 +83,7 @@ Eq_24: (ptr (segment (0 (arr T_34 4096) a0000)))
 	T_24 (in 0x4DE1 : selector)
 Eq_25: word16
 	T_25 (in 0x0000 : word16)
-Eq_26: word16
+Eq_26: (memptr T_24 T_27)
 	T_26 (in bx_23 + 0x0000 : word16)
 Eq_28: ui16
 	T_28 (in 0x0001 : word16)
@@ -194,8 +194,8 @@ T_25: (in 0x0000 : word16)
   OrigDataType: word16
 T_26: (in bx_23 + 0x0000 : word16)
   Class: Eq_26
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr T_24 T_27)
+  OrigDataType: (memptr T_24 T_27)
 T_27: (in Mem22[0x4DE1:bx_23 + 0x0000:byte] : byte)
   Class: Eq_23
   DataType: byte

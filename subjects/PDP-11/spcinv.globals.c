@@ -66,7 +66,7 @@ Eq_3111 g_a0EE6[] =
 Eq_3110 g_a0EE9[] = 
 	{
 	};
-ci8 g_a0EEC[] = 
+Eq_3109 g_a0EEC[] = 
 	{
 	};
 Eq_3114 g_a0EF0[] = 

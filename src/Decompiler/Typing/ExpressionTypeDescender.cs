@@ -493,12 +493,18 @@ namespace Reko.Typing
 
         public bool VisitMemoryAccess(MemoryAccess access, TypeVariable tv)
         {
+            MeetDataType(access.TypeVariable, access.DataType);
+            // Regardless of how the memory access is done, the effective address also has a type,
+            // which is (ptr tvField)
+            MeetDataType(
+                access.EffectiveAddress,
+                factory.CreatePointer(access.TypeVariable, access.EffectiveAddress.DataType.Size));
+
             return VisitMemoryAccess(null, access.TypeVariable, access.EffectiveAddress, globals);
         }
 
         private bool VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals)
         {
-            MeetDataType(tvAccess, tvAccess.DataType);
             int eaSize = effectiveAddress.TypeVariable.DataType.Size;
             Expression p;
             int offset;
@@ -743,6 +749,17 @@ namespace Reko.Typing
             seg.IsSegment = true;
             MeetDataType(access.BasePointer, factory.CreatePointer(seg, access.BasePointer.DataType.Size));
             access.BasePointer.Accept(this, access.BasePointer.TypeVariable);
+
+            MeetDataType(access.TypeVariable, access.DataType);
+            // Regardless of how the memory access is done, the effective address also has a type,
+            // which is (memptr [[baseptr]] dtField)
+            MeetDataType(
+                access.EffectiveAddress,
+                factory.CreateMemberPointer(
+                    access.BasePointer.TypeVariable,
+                    access.TypeVariable,
+                    access.EffectiveAddress.DataType.Size));
+
 
             return VisitMemoryAccess(access.BasePointer, access.TypeVariable, access.EffectiveAddress, access.BasePointer);
         }

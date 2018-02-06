@@ -59,8 +59,8 @@ T_5: (in 0x0000 : word16)
   OrigDataType: word16
 T_6: (in si + 0x0000 : word16)
   Class: Eq_6
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_4 T_7)
 T_7: (in Mem0[cs:si + 0x0000:word16] : word16)
   Class: Eq_7
   DataType: word16
@@ -83,8 +83,8 @@ T_11: (in 0x0000 : word16)
   OrigDataType: word16
 T_12: (in si2 + 0x0000 : word16)
   Class: Eq_12
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_4) word16)
+  OrigDataType: (memptr T_4 T_13)
 T_13: (in Mem0[cs:si2 + 0x0000:word16] : word16)
   Class: Eq_7
   DataType: word16
@@ -104,7 +104,7 @@ T_16: (in 0x0002 : word16)
 T_17: (in si + 0x0002 : word16)
   Class: Eq_17
   DataType: (memptr (ptr Eq_4) word16)
-  OrigDataType: (memptr T_4 (struct (0 T_7 t0000)))
+  OrigDataType: (memptr T_4 T_18)
 T_18: (in Mem0[cs:si + 0x0002:word16] : word16)
   Class: Eq_7
   DataType: word16

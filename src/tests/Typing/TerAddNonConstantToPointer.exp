@@ -47,8 +47,8 @@ T_4: (in 0x0000 : word16)
   OrigDataType: word16
 T_5: (in p + 0x0000 : word16)
   Class: Eq_5
-  DataType: word16
-  OrigDataType: word16
+  DataType: (ptr word16)
+  OrigDataType: (ptr T_6)
 T_6: (in Mem0[p + 0x0000:word16] : word16)
   Class: Eq_2
   DataType: word16
@@ -63,8 +63,8 @@ T_8: (in 0x0004 : word16)
   OrigDataType: word16
 T_9: (in p + 0x0004 : word16)
   Class: Eq_9
-  DataType: ptr16
-  OrigDataType: ptr16
+  DataType: (ptr word16)
+  OrigDataType: (ptr T_10)
 T_10: (in Mem0[p + 0x0004:word16] : word16)
   Class: Eq_7
   DataType: word16

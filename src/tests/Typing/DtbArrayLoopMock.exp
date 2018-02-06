@@ -36,7 +36,7 @@ Eq_6: word32
 	T_9 (in Mem2[ptr_0 + 0x00000000:word32] : word32)
 Eq_7: word32
 	T_7 (in 0x00000000 : word32)
-Eq_8: up32
+Eq_8: (ptr T_9)
 	T_8 (in ptr_0 + 0x00000000 : word32)
 Eq_10: int32
 	T_10 (in 0x00000004 : word32)
@@ -73,8 +73,8 @@ T_7: (in 0x00000000 : word32)
   OrigDataType: word32
 T_8: (in ptr_0 + 0x00000000 : word32)
   Class: Eq_8
-  DataType: up32
-  OrigDataType: up32
+  DataType: (ptr T_9)
+  OrigDataType: (ptr T_9)
 T_9: (in Mem2[ptr_0 + 0x00000000:word32] : word32)
   Class: Eq_6
   DataType: word32

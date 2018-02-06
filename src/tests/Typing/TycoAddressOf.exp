@@ -39,8 +39,8 @@ T_6: (in 0x00000000 : word32)
   OrigDataType: word32
 T_7: (in r1 + 0x00000000 : word32)
   Class: Eq_7
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr T_8)
+  OrigDataType: (ptr T_8)
 T_8: (in Mem0[r1 + 0x00000000:word16] : word16)
   Class: Eq_5
   DataType: word16
@@ -55,8 +55,8 @@ T_10: (in 0x00000004 : word32)
   OrigDataType: word32
 T_11: (in r1 + 0x00000004 : word32)
   Class: Eq_11
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr T_12)
+  OrigDataType: (ptr T_12)
 T_12: (in Mem0[r1 + 0x00000004:byte] : byte)
   Class: Eq_9
   DataType: byte

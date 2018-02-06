@@ -78,8 +78,8 @@ T_14: (in 0x0004 : word16)
   OrigDataType: word16
 T_15: (in SLICE(es_bx, word16, 0) + 0x0004 : word16)
   Class: Eq_15
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_12) word16)
+  OrigDataType: (memptr T_12 T_16)
 T_16: (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16] : word16)
   Class: Eq_16
   DataType: word16

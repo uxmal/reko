@@ -5,6 +5,7 @@
 #include "TLCS-90.h"
 
 byte g_b0001 = 0x00;
+word16 g_w0002 = 0x0001;
 union Eq_1517 g_u0350 = 
 	{
 		0x2026

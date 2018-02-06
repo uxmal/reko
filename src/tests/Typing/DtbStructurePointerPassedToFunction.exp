@@ -32,7 +32,7 @@ Eq_3: (ptr (struct (4 T_6 t0004) (8 T_14 t0008)))
 	T_9 (in arg1 : word32)
 Eq_4: word32
 	T_4 (in 0x00000004 : word32)
-Eq_5: word32
+Eq_5: (ptr T_6)
 	T_5 (in p + 0x00000004 : word32)
 Eq_7: (ptr (fn T_10 (T_3)))
 	T_7 (in Fn2 : ptr32)
@@ -44,7 +44,7 @@ Eq_11: word32
 	T_14 (in Mem0[arg1 + 0x00000008:word32] : word32)
 Eq_12: word32
 	T_12 (in 0x00000008 : word32)
-Eq_13: word32
+Eq_13: (ptr T_14)
 	T_13 (in arg1 + 0x00000008 : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
@@ -65,8 +65,8 @@ T_4: (in 0x00000004 : word32)
   OrigDataType: word32
 T_5: (in p + 0x00000004 : word32)
   Class: Eq_5
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr T_6)
+  OrigDataType: (ptr T_6)
 T_6: (in Mem0[p + 0x00000004:word32] : word32)
   Class: Eq_2
   DataType: word32
@@ -97,8 +97,8 @@ T_12: (in 0x00000008 : word32)
   OrigDataType: word32
 T_13: (in arg1 + 0x00000008 : word32)
   Class: Eq_13
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr T_14)
+  OrigDataType: (ptr T_14)
 T_14: (in Mem0[arg1 + 0x00000008:word32] : word32)
   Class: Eq_11
   DataType: word32

@@ -56,7 +56,15 @@ namespace Reko.Core.Types
 		/// <summary>
 		/// The equivalence class this type variable belongs to.
 		/// </summary>
-		public EquivalenceClass Class { get; set; }
+		public EquivalenceClass Class {
+            get { return c; }
+            set {
+                if (value.Name.EndsWith("_31") && this.Name.EndsWith("_37"))
+                    value.ToString();
+                c = value;
+            }
+        }
+        private EquivalenceClass c;
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{

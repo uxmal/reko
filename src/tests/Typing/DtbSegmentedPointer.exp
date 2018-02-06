@@ -35,7 +35,7 @@ Eq_13: (memptr T_12 (struct (4 T_16 t0004)))
 	T_13 (in SLICE(es_bx, word16, 0) : word16)
 Eq_14: word16
 	T_14 (in 0x0004 : word16)
-Eq_15: word16
+Eq_15: (memptr T_12 T_16)
 	T_15 (in SLICE(es_bx, word16, 0) + 0x0004 : word16)
 Eq_16: word16
 	T_16 (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16] : word16)
@@ -101,8 +101,8 @@ T_14: (in 0x0004 : word16)
   OrigDataType: word16
 T_15: (in SLICE(es_bx, word16, 0) + 0x0004 : word16)
   Class: Eq_15
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr T_12 T_16)
+  OrigDataType: (memptr T_12 T_16)
 T_16: (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 0x0004:word16] : word16)
   Class: Eq_16
   DataType: word16

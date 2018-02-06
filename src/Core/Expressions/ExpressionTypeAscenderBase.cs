@@ -187,7 +187,7 @@ namespace Reko.Core.Expressions
 
             var pointee = ptrLeft.Pointee;
             var strPointee = pointee.ResolveAs<StructureType>();
-            if (strPointee == null)
+            if (strPointee == null || !strPointee.UserDefined)
                 return null;
 
             var field = strPointee.Fields.LowerBound(offset);
@@ -198,25 +198,35 @@ namespace Reko.Core.Expressions
             var dtField = field.DataType.ResolveAs<DataType>();
             if (dtField == null)
                 return null;
-            //$TODO This really should be offset != field.Offset
-            // However doing so causes a regression in hello_ppc.exe
-            if (offset >= field.Offset + dtField.Size)
+            if (offset != field.Offset)
                 return null;
             return factory.CreatePointer(dtField, dtLeft.Size);
         }
 
+        /// <summary>
+        /// Given the types of the summands of an addition, try to
+        /// infer what the type of the sum is.
+        /// </summary>
+        /// <param name="dtLeft">Data type of the left summand</param>
+        /// <param name="dtRight">Data type of the right summand</param>
+        /// <returns>Data type of the sum.</returns>
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
             var ptLeft = dtLeft.ResolveAs<PrimitiveType>();
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer)
             {
+                // Left side is a ptr<xx> and right side is primitive
+                // but not ptr<xx>, then the whole thing is a pointer to
+                // something.
                 if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
 
             if (ptLeft != null && ptLeft.IsIntegral && ptRight != null && ptRight.IsIntegral)
             {
+                // Both summands are integers of some kind.
+
                 // According to the C language definition, the sum
                 // of unsigned and signed integers is always unsigned.
                 if (ptLeft.Domain == Domain.UnsignedInt)
@@ -234,6 +244,14 @@ namespace Reko.Core.Expressions
                     return dtLeft;
                 else 
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+            }
+            var mp = dtLeft.ResolveAs<MemberPointer>();
+            if (mp != null)
+            {
+                if (dtLeft is TypeReference)
+                    return dtLeft;
+                else
+                    return PrimitiveType.Create(Domain.Offset, dtLeft.Size);
             }
             return dtLeft;
         }

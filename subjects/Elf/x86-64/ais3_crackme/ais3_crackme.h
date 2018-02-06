@@ -201,8 +201,8 @@ T_33: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_34: (in 0x0000000000600FE0 + 0x0000000000000000 : word64)
   Class: Eq_34
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr word64)
+  OrigDataType: (ptr T_35)
 T_35: (in Mem0[0x0000000000600FE0 + 0x0000000000000000:word64] : word64)
   Class: Eq_31
   DataType: word64
@@ -397,8 +397,8 @@ T_82: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_83: (in 0x0000000000601038 + 0x0000000000000000 : word64)
   Class: Eq_83
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr byte)
+  OrigDataType: (ptr T_84)
 T_84: (in Mem0[0x0000000000601038 + 0x0000000000000000:byte] : byte)
   Class: Eq_84
   DataType: byte
@@ -437,8 +437,8 @@ T_92: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_93: (in 0x0000000000601038 + 0x0000000000000000 : word64)
   Class: Eq_93
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr byte)
+  OrigDataType: (ptr T_94)
 T_94: (in Mem16[0x0000000000601038 + 0x0000000000000000:byte] : byte)
   Class: Eq_90
   DataType: byte
@@ -457,8 +457,8 @@ T_97: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_98: (in 0x0000000000600E08 + 0x0000000000000000 : word64)
   Class: Eq_98
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr word64)
+  OrigDataType: (ptr T_99)
 T_99: (in Mem0[0x0000000000600E08 + 0x0000000000000000:word64] : word64)
   Class: Eq_99
   DataType: word64
@@ -701,8 +701,8 @@ T_158: (in 0x0000000000601020 : word64)
   OrigDataType: word64
 T_159: (in DPB(rax_113, (int16) (byte) rax_113, 0) + 0x0000000000601020 : word64)
   Class: Eq_159
-  DataType: uint64
-  OrigDataType: uint64
+  DataType: (ptr byte)
+  OrigDataType: (ptr T_160)
 T_160: (in Mem0[DPB(rax_113, (int16) (byte) rax_113, 0) + 0x0000000000601020:byte] : byte)
   Class: Eq_160
   DataType: byte
@@ -969,8 +969,8 @@ T_225: (in 0x0000000000000008 : word64)
   OrigDataType: word64
 T_226: (in rsi + 0x0000000000000008 : word64)
   Class: Eq_226
-  DataType: word64
-  OrigDataType: word64
+  DataType: (ptr (ptr (arr Eq_134)))
+  OrigDataType: (ptr T_227)
 T_227: (in Mem0[rsi + 0x0000000000000008:word64] : word64)
   Class: Eq_126
   DataType: (ptr (arr Eq_134))
@@ -1153,8 +1153,8 @@ T_271: (in 0x0000000000000000 : word64)
   OrigDataType: word64
 T_272: (in 0x0000000000600DF8 + 0x0000000000000000 : word64)
   Class: Eq_272
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr (ptr code))
+  OrigDataType: (ptr T_273)
 T_273: (in Mem0[0x0000000000600DF8 + 0x0000000000000000:word64] : word64)
   Class: Eq_273
   DataType: (ptr code)

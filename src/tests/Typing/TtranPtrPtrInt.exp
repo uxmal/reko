@@ -30,8 +30,8 @@ T_3: (in 0x00000000 : word32)
   OrigDataType: word32
 T_4: (in r1 + 0x00000000 : word32)
   Class: Eq_4
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr (ptr word32))
+  OrigDataType: (ptr T_5)
 T_5: (in Mem0[r1 + 0x00000000:word32] : word32)
   Class: Eq_5
   DataType: (ptr word32)
@@ -46,8 +46,8 @@ T_7: (in 0x00000000 : word32)
   OrigDataType: word32
 T_8: (in r2 + 0x00000000 : word32)
   Class: Eq_8
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr word32)
+  OrigDataType: (ptr T_9)
 T_9: (in Mem0[r2 + 0x00000000:word32] : word32)
   Class: Eq_9
   DataType: word32

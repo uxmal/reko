@@ -16,10 +16,7 @@ byte g_b02A3 = 0x64;
 ptr16 g_ptr1388 = 0x0000;
 cu8 g_b138A = 0x00;
 cu8 g_b138B = 0x00;
-Eq_2945 g_t138C = 
-	{
-		0x00
-	};
+byte g_b138C = 0x00;
 ptr16 g_ptr14BC = 0x0000;
 int16 g_w14BE = 0;
 byte g_b14EF = 0x01;
