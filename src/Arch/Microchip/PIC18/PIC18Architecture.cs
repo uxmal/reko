@@ -46,7 +46,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public PIC18Architecture()
+        /// <param name="archID">Identifier for the architecture.</param>
+        public PIC18Architecture(string archID) : base(archID)
         {
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
@@ -59,7 +60,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Constructor.
         /// </summary>
         /// <param name="picDescr">PIC descriptor.</param>
-        public PIC18Architecture(PIC picDescr) : this()
+        public PIC18Architecture(PIC picDescr) : this(picDescr.Name)
         {
             LoadConfiguration(picDescr);
         }
@@ -71,7 +72,6 @@ namespace Reko.Arch.Microchip.PIC18
         public void LoadConfiguration(PIC picDescr)
         {
             PICDescriptor = picDescr;
-            Name = picDescr.Name;
             Description = picDescr.Desc;
             PIC18Registers.Create(picDescr).LoadRegisters(); 
             StackRegister = PIC18Registers.STKPTR;

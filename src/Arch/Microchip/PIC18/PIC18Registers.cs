@@ -463,8 +463,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         #endregion
 
-        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Byte);
-        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.UInt16);
+        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
+        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte);
         public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
 
         /// <summary>

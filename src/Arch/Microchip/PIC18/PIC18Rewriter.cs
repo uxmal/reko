@@ -49,8 +49,6 @@ namespace Reko.Arch.Microchip.PIC18
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
-        private int maxHWStackWrite;
-
 
         #endregion
 
@@ -181,21 +179,32 @@ namespace Reko.Arch.Microchip.PIC18
 
         #endregion
 
-        public Identifier FlagGroup(FlagM flags)
+        #region Helpers
+
+        private Identifier FlagGroup(FlagM flags)
         {
             return binder.EnsureFlagGroup(PIC18Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
-        #region Helpers
+        private ArrayAccess PushToHWStackAccess()
+        {
+            var stkptr = binder.EnsureRegister(arch.StackRegister);
+            var slot = m.ARef(PrimitiveType.Ptr32, PIC18Registers.GlobalStack, stkptr);
+            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+            return slot;
+        }
+
+        private ArrayAccess PopFromHWStackAccess()
+        {
+            var stkptr = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
+            var slot = m.ARef(PrimitiveType.Ptr32, PIC18Registers.GlobalStack, stkptr);
+            return slot;
+        }
 
         private MemoryAccess DataByteMemoryAccess(Expression ea)
         {
             return new MemoryAccess(PIC18Registers.GlobalData, ea, PrimitiveType.Byte);
-        }
-
-        private MemoryAccess StackMemoryAccess(Expression ea)
-        {
-            return new MemoryAccess(PIC18Registers.GlobalStack, ea, PrimitiveType.Ptr32);
         }
 
         private Expression GetMemoryBankAccess(PIC18BankedAccessOperand mem)
@@ -239,20 +248,6 @@ namespace Reko.Arch.Microchip.PIC18
             if (sfr != RegisterStorage.None)
                 return binder.EnsureRegister(sfr);
             return DataByteMemoryAccess(PICDataAddress.Ptr(mem.DataTarget));
-        }
-
-        private void WriteHWStack(int offset)
-        {
-            int o = offset - state.HWStackItems;
-            if (o > maxHWStackWrite)
-                maxHWStackWrite = o;
-        }
-
-        private Expression HWStackSlot(int reg)
-        {
-            
-            //TODO: How to get binder understand/implement separate hardware return stack?
-            throw new NotImplementedException();
         }
 
         private Expression RewriteSrcOp(MachineOperand op)
@@ -514,42 +509,35 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCALL()
         {
-            //TODO: See TOS/stack update, shadowing of WREG, STATUS, BSR
+            //TODO: shadowing of WREG, STATUS, BSR
             
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
             var target = RewriteSrcOp(instrCurr.op1);
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            var tos = binder.EnsureRegister(PIC18Registers.TOS);
             var retaddr = instrCurr.Address + instrCurr.Length;
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            state.GrowHWStack(instrCurr.Address);
-            var dst = HWStackSlot(0);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+            var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
+            m.Assign(tos, retaddr);
             m.Call(target, 0);
-            WriteHWStack(0);
         }
 
         private void RewriteCALLW()
         {
-            //TODO: See TOS/stack update
             
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
             var w = binder.EnsureRegister(PIC18Registers.WREG);
             var pclat = binder.EnsureRegister(PIC18Registers.PCLAT);
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            var tos = binder.EnsureRegister(PIC18Registers.TOS);
             var target = m.Fn(host.PseudoProcedure("__callw", VoidType.Instance, w, pclat));
             var retaddr = instrCurr.Address + instrCurr.Length;
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            state.GrowHWStack(instrCurr.Address);
-            var dst = HWStackSlot(0);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+            var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
+            m.Assign(tos, retaddr);
             m.Call(target, 0);
-            WriteHWStack(0);
         }
 
         private void RewriteCLRF()
@@ -812,22 +800,20 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewritePOP()
         {
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
-            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
 
-            //TODO: See TOS update
+            var src = PopFromHWStackAccess();
+            m.Assign(tos, src);
         }
 
         private void RewritePUSH()
         {
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
-            var pclat = binder.EnsureRegister(PIC18Registers.PCLAT);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
-            m.Assign(StackMemoryAccess(stkptr), pclat);
 
-            //TODO: see TOS update
+            var nextaddr = instrCurr.Address + instrCurr.Length;
+            var dst = PushToHWStackAccess();
+            m.Assign(dst, nextaddr);
+            m.Assign(tos, nextaddr);
         }
 
         private void RewritePUSHL()
@@ -844,48 +830,59 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
             var target = RewriteSrcOp(instrCurr.op1);
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            var tos = binder.EnsureRegister(PIC18Registers.TOS);
             var retaddr = instrCurr.Address + instrCurr.Length;
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            state.GrowHWStack(instrCurr.Address);
-            var dst = HWStackSlot(0);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+            var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
+            m.Assign(tos, retaddr);
             m.Call(target, 0);
-            WriteHWStack(0);
         }
 
         private void RewriteRESET()
         {
-            var stkptr = binder.EnsureRegister(PIC18Registers.STKPTR);
-            m.Assign(stkptr, Constant.Byte(0));
             rtlc = RtlClass.Terminates;
+
+            var stkptr = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(stkptr, Constant.Byte(0));
             m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
         }
 
         private void RewriteRETFIE()
         {
-            var tos = binder.EnsureSequence(PIC18Registers.TOSU, PIC18Registers.TOSL, PrimitiveType.Word32);
-            //TODO: See TOS restore and stack update
             rtlc = RtlClass.Transfer;
-            m.Return(1, 0);
+
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+
+            var src = PopFromHWStackAccess();
+            m.Assign(tos, src);
+            m.Return(0, 0);
         }
 
         private void RewriteRETLW()
         {
+            rtlc = RtlClass.Transfer;
+
             var w = binder.EnsureRegister(PIC18Registers.WREG);
             var k = RewriteSrcOp(instrCurr.op1);
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+
             m.Assign(w, k);
-            rtlc = RtlClass.Transfer;
-            m.Return(1, 0);
+            var src = PopFromHWStackAccess();
+            m.Assign(tos, src);
+            m.Return(0, 0);
         }
 
         private void RewriteRETURN()
         {
             //TODO: shadow WREG, BSR, STATUS
             rtlc = RtlClass.Transfer;
-            m.Return(1, 0);
+
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+
+            var src = PopFromHWStackAccess();
+            m.Assign(tos, src);
+            m.Return(0, 0);
         }
 
         private void RewriteRLCF()
@@ -987,11 +984,15 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteSUBULNK()
         {
+            rtlc = RtlClass.Transfer;
+
             var fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
             var k = RewriteSrcOp(instrCurr.op1);
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+
             m.Assign(fsr2, m.ISub(fsr2, k));
-            _setStatusFlags(fsr2);
-            rtlc = RtlClass.Transfer;
+            var src = PopFromHWStackAccess();
+            m.Assign(tos, src);
             m.Return(0, 0);
         }
 

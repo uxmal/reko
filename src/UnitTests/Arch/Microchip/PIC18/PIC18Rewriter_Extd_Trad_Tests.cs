@@ -478,25 +478,36 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_CALL_Extd_Trad()
         {
             ExecTest(Words(0xEC06, 0xF000),
-                "0|T--|000200(4): 2 instructions",
-                    "1|T--|call 00000C (1)"
+                "0|T--|000200(4): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000204",
+                    "3|L--|TOS = 000204",
+                    "4|T--|call 00000C (0)"
                 );
 
             ExecTest(Words(0xEC12, 0xF345),
-                "0|T--|000200(4): 2 instructions",
-                    "1|T--|call 068A24 (1)"
+                "0|T--|000200(4): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000204",
+                    "3|L--|TOS = 000204",
+                    "4|T--|call 068A24 (0)"
                 );
 
             ExecTest(Words(0xED06, 0xF000),
-                "0|T--|000200(4): 2 instructions",
-                    "1|T--|call 00000C (1)"
+                "0|T--|000200(4): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000204",
+                    "3|L--|TOS = 000204",
+                    "4|T--|call 00000C (0)"
                 );
 
             ExecTest(Words(0xED12, 0xF345),
-                "0|T--|000200(4): 2 instructions",
-                    "1|T--|call 068A24 (1)"
+                "0|T--|000200(4): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000204",
+                    "3|L--|TOS = 000204",
+                    "4|T--|call 068A24 (0)"
                 );
-
 
         }
 
@@ -504,8 +515,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_CALLW_Extd_Trad()
         {
             ExecTest(Words(0x0014),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|call __callw(WREG, PCLATH, PCLATU)() (3)"
+                "0|T--|000200(2): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000202",
+                    "3|L--|TOS = 000202",
+                    "4|T--|call __callw(WREG, PCLAT)() (0)"
                 );
 
         }
@@ -1354,8 +1368,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_POP_Extd_Trad()
         {
             ExecTest(Words(0x0006),
-                "0|L--|000200(2): 1 instructions",
-                    "1|L--|STKPTR = STKPTR - 0x01"
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|STKPTR = STKPTR - 0x01",
+                    "2|L--|TOS = Stack[STKPTR]"
                 );
         }
 
@@ -1363,9 +1378,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_PUSH_Extd_Trad()
         {
             ExecTest(Words(0x0005),
-                "0|L--|000200(2): 2 instructions",
+                "0|L--|000200(2): 3 instructions",
                     "1|L--|STKPTR = STKPTR + 0x01",
-                    "2|L--|Stack[STKPTR:ptr32] = PCLAT"
+                    "2|L--|Stack[STKPTR] = 000202",
+                    "3|L--|TOS = 000202"
                 );
         }
 
@@ -1373,16 +1389,25 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_RCALL_Extd_Trad()
         {
             ExecTest(Words(0xD800),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|call 000202 (1)"
+                "0|T--|000200(2): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000202",
+                    "3|L--|TOS = 000202",
+                    "4|T--|call 000202 (0)"
                 );
             ExecTest(Words(0xDFFF),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|call 000200 (1)"
+                "0|T--|000200(2): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000202",
+                    "3|L--|TOS = 000202",
+                    "4|T--|call 000200 (0)"
                 );
             ExecTest(Words(0xDBFF),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|call 000A00 (1)"
+                "0|T--|000200(2): 4 instructions",
+                    "1|L--|STKPTR = STKPTR + 0x01",
+                    "2|L--|Stack[STKPTR] = 000202",
+                    "3|L--|TOS = 000202",
+                    "4|T--|call 000A00 (0)"
                 );
         }
 
@@ -1400,12 +1425,16 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_RETFIE_Extd_Trad()
         {
             ExecTest(Words(0x0010),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|return (1,0)"
+                "0|T--|000200(2): 3 instructions",
+                    "1|L--|STKPTR = STKPTR - 0x01",
+                    "2|L--|TOS = Stack[STKPTR]",
+                    "3|T--|return (0,0)"
                 );
             ExecTest(Words(0x0011),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|return (1,0)"
+                "0|T--|000200(2): 3 instructions",
+                    "1|L--|STKPTR = STKPTR - 0x01",
+                    "2|L--|TOS = Stack[STKPTR]",
+                    "3|T--|return (0,0)"
                 );
         }
 
@@ -1413,19 +1442,25 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_RETLW_Extd_Trad()
         {
             ExecTest(Words(0x0C00),
-                "0|T--|000200(2): 2 instructions",
+                "0|T--|000200(2): 4 instructions",
                     "1|L--|WREG = 0x00",
-                    "2|T--|return (1,0)"
+                    "2|L--|STKPTR = STKPTR - 0x01",
+                    "3|L--|TOS = Stack[STKPTR]",
+                    "4|T--|return (0,0)"
                 );
             ExecTest(Words(0x0C55),
-                "0|T--|000200(2): 2 instructions",
+                "0|T--|000200(2): 4 instructions",
                     "1|L--|WREG = 0x55",
-                    "2|T--|return (1,0)"
+                    "2|L--|STKPTR = STKPTR - 0x01",
+                    "3|L--|TOS = Stack[STKPTR]",
+                    "4|T--|return (0,0)"
                 );
             ExecTest(Words(0x0CCC),
-                "0|T--|000200(2): 2 instructions",
+                "0|T--|000200(2): 4 instructions",
                     "1|L--|WREG = 0xCC",
-                    "2|T--|return (1,0)"
+                    "2|L--|STKPTR = STKPTR - 0x01",
+                    "3|L--|TOS = Stack[STKPTR]",
+                    "4|T--|return (0,0)"
                 );
         }
 
@@ -1433,12 +1468,16 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_RETURN_Extd_Trad()
         {
             ExecTest(Words(0x0012),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|return (1,0)"
+                "0|T--|000200(2): 3 instructions",
+                    "1|L--|STKPTR = STKPTR - 0x01",
+                    "2|L--|TOS = Stack[STKPTR]",
+                    "3|T--|return (0,0)"
                 );
             ExecTest(Words(0x0013),
-                "0|T--|000200(2): 1 instructions",
-                    "1|T--|return (1,0)"
+                "0|T--|000200(2): 3 instructions",
+                    "1|L--|STKPTR = STKPTR - 0x01",
+                    "2|L--|TOS = Stack[STKPTR]",
+                    "3|T--|return (0,0)"
                 );
         }
 
