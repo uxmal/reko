@@ -121,14 +121,14 @@ namespace Reko.UnitTests.Analysis
 
         private DataType VtblStr(params DataType[] methods)
         {
-            var vtbl_str = new StructureType();
+            var vtbl_str = new StructureType(null, 0, true);
             int offset = 0;
-            foreach(var method in methods)
+            foreach (var method in methods)
             {
                 vtbl_str.Fields.Add(offset, method);
                 offset += 4;
             }
-            return new StructureType()
+            return new StructureType(null, 0, true)
             {
                 Fields =
                     {

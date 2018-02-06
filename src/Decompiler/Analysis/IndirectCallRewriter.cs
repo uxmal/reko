@@ -33,6 +33,11 @@ namespace Reko.Analysis
     /// Try to rewrite indirect call statements to applications using
     /// user-defined data (e.g. global variables, parameters of procedures).
     /// </summary>
+    /// <remarks>
+    /// For now, the indirect call rewriter requires user-supplied information to
+    /// succeed. This requirement may be changed in the future as Reko moves
+    /// type analysis earlier in the decompilation process.
+    /// </remarks>
     public class IndirectCallRewriter
     {
         private SsaState ssa;
@@ -44,7 +49,6 @@ namespace Reko.Analysis
         private DecompilerEventListener eventListener;
         private ExpressionEmitter m;
         private bool changed;
-
 
         public IndirectCallRewriter(
             Program program,
