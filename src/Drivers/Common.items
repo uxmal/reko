@@ -101,12 +101,8 @@ by the PreBuild.targets file.
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>
 
-  <!-- We're forced to do this because the VC++ and the VC# teams apparently
-      couldn't agree on the name of the i386 platform. The VC++ team call it
-      Win32 and the C# team call it x86... Thanks Microsoft.
-  -->
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\addons\build\ArmNative\bin\Win32\$(Configuration)\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Arch\ArmNative\bin\Win32\$(Configuration)\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
   </ItemGroup>

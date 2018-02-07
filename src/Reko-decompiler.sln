@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
 	ProjectSection(SolutionItems) = preProject
@@ -377,10 +377,10 @@ Global
 		TravisRelease|x86 = TravisRelease|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x64.Build.0 = Debug|Any CPU
-		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x86.Build.0 = Debug|Any CPU
+		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x64.ActiveCfg = Debug|x64
+		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x64.Build.0 = Debug|x64
+		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x86.ActiveCfg = Debug|x86
+		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|x86.Build.0 = Debug|x86
 		{5C315C78-1F97-4B16-81AA-917284969DFE}.Release|x64.ActiveCfg = Release|Any CPU
 		{5C315C78-1F97-4B16-81AA-917284969DFE}.Release|x64.Build.0 = Release|Any CPU
 		{5C315C78-1F97-4B16-81AA-917284969DFE}.Release|x86.ActiveCfg = Release|Any CPU
@@ -1310,6 +1310,9 @@ Global
 		{FDAF4CA9-085C-473E-BCB5-0D2A4354A949} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
 		{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
 		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1} = {EF16C5BE-595C-4A9F-9CA6-028D993661E7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF3A1A75-8AF4-44FE-A051-04705E571D61}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\WindowsDecompiler\WindowsDecompiler.csproj
