@@ -559,9 +559,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 BorlandType bt = null;
                 switch (type_id)
                 {
-                case 0x00:
+                case TID_VOID:
                 default:
                     {
+                        if (TID_VOID != type_id)
+                            DebugEx.PrintIf(trace.TraceVerbose, $"No special support for type {type_id:X2}, fallback to void");
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
                         DebugEx.PrintIf(trace.TraceVerbose, $"    {b2:X2} {w:X4}");
@@ -571,13 +573,14 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 case TID_SCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.SChar8()); break;
                 case TID_SINT: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int16()); break;
                 case TID_SLONG: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int32()); break;
-                case TID_SQUAD: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int64()); break;
                 case TID_UCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UChar8()); break;
                 case TID_UINT: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt16()); break;
                 case TID_ULONG: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt32()); break;
-                case TID_UQUAD: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt64()); break;
                 case TID_PCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Char8()); break;
 
+                case TID_SQUAD: bt = ClassifyType(rdr, PrimitiveType_v1.Int64()); break;
+                case TID_UQUAD: bt = ClassifyType(rdr, PrimitiveType_v1.UInt64()); break;
+                
                 case TID_FLOAT: bt = ClassifyType(rdr, PrimitiveType_v1.Real32()); break;
                 //case TID_TPREAL: ClassifyPrimitiveType(rdr, PrimitiveType_v1.TPREAL()); break;
                 case TID_DOUBLE: bt = ClassifyType(rdr, PrimitiveType_v1.Real64()); break;
@@ -633,6 +636,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     }
                 }
                 bt.name = names[type_name];
+                if (iType == 1 && type_id == 0) bt.name = "void";
                 types[(ushort)iType] = bt;
             }
         }
