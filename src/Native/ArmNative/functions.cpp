@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2017 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 
 #include "stdafx.h"
 
+#include "common/compat.h"
+
 // Stand-alone functions.
 
 #if _DEBUG || DEBUG
@@ -27,7 +29,7 @@ void Dump(const char * fmt, ...)
 	va_start(args, fmt);
 #if _WINDOWS
 	char buf[512];
-	vsnprintf(buf, _countof(buf), fmt, args);
+	vsnprintf(buf, countof(buf), fmt, args);
 	::strcat_s(buf, "\r\n");
 	::OutputDebugStringA(buf);
 // Use MessageBox for Release mode debugging.
