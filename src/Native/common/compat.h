@@ -8,13 +8,7 @@ extern "C" {
 #ifndef _MSC_VER
 void OutputDebugString(char *lpOutputString);
 void DebugBreak();
-
-template < typename T, size_t N >
-size_t countof( T ( & arr )[ N ] )
-{
-    return std::extent< T[ N ] >::value;
-}
-
+#define countof(_arr) (sizeof(arr)/sizeof arr[0])
 #else
 #define countof _countof
 #endif
