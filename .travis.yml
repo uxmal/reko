@@ -1,5 +1,9 @@
 language: csharp
 solution: src/Reko-decompiler.sln
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libcapstone-dev
+
 install:
   - nuget restore src/Reko-decompiler.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
