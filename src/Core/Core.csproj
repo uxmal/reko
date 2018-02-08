@@ -843,12 +843,14 @@
   
   <Target Name="CleanCMake" AfterTargets="Clean">
     <Message Importance="High" Text="*** Cleaning up CMake files" />
+    <Exec Condition=" '$(OS)' != 'Unix'" Command="cmake.exe -DACTION=clean -DREKO_PATH=$(SolutionDir)../ -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
+    <Exec Condition=" '$(OS)' == 'Unix'" Command="cmake -DACTION=clean -DREKO_PATH=$(SolutionDir)../ -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
   </Target>
   
   <Target Name="AfterBuild">
     <!-- Start building the native shared libraries using CMake -->
-    <Exec Condition=" '$(OS)' != 'Unix'" Command="cmake.exe -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
-    <Exec Condition=" '$(OS)' == 'Unix'" Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
+    <Exec Condition=" '$(OS)' != 'Unix'" Command="cmake.exe -DREKO_PATH=$(SolutionDir)../ -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
+    <Exec Condition=" '$(OS)' == 'Unix'" Command="cmake -DREKO_PATH=$(SolutionDir)../ -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
   </Target>
   <PropertyGroup>
     <PreBuildEvent>

@@ -1,5 +1,17 @@
 function(check_msys output)
-	set(${output} ("$ENV{OSTYPE}" STREQUAL "msys"))
+	set(SHELL "$ENV{SHELL}")
+	execute_process(
+		COMMAND ${SHELL} -c 'echo -ne $OSTYPE'
+		OUTPUT_VARIABLE ostype
+	)
+
+	if(${ostype} STREQUAL "msys")
+		set(${output} TRUE PARENT_SCOPE)
+		return()
+	endif()
+
+	set(${output} FALSE PARENT_SCOPE)
+
 endfunction()
 
 function(clear_cache build_dir)
@@ -9,15 +21,31 @@ function(clear_cache build_dir)
 	endif()
 endfunction()
 
-function(invoke_cmake name path)
-	set(BUILD_DIR ${path}/build)
+function(process_project name path)
+	set(BUILD_DIR ${path}/build/${REKO_PLATFORM})
 
-	if(NOT EXISTS ${BUILD_DIR})
-		file(MAKE_DIRECTORY ${BUILD_DIR})
+	if(ACTION STREQUAL "clean")
+		clean_project(${name} ${path} ${BUILD_DIR})
+	else()
+		invoke_cmake(${name} ${path} ${BUILD_DIR})
+	endif()
+endfunction()
+
+function(clean_project name path build_dir)
+	if(EXISTS ${build_dir})
+		message(STATUS "Removing ${build_dir}")
+		file(REMOVE_RECURSE ${build_dir})
+	endif()
+endfunction()
+
+function(invoke_cmake name path build_dir)
+	if(NOT EXISTS ${build_dir})
+		file(MAKE_DIRECTORY ${build_dir})
 	endif()
 
 	if(WIN32)
 		check_msys(IS_MSYS)
+		message(STATUS "IS_MSYS: ${IS_MSYS}")
 		if(IS_MSYS)
 			set(GENERATOR "MSYS Makefiles")
 		elseif(MINGW)
@@ -26,20 +54,19 @@ function(invoke_cmake name path)
 			set(GENERATOR ${REKO_COMPILER})
 		endif()
 	endif()
-
-	# TODO: do this when cleaning/changing build type only
-	clear_cache(${BUILD_DIR})
-	message(STATUS "CMake command line: ${CMAKE_COMMAND} .. ${GENERATOR}.REKO_COMPILER= ${REKO_COMPILER} ")
 	
-	set(CMAKE_ARGS "..")
+	set(CMAKE_ARGS ${path})
 	if(GENERATOR)
 		list(APPEND CMAKE_ARGS -G ${GENERATOR})
 	endif()
 
-	#the problem is each argument here is passed as such, so "-G FOO" is one argument,. this should fail
+	if(REKO_PATH)
+		list(APPEND CMAKE_ARGS "-DREKO_PATH=${REKO_PATH}")
+	endif()
+
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}
-		WORKING_DIRECTORY ${BUILD_DIR}
+		WORKING_DIRECTORY ${build_dir}
 		RESULT_VARIABLE retcode
 	)
 
@@ -49,7 +76,7 @@ function(invoke_cmake name path)
 
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} --build .
-		WORKING_DIRECTORY ${BUILD_DIR}
+		WORKING_DIRECTORY ${build_dir}
 		RESULT_VARIABLE retcode
 	)
 
@@ -65,4 +92,5 @@ message("")
 
 set(ADDONS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/addons)
 message(STATUS "Building addons")
-invoke_cmake(addons ${ADDONS_PATH})
+
+process_project(addons ${ADDONS_PATH})
