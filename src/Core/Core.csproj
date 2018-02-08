@@ -840,9 +840,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  
+  <Target Name="CleanCMake" AfterTargets="Clean">
+    <Message Importance="High" Text="*** Cleaning up CMake files" />
+  </Target>
+  
   <Target Name="AfterBuild">
     <!-- Start building the native shared libraries using CMake -->
-    <Message Importance="High" Text="Path is $(PATH)" />
     <Exec Condition=" '$(OS)' != 'Unix'" Command="cmake.exe -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native"/>
     <Exec Condition=" '$(OS)' == 'Unix'" Command="rm -rf /" />
   </Target>
