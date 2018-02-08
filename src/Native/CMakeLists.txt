@@ -1,6 +1,9 @@
-project(reko-addons)
+project(reko-native)
 
 cmake_minimum_required(VERSION 3.0)
+
+# No library prefix for consistent naming (Windows has no lib prefix)
+set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
 	set(CMAKE_BUILD_TYPE Debug)

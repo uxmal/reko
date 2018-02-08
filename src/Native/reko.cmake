@@ -97,7 +97,5 @@ message("=> Build Type: ${CMAKE_BUILD_TYPE}")
 message("=> Generator : ${REKO_COMPILER}")
 message("")
 
-set(ADDONS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/addons)
-message(STATUS "Building addons")
-
-process_project(addons ${ADDONS_PATH})
+message(STATUS "Building native libraries")
+process_project(native ${CMAKE_CURRENT_SOURCE_DIR})
