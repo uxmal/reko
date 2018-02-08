@@ -171,7 +171,7 @@ l02C8:
 	word16 r4_35
 	*r4Out = r4 + 0x0002
 	word16 r3_50
-	*r3Out = r2_10 - r2_19
+	*r3Out = r2_19 - r2_10
 	return r2_40 + r2_29
 // DataOut: r2 r3 r4 r5
 // DataOut (flags): 
@@ -2380,7 +2380,7 @@ l0DA2:
 	Mem69[0x00A8:word16] = Mem68[0x00A8:word16] + 0x0001
 	Mem71[0x00A8:word16] = Mem69[0x00A8:word16] & ~0xFFFC
 	Mem73[r5:word16] = Mem71[0x00A6:word16]
-	Mem75[r5:word16] = Mem73[0x00A8:word16] | Mem73[r5:word16]
+	Mem75[r5:word16] = Mem73[r5:word16] | Mem73[0x00A8:word16]
 	Mem77[r5:word16] = Mem75[r5:word16] | 0x8C04
 	r5 = r5 + 0x0002
 // DataOut: r0 r1 r2 r4 r5
@@ -2481,9 +2481,9 @@ l0E20:
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> r4:<invalid> r5:<invalid> r3:<invalid> -2(fp):<invalid>
 
 l0E26:
-	Mem30[r1_10:word16] = r0 - Mem0[r1_10:word16]
+	Mem30[r1_10:word16] = Mem0[r1_10:word16] - r0
 	r3_12 = r3_12 - 0x0002
-	Mem34[r3_12:word16] = r0 - Mem30[r3_12:word16]
+	Mem34[r3_12:word16] = Mem30[r3_12:word16] - r0
 	r1_10 = r1_10 + 0x0002
 	r0 = -(r0 >> 1)
 	branch r0 != 0x0000 l0E26

@@ -4,83 +4,21 @@
 
 #include "RTOSDemo.h"
 
-byte * g_ptrFFFFFFE0;
-ptr32 g_ptrFFFFFFE4;
-word32 g_dwFFFFFFE8;
-byte * g_ptrFFFFFFEC;
-word32 g_dwFFFFFFF0;
-word32 g_dwFFFFFFF4;
-word32 g_dwFFFFFFF8;
-word32 g_dwFFFFFFFC;
-Eq_736 g_t0000 = 
-	{
-		0x000080092000022C
-	};
-word32 g_dw0003 = 0x00800920;
-struct Eq_738 * g_ptr0004 = ResetISR;
-void * g_ptr0007 = &g_v800100;
-struct Eq_1119 * g_ptr0008 = NmiSR;
-word32 g_dw000C = 0x00008005;
-word32 g_dw000D = 0x00000080;
-Eq_5570 g_t000E = 
-	{
-		0x0000000000000000
-	};
-word32 g_dw000F = 0x00000000;
-Eq_2812 g_t0010 = 
-	{
-		0
-	};
-struct Eq_3684 * g_ptr0011 = null;
-Eq_5575 g_t0012 = 
-	{
-		0x00
-	};
-struct Eq_2156 * g_ptr0013 = null;
-ptr32 g_ptr0014 = 0x00000000;
-ptr32 g_ptr0018 = 0x00000000;
-union Eq_4040 g_u0245 = 
-	{
-		1363557095
-	};
-word32 * g_ptr0541 = &g_dw11F38646;
-union Eq_782 g_u08CD = 
-	{
-		32
-	};
+ptr32 g_ptr0541 = 0x11F38646;
 word64 g_qw0A01 = 0xC4BF00BDA5F00067;
-byte g_b0C00 = 0x64;
-word32 g_dw12ED = 0xDF000000;
+Eq_13 g_t3FF0 = 
+	{
+		
+		{
+			0x0000
+		},
+		
+		{
+			0
+		},
+	};
 word64 g_qw8381 = 0x00D014429A6BEB6B;
-word64 g_qw8ECF = 0x54F107F9FEF7FF46;
 ui32 g_dw9119 = 0x00F8C043;
 ui32 g_dw9169 = 0x08F8C043;
-union Eq_4040 * g_ptr91E9 = &g_t4F8C043;
-union Eq_4040 g_u9209 = 
-	{
-		-1975317825
-	};
-union Eq_4148 g_u9319 = 
-	{
-		66
-	};
 word32 g_dw940C = 0x2413B895;
-struct Eq_4633 * g_ptr95DD = &g_t5D01328;
-struct Eq_5180 * g_ptr9B99 = &g_t30F024B;
-struct Eq_5242 * g_ptr9BD1 = &g_t30F024B;
-struct Eq_5304 * g_ptr9C09 = &g_t30F024B;
-union Eq_5571 g_u9CB9 = 
-	{
-		6219
-	};
-union Eq_5571 g_u9CC5 = 
-	{
-		6219
-	};
-Eq_5159 g_tF24B;
-void g_v800100;
-Eq_5180 g_t30F024B;
-Eq_4040 g_t4F8C043;
-Eq_4633 g_t5D01328;
-word32 g_dw11F38646;
 

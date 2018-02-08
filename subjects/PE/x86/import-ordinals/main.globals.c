@@ -4,10 +4,10 @@
 
 #include "main.h"
 
-Eq_623 g_t0100;
-Eq_623 g_t5A4D;
+Eq_629 g_t0100;
+Eq_629 g_t5A4D;
 word16 g_w400000 = 0x5A4D;
-struct Eq_623 * g_ptr40003C = &g_t0100;
+struct Eq_629 * g_ptr40003C = &g_t0100;
 <anonymous> g_t401731 = <code>;
 <anonymous> * g_ptr4020D4 = &g_t401731;
 Eq_162 g_t4020E0 = null;

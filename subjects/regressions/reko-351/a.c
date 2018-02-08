@@ -22,7 +22,6 @@ void deregister_tm_clones()
 		byte Z_49;
 		null();
 	}
-	return;
 }
 
 // 800000AE: void register_tm_clones()
@@ -47,7 +46,6 @@ void register_tm_clones()
 		byte V_59;
 		null();
 	}
-	return;
 }
 
 // 800000E4: void __do_global_dtors_aux(Register word32 d2)
@@ -55,13 +53,13 @@ void __do_global_dtors_aux(word32 d2)
 {
 	if (globals->b80002724 == 0x00)
 	{
-		uint32 d0_105 = globals->dw80002726;
+		up32 d0_105 = globals->dw80002726;
 		<anonymous> * a2_106[] = globals->a80002714;
 		if (0x00 - d0_105 > 0x00)
 		{
 			do
 			{
-				ui32 d0_107 = d0_105 + 0x01;
+				uint32 d0_107 = d0_105 + 0x01;
 				globals->dw80002726 = d0_107;
 				<anonymous> * a0_112 = a2_106[d0_107];
 				word32 a7_113;
@@ -76,7 +74,7 @@ void __do_global_dtors_aux(word32 d2)
 				byte CVZNX_123;
 				byte VZ_124;
 				word32 a0_125;
-				bcuiposr0 None_126;
+				bcuisposr0 None_126;
 				byte CZ_127;
 				a0_112();
 				d0_105 = globals->dw80002726;
@@ -98,19 +96,17 @@ void __do_global_dtors_aux(word32 d2)
 			byte CVZNX_99;
 			byte VZ_100;
 			word32 a0_101;
-			bcuiposr0 None_102;
+			bcuisposr0 None_102;
 			byte CZ_103;
 			null();
 		}
 		globals->b80002724 = 0x01;
 	}
-	return;
 }
 
 // 80000158: void call___do_global_dtors_aux()
 void call___do_global_dtors_aux()
 {
-	return;
 }
 
 // 80000160: void frame_dummy()
@@ -148,25 +144,19 @@ void frame_dummy()
 		byte N_75;
 		null();
 		register_tm_clones();
-		return;
 	}
 	else
-	{
 		register_tm_clones();
-		return;
-	}
 }
 
 // 800001A4: void call_frame_dummy()
 void call_frame_dummy()
 {
-	return;
 }
 
 // 800001AC: void sine_taylor(Stack real64 rArg04)
 void sine_taylor(real64 rArg04)
 {
-	return;
 }
 
 // 8000033C: void factorial(Stack int32 dwArg04)
@@ -175,7 +165,6 @@ void factorial(int32 dwArg04)
 	int32 dwLoc08_15 = 0x02;
 	while (dwLoc08_15 - dwArg04 <= 0x00)
 		dwLoc08_15 = dwLoc08_15 + 0x01;
-	return;
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -184,7 +173,6 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 	int32 dwLoc08_16 = 0x00;
 	while (dwLoc08_16 - dwArg0C < 0x00)
 		dwLoc08_16 = dwLoc08_16 + 0x01;
-	return;
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -199,15 +187,14 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 		factorial(dwLoc08_24);
 		dwLoc08_24 = dwLoc08_24 + 0x04;
 	}
-	int32 dwLoc08_133 = 0x05;
-	while (dwLoc08_133 - dwArg0C <= 0x00)
+	int32 dwLoc08_104 = 0x05;
+	while (dwLoc08_104 - dwArg0C <= 0x00)
 	{
 		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
-		pow_int(rLoc28, dwLoc08_133);
-		factorial(dwLoc08_133);
-		dwLoc08_133 = dwLoc08_133 + 0x04;
+		pow_int(rLoc28, dwLoc08_104);
+		factorial(dwLoc08_104);
+		dwLoc08_104 = dwLoc08_104 + 0x04;
 	}
-	return;
 }
 
 // 8000049A: void main()
@@ -215,24 +202,22 @@ void main()
 {
 	sine_taylor(DPB(rLoc10, 0x40091EB8, 0));
 	_sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 1063818100, 0), fp - 0x08);
-	return;
 }
 
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_222 tArg14)
 void _sin(real64 rArg04, real64 rArg0C, Eq_222 tArg14)
 {
-	Eq_233 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_237 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
-	int32 dwLoc20_100 = 0x01;
-	while ((real64) ((real80) rLoc0C_23 / rLoc14) >= rArg0C)
+	Eq_233 rLoc0C_117 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_237 v9_28 = (real64) ((real80) rLoc0C_117 * rLoc0C_117);
+	int32 dwLoc20_132 = 0x01;
+	while ((real64) ((real80) rLoc0C_117 / rLoc14) >= rArg0C)
 	{
 		*tArg14 = (word32) *tArg14 + 0x01;
-		word32 v23_65 = dwLoc20_100 + 0x01;
-		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
-		dwLoc20_100 = v23_65 + 0x03;
-		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x01)) * (real80) (v23_65 + 0x02)) * (real80) (v23_65 + 0x03));
+		int32 v24_77 = dwLoc20_132 + 0x01;
+		rLoc0C_117 = (real64) ((real80) (real64) ((real80) rLoc0C_117 * v9_28) * v9_28);
+		dwLoc20_132 = v24_77 + 0x03;
+		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_77) * (real80) (v24_77 + 0x01)) * (real80) (v24_77 + 0x02)) * (real80) (v24_77 + 0x03));
 	}
-	return;
 }
 
 // 80000624: void __do_global_ctors_aux()
@@ -253,12 +238,10 @@ void __do_global_ctors_aux()
 			a0_12();
 		} while (-0x01 - *(a2_28 - 0x04) != 0x00);
 	}
-	return;
 }
 
 // 8000064E: void call___do_global_ctors_aux()
 void call___do_global_ctors_aux()
 {
-	return;
 }
 

@@ -4,22 +4,12 @@
 
 #include "MAX.h"
 
-***************************************************************************************************** g_ptr0000;
-Eq_5547 g_t0001;
+struct Eq_125 * g_ptr0000;
+Eq_5555 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
-struct Eq_713 g_t13DC = 
-	{
-		0x45,
-		0x6E,
-	};
 Eq_917 g_a2BED[] = 
 	{
-	};
-struct Eq_713 g_t3888 = 
-	{
-		0x25,
-		0x00,
 	};
 ptr32 g_ptr3D90 = 0x00000000;
 struct Eq_4 * g_ptr3D94 = &g_t4000;
@@ -32,13 +22,13 @@ ui32 g_dw3DAC = 0x05050505;
 word32 g_dw3DB8 = 0x05050505;
 ptr32 g_ptr3DBC = 0x06060606;
 word32 g_dw3DC0 = 0x06060606;
-struct Eq_4729 * g_ptr3DC4 = &g_t6060606;
+struct Eq_4737 * g_ptr3DC4 = &g_t6060606;
 word32 g_dw3DC8 = 0x06060606;
-Eq_7634 g_a3DCC[] = 
+Eq_7642 g_a3DCC[] = 
 	{
 	};
 Eq_4 g_t4000;
 Eq_67 g_t10202;
 Eq_67 g_t3030303;
-Eq_4729 g_t6060606;
+Eq_4737 g_t6060606;
 

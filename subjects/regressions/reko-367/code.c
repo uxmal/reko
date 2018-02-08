@@ -8,53 +8,54 @@
 void fn80000000(word32 d2)
 {
 	fn800003CC(d2);
-	return;
 }
 
 // 80000132: Register real80 fn80000132(Register word32 d2, Stack real96 rArg04, Stack real96 rArg10)
 real80 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
 {
-	word32 dwLoc14_16 = 0x00;
-	while ((real96) (real80) dwLoc14_16 < rArg10)
-		dwLoc14_16 = dwLoc14_16 + 0x01;
+	word32 dwLoc14_17 = 0x00;
+	while ((real96) (real80) dwLoc14_17 < rArg10)
+		dwLoc14_17 = dwLoc14_17 + 0x01;
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
 // 8000018E: Register real80 fn8000018E(Register word32 d2, Stack real96 rArg04)
 real80 fn8000018E(word32 d2, real96 rArg04)
 {
-	int32 dwLoc14_18 = 0x01;
-	while ((real96) (real80) dwLoc14_18 <= rArg04)
-		dwLoc14_18 = dwLoc14_18 + 0x01;
+	int32 dwLoc14_19 = 0x01;
+	while ((real96) (real80) dwLoc14_19 <= rArg04)
+		dwLoc14_19 = dwLoc14_19 + 0x01;
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
-// 800001F2: void fn800001F2(Register word32 d2, Stack real96 rArg04)
-void fn800001F2(word32 d2, real96 rArg04)
+// 800001F2: Register real80 fn800001F2(Register word32 d2, Stack real96 rArg04)
+real80 fn800001F2(word32 d2, real96 rArg04)
 {
-	int32 dwLoc20_25 = 0x03;
-	while (100 - dwLoc20_25 >= 0x00)
+	int32 dwLoc20_28 = 0x03;
+	while (100 - dwLoc20_28 >= 0x00)
 	{
-		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_25);
-		fn8000018E(d2, (real96) (real80) dwLoc20_25);
-		dwLoc20_25 = dwLoc20_25 + 0x02;
+		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_28);
+		real96 v19_67 = (real96) (real80) dwLoc20_28;
+		fn8000018E(d2, v19_67);
+		rLoc3C = v19_67;
+		dwLoc20_28 = dwLoc20_28 + 0x02;
 	}
-	return;
+	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }
 
-// 800002AE: Register real80 fn800002AE(Register word32 d2, Stack real96 rArg04, Register out Eq_61 fp2Out)
-real80 fn800002AE(word32 d2, real96 rArg04, Eq_61 & fp2Out)
+// 800002AE: Register real80 fn800002AE(Register word32 d2, Stack real96 rArg04, Register out Eq_67 fp2Out)
+real80 fn800002AE(word32 d2, real96 rArg04, Eq_67 & fp2Out)
 {
-	int32 dwLoc20_24 = 0x02;
-	while (100 - dwLoc20_24 >= 0x00)
+	int32 dwLoc20_27 = 0x02;
+	while (100 - dwLoc20_27 >= 0x00)
 	{
-		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_24);
-		real96 v19_59 = (real96) (real80) dwLoc20_24;
-		fn8000018E(d2, v19_59);
-		rLoc3C = v19_59;
-		dwLoc20_24 = dwLoc20_24 + 0x02;
+		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_27);
+		real96 v19_67 = (real96) (real80) dwLoc20_27;
+		fn8000018E(d2, v19_67);
+		rLoc3C = v19_67;
+		dwLoc20_27 = dwLoc20_27 + 0x02;
 	}
-	real80 fp2_102;
+	real80 fp2_118;
 	*fp2Out = fp2;
 	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }
@@ -63,21 +64,19 @@ real80 fn800002AE(word32 d2, real96 rArg04, Eq_61 & fp2Out)
 void fn8000036C(word32 d2, real96 rArg04)
 {
 	fn800001F2(d2, (real96) (real80) rArg04);
-	real80 fp2_28;
-	fn800002AE(d2, (real96) (real80) rArg04, out fp2_28);
-	return;
+	real80 fp2_32;
+	fn800002AE(d2, (real96) (real80) rArg04, out fp2_32);
 }
 
 // 800003CC: void fn800003CC(Register word32 d2)
 void fn800003CC(word32 d2)
 {
-	real96 v6_9 = (real96) (real80) *(real96 *) 0x80000538;
-	fn80000132(d2, (real96) (real80) v6_9, (real96) (real80) v6_9);
-	fn8000018E(d2, (real96) (real80) v6_9);
-	fn800001F2(d2, (real96) (real80) v6_9);
-	real80 fp2_41;
-	fn800002AE(d2, (real96) (real80) v6_9, out fp2_41);
-	fn8000036C(d2, (real96) (real80) v6_9);
-	return;
+	real96 v6_10 = (real96) (real80) *(real96 *) 0x80000538;
+	fn80000132(d2, (real96) (real80) v6_10, (real96) (real80) v6_10);
+	fn8000018E(d2, (real96) (real80) v6_10);
+	fn800001F2(d2, (real96) (real80) v6_10);
+	real80 fp2_50;
+	fn800002AE(d2, (real96) (real80) v6_10, out fp2_50);
+	fn8000036C(d2, (real96) (real80) v6_10);
 }
 
