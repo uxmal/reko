@@ -1,17 +1,27 @@
 language: csharp
 solution: src/Reko-decompiler.sln
-dist: trusty
+sudo: false
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-toolchain-r/test'
+    packages:
+      - gcc-7
+      - g++-7
+
 before_install:
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-  - sudo apt-get install -y gcc-7 g++-7
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90 --slave /usr/bin/g++ g++ /usr/bin/g++-7
-  - mkdir -p tmp/capstone
-  - pushd tmp/capstone
+  - mkdir -p $HOME/prefix/bin
+  - ln -s /usr/bin/gcc-7 $HOME/prefix/bin/gcc
+  - ln -s /usr/bin/g++-7 $HOME/prefix/bin/g++
+  - export PATH="$HOME/prefix/bin:$PATH"
+  - mkdir -p $HOME/capstone
+  - pushd $HOME/capstone
   - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
   - tar -xf 3.0.4.tar.gz
   - cd capstone*
-  - sudo make install -j $(grep processor /proc/cpuinfo | wc -l)
+  - DESTDIR=$HOME/prefix make install -j $(grep processor /proc/cpuinfo | wc -l)
+  - export PKG_CONFIG_PATH="$HOME/prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
   - popd
 
 install:
