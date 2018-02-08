@@ -1,13 +1,12 @@
 language: csharp
 solution: src/Reko-decompiler.sln
 before_install:
-  - sudo apt-get update -qq
   - mkdir -p tmp/capstone
   - pushd tmp/capstone
   - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
   - tar -xf 3.0.4.tar.gz
   - cd capstone*
-  - make install -j $(grep processor /proc/cpuinfo | wc -l)
+  - sudo make install -j $(grep processor /proc/cpuinfo | wc -l)
   - popd
 
 install:
