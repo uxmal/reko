@@ -155,7 +155,7 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 		}
 		else
 		{
-			if (sep == "-")
+			if (sep[0] == '-')
 			{
 				writer.WriteString(sep);
 				writer.WriteString(RegName(regPrev));
