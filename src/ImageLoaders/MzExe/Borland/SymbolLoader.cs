@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -648,13 +648,24 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     {
                         var b2 = rdr.ReadByte();
                         var retType = rdr.ReadLeUInt16();
-                        var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7);
-                        var nested = (b2 & 0x40) != 0 ? " nested" : "";
-                        var varargs = (b2 & 0x80) != 0 ? " varargs" : "";
-                        var additional = (b2 & 0x38) != 0 ? $" additional bits: {(b2 & 0x38):X2}" : "";
-                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: returns {retType:X4}({GetKnownTypeName(retType)}) ({lang}{varargs}{nested}{additional})");
-                        // TODO: Store return type in Callable
-                        bt = new Callable { };
+                        var type = b2 & 0x7;
+                        var lang = ClassifyFuncProgrammingLanguage(type);
+                        var isNested = (b2 & 0x40) != 0;
+                        var isVararg = (b2 & 0x80) != 0;
+                        var additionalBits = b2 & 0x38;
+                        
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: {b2:X2} returns {retType:X4}({GetKnownTypeName(retType)}) ({lang}" +
+                                                            $"{(isVararg ? " varargs" : "")}" +
+                                                            $"{(isNested ? " nested" : "")}" +
+                                                            $"{(additionalBits != 0 ? $" additional bits: {additionalBits:X2}" : "")})");
+                        
+                        bt = new Callable
+                        {
+                            IsNested = isNested,
+                            IsVararg = isVararg,
+                            Type = type,
+                            ReturnType = retType,
+                        };
                         break;
                     }
                 case TID_LABEL:
