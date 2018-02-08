@@ -30,3 +30,4 @@ TestResults
 /src/Arch/ArmNative/Release
 /src/Debug
 /src/Release
+/src/Native/build
