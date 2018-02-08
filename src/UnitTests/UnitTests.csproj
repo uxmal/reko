@@ -891,17 +891,17 @@
       Win32 and the C# team call it x86... Thanks Microsoft.
   -->
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <ExternalComponents Include="$(SolutionDir)Native\$(Platform)\ArmNative\$(Configuration)\ArmNative.dll" />
-    <ExternalComponents Include="$(SolutionDir)Native\$(Platform)\ArmNative\$(Configuration)\ArmNative.pdb" />
+    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.dll" />
+    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <ExternalComponents Include="$(SolutionDir)Native\$(Platform)\ArmNative\$(Configuration)\ArmNative.dll" />
-    <ExternalComponents Include="$(SolutionDir)Native\$(Platform)\ArmNative\$(Configuration)\ArmNative.pdb" />
+    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.dll" />
+    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone*.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <ExternalComponents Include="$(SolutionDir)Arch\ArmNative\bin\$(Configuration)\libArmNative.so" />
+    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\libArmNative.so" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
   <Target Name="BeforeBuild">
