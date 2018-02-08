@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" Outputs="$(TargetPath)" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{812947D3-7B26-4536-AB23-CD26BF6CA416}</ProjectGuid>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <Language>CPP</Language>
+    <Target>Bin</Target>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputName>ArmNative</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <ExtraCompilerArguments>-std=c++11</ExtraCompilerArguments>
+    <Libs>
+      <Libs>
+        <Lib>/usr/lib/libcapstone.so</Lib>
+      </Libs>
+    </Libs>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <OutputName>ArmNative</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <ExtraCompilerArguments>-std=c++11</ExtraCompilerArguments>
+    <Libs>
+      <Libs>
+        <Lib>/usr/lib/libcapstone.so</Lib>
+      </Libs>
+    </Libs>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Arm32Disassembler.cpp" />
+    <Compile Include="ArmArchitecture.cpp" />
+    <Compile Include="ArmRewriter.System.cpp" />
+    <Compile Include="ArmNative.cpp" />
+    <Compile Include="ArmRewriter.Alu.cpp" />
+    <Compile Include="ArmRewriter.cpp" />
+    <Compile Include="ArmRewriter.Vector.cpp" />
+    <Compile Include="ComBase.cpp" />
+    <Compile Include="dllmain.cpp" />
+    <Compile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArmArchitecture.h" />
+    <None Include="Arm32Disassembler.h" />
+    <None Include="ArmRewriter.h" />
+    <None Include="ComBase.h" />
+    <None Include="functions.h" />
+    <None Include="NativeInstruction.h" />
+    <None Include="reko.h" />
+    <None Include="stdafx.h" />
+    <None Include="types.h" />
+  </ItemGroup>
+</Project>
