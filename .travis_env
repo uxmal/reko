@@ -1,0 +1,4 @@
+#!/bin/sh
+export PATH="$HOME/prefix/bin:$PATH"
+export PKG_CONFIG_PATH="$HOME/prefix/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+

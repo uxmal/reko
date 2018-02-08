@@ -14,7 +14,7 @@ before_install:
   - mkdir -p $HOME/prefix/bin
   - ln -s /usr/bin/gcc-7 $HOME/prefix/bin/gcc
   - ln -s /usr/bin/g++-7 $HOME/prefix/bin/g++
-  - export PATH="$HOME/prefix/bin:$PATH"
+  - source .travis_env
   - mkdir -p $HOME/capstone
   - pushd $HOME/capstone
   - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
@@ -29,6 +29,7 @@ install:
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
 script:
+  - source .travis_env
   - sh ./setup.sh -u
   - msbuild /version
   - msbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
