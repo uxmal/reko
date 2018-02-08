@@ -589,18 +589,71 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 case TID_BOOL: bt = ClassifyType(rdr, PrimitiveType_v1.Bool()); break;
                 case TID_TBYTE: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Any, ByteSize = 10 }); break;
                 case TID_PWORD: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Any, ByteSize = 6 }); break;
+                
                 case TID_NEAR: bt = ClassifyComplex(rdr, t => PointerType_v1.Create(t, 2), "near *"); break;
                 case TID_FAR: bt = ClassifyComplex(rdr, t => PointerType_v1.Create(t, 4), "far *"); break;
+           
                 case TID_CARRAY: bt = ClassifyComplex(rdr, t => new ArrayType_v1 { ElementType = t, Length = 1 /*//$TODO: unknown length */}, "C Array[]"); break;
+                case TID_PARRAY:
+                    {
+                        ++i;
+                        var filler = rdr.ReadByte();
+                        var elementType = rdr.ReadLeUInt16();
+                        var arrayIndexType = rdr.ReadLeUInt16();
+                        var f1 = rdr.ReadLeUInt16();
+                        var f2 = rdr.ReadLeUInt16();
+                        var f3 = rdr.ReadLeUInt16();
+                        SerializedType indexDataType;
+                        if (elementType > iType) DebugEx.PrintIf(trace.TraceWarning, $"    array defined before its element type: {elementType:X4}");
+                        if (arrayIndexType > iType)
+                        {
+                            DebugEx.PrintIf(trace.TraceWarning, $"    array defined before its index type: {arrayIndexType:X4}");
+                            indexDataType = null;
+                        }
+                        else indexDataType = ((SimpleType) types[arrayIndexType]).DataType;
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    Pascal Array[]: {filler:X2} {elementType:X4}({GetKnownTypeName(elementType)})" +
+                                                            $" {arrayIndexType:X4}{indexDataType} {f1:X4}{f2:X4}{f3:X4}");
+                        // TODO: Get upper index value from arrayIndexType
+                        bt = new ComplexType
+                        {
+                            ConstructType = t => new ArrayType_v1 { ElementType = t, Length = 1 /*//$TODO: unknown length */},
+                            SubType = elementType,
+                        };
+                        break;
+                    }
+                    
+                case TID_TFILE:
+                    {
+                        DebugEx.PrintIf(trace.TraceVerbose, "      Text File");
+                        bt = ClassifyType(rdr, new VoidType_v1()); break;
+                    }
+                case TID_BFILE:
+                    {
+                        DebugEx.PrintIf(trace.TraceVerbose, "      Binary File");
+                        bt = ClassifyType(rdr, new VoidType_v1()); break;
+                    }
+                    
+                case TID_PSTR:
+                    {
+                        var maxLenght = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        // TODO: Use special SerializedType
+                        SerializedType dt = new ArrayType_v1 {ElementType = PrimitiveType_v1.UChar8(), Length = type_size};
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    PascalString MaxLenght={maxLenght:X2} {w:X4} {dt}");
+                        bt = new SimpleType { DataType = dt };
+                        break;
+                    }
+                    
                 case TID_FUNCTION:
                     {
                         var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
+                        var retType = rdr.ReadLeUInt16();
                         var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7);
                         var nested = (b2 & 0x40) != 0 ? " nested" : "";
                         var varargs = (b2 & 0x80) != 0 ? " varargs" : "";
                         var additional = (b2 & 0x38) != 0 ? $" additional bits: {(b2 & 0x38):X2}" : "";
-                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: returns {w:X4} ({lang}{varargs}{nested}{additional})");
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: returns {retType:X4}({GetKnownTypeName(retType)}) ({lang}{varargs}{nested}{additional})");
+                        // TODO: Store return type in Callable
                         bt = new Callable { };
                         break;
                     }
@@ -641,13 +694,21 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             }
         }
 
+        private string GetKnownTypeName(ushort typeNumber)
+        {
+            BorlandType type;
+            return types.TryGetValue(typeNumber, out type) ? type.name : "<unknown>";
+        }
+
         private BorlandType ClassifyRangeType(LeImageReader rdr, SerializedType pt)
         {
-            var b2 = rdr.ReadByte();
-            var w = rdr.ReadLeUInt16();
-            var w0 = rdr.ReadLeUInt32();
-            var w1 = rdr.ReadLeUInt32();
-            DebugEx.PrintIf(trace.TraceVerbose, $"    {b2:X2} {w:X4} [{w0:X8} {w1:X8}] {pt}");
+            var filler = rdr.ReadByte();
+            var parent = rdr.ReadLeUInt16();
+            var lower = rdr.ReadLeInt32();
+            var upper = rdr.ReadLeInt32();
+            var parentType = parent != 0 ? $" ({GetKnownTypeName(parent)})" : ""; 
+            DebugEx.PrintIf(trace.TraceVerbose, $"    {filler:X2} {parent:X4}{parentType} [{lower:X8}..{upper:X8}] {pt}");
+            // TODO: Add limits into type
             return new SimpleType { DataType = pt };
         }
 
@@ -659,11 +720,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             return new SimpleType { DataType = dt };
         }
 
-        private BorlandType ClassifyComplex(LeImageReader rdr, Func<SerializedType,SerializedType> ctor, string msg)
+        private ComplexType ClassifyComplex(LeImageReader rdr, Func<SerializedType,SerializedType> ctor, string msg)
         {
             var b2 = rdr.ReadByte();
             var w = rdr.ReadLeUInt16();
-            DebugEx.PrintIf(trace.TraceVerbose, $"    {msg}: {w:X4}");
+            DebugEx.PrintIf(trace.TraceVerbose, $"    {msg}: {w:X4} ({GetKnownTypeName(w)})");
             return new ComplexType
             {
                 ConstructType = ctor,
