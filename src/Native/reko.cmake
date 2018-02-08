@@ -1,5 +1,12 @@
 function(check_msys output)
 	set(SHELL "$ENV{SHELL}")
+
+	# If there's no SHELL it's not msys
+	if(NOT SHELL)
+		set(${output} FALSE PARENT_SCOPE)
+		return()
+	endif()
+
 	execute_process(
 		COMMAND ${SHELL} -c 'echo -ne $OSTYPE'
 		OUTPUT_VARIABLE ostype
@@ -11,7 +18,6 @@ function(check_msys output)
 	endif()
 
 	set(${output} FALSE PARENT_SCOPE)
-
 endfunction()
 
 function(clear_cache build_dir)
@@ -45,6 +51,7 @@ function(invoke_cmake name path build_dir)
 
 	if(WIN32)
 		check_msys(IS_MSYS)
+
 		message(STATUS "IS_MSYS: ${IS_MSYS}")
 		if(IS_MSYS)
 			set(GENERATOR "MSYS Makefiles")
