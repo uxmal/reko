@@ -2,7 +2,6 @@ language: csharp
 solution: src/Reko-decompiler.sln
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get build-dep capstone
   - mkdir -p tmp/capstone
   - pushd tmp/capstone
   - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
