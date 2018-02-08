@@ -30,7 +30,6 @@ install:
 
 script:
   - source .travis_env
-  - sh ./setup.sh -u
   - msbuild /version
   - msbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests
