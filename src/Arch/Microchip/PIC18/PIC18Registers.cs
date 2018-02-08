@@ -34,6 +34,26 @@ namespace Reko.Arch.Microchip.PIC18
 {
 
     /// <summary>
+    /// Values that represent FSR indirect registers operation.
+    /// </summary>
+    public enum IndirectRegOp : byte
+    {
+        /// <summary> No operation using FSR register. </summary>
+        None,
+        /// <summary> Indirect read/write using FSR register. </summary>
+        INDF,
+        /// <summary> Indirect read/write using FSR register, then increments FSR. </summary>
+        POSTINC,
+        /// <summary> Indirect read/write using FSR register, then decrements FSR. </summary>
+        POSTDEC,
+        /// <summary> Increments FSR then indirect read/write using FSR register. </summary>
+        PREINC,
+        /// <summary> Adds FSR and WREG then indirect read/write using FSR register. </summary>
+        PLUSW
+    }
+
+
+    /// <summary>
     /// This class implements the PIC18 registers pool.
     /// </summary>
     public class PIC18Registers : PICRegistersBuilder, IPICRegisterSymTable
@@ -191,6 +211,12 @@ namespace Reko.Arch.Microchip.PIC18
         private static object _symtabLock = new object(); // lock to allow concurrent access.
         private static PIC18Registers _registers;
 
+        private static Dictionary<PICRegisterStorage, (IndirectRegOp iop, PICRegisterStorage fsr)> _indirectParents
+            = new Dictionary<PICRegisterStorage, (IndirectRegOp, PICRegisterStorage)>();
+
+        private static HashSet<PICRegisterStorage> _invalidMovfflDests
+            = new HashSet<PICRegisterStorage>();
+
         private static Dictionary<string, PICRegisterStorage> UniqueRegNames
             = new Dictionary<string, PICRegisterStorage>();
         private static Dictionary<string, PICBitFieldStorage> UniqueFieldNames
@@ -199,6 +225,7 @@ namespace Reko.Arch.Microchip.PIC18
             = new Dictionary<RegSizedAddress, RegisterStorage>();
         private static Dictionary<BitFieldAddr, BitFieldList> RegsBitFields
             = new Dictionary<BitFieldAddr, BitFieldList>();
+
 
         #endregion
 
@@ -627,6 +654,7 @@ namespace Reko.Arch.Microchip.PIC18
             POSTDEC2 = _getRegisterByName("POSTDEC2");
             POSTINC2 = _getRegisterByName("POSTINC2");
             INDF2 = _getRegisterByName("INDF2");
+
             BSR = _getRegisterByName("BSR");
             FSR1L = _getRegisterByName("FSR1L");
             FSR1H = _getRegisterByName("FSR1H");
@@ -635,6 +663,7 @@ namespace Reko.Arch.Microchip.PIC18
             POSTDEC1 = _getRegisterByName("POSTDEC1");
             POSTINC1 = _getRegisterByName("POSTINC1");
             INDF1 = _getRegisterByName("INDF1");
+
             WREG = _getRegisterByName("WREG");
             FSR0L = _getRegisterByName("FSR0L");
             FSR0H = _getRegisterByName("FSR0H");
@@ -643,6 +672,7 @@ namespace Reko.Arch.Microchip.PIC18
             POSTDEC0 = _getRegisterByName("POSTDEC0");
             POSTINC0 = _getRegisterByName("POSTINC0");
             INDF0 = _getRegisterByName("INDF0");
+
             PRODL = _getRegisterByName("PRODL");
             PRODH = _getRegisterByName("PRODH");
             TABLAT = _getRegisterByName("TABLAT");
@@ -666,7 +696,6 @@ namespace Reko.Arch.Microchip.PIC18
             TOS = _getRegisterByName("TOS");
             PCLAT = _getRegisterByName("PCLAT");
             TBLPTR = _getRegisterByName("TBLPTR");
-
             PRODH.BitAddress = 8;
             FSR0H.BitAddress = 8;
             FSR1H.BitAddress = 8;
@@ -681,6 +710,30 @@ namespace Reko.Arch.Microchip.PIC18
             STATUS_CSHAD = _peekRegisterByName("STATUS_CSHAD");
             WREG_CSHAD = _peekRegisterByName("WREG_CSHAD");
             BSR_CSHAD = _peekRegisterByName("BSR_CSHAD");
+
+            _indirectParents.Clear();
+            _indirectParents.Add(PLUSW0, (IndirectRegOp.PLUSW, FSR0));
+            _indirectParents.Add(PREINC0, (IndirectRegOp.PREINC, FSR0));
+            _indirectParents.Add(POSTDEC0, (IndirectRegOp.POSTDEC, FSR0));
+            _indirectParents.Add(POSTINC0, (IndirectRegOp.POSTINC, FSR0));
+            _indirectParents.Add(INDF0, (IndirectRegOp.INDF, FSR0));
+            _indirectParents.Add(PLUSW1, (IndirectRegOp.PLUSW, FSR1));
+            _indirectParents.Add(PREINC1, (IndirectRegOp.PREINC, FSR1));
+            _indirectParents.Add(POSTDEC1, (IndirectRegOp.POSTDEC, FSR1));
+            _indirectParents.Add(POSTINC1, (IndirectRegOp.POSTINC, FSR1));
+            _indirectParents.Add(INDF1, (IndirectRegOp.INDF, FSR1));
+            _indirectParents.Add(PLUSW2, (IndirectRegOp.PLUSW, FSR2));
+            _indirectParents.Add(PREINC2, (IndirectRegOp.PREINC, FSR2));
+            _indirectParents.Add(POSTDEC2, (IndirectRegOp.POSTDEC, FSR2));
+            _indirectParents.Add(POSTINC2, (IndirectRegOp.POSTINC, FSR2));
+            _indirectParents.Add(INDF2, (IndirectRegOp.INDF, FSR2));
+
+            _invalidMovfflDests.Clear();
+            _invalidMovfflDests.Add(PCL);
+            _invalidMovfflDests.Add(TOSL);
+            _invalidMovfflDests.Add(TOSH);
+            _invalidMovfflDests.Add(TOSU);
+
         }
 
         #endregion
@@ -921,6 +974,39 @@ namespace Reko.Arch.Microchip.PIC18
         /// Gets the maximum number of registers.
         /// </summary>
         public static int Max => RegsByAddr.Count;
+
+        /// <summary>
+        /// Query if '<paramref name="sfr"/>' register has indirect operation.
+        /// </summary>
+        /// <param name="sfr">The FSR register (FSR0, FSR1, FSR2).</param>
+        /// <param name="iop">[out] The indirect operation.</param>
+        /// <returns>
+        /// True if indirect operation exists, false if not.
+        /// </returns>
+        public static IndirectRegOp IndirectOpMode(PICRegisterStorage sfr, out PICRegisterStorage parentsfr)
+        {
+            parentsfr = PICRegisterStorage.None;
+            if (sfr is null) return IndirectRegOp.None;
+            if (_indirectParents.TryGetValue(sfr, out (IndirectRegOp iop, PICRegisterStorage fsr) ent))
+            {
+                parentsfr = ent.fsr;
+                return ent.iop;
+            }
+            return IndirectRegOp.None;
+        }
+
+        /// <summary>
+        /// Query if data memory absolute address corresponds to one of the MOVFFL forbidden destinations (per PIC data sheet)..
+        /// </summary>
+        /// <param name="dstaddr">The data memory absolute address.</param>
+        /// <returns>
+        /// True if forbidden, false allowed.
+        /// </returns>
+        public static bool NotAllowedMovlDest(ushort dstaddr)
+        {
+            var reg = GetRegisterBySizedAddr(PICDataAddress.Ptr(dstaddr), 8);
+            return _invalidMovfflDests.Contains(reg);
+        }
 
         #endregion
 

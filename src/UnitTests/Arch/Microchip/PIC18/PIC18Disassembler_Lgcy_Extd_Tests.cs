@@ -780,6 +780,22 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
+        public void Disasm_Indirect_Lgcy_Extd()
+        {
+            VerifyDisasm("TSTFSZ\tINDF2,ACCESS", "", 0x66DF);
+            VerifyDisasm("DECF\tPLUSW2,W,ACCESS", "", 0x04DB);
+            VerifyDisasm("DECF\tINDF1,F,ACCESS", "", 0x06E7);
+            VerifyDisasm("INCF\tPLUSW0,W,ACCESS", "", 0x28EB);
+            VerifyDisasm("INCF\tINDF0,F,ACCESS", "", 0x2AEF);
+            VerifyDisasm("ADDWFC\tINDF0,W,ACCESS", "", 0x20EF);
+            VerifyDisasm("ANDWF\tPOSTINC1,F,ACCESS", "", 0x16E6);
+            VerifyDisasm("ADDWF\tPOSTDEC0,F,ACCESS", "", 0x26ED);
+            VerifyDisasm("SUBWFB\tPREINC2,F,ACCESS", "", 0x5ADC);
+            VerifyDisasm("IORWF\tPLUSW1,F,ACCESS", "", 0x12E3);
+            VerifyDisasm("MOVFF\tPLUSW2,POSTINC0", "", 0xCFDB, 0xFFEE);
+        }
+
+        [Test]
         public void Disasm_Invalids_Trad_Extd()
         {
             VerifyDisasm("invalid", "unknown opcode", 0x0001);

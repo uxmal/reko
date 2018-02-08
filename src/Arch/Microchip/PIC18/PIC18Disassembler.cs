@@ -285,7 +285,8 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Instruction in the form <code>'....-..da-ffff-ffff'</code> (DECF, IORWF, ANDWF, XORWF, COMF, ADDWFC, ADDWF, INCF, DECFSZ, RRCF, RLCF, SWAPF, INCFSZ, RRNCF, RLNCF, INFSNZ, DCFSNZ, MOVF, SUBFWB, SUBWFB, SUBWF, TSTFSZ)
+        /// Instruction in the form <code>'....-..da-ffff-ffff'</code>
+        /// (DECF, IORWF, ANDWF, XORWF, COMF, ADDWFC, ADDWF, INCF, DECFSZ, RRCF, RLCF, SWAPF, INCFSZ, RRNCF, RLNCF, INFSNZ, DCFSNZ, MOVF, SUBFWB, SUBWFB, SUBWF, TSTFSZ)
         /// </summary>
         private class MemoryAccessWithDestOpRec : Decoder
         {
@@ -597,6 +598,10 @@ namespace Reko.Arch.Microchip.PIC18
                 ushort srcaddr = (ushort)((uInstr.Extract(0, 4) << 10) | word2.Extract(2, 10));
                 ushort dstaddr = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
+                // PCL, TOSL, TOSH, TOSU are invalid destinations.
+                if (PIC18Registers.NotAllowedMovlDest(dstaddr))
+                    return null;
+
                 return new PIC18Instruction(
                     opcode,
                     dasm.ExecMode,
@@ -753,11 +758,18 @@ namespace Reko.Arch.Microchip.PIC18
                 if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
 
+                var zs = (byte)uInstr.Extract(0, 7);
+                var fd = word2;
+
+                // PCL, TOSL, TOSH, TOSU are invalid destinations.
+                if (PIC18Registers.NotAllowedMovlDest(fd))
+                    return null;
+
                 return new PIC18Instruction(
                     opcode,
                     dasm.ExecMode,
-                    new PIC18FSR2IdxOperand((byte)uInstr.Extract(0, 7)),
-                    new PIC18Data12bitAbsAddrOperand(word2)
+                    new PIC18FSR2IdxOperand(zs),
+                    new PIC18Data12bitAbsAddrOperand(fd)
                 );
             }
         }
@@ -784,14 +796,18 @@ namespace Reko.Arch.Microchip.PIC18
                 // This is a 3-word instruction.
                 if (!_getAddlWord(dasm.rdr, out ushort word2) || !_getAddlWord(dasm.rdr, out ushort word3))
                     return null;
-                byte zssource = (byte)word2.Extract(2, 7);
-                ushort fsdest = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
+                byte zs = (byte)word2.Extract(2, 7);
+                ushort fd = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
+
+                // PCL, TOSL, TOSH, TOSU are invalid destinations.
+                if (PIC18Registers.NotAllowedMovlDest(fd))
+                    return null;
 
                 return new PIC18Instruction(
                     opcode,
                     dasm.ExecMode,
-                    new PIC18FSR2IdxOperand(zssource),
-                    new PIC18Data14bitAbsAddrOperand(fsdest)
+                    new PIC18FSR2IdxOperand(zs),
+                    new PIC18Data14bitAbsAddrOperand(fd)
                     );
             }
         }
@@ -819,11 +835,14 @@ namespace Reko.Arch.Microchip.PIC18
                 if (!_getAddlWord(dasm.rdr, out ushort word2))
                     return null;
 
+                var zs = (byte)uInstr.Extract(0, 7);
+                var zd = (byte)word2.Extract(0, 7);
+
                 return new PIC18Instruction(
                     opcode,
                     dasm.ExecMode,
-                    new PIC18FSR2IdxOperand((byte)uInstr.Extract(0, 7)),
-                    new PIC18FSR2IdxOperand((byte)word2.Extract(0, 7))
+                    new PIC18FSR2IdxOperand(zs),
+                    new PIC18FSR2IdxOperand(zd)
                     );
             }
         }

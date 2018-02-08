@@ -2177,6 +2177,98 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
+        public void Rewriter_Indirect_Extd_Extd()
+        {
+            // TSTFSZ INDF2,ACCESS
+            ExecTest(Words(0x66DF),
+                "0|T--|000200(2): 1 instructions",
+                    "1|T--|if (Data[FSR2:byte] == 0x00) branch 000204"
+                );
+            // DECF PLUSW2,W,ACCESS
+            ExecTest(Words(0x04DB),
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|WREG = Data[FSR2 + WREG:byte] - 0x01",
+                    "2|L--|CDCZOVN = cond(WREG)"
+                );
+            // DECF INDF1,F,ACCESS
+            ExecTest(Words(0x06E7),
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|Data[FSR1:byte] = Data[FSR1:byte] - 0x01",
+                    "2|L--|CDCZOVN = cond(Data[FSR1:byte])"
+                );
+            // INCF PLUSW0,W,ACCESS
+            ExecTest(Words(0x28EB),
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|WREG = Data[FSR0 + WREG:byte] + 0x01",
+                    "2|L--|CDCZOVN = cond(WREG)"
+                );
+            // INCF INDF0,F,ACCESS
+            ExecTest(Words(0x2AEF),
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|Data[FSR0:byte] = Data[FSR0:byte] + 0x01",
+                    "2|L--|CDCZOVN = cond(Data[FSR0:byte])"
+                );
+            // ADDWFC INDF0,W,ACCESS
+            ExecTest(Words(0x20EF),
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|WREG = WREG + Data[FSR0:byte] + C",
+                    "2|L--|CDCZOVN = cond(WREG)"
+                );
+            // ANDWF POSTINC1,F,ACCESS
+            ExecTest(Words(0x16E6),
+                "0|L--|000200(2): 3 instructions",
+                    "1|L--|Data[FSR1:byte] = WREG & Data[FSR1:byte]",
+                    "2|L--|FSR1 = FSR1 + 0x0001",
+                    "3|L--|ZN = cond(Data[FSR1:byte])"
+                );
+            // ADDWF POSTDEC0,F,ACCESS
+            ExecTest(Words(0x26ED),
+                "0|L--|000200(2): 3 instructions",
+                    "1|L--|Data[FSR0:byte] = WREG + Data[FSR0:byte]",
+                    "2|L--|FSR0 = FSR0 - 0x0001",
+                    "3|L--|CDCZOVN = cond(Data[FSR0:byte])"
+                );
+            // SUBWFB PREINC2,F,ACCESS
+            ExecTest(Words(0x5ADC),
+                "0|L--|000200(2): 3 instructions",
+                    "1|L--|FSR2 = FSR2 + 0x0001",
+                    "2|L--|Data[FSR2:byte] = Data[FSR2:byte] - WREG - !C",
+                    "3|L--|CDCZOVN = cond(Data[FSR2:byte])"
+                );
+            // IORWF PLUSW1,F,ACCESS
+            ExecTest(Words(0x12E3),
+                "0|L--|000200(2): 2 instructions",
+                    "1|L--|Data[FSR1 + WREG:byte] = WREG | Data[FSR1 + WREG:byte]",
+                    "2|L--|ZN = cond(Data[FSR1 + WREG:byte])"
+                );
+            // MOVFF PLUSW2,POSTINC0
+            ExecTest(Words(0xCFDB, 0xFFEE),
+                "0|L--|000200(4): 2 instructions",
+                    "1|L--|Data[FSR0:byte] = Data[FSR2 + WREG:byte]",
+                    "2|L--|FSR0 = FSR0 + 0x0001"
+                );
+            // MOVFF PREINC1,POSTDEC0
+            ExecTest(Words(0xCFE4, 0xFFED),
+                "0|L--|000200(4): 3 instructions",
+                    "1|L--|FSR1 = FSR1 + 0x0001",
+                    "2|L--|Data[FSR0:byte] = Data[FSR1:byte]",
+                    "3|L--|FSR0 = FSR0 - 0x0001"
+                );
+            // MOVSF [0x38],POSTDEC0
+            ExecTest(Words(0xEB38, 0xFFED),
+                "0|L--|000200(4): 2 instructions",
+                    "1|L--|Data[FSR0:byte] = Data[FSR2 + 0x38:byte]",
+                    "2|L--|FSR0 = FSR0 - 0x0001"
+                );
+            // MOVSS [0x38],[0x83]
+            ExecTest(Words(0xEBB8, 0xFA75),
+                "0|L--|000200(4): 1 instructions",
+                    "1|L--|Data[FSR2 + 0x75:byte] = Data[FSR2 + 0x38:byte]"
+                );
+
+        }
+
+        [Test]
         public void Rewriter__Invalid_Extd_Extd()
         {
             ExecTest(Words(0x0001),

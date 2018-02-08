@@ -335,9 +335,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         {
             VerifyDisasm("DECF\t0x01,W,ACCESS", "", 0x0401);
             VerifyDisasm("DECF\t0x5F,W,ACCESS", "", 0x045F);
-            VerifyDisasm("DECF\tPLUSW2,W,ACCESS", "", 0x04DB);
             VerifyDisasm("DECF\t0x44,F,ACCESS", "", 0x0644);
-            VerifyDisasm("DECF\tINDF1,F,ACCESS", "", 0x06E7);
             VerifyDisasm("DECF\t0x01,W", "", 0x0501);
             VerifyDisasm("DECF\t0x5F,W", "", 0x055F);
             VerifyDisasm("DECF\t0xBB,W", "", 0x05BB);
@@ -374,9 +372,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         {
             VerifyDisasm("INCF\t0x01,W,ACCESS", "", 0x2801);
             VerifyDisasm("INCF\t0x5F,W,ACCESS", "", 0x285F);
-            VerifyDisasm("INCF\tPLUSW2,W,ACCESS", "", 0x28DB);
             VerifyDisasm("INCF\t0x44,F,ACCESS", "", 0x2A44);
-            VerifyDisasm("INCF\tINDF1,F,ACCESS", "", 0x2AE7);
             VerifyDisasm("INCF\t0x01,W", "", 0x2901);
             VerifyDisasm("INCF\t0x5F,W", "", 0x295F);
             VerifyDisasm("INCF\t0xBB,W", "", 0x29BB);
@@ -777,6 +773,22 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             VerifyDisasm("SUBLW\t0xAA", "", 0x08AA);
             VerifyDisasm("XORLW\t0x00", "", 0x0A00);
             VerifyDisasm("XORLW\t0xAA", "", 0x0AAA);
+        }
+
+        [Test]
+        public void Disasm_Indirect_Lgcy_Trad()
+        {
+            VerifyDisasm("TSTFSZ\tINDF2,ACCESS", "", 0x66DF);
+            VerifyDisasm("DECF\tPLUSW2,W,ACCESS", "", 0x04DB);
+            VerifyDisasm("DECF\tINDF1,F,ACCESS", "", 0x06E7);
+            VerifyDisasm("INCF\tPLUSW0,W,ACCESS", "", 0x28EB);
+            VerifyDisasm("INCF\tINDF0,F,ACCESS", "", 0x2AEF);
+            VerifyDisasm("ADDWFC\tINDF0,W,ACCESS", "", 0x20EF);
+            VerifyDisasm("ANDWF\tPOSTINC1,F,ACCESS", "", 0x16E6);
+            VerifyDisasm("ADDWF\tPOSTDEC0,F,ACCESS", "", 0x26ED);
+            VerifyDisasm("SUBWFB\tPREINC2,F,ACCESS", "", 0x5ADC);
+            VerifyDisasm("IORWF\tPLUSW1,F,ACCESS", "", 0x12E3);
+            VerifyDisasm("MOVFF\tPLUSW2,POSTINC0", "", 0xCFDB, 0xFFEE);
         }
 
         [Test]

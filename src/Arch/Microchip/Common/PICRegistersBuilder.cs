@@ -160,10 +160,8 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(NMMRPlace xmlRegion)
         {
-            foreach (var e in xmlRegion.SFRDefs)
-            {
-                e.Accept(this);
-            }
+            if (xmlRegion.RegionID != "peripheralnmmrs")  // Do not consider internal peripherals (for debuggers only).
+                xmlRegion.SFRDefs.ForEach(e => e.Accept(this));
         }
 
         public void Visit(LinearDataSector xmlRegion)
