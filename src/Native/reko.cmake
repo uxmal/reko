@@ -71,6 +71,10 @@ function(invoke_cmake name path build_dir)
 		list(APPEND CMAKE_ARGS "-DREKO_PATH=${REKO_PATH}")
 	endif()
 
+	if(CMAKE_BUILD_TYPE)
+		list(APPEND CMAKE_ARGS "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
+	endif()
+
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}
 		WORKING_DIRECTORY ${build_dir}
