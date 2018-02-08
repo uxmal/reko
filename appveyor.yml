@@ -6,6 +6,7 @@ init:
   - git config --global core.autocrlf true 
 
 configuration: Debug
+platform: x86
 
 build:
   project: src/Reko-decompiler.sln
