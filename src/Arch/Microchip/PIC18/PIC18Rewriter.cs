@@ -49,7 +49,8 @@ namespace Reko.Arch.Microchip.PIC18
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
-        private Identifier Wreg;
+        private Identifier Wreg;    // cached WREG register identifier
+        private Identifier Fsr2;    // cached FSR2 register identifier
 
         #endregion
 
@@ -80,6 +81,7 @@ namespace Reko.Arch.Microchip.PIC18
                 rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 Wreg = binder.EnsureRegister(PIC18Registers.WREG);
+                Fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
 
                 switch (instrCurr.Opcode)
                 {
@@ -208,61 +210,6 @@ namespace Reko.Arch.Microchip.PIC18
         private static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PIC18Registers.GlobalData, ea, PrimitiveType.Byte);
 
-        private (IndirectRegOp indop, Expression adr) GetMemoryBankAccess(MachineOperand op)
-        {
-
-            switch (op)
-            {
-                case PIC18BankedAccessOperand mem:
-                    var offset = mem.BankAddr;
-
-                    // Check if access is a Direct Addressing one (bank designated by BSR).
-                    // 
-                    if (!mem.IsAccessRAM.ToBoolean())
-                    {
-                        // Address is BSR direct addressing.
-                        Identifier bsr = binder.EnsureRegister(PIC18Registers.BSR);
-                        return (IndirectRegOp.None, DataMem8(m.IAdd(m.Shl(bsr, 8), offset)));
-                    }
-
-                    // We have some sort of Access Bank RAM type of access; either Lower or Upper area.
-                    //
-                    if (PIC18MemoryMapper.BelongsToAccessRAMLow(offset))
-                    {
-                        if (mem.ExecMode == PICExecMode.Traditional)
-                        {
-                            return (IndirectRegOp.None, DataMem8(offset));
-                        }
-                        // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
-                        Identifier fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
-                        return (IndirectRegOp.None, DataMem8(m.IAdd(fsr2, offset)));
-                    }
-
-                    // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
-                    // 
-                    var accAddr = PIC18MemoryMapper.TranslateAccessAddress(offset);
-                    var sfr = PIC18Registers.GetRegisterBySizedAddr(accAddr, 8) as PICRegisterStorage;
-                    if (sfr != PICRegisterStorage.None)
-                    {
-                        var iop = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
-                        if (iop != IndirectRegOp.None)
-                            return (iop, binder.EnsureRegister(fsr));
-                        return (IndirectRegOp.None, binder.EnsureRegister(sfr));
-                    }
-                    return (IndirectRegOp.None, DataMem8(accAddr));
-
-                default:
-                    throw new InvalidOperationException("Invalid direct addressing operand.");
-            }
-        }
-
-        private static bool DestIsWreg(MachineOperand op)
-        {
-            if (op is PIC18DataByteAccessWithDestOperand bytedst)
-                return bytedst.WregIsDest.ToBoolean();
-            return false;
-        }
-
         private Expression GetFSRNum(MachineOperand op)
         {
             switch (op)
@@ -333,36 +280,12 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private (IndirectRegOp indop, Expression adr) GetDataAbsAddress(MachineOperand op)
-        {
-            switch(op)
-            {
-                case PIC18DataAbsAddrOperand memabsaddr:
-                    var reg = PIC18Registers.GetRegisterBySizedAddr(memabsaddr.DataTarget, 8);
-                    if (reg is PICRegisterStorage sfr)
-                    {
-                        if (sfr != PICRegisterStorage.None)
-                        {
-                            var indmode = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
-                            if (indmode != IndirectRegOp.None)
-                                return (indmode, binder.EnsureRegister(fsr));
-                            return (indmode, binder.EnsureRegister(sfr));
-                        }
-                    }
-                    return (IndirectRegOp.None, DataMem8(PICDataAddress.Ptr(memabsaddr.DataTarget)));
-
-                default:
-                    throw new InvalidOperationException($"Invalid data absolute address operand.");
-            }
-        }
-
         private Expression GetFSR2IdxAddress(MachineOperand op)
         {
             switch (op)
             {
                 case PIC18FSR2IdxOperand fsr2idx:
-                    var fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
-                    return DataMem8(m.IAdd(fsr2, fsr2idx.Offset));
+                    return DataMem8(m.IAdd(Fsr2, fsr2idx.Offset));
 
                 default:
                     throw new InvalidOperationException($"Invalid FSR2 indexed address operand.");
@@ -401,6 +324,53 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         private (IndirectRegOp, Expression) GetUnaryPtrs(MachineOperand op, out Expression ptr)
         {
+            (IndirectRegOp indop, Expression adr) GetMemoryBankAccess(MachineOperand mop)
+            {
+
+                switch (mop)
+                {
+                    case PIC18BankedAccessOperand bmem:
+                        var offset = bmem.BankAddr;
+
+                        // Check if access is a Direct Addressing one (bank designated by BSR).
+                        // 
+                        if (!bmem.IsAccessRAM.ToBoolean())
+                        {
+                            // Address is BSR direct addressing.
+                            Identifier bsr = binder.EnsureRegister(PIC18Registers.BSR);
+                            return (IndirectRegOp.None, DataMem8(m.IAdd(m.Shl(bsr, 8), offset)));
+                        }
+
+                        // We have some sort of Access Bank RAM type of access; either Lower or Upper area.
+                        //
+                        if (PIC18MemoryMapper.BelongsToAccessRAMLow(offset))
+                        {
+                            if (bmem.ExecMode == PICExecMode.Traditional)
+                            {
+                                return (IndirectRegOp.None, DataMem8(offset));
+                            }
+                            // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
+                            return (IndirectRegOp.None, DataMem8(m.IAdd(Fsr2, offset)));
+                        }
+
+                        // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
+                        // 
+                        var accAddr = PIC18MemoryMapper.TranslateAccessAddress(offset);
+                        var sfr = PIC18Registers.GetRegisterBySizedAddr(accAddr, 8) as PICRegisterStorage;
+                        if (sfr != PICRegisterStorage.None)
+                        {
+                            var iop = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
+                            if (iop != IndirectRegOp.None)
+                                return (iop, binder.EnsureRegister(fsr));
+                            return (iop, binder.EnsureRegister(sfr));
+                        }
+                        return (IndirectRegOp.None, DataMem8(accAddr));
+
+                    default:
+                        throw new InvalidOperationException("Invalid direct addressing operand.");
+                }
+            }
+
             var mem = GetMemoryBankAccess(op);
             switch (mem.indop)
             {
@@ -438,6 +408,14 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         private (IndirectRegOp, Expression) GetBinaryPtrs(MachineOperand op, out Expression ptr, out Expression dst)
         {
+
+            bool DestIsWreg(MachineOperand mop)
+            {
+                if (mop is PIC18DataByteAccessWithDestOperand bytedst)
+                    return bytedst.WregIsDest.ToBoolean();
+                return false;
+            }
+
             var mem = GetUnaryPtrs(op, out ptr);
             dst = (DestIsWreg(op) ? Wreg : ptr);
             return mem;
@@ -455,6 +433,30 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         private (IndirectRegOp, Expression) GetUnaryAbsPtrs(MachineOperand op, out Expression ptr)
         {
+
+            (IndirectRegOp indop, Expression adr) GetDataAbsAddress(MachineOperand mop)
+            {
+                switch (mop)
+                {
+                    case PIC18DataAbsAddrOperand memabsaddr:
+                        var reg = PIC18Registers.GetRegisterBySizedAddr(memabsaddr.DataTarget, 8);
+                        if (reg is PICRegisterStorage sfr)
+                        {
+                            if (sfr != PICRegisterStorage.None)
+                            {
+                                var indmode = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
+                                if (indmode != IndirectRegOp.None)
+                                    return (indmode, binder.EnsureRegister(fsr));
+                                return (indmode, binder.EnsureRegister(sfr));
+                            }
+                        }
+                        return (IndirectRegOp.None, DataMem8(PICDataAddress.Ptr(memabsaddr.DataTarget)));
+
+                    default:
+                        throw new InvalidOperationException($"Invalid data absolute address operand.");
+                }
+            }
+
             var mem = GetDataAbsAddress(op);
             switch (mem.indop)
             {
@@ -519,10 +521,9 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteADDULNK()
         {
-            var fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
             var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(fsr2, m.IAdd(fsr2, k));
-            _setStatusFlags(fsr2);
+            m.Assign(Fsr2, m.IAdd(Fsr2, k));
+            _setStatusFlags(Fsr2);
             rtlc = RtlClass.Transfer;
             m.Return(0, 0);
         }
@@ -1626,11 +1627,10 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewritePUSHL()
         {
-            var fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
             var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(DataMem8(fsr2), k);
-            m.Assign(fsr2, m.IAdd(fsr2, 1));
-            _setStatusFlags(fsr2);
+            m.Assign(DataMem8(Fsr2), k);
+            m.Assign(Fsr2, m.IAdd(Fsr2, 1));
+            _setStatusFlags(Fsr2);
         }
 
         private void RewriteRCALL()
@@ -1941,11 +1941,10 @@ namespace Reko.Arch.Microchip.PIC18
         {
             rtlc = RtlClass.Transfer;
 
-            var fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
             var k = GetImmediateValue(instrCurr.op1);
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            m.Assign(fsr2, m.ISub(fsr2, k));
+            m.Assign(Fsr2, m.ISub(Fsr2, k));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
             m.Return(0, 0);

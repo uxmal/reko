@@ -101,7 +101,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
 
             // If there is no legal instruction, consume only one word and return an Illegal pseudo-instruction.
-            if (instrCur == null)
+            if (instrCur is null)
             {
                 instrCur = new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur };
                 rdr.Offset = offset + 2; // Consume only the first word of the binary instruction.
@@ -127,7 +127,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Thrown <paramref name="rdr"/> argument is null.</exception>
         private static bool _getAddlWord(EndianImageReader rdr, out ushort w)
         {
-            if (rdr == null) throw new ArgumentNullException(nameof(rdr));
+            if (rdr is null) throw new ArgumentNullException(nameof(rdr));
             if (!rdr.TryReadUInt16(out w)) return false;
             if ((w & 0xF000U) != 0xF000U) return false;
             w &= (ushort)0xFFFU;

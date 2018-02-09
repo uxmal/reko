@@ -84,7 +84,7 @@ namespace Reko.Arch.Microchip.Common
                 bool IEqualityComparer<MemoryDomainKey>.Equals(MemoryDomainKey x, MemoryDomainKey y)
                 {
                     if (ReferenceEquals(x, y)) return true;
-                    if (x == null || y == null)
+                    if (x is null || y is null)
                         return false;
                     if (x.Domain == y.Domain)
                         return x.SubDomain == y.SubDomain;
@@ -257,7 +257,7 @@ namespace Reko.Arch.Microchip.Common
             /// <value>
             /// The size in number of bytes.
             /// </value>
-            public uint Size => (PhysicalByteAddress == null ? 0 : (uint)(PhysicalByteAddress.End - PhysicalByteAddress.Begin));
+            public uint Size => (PhysicalByteAddress is null ? 0 : (uint)(PhysicalByteAddress.End - PhysicalByteAddress.Begin));
 
             #endregion
 
@@ -311,7 +311,7 @@ namespace Reko.Arch.Microchip.Common
             /// </returns>
             public bool Contains(Address aFragAddr, uint Len = 0)
             {
-                if (aFragAddr == null) return false;
+                if (aFragAddr is null) return false;
                 return ((aFragAddr >= LogicalByteAddress.Begin) && ((aFragAddr + Len) < LogicalByteAddress.End));
             }
 
@@ -419,7 +419,7 @@ namespace Reko.Arch.Microchip.Common
             public MemTrait Trait { get; }
 
             /// <summary>
-            /// Gets the size in bytes of the Linear Access data memory region.
+            /// Gets the size, in bytes, of the Linear Access data memory region.
             /// </summary>
             /// <value>
             /// The size in number of bytes.
@@ -437,8 +437,8 @@ namespace Reko.Arch.Microchip.Common
             public Address RemapAddress(Address aFSRAddr)
             {
                 if (!Contains(aFSRAddr)) return null;
-                if (!RemapFSRIndirect(aFSRAddr, out Tuple<byte, uint> add)) return null;
-                return Address.Ptr16((ushort)(add.Item1 * BankSize + add.Item2));
+                if (!RemapFSRIndirect(aFSRAddr, out (byte BankNum, uint BankOffset) add)) return null;
+                return Address.Ptr16((ushort)(add.BankNum * BankSize + add.BankOffset));
             }
 
             /// <summary>
@@ -449,15 +449,15 @@ namespace Reko.Arch.Microchip.Common
             /// <returns>
             /// A tuple containing the GPR Bank Number and GPR Offset or NOPHYSICAL_MEM(-1, -1) indicator.
             /// </returns>
-            public bool RemapFSRIndirect(Address aFSRVirtAddr, out Tuple<byte, uint> gprBank)
+            public bool RemapFSRIndirect(Address aFSRVirtAddr, out (byte BankNum, uint BankOffset) gprBank)
             {
-                gprBank = null;
+                gprBank = (0, 0);
                 if (!Contains(aFSRVirtAddr)) return false;
                 uint blocksize = (uint)(BlockByteRange.End - BlockByteRange.Begin);
                 var fsraddr = aFSRVirtAddr.ToLinear() - FSRByteAddress.Begin.ToLinear();
                 byte bankNo = (byte)(fsraddr / blocksize);
                 uint bankOff = (uint)(fsraddr % blocksize);
-                gprBank = new Tuple<byte, uint>(bankNo, (BlockByteRange.Begin + (int)bankOff).ToUInt32());
+                gprBank = (bankNo, (BlockByteRange.Begin + (int)bankOff).ToUInt32());
                 return true;
             }
 
@@ -996,7 +996,7 @@ namespace Reko.Arch.Microchip.Common
                 if (!string.IsNullOrWhiteSpace(xmlRegion.ShadowIDRef))
                 {
                     var remap = GetRegion(xmlRegion.ShadowIDRef);
-                    if (remap == null) throw new ArgumentOutOfRangeException(nameof(xmlRegion.ShadowIDRef));
+                    if (remap is null) throw new ArgumentOutOfRangeException(nameof(xmlRegion.ShadowIDRef));
                     regn.PhysicalByteAddress = remap.LogicalByteAddress;
                 }
                 _memregions.Add(regn);
@@ -1014,7 +1014,7 @@ namespace Reko.Arch.Microchip.Common
                 if (!string.IsNullOrWhiteSpace(xmlRegion.ShadowIDRef))
                 {
                     var remap = GetRegion(xmlRegion.ShadowIDRef);
-                    if (remap == null) throw new ArgumentOutOfRangeException(nameof(xmlRegion.ShadowIDRef));
+                    if (remap is null) throw new ArgumentOutOfRangeException(nameof(xmlRegion.ShadowIDRef));
                     regn.PhysicalByteAddress = remap.LogicalByteAddress;
                 }
                 _memregions.Add(regn);
@@ -1164,7 +1164,7 @@ namespace Reko.Arch.Microchip.Common
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid data memory size (less than 12 bytes).</exception>
         public static IPICMemoryMap Create(PIC thePIC)
         {
-            if (thePIC == null) throw new ArgumentNullException(nameof(thePIC));
+            if (thePIC is null) throw new ArgumentNullException(nameof(thePIC));
             uint datasize = thePIC.DataSpace?.EndAddr ?? 0;
             if (datasize < MinDataSize)
                 throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataSize} bytes). Check PIC definition.");

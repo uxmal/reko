@@ -48,7 +48,7 @@ namespace Reko.Arch.Microchip.Common
         int BankSize { get; }
 
         /// <summary>
-        /// Gets the block byte range visible thru the linear data region.
+        /// Gets the block byte range visible via the linear data region.
         /// </summary>
         /// <value>
         /// The addresses tuple (start, end) representing the GPR block range.
@@ -97,15 +97,15 @@ namespace Reko.Arch.Microchip.Common
         Address RemapAddress(Address aFSRAddr);
 
         /// <summary>
-        /// Remap a FSR indirect address in linear data region address to the corresponding GPR bank and
+        /// Remap a FSR indirect address in linear data region address to the corresponding GPR bank number and
         /// offset.
         /// </summary>
         /// <param name="aFSRVirtAddr">The virtual data memory byte address.</param>
-        /// <param name="gprBank">[out] The GPR bank.</param>
+        /// <param name="gprBank">[out] The GPR bank number and offset.</param>
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        bool RemapFSRIndirect(Address aFSRVirtAddr, out Tuple<byte, uint> gprBank );
+        bool RemapFSRIndirect(Address aFSRVirtAddr, out (byte BankNum, uint BankOffset) gprBank );
 
     }
 

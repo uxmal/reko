@@ -43,11 +43,9 @@ namespace Reko.Arch.Microchip.PIC18
     {
         private List<FlagGroupStorage> flagGroups;
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <param name="archID">Identifier for the architecture.</param>
-        public PIC18Architecture(string archID) : base(archID)
+        #region Constructors
+
+        private void SetProcTraits()
         {
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
@@ -57,19 +55,32 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Constructor.
+        /// Default constructor.
         /// </summary>
-        /// <param name="picDescr">PIC descriptor.</param>
-        public PIC18Architecture(PIC picDescr) : this(picDescr.Name)
+        /// <param name="archID">Identifier for the architecture.</param>
+        public PIC18Architecture(string archID) : base(archID)
         {
-            LoadConfiguration(picDescr);
+            SetProcTraits();
+            LoadConfiguration(PICDescriptor);
         }
 
         /// <summary>
-        /// Loads the PICa configuration.
+        /// Constructor. Used for tests purpose.
         /// </summary>
         /// <param name="picDescr">PIC descriptor.</param>
-        public void LoadConfiguration(PIC picDescr)
+        public PIC18Architecture(PIC picDescr) : base(picDescr.Name)
+        {
+            SetProcTraits();
+            LoadConfiguration(picDescr);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Loads the PIC configuration. Creates memory mapper and registers.
+        /// </summary>
+        /// <param name="picDescr">PIC descriptor.</param>
+        private void LoadConfiguration(PIC picDescr)
         {
             PICDescriptor = picDescr;
             Description = picDescr.Desc;
@@ -80,7 +91,40 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC PICDescriptor { get; private set; }
+        public PIC PICDescriptor
+        {
+            get
+            {
+                if (_picDescriptor is null)
+                {
+                    try
+                    {
+                        PICCrownking db = PICCrownking.GetDB();
+                        if (db is null)
+                            throw new InvalidOperationException("Cannot get access to PIC database");
+                        PIC pic = db.GetPIC(Name);
+                        if (pic is null)
+                            throw new InvalidOperationException("No such PIC");
+                        PICDescriptor = pic;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException($"Unable to retrieve PIC definition for PIC name '{Name}'", ex);
+                    }
+                }
+                return _picDescriptor;
+            }
+            private set
+            {
+                if (_picDescriptor != value)
+                {
+                    _picDescriptor = value;
+                    if (!(_picDescriptor is null))
+                        LoadConfiguration(_picDescriptor);
+                }
+            }
+        }
+        private PIC _picDescriptor;
 
         /// <summary>
         /// Gets or sets the PIC execution mode.
@@ -101,7 +145,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             get
             {
-                if (_memmapper == null)
+                if (_memmapper is null)
                     _memmapper = PIC18MemoryMapper.Create(PICDescriptor);
                 return _memmapper;
             }
@@ -221,7 +265,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         /// <remarks>
         /// Most architectures do not have sub-registers, and will use a default implementation. This
-        /// method is overridden for architectures like x86 and Z80, where sub-registers (ah, al, etc)
+        /// method is overridden for architectures like x86 and Z80, where sub-registers (<code>"ah", "al"</code>, etc)
         /// do exist.
         /// </remarks>
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)

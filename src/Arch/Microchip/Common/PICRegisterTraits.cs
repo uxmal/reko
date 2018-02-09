@@ -121,7 +121,7 @@ namespace Reko.Arch.Microchip.Common
 
         public PICRegisterTraits(SFRDef sfr)
         {
-            if (sfr == null) throw new ArgumentNullException(nameof(sfr));
+            if (sfr is null) throw new ArgumentNullException(nameof(sfr));
             Name = sfr.Name;
             Desc = sfr.Desc;
             BitWidth = (int)sfr.NzWidth;
@@ -143,8 +143,8 @@ namespace Reko.Arch.Microchip.Common
 
         public PICRegisterTraits(JoinedSFRDef joinedsfr, ICollection<PICRegisterStorage> subregs)
         {
-            if (joinedsfr == null) throw new ArgumentNullException(nameof(joinedsfr));
-            if (subregs == null) throw new ArgumentNullException(nameof(subregs));
+            if (joinedsfr is null) throw new ArgumentNullException(nameof(joinedsfr));
+            if (subregs is null) throw new ArgumentNullException(nameof(subregs));
             Name = joinedsfr.Name;
             Desc = joinedsfr.Desc;
             BitWidth = (int)joinedsfr.NzWidth;

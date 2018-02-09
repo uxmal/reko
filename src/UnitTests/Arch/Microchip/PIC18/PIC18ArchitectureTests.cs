@@ -14,6 +14,32 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         private PIC18Architecture arch;
 
         [Test]
+        public void PIC18arch_WrongPIC()
+        {
+            Assert.Throws<InvalidOperationException>(() => new PIC18Architecture("PICunknown"));
+        }
+
+        [Test]
+        public void PIC18arch_CheckArchFromDBTests()
+        {
+            arch = new PIC18Architecture("PIC18F2550");
+            Assert.NotNull(arch);
+            arch.ExecMode = PICExecMode.Traditional;
+            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            Assert.NotNull(arch.PICDescriptor);
+            pic = arch.PICDescriptor;
+            Assert.AreEqual(arch.Name, pic.Name);
+
+            arch = new PIC18Architecture("PIC18F24K42");
+            Assert.NotNull(arch);
+            arch.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
+            Assert.NotNull(arch.PICDescriptor);
+            pic = arch.PICDescriptor;
+            Assert.AreEqual(arch.Name, pic.Name);
+        }
+
+        [Test]
         public void PIC18arch_CheckArchTests()
         {
             pic = PICSamples.GetSample(InstructionSetID.PIC18);

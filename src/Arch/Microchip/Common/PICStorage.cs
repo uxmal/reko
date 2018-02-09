@@ -192,12 +192,13 @@ namespace Reko.Arch.Microchip.Common
 
         public override bool Equals(object obj)
         {
-            var that = obj as PICRegisterStorage;
-            if (that == null)
-                return false;
-            return Address == that.Address &&
-                BitAddress == that.BitAddress &&
-                BitSize == that.BitSize;
+            if (obj is PICRegisterStorage that)
+            {
+                return Address == that.Address &&
+                    BitAddress == that.BitAddress &&
+                    BitSize == that.BitSize;
+            }
+            return false;
         }
 
         public override int GetHashCode()

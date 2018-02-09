@@ -177,7 +177,7 @@ namespace Reko.Arch.Microchip.PIC18
 
             public bool Equals(BitFieldAddr other)
             {
-                if (other == null) return false;
+                if (other is null) return false;
                 return RegAddr.Equals(other.RegAddr) && BitPos.Equals(other.BitPos);
             }
 
@@ -641,10 +641,10 @@ namespace Reko.Arch.Microchip.PIC18
             N = _getBitFieldByName("Z");
 
             PD = _peekBitFieldByName("PD");
-            if (PD == null)
+            if (PD is null)
                 PD = _peekBitFieldByName("nPD");
             TO = _peekBitFieldByName("TO");
-            if (TO == null)
+            if (TO is null)
                 TO = _peekBitFieldByName("nTO");
 
             FSR2L = _getRegisterByName("FSR2L");
@@ -750,7 +750,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static PIC18Registers Create(PIC pic)
         {
-            if (pic == null) throw new ArgumentNullException(nameof(pic));
+            if (pic is null) throw new ArgumentNullException(nameof(pic));
             _registers = new PIC18Registers(pic);
             return _registers;
         }
@@ -850,10 +850,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         public static RegisterStorage GetRegisterByName(string name)
         {
-            PICRegisterStorage reg = _registers?._peekRegisterByName(name);
-            if (reg == null)
-                return RegisterStorage.None;
-            return reg;
+            return _registers?._peekRegisterByName(name) ?? RegisterStorage.None;
         }
 
         /// <summary>
@@ -866,10 +863,7 @@ namespace Reko.Arch.Microchip.PIC18
         public static RegisterStorage GetRegisterBySizedAddr(PICDataAddress address, int bwidth)
         {
             var regaddr = new RegSizedAddress(address, bwidth);
-            RegisterStorage reg = _registers?._peekRegisterBySizedAddr(regaddr);
-            if (reg == null)
-                return RegisterStorage.None;
-            return reg;
+            return _registers?._peekRegisterBySizedAddr(regaddr) ?? RegisterStorage.None;
         }
 
         /// <summary>
@@ -882,10 +876,7 @@ namespace Reko.Arch.Microchip.PIC18
         public static RegisterStorage GetRegisterBySizedAddr(ushort uAddr, int bwidth)
         {
             var regaddr = new RegSizedAddress(uAddr, bwidth);
-            RegisterStorage reg = _registers?._peekRegisterBySizedAddr(regaddr);
-            if (reg == null)
-                return RegisterStorage.None;
-            return reg;
+            return _registers?._peekRegisterBySizedAddr(regaddr) ?? RegisterStorage.None;
         }
 
         /// <summary>
@@ -951,7 +942,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         public static FlagGroupStorage GetBitFieldByReg(PICRegisterStorage reg, uint bitPos, uint bitWidth = 0)
         {
-            if (reg == null) return null;
+            if (reg is null) return null;
             return GetBitFieldByAddr(reg.Address, bitPos, bitWidth);
         }
 

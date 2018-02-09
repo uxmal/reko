@@ -137,9 +137,9 @@ namespace Reko.Arch.Microchip.PIC18
         {
             get
             {
-                if (op1 == null)
+                if (op1 is null)
                     return 0;
-                if (op2 == null)
+                if (op2 is null)
                     return 1;
                 return 2;
             }
@@ -148,7 +148,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
-            if (op1 == null)
+            if (op1 is null)
                 return;
             if (op1 is IOperandShadow opshad1)
             {
@@ -162,7 +162,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             writer.Tab();
             op1.Write(writer, options);
-            if (op2 == null)
+            if (op2 is null)
                 return;
             if (op2 is IOperandShadow opshad2)
             {

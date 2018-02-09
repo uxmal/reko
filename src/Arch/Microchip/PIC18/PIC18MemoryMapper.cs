@@ -77,16 +77,16 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
         public static PIC18MemoryMapper Create(PIC pic)
         {
-            if (pic == null) throw new ArgumentNullException(nameof(pic));
+            if (pic is null) throw new ArgumentNullException(nameof(pic));
             _mapper = new PIC18MemoryMapper(pic);
             _mapper.AccessRAMHigh = _mapper.MemoryMap.GetDataRegion(AccessSFRRegionID);
-            if (_mapper.AccessRAMHigh == null)
+            if (_mapper.AccessRAMHigh is null)
                 throw new InvalidOperationException($"Missing '{AccessSFRRegionID}' data memory region.");
             _mapper.AccessRAMLow = _mapper.MemoryMap.GetDataRegion(AccessRAMRegionID);
-            if (_mapper.AccessRAMLow == null)
+            if (_mapper.AccessRAMLow is null)
             {
                 _mapper.AccessRAMLow = _mapper.MemoryMap.GetDataRegion(ExtendRAMRegionID);
-                if (_mapper.AccessRAMLow == null)
+                if (_mapper.AccessRAMLow is null)
                     throw new InvalidOperationException($"Missing '{AccessRAMRegionID}'/'{ExtendRAMRegionID}' data memory region.");
             }
             return _mapper;
@@ -125,7 +125,7 @@ namespace Reko.Arch.Microchip.PIC18
                             AccessRAMLow = MemoryMap.GetDataRegion(ExtendRAMRegionID);
                             break;
                     }
-                    if (AccessRAMLow == null)
+                    if (AccessRAMLow is null)
                         throw new InvalidOperationException($"Missing '{AccessRAMRegionID}'/'{ExtendRAMRegionID}' data memory region.");
                 }
             }
