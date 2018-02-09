@@ -57,8 +57,8 @@ void initpySample()
 	Py_InitModule4("pySample", globals->methods, null, null, 1007);
 }
 
-// 100011E9: Register word32 fn100011E9(Stack uint32 dwArg08)
-word32 fn100011E9(uint32 dwArg08)
+// 100011E9: Register word32 fn100011E9(Stack up32 dwArg08)
+word32 fn100011E9(up32 dwArg08)
 {
 	word32 eax_123;
 	Eq_139 ebp_203 = 0x00;
@@ -438,18 +438,18 @@ word32 fn100016D0(HMODULE dwArg04)
 	return (word32) (eax_21->w0018 == 0x010B);
 }
 
-// 10001700: Register (ptr Eq_1041) fn10001700(Stack Eq_488 dwArg04, Stack uint32 dwArg08)
-Eq_1041 * fn10001700(HMODULE dwArg04, uint32 dwArg08)
+// 10001700: Register (ptr Eq_1041) fn10001700(Stack Eq_488 dwArg04, Stack up32 dwArg08)
+Eq_1041 * fn10001700(HMODULE dwArg04, up32 dwArg08)
 {
 	struct Eq_1044 * ecx_6 = dwArg04 + dwArg04->dw003C / 0x0040;
-	uint32 esi_14 = (word32) ecx_6->w0006;
-	uint32 edx_15 = 0x00;
+	up32 esi_14 = (word32) ecx_6->w0006;
+	up32 edx_15 = 0x00;
 	struct Eq_1041 * eax_22 = &(ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
 	if (true)
 	{
 		do
 		{
-			uint32 ecx_49 = eax_22->dw0000;
+			up32 ecx_49 = eax_22->dw0000;
 			if (dwArg08 >= ecx_49 && dwArg08 < eax_22->dw0008 + ecx_49)
 				return eax_22;
 			edx_15 = edx_15 + 0x01;
@@ -487,8 +487,8 @@ l100017A8:
 	goto l100017A8;
 }
 
-// 100017C6: Register word32 fn100017C6(Stack Eq_488 dwArg04, Stack uint32 dwArg08)
-word32 fn100017C6(HMODULE dwArg04, uint32 dwArg08)
+// 100017C6: Register word32 fn100017C6(Stack Eq_488 dwArg04, Stack up32 dwArg08)
+word32 fn100017C6(HMODULE dwArg04, up32 dwArg08)
 {
 	if (dwArg08 == 0x01 && globals->ptr100020CC == null)
 		DisableThreadLibraryCalls(dwArg04);
@@ -508,8 +508,8 @@ ptr32 fn100017E8( * ebx, ptr32 esi, word32 edi, word32 dwArg00, word32 dwArg04, 
 	return fp + 0x08;
 }
 
-// 1000182D: Register uint32 fn1000182D(Register (ptr Eq_400) ebp, Stack word32 dwArg00, Stack Eq_488 dwArg04, Stack uint32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10)
-uint32 fn1000182D(Eq_400 * ebp, word32 dwArg00, HMODULE dwArg04, uint32 dwArg08, word32 dwArg0C, word32 dwArg10)
+// 1000182D: Register up32 fn1000182D(Register (ptr Eq_400) ebp, Stack word32 dwArg00, Stack Eq_488 dwArg04, Stack up32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10)
+up32 fn1000182D(Eq_400 * ebp, word32 dwArg00, HMODULE dwArg04, up32 dwArg08, word32 dwArg0C, word32 dwArg10)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ebp->dw0000 = dwArg00;

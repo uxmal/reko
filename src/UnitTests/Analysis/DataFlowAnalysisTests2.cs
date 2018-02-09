@@ -193,7 +193,7 @@ test_exit:
         [Ignore(Categories.FailedTests)]
         public void Dfa2_UserDefinedStackArgs()
         {
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var pb = new ProgramBuilder(arch);
             var test = pb.Add(
                 new Procedure_v1

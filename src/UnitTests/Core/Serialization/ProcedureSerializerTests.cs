@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             platform = new Win32Platform(null, arch);
         }
 

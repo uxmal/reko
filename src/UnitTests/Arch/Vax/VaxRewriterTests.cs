@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Vax
     [TestFixture]
     public class VaxRewriterTests : RewriterTestBase
     {
-        private VaxArchitecture arch = new VaxArchitecture();
+        private VaxArchitecture arch = new VaxArchitecture("vax");
         private Address baseAddr = Address.Ptr32(0x0010000);
         private VaxProcessorState state;
         private MemoryArea image;

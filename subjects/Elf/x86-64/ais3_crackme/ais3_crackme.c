@@ -146,7 +146,7 @@ void main(Eq_219 * rsi, word32 edi)
 void __libc_csu_init(word32 edi)
 {
 	_init();
-	if (0x0000000000600E00 - 0x0000000000600DF8 >> 0x03 != 0x00)
+	if (0x00600E00 - 0x00600DF8 >> 0x03 != 0x00)
 	{
 		do
 		{

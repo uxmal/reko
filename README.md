@@ -66,7 +66,8 @@ so we can help you fix the issue.
 If you're interested in contributing code, see the
 [road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
 The [Wiki](https://github.com/uxmal/reko/wiki) has more information
-about the Reko project's internal workings.
+about the Reko project's internal workings. Please consult the
+ [style guide](https://github.com/uxmal/reko/blob/master/doc/style.md).
 
 ### Warnings and errors related to WiX
 

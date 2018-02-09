@@ -36,7 +36,7 @@ namespace Reko.Arch.Z80
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Z80ProcessorArchitecture()
+        public Z80ProcessorArchitecture(string archId) : base(archId)
         {
             this.InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr16;

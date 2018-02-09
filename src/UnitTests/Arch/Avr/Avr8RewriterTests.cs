@@ -32,13 +32,13 @@ namespace Reko.UnitTests.Arch.Avr
     [TestFixture]
     public class Avr8RewriterTests : RewriterTestBase
     {
-        private Avr8Architecture arch = new Avr8Architecture();
+        private Avr8Architecture arch;
         private Address baseAddr = Address.Ptr16(0x0100);
         private MemoryArea image;
 
         public Avr8RewriterTests()
         {
-            this.arch = new Avr8Architecture();
+            this.arch = new Avr8Architecture("avr8");
         }
 
         public override IProcessorArchitecture Architecture

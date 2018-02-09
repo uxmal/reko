@@ -39,7 +39,7 @@ namespace Reko.Arch.Tlcs
     // https://toshiba.semicon-storage.com/product/micro/900H1_CPU_BOOK_CP3_CPU_en.pdf
     public class Tlcs900Architecture : ProcessorArchitecture
     {
-        public Tlcs900Architecture()
+        public Tlcs900Architecture(string archId) : base(archId)
         {
             this.InstructionBitSize = 8;        // Instruction alignment, really.
             this.FramePointerType = PrimitiveType.Ptr32;

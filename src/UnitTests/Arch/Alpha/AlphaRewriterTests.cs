@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class AlphaRewriterTests : RewriterTestBase
     {
-        static AlphaArchitecture arch = new AlphaArchitecture();
+        static AlphaArchitecture arch = new AlphaArchitecture("alpha");
         private AlphaDisassembler dasm;
         private MemoryArea image;
 

@@ -34,7 +34,7 @@ namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : ProcessorArchitecture
     {
-        public Mos6502ProcessorArchitecture()
+        public Mos6502ProcessorArchitecture(string archId) : base(archId)
         {
             CarryFlagMask = (uint)FlagM.CF;
             InstructionBitSize = 8;

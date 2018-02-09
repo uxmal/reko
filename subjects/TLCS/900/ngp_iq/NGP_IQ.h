@@ -64,10 +64,10 @@ Eq_481: (union "Eq_481" (byte u0) (ptr32 u1))
 	T_481 (in hOut : Eq_481)
 	T_527 (in out h_24 : ptr32)
 	T_541 (in out h_35 : ptr32)
-Eq_482: (struct "Eq_482" (0 byte b0000) (1 byte b0001))
+Eq_482: (struct "Eq_482" (0 uint8 b0000) (1 byte b0001))
 	T_482 (in xde_27 : (ptr Eq_482))
 	T_497 (in DPB(0x00009800, (word16) (DPB(bc, 0x00, 8) * 0x0002) + 0x9800 + (word16) (DPB(hl, 0x00, 8) * 0x0040), 0) : word32)
-Eq_517: (fn byte (byte, byte, word16, word16, word16, Eq_480, Eq_481))
+Eq_517: (fn byte (byte, uint8, word16, word16, word16, Eq_480, Eq_481))
 	T_517 (in fn0020050A : ptr32)
 	T_518 (in signature of fn0020050A : void)
 	T_531 (in fn0020050A : ptr32)
@@ -1979,9 +1979,9 @@ T_475: (in w : byte)
   Class: Eq_204
   DataType: byte
   OrigDataType: byte
-T_476: (in a : byte)
+T_476: (in a : uint8)
   Class: Eq_476
-  DataType: byte
+  DataType: uint8
   OrigDataType: byte
 T_477: (in bc : word16)
   Class: Eq_477
@@ -2077,7 +2077,7 @@ T_499: (in xde_27 + 0x00000000 : word32)
   OrigDataType: word32
 T_500: (in Mem30[xde_27 + 0x00000000:byte] : byte)
   Class: Eq_476
-  DataType: byte
+  DataType: uint8
   OrigDataType: byte
 T_501: (in 0x00000001 : word32)
   Class: Eq_501
@@ -2173,8 +2173,8 @@ T_523: (in 0x40 : byte)
   OrigDataType: byte
 T_524: (in ((a & 0xF0) >> 0x04) + 0x40 : byte)
   Class: Eq_476
-  DataType: byte
-  OrigDataType: byte
+  DataType: uint8
+  OrigDataType: uint8
 T_525: (in DPB(bc, a, 0) : word16)
   Class: Eq_477
   DataType: word16
@@ -2217,7 +2217,7 @@ T_534: (in 0x40 : byte)
   OrigDataType: byte
 T_535: (in (c_25 & 0x0F) + 0x40 : byte)
   Class: Eq_476
-  DataType: byte
+  DataType: uint8
   OrigDataType: byte
 T_536: (in DPB(bc, c_25, 0) : word16)
   Class: Eq_477
@@ -2949,11 +2949,11 @@ typedef union Eq_481 {
 } Eq_481;
 
 typedef struct Eq_482 {
-	byte b0000;	// 0
+	uint8 b0000;	// 0
 	byte b0001;	// 1
 } Eq_482;
 
-typedef byte (Eq_517)(byte, byte, word16, word16, word16, Eq_480, Eq_481);
+typedef byte (Eq_517)(byte, uint8, word16, word16, word16, Eq_480, Eq_481);
 
 typedef union Eq_562 {
 	uint16 u0;

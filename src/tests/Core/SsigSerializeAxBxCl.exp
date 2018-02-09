@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature>
   <return name="ax">
-    <prim domain="Character SignedInt UnsignedInt Integer Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <prim domain="Character SignedInt UnsignedInt Integer Real Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
     <reg>ax</reg>
   </return>
   <arg name="bx">
-    <prim domain="Character SignedInt UnsignedInt Integer Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <prim domain="Character SignedInt UnsignedInt Integer Real Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
     <reg>bx</reg>
   </arg>
   <arg name="cl">

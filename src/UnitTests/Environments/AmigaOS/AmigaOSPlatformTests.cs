@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services = mr.StrictMock<IServiceProvider>();
             var cfgSvc = mr.Stub<IConfigurationService>();
             var env = mr.Stub<OperatingEnvironment>();
-            this.arch = new M68kArchitecture();
+            this.arch = new M68kArchitecture("m68k");
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
             cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(env);

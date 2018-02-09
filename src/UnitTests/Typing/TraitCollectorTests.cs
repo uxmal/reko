@@ -322,12 +322,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void TrcoReg00014()
-        {
-            RunTest32("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
-        }
-
-        [Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
 			ProgramBuilder m = new ProgramBuilder();

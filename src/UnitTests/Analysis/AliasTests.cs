@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
             proc = Procedure.Create("foo", Address.Ptr32(0x100), arch.CreateFrame());
             alias = new Aliases(proc, arch);
         }

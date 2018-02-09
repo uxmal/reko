@@ -588,11 +588,11 @@ T_133: (in _init() : void)
   OrigDataType: void
 T_134: (in 0000000000600E18 : ptr64)
   Class: Eq_134
-  DataType: Eq_134
+  DataType: int64
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_135: (in 0000000000600E10 : ptr64)
   Class: Eq_135
-  DataType: Eq_135
+  DataType: int64
   OrigDataType: (union (int64 u1) (ptr64 u0))
 T_136: (in 0x0000000000600E18 - 0x0000000000600E10 : word64)
   Class: Eq_136

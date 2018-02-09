@@ -269,8 +269,8 @@ l004012C3:
 	goto l00401172;
 }
 
-// 004013F6: Register (ptr Eq_512) fn004013F6(Stack (ptr Eq_94) dwArg04, Stack uint32 dwArg08)
-Eq_512 * fn004013F6(Eq_94 * dwArg04, uint32 dwArg08)
+// 004013F6: Register (ptr Eq_512) fn004013F6(Stack (ptr Eq_94) dwArg04, Stack up32 dwArg08)
+Eq_512 * fn004013F6(Eq_94 * dwArg04, up32 dwArg08)
 {
 	struct Eq_512 * eax_26;
 	struct Eq_516 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
@@ -456,8 +456,8 @@ ptr32 fn00401980(word32 ebx, ptr32 esi, ptr32 edi, word32 dwArg00, word32 dwArg0
 	return fp + 0x08;
 }
 
-// 004019C6: Register word32 fn004019C6(Register (ptr Eq_65) ebp, Stack word32 dwArg00, Stack (ptr Eq_94) dwArg04, Stack uint32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 esiOut, Register out ptr32 ediOut)
-word32 fn004019C6(Eq_65 * ebp, word32 dwArg00, Eq_94 * dwArg04, uint32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & esiOut, ptr32 & ediOut)
+// 004019C6: Register word32 fn004019C6(Register (ptr Eq_65) ebp, Stack word32 dwArg00, Stack (ptr Eq_94) dwArg04, Stack up32 dwArg08, Stack word32 dwArg0C, Stack word32 dwArg10, Register out ptr32 esiOut, Register out ptr32 ediOut)
+word32 fn004019C6(Eq_65 * ebp, word32 dwArg00, Eq_94 * dwArg04, up32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ebp->dw0000 = dwArg00;

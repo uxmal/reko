@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class SuperHRewriterTests : RewriterTestBase
     {
-        private SuperHArchitecture arch = new SuperHLeArchitecture();
+        private SuperHArchitecture arch = new SuperHLeArchitecture("superH");
         private Address baseAddr = Address.Ptr32(0x00100000);
         private MemoryArea image;
 

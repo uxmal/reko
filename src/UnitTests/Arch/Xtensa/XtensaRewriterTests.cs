@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Xtensa
     [TestFixture]
     public class XtensaRewriterTests : RewriterTestBase
     {
-        private XtensaArchitecture arch = new XtensaArchitecture();
+        private XtensaArchitecture arch = new XtensaArchitecture("xtensa");
         private Address baseAddr = Address.Ptr32(0x0010000);
         private MemoryArea image;
 

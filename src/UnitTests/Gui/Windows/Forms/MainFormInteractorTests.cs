@@ -543,7 +543,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
-            prog.Architecture = new X86ArchitectureReal();
+            prog.Architecture = new X86ArchitectureReal("x86-real-16");
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
             prog.SegmentMap = new SegmentMap(
                 mem.BaseAddress,

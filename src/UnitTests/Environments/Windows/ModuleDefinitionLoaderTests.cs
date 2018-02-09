@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void CreateDefFileLoader(string absPath, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32("x86-protected-32"));
             dfl = new ModuleDefinitionLoader(null, absPath, Encoding.ASCII.GetBytes(contents));
         }
 

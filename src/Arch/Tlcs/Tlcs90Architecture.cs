@@ -39,7 +39,7 @@ namespace Reko.Arch.Tlcs
     /// </summary>
     public class Tlcs90Architecture : ProcessorArchitecture
     {
-        public Tlcs90Architecture()
+        public Tlcs90Architecture(string archId) : base(archId)
         {
             base.InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr32;

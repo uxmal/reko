@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm
 {
     public class ThumbProcessorArchitecture : ProcessorArchitecture
     {
-        public ThumbProcessorArchitecture()
+        public ThumbProcessorArchitecture(string archId) : base(archId)
         {
             this.StackRegister = A32Registers.sp;
             this.FramePointerType = PrimitiveType.Ptr32;

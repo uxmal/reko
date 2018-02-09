@@ -162,7 +162,6 @@ namespace Reko.UnitTests.Typing
                 m.Mem8(m.IAdd(psz, Constant.Word32(0))));
         }
 
-        [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
         public void ExaMkSequence()
         {
             var lpsz = Id("psz", PrimitiveType.Word32);

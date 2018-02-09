@@ -65,13 +65,13 @@ namespace Reko.UnitTests.Arch.PowerPC
         [SetUp]
         public void Setup()
         {
-            this.arch = new PowerPcBe32Architecture();
+            this.arch = new PowerPcBe32Architecture("ppc-be-32");
 
         }
 
         private void Given_PowerPcBe64()
         {
-            this.arch = new PowerPcBe64Architecture();
+            this.arch = new PowerPcBe64Architecture("ppc-be-32");
         }
 
         [Test]

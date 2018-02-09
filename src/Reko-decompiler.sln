@@ -2452,7 +2452,7 @@ Global
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A3F90CBE-0D50-4395-AAD8-17A5AB5F6839}
+		SolutionGuid = {9B695387-7C8B-4E2A-9CFC-874423BDE6AC}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj

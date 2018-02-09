@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithConstant()
         {
-            program.Architecture = new X86ArchitectureFlat32();
+            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig);
@@ -304,7 +304,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_CallingAllocaWithNonConstant()
         {
             arch = mr.Stub<IProcessorArchitecture>();
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, arch);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);

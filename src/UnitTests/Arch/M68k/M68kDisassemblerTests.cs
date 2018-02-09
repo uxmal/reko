@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.M68k
     [TestFixture]
     public class M68kDisassemblerTests : DisassemblerTestBase<M68kInstruction>
     {
-        private M68kArchitecture arch = new M68kArchitecture();
+        private M68kArchitecture arch = new M68kArchitecture("m68k");
         private IEnumerator<M68kInstruction> dasm;
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)

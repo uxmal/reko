@@ -49,7 +49,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage lo;
         private Dictionary<string, RegisterStorage> mpNameToReg;
 
-        public MipsProcessorArchitecture(PrimitiveType wordSize, PrimitiveType ptrSize)
+        public MipsProcessorArchitecture(string archId, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
         {
             this.WordWidth = wordSize;
             this.PointerType = ptrSize;
@@ -233,7 +233,7 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
@@ -273,7 +273,7 @@ namespace Reko.Arch.Mips
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
-        public MipsLe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
@@ -313,7 +313,7 @@ namespace Reko.Arch.Mips
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsBe64Architecture(string archId) : base(archId, PrimitiveType.Word64, PrimitiveType.Ptr64)
         { }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
@@ -354,7 +354,7 @@ namespace Reko.Arch.Mips
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsLe64Architecture(string archId) : base(archId, PrimitiveType.Word64, PrimitiveType.Ptr64)
         {
         }
 

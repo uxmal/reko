@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ThumbProcessorArchitecture();
+            return new ThumbProcessorArchitecture("arm-thumb");
         }
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)

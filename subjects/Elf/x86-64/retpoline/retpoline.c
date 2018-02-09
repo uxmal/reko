@@ -124,7 +124,7 @@ void fn0000000000400700(word64 qwArg00)
 void __libc_csu_init(word32 edi)
 {
 	_init();
-	if (0x0000000000600E18 - 0x0000000000600E10 >> 0x03 != 0x00)
+	if (0x00600E18 - 0x00600E10 >> 0x03 != 0x00)
 	{
 		do
 		{

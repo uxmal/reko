@@ -601,10 +601,10 @@ T_115: (in register_tm_clones() : void)
   Class: Eq_113
   DataType: void
   OrigDataType: void
-T_116: (in ecx : uint32)
+T_116: (in ecx : up32)
   Class: Eq_116
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_117: (in edx : word32)
   Class: Eq_117
   DataType: word32
@@ -647,8 +647,8 @@ T_126: (in Mem16[r13 - 0x0000000000000028 + 0x0000000000000000:word32] : word32)
   OrigDataType: word32
 T_127: (in 0x00000010 : word32)
   Class: Eq_116
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_128: (in ecx > 0x00000010 : bool)
   Class: Eq_128
   DataType: bool
@@ -1005,18 +1005,18 @@ T_216: (in Mem0[fs:0x00000028:word64] : word64)
   Class: Eq_214
   DataType: word64
   OrigDataType: word64
-T_217: (in eax_84 : uint32)
+T_217: (in eax_84 : up32)
   Class: Eq_217
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_218: (in (word32) al_79 : word32)
   Class: Eq_217
-  DataType: uint32
+  DataType: up32
   OrigDataType: word32
 T_219: (in 0x00000006 : word32)
   Class: Eq_217
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_220: (in eax_84 > 0x00000006 : bool)
   Class: Eq_220
   DataType: bool
@@ -3441,10 +3441,10 @@ T_825: (in (word32) (uint64) (word32) (uint64) (edx_741 >> (byte) ((uint64) eax_
   Class: Eq_825
   DataType: bool
   OrigDataType: bool
-T_826: (in dwLoc54_603 : uint32)
+T_826: (in dwLoc54_603 : up32)
   Class: Eq_826
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_827: (in dwLoc84 : word32)
   Class: Eq_827
   DataType: word32
@@ -3455,8 +3455,8 @@ T_828: (in (uint64) dwLoc84 : uint64)
   OrigDataType: uint64
 T_829: (in (word32) (uint64) dwLoc84 : word32)
   Class: Eq_826
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_830: (in dwLoc54_603 < (word32) ((uint64) dwLoc84) : bool)
   Class: Eq_830
   DataType: bool
@@ -4016,14 +4016,14 @@ T_968: (in 0x00000001 : word32)
 T_969: (in dwLoc68_450 + 0x00000001 : word32)
   Class: Eq_603
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_970: (in (uint64) dwLoc64_586 : uint64)
   Class: Eq_970
   DataType: uint64
   OrigDataType: uint64
 T_971: (in (word32) (uint64) dwLoc64_586 : word32)
   Class: Eq_826
-  DataType: uint32
+  DataType: up32
   OrigDataType: word32
 T_972: (in (uint64) dwLoc5C_588 : uint64)
   Class: Eq_972
@@ -4031,23 +4031,23 @@ T_972: (in (uint64) dwLoc5C_588 : uint64)
   OrigDataType: uint64
 T_973: (in (word32) (uint64) dwLoc5C_588 : word32)
   Class: Eq_973
-  DataType: word32
-  OrigDataType: word32
+  DataType: up32
+  OrigDataType: up32
 T_974: (in dwLoc54_603 + (word32) ((uint64) dwLoc5C_588) : word32)
   Class: Eq_826
-  DataType: uint32
-  OrigDataType: word32
-T_975: (in dwLoc50_677 : uint32)
+  DataType: up32
+  OrigDataType: up32
+T_975: (in dwLoc50_677 : up32)
   Class: Eq_975
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_976: (in (uint64) dwLoc60_585 : uint64)
   Class: Eq_976
   DataType: uint64
   OrigDataType: uint64
 T_977: (in (word32) (uint64) dwLoc60_585 : word32)
   Class: Eq_975
-  DataType: uint32
+  DataType: up32
   OrigDataType: word32
 T_978: (in (uint64) dwLoc88 : uint64)
   Class: Eq_978
@@ -4055,8 +4055,8 @@ T_978: (in (uint64) dwLoc88 : uint64)
   OrigDataType: uint64
 T_979: (in (word32) (uint64) dwLoc88 : word32)
   Class: Eq_975
-  DataType: uint32
-  OrigDataType: uint32
+  DataType: up32
+  OrigDataType: up32
 T_980: (in dwLoc50_677 < (word32) ((uint64) dwLoc88) : bool)
   Class: Eq_980
   DataType: bool
@@ -4075,12 +4075,12 @@ T_983: (in (uint64) dwLoc58_587 : uint64)
   OrigDataType: uint64
 T_984: (in (word32) (uint64) dwLoc58_587 : word32)
   Class: Eq_984
-  DataType: word32
-  OrigDataType: word32
+  DataType: up32
+  OrigDataType: up32
 T_985: (in dwLoc50_677 + (word32) ((uint64) dwLoc58_587) : word32)
   Class: Eq_975
-  DataType: uint32
-  OrigDataType: word32
+  DataType: up32
+  OrigDataType: up32
 T_986: (in print_pixel : ptr64)
   Class: Eq_986
   DataType: (ptr Eq_986)
@@ -4115,11 +4115,11 @@ T_993: (in _init() : void)
   OrigDataType: void
 T_994: (in 0000000000601E08 : ptr64)
   Class: Eq_994
-  DataType: Eq_994
+  DataType: int64
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_995: (in 0000000000601E00 : ptr64)
   Class: Eq_995
-  DataType: Eq_995
+  DataType: int64
   OrigDataType: (union (int64 u1) (ptr64 u0))
 T_996: (in 0x0000000000601E08 - 0x0000000000601E00 : word64)
   Class: Eq_996

@@ -90,11 +90,11 @@ T_8: (in 0x0040208B : ptr32)
 T_9: (in Mem0[0x0040208B:word32] : word32)
   Class: Eq_9
   DataType: uint32
-  OrigDataType: uint32
+  OrigDataType: up32
 T_10: (in 0x00000000 : word32)
   Class: Eq_9
   DataType: uint32
-  OrigDataType: uint32
+  OrigDataType: up32
 T_11: (in globals->dw40208B < 0x00000000 : bool)
   Class: Eq_11
   DataType: bool

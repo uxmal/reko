@@ -1,0 +1,77 @@
+// Fn
+// Return size: 0
+void Fn()
+Fn_entry:
+	// succ:  l1
+l1:
+	Mem0[ptr + 0x000000C8:word32] = 0x00001234
+	Mem0[ptr + 0x0000000C:word32] = 0x00005678
+	b16 = Mem0[ptr + 0x0000000E:word16] | 0x00FF
+Fn_exit:
+
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in 0x00001234 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_3: (in ptr : word32)
+  Class: Eq_3
+  DataType: (ptr (struct (C T_10 t000C) (E T_13 t000E) (C8 T_6 t00C8)))
+  OrigDataType: (ptr (struct (C T_10 t000C) (E T_13 t000E) (C8 T_6 t00C8)))
+T_4: (in 0x000000C8 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in ptr + 0x000000C8 : word32)
+  Class: Eq_5
+  DataType: word32
+  OrigDataType: word32
+T_6: (in Mem0[ptr + 0x000000C8:word32] : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_7: (in 0x00005678 : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_8: (in 0x0000000C : word32)
+  Class: Eq_8
+  DataType: word32
+  OrigDataType: word32
+T_9: (in ptr + 0x0000000C : word32)
+  Class: Eq_9
+  DataType: ptr32
+  OrigDataType: ptr32
+T_10: (in Mem0[ptr + 0x0000000C:word32] : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_11: (in 0x0000000E : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_12: (in ptr + 0x0000000E : word32)
+  Class: Eq_12
+  DataType: (ptr word32)
+  OrigDataType: (ptr word32)
+T_13: (in Mem0[ptr + 0x0000000E:word16] : word16)
+  Class: Eq_13
+  DataType: ui32
+  OrigDataType: ui32
+T_14: (in 0x00FF : word16)
+  Class: Eq_14
+  DataType: (union (ui32 u1) (word16 u0))
+  OrigDataType: (union (ui32 u0) (word16 u1))
+T_15: (in Mem0[ptr + 0x0000000E:word16] | 0x00FF : word16)
+  Class: Eq_15
+  DataType: ui32
+  OrigDataType: ui32
+T_16: (in b16 : word16)
+  Class: Eq_15
+  DataType: (union (ui32 u1) (word16 u0))
+  OrigDataType: (union (ui32 u1) (word16 u0))

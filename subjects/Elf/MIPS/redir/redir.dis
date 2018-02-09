@@ -16,7 +16,7 @@ l004001BC:
 	word32 r28_15
 	word32 r25_16
 	word32 ra_17
-	bcuiposr0 None_18
+	bcuisposr0 None_18
 	call Mem0[0x1000087C:word32] + 1836 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc08_10,dwLoc10_7,r25_13,r28_5,ra,sp_6
 		defs: None_18,r25_16,r28_15,ra_17,sp_14
@@ -24,7 +24,7 @@ l004001BC:
 	word32 r28_23
 	word32 r25_24
 	word32 ra_25
-	bcuiposr0 None_26
+	bcuisposr0 None_26
 	call Mem0[0x10000880:word32] + -25584 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc08_10,dwLoc10_7,None_18,r25_21,r28_19,ra_17,sp_14
 		defs: None_26,r25_24,r28_23,ra_25,sp_22
@@ -8288,7 +8288,7 @@ l00405800:
 	word32 r3_220
 	word32 r6_221
 	word32 r7_222
-	bcuiposr0 None_223
+	bcuisposr0 None_223
 	call strspn (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_132,dwLoc0150_99,dwLoc0158_7,dwLoc0160_133,dwLoc08_9,dwLoc0C_11,dwLoc18_131,dwLoc1C_129,dwLoc20_128,dwLoc24_127,dwLoc28_205,dwLoc2C_130,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_152,None_203,r2_206,r25_211,r28_204,r3_200,r30_196,r4_208,r5_210,r6_201,r7_202,ra_195,sp_192
 		defs: None_223,r2_219,r25_214,r28_213,r3_220,r30_216,r4_217,r5_218,r6_221,r7_222,ra_215,sp_212
@@ -8317,7 +8317,7 @@ l00405858:
 	word32 r3_245
 	word32 r6_246
 	word32 r7_247
-	bcuiposr0 None_248
+	bcuisposr0 None_248
 	call strcspn (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_132,dwLoc0150_99,dwLoc0158_7,dwLoc0160_133,dwLoc08_9,dwLoc0C_11,dwLoc18_131,dwLoc1C_129,dwLoc20_128,dwLoc24_232,dwLoc28_205,dwLoc2C_130,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_228,None_223,r2_231,r25_236,r28_224,r3_225,r30_216,r4_233,r5_235,r6_221,r7_222,ra_215,sp_212
 		defs: None_248,r2_244,r25_239,r28_238,r3_245,r30_241,r4_242,r5_243,r6_246,r7_247,ra_240,sp_237
@@ -8347,7 +8347,7 @@ l00405920:
 	word32 r3_311
 	word32 r6_312
 	word32 r7_313
-	bcuiposr0 None_314
+	bcuisposr0 None_314
 	call strspn (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_132,dwLoc0150_99,dwLoc0158_7,dwLoc0160_133,dwLoc08_9,dwLoc0C_11,dwLoc18_131,dwLoc1C_129,dwLoc20_255,dwLoc24_232,dwLoc28_205,dwLoc2C_130,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_298,None_270,r2_297,r25_302,r28_271,r3_267,r30_263,r4_299,r5_301,r6_268,r7_269,ra_262,sp_259
 		defs: None_314,r2_310,r25_305,r28_304,r3_311,r30_307,r4_308,r5_309,r6_312,r7_313,ra_306,sp_303
@@ -8362,7 +8362,7 @@ l00405920:
 	word32 r3_334
 	word32 r6_335
 	word32 r7_336
-	bcuiposr0 None_337
+	bcuisposr0 None_337
 	call strcspn (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_132,dwLoc0150_99,dwLoc0158_7,dwLoc0160_133,dwLoc08_9,dwLoc0C_11,dwLoc18_131,dwLoc1C_321,dwLoc20_255,dwLoc24_232,dwLoc28_205,dwLoc2C_130,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_319,None_314,r2_320,r25_325,r28_315,r3_316,r30_307,r4_322,r5_324,r6_312,r7_313,ra_306,sp_303
 		defs: None_337,r2_333,r25_328,r28_327,r3_334,r30_330,r4_331,r5_332,r6_335,r7_336,ra_329,sp_326
@@ -8440,7 +8440,7 @@ l00405C50:
 	word32 r3_392
 	word32 r6_393
 	word32 r7_394
-	bcuiposr0 None_395
+	bcuisposr0 None_395
 	call r25_383 (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_351,dwLoc0150_99,dwLoc0158_7,dwLoc0160_376,dwLoc08_9,dwLoc0C_11,dwLoc18_350,dwLoc1C_321,dwLoc20_255,dwLoc24_232,dwLoc28_205,dwLoc2C_349,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_342,None_352,r2_375,r25_383,r28_358,r3_372,r30_360,r4_377,r5_379,r6_381,r7_382,ra_359,sp_361
 		defs: None_395,r2_391,r25_386,r28_385,r3_392,r30_388,r4_389,r5_390,r6_393,r7_394,ra_387,sp_384
@@ -8502,7 +8502,7 @@ l00405B54:
 	word32 r3_532
 	word32 r6_533
 	word32 r7_534
-	bcuiposr0 None_535
+	bcuisposr0 None_535
 	call Mem346[0x1000087C:word32] + 21488 (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_351,dwLoc0150_99,dwLoc0158_7,dwLoc0160_133,dwLoc08_9,dwLoc0C_11,dwLoc18_453,dwLoc1C_321,dwLoc20_255,dwLoc24_232,dwLoc28_205,dwLoc2C_441,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_342,None_422,r2_454,r25_523,r28_423,r3_455,r30_415,r4_520,r5_521,r6_420,r7_421,ra_414,sp_411
 		defs: None_535,r2_531,r25_526,r28_525,r3_532,r30_528,r4_529,r5_530,r6_533,r7_534,ra_527,sp_524
@@ -8603,7 +8603,7 @@ l004058D8:
 	word32 r3_291
 	word32 r6_292
 	word32 r7_293
-	bcuiposr0 None_294
+	bcuisposr0 None_294
 	call r25_282 (retsize: 0; depth: 368)
 		uses: bLoc0148_207,bLoc37_36,bLoc38_35,dwLoc014C_132,dwLoc0150_99,dwLoc0158_7,dwLoc0160_275,dwLoc08_9,dwLoc0C_11,dwLoc18_131,dwLoc1C_129,dwLoc20_255,dwLoc24_232,dwLoc28_205,dwLoc2C_130,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_272,None_270,r2_274,r25_282,r28_271,r3_267,r30_263,r4_276,r5_278,r6_280,r7_281,ra_262,sp_259
 		defs: None_294,r2_290,r25_285,r28_284,r3_291,r30_287,r4_288,r5_289,r6_292,r7_293,ra_286,sp_283
@@ -8662,7 +8662,7 @@ l004056D0:
 	word32 r3_118
 	word32 r6_119
 	word32 r7_120
-	bcuiposr0 None_121
+	bcuisposr0 None_121
 	call r25_109 (retsize: 0; depth: 368)
 		uses: bLoc0148,bLoc37_36,bLoc38_35,dwLoc014C,dwLoc0150_99,dwLoc0158_7,dwLoc0160_102,dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C,dwLoc30_80,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48_81,None_97,r2_101,r25_109,r28_98,r3_94,r30_90,r4_103,r5_105,r6_107,r7_108,ra_89,sp_86
 		defs: None_121,r2_117,r25_112,r28_111,r3_118,r30_114,r4_115,r5_116,r6_119,r7_120,ra_113,sp_110
@@ -8690,7 +8690,7 @@ l004055B4:
 	word32 r3_617
 	word32 r6_618
 	word32 r7_619
-	bcuiposr0 None_620
+	bcuisposr0 None_620
 	call r25_608 (retsize: 0; depth: 368)
 		uses: bLoc0148,bLoc37_36,bLoc38_35,dwLoc014C,dwLoc0150,dwLoc0158_7,dwLoc0160,dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C,dwLoc30_37,dwLoc39_34,dwLoc3C_32,dwLoc3D_30,dwLoc40_28,dwLoc48,None_598,r2_601,r25_608,r28_599,r3_595,r30_591,r4_602,r5_604,r6_606,r7_607,ra_590,sp_587
 		defs: None_620,r2_616,r25_611,r28_610,r3_617,r30_613,r4_614,r5_615,r6_618,r7_619,ra_612,sp_609
@@ -8888,7 +8888,7 @@ l00405E64:
 	word32 r1_425
 	word32 r6_426
 	word32 r7_427
-	bcuiposr0 None_428
+	bcuisposr0 None_428
 	call r25_414 (retsize: 0; depth: 72)
 		uses: bLoc1C_111,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_32,dwLoc18_113,dwLoc20_31,dwLoc24_42,dwLoc28_114,dwLoc30_7,dwLoc38,None_33,r1_36,r16_45,r2_412,r25_414,r28_39,r3_115,r30_44,r4_413,r5_37,r6_35,r7_34,ra_43,sp_46
 		defs: None_428,r1_425,r16_420,r2_423,r25_417,r28_416,r3_424,r30_419,r4_421,r5_422,r6_426,r7_427,ra_418,sp_415
@@ -8980,7 +8980,7 @@ l004061EC:
 	word32 r1_181
 	word32 r6_182
 	word32 r7_183
-	bcuiposr0 None_184
+	bcuisposr0 None_184
 	call r25_170 (retsize: 0; depth: 72)
 		uses: bLoc1C_111,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_134,dwLoc18_113,dwLoc20_133,dwLoc24_144,dwLoc28_143,dwLoc30_7,dwLoc38_163,None_135,r1_138,r16_147,r2_162,r25_170,r28_141,r3_159,r30_146,r4_164,r5_166,r6_168,r7_169,ra_145,sp_148
 		defs: None_184,r1_181,r16_176,r2_179,r25_173,r28_172,r3_180,r30_175,r4_177,r5_178,r6_182,r7_183,ra_174,sp_171
@@ -8998,7 +8998,7 @@ l004061EC:
 	word32 r1_199
 	word32 r6_200
 	word32 r7_201
-	bcuiposr0 None_202
+	bcuisposr0 None_202
 	call r25_188 (retsize: 0; depth: 72)
 		uses: bLoc1C_111,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_134,dwLoc18_113,dwLoc20_133,dwLoc24_144,dwLoc28_143,dwLoc30_7,dwLoc38_163,None_184,r1_181,r16_176,r2_186,r25_188,r28_185,r3_180,r30_175,r4_187,r5_178,r6_182,r7_183,ra_174,sp_171
 		defs: None_202,r1_199,r16_194,r2_197,r25_191,r28_190,r3_198,r30_193,r4_195,r5_196,r6_200,r7_201,ra_192,sp_189
@@ -9067,7 +9067,7 @@ l00405F80:
 	word32 r1_378
 	word32 r6_379
 	word32 r7_380
-	bcuiposr0 None_381
+	bcuisposr0 None_381
 	call toupper (retsize: 0; depth: 72)
 		uses: bLoc1C_111,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_134,dwLoc18_113,dwLoc20_133,dwLoc24_144,dwLoc28_143,dwLoc30_7,dwLoc38,None_135,r1_216,r16_147,r2_365,r25_367,r28_141,r3_363,r30_146,r4_366,r5_139,r6_137,r7_136,ra_145,sp_148
 		defs: None_381,r1_378,r16_373,r2_376,r25_370,r28_369,r3_377,r30_372,r4_374,r5_375,r6_379,r7_380,ra_371,sp_368
@@ -9084,7 +9084,7 @@ l00405F80:
 	word32 r1_407
 	word32 r6_408
 	word32 r7_409
-	bcuiposr0 None_410
+	bcuisposr0 None_410
 	call toupper (retsize: 0; depth: 72)
 		uses: bLoc1C_111,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_134,dwLoc18_113,dwLoc20_133,dwLoc24_144,dwLoc28_143,dwLoc30_7,dwLoc38,None_381,r1_393,r16_383,r2_394,r25_396,r28_382,r3_384,r30_372,r4_395,r5_375,r6_379,r7_380,ra_371,sp_368
 		defs: None_410,r1_407,r16_402,r2_405,r25_399,r28_398,r3_406,r30_401,r4_403,r5_404,r6_408,r7_409,ra_400,sp_397
@@ -9129,7 +9129,7 @@ l004060E8:
 	word32 r1_335
 	word32 r6_336
 	word32 r7_337
-	bcuiposr0 None_338
+	bcuisposr0 None_338
 	call Mem0[0x1000087C:word32] + 21488 (retsize: 0; depth: 72)
 		uses: bLoc1C_111,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_262,dwLoc18_113,dwLoc20_250,dwLoc24_144,dwLoc28_143,dwLoc30_7,dwLoc38,None_237,r1_240,r16_247,r2_263,r25_324,r28_243,r3_264,r30_246,r4_321,r5_322,r6_239,r7_238,ra_245,sp_248
 		defs: None_338,r1_335,r16_330,r2_333,r25_327,r28_326,r3_334,r30_329,r4_331,r5_332,r6_336,r7_337,ra_328,sp_325
@@ -9509,7 +9509,7 @@ l00406664:
 	word32 r4_60
 	word32 r2_61
 	word32 r3_62
-	bcuiposr0 None_63
+	bcuisposr0 None_63
 	call vsnprintf (retsize: 0; depth: 1080)
 		uses: dwLoc0420_43,dwLoc0428_7,dwLoc08_15,dwLoc0C_17,dwLoc18,None,r2_44,r25_49,r28_5,r3_25,r30_18,r4_45,r5_46,r6_47,r7_48,ra,sp_6
 		defs: None_63,r2_61,r25_54,r28_53,r3_62,r30_59,r4_60,r5_55,r6_56,r7_57,ra_58,sp_52
@@ -9524,7 +9524,7 @@ l00406664:
 	word32 r4_82
 	word32 r2_83
 	word32 r3_84
-	bcuiposr0 None_85
+	bcuisposr0 None_85
 	call Mem0[0x1000087C:word32] + 27004 (retsize: 0; depth: 1080)
 		uses: dwLoc0420_43,dwLoc0428_7,dwLoc08_15,dwLoc0C_17,dwLoc18_65,None_63,r2_66,r25_73,r28_64,r3_62,r30_59,r4_68,r5_69,r6_70,r7_71,ra_58,sp_52
 		defs: None_85,r2_83,r25_76,r28_75,r3_84,r30_81,r4_82,r5_77,r6_78,r7_79,ra_80,sp_74
@@ -11592,7 +11592,7 @@ l00407A38:
 	word64 f12_31
 	word64 f14_32
 	word32 r6_33
-	bcuiposr0 None_34
+	bcuisposr0 None_34
 	word32 r2_35
 	call r17_11 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12,f14,r16,r17_11,r25_20,r28_5,r4_16,r5_17,ra,sp_6
@@ -11608,7 +11608,7 @@ l00407A38:
 	word64 f12_49
 	word64 f14_50
 	word32 r6_51
-	bcuiposr0 None_52
+	bcuisposr0 None_52
 	word32 r2_53
 	call r17_26 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_31,f14_32,None_34,r16_37,r17_26,r2_35,r25_39,r28_36,r4_38,r5_40,r6_33,ra_27,sp_23
@@ -11624,7 +11624,7 @@ l00407A38:
 	word64 f12_68
 	word64 f14_69
 	word32 r6_70
-	bcuiposr0 None_71
+	bcuisposr0 None_71
 	word32 r2_72
 	call Mem0[0x1000087C:word32] + 30688 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_49,f14_50,None_52,r16_46,r17_44,r2_53,r25_56,r28_54,r4_58,r5_57,r6_59,ra_45,sp_41
@@ -11641,7 +11641,7 @@ l00407A38:
 	word64 f12_84
 	word64 f14_85
 	word32 r6_86
-	bcuiposr0 None_87
+	bcuisposr0 None_87
 	word32 r2_88
 	call r25_74 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_68,f14_69,None_71,r16_65,r17_63,r2_72,r25_74,r28_73,r4_75,r5_67,r6_70,ra_64,sp_60
@@ -11685,7 +11685,7 @@ l00407AE0:
 	word64 f14_32
 	word32 r2_33
 	word32 r6_34
-	bcuiposr0 None_35
+	bcuisposr0 None_35
 	call r17_11 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12,f14,r16,r17_11,r25_20,r28_5,r4_16,r5_17,ra,sp_6
 		defs: f12_31,f14_32,None_35,r16_28,r17_26,r2_33,r25_25,r28_24,r4_29,r5_30,r6_34,ra_27,sp_23
@@ -11701,7 +11701,7 @@ l00407AE0:
 	word64 f14_50
 	word32 r2_51
 	word32 r6_52
-	bcuiposr0 None_53
+	bcuisposr0 None_53
 	call r17_26 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc50_7,f12_31,f14_32,None_35,r16_37,r17_26,r2_33,r25_39,r28_36,r4_38,r5_40,r6_34,ra_27,sp_23
 		defs: f12_49,f14_50,None_53,r16_46,r17_44,r2_51,r25_43,r28_42,r4_47,r5_48,r6_52,ra_45,sp_41
@@ -11717,7 +11717,7 @@ l00407AE0:
 	word64 f14_73
 	word32 r2_74
 	word32 r6_75
-	bcuiposr0 None_76
+	bcuisposr0 None_76
 	call Mem0[0x1000087C:word32] + 30688 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc34_63,dwLoc50_7,f12_49,f14_50,None_53,r16_46,r17_44,r2_60,r25_56,r28_54,r4_61,r5_59,r6_62,ra_45,sp_41
 		defs: f12_72,f14_73,None_76,r16_69,r17_67,r2_74,r25_66,r28_65,r4_70,r5_71,r6_75,ra_68,sp_64
@@ -11734,7 +11734,7 @@ l00407AE0:
 	word64 f14_89
 	word32 r2_90
 	word32 r6_91
-	bcuiposr0 None_92
+	bcuisposr0 None_92
 	call r25_78 (retsize: 0; depth: 96)
 		uses: dwLoc04_13,dwLoc08_9,dwLoc0C_15,dwLoc14_22,dwLoc18_19,dwLoc34_63,dwLoc50_7,f12_72,f14_73,None_76,r16_69,r17_67,r2_74,r25_78,r28_77,r4_79,r5_71,r6_75,ra_68,sp_64
 		defs: f12_88,f14_89,None_92,r16_85,r17_83,r2_90,r25_82,r28_81,r4_86,r5_87,r6_91,ra_84,sp_80
@@ -13677,7 +13677,7 @@ l004084FC:
 	word32 r16_50
 	word32 r4_51
 	word32 r5_52
-	bcuiposr0 None_53
+	bcuisposr0 None_53
 	call r18_22 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12,f13,f14,f15,r16,r17_23,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
 		defs: f12_39,f13_41,f14_43,f15_45,None_53,r16_50,r17_48,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
@@ -13699,7 +13699,7 @@ l004084FC:
 	word32 r16_74
 	word32 r4_75
 	word32 r5_76
-	bcuiposr0 None_77
+	bcuisposr0 None_77
 	call r18_47 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_39,f13_41,f14_43,f15_45,None_53,r16_55,r17_48,r18_47,r2_40,r25_57,r28_54,r3_38,r4_56,r5_58,r6_44,r7_42,r8_46,ra_49,sp_35
 		defs: f12_63,f13_65,f14_67,f15_69,None_77,r16_74,r17_72,r18_71,r2_64,r25_61,r28_60,r3_62,r4_75,r5_76,r6_68,r7_66,r8_70,ra_73,sp_59
@@ -13721,7 +13721,7 @@ l004084FC:
 	word32 r16_99
 	word32 r4_100
 	word32 r5_101
-	bcuiposr0 None_102
+	bcuisposr0 None_102
 	call Mem0[0x10000880:word32] + -32384 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_63,f13_65,f14_67,f15_69,None_77,r16_74,r17_72,r18_71,r2_64,r25_80,r28_78,r3_62,r4_82,r5_81,r6_83,r7_66,r8_70,ra_73,sp_59
 		defs: f12_88,f13_90,f14_92,f15_94,None_102,r16_99,r17_97,r18_96,r2_89,r25_86,r28_85,r3_87,r4_100,r5_101,r6_93,r7_91,r8_95,ra_98,sp_84
@@ -13744,7 +13744,7 @@ l004084FC:
 	word32 r16_121
 	word32 r4_122
 	word32 r5_123
-	bcuiposr0 None_124
+	bcuisposr0 None_124
 	call r25_104 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_88,f13_90,f14_92,f15_94,None_102,r16_99,r17_97,r18_96,r2_89,r25_104,r28_103,r3_87,r4_105,r5_101,r6_93,r7_91,r8_95,ra_98,sp_84
 		defs: f12_110,f13_112,f14_114,f15_116,None_124,r16_121,r17_119,r18_118,r2_111,r25_108,r28_107,r3_109,r4_122,r5_123,r6_115,r7_113,r8_117,ra_120,sp_106
@@ -13793,7 +13793,7 @@ l004085CC:
 	word32 r16_50
 	word32 r4_51
 	word32 r5_52
-	bcuiposr0 None_53
+	bcuisposr0 None_53
 	call r18_22 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12,f13,f14,f15,r16,r17_23,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
 		defs: f12_39,f13_41,f14_43,f15_45,None_53,r16_50,r17_48,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,ra_49,sp_35
@@ -13815,7 +13815,7 @@ l004085CC:
 	word32 r16_74
 	word32 r4_75
 	word32 r5_76
-	bcuiposr0 None_77
+	bcuisposr0 None_77
 	call r18_47 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc78_7,f12_39,f13_41,f14_43,f15_45,None_53,r16_55,r17_48,r18_47,r2_40,r25_57,r28_54,r3_38,r4_56,r5_58,r6_44,r7_42,r8_46,ra_49,sp_35
 		defs: f12_63,f13_65,f14_67,f15_69,None_77,r16_74,r17_72,r18_71,r2_64,r25_61,r28_60,r3_62,r4_75,r5_76,r6_68,r7_66,r8_70,ra_73,sp_59
@@ -13837,7 +13837,7 @@ l004085CC:
 	word32 r16_103
 	word32 r4_104
 	word32 r5_105
-	bcuiposr0 None_106
+	bcuisposr0 None_106
 	call Mem0[0x10000880:word32] + -32384 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc54_87,dwLoc78_7,f12_63,f13_65,f14_67,f15_69,None_77,r16_74,r17_72,r18_71,r2_84,r25_80,r28_78,r3_62,r4_85,r5_83,r6_86,r7_66,r8_70,ra_73,sp_59
 		defs: f12_92,f13_94,f14_96,f15_98,None_106,r16_103,r17_101,r18_100,r2_93,r25_90,r28_89,r3_91,r4_104,r5_105,r6_97,r7_95,r8_99,ra_102,sp_88
@@ -13860,7 +13860,7 @@ l004085CC:
 	word32 r16_125
 	word32 r4_126
 	word32 r5_127
-	bcuiposr0 None_128
+	bcuisposr0 None_128
 	call r25_108 (retsize: 0; depth: 136)
 		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_20,dwLoc14_30,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc54_87,dwLoc78_7,f12_92,f13_94,f14_96,f15_98,None_106,r16_103,r17_101,r18_100,r2_93,r25_108,r28_107,r3_91,r4_109,r5_105,r6_97,r7_95,r8_99,ra_102,sp_88
 		defs: f12_114,f13_116,f14_118,f15_120,None_128,r16_125,r17_123,r18_122,r2_115,r25_112,r28_111,r3_113,r4_126,r5_127,r6_119,r7_117,r8_121,ra_124,sp_110
@@ -17648,7 +17648,7 @@ l00409CB0:
 	word32 r28_15
 	word32 r25_16
 	word32 ra_17
-	bcuiposr0 None_18
+	bcuisposr0 None_18
 	call Mem0[0x1000087C:word32] + 1568 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc08_10,dwLoc10_7,r25_13,r28_5,ra,sp_6
 		defs: None_18,r25_16,r28_15,ra_17,sp_14

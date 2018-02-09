@@ -895,10 +895,10 @@ T_207: (in ZC_40 : byte)
   Class: Eq_207
   DataType: byte
   OrigDataType: byte
-T_208: (in None_41 : bcuiposr0)
+T_208: (in None_41 : bcuisposr0)
   Class: Eq_208
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_209: (in r1_42 : word32)
   Class: Eq_209
   DataType: word32
@@ -1235,10 +1235,10 @@ T_292: (in C_60 : byte)
   Class: Eq_292
   DataType: byte
   OrigDataType: byte
-T_293: (in None_61 : bcuiposr0)
+T_293: (in None_61 : bcuisposr0)
   Class: Eq_293
-  DataType: bcuiposr0
-  OrigDataType: bcuiposr0
+  DataType: bcuisposr0
+  OrigDataType: bcuisposr0
 T_294: (in 0x00000000 : word32)
   Class: Eq_294
   DataType: word32

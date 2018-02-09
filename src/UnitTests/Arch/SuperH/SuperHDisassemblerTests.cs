@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public SuperHDisassemblerTests()
         {
-            this.arch = new SuperHLeArchitecture();
+            this.arch = new SuperHLeArchitecture("superH");
         }
 
         public override IProcessorArchitecture Architecture

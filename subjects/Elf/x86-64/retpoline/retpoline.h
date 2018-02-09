@@ -898,11 +898,11 @@ T_206: (in _init() : void)
   OrigDataType: void
 T_207: (in 0000000000600E18 : ptr64)
   Class: Eq_207
-  DataType: Eq_207
+  DataType: int64
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_208: (in 0000000000600E10 : ptr64)
   Class: Eq_208
-  DataType: Eq_208
+  DataType: int64
   OrigDataType: (union (int64 u1) (ptr64 u0))
 T_209: (in 0x0000000000600E18 - 0x0000000000600E10 : word64)
   Class: Eq_209

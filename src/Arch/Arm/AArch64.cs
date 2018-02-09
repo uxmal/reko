@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm
 {
     public class AArch64 : ProcessorArchitecture
     {
-        public AArch64()
+        public AArch64(string archId) : base(archId)
         {
             this.InstructionBitSize = 32;
             this.FramePointerType = PrimitiveType.Ptr64;

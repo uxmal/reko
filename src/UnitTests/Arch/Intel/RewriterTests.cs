@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.Intel
 		[SetUp]
 		public void SetUp()
 		{
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
             program = new Program() { Architecture = arch };
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());

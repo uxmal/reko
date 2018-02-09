@@ -32,7 +32,7 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaArchitecture : ProcessorArchitecture
     {
-        public XtensaArchitecture()
+        public XtensaArchitecture(string archId)  : base(archId)
         {
             this.InstructionBitSize = 8;        // Instruction alignment, really.
             this.FramePointerType = PrimitiveType.Ptr32;

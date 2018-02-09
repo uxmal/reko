@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
 
         private void CreateTypeLibraryLoader(string filename, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32("x86-protected-32"));
             tlldr = new TypeLibraryLoader(null, filename, Encoding.ASCII.GetBytes(contents));
         }
 

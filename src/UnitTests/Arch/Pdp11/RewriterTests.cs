@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Pdp11
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private Pdp11Architecture arch = new Pdp11Architecture();
+        private Pdp11Architecture arch = new Pdp11Architecture("pdp11");
         private MemoryArea image;
         private Address addrBase = Address.Ptr16(0x0200);
 

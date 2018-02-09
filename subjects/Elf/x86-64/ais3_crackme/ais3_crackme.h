@@ -701,8 +701,8 @@ T_158: (in 0x0000000000601020 : word64)
   OrigDataType: word64
 T_159: (in DPB(rax_113, (int16) (byte) rax_113, 0) + 0x0000000000601020 : word64)
   Class: Eq_159
-  DataType: word64
-  OrigDataType: word64
+  DataType: uint64
+  OrigDataType: uint64
 T_160: (in Mem0[DPB(rax_113, (int16) (byte) rax_113, 0) + 0x0000000000601020:byte] : byte)
   Class: Eq_160
   DataType: byte
@@ -1049,11 +1049,11 @@ T_245: (in _init() : void)
   OrigDataType: void
 T_246: (in 0000000000600E00 : ptr64)
   Class: Eq_246
-  DataType: Eq_246
+  DataType: int64
   OrigDataType: (union (int64 u0) (ptr64 u1))
 T_247: (in 0000000000600DF8 : ptr64)
   Class: Eq_247
-  DataType: Eq_247
+  DataType: int64
   OrigDataType: (union (int64 u1) (ptr64 u0))
 T_248: (in 0x0000000000600E00 - 0x0000000000600DF8 : word64)
   Class: Eq_248

@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.M68k
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private M68kArchitecture arch = new M68kArchitecture();
+        private M68kArchitecture arch = new M68kArchitecture("m68k");
         private Address addrBase = Address.Ptr32(0x00010000);
         private MemoryArea mem;
 

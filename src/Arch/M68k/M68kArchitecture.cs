@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M68kArchitecture()
+        public M68kArchitecture(string archId) : base(archId)
         {
             InstructionBitSize = 16;
             FramePointerType = PrimitiveType.Ptr32;

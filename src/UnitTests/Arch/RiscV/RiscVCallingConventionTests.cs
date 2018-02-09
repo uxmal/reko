@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [SetUp]
         public void Setup()
         {
-            this.arch = new RiscVArchitecture();
+            this.arch = new RiscVArchitecture("riscV");
             this.cc = new RiscVCallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
         }
