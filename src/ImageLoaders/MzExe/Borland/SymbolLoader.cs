@@ -597,12 +597,12 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 case TID_PARRAY:
                     {
                         ++i;
-                        var filler = rdr.ReadByte();
+                        var filler1 = rdr.ReadByte();
                         var elementType = rdr.ReadLeUInt16();
                         var arrayIndexType = rdr.ReadLeUInt16();
-                        var f1 = rdr.ReadLeUInt16();
-                        var f2 = rdr.ReadLeUInt16();
-                        var f3 = rdr.ReadLeUInt16();
+                        var filler2 = rdr.ReadLeUInt16();
+                        var filler3 = rdr.ReadLeUInt16();
+                        var filler4 = rdr.ReadLeUInt16();
                         SerializedType indexDataType;
                         if (elementType > iType) DebugEx.PrintIf(trace.TraceWarning, $"    array defined before its element type: {elementType:X4}");
                         if (arrayIndexType > iType)
@@ -611,8 +611,8 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                             indexDataType = null;
                         }
                         else indexDataType = ((SimpleType) types[arrayIndexType]).DataType;
-                        DebugEx.PrintIf(trace.TraceVerbose, $"    Pascal Array[]: {filler:X2} {elementType:X4}({GetKnownTypeName(elementType)})" +
-                                                            $" {arrayIndexType:X4}{indexDataType} {f1:X4}{f2:X4}{f3:X4}");
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    Pascal Array[]: {filler1:X2} {elementType:X4}({GetKnownTypeName(elementType)})" +
+                                                            $" {arrayIndexType:X4}{indexDataType} {filler2:X4}{filler3:X4}{filler4:X4}");
                         // TODO: Get upper index value from arrayIndexType
                         bt = new ComplexType
                         {
@@ -707,6 +707,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
 
         private string GetKnownTypeName(ushort typeNumber)
         {
+            if (typeNumber == 0) return "<no-type>"; 
             BorlandType type;
             return types.TryGetValue(typeNumber, out type) ? type.name : "<unknown>";
         }
