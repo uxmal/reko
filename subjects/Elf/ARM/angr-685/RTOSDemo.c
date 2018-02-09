@@ -4,15 +4,139 @@
 
 #include "RTOSDemo.h"
 
-// 00000059: void prvUnlockQueue()
-void prvUnlockQueue()
+// 00000059: void prvUnlockQueue(Register word32 r0, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10)
+void prvUnlockQueue(word32 r0, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10)
 {
+	if (!Z)
+	{
+		Mem17[r6 + 0x00:word32] = r0;
+		Mem20[r6 - 0x04 + 0x00:word32] = r2;
+		Mem21[r6 - 0x08 + 0x00:word32] = r4;
+		Mem23[r6 - 0x0C + 0x00:word32] = r5;
+		Mem25[r6 - 0x0010 + 0x00:word32] = r7;
+		Mem26[r6 - 0x0014 + 0x00:word32] = r8;
+		Mem27[r6 - 0x0018 + 0x00:word32] = r10;
+	}
+	if (!V)
+		Mem12[r0 + 0x00:byte] = (byte) r4;
 }
 
-// 000000ED: void prvCopyDataToQueue(Register Eq_2 r0, Register (ptr Eq_2) r6)
-void prvCopyDataToQueue(Eq_2 r0, Eq_2 * r6)
+// 000000ED: void prvCopyDataToQueue(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp)
+void prvCopyDataToQueue(word32 lr, word32 pc, word32 r0, word32 r2, word32 r3, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 fp)
 {
-	*r6 = (union Eq_2 *) r0;
+	if (!Z)
+	{
+		Mem218[r6 + 0x00:word16] = (uint16) r0;
+		r6 = r6 + ~0x44;
+	}
+	if (!C)
+	{
+		Mem208[fp + 0x00:word32] = r2;
+		Mem209[fp - 0x04 + 0x00:word32] = r3;
+		Mem210[fp - 0x08 + 0x00:word32] = r5;
+		Mem211[fp - 0x0C + 0x00:word32] = r6;
+		Mem212[fp - 0x0010 + 0x00:word32] = r8;
+		Mem213[fp - 0x0014 + 0x00:word32] = r10;
+		Mem214[fp - 0x0018 + 0x00:word32] = fp;
+		Mem215[fp - 0x001C + 0x00:word32] = pc;
+		fp = fp - 0x0020;
+		fp_r10 = SEQ(fp - 0x0020, r10);
+	}
+	if (!Z)
+	{
+		Mem206[r8 + 0x00:word16] = (uint16) r2;
+		r8 = r8 + 0x69;
+	}
+	if (!Z)
+		r3 = r0 & ~(lr >>u 0x02);
+	if (!V)
+	{
+		r10 = r3 - (r5 >>u r5);
+		fp_r10 = SEQ(fp, r10);
+	}
+	if (!NV)
+	{
+		byte NZCV_195 = cond(r9 + (r6 >> 0x001C) + C);
+		C = NZCV_195;
+		NV = NZCV_195;
+		Z = NZCV_195;
+		N = NZCV_195;
+	}
+	if (!N)
+	{
+		word32 sp_173;
+		word32 r6_176;
+		word32 fp_178;
+		word32 r2_179;
+		word32 pc_184;
+		word32 lr_185;
+		byte V_186;
+		word32 r1_187;
+		word32 r7_189;
+		word32 r9_190;
+		byte NZCV_191;
+		byte N_192;
+		byte NZ_193;
+		fnFFC02AB1();
+	}
+	if (!C)
+	{
+		r8 = r8 + -0x003A;
+		Mem172[r8 + 0x00:word64] = fp_r10;
+	}
+	if (!Z)
+	{
+		word32 sp_150;
+		byte Z_151;
+		word32 r6_153;
+		word32 fp_155;
+		word32 r2_156;
+		word32 pc_161;
+		word32 lr_162;
+		byte V_163;
+		word32 r1_164;
+		word32 r7_166;
+		word32 r9_167;
+		byte NZCV_168;
+		byte N_169;
+		byte NZ_170;
+		fn01A18AC9();
+	}
+	if (!C)
+	{
+		r0 = r5 ^ __ror(r8, 0x02);
+		byte NZCV_141 = cond(r0);
+		C = NZCV_141;
+		NV = NZCV_141;
+	}
+	if (!NV)
+		Mem139[r0 + -838:byte] = (byte) r10;
+	word32 r7_93 = fp + __ror(r3, 0x00) + C;
+	if (r7_93 <= 0x00)
+	{
+		word32 sp_117;
+		byte Z_118;
+		word32 r0_119;
+		word32 r6_120;
+		byte C_121;
+		word32 fp_122;
+		word32 r2_123;
+		word32 r3_124;
+		word32 r5_125;
+		word32 r8_126;
+		word32 r10_127;
+		word32 pc_128;
+		word32 lr_129;
+		byte V_130;
+		word32 r1_131;
+		byte NV_132;
+		word32 r7_133;
+		word32 r9_134;
+		byte NZCV_135;
+		byte N_136;
+		byte NZ_137;
+		fnFFC02AD1();
+	}
 }
 
 // 0000016D: void prvCopyDataFromQueue()
@@ -26,38 +150,106 @@ void prvCopyDataFromQueue()
 	}
 }
 
-// 00000191: void xQueueGenericSend(Register word32 r7, Register (ptr Eq_13) r9)
-void xQueueGenericSend(word32 r7, Eq_13 * r9)
+// 00000191: void xQueueGenericSend(Register word32 r0, Register word32 r7, Register word32 r9)
+void xQueueGenericSend(word32 r0, word32 r7, word32 r9)
 {
 	if (!Z)
 	{
-		word32 pc_7 = r7 - __ror(r9, 0x01);
+		word32 pc_14 = r7 - __ror(r9, 0x01);
 	}
 }
 
 // 000002A5: void xQueuePeekFromISR(Register word32 r3)
 void xQueuePeekFromISR(word32 r3)
 {
-	__syscall(0x00F04F85);
+	if (!NZV)
+		__syscall(0x00F04F85);
 }
 
-// 000002D9: void xQueueGenericReceive(Register word32 r7, Register (ptr Eq_13) r9)
-void xQueueGenericReceive(word32 r7, Eq_13 * r9)
+// 000002D9: void xQueueGenericReceive(Register word32 r0, Register word32 r7, Register word32 r9)
+void xQueueGenericReceive(word32 r0, word32 r7, word32 r9)
 {
 	if (!Z)
 	{
-		word32 pc_7 = r7 - __ror(r9, 0x01);
+		word32 pc_14 = r7 - __ror(r9, 0x01);
 	}
 }
 
-// 00000429: void uxQueueMessagesWaiting()
-void uxQueueMessagesWaiting()
+// 00000429: void uxQueueMessagesWaiting(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp)
+void uxQueueMessagesWaiting(word32 lr, word32 pc, word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 fp)
 {
+	if (!Z)
+	{
+		Mem43[r6 + 0x00:word32] = r0;
+		Mem44[r6 - 0x04 + 0x00:word32] = r2;
+		Mem45[r6 - 0x08 + 0x00:word32] = r4;
+		Mem46[r6 - 0x0C + 0x00:word32] = r5;
+		Mem47[r6 - 0x0010 + 0x00:word32] = r7;
+		Mem48[r6 - 0x0014 + 0x00:word32] = r10;
+	}
+	if (!NV)
+	{
+		r10 = Mem0[r8 + 0x00:byte];
+		r8 = r8 + 0x04F0;
+	}
+	if (NZV)
+	{
+		if (!Z)
+		{
+			Mem39[r6 + 0x00:word64] = r3_r2;
+			r6 = r6 + ~0x07;
+		}
+		if (C)
+			uxQueueSpacesAvailable(lr, r0, r2, r3, r4, r5, r6, r7, r8, r10, fp);
+		else
+		{
+			word32 r0_22 = Mem0[pc + 0x00:word32];
+			word32 r2_23 = Mem0[pc + 0x04:word32];
+			word32 r3_24 = Mem0[pc + 0x08:word32];
+			word32 r4_26 = Mem0[pc + 0x0C:word32];
+			word32 r5_27 = Mem0[pc + 0x0010:word32];
+			word32 r7_28 = Mem0[pc + 0x0014:word32];
+			uxQueueSpacesAvailable(lr, r0_22, r2_23, r3_24, r4_26, r5_27, r6, r7_28, r8, r10, fp);
+		}
+	}
 }
 
-// 0000043D: void uxQueueSpacesAvailable()
-void uxQueueSpacesAvailable()
+// 0000043D: void uxQueueSpacesAvailable(Register word32 lr, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp)
+void uxQueueSpacesAvailable(word32 lr, word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 fp)
 {
+	if (!Z)
+	{
+		Mem64[r6 + 0x00:word32] = r0;
+		Mem66[r6 - 0x04 + 0x00:word32] = r2;
+		Mem67[r6 - 0x08 + 0x00:word32] = r4;
+		Mem68[r6 - 0x0C + 0x00:word32] = r5;
+		Mem69[r6 - 0x0010 + 0x00:word32] = r7;
+		Mem70[r6 - 0x0014 + 0x00:word32] = r8;
+		Mem71[r6 - 0x0018 + 0x00:word32] = r10;
+	}
+	if (!NV)
+		return;
+	if (!C)
+		Mem62[fp + 0x00:byte] = (byte) lr;
+	if (!NZV)
+	{
+		byte NZCV_56 = cond(!(r10 << r8));
+		C = NZCV_56;
+		Z = NZCV_56;
+	}
+	if (!C)
+	{
+		Mem48[r6 + 0x00:word32] = r3;
+		Mem49[r6 - 0x04 + 0x00:word32] = r4;
+		Mem50[r6 - 0x08 + 0x00:word32] = r5;
+		Mem51[r6 - 0x0C + 0x00:word32] = r6;
+		Mem52[r6 - 0x0010 + 0x00:word32] = r7;
+		Mem53[r6 - 0x0014 + 0x00:word32] = fp;
+	}
+	if (Z)
+		vQueueDelete();
+	else
+		vQueueDelete();
 }
 
 // 00000455: void vQueueDelete()
@@ -68,52 +260,79 @@ void vQueueDelete()
 // 00000459: void xQueueGenericSendFromISR(Register word32 r3)
 void xQueueGenericSendFromISR(word32 r3)
 {
-	__syscall(0x00F04F86);
+	if (!NZV)
+		__syscall(0x00F04F86);
 }
 
 // 000004C5: void xQueueGiveFromISR(Register word32 r3)
 void xQueueGiveFromISR(word32 r3)
 {
-	__syscall(0x00F04F84);
+	if (!NZV)
+		__syscall(0x00F04F84);
 }
 
-// 00000525: void xQueueReceiveFromISR(Register (ptr (ptr Eq_13)) r4, Register word32 r9, Register (ptr Eq_13) fp, Register word32 pc)
-void xQueueReceiveFromISR(Eq_13 * * r4, word32 r9, Eq_13 * fp, word32 pc)
+// 00000525: void xQueueReceiveFromISR(Register word32 pc, Register word32 r4, Register word32 r9, Register word32 fp)
+void xQueueReceiveFromISR(word32 pc, word32 r4, word32 r9, word32 fp)
 {
 	__syscall(4321513);
-	__syscall(0x008611F3);
-	*r4 = (struct Eq_13 **) fp;
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
-	globals->ptr0541 = r4 - 0x0FF0;
-	if (!C && !C)
+	if (!NZ)
+		__syscall(0x008611F3);
+	if (!ZC)
 	{
-		word32 r2_15 = (byte) C + (r9 + __ror(fp, 0x08));
+		Mem20[r4 + 0x00:word32] = fp;
+		r4 = r4 - 0x0FF0;
+	}
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
+	if (!ZC)
+		Mem18[0x00000541 + 0x00:word32] = r4;
+	if (!C)
+	{
+		word32 r2_16 = r9 + __ror(fp, 0x08) + C;
 	}
 }
 
-// 00000595: void xQueueIsQueueEmptyFromISR()
-void xQueueIsQueueEmptyFromISR()
+// 00000595: void xQueueIsQueueEmptyFromISR(Register word32 r0, Register word32 r4, Register word32 r5, Register word32 r9, Register word32 r10, Register word32 fp)
+void xQueueIsQueueEmptyFromISR(word32 r0, word32 r4, word32 r5, word32 r9, word32 r10, word32 fp)
 {
+	if (!ZC)
+		V = cond(__ror(fp, 0x00) - r10 - C);
+	if (!V)
+		Mem15[r9 + 0x00:word64] = r5_r4;
 }
 
-// 000005A1: void xQueueIsQueueFullFromISR(Register ptr32 fp)
-void xQueueIsQueueFullFromISR(ptr32 fp)
+// 000005A1: void xQueueIsQueueFullFromISR(Register word32 pc, Register word32 r0, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r9, Register word32 r10, Register word32 fp)
+void xQueueIsQueueFullFromISR(word32 pc, word32 r0, word32 r4, word32 r5, word32 r7, word32 r9, word32 r10, word32 fp)
 {
 	if (!NZV)
 	{
-		word32 ip_6 = fp - rrx(fp, 0x00);
+		word32 ip_43 = fp - __ror(fp, 0x00);
 	}
+	if (!ZC)
+	{
+		fp = (r10 << r0) - r10 - C;
+		byte NZCV_38 = cond(fp);
+		ZC = NZCV_38;
+		V = NZCV_38;
+	}
+	if (!V)
+		Mem34[r9 + 0x00:word64] = r5_r4;
+	if (ZC)
+		uxQueueMessagesWaitingFromISR(r7, fp);
+	else
+		uxQueueMessagesWaitingFromISR(r7, fp);
 }
 
-// 000005B1: void uxQueueMessagesWaitingFromISR(Register word32 r7, Register ptr32 fp)
-void uxQueueMessagesWaitingFromISR(word32 r7, ptr32 fp)
+// 000005B1: void uxQueueMessagesWaitingFromISR(Register word32 r7, Register word32 fp)
+void uxQueueMessagesWaitingFromISR(word32 r7, word32 fp)
 {
 	if (Z)
 		xQueueGetMutexHolder();
 	else
 	{
-		word32 r7_6 = r7 - rrx(fp, 0x00);
+		word32 r7_6 = r7 - __ror(fp, 0x00);
 		xQueueGetMutexHolder();
 	}
 }
@@ -123,61 +342,285 @@ void xQueueGetMutexHolder()
 {
 }
 
-// 000005D5: void xQueueTakeMutexRecursive()
-void xQueueTakeMutexRecursive()
+// 000005D5: void xQueueTakeMutexRecursive(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 ip, Stack byte bArg0CF0)
+void xQueueTakeMutexRecursive(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r8, word32 r9, word32 ip, byte bArg0CF0)
 {
+	word32 sp_1 = fp;
+	if (!Z)
+		Mem40[r8 + 0x00:byte] = (byte) r4;
+	if (!Z)
+		r0 = r6 - (r6 >> 0x001C);
+	if (!ZC)
+		sp_1 = fp + 3312;
+	if (!Z)
+	{
+		r0 = r0 - (r2 >> 0x0014) - C;
+		Z = cond(r0);
+	}
+	if (!Z)
+	{
+		Mem18[r6 - 0x04 + 0x00:word32] = r0;
+		Mem21[r6 - 0x08 + 0x00:word32] = r1;
+		Mem23[r6 - 0x0C + 0x00:word32] = r5;
+		Mem25[r6 - 0x0010 + 0x00:word32] = r9;
+		Mem27[r6 - 0x0014 + 0x00:word32] = ip;
+		Mem28[r6 - 0x0018 + 0x00:word32] = sp_1;
+	}
 }
 
-// 00000605: void xQueueGiveMutexRecursive()
-void xQueueGiveMutexRecursive()
+// 00000605: void xQueueGiveMutexRecursive(Register word32 lr, Register word32 r0, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9)
+void xQueueGiveMutexRecursive(word32 lr, word32 r0, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9)
 {
+	if (!Z)
+	{
+		Mem77[r8 + 0x00:byte] = (byte) r4;
+		r8 = r8 - 0x05B5;
+		r9_r8 = SEQ(r9, r8 - 0x05B5);
+	}
+	if (!ZC)
+		r0 = Mem0[r0 + 0x0046:byte];
+	if (!Z)
+		Mem73[r2 + -0x005D:word64] = r9_r8;
+	if (!C)
+	{
+		Mem69[r0 + 0x00:word32] = r4;
+		Mem70[r0 - 0x04 + 0x00:word32] = r6;
+		Mem71[r0 - 0x08 + 0x00:word32] = r7;
+		r0 = r0 - 0x0C;
+	}
+	if (!Z)
+	{
+		r8 = r8 + -0x003D;
+		Mem68[r8 + 0x00:word16] = (uint16) lr;
+	}
+	if (!Z)
+	{
+		word32 sp_53;
+		byte ZC_57;
+		word32 r2_59;
+		word32 r6_61;
+		word32 lr_63;
+		word32 r9_65;
+		fn0183930D();
+	}
+	if (!C)
+	{
+		Mem47[r0 + 0x00:word32] = r0;
+		Mem48[r0 - 0x04 + 0x00:word32] = r4;
+		Mem49[r0 - 0x08 + 0x00:word32] = r5;
+		Mem50[r0 - 0x0C + 0x00:word32] = r7;
+		Mem51[r0 - 0x0010 + 0x00:word32] = r8;
+	}
+	word32 sp_34;
+	byte Z_35;
+	word32 r4_36;
+	word32 r8_37;
+	byte ZC_38;
+	word32 r0_39;
+	word32 r2_40;
+	byte C_41;
+	word32 r6_42;
+	word32 r7_43;
+	word32 lr_44;
+	word32 r5_45;
+	word32 r9_46;
+	fn0118891D();
 }
 
-// 00000631: void xQueueGenericReset(Register word32 r0, Register (ptr word32) r5, Register word32 pc)
-void xQueueGenericReset(word32 r0, word32 * r5, word32 pc)
+// 00000631: void xQueueGenericReset(Register word32 pc, Register word32 r0, Register word32 r5, Register word32 r8, Register word32 ip)
+void xQueueGenericReset(word32 pc, word32 r0, word32 r5, word32 r8, word32 ip)
 {
-	__mcr(0x04, 0x02, r0, 0x06, 0x05, 0x05);
-	*r5 = pc;
+	if (!Z)
+		__mcr(0x04, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		Mem18[r5 + 0x00:word32] = pc;
 }
 
-// 000006AD: void xQueueGenericCreate(Register Eq_120 r0, Register (ptr Eq_120) r6)
-void xQueueGenericCreate(Eq_120 r0, Eq_120 * r6)
+// 000006AD: void xQueueGenericCreate(Register word32 r0, Register word32 r6)
+void xQueueGenericCreate(word32 r0, word32 r6)
 {
-	*r6 = (union Eq_120 *) r0;
+	if (!Z)
+		Mem31[r6 + 0x00:word16] = (uint16) r0;
 }
 
-// 000006DD: void xQueueCreateMutex(Register Eq_126 r0, Register (ptr Eq_126) r6)
-void xQueueCreateMutex(Eq_126 r0, Eq_126 * r6)
+// 000006DD: void xQueueCreateMutex(Register word32 r0, Register word32 r6)
+void xQueueCreateMutex(word32 r0, word32 r6)
 {
-	*r6 = (union Eq_126 *) r0;
+	if (!Z)
+		Mem6[r6 + 0x00:word16] = (uint16) r0;
 }
 
-// 00000701: void prvInitialiseNewTask()
-void prvInitialiseNewTask()
+// 00000701: void prvInitialiseNewTask(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp)
+void prvInitialiseNewTask(word32 r0, word32 r1, word32 r2, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 fp)
 {
+	if (Z)
+	{
+		if (!C)
+			Mem75[r6 + -0x099C:byte] = (byte) r9;
+		if (!ZC)
+		{
+			r0 = __ror(fp, 0x04) - r1 - C;
+			byte NZCV_68 = cond(r0);
+			C = NZCV_68;
+			Z = NZCV_68;
+			ZC = NZCV_68;
+			NZ = NZCV_68;
+			N = NZCV_68;
+		}
+		if (!ZC)
+		{
+			byte NZCV_61 = cond(fp ^ 0xC0000010);
+			C = NZCV_61;
+			Z = NZCV_61;
+			ZC = NZCV_61;
+			NZ = NZCV_61;
+			N = NZCV_61;
+		}
+		if (!Z)
+			r0 = Mem0[r10 + 0x0A46:word32];
+		if (!ZC)
+		{
+			word32 r8_59 = r5 & __ror(fp, 0x07);
+		}
+		if (!NZ)
+			__syscall(0x001E4B46);
+		if (!Z)
+			r0 = r5 & 0x03C00000;
+		if (!N)
+			r0 = Mem0[r1 + 0x00:byte];
+		if (!Z)
+			Z = cond((r0 << 0x04) - r0 - C);
+	}
 }
 
-// 00000799: void prvAddNewTaskToReadyList()
-void prvAddNewTaskToReadyList()
+// 00000799: void prvAddNewTaskToReadyList(Register word32 r0, Register word32 r1, Register word32 r6)
+void prvAddNewTaskToReadyList(word32 r0, word32 r1, word32 r6)
 {
+	if (!C)
+		__stcl(0x00, 0x0F, Mem0[r1 + -0x03A4:void]);
+	if (!Z)
+		Mem5[r6 + 0x00:byte] = (byte) r0;
 }
 
-// 0000085D: void prvAddCurrentTaskToDelayedList.isra.0(Register Eq_131 r1, Register (ptr Eq_132) ip)
-void prvAddCurrentTaskToDelayedList.isra.0(Eq_131 r1, Eq_132 * ip)
+// 0000085D: void prvAddCurrentTaskToDelayedList.isra.0(Register word32 r0, Register word32 r1, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 ip)
+void prvAddCurrentTaskToDelayedList.isra.0(word32 r0, word32 r1, word32 r6, word32 r8, word32 r9, word32 ip)
 {
-	ip->tFFFFFB4B = r1;
-}
-
-// 000008B5: void xTaskCreate(Register word32 r0, Register (ptr (ptr Eq_13)) r6, Register word32 r7, Register (ptr Eq_13) r9, Register word32 r10, Register word32 ip)
-void xTaskCreate(word32 r0, Eq_13 * * r6, word32 r7, Eq_13 * r9, word32 r10, word32 ip)
-{
+	if (!Z)
+		Mem48[ip + -0x04B5:byte] = (byte) r1;
 	if (!ZC)
 	{
-		word32 pc_24 = r7 - __ror(r9, 0x01);
+		byte NZCV_42 = cond((r6 >> 0x08) - r8 - C);
+		C = NZCV_42;
+		Z = NZCV_42;
+		V = NZCV_42;
 	}
-	*r6 = (struct Eq_13 **) r9;
-	*(r6 - 0x04) = r10;
-	*(r6 - 0x08) = ip;
+	if (!C)
+		Mem39[r8 + 0x00:byte] = (byte) r6;
+}
+
+// 000008B5: void xTaskCreate(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 ip, Stack word32 dwArg00)
+void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 ip, word32 dwArg00)
+{
+	word32 sp_1 = fp;
+	if (!ZC)
+	{
+		word32 pc_134 = r7 - __ror(r9, 0x01);
+	}
+	if (!ZC)
+	{
+		r8 = r0 + (r6 >> 0x08) + C;
+		byte NZCV_126 = cond(r8);
+		C = NZCV_126;
+		ZC = NZCV_126;
+		Z = NZCV_126;
+		V = NZCV_126;
+		NZV = NZCV_126;
+		N = NZCV_126;
+		NZ = NZCV_126;
+	}
+	if (!ZC)
+	{
+		Mem122[r6 - 0x04 + 0x00:word32] = r9;
+		Mem123[r6 - 0x08 + 0x00:word32] = r10;
+		Mem124[r6 - 0x0C + 0x00:word32] = ip;
+	}
+	if (!Z)
+		r9 = r6 - (r6 >> 0x0014);
+	word32 r3_25 = Mem0[0x000008CD + 0x00:int16];
+	if (!V)
+	{
+		Mem115[r6 + 0x00:word32] = r0;
+		Mem116[r6 - 0x04 + 0x00:word32] = r4;
+		Mem117[r6 - 0x08 + 0x00:word32] = r5;
+		Mem118[r6 - 0x0C + 0x00:word32] = r7;
+		Mem119[r6 - 0x0010 + 0x00:word32] = r8;
+		Mem120[r6 - 0x0014 + 0x00:word32] = r10;
+	}
+	if (C)
+	{
+		if (!NZV)
+		{
+			Mem104[r6 + 0x00:word32] = r0;
+			Mem105[r6 - 0x04 + 0x00:word32] = r1;
+			Mem106[r6 - 0x08 + 0x00:word32] = r2;
+			Mem107[r6 - 0x0C + 0x00:word32] = r3_25;
+			Mem108[r6 - 0x0010 + 0x00:word32] = r4;
+			Mem110[r6 - 0x0014 + 0x00:word32] = r5;
+			Mem111[r6 - 0x0018 + 0x00:word32] = r6;
+			Mem112[r6 - 0x001C + 0x00:word32] = r7;
+			Mem114[r6 - 0x0020 + 0x00:word32] = r10;
+		}
+		if (!Z)
+		{
+			Mem103[r7 + -177:word32] = r0;
+			r7 = r7 + -177;
+		}
+		if (!ZC)
+		{
+			r0 = dwArg00;
+			sp_1 = fp + 0x0D65;
+		}
+		if (!Z)
+			r6 = Mem0[r0 + -88:int16];
+		if (!NZ)
+		{
+			Mem86[r6 - 0x04 + 0x00:word32] = r1;
+			Mem87[r6 - 0x08 + 0x00:word32] = r2;
+			Mem88[r6 - 0x0C + 0x00:word32] = r6;
+			Mem89[r6 - 0x0010 + 0x00:word32] = r9;
+			Mem91[r6 - 0x0014 + 0x00:word32] = ip;
+			Mem92[r6 - 0x0018 + 0x00:word32] = sp_1;
+		}
+		if (!Z)
+			Z = cond(r2 *u r7);
+		if (!Z)
+		{
+			word32 r7_51 = r7 + 3989;
+			word32 sp_52;
+			byte ZC_53;
+			word32 pc_54;
+			word32 r7_55;
+			word32 r9_56;
+			word32 r8_57;
+			word32 r0_58;
+			word32 r6_59;
+			bool C_60;
+			byte NZCV_61;
+			word32 r10_62;
+			word32 ip_63;
+			byte Z_64;
+			word32 r3_65;
+			byte V_66;
+			word32 r4_67;
+			word32 r5_68;
+			byte NZV_69;
+			word32 r1_70;
+			word32 r2_71;
+			byte N_72;
+			byte NZ_73;
+			Mem0[r7_51 + 0x00:byte]();
+		}
+	}
 }
 
 // 0000091D: void xTaskCreateRestricted()
@@ -185,60 +628,104 @@ void xTaskCreateRestricted()
 {
 }
 
-// 00000971: void vTaskAllocateMPURegions()
-void vTaskAllocateMPURegions()
+// 00000971: void vTaskAllocateMPURegions(Register word32 r0, Register word32 r3, Register word32 r6, Register word32 r10)
+void vTaskAllocateMPURegions(word32 r0, word32 r3, word32 r6, word32 r10)
 {
+	if (!Z)
+		Mem11[r3 + 0x00:word32] = r0;
 }
 
-// 00000991: void vTaskStartScheduler(Register word32 r0, Register word32 r1, Register (ptr Eq_164) r3, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
-void vTaskStartScheduler(word32 r0, word32 r1, Eq_164 * r3, word32 r8, word32 r9, word32 fp, word32 ip)
+// 00000991: void vTaskStartScheduler(Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
+void vTaskStartScheduler(word32 r0, word32 r1, word32 r3, word32 r8, word32 r9, word32 fp, word32 ip)
 {
-	r3->qw0000 = r1_r0;
-	r3->qw00B0 = r9_r8;
-	__syscall(4788003);
+	if (!Z)
+		Mem23[r3 + 0x00:word64] = r1_r0;
+	word32 r3_10 = r3;
+	if (!Z)
+		r3_10 = r3 + 0xB0;
+	if (!Z)
+		Mem16[r3_10 + 0x00:word64] = r9_r8;
+	if (!Z)
+		__syscall(4788003);
 }
 
-// 000009ED: void vTaskEndScheduler(Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 pc)
-void vTaskEndScheduler(word32 r0, word32 r3, word32 r4, word32 r5, word32 pc)
+// 000009ED: void vTaskEndScheduler(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r5)
+void vTaskEndScheduler(word32 pc, word32 r0, word32 r3, word32 r4, word32 r5)
 {
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
-	globals->qw0A01 = r5_r4;
-	word32 sp_9;
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
+	if (!Z)
+		Mem30[0x00000A01 + 0x00:word64] = r5_r4;
+	word32 sp_8;
+	byte ZC_9;
 	word32 fp_10;
-	byte ZC_11;
-	word32 pc_12;
-	word32 r3_13;
-	byte NZ_14;
-	word32 r0_15;
-	word32 r4_16;
-	word32 r5_17;
+	byte NZV_11;
+	byte Z_12;
+	word32 pc_13;
+	word32 r3_14;
+	byte NZ_15;
+	byte NV_16;
+	word32 r0_17;
+	byte NZV_18;
+	word32 r4_19;
+	word32 r5_20;
 	fn012C128D();
 }
 
-// 00000A0D: void vTaskSuspendAll()
-void vTaskSuspendAll()
+// 00000A0D: void vTaskSuspendAll(Register word32 pc, Register word32 r0, Register word32 r3)
+void vTaskSuspendAll(word32 pc, word32 r0, word32 r3)
+{
+	if (ZC)
+	{
+		if (!NZV)
+		{
+			byte NZCV_25 = cond(r3 ^ 0x0C);
+			NZV = NZCV_25;
+			V = NZCV_25;
+		}
+	}
+}
+
+// 00000A21: void xTaskGetTickCount(Register word32 r7, Register word32 r8, Register word32 fp)
+void xTaskGetTickCount(word32 r7, word32 r8, word32 fp)
+{
+	if (!ZC)
+		NZV = cond((fp >> 0x06) - r8 - C);
+	if (!NZV)
+		Mem13[r7 + 0x00:byte] = (byte) r7;
+}
+
+// 00000A2D: void xTaskGetTickCountFromISR(Register word32 r7, Register word32 r8, Register word32 fp)
+void xTaskGetTickCountFromISR(word32 r7, word32 r8, word32 fp)
+{
+	if (!ZC)
+		NZV = cond((fp >> 0x06) - r8 - C);
+	if (!NZV)
+		Mem13[r7 + 0x00:byte] = (byte) r7;
+}
+
+// 00000A39: void uxTaskGetNumberOfTasks(Register word32 pc, Register word32 r8, Register word32 fp)
+void uxTaskGetNumberOfTasks(word32 pc, word32 r8, word32 fp)
 {
 }
 
-// 00000A21: void xTaskGetTickCount()
-void xTaskGetTickCount()
+// 00000A45: void pcTaskGetName(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 fp)
+void pcTaskGetName(word32 pc, word32 r0, word32 r1, word32 r2, word32 r6, word32 r8, word32 r9, word32 fp)
 {
-}
-
-// 00000A2D: void xTaskGetTickCountFromISR()
-void xTaskGetTickCountFromISR()
-{
-}
-
-// 00000A39: void uxTaskGetNumberOfTasks(Register word32 r8, Register word32 fp)
-void uxTaskGetNumberOfTasks(word32 r8, word32 fp)
-{
-}
-
-// 00000A45: void pcTaskGetName()
-void pcTaskGetName()
-{
+	if (!V)
+		r0 = r0 + r1;
+	if (!N)
+	{
+		Mem27[fp + 0x00:word32] = r0;
+		Mem30[fp - 0x04 + 0x00:word32] = r1;
+		Mem32[fp - 0x08 + 0x00:word32] = r2;
+		Mem34[fp - 0x0C + 0x00:word32] = r6;
+		Mem36[fp - 0x0010 + 0x00:word32] = r9;
+	}
+	if (!V)
+		NZV = cond(r0 ^ __ror(r8, 0x08));
 }
 
 // 00000A59: void xTaskGenericNotify()
@@ -246,53 +733,54 @@ void xTaskGenericNotify()
 {
 }
 
-// 00000B0D: void xTaskGenericNotifyFromISR(Register (ptr word32) r4, Register word32 fp)
-void xTaskGenericNotifyFromISR(word32 * r4, word32 fp)
+// 00000B0D: void xTaskGenericNotifyFromISR(Register word32 lr, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 fp)
+void xTaskGenericNotifyFromISR(word32 lr, word32 r0, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 fp)
 {
 	__syscall(4321513);
-	__syscall(8720883);
-	*r4 = fp;
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
+	if (!NZ)
+		__syscall(8720883);
+	if (!ZC)
+		Mem54[r4 + 0x00:word32] = fp;
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
 	if (!Z)
 	{
-		word32 sp_11;
-		word32 fp_12;
-		word32 r4_13;
-		byte Z_14;
+		word32 sp_40;
+		byte NZ_41;
+		word32 fp_43;
+		word32 r4_44;
+		byte NZV_45;
+		word32 r8_51;
+		word32 r6_52;
+		word32 r7_53;
 		fnFE3D4AF5();
 	}
+	if (!Z)
+		__stcl(0x04, 0x00, Mem0[lr + 0x00:void]);
+	if (!ZC)
+		r0 = r3 ^ __ror(r0, 0x04);
+	if (!Z)
+		Mem37[r0 + -0x0048:word64] = r7_r6;
 }
 
 // 00000BD5: void xTaskNotifyWait(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 ip)
 void xTaskNotifyWait(word32 r0, word32 r1, word32 r2, word32 r3, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 ip)
 {
-	__syscall(4321513);
-	__syscall(0x00460E46);
-	word32 sp_22;
-	word32 r1_23;
-	word32 r6_24;
-	word32 ip_25;
-	byte ZC_26;
-	word32 r0_27;
-	byte NZV_28;
-	word32 r2_29;
-	word32 r8_30;
-	word32 r9_31;
-	word32 * r10_32;
-	byte Z_33;
-	word32 r3_34;
-	word32 r5_35;
-	fn01A19079();
 }
 
-// 00000C61: void vTaskNotifyGiveFromISR(Register word32 pc)
-void vTaskNotifyGiveFromISR(word32 pc)
+// 00000C61: void vTaskNotifyGiveFromISR(Register word32 lr, Register word32 pc, Register word32 r3, Register word32 r8)
+void vTaskNotifyGiveFromISR(word32 lr, word32 pc, word32 r3, word32 r8)
 {
 	__syscall(4454633);
-	__syscall(0x008611F3);
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
+	if (!NZ)
+		__syscall(0x008611F3);
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
+	__stcl(0x03, 0x00, Mem0[lr + -0x00C0:void]);
 }
 
 // 00000D01: void ulTaskNotifyTake()
@@ -300,65 +788,159 @@ void ulTaskNotifyTake()
 {
 }
 
-// 00000D6D: void xTaskIncrementTick()
-void xTaskIncrementTick()
+// 00000D6D: void xTaskIncrementTick(Register word32 r0, Register word32 r7, Register word32 r8)
+void xTaskIncrementTick(word32 r0, word32 r7, word32 r8)
 {
+	if (C)
+	{
+		if (ZC)
+		{
+			if (!N)
+				__mcr(0x00, 0x01, r0, 11, 0x00, 0x01);
+		}
+	}
 }
 
-// 00000E6D: void xTaskResumeAll(Register word32 ip, Register word32 pc)
-void xTaskResumeAll(word32 ip, word32 pc)
+// 00000E6D: void xTaskResumeAll(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6, Register word32 fp, Register word32 ip)
+void xTaskResumeAll(word32 lr, word32 pc, word32 r0, word32 r1, word32 r6, word32 fp, word32 ip)
 {
+	if (!ZC)
+	{
+		r0 = !(ip >> 0x0E);
+		byte NZCV_100 = cond(r0);
+		C = NZCV_100;
+		ZC = NZCV_100;
+		NZV = NZCV_100;
+		NZV = NZCV_100;
+		Z = NZCV_100;
+		NZ = NZCV_100;
+	}
+	if (ZC)
+	{
+		if (!NZV)
+			r0 = Mem0[fp + 0x00:word32];
+		if (!NZV)
+			r0 = r0 - 3320;
+		if (!Z)
+			r0 = r0 + ~0xC7;
+		if (!NZ)
+		{
+			word32 sp_73;
+			word32 pc_75;
+			byte ZC_76;
+			word32 ip_78;
+			byte NZCV_79;
+			byte NZV_80;
+			word32 fp_81;
+			word32 r8_83;
+			word32 r4_85;
+			word32 r1_86;
+			word32 r3_90;
+			word32 r10_91;
+			fn00AC1031();
+		}
+		if (!Z)
+			Mem71[r6 + 0x00:word32] = r0;
+		if (!Z)
+			__mcr(0x08, 0x00, r0, 0x07, 0x01, 0x07);
+		if (!NZV)
+			__stcl(0x03, 0x06, Mem0[lr + -0x0380:void]);
+		if (NZ)
+			;
+	}
 }
 
-// 00000F49: void vTaskDelay(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp, Register word32 lr, Register (ptr word32) pc)
-void vTaskDelay(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp, word32 lr, word32 * pc)
+// 00000F49: void vTaskDelay(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp)
+void vTaskDelay(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp)
 {
-	__syscall(0x00B940B5);
+	if (!NZ)
+		__syscall(0x00B940B5);
 	if (!Z)
 		return;
-	__syscall(0x00601A4B);
-	__syscall(0x008F4FF3);
-	*pc = r0;
-	*(pc - 0x04) = r1;
-	*(pc - 0x08) = r4;
-	*(pc - 0x0C) = r5;
-	*(pc - 0x10) = r6;
-	*(pc - 0x14) = r7;
-	*(pc - 0x18) = r8;
-	*(pc - 0x1C) = r9;
-	*(pc - 0x20) = r10;
-	*(pc - 0x24) = fp;
-	*(pc - 0x28) = fp;
-	*(pc - 44) = lr;
+	if (!NZV)
+		__syscall(0x00601A4B);
+	if (!NZV)
+		__syscall(0x008F4FF3);
+	if (!Z)
+	{
+		Mem21[pc + 0x00:word32] = r0;
+		Mem24[pc + 0x04:word32] = r1;
+		Mem26[pc + 0x08:word32] = r4;
+		Mem28[pc + 0x0C:word32] = r5;
+		Mem30[pc + 0x0010:word32] = r6;
+		Mem32[pc + 0x0014:word32] = r7;
+		Mem33[pc + 0x0018:word32] = r8;
+		Mem35[pc + 0x001C:word32] = r9;
+		Mem36[pc + 0x0020:word32] = r10;
+		Mem38[pc + 0x0024:word32] = fp;
+		Mem39[pc + 0x0028:word32] = fp;
+		Mem41[pc + 44:word32] = lr;
+	}
+	if (ZC)
+		;
 }
 
-// 00000F81: void vTaskDelayUntil(Register (ptr word32) r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 pc)
-void vTaskDelayUntil(word32 * r0, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 pc)
+// 00000F81: void vTaskDelayUntil(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 s4, Register word32 s8)
+void vTaskDelayUntil(word32 pc, word32 r0, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 s4, word32 s8)
 {
-	if (!NZV && !NZV)
+	if (!NZV)
 	{
-		bool NZCV_40 = cond((byte) C + (r5 + 0x4A));
-		NZV = NZCV_40;
-		NZV = NZCV_40;
+		byte NZCV_52 = cond(r5 + 0x4A + C);
+		NZV = NZCV_52;
+		Z = NZCV_52;
+		NZV = NZCV_52;
 	}
 	if (!NZV)
 	{
+		byte NZCV_45 = cond(r4 ^ 0x1A);
 		r0 = r4 ^ 0x1A;
-		if (!NZV)
-			NZV = cond(r4 ^ 0x1A);
+		NZV = NZCV_45;
+		Z = NZCV_45;
 	}
-	*r0 = r3;
-	*(r0 - 0x04) = r4;
-	*(r0 - 0x08) = r5;
-	*(r0 - 0x0C) = r6;
-	*(r0 - 0x10) = r7;
-	*(r0 - 0x14) = pc;
+	if (!Z)
+	{
+		Mem31[r0 - 0x04 + 0x00:word32] = r3;
+		Mem33[r0 - 0x08 + 0x00:word32] = r4;
+		Mem35[r0 - 0x0C + 0x00:word32] = r5;
+		Mem37[r0 - 0x0010 + 0x00:word32] = r6;
+		Mem39[r0 - 0x0014 + 0x00:word32] = r7;
+		Mem41[r0 - 0x0018 + 0x00:word32] = pc;
+	}
+	if (!Z)
+		__vmls_f32(s4, s8);
 }
 
-// 00000FDD: void vTaskPlaceOnEventList(Register Eq_458 r0, Register (ptr Eq_458) r6)
-void vTaskPlaceOnEventList(Eq_458 r0, Eq_458 * r6)
+// 00000FDD: void vTaskPlaceOnEventList(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 fp, Register word32 ip)
+void vTaskPlaceOnEventList(word32 lr, word32 pc, word32 r0, word32 r1, word32 r3, word32 r6, word32 r7, word32 r8, word32 fp, word32 ip)
 {
-	*r6 = (union Eq_458 *) r0;
+	if (!Z)
+	{
+		Mem51[r6 + 0x00:byte] = (byte) r0;
+		r6 = r6 - 3253;
+	}
+	if (!C)
+	{
+		Mem38[r8 + 0x00:word32] = r0;
+		Mem39[r8 - 0x04 + 0x00:word32] = r1;
+		Mem41[r8 - 0x08 + 0x00:word32] = r3;
+		Mem42[r8 - 0x0C + 0x00:word32] = r6;
+		Mem43[r8 - 0x0010 + 0x00:word32] = r8;
+		Mem45[r8 - 0x0014 + 0x00:word32] = fp;
+		Mem47[r8 - 0x0018 + 0x00:word32] = ip;
+		Mem49[r8 - 0x001C + 0x00:word32] = lr;
+	}
+	if (!ZC)
+	{
+		r0 = !(r1 >>u r7);
+		byte NZCV_32 = cond(r0);
+		C = NZCV_32;
+		NZV = NZCV_32;
+		NZV = NZCV_32;
+	}
+	if (!NZV)
+		__stcl(0x00, 0x02, Mem0[r6 + -996:void]);
+	if (!C)
+		Mem28[r0 + 0x00:byte] = (byte) r1;
 }
 
 // 00000FF9: void vTaskPlaceOnUnorderedEventList()
@@ -376,43 +958,67 @@ void xTaskRemoveFromUnorderedEventList()
 {
 }
 
-// 000010D9: void vTaskSwitchContext()
-void vTaskSwitchContext()
+// 000010D9: void vTaskSwitchContext(Register word32 r0, Register word32 r9)
+void vTaskSwitchContext(word32 r0, word32 r9)
+{
+	if (ZC)
+	{
+		if (!NZV)
+			NZV = cond(r9 + 0xC0000000 + C);
+	}
+}
+
+// 00001121: void uxTaskResetEventItemValue(Register word32 lr, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
+void uxTaskResetEventItemValue(word32 lr, word32 r3, word32 r5, word32 r6, word32 r8, word32 r9, word32 fp, word32 ip)
 {
 }
 
-// 00001121: void uxTaskResetEventItemValue()
-void uxTaskResetEventItemValue()
-{
-	word32 sp_3;
-	byte NZ_4;
-	fn01A17655();
-}
-
-// 00001139: void xTaskGetCurrentTaskHandle(Register word32 r8, Register word32 fp)
-void xTaskGetCurrentTaskHandle(word32 r8, word32 fp)
+// 00001139: void xTaskGetCurrentTaskHandle(Register word32 pc, Register word32 r8, Register word32 fp)
+void xTaskGetCurrentTaskHandle(word32 pc, word32 r8, word32 fp)
 {
 }
 
-// 00001145: void vTaskSetTimeOutState()
-void vTaskSetTimeOutState()
+// 00001145: void vTaskSetTimeOutState(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r7, Register word32 r8, Register word32 fp)
+void vTaskSetTimeOutState(word32 r0, word32 r1, word32 r2, word32 r7, word32 r8, word32 fp)
 {
+	if (!ZC)
+		r8 = r8 + 0x034B;
+	if (!ZC)
+	{
+		byte NZCV_32 = cond((r0 >>u 0x06) - r8 - C);
+		Z = NZCV_32;
+		NZV = NZCV_32;
+		V = NZCV_32;
+	}
+	if (!Z)
+		__stcl(0x00, 0x08, Mem0[r8 + 0x00:void]);
+	if (!NZV)
+		Mem27[r7 + 0x00:byte] = (byte) r7;
+	if (V)
+		xTaskCheckForTimeOut(r0, r1, r2, r8, fp);
+	else
+		xTaskCheckForTimeOut(0x00, r1, r2, r8, fp);
 }
 
-// 00001159: void xTaskCheckForTimeOut(Register word32 r0, Register word32 r1, Register word32 r2, Register (ptr Eq_474) fp)
-void xTaskCheckForTimeOut(word32 r0, word32 r1, word32 r2, Eq_474 * fp)
+// 00001159: void xTaskCheckForTimeOut(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r8, Register word32 fp)
+void xTaskCheckForTimeOut(word32 r0, word32 r1, word32 r2, word32 r8, word32 fp)
 {
-	__mcr(0x04, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x04, 0x02, r0, 0x06, 0x05, 0x05);
 	if (!Z)
 	{
-		word32 sp_15;
-		word32 r0_16;
-		byte Z_17;
-		word32 r1_19;
-		word32 r2_20;
+		word32 sp_38;
+		byte Z_39;
+		word32 r0_40;
+		byte NZCV_45;
+		word32 r1_46;
+		word32 r2_47;
 		fnFFC02E7D();
 	}
-	fp->qwFFFFFFE6 = r2_r1;
+	if (!C)
+		Mem37[fp + -0x001A:word64] = r2_r1;
+	if (!ZC)
+		ZC = cond(__ror(r8, 0x06) - r8 - C);
 }
 
 // 000011AD: void vTaskMissedYield(Register word32 r0)
@@ -430,96 +1036,169 @@ void xTaskPriorityDisinherit()
 {
 }
 
-// 000012D5: void pvTaskIncrementMutexHeldCount(Register word32 r5, Register word32 r8)
-void pvTaskIncrementMutexHeldCount(word32 r5, word32 r8)
+// 000012D5: void pvTaskIncrementMutexHeldCount(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 fp, Register word32 ip)
+void pvTaskIncrementMutexHeldCount(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r5, word32 r6, word32 r8, word32 fp, word32 ip)
 {
 	word32 sp_3;
 	byte Z_4;
-	bool NZV_5;
-	word32 r5_6;
-	word32 r8_7;
-	byte V_8;
+	byte NZV_5;
+	byte V_6;
+	word32 r5_7;
+	word32 r8_8;
+	byte NZV_9;
+	word32 pc_10;
+	word32 r0_11;
+	word32 r1_12;
+	word32 r3_13;
+	word32 r4_14;
+	word32 r6_15;
+	word32 fp_16;
+	word32 ip_17;
 	fn01A17C09();
 }
 
-// 000012F1: void prvRestoreContextOfFirstTask(Register word32 r3, Register (ptr word64) r4, Register ptr32 r8)
-void prvRestoreContextOfFirstTask(word32 r3, word64 * r4, ptr32 r8)
+// 000012F1: void prvRestoreContextOfFirstTask(Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r8, Register word32 fp, Register word32 ip)
+void prvRestoreContextOfFirstTask(word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r8, word32 fp, word32 ip)
 {
-	*r4 = r4_r3;
+	if (!Z)
+		Mem37[r4 + 0x00:word64] = r4_r3;
 	if (!ZC)
+		r0 = r8 - __ror(r8, 0x00);
+	if (Z)
 	{
-		word32 r0_10 = r8 - rrx(r8, 0x00);
+		if (!Z)
+		{
+			Mem24[r8 + 0x00:word32] = r0;
+			Mem25[r8 - 0x04 + 0x00:word32] = r1;
+			Mem27[r8 - 0x08 + 0x00:word32] = r3;
+			Mem29[r8 - 0x0C + 0x00:word32] = r6;
+			Mem30[r8 - 0x0010 + 0x00:word32] = r8;
+			Mem32[r8 - 0x0014 + 0x00:word32] = fp;
+			Mem34[r8 - 0x0018 + 0x00:word32] = ip;
+		}
 	}
 }
 
-// 00001335: void prvSVCHandler()
-void prvSVCHandler()
+// 00001335: void prvSVCHandler(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8, Register word32 fp, Register word32 ip)
+void prvSVCHandler(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 r8, word32 fp, word32 ip)
 {
+	if (!Z)
+	{
+		r1 = 0xA4000001 - r8 - C;
+		byte NZCV_52 = cond(r1);
+		r2_r1 = SEQ(r2, r1);
+		r1_r0 = SEQ(r1, r0);
+		C = NZCV_52;
+		Z = NZCV_52;
+		ZC = NZCV_52;
+		V = NZCV_52;
+	}
+	if (!Z)
+		r1_r0 = SEQ(r1, fp ^ ip >>u r1);
+	if (!Z)
+	{
+		word32 r0_37 = r3 - 0x00340000 - C;
+		byte NZCV_39 = cond(r0_37);
+		r1_r0 = SEQ(r1, r0_37);
+		C = NZCV_39;
+		Z = NZCV_39;
+		ZC = NZCV_39;
+		V = NZCV_39;
+	}
+	__syscall(0x00D1062B);
+	if (!C)
+		Mem36[r1 + 0x00:word64] = r2_r1;
+	if (!ZC)
+		Mem35[r1 + 0x00:word64] = r1_r0;
+	if (!V)
+		Mem32[r8 + 0x00:word64] = r2_r1;
+	if (!Z)
+		Mem31[r7 + 0x00:byte] = (byte) r7;
 }
 
-// 0000137D: void pxPortInitialiseStack(Register word32 r4)
-void pxPortInitialiseStack(word32 r4)
+// 0000137D: void pxPortInitialiseStack(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7)
+void pxPortInitialiseStack(word32 r4, word32 r5, word32 r6, word32 r7)
 {
-	__syscall(0x002302BF);
-	__syscall(7700720);
+	if (!Z)
+	{
+		r5 = Mem0[r4 + 0x0C:word32];
+		r4 = r4 + 0x0018;
+	}
+	if (!NZ)
+		__syscall(0x002302BF);
+	if (!NZ)
+		__syscall(7700720);
+	if (!Z)
+	{
+		Mem17[r4 + 0x00:word32] = r4;
+		Mem18[r4 - 0x04 + 0x00:word32] = r5;
+		Mem20[r4 - 0x08 + 0x00:word32] = r6;
+		Mem22[r4 - 0x0C + 0x00:word32] = r7;
+	}
 }
 
 // 000013B1: void xPortStartScheduler(Register word32 r8, Register word32 r9)
 void xPortStartScheduler(word32 r8, word32 r9)
 {
 	word32 sp_3;
-	bool Z_4;
-	word32 r4_5;
-	word32 r9_6;
-	bool N_7;
+	byte Z_4;
+	byte NZ_5;
+	word32 r4_6;
+	word32 r9_7;
 	word32 r1_8;
 	word32 r8_9;
 	fnFED1D4E5();
 }
 
-// 00001551: void vPortEndScheduler(Register Eq_579 r0, Register int32 r7, Register (ptr Eq_579) r9, Register word32 fp, Register word32 pc)
-void vPortEndScheduler(Eq_579 r0, int32 r7, Eq_579 * r9, word32 fp, word32 pc)
+// 00001551: void vPortEndScheduler(Register word32 pc, Register word32 r0, Register word32 r7, Register word32 r9, Register word32 fp)
+void vPortEndScheduler(word32 pc, word32 r0, word32 r7, word32 r9, word32 fp)
 {
 	if (C)
 		vPortStoreTaskMPUSettings(r0, r9, fp);
-	else if (C)
-		vPortStoreTaskMPUSettings(r0, r9, fp);
 	else
 	{
-		Eq_579 r0_7 = (byte) C + (pc + (r7 >> 0x20));
-		vPortStoreTaskMPUSettings(r0_7, r9, fp);
+		word32 r0_8 = pc + (r7 >> 0x0020) + C;
+		vPortStoreTaskMPUSettings(r0_8, r9, fp);
 	}
 }
 
-// 00001555: void vPortStoreTaskMPUSettings(Register Eq_579 r0, Register (ptr Eq_579) r9, Register word32 fp)
-void vPortStoreTaskMPUSettings(Eq_579 r0, Eq_579 * r9, word32 fp)
+// 00001555: void vPortStoreTaskMPUSettings(Register word32 r0, Register word32 r9, Register word32 fp)
+void vPortStoreTaskMPUSettings(word32 r0, word32 r9, word32 fp)
 {
-	*r9 = (union Eq_579 *) r0;
+	if (!NZ)
+		Mem15[r9 + 0x00:word16] = (uint16) r0;
 }
 
-// 00001689: void xPortPendSVHandler(Register (ptr Eq_603) r0, Register (ptr word64) r1, Register word32 r2, Register word32 r3, Register Eq_607 r5, Register word32 r6, Register word32 r8, Register (ptr Eq_13) r9, Register word32 r10, Register word32 fp, Register ui32 pc)
-void xPortPendSVHandler(Eq_603 * r0, word64 * r1, word32 r2, word32 r3, Eq_607 r5, word32 r6, word32 r8, Eq_13 * r9, word32 r10, word32 fp, ui32 pc)
+// 00001689: void xPortPendSVHandler(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp)
+void xPortPendSVHandler(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 fp)
 {
-	r0->ptr0000 = r0;
+	if (!Z)
+		Mem30[r0 + 0x00:word32] = r0;
 	__syscall(6822475);
-	*r1 = r2_r1;
+	if (!C)
+		Mem27[r1 + 0x00:word64] = r2_r1;
 	if (!Z)
 	{
-		ui32 pc_26 = pc & __ror(r9, 0x05);
+		word32 pc_25 = pc & __ror(r9, 0x05);
 	}
-	r9->t0000 = r5;
-	*(r9 - 0x04) = r6;
-	*(r9 - 0x08) = r8;
-	*(r9 - 0x0C) = r10;
-	*(r9 - 0x10) = fp;
-	*(r9 - 0x14) = fp;
-	__syscall(0x00F04F40);
+	if (!Z)
+	{
+		Mem14[r9 + 0x00:word32] = r5;
+		Mem16[r9 + 0x04:word32] = r6;
+		Mem18[r9 + 0x08:word32] = r8;
+		Mem20[r9 + 0x0C:word32] = r10;
+		Mem22[r9 + 0x0010:word32] = fp;
+		Mem23[r9 + 0x0014:word32] = fp;
+	}
+	if (!NZV)
+		__syscall(0x00F04F40);
 }
 
 // 000016E5: void xPortSysTickHandler(Register word32 r3)
 void xPortSysTickHandler(word32 r3)
 {
-	__syscall(0x00F04F84);
+	if (!NZV)
+		__syscall(0x00F04F84);
 }
 
 // 00001715: void vPortSVCHandler()
@@ -527,22 +1206,32 @@ void vPortSVCHandler()
 {
 }
 
-// 0000172D: void pvPortMalloc(Register word32 r0, Register word32 r7, Register word32 pc)
-void pvPortMalloc(word32 r0, word32 r7, word32 pc)
+// 0000172D: void pvPortMalloc(Register word32 pc, Register word32 r0, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10)
+void pvPortMalloc(word32 pc, word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10)
 {
+	if (!C)
+		Z = cond(pc + (r7 << 0x0018) + C);
+	if (!Z)
+	{
+		Mem15[r4 + 0x00:word32] = r4;
+		Mem17[r4 - 0x04 + 0x00:word32] = r5;
+		Mem19[r4 - 0x08 + 0x00:word32] = r6;
+		Mem21[r4 - 0x0C + 0x00:word32] = r7;
+		Mem23[r4 - 0x0010 + 0x00:word32] = r8;
+		Mem25[r4 - 0x0014 + 0x00:word32] = r9;
+		Mem27[r4 - 0x0018 + 0x00:word32] = r10;
+	}
 }
 
-// 00001781: void vPortFree(Register word32 r0, Register int32 r7, Register word32 pc)
-void vPortFree(word32 r0, int32 r7, word32 pc)
+// 00001781: void vPortFree(Register word32 pc, Register word32 r0, Register word32 r7)
+void vPortFree(word32 pc, word32 r0, word32 r7)
 {
 	if (Z)
 		vPortInitialiseBlocks(r0);
-	else if (Z)
-		vPortInitialiseBlocks(r0);
 	else
 	{
-		word32 r0_8 = (byte) C + (pc + (r7 >> 0x20));
-		vPortInitialiseBlocks(r0_8);
+		word32 r0_10 = pc + (r7 >> 0x0020) + C;
+		vPortInitialiseBlocks(r0_10);
 	}
 }
 
@@ -551,9 +1240,29 @@ void vPortInitialiseBlocks(word32 r0)
 {
 }
 
-// 00001795: void xPortGetFreeHeapSize()
-void xPortGetFreeHeapSize()
+// 00001795: void xPortGetFreeHeapSize(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 fp)
+void xPortGetFreeHeapSize(word32 pc, word32 r0, word32 r2, word32 r5, word32 r7, word32 r8, word32 fp)
 {
+	if (!NZV)
+	{
+		byte NZCV_59 = cond((fp >> 0x06) - r8 - C);
+		C = NZCV_59;
+		NZV = NZCV_59;
+		V = NZCV_59;
+		Z = NZCV_59;
+	}
+	if (!V)
+	{
+		byte NZCV_47 = cond(r0 ^ __ror(r0, 0x08));
+		C = NZCV_47;
+		Z = NZCV_47;
+	}
+	if (!C)
+		Z = cond(pc + (r7 >> 0x0020) + C);
+	if (Z)
+		xEventGroupCreate();
+	else
+		xEventGroupCreate();
 }
 
 // 000017A9: void xEventGroupCreate()
@@ -561,41 +1270,108 @@ void xEventGroupCreate()
 {
 }
 
-// 000017C5: void xEventGroupWaitBits(Register (ptr Eq_692) r1, Register (ptr Eq_13) r9, Register Eq_692 pc)
-void xEventGroupWaitBits(Eq_692 * r1, Eq_13 * r9, Eq_692 pc)
+// 000017C5: void xEventGroupWaitBits(Register word32 pc, Register word32 r1, Register word32 r6, Register word32 r9)
+void xEventGroupWaitBits(word32 pc, word32 r1, word32 r6, word32 r9)
 {
-	*r1 = (union Eq_692 *) pc;
-	ptr32 r1_6 = r1 - __ror(r9, 0x01);
+	if (!Z)
+	{
+		Mem8[r1 + 0x00:byte] = (byte) pc;
+		word32 r1_10 = r1 - __ror(r9, 0x01);
+	}
+	if (!Z)
+		__stcl(0x0F, 0x01, Mem0[r6 + -0x0118:void]);
 }
 
-// 00001875: void xEventGroupClearBits()
-void xEventGroupClearBits()
+// 00001875: void xEventGroupClearBits(Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r8)
+void xEventGroupClearBits(word32 r0, word32 r2, word32 r3, word32 r4, word32 r6, word32 r8)
 {
+	if (Z)
+	{
+		if (V)
+		{
+			if (!C)
+				Mem33[r8 + -0x05FE:byte] = (byte) r3;
+			if (!C)
+				Mem29[r4 + 0x00:word32] = r0;
+			if (!ZC)
+				V = cond(!0x06000000);
+			if (!V)
+				Mem21[r6 + 0x00:word64] = r3_r2;
+		}
+	}
 }
 
-// 00001891: void xEventGroupSetBits()
-void xEventGroupSetBits()
+// 00001891: void xEventGroupSetBits(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 fp)
+void xEventGroupSetBits(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 fp)
 {
+	if (Z)
+	{
+		if (!NZV)
+			return;
+		if (!C)
+		{
+			Mem43[r8 + 0x00:word32] = r3;
+			Mem45[r8 - 0x04 + 0x00:word32] = r4;
+			Mem47[r8 - 0x08 + 0x00:word32] = r5;
+			Mem48[r8 - 0x0C + 0x00:word32] = r6;
+			Mem49[r8 - 0x0010 + 0x00:word32] = r7;
+			Mem50[r8 - 0x0014 + 0x00:word32] = r8;
+			Mem52[r8 - 0x0018 + 0x00:word32] = fp;
+			Mem53[r8 - 0x001C + 0x00:word32] = fp;
+		}
+		if (Z)
+		{
+			if (!ZC)
+				Mem40[r3 + 0x00:byte] = (byte) r2;
+			if (!C)
+				r2 = r0 - 0x00108000;
+			if (Z)
+			{
+				if (!Z)
+					Mem37[r2 + 0x00:byte] = (byte) r0;
+			}
+		}
+	}
 }
 
-// 000018F9: void xEventGroupSync()
-void xEventGroupSync()
+// 000018F9: void xEventGroupSync(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 ip)
+void xEventGroupSync(word32 lr, word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r6, word32 r7, word32 ip)
 {
+	if (!ZC)
+	{
+		Mem9[r1 + 0x00:word32] = r0;
+		Mem12[r1 - 0x04 + 0x00:word32] = r3;
+		Mem14[r1 - 0x08 + 0x00:word32] = r5;
+		Mem15[r1 - 0x0C + 0x00:word32] = r6;
+		Mem17[r1 - 0x0010 + 0x00:word32] = r7;
+		Mem19[r1 - 0x0014 + 0x00:word32] = ip;
+		Mem20[r1 - 0x0018 + 0x00:word32] = fp;
+		Mem22[r1 - 0x001C + 0x00:word32] = lr;
+		Mem24[r1 - 0x0020 + 0x00:word32] = pc;
+	}
+	if (!Z)
+		Mem7[r6 + 0x00:byte] = (byte) r0;
 }
 
-// 00001989: void xEventGroupGetBitsFromISR(Register word32 r1, Register word32 r2, Register int32 r3, Register word32 r7, Register (ptr word64) r8, Register word32 pc)
-void xEventGroupGetBitsFromISR(word32 r1, word32 r2, int32 r3, word32 r7, word64 * r8, word32 pc)
+// 00001989: void xEventGroupGetBitsFromISR(Register word32 pc, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8)
+void xEventGroupGetBitsFromISR(word32 pc, word32 r1, word32 r2, word32 r3, word32 r7, word32 r8)
 {
-	__syscall(8589811);
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
-	*r8 = r2_r1;
-	ptr32 r8_11 = r8 + r3;
+	if (!NZ)
+		__syscall(8589811);
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
+	if (!Z)
+	{
+		Mem16[r8 + 0x00:word64] = r2_r1;
+		r8 = r8 + r3;
+	}
 	if (Z)
 		vEventGroupDelete();
 	else
 	{
-		word32 r7_15 = r7 - rrx(r8_11, 0x00);
+		word32 r7_14 = r7 - __ror(r8, 0x00);
 		vEventGroupDelete();
 	}
 }
@@ -605,18 +1381,25 @@ void vEventGroupDelete()
 {
 }
 
-// 000019D1: void vEventGroupSetBitsCallback(Register word32 pc)
-void vEventGroupSetBitsCallback(word32 pc)
+// 000019D1: void vEventGroupSetBitsCallback(Register word32 pc, Register word32 r6)
+void vEventGroupSetBitsCallback(word32 pc, word32 r6)
 {
 	if (C)
-		vEventGroupClearBitsCallback();
+		vEventGroupClearBitsCallback(r6);
 	else
-		vEventGroupClearBitsCallback();
+	{
+		word32 r6_23 = Mem0[pc + 0x0014:word32];
+		vEventGroupClearBitsCallback(r6_23);
+	}
 }
 
-// 000019D5: void vEventGroupClearBitsCallback()
-void vEventGroupClearBitsCallback()
+// 000019D5: void vEventGroupClearBitsCallback(Register word32 r6)
+void vEventGroupClearBitsCallback(word32 r6)
 {
+	if (!Z)
+		__stcl(0x04, 0x00, Mem0[r6 + -0x02D4:void]);
+	if (NZV)
+		;
 }
 
 // 00008001: void NmiSR()
@@ -624,60 +1407,82 @@ void NmiSR()
 {
 }
 
-// 00008005: void FaultISR(Register word32 r0, Register word32 r1, Register (ptr Eq_743) pc)
-void FaultISR(word32 r0, word32 r1, Eq_743 * pc)
+// 00008005: void FaultISR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r8)
+void FaultISR(word32 pc, word32 r0, word32 r1, word32 r8)
 {
 	if (Z)
-		ResetISR(r0, r1);
+		ResetISR(pc, r0, r1, r8);
 	else
 	{
-		word32 r0_12 = pc->dw0000;
-		word32 r1_13 = pc->dw0004;
-		ResetISR(r0_12, r1_13);
+		word32 r0_12 = Mem0[pc + 0x00:word32];
+		word32 r1_13 = Mem0[pc + 0x04:word32];
+		ResetISR(pc + 0x0018, r0_12, r1_13, r8);
 	}
 }
 
-// 00008009: void ResetISR(Register word32 r0, Register word32 r1)
-void ResetISR(word32 r0, word32 r1)
+// 00008009: void ResetISR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r8)
+void ResetISR(word32 pc, word32 r0, word32 r1, word32 r8)
 {
 	word32 sp_4;
-	word32 r0_5;
-	byte ZC_6;
+	byte ZC_5;
+	word32 r0_6;
 	byte NZV_7;
-	word32 r1_8;
-	bool Z_9;
+	word32 r1_9;
 	word32 r2_10;
-	byte SZCO_11;
+	byte NZCV_11;
+	word32 r8_12;
+	word32 r4_13;
+	byte C_14;
+	byte V_15;
+	word32 pc_16;
+	byte Z_18;
 	fnFF48A91D();
 }
 
-// 00008035: void raise(Register word32 r0, Register word32 r2, Register (ptr word32) r4, Register word32 r5, Register (ptr Eq_13) r7, Register word32 r9, Register word32 pc)
-void raise(word32 r0, word32 r2, word32 * r4, word32 r5, Eq_13 * r7, word32 r9, word32 pc)
+// 00008035: void raise(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r9)
+void raise(word32 pc, word32 r0, word32 r2, word32 r4, word32 r5, word32 r7, word32 r9)
 {
 	if (C)
 		vPrintTask(r0, r2, r4, r5, r7, r9);
-	else if (C)
-		vPrintTask(r0, r2, r4, r5, r7, r9);
 	else
 	{
-		word32 r0_7 = (byte) C + (pc + __ror(r7, 0x01));
-		vPrintTask(r0_7, r2, r4, r5, r7, r9);
+		word32 r0_8 = pc + __ror(r7, 0x01) + C;
+		vPrintTask(r0_8, r2, r4, r5, r7, r9);
 	}
 }
 
-// 00008039: void vPrintTask(Register word32 r0, Register word32 r2, Register (ptr word32) r4, Register word32 r5, Register (ptr Eq_13) r7, Register word32 r9)
-void vPrintTask(word32 r0, word32 r2, word32 * r4, word32 r5, Eq_13 * r7, word32 r9)
+// 00008039: void vPrintTask(Register word32 r0, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r9)
+void vPrintTask(word32 r0, word32 r2, word32 r4, word32 r5, word32 r7, word32 r9)
 {
-	*r4 = r0;
-	*(r4 - 0x04) = r2;
-	*(r4 - 0x08) = r4;
-	*(r4 - 0x0C) = r5;
-	*(r4 - 0x10) = (struct Eq_13 **) r7;
+	if (!Z)
+	{
+		Mem15[r4 - 0x04 + 0x00:word32] = r0;
+		Mem17[r4 - 0x08 + 0x00:word32] = r2;
+		Mem18[r4 - 0x0C + 0x00:word32] = r4;
+		Mem20[r4 - 0x0010 + 0x00:word32] = r5;
+		Mem22[r4 - 0x0014 + 0x00:word32] = r7;
+	}
 }
 
-// 00008069: void vCheckTask(Register word32 r0, Register word32 r3)
-void vCheckTask(word32 r0, word32 r3)
+// 00008069: void vCheckTask(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r8, Register word32 ip, Stack byte bArg00)
+void vCheckTask(word32 r0, word32 r1, word32 r2, word32 r3, word32 r8, word32 ip, byte bArg00)
 {
+	word32 sp_1 = fp;
+	if (!ZC)
+		r1_r0 = SEQ(r1, DPB(r0, ~0x444A, 16));
+	if (!Z)
+		r1_r0 = SEQ(r1, Mem0[r3 + 0x00:word16]);
+	if (!Z)
+	{
+		byte NZCV_49 = cond(0x00F00000 - ip - C);
+		C = NZCV_49;
+		ZC = NZCV_49;
+		NZ = NZCV_49;
+	}
+	if (!NZ)
+		sp_1 = fp - 0x09AC;
+	if (!C)
+		Mem43[sp_1 + 0x00:word64] = r1_r0;
 }
 
 // 000080A1: void Main()
@@ -685,239 +1490,341 @@ void Main()
 {
 }
 
-// 00008109: void vUART_ISR(Register word32 r0, Register word32 r2, Register word32 r4, Register word32 r5, Register (ptr word32) r6, Register word32 r7)
-void vUART_ISR(word32 r0, word32 r2, word32 r4, word32 r5, word32 * r6, word32 r7)
-{
-	*r6 = r0;
-	*(r6 - 0x04) = r2;
-	*(r6 - 0x08) = r4;
-	*(r6 - 0x0C) = r5;
-	*(r6 - 0x10) = r7;
-}
-
-// 00008185: void vSetErrorLED(Register Eq_866 r0, Register uint32 r1, Register (ptr Eq_868) r6)
-void vSetErrorLED(Eq_866 r0, uint32 r1, Eq_868 * r6)
-{
-	if (!Z)
-		r0 = r0 ^ r1 >> 0x0E;
-	__syscall(0x00BA34F0);
-	prvSetAndCheckRegisters(r0, r6);
-}
-
-// 0000818D: void prvSetAndCheckRegisters(Register Eq_866 r0, Register (ptr Eq_868) r6)
-void prvSetAndCheckRegisters(Eq_866 r0, Eq_868 * r6)
+// 00008109: void vUART_ISR(Register word32 r0, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7)
+void vUART_ISR(word32 r0, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7)
 {
 	if (!Z)
 	{
-		word32 sp_121;
+		Mem9[r6 - 0x04 + 0x00:word32] = r0;
+		Mem11[r6 - 0x08 + 0x00:word32] = r2;
+		Mem13[r6 - 0x0C + 0x00:word32] = r4;
+		Mem15[r6 - 0x0010 + 0x00:word32] = r5;
+		Mem17[r6 - 0x0014 + 0x00:word32] = r7;
+	}
+}
+
+// 00008185: void vSetErrorLED(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 fp, Register word32 ip)
+void vSetErrorLED(word32 pc, word32 r0, word32 r1, word32 r3, word32 r6, word32 r7, word32 fp, word32 ip)
+{
+	if (!Z)
+		r0 = r0 ^ r1 >>u 0x0E;
+	if (NZ)
+		prvSetAndCheckRegisters(pc, r0, r3, r6, r7, fp, ip);
+	else
+	{
+		__syscall(0x00BA34F0);
+		prvSetAndCheckRegisters(pc, r0, r3, r6, r7, fp, ip);
+	}
+}
+
+// 0000818D: void prvSetAndCheckRegisters(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 fp, Register word32 ip)
+void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 fp, word32 ip)
+{
+	if (!Z)
+	{
+		word32 sp_241;
 		fn002CAD55();
 	}
 	if (!Z)
-		fn0000895D(r0, r6);
+		fn0000895D(pc, r0, r3, r6, r7, fp, ip);
 	if (!Z)
 	{
-		word32 sp_116;
-		word32 r0_119;
-		word32 r6_120;
+		word32 sp_231;
+		word32 pc_234;
+		word32 r0_235;
+		word32 r3_236;
+		word32 r6_237;
+		word32 r7_238;
+		word32 fp_239;
+		word32 ip_240;
 		fn00048D61();
 	}
 	if (!Z)
 	{
-		word32 sp_111;
-		word32 r0_114;
-		word32 r6_115;
+		word32 sp_221;
+		word32 pc_224;
+		word32 r0_225;
+		word32 r3_226;
+		word32 r6_227;
+		word32 r7_228;
+		word32 fp_229;
+		word32 ip_230;
 		fn00089165();
 	}
 	if (!Z)
 	{
-		word32 sp_106;
-		word32 r0_109;
-		word32 r6_110;
+		word32 sp_211;
+		word32 pc_214;
+		word32 r0_215;
+		word32 r3_216;
+		word32 r6_217;
+		word32 r7_218;
+		word32 fp_219;
+		word32 ip_220;
 		fn000C9569();
 	}
 	if (!Z)
 	{
-		word32 sp_101;
-		word32 r0_104;
-		word32 r6_105;
+		word32 sp_201;
+		word32 pc_204;
+		word32 r0_205;
+		word32 r3_206;
+		word32 r6_207;
+		word32 r7_208;
+		word32 fp_209;
+		word32 ip_210;
 		fn0010996D();
 	}
 	if (!Z)
 	{
-		word32 sp_96;
-		word32 r0_99;
-		word32 r6_100;
+		word32 sp_191;
+		word32 pc_194;
+		word32 r0_195;
+		word32 r3_196;
+		word32 r6_197;
+		word32 r7_198;
+		word32 fp_199;
+		word32 ip_200;
 		fn00149D71();
 	}
 	if (!Z)
 	{
-		word32 sp_91;
-		word32 r0_94;
-		word32 r6_95;
+		word32 sp_181;
+		word32 pc_184;
+		word32 r0_185;
+		word32 r3_186;
+		word32 r6_187;
+		word32 r7_188;
+		word32 fp_189;
+		word32 ip_190;
 		fn0018A175();
 	}
 	if (!Z)
 	{
-		word32 sp_86;
-		word32 r0_89;
-		word32 r6_90;
+		word32 sp_171;
+		word32 pc_174;
+		word32 r0_175;
+		word32 r3_176;
+		word32 r6_177;
+		word32 r7_178;
+		word32 fp_179;
+		word32 ip_180;
 		fn001CA579();
 	}
 	if (!Z)
 	{
-		word32 sp_81;
-		word32 r0_84;
-		word32 r6_85;
+		word32 sp_161;
+		word32 pc_164;
+		word32 r0_165;
+		word32 r3_166;
+		word32 r6_167;
+		word32 r7_168;
+		word32 fp_169;
+		word32 ip_170;
 		fn0020A97D();
 	}
 	if (!Z)
 	{
-		word32 sp_76;
-		word32 r0_79;
-		word32 r6_80;
+		word32 sp_151;
+		word32 pc_154;
+		word32 r0_155;
+		word32 r3_156;
+		word32 r6_157;
+		word32 r7_158;
+		word32 fp_159;
+		word32 ip_160;
 		fn0024AD81();
 	}
 	if (!Z)
 	{
-		word32 sp_71;
-		byte Z_72;
-		word32 r0_74;
-		word32 r6_75;
+		word32 sp_141;
+		byte Z_142;
+		word32 pc_144;
+		word32 r0_145;
+		word32 r3_146;
+		word32 r6_147;
+		word32 r7_148;
+		word32 fp_149;
+		word32 ip_150;
 		fn0028B185();
 	}
-	if (!NV)
+	if (!NZV)
 	{
-		word32 sp_66;
-		byte Z_67;
-		byte NV_68;
-		word32 r0_69;
-		word32 r6_70;
+		word32 sp_131;
+		byte Z_132;
+		byte NZV_133;
+		word32 pc_134;
+		word32 r0_135;
+		word32 r3_136;
+		word32 r6_137;
+		word32 r7_138;
+		word32 fp_139;
+		word32 ip_140;
 		fn0030B589();
 	}
 }
 
-// 00008211: void vApplicationIdleHook(Register (ptr Eq_949) r0, Register ui32 r1, Register word32 r2, Register (ptr Eq_952) r7, Register (ptr Eq_953) r8, Register Eq_954 pc)
-void vApplicationIdleHook(Eq_949 * r0, ui32 r1, word32 r2, Eq_952 * r7, Eq_953 * r8, Eq_954 pc)
+// 00008211: void vApplicationIdleHook(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r7, Register word32 r8, Register word32 ip)
+void vApplicationIdleHook(word32 pc, word32 r0, word32 r1, word32 r2, word32 r7, word32 r8, word32 ip)
 {
 	if (!ZC)
 	{
-		word32 sp_73;
-		byte ZC_74;
-		word32 r3_79;
-		word32 r4_80;
-		word32 r5_81;
-		word32 r6_82;
-		word32 r9_84;
-		word32 r10_85;
-		word32 fp_86;
-		word32 ip_87;
-		word32 lr_88;
+		word32 sp_74;
+		word32 r3_80;
+		word32 r4_81;
+		word32 r5_82;
+		word32 r6_83;
+		word32 r9_85;
+		word32 r10_86;
+		word32 fp_87;
+		word32 lr_89;
 		fnFFC084ED();
 	}
-	if (!NV)
+	if (!NZV)
 		return;
-	r7->t0AFF = pc;
+	if (!ZC)
+		Mem73[r7 + 0x0AFF:byte] = (byte) pc;
 	if (C)
-		PDCInit(r0, r1, r2, r8);
+		PDCInit(r0, r1, r2, r8, ip);
 	else
 	{
-		struct Eq_949 * r0_72 = r0 & r1 << 0x01;
-		PDCInit(r0_72, r1, r2, r8);
+		word32 r0_71 = r0 & r1 << 0x01;
+		PDCInit(r0_71, r1, r2, r8, ip);
 	}
 }
 
-// 00008221: void PDCInit(Register (ptr Eq_949) r0, Register ui32 r1, Register word32 r2, Register (ptr Eq_953) r8)
-void PDCInit(Eq_949 * r0, ui32 r1, word32 r2, Eq_953 * r8)
+// 00008221: void PDCInit(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r8, Register word32 ip)
+void PDCInit(word32 r0, word32 r1, word32 r2, word32 r8, word32 ip)
 {
 	if (!ZC)
 		r2_r1 = SEQ(r2, DPB(r1, 35509, 16));
-	if (!NZV)
-		r8 = r0->ptr0010;
-	r8->qwFFFFFF64 = r2_r1;
+	if (!NV)
+		r8 = Mem0[r0 + 0x0010:word32];
+	if (!Z)
+		Mem38[r8 + -0x009C:word64] = r2_r1;
+	if (!Z)
+		NZ = cond(0x0F000000 - ip - C);
+	if (!NZ)
+		__syscall(0x00213422);
 }
 
 // 0000829D: void PDCWrite(Register word32 r0, Register word32 r1, Register word32 ip)
 void PDCWrite(word32 r0, word32 r1, word32 ip)
 {
-	word32 sp_3;
-	bool Z_4;
-	word32 r8_5;
-	word32 r0_6;
-	word32 ip_7;
-	bool C_8;
-	byte NZCV_9;
-	word64 * r1_10;
-	fn0118B979();
 }
 
-// 000082D1: void vListInitialise()
-void vListInitialise()
+// 000082D1: void vListInitialise(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r7, Register word32 r8, Register word32 r9)
+void vListInitialise(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7, word32 r8, word32 r9)
 {
+	if (Z)
+	{
+		if (!Z)
+			r1 = Mem0[r1 + 0x00:word32] + 0x08;
+		if (!ZC)
+			r8 = r0 - (r3 << 0x02);
+		if (!NZV)
+			r0 = 3304;
+		if (!V)
+			r0 = r1 - __ror(3304, 0x06);
+		if (Z)
+			vListInitialiseItem(pc, r0, r1, r3, r7, r8, r9);
+		else
+		{
+			word32 r0_52 = pc + (r7 >> 0x0020) + C;
+			vListInitialiseItem(pc, r0_52, r1, r3, r7, r8, r9);
+		}
+	}
+	else
+	{
+		word32 sp_32;
+		byte Z_33;
+		word32 r1_34;
+		word32 pc_35;
+		word32 r5_36;
+		byte ZC_37;
+		word32 r8_38;
+		word32 r0_39;
+		word32 r3_40;
+		byte NZV_41;
+		byte V_42;
+		word32 r7_43;
+		bool C_44;
+		byte NZCV_45;
+		word32 r9_46;
+		Mem0[r1 + 0x00:int16]();
+	}
 }
 
-// 000082E9: void vListInitialiseItem(Register ui32 r0, Register word32 r1, Register uint32 r3, Register int32 r7, Register (ptr Eq_13) r8, Register Eq_1022 r9, Register word32 pc)
-void vListInitialiseItem(ui32 r0, word32 r1, uint32 r3, int32 r7, Eq_13 * r8, Eq_1022 r9, word32 pc)
+// 000082E9: void vListInitialiseItem(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r7, Register word32 r8, Register word32 r9)
+void vListInitialiseItem(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7, word32 r8, word32 r9)
 {
 	if (!V)
-		r0 = r1 - (r3 >> 0x06);
+		r0 = r1 - (r3 >>u 0x06);
 	if (ZC)
-		vListInsertEnd(r0, r8, r9);
-	else if (ZC)
 		vListInsertEnd(r0, r8, r9);
 	else
 	{
-		ui32 r0_11 = (byte) C + (pc + (r7 >> 0x20));
-		vListInsertEnd(r0_11, r8, r9);
+		word32 r0_14 = pc + (r7 >> 0x0020) + C;
+		vListInsertEnd(r0_14, r8, r9);
 	}
 }
 
-// 000082F1: void vListInsertEnd(Register ui32 r0, Register (ptr Eq_13) r8, Register Eq_1022 r9)
-void vListInsertEnd(ui32 r0, Eq_13 * r8, Eq_1022 r9)
+// 000082F1: void vListInsertEnd(Register word32 r0, Register word32 r8, Register word32 r9)
+void vListInsertEnd(word32 r0, word32 r8, word32 r9)
 {
 	if (!Z)
-	{
-		ui32 r0_9 = r0 & __ror(r8, 0x0019);
-	}
-	r8->tFFFFFF3C = r9;
+		r0 = r0 & __ror(r8, 0x0019);
+	if (!Z)
+		Mem13[r8 + -0x00C4:word16] = (uint16) r9;
+	if (!ZC)
+		__stcl(0x0C, 0x08, Mem0[r0 + 0x00:void]);
 }
 
-// 0000830D: void vListInsert(Register uint32 r0, Register Eq_1055 r1, Register (ptr ui64) r2, Register word32 r8, Register ui32 ip)
-void vListInsert(uint32 r0, Eq_1055 r1, ui64 * r2, word32 r8, ui32 ip)
+// 0000830D: void vListInsert(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r8, Register word32 ip)
+void vListInsert(word32 r0, word32 r1, word32 r2, word32 r8, word32 ip)
 {
 	if (!V)
 	{
-		word32 sp_52;
-		byte V_53;
-		byte NZCV_59;
-		word32 pc_63;
+		word32 sp_68;
+		byte V_69;
+		byte NZCV_75;
+		word32 pc_80;
 		fn01A0B9E5();
 	}
-	if (!Z && !Z)
-	{
-		r1 = r0 - (ip << r1) - C;
-		r1_r0 = SEQ(r1, r0);
-	}
-	*r2 = r1_r0;
-	union Eq_1101 * r2_30 = r2 - r1;
-	if (!NZ)
-		r1 = DPB(r1, 0x6AE0, 16);
-	union Eq_1055 * r8_33 = r8 + -0x0C68;
-	*r8_33 = (union Eq_1055 *) r1;
 	if (!Z)
 	{
-		word32 sp_35;
-		byte V_36;
-		byte Z_37;
-		word32 r1_38;
-		word32 r0_39;
-		word32 ip_40;
-		bool C_41;
-		byte NZCV_42;
-		word32 r2_43;
-		byte NZ_44;
-		word32 r8_45;
-		word32 pc_46;
-		(*r2_30)();
+		r1 = r0 - (ip << r1) - C;
+		byte NZCV_62 = cond(r1);
+		r1_r0 = SEQ(r1, r0);
+		Z = NZCV_62;
+		N = NZCV_62;
+		NV = NZCV_62;
+	}
+	if (!Z)
+	{
+		Mem58[r2 + 0x00:word64] = r1_r0;
+		r2 = r2 - r1;
+	}
+	if (!N)
+		r1 = DPB(r1, 0x6AE0, 16);
+	if (!NV)
+		Mem55[r8 + -0x0C68:byte] = (byte) r1;
+	if (!Z)
+	{
+		word32 sp_41;
+		byte V_42;
+		byte Z_43;
+		word32 r1_44;
+		word32 r0_45;
+		word32 ip_46;
+		bool C_47;
+		byte NZCV_48;
+		word32 r2_49;
+		byte N_50;
+		byte NV_51;
+		word32 r8_52;
+		word32 pc_53;
+		Mem0[r2 + 0x00:byte]();
 	}
 }
 
@@ -926,41 +1833,62 @@ void uxListRemove()
 {
 }
 
-// 00008365: void xQueueCRSend(Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 pc)
-void xQueueCRSend(word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 pc)
+// 00008365: void xQueueCRSend(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r9)
+void xQueueCRSend(word32 pc, word32 r0, word32 r2, word32 r3, word32 r4, word32 r5, word32 r9)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
-	__syscall(0x00461446);
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
-	globals->qw8381 = r5_r4;
-	word32 sp_10;
-	word32 r0_11;
-	word32 fp_12;
-	bool ZC_13;
-	word32 pc_14;
-	word32 r3_15;
-	byte NZV_16;
-	byte Z_17;
-	word32 r1_18;
-	word32 r2_19;
-	bool C_20;
-	byte NZCV_21;
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!NZ)
+		__syscall(0x00461446);
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
+	if (!Z)
+		Mem60[0x00008381 + 0x00:word64] = r5_r4;
+	word32 sp_8;
+	byte Z_9;
+	word32 r0_10;
+	byte NZ_11;
+	byte ZC_12;
+	word32 fp_13;
+	byte NZV_14;
+	word32 pc_15;
+	word32 r3_16;
+	word32 r1_17;
+	word32 r2_18;
+	bool C_19;
+	byte NZCV_20;
+	word32 r9_21;
 	word32 r4_22;
 	word32 r5_23;
 	fnFFE47745();
 }
 
-// 00008401: void xQueueCRReceive(Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r6, Register (ptr word64) r8, Register word32 r9)
-void xQueueCRReceive(word32 r1, word32 r2, word32 r3, word32 r4, word32 r6, word64 * r8, word32 r9)
+// 00008401: void xQueueCRReceive(Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r8, Register word32 r9)
+void xQueueCRReceive(word32 r1, word32 r2, word32 r3, word32 r4, word32 r6, word32 r8, word32 r9)
 {
-	__syscall(0x004604B5);
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
-	globals->dw940C = r4;
-	if (!Z && !Z)
-		r2_r1 = SEQ((byte) C + (r9 + __ror(&globals->t3FF0, 0x001A)), r1);
-	*r8 = r2_r1;
+	if (!NZ)
+		__syscall(0x004604B5);
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
+	if (!ZC)
+		Mem55[0x0000940C + 0x00:word32] = r4;
+	if (!Z)
+	{
+		word32 r2_46 = r9 + __ror(0x3FF0, 0x001A) + C;
+		byte NZCV_48 = cond(r2_46);
+		r2_r1 = SEQ(r2_46, r1);
+		C = NZCV_48;
+		ZC = NZCV_48;
+		Z = NZCV_48;
+	}
+	if (!ZC)
+		Z = cond(r1 - 0x02A00000 - C);
+	if (!Z)
+		Mem35[r8 + 0x00:word64] = r2_r1;
 }
 
 // 000084A1: void xQueueCRSendFromISR()
@@ -973,41 +1901,57 @@ void xQueueCRReceiveFromISR()
 {
 }
 
-// 0000852D: void prvIdleTask(Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register (ptr word32) r7, Register word32 r10, Register word32 fp, Register word32 ip, Register word32 lr, Register word32 pc)
-void prvIdleTask(word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 * r7, word32 r10, word32 fp, word32 ip, word32 lr, word32 pc)
+// 0000852D: void prvIdleTask(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp, Register word32 ip)
+void prvIdleTask(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 fp, word32 ip)
 {
-	__syscall(0x00F7FFB5);
-	*r7 = r1;
-	*(r7 - 0x04) = r2;
-	*(r7 - 0x08) = r3;
-	*(r7 - 0x0C) = r4;
-	*(r7 - 0x10) = r5;
-	*(r7 - 0x14) = r6;
-	*(r7 - 0x18) = r7;
-	*(r7 - 0x1C) = r10;
-	*(r7 - 0x20) = fp;
-	*(r7 - 0x24) = ip;
-	*(r7 - 0x28) = fp;
-	*(r7 - 44) = lr;
-	*(r7 - 0x30) = pc;
-	xTaskNotifyStateClear();
+	if (!V)
+		__syscall(0x00F7FFB5);
+	if (C)
+		xTaskNotifyStateClear(r0, r1, r3, r5, r8, fp);
+	else
+	{
+		Mem6[r7 + 0x00:word32] = r1;
+		Mem9[r7 + 0x04:word32] = r2;
+		Mem11[r7 + 0x08:word32] = r3;
+		Mem13[r7 + 0x0C:word32] = r4;
+		Mem15[r7 + 0x0010:word32] = r5;
+		Mem17[r7 + 0x0014:word32] = r6;
+		Mem18[r7 + 0x0018:word32] = r7;
+		Mem20[r7 + 0x001C:word32] = r10;
+		Mem22[r7 + 0x0020:word32] = fp;
+		Mem24[r7 + 0x0024:word32] = ip;
+		Mem25[r7 + 0x0028:word32] = fp;
+		Mem27[r7 + 44:word32] = lr;
+		Mem29[r7 + 0x0030:word32] = pc;
+		xTaskNotifyStateClear(r0, r1, r3, r5, r8, fp);
+	}
 }
 
-// 00008535: void xTaskNotifyStateClear()
-void xTaskNotifyStateClear()
+// 00008535: void xTaskNotifyStateClear(Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r8, Register word32 fp)
+void xTaskNotifyStateClear(word32 r0, word32 r1, word32 r3, word32 r5, word32 r8, word32 fp)
 {
+	if (Z)
+	{
+		if (!Z)
+			Mem52[fp + -0x0230:word32] = r0;
+		if (!Z)
+			Mem50[r3 + 0x00:word16] = (uint16) r0;
+		if (!ZC)
+			Mem47[r5 + 0x00:word32] = r0;
+	}
 }
 
-// 00008565: void xPortRaisePrivilege(Register (ptr word64) r0, Register word32 r1, Register word32 r2, Register word32 r3)
-void xPortRaisePrivilege(word64 * r0, word32 r1, word32 r2, word32 r3)
+// 00008565: void xPortRaisePrivilege(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3)
+void xPortRaisePrivilege(word32 r0, word32 r1, word32 r2, word32 r3)
 {
-	*r0 = r2_r1;
-	word32 sp_8;
-	word32 r0_9;
-	word32 r3_10;
-	bool Z_11;
-	word32 r1_12;
-	word32 r2_13;
+	if (!Z)
+		Mem12[r0 + 0x00:word64] = r2_r1;
+	word32 sp_3;
+	byte Z_4;
+	word32 r0_5;
+	word32 r3_6;
+	word32 r1_7;
+	word32 r2_8;
 	fn003C8D31();
 }
 
@@ -1021,33 +1965,44 @@ void vPortExitCritical()
 {
 }
 
-// 000085DD: void vParTestInitialise(Register Eq_1296 r0, Register (ptr Eq_1297) fp)
-void vParTestInitialise(Eq_1296 r0, Eq_1297 * fp)
+// 000085DD: void vParTestInitialise(Register word32 r0, Register word32 fp)
+void vParTestInitialise(word32 r0, word32 fp)
 {
-	__syscall(0x00F7FFB5);
-	fp->tFFFFFC02 = r0;
+	if (!Z)
+		__syscall(0x00F7FFB5);
+	if (!Z)
+		Mem5[fp + -1022:byte] = (byte) r0;
+	if (NZV)
+		;
 }
 
-// 000085F5: void vParTestSetLED()
-void vParTestSetLED()
+// 000085F5: void vParTestSetLED(Register word32 r6)
+void vParTestSetLED(word32 r6)
 {
+	if (!Z)
+		__stcl(0x04, 0x00, Mem0[r6 + -0x02D4:void]);
+	if (!V)
+		Z = cond(!(r6 >> 0x0020));
+	if (Z)
+		;
 }
 
-// 00008631: void vParTestToggleLED(Register Eq_1304 r0, Register (ptr Eq_1304) r6)
-void vParTestToggleLED(Eq_1304 r0, Eq_1304 * r6)
+// 00008631: void vParTestToggleLED(Register word32 r0, Register word32 r6)
+void vParTestToggleLED(word32 r0, word32 r6)
 {
-	*r6 = (union Eq_1304 *) r0;
+	if (!Z)
+		Mem6[r6 + 0x00:word16] = (uint16) r0;
 }
 
-// 00008671: void prvFlashCoRoutine(Register word32 r5, Register word32 lr)
-void prvFlashCoRoutine(word32 r5, word32 lr)
+// 00008671: void prvFlashCoRoutine(Register word32 lr, Register word32 r5)
+void prvFlashCoRoutine(word32 lr, word32 r5)
 {
 	if (!Z)
 	{
 		word32 sp_18;
-		word32 r8_19;
-		word32 lr_20;
-		byte ZC_21;
+		byte ZC_19;
+		word32 r8_20;
+		word32 lr_21;
 		word32 r5_22;
 		word32 fp_23;
 		byte Z_24;
@@ -1055,36 +2010,45 @@ void prvFlashCoRoutine(word32 r5, word32 lr)
 	}
 }
 
-// 000086E9: void prvFixedDelayCoRoutine(Register word32 r5, Register word32 lr)
-void prvFixedDelayCoRoutine(word32 r5, word32 lr)
+// 000086E9: void prvFixedDelayCoRoutine(Register word32 lr, Register word32 r5)
+void prvFixedDelayCoRoutine(word32 lr, word32 r5)
 {
 }
 
-// 00008785: void vStartFlashCoRoutines(Register Eq_1325 r0, Register word32 r1, Register word32 r5, Register (ptr Eq_1325) r6, Register word32 pc)
-void vStartFlashCoRoutines(Eq_1325 r0, word32 r1, word32 r5, Eq_1325 * r6, word32 pc)
+// 00008785: void vStartFlashCoRoutines(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 fp, Register word32 ip)
+void vStartFlashCoRoutines(word32 lr, word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r6, word32 fp, word32 ip)
 {
-	*r6 = (union Eq_1325 *) r0;
-	word32 sp_20;
-	word32 pc_21;
-	byte Z_22;
-	word32 r3_23;
-	word32 r5_24;
-	word32 fp_25;
-	word32 r7_26;
-	word32 r0_27;
-	bool C_28;
-	byte NZCV_29;
-	word32 r6_30;
-	word32 r1_31;
+	if (!Z)
+		r5 = Mem0[pc + 0x04:word32];
+	if (!Z)
+		Z = cond(r5 + (r0 >>u 0x0020) + C);
+	if (!Z)
+		Mem57[r6 + 0x00:byte] = (byte) r0;
+	word32 sp_23;
+	byte Z_24;
+	word32 pc_25;
+	word32 r3_26;
+	word32 r5_27;
+	word32 fp_28;
+	word32 r7_29;
+	word32 r0_30;
+	bool C_31;
+	byte NZCV_32;
+	word32 r6_33;
+	word32 r1_34;
+	byte ZC_35;
+	word32 ip_36;
+	word32 r4_37;
+	word32 lr_38;
 	fnFFE66B5D();
 }
 
-// 000087D1: void xAreFlashCoRoutinesStillRunning(Register word32 r0, Register Eq_1349 r3, Register (ptr Eq_1349) r6, Register int32 r7, Register word32 r8, Register word32 fp, Register word32 pc)
-void xAreFlashCoRoutinesStillRunning(word32 r0, Eq_1349 r3, Eq_1349 * r6, int32 r7, word32 r8, word32 fp, word32 pc)
+// 000087D1: void xAreFlashCoRoutinesStillRunning(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 fp)
+void xAreFlashCoRoutinesStillRunning(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 r8, word32 fp)
 {
-	if (!NZV && !NZV)
+	if (!NZV)
 	{
-		r0 = (word32) ((byte) C + (pc + (r7 >> 0x20)));
+		r0 = pc + (r7 >> 0x0020) + C;
 		V = cond(r0);
 	}
 	if (V)
@@ -1093,42 +2057,52 @@ void xAreFlashCoRoutinesStillRunning(word32 r0, Eq_1349 r3, Eq_1349 * r6, int32 
 		MPU_xTaskCreateRestricted(0x00, r3, r6);
 }
 
-// 000087DD: void MPU_xTaskCreateRestricted(Register word32 r0, Register Eq_1349 r3, Register (ptr Eq_1349) r6)
-void MPU_xTaskCreateRestricted(word32 r0, Eq_1349 r3, Eq_1349 * r6)
+// 000087DD: void MPU_xTaskCreateRestricted(Register word32 r0, Register word32 r3, Register word32 r6)
+void MPU_xTaskCreateRestricted(word32 r0, word32 r3, word32 r6)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
-	__syscall(0x00F7FF46);
-	*r6 = (union Eq_1349 *) r3;
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!NZV)
+		__syscall(0x00F7FF46);
+	if (!Z)
+		Mem7[r6 + 0x00:byte] = (byte) r3;
 }
 
-// 00008809: void MPU_xTaskCreate(Register word32 r7)
-void MPU_xTaskCreate(word32 r7)
+// 00008809: void MPU_xTaskCreate(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10)
+void MPU_xTaskCreate(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10)
 {
 }
 
-// 0000884D: void MPU_vTaskAllocateMPURegions(Register word32 r0, Register word32 r1, Register (ptr Eq_1389) r6)
-void MPU_vTaskAllocateMPURegions(word32 r0, word32 r1, Eq_1389 * r6)
+// 0000884D: void MPU_vTaskAllocateMPURegions(Register word32 r0, Register word32 r1, Register word32 r6)
+void MPU_vTaskAllocateMPURegions(word32 r0, word32 r1, word32 r6)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 	if (ZC)
-		r6->qwFFFFFFB2 = r1_r0;
+	{
+		if (!C)
+			Mem18[r6 + -0x004E:word64] = r1_r0;
+	}
 	else
 	{
 		word32 sp_7;
-		word32 r0_8;
-		word32 r7_9;
-		word32 pc_10;
-		byte ZC_11;
-		word32 r6_12;
-		word32 r1_13;
-		(*r7)();
+		byte Z_8;
+		word32 r0_9;
+		byte ZC_10;
+		word32 r7_11;
+		word32 pc_12;
+		byte C_13;
+		word32 r6_14;
+		word32 r1_15;
+		Mem0[r7 + 0x00:byte]();
 	}
 }
 
 // 00008875: void MPU_vTaskDelayUntil(Register word32 r0)
 void MPU_vTaskDelayUntil(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
 // 0000889D: void MPU_vTaskDelay()
@@ -1139,18 +2113,22 @@ void MPU_vTaskDelay()
 // 000088C1: void MPU_vTaskSuspendAll()
 void MPU_vTaskSuspendAll()
 {
-	__syscall(0x00F7FFB5);
+	if (!NZ)
+		__syscall(0x00F7FFB5);
 }
 
 // 000088E1: void MPU_xTaskResumeAll()
 void MPU_xTaskResumeAll()
 {
-	__syscall(0x00F7FFB5);
+	if (!C)
+		__syscall(0x00F7FFB5);
 }
 
 // 00008905: void MPU_xTaskGetTickCount()
 void MPU_xTaskGetTickCount()
 {
+	if (C)
+		;
 }
 
 // 00008929: void MPU_uxTaskGetNumberOfTasks()
@@ -1169,10 +2147,30 @@ void MPU_pcTaskGetName()
 {
 }
 
-// 0000895D: void fn0000895D(Register Eq_866 r0, Register (ptr Eq_868) r6)
-void fn0000895D(Eq_866 r0, Eq_868 * r6)
+// 0000895D: void fn0000895D(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 fp, Register word32 ip)
+void fn0000895D(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 fp, word32 ip)
 {
-	r6->tFFFFFCD4 = r0;
+	if (!Z)
+		Mem52[r6 + -0x032C:byte] = (byte) r0;
+	if (!Z)
+		r3 = r3 + 0x0FD0;
+	if (!Z)
+	{
+		byte NZCV_47 = cond(!(r0 << 0x01));
+		Z = NZCV_47;
+		C = NZCV_47;
+	}
+	if (!C)
+	{
+		Mem37[r6 + 0x00:word32] = r3;
+		Mem39[r6 - 0x04 + 0x00:word32] = r7;
+		Mem41[r6 - 0x08 + 0x00:word32] = fp;
+		Mem43[r6 - 0x0C + 0x00:word32] = ip;
+	}
+	if (C)
+		MPU_vTaskSetTimeOutState();
+	else
+		MPU_vTaskSetTimeOutState();
 }
 
 // 00008975: void MPU_vTaskSetTimeOutState()
@@ -1183,27 +2181,33 @@ void MPU_vTaskSetTimeOutState()
 // 00008999: void MPU_xTaskCheckForTimeOut(Register word32 r0)
 void MPU_xTaskCheckForTimeOut(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
-// 000089C5: void MPU_xTaskGenericNotify(Register Eq_1443 r0, Register (ptr Eq_1444) r1, Register (ptr Eq_1443) r6, Register Eq_1446 pc)
-void MPU_xTaskGenericNotify(Eq_1443 r0, Eq_1444 * r1, Eq_1443 * r6, Eq_1446 pc)
+// 000089C5: void MPU_xTaskGenericNotify(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6)
+void MPU_xTaskGenericNotify(word32 pc, word32 r0, word32 r1, word32 r6)
 {
-	r1->tFFFFFF17 = pc;
-	*r6 = (union Eq_1443 *) r0;
+	if (!Z)
+		Mem7[r1 + -233:byte] = (byte) pc;
+	if (!Z)
+		Mem4[r6 + 0x00:byte] = (byte) r0;
 }
 
-// 000089FD: void MPU_xTaskNotifyWait(Register Eq_1453 r0, Register (ptr Eq_1454) r1, Register (ptr Eq_1453) r6, Register Eq_1456 pc)
-void MPU_xTaskNotifyWait(Eq_1453 r0, Eq_1454 * r1, Eq_1453 * r6, Eq_1456 pc)
+// 000089FD: void MPU_xTaskNotifyWait(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6)
+void MPU_xTaskNotifyWait(word32 pc, word32 r0, word32 r1, word32 r6)
 {
-	r1->tFFFFFF17 = pc;
-	*r6 = (union Eq_1453 *) r0;
+	if (!Z)
+		Mem7[r1 + -233:byte] = (byte) pc;
+	if (!Z)
+		Mem4[r6 + 0x00:byte] = (byte) r0;
 }
 
 // 00008A35: void MPU_ulTaskNotifyTake(Register word32 r0)
 void MPU_ulTaskNotifyTake(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
 // 00008A61: void MPU_xTaskNotifyStateClear()
@@ -1214,20 +2218,24 @@ void MPU_xTaskNotifyStateClear()
 // 00008A89: void MPU_xQueueGenericCreate(Register word32 r0)
 void MPU_xQueueGenericCreate(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
 // 00008AB9: void MPU_xQueueGenericReset(Register word32 r0)
 void MPU_xQueueGenericReset(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
-// 00008AE5: void MPU_xQueueGenericSend(Register Eq_1487 r0, Register (ptr Eq_1488) r1, Register (ptr Eq_1487) r6, Register Eq_1490 pc)
-void MPU_xQueueGenericSend(Eq_1487 r0, Eq_1488 * r1, Eq_1487 * r6, Eq_1490 pc)
+// 00008AE5: void MPU_xQueueGenericSend(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6)
+void MPU_xQueueGenericSend(word32 pc, word32 r0, word32 r1, word32 r6)
 {
-	r1->tFFFFFF17 = pc;
-	*r6 = (union Eq_1487 *) r0;
+	if (!Z)
+		Mem7[r1 + -233:byte] = (byte) pc;
+	if (!Z)
+		Mem4[r6 + 0x00:byte] = (byte) r0;
 }
 
 // 00008B1D: void MPU_uxQueueMessagesWaiting()
@@ -1240,25 +2248,29 @@ void MPU_uxQueueSpacesAvailable()
 {
 }
 
-// 00008B6D: void MPU_xQueueGenericReceive(Register Eq_1497 r0, Register (ptr Eq_1498) r1, Register (ptr Eq_1497) r6, Register Eq_1500 pc)
-void MPU_xQueueGenericReceive(Eq_1497 r0, Eq_1498 * r1, Eq_1497 * r6, Eq_1500 pc)
+// 00008B6D: void MPU_xQueueGenericReceive(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6)
+void MPU_xQueueGenericReceive(word32 pc, word32 r0, word32 r1, word32 r6)
 {
-	r1->tFFFFFF17 = pc;
-	*r6 = (union Eq_1497 *) r0;
+	if (!Z)
+		Mem7[r1 + -233:byte] = (byte) pc;
+	if (!Z)
+		Mem4[r6 + 0x00:byte] = (byte) r0;
 }
 
-// 00008BA5: void MPU_xQueuePeekFromISR(Register word32 r0, Register Eq_1508 r3, Register (ptr Eq_1508) r6)
-void MPU_xQueuePeekFromISR(word32 r0, Eq_1508 r3, Eq_1508 * r6)
+// 00008BA5: void MPU_xQueuePeekFromISR(Register word32 r0, Register word32 r3, Register word32 r6)
+void MPU_xQueuePeekFromISR(word32 r0, word32 r3, word32 r6)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 	if (!NZV)
 	{
-		word32 sp_13;
-		word32 r0_14;
-		byte NZV_15;
+		word32 sp_16;
+		word32 r0_18;
+		byte NZV_19;
 		fnFFE088C9();
 	}
-	*r6 = (union Eq_1508 *) r3;
+	if (!Z)
+		Mem14[r6 + 0x00:byte] = (byte) r3;
 }
 
 // 00008BD1: void MPU_xQueueGetMutexHolder()
@@ -1271,10 +2283,16 @@ void MPU_xQueueCreateMutex()
 {
 }
 
-// 00008C21: void MPU_xQueueTakeMutexRecursive(Register word32 r0)
-void MPU_xQueueTakeMutexRecursive(word32 r0)
+// 00008C21: void MPU_xQueueTakeMutexRecursive(Register word32 r0, Register word32 r3, Register word32 r6)
+void MPU_xQueueTakeMutexRecursive(word32 r0, word32 r3, word32 r6)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (ZC)
+	{
+		if (!Z)
+			Mem7[r6 + 0x00:byte] = (byte) r3;
+	}
 }
 
 // 00008C4D: void MPU_xQueueGiveMutexRecursive()
@@ -1300,11 +2318,15 @@ void MPU_vPortFree()
 // 00008CE5: void MPU_vPortInitialiseBlocks()
 void MPU_vPortInitialiseBlocks()
 {
+	if (C)
+		;
 }
 
 // 00008D05: void MPU_xPortGetFreeHeapSize()
 void MPU_xPortGetFreeHeapSize()
 {
+	if (C)
+		;
 }
 
 // 00008D29: void MPU_xEventGroupCreate()
@@ -1318,41 +2340,50 @@ void MPU_xEventGroupCreate()
 	}
 }
 
-// 00008D4D: void MPU_xEventGroupWaitBits(Register word32 r0, Register word32 r1, Register word32 r2, Register (ptr word32) r6, Register word32 ip, Register word32 pc)
-void MPU_xEventGroupWaitBits(word32 r0, word32 r1, word32 r2, word32 * r6, word32 ip, word32 pc)
+// 00008D4D: void MPU_xEventGroupWaitBits(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r6, Register word32 ip)
+void MPU_xEventGroupWaitBits(word32 pc, word32 r0, word32 r1, word32 r2, word32 r6, word32 ip)
 {
 	if (!ZC)
 		pc = DPB(pc, 12521, 16);
-	__mcr(0x05, 0x02, r0, 0x06, 0x00, 0x05);
-	*r6 = r1;
-	*(r6 - 0x04) = r2;
-	*(r6 - 0x08) = r6;
-	*(r6 - 0x0C) = ip;
-	*(r6 - 0x10) = pc;
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x00, 0x05);
+	if (!ZC)
+	{
+		Mem7[r6 - 0x04 + 0x00:word32] = r1;
+		Mem10[r6 - 0x08 + 0x00:word32] = r2;
+		Mem11[r6 - 0x0C + 0x00:word32] = r6;
+		Mem13[r6 - 0x0010 + 0x00:word32] = ip;
+		Mem14[r6 - 0x0014 + 0x00:word32] = pc;
+	}
 }
 
 // 00008D8D: void MPU_xEventGroupClearBits(Register word32 r0)
 void MPU_xEventGroupClearBits(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 	word32 sp_6;
-	word32 r0_7;
-	word32 r7_8;
-	word32 pc_9;
-	(*r7)();
+	byte Z_7;
+	word32 r0_8;
+	word32 r7_9;
+	word32 pc_10;
+	Mem0[r7 + 0x00:byte]();
 }
 
 // 00008DB9: void MPU_xEventGroupSetBits(Register word32 r0)
 void MPU_xEventGroupSetBits(word32 r0)
 {
-	__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x05, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
-// 00008DE5: void MPU_xEventGroupSync(Register Eq_1602 r0, Register (ptr Eq_1603) r1, Register (ptr Eq_1602) r6, Register Eq_1605 pc)
-void MPU_xEventGroupSync(Eq_1602 r0, Eq_1603 * r1, Eq_1602 * r6, Eq_1605 pc)
+// 00008DE5: void MPU_xEventGroupSync(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r6)
+void MPU_xEventGroupSync(word32 pc, word32 r0, word32 r1, word32 r6)
 {
-	r1->tFFFFFF17 = pc;
-	*r6 = (union Eq_1602 *) r0;
+	if (!Z)
+		Mem7[r1 + -233:byte] = (byte) pc;
+	if (!Z)
+		Mem4[r6 + 0x00:byte] = (byte) r0;
 }
 
 // 00008E1D: void MPU_vEventGroupDelete()
@@ -1360,81 +2391,177 @@ void MPU_vEventGroupDelete()
 {
 }
 
-// 00008E41: void xCoRoutineCreate()
-void xCoRoutineCreate()
+// 00008E41: void xCoRoutineCreate(Register word32 pc, Register word32 r8, Register word32 r9)
+void xCoRoutineCreate(word32 pc, word32 r8, word32 r9)
 {
+	if (Z)
+		;
 }
 
-// 00008EF1: void vCoRoutineAddToDelayedList()
-void vCoRoutineAddToDelayedList()
+// 00008EF1: void vCoRoutineAddToDelayedList(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 ip)
+void vCoRoutineAddToDelayedList(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 ip)
 {
+	if (Z)
+	{
+		if (!V)
+		{
+			Mem72[r8 + -844:byte] = (byte) r2;
+			r8 = r8 + -844;
+		}
+		if (!Z)
+		{
+			Mem58[r4 + 0x00:word32] = r0;
+			Mem61[r4 - 0x04 + 0x00:word32] = r1;
+			Mem62[r4 - 0x08 + 0x00:word32] = r2;
+			Mem64[r4 - 0x0C + 0x00:word32] = r3;
+			Mem66[r4 - 0x0010 + 0x00:word32] = r5;
+			Mem68[r4 - 0x0014 + 0x00:word32] = r6;
+			Mem69[r4 - 0x0018 + 0x00:word32] = r8;
+			Mem70[r4 - 0x001C + 0x00:word32] = r10;
+		}
+		if (!Z)
+			__syscall(0x00F7FF1D);
+		if (!C)
+			Mem57[0x00008ECF + 0x00:word64] = r7_r6;
+		if (!NZ)
+			__stcl(0x0D, 0x09, Mem0[r2 + -0x01A0:void]);
+		word32 r3_10 = pc + __ror(r0, 0x08) + C;
+		if (r3_10 == 0x00)
+			Mem52[lr + 0x00:byte] = (byte) r10;
+		word32 sp_17;
+		byte Z_18;
+		byte V_19;
+		word32 r2_20;
+		word32 r8_21;
+		word32 r4_22;
+		word32 r0_23;
+		word32 r1_24;
+		word32 r5_26;
+		word32 r6_27;
+		word32 r10_28;
+		byte C_29;
+		word32 pc_30;
+		byte NZ_31;
+		byte NZCV_32;
+		word32 lr_33;
+		byte NZV_34;
+		word32 r7_35;
+		word32 ip_36;
+		word64 d17_37;
+		word64 d31_38;
+		word32 r3_25;
+		fnFFE08BDF();
+		if (!C_29)
+			r3_25 = Mem0[r1_24 + 0x00:int16];
+		if (!NZV_34)
+			__stcl(0x00, 0x03, Mem0[r6_27 + -0x01A0:void]);
+		if (!Z_18)
+		{
+			Mem41[r0_23 + 0x00:word32] = r3_25;
+			Mem42[r0_23 - 0x04 + 0x00:word32] = r5_26;
+			Mem43[r0_23 - 0x08 + 0x00:word32] = r6_27;
+			Mem44[r0_23 - 0x0C + 0x00:word32] = r7_35;
+			Mem45[r0_23 - 0x0010 + 0x00:word32] = ip_36;
+			Mem46[r0_23 - 0x0014 + 0x00:word32] = fp;
+			Mem47[r0_23 - 0x0018 + 0x00:word32] = lr_33;
+		}
+	}
 }
 
-// 00008F2D: void vCoRoutineSchedule(Register word32 r0, Register (ptr Eq_1613) r1, Register word32 r7, Register Eq_1615 pc)
-void vCoRoutineSchedule(word32 r0, Eq_1613 * r1, word32 r7, Eq_1615 pc)
+// 00008F2D: void vCoRoutineSchedule(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r7, Register word32 r8)
+void vCoRoutineSchedule(word32 pc, word32 r0, word32 r1, word32 r7, word32 r8)
 {
-	r1->tFFFFFF17 = pc;
+	if (!N)
+		Mem74[r1 + -233:byte] = (byte) pc;
 	if (!C)
 	{
-		word32 sp_38;
-		word32 pc_39;
-		word32 r1_40;
-		word32 fp_44;
+		word32 sp_61;
+		byte N_62;
+		word32 pc_63;
+		word32 r1_64;
+		word32 fp_71;
 		fn01B63C6D();
 	}
-	word32 * r7_18 = r7 + -0x00B3;
-	*r7_18 = r0;
-	__syscall(525553);
-	__syscall(0x008811F3);
-	__syscall(0x008F6FF3);
+	if (!Z)
+		Mem60[r7 + -0x00B3:word32] = r0;
+	if (!NZ)
+		__syscall(525553);
+	if (!NZV)
+		__syscall(0x008811F3);
+	if (!NZV)
+		__syscall(0x008F6FF3);
 	if (!C)
 	{
-		word32 sp_29;
-		word32 pc_30;
-		word32 r1_31;
-		byte C_32;
-		word32 r0_33;
-		word32 r7_34;
-		word32 fp_35;
-		byte ZC_36;
+		word32 sp_45;
+		byte N_46;
+		word32 pc_47;
+		word32 r1_48;
+		byte C_49;
+		word32 r0_51;
+		word32 r7_52;
+		byte NZ_53;
+		byte ZC_54;
+		word32 fp_55;
+		byte NZV_56;
 		fnFE3DCF1D();
 	}
+	if (!Z)
+		Mem43[r8 + 0x00:byte] = (byte) fp;
 }
 
-// 00009095: void xCoRoutineRemoveFromEventList()
-void xCoRoutineRemoveFromEventList()
+// 00009095: void xCoRoutineRemoveFromEventList(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r6, Stack byte bArg00)
+void xCoRoutineRemoveFromEventList(word32 r0, word32 r1, word32 r2, word32 r6, byte bArg00)
 {
+	if (NZV)
+	{
+		if (!C)
+			Mem20[r6 + 0x00:word64] = r2_r1;
+		if (NZ)
+			;
+	}
 }
 
-// 000090C5: void GPIOGetIntNumber(Register word32 r0, Register word32 r1, Register (ptr word32) r2, Register word32 r3, Register word32 r6, Register word32 r8, Register word32 fp, Register word32 ip, Register word32 pc)
-void GPIOGetIntNumber(word32 r0, word32 r1, word32 * r2, word32 r3, word32 r6, word32 r8, word32 fp, word32 ip, word32 pc)
-{
-	*r2 = r0;
-	*(r2 - 0x04) = r1;
-	*(r2 - 0x08) = r3;
-	*(r2 - 0x0C) = r6;
-	*(r2 - 0x10) = fp;
-	*(r2 - 0x14) = ip;
-	*(r2 - 0x18) = pc;
-}
-
-// 0000910D: void GPIODirModeSet(Register ui32 r0, Register word32 r4, Register word32 pc)
-void GPIODirModeSet(ui32 r0, word32 r4, word32 pc)
+// 000090C5: void GPIOGetIntNumber(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r6, Register word32 r8, Register word32 fp, Register word32 ip)
+void GPIOGetIntNumber(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r6, word32 r8, word32 fp, word32 ip)
 {
 	if (!Z)
+	{
+		Mem11[r2 - 0x04 + 0x00:word32] = r0;
+		Mem14[r2 - 0x08 + 0x00:word32] = r1;
+		Mem16[r2 - 0x0C + 0x00:word32] = r3;
+		Mem18[r2 - 0x0010 + 0x00:word32] = r6;
+		Mem20[r2 - 0x0014 + 0x00:word32] = fp;
+		Mem22[r2 - 0x0018 + 0x00:word32] = ip;
+		Mem24[r2 - 0x001C + 0x00:word32] = pc;
+	}
+}
+
+// 0000910D: void GPIODirModeSet(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r8)
+void GPIODirModeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
+{
+	if (!Z)
+	{
+		byte NZCV_57 = cond(r4 ^ 0xF8);
 		r0 = r4 ^ 0xF8;
-	globals->dw9119 = r0;
+		Z = NZCV_57;
+		ZC = NZCV_57;
+		C = NZCV_57;
+	}
+	if (!Z)
+		Mem54[0x00009119 + 0x00:word32] = r0;
 	if (!ZC)
 	{
-		word32 sp_19;
-		word32 r0_20;
-		word32 r4_21;
-		byte Z_22;
-		byte NZCV_23;
-		word32 pc_24;
-		byte ZC_25;
+		word32 sp_43;
+		word32 r0_45;
+		word32 r4_46;
+		byte NZCV_47;
+		word32 pc_48;
+		byte ZC_49;
+		word32 ip_50;
 		fn010CC019();
 	}
+	if (!Z)
+		C = cond((r3 >> 0x0020) - r8 - C);
 }
 
 // 00009135: void GPIODirModeGet()
@@ -1442,28 +2569,70 @@ void GPIODirModeGet()
 {
 }
 
-// 0000915D: void GPIOIntTypeSet(Register ui32 r0, Register word32 r4, Register word32 r8, Register word32 pc)
-void GPIOIntTypeSet(ui32 r0, word32 r4, word32 r8, word32 pc)
+// 0000915D: void GPIOIntTypeSet(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r8)
+void GPIOIntTypeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 {
 	if (!Z)
+	{
+		byte NZCV_170 = cond(r4 ^ 0x00F80000);
 		r0 = r4 ^ 0x00F80000;
-	globals->dw9169 = r0;
+		Z = NZCV_170;
+		ZC = NZCV_170;
+		NZV = NZCV_170;
+		NZV = NZCV_170;
+		C = NZCV_170;
+		N = NZCV_170;
+	}
+	if (!Z)
+		Mem167[0x00009169 + 0x00:word32] = r0;
 	if (!ZC)
 	{
-		word32 sp_32;
-		word32 r0_33;
-		word32 r4_34;
-		byte NZCV_36;
-		word32 pc_37;
-		byte ZC_38;
-		word32 r8_39;
-		word32 r1_40;
-		word32 r6_41;
-		word32 lr_42;
+		word32 sp_148;
+		byte NZCV_152;
+		word32 pc_153;
+		byte ZC_154;
+		word32 r1_156;
+		word32 r6_157;
+		word32 lr_158;
+		word32 r2_164;
+		word32 r10_165;
+		word32 fp_166;
 		fn010CC069();
 	}
 	if (!Z)
-		;
+		return;
+	if (!Z)
+		r8 = r8 + 0x34;
+	if (!Z)
+	{
+		byte NZCV_139 = cond(0x40000003 - r0 - C);
+		Z = NZCV_139;
+		NZV = NZCV_139;
+		NZV = NZCV_139;
+		N = NZCV_139;
+	}
+	if (!Z)
+	{
+		word32 sp_119;
+		word32 r0_121;
+		byte NZCV_123;
+		word32 pc_124;
+		byte ZC_125;
+		word32 r1_127;
+		word32 r6_128;
+		word32 lr_129;
+		bool C_130;
+		word32 r2_135;
+		word32 r10_136;
+		word32 fp_137;
+		fnFEFCE1B9();
+	}
+	if (!NZV)
+		r8 = r3 - (r3 >> 22);
+	if (!NZV)
+		r4 = r4 + r8;
+	if (!N)
+		Z = cond(r4 ^ 0xF800);
 }
 
 // 00009195: void GPIOIntTypeGet(Register word32 r8)
@@ -1473,8 +2642,8 @@ void GPIOIntTypeGet(word32 r8)
 		;
 }
 
-// 000091C9: void GPIOPadConfigSet()
-void GPIOPadConfigSet()
+// 000091C9: void GPIOPadConfigSet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r8)
+void GPIOPadConfigSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r8)
 {
 }
 
@@ -1483,49 +2652,186 @@ void GPIOPadConfigGet()
 {
 }
 
-// 000092E1: void GPIOPinIntEnable(Register word32 r4)
-void GPIOPinIntEnable(word32 r4)
+// 000092E1: void GPIOPinIntEnable(Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r7, Register word32 r8, Register word32 r10)
+void GPIOPinIntEnable(word32 r0, word32 r1, word32 r3, word32 r4, word32 r7, word32 r8, word32 r10)
 {
+	if (!Z)
+	{
+		r3 = Mem0[r4 - -0x04 + 0x00:word32];
+		r4 = Mem0[r4 + 0x00:word32] + 0x0014;
+	}
+	if (!Z)
+		NZV = cond((r3 >> 0x0020) - r8 - C);
+	if (NZV)
+		GPIOPinIntDisable(r1, r4, r8, r10);
+	else
+		GPIOPinIntDisable(r1, r4, r8, r10);
 }
 
-// 000092ED: void GPIOPinIntDisable(Register ui32 r1, Register word32 r4, Register word32 r8, Register (ptr Eq_13) r10)
-void GPIOPinIntDisable(ui32 r1, word32 r4, word32 r8, Eq_13 * r10)
+// 000092ED: void GPIOPinIntDisable(Register word32 r1, Register word32 r4, Register word32 r8, Register word32 r10)
+void GPIOPinIntDisable(word32 r1, word32 r4, word32 r8, word32 r10)
 {
-	if ((r4 ^ 0xF8) > 0x00)
+	if (!C)
 	{
-		ui32 r0_13 = r1 & __ror(r10, 0x03);
+		byte NZCV_22 = cond(r4 ^ 0xF8);
+		NZV = NZCV_22;
+		V = NZCV_22;
+	}
+	if (!NZV)
+	{
+		word32 r0_21 = r1 & __ror(r10, 0x03);
 	}
 }
 
-// 000092FD: void GPIOPinIntStatus()
-void GPIOPinIntStatus()
+// 000092FD: void GPIOPinIntStatus(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
+void GPIOPinIntStatus(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 fp, word32 ip)
 {
+	if (!Z)
+		r8 = r8 + 0xB9;
+	if (!NZV)
+		r7 = r7 - r4;
+	if (!V)
+	{
+		Mem40[r4 + 0x00:word64] = r2_r1;
+		r4 = r4 - r8;
+	}
+	if (NZV)
+		GPIOPinIntClear(pc, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip);
+	else
+	{
+		word32 r0_22 = pc + (r7 >> 0x0020) + C;
+		GPIOPinIntClear(pc, r0_22, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip);
+	}
 }
 
-// 0000930D: void GPIOPinIntClear(Register word32 r4, Register word32 r8)
-void GPIOPinIntClear(word32 r4, word32 r8)
+// 0000930D: void GPIOPinIntClear(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
+void GPIOPinIntClear(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 fp, word32 ip)
 {
+	if (!V)
+	{
+		r1 = Mem0[r4 + 0x00:int16];
+		r4 = r4 - r8;
+	}
+	if (C)
+		GPIOPortIntRegister(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip);
+	else
+	{
+		word32 r0_11 = Mem0[0x00009319 + 0x00:word32];
+		GPIOPortIntRegister(r0_11, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip);
+	}
 }
 
-// 00009315: void GPIOPortIntRegister(Register word32 r5)
-void GPIOPortIntRegister(word32 r5)
+// 00009315: void GPIOPortIntRegister(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
+void GPIOPortIntRegister(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 fp, word32 ip)
 {
-	__syscall(13646914);
+	if (!ZC)
+	{
+		r0 = Mem0[r5 + 0x00:word32];
+		r1 = Mem0[r5 + 0x04:word32];
+		r3 = Mem0[r5 + 0x08:word32];
+		r6 = Mem0[r5 + 0x0C:word32];
+		ip = Mem0[r5 + 0x0010:word32];
+		r5 = r5 + 0x0014;
+	}
+	if (!Z)
+		__syscall(13646914);
+	if (!NZ)
+		fp = Mem0[r1 + 0x00:int8];
+	if (!ZC)
+		return;
+	if (!C)
+		r8 = r8 + 0x80;
+	if (!Z)
+	{
+		fp = (r6 >> 0x001A) - r8 - C;
+		byte NZCV_112 = cond(fp);
+		NZ = NZCV_112;
+		C = NZCV_112;
+		ZC = NZCV_112;
+		Z = NZCV_112;
+	}
+	if (!NZ)
+		__syscall(0x00F00040);
+	if (!ZC)
+	{
+		Mem100[fp + 0x00:word32] = r0;
+		Mem101[fp - 0x04 + 0x00:word32] = r3;
+		Mem102[fp - 0x08 + 0x00:word32] = r4;
+		Mem103[fp - 0x0C + 0x00:word32] = r5;
+		Mem105[fp - 0x0010 + 0x00:word32] = r7;
+		Mem106[fp - 0x0014 + 0x00:word32] = r8;
+		Mem108[fp - 0x0018 + 0x00:word32] = r9;
+		Mem109[fp - 0x001C + 0x00:word32] = fp;
+		Mem110[fp - 0x0020 + 0x00:word32] = ip;
+	}
+	if (!ZC)
+		return;
+	if (!C)
+		r8 = r8 + 0x80;
+	if (!Z)
+		C = cond((r6 >> 0x001A) - r8 - C);
+	if (!C)
+		__syscall(0x00F00040);
 }
 
-// 000093B1: void GPIOPortIntUnregister(Register word32 r5)
-void GPIOPortIntUnregister(word32 r5)
+// 000093B1: void GPIOPortIntUnregister(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 fp, Register word32 ip)
+void GPIOPortIntUnregister(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 fp, word32 ip)
 {
-	__syscall(13646914);
+	if (!ZC)
+	{
+		r1 = Mem0[r5 + 0x04:word32];
+		r3 = Mem0[r5 + 0x08:word32];
+		r6 = Mem0[r5 + 0x0C:word32];
+		ip = Mem0[r5 + 0x0010:word32];
+		r5 = r5 + 0x0014;
+	}
+	if (!Z)
+		__syscall(13646914);
+	if (!NZ)
+		fp = Mem0[r1 + 0x00:int8];
+	if (!ZC)
+		return;
+	if (!C)
+	{
+		r3 = Mem0[r9 + 0x00:int16];
+		r9 = r9 + 0x40;
+	}
+	if (!Z)
+	{
+		fp = (r6 >> 0x001A) - r8 - C;
+		byte NZCV_111 = cond(fp);
+		NV = NZCV_111;
+		C = NZCV_111;
+		ZC = NZCV_111;
+		Z = NZCV_111;
+	}
+	if (!NV)
+		__syscall(0x00F00040);
+	if (!ZC)
+	{
+		Mem101[fp + 0x00:word32] = r3;
+		Mem102[fp - 0x04 + 0x00:word32] = r4;
+		Mem103[fp - 0x08 + 0x00:word32] = r5;
+		Mem105[fp - 0x0C + 0x00:word32] = r7;
+		Mem106[fp - 0x0010 + 0x00:word32] = r8;
+		Mem107[fp - 0x0014 + 0x00:word32] = r9;
+		Mem108[fp - 0x0018 + 0x00:word32] = fp;
+		Mem109[fp - 0x001C + 0x00:word32] = ip;
+	}
+	if (!ZC)
+		return;
+	if (!Z)
+		ZC = cond((r6 >> 0x001A) - r8 - C);
+	if (!ZC)
+		__syscall(0x00F00040);
 }
 
-// 0000944D: void GPIOPinRead(Register (ptr word64) r0, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8, Register word32 pc)
-void GPIOPinRead(word64 * r0, word32 r2, word32 r3, word32 r7, word32 r8, word32 pc)
+// 0000944D: void GPIOPinRead(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8)
+void GPIOPinRead(word32 pc, word32 r0, word32 r2, word32 r3, word32 r7, word32 r8)
 {
-	*r0 = r3_r2;
-	if (N)
-		GPIOPinWrite();
-	else if (N)
+	if (!V)
+		Mem15[r0 + 0x00:word64] = r3_r2;
+	if (NZ)
 		GPIOPinWrite();
 	else
 		GPIOPinWrite();
@@ -1536,41 +2842,58 @@ void GPIOPinWrite()
 {
 }
 
-// 0000945D: void GPIOPinTypeComparator(Register (ptr Eq_1786) r3, Register Eq_1786 ip)
-void GPIOPinTypeComparator(Eq_1786 * r3, Eq_1786 ip)
+// 0000945D: void GPIOPinTypeComparator(Register word32 r3, Register word32 ip)
+void GPIOPinTypeComparator(word32 r3, word32 ip)
 {
-	*r3 = (union Eq_1786 *) ip;
+	if (!NZV)
+		Mem6[r3 + 0x00:word16] = (uint16) ip;
 }
 
-// 00009481: void GPIOPinTypeI2C(Register Eq_1790 r0, Register (ptr Eq_1790) r6)
-void GPIOPinTypeI2C(Eq_1790 r0, Eq_1790 * r6)
+// 00009481: void GPIOPinTypeI2C(Register word32 r0, Register word32 r6)
+void GPIOPinTypeI2C(word32 r0, word32 r6)
 {
-	*r6 = (union Eq_1790 *) r0;
+	if (!NZV)
+		Mem17[r6 + 0x00:word16] = (uint16) r0;
 	if (!Z)
 	{
-		word32 sp_11;
-		word32 r0_12;
-		word32 r6_13;
-		byte Z_14;
+		word32 sp_12;
+		byte NZV_13;
+		word32 r0_14;
+		word32 r6_15;
+		byte Z_16;
 		fn0090986D();
 	}
 }
 
-// 000094A5: void GPIOPinTypeQEI(Register Eq_1802 r0, Register (ptr Eq_1802) r6)
-void GPIOPinTypeQEI(Eq_1802 r0, Eq_1802 * r6)
+// 000094A5: void GPIOPinTypeQEI(Register word32 r0, Register word32 r6)
+void GPIOPinTypeQEI(word32 r0, word32 r6)
 {
-	*r6 = (union Eq_1802 *) r0;
-	word32 sp_7;
-	word32 r0_8;
-	word32 r6_9;
-	byte Z_10;
+	if (!NZV)
+		Mem10[r6 + 0x00:word16] = (uint16) r0;
+	word32 sp_4;
+	byte NZV_5;
+	word32 r0_6;
+	word32 r6_7;
+	byte Z_8;
 	fn00909891();
 }
 
-// 000094C9: void GPIOPinTypeUART(Register Eq_1814 r0, Register (ptr Eq_1814) r6)
-void GPIOPinTypeUART(Eq_1814 r0, Eq_1814 * r6)
+// 000094C9: void GPIOPinTypeUART(Register word32 r0, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7)
+void GPIOPinTypeUART(word32 r0, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7)
 {
-	*r6 = (union Eq_1814 *) r0;
+	if (!NZV)
+	{
+		Mem18[r6 + 0x00:word16] = (uint16) r0;
+		r6 = r6 + ~0xD3;
+	}
+	if (!Z)
+	{
+		Mem9[r4 + 0x00:word32] = r3;
+		Mem10[r4 - 0x04 + 0x00:word32] = r4;
+		Mem12[r4 - 0x08 + 0x00:word32] = r5;
+		Mem13[r4 - 0x0C + 0x00:word32] = r6;
+		Mem15[r4 - 0x0010 + 0x00:word32] = r7;
+	}
 }
 
 // 000094ED: void GPIOPinTypeTimer()
@@ -1588,51 +2911,57 @@ void GPIOPinTypePWM()
 {
 }
 
-// 000094F9: void IntDefaultHandler(Register (ptr Eq_13) r7, Register word32 pc)
-void IntDefaultHandler(Eq_13 * r7, word32 pc)
+// 000094F9: void IntDefaultHandler(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r7, Register word32 r8, Register word32 fp)
+void IntDefaultHandler(word32 pc, word32 r0, word32 r1, word32 r7, word32 r8, word32 fp)
 {
 	if (Z)
-		IntMasterEnable();
-	else if (Z)
-		IntMasterEnable();
+		IntMasterEnable(r0, r1, r8, fp, wArg00);
 	else
 	{
-		word32 r0_8 = (byte) C + (pc + __ror(r7, 0x01));
-		IntMasterEnable();
+		word32 r0_10 = pc + __ror(r7, 0x01) + C;
+		IntMasterEnable(r0_10, r1, r8, fp, wArg00);
 	}
 }
 
-// 000094FD: void IntMasterEnable()
-void IntMasterEnable()
+// 000094FD: void IntMasterEnable(Register word32 r0, Register word32 r1, Register word32 r8, Register word32 fp, Stack int16 wArg00)
+void IntMasterEnable(word32 r0, word32 r1, word32 r8, word32 fp, int16 wArg00)
 {
+	if (Z)
+		IntMasterDisable(r0, r1, r8, fp);
+	else
+		IntMasterDisable(r0, r1, r8, fp);
 }
 
-// 00009501: void IntMasterDisable(Register word32 r0, Register word32 r1, Register word32 fp)
-void IntMasterDisable(word32 r0, word32 r1, word32 fp)
+// 00009501: void IntMasterDisable(Register word32 r0, Register word32 r1, Register word32 r8, Register word32 fp)
+void IntMasterDisable(word32 r0, word32 r1, word32 r8, word32 fp)
 {
 	word32 sp_3;
 	byte Z_4;
 	word32 r0_5;
 	word32 r1_6;
-	word32 fp_7;
+	word32 r8_7;
+	word32 fp_8;
 	fnFEF858C9();
 }
 
-// 00009505: void IntRegister(Register word32 r0, Register word32 r1, Register word32 fp)
-void IntRegister(word32 r0, word32 r1, word32 fp)
+// 00009505: void IntRegister(Register word32 r0, Register word32 r1, Register word32 r8, Register word32 fp)
+void IntRegister(word32 r0, word32 r1, word32 r8, word32 fp)
 {
 	if (!Z)
 	{
-		word32 sp_43;
-		word32 r0_45;
-		word32 r1_48;
-		word32 r2_50;
-		word32 r6_51;
-		word32 r10_52;
-		word32 fp_53;
-		byte NZCV_54;
+		word32 sp_59;
+		word32 r0_62;
+		word32 r1_65;
+		word32 r2_66;
+		word32 r6_67;
+		word32 r10_68;
+		byte NZCV_70;
+		word32 r8_71;
+		word32 r4_72;
 		fnFED15639();
 	}
+	if (!Z)
+		Z = cond(fp & 0x5000);
 }
 
 // 00009539: void IntUnregister(Register word32 r0)
@@ -1645,58 +2974,173 @@ void IntPriorityGroupingSet(word32 r0)
 {
 }
 
-// 00009569: void IntPriorityGroupingGet()
-void IntPriorityGroupingGet()
+// 00009569: void IntPriorityGroupingGet(Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r5, Register word32 r6, Register word32 r9, Register word32 r10)
+void IntPriorityGroupingGet(word32 r0, word32 r2, word32 r3, word32 r5, word32 r6, word32 r9, word32 r10)
 {
+	if (Z)
+	{
+		if (!Z)
+		{
+			Mem60[r0 - 0x04 + 0x00:word32] = r0;
+			Mem61[r0 - 0x08 + 0x00:word32] = r3;
+			Mem62[r0 - 0x0C + 0x00:word32] = r6;
+			r0 = r0 - 0x0010;
+		}
+		if (!Z)
+		{
+			Mem55[r10 - 0x04 + 0x00:word32] = r3;
+			Mem56[r10 - 0x08 + 0x00:word32] = r5;
+			Mem57[r10 - 0x0C + 0x00:word32] = r6;
+			Mem58[r10 - 0x0010 + 0x00:word32] = r9;
+			Mem59[r10 - 0x0014 + 0x00:word32] = r10;
+		}
+		if (!N)
+		{
+			byte NZCV_50 = cond(0x10 - r0 - C);
+			Z = NZCV_50;
+			ZC = NZCV_50;
+		}
+		if (!ZC)
+		{
+			word32 sp_36;
+			word32 r0_38;
+			word32 r3_39;
+			word32 r6_40;
+			word32 r10_41;
+			word32 r5_42;
+			word32 r9_43;
+			byte N_44;
+			bool C_45;
+			byte NZCV_46;
+			byte ZC_47;
+			word32 r2_48;
+			fn00ECA961();
+		}
+	}
 }
 
-// 00009591: void IntPrioritySet(Register word32 r2, Register word32 fp)
-void IntPrioritySet(word32 r2, word32 fp)
+// 00009591: void IntPrioritySet(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp)
+void IntPrioritySet(word32 pc, word32 r0, word32 r2, word32 r3, word32 r7, word32 r8, word32 r10, word32 fp)
 {
+	if (!Z)
+		r0 = fp - (r2 >>u 0x0012);
+	if (!Z)
+	{
+		r2 = !0xB4;
+		byte NZCV_70 = cond(r2);
+		Z = NZCV_70;
+		NZV = NZCV_70;
+		C = NZCV_70;
+		NV = NZCV_70;
+	}
+	if (Z)
+	{
+		if (!Z)
+		{
+			r0 = !0x6A;
+			byte NZCV_64 = cond(r0);
+			Z = NZCV_64;
+			NZV = NZCV_64;
+			C = NZCV_64;
+			NV = NZCV_64;
+		}
+		if (!NZV)
+			r2 = r8 - (r0 << 0x06);
+		if (!C)
+			r8 = DPB(r8, 0x0200, 16);
+		if (!Z)
+			r3 = (int16) (r10 >> 0x0010) *s (int16) (r2 >> 0x0010) + r0;
+		if (!Z)
+		{
+			r3 = Mem0[r0 + 0x04:word32];
+			r7 = Mem0[r0 + 0x0014:word32];
+			r0 = r0 + 0x0018;
+		}
+		if (!Z)
+			r2 = r0 - (r3 >> 0x0020);
+		if (!NV)
+			Mem48[r7 + 0x00:byte] = (byte) r7;
+		if (Z)
+			IntPriorityGet(pc, r0, r2, r8, r10);
+		else
+		{
+			Mem44[r0 + 0x00:word32] = r0;
+			word32 r0_45 = r0 - (r2 >>u 0x01);
+			IntPriorityGet(pc, r0_45, r2, r8, r10);
+		}
+	}
 }
 
-// 000095BD: void IntPriorityGet(Register word32 r0, Register word32 r8)
-void IntPriorityGet(word32 r0, word32 r8)
+// 000095BD: void IntPriorityGet(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r8, Register word32 r10)
+void IntPriorityGet(word32 pc, word32 r0, word32 r2, word32 r8, word32 r10)
 {
 	if (!Z)
 	{
-		word32 r2_36 = !0x4B;
-		if (!Z)
-			NZV = cond(r2_36);
+		byte NZCV_93 = cond(!0x4B);
+		Z = NZCV_93;
+		NZV = NZCV_93;
+		V = NZCV_93;
+		C = NZCV_93;
+		NV = NZCV_93;
 	}
 	if (!Z)
 	{
-		word32 sp_28;
-		word32 r2_29;
-		byte SZCO_31;
-		word32 r0_32;
-		word32 r1_33;
-		word32 r8_34;
+		word32 sp_78;
+		word32 r2_80;
+		byte NZCV_81;
+		word32 r1_84;
+		word32 ip_89;
+		word32 pc_91;
 		fn0110E1D1();
 	}
 	if (!Z)
 	{
-		word32 r0_25 = !0x6A;
-		if (!Z)
-			NZV = cond(r0_25);
+		r0 = !0x6A;
+		byte NZCV_72 = cond(r0);
+		Z = NZCV_72;
+		NZV = NZCV_72;
+		V = NZCV_72;
+		C = NZCV_72;
+		NV = NZCV_72;
+	}
+	if (!Z)
+	{
+		byte NZCV_64 = cond((r0 << 0x06) - r10 - C);
+		Z = NZCV_64;
+		V = NZCV_64;
+		NV = NZCV_64;
+	}
+	if (!NV)
+		r0 = Mem0[0x000095DD + 0x00:word32];
+	if (Z)
+		IntEnable(r0, r8);
+	else
+	{
+		Mem56[r0 + 0x00:word32] = r0;
+		word32 r0_57 = r0 - 0xA2;
+		IntEnable(r0_57, r8);
 	}
 }
 
 // 000095DD: void IntEnable(Register word32 r0, Register word32 r8)
 void IntEnable(word32 r0, word32 r8)
 {
-	__syscall(0x00D01B28);
+	if (!Z)
+		__syscall(0x00D01B28);
 }
 
 // 00009639: void IntDisable(Register word32 r0, Register word32 r8)
 void IntDisable(word32 r0, word32 r8)
 {
-	__syscall(0x00D01B28);
+	if (!Z)
+		__syscall(0x00D01B28);
 }
 
-// 00009695: void OSRAMDelay(Register word32 r1, Register word32 r8, Register word32 pc)
-void OSRAMDelay(word32 r1, word32 r8, word32 pc)
+// 00009695: void OSRAMDelay(Register word32 pc, Register word32 r1, Register word32 r8)
+void OSRAMDelay(word32 pc, word32 r1, word32 r8)
 {
+	if (!V)
+		C = cond(r1 - (r8 >>u fp) - C);
 	if (C)
 		OSRAMWriteFirst();
 	else
@@ -1708,29 +3152,82 @@ void OSRAMWriteFirst()
 {
 }
 
-// 000096C5: void OSRAMWriteArray(Register (ptr Eq_1914) r5)
-void OSRAMWriteArray(Eq_1914 * r5)
+// 000096C5: void OSRAMWriteArray(Register word32 r0, Register word32 r1, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 fp, Register word32 ip, Stack int16 wArg00)
+void OSRAMWriteArray(word32 r0, word32 r1, word32 r5, word32 r6, word32 r7, word32 r8, word32 fp, word32 ip, int16 wArg00)
 {
-	if (!Z)
+	if (Z)
 	{
-		word32 sp_6;
-		word32 r5_7;
-		word32 pc_8;
-		byte Z_9;
-		r5->ptr08B1();
+		if (Z)
+		{
+			if (!Z)
+			{
+				byte NZCV_112 = cond(r8 & ip >> 0x0C);
+				Z = NZCV_112;
+				NZV = NZCV_112;
+				C = NZCV_112;
+				NV = NZCV_112;
+			}
+			if (!C)
+				return;
+			if (!NZV)
+				return;
+			if (!NV)
+				__mrc(0x06, 0x07, 0x0D, 0x00, 0x07);
+		}
+	}
+	else
+	{
+		word32 sp_45;
+		byte Z_46;
+		word32 r5_47;
+		word32 pc_48;
+		word32 r4_49;
+		word32 r8_50;
+		word32 ip_51;
+		byte NZCV_52;
+		word32 r2_53;
+		word32 r6_54;
+		word32 r1_55;
+		word32 r7_56;
+		byte C_57;
+		word32 r0_58;
+		word32 r3_59;
+		word32 fp_60;
+		word32 lr_61;
+		byte NZV_62;
+		word32 r9_63;
+		word32 r10_64;
+		byte NV_65;
+		Mem0[r5 + 2225:word32]();
 	}
 }
 
-// 00009705: void OSRAMWriteByte(Register Eq_1923 r0, Register word32 r1, Register (ptr Eq_1923) r6, Register word32 r8)
-void OSRAMWriteByte(Eq_1923 r0, word32 r1, Eq_1923 * r6, word32 r8)
+// 00009705: void OSRAMWriteByte(Register word32 r0, Register word32 r1, Register word32 r6, Register word32 r8, Stack int16 wArg00)
+void OSRAMWriteByte(word32 r0, word32 r1, word32 r6, word32 r8, int16 wArg00)
 {
-	*r6 = (union Eq_1923 *) r0;
+	if (!Z)
+		Mem25[r6 + 0x00:word16] = (uint16) r0;
+	if (!Z)
+		r0 = r8 - (r1 >>u 0x0012);
+	if (!Z)
+	{
+		word32 sp_11;
+		byte Z_12;
+		word32 r0_13;
+		word32 r6_14;
+		word32 r8_15;
+		word32 r1_16;
+		word32 r5_17;
+		word32 pc_18;
+		Mem0[r0 + 0x00:byte]();
+	}
 }
 
 // 00009739: void OSRAMWriteFinal(Register word32 r0, Register word32 r1, Register word32 r6, Register word32 ip)
 void OSRAMWriteFinal(word32 r0, word32 r1, word32 r6, word32 ip)
 {
-	__mcr(0x06, 0x02, r0, 0x06, 0x05, 0x05);
+	if (!Z)
+		__mcr(0x06, 0x02, r0, 0x06, 0x05, 0x05);
 }
 
 // 00009781: void OSRAMClear()
@@ -1738,29 +3235,82 @@ void OSRAMClear()
 {
 }
 
-// 000097CD: void OSRAMStringDraw()
-void OSRAMStringDraw()
+// 000097CD: void OSRAMStringDraw(Register word32 r6)
+void OSRAMStringDraw(word32 r6)
 {
+	if (Z)
+		;
 }
 
-// 00009881: void OSRAMImageDraw()
-void OSRAMImageDraw()
-{
-}
-
-// 000098F1: void OSRAMInit(Register (ptr Eq_1945) r1, Register Eq_1945 pc)
-void OSRAMInit(Eq_1945 * r1, Eq_1945 pc)
-{
-	*r1 = (union Eq_1945 *) pc;
-}
-
-// 00009975: void OSRAMDisplayOn(Register word32 r1, Register (ptr Eq_13) r9)
-void OSRAMDisplayOn(word32 r1, Eq_13 * r9)
+// 00009881: void OSRAMImageDraw(Register word32 lr, Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r10, Register word32 ip)
+void OSRAMImageDraw(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word32 ip)
 {
 	if (!Z)
 	{
-		word32 pc_7 = r1 - __ror(r9, 0x01);
+		Mem48[r7 + 0x00:word32] = r0;
+		Mem50[r7 - 0x04 + 0x00:word32] = r3;
+		Mem52[r7 - 0x08 + 0x00:word32] = r5;
+		Mem53[r7 - 0x0C + 0x00:word32] = r6;
+		Mem54[r7 - 0x0010 + 0x00:word32] = r7;
+		Mem55[r7 - 0x0014 + 0x00:word32] = ip;
+		Mem56[r7 - 0x0018 + 0x00:word32] = fp;
+		Mem58[r7 - 0x001C + 0x00:word32] = lr;
+		Mem60[r7 - 0x0020 + 0x00:word32] = pc;
 	}
+	if (!ZC)
+	{
+		Mem37[r6 - 0x04 + 0x00:word32] = r1;
+		Mem39[r6 - 0x08 + 0x00:word32] = r2;
+		Mem40[r6 - 0x0C + 0x00:word32] = r6;
+		Mem42[r6 - 0x0010 + 0x00:word32] = r10;
+		Mem44[r6 - 0x0014 + 0x00:word32] = ip;
+	}
+	if (!NZV)
+	{
+		byte NZCV_32 = cond(r1 ^ r6 >> 0x08);
+		Z = NZCV_32;
+		C = NZCV_32;
+	}
+	if (Z)
+	{
+		if (!Z)
+			Z = cond((r4 >> 0x0010) - r0 - C);
+		if (!Z)
+			__syscall(0x00F00108);
+	}
+}
+
+// 000098F1: void OSRAMInit(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r6, Register word32 r8)
+void OSRAMInit(word32 pc, word32 r0, word32 r1, word32 r2, word32 r6, word32 r8)
+{
+	if (!Z)
+	{
+		Mem25[r1 + 0x00:byte] = (byte) pc;
+		r2_r1 = SEQ(r2, r1 - 233);
+	}
+	if (!Z)
+	{
+		byte NZCV_21 = cond((r6 >> 0x001E) - r0 - C);
+		C = NZCV_21;
+		Z = NZCV_21;
+	}
+	if (!C)
+		__syscall(0x00F00020);
+	if (!Z)
+		Mem16[r8 + 0x00:word64] = r2_r1;
+	if (Z)
+		;
+}
+
+// 00009975: void OSRAMDisplayOn(Register word32 lr, Register word32 r0, Register word32 r1, Register word32 r4, Register word32 r6, Register word32 r9)
+void OSRAMDisplayOn(word32 lr, word32 r0, word32 r1, word32 r4, word32 r6, word32 r9)
+{
+	if (!Z)
+	{
+		word32 pc_17 = r1 - __ror(r9, 0x01);
+	}
+	if (!Z)
+		Mem13[r6 + 0x00:word32] = lr;
 }
 
 // 000099C1: void OSRAMDisplayOff()
@@ -1768,20 +3318,75 @@ void OSRAMDisplayOff()
 {
 }
 
-// 000099E9: void SSIConfig(Register (ptr Eq_1958) r1, Register Eq_1958 pc)
-void SSIConfig(Eq_1958 * r1, Eq_1958 pc)
+// 000099E9: void SSIConfig(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r9, Register word32 r10)
+void SSIConfig(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r9, word32 r10)
 {
-	*r1 = (union Eq_1958 *) pc;
+	if (!Z)
+		Mem45[r1 + 0x00:byte] = (byte) pc;
+	if (!ZC)
+	{
+		Mem36[r6 + 0x00:word32] = r1;
+		Mem38[r6 - 0x04 + 0x00:word32] = r2;
+		Mem39[r6 - 0x08 + 0x00:word32] = r6;
+		Mem41[r6 - 0x0C + 0x00:word32] = r9;
+		Mem43[r6 - 0x0010 + 0x00:word32] = r10;
+	}
+	if (!Z)
+		Mem33[r6 + 0x00:byte] = (byte) r1;
+	word32 sp_4;
+	byte Z_5;
+	word32 r1_7;
+	byte ZC_8;
+	word32 r6_9;
+	word32 r2_10;
+	word32 r9_11;
+	word32 r10_12;
+	word32 r0_13;
+	word32 r3_14;
+	word32 r4_15;
+	word32 r5_16;
+	word32 r7_17;
+	word32 pc_18;
+	fnFFC09C73();
+	if (!Z_5)
+	{
+		Mem24[pc_18 + 0x00:word32] = r0_13;
+		Mem25[pc_18 - 0x04 + 0x00:word32] = r3_14;
+		Mem26[pc_18 - 0x08 + 0x00:word32] = r4_15;
+		Mem27[pc_18 - 0x0C + 0x00:word32] = r5_16;
+		Mem28[pc_18 - 0x0010 + 0x00:word32] = r6_9;
+		Mem29[pc_18 - 0x0014 + 0x00:word32] = r7_17;
+		Mem30[pc_18 - 0x0018 + 0x00:word32] = r9_11;
+		pc_18 = pc_18 - 0x001C;
+	}
+	if (!Z_5)
+	{
+		Mem20[pc_18 + 0x00:word32] = r4_15;
+		Mem21[pc_18 - 0x04 + 0x00:word32] = r6_9;
+		Mem22[pc_18 - 0x08 + 0x00:word32] = r7_17;
+	}
 }
 
-// 00009A35: void SSIEnable()
-void SSIEnable()
+// 00009A35: void SSIEnable(Register word32 r0, Register word32 r3)
+void SSIEnable(word32 r0, word32 r3)
 {
+	if (!Z)
+		V = cond(0xA0000001 - r0 - C);
 }
 
-// 00009A41: void SSIDisable()
-void SSIDisable()
+// 00009A41: void SSIDisable(Register word32 pc, Register word32 r0, Register word32 r3)
+void SSIDisable(word32 pc, word32 r0, word32 r3)
 {
+	if (!Z)
+	{
+		byte NZCV_32 = cond(0xA0000001 - r0 - C);
+		Z = NZCV_32;
+		V = NZCV_32;
+	}
+	if (Z)
+		SSIIntRegister();
+	else
+		SSIIntRegister();
 }
 
 // 00009A4D: void SSIIntRegister()
@@ -1804,19 +3409,21 @@ void SSIIntDisable()
 {
 }
 
-// 00009A89: void SSIIntStatus()
-void SSIIntStatus()
+// 00009A89: void SSIIntStatus(Register word32 r7, Register word32 r8, Register word32 r9)
+void SSIIntStatus(word32 r7, word32 r8, word32 r9)
 {
+	if (!V)
+		Mem10[r9 + 0x00:word16] = (uint16) r8;
 }
 
-// 00009A95: void SSIIntClear(Register ptr32 r2, Register word32 r7)
-void SSIIntClear(ptr32 r2, word32 r7)
+// 00009A95: void SSIIntClear(Register word32 r2, Register word32 r7)
+void SSIIntClear(word32 r2, word32 r7)
 {
 	if (Z)
 		SSIDataPut();
 	else
 	{
-		word32 r7_6 = r7 - rrx(r2, 0x00);
+		word32 r7_6 = r7 - __ror(r2, 0x00);
 		SSIDataPut();
 	}
 }
@@ -1826,8 +3433,8 @@ void SSIDataPut()
 {
 }
 
-// 00009AA9: void SSIDataNonBlockingPut()
-void SSIDataNonBlockingPut()
+// 00009AA9: void SSIDataNonBlockingPut(Register word32 r0)
+void SSIDataNonBlockingPut(word32 r0)
 {
 }
 
@@ -1836,8 +3443,8 @@ void SSIDataGet()
 {
 }
 
-// 00009AC9: void SSIDataNonBlockingGet()
-void SSIDataNonBlockingGet()
+// 00009AC9: void SSIDataNonBlockingGet(Register word32 r0)
+void SSIDataNonBlockingGet(word32 r0)
 {
 }
 
@@ -1868,9 +3475,22 @@ void SysCtlPinPresent()
 {
 }
 
-// 00009B21: void SysCtlPeripheralPresent()
-void SysCtlPeripheralPresent()
+// 00009B21: void SysCtlPeripheralPresent(Register word32 r1, Register word32 r2, Register word32 r8)
+void SysCtlPeripheralPresent(word32 r1, word32 r2, word32 r8)
 {
+	if (!C)
+		r2 = Mem0[62027:int16];
+	if (!Z)
+	{
+		word32 sp_23;
+		byte N_24;
+		word32 r0_25;
+		byte C_26;
+		word32 r8_28;
+		fn01025EF1();
+	}
+	if (!Z)
+		Mem21[r2 + 0x00:byte] = (byte) r1;
 }
 
 // 00009B3D: void SysCtlPeripheralReset(Register word32 fp)
@@ -1878,83 +3498,203 @@ void SysCtlPeripheralReset(word32 fp)
 {
 }
 
-// 00009B7D: void SysCtlPeripheralEnable()
-void SysCtlPeripheralEnable()
+// 00009B7D: void SysCtlPeripheralEnable(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r8, Register word32 r9)
+void SysCtlPeripheralEnable(word32 pc, word32 r0, word32 r3, word32 r8, word32 r9)
 {
+	if (!Z)
+		r0 = 62027;
 	if (!NZV)
 	{
-		word32 sp_10;
-		word32 r0_11;
-		byte Z_12;
-		byte NZV_13;
+		word32 sp_54;
+		byte NZV_57;
+		word32 r2_59;
+		byte NZCV_62;
+		word32 r1_63;
+		word32 r8_64;
+		word32 r3_65;
+		word32 pc_67;
 		fn000EA735();
 	}
+	if (!V)
+	{
+		byte NZCV_48 = cond(__ror(r9, 0x00) - 62027 - C);
+		Z = NZCV_48;
+		V = NZCV_48;
+		N = NZCV_48;
+	}
+	if (!N)
+		r0 = Mem0[0x00009B99 + 0x00:word32];
+	if (Z)
+		SysCtlPeripheralDisable(r9);
+	else
+	{
+		Mem41[r0 + -0x00A5:word32] = r0;
+		SysCtlPeripheralDisable(r9);
+	}
 }
 
-// 00009B99: void SysCtlPeripheralDisable()
-void SysCtlPeripheralDisable()
+// 00009B99: void SysCtlPeripheralDisable(Register word32 r9)
+void SysCtlPeripheralDisable(word32 r9)
 {
-	word32 sp_4;
-	word32 r0_5;
-	byte Z_6;
-	byte NZV_7;
-	fn000EA751();
 }
 
-// 00009BB5: void SysCtlPeripheralSleepEnable()
-void SysCtlPeripheralSleepEnable()
+// 00009BB5: void SysCtlPeripheralSleepEnable(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r8, Register word32 r10)
+void SysCtlPeripheralSleepEnable(word32 pc, word32 r0, word32 r3, word32 r8, word32 r10)
 {
+	if (!Z)
+		r0 = 62027;
 	if (!ZC)
 	{
-		word32 sp_10;
-		word32 r0_11;
-		byte Z_12;
-		byte ZC_13;
+		word32 sp_54;
+		byte ZC_57;
+		word32 r2_59;
+		byte NZCV_62;
+		word32 r1_63;
+		word32 r8_64;
+		word32 r3_65;
+		word32 pc_67;
 		fn000EA76D();
 	}
-}
-
-// 00009BD1: void SysCtlPeripheralSleepDisable()
-void SysCtlPeripheralSleepDisable()
-{
-	word32 sp_4;
-	word32 r0_5;
-	byte Z_6;
-	byte ZC_7;
-	fn000EA789();
-}
-
-// 00009BED: void SysCtlPeripheralDeepSleepEnable()
-void SysCtlPeripheralDeepSleepEnable()
-{
-	if (!NZ)
+	if (!V)
 	{
-		word32 sp_10;
-		word32 r0_11;
-		byte Z_12;
-		byte NZ_13;
-		fn000EA7A5();
+		byte NZCV_48 = cond(__ror(r10, 0x00) - 62027 - C);
+		Z = NZCV_48;
+		V = NZCV_48;
+		N = NZCV_48;
+	}
+	if (!N)
+		r0 = Mem0[0x00009BD1 + 0x00:word32];
+	if (Z)
+		SysCtlPeripheralSleepDisable(r10);
+	else
+	{
+		Mem41[r0 + -0x00A5:word32] = r0;
+		SysCtlPeripheralSleepDisable(r10);
 	}
 }
 
-// 00009C09: void SysCtlPeripheralDeepSleepDisable()
-void SysCtlPeripheralDeepSleepDisable()
-{
-	word32 sp_4;
-	word32 r0_5;
-	byte Z_6;
-	byte NZ_7;
-	fn000EA7C1();
-}
-
-// 00009C25: void SysCtlPeripheralClockGating()
-void SysCtlPeripheralClockGating()
+// 00009BD1: void SysCtlPeripheralSleepDisable(Register word32 r10)
+void SysCtlPeripheralSleepDisable(word32 r10)
 {
 }
 
-// 00009C41: void SysCtlIntRegister()
-void SysCtlIntRegister()
+// 00009BED: void SysCtlPeripheralDeepSleepEnable(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r8, Register word32 fp)
+void SysCtlPeripheralDeepSleepEnable(word32 pc, word32 r0, word32 r3, word32 r8, word32 fp)
 {
+	if (!Z)
+		r0 = 62027;
+	if (!N)
+	{
+		word32 sp_50;
+		word32 r2_55;
+		byte NZCV_58;
+		word32 r1_59;
+		word32 r8_60;
+		word32 r3_61;
+		word32 pc_62;
+		fn000EA7A5();
+	}
+	if (!V)
+	{
+		byte NZCV_45 = cond(__ror(fp, 0x00) - 62027 - C);
+		N = NZCV_45;
+		Z = NZCV_45;
+		V = NZCV_45;
+	}
+	if (!N)
+		r0 = Mem0[0x00009C09 + 0x00:word32];
+	if (Z)
+		SysCtlPeripheralDeepSleepDisable(fp);
+	else
+	{
+		Mem38[r0 + -0x00A5:word32] = r0;
+		SysCtlPeripheralDeepSleepDisable(fp);
+	}
+}
+
+// 00009C09: void SysCtlPeripheralDeepSleepDisable(Register word32 fp)
+void SysCtlPeripheralDeepSleepDisable(word32 fp)
+{
+}
+
+// 00009C25: void SysCtlPeripheralClockGating(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp, Register word32 ip)
+void SysCtlPeripheralClockGating(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp, word32 ip)
+{
+	if (!Z)
+	{
+		Mem57[r8 + 0x00:word32] = r1;
+		Mem58[r8 - 0x04 + 0x00:word32] = r3;
+		Mem59[r8 - 0x08 + 0x00:word32] = r6;
+		Mem60[r8 - 0x0C + 0x00:word32] = r8;
+		Mem61[r8 - 0x0010 + 0x00:word32] = r9;
+		Mem62[r8 - 0x0014 + 0x00:word32] = ip;
+		r8 = r8 - 0x0018;
+	}
+	if (!Z)
+	{
+		r2 = Mem0[r0 + 0x00:word16];
+		r0 = r0 + 0x39;
+	}
+	if (!V)
+	{
+		word32 r1_53 = r0 - __ror(r3, 0x06);
+	}
+	if (!Z)
+	{
+		r4 = (r7 >> 0x06) - r0 - C;
+		byte NZCV_49 = cond(r4);
+		C = NZCV_49;
+		Z = NZCV_49;
+		V = NZCV_49;
+	}
+	if (!V)
+	{
+		word32 r1_47 = r0 - __ror(r3, 0x06);
+	}
+	if (!V)
+	{
+		r0 = pc + (r7 >> 0x0020) + C;
+		Z = cond(r0);
+	}
+	if (Z)
+		SysCtlIntRegister(pc, r2, r3, r4, r5, r6, r7, r8, r10, fp, ip);
+	else
+	{
+		Mem27[r0 + 0x00:word32] = r5;
+		Mem29[r0 - 0x04 + 0x00:word32] = r6;
+		Mem31[r0 - 0x08 + 0x00:word32] = r7;
+		Mem32[r0 - 0x0C + 0x00:word32] = r8;
+		Mem34[r0 - 0x0010 + 0x00:word32] = r9;
+		Mem36[r0 - 0x0014 + 0x00:word32] = r10;
+		Mem38[r0 - 0x0018 + 0x00:word32] = fp;
+		SysCtlIntRegister(pc, r2, r3, r4, r5, r6, r7, r8, r10, fp, ip);
+	}
+}
+
+// 00009C41: void SysCtlIntRegister(Register word32 pc, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp, Register word32 ip)
+void SysCtlIntRegister(word32 pc, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 fp, word32 ip)
+{
+	if (C)
+	{
+		if (N)
+		{
+			if (!Z)
+			{
+				Mem8[r8 + 0x00:word32] = r2;
+				Mem10[r8 + 0x04:word32] = r3;
+				Mem12[r8 + 0x08:word32] = r4;
+				Mem14[r8 + 0x0C:word32] = r5;
+				Mem16[r8 + 0x0010:word32] = r6;
+				Mem18[r8 + 0x0014:word32] = r7;
+				Mem19[r8 + 0x0018:word32] = r8;
+				Mem21[r8 + 0x001C:word32] = r10;
+				Mem23[r8 + 0x0020:word32] = fp;
+				Mem25[r8 + 0x0024:word32] = ip;
+				Mem26[r8 + 0x0028:word32] = fp;
+				Mem28[r8 + 44:word32] = pc;
+			}
+		}
+	}
 }
 
 // 00009C55: void SysCtlIntUnregister()
@@ -1962,9 +3702,22 @@ void SysCtlIntUnregister()
 {
 }
 
-// 00009C69: void SysCtlIntEnable()
-void SysCtlIntEnable()
+// 00009C69: void SysCtlIntEnable(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r6, Register word32 r8, Register word32 r9, Register word32 ip)
+void SysCtlIntEnable(word32 pc, word32 r0, word32 r1, word32 r3, word32 r6, word32 r8, word32 r9, word32 ip)
 {
+	if (!Z)
+	{
+		Mem20[r8 + 0x00:word32] = r1;
+		Mem21[r8 - 0x04 + 0x00:word32] = r3;
+		Mem23[r8 - 0x08 + 0x00:word32] = r6;
+		Mem24[r8 - 0x0C + 0x00:word32] = r8;
+		Mem26[r8 - 0x0010 + 0x00:word32] = r9;
+		Mem28[r8 - 0x0014 + 0x00:word32] = ip;
+	}
+	if (Z)
+		SysCtlIntDisable();
+	else
+		SysCtlIntDisable();
 }
 
 // 00009C79: void SysCtlIntDisable()
@@ -1972,61 +3725,172 @@ void SysCtlIntDisable()
 {
 }
 
-// 00009C89: void SysCtlIntClear(Register (ptr Eq_13) r0, Register word32 fp, Register (ptr (ptr Eq_13)) pc)
-void SysCtlIntClear(Eq_13 * r0, word32 fp, Eq_13 * * pc)
+// 00009C89: void SysCtlIntClear(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp)
+void SysCtlIntClear(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp)
 {
-	if (!NZ)
-		r0 = (struct Eq_13 *) *pc;
+	if (!V)
+		r1 = r0 - (fp >> 0x0010);
+	if (!N)
+	{
+		r0 = Mem0[pc + 0x00:word32];
+		r1 = Mem0[pc + 0x04:word32];
+		r6 = Mem0[pc + 0x0C:word32];
+		pc = pc + 0x0010;
+	}
 	if (Z)
-		SysCtlIntStatus();
+		SysCtlIntStatus(pc, r0, r1, r3, r4, r5, r6, r7, r8, r9, r10, fp);
 	else
 	{
 		word32 r0_17 = r0 - __ror(r0, 0x001F);
-		SysCtlIntStatus();
+		SysCtlIntStatus(pc, r0_17, r1, r3, r4, r5, r6, r7, r8, r9, r10, fp);
 	}
 }
 
-// 00009C95: void SysCtlIntStatus()
-void SysCtlIntStatus()
+// 00009C95: void SysCtlIntStatus(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp)
+void SysCtlIntStatus(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp)
 {
+	if (!Z)
+	{
+		Mem48[fp + 0x00:word32] = r0;
+		Mem49[fp - 0x04 + 0x00:word32] = r3;
+		Mem51[fp - 0x08 + 0x00:word32] = r4;
+		Mem52[fp - 0x0C + 0x00:word32] = r5;
+		Mem53[fp - 0x0010 + 0x00:word32] = r7;
+		Mem54[fp - 0x0014 + 0x00:word32] = r8;
+		Mem55[fp - 0x0018 + 0x00:word32] = r9;
+	}
+	if (!Z)
+		r7 = r7 - 0x68;
+	if (!V)
+		r1 = r8 - (fp >> 0x0010);
+	if (!N)
+	{
+		r0 = pc + (r7 >> 0x0020) + C;
+		byte NZCV_41 = cond(r0);
+		r0_r0 = SEQ(r0, r0);
+		N = NZCV_41;
+		Z = NZCV_41;
+	}
+	if (!N)
+	{
+		Mem30[r0 + 0x00:word32] = r5;
+		Mem32[r0 - 0x04 + 0x00:word32] = r6;
+		Mem33[r0 - 0x08 + 0x00:word32] = r7;
+		Mem34[r0 - 0x0C + 0x00:word32] = r8;
+		Mem36[r0 - 0x0010 + 0x00:word32] = r9;
+		Mem37[r0 - 0x0014 + 0x00:word32] = r10;
+		Mem38[r0 - 0x0018 + 0x00:word32] = fp;
+	}
+	if (Z)
+		SysCtlLDOSet(pc, r0, r1, r3, r5, r7, r8, r10, fp);
+	else
+	{
+		word32 r0_24 = (word32) ((int16) (r0 >> 0x0010) *s (int16) (pc >> 0x0010) + r0_r0);
+		SysCtlLDOSet(pc, r0_24, r1, r3, r5, r7, r8, r10, fp);
+	}
 }
 
-// 00009CAD: void SysCtlLDOSet(Register word32 r0, Register word32 fp)
-void SysCtlLDOSet(word32 r0, word32 fp)
+// 00009CAD: void SysCtlLDOSet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp)
+void SysCtlLDOSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r7, word32 r8, word32 r10, word32 fp)
 {
+	if (!V)
+		r1 = r0 - (fp >> 0x0010);
+	if (!C)
+	{
+		r0 = Mem0[0x00009CB9 + 0x00:word32];
+		r0_r0 = SEQ(r0, r0);
+		pc = pc + 0x47;
+	}
+	if (Z)
+		SysCtlLDOGet(pc, r0, r1, r3, r5, r7, r8, r10, fp);
+	else
+	{
+		word32 r0_16 = (word32) ((int16) (r0 >> 0x0010) *s (int16) (pc >> 0x0010) + r0_r0);
+		SysCtlLDOGet(pc, r0_16, r1, r3, r5, r7, r8, r10, fp);
+	}
 }
 
-// 00009CB9: void SysCtlLDOGet(Register word32 r8, Register word32 fp)
-void SysCtlLDOGet(word32 r8, word32 fp)
+// 00009CB9: void SysCtlLDOGet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp)
+void SysCtlLDOGet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r7, word32 r8, word32 r10, word32 fp)
 {
+	if (!V)
+		r1 = r8 - (fp >> 0x0010);
+	if (!C)
+	{
+		r0 = Mem0[0x00009CC5 + 0x00:word32];
+		r0_r0 = SEQ(r0, r0);
+		pc = pc + 0x47;
+	}
+	if (Z)
+		SysCtlLDOConfigSet(pc, r0, r1, r3, r5, r7, r10, fp);
+	else
+	{
+		word32 r0_16 = (word32) ((int16) (r0 >> 0x0010) *s (int16) (pc >> 0x0010) + r0_r0);
+		SysCtlLDOConfigSet(pc, r0_16, r1, r3, r5, r7, r10, fp);
+	}
 }
 
-// 00009CC5: void SysCtlLDOConfigSet(Register word32 r0, Register word32 r7, Register word32 fp, Register word32 pc)
-void SysCtlLDOConfigSet(word32 r0, word32 r7, word32 fp, word32 pc)
+// 00009CC5: void SysCtlLDOConfigSet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r5, Register word32 r7, Register word32 r10, Register word32 fp)
+void SysCtlLDOConfigSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r7, word32 r10, word32 fp)
 {
+	if (!V)
+		r1 = r0 - (fp >> 0x0010);
+	if (!V)
+	{
+		r0 = pc + (r7 >> 0x0020) + C;
+		r0_r0 = SEQ(r0, r0);
+		Z = cond(r0);
+	}
+	if (Z)
+		SysCtlReset(r0, r3, r5, r7, r10);
+	else
+	{
+		word32 r0_20 = (word32) ((int16) (r1 >> 0x0010) *s (int16) (pc >> 0x0010) + r0_r0);
+		SysCtlReset(r0_20, r3, r5, r7, r10);
+	}
 }
 
-// 00009CD1: void SysCtlReset()
-void SysCtlReset()
+// 00009CD1: void SysCtlReset(Register word32 r0, Register word32 r3, Register word32 r5, Register word32 r7, Register word32 r10)
+void SysCtlReset(word32 r0, word32 r3, word32 r5, word32 r7, word32 r10)
 {
 	word32 sp_3;
 	byte Z_4;
+	word32 r7_5;
+	word32 pc_7;
+	word32 r5_8;
+	word32 r3_9;
+	word32 r10_10;
+	word32 r0_12;
 	fn0128A605();
 }
 
-// 00009CE1: void SysCtlSleep()
-void SysCtlSleep()
+// 00009CE1: void SysCtlSleep(Register word32 r0, Register word32 r3, Register word32 r10)
+void SysCtlSleep(word32 r0, word32 r3, word32 r10)
+{
+	if (Z)
+		SysCtlDeepSleep(r0, r3);
+	else
+	{
+		word32 r0_7 = Mem0[r10 + 0x00:int16];
+		SysCtlDeepSleep(r0_7, r3);
+	}
+}
+
+// 00009CE5: void SysCtlDeepSleep(Register word32 r0, Register word32 r3)
+void SysCtlDeepSleep(word32 r0, word32 r3)
 {
 }
 
-// 00009CE5: void SysCtlDeepSleep(Register word32 r0)
-void SysCtlDeepSleep(word32 r0)
+// 00009D05: void SysCtlResetCauseGet(Register word32 r0, Register word32 r8, Register word32 fp)
+void SysCtlResetCauseGet(word32 r0, word32 r8, word32 fp)
 {
-}
-
-// 00009D05: void SysCtlResetCauseGet(Register word32 r8, Register word32 fp)
-void SysCtlResetCauseGet(word32 r8, word32 fp)
-{
+	if (N)
+	{
+		if (Z)
+			SysCtlResetCauseClear();
+		else
+			SysCtlResetCauseClear();
+	}
 }
 
 // 00009D11: void SysCtlResetCauseClear()
@@ -2054,43 +3918,56 @@ void SysCtlPWMClockSet()
 {
 }
 
-// 00009E7D: void SysCtlPWMClockGet(Register (ptr Eq_13) r0, Register int32 r7, Register word32 r8, Register word32 fp, Register word32 pc)
-void SysCtlPWMClockGet(Eq_13 * r0, int32 r7, word32 r8, word32 fp, word32 pc)
+// 00009E7D: void SysCtlPWMClockGet(Register word32 pc, Register word32 r0, Register word32 r4, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 fp)
+void SysCtlPWMClockGet(word32 pc, word32 r0, word32 r4, word32 r7, word32 r8, word32 r10, word32 fp)
 {
 	if (V)
 	{
-		if (!V && !V)
-			r0 = (struct Eq_13 *) ((byte) C + (pc + (r7 >> 0x20)));
+		if (!V)
+		{
+			r0 = pc + (r7 >> 0x0020) + C;
+			Z = cond(r0);
+		}
 		if (Z)
-			SysCtlADCSpeedSet();
+			SysCtlADCSpeedSet(r0, r4, r8, r10);
 		else
 		{
-			ptr32 r0_38 = r0 - __ror(r0, 0x001F);
-			SysCtlADCSpeedSet();
+			word32 r0_47 = r0 - __ror(r0, 0x001F);
+			SysCtlADCSpeedSet(r0_47, r4, r8, r10);
 		}
 	}
 	else
 	{
-		word32 sp_25;
-		word32 r1_26;
-		word32 r8_27;
-		word32 fp_28;
-		byte Z_29;
-		word32 r0_30;
-		word32 pc_31;
-		byte V_32;
-		word32 r7_33;
-		bool C_34;
-		byte NZCV_35;
-		r0->t0000();
+		word32 sp_29;
+		byte Z_30;
+		word32 r1_31;
+		word32 r8_32;
+		word32 fp_33;
+		byte V_34;
+		word32 r0_35;
+		word32 pc_36;
+		word32 r7_37;
+		bool C_38;
+		byte NZCV_39;
+		word32 r4_40;
+		word32 r10_41;
+		Mem0[r0 + 0x00:int16]();
 	}
 }
 
-// 00009E8D: void SysCtlADCSpeedSet()
-void SysCtlADCSpeedSet()
+// 00009E8D: void SysCtlADCSpeedSet(Register word32 r0, Register word32 r4, Register word32 r8, Register word32 r10)
+void SysCtlADCSpeedSet(word32 r0, word32 r4, word32 r8, word32 r10)
 {
 	word32 sp_3;
-	bool Z_4;
+	byte Z_4;
+	byte V_5;
+	word32 r2_6;
+	word32 r4_7;
+	word32 r10_8;
+	bool C_9;
+	byte NZCV_10;
+	word32 r0_11;
+	word32 r8_12;
 	fn0130C965();
 }
 
@@ -2099,19 +3976,129 @@ void SysCtlADCSpeedGet(word32 r8, word32 fp)
 {
 }
 
-// 00009ED5: void SysCtlIOSCVerificationSet()
-void SysCtlIOSCVerificationSet()
+// 00009ED5: void SysCtlIOSCVerificationSet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 ip)
+void SysCtlIOSCVerificationSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
 {
+	if (!Z)
+	{
+		Mem68[r8 + 0x00:word32] = r1;
+		Mem69[r8 - 0x04 + 0x00:word32] = r3;
+		Mem70[r8 - 0x08 + 0x00:word32] = r6;
+		Mem71[r8 - 0x0C + 0x00:word32] = r8;
+		Mem72[r8 - 0x0010 + 0x00:word32] = r9;
+		Mem73[r8 - 0x0014 + 0x00:word32] = ip;
+		r8 = r8 - 0x0018;
+	}
+	if (!Z)
+	{
+		word32 r0_59 = Mem0[r0 + 0x00:word32];
+		r3 = Mem0[r0_59 + 0x04:word32];
+		r4 = Mem0[r0_59 + 0x08:word32];
+		r7 = Mem0[r0_59 + 0x0010:word32];
+		r8 = Mem0[r0_59 + 0x0014:word32];
+		r9 = Mem0[r0_59 + 0x0018:word32];
+		r0 = r0_59 + 0x0020;
+	}
+	if (!V)
+		r1 = r0 - (r3 << 0x06);
+	if (!Z)
+	{
+		word32 r0_50 = Mem0[r0 + 0x00:word32];
+		r1 = Mem0[r0_50 + 0x04:word32];
+		r6 = Mem0[r0_50 + 0x0C:word32];
+		r8 = Mem0[r0_50 + 0x0010:word32];
+		r9 = Mem0[r0_50 + 0x0014:word32];
+		r0 = r0_50 + 0x001C;
+	}
+	if (!V)
+		r1 = r0 - (r3 << 0x06);
+	if (!V)
+	{
+		r0 = pc + (r7 >> 0x0020) + C;
+		Z = cond(r0);
+	}
+	if (Z)
+		SysCtlMOSCVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip);
+	else
+	{
+		Mem40[r0 + -4064:byte] = (byte) r0;
+		SysCtlMOSCVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip);
+	}
 }
 
-// 00009EF1: void SysCtlMOSCVerificationSet()
-void SysCtlMOSCVerificationSet()
+// 00009EF1: void SysCtlMOSCVerificationSet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 ip)
+void SysCtlMOSCVerificationSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
 {
+	if (!Z)
+	{
+		Mem42[r8 + 0x00:word32] = r1;
+		Mem43[r8 - 0x04 + 0x00:word32] = r3;
+		Mem44[r8 - 0x08 + 0x00:word32] = r6;
+		Mem45[r8 - 0x0C + 0x00:word32] = r8;
+		Mem46[r8 - 0x0010 + 0x00:word32] = r9;
+		Mem47[r8 - 0x0014 + 0x00:word32] = ip;
+		r8 = r8 - 0x0018;
+	}
+	if (!Z)
+		r0 = r0 + 0x03B9;
+	if (!V)
+		r1 = r0 - (r3 << 0x06);
+	if (!Z)
+	{
+		r4 = Mem0[r0 + 0x00:byte];
+		r0 = r0 + 0x0347;
+	}
+	if (!V)
+		r1 = r0 - (r3 << 0x06);
+	if (!V)
+	{
+		r0 = pc + (r7 >> 0x0020) + C;
+		Z = cond(r0);
+	}
+	if (Z)
+		SysCtlPLLVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip);
+	else
+	{
+		Mem23[r0 + -4064:byte] = (byte) r0;
+		SysCtlPLLVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip);
+	}
 }
 
-// 00009F0D: void SysCtlPLLVerificationSet()
-void SysCtlPLLVerificationSet()
+// 00009F0D: void SysCtlPLLVerificationSet(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r4, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 ip)
+void SysCtlPLLVerificationSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
 {
+	if (!Z)
+	{
+		Mem54[r8 + 0x00:word32] = r1;
+		Mem55[r8 - 0x04 + 0x00:word32] = r3;
+		Mem57[r8 - 0x08 + 0x00:word32] = r6;
+		Mem58[r8 - 0x0C + 0x00:word32] = r8;
+		Mem60[r8 - 0x0010 + 0x00:word32] = r9;
+		Mem62[r8 - 0x0014 + 0x00:word32] = ip;
+	}
+	if (!ZC)
+		r4 = r4 + 0x39;
+	if (!V)
+	{
+		word32 r1_50 = r0 - __ror(r3, 0x06);
+	}
+	if (!ZC)
+	{
+		byte NZCV_45 = cond((r7 >> 0x06) - r4 - C);
+		C = NZCV_45;
+		Z = NZCV_45;
+		V = NZCV_45;
+	}
+	if (!V)
+	{
+		word32 r1_43 = r0 - __ror(r3, 0x06);
+	}
+	if (!V)
+		Z = cond(pc + (r7 >> 0x0020) + C);
+	if (Z)
+		SysCtlClkVerificationClear();
+	else
+		SysCtlClkVerificationClear();
 }
 
 // 00009F29: void SysCtlClkVerificationClear()
@@ -2119,14 +4106,32 @@ void SysCtlClkVerificationClear()
 {
 }
 
-// 00009F39: void UARTParityModeSet()
-void UARTParityModeSet()
+// 00009F39: void UARTParityModeSet(Register word32 spsr, Register word32 r0, Register word32 r2, Register word32 r7, Register word32 r10)
+void UARTParityModeSet(word32 spsr, word32 r0, word32 r2, word32 r7, word32 r10)
 {
+	if (!ZC)
+	{
+		r2 = Mem0[r0 + 0x00:byte];
+		r0 = r0 + __ror(r10, 0x06);
+	}
+	if (!NZV)
+		__mrs(spsr);
+	if (NZV)
+		UARTParityModeGet(r0, r10);
+	else
+	{
+		word32 r7_12 = r7 - __ror(r2, 0x00);
+		UARTParityModeGet(r0, r10);
+	}
 }
 
-// 00009F45: void UARTParityModeGet()
-void UARTParityModeGet()
+// 00009F45: void UARTParityModeGet(Register word32 r0, Register word32 r10)
+void UARTParityModeGet(word32 r0, word32 r10)
 {
+	if (!ZC)
+	{
+		word32 r0_8 = Mem0[r0 + 0x00:byte] + __ror(r10, 0x00);
+	}
 }
 
 // 00009F4D: void UARTConfigSet()
@@ -2134,20 +4139,29 @@ void UARTConfigSet()
 {
 }
 
-// 00009FA9: void UARTConfigGet(Register (ptr word32) r0, Register word32 r1, Register word32 r2, Register (ptr Eq_2136) r6, Register (ptr Eq_13) r9)
-void UARTConfigGet(word32 * r0, word32 r1, word32 r2, Eq_2136 * r6, Eq_13 * r9)
+// 00009FA9: void UARTConfigGet(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r6, Register word32 r9)
+void UARTConfigGet(word32 r0, word32 r1, word32 r2, word32 r6, word32 r9)
 {
 	if (!NZV)
 	{
-		word32 pc_14 = r1 - __ror(r9, 0x01);
+		word32 pc_17 = r1 - __ror(r9, 0x01);
 	}
-	*r0 = r2;
-	*r6 = (union Eq_2136 *) (r0 + 0x013E);
+	if (!Z)
+	{
+		Mem13[r0 + 0x00:word32] = r2;
+		r0 = r0 + 1272;
+	}
+	if (!Z)
+		Mem10[r6 + 0x00:byte] = (byte) r0;
 }
 
-// 00009FD5: void UARTEnable()
-void UARTEnable()
+// 00009FD5: void UARTEnable(Register word32 r0, Register word32 r10)
+void UARTEnable(word32 r0, word32 r10)
 {
+	if (!Z)
+	{
+		word32 r4_10 = __ror(r10, 0x06) - r0 - C;
+	}
 }
 
 // 00009FED: void UARTDisable()
@@ -2155,21 +4169,77 @@ void UARTDisable()
 {
 }
 
-// 0000A00D: void UARTCharsAvail()
-void UARTCharsAvail()
+// 0000A00D: void UARTCharsAvail(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 r9)
+void UARTCharsAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 {
+	if (!Z)
+	{
+		byte NZCV_44 = cond(__ror(r9, 0x00) - r0 - C);
+		C = NZCV_44;
+		Z = NZCV_44;
+		ZC = NZCV_44;
+	}
+	if (!Z)
+		ZC = cond(r0 - r3 - C);
+	if (ZC)
+		UARTSpaceAvail(pc, r0, r3, r6, r7, r9);
+	else
+	{
+		word32 r7_30 = r7 - (r0 << r0);
+		UARTSpaceAvail(pc, r0, r3, r6, r7_30, r9);
+	}
 }
 
-// 0000A019: void UARTSpaceAvail()
-void UARTSpaceAvail()
+// 0000A019: void UARTSpaceAvail(Register word32 pc, Register word32 r0, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 r9)
+void UARTSpaceAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 {
+	if (!C)
+	{
+		byte NZCV_32 = cond(__ror(r9, 0x00) - r0 - C);
+		C = NZCV_32;
+		ZC = NZCV_32;
+		NZ = NZCV_32;
+	}
+	if (!NZ)
+		ZC = cond(r0 - r3 - C);
+	if (ZC)
+		UARTCharNonBlockingGet(pc, r6, r7);
+	else
+	{
+		word32 r7_20 = DPB(r7, 0x7010, 16);
+		UARTCharNonBlockingGet(pc, r6, r7_20);
+	}
 }
 
-// 0000A025: void UARTCharNonBlockingGet(Register (ptr ptr32) r6)
-void UARTCharNonBlockingGet(ptr32 * r6)
+// 0000A025: void UARTCharNonBlockingGet(Register word32 pc, Register word32 r6, Register word32 r7)
+void UARTCharNonBlockingGet(word32 pc, word32 r6, word32 r7)
 {
-	*r6 = fp;
-	__syscall(0x006800BF);
+	if (!N)
+		Mem43[r6 + 0x00:word32] = fp;
+	if (!NZ)
+		__syscall(0x006800BF);
+	if (V)
+	{
+		if (Z)
+			UARTCharGet();
+		else
+			UARTCharGet();
+	}
+	else
+	{
+		word32 sp_25;
+		byte N_26;
+		word32 r6_27;
+		byte NZ_28;
+		byte V_29;
+		word32 r0_30;
+		byte Z_31;
+		word32 pc_32;
+		word32 r7_33;
+		bool C_34;
+		byte NZCV_35;
+		Mem0[r0 + 0x00:int16]();
+	}
 }
 
 // 0000A035: void UARTCharGet()
@@ -2177,14 +4247,14 @@ void UARTCharGet()
 {
 }
 
-// 0000A045: void UARTCharNonBlockingPut(Register word32 r0, Register word32 r7, Register word32 pc)
-void UARTCharNonBlockingPut(word32 r0, word32 r7, word32 pc)
+// 0000A045: void UARTCharNonBlockingPut(Register word32 pc, Register word32 r0, Register word32 r7)
+void UARTCharNonBlockingPut(word32 pc, word32 r0, word32 r7)
 {
 	word32 sp_3;
 	byte NZ_4;
-	struct Eq_2161 * r0_5;
-	bool V_6;
-	bool Z_7;
+	byte Z_5;
+	word32 r0_6;
+	byte V_7;
 	word32 pc_8;
 	word32 r7_9;
 	bool C_10;
@@ -2202,28 +4272,44 @@ void UARTBreakCtl()
 {
 }
 
-// 0000A079: void UARTIntRegister(Register Eq_2182 r0, Register word32 r4, Register (ptr Eq_2182) ip)
-void UARTIntRegister(Eq_2182 r0, word32 r4, Eq_2182 * ip)
+// 0000A079: void UARTIntRegister(Register word32 r0, Register word32 r4, Register word32 r6, Register word32 ip)
+void UARTIntRegister(word32 r0, word32 r4, word32 r6, word32 ip)
 {
-	*ip = (union Eq_2182 *) r0;
+	if (!NV)
+		Mem17[ip + 0x00:word16] = (uint16) r0;
+	if (C)
+	{
+		if (!NZV)
+			__stcl(0x00, 0x02, Mem0[r6 + -1000:void]);
+	}
 }
 
-// 0000A099: void UARTIntUnregister(Register Eq_2189 r0, Register word32 r4, Register (ptr Eq_2189) ip)
-void UARTIntUnregister(Eq_2189 r0, word32 r4, Eq_2189 * ip)
+// 0000A099: void UARTIntUnregister(Register word32 r0, Register word32 r4, Register word32 r6, Register word32 ip)
+void UARTIntUnregister(word32 r0, word32 r4, word32 r6, word32 ip)
 {
-	*ip = (union Eq_2189 *) r0;
-	if (!NZV)
+	if (!NV)
+		Mem33[ip + 0x00:word16] = (uint16) r0;
+	if (NZV)
 	{
-		word32 sp_13;
-		word32 r0_14;
-		word32 ip_15;
-		word32 pc_16;
-		word32 r1_17;
-		word32 r4_18;
-		byte C_19;
-		word32 r7_20;
-		byte NZV_21;
-		(*r7)();
+		if (!NZV)
+			__stcl(0x00, 0x02, Mem0[r6 + -1000:void]);
+	}
+	else
+	{
+		word32 sp_15;
+		byte NV_16;
+		word32 r0_17;
+		word32 ip_18;
+		byte Z_19;
+		word32 pc_20;
+		byte C_21;
+		word32 r1_22;
+		word32 r4_23;
+		byte NZV_24;
+		word32 r7_25;
+		byte NZV_26;
+		word32 r6_27;
+		Mem0[r7 + 0x00:byte]();
 	}
 }
 
@@ -2237,74 +4323,84 @@ void UARTIntDisable()
 {
 }
 
-// 0000A0CD: void UARTIntStatus()
-void UARTIntStatus()
+// 0000A0CD: void UARTIntStatus(Register word32 r7, Register word32 fp, Register word32 ip)
+void UARTIntStatus(word32 r7, word32 fp, word32 ip)
 {
+	if (!V)
+		Mem10[fp + 0x00:word16] = (uint16) ip;
 }
 
-// 0000A0D9: void UARTIntClear(Register word32 r2, Register word32 r6, Register Eq_2212 r7, Register (ptr Eq_2213) pc)
-void UARTIntClear(word32 r2, word32 r6, Eq_2212 r7, Eq_2213 * pc)
+// 0000A0D9: void UARTIntClear(Register word32 pc, Register word32 r2, Register word32 r6, Register word32 r7)
+void UARTIntClear(word32 pc, word32 r2, word32 r6, word32 r7)
 {
 	if (V)
-		CPUcpsie(r2, r6, r7, pc);
+		CPUcpsie(pc, r2, r6, r7);
 	else
-		CPUcpsie(r2, r6, r7 - 100, pc);
+		CPUcpsie(pc, r2, r6, r7 - 100);
 }
 
-// 0000A0DD: void CPUcpsie(Register word32 r2, Register word32 r6, Register Eq_2212 r7, Register (ptr Eq_2213) pc)
-void CPUcpsie(word32 r2, word32 r6, Eq_2212 r7, Eq_2213 * pc)
+// 0000A0DD: void CPUcpsie(Register word32 pc, Register word32 r2, Register word32 r6, Register word32 r7)
+void CPUcpsie(word32 pc, word32 r2, word32 r6, word32 r7)
 {
-	*r7 = r7;
+	if (!V)
+	{
+		Mem19[r7 + 0x00:word16] = (uint16) r7;
+		r7 = r7 + ~0x05;
+	}
 	if (V)
-		CPUcpsid(r2, r6, (word32) r7 - 0x06, pc);
-	else if (V)
-		CPUcpsid(r2, r6, (word32) r7 - 0x06, pc);
+		CPUcpsid(pc, r2, r6, r7);
 	else
-		CPUcpsid(r2, r6, (word32) r7 - 0x06, pc);
+		CPUcpsid(pc, r2, r6, r7);
 }
 
-// 0000A0E5: void CPUcpsid(Register word32 r2, Register word32 r6, Register Eq_2234 r7, Register (ptr Eq_2213) pc)
-void CPUcpsid(word32 r2, word32 r6, Eq_2234 r7, Eq_2213 * pc)
+// 0000A0E5: void CPUcpsid(Register word32 pc, Register word32 r2, Register word32 r6, Register word32 r7)
+void CPUcpsid(word32 pc, word32 r2, word32 r6, word32 r7)
 {
-	*r7 = r7;
+	if (!V)
+	{
+		Mem19[r7 + 0x00:word16] = (uint16) r7;
+		r7 = r7 + ~0x05;
+	}
 	if (C)
-		CPUwfi(r2, r6, (word32) r7 - 0x06, pc);
-	else if (C)
-		CPUwfi(r2, r6, (word32) r7 - 0x06, pc);
+		CPUwfi(pc, r2, r6, r7);
 	else
-		CPUwfi(r2, r6, (word32) r7 - 0x06, pc);
+		CPUwfi(pc, r2, r6, r7);
 }
 
-// 0000A0ED: void CPUwfi(Register word32 r2, Register word32 r6, Register Eq_2253 r7, Register (ptr Eq_2213) pc)
-void CPUwfi(word32 r2, word32 r6, Eq_2253 r7, Eq_2213 * pc)
+// 0000A0ED: void CPUwfi(Register word32 pc, Register word32 r2, Register word32 r6, Register word32 r7)
+void CPUwfi(word32 pc, word32 r2, word32 r6, word32 r7)
 {
-	*r7 = r7;
+	if (!V)
+	{
+		Mem22[r7 + 0x00:word16] = (uint16) r7;
+		r7 = r7 + ~0x0E;
+	}
 	if (C)
-		I2CMasterInit(r2, r6, (word32) r7 - 0x0F);
+		I2CMasterInit(r2, r6, r7);
 	else
 	{
-		word32 r2_14 = pc->dw0008;
-		word32 r6_15 = pc->dw000C;
-		I2CMasterInit(r2_14, r6_15, (word32) r7 - 0x0F);
+		word32 r2_15 = Mem0[pc + 0x08:word32];
+		word32 r6_16 = Mem0[pc + 0x0C:word32];
+		I2CMasterInit(r2_15, r6_16, r7);
 	}
 }
 
-// 0000A0F5: void I2CMasterInit(Register word32 r2, Register word32 r6, Register (ptr Eq_2272) r7)
-void I2CMasterInit(word32 r2, word32 r6, Eq_2272 * r7)
+// 0000A0F5: void I2CMasterInit(Register word32 r2, Register word32 r6, Register word32 r7)
+void I2CMasterInit(word32 r2, word32 r6, word32 r7)
 {
 	if (!V)
 	{
 		word32 sp_13;
-		word32 r0_14;
-		word32 r6_15;
-		byte Z_16;
-		byte N_17;
+		byte Z_14;
+		word32 r0_15;
+		word32 r6_16;
+		byte NZ_17;
 		word32 r1_18;
 		word32 r2_19;
-		word32 r7_20;
-		word32 pc_21;
-		byte V_22;
-		r7->t0F62();
+		byte V_20;
+		word32 r7_21;
+		word32 pc_22;
+		Mem0[r7 + 3938:byte]();
 	}
 }
 
@@ -2313,9 +4409,11 @@ void I2CSlaveInit()
 {
 }
 
-// 0000A141: void I2CMasterEnable()
-void I2CMasterEnable()
+// 0000A141: void I2CMasterEnable(Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r10)
+void I2CMasterEnable(word32 r0, word32 r2, word32 r3, word32 r10)
 {
+	if (!Z)
+		V = cond(__ror(r10, 0x06) - r0 - C);
 }
 
 // 0000A14D: void I2CSlaveEnable()
@@ -2323,9 +4421,19 @@ void I2CSlaveEnable()
 {
 }
 
-// 0000A161: void I2CMasterDisable()
-void I2CMasterDisable()
+// 0000A161: void I2CMasterDisable(Register word32 pc, Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r10)
+void I2CMasterDisable(word32 pc, word32 r0, word32 r2, word32 r3, word32 r7, word32 r10)
 {
+	if (!Z)
+	{
+		byte NZCV_24 = cond(__ror(r10, 0x06) - r0 - C);
+		Z = NZCV_24;
+		V = NZCV_24;
+	}
+	if (Z)
+		I2CSlaveDisable();
+	else
+		I2CSlaveDisable();
 }
 
 // 0000A16D: void I2CSlaveDisable()
@@ -2348,49 +4456,49 @@ void I2CMasterIntEnable(word32 r1, word32 r3)
 {
 }
 
-// 0000A1B1: void I2CSlaveIntEnable(Register word32 r0, Register word32 r1, Register uint32 r3, Register int32 r7, Register word32 pc)
-void I2CSlaveIntEnable(word32 r0, word32 r1, uint32 r3, int32 r7, word32 pc)
+// 0000A1B1: void I2CSlaveIntEnable(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r7)
+void I2CSlaveIntEnable(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7)
 {
 	if (Z)
-		I2CMasterIntDisable(r0, r1, r3, r7, pc);
-	else if (Z)
-		I2CMasterIntDisable(r0, r1, r3, r7, pc);
+		I2CMasterIntDisable(pc, r0, r1, r3, r7);
 	else
 	{
-		word32 r0_12 = (byte) C + (pc + (r7 >> 0x20));
-		I2CMasterIntDisable(r0_12, r1, r3, r7, pc);
+		word32 r0_14 = pc + (r7 >> 0x0020) + C;
+		I2CMasterIntDisable(pc, r0_14, r1, r3, r7);
 	}
 }
 
-// 0000A1B9: void I2CMasterIntDisable(Register word32 r0, Register word32 r1, Register uint32 r3, Register int32 r7, Register word32 pc)
-void I2CMasterIntDisable(word32 r0, word32 r1, uint32 r3, int32 r7, word32 pc)
+// 0000A1B9: void I2CMasterIntDisable(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r3, Register word32 r7)
+void I2CMasterIntDisable(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7)
 {
 	if (!V)
-		r0 = r1 - (r3 >> 0x06);
+		r0 = r1 - (r3 >>u 0x06);
 	if (Z)
-		I2CSlaveIntDisable(r0, r3);
-	else if (Z)
 		I2CSlaveIntDisable(r0, r3);
 	else
 	{
-		word32 r0_12 = (byte) C + (pc + (r7 >> 0x20));
-		I2CSlaveIntDisable(r0_12, r3);
+		word32 r0_14 = pc + (r7 >> 0x0020) + C;
+		I2CSlaveIntDisable(r0_14, r3);
 	}
 }
 
-// 0000A1C1: void I2CSlaveIntDisable(Register word32 r0, Register uint32 r3)
-void I2CSlaveIntDisable(word32 r0, uint32 r3)
+// 0000A1C1: void I2CSlaveIntDisable(Register word32 r0, Register word32 r3)
+void I2CSlaveIntDisable(word32 r0, word32 r3)
 {
 }
 
-// 0000A1C9: void I2CMasterIntStatus()
-void I2CMasterIntStatus()
+// 0000A1C9: void I2CMasterIntStatus(Register word32 r4, Register word32 r9)
+void I2CMasterIntStatus(word32 r4, word32 r9)
 {
+	if (!Z)
+		Mem6[r9 + 0x00:word16] = (uint16) r4;
 }
 
-// 0000A1E1: void I2CSlaveIntStatus()
-void I2CSlaveIntStatus()
+// 0000A1E1: void I2CSlaveIntStatus(Register word32 r0, Register word32 r9)
+void I2CSlaveIntStatus(word32 r0, word32 r9)
 {
+	if (!Z)
+		Mem6[r9 + 0x00:word16] = (uint16) r0;
 }
 
 // 0000A1F9: void I2CMasterIntClear()
@@ -2398,90 +4506,103 @@ void I2CMasterIntClear()
 {
 }
 
-// 0000A201: void I2CSlaveIntClear(Register ptr32 r0, Register word32 r1, Register word32 r2, Register uint32 r3, Register word32 r7, Register ptr32 r8, Register word32 pc)
-void I2CSlaveIntClear(ptr32 r0, word32 r1, word32 r2, uint32 r3, word32 r7, ptr32 r8, word32 pc)
+// 0000A201: void I2CSlaveIntClear(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8)
+void I2CSlaveIntClear(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 r8)
 {
 	if (!V)
-		r8 = r1 - (r3 >> 0x06);
-	if (N)
-		I2CMasterSlaveAddrSet(r0, r2, r7, r8);
-	else if (N)
-		I2CMasterSlaveAddrSet(r0, r2, r7, r8);
+		r8 = r1 - (r3 >>u 0x06);
+	if (NZ)
+		I2CMasterSlaveAddrSet(r0, r2, r3, r7, r8);
 	else
 	{
-		ptr32 r0_10 = (byte) C + (pc + 0x47);
-		I2CMasterSlaveAddrSet(r0_10, r2, r7, r8);
+		word32 r0_13 = pc + 0x47 + C;
+		I2CMasterSlaveAddrSet(r0_13, r2, r3, r7, r8);
 	}
 }
 
-// 0000A209: void I2CMasterSlaveAddrSet(Register ptr32 r0, Register word32 r2, Register word32 r7, Register ptr32 r8)
-void I2CMasterSlaveAddrSet(ptr32 r0, word32 r2, word32 r7, ptr32 r8)
+// 0000A209: void I2CMasterSlaveAddrSet(Register word32 r0, Register word32 r2, Register word32 r3, Register word32 r7, Register word32 r8)
+void I2CMasterSlaveAddrSet(word32 r0, word32 r2, word32 r3, word32 r7, word32 r8)
 {
-	if (N)
-		I2CMasterBusy(r0, r7, r8);
+	if (NZ)
+		I2CMasterBusy(r0, r3, r7, r8);
 	else
 	{
-		word32 r7_9 = r7 - rrx(r0, 0x00);
-		I2CMasterBusy(r0, r7_9, r8);
+		word32 r7_9 = r7 - __ror(r0, 0x00);
+		I2CMasterBusy(r0, r3, r7_9, r8);
 	}
 }
 
-// 0000A211: void I2CMasterBusy(Register ptr32 r0, Register word32 r7, Register ptr32 r8)
-void I2CMasterBusy(ptr32 r0, word32 r7, ptr32 r8)
+// 0000A211: void I2CMasterBusy(Register word32 r0, Register word32 r3, Register word32 r7, Register word32 r8)
+void I2CMasterBusy(word32 r0, word32 r3, word32 r7, word32 r8)
 {
 	if (!Z)
-	{
-		word32 r0_12 = !rrx(r8, 0x00);
-	}
-	if (N)
-		I2CMasterBusBusy();
+		NZ = cond(!__ror(r8, 0x00));
+	if (NZ)
+		I2CMasterBusBusy(r3, r8);
 	else
-		I2CMasterBusBusy();
+		I2CMasterBusBusy(r3, r8);
 }
 
-// 0000A219: void I2CMasterBusBusy()
-void I2CMasterBusBusy()
+// 0000A219: void I2CMasterBusBusy(Register word32 r3, Register word32 r8)
+void I2CMasterBusBusy(word32 r3, word32 r8)
 {
-}
-
-// 0000A221: void I2CMasterControl(Register (ptr Eq_2407) r7)
-void I2CMasterControl(Eq_2407 * r7)
-{
-	if (N)
-		I2CMasterErr(r7);
-	else
+	if (!ZC)
 	{
-		struct Eq_2407 * r7_5 = DPB(r7, 0x7060, 16);
-		I2CMasterErr(r7_5);
+		word32 ip_10 = __ror(r8, 0x00) - r3 - C;
 	}
 }
 
-// 0000A225: void I2CMasterErr(Register (ptr Eq_2407) r7)
-void I2CMasterErr(Eq_2407 * r7)
+// 0000A221: void I2CMasterControl(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r7)
+void I2CMasterControl(word32 r0, word32 r1, word32 r2, word32 r7)
 {
-	r7->ptrFFFFF598 = fp;
+	if (NZ)
+		I2CMasterErr(r0, r1, r2, r7);
+	else
+	{
+		word32 r7_5 = DPB(r7, 0x7060, 16);
+		I2CMasterErr(r0, r1, r2, r7_5);
+	}
 }
 
-// 0000A23D: void I2CMasterDataPut(Register ptr32 r0, Register word32 r7, Register ptr32 r8)
-void I2CMasterDataPut(ptr32 r0, word32 r7, ptr32 r8)
+// 0000A225: void I2CMasterErr(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r7)
+void I2CMasterErr(word32 r0, word32 r1, word32 r2, word32 r7)
+{
+	if (!Z)
+		Mem30[r7 + -2664:word32] = fp;
+	if (!Z)
+	{
+		word32 r1_23 = 0x50000003 - r0 - C;
+		byte NZCV_26 = cond(r1_23);
+		r2_r1 = SEQ(r2, r1_23);
+		Z = NZCV_26;
+		V = NZCV_26;
+	}
+	if (!Z)
+		r0 = r0 & ~0x00;
+	if (!V)
+		Mem20[r0 + 0x00:word64] = r2_r1;
+}
+
+// 0000A23D: void I2CMasterDataPut(Register word32 r0, Register word32 r7, Register word32 r8)
+void I2CMasterDataPut(word32 r0, word32 r7, word32 r8)
 {
 	if (ZC)
 		I2CMasterDataGet(r7, r8);
 	else
 	{
-		word32 r7_6 = r7 - rrx(r0, 0x00);
+		word32 r7_6 = r7 - __ror(r0, 0x00);
 		I2CMasterDataGet(r7_6, r8);
 	}
 }
 
-// 0000A241: void I2CMasterDataGet(Register word32 r7, Register ptr32 r8)
-void I2CMasterDataGet(word32 r7, ptr32 r8)
+// 0000A241: void I2CMasterDataGet(Register word32 r7, Register word32 r8)
+void I2CMasterDataGet(word32 r7, word32 r8)
 {
-	if (N)
+	if (NZ)
 		I2CSlaveStatus();
 	else
 	{
-		word32 r7_6 = r7 - rrx(r8, 0x00);
+		word32 r7_6 = r7 - __ror(r8, 0x00);
 		I2CSlaveStatus();
 	}
 }
@@ -2491,47 +4612,156 @@ void I2CSlaveStatus()
 {
 }
 
-// 0000A249: void I2CSlaveDataPut(Register ptr32 r0, Register word32 r7)
-void I2CSlaveDataPut(ptr32 r0, word32 r7)
+// 0000A249: void I2CSlaveDataPut(Register word32 lr, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 ip)
+void I2CSlaveDataPut(word32 lr, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 ip)
 {
 	if (ZC)
-		I2CSlaveDataGet();
+		I2CSlaveDataGet(lr, r1, r2, r3, r4, r5, r6, r7, r8, r10, ip);
 	else
 	{
-		word32 r7_6 = r7 - rrx(r0, 0x00);
-		I2CSlaveDataGet();
+		word32 r7_6 = r7 - __ror(r0, 0x00);
+		I2CSlaveDataGet(lr, r1, r2, r3, r4, r5, r6, r7_6, r8, r10, ip);
 	}
 }
 
-// 0000A24D: void I2CSlaveDataGet()
-void I2CSlaveDataGet()
+// 0000A24D: void I2CSlaveDataGet(Register word32 lr, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r10, Register word32 ip)
+void I2CSlaveDataGet(word32 lr, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r10, word32 ip)
 {
+	if (!NZ)
+	{
+		Mem83[r7 + 0x00:word32] = r3;
+		Mem84[r7 - 0x04 + 0x00:word32] = r5;
+		Mem85[r7 - 0x08 + 0x00:word32] = r6;
+		Mem86[r7 - 0x0C + 0x00:word32] = ip;
+		Mem87[r7 - 0x0010 + 0x00:word32] = fp;
+		Mem88[r7 - 0x0014 + 0x00:word32] = lr;
+	}
+	if (!V)
+		__syscall(0x006C6C65);
+	if (!V)
+	{
+		word32 sp_64;
+		word32 r3_67;
+		word32 ip_70;
+		word32 r0_73;
+		fn018E3801();
+	}
+	if (!V)
+	{
+		Mem61[lr + 0x00:byte] = (byte) r6;
+		lr = lr - 0x0972;
+	}
+	if (V)
+	{
+		if (!V)
+			__syscall(7217252);
+		if (!V)
+		{
+			word32 r2_58 = r2 + -116;
+			Mem59[r2_58 + 0x00:byte] = (byte) r2_58;
+		}
+		if (!V)
+		{
+			r8 = r8 + -0x0420;
+			Mem57[r8 + 0x00:byte] = (byte) r7;
+		}
+		if (!NZ)
+		{
+			Mem48[~0x03:word32] = r1;
+			Mem49[~0x07:word32] = r4;
+			Mem50[~0x0B:word32] = r5;
+			Mem51[~0x0F:word32] = r6;
+			Mem52[~0x13:word32] = r8;
+			Mem53[~0x17:word32] = r10;
+			Mem54[~0x1B:word32] = fp;
+			Mem55[~0x1F:word32] = lr;
+		}
+		if (!ZC)
+			Mem45[0x00:word32] = 0x00;
+	}
 }
 
-// 0000A5C5: void memcpy(Register word32 r1, Register word32 r7, Register word32 lr)
-void memcpy(word32 r1, word32 r7, word32 lr)
+// 0000A5C5: void memcpy(Register word32 lr, Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10)
+void memcpy(word32 lr, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 r10)
 {
-	__syscall(0x05B5);
+	word32 sp_1 = fp;
+	if (!Z)
+		__syscall(0x05B5);
 	if (!Z)
 	{
-		word32 sp_39;
-		word32 r1_42;
-		word32 r3_43;
-		word32 r7_44;
-		word32 r0_45;
-		word32 lr_46;
+		word32 r0_178;
+		word32 r10_188;
+		byte NZCV_190;
+		word32 pc_191;
 		fnFF656279();
 	}
 	if (!ZC)
 	{
-		word32 sp_31;
-		byte ZC_33;
-		word32 r1_34;
-		word32 r3_35;
-		word32 r7_36;
-		word32 r0_37;
-		word32 lr_38;
+		word32 r0_157;
+		word32 r10_167;
+		byte NZCV_169;
+		word32 pc_170;
 		fn010CB1D5();
+	}
+	if (!Z)
+	{
+		r3 = Mem0[r1 + 0x00:byte];
+		r1 = r1 + (r7 << 0x0C);
+	}
+	if (!C)
+		r1 = Mem0[lr + 0x00:word32];
+	if (C)
+	{
+		if (!C)
+			r4 = Mem0[r9 + 0x00:word32];
+		if (!V)
+			Mem143[0x0C00:byte] = (byte) r1;
+		if (!NV)
+			Mem141[0x0C00:byte] = (byte) r5;
+		Mem72[0x0C00:byte] = (byte) r9;
+		word32 r0_133 = 0x0C00;
+		if (!Z)
+			sp_1 = 0x0C00 - __ror(r8, 0x001E);
+		if (ZC)
+		{
+			if (!Z)
+				__syscall(0x00D1F342);
+			if (!Z)
+				r9 = r3 - (r3 >>u 0x001C);
+			if (!ZC)
+				return;
+			if (!Z)
+				__cdp(0x0C, 0x0D, 0x01, 0x09, 11, 0x01);
+			if (!NZV)
+			{
+				Mem135[r3 + 0x00:word32] = 0x0C00;
+				r3 = r3 - 0x1F;
+			}
+			if (!NV)
+			{
+				r0_133 = Mem72[r4 + 0x00:word32];
+				r4 = r4 - 0x0108;
+			}
+			__syscall(0x0058CF00);
+			if (!NV)
+			{
+				byte NZCV_125 = cond(r3 ^ 0x50000000);
+				C = NZCV_125;
+				Z = NZCV_125;
+				NZV = NZCV_125;
+			}
+			if (!NZV)
+			{
+				Mem117[r0_133 - 0x04 + 0x00:word32] = r0_133;
+				Mem118[r0_133 - 0x08 + 0x00:word32] = r2;
+				Mem119[r0_133 - 0x0C + 0x00:word32] = r3;
+				Mem120[r0_133 - 0x0010 + 0x00:word32] = r4;
+				Mem121[r0_133 - 0x0014 + 0x00:word32] = r9;
+				Mem122[r0_133 - 0x0018 + 0x00:word32] = sp_1;
+			}
+			if (!Z)
+				Z = cond(r8 & r8 << sp_1);
+		}
 	}
 }
 
