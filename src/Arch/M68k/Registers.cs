@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +99,7 @@ namespace Reko.Arch.M68k
             ccr = new RegisterStorage("ccr", 24, 0, PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
-            pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
+            pc = new AddressRegister("pc", 27, PrimitiveType.Ptr32);
             fpsr = new RegisterStorage("fpsr", 28, 0, PrimitiveType.Word32);
 
             Max = 28;

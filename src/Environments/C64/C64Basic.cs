@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.Environments.C64
         private SortedList<ushort, C64BasicInstruction> program;
         private RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
-        public C64Basic(SortedList<ushort, C64BasicInstruction> program)
+        public C64Basic(SortedList<ushort, C64BasicInstruction> program) : base("c64Basic")
         {
             this.program = program;
             this.PointerType = PrimitiveType.Ptr16;
@@ -96,7 +96,7 @@ namespace Reko.Environments.C64
             return new C64BasicState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new C64BasicRewriter(this, rdr.Address, program, host);
         }

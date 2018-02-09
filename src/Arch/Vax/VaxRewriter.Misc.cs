@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,14 +33,14 @@ namespace Reko.Arch.Vax
         private void RewriteBicpsw()
         {
             var mask = RewriteSrcOp(0, PrimitiveType.UInt16);
-            var psw = frame.EnsureRegister(Registers.psw);
+            var psw = binder.EnsureRegister(Registers.psw);
             m.Assign(psw, m.And(psw, m.Comp(mask)));
         }
 
         private void RewriteBispsw()
         {
             var mask = RewriteSrcOp(0, PrimitiveType.UInt16);
-            var psw = frame.EnsureRegister(Registers.psw);
+            var psw = binder.EnsureRegister(Registers.psw);
             m.Assign(psw, m.Or(psw, mask));
         }
 
@@ -73,13 +73,13 @@ namespace Reko.Arch.Vax
         private void RewriteCmpc3()
         {
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
-            var str1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
-            var str2 = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var str1 = RewriteSrcOp(1, PrimitiveType.Ptr32);
+            var str2 = RewriteSrcOp(2, PrimitiveType.Ptr32);
             var addrCur = dasm.Current.Address;
-            var r0 = frame.EnsureRegister(Registers.r0);
-            var r1 = frame.EnsureRegister(Registers.r1);
-            var r2 = frame.EnsureRegister(Registers.r2);
-            var r3 = frame.EnsureRegister(Registers.r3);
+            var r0 = binder.EnsureRegister(Registers.r0);
+            var r1 = binder.EnsureRegister(Registers.r1);
+            var r2 = binder.EnsureRegister(Registers.r2);
+            var r3 = binder.EnsureRegister(Registers.r3);
             var addrNext = addrCur + dasm.Current.Length;
 
             m.Assign(r0, len);
@@ -91,13 +91,13 @@ namespace Reko.Arch.Vax
         private void RewriteScanc()
         {
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
-            var addr = RewriteSrcOp(1, PrimitiveType.Pointer32);
-            var tbl = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var addr = RewriteSrcOp(1, PrimitiveType.Ptr32);
+            var tbl = RewriteSrcOp(2, PrimitiveType.Ptr32);
             var mask = RewriteSrcOp(3, PrimitiveType.Byte);
-            var r0 = frame.EnsureRegister(Registers.r0);
-            var r1 = frame.EnsureRegister(Registers.r1);
-            var r2 = frame.EnsureRegister(Registers.r2);
-            var r3 = frame.EnsureRegister(Registers.r3);
+            var r0 = binder.EnsureRegister(Registers.r0);
+            var r1 = binder.EnsureRegister(Registers.r1);
+            var r2 = binder.EnsureRegister(Registers.r2);
+            var r3 = binder.EnsureRegister(Registers.r3);
             var z = FlagGroup(FlagM.ZF);
             m.Assign(r3, tbl);
             m.Assign(z, host.PseudoProcedure("__scanc", z.DataType, len, addr, tbl, mask,

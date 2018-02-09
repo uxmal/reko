@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Sparc
     [TestFixture]
     public class SparcRewriterTests : RewriterTestBase
     {
-        private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
+        private SparcArchitecture arch = new SparcArchitecture("sparc", PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
         private IRewriterHost host;
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Sparc
             return host;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return e;
         }
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void SparcRw_taddcc()
         {
             BuildTest(0x8B006001);
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore]
+        [Ignore("")]
         public void SparcRw_mulscc()
         {
             host.Stub(h => h.PseudoProcedure(
@@ -201,13 +201,10 @@ namespace Reko.UnitTests.Arch.Sparc
                 Arg<Expression[]>.Is.NotNull))
                 .Return(new Application(
                      new ProcedureConstant(
-                        PrimitiveType.Pointer32,
+                        PrimitiveType.Ptr32,
                         new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2)),
                 VoidType.Instance,
                 Constant.Word32(0x19)));
-
-            host.Stub(h => h.EnsurePseudoProcedure("__mulscc", PrimitiveType.Int32, 2))
-                .Return(new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2));
 
             BuildTest(0x8B204009);  // mulscc  %g1,%o1,%g5
             AssertCode(
@@ -351,7 +348,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 Arg<Expression[] >.Is.NotNull))
                 .Return(new Application(
                     new ProcedureConstant(
-                        PrimitiveType.Pointer32,
+                        PrimitiveType.Ptr32,
                         new PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 1)),
                     VoidType.Instance,
                     Constant.Word32(0x19)));

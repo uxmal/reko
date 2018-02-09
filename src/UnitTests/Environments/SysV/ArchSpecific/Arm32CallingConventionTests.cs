@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new Arm32Architecture();
+            arch = new Arm32Architecture("arm32");
         }
 
         private Pointer Ptr(DataType dt)
@@ -58,25 +58,6 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         {
             this.cc = new Arm32CallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
-        }
-
-        private Argument_v1 RegArg(SerializedType type, string regName)
-        {
-            return new Argument_v1
-            {
-                Type = type,
-                Kind = new Register_v1 { Name = regName },
-                Name = regName
-            };
-        }
-
-        private Argument_v1 FpuArg(SerializedType type, string name)
-        {
-            return new Argument_v1(
-                name,
-                type,
-                new Register_v1 { Name = name },
-                false);
         }
 
         [Test]

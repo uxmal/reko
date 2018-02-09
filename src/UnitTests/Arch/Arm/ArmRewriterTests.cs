@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Arm
     [Category(Categories.Capstone)]
     public class ArmRewriterTests : RewriterTestBase
     {
-        private Arm32Architecture arch = new Arm32Architecture();
+        private Arm32Architecture arch = new Arm32Architecture("arm32");
         private MemoryArea image;
         private Address baseAddress = Address.Ptr32(0x00100000);
 
@@ -48,9 +48,9 @@ namespace Reko.UnitTests.Arch.Arm
             get { return baseAddress; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return arch.CreateRewriter(new LeImageReader(image, 0), new ArmProcessorState(arch), frame, host);
+            return arch.CreateRewriter(new LeImageReader(image, 0), new ArmProcessorState(arch), binder, host);
         }
 
         private void BuildTest(params string[] bitStrings)
@@ -1150,10 +1150,8 @@ means
         {
             BuildTest(0xECCCCCCD);  // stcl p12, c12, [ip], {0xcd}
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|__stcl(0x0C, 0x0C, Mem0[ip:void])",
-                "2|L--|Mem0[0x0C:word32] = sp",
-                "3|L--|Mem0[0x0C + 4:word32] = ip");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__stcl(0x0C, 0x0C, Mem0[ip:void])");
         }
 
         [Test]
@@ -1362,9 +1360,14 @@ means
                 "1|T--|if (Test(UGT,ZC)) branch 00100004",
                 "2|T--|goto Mem0[0x00100008 + r3 * 4:word32]");
         }
+
+        [Test]
+        public void ArmRw_svc()
+        {
+            BuildTest(0xEF001234); // svc 0x1234
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|L--|__syscall(0x00001234)");
+    }
     }
 }
-/*
-0x00223164             D4 52 E0 00 
-0x00233768             F0 8E E0 00 
-    */

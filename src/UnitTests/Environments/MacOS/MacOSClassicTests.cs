@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Environments.MacOS
         [Test(Description="Resolves a call to the jumptable pointed to by A5 as a direct call.")]
         public void MacOS_ResolveIndirectCall()
         {
-            var macOS = new MacOSClassic(null, new M68kArchitecture());
+            var macOS = new MacOSClassic(null, new M68kArchitecture("m68k"));
             var a5 = new Identifier(Registers.a5.Name, Registers.a5.DataType, Registers.a5);
 
             var a5world = new MemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);

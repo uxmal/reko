@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Scanning
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
             var ldr = new Loader(new ServiceContainer());
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
             Program program = ldr.AssembleExecutable(
                  FileUnitTester.MapTestPath(sourceFile),
                  new X86TextAssembler(sc, arch),

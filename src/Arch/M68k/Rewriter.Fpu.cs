@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,13 +37,23 @@ namespace Reko.Arch.M68k
 
         private void RewriteFbcc(ConditionCode cc)
         {
+            var addr = ((M68kAddressOperand)di.op1).Address;
+            if (cc == ConditionCode.NEVER)
+            {
+                m.Nop();
+            }
+            else if (cc == ConditionCode.ALWAYS)
+            {
+                rtlc = RtlClass.Transfer;
+                m.Goto(addr);
+            }
+            else
+            {
             rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(
-                m.Test(cc, FpuFlagGroup()),
-                ((M68kAddressOperand)di.op1).Address,
-                RtlClass.ConditionalTransfer);
+                var test = m.Test(cc, binder.EnsureRegister(Registers.fpsr));
+                m.Branch(test, addr, rtlc);
         }
-
+        }
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
@@ -95,8 +105,7 @@ namespace Reko.Arch.M68k
             var opSrc = (M68kImmediateOperand)di.op1;
             int n = opSrc.Constant.ToInt32();
             Expression src;
-            double d;
-            if (fpuRomConstants.TryGetValue(n, out d))
+            if (fpuRomConstants.TryGetValue(n, out double d))
             {
                 src = Constant.Real64(d);
                 src.DataType = PrimitiveType.Real80;
@@ -108,6 +117,14 @@ namespace Reko.Arch.M68k
             var dst = orw.RewriteSrc(di.op2, di.Address);
             m.Assign(dst, src);
             m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
+        }
+
+        private void RewriteFtan()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("tan", s.DataType, s));
         }
 
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)

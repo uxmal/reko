@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.Core.Configuration
             this.TypeLibraries = new List<ITypeLibraryElement>();
         }
 
-        public string Name { get; internal set; }
+        public string Name { get; set; }
         public List<string> TrashedRegisters { get; internal set; }
         public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
     }

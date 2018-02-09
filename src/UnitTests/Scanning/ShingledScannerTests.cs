@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,8 +112,7 @@ namespace Reko.UnitTests.Scanning
                 })
                 .SelectMany(w => w)
                 .ToArray());
-            var arch = new MipsLe32Architecture();
-            arch.Name = "mips-le-32";
+            var arch = new MipsLe32Architecture("mips-le-32");
             CreateProgram(image, arch);
         }
 
@@ -123,7 +122,7 @@ namespace Reko.UnitTests.Scanning
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             CreateProgram(image, arch);
         }
 
@@ -131,7 +130,7 @@ namespace Reko.UnitTests.Scanning
         {
             var addrBase = Address.Ptr32(0x100000);
             var entry = new ImageSymbol(addrBase) { Type = SymbolType.Procedure };
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var m = new X86Assembler(null, new DefaultPlatform(null, arch), addrBase, new List<ImageSymbol> { entry });
             asm(m);
             this.program = m.GetImage();
@@ -142,7 +141,7 @@ namespace Reko.UnitTests.Scanning
             var image = new MemoryArea(
                 Address.Ptr64(0x0100000000000000),
                 bytes);
-            var arch = new X86ArchitectureFlat64();
+            var arch = new X86ArchitectureFlat64("x86-protected-64");
             CreateProgram(image, arch);
         }
 

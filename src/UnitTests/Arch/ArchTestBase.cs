@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             yield break;
         }
@@ -71,31 +71,12 @@ namespace Reko.UnitTests.Arch
 
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                if (args.Length != ppp.Arity)
-                    throw new ArgumentOutOfRangeException(
-                        string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                        ppp.Name,
-                        ppp.Arity,
-                        args.Length));
-
-                return new Application(
-                    new ProcedureConstant(arch.PointerType, ppp),
-                    returnType,
-                    args);
+                return PseudoProcedure(name, new ProcedureCharacteristics(), returnType, args);
             }
 
             public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                ppp.Characteristics = c;
-                if (args.Length != ppp.Arity)
-                    throw new ArgumentOutOfRangeException(
-                        string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                        ppp.Name,
-                        ppp.Arity,
-                        args.Length));
-
+                var ppp = new PseudoProcedure(name, returnType, args.Length);
                 return new Application(
                     new ProcedureConstant(arch.PointerType, ppp),
                     returnType,

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
             var hArg3 = m.Int16(5);
             var fn = m.MapToHandle(
                 new ProcedureConstant(
-                    PrimitiveType.Pointer32,
+                    PrimitiveType.Ptr32,
                     new ExternalProcedure("RightTriangle", new FunctionType())));
 
             m.AddArg(hArg1);

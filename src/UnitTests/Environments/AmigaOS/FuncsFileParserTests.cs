@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
 
         public FuncsFileParserTests()
         {
-            this.arch = new Reko.Arch.M68k.M68kArchitecture();
+            this.arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
         }
 
         private FuncsFileParser CreateParser(string file)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
         }
 
         private void When_Lookup_Procedure(string moduleName, string procName)

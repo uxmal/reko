@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
 
         private void CreateTypeLibraryLoader(string filename, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32("x86-protected-32"));
             tlldr = new TypeLibraryLoader(null, filename, Encoding.ASCII.GetBytes(contents));
         }
 

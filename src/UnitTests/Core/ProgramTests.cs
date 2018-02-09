@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Serialization;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core
 {
@@ -84,12 +85,12 @@ namespace Reko.UnitTests.Core
         [Test]
 		public void Prog_EnsurePseudoProc()
 		{
-			PseudoProcedure ppp = program.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
+			var ppp = program.EnsurePseudoProcedure("foo", VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsNotNull(ppp);
 			Assert.AreEqual("foo", ppp.Name);
 			Assert.AreEqual(1, program.PseudoProcedures.Count);
 
-            PseudoProcedure ppp2 = program.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
+            var ppp2 = program.EnsurePseudoProcedure("foo", VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsNotNull(ppp2);
 			Assert.AreSame(ppp, ppp2);
 			Assert.AreEqual("foo", ppp.Name);

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,7 +144,7 @@ namespace Reko.Environments.MacOS
                 });
                 offset += t.Item1;
             }
-
+            ssig.StackDelta = offset + 4;   // 4 = return address size.
             var syscallinfo = new SyscallInfo_v1
             {
                 Vector = vector.ToString("X4"),

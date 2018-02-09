@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Assemblers.M68k
         [SetUp]
         public void Setup()
         {
-            arch = new M68kArchitecture();
+            arch = new M68kArchitecture("m68k");
             asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<ImageSymbol>());
         }
 
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Assemblers.M68k
             {
                 m.Lea(m.Mem(-8,  m.a2), m.a4);
             });
-            Expect("lea\t$-0008(a2),a4");
+            Expect("lea\t-$0008(a2),a4");
         }
     }
 }

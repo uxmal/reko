@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCArch_GetTrampoline()
         {
-            var arch = new PowerPcBe32Architecture();
+            var arch = new PowerPcBe32Architecture("ppc-be-32");
             var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
             m.Lis(m.r11, 0x1006);
             m.Lwz(m.r11, 0x1234, m.r11);

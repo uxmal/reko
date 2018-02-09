@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,45 +36,33 @@ namespace Reko.Arch.X86
 	{
         private class X86LegacyCodeRegisterExtension
         {
-            const byte MAGIC = 0x40;
-            const byte MAGIC_MASK = 0xf0;
-            internal static X86LegacyCodeRegisterExtension Disabled = new X86LegacyCodeRegisterExtension(0);
-            
-            byte val;
-
             internal X86LegacyCodeRegisterExtension(byte value)
             {
-                this.val = value;
+                this.ByteValue = value;
             }
-            internal X86LegacyCodeRegisterExtension(byte magic, bool wide, bool modrm_reg, bool sib_idx, bool modrm_rm)
+
+            public void Reset()
             {
-                this.ByteValue = (byte)((this.val & 0xf) | ((magic & 0xf) << 4));
-                this.FlagWideValue = wide;
-                this.FlagTargetModrmRegister = modrm_reg;
-                this.FlagTargetSIBIndex = sib_idx;
-                this.FlagTargetModrmRegOrMem = modrm_rm;
+                ByteValue = 0;
             }
 
             internal byte ByteValue { get; set; }
-            internal bool IsActive()
-            {
-                return this.val != 0;
-            }
+
             internal bool FlagWideValue
             {
                 get
                 {
-                    return ((this.val & 0x8) == 0x8);
+                    return ((this.ByteValue & 0x8) == 0x8);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x8);
+                        this.ByteValue = (byte)(this.ByteValue | 0x8);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x8);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x8);
                     }
                 }
             }
@@ -82,17 +70,17 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x4) == 0x4);
+                    return ((this.ByteValue & 0x4) == 0x4);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x4);
+                        this.ByteValue = (byte)(this.ByteValue | 0x4);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x4);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x4);
                     }
                 }
             }
@@ -100,17 +88,17 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x1) == 0x1);
+                    return ((this.ByteValue & 0x1) == 0x1);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x1);
+                        this.ByteValue = (byte)(this.ByteValue | 0x1);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x1);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x1);
                     }
                 }
             }
@@ -118,21 +106,22 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x2) == 0x2);
+                    return ((this.ByteValue & 0x2) == 0x2);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x2);
+                        this.ByteValue = (byte)(this.ByteValue | 0x2);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x2);
+                        this.ByteValue = (byte)(this.ByteValue & ~0x2);
                     }
                 }
             }
         }
+
         private class X86InstructionDecodeInfo
         {
             bool isModRegMemActive;
@@ -144,13 +133,9 @@ namespace Reko.Arch.X86
             bool isRegisterExtensionActive;
             X86LegacyCodeRegisterExtension registerExtension;
 
-            bool repetitionPrefixF2;
-            bool repetitionPrefixF3;
-
-            bool sizeOverridePrefix;
-
             internal X86InstructionDecodeInfo()
             {
+                this.registerExtension = new X86LegacyCodeRegisterExtension(0);
                 this.Reset();
             }
 
@@ -164,18 +149,21 @@ namespace Reko.Arch.X86
 
                 // We do not reset isRegisterExtensionPrefixEnabled as that is set by the processor mode
                 this.isRegisterExtensionActive = false;
-                this.registerExtension = X86LegacyCodeRegisterExtension.Disabled;
+                this.registerExtension.Reset();
 
-                this.repetitionPrefixF2 = false;
-                this.repetitionPrefixF3 = false;
-
-                this.sizeOverridePrefix = false;
+                this.F2Prefix = false;
+                this.F3Prefix = false;
+                this.SizeOverridePrefix = false;
+                this.IsVex = false;
+                this.VexRegister = 0;
+                this.VexLong = false;
             }
 
             internal bool IsSegmentOverrideActive()
             {
                 return this.isSegmentOverrideActive;
             }
+
             internal RegisterStorage SegmentOverride
             {
                 get
@@ -193,6 +181,7 @@ namespace Reko.Arch.X86
             {
                 return this.isRegisterExtensionActive;
             }
+
             internal X86LegacyCodeRegisterExtension RegisterExtension
             {
                 get
@@ -209,7 +198,7 @@ namespace Reko.Arch.X86
                 set
                 {
                     this.isRegisterExtensionActive = true;
-                    this.registerExtension = new X86LegacyCodeRegisterExtension(value);
+                    this.registerExtension.ByteValue = value;
                 }
             }
 
@@ -217,6 +206,9 @@ namespace Reko.Arch.X86
             {
                 return this.isModRegMemActive;
             }
+
+            public bool IsVex { get; set; }
+
             internal byte ModRegMemByte
             {
                 get
@@ -234,53 +226,17 @@ namespace Reko.Arch.X86
                 }
             }
 
-            internal bool F2Prefix
-            {
-                get
-                {
-                    return this.repetitionPrefixF2;
-                }
-                set
-                {
-                    if (!value)
-                    {
-                        throw new ArgumentException("In what case is it reasonable to not call Reset() instead???");
-                    }
-                    this.repetitionPrefixF2 = value;
-                }
-            }
-            internal bool F3Prefix
-            {
-                get
-                {
-                    return this.repetitionPrefixF3;
-                }
-                set
-                {
-                    if (!value)
-                    {
-                        throw new ArgumentException("In what case is it reasonable to not call Reset() instead???");
-                    }
-                    this.repetitionPrefixF3 = value;
-                }
-            }
-            internal bool SizeOverridePrefix
-            {
-                get
-                {
-                    return this.sizeOverridePrefix;
-                }
-                set
-                {
-                    if (!value)
-                    {
-                        throw new ArgumentException("In what case is it reasonable to not call Reset() instead???");
-                    }
-                    this.sizeOverridePrefix = value;
-                }
-            }
-        };
-        
+            internal bool F2Prefix { get; set; }
+
+            internal bool F3Prefix { get; set; }
+
+            internal bool SizeOverridePrefix { get; set; }
+
+            public byte VexRegister { get; set; }
+
+            public bool VexLong { get; set; } // If true, use YMM or 256-bit memory access.
+        }
+
         private ProcessorMode mode;
         private X86Instruction instrCur;
 		private PrimitiveType dataWidth;
@@ -346,12 +302,23 @@ namespace Reko.Arch.X86
             }
             if (instrCur == null)
             {
-                return new X86Instruction(Opcode.illegal, dataWidth, addressWidth) 
-                { Address = addr };
+                instrCur = Illegal();
             }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
             return instrCur;
+        }
+
+        private X86Instruction Illegal()
+        {
+            return new X86Instruction(Opcode.illegal, dataWidth, addressWidth);
+        }
+
+        private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
+        {
+            int reg_bits = bits & 7;
+            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            return GpRegFromBits(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexW(int bits, PrimitiveType dataWidth)
@@ -495,6 +462,28 @@ namespace Reko.Arch.X86
 
         private RegisterStorage XmmRegFromBits(int bits, PrimitiveType dataWidth)
         {
+            if (dataWidth.BitSize == 256)
+            {
+                switch (bits)
+                {
+                case 0: return Registers.ymm0;
+                case 1: return Registers.ymm1;
+                case 2: return Registers.ymm2;
+                case 3: return Registers.ymm3;
+                case 4: return Registers.ymm4;
+                case 5: return Registers.ymm5;
+                case 6: return Registers.ymm6;
+                case 7: return Registers.ymm7;
+                case 8: return Registers.ymm8;
+                case 9: return Registers.ymm9;
+                case 10: return Registers.ymm10;
+                case 11: return Registers.ymm11;
+                case 12: return Registers.ymm12;
+                case 13: return Registers.ymm13;
+                case 14: return Registers.ymm14;
+                case 15: return Registers.ymm15;
+                }
+            }
             switch (bits)
             {
             case 0: return Registers.xmm0;
@@ -514,7 +503,7 @@ namespace Reko.Arch.X86
             case 14: return Registers.xmm14;
             case 15: return Registers.xmm15;
             }
-            throw new NotImplementedException();
+            throw new InvalidOperationException();
         }
 
 		public static RegisterStorage SegFromBits(int bits)
@@ -729,12 +718,95 @@ namespace Reko.Arch.X86
             {
                 switch (op)
                 {
+                case 0x38:
+                    if (!disasm.rdr.TryReadByte(out op))
+                        return null;
+                    return s_aOpRec0F38[op].Decode(disasm, op, "");
                 case 0x3A:
                     if (!disasm.rdr.TryReadByte(out op))
                         return null;
                     return s_aOpRec0F3A[op].Decode(disasm, op, "");
                 default: return null;
                 }
+            }
+        }
+
+        public class VexDecoder2 : OpRec
+        {
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var r = (~op >> 2) & 4;
+                var vvvv = (~op >> 3) & 0xF;
+                var pp = op & 3;
+                var ctx = disasm.currentDecodingContext;
+                ctx.IsVex = true;
+                ctx.VexRegister = (byte)vvvv;
+                ctx.RegisterExtensionPrefixByte = (byte)r;
+                ctx.VexLong = (op & 4) != 0;
+                ctx.F2Prefix = pp == 3;
+                ctx.F3Prefix = pp == 2;
+                ctx.SizeOverridePrefix = pp == 1;
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var instr = s_aOpRec0F[op].Decode(disasm, op, opFormat);
+                if (instr == null)
+                    return instr;
+                Opcode vexCode;
+                if (!s_mpVex.TryGetValue(instr.code, out vexCode))
+                {
+                    Debug.Print("Failed to map {0} to VEX counterpart", instr.code);
+                    return null;
+                }
+                instr.code = vexCode;
+                return instr;
+            }
+        }
+
+        public class VexDecoder3 : OpRec
+        {
+            public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
+            {
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var rxb = op >> 5;
+                var mmmmm = op & 0x1F;
+
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var w = op >> 7;
+                var vvvv = (~op >> 3) & 0xF;
+                var pp = op & 0x3;
+
+                var ctx = disasm.currentDecodingContext;
+                ctx.IsVex = true;
+                ctx.VexRegister = (byte)vvvv;
+                ctx.VexLong = (op & 4) != 0;
+                ctx.RegisterExtension.FlagWideValue = w != 0;
+                ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
+                ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
+                ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.F2Prefix = pp == 3;
+                ctx.F3Prefix = pp == 2;
+                ctx.SizeOverridePrefix = pp == 1;
+
+                OpRec[] decoders;
+                switch (mmmmm)
+                {
+                case 1: decoders = s_aOpRec0F;  break;
+                case 2: decoders = s_aOpRec0F38; break;
+                case 3: decoders = s_aOpRec0F3A; break;
+                default: return null;
+                }
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                var instr = decoders[op].Decode(disasm, op, opFormat);
+                if (instr == null)
+                    return instr;
+                if (!s_mpVex.TryGetValue(instr.code, out instr.code))
+                    return null;
+                return instr;
             }
         }
 
@@ -850,12 +922,16 @@ namespace Reko.Arch.X86
             {
                 if (disasm.currentDecodingContext.F2Prefix)
                 {
+                    if (opF2Fmt == null)
+                        return disasm.Illegal();
                     var instr = disasm.DecodeOperands(this.opF2, op, opF2Fmt);
                     instr.repPrefix = 0;
                     return instr;
                 }
                 else if (disasm.currentDecodingContext.F3Prefix)
                 {
+                    if (opF3Fmt == null)
+                        return disasm.Illegal();
                     var instr = disasm.DecodeOperands(this.opF3, op, opF3Fmt);
                     instr.repPrefix = 0;
                     return instr;
@@ -973,10 +1049,16 @@ namespace Reko.Arch.X86
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
                     break;
                 case 'H':       // reg
-                    //$TODO: VEX form not implemented yet, skip over for now.
-                    while (strFormat[i] != ',')
-                        ++i;
-                    continue;
+                    if (currentDecodingContext.IsVex)
+                    {
+                        width = SseOperandWidth(strFormat, ref i);
+                        pOperand = new RegisterOperand(XmmRegFromBits(currentDecodingContext.VexRegister, width));
+                    }
+                    else
+                    {
+                        i = strFormat.IndexOf(',', i);
+                    }
+                    break;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
                     width = SseOperandWidth(strFormat, ref i);
                     if (!TryEnsureModRM(out modRm))
@@ -1053,8 +1135,8 @@ namespace Reko.Arch.X86
                     pOperand = new RegisterOperand(RegFromBitsRexW(2, width));
                     break;
                 case 'r':		// Register encoded as last 3 bits of instruction.
-                    width = OperandWidth(strFormat[i++]);
-                    pOperand = new RegisterOperand(RegFromBitsRexW(op, width));
+                    iWidth = width = OperandWidth(strFormat[i++]);
+                    pOperand = new RegisterOperand(RegFromBitsRexB(op, width));
                     break;
                 case 's':		// Segment encoded as next byte of the format string.
                     pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
@@ -1108,7 +1190,7 @@ namespace Reko.Arch.X86
 				dataWidth = PrimitiveType.Word32;
 				break;
 			case 'p':
-				dataWidth = PrimitiveType.Pointer32;		// Far pointer.
+				dataWidth = PrimitiveType.Ptr32;		// Far pointer.
 				break;
 			case 'f':
 				dataWidth = PrimitiveType.Real32;
@@ -1137,13 +1219,17 @@ namespace Reko.Arch.X86
             switch (fmt[i++])
             {
             case 'd':
+                if (i < fmt.Length && fmt[i] == 'q')
+                {
+                    ++i; return PrimitiveType.Word128;
+                }
                 return PrimitiveType.Word32;
             case 'p':
                 switch (fmt[i++])
                 {
-                case 'd': return PrimitiveType.Word128; //$TODO: this should be array[2] of double32
-                case 'i': return PrimitiveType.Word128; //$TODO: this should be array[4] of int32
-                case 's': return PrimitiveType.Word128; //$TODO: this should be array[4] of real32
+                case 'd': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[2] of double32
+                case 'i': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of int32
+                case 's': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of real32
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
@@ -1157,9 +1243,9 @@ namespace Reko.Arch.X86
                 default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
                 }
             case 'x':
-                return defaultDataWidth != dataWidth
-                    ? PrimitiveType.Word128
-                    : PrimitiveType.Word256;
+                return this.currentDecodingContext.VexLong
+                    ? PrimitiveType.Word256
+                    : PrimitiveType.Word128;
             case 'y':
                 return this.currentDecodingContext.SizeOverridePrefix
                     ? PrimitiveType.Word128
@@ -1263,7 +1349,7 @@ namespace Reko.Arch.X86
                         }
                         else
                         {
-                            offsetWidth = PrimitiveType.Pointer32;
+                            offsetWidth = PrimitiveType.Ptr32;
                             b = RegisterStorage.None;
                         }
 					}
@@ -1338,18 +1424,22 @@ namespace Reko.Arch.X86
 
 		private static OpRec [] s_aOpRec;
 		private static OpRec [] s_aOpRec0F;
+		private static OpRec [] s_aOpRec0F38;
 		private static OpRec [] s_aOpRec0F3A;
-		private static OpRec [] s_aOpRecGrp;
+        private static OpRec [] s_aOpRecGrp;
 		private static OpRec [] s_aFpOpRec;
+        private static Dictionary<Opcode, Opcode> s_mpVex;
 
 		static X86Disassembler()
 		{
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
+            s_aOpRec0F38 = Create0F38Oprecs();
             s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
             s_aFpOpRec = CreateFpuOprecs();
+            s_mpVex = CreateVexMapping();
             Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
 		}
 	}

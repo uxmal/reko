@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,12 +74,18 @@ namespace Reko.Arch.X86
 				// group 5
 				new SingleByteOpRec(Opcode.inc, "Ev"),
 				new SingleByteOpRec(Opcode.dec, "Ev"),
-				new SingleByteOpRec(Opcode.call, "Ev"),
-				new SingleByteOpRec(Opcode.call, "Ep"),
-				new SingleByteOpRec(Opcode.jmp, "Ev"),
+				new Alternative64OpRec(
+                    new SingleByteOpRec(Opcode.call, "Ev"),
+                    new SingleByteOpRec(Opcode.call, "Eq")),
+                new SingleByteOpRec(Opcode.call, "Ep"),
+                new Alternative64OpRec(
+				    new SingleByteOpRec(Opcode.jmp, "Ev"),
+				    new SingleByteOpRec(Opcode.jmp, "Eq")),
 				new SingleByteOpRec(Opcode.jmp, "Ep"),
-				new SingleByteOpRec(Opcode.push, "Ev"),
-				new SingleByteOpRec(Opcode.illegal),
+                new Alternative64OpRec(
+				    new SingleByteOpRec(Opcode.push, "Ev"),
+				    new SingleByteOpRec(Opcode.push, "Eq")),
+                new SingleByteOpRec(Opcode.illegal),
 
 				// group 6
 				new SingleByteOpRec(Opcode.illegal),
@@ -188,15 +194,49 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new Group7OpRec(
+                    new SingleByteOpRec(Opcode.xrstor, "Md"),
+
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, ""),
+                    new SingleByteOpRec(Opcode.lfence, "")),
+                new Group7OpRec(
+                    new SingleByteOpRec(Opcode.xsaveopt, "Md"),
+
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, ""),
+                    new SingleByteOpRec(Opcode.mfence, "")),
+
+                new Group7OpRec(
+                    new SingleByteOpRec(Opcode.clflush, "Md"),
+
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, ""),
+                    new SingleByteOpRec(Opcode.sfence, "")),
 
 				// group 16
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.prefetchnta, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht0, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht1, "Mb"),
+				new SingleByteOpRec(Opcode.prefetcht2, "Mb"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),

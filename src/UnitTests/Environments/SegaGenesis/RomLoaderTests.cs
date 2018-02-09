@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var cfgSvc = mr.Stub<IConfigurationService>();
             var openv = mr.Stub<OperatingEnvironment>();
             var diagSvc = mr.StrictMock<IDiagnosticsService>();
-            var arch = new M68kArchitecture();
+            var arch = new M68kArchitecture("m68k");
             var platform = new SegaGenesisPlatform(sc, arch);
             cfgSvc.Expect(c => c.GetArchitecture("m68k")).Return(arch);
             cfgSvc.Expect(c => c.GetEnvironment("sega-genesis")).Return(openv);
@@ -97,6 +97,5 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var ramSegment = program.SegmentMap.Segments.Values.First(s => s.Name == ".data");
             Assert.IsNotNull(ramSegment.MemoryArea, "RAM segment should have a MemoryArea");
         }
-
     }
 }

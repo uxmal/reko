@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,18 +139,25 @@ namespace Reko.Arch.X86
 				else
 				{
                     var off = Offset.ToInt32();
-                    var absOff = Math.Abs(off);
-                    if (Offset.DataType.Size > 2 && off < 0 && absOff < 0x10000)
+                    if (off == Int32.MinValue)
                     {
-                        // Special case for negative 32-bit offsets whose 
-                        // absolute value < 0x10000 (GitHub issue #252)
-                        writer.WriteString("-");
-                        writer.WriteFormat("{0:X8}", absOff);
+                        writer.WriteString("-80000000");
                     }
                     else
                     {
-                        writer.WriteString("+");
-                        writer.WriteString(FormatUnsignedValue(Offset));
+                        var absOff = Math.Abs(off);
+                        if (Offset.DataType.Size > 2 && off < 0 && absOff < 0x10000)
+                        {
+                            // Special case for negative 32-bit offsets whose 
+                            // absolute value < 0x10000 (GitHub issue #252)
+                            writer.WriteString("-");
+                            writer.WriteFormat("{0:X8}", absOff);
+                        }
+                        else
+                        {
+                            writer.WriteString("+");
+                            writer.WriteString(FormatUnsignedValue(Offset));
+                        }
                     }
 				}
 			}

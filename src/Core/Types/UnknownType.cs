@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +26,8 @@ namespace Reko.Core.Types
 {
 	public class UnknownType : DataType
 	{
-        private int size;
-
 		public UnknownType(int size = 0)
 		{
-            this.size = 0;
 		}
 
         public override void Accept(IDataTypeVisitor v)
@@ -50,7 +47,7 @@ namespace Reko.Core.Types
 
 		public override int Size
 		{
-			get { return size; }
+			get { return 0; }
 			set { ThrowBadSize(); }
 		}
 	}

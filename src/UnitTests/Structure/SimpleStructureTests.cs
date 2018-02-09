@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore()]
+        [Ignore("")]
         public void StrReg00006()
         {
             RunTest32("Fragments/regressions/r00006.asm", "Structure/StrReg00006.txt", Address.Ptr32(0x100048B0));
@@ -285,7 +285,6 @@ ret
 {
 	if (dwArg04 != 0x00000000)
 		Mem11[0x00123234:word32] = 0x00006423;
-	return;
 }
 ===
 ", program);
@@ -302,7 +301,6 @@ ret
 @"void fn00100000()
 {
 	Mem5[0x02000000:word32] = fn0010000C(dwArg00, dwArg04);
-	return;
 }
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)

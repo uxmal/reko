@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900RewriterTests : RewriterTestBase
     {
-        private Tlcs900Architecture arch = new Tlcs900Architecture();
+        private Tlcs900Architecture arch = new Tlcs900Architecture("tlcs900");
         private Address baseAddr = Address.Ptr32(0x0010000);
         private Tlcs900ProcessorState state;
         private MemoryArea image;

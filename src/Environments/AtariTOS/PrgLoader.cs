@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,7 @@ namespace Reko.Environments.AtariTOS
         public override Program Load(Address addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
-            PrgHeader hdr;
-            if (!TryLoadHeader(rdr, out hdr))
+            if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
             var mem = new MemoryArea(addrLoad, new byte[ hdr.TextSize + hdr.DataSize + hdr.BssSize ]);
@@ -78,9 +77,15 @@ namespace Reko.Environments.AtariTOS
 
         private bool TryLoadHeader(BeImageReader rdr, out PrgHeader hdr)
         {
-            var sr = new StructureReader<PrgHeader>(rdr.CreateBinaryReader());
-            hdr = sr.Read();
-            return hdr.Magic == 0x601A;
+            var sr = new StructureReader<PrgHeader>(rdr);
+            var h = sr.Read();
+            if (h.Magic != 0x601A)
+            {
+                hdr = default(PrgHeader);
+                return false;
+            }
+            hdr = h;
+            return true;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -92,8 +97,7 @@ namespace Reko.Environments.AtariTOS
 
         bool PerformRelocations(MemoryArea mem, ImageReader rdr)
         {
-            uint fixup;
-            if (!rdr.TryReadBeUInt32(out fixup))
+            if (!rdr.TryReadBeUInt32(out uint fixup))
                 return false;
             if (fixup == 0)
                 return true;    // no relocations to do.
@@ -106,10 +110,9 @@ namespace Reko.Environments.AtariTOS
                 mem.WriteBeUInt32(offset, l);
                 mem.Relocations.AddPointerReference(mem.BaseAddress.ToLinear() + offset, l);
 
-                byte b;
                 for(;;)
                 {
-                    if (!rdr.TryReadByte(out b))
+                    if (!rdr.TryReadByte(out byte b))
                         return false;
                     if (b == 0)
                         return true;

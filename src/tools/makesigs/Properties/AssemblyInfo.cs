@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("makesigs")]
-[assembly: AssemblyCopyright("Copyright ©1999-2017")]
+[assembly: AssemblyCopyright("Copyright ©1999-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

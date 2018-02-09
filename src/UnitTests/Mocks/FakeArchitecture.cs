@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
             RtlTrace trace;
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
+        public Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -281,12 +281,12 @@ namespace Reko.UnitTests.Mocks
 
         public PrimitiveType FramePointerType
         {
-            get { return PrimitiveType.Pointer32; }
+            get { return PrimitiveType.Ptr32; }
         }
 
         public PrimitiveType PointerType
         {
-            get { return PrimitiveType.Pointer32; }
+            get { return PrimitiveType.Ptr32; }
         }
 
 		public PrimitiveType WordWidth

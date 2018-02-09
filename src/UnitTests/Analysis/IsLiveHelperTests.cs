@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
 			f = arch.CreateFrame();
             liveness = new IdentifierLiveness(arch);
 			isLiveHelper = new RegisterLiveness.IsLiveHelper(arch);

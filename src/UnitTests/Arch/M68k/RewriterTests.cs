@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.M68k
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private M68kArchitecture arch = new M68kArchitecture();
+        private M68kArchitecture arch = new M68kArchitecture("m68k");
         private Address addrBase = Address.Ptr32(0x00010000);
         private MemoryArea mem;
 
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.M68k
             get { return addrBase; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return arch.CreateRewriter(mem.CreateLeReader(0), arch.CreateProcessorState(), arch.CreateFrame(), host);
         }
@@ -827,7 +827,7 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68krw_Clr_d1()
+        public void M68krw_clr_d1()
         {
             Rewrite(0x4241);
             AssertCode(
@@ -979,8 +979,6 @@ namespace Reko.UnitTests.Arch.M68k
                 "5|L--|V = false");
         }
 
-
-
         [Test]
         public void M68krw_bset_addr()
         {
@@ -989,6 +987,24 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(6): 1 instructions",
                 "1|L--|Z = __bset(Mem0[a0 + 16:byte], 0x0001, out Mem0[a0 + 16:byte])");
             //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
+        }
+
+        [Test]
+        public void M68krw_bset_effectivezero()
+        {
+            Rewrite(0x01F0, 0x01C0);
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|Z = __bset(Mem0[null:byte], d0, out Mem0[null:byte])");
+        }
+
+        [Test]
+        public void M68krw_bset_effective()
+        {
+            Rewrite(0x08F1, 0x9708, 0xF1CC);
+            AssertCode(
+                "0|L--|00010000(6): 1 instructions",
+                "1|L--|Z = __bset(Mem0[null:byte], 0x9708, out Mem0[null:byte])");
         }
 
         [Test]
@@ -1222,7 +1238,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0xF29C, 0x00E0);  // fbnge 0x000000e8
             AssertCode(
                "0|T--|00010000(4): 1 instructions",
-               "1|T--|if (Test(LT,FPUFLAGS)) branch 000100E2");
+               "1|T--|if (Test(LT,fpsr)) branch 000100E2");
         }
 
         [Test]
@@ -1378,6 +1394,252 @@ namespace Reko.UnitTests.Arch.M68k
                 "3|L--|C = false",
                 "4|L--|N = false",
                 "5|L--|V = false");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_moves()
+        {
+            Rewrite(0x0EA0, 0x0048);    // moves.w -(a0),d0
+            AssertCode(
+                "0|S--|00010000(4): 3 instructions",
+                "1|L--|a0 = a0 - 2",
+                "2|L--|v4 = __moves(Mem0[a0:word16])",
+                "3|L--|d0 = DPB(d0, v4, 0)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_negx()
+        {
+            Rewrite(0x4036, 0x600A); // negx.b (0A, a6, d6)
+            AssertCode(
+                "0|L--|00010000(4): 3 instructions",
+                "1|L--|v4 = -Mem0[a6 + 10 + d6:byte] - X",
+                "2|L--|Mem0[a6 + 10 + d6:byte] = v4",
+                "3|L--|CVZNX = cond(v4)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_rte()
+        {
+            Rewrite(0x4E73);    // rte
+            AssertCode(
+                "0|S--|00010000(2): 3 instructions",
+                "1|L--|sr = Mem0[a7:word16]",
+                "2|L--|a7 = a7 + 2",
+                "3|T--|return (4,0)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_bkpt()
+        {
+            Rewrite(0x484B);    // bkpt#$03
+            AssertCode(
+               "0|---|00010000(2): 1 instructions",
+               "1|L--|__bkpt(0x03)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_move16()
+        {
+            Rewrite(0xF605, 0x6600, 0xFFF4);    // move16 (a5)+,#$6600FFF4
+            AssertCode(
+               "0|L--|00010000(6): 2 instructions",
+               "1|L--|v3 = Mem0[a5:word128]",
+               "2|L--|a5 = a5 + 16");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_sbcd()
+        {
+            Rewrite(0x8F02);    // sbcd d2,d7
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|v5 = (byte) d2 - (byte) d7 - X",
+                "2|L--|d7 = DPB(d7, v5, 0)",
+                "3|L--|CVZNX = cond(v5)");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void M68krw_fbolt()
+        {
+            Rewrite(0xF684, 0x0678);    // fbolt$00001CCE
+            AssertCode(
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|if (Test(LT,fpsr)) branch 0001067A");
+        }
+
+        [Test]
+        public void M68krw_dbcs()
+        {
+            Rewrite(0x55CF, 0xFFF2);        // dbcs d7,$000F21B2
+            AssertCode(
+                "0|T--|00010000(4): 3 instructions",
+                "1|T--|if (Test(ULT,C)) branch 00010004",
+                "2|L--|d7 = d7 - 0x00000001",
+                "3|T--|if (d7 != 0xFFFFFFFF) branch 0000FFF4");
+        }
+
+        [Test]
+        public void M68krw_movem_w()
+        {
+            Rewrite(0x48A7, 0xC000);            // movem.w d0-d1,-(sp)
+            AssertCode(
+                "0|L--|00010000(4): 4 instructions",
+                "1|L--|a7 = a7 - 2",
+                "2|L--|Mem0[a7:word16] = d1",
+                "3|L--|a7 = a7 - 2",
+                "4|L--|Mem0[a7:word16] = d0");
+        }
+
+        [Test]
+        public void M68krw_nbcd()
+        {
+            Rewrite(0x4822);    // nbcd -(a2)
+            AssertCode(
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|a2 = a2 - 1",
+                "2|L--|v4 = 0x00 - Mem0[a2:byte] - X",
+                "3|L--|Mem0[a2:byte] = v4",
+                "4|L--|CVZNX = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_pack()
+        {
+            Rewrite(0x8F47, 0x0002);   // pack d7, d7, 2
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|v3 = __pack((uint16) d7, 0x0002)",
+                "2|L--|d7 = DPB(d7, v3, 0)");
+        }
+
+        [Test]
+        public void M68krw_unpk()
+        {
+            Rewrite(0x8784, 0x0784);    // unpk d4, d3
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|v4 = __unpk((byte) d4, 0x0784)",
+                "2|L--|d3 = DPB(d3, v4, 0)");
+        }
+
+        [Test]
+        public void M68krw_svc()
+        {
+            Rewrite(0x58EE, 0x26FC);    // svc $26FC(a6)
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|Mem0[a6 + 9980:byte] = V");
+        }
+
+        [Test]
+        public void M68krw_abcd()
+        {
+            Rewrite(0xC700);        // abcd d0, d3
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|v5 = (byte) d3 + (byte) d0 + X",
+                "2|L--|d3 = DPB(d3, v5, 0)",
+                "3|L--|CVZNX = cond(v5)");
+        }
+
+        [Test]
+        public void M68krw_pc_relative_indexing()
+        {
+            Rewrite(0x0C3B, 0x0004, 0x0028);    // cmpi.b\t#$04,(pc,d0.w,+002C)
+            AssertCode(
+                "0|L--|00010000(6): 2 instructions",
+                "1|L--|v4 = Mem0[pc + (word32) ((int16) d0) + 44:byte] - 4",
+                "2|L--|CVZN = cond(v4)");
+        }
+
+        [Test]
+        [Ignore("Need an OperandRewriter mode where the [a6] is returned to the caller.")]
+        public void M68krw_tas()
+        {
+            Rewrite(0x4AE6);    // tas -(a6)
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|a6 = a6 - 1",
+                "2|L--|ZN = __tas(Mem0[a6:byte])");
+        }
+
+        [Test]
+        public void M68krw_divul()
+        {
+            Rewrite(0x4C44, 0x00A0); // divul.l d4, d0
+            AssertCode(
+                "0|L--|00010000(4): 5 instructions",
+                "1|L--|v4 = d4",
+                "2|L--|d4 = d0 % v4",
+                "3|L--|d0 = d0 /u v4",
+                "4|L--|VZN = cond(d0)",
+                "5|L--|C = false");
+        }
+
+        [Test]
+        public void M68krw_trapeq()
+        {
+            Rewrite(0x57FA, 0x0029); // trapeq #$0029
+            AssertCode(
+                "0|T--|00010000(4): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00010004",
+                "2|L--|__syscall(0x0007, 0x0029)");
+        }
+
+        [Test]
+        public void M68krw_indexedindirect()
+        {
+            Rewrite(0x4033, 0xB316, 0x008B); // negx.b([a3], a3.w * 2, +008B)
+            AssertCode(
+                "0|L--|00010000(6): 3 instructions",
+                "1|L--|v3 = -Mem0[Mem0[a3:word32] + (word32) ((int16) a3) * 2 + 139:byte] - X",
+                "2|L--|Mem0[Mem0[a3:word32] + (word32) ((int16) a3) * 2 + 139:byte] = v3",
+                "3|L--|CVZNX = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_lea_indexedindirect()
+        {
+            Rewrite(0x41F5, 0xB316, 0x0080);    // lea([a5],a3.w * 2,+0080),a0
+            AssertCode(
+                "0|L--|00010000(6): 1 instructions",
+                "1|L--|a0 = Mem0[a5:word32] + (word32) ((int16) a3) * 2 + 128");
+        }
+
+        [Test]
+        public void M68krw_chk_zeroextension()
+        {
+            Rewrite(0x4736, 0x05C0);    // chk
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|T--|if (null >= 0x00000000 && null <= d3) branch 00010004",
+                "2|L--|__syscall(0x06)");
+        }
+
+        [Test]
+        public void M68krw_ptest()
+        {
+            Rewrite(0xF000, 0x8000);    // ptest
+            AssertCode(
+                "0|S--|00010000(4): 1 instructions",
+                "1|L--|__ptest(d0, 0x00)");
+        }
+
+        [Test]
+        public void M68krw_trapf()
+        {
+            Rewrite(0x51FC);    // trapf
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|nop");
         }
     }
 }

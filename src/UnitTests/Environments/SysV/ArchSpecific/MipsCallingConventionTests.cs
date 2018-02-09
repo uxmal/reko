@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private void AssertSignature(string sExp, params DataType[] args)
         {
-            var arch = new MipsBe32Architecture();
+            var arch = new MipsBe32Architecture("mips-be-32");
             var cc = new MipsCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, null, null, args.ToList());

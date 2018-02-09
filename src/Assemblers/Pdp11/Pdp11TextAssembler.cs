@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace Reko.Assemblers.Pdp11
 
         public Program Assemble(Address addrBase, TextReader reader)
         {
-            arch = new Pdp11Architecture();
+            arch = new Pdp11Architecture("pdp11");
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
             lexer = new Lexer(reader);
 

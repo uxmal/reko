@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Structure
         {
             Identifier i = Local32("i");
             Label("loopHeader");
-            Identifier v = Declare(PrimitiveType.Byte, "v", Load(PrimitiveType.Byte, i));
+            Identifier v = Declare(PrimitiveType.Byte, "v", Mem(PrimitiveType.Byte, i));
             Assign(i, IAdd(i, 1));
             BranchIf(Eq(v, 0x20), "exit_loop");
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -192,10 +192,31 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 			interactor.OpenBinary(null);
 			Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
 			interactor.NextPhase();
-			Assert.AreSame(interactor.LoadedPageInteractor, interactor.CurrentPhase);
+			Assert.AreSame(interactor.ScannedPageInteractor, interactor.CurrentPhase);
 
             mr.VerifyAll();
 		}
+
+        [Test]
+        public void Mfi_FinishDecompilation()
+        {
+            Given_MainFormInteractor();
+            Given_LoadPreferences();
+            Given_DecompilerInstance();
+            Given_XmlWriter();
+            Given_SavePrompt(true);
+            dcSvc.Stub(d => d.Decompiler = null);
+            fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            mr.ReplayAll();
+
+            When_CreateMainFormInteractor();
+            interactor.OpenBinary(null);
+            Assert.AreSame(interactor.InitialPageInteractor, interactor.CurrentPhase);
+            interactor.FinishDecompilation();
+            Assert.AreSame(interactor.FinalPageInteractor, interactor.CurrentPhase);
+
+            mr.VerifyAll();
+        }
 
         private void Given_Loader()
         {
@@ -523,7 +544,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
-            prog.Architecture = new X86ArchitectureReal();
+            prog.Architecture = new X86ArchitectureReal("x86-real-16");
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
             prog.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
@@ -562,7 +583,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Stub(s => s.CreateMemoryViewService()).Return(memSvc);
             svcFactory.Stub(s => s.CreateDecompilerEventListener()).Return(new FakeDecompilerEventListener());
             svcFactory.Stub(s => s.CreateInitialPageInteractor()).Return(new FakeInitialPageInteractor());
-            svcFactory.Stub(s => s.CreateLoadedPageInteractor()).Return(new FakeLoadedPageInteractor());
+            svcFactory.Stub(s => s.CreateScannedPageInteractor()).Return(new FakeScannedPageInteractor());
+            svcFactory.Stub(s => s.CreateAnalyzedPageInteractor()).Return(new FakeAnalyzedPageInteractor());
+            svcFactory.Stub(s => s.CreateFinalPageInteractor()).Return(new FakeFinalPageInteractor());
             svcFactory.Stub(s => s.CreateTypeLibraryLoaderService()).Return(typeLibSvc);
             svcFactory.Stub(s => s.CreateProjectBrowserService(Arg<ITreeView>.Is.NotNull)).Return(brSvc);
             svcFactory.Stub(s => s.CreateUiPreferencesService()).Return(uiPrefs);

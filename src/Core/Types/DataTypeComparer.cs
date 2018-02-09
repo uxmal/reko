@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core.Types
 	/// Imposes a total ordering of DataTypes and compares two data types to 
     /// see if they are equal or less than each other.
 	/// </summary>
-	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>
+	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>, IEqualityComparer<DataType>
 	{
         private const int Prim   = 0;
         private const int Enum   = 1;
@@ -97,6 +97,13 @@ namespace Reko.Core.Types
 
             if (x is VoidType)
                 return 0;
+
+            if (x is UnknownType && y is UnknownType)
+                return 0;
+            if (x is UnknownType)
+                return -1;
+            if (y is UnknownType)
+                return 1;
 
 			PrimitiveType ix = x as PrimitiveType;
 			PrimitiveType iy = y as PrimitiveType;
@@ -288,6 +295,52 @@ namespace Reko.Core.Types
                     return d;
             }
             return Compare(x.ReturnValue.DataType, y.ReturnValue.DataType, count);
+        }
+
+        public bool Equals(DataType a, DataType b)
+        {
+            return Compare(a, b) == 0;
+        }
+
+        public int GetHashCode(DataType dt)
+        {
+            var pt = dt as PrimitiveType;
+            if (pt != null)
+                return pt.GetHashCode();
+            if (dt is UnknownType)
+                return dt.GetType().GetHashCode();
+            var ptr = dt as Pointer;
+            if (ptr != null)
+            {
+                return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
+            }
+            var rt = dt as ReferenceTo;
+            if (rt != null)
+            {
+                return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
+            }
+            var ft = dt as FunctionType;
+            if (ft != null)
+            {
+                if (ft.ParametersValid)
+                {
+                    int hash = 0;
+                    if (ft.ReturnValue != null)
+                    {
+                        hash = GetHashCode(ft.ReturnValue.DataType);
+                    }
+                    foreach (var p in ft.Parameters)
+                    {
+                        hash = hash * 11 ^ GetHashCode(p.DataType);
+                    }
+                    return hash;
+                }
+                else
+                {
+                    return ft.ReturnAddressOnStack + ft.StackDelta;
+                }
+            }
+            return dt.GetType().GetHashCode();
         }
 
 		#region IDataTypeVisitor Members /////////////////////////////////////////

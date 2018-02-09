@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         public XtensaDisassemblerTests()
         {
-            this.arch = new XtensaArchitecture();
+            this.arch = new XtensaArchitecture("xtensa");
         }
 
         public override IProcessorArchitecture Architecture

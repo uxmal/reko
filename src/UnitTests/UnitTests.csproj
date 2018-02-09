@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -13,7 +13,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -42,6 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -169,6 +170,7 @@
     <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProcedureSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
+    <Compile Include="Core\Types\DataTypeComparerTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\MacOSClassicTests.cs" />
     <Compile Include="Environments\MacOS\MacsBugSymbolScannerTests.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Environments\MacOS\InlineCodeInterpreterTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\Avr8CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\AlphaCallingConventionTests.cs" />
     <Compile Include="Environments\Windows\BorlandMangledNameParserTests.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
     <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
+    <Compile Include="ImageLoaders\MzExe\Borland\SymbolLoaderTests.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
     <Compile Include="Mocks\SsaProcedureBuilder.cs" />
@@ -532,7 +536,7 @@
     <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\LoadedPageInteractorTests.cs">
+    <Compile Include="Gui\Windows\Forms\ScannedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
@@ -607,6 +611,7 @@
     <Compile Include="Scanning\StringFinderTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
+    <Compile Include="Structure\AbsynCodeEmitter.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
@@ -615,7 +620,8 @@
     <Compile Include="Structure\MockWhileGoto.cs" />
     <Compile Include="Structure\MockWhileWithDeclarations.cs" />
     <Compile Include="Structure\MockNestedWhileLoops.cs" />
-    <Compile Include="Structure\ProcedureStructurerTests.cs" />
+    <Compile Include="Structure\ProcedurePrettifierTests.cs" />
+    <Compile Include="Structure\StructureAnalysisTests.cs" />
     <Compile Include="Structure\CfgCleanerTests.cs" />
     <Compile Include="Structure\CompoundConditionCoalescerTests.cs" />
     <Compile Include="Structure\MockIfElseIf.cs" />
@@ -624,6 +630,7 @@
     <Compile Include="Structure\MockWhileBreak.cs" />
     <Compile Include="Structure\SimpleStructureTests.cs" />
     <Compile Include="Structure\StructureTestBase.cs" />
+    <Compile Include="Structure\TailReturnRemoverTests.cs" />
     <Compile Include="TestCode\Factorial.cs" />
     <Compile Include="TestCode\ManyIncrements.cs" />
     <Compile Include="TestSerializedTypeRenderer.cs" />
@@ -835,6 +842,10 @@
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj">
+      <Project>{9e4b5291-eba1-4127-ac38-e0f822f7e4f1}</Project>
+      <Name>LGSymLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

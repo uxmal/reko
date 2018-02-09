@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Typing
                 var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 var si = m.Temp(PrimitiveType.Int16, "si");
-                m.Assign(bx, m.SegMemW(ds, m.Word16(0xC00)));
+                m.Assign(bx, m.SegMem16(ds, m.Word16(0xC00)));
                 m.SegStore(ds, m.IAdd(
                                 m.IAdd(bx, 10),
                                 si),
@@ -144,8 +144,8 @@ namespace Reko.UnitTests.Typing
                     }
                 };
                 var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
-                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
-                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+                m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
         }
 
@@ -207,15 +207,55 @@ namespace Reko.UnitTests.Typing
             RunTest(mock, "Typing/TycoFramePointer.txt");
         }
 
+
+        [Test]
+        public void TycoReg00014()
+        {
+            RunTest32("Fragments/regressions/r00014.asm", "Typing/TycoReg00014.txt");
+        }
+
         [Test]
         public void TycoReg00300()
         {
             buildEquivalenceClasses = true;
             RunTest(m =>
             {
-                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
-                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
+                m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
+                m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
             }, "Typing/TycoReg00300.txt");
+        }
+
+
+        [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
+        public void TycoSignedUnsignedAdd()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier b = m.Local32("b");
+                Identifier c = m.Local32("c");
+                a.DataType = PrimitiveType.Int32;
+                b.DataType = PrimitiveType.UInt32;
+                m.Assign(c, m.IAdd(a, b));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoSignedUnsignedAdd.txt");
+        }
+
+        [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
+        public void TycoStructMembers()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier ptr = m.Local32("ptr");
+                Identifier b16 = m.Local16("b16");
+                Identifier c16 = m.Local16("c16");
+                m.Store(m.IAdd(ptr, 200), m.Word32(0x1234));
+                m.Store(m.IAdd(ptr, 12), m.Word32(0x5678));
+                m.Assign(b16, m.Or(m.Mem16(m.IAdd(ptr, 14)), m.Word16(0x00FF)));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoStructMembers.txt");
         }
     }
 }

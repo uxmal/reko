@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@ namespace Reko.UnitTests.Arch.Avr
     [TestFixture]
     public class Avr8RewriterTests : RewriterTestBase
     {
-        private Avr8Architecture arch = new Avr8Architecture();
+        private Avr8Architecture arch;
         private Address baseAddr = Address.Ptr16(0x0100);
         private Avr8State state;
         private MemoryArea image;
 
         public Avr8RewriterTests()
         {
-            this.arch = new Avr8Architecture();
+            this.arch = new Avr8Architecture("avr8");
         }
 
         public override IProcessorArchitecture Architecture
@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.Avr
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return new Avr8Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.FramePointerType), host);
         }
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Arch.Avr
             Rewrite(0x9407); // "ror\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = __rcr(r0, C)",
+                "1|L--|r0 = __rcr(r0, 1, C)",
                 "2|L--|HSVNZC = cond(r0)");
         }
 
@@ -326,14 +326,14 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr8_rw_brcc()
         {
-            Rewrite(0xF000); // "brcs\t0000"
+            Rewrite(0xF000); // "brcs\t0102"
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if (Test(ULT,C)) branch 0100");
+                "1|T--|if (Test(ULT,C)) branch 0102");
             Rewrite(0xF4FF); // "brid\t003E"
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|if (!I) branch 013E");
+                "1|T--|if (!I) branch 0140");
         }
 
         [Test]
@@ -434,6 +434,87 @@ namespace Reko.UnitTests.Arch.Avr
                   "0|L--|0100(2): 2 instructions",
                   "1|L--|r25 = Mem0[code:z:byte]",
                   "2|L--|z = z + 1");
+        }
+
+        [Test]
+        public void Avr8_rw_cpse()
+        {
+            Rewrite(0x1181, 0x8180);	// cpse	r24,r1; ld r24,X
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (r24 == r1) branch 0104",
+                "2|L--|0102(2): 1 instructions",
+                "3|L--|r24 = Mem0[x:byte]");
+        }
+
+        [Test]
+        public void Avr8_rw_ldd()
+        {
+            Rewrite(0x818E);	// ldd	r24,y+06
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|r24 = Mem0[y + 6:byte]");
+        }
+
+                [Test]
+        public void Avr8_rw_ldd_z()
+        {
+            Rewrite(0x8964);	
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|r22 = Mem0[z + 20:byte]");
+        }
+
+        [Test]
+        public void Avr8_rw_std()
+        {
+            Rewrite(0x8213);	// std	z+0B,r1
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|Mem0[z + 3:byte] = r1");
+        }
+
+        [Test]
+        public void Avr8_rw_brpl()
+        {
+            Rewrite(0xF7E2);	// brpl	0364
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (Test(GE,N)) branch 00FA");
+        }
+
+        [Test]
+        public void Avr8_rw_sbrs()
+        {
+            Rewrite(0xFF84, 0x8213);	// sbrs	r24,04; std	z+0B,r1
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if ((r24 & 0x10) != 0x00) branch 0104",
+                "2|L--|0102(2): 1 instructions",
+                "3|L--|Mem0[z + 3:byte] = r1");
+        }
+
+
+        [Test]
+        public void Avr8_rw_sbrc()
+        {
+            Rewrite(0xFD84, 0x8213);	// sbrc	r24,04; std	z+0B,r1
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if ((r24 & 0x10) == 0x00) branch 0104",
+                "2|L--|0102(2): 1 instructions",
+                "3|L--|Mem0[z + 3:byte] = r1");
+        }
+
+        [Test]
+        public void Avr8_rw_muls()
+        {
+            Rewrite(0x02E2);	// muls	r30,r18
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|r1_r0 = r30 *s r18",
+                "2|L--|C = r1_r0 < 0x0000",
+                "3|L--|Z = r1_r0 == 0x0000");
         }
     }
 }

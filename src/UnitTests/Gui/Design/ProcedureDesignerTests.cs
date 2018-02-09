@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Gui.Design
         [Test]
         public void ProcDesigner_DefaultAction_ShowProcedure()
         {
-            var proc = new Procedure("foo", new Frame(PrimitiveType.Pointer32));
+            var proc = new Procedure("foo", new Frame(PrimitiveType.Ptr32));
             var des = new ProcedureDesigner(program, proc, null, Address.Ptr32(0x001100000), false);
             des.Services = services;
             var codeSvc = mr.StrictMock<ICodeViewerService>();

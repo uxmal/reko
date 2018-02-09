@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,37 +32,46 @@ namespace Reko.Core
 {
 	public class StructureMemberAttribute : Attribute
     {
-		public Type memberType { get; private set; }
-
 		/// <summary>
 		/// </summary>
 		/// <param name="memberType">Type of a class to invoke to process the member</param>
 		public StructureMemberAttribute(Type memberType) {
-			this.memberType = memberType;
+			this.MemberType = memberType;
 		}
-	}
 
-	/// <summary>
-	/// Reads in a structure field by field from an image reader.
-	/// </summary>
-	public class StructureReader<T> where T : struct
+        public Type MemberType { get; private set; }
+
+    }
+
+    /// <summary>
+    /// Reads in a structure field by field from an image reader.
+    /// </summary>
+    public class StructureReader<T> where T : struct
     {
-        private T structure;
-		private BinaryReader reader;
+		private Func<int, byte[]> readBytes;
 		private Endianness defaultEndianess = Endianness.LittleEndian;
 
-        public StructureReader(BinaryReader reader)
+        public StructureReader(ImageReader reader) : this(reader.ReadBytes)
         {
-			this.reader = reader;
-			if (typeof(T).IsDefined(typeof(EndianAttribute), false)) {
-				EndianAttribute attr = (EndianAttribute)(typeof(T).GetCustomAttribute(typeof(EndianAttribute), false));
-				this.defaultEndianess = attr.Endianness;
-			}
+        }
+
+        public StructureReader(BinaryReader reader) : this(reader.ReadBytes)
+        {
+        }
+
+        public StructureReader(Func<int, byte[]> readBytes)
+        {
+            this.readBytes = readBytes;
+            if (typeof(T).IsDefined(typeof(EndianAttribute), false))
+            {
+                EndianAttribute attr = (EndianAttribute)(typeof(T).GetCustomAttribute(typeof(EndianAttribute), false));
+                this.defaultEndianess = attr.Endianness;
+            }
         }
 
         public T Read()
         {
-			return this.BytesToStruct(this.reader);
+			return this.BytesToStruct(this.readBytes);
         }
 
         private int GetAlignment(FieldInfo f)
@@ -132,13 +141,12 @@ namespace Reko.Core
 			return rawData;
 		}
 
-		private T BytesToStruct(BinaryReader reader) {
-			byte[] bytes = reader.ReadBytes(Marshal.SizeOf(typeof(T)));
+		private T BytesToStruct(Func<int, byte[]> readBytes) {
+			byte[] bytes = readBytes(Marshal.SizeOf(typeof(T)));
 			return this.BytesToStruct(bytes);
 		}
 
-		private T BytesToStruct(byte[] rawData)
-        {
+		private T BytesToStruct(byte[] rawData) {
 			T result = default(T);
 
 			RespectEndianness(typeof(T), rawData);

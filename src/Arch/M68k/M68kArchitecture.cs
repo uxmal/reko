@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,17 +37,20 @@ namespace Reko.Arch.M68k
     [Designer("Reko.Arch.M68k.Design.M68kArchitectureDesigner,Reko.Arch.M68k.Design")]
     public class M68kArchitecture : ProcessorArchitecture
     {
-        public M68kArchitecture()
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
+        public M68kArchitecture(string archId) : base(archId)
         {
             InstructionBitSize = 16;
-            FramePointerType = PrimitiveType.Pointer32;
-            PointerType = PrimitiveType.Pointer32;
+            FramePointerType = PrimitiveType.Ptr32;
+            PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             CarryFlagMask = (uint)FlagM.CF;
             StackRegister = Registers.a7;
-        }
+            flagGroups = new Dictionary<uint, FlagGroupStorage>();
+    }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+    public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);
         }
@@ -140,7 +143,16 @@ namespace Reko.Arch.M68k
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.ccr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -153,11 +165,11 @@ namespace Reko.Arch.M68k
             return new Rewriter(this, rdr, (M68kState)state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             return new MemoryAccess(new BinaryExpression(
                 Operator.IAdd, FramePointerType,
-                frame.EnsureRegister(StackRegister), Constant.Word32(offset)),
+                binder.EnsureRegister(StackRegister), Constant.Word32(offset)),
                 dataType);
         }
 

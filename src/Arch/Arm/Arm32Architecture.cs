@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ using Reko.Core.Operators;
 
 namespace Reko.Arch.Arm
 {
+    // https://wiki.ubuntu.com/ARM/Thumb2PortingHowto
     public class Arm32Architecture : ProcessorArchitecture
     {
         private INativeArchitecture native;
@@ -44,11 +45,11 @@ namespace Reko.Arch.Arm
         private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Arm32Architecture()
+        public Arm32Architecture(string archId) : base(archId)
         {
             InstructionBitSize = 32;
-            FramePointerType = PrimitiveType.Pointer32;
-            PointerType = PrimitiveType.Pointer32;
+            FramePointerType = PrimitiveType.Ptr32;
+            PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
@@ -70,9 +71,7 @@ namespace Reko.Arch.Arm
 
         private void GetRegisterOfType(int registerKind)
         {
-            int cRegs;
-            IntPtr aRegs;
-            native.GetAllRegisters(registerKind, out cRegs, out aRegs);
+            native.GetAllRegisters(registerKind, out int cRegs, out IntPtr aRegs);
             if (aRegs == null)
                 throw new OutOfMemoryException();
             NativeRegister nReg = new NativeRegister();
@@ -183,7 +182,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new ArmREwriter(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
+            return new ArmRewriter(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
@@ -196,8 +195,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            RegisterStorage reg;
-            if (regsByNumber.TryGetValue(i, out reg))
+            if (regsByNumber.TryGetValue(i, out var reg))
                 return reg;
             else 
                 return null;
@@ -205,8 +203,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (regsByName.TryGetValue(name, out reg))
+            if (regsByName.TryGetValue(name, out var reg))
                 return reg;
             else
                 return null;
@@ -237,8 +234,7 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out var f))
             {
                 return f;
             }

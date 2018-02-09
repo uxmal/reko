@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class SuperHRewriterTests : RewriterTestBase
     {
-        private SuperHArchitecture arch = new SuperHLeArchitecture();
+        private SuperHArchitecture arch = new SuperHLeArchitecture("superH");
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SuperHState state;
         private MemoryArea image;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,10 +35,9 @@ namespace Reko.UnitTests.Fragments
 			var sum = Local32("mod");
 			PrimitiveType fl = PrimitiveType.Real32;
 
-			Assign(sum, IAdd(Load(fl, v),
-						IAdd(Load(fl, IAdd(v, 4)),
-							Load(fl, IAdd(v, 8)))));
-
+			Assign(sum, FAdd(Mem(fl, v),
+						FAdd(Mem(fl, IAdd(v, 4)),
+							Mem(fl, IAdd(v, 8)))));
 		}
 	}
 }

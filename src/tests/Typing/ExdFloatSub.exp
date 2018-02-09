@@ -12,7 +12,7 @@ T_3: (in -5.5F : real32)
   Class: Eq_3
   DataType: real32
   OrigDataType: real32
-T_4: (in p - -5.5F : real64)
+T_4: (in p - -5.5F : real32)
   Class: Eq_4
   DataType: real32
   OrigDataType: real32

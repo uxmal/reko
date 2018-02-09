@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,19 +36,20 @@ namespace Reko.Arch.Arm
 {
     public class Arm64Architecture : ProcessorArchitecture
     {
+
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private RegisterStorage[] regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Arm64Architecture()
+        public Arm64Architecture(string archId) : base(archId)
         {
-            InstructionBitSize = 32;
-            FramePointerType = PrimitiveType.Pointer32;
-            PointerType = PrimitiveType.Pointer32;
-            WordWidth = PrimitiveType.Word32;
+            this.InstructionBitSize = 32;
+            this.FramePointerType = PrimitiveType.Ptr64;
+            this.PointerType = PrimitiveType.Ptr64;
+            this.WordWidth = PrimitiveType.Word64;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
-
+            this.CarryFlagMask = 0;
             var unk = CreateNativeArchitecture("arm-64");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
 
@@ -217,7 +218,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

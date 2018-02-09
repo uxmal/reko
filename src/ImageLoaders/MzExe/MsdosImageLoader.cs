@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Core.Configuration;
 using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -72,7 +73,7 @@ namespace Reko.ImageLoaders.MzExe
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
 			SegmentMap imageMap = segmentMap;
-			EndianImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
+			EndianImageReader rdr = new LeImageReader(exe.RawImage, exe.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
@@ -134,8 +135,38 @@ namespace Reko.ImageLoaders.MzExe
                 results.Symbols[sym.Address] = sym;
                 ep.NoDecompile = true;
             }
+
+			try
+			{
+				LoadDebugSymbols(results.Symbols, addrLoad);
+			}
+			catch (Exception ex)
+			{
+                var listener = Services.RequireService<DecompilerEventListener>();
+                listener.Error(
+                    new NullCodeLocation(Filename),
+                    ex,
+                    "Detected Borland debug symbols but failed to load them.");
+			}
             return results;
 		}
+
+        private void LoadDebugSymbols(SortedList<Address, ImageSymbol> symbols, Address addrLoad)
+        {
+            //$REVIEW: this is hardwired. some kind of generic "sniffing" mechanism needs to be implemented.
+            // We don't want to load every registered symbol provider, though. Perhaps
+            // load symbols in a separate AppDomain, marshal all the symbols across,
+            // then discard the appdomain?
+            var borsymLdr = new Borland.SymbolLoader(exe, RawImage, addrLoad);
+            if (borsymLdr.LoadDebugHeader())
+            {
+                var syms = borsymLdr.LoadSymbols();
+                foreach (var sym in syms)
+                {
+                    symbols[sym.Key] = sym.Value;
+                }
+            }
+        }
 
         [Conditional("DEBUG")]
         public void DumpSegments(SegmentMap segmentMap)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Arch.Sparc
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public SparcArchitecture(PrimitiveType wordWidth)
+        public SparcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
         {
             this.WordWidth = wordWidth;
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
@@ -88,9 +88,9 @@ namespace Reko.Arch.Sparc
             return new SparcProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new SparcRewriter(this, rdr, (SparcProcessorState)state, frame, host);
+            return new SparcRewriter(this, rdr, (SparcProcessorState)state, binder, host);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -179,7 +179,7 @@ namespace Reko.Arch.Sparc
             return GetFlagGroup((uint)grf);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -220,14 +220,14 @@ namespace Reko.Arch.Sparc
 
     public class SparcArchitecture32 : SparcArchitecture
     {
-        public SparcArchitecture32() : base(PrimitiveType.Word32)
+        public SparcArchitecture32(string archId) : base(archId, PrimitiveType.Word32)
         {
         }
     }
 
     public class SparcArchitecture64 : SparcArchitecture
     {
-        public SparcArchitecture64() : base(PrimitiveType.Word64)
+        public SparcArchitecture64(string archId) : base(archId, PrimitiveType.Word64)
         {
         }
     }

@@ -48,6 +48,5 @@ void fn0C00_0000(word16 ax, selector ds)
 	}
 	Mem10[ds:0x0300:word16] = ax;
 	Mem12[ds:0x0302:byte] = cl_13;
-	return;
 }
 ===========================

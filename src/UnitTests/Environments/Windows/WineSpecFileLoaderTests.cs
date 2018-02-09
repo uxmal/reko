@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,13 +55,13 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Given_WineSpecLoader_16(string filename, string contents)
         {
-            this.platform = new Win16Platform(sc, new X86ArchitectureProtected16());
+            this.platform = new Win16Platform(sc, new X86ArchitectureProtected16("x86-protected-16"));
             wsfl = new WineSpecFileLoader(sc, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         private void Given_WineSpecLoader_32(string filename, string contents)
         {
-            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32());
+            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
             wsfl = new WineSpecFileLoader(sc, filename, Encoding.ASCII.GetBytes(contents));
         }
 

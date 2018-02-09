@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core
 			var reg_edx = new RegisterStorage("edx", 1, 0, PrimitiveType.Word32);
 			var id2 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
 			var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
-			var arg = new Identifier("barOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
+			var arg = new Identifier("barOut", PrimitiveType.Ptr32, new OutArgumentStorage(r));
 			var use2 = new UseInstruction(id2, arg);
 			Assert.AreSame(id2, use2.Expression);
 			Assert.AreEqual("barOut", use2.OutArgument.Name);
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core
 			Assert.AreEqual("use foo", use.ToString());
 
 			var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
-			var arg = new Identifier("edxOut", PrimitiveType.Pointer32, new OutArgumentStorage(r));
+			var arg = new Identifier("edxOut", PrimitiveType.Ptr32, new OutArgumentStorage(r));
 			use = new UseInstruction(id1, arg);
 			Assert.AreEqual("use foo (=> edxOut)" , use.ToString());
 		}

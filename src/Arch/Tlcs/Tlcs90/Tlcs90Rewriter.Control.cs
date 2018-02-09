@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,7 +129,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             rtlc = RtlClass.Transfer;
             var sp = binder.EnsureRegister(Registers.sp);
             var af = binder.EnsureRegister(Registers.af);
-            m.Assign(af, m.LoadW(sp));
+            m.Assign(af, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, m.Int32(2)));
             m.Return(2, 0);
         }
@@ -140,7 +140,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var sp = binder.EnsureRegister(Registers.sp);
             var af = binder.EnsureRegister(Registers.af);
             m.Assign(sp, m.ISub(sp, m.Int32(2)));
-            m.Assign(m.LoadW(sp), af);
+            m.Assign(m.Mem16(sp), af);
             m.Call(Address.Ptr16(0x0100), 2);
 
         }

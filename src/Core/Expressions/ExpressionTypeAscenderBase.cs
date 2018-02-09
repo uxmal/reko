@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,7 +119,9 @@ namespace Reko.Core.Expressions
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.UnsignedInt);
             }
-            else if (binExp.Operator is ConditionalOperator)
+            else if (binExp.Operator is ConditionalOperator ||
+                binExp.Operator is CorOperator ||
+                binExp.Operator is CandOperator)
             {
                 dt = PrimitiveType.Bool;
             }
@@ -159,15 +161,15 @@ namespace Reko.Core.Expressions
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
         private Pointer GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
         {
-            Constant cOffset;
-            if (!right.As(out cOffset))
-                return null;
-            var ptRight = dtRight as PrimitiveType;
-            if (ptRight == null || ptRight.Domain == Domain.Pointer)
-                return null;
-            int offset = cOffset.ToInt32();
-
-            return GetPossibleFieldType(dtLeft, offset);
+            if (right is Constant cOffset)
+            {
+                if (dtRight is PrimitiveType ptRight && ptRight.Domain != Domain.Pointer)
+                {
+                    int offset = cOffset.ToInt32();
+                    return GetPossibleFieldType(dtLeft, offset);
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -196,7 +198,8 @@ namespace Reko.Core.Expressions
             var dtField = field.DataType.ResolveAs<DataType>();
             if (dtField == null)
                 return null;
-            //$BUG: offset != field.Offset?
+            //$TODO This really should be offset != field.Offset
+            // However doing so causes a regression in hello_ppc.exe
             if (offset >= field.Offset + dtField.Size)
                 return null;
             return factory.CreatePointer(dtField, dtLeft.Size);
@@ -204,22 +207,33 @@ namespace Reko.Core.Expressions
 
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
-            var ptLeft = dtLeft as PrimitiveType;
+            var ptLeft = dtLeft.ResolveAs<PrimitiveType>();
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer)
             {
                 if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
-            
-            if (ptLeft != null && ptLeft.IsIntegral)
+
+            if (ptLeft != null && ptLeft.IsIntegral && ptRight != null && ptRight.IsIntegral)
             {
-                if (ptRight != null)
+                // According to the C language definition, the sum
+                // of unsigned and signed integers is always unsigned.
+                if (ptLeft.Domain == Domain.UnsignedInt)
+                {
+                    return ptLeft;
+                }
+                if (ptRight.Domain == Domain.UnsignedInt)
+                {
                     return ptRight;
+                }
             }
-            if (dtLeft is Pointer)
+            if (dtLeft.ResolveAs<Pointer>() != null)
             {
-                return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+                if (dtLeft is TypeReference)
+                    return dtLeft;
+                else 
+                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
             return dtLeft;
         }
@@ -231,9 +245,16 @@ namespace Reko.Core.Expressions
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
                 dtLeft is Pointer)
             {
-                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
-                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+                if (ptRight != null)
+                {
+                    if ((ptRight.Domain & Domain.Integer) != 0)
+                        return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+                    else if ((ptRight.Domain & Domain.Pointer) != 0)
+                        return PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
+                }
+                if (dtRight is Pointer)
+                    return PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
+                throw new TypeInferenceException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             if (ptRight != null && ptRight.Domain == Domain.Pointer || 
                 dtRight is Pointer)
@@ -245,7 +266,7 @@ namespace Reko.Core.Expressions
                 // integer.
                 if (ptLeft != null && (ptLeft.Domain & Domain.Pointer) != 0)
                     return PrimitiveType.Create(Domain.Integer, dtLeft.Size);
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
+                throw new TypeInferenceException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             return dtLeft;
         }
@@ -351,8 +372,7 @@ namespace Reko.Core.Expressions
             }
             else 
             {
-                var ptHead = dtHead as PrimitiveType;
-                if (ptHead != null && ptHead.IsIntegral)
+                if (dtHead is PrimitiveType ptHead && ptHead.IsIntegral)
                 {
                     dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.Size);
                 }

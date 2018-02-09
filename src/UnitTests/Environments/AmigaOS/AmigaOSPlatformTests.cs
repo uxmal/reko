@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
         private RtlEmitter m;
         private AmigaOSPlatform platform;
         private List<RtlInstruction> rtls;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
 
         [SetUp]
         public void Setup()
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services = mr.StrictMock<IServiceProvider>();
             var cfgSvc = mr.Stub<IConfigurationService>();
             var env = mr.Stub<OperatingEnvironment>();
-            this.arch = new M68kArchitecture();
+            this.arch = new M68kArchitecture("m68k");
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
             cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(env);
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(cfgSvc);
             this.services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(fsSvc);
             this.services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tllSvc);
-            this.frame = new Frame(arch.FramePointerType);
+            this.binder = new Frame(arch.FramePointerType);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             mr.ReplayAll();
 
             When_Create_Platform();
-            m.Call(m.IAdd(frame.EnsureRegister(Registers.a6), -512), 4);
+            m.Call(m.IAdd(binder.EnsureRegister(Registers.a6), -512), 4);
             var state = arch.CreateProcessorState();
             var svc = platform.FindService(rtls.Last(), state);
 

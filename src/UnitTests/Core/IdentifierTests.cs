@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Core
 		{
 			var reg_internal = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
 			reg = new Identifier("eax", PrimitiveType.Word32, reg_internal);
-			outReg = new Identifier("eaxOut", PrimitiveType.Pointer32, new OutArgumentStorage(reg));
+			outReg = new Identifier("eaxOut", PrimitiveType.Ptr32, new OutArgumentStorage(reg));
 		}
 
 		[Test]

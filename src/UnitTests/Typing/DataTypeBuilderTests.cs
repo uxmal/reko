@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Typing
         {
             store = new TypeStore();
             factory = new TypeFactory();
-            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
+            aen = new ExpressionNormalizer(PrimitiveType.Ptr32);
             eqb = new EquivalenceClassBuilder(factory, store);
             arch = new FakeArchitecture();
             program = new Program();
@@ -58,14 +58,14 @@ namespace Reko.UnitTests.Typing
             dtb = new DataTypeBuilder(factory, store, program.Platform);
         }
 
-        protected override void RunTest(Program prog, string outputFile)
+        protected override void RunTest(Program program, string outputFile)
         {
-            aen.Transform(prog);
-            eqb.Build(prog);
-            TypeCollector trco = new TypeCollector(factory, store, prog, new FakeDecompilerEventListener());
+            aen.Transform(program);
+            eqb.Build(program);
+            TypeCollector trco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
-            Verify(prog, outputFile);
+            Verify(program, outputFile);
         }
 
         private void Verify(string outputFile)
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Typing
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
                 Store(IAdd(IAdd(r, 20), SMul(i, 10)), Int32(0));
-                Return(Load(PrimitiveType.Word16,
+                Return(Mem(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
             }
         }
@@ -345,7 +345,7 @@ namespace Reko.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
-            var arch = new Reko.Arch.X86.X86ArchitectureReal();
+            var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
             Program prog = new Program
             {
                 Architecture = arch,
@@ -371,7 +371,7 @@ namespace Reko.UnitTests.Typing
         public void DtbSegmentedDirectAddress()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            var arch = new Reko.Arch.X86.X86ArchitectureReal();
+            var arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
             var prog = new Program
             {
                 Architecture = arch,
@@ -490,8 +490,8 @@ namespace Reko.UnitTests.Typing
             m.Assign(ds2, ds);
             m.Store(
                 m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
-                m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
-            m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
+                m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
+            m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);

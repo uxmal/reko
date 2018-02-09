@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,8 +103,7 @@ namespace Reko.Typing
 
         private FunctionType ExtractSignature(Expression proc)
         {
-            var pc = proc as ProcedureConstant;
-            if (pc != null)
+            if (proc is ProcedureConstant pc)
                 return pc.Procedure.Signature;
             return MatchFunctionPointer(proc.TypeVariable.DataType);
         }
@@ -157,12 +156,10 @@ namespace Reko.Typing
                 arr = acc.Array;
                 offset = 0;
             }
-            BinaryExpression bIndex = acc.Index as BinaryExpression;
             int stride = 1;
-            if (bIndex != null && (bIndex.Operator == Operator.IMul || bIndex.Operator == Operator.SMul || bIndex.Operator == Operator.UMul))
+            if (acc.Index is BinaryExpression bIndex && (bIndex.Operator == Operator.IMul || bIndex.Operator == Operator.SMul || bIndex.Operator == Operator.UMul))
             {
-                Constant c = bIndex.Right as Constant;
-                if (c != null)
+                if (bIndex.Right is Constant c)
                 {
                     stride = c.ToInt32();
                 }
@@ -219,9 +216,11 @@ namespace Reko.Typing
             if (binExp.Operator == Operator.IAdd)
             {
                 var dt = PushAddendDataType(binExp.TypeVariable.DataType, eRight.TypeVariable.DataType);
-                MeetDataType(eLeft, dt);
+                if (dt != null)
+                    MeetDataType(eLeft, dt);
                 dt = PushAddendDataType(binExp.TypeVariable.DataType, eLeft.TypeVariable.DataType);
-                MeetDataType(eRight, dt);
+                if (dt != null)
+                    MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.ISub)
             {
@@ -282,13 +281,14 @@ namespace Reko.Typing
             }
             else if (binExp.Operator is UnsignedIntOperator)
             {
-                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.UnsignedInt|Domain.Character);
+                dt = PrimitiveType.CreateWord(eRight.TypeVariable.DataType.Size).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
-                binExp.Operator == Operator.Xor)
+                binExp.Operator == Operator.Xor || binExp.Operator == Operator.Cand ||
+                binExp.Operator == Operator.Cor)
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.
@@ -341,9 +341,8 @@ namespace Reko.Typing
                     return PrimitiveType.Create(Domain.Pointer, dtSum.Size);
                 }
             }
-            if (dtSum is MemberPointer)
+            if (dtSum is MemberPointer mpSum)
             {
-                var mpSum  = dtSum as MemberPointer;
                 if (dtOther is MemberPointer)
                     return PrimitiveType.Create(Domain.SignedInt, dtOther.Size);
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
@@ -353,8 +352,9 @@ namespace Reko.Typing
             }
             if (ptSum != null && ptSum.IsIntegral)
             {
-                if (ptOther != null && ptOther.Domain == Domain.Pointer || dtOther is Pointer)
-                    return factory.CreateUnionType(null, null, new List<DataType> {dtSum, dtOther});
+                // With integral types, type information flows only from leaves
+                // to root.
+                return null;
             }
             if (ptSum != null && ptSum.Domain == Domain.Pointer || dtSum is Pointer)
             {
@@ -569,8 +569,7 @@ namespace Reko.Typing
 		{
 			var id = e as Identifier;
 			if (id == null) return null;
-            LinearInductionVariable iv;
-            if (!ivs.TryGetValue(id, out iv)) return null;
+            if (!ivs.TryGetValue(id, out var iv)) return null;
             return iv;
 		}
 
@@ -687,8 +686,7 @@ namespace Reko.Typing
                 if (IsSelector(seq.Head) || DataTypeOf(seq.Head) is Pointer)
                 {
                     MeetDataType(seq.Head, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seq.Head).Size));
-                    var ptr = DataTypeOf(seq) as Pointer;
-                    if (ptr != null)
+                    if (DataTypeOf(seq) is Pointer ptr)
                     {
                         MeetDataType(seq.Tail, MemberPointerTo(seq.Head.TypeVariable, ptr.Pointee, DataTypeOf(seq.Tail).Size));
                     }
@@ -697,8 +695,7 @@ namespace Reko.Typing
                     return false;
                 }
             }
-            var pt = tv.DataType as PrimitiveType;
-            if (pt != null && pt.IsIntegral)
+            if (tv.DataType is PrimitiveType pt && pt.IsIntegral)
             {
                 MeetDataType(seq.Head, PrimitiveType.Create(pt.Domain, seq.Head.DataType.Size));
                 MeetDataType(seq.Tail, PrimitiveType.Create(Domain.UnsignedInt, seq.Head.DataType.Size));

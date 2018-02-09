@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Structure
                 Label("inner");
                 BranchIf(Ge(j, 10), "done_inner");
 
-                Store(Word32(0x1234), IAdd(Load(PrimitiveType.Int32, Word32(0x1234)), j));
+                Store(Word32(0x1234), IAdd(Mem(PrimitiveType.Int32, Word32(0x1234)), j));
                     Assign(j,IAdd(j,1));
                     Goto("inner");
                 Label("done_inner");

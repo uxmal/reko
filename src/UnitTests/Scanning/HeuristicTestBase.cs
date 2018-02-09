@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,12 +73,6 @@ namespace Reko.UnitTests.Scanning
         protected void Given_RewriterHost()
         {
             host = mr.Stub<IRewriterHost>();
-            host.Stub(h => h.EnsurePseudoProcedure(null, null, 0))
-                .IgnoreArguments()
-                .Do(new Func<string, DataType, int, PseudoProcedure>((n, dt, a) =>
-                {
-                    return new PseudoProcedure(n, dt, a);
-                }));
             host.Stub(h => h.PseudoProcedure(
                 Arg<string>.Is.Anything,
                 Arg<DataType>.Is.Anything,
@@ -90,7 +84,6 @@ namespace Reko.UnitTests.Scanning
                     return new Application(new ProcedureConstant(fn, ppp),
                         dt,
                         a);
-
             }));
         }
 
@@ -146,7 +139,7 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_x86_32()
         {
-            program.Architecture = new X86ArchitectureFlat32();
+            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
@@ -159,7 +152,7 @@ namespace Reko.UnitTests.Scanning
 
         internal void Given_x86_16()
         {
-            program.Architecture = new X86ArchitectureReal();
+            program.Architecture = new X86ArchitectureReal("x86-real-16");
         }
 
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)

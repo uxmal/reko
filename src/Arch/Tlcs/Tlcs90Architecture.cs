@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,11 +39,11 @@ namespace Reko.Arch.Tlcs
     /// </summary>
     public class Tlcs90Architecture : ProcessorArchitecture
     {
-        public Tlcs90Architecture()
+        public Tlcs90Architecture(string archId) : base(archId)
         {
             base.InstructionBitSize = 8;
-            this.FramePointerType = PrimitiveType.Pointer32;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.StackRegister = Registers.sp;
         }
@@ -93,9 +93,9 @@ namespace Reko.Arch.Tlcs
             return new Tlcs90State(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Tlcs90Rewriter(this, rdr, state, frame, host);
+            return new Tlcs90Rewriter(this, rdr, state, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)

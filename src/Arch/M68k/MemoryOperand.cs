@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,12 +81,7 @@ namespace Reko.Arch.M68k
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteString("#");
-            var pt = Constant.DataType as PrimitiveType;
-            if (pt == null || pt.Domain != Domain.Real)
-            {
-                writer.WriteString("$");
-            }
-            writer.WriteString(MachineOperand.FormatValue(Constant));
+            writer.WriteString(MachineOperand.FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
         }
     }
 
@@ -159,10 +154,7 @@ namespace Reko.Arch.M68k
         {
             if (Offset != null)
             {
-                writer.WriteChar('$');
-                writer.WriteString(Offset.IsNegative
-                    ? MachineOperand.FormatSignedValue(Offset)
-                    : MachineOperand.FormatUnsignedValue(Offset));
+                writer.WriteString(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
             }
             writer.WriteString("(");
             writer.WriteString(Base.Name);
@@ -231,7 +223,7 @@ namespace Reko.Arch.M68k
             this.ARegister = a;
             this.XRegister = x;
             this.XWidth = width;
-            this.Scale = (byte) scale;
+            this.Scale = (byte)scale;
         }
 
         public override T Accept<T>(M68kOperandVisitor<T> visitor)

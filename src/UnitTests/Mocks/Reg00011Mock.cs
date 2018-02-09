@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Mocks
 			// DataOut: eax ecx edx esi ax cx bx sp bp di es cs ss ds fs
 			// LocalsOut: loc02(16)l1B96_2DB4:		// block 4, pred: 3
 			Identifier fs_41 = Local16("fs_41");
-            Assign(fs_41, LoadW(Word16(0x7E50)));
+            Assign(fs_41, Mem16(Word16(0x7E50)));
 			BranchIf(Ne(LoadW(0x7E50), LoadW(0x53C2)), "block6");
 			// succ:  5 6
 
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Mocks
 			// DataOut: eax ecx edx esi ax cx sp bp di es cs ss ds fs
 			// LocalsOut: loc02(16)l1B96_2DCF:		// block 6, pred: 5 4
 			Label("block6");
-			SideEffect(Fn(LoadW(IAdd(UMul(ax_36, 0x0002), 0x841A))));
+			SideEffect(Fn(Mem16(IAdd(UMul(ax_36, 0x0002), 0x841A))));
 			Identifier loc04_63 = Local16("loc04_63");
 			Assign(loc04_63, LoadW(0x0048));
 			Store(Word16(0x004A), LoadW(0x004A));

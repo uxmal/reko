@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -360,7 +360,7 @@ namespace Reko.Core
         {
             var members = enumType.Values != null
                 ? enumType.Values.ToSortedList(k => k.Name, v => (long)v.Value)
-                : null;
+                : new SortedList<string, long>();
             return new EnumType
             {
                 Name = enumType.Name,
@@ -371,7 +371,13 @@ namespace Reko.Core
 
         public DataType VisitTemplate(SerializedTemplate sTemplate)
         {
-            throw new NotImplementedException();
+            //$TODO: Reko's type system doesn't encompass templated / generic
+            // types yet, so we fake a template instance.
+            var dts = sTemplate.TypeArguments.Select(ta => ta.Accept(this));
+            return new StructureType
+            {
+                Name = $"{sTemplate.Name}<{string.Join(",", dts)}>",
+            };
         }
 
         public DataType VisitVoidType(VoidType_v1 voidType)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1109,13 +1109,13 @@ namespace Reko.Assemblers.x86
 
         public void i386()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             SetDefaultWordWidth(PrimitiveType.Word32);
         }
 
         public void i86()
         {
-            arch = new X86ArchitectureReal();
+            arch = new X86ArchitectureReal("x86-real-16");
             Platform = new MsdosPlatform(services, arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }

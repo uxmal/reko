@@ -100,8 +100,8 @@ namespace Reko.UnitTests.Core.Serialization.Json
                           "[0,'=','SZ','cof',['-f','f1','f3']]," +
                           "[1,'bra',['test','GE','SZ'],'l_nonneg']]," +
                      "'succ':['l_neg','l_nonneg']}," +
-                "{'name':'l_nonneg','linaddr':4,'stms':[" +
-                          "[0,['st',['m','Mem0',['+','r9',[8,'w32']],'w64'],['*f','f3',[2,'r64']]]]," +
+                    "{'name':'l_nonneg','linaddr':4,'stms':[" +
+                          "[0,['st',['m','Mem0',['+','r9',[8,'w32']],'r64'],['*f','f3',[2,'r64']]]]," +
                           "[1,'ret']]," +
                    "'succ':['JpsTest_exit']}," +
                 "{'name':'l_neg','linaddr':2,'stms':[" +
@@ -185,8 +185,8 @@ namespace Reko.UnitTests.Core.Serialization.Json
                 var f1 = m.Reg64("f1", 2);
                 var f2 = m.Reg64("f1", 2);
                 m.Label("l1000");
-                m.Assign(f1, m.Fn(cos, m.Load(PrimitiveType.Real64, r1)));
-                m.Assign(f2, m.Fn(sin, m.Load(PrimitiveType.Real64, r2)));
+                m.Assign(f1, m.Fn(cos, m.Mem(PrimitiveType.Real64, r1)));
+                m.Assign(f2, m.Fn(sin, m.Mem(PrimitiveType.Real64, r2)));
                 m.Assign(f1, m.FSub(f1, f2));
                 m.Return(f1);
             });

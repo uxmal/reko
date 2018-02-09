@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,17 +34,18 @@ using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public class ThumbProcessorArchitecture : ProcessorArchitecture
+    public class ThumbArchitecture : ProcessorArchitecture
     {
+
         private INativeArchitecture native;
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public ThumbProcessorArchitecture()
+        public ThumbArchitecture(string archId) : base(archId)
         {
-            this.FramePointerType = PrimitiveType.Pointer32;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.InstructionBitSize = 16;
 

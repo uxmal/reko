@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Xtensa
     [TestFixture]
     public class XtensaRewriterTests : RewriterTestBase
     {
-        private XtensaArchitecture arch = new XtensaArchitecture();
+        private XtensaArchitecture arch = new XtensaArchitecture("xtensa");
         private Address baseAddr = Address.Ptr32(0x0010000);
         private XtensaProcessorState state;
         private MemoryArea image;
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             return new XtensaRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }

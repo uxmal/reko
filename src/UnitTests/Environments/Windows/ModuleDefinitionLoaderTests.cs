@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void CreateDefFileLoader(string absPath, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32("x86-protected-32"));
             dfl = new ModuleDefinitionLoader(null, absPath, Encoding.ASCII.GetBytes(contents));
         }
 

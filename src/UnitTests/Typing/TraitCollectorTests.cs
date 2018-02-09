@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 
 			// e ::= Mem[(b+0x1003000)+(i*s):word16]
-			Expression e = m.Load(
+			Expression e = m.Mem(
 				PrimitiveType.Word16,
 				m.IAdd(m.IAdd(b, Constant.Word32(0x10030000)),
 				m.SMul(i, s)));
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier i = m.Local32("i");
             Expression ea = m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000));
-            Expression e = m.Load(PrimitiveType.Int32, ea);
+            Expression e = m.Mem(PrimitiveType.Int32, ea);
 
             coll = CreateCollector(prog);
 			e = e.Accept(en);
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Typing
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
 			MemberPointerSelector mps = m.MembPtrW(ds, m.IAdd(bx, 4));
-			Expression e = m.Load(PrimitiveType.Byte, mps);
+			Expression e = m.Mem(PrimitiveType.Byte, mps);
 
             coll = CreateCollector();
 			e = e.Accept(en);
@@ -322,12 +322,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void TrcoReg00014()
-        {
-            RunTest32("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
-        }
-
-        [Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
 			ProgramBuilder m = new ProgramBuilder();
@@ -386,7 +380,7 @@ namespace Reko.UnitTests.Typing
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier pfn = m.Local32("pfn");
-			Expression l = m.Load(PrimitiveType.Word32, pfn);
+			Expression l = m.Mem(PrimitiveType.Word32, pfn);
 			CallInstruction icall = new CallInstruction(l, new CallSite(0, 0));
 
             coll = CreateCollector();
@@ -409,7 +403,7 @@ namespace Reko.UnitTests.Typing
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
-			Expression e = m.SegMemW(ds, m.Word16(0xC002U));
+			Expression e = m.SegMem16(ds, m.Word16(0xC002U));
 
             coll = CreateCollector();
 			e.Accept(eqb);

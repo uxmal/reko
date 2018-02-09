@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Analysis
 
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
             var sc = new ServiceContainer();
             var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
             var env = MockRepository.GenerateStub<OperatingEnvironment>();
@@ -157,12 +157,12 @@ namespace Reko.UnitTests.Analysis
         private Program RewriteFile32(string relativePath, string configFile)
         {
             Program program;
-            var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
+            var asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 if (this.platform == null)
                 {
-                    this.platform = new Reko.Environments.Windows.Win32Platform(sc, new X86ArchitectureFlat32());
+                    this.platform = new Reko.Environments.Windows.Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
                 }
                 asm.Platform = this.platform;
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Analysis
 
         protected Program RewriteCodeFragment(string s)
         {
-            Assembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
+            Assembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             Rewrite(program, asm, null);
@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Analysis
 
         protected Program RewriteCodeFragment32(string s)
         {
-            Assembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
+            Assembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
             var program = asm.AssembleFragment(Address.Ptr32(0x00400000), s);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             Rewrite(program, asm, null);
@@ -306,8 +306,8 @@ namespace Reko.UnitTests.Analysis
         protected void Given_FakeWin32Platform(MockRepository mr)
         {
             var platform = mr.StrictMock<IPlatform>();
-            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
-            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
+            var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Ptr32);
+            var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Ptr32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
             platform.Stub(p => p.LookupProcedureByName(
                 Arg<string>.Is.Anything,
@@ -355,7 +355,7 @@ namespace Reko.UnitTests.Analysis
                 Arg<IRewriterHost>.Is.NotNull))
                 .Return(null);
 
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
                 new HashSet<RegisterStorage>());
             platform.Stub(p => p.MakeAddressFromLinear(0ul))

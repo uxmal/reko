@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,11 +47,11 @@ namespace Reko.Core
 			args = new List<Identifier>();
 		}
 
-		public void AddFlagGroupReturnValue(uint bitMask, IStorageBinder frame)
+		public void AddFlagGroupReturnValue(uint bitMask, IStorageBinder binder)
 		{
 			PrimitiveType dt = Bits.IsSingleBitSet(bitMask) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var grf = arch.GetFlagGroup(bitMask);
-			ret = frame.EnsureFlagGroup(grf.FlagRegister, bitMask, grf.Name, dt);
+			ret = binder.EnsureFlagGroup(grf.FlagRegister, bitMask, grf.Name, dt);
 		}
 
 		public void AddFpuStackArgument(int x, Identifier id)

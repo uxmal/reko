@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,13 +76,13 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest32(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(sc, arch), m);
         }
 
         private void BuildTest16(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureReal();
+            var arch = new X86ArchitectureReal("x86-real-16");
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
@@ -118,14 +118,14 @@ namespace Reko.UnitTests.Scanning
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
             }
 
             public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
                 ppp.Characteristics = c;
-                return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
             }
 
             public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, FunctionType signature)
@@ -464,6 +464,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
+                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             });
             follow.Procedure = proc;
             wi.Process();
@@ -491,6 +492,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             });
             wi.Process();
             var sExp =

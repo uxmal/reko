@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ namespace Reko.Core.Output
             if (ShowEdges && block.Succ.Count > 0)
             {
                 StringBuilder sb = new StringBuilder("succ: ");
-                foreach (var s in block.Succ)
+                foreach (var s in block.Succ.Where(b => b != null))
                     sb.AppendFormat(" {0}", s.Name);
                 lines.Add(sb.ToString());
             }

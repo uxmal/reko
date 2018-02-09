@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class SuperHRelocator : ElfRelocator32
     {
-        public SuperHRelocator(ElfLoader32 loader) : base(loader)
+        public SuperHRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 

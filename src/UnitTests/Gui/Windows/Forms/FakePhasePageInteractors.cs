@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,9 +128,23 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         }
     }
 
-    public class FakeLoadedPageInteractor : FakePhasePageInteractor, ILoadedPageInteractor
+    public class FakeScannedPageInteractor : FakePhasePageInteractor, IScannedPageInteractor
     {
-        public FakeLoadedPageInteractor() 
+        public FakeScannedPageInteractor()
+        {
+        }
+    }
+
+    public class FakeAnalyzedPageInteractor : FakePhasePageInteractor, IAnalyzedPageInteractor
+    {
+        public FakeAnalyzedPageInteractor()
+        {
+        }
+    }
+
+    public class FakeFinalPageInteractor : FakePhasePageInteractor, IFinalPageInteractor
+    {
+        public FakeFinalPageInteractor()
         {
         }
     }

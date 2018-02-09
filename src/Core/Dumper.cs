@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Machine;
-using Reko.Core.NativeInterface;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
@@ -78,12 +77,10 @@ namespace Reko.Core
 
         private void DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter)
         {
-            ImageMapBlock block = i as ImageMapBlock;
-            if (block != null)
+            if (i is ImageMapBlock block)
             {
                 formatter.WriteLine();
-                Procedure proc;
-                if (program.Procedures.TryGetValue(block.Address, out proc))
+                if (program.Procedures.TryGetValue(block.Address, out var proc))
                 {
                     formatter.WriteComment(string.Format(
                         ";; {0}: {1}", proc.Name, block.Address));
@@ -98,14 +95,15 @@ namespace Reko.Core
                 {
                     formatter.Write(block.Block.Name);
                     formatter.Write(":");
+                    if (block.Block.Name == "l00000065")    //$DEBUG
+                        block.ToString();
                     formatter.WriteLine();
                 }
                 DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);
                 return;
             }
 
-            ImageMapVectorTable table = i as ImageMapVectorTable;
-            if (table != null)
+            if (i is ImageMapVectorTable table)
             {
                 formatter.WriteLine(";; Code vector at {0} ({1} bytes)",
                     table.Address, table.Size);
@@ -149,8 +147,7 @@ namespace Reko.Core
             const int BytesPerLine = 16;
             var linAddr = address.ToLinear();
             ulong cSkip = linAddr - BytesPerLine * (linAddr / BytesPerLine);
-            ImageSegment segment;
-            if (!map.TryFindSegment(address, out segment) || segment.MemoryArea == null)
+            if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea == null)
                 return;
             byte[] prevLine = null;
             bool showEllipsis = true;
@@ -225,8 +222,7 @@ namespace Reko.Core
 
         public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, Formatter formatter)
         {
-            ImageSegment segment;
-            if (!map.TryFindSegment(addrStart, out segment))
+            if (!map.TryFindSegment(addrStart, out var segment))
                 return;
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(segment.MemoryArea, addrStart));
             try
@@ -270,8 +266,7 @@ namespace Reko.Core
 
         private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter w)
         {
-            ImageSegment segment;
-            if (!map.TryFindSegment(item.Address, out segment) || segment.MemoryArea == null)
+            if (!map.TryFindSegment(item.Address, out var segment) || segment.MemoryArea == null)
                 return;
             WriteLabel(item.Address, w);
 
@@ -281,9 +276,8 @@ namespace Reko.Core
 
         private void WriteLabel(Address addr, Formatter w)
         {
-            ImageSymbol sym;
-            if (program.ImageSymbols.TryGetValue(addr, out sym) &&
-             !string.IsNullOrEmpty(sym.Name))
+            if (program.ImageSymbols.TryGetValue(addr, out var sym) &&
+                !string.IsNullOrEmpty(sym.Name))
             {
                 w.Write(sym.Name);
                 w.Write("\t\t; {0}",addr);
@@ -353,9 +347,10 @@ namespace Reko.Core
                 formatter.Write(s);
             }
 
-            public void WriteAddress(string formattedAddres, ulong uAddr)
+            public void WriteAddress(string formattedAddress, ulong uAddr)
             {
-                WriteAddress(formattedAddres, Address.Ptr64(uAddr));
+                chars += formattedAddress.Length;
+                formatter.WriteHyperlink(formattedAddress, uAddr);
             }
 
             public void WriteAddress(string formattedAddress, Address addr)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,8 +118,11 @@ namespace Reko.Gui.Forms
         {
            var uiSvc =  dlg.Services.RequireService<IDecompilerShellUiService>();
            var fileName = uiSvc.ShowOpenFileDialog("");
-           if (fileName != null)
-               dlg.FileName.Text = fileName;
+            if (fileName != null)
+            {
+                dlg.FileName.Text = fileName;
+                EnableControls();
+            }
         }
 
         void AddressTextBox_TextChanged(object sender, EventArgs e)

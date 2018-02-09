@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,12 +46,12 @@ namespace Reko.Core.NativeInterface
 
             { BaseType.Int32, PrimitiveType.Int32 },
             { BaseType.UInt32, PrimitiveType.UInt32 },
-            { BaseType.Ptr32, PrimitiveType.Pointer32 },
+            { BaseType.Ptr32, PrimitiveType.Ptr32},
             { BaseType.Word32, PrimitiveType.Word32 },
 
             { BaseType.Int64, PrimitiveType.Int64 },
             { BaseType.UInt64, PrimitiveType.UInt64 },
-            { BaseType.Ptr64, PrimitiveType.Pointer64 },
+            { BaseType.Ptr64, PrimitiveType.Ptr64 },
             { BaseType.Word64, PrimitiveType.Word64 },
 
             { BaseType.Word128, PrimitiveType.Word128 },

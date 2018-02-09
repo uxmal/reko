@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
     // https://gcc.gnu.org/ml/gcc/2008-07/txt00000.txt - MIPS non-PIC ABI specification
     public class MipsRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public MipsRelocator(ElfLoader32 elfLoader) : base(elfLoader)
+        public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = elfLoader;
         }
 
         public override void Relocate(Program program)
@@ -40,6 +37,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
 
             var dynsect = loader.GetSectionInfoByName(".dynamic");
+            if (dynsect == null)
+                return;
+
             var dynentries = loader.GetDynEntries(dynsect.FileOffset).ToDictionary(k => k.d_tag);
             var symtab = dynentries[DynamicSectionRenderer.DT_SYMTAB];
             var pltgot = dynentries[DynamicSectionRenderer.DT_PLTGOT].d_val;
@@ -174,5 +174,25 @@ namespace Reko.ImageLoaders.Elf.Relocators
          */
         R_MIPS_PC21_S2 = 60,
         R_MIPS_PC26_S2 = 61,
+    }
+
+    public class MipsRelocator64 : ElfRelocator64
+    {
+        private ElfLoader64 elfLoader;
+
+        public MipsRelocator64(ElfLoader64 elfLoader, SortedList<Address, ImageSymbol> imageSymbols) : base(elfLoader, imageSymbols)
+        {
+            this.elfLoader = elfLoader;
+        }
+
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

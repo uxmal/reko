@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,11 @@ namespace Reko.Structure
 
 		public bool EndsInJump(Block block)
 		{
-			return (block.Succ.Count == 1);
+            if (block.Succ.Count != 1)
+                return false;
+            if (block.Statements.Count < 1)
+                return true;
+            return !(block.Statements.Last.Instruction is SwitchInstruction);
 		}
 
 		private void ReplaceBranchWithJump(Block block)

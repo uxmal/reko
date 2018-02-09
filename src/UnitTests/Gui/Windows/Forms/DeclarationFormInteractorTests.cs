@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 Pavel Tomin.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var mem = new MemoryArea(Address32.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var segmentMap = new SegmentMap(Address32.Ptr32(0x05), seg);
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new Win32Platform(null, arch);
             program = new Program(segmentMap, arch, platform);
             program.ImageMap = segmentMap.CreateImageMap();

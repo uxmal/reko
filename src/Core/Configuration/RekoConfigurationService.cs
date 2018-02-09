@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ namespace Reko.Core.Configuration
          ICollection<SignatureFile> GetSignatureFiles();
          ICollection<AssemblerElement> GetAssemblers();
          ICollection<RawFileElement> GetRawFiles();
+
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
          ICollection<SymbolSource> GetSymbolSources();
@@ -89,7 +90,7 @@ namespace Reko.Core.Configuration
         }
 
         private LoaderConfiguration LoadLoaderConfiguration(RekoLoader l)
-        { 
+        {
             return new LoaderElementImpl
             {
                 Argument = l.Argument,
@@ -137,7 +138,7 @@ namespace Reko.Core.Configuration
                     ? XmlOptions.LoadIntoDictionary(env.Options
                         .SelectMany(o => o.ChildNodes.OfType<XmlElement>())
                         .ToArray())
-                    : new Dictionary<string,object>()
+                    : new Dictionary<string, object>()
             };
         }
 
@@ -186,7 +187,7 @@ namespace Reko.Core.Configuration
                 Name = spa.Name,
                 TrashedRegisters = sTrashedRegs
                     .Split(',')
-                    .Select(s =>  s.Trim())
+                    .Select(s => s.Trim())
                     .ToList(),
                 TypeLibraries = LoadCollection(sLibraries, LoadTypeLibraryReference)
             };
@@ -247,7 +248,7 @@ namespace Reko.Core.Configuration
         {
             if (sItems == null)
                 return new List<TDst>();
-            else 
+            else
                 return sItems.Select(fn).ToList();
         }
 
@@ -317,8 +318,7 @@ namespace Reko.Core.Configuration
             Type t = Type.GetType(elem.TypeName, true);
             if (t == null)
                 return null;
-            var arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
-            arch.Name = elem.Name;
+            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, elem.Name);
             arch.Description = elem.Description;
             return arch;
         }
@@ -332,7 +332,7 @@ namespace Reko.Core.Configuration
             Type t = Type.GetType(elem.TypeName, true);
             return (Assembler)t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
-   
+
         public OperatingEnvironment GetEnvironment(string envName)
         {
             var env = GetEnvironments()
@@ -358,13 +358,20 @@ namespace Reko.Core.Configuration
             return uiPreferences.Styles;
         }
 
-        public string GetInstallationRelativePath(string [] pathComponents)
+        public string GetInstallationRelativePath(string[] pathComponents)
+        {
+            return MakeInstallationRelativePath(pathComponents);
+        }
+
+        public static string MakeInstallationRelativePath(string[] pathComponents)
         {
             var filename = Path.Combine(pathComponents);
             if (!Path.IsPathRooted(filename))
             {
+                string assemblyUri = typeof(RekoConfigurationService).Assembly.CodeBase;
+                string assemblyPath = new Uri(assemblyUri).LocalPath;
                 return Path.Combine(
-                    Path.GetDirectoryName(GetType().Assembly.Location),
+                    Path.GetDirectoryName(assemblyPath),
                     filename);
             }
             return filename;

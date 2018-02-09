@@ -1,9 +1,9 @@
-all: nox fib.exe
+all: fib.exe
 
 clean:
 	@del fib.exe
 
-fib.exe: fib\fib.c
-	cl /Ox fib\fib.c
+fib.exe: fib.c
+	cl /Ox fib.c
 
 

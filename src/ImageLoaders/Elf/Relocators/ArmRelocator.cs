@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class ArmRelocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public ArmRelocator(ElfLoader32 loader) : base(loader)
+        public ArmRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
         }
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)

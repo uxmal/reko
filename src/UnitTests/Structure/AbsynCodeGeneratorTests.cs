@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void Return()
+        public void Acg_Return()
         {
             CompileTest(m =>
             {
@@ -85,12 +85,11 @@ namespace Reko.UnitTests.Structure
             RunTest(
                 "ProcedureBuilder()" + nl +
                 "{" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void IfThen()
+        public void Acg_IfThen()
         {
             CompileTest(m =>
             {
@@ -106,12 +105,11 @@ namespace Reko.UnitTests.Structure
                 "\tif (!foo())" + nl+ 
                 "\t\tbar();" + nl +
                 "\tbaz();" + nl+ 
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void IfThenElse()
+        public void Acg_IfThenElse()
         {
             CompileTest(m =>
             {
@@ -132,12 +130,11 @@ namespace Reko.UnitTests.Structure
                 "\t\tThen();" + nl +
                 "\telse"  + nl +
                 "\t\tElse();" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void NestedIfs()
+        public void Acg_NestedIfs()
         {
             CompileTest(new NestedIfs());
             RunTest(
@@ -155,13 +152,12 @@ namespace Reko.UnitTests.Structure
                 "		if (ax < -12)" + nl +
                 "			ax = -12;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
 
         }
 
         [Test]
-        public void WhileLoop()
+        public void Acg_WhileLoop()
         {
             CompileTest(new WhileLoopFragment());
             RunTest(
@@ -179,7 +175,7 @@ namespace Reko.UnitTests.Structure
         }
         
         [Test]
-        public void BigLoopHead()
+        public void Acg_BigLoopHead()
         {
             CompileTest(new BigLoopHeadFragment());
             RunTest(
@@ -193,13 +189,12 @@ namespace Reko.UnitTests.Structure
                 "			break;" + nl +
                 "		LoopWork();" + nl +
                 "	}" + nl +
-                "	return;" + nl + 
                 "}" + nl);
 
         }
 
         [Test]
-        public void DoWhile()
+        public void Acg_DoWhile()
         {
             CompileTest(new DoWhileFragment());
             RunTest(
@@ -208,12 +203,11 @@ namespace Reko.UnitTests.Structure
                 "	do" + nl +
                 "		Frobulate();" + nl +
                 "	while (!DoneFrobbing());" + nl +
-                "	return;" + nl + 
                 "}" + nl);
         }
 
         [Test]
-        public void DoWhileIf()
+        public void Acg_DoWhileIf()
         {
             CompileTest(new DoWhileIfFragment());
             RunTest(
@@ -225,12 +219,11 @@ namespace Reko.UnitTests.Structure
                 "		if (NeedsBork())" + nl + 
                 "			Bork();" + nl + 
                 "	} while (!Done());" + nl + 
-                "	return;" + nl + 
                 "}" + nl);
         }
 
         [Test]
-        public void WhileGoto()
+        public void Acg_WhileGoto()
         {
             CompileTest(new MockWhileGoto());
             RunTest(
@@ -249,12 +242,11 @@ namespace Reko.UnitTests.Structure
                 "	bar3();" + nl +
                 "end:" + nl + 
                 "	bar4();" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void UnstructuredIfs()
+        public void Acg_UnstructuredIfs()
         {
             CompileTest(new UnstructuredIfsMock());
             RunTest(
@@ -268,12 +260,11 @@ namespace Reko.UnitTests.Structure
                 "		return;" + nl +
                 "	}" + nl +
                 "	niz();" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void WhileBreak()
+        public void Acg_WhileBreak()
         {
             CompileTest(new MockWhileBreak());
             RunTest(
@@ -294,7 +285,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void CaseJumpsBack()
+        public void Acg_CaseJumpsBack()
         {
             CompileTest(new MockCaseJumpsBack());
             RunTest(
@@ -315,12 +306,11 @@ namespace Reko.UnitTests.Structure
                 "		print(n);" + nl +
                 "		break;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void CaseStatement()
+        public void Acg_CaseStatement()
         {
             CompileTest(new MockCaseStatement());
             RunTest(
@@ -338,12 +328,11 @@ namespace Reko.UnitTests.Structure
                 "		fn2();" + nl +
                 "		break;" + nl +
                 "	}" + nl +
-                "\treturn;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void NestedWhileLoops()
+        public void Acg_NestedWhileLoops()
         {
             CompileTest(new MockNestedWhileLoops());
             RunTest(
@@ -355,17 +344,16 @@ namespace Reko.UnitTests.Structure
                 "		int32 j = 0;" + nl +
                 "		while (j < 10)" + nl +
                 "		{" + nl +
-                "			Mem0[0x00001234:int32] = Mem0[0x00001234:int32] + j;" + nl +
+                "			Mem0[0x00001234:word32] = Mem0[0x00001234:int32] + j;" + nl +
                 "			j = j + 1;" + nl +
                 "		}" + nl +
                 "		i = i + 1;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void AcgWhileReturn()
+        public void Acg_AcgWhileReturn()
         {
             CompileTest(m =>
             {
@@ -391,13 +379,12 @@ namespace Reko.UnitTests.Structure
                 "		grux = foo();" + nl +
                 "\t}" + nl +
                 "\textra();" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
 
         [Test]
-        public void AcgWhileWithDeclarations()
+        public void Acg_AcgWhileWithDeclarations()
         {
             CompileTest(new MockWhileWithDeclarations());
             RunTest(
@@ -411,19 +398,18 @@ namespace Reko.UnitTests.Structure
                 "			break;" + nl +
                 "		Mem0[0x00300000:byte] = v;" + nl +
                 "	}" + nl +
-                "	return;" + nl +
                 "}" + nl);
         }
 
         [Test]
-        public void AcgBranchesToReturns()
+        public void Acg_AcgBranchesToReturns()
         {
             CompileTest(m =>
             {
                 var a1 = m.Local16("a1"); 
                 m.Assign(a1, m.Fn("fn0540"));
                 var tmp = m.Local16("tmp");
-                m.Assign(tmp, m.LoadW(m.Word16(0x8416)));
+                m.Assign(tmp, m.Mem16(m.Word16(0x8416)));
                 m.BranchIf(m.Ne(tmp, 0), "branch_c");
 
                 m.Label("Branch_a");
@@ -443,23 +429,20 @@ namespace Reko.UnitTests.Structure
 "{" + nl +
 "	a1 = fn0540();" + nl +
 "	tmp = Mem0[0x8416:word16];" + nl +
-"	if (tmp == 0x0000)" + nl +
-"	{" + nl +
-"		Mem0[0x8414:word16] = 0x0000;" + nl +
-"		if (0x8414 != 0x0000)" + nl +
-"		{" + nl +
-"			fn02A9(&ax_96);" + nl +
-"			return ax_96;" + nl +
-"		}" + nl +
-"	}" + nl +
-"	return a1;" + nl +
+"	if (tmp != 0x0000)" + nl +
+"		return a1;" + nl +
+"	Mem0[0x8414:word16] = 0x0000;" + nl +
+"	if (0x8414 == 0x0000)" + nl +
+"		return a1;" + nl +
+"	fn02A9(&ax_96);" + nl +
+"	return ax_96;" + nl +
 "}" + nl);
 
 
         }
 
         [Test]
-        public void AcgInfiniteLoop()
+        public void Acg_AcgInfiniteLoop()
         {
             CompileTest(new MockInfiniteLoop());
             RunTest(
@@ -471,15 +454,15 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        public void AcgInfiniteLoop2()
+        public void Acg_AcgInfiniteLoop2()
         {
             CompileTest(m =>
             {
                 m.Label("Infinity");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x1234)), 0), "hop");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x1234)), 0), "hop");
                 m.SideEffect(m.Fn("foo"));
                 m.Label("hop");
-                m.BranchIf(m.Eq(m.LoadW(m.Word16(0x5123)), 1), "Infinity");
+                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x5123)), 1), "Infinity");
                 m.SideEffect(m.Fn("bar"));
                 m.Goto("Infinity");
                 m.Return();

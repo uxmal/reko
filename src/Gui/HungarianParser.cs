@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -158,7 +158,7 @@ Some examples:
                 }
                 var pointee = Parse(PrimitiveType.Char);
                 if (pointee is UnknownType)
-                    return PrimitiveType.Pointer32;     //$ARch-dependent?
+                    return PrimitiveType.Ptr32;     //$ARch-dependent?
                 else
                     return new Pointer(pointee, 4);     //$ARCH-dependent!
             case 'i':

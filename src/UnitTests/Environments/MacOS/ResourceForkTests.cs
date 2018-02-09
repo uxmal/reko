@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Environments.MacOS
         [Test]
         public void ReadHeader()
         {
-            var arch = new M68kArchitecture();
+            var arch = new M68kArchitecture("m68k");
             var macOS = new MacOSClassic(new ServiceContainer(), arch);
 
             MemoryStream stm = new MemoryStream();

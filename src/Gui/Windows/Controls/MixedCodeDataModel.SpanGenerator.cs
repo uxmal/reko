@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -238,7 +238,7 @@ namespace Reko.Gui.Windows.Controls
                 for (int i = 0; i < chars.Length; ++i)
                 {
                     char ch = chars[i];
-                    if (char.IsControl(ch) || char.IsSurrogate(ch))
+                    if (char.IsControl(ch) || char.IsSurrogate(ch) || (0xE000 <= ch && ch <= 0xE0FF))
                         chars[i] = '.';
                 }
 

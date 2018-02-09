@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2018 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -456,7 +456,7 @@ STDMETHODIMP ArmRewriter::Next()
 	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &INativeRtlEmitter::SMul); break;
-	case ARM_INS_STCL: RewriteStcl();
+	case ARM_INS_STCL: RewriteStcl(); break;
 	case ARM_INS_STM: RewriteStm(0, true); break;
 	case ARM_INS_STMDB: RewriteStm(-4, false); break;
 	case ARM_INS_STMDA: RewriteStm(0, false); break;
@@ -858,13 +858,6 @@ HExpr ArmRewriter::FlagGroup(FlagM bits, const char * name, BaseType type)
 	return host->EnsureFlagGroup(ARM_REG_CPSR, (int) bits, name, type);
 }
 
-void ArmRewriter::RewriteSvc()
-{
-	//$TODO
-	//m.SideEffect(m.Fn(
-	//	host->EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2),
-	//	Operand(Dst)));
-}
 
 void ArmRewriter::RewriteSwp(BaseType type)
 {

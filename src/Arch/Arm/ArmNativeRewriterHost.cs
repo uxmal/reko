@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ namespace Reko.Arch.Arm
         public HExpr EnsurePseudoProcedure(string name, BaseType dt, int arity)
         {
             var exp = host.EnsurePseudoProcedure(name, ntf.GetRekoType((HExpr) dt), arity);
-            var pc = new ProcedureConstant(PrimitiveType.Pointer32, exp);
+            var pc = new ProcedureConstant(PrimitiveType.Ptr32, exp);
             return m.MapToHandle(pc);
         }
     }

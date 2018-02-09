@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,14 +45,13 @@ namespace Reko.Arch.PowerPC
         public RegisterStorage ctr { get; private set; }
         public RegisterStorage xer { get; private set; }
         public RegisterStorage fpscr { get; private set; }
-
         public RegisterStorage cr { get; private set; }
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
-        public PowerPcArchitecture(PrimitiveType wordWidth)
+        public PowerPcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
         {
             WordWidth = wordWidth;
             PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
@@ -219,8 +218,7 @@ namespace Reko.Arch.PowerPC
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -278,9 +276,9 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new PowerPcRewriter(this, rdr, frame, host);
+            return new PowerPcRewriter(this, rdr, binder, host);
         }
 
         public override abstract Address MakeAddressFromConstant(Constant c);
@@ -300,8 +298,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
-        public PowerPcBe32Architecture()
-            : base(PrimitiveType.Word32)
+        public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -350,7 +347,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
     {
-        public PowerPcLe32Architecture() : base(PrimitiveType.Word32)
+        public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32)
         {
 
         }
@@ -393,8 +390,8 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe64Architecture : PowerPcArchitecture
     {
-        public PowerPcBe64Architecture()
-            : base(PrimitiveType.Word64)
+        public PowerPcBe64Architecture(string archId)
+            : base(archId, PrimitiveType.Word64)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(

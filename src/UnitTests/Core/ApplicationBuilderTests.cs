@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core
 
 		public ApplicationBuilderTests()
 		{
-			arch = new X86ArchitectureFlat32();
+			arch = new X86ArchitectureFlat32("x86-protected-32");
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
 			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Core
             {
                 StackDepthOnEntry = 6
             };
-            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), callee.Signature, true); 
+            ab = new ApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Ptr32, callee), callee.Signature, true); 
             var instr = ab.CreateInstruction();
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }
@@ -105,12 +105,12 @@ namespace Reko.UnitTests.Core
         [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
         public void AppBld_BindByteToRegister()
         {
-            var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
+            var callee = new Procedure("callee", new Frame(PrimitiveType.Ptr32));
             var ab = new ApplicationBuilder(
                 arch, 
                 callee.Frame,
                 new CallSite(4, 0), 
-                new Identifier("foo", PrimitiveType.Pointer32, null),
+                new Identifier("foo", PrimitiveType.Ptr32, null),
                 new FunctionType(new Identifier("bRet", PrimitiveType.Byte, Registers.eax), new Identifier[0]),
                 true);
             var instr = ab.CreateInstruction();
@@ -120,12 +120,12 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue()
         {
-            var rand = new Procedure("rand", new Frame(PrimitiveType.Pointer32));
+            var rand = new Procedure("rand", new Frame(PrimitiveType.Ptr32));
             var ab = new ApplicationBuilder(
                 arch,
                 rand.Frame,
                 new CallSite(4, 0),
-                new ProcedureConstant(PrimitiveType.Pointer32, rand),
+                new ProcedureConstant(PrimitiveType.Ptr32, rand),
                 new FunctionType(new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
                 true);
             var instr = ab.CreateInstruction();
@@ -135,16 +135,16 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue_WithArgs()
         {
-            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Pointer32));
+            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Ptr32));
             var ab = new ApplicationBuilder(
                 arch,
                 fputs.Frame,
                 new CallSite(4, 0),
-                new ProcedureConstant(PrimitiveType.Pointer32, fputs),
+                new ProcedureConstant(PrimitiveType.Ptr32, fputs),
                 new FunctionType(
                     new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(12, PrimitiveType.Int32)),
-                    new Identifier("str", PrimitiveType.Pointer32, new StackArgumentStorage(8, PrimitiveType.Int32)),
-                    new Identifier("stm", PrimitiveType.Pointer32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+                    new Identifier("str", PrimitiveType.Ptr32, new StackArgumentStorage(8, PrimitiveType.Int32)),
+                    new Identifier("stm", PrimitiveType.Ptr32, new StackArgumentStorage(4, PrimitiveType.Int32))),
                 true);
             var instr = ab.CreateInstruction();
             Assert.AreEqual("dwArg0C = fputs(dwArg08, dwArg04)", instr.ToString());

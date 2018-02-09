@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -352,7 +352,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.arch32be = mr.Stub<IProcessorArchitecture>();
             this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
-            this.arch.Name = "x86-protected-32";
             cfgSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
             cfgSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
             {

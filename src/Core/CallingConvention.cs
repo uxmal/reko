@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,11 +86,13 @@ namespace Reko.Core
         /// Add a sequence parameter.
         /// </summary>
         void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo);
+        void SequenceParam(SequenceStorage seq);
 
         /// <summary>
         /// Indicate that a sequence is returned.
         /// </summary>
         void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
+        void SequenceReturn(SequenceStorage seq);
 
         /// <summary>
         /// Indicate that the implicit "this" pointer is passed in a register.
@@ -180,11 +182,20 @@ namespace Reko.Core
             this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
         }
 
+        public void SequenceParam(SequenceStorage seq)
+        {
+            this.Parameters.Add(seq);
+        }
+
         public void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
         {
             this.Return = new SequenceStorage(stgHi, stgLo);
         }
 
+        public void SequenceReturn(SequenceStorage seq)
+        {
+            this.Return = seq;
+        }
         public void StackParam(DataType dt)
         {
             var stg = new StackArgumentStorage(stackOffset, dt);

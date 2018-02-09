@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,11 +128,11 @@ namespace Reko.Arch.PowerPC
                         op3.Write(writer, options);
                         if (op4 != null)
                         {
-                            writer.WriteString(",");
+                            writer.WriteChar(',');
                             op4.Write(writer, options);
                             if (op5 != null)
                             {
-                                writer.WriteString(",");
+                                writer.WriteChar(',');
                                 op5.Write(writer, options);
                             }
                         }
@@ -218,7 +218,7 @@ namespace Reko.Arch.PowerPC
         public Address Address;
 
         public AddressOperand(Address a)
-            : base(PrimitiveType.Pointer32)	//$BUGBUG: 64-bit pointers?
+            : base(PrimitiveType.Ptr32)	//$BUGBUG: 64-bit pointers?
         {
             Address = a;
         }

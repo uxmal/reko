@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Typing
 	/// Assumes that a prior pass has assigned unique type identifiers to each expression in the program.
 	/// <para>
 	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem fÃ¼r einen Decompiler", 2004, by Raimar Falke.
+	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
 	/// </para>
 	/// </remarks>
 	public class TraitCollector : InstructionVisitor<DataType>, ExpressionVisitor<DataType>

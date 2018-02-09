@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,14 +33,14 @@ using CallingConvention = System.Runtime.InteropServices.CallingConvention;
 
 namespace Reko.Arch.Arm
 {
-    public class ArmREwriter : IEnumerable<RtlInstructionCluster>
+    public class ArmRewriter : IEnumerable<RtlInstructionCluster>
     {
         private Dictionary<int, RegisterStorage> regs;
         private EndianImageReader rdr;
         private IStorageBinder binder;
         private IRewriterHost host;
 
-        internal ArmREwriter(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
+        internal ArmRewriter(Dictionary<int, RegisterStorage> regs, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.regs = regs;
             this.rdr = rdr;
@@ -74,7 +74,7 @@ namespace Reko.Arch.Arm
             private IntPtr iNtf;
             private IntPtr iHost;
 
-            public Enumerator(Dictionary<int, RegisterStorage> regs, ArmREwriter outer)
+            public Enumerator(Dictionary<int, RegisterStorage> regs, ArmRewriter outer)
             {
                 this.bytes = outer.rdr.Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm
 
 				IntPtr unk = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iNtf, iHost);
 				this.native = (INativeRewriter)Marshal.GetObjectForIUnknown(unk);
-				Marshal.Release(unk);
+				//Marshal.Release(unk);
             }
 
             public RtlInstructionCluster Current { get; private set; }
@@ -101,8 +101,7 @@ namespace Reko.Arch.Arm
             private IntPtr GetCOMInterface(object o, Guid iid)
             {
                 var iUnknown = Marshal.GetIUnknownForObject(o);
-                IntPtr intf;
-                var hr2 = Marshal.QueryInterface(iUnknown, ref iid, out intf);
+                var hr2 = Marshal.QueryInterface(iUnknown, ref iid, out IntPtr intf);
                 return intf;
             }
 
@@ -148,7 +147,7 @@ namespace Reko.Arch.Arm
             }
         }
 
-        static ArmREwriter()
+        static ArmRewriter()
         {
 			IID_INativeRewriter = typeof(INativeRewriter).GUID;
             IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;

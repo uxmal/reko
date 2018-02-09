@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -302,7 +302,7 @@ namespace Reko.Arch.Alpha
                         ea = m.ISub(ea, -offset);
                     }
                 }
-                return m.Load(mop.Width, ea);
+                return m.Mem(mop.Width, ea);
             }
             throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
         }

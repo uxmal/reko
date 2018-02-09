@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -208,6 +208,8 @@ namespace Reko.Scanning
         public void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
         {
             var hits = enumerable.Intersect(this.WatchedAddresses).ToArray();
+            if (hits.Length > 0)
+                hits.ToString();
         }
     }
 }

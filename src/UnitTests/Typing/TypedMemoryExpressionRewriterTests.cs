@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Typing
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
             var tmer = new TypedExpressionRewriter(program, null);
-            var access = CreateTv(m.LoadDw(m.IAdd(ptr, 0)));
+            var access = CreateTv(m.Mem32(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
 		}

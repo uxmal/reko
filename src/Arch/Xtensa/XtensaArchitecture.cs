@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,11 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaArchitecture : ProcessorArchitecture
     {
-        public XtensaArchitecture() 
+        public XtensaArchitecture(string archId)  : base(archId)
         {
             this.InstructionBitSize = 8;        // Instruction alignment, really.
-            this.FramePointerType = PrimitiveType.Pointer32;
-            this.PointerType = PrimitiveType.Pointer32;
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.StackRegister = Registers.a1;
         }
@@ -106,9 +106,9 @@ namespace Reko.Arch.Xtensa
             { 0x03, Registers.SAR },
             { 0xA2, new RegisterStorage("CCOUNT", 0x1A2, 0, PrimitiveType.Word32) },
             { 0xA3, new RegisterStorage("INTENABLE", 0x1A3, 0, PrimitiveType.Word32) },
-            { 0xB1, new RegisterStorage("EPC1", 0x1B1, 0, PrimitiveType.Pointer32) },
-            { 0xB2, new RegisterStorage("EPC2", 0x1B2, 0, PrimitiveType.Pointer32) },
-            { 0xB3, new RegisterStorage("EPC3", 0x1B3, 0, PrimitiveType.Pointer32) },
+            { 0xB1, new RegisterStorage("EPC1", 0x1B1, 0, PrimitiveType.Ptr32) },
+            { 0xB2, new RegisterStorage("EPC2", 0x1B2, 0, PrimitiveType.Ptr32) },
+            { 0xB3, new RegisterStorage("EPC3", 0x1B3, 0, PrimitiveType.Ptr32) },
             { 0xC0, new RegisterStorage("DEPC", 0x1C0, 0, PrimitiveType.Word32) },
             { 0xD1, new RegisterStorage("EXCSAVE1", 0x1D1, 0, PrimitiveType.Word32) },
             { 0xD2, new RegisterStorage("EXCSAVE2", 0x1D2, 0, PrimitiveType.Word32) },
@@ -119,10 +119,10 @@ namespace Reko.Arch.Xtensa
             { 0xD7, new RegisterStorage("EXCSAVE7", 0x1D7, 0, PrimitiveType.Word32) },
             { 0xE2, new RegisterStorage("INTSET", 0x1E2, 0, PrimitiveType.Word32) },
             { 0xE3, new RegisterStorage("INTCLEAR", 0x1E3, 0, PrimitiveType.Word32) },
-            { 0xE6, new RegisterStorage("PS", 0x1E6, 0, PrimitiveType.Pointer32) },
-            { 0xE7, new RegisterStorage("VECBASE", 0x1E7, 0, PrimitiveType.Pointer32) },
-            { 0xE8, new RegisterStorage("EXCCAUSE", 0x1E8, 0, PrimitiveType.Pointer32) },
-            { 0xEE, new RegisterStorage("EXCVADDR", 0x1EE, 0, PrimitiveType.Pointer32) },
+            { 0xE6, new RegisterStorage("PS", 0x1E6, 0, PrimitiveType.Ptr32) },
+            { 0xE7, new RegisterStorage("VECBASE", 0x1E7, 0, PrimitiveType.Ptr32) },
+            { 0xE8, new RegisterStorage("EXCCAUSE", 0x1E8, 0, PrimitiveType.Ptr32) },
+            { 0xEE, new RegisterStorage("EXCVADDR", 0x1EE, 0, PrimitiveType.Ptr32) },
             { 0xF0, new RegisterStorage("CCOMPARE0", 0x1F0, 0, PrimitiveType.Word32) },
         };
 
@@ -175,12 +175,12 @@ namespace Reko.Arch.Xtensa
             return new XtensaProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new XtensaRewriter(this, rdr, state, frame, host);
+            return new XtensaRewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

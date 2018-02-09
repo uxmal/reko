@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void FindNoOutParams()
         {
-            Assert.AreEqual(0, UsedIdentifierFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Pointer32, m.Local32("tmp")))).Count);
+            Assert.AreEqual(0, UsedIdentifierFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Ptr32, m.Local32("tmp")))).Count);
         }
     }
 }

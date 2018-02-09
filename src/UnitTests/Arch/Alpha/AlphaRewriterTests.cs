@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class AlphaRewriterTests : RewriterTestBase
     {
-        static AlphaArchitecture arch = new AlphaArchitecture();
+        static AlphaArchitecture arch = new AlphaArchitecture("alpha");
         private AlphaDisassembler dasm;
         private MemoryArea image;
 
@@ -81,9 +81,9 @@ namespace Reko.UnitTests.Arch.Mips
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new AlphaRewriter(arch, new LeImageReader(this.image, 0), new AlphaProcessorState(arch), frame, host);
+            return new AlphaRewriter(arch, new LeImageReader(this.image, 0), new AlphaProcessorState(arch), binder, host);
         }
 
         [Test]

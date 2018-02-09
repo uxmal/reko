@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             this.sc = new ServiceContainer();
             this.sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-			this.arch = new X86ArchitectureReal();
+			this.arch = new X86ArchitectureReal("x86-real-16");
             this.platform = new MsdosPlatform(sc, arch);
 		}
 
@@ -69,7 +69,10 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			SerializedSignature ssig;
             var fsSvc = sc.RequireService<IFileSystemService>();
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("Core/AxBxCl.xml"), FileMode.Open))
+			using (Stream stm = fsSvc.CreateFileStream(
+                FileUnitTester.MapTestPath("Core/AxBxCl.xml"),
+                FileMode.Open,
+                FileAccess.Read))
 			{
 				XmlTextReader rdr = new XmlTextReader(stm);
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedSignature));

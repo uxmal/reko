@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -267,9 +267,8 @@ namespace Reko.Arch.SuperH
 
             public override SuperHInstruction Decode(SuperHDisassembler dasm, ushort uInstr)
             {
-                OprecBase or;
                 var mask = (1 << bitcount) - 1;
-                if (!oprecs.TryGetValue((uInstr >> shift) & mask, out or))
+                if (!oprecs.TryGetValue((uInstr >> shift) & mask, out OprecBase or))
                     return dasm.Decode(uInstr, Opcode.invalid, "");
                 return or.Decode(dasm, uInstr);
             }

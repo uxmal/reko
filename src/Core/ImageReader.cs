@@ -1,6 +1,6 @@
-ï»¿#region License
+#region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core
 {
     /// <summary>
     /// Reads bytes and differently sized words sequentially from an 
-    /// associated MemoryArea. Concrete derived classes 
+    /// associated LoadedImage. Concrete derived classes 
     /// <see cref="BeImageReader"/> and <see cref="LeImageReader"/> 
     /// implement big- and little-endian interpretation of byte sequences.
     /// </summary>
@@ -40,14 +40,6 @@ namespace Reko.Core
 		protected long offEnd;
 		protected long off;
 		protected Address addrStart;
-
-		public MemoryArea Image
-		{
-			get
-			{
-				return image;
-			}
-		}
 
 		protected ImageReader(MemoryArea img, Address addr)
         {
@@ -105,7 +97,6 @@ namespace Reko.Core
 
 		public ImageReader(byte[] img) : this(img, 0) { }
 
-        // Factory methods 
 		public LeImageReader CreateLeReader()
         {
             return new LeImageReader(bytes, (ulong)off)
@@ -117,18 +108,9 @@ namespace Reko.Core
             };
         }
 
-        public BinaryReader CreateBinaryReader()
-        {
-            return new BinaryReader(new MemoryStream(this.Bytes));
-        }
-
-        public BinaryReader CreateBinaryImageReader()
-        {
-            return new BinaryReader(new ImageStream(this.Image));
-        }
-
         public Address Address { get { return addrStart + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
+        public MemoryArea Image { get { return image; } }
         public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
@@ -168,8 +150,11 @@ namespace Reko.Core
 
         public byte[] ReadBytes(uint length)
         {
-            byte[] dst = new byte[length];
-            Array.Copy(bytes,(int) off, dst, 0, length);
+            int avail = Math.Min((int) length, bytes.Length -(int) off);
+            if (avail <= 0)
+                return new byte[0];
+            byte[] dst = new byte[avail];
+            Array.Copy(bytes,(int) off, dst, 0, avail);
             Offset += length;
             return dst;
         }
@@ -425,6 +410,7 @@ namespace Reko.Core
         public long PeekLeInt64(uint offset) { return (long)MemoryArea.ReadLeUInt64(bytes, off); }
         public long PeekBeInt64(uint offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
 
+
         public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)
         {
             switch (origin)
@@ -449,11 +435,11 @@ namespace Reko.Core
             return ab;
         }
 
-		public int Read(byte[] buffer, int offset, int count)
-		{
-			int bytesRead = (int)Math.Min(count, offEnd - offset);
-			Array.Copy(bytes, offset, buffer, 0, bytesRead);
-			return bytesRead;
-		}
-	}
+        public int Read(byte[] buffer, int offset, int count)
+        {
+            int bytesRead = (int)Math.Min(count, offEnd - offset);
+            Array.Copy(bytes, offset, buffer, 0, bytesRead);
+            return bytesRead;
+        }
+    }
 }

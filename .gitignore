@@ -32,3 +32,4 @@ TestResults
 /src/Debug
 /src/Release
 /src/Native/build
+/src/WixInstaller/*.user

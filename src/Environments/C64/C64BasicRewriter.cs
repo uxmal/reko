@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,12 +101,9 @@ namespace Reko.Environments.C64
             switch ((Token)b)
             {
             case Token.END:
-                var ppp = host.EnsurePseudoProcedure("__End", VoidType.Instance, 0);
-                ppp.Characteristics = new ProcedureCharacteristics
-                {
-                    Terminates = true,
-                };
-                m.SideEffect(PseudoProc(ppp, VoidType.Instance));
+                var c = new ProcedureCharacteristics { Terminates = true };
+                var ppp = host.PseudoProcedure("__End", c, VoidType.Instance);
+                m.SideEffect(ppp);
                 i = line.Length;        // We never return from end.
                 return;
             case Token.CLOSE:
@@ -340,15 +337,15 @@ namespace Reko.Environments.C64
                 Expect((byte)'(');
                 e = ExpectExpr();
                 Expect((byte)')');
-                return PseudoProc("__Chr", strType, e);
+                return host.PseudoProcedure("__Chr", strType, e);
             case Token.SPC_lp:
                 e = ExpectExpr();
                 Expect((byte)')');
-                return PseudoProc("__Spc", strType, e);
+                return host.PseudoProcedure("__Spc", strType, e);
             case Token.TAB_lp:
                 e = ExpectExpr();
                 Expect((byte)')');
-                return PseudoProc("__Tab", strType, e);
+                return host.PseudoProcedure("__Tab", strType, e);
             case Token.QUOTE:
                 return ParseStringLiteral();
             default:
@@ -408,24 +405,6 @@ namespace Reko.Environments.C64
                 return false;
         }
 
-        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
-        {
-            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
-            return PseudoProc(ppp, retType, args);
-        }
-
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
-        {
-            if (args.Length != ppp.Arity)
-                throw new ArgumentOutOfRangeException(
-                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                    ppp.Name,
-                    ppp.Arity,
-                    args.Length));
-
-            return m.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
-        }
-
         private bool IsDigit(byte b)
         {
             return ((byte)'0' <= b && b <= (byte)'9');
@@ -449,14 +428,14 @@ namespace Reko.Environments.C64
             }
             rtlc = RtlClass.Linear;
             m.SideEffect(
-                PseudoProc("__Close", VoidType.Instance,
+                host.PseudoProcedure("__Close", VoidType.Instance,
                 handle));
         }
 
         private void RewriteClr()
         {
             m.SideEffect(
-                PseudoProc("__Clr", VoidType.Instance));
+                host.PseudoProcedure("__Clr", VoidType.Instance));
         }
 
         private void RewriteFor()
@@ -478,7 +457,7 @@ namespace Reko.Environments.C64
                 step = Constant.Int32(1);
             }
             rtlc = RtlClass.Linear;
-            m.SideEffect(PseudoProc("__For", VoidType.Instance,
+            m.SideEffect(host.PseudoProcedure("__For", VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, id),
                 start,
                 end,
@@ -500,7 +479,7 @@ namespace Reko.Environments.C64
                 SyntaxError();
             rtlc = RtlClass.Linear;
             m.SideEffect(
-                PseudoProc("__Get",
+                host.PseudoProcedure("__Get",
                 VoidType.Instance,
                 m.Out(strType, id)));
         }
@@ -583,11 +562,11 @@ namespace Reko.Environments.C64
                 var fnName = "__PrintLine";
                 if (PeekAndDiscard((byte)';'))
                     fnName = "__Print";
-                m.SideEffect(PseudoProc(fnName, VoidType.Instance, str));
+                m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, str));
             }
             Expression lValue = ExpectLValue();
             rtlc = RtlClass.Linear;
-            m.SideEffect(PseudoProc("__Input", VoidType.Instance,
+            m.SideEffect(host.PseudoProcedure("__Input", VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, lValue)));
         }
 
@@ -598,13 +577,13 @@ namespace Reko.Environments.C64
             Expect((byte)',');
             Expression lValue = ExpectLValue();
             rtlc = RtlClass.Linear;
-            m.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
+            m.SideEffect(host.PseudoProcedure("__InputStm", VoidType.Instance,
                 logFileNo,
                 m.Out(PrimitiveType.Ptr16, lValue)));
             while (EatSpaces() && PeekAndDiscard((byte)','))
             {
                 lValue = ExpectLValue();
-                m.SideEffect(PseudoProc("__InputStm", VoidType.Instance,
+                m.SideEffect(host.PseudoProcedure("__InputStm", VoidType.Instance,
                     logFileNo,
                     m.Out(PrimitiveType.Ptr16, lValue)));
             }
@@ -614,7 +593,7 @@ namespace Reko.Environments.C64
         {
             Identifier id;
             GetIdentifier(out id); // The variable name is redundant.
-            m.SideEffect(PseudoProc("__Next", VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__Next", VoidType.Instance));
         }
 
         private void RewriteOpen()
@@ -656,7 +635,7 @@ namespace Reko.Environments.C64
                     }
                 }
             }
-            m.SideEffect(PseudoProc(
+            m.SideEffect(host.PseudoProcedure(
                 "__Open",
                 VoidType.Instance,
                 logicalFileNo,
@@ -672,7 +651,7 @@ namespace Reko.Environments.C64
                 throw new InvalidOperationException("?SN Error");
             Expect((byte)',');
             var val = ParseExpr();
-            m.SideEffect(PseudoProc("__Poke",
+            m.SideEffect(host.PseudoProcedure("__Poke",
                 VoidType.Instance,
                 addr,
                 val));
@@ -690,7 +669,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 line[i] == ':')
             {
-                m.SideEffect(PseudoProc("__PrintEmptyLine", VoidType.Instance));
+                m.SideEffect(host.PseudoProcedure("__PrintEmptyLine", VoidType.Instance));
                 return;
             }
             do
@@ -702,7 +681,7 @@ namespace Reko.Environments.C64
                     if (expr == null)
                         SyntaxError();
                     Expect((byte)')');
-                    m.SideEffect(PseudoProc("__PrintTab", VoidType.Instance, expr));
+                    m.SideEffect(host.PseudoProcedure("__PrintTab", VoidType.Instance, expr));
                     PeekAndDiscard((byte)';');
                     continue;
                 }
@@ -719,11 +698,11 @@ namespace Reko.Environments.C64
                 }
                 if (expr != null)
                 {
-                    m.SideEffect(PseudoProc(fnName, VoidType.Instance, expr));
+                    m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance, expr));
                 }
                 else
                 {
-                    m.SideEffect(PseudoProc(fnName, VoidType.Instance));
+                    m.SideEffect(host.PseudoProcedure(fnName, VoidType.Instance));
                 }
             } while (EatSpaces() && line[i] != ':');
             
@@ -741,7 +720,7 @@ namespace Reko.Environments.C64
                 if (expr == null)
                     break;
                 m.SideEffect(
-                    PseudoProc("__PrintStm", VoidType.Instance,
+                    host.PseudoProcedure("__PrintStm", VoidType.Instance,
                         Constant.Int32(stm),
                         expr));
             }
@@ -760,7 +739,7 @@ namespace Reko.Environments.C64
                 !GetInteger(out addr))
                 throw new InvalidOperationException("Expected address after SYS.");
             m.SideEffect(
-                PseudoProc("__Sys", VoidType.Instance,
+                host.PseudoProcedure("__Sys", VoidType.Instance,
                     new ProcedureConstant(arch.PointerType, new ExternalProcedure(
                         string.Format("fn{0:X4}", addr),
                         new FunctionType()))));

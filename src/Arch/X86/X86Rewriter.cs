@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
     {
         private IRewriterHost host;
         private IntelArchitecture arch;
-        private IStorageBinder frame;
+        private IStorageBinder binder;
         private LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
@@ -55,13 +55,13 @@ namespace Reko.Arch.X86
             IRewriterHost host,
             X86State state,
             EndianImageReader rdr,
-            IStorageBinder frame)
+            IStorageBinder binder)
         {
             if (host == null)
                 throw new ArgumentNullException("host");
             this.arch = arch;
             this.host = host;
-            this.frame = frame;
+            this.binder = binder;
             this.state = state;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
@@ -80,7 +80,7 @@ namespace Reko.Arch.X86
                 this.rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = RtlClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
-                orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, frame, host);
+                orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.code)
                 {
                 default:
@@ -97,8 +97,10 @@ namespace Reko.Arch.X86
                 case Opcode.adc: RewriteAdcSbb(m.IAdd); break;
                 case Opcode.add: RewriteAddSub(Operator.IAdd); break;
                 case Opcode.addss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32); break;
-                case Opcode.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
+                case Opcode.addsd:
+                case Opcode.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
                 case Opcode.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
+                case Opcode.aesimc: RewriteAesimc(); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
@@ -135,8 +137,10 @@ namespace Reko.Arch.X86
                 case Opcode.cmpsb: RewriteStringInstruction(); break;
                 case Opcode.cpuid: RewriteCpuid(); break;
                 case Opcode.cvtpi2ps: RewriteCvtPackedToReal(PrimitiveType.Real32); break;
-                case Opcode.cvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
-                case Opcode.cvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
+                case Opcode.cvtsi2sd:
+                case Opcode.vcvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Opcode.cvtsi2ss:
+                case Opcode.vcvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
                 case Opcode.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
@@ -191,6 +195,7 @@ namespace Reko.Arch.X86
                 case Opcode.fldz: RewriteFldConst(0.0); break;
                 case Opcode.fmul: EmitCommonFpuInstruction(m.FMul, false, false); break;
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
+				case Opcode.fninit: RewriteFninit(); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.fptan: RewriteFptan(); break;
@@ -251,6 +256,7 @@ namespace Reko.Arch.X86
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.leave: RewriteLeave(); break;
                 case Opcode.les: RewriteLxs(Registers.es); break;
+                case Opcode.lfence: RewriteLfence(); break;
                 case Opcode.lfs: RewriteLxs(Registers.fs); break;
                 case Opcode.lgs: RewriteLxs(Registers.gs); break;
                 case Opcode.@lock: RewriteLock(); break;
@@ -260,16 +266,22 @@ namespace Reko.Arch.X86
                 case Opcode.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
+                case Opcode.mfence: RewriteMfence(); break;
                 case Opcode.mov: RewriteMov(); break;
-                case Opcode.movaps: RewriteMov(); break;
+                case Opcode.movapd:
+                case Opcode.movaps:
+                case Opcode.vmovapd:
+                case Opcode.vmovaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movlhps: RewriteMovlhps(); break;
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
-                case Opcode.movsd: RewriteMovssd(PrimitiveType.Real64); break;
-                case Opcode.movss: RewriteMovssd(PrimitiveType.Real32); break;
+                case Opcode.movsd:
+                case Opcode.vmovsd:  RewriteMovssd(PrimitiveType.Real64); break;
+                case Opcode.movss:
+                case Opcode.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
                 case Opcode.movups: RewriteMov(); break;
                 case Opcode.movupd: RewriteMov(); break;
@@ -286,11 +298,16 @@ namespace Reko.Arch.X86
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.@outs: RewriteStringInstruction(); break;
                 case Opcode.@outsb: RewriteStringInstruction(); break;
+                case Opcode.pause: RewritePause(); break;
                 case Opcode.palignr: RewritePalignr(); break;
                 case Opcode.pcmpeqb: RewritePcmpeqb(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.popa: RewritePopa(); break;
                 case Opcode.popf: RewritePopf(); break;
+                case Opcode.prefetchnta: RewritePrefetch("__prefetchnta"); break;
+                case Opcode.prefetcht0: RewritePrefetch("__prefetcht0"); break;
+                case Opcode.prefetcht1: RewritePrefetch("__prefetcht1"); break;
+                case Opcode.prefetcht2: RewritePrefetch("__prefetcht2"); break;
                 case Opcode.pshufd: RewritePshufd(); break;
                 case Opcode.punpcklbw: RewritePunpcklbw(); break;
                 case Opcode.punpcklwd: RewritePunpcklwd(); break;
@@ -349,6 +366,10 @@ namespace Reko.Arch.X86
                 case Opcode.xsetbv: RewriteXsetbv(); break;
                 case Opcode.xlat: RewriteXlat(); break;
                 case Opcode.xor: RewriteLogical(BinaryOperator.Xor); break;
+                case Opcode.xorpd:
+                case Opcode.vxorpd: RewritePackedBinop("__xorpd", PrimitiveType.Word64); break;
+                case Opcode.xorps: RewritePackedBinop("__xorps", PrimitiveType.Word32); break;
+
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }
@@ -359,7 +380,13 @@ namespace Reko.Arch.X86
             }
         }
 
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
+		private void RewriteFninit()
+		{
+			var ppp = host.PseudoProcedure("__fninit", VoidType.Instance);
+			m.SideEffect(ppp);
+		}
+
+		public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
         {
             if (args.Length != ppp.Arity)
                 throw new ArgumentOutOfRangeException(
@@ -411,7 +438,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                var tmp = frame.CreateTemporary(opDst.Width);
+                var tmp = binder.CreateTemporary(opDst.Width);
                 m.Assign(tmp, src);
                 var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
                 m.Assign(ea, tmp);
@@ -433,7 +460,7 @@ namespace Reko.Arch.X86
             {
                 // Special case for X86-64: 
                 var reg = (RegisterStorage)idDst.Storage;
-                idDst = frame.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
+                idDst = binder.EnsureRegister(Registers.Gp64BitRegisters[reg.Number]);
                 src = m.Cast(PrimitiveType.UInt64, src);
             }
             m.Assign(idDst, src);

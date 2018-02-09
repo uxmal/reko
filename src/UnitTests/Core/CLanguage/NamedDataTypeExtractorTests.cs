@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,6 +67,26 @@ namespace Reko.UnitTests.Core.CLanguage
 
             Assert.AreEqual("Bob", nt.Name);
             Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_Bool()
+        {
+            Run(new[] { SType(CTokenType.Bool) },
+                new IdDeclarator { Name = "Bob" });
+
+            Assert.AreEqual("Bob", nt.Name);
+            Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor__Bool()
+        {
+            Run(new[] { SType(CTokenType._Bool) },
+                new IdDeclarator { Name = "Bob" });
+
+            Assert.AreEqual("Bob", nt.Name);
+            Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
         }
 
         [Test]

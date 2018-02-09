@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Analysis
 		public void Setup()
 		{
 			program = new Program();
-			program.Architecture = new X86ArchitectureFlat32();
+			program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
 			gcr = new GlobalCallRewriter(program, null, new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());

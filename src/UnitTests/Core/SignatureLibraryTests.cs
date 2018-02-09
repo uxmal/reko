@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new SysVPlatform(null, arch);
             var tldser = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var lib = tldser.Load(slib);

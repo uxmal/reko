@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +39,7 @@ namespace Reko.Environments.RT11
 
         public override Program Load(Address addrLoad)
         {
-            var arch = new Pdp11Architecture();
-            arch.Name = "pdp11";
+            var arch = new Pdp11Architecture("pdp11");
 
             return new Program(
                 new SegmentMap(addrLoad,

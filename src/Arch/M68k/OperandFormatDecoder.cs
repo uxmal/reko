@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -391,7 +391,7 @@ namespace Reko.Arch.M68k
             {
                 if (M68kDisassembler.EXT_EFFECTIVE_ZERO(extension))
                 {
-                    op = new M68kImmediateOperand(Constant.Zero(dataWidth));
+                    op = new M68kAddressOperand(Address.Ptr32(0));
                     return true;
                 }
 

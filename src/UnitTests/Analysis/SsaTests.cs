@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Analysis
         {
             ProcedureBuilder m = new ProcedureBuilder("foo");
             Identifier r4 = m.Register(4);
-            m.Store(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Pointer32, r4)));
+            m.Store(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Ptr32, r4)));
             m.Return();
 
             RunFileTest(m, "Analysis/SsaOutParameters.txt");
@@ -127,8 +127,8 @@ namespace Reko.UnitTests.Analysis
             m.Assign(esp, m.ISub(esp, 4));
             m.Store(esp, ebp);
             m.Assign(ebp, esp);
-            m.Assign(eax, m.LoadDw(m.IAdd(ebp, 8)));  // dwArg04
-            m.Assign(ebp, m.LoadDw(esp));
+            m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));  // dwArg04
+            m.Assign(ebp, m.Mem32(esp));
             m.Assign(esp, m.IAdd(esp,4));
             m.Return();
 
@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder("SsaCallIndirect");
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
-            m.Assign(r1, m.LoadDw(r2));
+            m.Assign(r1, m.Mem32(r2));
             m.Call(r1, 4);
             m.Return();
 
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Analysis
                 new Identifier("", VoidType.Instance, null),
                 new Identifier("arg1", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))));
             m.Assign(sp, m.Frame.FramePointer);
-            m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+            m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
             m.BranchIf(m.Ugt(r1, m.Word32(0x5)), "m4_default");
             m.Label("m1");
             m.Switch(r1,

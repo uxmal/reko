@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaArchitecture : ProcessorArchitecture
     {
-        public AlphaArchitecture()
+        public AlphaArchitecture(string archId) : base(archId)
         {
             this.WordWidth = PrimitiveType.Word64;
-            this.PointerType = PrimitiveType.Pointer64;
-            this.FramePointerType = PrimitiveType.Pointer64;
+            this.PointerType = PrimitiveType.Ptr64;
+            this.FramePointerType = PrimitiveType.Ptr64;
             this.InstructionBitSize = 32;
         }
 
@@ -91,7 +91,7 @@ namespace Reko.Arch.Alpha
             return new AlphaRewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
@@ -118,8 +118,7 @@ namespace Reko.Arch.Alpha
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            return Registers.AllRegisters.TryGetValue(name, out reg)
+            return Registers.AllRegisters.TryGetValue(name, out var reg)
                 ? reg
                 : null;
         }

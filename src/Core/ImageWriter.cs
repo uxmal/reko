@@ -1,6 +1,6 @@
-ï»¿#region License
+#region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,23 +41,23 @@ namespace Reko.Core
             this.Position = 0;
         }
 
-        public ImageWriter(byte[] image, ulong offset)
+        public ImageWriter(byte[] image, uint offset)
         {
             this.Bytes = image;
-            this.Position = offset;
+            this.Position = (int)offset;
         }
 
         public ImageWriter(MemoryArea mem, Address addr)
         {
             this.Bytes = mem.Bytes;
-            this.Position = (ulong)(addr - mem.BaseAddress);
+            this.Position = (int)(addr - mem.BaseAddress);
             this.MemoryArea = mem;
         }
 
-        public ImageWriter(MemoryArea mem, ulong offset)
+        public ImageWriter(MemoryArea mem, long offset)
         {
             this.Bytes = mem.Bytes;
-            this.Position = offset;
+            this.Position = (int)offset;
             this.MemoryArea = mem;
         }
 
@@ -65,27 +65,26 @@ namespace Reko.Core
 
         public byte[] Bytes { get; private set; }
         public MemoryArea MemoryArea { get; protected set; }
-        public ulong Position { get; set; }
+        public int Position { get; set; }
 
         public byte[] ToArray()
         {
             var b = new byte[Position];
-            Array.Copy(Bytes, b, (int)Position);
+            Array.Copy(Bytes, b, Position);
             return b;
         }
 
         public ImageWriter WriteByte(byte b)
         {
-			ulong bytesLength = (ulong)Bytes.LongLength;
-            if (Position >= bytesLength)
+            if (Position >= Bytes.Length)
             {
-                ulong newSize = (bytesLength + 1) * 2;
+                int newSize = (Bytes.Length + 1) * 2;
                 while (newSize < Position - 1)
                 {
                     newSize *= 2;
                 }
                 var bytes = Bytes;
-                Array.Resize(ref bytes, (int)newSize);
+                Array.Resize(ref bytes, newSize);
                 Bytes = bytes;
             }
             Bytes[Position++] = b;
@@ -186,10 +185,8 @@ namespace Reko.Core
 
         public ImageWriter WriteLeUInt32(uint ui)
         {
-            WriteByte((byte)ui);
-            WriteByte((byte)(ui >> 8));
-            WriteByte((byte)(ui >> 16));
-            WriteByte((byte)(ui >> 24));
+            WriteLeUInt32((uint) Position, ui);
+            Position += 4;
             return this;
         }
 
@@ -248,7 +245,7 @@ namespace Reko.Core
         {
         }
 
-        public BeImageWriter(byte[] image, ulong offset)
+        public BeImageWriter(byte[] image, uint offset)
             : base(image, offset)
         {
         }
@@ -258,13 +255,8 @@ namespace Reko.Core
         {
         }
 
-        public BeImageWriter(MemoryArea mem, ulong offset)
-          : base(mem, offset)
-        {
-        }
-
         public BeImageWriter(MemoryArea mem, long offset)
-            : base(mem, (ulong)offset)
+            : base(mem, offset)
         {
         }
 
@@ -291,7 +283,7 @@ namespace Reko.Core
         {
         }
 
-        public LeImageWriter(byte[] image, ulong offset)
+        public LeImageWriter(byte[] image, uint offset)
             : base(image, offset)
         {
         }
@@ -301,13 +293,8 @@ namespace Reko.Core
         {
         }
 
-        public LeImageWriter(MemoryArea mem, ulong offset)
-            : base(mem, offset)
-        {
-        }
-
         public LeImageWriter(MemoryArea mem, long offset)
-            : base(mem, (ulong)offset)
+            : base(mem, offset)
         {
         }
 

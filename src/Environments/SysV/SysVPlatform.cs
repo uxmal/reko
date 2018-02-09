@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,8 @@ namespace Reko.Environments.SysV
             {
             case "mips-be-32":
             case "mips-le-32":
+            case "mips-be-64":
+            case "mips-le-64":
                 return new MipsCallingConvention(Architecture); //$ ccName?
             case "ppc-be-32":
             case "ppc-le-32":
@@ -127,6 +129,7 @@ namespace Reko.Environments.SysV
         {
             switch (cb)
             {
+            case CBasicType.Bool: return 1;
             case CBasicType.Char: return 1;
             case CBasicType.WChar_t: return 2;
             case CBasicType.Short: return 2;
@@ -150,11 +153,9 @@ namespace Reko.Environments.SysV
             // Match x86 pattern.
             // jmp [destination]
             Address addrTarget = null;
-            var jump = rtlc.Instructions[0] as RtlGoto;
-            if (jump != null)
+            if (rtlc.Instructions[0] is RtlGoto jump)
             {
-                var pc = jump.Target as ProcedureConstant;
-                if (pc != null)
+                if (jump.Target is ProcedureConstant pc)
                     return pc.Procedure;
                 var access = jump.Target as MemoryAccess;
                 if (access == null)
@@ -238,8 +239,7 @@ namespace Reko.Environments.SysV
             }
             if (field == null)
                 return null;
-            var sproc = field.Type as SerializedSignature;
-            if (sproc != null)
+            if (field.Type is SerializedSignature sproc)
             {
                 return new Procedure_v1
                 {

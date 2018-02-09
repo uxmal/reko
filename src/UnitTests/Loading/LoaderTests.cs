@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,6 +239,7 @@ namespace Reko.UnitTests.Loading
             cfgSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
             cfgSvc.Stub(s => s.GetEnvironment(null)).Return(openv);
             openv.Stub(o => o.Load(null, null)).IgnoreArguments().Return(new DefaultPlatform(sc, arch));
+            arch.Stub(a => a.Name).Return("mmix");
             arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("00123500"),
                 out Arg<Address>.Out(Address.Ptr32(0x00123500)).Dummy)).Return(true);

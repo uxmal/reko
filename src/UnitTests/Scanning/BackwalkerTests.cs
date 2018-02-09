@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Scanning
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var asm = new X86TextAssembler(sc, arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(v40, m.ISub(m.Cast(PrimitiveType.Word16, d0), 44));
             m.Assign(CVZN, m.Cond(v40));
             m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
-            m.Assign(a5, m.LoadDw(m.IAdd(Address.Ptr32(0x0000C046), d0)));
+            m.Assign(a5, m.Mem32(m.IAdd(Address.Ptr32(0x0000C046), d0)));
             var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
 
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
@@ -219,8 +219,8 @@ namespace Reko.UnitTests.Scanning
         public void BwLoadDirect()
         {
             var r1 = m.Reg32("r1", 1);
-            m.Assign(r1, m.LoadDw(Constant.Word32(0x00123400)));
-            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00113300), m.IMul(r1, 8))), RtlClass.Transfer);
+            m.Assign(r1, m.Mem32(Constant.Word32(0x00123400)));
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00113300), m.IMul(r1, 8))), RtlClass.Transfer);
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
@@ -238,11 +238,11 @@ namespace Reko.UnitTests.Scanning
             var ecx = m.Reg32("ecx", 1);
             var CZ = m.Flags("CZ");
 
-            m.Assign(eax, m.LoadB(rax));
+            m.Assign(eax, m.Mem8(rax));
             m.Assign(CZ, m.Cond(m.ISub(al, 0x78)));
             m.BranchIf(m.Test(ConditionCode.UGT, CZ), "ldefault");
             m.Assign(ecx, m.Cast(PrimitiveType.Word32, al));
-            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), RtlClass.Transfer);
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00411F40), m.IMul(ecx, 8))), RtlClass.Transfer);
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Scanning
             m.Label("do_switch");
             m.Assign(eax, 0);
             var block = m.CurrentBlock;
-            var xfer = new RtlGoto(m.LoadDw(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), RtlClass.Transfer);
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), RtlClass.Transfer);
 
             m.Label("default_case");
             m.Return();

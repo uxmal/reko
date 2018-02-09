@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/PsigArguments.txt"))
 			{
-				IntelArchitecture arch = new X86ArchitectureReal();
+				IntelArchitecture arch = new X86ArchitectureReal("x86-real-16");
 				uint f = (uint)(FlagM.CF|FlagM.ZF);
 				Identifier argF = new Identifier(arch.GrfToString(f), PrimitiveType.Bool, new FlagGroupStorage(Registers.eflags, f, "CZ", PrimitiveType.Byte));
 				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);

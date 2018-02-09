@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     class x86Relocator : ElfRelocator32
     {
-        private ElfLoader32 loader;
-
-        public x86Relocator(ElfLoader32 loader) : base(loader)
+        public x86Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
-            this.loader = loader;
         }
 
         public override void Relocate(Program program)
@@ -45,9 +42,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         private void LoadImportReferencesFromRelPlt(Dictionary<Address,ImportReference> importReferences)
         {
             var rel_plt = loader.GetSectionInfoByName(".rel.plt");
+            if (rel_plt == null)
+                return;
             var symtab = rel_plt.LinkedSection;
-
-            var plt = loader.GetSectionInfoByName(".plt");
             var relRdr = loader.CreateReader(rel_plt.FileOffset);
 
             uint entries = rel_plt.EntryCount();
@@ -63,9 +60,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 uint sym = info >> 8;
                 string symStr = loader.GetSymbolName(symtab, sym);
 
-                var addr = plt.Address + (i + 1) * plt.EntrySize;
+                var addr = Address.Ptr32(offset);
                 importReferences[addr] = new NamedImportReference(
-                    addr, null, symStr);
+                    addr, "", symStr);
             }
         }
 

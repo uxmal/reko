@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,6 +148,8 @@ namespace Reko.Evaluation
                     if (StackState.TryGetValue(remainder, out v2))
                     {
                         if (v2 == Constant.Invalid || value == Constant.Invalid)
+                            return Constant.Invalid;
+                        if (v2.DataType.Size + value.DataType.Size != accessDataType.Size)
                             return Constant.Invalid;
 
                         //$BUGBUG: should evaluate the MkSequence, possibly creating a longer constant if v2 and value are 

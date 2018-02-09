@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -205,8 +205,8 @@ ProcedureBuilder_exit:
                 m.Store(sp, r1);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r2);
-                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
-                m.Assign(r2, m.LoadDw(sp));
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
+                m.Assign(r2, m.Mem32(sp));
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Store(m.Word32(0x010008), r1);
                 m.Return();
@@ -266,7 +266,7 @@ ProcedureBuilder_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Assign(r1, 0);
@@ -276,7 +276,7 @@ ProcedureBuilder_exit:
                 m.Assign(r1, 1);
 
                 m.Label("done");
-                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(bp, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -338,7 +338,7 @@ ProcedureBuilder_exit:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
-                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Store(m.IAdd(bp, 8), m.Word16(3));
@@ -349,7 +349,7 @@ ProcedureBuilder_exit:
                 m.Assign(r1, 1);
 
                 m.Label("done");
-                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(bp, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -456,7 +456,7 @@ ProcedureBuilder_exit:
                 m.Store(sp, bp);
                 m.Assign(bp, sp);
                 m.Store(m.IAdd(bp, -8), m.Word32(0));
-                m.Assign(cr, m.ISub(m.LoadW(m.IAdd(bp, 8)), 0x3));
+                m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
                 m.Store(m.IAdd(bp, -8), r1);
@@ -466,8 +466,8 @@ ProcedureBuilder_exit:
                 m.Store(m.IAdd(bp, -8), r1);
 
                 m.Label("done");
-                m.Assign(r1, m.LoadDw(m.IAdd(bp,-8)));
-                m.Assign(bp, m.LoadDw(sp));
+                m.Assign(r1, m.Mem32(m.IAdd(bp,-8)));
+                m.Assign(bp, m.Mem32(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
@@ -665,7 +665,7 @@ ProcedureBuilder_exit:
                 var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
-                m.Assign(eax, m.LoadDw(eax));
+                m.Assign(eax, m.Mem32(eax));
                 m.Store(m.Word32(0x1234), ah);
                 m.Return();
             });
@@ -702,7 +702,7 @@ ProcedureBuilder_exit:
                 var r13 = m.Reg32("r13", 13);
                 var r12 = m.Reg32("r12", 12);
                 m.Assign(r13, 0x00030000);
-                m.Assign(r12, m.LoadDw(m.IAdd(r13, 0x1234)));
+                m.Assign(r12, m.Mem32(m.IAdd(r13, 0x1234)));
                 m.Call(r12, 0);
                 m.Return();
             });

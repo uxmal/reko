@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 {
     public class Tlcs90DisassemblerTests : DisassemblerTestBase<Tlcs90Instruction>
     {
-        private Tlcs90Architecture arch = new Tlcs90Architecture();
+        private Tlcs90Architecture arch = new Tlcs90Architecture("tlcs90");
 
         public override IProcessorArchitecture Architecture
         {

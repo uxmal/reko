@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.Arch.Mips
             else
             {
                 throw new NotImplementedException("Linked branches not implemented yet.");
-            }
+        }
         }
 
         private void RewriteBranch0(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
@@ -65,7 +65,7 @@ namespace Reko.Arch.Mips
             if (link)
             {
                 m.Assign(
-                    binder.EnsureRegister(Registers.ra),
+                    binder.EnsureRegister(arch.LinkRegister),
                     instr.Address + 8);
             }
             var reg = RewriteOperand0(instr.op1);
@@ -103,7 +103,7 @@ namespace Reko.Arch.Mips
             }
         }
 
-        private void RewriteBc1f(MipsInstruction instr, bool opTrue)
+        private void RewriteBranchConditional1(MipsInstruction instr, bool opTrue)
         {
             var cond = RewriteOperand0(instr.op1);
             if (!opTrue)
@@ -130,7 +130,7 @@ namespace Reko.Arch.Mips
             rtlc = RtlClass.Transfer;
             var dst = RewriteOperand0(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
-            if (lr == Registers.ra)
+            if (lr == arch.LinkRegister)
             {
                 m.CallD(dst, 0);
                 return;
@@ -139,7 +139,7 @@ namespace Reko.Arch.Mips
             {
                 m.Assign(binder.EnsureRegister(lr), instr.Address + 8);
                 m.GotoD(dst);
-            }
+        }
         }
 
         private void RewriteJr(MipsInstruction instr)
@@ -148,7 +148,7 @@ namespace Reko.Arch.Mips
             var dst = RewriteOperand(instr.op1);
 
             var reg = (RegisterStorage)((Identifier)dst).Storage;
-            if (reg == Registers.ra)
+            if (reg == arch.LinkRegister)
             {
                 m.ReturnD(0, 0);
             }

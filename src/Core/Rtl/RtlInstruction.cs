@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,11 +64,12 @@ namespace Reko.Core.Rtl
         public static string FormatClass(RtlClass rtlClass)
         {
             var sb = new StringBuilder();
-            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear|RtlClass.Terminates))
+            switch (rtlClass & (RtlClass.Transfer|RtlClass.Linear|RtlClass.Terminates|RtlClass.System))
             {
             case RtlClass.Linear: sb.Append('L'); break;
             case RtlClass.Transfer: sb.Append('T'); break;
             case RtlClass.Terminates: sb.Append('H'); break;
+            case RtlClass.System: sb.Append('S'); break;
             default: sb.Append('-'); break;
             }
             sb.Append((rtlClass & RtlClass.Delay) != 0 ? 'D' : '-');
@@ -85,15 +86,15 @@ namespace Reko.Core.Rtl
     public enum RtlClass
     {
         None,
-        Linear = 1,         // non-transfer instruction, e.g. ALU operation.
-        Transfer = 2,       // transfer instruction.
+        Linear = 1,         // Non-transfer instruction, e.g. ALU operation.
+        Transfer = 2,       // Transfer instruction.
         Conditional = 4,    // Instruction is gated on a condition.
         Call = 8,           // Instruction saves its continuation.
         Delay = 16,         // Next instruction is in the delay slot and may be executed.
         Annul = 32,         // Next instruction is annulled (see SPARC architecture)
         Terminates = 64,    // Instruction terminates execution (e.g. x86 and ARM HLT)
-        Invalid = 128,      // Invalid instruction
-
+        System = 128,       // Privileged instruction
+        Invalid = 256,      // Invalid instruction
         ConditionalTransfer = Conditional | Transfer,
     }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,17 +41,17 @@ namespace Reko.UnitTests.Arch.Intel
 
 		public X86ArchitectureTests()
 		{
-			arch = new X86ArchitectureReal();
+			arch = new X86ArchitectureReal("x86-real-16");
 		}
 
 		[Test]
 		public void IaCreate()
 		{
-			arch = new X86ArchitectureReal();
+			arch = new X86ArchitectureReal("x86-real-16");
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
-			arch = new X86ArchitectureFlat32();
+			arch = new X86ArchitectureFlat32("x86-protected-32");
 			Assert.AreEqual(PrimitiveType.Word32, arch.WordWidth);
-            arch = new X86ArchitectureProtected16();
+            arch = new X86ArchitectureProtected16("x86-protected-16");
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
 		}
 
@@ -76,15 +76,14 @@ namespace Reko.UnitTests.Arch.Intel
 			Assert.AreSame(Registers.di, arch.GetRegister("di"));
 		}
 
-		[ExpectedException(typeof (ArgumentException))]
-		[Test]
-		public void IaFailGetRegisterFromString()
-		{
-			arch.GetRegister("invalidregistername");
-		}
+        [Test]
+        public void IaFailGetRegisterFromString()
+        {
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+        }
 
-		[Test]
-		public void IaGetRegisterFromNumber()
+        [Test]
+        public void IaGetRegisterFromNumber()
 		{
 			Assert.AreEqual("eax", arch.GetRegister(0).Name);
 			Assert.AreEqual("ecx", arch.GetRegister(1).Name);
@@ -182,12 +181,11 @@ namespace Reko.UnitTests.Arch.Intel
 			Assert.AreEqual(PrimitiveType.Byte, sz.DataType);
 		}
 
-		[Test]
-		[ExpectedException(typeof (ArgumentException))]
-		public void IaGetInvalidRegisterFromName()
-		{
-			Assert.IsNull(arch.GetRegister("NonExistingRegisterName"));
-		}
+        [Test]
+        public void IaGetInvalidRegisterFromName()
+        {
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("NonExistingRegisterName"));
+        }
 
         private EndianImageReader CreateImageReader(params byte[] bytes)
         {
@@ -202,7 +200,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_RealMode_Offset()
         {
-            arch = new X86ArchitectureReal();
+            arch = new X86ArchitectureReal("x86-real-16");
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
@@ -215,7 +213,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_RealMode_SegOffset()
         {
-            arch = new X86ArchitectureReal();
+            arch = new X86ArchitectureReal("x86-real-16");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -227,7 +225,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_ProtectedMode16_Offset()
         {
-            arch = new X86ArchitectureProtected16();
+            arch = new X86ArchitectureProtected16("x86-protected-16");
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
@@ -239,7 +237,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_ReadCodeAddress_ProtectedMode16_SegOffset()
         {
-            arch = new X86ArchitectureProtected16();
+            arch = new X86ArchitectureProtected16("x86-protected-16");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -251,7 +249,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_ReadCodeAddress_ProtectedFlatMode32()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -263,7 +261,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_SetAxAliasesTrue()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             var aliases = arch.GetAliases(Registers.ax).ToHashSet();
             Assert.IsTrue(aliases.Contains(Registers.ax), "Expected ax set");
             Assert.IsTrue(aliases.Contains(Registers.ah), "Expected ah set");
@@ -273,7 +271,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_GetOpcodeNames()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             Assert.AreEqual(
                 "aaa,aad,aam,aas,adc,add",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
@@ -282,7 +280,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_GetOpcodeNumber()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             Assert.AreEqual(
                 Opcode.mov,
                 (Opcode)arch.GetOpcodeNumber("mov"));

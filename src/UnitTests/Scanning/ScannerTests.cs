@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
             this.scan = this.CreateScanner(this.program);
@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Scanning
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new FakePlatform(null, arch);
             platform.Test_DefaultCallingConvention = "__cdecl";
             this.program = new Program
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Scanning
             fakeArch.Test_AddTrace(new RtlTrace(addr.ToUInt32())
             {
                 m => {
-                    m.Assign(m.LoadDw(m.Word32(0x3000)), m.Word32(42));
+                    m.Assign(m.Mem32(m.Word32(0x3000)), m.Word32(42));
                 }
             });
             scan.EnqueueJumpTarget(addr, addr, proc, arch.CreateProcessorState());
@@ -312,7 +312,7 @@ namespace Reko.UnitTests.Scanning
         {
             program = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
             m.i86();
 
             m.Proc("main");
@@ -394,7 +394,7 @@ fn0C00_0000_exit:
 
         private void Given_x86_Flat32()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
         }
 
         [Test]
@@ -464,12 +464,12 @@ fn0C00_0000_exit:
             Given_Trace(new RtlTrace(0x1000)
             {
                 m => { m.Assign(reg1, m.Word32(0)); },
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1004)
             {
-                m => { m.Assign(m.LoadDw(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1100)
@@ -527,7 +527,7 @@ fn00001100_exit:
             program.Platform = platform;
             Given_Trace(new RtlTrace(0x1000)
             {
-                m => { m.Goto(m.LoadDw(m.Word32(0x2000))); }
+                m => { m.Goto(m.Mem32(m.Word32(0x2000))); }
             });
             program.ImportReferences.Add(
                 Address.Ptr32(0x2000),

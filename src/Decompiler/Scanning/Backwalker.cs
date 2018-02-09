@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,8 +56,7 @@ namespace Reko.Scanning
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;
-            var seq = xfer.Target as MkSequence;
-            if (seq != null)
+            if (xfer.Target is MkSequence seq)
             {
                 target = seq.Tail;
             }
@@ -124,8 +123,7 @@ namespace Reko.Scanning
                 var assSrc = ass.Item2.Accept(eval);
                 var assDst = ass.Item1;
                 var regSrc = RegisterOf(assSrc);
-                var binSrc = assSrc as BinaryExpression;
-                if (binSrc != null)
+                if (assSrc is BinaryExpression binSrc)
                 {
                     if (RegisterOf(assDst) == Index || assDst == IndexExpression)
                     {
@@ -185,8 +183,7 @@ namespace Reko.Scanning
                     Index = host.GetSubregister(Index, 0, 8);
                     return true;
                 }
-                var cof = assSrc as ConditionOf;
-                if (cof != null && UsedFlagIdentifier != null)
+                if (assSrc is ConditionOf cof && UsedFlagIdentifier != null)
                 {
                     var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage).FlagGroupBits;
                     var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroupBits;
@@ -198,13 +195,12 @@ namespace Reko.Scanning
                         (binCmp.Operator is ISubOperator ||
                          binCmp.Operator is USubOperator))
                     {
-                        var idLeft = RegisterOf(binCmp.Left  as Identifier);
+                        var idLeft = RegisterOf(binCmp.Left as Identifier);
                         if (idLeft != null &&
                             (idLeft == Index || idLeft == host.GetSubregister(Index, 0, 8)) ||
                            (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
                         {
-                            var immSrc = binCmp.Right as Constant;
-                            if (immSrc != null)
+                            if (binCmp.Right is Constant immSrc)
                             {
                                 // Found the bound of the table.
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.ToInt32()));
@@ -212,8 +208,7 @@ namespace Reko.Scanning
                             }
                         }
                     }
-                    var idCof = cof.Expression as Identifier;
-                    if (idCof != null)
+                    if (cof.Expression is Identifier idCof)
                     {
                         IndexExpression = idCof;
                         Index = null;
@@ -229,9 +224,8 @@ namespace Reko.Scanning
                 var castSrc = src as Cast;
                 if (castSrc != null)
                     src = castSrc.Expression;
-                var memSrc = src as MemoryAccess;
                 var regDst = RegisterOf(assDst);
-                if (memSrc != null &&
+                if (src is MemoryAccess memSrc &&
                     (regDst == Index ||
                      (Index != null && regDst != null && regDst.Name != "None" && regDst.IsSubRegisterOf(Index))))
                 {
@@ -253,10 +247,9 @@ namespace Reko.Scanning
                         IndexExpression = null;
                         return false;
                     }
-                    var memOffset = binEa.Right as Constant;
                     var scale = GetMultiplier(binEa.Left);
                     var baseReg = GetBaseRegister(binEa.Left);
-                    if (memOffset != null && binEa.Operator == Operator.IAdd)
+                    if (binEa.Right is Constant memOffset && binEa.Operator == Operator.IAdd)
                     {
                         var mOff = memOffset.ToInt32();
                         if (mOff > 0x200)
@@ -304,8 +297,7 @@ namespace Reko.Scanning
 
         private bool VisitBranch(Expression bra, bool fallthrough)
         {
-            var cond = bra as TestCondition;
-            if (cond != null)
+            if (bra is TestCondition cond)
             {
                 ConditionCode cc = cond.ConditionCode;
                 switch (cc)
@@ -314,7 +306,7 @@ namespace Reko.Scanning
                 case ConditionCode.UGT:
                 case ConditionCode.GT:
                     break;
-                    //$TODO: verify the branch direction here.
+                //$TODO: verify the branch direction here.
                 case ConditionCode.ULE:
                     fallthrough = !fallthrough;
                     cc = ConditionCode.UGT;
@@ -323,7 +315,7 @@ namespace Reko.Scanning
                     fallthrough = !fallthrough;
                     cc = ConditionCode.UGE;
                     break;
-                default:return true;
+                default: return true;
                 }
                 if (fallthrough)
                 {
@@ -336,10 +328,9 @@ namespace Reko.Scanning
 
         private BinaryExpression NegateRight(BinaryExpression bin)
         {
-            Constant cRight;
             if (bin != null &&
                 (bin.Operator == Operator.IAdd) &&
-                bin.Right.As(out cRight))
+                bin.Right is Constant cRight)
             {
                 return new BinaryExpression(
                     Operator.ISub,
@@ -352,16 +343,11 @@ namespace Reko.Scanning
 
         private RegisterStorage RegisterOf(Expression e)
         {
-            var c = e as Cast;
-            if (c != null)
+            if (e is Cast c)
                 e = c.Expression;
-            var id = e as Identifier;
-            if (id == null)
-                return RegisterStorage.None;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return RegisterStorage.None;
-            return reg;
+            if (e is Identifier id && id.Storage is RegisterStorage reg)
+                return reg;
+            return RegisterStorage.None;
         }
 
         public bool BackwalkInstructions(
@@ -395,8 +381,7 @@ namespace Reko.Scanning
 
         private RegisterStorage GetBaseRegister(Expression ea)
         {
-            var id = ea as Identifier;
-            if (id != null)
+            if (ea is Identifier id)
                 return RegisterOf(id);
             var bin = ea as BinaryExpression;
             if (bin == null)
@@ -458,8 +443,8 @@ namespace Reko.Scanning
         public RegisterStorage DetermineIndexRegister(MemoryAccess mem)
         {
             Stride = 0;
-            var id = mem.EffectiveAddress as Identifier;    // Mem[reg]
-            if (id != null)
+            // Mem[reg]
+            if (mem.EffectiveAddress is Identifier id)
             {
                 Stride = 1;
                 return RegisterOf(id);
@@ -526,14 +511,11 @@ namespace Reko.Scanning
             var vector = possibleVector as Constant;
             if (vector == null)
                 return;
-            var pt = vector.DataType as PrimitiveType;
-            if (pt != null && pt.Domain == Domain.SignedInt)
+            if (vector.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
                 return;
-            var segmem = mem as SegmentedAccess;
-            if (segmem != null)
+            if (mem is SegmentedAccess segmem)
             {
-                var selector = segmem.BasePointer.Accept(eval) as Constant;
-                if (selector != null)
+                if (segmem.BasePointer.Accept(eval) is Constant selector)
                 {
                     VectorAddress = host.MakeSegmentedAddress(selector, vector);
                 }

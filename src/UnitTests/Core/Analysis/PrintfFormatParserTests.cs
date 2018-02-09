@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core.Analysis
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             this.program = new Program { Platform = platform };
         }
 

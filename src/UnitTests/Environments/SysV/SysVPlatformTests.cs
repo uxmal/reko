@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,14 +124,16 @@ namespace Reko.UnitTests.Environments.SysV
         [Test]
         public void SysV_LoadTrashedRegisters()
         {
+            arch.Stub(a => a.Name).Return("mmix");
             arch.Stub(a => a.GetRegister((string)null)).IgnoreArguments()
                 .Do(new Func<string, RegisterStorage>(r => new RegisterStorage(r, (int)r[1], 0, PrimitiveType.Word32)));
             var env = new OperatingEnvironmentElement
             {
                 Architectures =
                 {
-                    new PlatformArchitectureElement
+                    new PlatformArchitectureElement()
                     {
+                         Name = "mmix",
                          TrashedRegisters =
                          {
                              "r2", "r3"

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,16 +55,18 @@ namespace Reko.Arch.Mips
             m.Assign(RewriteOperand0(instr.op1), from);
         }
 
-        private void RewriteTrap(MipsInstruction instr, Func<Expression,Expression,Expression> op)
+        private void RewriteTrap(MipsInstruction instr, Func<Expression, Expression, Expression> op)
         {
-            var cond = op(
-                RewriteOperand(instr.op1),
-                RewriteOperand(instr.op2));
-
-            m.BranchInMiddleOfInstruction(
-                cond.Invert(),
-                instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (op != m.Eq || !cmp.Equals(op1, op2))
+            {
+                this.rtlc = RtlClass.ConditionalTransfer;
+                m.BranchInMiddleOfInstruction(
+                        op(op1, op2).Invert(),
+                        instr.Address + instr.Length,
+                        RtlClass.ConditionalTransfer);
+            }
             var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
             m.SideEffect(trap);
         }

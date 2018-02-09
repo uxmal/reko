@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,8 +148,7 @@ namespace Reko.Analysis
             if (ass == null)
                 return false;
             Expression e = ass.Src;
-            Cast cast = ass.Src as Cast;
-            if (cast != null)
+            if (e is Cast cast)
                 e = cast.Expression;
             return (e == grf);
         }
@@ -169,46 +168,34 @@ namespace Reko.Analysis
 			{
 				return sid.Identifier;
 			}
-			BinaryExpression binDef = e as BinaryExpression;
-			if (binDef != null)
-			{
+            switch (e)
+            {
+            case BinaryExpression binDef:
 				if (gf.IsNegated)
 					e = e.Invert();
 				return e;
-			}
-			ConditionOf cof = e as ConditionOf;
-			if (cof != null)
-			{
-				binDef = cof.Expression as BinaryExpression;
-				if (binDef == null)
-                    binDef = CmpExpressionToZero(cof.Expression);
-				return ComparisonFromConditionCode(cc, binDef, gf.IsNegated);
-			}
-			Application app = e as Application;
-			if (app != null)
-			{
+            case ConditionOf cof:
+				var condBinDef = cof.Expression as BinaryExpression;
+				if (condBinDef == null)
+                    condBinDef = CmpExpressionToZero(cof.Expression);
+				return ComparisonFromConditionCode(cc, condBinDef, gf.IsNegated);
+            case Application app:
 				return sid.Identifier;
-			}
-			PhiFunction phi = e as PhiFunction;
-			if (phi != null)
-			{
+            case PhiFunction phi:
 				return sid.Identifier;
-			}
+            default:
 			throw new NotImplementedException("NYI: e: " + e.ToString());
+            }
 		}
 
 		public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
-            BinaryExpression binUse = a.Src as BinaryExpression;
-            if (binUse != null && IsAddOrSub(binUse.Operator))
+            if (a.Src is BinaryExpression binUse && IsAddOrSub(binUse.Operator))
                 return TransformAddOrSub(a, binUse);
-            Application app;
-            ProcedureConstant pc;
-            if (a.Src.As(out app) && app.Procedure.As(out pc))
+            if (a.Src is Application app && app.Procedure is ProcedureConstant pc)
             {
-                var pseudo = pc.Procedure as PseudoProcedure;
-                if (pseudo != null)
+                if (pc.Procedure is PseudoProcedure pseudo)
                 {
                     if (pseudo.Name == PseudoProcedure.RorC)
                     {
@@ -351,8 +338,8 @@ namespace Reko.Analysis
             if (condId == null)
                 return a;
             var sidOrigHi = ssaIds[condId];
-            var shift = sidOrigHi.DefExpression as BinaryExpression;
-            if (shift == null || shift.Operator != Operator.Shr)
+            if (!(sidOrigHi.DefExpression is BinaryExpression shift &&
+                  shift.Operator == Operator.Shr))
                 return a;
 
             var block = sidOrigLo.DefStatement.Block;

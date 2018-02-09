@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void EqbArrayAccess()
 		{
-            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", PrimitiveType.Pointer32, null), new Identifier("i", PrimitiveType.Int32, null));
+            ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", PrimitiveType.Ptr32, null), new Identifier("i", PrimitiveType.Int32, null));
 			e.Accept(eqb);
 			Assert.AreEqual("T_3", e.TypeVariable.ToString());
 			Assert.AreEqual("T_1", e.Array.TypeVariable.ToString());

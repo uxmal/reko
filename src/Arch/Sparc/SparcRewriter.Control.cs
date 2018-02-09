@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.Arch.Sparc
     {
         private Identifier Grf(FlagM grf)
         {
-            return frame.EnsureFlagGroup(
+            return binder.EnsureFlagGroup(
                 Registers.psr,
                 (uint) grf, 
                 arch.GrfToString((uint) grf),
@@ -48,8 +48,7 @@ namespace Reko.Arch.Sparc
             if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
             this.rtlc = rtlClass;
-            Constant c;
-            if (cond.As(out c) && c.ToBoolean())
+            if (cond is Constant c && c.ToBoolean())
             {
                 m.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
             }

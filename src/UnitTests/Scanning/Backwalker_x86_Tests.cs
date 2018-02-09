@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(arch.CreateProcessorState(), new FakeDecompilerEventListener());
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Scanning
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var asm = new X86TextAssembler(sc, arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var bw = new Backwalker<Block,Instruction>(
                 host,
-                new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer),
+                new RtlGoto(m.Mem32(m.IAdd(eax, 0x10000)), RtlClass.Transfer),
                 expSimp);
             Assert.IsTrue(bw.BackwalkInstruction(m.Assign(eax, m.IAdd(eax, eax))));
             Assert.AreSame(Registers.eax, bw.Index);
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Scanning
         public void BwAndMask()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x7))));
             Assert.AreSame(Registers.eax, bw.Index);
             Assert.AreEqual(0x10000ul, bw.VectorAddress.ToLinear());
@@ -222,7 +222,7 @@ namespace Reko.UnitTests.Scanning
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF|FlagM.ZF|FlagM.CF|FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(
                 bw.BackwalkInstruction(
                     m.BranchIf(
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Scanning
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             bw.UsedFlagIdentifier = m.Frame.EnsureFlagGroup(Registers.eflags,(uint)FlagM.CF, "C", PrimitiveType.Byte);
             Assert.IsFalse(
                 bw.BackwalkInstruction(
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Scanning
         public void BwMaskWithHoles()
         {
             var eax = m.Frame.EnsureRegister(Registers.eax);
-            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(eax, 0x10000)), RtlClass.Transfer), expSimp);
             Assert.IsFalse(bw.BackwalkInstruction(m.Assign(eax, m.And(eax, 0x0A))));
             Assert.IsNull(bw.Index);
             Assert.AreEqual(0, bw.Operations.Count);
@@ -264,9 +264,9 @@ namespace Reko.UnitTests.Scanning
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var al = m.Frame.EnsureRegister(Registers.al);
             m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
-            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(bw.BackwalkInstruction(
-                m.Assign(al, m.LoadB(m.IAdd(edx, 0x1004)))));
+                m.Assign(al, m.Mem8(m.IAdd(edx, 0x1004)))));
             Assert.AreSame(Registers.edx, bw.Index);
         }
 
@@ -276,7 +276,7 @@ namespace Reko.UnitTests.Scanning
             var bx = m.Frame.EnsureRegister(Registers.bx);
             var bl = m.Frame.EnsureRegister(Registers.bl);
             var bh = m.Frame.EnsureRegister(Registers.bh);
-            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.LoadDw(m.IAdd(bx, 0x1000)), RtlClass.Transfer), expSimp);
+            var bw = new Backwalker<Block,Instruction>(host, new RtlGoto(m.Mem32(m.IAdd(bx, 0x1000)), RtlClass.Transfer), expSimp);
 
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(bh, m.Xor(bh, bh))));
@@ -302,7 +302,7 @@ namespace Reko.UnitTests.Scanning
             //m.Ja("default");
 
             var block0 = m.CurrentBlock;
-            m.Assign(eax, m.LoadDw(m.IAdd(esp, 4)));
+            m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
             m.Assign(SCZO, new ConditionOf(m.ISub(eax, 3)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Scanning
 
             m.Assign(edx, m.Xor(edx, edx));
             m.Assign(SCZO, new ConditionOf(edx));
-            m.Assign(dl, m.LoadB(m.IAdd(eax, 0x10000)));
+            m.Assign(dl, m.Mem8(m.IAdd(eax, 0x10000)));
 
 
             //m.Label("bytes");
@@ -346,8 +346,8 @@ namespace Reko.UnitTests.Scanning
             //m.Label("dummy");
             //m.Dd(0);
 
-            RunTest(new X86ArchitectureFlat32(),
-                new RtlGoto(m.LoadDw(m.IAdd(m.IMul(edx, 4), 0x10010)), RtlClass.Transfer),
+            RunTest(new X86ArchitectureFlat32("x86-protected-32"),
+                new RtlGoto(m.Mem32(m.IAdd(m.IMul(edx, 4), 0x10010)), RtlClass.Transfer),
                 "Scanning/BwSwitch32.txt");
         }
 
@@ -364,9 +364,9 @@ namespace Reko.UnitTests.Scanning
 
             m.Assign(sp, m.ISub(sp, 2));
             m.Store(sp, cs);
-            m.Assign(ds, m.LoadW(sp));
+            m.Assign(ds, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
-            m.Assign(bl, m.LoadB(si));
+            m.Assign(bl, m.Mem8(si));
             m.Assign(SCZO, new ConditionOf(m.ISub(bl, 2)));
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "grox");
 
@@ -375,8 +375,8 @@ namespace Reko.UnitTests.Scanning
             m.Assign(bx, m.IAdd(bx, bx));
             m.Assign(SCZO, new ConditionOf(bx));
 
-            RunTest(new X86ArchitectureReal(),
-                new RtlGoto(m.LoadW(m.IAdd(bx, 0x1234)), RtlClass.Transfer),
+            RunTest(new X86ArchitectureReal("x86-real-16"),
+                new RtlGoto(m.Mem16(m.IAdd(bx, 0x1234)), RtlClass.Transfer),
                 "Scanning/BwSwitch16.txt");
         }
 
@@ -399,7 +399,7 @@ namespace Reko.UnitTests.Scanning
         public void BwDetectIndexRegister()
         {
             var edx = m.Frame.EnsureRegister(Registers.edx);
-            var xfer = new RtlGoto(m.LoadDw(m.IAdd(m.Word32(0x10001234), m.IMul(edx, 4))), RtlClass.Transfer);
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(m.Word32(0x10001234), m.IMul(edx, 4))), RtlClass.Transfer);
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             Assert.AreSame(Registers.edx, bw.Index);
         }
@@ -416,7 +416,7 @@ namespace Reko.UnitTests.Scanning
             
             // cmp [ebp-66],1D
 
-            m.Assign(SCZO, m.Cond(m.ISub(m.LoadDw(m.ISub(ebp, 0xC4)), 0x1D)));
+            m.Assign(SCZO, m.Cond(m.ISub(m.Mem32(m.ISub(ebp, 0xC4)), 0x1D)));
             var block0 = m.CurrentBlock;
             m.BranchIf(new TestCondition(ConditionCode.UGT, SCZO), "default");
 
@@ -424,9 +424,9 @@ namespace Reko.UnitTests.Scanning
             // movzx eax,byte ptr [edx + 0x10000]
             // jmp [eax + 0x12000]
 
-            m.Assign(edx, m.LoadDw(m.ISub(ebp, 0xC4)));
-            m.Assign(eax, m.Cast(PrimitiveType.Word32, m.LoadB(m.IAdd(edx, 0x10000))));
-            var xfer = new RtlGoto(m.LoadDw(m.IAdd(eax, 0x12000)), RtlClass.Transfer);
+            m.Assign(edx, m.Mem32(m.ISub(ebp, 0xC4)));
+            m.Assign(eax, m.Cast(PrimitiveType.Word32, m.Mem8(m.IAdd(edx, 0x10000))));
+            var xfer = new RtlGoto(m.Mem32(m.IAdd(eax, 0x12000)), RtlClass.Transfer);
 
             var block1 = m.CurrentBlock;
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
@@ -446,8 +446,8 @@ namespace Reko.UnitTests.Scanning
             var v1 = m.Frame.CreateTemporary(PrimitiveType.Word32);
             var edi = m.Frame.CreateTemporary(PrimitiveType.Word32);
             var esi = m.Frame.EnsureRegister(Registers.esi);
-            var xfer = new RtlCall(m.LoadDw(m.IAdd(esi, 40)), 4, RtlClass.Transfer);
-            m.Assign(v1, m.LoadDw(edi));
+            var xfer = new RtlCall(m.Mem32(m.IAdd(esi, 40)), 4, RtlClass.Transfer);
+            m.Assign(v1, m.Mem32(edi));
             m.Assign(esi, v1);
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             bool result;
@@ -467,7 +467,7 @@ namespace Reko.UnitTests.Scanning
             var Z = m.Frame.EnsureFlagGroup(Registers.eflags, 1, "Z", PrimitiveType.Bool);
 
             var xfer = new RtlCall(eax, 4, RtlClass.Transfer);
-            m.Assign(eax, m.LoadDw(esi));
+            m.Assign(eax, m.Mem32(esi));
             m.Assign(Z, m.Cond(m.And(eax, eax)));
             m.BranchIf(m.Test(ConditionCode.EQ, Z), "null_ptr");
             m.Label("do_call");

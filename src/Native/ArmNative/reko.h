@@ -77,15 +77,16 @@ enum class ConditionCode
 
 enum class RtlClass
 {
-	Linear = 1,         // non-transfer instruction, e.g. ALU operation.
-	Transfer = 2,       // transfer instruction.
+	None,
+	Linear = 1,         // Non-transfer instruction, e.g. ALU operation.
+	Transfer = 2,       // Transfer instruction.
 	Conditional = 4,    // Instruction is gated on a condition.
 	Call = 8,           // Instruction saves its continuation.
 	Delay = 16,         // Next instruction is in the delay slot and may be executed.
 	Annul = 32,         // Next instruction is annulled (see SPARC architecture)
 	Terminates = 64,    // Instruction terminates execution (e.g. x86 and ARM HLT)
-	Invalid = 128,      // Invalid instruction
-
+	System = 128,       // Privileged instruction
+	Invalid = 256,      // Invalid instruction
 	ConditionalTransfer = Conditional | Transfer,
 };
 inline RtlClass operator|(RtlClass a, RtlClass b) {

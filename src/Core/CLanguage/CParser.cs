@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -632,6 +632,7 @@ IGNORE tab + cr + lf
             switch (token.Type)
             {
             case CTokenType.Void:
+            case CTokenType.Bool:
             case CTokenType.Char:
             case CTokenType.Short:
             case CTokenType.Int:
@@ -642,6 +643,7 @@ IGNORE tab + cr + lf
             case CTokenType.Signed:
             case CTokenType.Unsigned:
             case CTokenType.Wchar_t:
+            case CTokenType._Bool:
             case CTokenType.__W64:
                 return grammar.SimpleType(lexer.Read().Type);
             case CTokenType.Id: // type name

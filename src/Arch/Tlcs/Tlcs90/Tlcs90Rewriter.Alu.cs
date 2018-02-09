@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -170,8 +170,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var src = binder.EnsureRegister(Registers.hl);
             var dst = binder.EnsureRegister(Registers.de);
             var cnt = binder.EnsureRegister(Registers.bc);
-            m.Assign(tmp, m.Load(dt, src));
-            m.Assign(m.Load(dt, dst), tmp);
+            m.Assign(tmp, m.Mem(dt, src));
+            m.Assign(m.Mem(dt, dst), tmp);
             m.Assign(src, m.IAdd(src, m.Int32(dt.Size)));
             m.Assign(dst, m.IAdd(dst, m.Int32(dt.Size)));
             m.Assign(cnt, m.ISub(cnt, m.Int16(1)));
@@ -197,7 +197,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         {
             var sp = binder.EnsureRegister(Registers.sp);
             var src = RewriteSrc(instr.op1);
-            m.Assign(src, m.LoadW(sp));
+            m.Assign(src, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, m.Int16((short)src.DataType.Size)));
         }
 
@@ -206,7 +206,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var sp = binder.EnsureRegister(Registers.sp);
             var src = RewriteSrc(instr.op1);
             m.Assign(sp, m.ISub(sp, m.Int16((short)src.DataType.Size)));
-            m.Assign(m.LoadW(sp), src);
+            m.Assign(m.Mem16(sp), src);
         }
 
         private void RewriteRcf()

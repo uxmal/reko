@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Sparc
 
         private static SparcInstruction Disassemble(MemoryArea img)
         {
-            var arch = new SparcArchitecture(PrimitiveType.Word32);
+            var arch = new SparcArchitecture("sparc", PrimitiveType.Word32);
             var dasm = new SparcDisassembler(arch, img.CreateBeReader(0U));
             return dasm.First();
         }

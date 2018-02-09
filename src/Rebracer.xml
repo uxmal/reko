@@ -42,6 +42,7 @@
         <PropertyValue name="Indent_BlockContents">1</PropertyValue>
         <PropertyValue name="Indent_Braces">0</PropertyValue>
         <PropertyValue name="Indent_CaseContents">1</PropertyValue>
+        <PropertyValue name="Indent_CaseContentsWhenBlock">1</PropertyValue>
         <PropertyValue name="Indent_CaseLabels">0</PropertyValue>
         <PropertyValue name="Indent_FlushLabelsLeft">0</PropertyValue>
         <PropertyValue name="Indent_UnindentLabels">2</PropertyValue>
@@ -317,10 +318,27 @@
     &lt;SerializableNamingRule SymbolSpecificationID="5f3ddba1-279f-486c-801e-5c097c36dd85" NamingStyleID="87e7c501-9948-4b53-b1eb-a6cbe918feee" EnforcementLevel="Info" /&gt;
   &lt;/NamingRules&gt;
 &lt;/NamingPreferencesInfo&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferBraces">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferCoalesceExpression">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferCollectionInitializer">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferConditionalDelegateCall">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExplicitTupleNames">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExpressionBodiedAccessors">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExpressionBodiedConstructors">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExpressionBodiedIndexers">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExpressionBodiedMethods">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExpressionBodiedOperators">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferExpressionBodiedProperties">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferInlinedVariableDeclaration">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
         <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInDeclaration">1</PropertyValue>
         <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInDeclaration_CodeStyle">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInMemberAccess">1</PropertyValue>
         <PropertyValue name="Style_PreferIntrinsicPredefinedTypeKeywordInMemberAccess_CodeStyle">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferNullPropagation">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferObjectInitializer">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferPatternMatchingOverAsWithNullCheck">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferPatternMatchingOverIsWithCastCheck">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
+        <PropertyValue name="Style_PreferThrowExpression">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="true" DiagnosticSeverity="Info" /&gt;</PropertyValue>
         <PropertyValue name="Style_QualifyEventAccess">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_QualifyFieldAccess">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_QualifyMemberAccessWithThisOrMe">1</PropertyValue>
@@ -329,7 +347,7 @@
         <PropertyValue name="Style_UseImplicitTypeForIntrinsicTypes">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_UseImplicitTypeWhereApparent">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
         <PropertyValue name="Style_UseImplicitTypeWherePossible">&lt;CodeStyleOption SerializationVersion="1" Type="Boolean" Value="false" DiagnosticSeverity="Hidden" /&gt;</PropertyValue>
-        <PropertyValue name="Style_UseVarWhenDeclaringLocals">1</PropertyValue>
+        <PropertyValue name="Style_UseVarWhenDeclaringLocals">0</PropertyValue>
         <PropertyValue name="WarnOnBuildErrors">0</PropertyValue>
         <PropertyValue name="Wrapping_IgnoreSpacesAroundBinaryOperators">0</PropertyValue>
         <PropertyValue name="Wrapping_IgnoreSpacesAroundVariableDeclaration">0</PropertyValue>
@@ -365,10 +383,12 @@
         <PropertyValue name="AutoFormatOnSemicolon">true</PropertyValue>
         <PropertyValue name="AutoIndentOnTab">false</PropertyValue>
         <PropertyValue name="AutoPchCacheQuota">5120</PropertyValue>
+        <PropertyValue name="AutoTuneMaximumFindReferencesThreads">true</PropertyValue>
         <PropertyValue name="ColorizeInactiveBlocksDifferently">true</PropertyValue>
         <PropertyValue name="DisableAutoPch">false</PropertyValue>
         <PropertyValue name="DisableBrowsingUpToDateCheck">true</PropertyValue>
         <PropertyValue name="DisableCreateDeclDefnScan">false</PropertyValue>
+        <PropertyValue name="DisableCurrentItemSelection">true</PropertyValue>
         <PropertyValue name="DisableErrorReporting">false</PropertyValue>
         <PropertyValue name="DisableHLSLIntelliSense">true</PropertyValue>
         <PropertyValue name="DisableIntelliSenseErrorsInErrorList">false</PropertyValue>
@@ -376,14 +396,18 @@
         <PropertyValue name="EnableExpandPrecedence">false</PropertyValue>
         <PropertyValue name="EnableExpandScopes">false</PropertyValue>
         <PropertyValue name="EnableExtractFunction">false</PropertyValue>
-        <PropertyValue name="EnableProjectCaching">true</PropertyValue>
+        <PropertyValue name="EnableProjectCaching">false</PropertyValue>
         <PropertyValue name="EnableSQLiteStoreEngine">true</PropertyValue>
         <PropertyValue name="EnableSingleFileISense">true</PropertyValue>
         <PropertyValue name="EnableSingleFileISenseSquiggles">false</PropertyValue>
         <PropertyValue name="EnumerateCommentTasks">true</PropertyValue>
         <PropertyValue name="GroupBrackets">true</PropertyValue>
         <PropertyValue name="HideExperimentalAd">true</PropertyValue>
+        <PropertyValue name="HideExternalDependenciesFolders">false</PropertyValue>
         <PropertyValue name="HighlightMatchingTokens">true</PropertyValue>
+        <PropertyValue name="IncludeHintsSuppress">false</PropertyValue>
+        <PropertyValue name="IncludeHintsSuppressBoostTest">false</PropertyValue>
+        <PropertyValue name="IncludeHintsSuppressGoogleTest">false</PropertyValue>
         <PropertyValue name="IndentAccessSpecifiers">false</PropertyValue>
         <PropertyValue name="IndentBlockContents">true</PropertyValue>
         <PropertyValue name="IndentBraces">false</PropertyValue>
@@ -391,9 +415,11 @@
         <PropertyValue name="IndentCaseContents">true</PropertyValue>
         <PropertyValue name="IndentCaseLabels">false</PropertyValue>
         <PropertyValue name="IndentGotoLabels">1</PropertyValue>
+        <PropertyValue name="IndentLambdaBraces">false</PropertyValue>
         <PropertyValue name="IndentNamespaceContents">true</PropertyValue>
         <PropertyValue name="IndentPreprocessor">2</PropertyValue>
         <PropertyValue name="IndentationReference">2</PropertyValue>
+        <PropertyValue name="MaximumFindReferencesThreads">7</PropertyValue>
         <PropertyValue name="MemberListDotToArrow">false</PropertyValue>
         <PropertyValue name="MemberListDotToArrow_1">true</PropertyValue>
         <PropertyValue name="MemberListFilterHeuristic">false</PropertyValue>
@@ -469,6 +495,7 @@
         <PropertyValue name="ES3ForFilesThatAreNotPartOfAProject">false</PropertyValue>
         <PropertyValue name="ES5ForFilesThatAreNotPartOfAProject">true</PropertyValue>
         <PropertyValue name="ES6ForFilesThatAreNotPartOfAProject">false</PropertyValue>
+        <PropertyValue name="FormatCompletedBlockOnLeftCurlyBrace">true</PropertyValue>
         <PropertyValue name="FormatCompletedBlockOnRightCurlyBrace">true</PropertyValue>
         <PropertyValue name="FormatCompletedLineOnEnter">true</PropertyValue>
         <PropertyValue name="FormatCompletedStatementOnSemicolon">true</PropertyValue>
@@ -479,6 +506,7 @@
         <PropertyValue name="InsertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis">false</PropertyValue>
         <PropertyValue name="InsertSpaceAfterSemicolonInForStatements">true</PropertyValue>
         <PropertyValue name="InsertSpaceBeforeAndAfterBinaryOperators">true</PropertyValue>
+        <PropertyValue name="OnlyAnalyzeProjectsWithOpenDocuments">false</PropertyValue>
         <PropertyValue name="OnlyUseTabOrEnterToCommit">true</PropertyValue>
         <PropertyValue name="PlaceOpenBraceOnNewLineForControlBlocks">false</PropertyValue>
         <PropertyValue name="PlaceOpenBraceOnNewLineForFunctions">false</PropertyValue>

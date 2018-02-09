@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Assemblers.x86
 		{
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new X86ArchitectureReal();
+            arch = new X86ArchitectureReal("x86-real-16");
             asm = new X86TextAssembler(sc, arch);
         }
 
@@ -138,7 +138,7 @@ hello	endp
             var segment = program.SegmentMap.Segments.Values.First();
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
-				var arch = new X86ArchitectureReal();
+				var arch = new X86ArchitectureReal("x86-real-16");
 				var d = new Dumper(program);
 				d.DumpData(program.SegmentMap, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();

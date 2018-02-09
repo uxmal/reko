@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,8 +186,7 @@ namespace Reko.Arch.X86
 
         private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 if (memOp.Base == Registers.rip)
                 {

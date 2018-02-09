@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,13 +144,13 @@ namespace Reko.Core
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
-        Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
+        Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
 
-        string Name { get; set; }                           // Short name used to refer to an architecture.
+        string Name { get; }                           // Short name used to refer to an architecture.
         string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
@@ -195,7 +195,12 @@ namespace Reko.Core
     {
         private RegisterStorage regStack;
 
-        public string Name { get; set; }
+        public ProcessorArchitecture(string archId)
+        {
+            this.Name = archId;
+        }
+
+        public string Name { get; }
         public string Description {get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
@@ -237,7 +242,7 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        public abstract Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
+        public abstract Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);

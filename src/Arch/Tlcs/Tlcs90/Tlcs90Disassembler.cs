@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         public override Tlcs90Instruction DisassembleInstruction()
         {
-            byte b;
             this.addr = rdr.Address;
-            if (!rdr.TryReadByte(out b))
+            if (!rdr.TryReadByte(out byte b))
                 return null;
             this.dataWidth = null;
             this.byteReg = null;
@@ -142,8 +141,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     }
                     else
                     {
-                        short off;
-                        if (!rdr.TryReadLeInt16(out off))
+                        if (!rdr.TryReadLeInt16(out short off))
                             return null;
                         dest = rdr.Address + off;
                     }

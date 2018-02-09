@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -232,27 +232,27 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Mem(BaseType dt, HExpr ea)
         {
-            return MapToHandle(m.Load(Interop.DataTypes[dt], GetExpression(ea)));
+            return MapToHandle(m.Mem(Interop.DataTypes[dt], GetExpression(ea)));
         }
 
         public HExpr Mem8(HExpr ea)
         {
-            return MapToHandle(m.LoadB(GetExpression(ea)));
+            return MapToHandle(m.Mem8(GetExpression(ea)));
         }
 
         public HExpr Mem16(HExpr ea)
         {
-            return MapToHandle(m.LoadW(GetExpression(ea)));
+            return MapToHandle(m.Mem16(GetExpression(ea)));
         }
 
         public HExpr Mem32(HExpr ea)
         {
-            return MapToHandle(m.LoadDw(GetExpression(ea)));
+            return MapToHandle(m.Mem32(GetExpression(ea)));
         }
 
         public HExpr Mem64(HExpr ea)
         {
-            return MapToHandle(m.Load(PrimitiveType.Word64, GetExpression(ea)));
+            return MapToHandle(m.Mem64(GetExpression(ea)));
         }
 
         public HExpr Not(HExpr a)

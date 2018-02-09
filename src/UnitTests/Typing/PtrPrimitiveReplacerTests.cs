@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Typing
 			ProgramBuilder mock = new ProgramBuilder();
 			ProcedureBuilder p = new ProcedureBuilder();
 			Identifier cs = p.Frame.EnsureRegister(Registers.cs);
-			p.Store(p.SegMemW(cs, p.Word32(0x0001)), Constant.Create(PrimitiveType.SegmentSelector, 0x0800));
+			p.Store(p.SegMem16(cs, p.Word32(0x0001)), Constant.Create(PrimitiveType.SegmentSelector, 0x0800));
 			mock.Add(p);
 			RunTest(mock.BuildProgram(), "Typing/PprMemberVars.txt");
 		}
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder mock = new ProgramBuilder();
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            m.SegStore(ds, m.Word32(7000), m.SegMemW(ds, m.SegMemW(ds, m.Word32(0x5321))));
+            m.SegStore(ds, m.Word32(7000), m.SegMem16(ds, m.SegMem16(ds, m.Word32(0x5321))));
             mock.Add(m);
             RunTest(mock.BuildProgram(), "Typing/PprMemberPointers.txt");
         }

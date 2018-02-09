@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Core
 
         public void AddPointerReference(ulong linAddress, uint pointer)
 		{
-			var c = Constant.Create(PrimitiveType.Pointer32, pointer);
+			var c = Constant.Create(PrimitiveType.Ptr32, pointer);
 			map.Add(linAddress, c);
 		}
 

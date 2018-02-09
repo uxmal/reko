@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace hunktool
         public IProcessorArchitecture GetArchitecture(string archLabel)
         {
             if (archLabel == "m68k")
-                return new M68kArchitecture();
+                return new M68kArchitecture("m68k");
             throw new NotImplementedException();
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Assemblers.x86
         private void RunTest(AssemblerFragment fragment, string sExp)
         {
             Address addrBase=  Address.SegPtr(0xC00, 0);
-            X86Assembler asm = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal()), addrBase, new List<ImageSymbol>());
+            X86Assembler asm = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal("x86-real-16")), addrBase, new List<ImageSymbol>());
             fragment.Build(asm);
             Program lr = asm.GetImage();
             var mem = lr.SegmentMap.Segments.Values.First().MemoryArea;

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +32,9 @@ namespace Reko.Environments.Windows
     /// <summary>
     /// Parses C++ names mangled by Borland compilers.
     /// </summary>
-    // https://github.com/mildred/Lysaac/blob/master/doc/boa.cp437.txt
-    // http://edn.embarcadero.com/article/27758
+// https://github.com/mildred/Lysaac/blob/master/doc/boa.cp437.txt
+// http://edn.embarcadero.com/article/27758
+
     public class BorlandMangledNamedParser
     {
         private string s;
@@ -50,6 +51,14 @@ namespace Reko.Environments.Windows
 
         public Tuple<string, SerializedType, SerializedType> Parse()
         {
+            //$HACK: names with two leading @@ are special, so we treat them specially.
+            // There is no indication of what signature such a function has, 
+            // so the signature is left undefined.
+            if (s.StartsWith("@@"))
+            {
+                var sig = new SerializedSignature();
+                return new Tuple<string, SerializedType, SerializedType>(s, sig, null);
+            }
             var qname = ParseName();
             if (qname == null)
                 return null;

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,9 +93,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         private void Given_i386_Architecture()
         {
             this.arch_386 = mr.StrictMock<IProcessorArchitecture>();
-            arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Pointer32));
+            arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Ptr32));
             arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
-            arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
+            arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var state = mr.Stub<ProcessorState>();
             arch_386.Stub(a => a.CreateProcessorState()).Return(state);
             arch_386.Replay();
@@ -168,9 +168,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             }
             writer.WriteLeUInt32(0);
             writer.WriteLeUInt32(0);
-            writer.Position = (ulong)rvaDirectories + 13 * 8;
+            writer.Position = rvaDirectories + 13 * 8;
             writer.WriteLeInt32((int)rvaDld);
-            writer.Position = (ulong)rvaDirectories - 4;
+            writer.Position = rvaDirectories - 4;
             writer.WriteLeInt32(14);
         }
 
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeUInt32(2);        // number of data directory entries
 
             rvaDirectories = (int)writer.Position;
-            writer.Position = (ulong)rvaDirectories + 2 * 12;
+            writer.Position = rvaDirectories + 2 * 12;
             var optHdrSize = writer.Position - rvaOptHdr;
             var rvaSections = writer.Position;
             writer.Position = rvaOptionalHeaderSize;
@@ -290,10 +290,10 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.WriteLeUInt32(2);        // number of data directory entries
 
             rvaDirectories = (int)writer.Position;
-            var optHdrSize = (ulong)rvaDirectories - rvaOptHdr;
+            var optHdrSize = rvaDirectories - rvaOptHdr;
             writer.Position = rvaOptionalHeaderSize;
             writer.WriteLeInt16((short)optHdrSize);
-            writer.Position = (ulong)rvaDirectories;
+            writer.Position = rvaDirectories;
 
             writer.WriteLeUInt32(0);        // Export table rva
             writer.WriteLeUInt32(0);        // Export table size
