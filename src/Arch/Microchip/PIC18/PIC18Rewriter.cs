@@ -324,10 +324,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         private (IndirectRegOp, Expression) GetUnaryPtrs(MachineOperand op, out Expression ptr)
         {
-            (IndirectRegOp indop, Expression adr) GetMemoryBankAccess(MachineOperand mop)
+            (IndirectRegOp indop, Expression adr) GetMemoryBankAccess()
             {
 
-                switch (mop)
+                switch (op)
                 {
                     case PIC18BankedAccessOperand bmem:
                         var offset = bmem.BankAddr;
@@ -371,29 +371,29 @@ namespace Reko.Arch.Microchip.PIC18
                 }
             }
 
-            var mem = GetMemoryBankAccess(op);
-            switch (mem.indop)
+            var (indop, adr) = GetMemoryBankAccess();
+            switch (indop)
             {
                 case IndirectRegOp.None:    // Direct mode
-                    ptr = mem.adr;
+                    ptr = adr;
                     break;
 
                 case IndirectRegOp.INDF:    // Indirect modes
                 case IndirectRegOp.POSTDEC:
                 case IndirectRegOp.POSTINC:
                 case IndirectRegOp.PREINC:
-                    ptr = DataMem8(mem.adr);
+                    ptr = DataMem8(adr);
                     break;
 
                 case IndirectRegOp.PLUSW:   // Indirect-indexed mode
-                    ptr = DataMem8(m.IAdd(mem.adr, Wreg));
+                    ptr = DataMem8(m.IAdd(adr, Wreg));
                     break;
 
                 default:
                     throw new InvalidOperationException("Unable to adjust indirect pointer.");
             }
 
-            return mem;
+            return (indop, adr);
         }
 
         /// <summary>
@@ -409,16 +409,16 @@ namespace Reko.Arch.Microchip.PIC18
         private (IndirectRegOp, Expression) GetBinaryPtrs(MachineOperand op, out Expression ptr, out Expression dst)
         {
 
-            bool DestIsWreg(MachineOperand mop)
+            bool DestIsWreg()
             {
-                if (mop is PIC18DataByteAccessWithDestOperand bytedst)
+                if (op is PIC18DataByteAccessWithDestOperand bytedst)
                     return bytedst.WregIsDest.ToBoolean();
                 return false;
             }
 
-            var mem = GetUnaryPtrs(op, out ptr);
-            dst = (DestIsWreg(op) ? Wreg : ptr);
-            return mem;
+            var (indop, adr) = GetUnaryPtrs(op, out ptr);
+            dst = (DestIsWreg() ? Wreg : ptr);
+            return (indop, adr);
         }
 
         /// <summary>
@@ -434,9 +434,9 @@ namespace Reko.Arch.Microchip.PIC18
         private (IndirectRegOp, Expression) GetUnaryAbsPtrs(MachineOperand op, out Expression ptr)
         {
 
-            (IndirectRegOp indop, Expression adr) GetDataAbsAddress(MachineOperand mop)
+            (IndirectRegOp indop, Expression adr) GetDataAbsAddress()
             {
-                switch (mop)
+                switch (op)
                 {
                     case PIC18DataAbsAddrOperand memabsaddr:
                         var reg = PIC18Registers.GetRegisterBySizedAddr(memabsaddr.DataTarget, 8);
@@ -457,29 +457,29 @@ namespace Reko.Arch.Microchip.PIC18
                 }
             }
 
-            var mem = GetDataAbsAddress(op);
-            switch (mem.indop)
+            var (indop, adr) = GetDataAbsAddress();
+            switch (indop)
             {
                 case IndirectRegOp.None:    // Direct mode
-                    ptr = mem.adr;
+                    ptr = adr;
                     break;
 
                 case IndirectRegOp.INDF:    // Indirect modes
                 case IndirectRegOp.POSTDEC:
                 case IndirectRegOp.POSTINC:
                 case IndirectRegOp.PREINC:
-                    ptr = DataMem8(mem.adr);
+                    ptr = DataMem8(adr);
                     break;
 
                 case IndirectRegOp.PLUSW:   // Indirect-indexed mode
-                    ptr = DataMem8(m.IAdd(mem.adr, Wreg));
+                    ptr = DataMem8(m.IAdd(adr, Wreg));
                     break;
 
                 default:
                     throw new InvalidOperationException("Unable to adjust indirect pointer.");
             }
 
-            return mem;
+            return (indop, adr);
         }
 
         private void _rewriteCondBranch(TestCondition test)

@@ -36,6 +36,7 @@ using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18
 {
+
     /// <summary>
     /// PIC18 processor architecture.
     /// </summary>
@@ -45,22 +46,17 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Constructors
 
-        private void SetProcTraits()
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="archID">Identifier for the architecture. Interpreted as the name of the PIC.</param>
+        public PIC18Architecture(string archID) : base(archID)
         {
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
             InstructionBitSize = 16;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Byte;
-        }
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <param name="archID">Identifier for the architecture.</param>
-        public PIC18Architecture(string archID) : base(archID)
-        {
-            SetProcTraits();
             LoadConfiguration(PICDescriptor);
         }
 
@@ -70,11 +66,17 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="picDescr">PIC descriptor.</param>
         public PIC18Architecture(PIC picDescr) : base(picDescr.Name)
         {
-            SetProcTraits();
+            flagGroups = new List<FlagGroupStorage>();
+            FramePointerType = PrimitiveType.Offset16;
+            InstructionBitSize = 16;
+            PointerType = PrimitiveType.Ptr32;
+            WordWidth = PrimitiveType.Byte;
             LoadConfiguration(picDescr);
         }
 
         #endregion
+
+        #region Helpers
 
         /// <summary>
         /// Loads the PIC configuration. Creates memory mapper and registers.
@@ -87,6 +89,10 @@ namespace Reko.Arch.Microchip.PIC18
             PIC18Registers.Create(picDescr).LoadRegisters(); 
             StackRegister = PIC18Registers.STKPTR;
         }
+
+        #endregion
+
+        #region Public Methods/Properties
 
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
@@ -294,8 +300,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            //TODO: CreatePointerScanner - understand purpose, implement
-            throw new NotImplementedException($"{nameof(CreatePointerScanner)} not implemented.");
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
+            return new PIC18PointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li)); ;
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
@@ -307,10 +313,7 @@ namespace Reko.Arch.Microchip.PIC18
             => Address.Ptr32(c.ToUInt32());
 
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
-        {
-            //TODO: ReadCodeAddress - understand purpose, implement
-            throw new NotImplementedException($"{nameof(ReadCodeAddress)} not implemented.");
-        }
+            => PICProgAddress.Ptr(rdr.ReadLeUInt32());
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
@@ -338,6 +341,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
             => Address.TryParse32(txtAddress, out addr);
+
+        #endregion
 
     }
 

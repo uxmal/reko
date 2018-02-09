@@ -30,6 +30,7 @@ namespace Reko.Arch.Microchip.PIC18
 {
     public class PIC18Disassembler : DisassemblerBase<PIC18Instruction>
     {
+
         #region Locals
 
         private EndianImageReader rdr;

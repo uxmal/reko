@@ -66,6 +66,7 @@
     <Compile Include="PIC18\PIC18Architecture.cs" />
     <Compile Include="PIC18\PIC18InstructionComparer.cs" />
     <Compile Include="PIC18\PIC18Operand.cs" />
+    <Compile Include="PIC18\PIC18PointerScanner.cs" />
     <Compile Include="PIC18\PIC18Registers.cs" />
     <Compile Include="PIC18\PIC18Rewriter.cs" />
     <Compile Include="PIC18\PIC18State.cs" />
