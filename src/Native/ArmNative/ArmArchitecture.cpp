@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2017 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #include "ArmArchitecture.h"
 #include "functions.h"
 
+#include "common/compat.h"
+
 ArmArchitecture::ArmArchitecture()
 {
 	AddRef();
@@ -49,12 +51,12 @@ void STDMETHODCALLTYPE ArmArchitecture::GetAllRegisters(int regKind, int * pcReg
 {
 	if (regKind == 0)
 	{
-		*pcRegs = _countof(aRegs);
+		*pcRegs = countof(aRegs);
 		*ppRegs = &aRegs[0];
 	}
 	else if (regKind == 1)
 	{
-		*pcRegs = _countof(aSysregs);
+		*pcRegs = countof(aSysregs);
 		*ppRegs = &aSysregs[0];
 	}
 }

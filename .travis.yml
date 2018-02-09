@@ -1,11 +1,35 @@
 language: csharp
 solution: src/Reko-decompiler.sln
+sudo: false
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-toolchain-r/test'
+    packages:
+      - gcc-7
+      - g++-7
+
+before_install:
+  - mkdir -p $HOME/prefix/bin
+  - ln -s /usr/bin/gcc-7 $HOME/prefix/bin/gcc
+  - ln -s /usr/bin/g++-7 $HOME/prefix/bin/g++
+  - source .travis_env
+  - mkdir -p $HOME/capstone
+  - pushd $HOME/capstone
+  - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
+  - tar -xf 3.0.4.tar.gz
+  - cd capstone*
+  - DESTDIR=$HOME/prefix make install -j $(grep processor /proc/cpuinfo | wc -l)
+  - export PKG_CONFIG_PATH="$HOME/prefix/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+  - popd
+
 install:
   - nuget restore src/Reko-decompiler.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
 script:
-  - sh ./setup.sh -u
+  - source .travis_env
   - msbuild /version
   - msbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests
