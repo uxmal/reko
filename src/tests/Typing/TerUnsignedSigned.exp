@@ -1,0 +1,126 @@
+// Before ///////
+// register_tm_clones
+// Return size: 0
+void register_tm_clones()
+register_tm_clones_entry:
+	// succ:  l1
+l1:
+	rsp = 0x0000000000201028
+	rsi = 0x0000000000201028
+	rsi = rsi - rsp
+	branch (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >>u 0x3F) >> 0x0000000000000001) == 0x0000000000000000 mHyperSpace
+	// succ:  mHello mHyperSpace
+mHello:
+	Mem0[0x000000000000002A:word64] = rsi
+	// succ:  mHyperspace
+mHyperspace:
+	return
+	// succ:  register_tm_clones_exit
+mHyperSpace:
+register_tm_clones_exit:
+
+// After ///////
+// register_tm_clones
+// Return size: 0
+void register_tm_clones()
+register_tm_clones_entry:
+	// succ:  l1
+l1:
+	rsp = 0x0000000000201028
+	rsi = 0x0000000000201028
+	rsi = rsi - rsp
+	branch (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) == 0x0000000000000000 mHyperSpace
+	// succ:  mHello mHyperSpace
+mHello:
+	(int64 *) 0x000000000000002A = rsi
+	// succ:  mHyperspace
+mHyperspace:
+	return
+	// succ:  register_tm_clones_exit
+mHyperSpace:
+register_tm_clones_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals" (2A int64 qw002A))
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_10: (union "Eq_10" (int64 u0) (uint64 u1))
+	T_10 (in rsi >> 0x0000000000000003 : word64)
+Eq_12: (union "Eq_12" (int64 u0) (uint64 u1))
+	T_12 (in rsi >> 0x0000000000000003 >> 0x3F : word64)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in 0x0000000000201028 : word64)
+  Class: Eq_2
+  DataType: word64
+  OrigDataType: word64
+T_3: (in rsp : word64)
+  Class: Eq_2
+  DataType: word64
+  OrigDataType: word64
+T_4: (in 0x0000000000201028 : word64)
+  Class: Eq_4
+  DataType: int64
+  OrigDataType: word64
+T_5: (in rsi : word64)
+  Class: Eq_4
+  DataType: int64
+  OrigDataType: int64
+T_6: (in rsi - rsp : word64)
+  Class: Eq_4
+  DataType: int64
+  OrigDataType: word64
+T_7: (in 0x0000000000000003 : word64)
+  Class: Eq_7
+  DataType: word64
+  OrigDataType: word64
+T_8: (in rsi >> 0x0000000000000003 : word64)
+  Class: Eq_8
+  DataType: int64
+  OrigDataType: int64
+T_9: (in 0x0000000000000003 : word64)
+  Class: Eq_9
+  DataType: word64
+  OrigDataType: word64
+T_10: (in rsi >> 0x0000000000000003 : word64)
+  Class: Eq_10
+  DataType: Eq_10
+  OrigDataType: (union (int64 u0) (uint64 u1))
+T_11: (in 0x3F : byte)
+  Class: Eq_11
+  DataType: byte
+  OrigDataType: byte
+T_12: (in rsi >> 0x0000000000000003 >> 0x3F : word64)
+  Class: Eq_12
+  DataType: Eq_12
+  OrigDataType: (union (int64 u1) (uint64 u0))
+T_13: (in 0x0000000000000001 : word64)
+  Class: Eq_13
+  DataType: word64
+  OrigDataType: word64
+T_14: (in rsi >> 0x0000000000000003 >> 0x3F >> 0x0000000000000001 : word64)
+  Class: Eq_14
+  DataType: int64
+  OrigDataType: int64
+T_15: (in (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) : word64)
+  Class: Eq_15
+  DataType: int64
+  OrigDataType: int64
+T_16: (in 0x0000000000000000 : word64)
+  Class: Eq_15
+  DataType: int64
+  OrigDataType: word64
+T_17: (in (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) == 0x0000000000000000 : bool)
+  Class: Eq_17
+  DataType: bool
+  OrigDataType: bool
+T_18: (in 0x000000000000002A : word64)
+  Class: Eq_18
+  DataType: (ptr int64)
+  OrigDataType: (ptr (struct (0 T_19 t0000)))
+T_19: (in Mem0[0x000000000000002A:word64] : word64)
+  Class: Eq_4
+  DataType: int64
+  OrigDataType: word64
