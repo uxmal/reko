@@ -101,7 +101,7 @@ endfunction()
 
 function(get_test_runner_cmdline)
 	# switches, single value, list value
-	cmake_parse_arguments(ARGS "" "IN_FILENAME;OUT_DASM;OUT_DIS;OUT_SRC;OUT_HDR;OUT_GLOBALS;TEST_DIRECTORY;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
+	cmake_parse_arguments(ARGS "" "IN_FILENAME;TEST_DIRECTORY;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
 
 	set(final_cmd ${CMAKE_COMMAND})
 
@@ -111,30 +111,6 @@ function(get_test_runner_cmdline)
 	if(clean_args)
 		marshal_list("*" "${clean_args}" clean_args)
 		list(APPEND final_cmd "-DCLEAR_FILES=${clean_args}")
-	endif()
-	
-
-	## Enable checks if the caller wants to make sure
-	## that the dasm/dis/src/header/globals files were specified
-	## also convert the relative path to absolute while forwarding
-	if(ARGS_OUT_DASM)
-		list(APPEND final_cmd "-DOUT_DASM=${ARGS_TEST_DIRECTORY}/${ARGS_OUT_DASM}")
-	endif()
-
-	if(ARGS_OUT_DIS)
-		list(APPEND final_cmd "-DOUT_DIS=${ARGS_TEST_DIRECTORY}/${ARGS_OUT_DIS}")
-	endif()
-
-	if(ARGS_OUT_SRC)
-		list(APPEND final_cmd "-DOUT_SRC=${ARGS_TEST_DIRECTORY}/${ARGS_OUT_SRC}")
-	endif()
-
-	if(ARGS_OUT_HDR)
-		list(APPEND final_cmd "-DOUT_HDR=${ARGS_TEST_DIRECTORY}/${ARGS_OUT_HDR}")
-	endif()
-
-	if(ARGS_OUT_GLOBALS)
-		list(APPEND final_cmd "-DOUT_GLOBALS=${ARGS_TEST_DIRECTORY}/${ARGS_OUT_GLOBALS}")
 	endif()
 
 	set(REKO_CMD ${CLR_RUNTIME} ${REKO_CMDLINE_DIR}/${REKO_CMDLINE_EXE})
@@ -153,53 +129,6 @@ function(get_test_runner_cmdline)
 endfunction()
 
 function(define_regression_test_dcproj test_dir project_file out_target)
-	# read .dcproject and scan it to find the output names
-	file(STRINGS ${project_file} prj_lines)
-
-	foreach(line ${prj_lines})
-		if(line MATCHES "<filename>(.*)</filename>")
-			set(arg_in_filename "${CMAKE_MATCH_1}")
-		elseif(line MATCHES "<disassembly>(.*)</disassembly>")
-			set(arg_dasm_out "${CMAKE_MATCH_1}")
-		elseif(line MATCHES "<intermediate-code>(.*)</intermediate-code>")
-			set(arg_dis_out "${CMAKE_MATCH_1}")
-		elseif(line MATCHES "<output>(.*)</output>")
-			set(arg_c_src_out "${CMAKE_MATCH_1}")
-		elseif(line MATCHES "<types-file>(.*)</types-file>")
-			set(arg_c_hdr_out "${CMAKE_MATCH_1}")
-		elseif(line MATCHES "<global-vars>(.*)</global-vars>")
-			set(arg_c_globals_out "${CMAKE_MATCH_1}")
-		endif()
-	endforeach()	
-
-	if(NOT arg_in_filename)
-		message(FATAL_ERROR "${project_file} doesn't contain <filename>")
-	endif()
-
-	## Prepare the filename without extension, to fill any missing directive as
-	## <name_we>.extension
-	get_filename_component(in_filename_we ${arg_in_filename} NAME_WE)
-
-	if(NOT arg_dasm_out)
-		set(arg_dasm_out "${in_filename_we}.asm")
-	endif()
-
-	if(NOT arg_dis_out)
-		set(arg_dis_out "${in_filename_we}.dis")
-	endif()
-
-	if(NOT arg_c_src_out)
-		set(arg_c_src_out "${in_filename_we}.c")
-	endif()
-
-	if(NOT arg_c_hdr_out)
-		set(arg_c_hdr_out "${in_filename_we}.h")
-	endif()
-
-	if(NOT arg_c_globals_out)
-		set(arg_c_globals_out "${in_filename_we}.globals.c")
-	endif()
-	
 	get_test_name(${test_dir} test_name)
 	set(test_name ${test_name}_dcproject)
 
@@ -211,12 +140,6 @@ function(define_regression_test_dcproj test_dir project_file out_target)
 		EXTRA_ARGS
 			${project_file}
 		CMDLINE_VAR runner_cmd
-		
-		OUT_DASM ${arg_dasm_out}
-		OUT_DIS	${arg_dis_out}
-		OUT_SRC	${arg_c_src_out}
-		OUT_HDR ${arg_c_hdr_out}
-		OUT_GLOBALS ${arg_c_globals_out}
 	)
 
 	# run .dcproject
