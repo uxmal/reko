@@ -26,4 +26,8 @@ endforeach()
 execute_process(
 	COMMAND ${COMMAND}
 	WORKING_DIRECTORY ${TEST_DIRECTORY}
+	OUTPUT_VARIABLE test_result
 )
+
+set(LOG_FILE ${TEST_DIRECTORY}/${TEST_NAME}.log)
+file(WRITE ${LOG_FILE} ${test_result})

@@ -20,6 +20,18 @@ ProcessorCount(NumThreads)
 message(STATUS "> We can use ${NumThreads} CPU Threads")
 set(CTEST_PARALLEL_LEVEL ${NumThreads})
 
+
+function(add_log_file log_file)
+	get_property(LOG_FILES GLOBAL PROPERTY LOG_FILES)
+	list(APPEND LOG_FILES ${log_file})
+	set_property(GLOBAL PROPERTY LOG_FILES "${LOG_FILES}")
+endfunction()
+
+function(save_logs_list logs_list_file)
+	get_property(LOG_FILES GLOBAL PROPERTY LOG_FILES)
+	file(WRITE ${logs_list_file} "${LOG_FILES}")
+endfunction()
+
 # Retrives the .NET runtime executable (for unix)
 macro(get_clr_runtime out_runner)
 	if(UNIX AND NOT WIN32)
@@ -66,9 +78,18 @@ endfunction()
 # we additionally remove empty elements in the list while doing so
 function(marshal_list separator list out_list)
 	set(result "")
+	
+	set(item_idx 0)
+	list(LENGTH list n_items)
+
 	foreach(item ${list})
 		if(item)
-			set(result "${result}${item}${separator}")
+			set(result "${result}${item}")
+		endif()
+
+		math(EXPR item_idx "${item_idx}+1")
+		if(${item_idx} LESS ${n_items})
+			set(result "${result}${separator}")
 		endif()
 	endforeach()
 
@@ -77,7 +98,7 @@ endfunction()
 
 function(get_test_runner_cmdline)
 	# switches, single value, list value
-	cmake_parse_arguments(ARGS "" "IN_FILENAME;TEST_DIRECTORY;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
+	cmake_parse_arguments(ARGS "" "TEST_NAME;TEST_DIRECTORY;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
 
 	set(final_cmd ${CMAKE_COMMAND})
 
@@ -89,6 +110,7 @@ function(get_test_runner_cmdline)
 
 	marshal_list("*" "${REKO_CMD}" REKO_CMD)
 
+	list(APPEND final_cmd "-DTEST_NAME=${ARGS_TEST_NAME}")
 	list(APPEND final_cmd "-DTEST_DIRECTORY=${ARGS_TEST_DIRECTORY}")
 	list(APPEND final_cmd "-DCOMMAND=${REKO_CMD}")
 	list(APPEND final_cmd -P ${TEST_RUNNER})
@@ -98,17 +120,23 @@ endfunction()
 
 function(define_regression_test_dcproj test_dir project_file out_target)
 	get_test_name(${test_dir} test_name)
-	set(test_name ${test_name}_dcproject)
 
+	get_filename_component(proj_name ${project_file} NAME)
+
+	set(test_name ${test_name}_${proj_name})
 	message(STATUS "> Add_dcproject ${test_name} => ${project_file}")
 
 	get_test_runner_cmdline(
+		TEST_NAME
+			${test_name}
 		TEST_DIRECTORY
 			${test_dir}
 		EXTRA_ARGS
 			${project_file}
 		CMDLINE_VAR runner_cmd
 	)
+
+	add_log_file("${test_dir}/${test_name}.log")
 
 	# run .dcproject
 	add_test(
@@ -120,16 +148,17 @@ function(define_regression_test_dcproj test_dir project_file out_target)
 	set(${out_target} ${test_name} PARENT_SCOPE)
 endfunction()
 
-function(define_regression_test_script test_dir script_file out_target)
+function(define_regression_test_script test_dir script_file out_targets)
 	# Get list of lines
 	file(STRINGS ${script_file} script)
 
-	set(cmdline "")
-
+	set(tasks "")
 	foreach(line ${script})
 		if(line MATCHES "^#" OR NOT line)
 			continue()
 		endif()
+
+		set(cmdline "")
 
 		## Split by space (string to list), and collect non empty args
 		string(STRIP ${line} _cmdline)
@@ -142,39 +171,55 @@ function(define_regression_test_script test_dir script_file out_target)
 
 			list(APPEND cmdline ${piece})
 		endforeach()
+
+		marshal_list("*" "${cmdline}" cmdline)
+		list(APPEND tasks "${cmdline}")
 	endforeach()
 
-	## If there is no cmdline (only comments) this test is disabled, skip it
-	if(NOT cmdline)
+	## If there is no task (only comments) skip this directory
+	if(NOT tasks)
 		return()
 	endif()
 
-	## TODO: extract the binary name from cmdline for output checks
+	set(test_names "")
 
-	get_test_name(${test_dir} test_name)
-	set(test_name ${test_name}_script)
+	foreach(cmdline ${tasks})
+		string(REPLACE "*" ";" cmdline ${cmdline})
 
-	message(STATUS "> Add_script ${test_name} => ${cmdline}")
+		# XXX: Assuming the executable name is the last argument
+		list(GET cmdline -1 exe_name)
 
-	# Remove the executable name
-	list(REMOVE_AT cmdline 0)
+		get_test_name(${test_dir} test_name)
+		set(test_name ${test_name}_${exe_name})
 
-	get_test_runner_cmdline(
-		TEST_DIRECTORY
-			${test_dir}
-		EXTRA_ARGS
-			${cmdline}
-		CMDLINE_VAR runner_cmd
-	)
+		message(STATUS "> Add_script ${test_name} => ${cmdline}")
 
-	# run script
-	add_test(
-		NAME ${test_name}
-		COMMAND ${runner_cmd}
-		WORKING_DIRECTORY ${TOPLEVEL}
-	)
+		# Remove "decompiler.exe"
+		list(REMOVE_AT cmdline 0)
 
-	set(${out_target} ${test_name} PARENT_SCOPE)
+		get_test_runner_cmdline(
+			TEST_NAME
+				${test_name}
+			TEST_DIRECTORY
+				${test_dir}
+			EXTRA_ARGS
+				${cmdline}
+			CMDLINE_VAR runner_cmd
+		)
+
+		add_log_file("${test_dir}/${test_name}.log")
+
+		# run script
+		add_test(
+			NAME ${test_name}
+			COMMAND ${runner_cmd}
+			WORKING_DIRECTORY ${TOPLEVEL}
+		)
+
+		list(APPEND test_names ${test_name})
+	endforeach()
+
+	set(${out_targets} ${test_names} PARENT_SCOPE)
 endfunction()
 
 macro(configure_test test_name)
@@ -204,11 +249,13 @@ function(process_directory test_dir)
 	if(EXISTS ${script_file})
 		# Define a subject.cmd test
 		define_regression_test_script(
-			${test_dir} ${script_file} script_target
+			${test_dir} ${script_file} script_targets
 		)
 
-		if(script_target)
-			configure_test(${script_target})
+		if(script_targets)
+			foreach(script_target ${script_targets})
+				configure_test(${script_target})
+			endforeach()
 		endif()
 	endif()
 endfunction()
@@ -250,9 +297,21 @@ else()
 	set(CTEST_PARALLEL_LEVEL "-j ${NumThreads}")
 endif()
 
+set(logs_list_file ${CMAKE_CURRENT_BINARY_DIR}/logs.txt)
+save_logs_list(${logs_list_file})
+
 add_custom_target(RunTests ALL
 	COMMAND ctest -C $<CONFIGURATION>
 		--output-on-failure
 		${CTEST_PARALLEL_LEVEL}
 		${CTEST_VERBOSE}
+)
+
+add_custom_target(CollectLogs ALL
+	DEPENDS RunTests
+	WORKING_DIRECTORY ${TOPLEVEL}
+	COMMAND
+		${CMAKE_COMMAND}
+		"-DLOG_FILES=${logs_list_file}"
+		-P ${TOPLEVEL}/collect.cmake
 )
