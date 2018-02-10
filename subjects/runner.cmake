@@ -3,18 +3,25 @@
 ## This file is part of Reko Decompiler
 ##
 
+set(OUTPUT_EXTENSIONS "asm" "c" "dis" "h")
+
+function(rm_by_ext directory ext)
+	file(GLOB files "${directory}/*.${ext}")
+	foreach(file ${files})
+		message(STATUS "=> Removing ${file}")
+		file(REMOVE ${file})
+	endforeach()
+endfunction()
+
 # Unmarshal lists
-string(REPLACE "*" ";" CLEAR_FILES ${CLEAR_FILES})
 string(REPLACE "*" ";" COMMAND ${COMMAND})
 
 message(STATUS "> ${COMMAND}")
 
-if(CLEAR_FILES)
-	foreach(file ${CLEAR_FILES})
-		message(STATUS "=> Removing ${file}")
-		file(REMOVE ${file})
-	endforeach()
-endif()
+foreach(ext ${OUTPUT_EXTENSIONS})
+	message(STATUS ${TEST_DIRECTORY})
+	rm_by_ext(${TEST_DIRECTORY} ${ext})
+endforeach()
 
 execute_process(
 	COMMAND ${COMMAND}

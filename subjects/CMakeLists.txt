@@ -53,30 +53,6 @@ set(TEST_RUNNER ${TOPLEVEL}/runner.cmake)
 set(REKO_CMDLINE_DIR "${REKO_CMDLINE_DIR}/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}")
 set(REKO_CMDLINE_EXE "decompile.exe")
 
-set(OUTPUT_EXTENSIONS "asm" "c" "dis" "h")
-
-# Returns a list of files that should be removed (given a list of files)
-function(filter_clear_dir_list in_files out_list)
-	set(result "")
-	foreach(file ${in_files})
-		foreach(ext ${OUTPUT_EXTENSIONS})
-			if(file MATCHES "\\.${ext}$")
-				list(APPEND result ${file})
-			endif()
-		endforeach()
-	endforeach()
-
-	set(${out_list} ${result} PARENT_SCOPE)
-endfunction()
-
-# Returns a list of files that should be removed (given a path to look at)
-function(get_clean_dir_list test_dir out_files)
-	file(GLOB in_files "${test_dir}/*")
-	filter_clear_dir_list("${in_files}" result)
-
-	set(${out_files} ${result} PARENT_SCOPE)
-endfunction()
-
 function(get_test_name test_dir out_name)
 	file(RELATIVE_PATH test_name ${TOPLEVEL} ${test_dir})
 	string(REPLACE "/" "_" test_name ${test_name})
@@ -104,14 +80,6 @@ function(get_test_runner_cmdline)
 	cmake_parse_arguments(ARGS "" "IN_FILENAME;TEST_DIRECTORY;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
 
 	set(final_cmd ${CMAKE_COMMAND})
-
-	# Get the list of files that should be cleaned
-	get_clean_dir_list(${ARGS_TEST_DIRECTORY} clean_args)
-
-	if(clean_args)
-		marshal_list("*" "${clean_args}" clean_args)
-		list(APPEND final_cmd "-DCLEAR_FILES=${clean_args}")
-	endif()
 
 	set(REKO_CMD ${CLR_RUNTIME} ${REKO_CMDLINE_DIR}/${REKO_CMDLINE_EXE})
 
