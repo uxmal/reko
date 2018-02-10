@@ -52,14 +52,17 @@ namespace Reko.Arch.Microchip.PIC18
         {
             target = 0;
             ushort sopcode = (ushort)opcode;
+            var offset = rdr.Offset;
             if (((sopcode & 0xFE00) == 0xEC00) // CALL n,[s]
                 &&
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
-                if (!rdr.TryReadUInt16(out ushort word2))
-                    return false;
-                target = (uint)(sopcode.Extract(0, 8) | (word2 << 8));
-                return true;
+                ushort word2 = rdr.ReadLeUInt16();
+                if ((word2 & 0xF000) == 0xF000)
+                {
+                    target = (uint)(sopcode.Extract(0, 8) | (word2 << 8));
+                    return true;
+                }
             }
             if ((sopcode & 0xF800) == 0xD800) // RCALL n
             {
@@ -67,6 +70,7 @@ namespace Reko.Arch.Microchip.PIC18
                 target = (uint)((long)rdr.Address.ToLinear() + 2 + (off * 2));
                 return true;
             }
+            rdr.Offset = offset;
             return false;
         }
 
@@ -74,12 +78,17 @@ namespace Reko.Arch.Microchip.PIC18
         {
             target = 0;
             ushort sopcode = (ushort)opcode;
-            if ((sopcode & 0xFF00) == 0xEF00) // GOTO n
+            var offset = rdr.Offset;
+            if (((sopcode & 0xFF00) == 0xEF00) // GOTO n
+                &&
+                rdr.IsValidOffset(rdr.Offset + 2u))
             {
-                if (!rdr.TryReadUInt16(out ushort word2))
-                    return false;
-                target = (uint)(sopcode.Extract(0, 8) | (word2 << 8));
-                return true;
+                ushort word2 = rdr.ReadLeUInt16();
+                if ((word2 & 0xF000) == 0xF000)
+                {
+                    target = (uint)(sopcode.Extract(0, 8) | (word2 << 8));
+                    return true;
+                }
             }
             if ((sopcode & 0xF800) == 0xD000) // BRA n
             {
@@ -93,6 +102,7 @@ namespace Reko.Arch.Microchip.PIC18
                 target = (uint)((long)rdr.Address.ToLinear() + 2 + (off * 2));
                 return true;
             }
+            rdr.Offset = offset;
             return false;
         }
 
