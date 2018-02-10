@@ -15,10 +15,12 @@ if(NOT CTEST_TESTING_TIMEOUT)
 	set(CTEST_TESTING_TIMEOUT 60)
 endif()
 
-ProcessorCount(NumThreads)
+if(NOT NUM_JOBS)
+	ProcessorCount(NUM_JOBS)
+endif()
 
-message(STATUS "> We can use ${NumThreads} CPU Threads")
-set(CTEST_PARALLEL_LEVEL ${NumThreads})
+message(STATUS "> We can use ${NUM_JOBS} CPU Threads")
+set(CTEST_PARALLEL_LEVEL ${NUM_JOBS})
 
 
 function(add_log_file log_file)
@@ -294,7 +296,7 @@ endif()
 if(NO_PARALLEL)
 	set(CTEST_PARALLEL_LEVEL OFF)
 else()
-	set(CTEST_PARALLEL_LEVEL "-j ${NumThreads}")
+	set(CTEST_PARALLEL_LEVEL "-j ${NUM_JOBS}")
 endif()
 
 set(logs_list_file ${CMAKE_CURRENT_BINARY_DIR}/logs.txt)
