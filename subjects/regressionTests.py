@@ -6,11 +6,14 @@
 # * a subject.cmd file containing reko command lines to execute.
 
 from optparse import OptionParser
+from threading import Thread
+import multiprocessing as mp
 import os
 import os.path
 import re
 import subprocess
 import sys
+import time
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(script_dir)
@@ -72,30 +75,30 @@ def clear_dir(dir_name, files):
             if pname.endswith(ext):
                 os.remove(os.path.join(dir_name, pname))
 
-def run_test(dir_name, files):
+def run_test(dir_name, files, pool_state):
     needClear = True
     for pname in files:
         if pname.endswith(".dcproject"):
             if needClear:
                 clear_dir(dir_name, files)
                 needClear = False
-            execute_in_dir(execute_reko_project, dir_name, pname)
+            execute_in_dir(execute_reko_project, dir_name, pname, pool_state)
 
     scr_name = os.path.join(dir_name, "subject.cmd")
     if os.path.isfile(scr_name):
         if needClear:
             clear_dir(dir_name, files)
             needClear = False
-        execute_in_dir(execute_command_file, dir_name, scr_name)
+        execute_in_dir(execute_command_file, dir_name, scr_name, pool_state)
 
-def execute_in_dir(fn, dir, fname):
+def execute_in_dir(fn, dir, fname, pool_state):
     oldDir = os.getcwd()
     os.chdir(dir)
-    fn(dir, fname)
+    fn(dir, fname, pool_state)
     os.chdir(oldDir)
 
-def execute_reko_project(dir, pname):
-    execute_command([reko_cmdline, pname], pname)
+def execute_reko_project(dir, pname, pool_state):
+    return execute_command([reko_cmdline, pname], dir, pname, pool_state)
 
 
 # Remove any comment on the line
@@ -103,7 +106,7 @@ def strip_comment(line):
     return re.sub('#.*', '', line)
 
 # Find all commands to execute.
-def execute_command_file(dir, scr_name):
+def execute_command_file(dir, scr_name, pool_state):
     f = open("subject.cmd")
     lines = f.readlines()
     f.close()
@@ -116,21 +119,32 @@ def execute_command_file(dir, scr_name):
             continue
         exe_and_args[0] = reko_cmdline
         # Assumes the binary's name is the last item on the command line.
-        execute_command(exe_and_args, exe_and_args[-1])
+        execute_command(exe_and_args, dir, exe_and_args[-1], pool_state)
 
-def execute_command(exe_and_args, pname):
-    rel_pname = os.path.join(os.path.relpath(os.getcwd(), start_dir), pname)
-    
-    if sys.platform == "linux2":
-        exe_and_args.insert(0, "mono")
-    print("=== " + rel_pname)
+
+
+def processor(dir, rel_pname, exe_and_args):
+    os.chdir(dir)
+    output_lines = "=== " + rel_pname + "\n"
+    start = time.time()
     proc = subprocess.Popen(exe_and_args,
         stdout=subprocess.PIPE,
         universal_newlines=True)
     out = proc.communicate()[0]
+    output_lines += "    Time: " + str(time.time() - start) + "\n"
     if "error" in out.lower():
-        print("*** " + rel_pname)
-        print(out)
+        output_lines += "*** " + rel_pname + "\n"
+        output_lines += out
+    return output_lines
+
+def execute_command(exe_and_args, dir, pname, pool_state):
+    rel_pname = os.path.join(os.path.relpath(os.getcwd(), start_dir), pname)
+    if sys.platform == "linux2":
+        exe_and_args.insert(0, "mono")
+
+    (pool, queue) = pool_state
+    result = pool.apply_async(processor, (dir, rel_pname, exe_and_args))
+    queue.append(result)
 
 def check_output_files():
     proc = subprocess.Popen(["git", "status", "."],
@@ -149,9 +163,25 @@ def check_output_files():
         print("Output files differ from repository")
         exit(1)
 
-for dir in dirs:
-    for root, subdirs, files in os.walk(dir):
-        run_test(root, files)
 
-if options.check_output:
-    check_output_files()
+TIMEOUT = 60  # seconds
+
+if __name__ == '__main__':
+    mp.freeze_support()     # Needed to keep Windows happy.
+
+    start_time = time.time()
+
+    pool = mp.Pool(processes=8)
+    queue = []
+    for dir in dirs:
+        for root, subdirs, files in os.walk(dir):
+            run_test(root, files, (pool,queue))
+    for result in queue:
+        x = result.get(timeout=TIMEOUT)
+        sys.stdout.write(x)
+
+    if options.check_output:
+        check_output_files()
+
+    print("Elapsed time: %s seconds ---" % (time.time() - start_time))
+
