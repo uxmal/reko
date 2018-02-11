@@ -183,5 +183,5 @@ if __name__ == '__main__':
     if options.check_output:
         check_output_files()
 
-    print("Elapsed time: %s seconds ---" % (time.time() - start_time))
+    print("Decompiled %s binaries in %s seconds ---" % (len(queue), time.time() - start_time))
 
