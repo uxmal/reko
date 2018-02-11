@@ -19,6 +19,7 @@ TestResults
 /src/tools/reko.config
 /src/Reko-decompiler.VC.db
 **/ipch/
+/subjects/subject_weights.txt
 
 # MSVC build directories
 **/x86/Debug

@@ -50,7 +50,7 @@ namespace Reko.Arch.M68k
             else
             {
             rtlc = RtlClass.ConditionalTransfer;
-                var test = m.Test(cc, binder.EnsureRegister(Registers.fpsr));
+                var test = m.Test(cc, FpuFlagGroup());
                 m.Branch(test, addr, rtlc);
         }
         }
