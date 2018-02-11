@@ -7,7 +7,7 @@ message(STATUS "Merging log files from: ${LOG_FILES}")
 
 file(READ ${LOG_FILES} log_files)
 
-set(FINAL_LOG "testfoobar.log")
+set(FINAL_LOG "${CMAKE_CURRENT_BINARY_DIR}/testfoobar.log")
 
 foreach(log_file ${log_files})
 	message(STATUS "Merging: ${log_file}")

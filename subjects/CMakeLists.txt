@@ -10,18 +10,18 @@ enable_testing()
 
 include(ProcessorCount)
 
-# The maximum time a regression test can take
-if(NOT CTEST_TESTING_TIMEOUT)
-	set(CTEST_TESTING_TIMEOUT 60)
+# The maximum time a regression test can take (0 to disable)
+if(NOT DEFINED TESTING_TIMEOUT)
+	set(TESTING_TIMEOUT 60)
 endif()
 
-if(NOT NUM_JOBS)
-	ProcessorCount(NUM_JOBS)
+if(NOT DEFINED CONCURRENT_JOBS)
+	ProcessorCount(CONCURRENT_JOBS)
+	set(CTEST_PARALLEL_LEVEL ${CONCURRENT_JOBS})
 endif()
 
-message(STATUS "> We can use ${NUM_JOBS} CPU Threads")
-set(CTEST_PARALLEL_LEVEL ${NUM_JOBS})
-
+message(STATUS "> Concurrent Tasks: ${CONCURRENT_JOBS}")
+message(STATUS "> Test Timeout    : ${TESTING_TIMEOUT}")
 
 function(add_log_file log_file)
 	get_property(LOG_FILES GLOBAL PROPERTY LOG_FILES)
@@ -43,8 +43,12 @@ macro(get_clr_runtime out_runner)
 	endif()
 endmacro()
 
-# Path where regression test subdirectories are placed
 set(TOPLEVEL ${CMAKE_CURRENT_LIST_DIR})
+
+# Path where regression test subdirectories are placed
+if(NOT SUBJECTS_DIR)
+	set(SUBJECTS_DIR ${TOPLEVEL})
+endif()
 
 ## REKO_PLATFORM, CMAKE_BUILD_TYPE
 ### Used to build the path to decompile.exe
@@ -224,12 +228,6 @@ function(define_regression_test_script test_dir script_file out_targets)
 	set(${out_targets} ${test_names} PARENT_SCOPE)
 endfunction()
 
-macro(configure_test test_name)
-	set_tests_properties(${test_name} PROPERTIES
-		TIMEOUT ${CTEST_TESTING_TIMEOUT}
-	)
-endmacro()
-
 # Processes a directory, looking for .dcproject or subject.cmd
 function(process_directory test_dir)
 	file(GLOB files "${test_dir}/*")
@@ -240,10 +238,6 @@ function(process_directory test_dir)
 			define_regression_test_dcproj(
 				${test_dir} ${file} dcproj_target
 			)
-
-			if(dcproj_target)
-				configure_test(${dcproj_target})
-			endif()
 		endif()
 	endforeach()
 
@@ -253,12 +247,6 @@ function(process_directory test_dir)
 		define_regression_test_script(
 			${test_dir} ${script_file} script_targets
 		)
-
-		if(script_targets)
-			foreach(script_target ${script_targets})
-				configure_test(${script_target})
-			endforeach()
-		endif()
 	endif()
 endfunction()
 
@@ -285,22 +273,15 @@ function(discover path)
 	endforeach()
 endfunction()
 
-if(SUBJECTS_DIR)
-	discover(${SUBJECTS_DIR})
-else()
-	discover(${TOPLEVEL})
-endif()
-
+discover(${SUBJECTS_DIR})
 
 ## Prepare ctest arguments
 if(VERBOSE)
 	set(CTEST_VERBOSE "--verbose")
 endif()
 
-if(NO_PARALLEL)
-	set(CTEST_PARALLEL_LEVEL OFF)
-else()
-	set(CTEST_PARALLEL_LEVEL "-j ${NUM_JOBS}")
+if(CONCURRENT_JOBS GREATER 1)
+	set(CTEST_PARALLEL_LEVEL "-j ${CONCURRENT_JOBS}")
 endif()
 
 set(logs_list_file ${CMAKE_CURRENT_BINARY_DIR}/logs.txt)
@@ -309,13 +290,14 @@ save_logs_list(${logs_list_file})
 add_custom_target(RunTests ALL
 	COMMAND ctest -C $<CONFIGURATION>
 		--output-on-failure
+		--timeout ${TESTING_TIMEOUT}
 		${CTEST_PARALLEL_LEVEL}
 		${CTEST_VERBOSE}
 )
 
 add_custom_target(CollectLogs ALL
 	DEPENDS RunTests
-	WORKING_DIRECTORY ${TOPLEVEL}
+	WORKING_DIRECTORY ${SUBJECTS_DIR}
 	COMMAND
 		${CMAKE_COMMAND}
 		"-DLOG_FILES=${logs_list_file}"
