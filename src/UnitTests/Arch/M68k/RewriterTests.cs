@@ -1238,7 +1238,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0xF29C, 0x00E0);  // fbnge 0x000000e8
             AssertCode(
                "0|T--|00010000(4): 1 instructions",
-               "1|T--|if (Test(LT,fpsr)) branch 000100E2");
+               "1|T--|if (Test(LT,FPUFLAGS)) branch 000100E2");
         }
 
         [Test]
@@ -1472,7 +1472,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0xF684, 0x0678);    // fbolt$00001CCE
             AssertCode(
                 "0|T--|00010000(4): 1 instructions",
-                "1|T--|if (Test(LT,fpsr)) branch 0001067A");
+                "1|T--|if (Test(LT,FPUFLAGS)) branch 0001067A");
         }
 
         [Test]
