@@ -49,11 +49,12 @@ namespace Reko.Arch.M68k
             }
             else
             {
-            rtlc = RtlClass.ConditionalTransfer;
+                rtlc = RtlClass.ConditionalTransfer;
                 var test = m.Test(cc, FpuFlagGroup());
                 m.Branch(test, addr, rtlc);
+            }
         }
-        }
+
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);

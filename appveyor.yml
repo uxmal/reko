@@ -4,7 +4,7 @@ init:
   - git config --global core.autocrlf true 
 
 image: Visual Studio 2017
-platform: x864
+platform: x86
 
 configuration: Release
 
