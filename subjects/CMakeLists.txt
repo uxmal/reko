@@ -285,7 +285,11 @@ function(discover path)
 	endforeach()
 endfunction()
 
-discover(${TOPLEVEL})
+if(SUBJECTS_DIR)
+	discover(${SUBJECTS_DIR})
+else()
+	discover(${TOPLEVEL})
+endif()
 
 
 ## Prepare ctest arguments
