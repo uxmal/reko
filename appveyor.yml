@@ -18,14 +18,14 @@ environment:
 after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
-        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
+        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
         mkdir $env:artifacts_dir;
         ;
         <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
         "[after_build] compressing WindowsDecompiler...";
-        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/.;
+        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/.;
         "[after_build] compressing CmdLine...";
-        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:CONFIGURATION/.;
+        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/.;
         mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         ;
         <# Append the short hash to the .msi setup #>;
