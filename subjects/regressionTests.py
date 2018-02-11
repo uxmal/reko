@@ -149,7 +149,7 @@ def schedule_jobs(jobs, weights):
 
 def processor(dir, rel_pname, exe_and_args):
     os.chdir(dir)
-    print("Processor %s %s %s" % (dir, rel_pname, exe_and_args))
+    # print("Processor %s %s %s" % (dir, rel_pname, exe_and_args))
     banner = os.path.join(os.path.relpath(dir, start_dir), rel_pname)
     if sys.platform == "linux2":
         exe_and_args.insert(0, "mono")
