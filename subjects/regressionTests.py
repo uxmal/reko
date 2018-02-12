@@ -27,7 +27,7 @@ parser.add_option("-o", "--check-output", dest="check_output",
                   help="check output files", default=False)
 parser.add_option("-p", "--platform", dest="platform",
                   help="define platform (x86, x64)",
-                  default="x64")                  
+                  default="x64")
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
     dirs = [script_dir]
