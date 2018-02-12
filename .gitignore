@@ -20,6 +20,7 @@ TestResults
 /src/Reko-decompiler.VC.db
 **/ipch/
 /subjects/subject_weights.txt
+/subjects/regressionTests.pyc
 
 # MSVC build directories
 **/x86/Debug
