@@ -36,6 +36,7 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
+  - cmd: dir /s .\src\Drivers\CmdLine
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=FailedTests /framework:net-4.5
   - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.5
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
