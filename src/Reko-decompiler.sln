@@ -1550,8 +1550,8 @@ Global
 		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|x64.ActiveCfg = Release|x64
 		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|x64.Build.0 = Release|x64
-		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|x86.ActiveCfg = Release|Any CPU
-		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|x86.Build.0 = Release|Any CPU
+		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|x86.ActiveCfg = Release|x86
+		{D439868B-C78F-472F-82F2-1E3E5C88163B}.Release|x86.Build.0 = Release|x86
 		{D439868B-C78F-472F-82F2-1E3E5C88163B}.TravisRelease|Any CPU.ActiveCfg = TravisRelease|Any CPU
 		{D439868B-C78F-472F-82F2-1E3E5C88163B}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
 		{D439868B-C78F-472F-82F2-1E3E5C88163B}.TravisRelease|x64.ActiveCfg = TravisRelease|Any CPU
