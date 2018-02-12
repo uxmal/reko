@@ -19,7 +19,6 @@ string(REPLACE "*" ";" COMMAND ${COMMAND})
 message(STATUS "> ${COMMAND}")
 
 foreach(ext ${OUTPUT_EXTENSIONS})
-	message(STATUS ${TEST_DIRECTORY})
 	rm_by_ext(${TEST_DIRECTORY} ${ext})
 endforeach()
 
