@@ -40,8 +40,6 @@ namespace Microchip.Crownking
         DBOK,
         /// <summary>No database available.</summary>
         NoDB,
-        /// <summary>Database available but needs an update.</summary>
-        DBObso
     }
 
 }

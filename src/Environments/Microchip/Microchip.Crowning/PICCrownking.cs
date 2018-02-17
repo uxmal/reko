@@ -41,13 +41,9 @@ namespace Microchip.Crownking
     {
         #region Privates
 
-        private const string _keyW32 = "SOFTWARE\\Microchip";
-        private const string _keyW64 = "SOFTWARE\\Wow6432Node\\Microchip";
-        private const string _crownkingpath = "mplab_ide\\mplablibs\\modules\\ext";
-        private const string _crownkingfile = "crownking.edc.jar";
         private const string _localdbfile = "picdb.zip";
-        private const string _contentPIC16 = "content/edc/16xxxx";
-        private const string _contentPIC18 = "content/edc/18xxxx";
+        private const string _contentPIC16 = @"content/edc/16xxxx";
+        private const string _contentPIC18 = @"content/edc/18xxxx";
 
         private static PICCrownking currentDB = null;
 
@@ -65,34 +61,12 @@ namespace Microchip.Crownking
             }
         }
 
-        private string _getIDECrownkingFilePath()
-        {
-            try
-            {
-                RegistryKey MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW32);
-                if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW64);
-                string ideinstalldir = (string)(MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
-                if (ideinstalldir == null) return null;
-                string path = Path.Combine(ideinstalldir, _crownkingpath);
-                if (!String.IsNullOrWhiteSpace(path) && Directory.Exists(path))
-                {
-                    path = Path.Combine(path, _crownkingfile);
-                    return File.Exists(path) ? path : null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceWarning($"Couldn't get path to Microchip MPLAB X IDE database : {ex.StackTrace}");
-            }
-            return null;
-        }
 
         private string _getPICLocalDBFilePath()
         {
             Assembly CrownkingAssembly;
             CrownkingAssembly = Assembly.GetAssembly(this.GetType());
             string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
-//            string sDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string path = Path.Combine(sDir, _localdbfile);
             return path;
         }
@@ -104,84 +78,13 @@ namespace Microchip.Crownking
             // No local database, check presence of IDE X database
             if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
             {
-                CurrentDBPath = _getIDECrownkingFilePath();
-                if (CurrentDBPath == null)
-                {
                     Status = DBStatus.NoDB;
                     LastError = DBErrorCode.NoDBFile;
                     return;
-                }
-                Status = DBStatus.DBObso;
-                LastError = DBErrorCode.NoError;
-                return;
             }
             // Local database is present. Check if out-of-date versus optional IDE X database
             Status = DBStatus.DBOK;
             LastError = DBErrorCode.NoError;
-            string IDEJar = _getIDECrownkingFilePath();
-            if (IDEJar != null)
-            {
-                var timelocal = GetDBDate();
-                var timeIDE = GetDBDate(IDEJar);
-                if (timelocal.CompareTo(timeIDE) < 0)
-                    Status = DBStatus.DBObso;
-            }
-        }
-
-        // XML elements we are ignoring. This helps decrease the size of the database.
-        private static string[] _unwantednodes =
-            new string[] {
-                "Import",
-                "Power",
-                "Programming",
-                "Oscillator",
-                "Freeze",
-                "WatchdogTimer",
-                "Breakpoints",
-                "MemoryModeList",
-                "PinList",
-                "LCD",
-                "AliasList",
-                "StimInfo",
-            };
-
-        private XDocument _defaultPruning(XDocument xdoc)
-        {
-            XElement xroot = xdoc?.Root;
-            if (xroot == null) return null;
-            if (xroot.Name.Namespace == XNamespace.None)
-                return xdoc;
-            if (xroot.Name.LocalName != "PIC")
-                return null;
-
-            // Remove the unwanted elements
-            foreach (string name in _unwantednodes)
-                xroot.DescendantElements(name).Remove();
-
-            // Remove unwanted sub-elements in various elements that we have no use of.
-            xroot.DescendantElements("SFRModeList").Where(p => p.IsEmpty).Remove();
-
-            // Remove the namespaces and prefixes
-            foreach (XElement e in xroot.DescendantsAndSelf())
-            {
-                if (e.Name.Namespace != XNamespace.None)
-                    e.Name = XNamespace.None.GetName(e.Name.LocalName);
-                if (e.Attributes().Where(a => a.IsNamespaceDeclaration || a.Name.Namespace != XNamespace.None).Any())
-                    e.ReplaceAttributes(e.Attributes().Select(a => a.IsNamespaceDeclaration ? null : a.Name.Namespace != XNamespace.None ? new XAttribute(XNamespace.None.GetName(a.Name.LocalName), a.Value) : a));
-            }
-
-            // Remove the unwanted root's attribute
-            xroot.Attribute("schemaLocation").Remove();
-
-
-            return xdoc;
-        }
-
-        private bool _defaultFilter(string s)
-        {
-            return
-                s.StartsWith("PIC16C") || s.StartsWith("PIC16F") ||
-                s.StartsWith("PIC18F") && !s.Contains("J");
         }
 
         #endregion
@@ -215,24 +118,6 @@ namespace Microchip.Crownking
         /// The database status as a value from <see cref="DBStatus"/> enumeration.
         /// </value>
         public DBStatus Status { get; private set; }
-
-        /// <summary>
-        /// Gets the Microchip Crownking PIC XML database creation date.
-        /// </summary>
-        /// <param name="path">(Optional) Full pathname of the database file.</param>
-        /// <returns>
-        /// The database's creation date.
-        /// </returns>
-        /// <exception cref="PICCrownkingException">If the Microchip file does not exists on the current
-        ///                                         system.</exception>
-        public DateTime GetDBDate(string path = null)
-        {
-            if (path != null)
-                return File.GetCreationTime(path);
-            _checkDBExist();
-            if (CurrentDBPath != null) return File.GetCreationTime(CurrentDBPath);
-            return DateTime.Now;
-        }
 
         /// <summary>
         /// Gets the full pathname of the current database file.
@@ -347,83 +232,6 @@ namespace Microchip.Crownking
         /// Only PIC16 and PIC18 are listed whatever database content is.
         /// </remarks>
         public IEnumerable<string> EnumPICList() => EnumPICList(filt => true);
-
-        /// <summary>
-        /// Forcibly updates the local database for PICs selected via a filter on their names.
-        /// </summary>
-        /// <remarks>
-        /// The filter can only apply to a subset of PIC16 and PIC18 definition entries.
-        /// </remarks>
-        /// <param name="filter">(Optional) A filter function to select PICs by name. Default selects PIC16 and PIC18.</param>
-        /// <param name="pruning">(Optional) The pruning function to simplify the PIC XML definition.</param>
-        public void UpdateDB(Func<string, bool> filter = null, Func<XDocument, XDocument> pruning = null)
-        {
-            string idecrownkingpath = _getIDECrownkingFilePath();   // The MPLAB X IDE database
-            string localpath = _getPICLocalDBFilePath();       // The local database
-
-            if (idecrownkingpath == null)
-            {
-                if (localpath == null || !File.Exists(localpath))
-                {
-                    CurrentDBPath = null;              // We have no database at all.
-                    Status = DBStatus.NoDB;
-                    _raiseError(DBErrorCode.NoDBFile, "No PIC database file. You may wish to install Microchip MPLAB X IDE.");
-                }
-                // No MPLAB X IDE database on this system. Keep the local one as-is even if not the latest version.
-                CurrentDBPath = localpath;
-                Status = DBStatus.DBOK;
-                LastError = DBErrorCode.NoError;
-                return;
-            }
-            // An MPLAB X IDE database exists. The caller considers we need to (re)generate the local database.
-            try
-            {
-                // Create a new local database
-                using (FileStream outfile = new FileStream(localpath, FileMode.Create, FileAccess.Write))
-                {
-                    // Those database are compressed (ZIP format)
-                    using (ZipArchive crownkingfile = ZipFile.OpenRead(idecrownkingpath),
-                                      zoutfile = new ZipArchive(outfile, ZipArchiveMode.Create))
-                    {
-                        // For each MPLAB X IDE entry, look only for true PIC16 and PIC18
-                        foreach (var entry in crownkingfile.Entries)
-                        {
-                            if (entry.FullName.StartsWith(_contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
-                                entry.FullName.StartsWith(_contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
-                            {
-                                // Caller may want to filter further valid PIC entries
-                                if ((filter ?? _defaultFilter)(entry.Name))
-                                {
-                                    // Candidate to extract.
-                                    XDocument xdoc;
-                                    using (var eo = entry.Open())
-                                    {
-                                        xdoc = XDocument.Load(entry.Open());
-                                        xdoc = (pruning ?? _defaultPruning)(xdoc); // Pruning of the XML tree for unwanted elements
-                                    }
-                                    
-                                    if (xdoc != null)
-                                    {
-                                        PIC pic = xdoc.ToObject<PIC>();
-                                        XmlSerializer xs = new XmlSerializer(typeof(PIC));
-                                        ZipArchiveEntry picentry = zoutfile.CreateEntry(entry.FullName);
-                                        using (StreamWriter picw = new StreamWriter(picentry.Open()))
-                                            xs.Serialize(picw, pic);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                CurrentDBPath = localpath;
-                Status = DBStatus.DBOK;
-                LastError = DBErrorCode.NoError;
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError($"Update DB : {ex.StackTrace}");
-            }
-        }
 
         #endregion
 

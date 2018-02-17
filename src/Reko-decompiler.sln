@@ -422,6 +422,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip.Utils", "Librarie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHex32", "ImageLoaders\IHex32\IHex32.csproj", "{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "genPICdb", "tools\genPICdb\genPICdb.csproj", "{5FF428FE-C17F-4070-93D2-215BFA3B52A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -2426,6 +2428,36 @@ Global
 		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|.NET.Build.0 = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|Win32.Build.0 = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Debug|x86.Build.0 = Debug|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|.NET.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|.NET.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|Win32.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|Win32.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.Release|x86.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2503,6 +2535,7 @@ Global
 		{9B13FBCE-EC34-495B-B464-C80FF86E61E0} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{45E095E9-D7C2-40AA-913B-AB77582AFBB4} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
 		{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
+		{5FF428FE-C17F-4070-93D2-215BFA3B52A8} = {AD6CD1E3-2C31-4E78-9432-4BAC77BC63D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B012B36-B0A2-4412-A22A-023C9B7C2EDD}
