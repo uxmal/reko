@@ -198,7 +198,7 @@ def load_weights(filename):
 def save_weights(weights, filename):
     with open(filename, "w") as f:
         for k in weights:
-            file.write(f, "%s|%r\n" % (k, weights[k]))
+            f.write("%s|%r\n" % (k, weights[k]))
 
 TIMEOUT = 60  # seconds
 WEIGHTS_FILENAME = "subject_weights.txt"
