@@ -2,6 +2,7 @@ version: 0.7.2.{build}
 
 init: 
   - git config --global core.autocrlf true 
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 image: Visual Studio 2017
 platform: x86
@@ -49,3 +50,6 @@ artifacts:
     name: Reko WinForms driver
   - path: bin/CmdLine-*.zip
     name: Reko CmdLine driver
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

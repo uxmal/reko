@@ -44,7 +44,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -72,10 +71,6 @@
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
-      <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
-      <Name>C2Xml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

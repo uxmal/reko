@@ -47,7 +47,7 @@
         <PropertyValue name="TabSize">4</PropertyValue>
         <PropertyValue name="UseMapMode">false</PropertyValue>
         <PropertyValue name="VirtualSpace">false</PropertyValue>
-        <PropertyValue name="WordWrap">true</PropertyValue>
+        <PropertyValue name="WordWrap">false</PropertyValue>
         <PropertyValue name="WordWrapGlyphs">true</PropertyValue>
       </ToolsOptionsSubCategory>
       <ToolsOptionsSubCategory name="CSharp-Specific">
