@@ -73,6 +73,7 @@ set(REKO_CMDLINE_EXE "decompile.exe")
 
 function(get_test_name test_dir out_name)
 	file(RELATIVE_PATH test_name ${TOPLEVEL} ${test_dir})
+	string(REGEX REPLACE "^([A-Za-z]):[\\/]" "\\1_" test_name ${test_name})
 	string(REPLACE "/" "_" test_name ${test_name})
 	string(REPLACE "\\" "_" test_name ${test_name})
 	
@@ -104,7 +105,7 @@ endfunction()
 
 function(get_test_runner_cmdline)
 	# switches, single value, list value
-	cmake_parse_arguments(ARGS "" "TEST_NAME;TEST_DIRECTORY;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
+	cmake_parse_arguments(ARGS "" "TEST_NAME;TEST_DIRECTORY;LOG_FILE;CMDLINE_VAR" "EXTRA_ARGS" ${ARGN})
 
 	set(final_cmd ${CMAKE_COMMAND})
 
@@ -116,6 +117,7 @@ function(get_test_runner_cmdline)
 
 	marshal_list("*" "${REKO_CMD}" REKO_CMD)
 
+	list(APPEND final_cmd "-DLOG_FILE=${ARGS_LOG_FILE}")
 	list(APPEND final_cmd "-DTEST_NAME=${ARGS_TEST_NAME}")
 	list(APPEND final_cmd "-DTEST_DIRECTORY=${ARGS_TEST_DIRECTORY}")
 	list(APPEND final_cmd "-DCOMMAND=${REKO_CMD}")
@@ -132,6 +134,8 @@ function(define_regression_test_dcproj test_dir project_file out_target)
 	set(test_name ${test_name}_${proj_name})
 	message(STATUS "> Add_dcproject ${test_name} => ${project_file}")
 
+	set(log_file "${test_dir}/${proj_name}.log")
+
 	get_test_runner_cmdline(
 		TEST_NAME
 			${test_name}
@@ -139,10 +143,12 @@ function(define_regression_test_dcproj test_dir project_file out_target)
 			${test_dir}
 		EXTRA_ARGS
 			${project_file}
+		LOG_FILE
+			${log_file}
 		CMDLINE_VAR runner_cmd
 	)
 
-	add_log_file("${test_dir}/${test_name}.log")
+	add_log_file(${log_file})
 
 	# run .dcproject
 	add_test(
@@ -203,6 +209,8 @@ function(define_regression_test_script test_dir script_file out_targets)
 		# Remove "decompiler.exe"
 		list(REMOVE_AT cmdline 0)
 
+		set(log_file "${test_dir}/${exe_name}.log")
+
 		get_test_runner_cmdline(
 			TEST_NAME
 				${test_name}
@@ -210,10 +218,12 @@ function(define_regression_test_script test_dir script_file out_targets)
 				${test_dir}
 			EXTRA_ARGS
 				${cmdline}
+			LOG_FILE
+				${log_file}
 			CMDLINE_VAR runner_cmd
 		)
 
-		add_log_file("${test_dir}/${test_name}.log")
+		add_log_file(${log_file})
 
 		# run script
 		add_test(
