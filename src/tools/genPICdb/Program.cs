@@ -165,7 +165,7 @@ namespace Reko.Tools.genPICdb
             PIC pic = xdoc.ToObject<PIC>();
             XmlSerializer xs = new XmlSerializer(typeof(PIC));
             string picname = pic.Name;
-            string picpath = Path.Combine(subdir, picname + ".PIC");
+            string picpath = subdir + "/" + picname + ".PIC";
             ZipArchiveEntry picentry = zout.CreateEntry(picpath);
             using (StreamWriter picw = new StreamWriter(picentry.Open()))
                 xs.Serialize(picw, pic);

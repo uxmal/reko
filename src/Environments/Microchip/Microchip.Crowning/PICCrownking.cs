@@ -20,18 +20,13 @@
 
 namespace Microchip.Crownking
 {
-    using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
-    using System.Linq;
     using System.Reflection;
-    using System.Xml.Serialization;
     using System.Xml.Linq;
-    using Microchip.Utils;
 
 
     /// <summary>
@@ -60,7 +55,6 @@ namespace Microchip.Crownking
                 throw _raiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
             }
         }
-
 
         private string _getPICLocalDBFilePath()
         {
@@ -181,7 +175,7 @@ namespace Microchip.Crownking
                         if (entry != null)
                         {
                             using (var eo = entry.Open())
-                                xmlpic = _defaultPruning(XDocument.Load(eo))?.Root;
+                                xmlpic = XDocument.Load(eo)?.Root;
                             LastError = xmlpic == null ? DBErrorCode.WrongDB : DBErrorCode.NoError;
                         }
                     }

@@ -41,16 +41,6 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         }
 
         [Test]
-        [Explicit("Valid only if Microchip MPLAB X IDE is installed in the current environment")]
-        [Description("Update PIC local database. Takes some time depending on platform.")]
-//        [Ignore("Launch this test *ONLY IF* Microchip MPLAB X IDE is installed in the current environment")]
-        public void Test_UpdateDB()
-        {
-            db.UpdateDB();
-            Assert.That(db.Status, Is.EqualTo(DBStatus.DBOK), $"Update failed: status={db.Status}, error={db.LastError}");
-        }
-
-        [Test]
         [Description("List PICs names")]
         public void ListPICs_Tests()
         {
