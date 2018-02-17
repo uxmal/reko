@@ -28,5 +28,9 @@ execute_process(
 	OUTPUT_VARIABLE test_result
 )
 
-set(LOG_FILE ${TEST_DIRECTORY}/${TEST_NAME}.log)
+if(NOT DEFINED LOG_FILE)
+	set(LOG_FILE ${TEST_DIRECTORY}/${TEST_NAME}.log)
+endif()
+
+message(STATUS "Logging to ${LOG_FILE}")
 file(WRITE ${LOG_FILE} ${test_result})
