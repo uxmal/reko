@@ -54,6 +54,8 @@ namespace Reko.Tools.genPICdb
         private const string _contentPIC16 = @"content/edc/16xxxx";
         private const string _contentPIC18 = @"content/edc/18xxxx";
 
+        private bool success = false;
+
         #endregion
 
         #region Helpers
@@ -185,7 +187,7 @@ namespace Reko.Tools.genPICdb
         /// <summary>
         /// Executes the program.
         /// </summary>
-        /// <param name="args">An array of command-line argument strings.</param>
+        /// <param name="args">The names of the destination directories for copying the 'picdb.zip' file.</param>
         /// <returns>
         /// An error code or 0.
         /// </returns>
@@ -194,20 +196,28 @@ namespace Reko.Tools.genPICdb
             if (MPLABXInstallDir == null)
             {
                 Console.WriteLine("Unable to find the Microchip MPLAB X IDE installation directory. Please make sure MPLAB X IDE is installed on this system.");
-                return -1;
+                return 0;
             }
             if (Directory.Exists(PacksPath))    // Post v4.10 database
-            {
-                if (Post410Database() == 0)
-                    return 0;
-            }
+                success = (Post410Database() == 0);
+            else
             if (Directory.Exists(CrownkingPath))   // Ante v4.10 database
+                success = (Ante410Database() == 0);
+            else
             {
-                if (Ante410Database() == 0)
-                    return 0;
+                Console.WriteLine("Unable to find PIC definitions in currently installed MPLAB X IDE software.");
+                return 0;
             }
-            Console.WriteLine("Unable to find PIC definitions in currently installed MPLAB X IDE software.");
-            return -1;
+            if (success)
+                foreach (var fdest in args)
+                {
+                    Console.WriteLine($"Copying database to '{fdest}'.");
+                    if (!fdest.EndsWith("\\", true, CultureInfo.InvariantCulture)) continue;
+                    if (!Directory.Exists(fdest)) Directory.CreateDirectory(fdest);
+                    string fpath = Path.Combine(fdest, _localdbfile);
+                    File.Copy(PICLocalDBFilePath, fpath, true);
+                }
+            return 0;
         }
 
         /// <summary>
