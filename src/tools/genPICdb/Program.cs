@@ -18,27 +18,25 @@
  */
 #endregion
 
+using Microchip.Crownking;
+using Microchip.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.IO.Compression;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Xml.Linq;
-using Microchip.Utils;
-using Microchip.Crownking;
+using System.Xml.Serialization;
 
 namespace Reko.Tools.genPICdb
 {
     /// <summary>
     /// A program to generate the PIC definition database from the MPLAB X IDE installation.
+    /// The Microchip MPLAB X IDE is freely available at www.microchip.com as a development tool.
     /// </summary>
     class Program
     {
@@ -102,7 +100,6 @@ namespace Reko.Tools.genPICdb
 
         private string CrownkingPath => Path.Combine(MPLABXInstallDir, _crownkingpath);
 
-
         // XML elements we are ignoring. This helps decrease the size of the database.
         private static string[] _unwantednodes =
             new string[] {
@@ -120,7 +117,7 @@ namespace Reko.Tools.genPICdb
                 "StimInfo",
             };
 
-        private XDocument _defaultPruning(XDocument xdoc)
+        private XDocument _pruning(XDocument xdoc)
         {
             XElement xroot = xdoc?.Root;
             if (xroot == null) return null;
@@ -152,7 +149,7 @@ namespace Reko.Tools.genPICdb
             return xdoc;
         }
 
-        private bool _defaultFilter(string s)
+        private bool _filter(string s)
         {
             return
                 (s.StartsWith("PIC16C") || s.StartsWith("PIC16F"))
@@ -247,14 +244,14 @@ namespace Reko.Tools.genPICdb
                                 entry.FullName.StartsWith(_contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
                             {
                                 // Caller may want to filter further valid PIC entries
-                                if (_defaultFilter(entry.Name))
+                                if (_filter(entry.Name))
                                 {
                                     // Candidate to extract.
                                     XDocument xdoc;
                                     using (var eo = entry.Open())
                                     {
                                         xdoc = XDocument.Load(entry.Open());
-                                        xdoc = _defaultPruning(xdoc); // Pruning of the XML tree for unwanted elements
+                                        xdoc = _pruning(xdoc); // Pruning of the XML tree for unwanted elements
                                     }
 
                                     if (xdoc != null)
@@ -282,6 +279,11 @@ namespace Reko.Tools.genPICdb
             }
         }
 
+        /// <summary>
+        /// Enumerates the "interesting" PICs form the MPLAB X IDE database.
+        /// </summary>
+        /// <param name="subdir">The sub-directory of interest in MPLAB X IDE installation directory.</param>
+        /// 
         private IEnumerable<XDocument> _getValidPIC(string subdir)
         {
             foreach (var dir in Directory.EnumerateDirectories(PacksPath, subdir, SearchOption.AllDirectories))
@@ -291,10 +293,10 @@ namespace Reko.Tools.genPICdb
                     foreach (var filename in Directory.EnumerateFiles(edcdir, "PIC*.PIC"))
                     {
                         string picname = Path.GetFileNameWithoutExtension(filename);
-                        if (_defaultFilter(picname))
+                        if (_filter(picname))
                         {
                             XDocument xdoc = XDocument.Load(filename); ;
-                            xdoc = _defaultPruning(xdoc); // Pruning of the XML tree for unwanted elements
+                            xdoc = _pruning(xdoc); // Pruning of the XML tree for unwanted elements
                             if (xdoc != null) yield return xdoc;
                         }
                     }

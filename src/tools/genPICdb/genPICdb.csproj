@@ -35,6 +35,9 @@
   <PropertyGroup>
     <StartupObject>Reko.Tools.genPICdb.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,7 +58,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj">
+    <ProjectReference Include="..\..\Environments\Microchip\Microchip.Crownking\Microchip.Crownking.csproj">
       <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
       <Name>Microchip.Crownking</Name>
     </ProjectReference>
@@ -65,4 +68,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(TargetPath)"
+echo F | xcopy /y "$(TargetDir)picdb.zip" "$(SolutionDir)UnitTests"
+echo F | xcopy /y "$(TargetDir)picdb.zip" "$(SolutionDir)Environments\Microchip\Microchip.Crownking"
+echo F | xcopy /y "$(TargetDir)picdb.zip" "$(SolutionDir)Arch\Microchip"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

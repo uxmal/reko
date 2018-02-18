@@ -78,7 +78,7 @@
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj">
+    <ProjectReference Include="..\..\Environments\Microchip\Microchip.Crownking\Microchip.Crownking.csproj">
       <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
       <Name>Microchip.Crownking</Name>
     </ProjectReference>
@@ -87,6 +87,10 @@
       <Name>Microchip.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="picdb.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

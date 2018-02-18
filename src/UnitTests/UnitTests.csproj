@@ -758,7 +758,7 @@
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
       <Name>MacOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Environments\Microchip\Microchip.Crowning\Microchip.Crownking.csproj">
+    <ProjectReference Include="..\Environments\Microchip\Microchip.Crownking\Microchip.Crownking.csproj">
       <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
       <Name>Microchip.Crownking</Name>
     </ProjectReference>
