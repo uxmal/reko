@@ -91,7 +91,7 @@ namespace Reko.Loading
         /// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
         /// Relocation gives us a chance to determine the addresses of interesting items.
         /// </summary>
-        /// <param name="rawBytes">Image of the executeable file.</param>
+        /// <param name="rawBytes">Image of the executable file.</param>
         /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
         public Program LoadExecutable(string filename, byte[] image, string loader, Address addrLoad)

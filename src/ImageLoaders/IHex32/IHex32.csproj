@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.ImageLoaders.IHex32</RootNamespace>
-    <AssemblyName>IHex32</AssemblyName>
+    <AssemblyName>Reko.ImageLoaders.IHex32</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
