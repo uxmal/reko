@@ -131,6 +131,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
+      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Name>SysV</Name>
+    </ProjectReference>
   </ItemGroup>
 
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
