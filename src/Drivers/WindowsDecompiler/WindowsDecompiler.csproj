@@ -158,8 +158,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-
-
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
@@ -200,6 +198,10 @@
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Native\NativeProxy.csproj">
+      <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
+      <Name>NativeProxy</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -219,9 +221,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-
-  <Import Project="$(SolutionDir)Drivers\PreBuild.targets" /> 
-
+  <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

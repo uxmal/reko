@@ -137,6 +137,10 @@
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Name>Python</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Native\NativeProxy.csproj">
+      <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
+      <Name>NativeProxy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />

@@ -369,6 +369,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{EF16
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LGSymLoader", "Symbols\LGSymLoader\LGSymLoader.csproj", "{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeProxy", "Native\NativeProxy.csproj", "{1DBA55A8-6C67-4D16-8137-912B79715973}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1010,8 +1012,8 @@ Global
 		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
 		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|x64.ActiveCfg = TravisRelease|Any CPU
 		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
-		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|x86.ActiveCfg = Release|Any CPU
-		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
+		{6B0DED4F-5035-49CE-AE54-BE92B3354E44}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
 		{697ACCC1-BA7B-4B34-BCA3-F82113843F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{697ACCC1-BA7B-4B34-BCA3-F82113843F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{697ACCC1-BA7B-4B34-BCA3-F82113843F40}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1082,8 +1084,8 @@ Global
 		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
 		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|x64.ActiveCfg = TravisRelease|Any CPU
 		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
-		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|x86.ActiveCfg = Release|Any CPU
-		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
+		{1E57924E-B623-4894-8E3A-87E3E99E2303}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
 		{73E8B629-F836-4CA6-B003-DAE0809B8A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73E8B629-F836-4CA6-B003-DAE0809B8A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73E8B629-F836-4CA6-B003-DAE0809B8A7A}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1467,7 +1469,8 @@ Global
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Debug|x86.ActiveCfg = Debug|x86
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Debug|x86.Build.0 = Debug|x86
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Release|Any CPU.ActiveCfg = Release|x86
-		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Release|x64.ActiveCfg = Release|x86
+		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Release|x64.ActiveCfg = Release|x64
+		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Release|x64.Build.0 = Release|x64
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Release|x86.ActiveCfg = Release|x86
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.Release|x86.Build.0 = Release|x86
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.TravisRelease|Any CPU.ActiveCfg = TravisRelease|x86
@@ -1475,7 +1478,6 @@ Global
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.TravisRelease|x86.ActiveCfg = TravisRelease|x86
 		{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}.TravisRelease|x86.Build.0 = TravisRelease|x86
 		{6528DBD9-8129-48D8-AA21-C169F1679646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6528DBD9-8129-48D8-AA21-C169F1679646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6528DBD9-8129-48D8-AA21-C169F1679646}.Debug|x64.ActiveCfg = Debug|x64
 		{6528DBD9-8129-48D8-AA21-C169F1679646}.Debug|x64.Build.0 = Debug|x64
 		{6528DBD9-8129-48D8-AA21-C169F1679646}.Debug|x86.ActiveCfg = Debug|x86
@@ -1646,6 +1648,24 @@ Global
 		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
 		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
 		{9E4B5291-EBA1-4127-AC38-E0F822F7E4F1}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Debug|x64.ActiveCfg = Debug|x64
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Debug|x64.Build.0 = Debug|x64
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Debug|x86.ActiveCfg = Debug|x86
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Debug|x86.Build.0 = Debug|x86
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Release|x64.ActiveCfg = Release|x64
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Release|x64.Build.0 = Release|x64
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Release|x86.ActiveCfg = Release|x86
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.Release|x86.Build.0 = Release|x86
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.TravisRelease|x64.ActiveCfg = TravisRelease|x64
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.TravisRelease|x64.Build.0 = TravisRelease|x64
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.TravisRelease|x86.ActiveCfg = TravisRelease|x86
+		{1DBA55A8-6C67-4D16-8137-912B79715973}.TravisRelease|x86.Build.0 = TravisRelease|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
