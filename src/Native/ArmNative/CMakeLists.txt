@@ -6,8 +6,6 @@ target_compile_definitions(ArmNative PUBLIC UNICODE)
 target_link_libraries(ArmNative ${CAPSTONE_LIBRARIES})
 
 set(OUTDIR ${CMAKE_BUILD_TYPE})
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set_target_properties(ArmNative
 	PROPERTIES
