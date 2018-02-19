@@ -2,7 +2,8 @@ version: 0.7.2.{build}
 
 init: 
   - git config --global core.autocrlf true 
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+ # The commented out line below displays RDP details for debugging on an AppVeyor VM
+ # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 image: Visual Studio 2017
 platform: x86
@@ -52,4 +53,6 @@ artifacts:
     name: Reko CmdLine driver
 
 on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# The commented out line below displays will keep the AppVeyor VM alive long enough for a RDP diagnostic
+# session
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
