@@ -902,8 +902,8 @@ Global
 		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
 		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|x64.ActiveCfg = TravisRelease|Any CPU
 		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
-		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|x86.ActiveCfg = Release|Any CPU
-		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
+		{5307665E-072F-4398-872D-6550BE6FC1EB}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
 		{A1376626-5207-41A9-A77B-11DDB9F534D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1376626-5207-41A9-A77B-11DDB9F534D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1376626-5207-41A9-A77B-11DDB9F534D1}.Debug|x64.ActiveCfg = Debug|Any CPU
