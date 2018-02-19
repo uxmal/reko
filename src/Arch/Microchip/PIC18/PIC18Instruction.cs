@@ -23,7 +23,7 @@
 using Reko.Core.Machine;
 using System.Collections.Generic;
 using System;
-using Microchip.Crownking;
+using Reko.Libraries.Microchip;
 using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18

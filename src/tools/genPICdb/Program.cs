@@ -18,8 +18,7 @@
  */
 #endregion
 
-using Microchip.Crownking;
-using Microchip.Utils;
+using Reko.Libraries.Microchip;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -51,6 +50,7 @@ namespace Reko.Tools.genPICdb
         private const string _crownkingfile = "crownking.edc.jar";
 
         private const string _localdbfile = "picdb.zip";
+        private const string _defaultdbfile = "defaultpicdb.zip";
         private const string _contentPIC16 = @"content/edc/16xxxx";
         private const string _contentPIC18 = @"content/edc/18xxxx";
 
@@ -97,6 +97,22 @@ namespace Reko.Tools.genPICdb
             }
         }
         private string _piclocalDBFilePath = null;
+
+        private string PICDefaultDBFilePath
+        {
+            get
+            {
+                if (_picdefaultDBFilePath == null)
+                {
+                    Assembly CrownkingAssembly;
+                    CrownkingAssembly = Assembly.GetAssembly(this.GetType());
+                    string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
+                    _picdefaultDBFilePath = Path.Combine(sDir, @"..\..", _defaultdbfile);
+                }
+                return _picdefaultDBFilePath;
+            }
+        }
+        private string _picdefaultDBFilePath = null;
 
         private string PacksPath => Path.Combine(MPLABXInstallDir, _packs);
 
@@ -193,31 +209,27 @@ namespace Reko.Tools.genPICdb
         /// </returns>
         public int Execute(string[] args)
         {
-            if (MPLABXInstallDir == null)
-            {
-                Console.WriteLine("Unable to find the Microchip MPLAB X IDE installation directory. Please make sure MPLAB X IDE is installed on this system.");
-                return 0;
-            }
+            // Try to regenerate the PIC DB file.
             if (Directory.Exists(PacksPath))    // Post v4.10 database
                 success = (Post410Database() == 0);
             else
             if (Directory.Exists(CrownkingPath))   // Ante v4.10 database
                 success = (Ante410Database() == 0);
-            else
+
+            if (success)
             {
-                Console.WriteLine("Unable to find PIC definitions in currently installed MPLAB X IDE software.");
+                Console.WriteLine("Keeping a default copy of PIC DB.");
+                File.Copy(PICLocalDBFilePath, PICDefaultDBFilePath, true);
                 return 0;
             }
-            if (success)
-                foreach (var fdest in args)
-                {
-                    Console.WriteLine($"Copying database to '{fdest}'.");
-                    if (!fdest.EndsWith("\\", true, CultureInfo.InvariantCulture)) continue;
-                    if (!Directory.Exists(fdest)) Directory.CreateDirectory(fdest);
-                    string fpath = Path.Combine(fdest, _localdbfile);
-                    File.Copy(PICLocalDBFilePath, fpath, true);
-                }
-            return 0;
+            if (File.Exists(PICDefaultDBFilePath))
+            {
+                Console.WriteLine("Copying a default copy of PIC DB.");
+                File.Copy(PICDefaultDBFilePath, PICLocalDBFilePath, true);
+                return 0;
+            }
+            Console.WriteLine("Unable to find the Microchip MPLAB X IDE installation directory nor a default PIC Database. Please make sure MPLAB X IDE is installed on this system.");
+            return -1;
         }
 
         /// <summary>

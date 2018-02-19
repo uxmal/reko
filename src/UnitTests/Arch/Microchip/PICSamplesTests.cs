@@ -1,4 +1,4 @@
-﻿using Microchip.Crownking;
+﻿using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using System;
 

@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Microchip.Utils
+namespace Reko.Libraries.Microchip
 {
     using System;
     using System.Diagnostics;
@@ -98,7 +98,7 @@ namespace Microchip.Utils
 
         #endregion
 
-        #region Bitfield Extraction
+        #region Bit field Extraction
 
         /// <summary>
         /// Extracts the bits field from the specified signed byte
@@ -485,7 +485,7 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
-        /// of the specified uint value.  Returns 32 if the specified value has no one-bits in its binary representation,
+        /// of the specified unsigned integer value.  Returns 32 if the specified value has no one-bits in its binary representation,
         /// in other words if it is equal to zero.
         /// <para>
         /// Note that this method is closely related to the logarithm base 2. For all positive int values x:
@@ -533,13 +533,13 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the number of zero bits following the lowest-order ("rightmost")
-        /// one-bit in the binary representation of the specified uint value.
+        /// one-bit in the binary representation of the specified unsigned integer value.
         /// Returns 32 if the specified value has no one-bits in its representation, in other words if it is equal to zero.
         /// </summary>
         /// <param name="ui">The value whose number of trailing zeros is to be computed.</param>
         /// <returns>
         /// The number of zero bits following the lowest-order ("rightmost") one-bit in the binary representation
-        /// of the specified uint value, or 32 if the value is equal to zero.
+        /// of the specified unsigned integer value, or 32 if the value is equal to zero.
         /// </returns>
         public static int NumberOfTrailingZeros(this uint ui)
         {
@@ -581,7 +581,7 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
-        /// of the specified ulong value.  Returns 64 if the specified value has no one-bits in its binary representation,
+        /// of the specified unsigned long value.  Returns 64 if the specified value has no one-bits in its binary representation,
         /// in other words if it is equal to zero.
         /// <para>
         /// Note that this method is closely related to the logarithm base 2. For all positive int values x:
@@ -594,7 +594,7 @@ namespace Microchip.Utils
         /// <param name="ul">The value whose number of leading zeros is to be computed.</param>
         /// <returns>
         /// The number of zero bits preceding the highest-order ("leftmost") one-bit binary representation of the specified
-        /// ulong value, or 64 if the value is equal to zero.
+        /// unsigned long value, or 64 if the value is equal to zero.
         /// </returns>
         public static int NumberOfLeadingZeros(this ulong ul)
         {
@@ -631,13 +631,13 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the number of zero bits following the lowest-order ("rightmost")
-        /// one-bit in the binary representation of the specified ulong value.
+        /// one-bit in the binary representation of the specified unsigned long value.
         /// Returns 64 if the specified value has no one-bits in its representation, in other words if it is equal to zero.
         /// </summary>
         /// <param name="ul">The value whose number of trailing zeros is to be computed.</param>
         /// <returns>
         /// The number of zero bits following the lowest-order ("rightmost") one-bit in the binary representation
-        /// of the specified ulong value, or 64 if the value is equal to zero.
+        /// of the specified unsigned long value, or 64 if the value is equal to zero.
         /// </returns>
         public static int NumberOfTrailingZeros(this ulong ul)
         {
@@ -666,7 +666,7 @@ namespace Microchip.Utils
         /// <param name="ui">The unsigned integer to act on.</param>
         /// <param name="alignment">The alignment value.</param>
         /// <returns>
-        /// An uint.
+        /// An unsigned integer.
         /// </returns>
         public static uint Align(this uint ui, uint alignment)
         {
@@ -687,7 +687,7 @@ namespace Microchip.Utils
         /// <param name="i">The integer to act on.</param>
         /// <param name="alignment">The alignment value.</param>
         /// <returns>
-        /// An uint.
+        /// An unsigned integer.
         /// </returns>
         public static int Align(this int i, int alignment)
         {
@@ -709,13 +709,13 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
-        /// specified uint value left by the specified number of bits.  (Bits shifted out of the
+        /// specified unsigned integer value left by the specified number of bits.  (Bits shifted out of the
         /// left hand, or high-order, side reenter on the right, or low-order.)
         /// </summary>
         /// <param name="ui">The value whose bits are to be rotated left.</param>
         /// <param name="distance">The number of bit positions to rotate left.</param>
         /// <returns>
-        /// The value obtained by rotating the binary representation of the specified uint value left by the specified number of bits.
+        /// The value obtained by rotating the binary representation of the specified unsigned integer value left by the specified number of bits.
         /// </returns>
         public static uint RotateLeft(this uint ui, int distance)
         {
@@ -739,13 +739,13 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
-        /// specified ulong value left by the specified number of bits.  (Bits shifted out of the
+        /// specified unsigned long value left by the specified number of bits.  (Bits shifted out of the
         /// left hand, or high-order, side reenter on the right, or low-order.)
         /// </summary>
         /// <param name="ul">The value whose bits are to be rotated left.</param>
         /// <param name="distance">The number of bit positions to rotate left.</param>
         /// <returns>
-        /// The value obtained by rotating the binary representation of the specified ulong value left by the specified number of bits.
+        /// The value obtained by rotating the binary representation of the specified unsigned long value left by the specified number of bits.
         /// </returns>
         public static ulong RotateLeft(this ulong ul, int distance)
         {
@@ -769,14 +769,14 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
-        /// specified uint value right by the specified number of bits.  (Bits shifted out of the
+        /// specified unsigned integer value right by the specified number of bits.  (Bits shifted out of the
         /// right hand, or low-order, side reenter on the left, or high-order.)
         /// </summary>
         /// <param name="ui">The value whose bits are to be rotated right.</param>
         /// <param name="distance">The number of bit positions to rotate right.</param>
         /// <returns>
         /// The value obtained by rotating the binary representation of the specified
-        /// uint value right by the specified number of bits.
+        /// unsigned integer value right by the specified number of bits.
         /// </returns>
         public static uint RotateRight(this uint ui, int distance)
         {
@@ -801,14 +801,14 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the value obtained by rotating the binary representation of the
-        /// specified ulong value right by the specified number of bits.  (Bits shifted out of the
+        /// specified unsigned long value right by the specified number of bits.  (Bits shifted out of the
         /// right hand, or low-order, side reenter on the left, or high-order.)
         /// </summary>
         /// <param name="ul">The value whose bits are to be rotated right.</param>
         /// <param name="distance">The number of bit positions to rotate right.</param>
         /// <returns>
         /// The value obtained by rotating the binary representation of the specified
-        /// ulong value right by the specified number of bits.
+        /// unsigned long value right by the specified number of bits.
         /// </returns>
         public static ulong RotateRight(this ulong ul, int distance)
         {
@@ -833,11 +833,11 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the value obtained by reversing the order of the bits in binary
-        /// representation of the specified uint value.
+        /// representation of the specified unsigned integer value.
         /// </summary>
         /// <param name="ui">The value to be reversed.</param>
         /// <returns>
-        /// The value obtained by reversing order of the bits in the specified uint value.
+        /// The value obtained by reversing order of the bits in the specified unsigned integer value.
         /// </returns>
         public static uint Reverse(this uint ui)
         {
@@ -866,11 +866,11 @@ namespace Microchip.Utils
 
         /// <summary>
         /// Returns the value obtained by reversing the order of the bits in binary
-        /// representation of the specified ulong value.
+        /// representation of the specified unsigned long value.
         /// </summary>
         /// <param name="ul">The value to be reversed.</param>
         /// <returns>
-        /// The value obtained by reversing order of the bits in the specified ulong value.
+        /// The value obtained by reversing order of the bits in the specified unsigned long value.
         /// </returns>
         public static ulong Reverse(this ulong ul)
         {
@@ -911,13 +911,13 @@ namespace Microchip.Utils
         }
 
         /// <summary>
-        /// Returns the signum function of the specified long value.  (The return value is -1 if
+        /// Returns the Signum function of the specified long value.  (The return value is -1 if
         /// the specified value is negative; 0 if the specified value is zero; and 1 if the specified
         /// value is positive.)
         /// </summary>
-        /// <param name="l">The value whose signum is to be computed.</param>
+        /// <param name="l">The value whose Signum is to be computed.</param>
         /// <returns>
-        /// The signum function of the specified long value.
+        /// The Signum function of the specified long value.
         /// </returns>
         public static long Signum(this long l)
         {
@@ -929,14 +929,14 @@ namespace Microchip.Utils
         #region String conversions
 
         /// <summary>
-        /// This extension method converts a bitfield value to an equivalent binary string.
+        /// This extension method converts a bit field value to an equivalent binary string.
         /// </summary>
         /// <param name="field">The field value to convert. Right justified.</param>
-        /// <param name="width">The bitfield width in bits.</param>
+        /// <param name="width">The bit field width in bits.</param>
         /// <param name="sset">The 'set' (one) representation character.</param>
         /// <param name="sclr">The 'clear' (zero) representation character. Default is '-'.</param>
         /// <returns>
-        /// A string representing the bitfield value in base 2.
+        /// A string representing the bit field value in base 2.
         /// </returns>
         public static string ToStringField(this int field, int width, char sset, char sclr = '-')
         {
@@ -956,7 +956,7 @@ namespace Microchip.Utils
         /// This extension method converts a String containing <paramref name="sset"/> chars to an equivalent bit field value.
         /// </summary>
         /// <param name="sField">The String to act on.</param>
-        /// <param name="width">The bitfield width in bits.</param>
+        /// <param name="width">The bit field width in bits.</param>
         /// <param name="sset">The 'set' (one) representation character.</param>
         /// <returns>
         /// The given data converted to an integer representing the field value (right justified)

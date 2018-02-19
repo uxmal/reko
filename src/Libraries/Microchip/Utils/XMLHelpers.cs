@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Microchip.Utils
+namespace Reko.Libraries.Microchip
 {
     using System;
     using System.Collections.Generic;

@@ -1,5 +1,4 @@
-﻿using Microchip.Crownking;
-using Microchip.Utils;
+﻿using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 using System.IO;

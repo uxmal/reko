@@ -20,7 +20,7 @@
  */
 #endregion
 
-using Microchip.Crownking;
+using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 using System.Linq;

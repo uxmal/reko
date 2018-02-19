@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Microchip.Crownking;
+using Reko.Libraries.Microchip;
 using Reko.Arch.Microchip.Common;
 
 namespace Reko.Arch.Microchip.PIC18

@@ -7,10 +7,11 @@
     <ProjectGuid>{45E095E9-D7C2-40AA-913B-AB77582AFBB4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microchip.Utils</RootNamespace>
+    <RootNamespace>Reko.Libraries.Microchip</RootNamespace>
     <AssemblyName>Reko.Libraries.Microchip.Utils</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,6 +46,11 @@
   <ItemGroup>
     <Compile Include="BitsUtils.cs" />
     <Compile Include="ConvUtils.cs" />
+    <Compile Include="IPICVisitor.cs" />
+    <Compile Include="PIC.cs" />
+    <Compile Include="PICCrownking.cs" />
+    <Compile Include="PICCrownkingCodes.cs" />
+    <Compile Include="PICCrownkingException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XMLHelpers.cs" />
   </ItemGroup>

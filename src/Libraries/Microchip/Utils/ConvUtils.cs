@@ -18,7 +18,7 @@
  */
 #endregion
 
-namespace Microchip.Utils
+namespace Reko.Libraries.Microchip
 {
     using System;
     using System.Text;
@@ -229,7 +229,7 @@ namespace Microchip.Utils
         #region Boolean
 
         /// <summary>
-        /// Converts the string representation of a boolean to an equivalent bool.
+        /// Converts the string representation of a boolean to an equivalent boolean.
         /// </summary>
         /// <param name="sNumber">A string that contains the boolean value for a true result.</param>
         /// <returns>Boolean value.</returns>
@@ -244,7 +244,7 @@ namespace Microchip.Utils
         }
 
         /// <summary>
-        /// Converts the string representation of a boolean to an equivalent nullable bool.
+        /// Converts the string representation of a boolean to an equivalent nullable boolean.
         /// </summary>
         /// <param name="sNumber">A string that contains the boolean value for a true result.</param>
         /// <returns>Nullable boolean value. Will be null if the string is null/empty.</returns>
@@ -478,7 +478,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this short iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
         {
@@ -500,7 +500,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KB, MB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kilobytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KB, MB, GB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KB, MB, GB, etc...)</returns>
         /// 
         public static string ToPower1K(this short? iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
             => (iNumber.HasValue ? ToPower1K(iNumber.Value, iDecimalPlace, eSuffix) : NullDispValue);
@@ -618,7 +618,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this ushort iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
         {
@@ -639,7 +639,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this ushort? iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
             => (iNumber.HasValue ? ToPower1K(iNumber.Value, iDecimalPlace, eSuffix) : NullDispValue);
@@ -757,7 +757,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this int iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
         {
@@ -779,7 +779,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this int? iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
             => (iNumber.HasValue ? ToPower1K(iNumber.Value, iDecimalPlace, eSuffix) : NullDispValue);
@@ -948,7 +948,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this long iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
         {
@@ -970,7 +970,7 @@ namespace Microchip.Utils
         /// <param name="eSuffix">Either <see cref="ConvSuffix.Sht"/> for short suffix (like KiB, MiB),
         ///                       or <see cref="ConvSuffix.Sht"/> for long suffix ('kibibytes', ...); default is short suffix.
         /// </param>
-        /// <returns>The string representation of the number with the appropriate suffixe (KiB, MiB, GiB, etc...)</returns>
+        /// <returns>The string representation of the number with the appropriate suffix (KiB, MiB, GiB, etc...)</returns>
         /// 
         public static string ToPower1K(this long? iNumber, int iDecimalPlace = 0, ConvSuffix eSuffix = ConvSuffix.Sht)
             => (iNumber.HasValue ? ToPower1K(iNumber.Value, iDecimalPlace, eSuffix) : NullDispValue);

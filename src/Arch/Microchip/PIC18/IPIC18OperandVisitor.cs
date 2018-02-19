@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reko.Arch.Microchip.PIC18
+﻿namespace Reko.Arch.Microchip.PIC18
 {
 
     /// <summary>

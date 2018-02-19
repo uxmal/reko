@@ -20,7 +20,7 @@
  */
 #endregion
 
-using Microchip.Crownking;
+using Reko.Libraries.Microchip;
 using NUnit.Framework;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm

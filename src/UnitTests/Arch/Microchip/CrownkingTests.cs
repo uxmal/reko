@@ -18,8 +18,7 @@
  */
 #endregion
 
-using Microchip.Crownking;
-using Microchip.Utils;
+using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using System.Globalization;
 using System.IO;

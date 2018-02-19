@@ -20,7 +20,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.Microchip.PIC18
 {
 
     /// <summary>

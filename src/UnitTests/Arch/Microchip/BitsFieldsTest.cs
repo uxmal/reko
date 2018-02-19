@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Microchip.Utils;
+using Reko.Libraries.Microchip;
 
 namespace Reko.UnitTests.Arch.Microchip
 {

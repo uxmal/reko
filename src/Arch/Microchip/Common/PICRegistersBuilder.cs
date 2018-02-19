@@ -20,11 +20,9 @@
  */
 #endregion
 
-using Microchip.Crownking;
-using Reko.Core;
 using Reko.Core.Types;
+using Reko.Libraries.Microchip;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common

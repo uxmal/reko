@@ -20,12 +20,12 @@
  */
 #endregion
 
-using Microchip.Crownking;
 using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Libraries.Microchip;
 
 namespace Reko.Arch.Microchip.PIC18
 {

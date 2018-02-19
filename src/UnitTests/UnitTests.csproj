@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -670,9 +670,9 @@
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\Microchip\Microchip.csproj">
+    <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
-      <Name>Microchip</Name>
+      <Name>MicrochipPIC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
@@ -757,10 +757,6 @@
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
       <Project>{D0D1798C-08F7-4DE6-94E9-CC382E1FBEC8}</Project>
       <Name>MacOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Environments\Microchip\Microchip.Crownking\Microchip.Crownking.csproj">
-      <Project>{9b13fbce-ec34-495b-b464-c80ff86e61e0}</Project>
-      <Name>Microchip.Crownking</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
@@ -883,9 +879,7 @@
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="picdb.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <PICMetadata Include="$(SolutionDir)Tools\genPICdb\$(OutDir)picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
@@ -911,6 +905,8 @@
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ExternalAssemblies)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="normal" Text="Copying PC definitions database to $(TargetDir)" />
+    <Copy SourceFiles="@(PICMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

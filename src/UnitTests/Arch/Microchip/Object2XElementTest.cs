@@ -2,8 +2,9 @@
 using System;
 using System.Collections;
 using System.Xml.Linq;
+using Reko.Libraries.Microchip;
 
-namespace Microchip.Utils
+namespace Reko.UnitTests.Microchip.Utils
 {
     [TestFixture]
     public class Object2XElementTest

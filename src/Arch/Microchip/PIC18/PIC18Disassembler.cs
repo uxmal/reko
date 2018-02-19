@@ -20,8 +20,7 @@
  */
 #endregion
 
-using Microchip.Crownking;
-using Microchip.Utils;
+using Reko.Libraries.Microchip;
 using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using System;

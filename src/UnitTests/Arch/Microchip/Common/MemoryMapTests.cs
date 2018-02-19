@@ -20,11 +20,11 @@
  */
 #endregion
 
-using Microchip.Crownking;
+using Reko.Libraries.Microchip;
 using Reko.Arch.Microchip.Common;
 using NUnit.Framework;
 using Reko.Core;
-using System;
+
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
