@@ -25,13 +25,7 @@ l10071029:
 // SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
 
 l1007100A:
-	switch (n + 0x00000001) { l10071011 l10071017 l1007101D l10071023 }
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
-
-l10071023:
-	return 0x10072008
+	switch (n + 0x00000001) { l10071011 l10071017 l1007101D }
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
