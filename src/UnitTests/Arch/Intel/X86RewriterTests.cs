@@ -442,6 +442,15 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
+        public void X86Rw_JmpFarIndirect()
+        {
+            Run16bitTest(0xFF, 0x6F, 0x34);
+            AssertCode(
+                "0|T--|0C00:0000(3): 1 instructions",
+                "1|T--|goto Mem0[ds:bx + 0x0034:ptr32]");
+        }
+
+        [Test]
         public void X86rw_Jne()
         {
             Run16bitTest(m =>
@@ -939,9 +948,9 @@ namespace Reko.UnitTests.Arch.Intel
             });
             AssertCode(
                 "0|T--|0C00:0000(2): 1 instructions",
-                "1|T--|call SEQ(cs, bx) (2)",
+                "1|T--|call SEQ(0x0C00, bx) (2)",
                 "2|T--|0C00:0002(3): 1 instructions",
-                "3|T--|call SEQ(cs, Mem0[ds:bx + 0x0004:word16]) (2)",
+                "3|T--|call SEQ(0x0C00, Mem0[ds:bx + 0x0004:word16]) (2)",
                 "4|T--|0C00:0005(3): 1 instructions",
                 "5|T--|call Mem0[ds:bx + 0x0008:ptr32] (4)");
         }

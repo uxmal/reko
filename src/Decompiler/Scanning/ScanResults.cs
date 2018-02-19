@@ -199,9 +199,9 @@ namespace Reko.Scanning
 
         public class block
         {
-            public Address id;
-            public Address component_id;
-            internal instr[] instrs;
+            public Address id;                  // Address of block
+            public Address component_id;        // Component we're part of.
+            public instr[] instrs;              // The instructions of the block.
         }
 
         [Conditional("DEBUG")]

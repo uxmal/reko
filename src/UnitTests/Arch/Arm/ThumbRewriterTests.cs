@@ -238,15 +238,12 @@ namespace Reko.UnitTests.Arch.Arm
   004021AA: 9902      ldr         r1,[sp,#8]
   004021AC: 480C      ldr         r0,004021E0
   004021AE: 4B0A      ldr         r3,004021D8
-  004021B0: 681B      ldr         r3,[r3]
   004021B2: 4798      blx         r3
   004021B4: E7EF      b           00402196
   004021B6: 4809      ldr         r0,004021DC
   004021B8: 4B07      ldr         r3,004021D8
-  004021BA: 681B      ldr         r3,[r3]
   004021BC: 4798      blx         r3
   004021BE: 4B05      ldr         r3,004021D4
-  004021C0: 681B      ldr         r3,[r3]
   004021C2: 4798      blx         r3
   004021C4: 2300      movs        r3,#0
   004021C6: 9301      str         r3,[sp,#4]
@@ -322,47 +319,36 @@ namespace Reko.UnitTests.Arch.Arm
   004022FA: 601A      str         r2,[r3]
   004022FC: 2001      movs        r0,#1
   004022FE: 4B27      ldr         r3,0040239C
-  00402300: 681B      ldr         r3,[r3]
   00402302: 4798      blx         r3
   00402304: F06F 0000 mvn         r0,#0
   00402308: 4B23      ldr         r3,00402398
-  0040230A: 681B      ldr         r3,[r3]
   0040230C: 4798      blx         r3
   0040230E: 9001      str         r0,[sp,#4]
   00402310: 9A01      ldr         r2,[sp,#4]
   00402312: 4B20      ldr         r3,00402394
   00402314: 601A      str         r2,[r3]
   00402316: 4B1F      ldr         r3,00402394
-  00402318: 681A      ldr         r2,[r3]
   0040231A: 4B1D      ldr         r3,00402390
   0040231C: 601A      str         r2,[r3]
   0040231E: 4B1B      ldr         r3,0040238C
-  00402320: 681A      ldr         r2,[r3]
   00402322: 4B19      ldr         r3,00402388
-  00402324: 681B      ldr         r3,[r3]
   00402326: 601A      str         r2,[r3]
   00402328: 4B16      ldr         r3,00402384
-  0040232A: 681A      ldr         r2,[r3]
   0040232C: 4B14      ldr         r3,00402380
-  0040232E: 681B      ldr         r3,[r3]
   00402330: 601A      str         r2,[r3]
   00402332: F000 FDE9 bl          00402F08
   00402336: F000 FB57 bl          004029E8
   0040233A: 4B10      ldr         r3,0040237C
-  0040233C: 681B      ldr         r3,[r3]
   0040233E: 2B00      cmp         r3,#0
   00402340: D103      bne         0040234A
   00402342: 480D      ldr         r0,00402378
   00402344: 4B0B      ldr         r3,00402374
-  00402346: 681B      ldr         r3,[r3]
   00402348: 4798      blx         r3
   0040234A: 4B09      ldr         r3,00402370
-  0040234C: 681B      ldr         r3,[r3]
   0040234E: F1B3 3FFF cmp         r3,#0xFFFFFFFF
   00402352: D104      bne         0040235E
   00402354: F06F 0000 mvn         r0,#0
   00402358: 4B04      ldr         r3,0040236C
-  0040235A: 681B      ldr         r3,[r3]
   0040235C: 4798      blx         r3
   0040235E: 2300      movs        r3,#0
   00402360: 9302      str         r3,[sp,#8]
@@ -405,25 +391,21 @@ namespace Reko.UnitTests.Arch.Arm
   004023F6: 4817      ldr         r0,00402454
   004023F8: F000 FD60 bl          00402EBC
   004023FC: 4B14      ldr         r3,00402450
-  004023FE: 681A      ldr         r2,[r3]
   00402400: 4B12      ldr         r3,0040244C
   00402402: 601A      str         r2,[r3]
   00402404: 4B11      ldr         r3,0040244C
   00402406: 9300      str         r3,[sp]
   00402408: 4B0F      ldr         r3,00402448
-  0040240A: 681B      ldr         r3,[r3]
   0040240C: 4A0D      ldr         r2,00402444
   0040240E: 490C      ldr         r1,00402440
   00402410: 480A      ldr         r0,0040243C
   00402412: 4C09      ldr         r4,00402438
-  00402414: 6824      ldr         r4,[r4]
   00402416: 47A0      blx         r4
   00402418: 9002      str         r0,[sp,#8]
   0040241A: 9A02      ldr         r2,[sp,#8]
   0040241C: 4B05      ldr         r3,00402434
   0040241E: 601A      str         r2,[r3]
   00402420: 4B04      ldr         r3,00402434
-  00402422: 681B      ldr         r3,[r3]
   00402424: 2B00      cmp         r3,#0
   00402426: DA02      bge         0040242E
   00402428: 2008      movs        r0,#8
@@ -471,7 +453,6 @@ namespace Reko.UnitTests.Arch.Arm
   004024BA: 62B8      str         r0,[r7,#0x28]
   004024BC: 6ABB      ldr         r3,[r7,#0x28]
   004024BE: 1D1B      adds        r3,r3,#4
-  004024C0: 681B      ldr         r3,[r3]
   004024C2: 60BB      str         r3,[r7,#8]
   004024C4: 2300      movs        r3,#0
   004024C6: 60FB      str         r3,[r7,#0xC]
@@ -501,7 +482,6 @@ namespace Reko.UnitTests.Arch.Arm
   004024FE: E000      b           00402502
   00402500: E7E2      b           004024C8
   00402502: 4B6D      ldr         r3,004026B8
-  00402504: 681B      ldr         r3,[r3]
   00402506: 623B      str         r3,[r7,#0x20]
   00402508: F3BF 8F5B dmb         ish
   0040250C: 6A3B      ldr         r3,[r7,#0x20]
@@ -511,7 +491,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402514: F000 FA62 bl          004029DC
   00402518: E01D      b           00402556
   0040251A: 4B67      ldr         r3,004026B8
-  0040251C: 681B      ldr         r3,[r3]
   0040251E: 63BB      str         r3,[r7,#0x38]
   00402520: F3BF 8F5B dmb         ish
   00402524: 6BBB      ldr         r3,[r7,#0x38]
@@ -538,7 +517,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402552: 2301      movs        r3,#1
   00402554: 6013      str         r3,[r2]
   00402556: 4B58      ldr         r3,004026B8
-  00402558: 681B      ldr         r3,[r3]
   0040255A: 633B      str         r3,[r7,#0x30]
   0040255C: F3BF 8F5B dmb         ish
   00402560: 6B3B      ldr         r3,[r7,#0x30]
@@ -552,7 +530,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402574: 2302      movs        r3,#2
   00402576: 6013      str         r3,[r2]
   00402578: 4B4F      ldr         r3,004026B8
-  0040257A: 681B      ldr         r3,[r3]
   0040257C: 61BB      str         r3,[r7,#0x18]
   0040257E: F3BF 8F5B dmb         ish
   00402582: 69BB      ldr         r3,[r7,#0x18]
@@ -567,7 +544,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402596: 4945      ldr         r1,004026AC
   00402598: 2002      movs        r0,#2
   0040259A: 4C43      ldr         r4,004026A8
-  0040259C: 6824      ldr         r4,[r4]
   0040259E: 47A0      blx         r4
   004025A0: 61F8      str         r0,[r7,#0x1C]
   004025A2: 69FB      ldr         r3,[r7,#0x1C]
@@ -586,7 +562,6 @@ namespace Reko.UnitTests.Arch.Arm
   004025C2: D1F9      bne         004025B8
   004025C4: F3BF 8F5B dmb         ish
   004025C8: 4B35      ldr         r3,004026A0
-  004025CA: 681B      ldr         r3,[r3]
   004025CC: 2B00      cmp         r3,#0
   004025CE: D00C      beq         004025EA
   004025D0: 4833      ldr         r0,004026A0
@@ -599,70 +574,51 @@ namespace Reko.UnitTests.Arch.Arm
   004025E0: 2102      movs        r1,#2
   004025E2: 2000      movs        r0,#0
   004025E4: 4B2E      ldr         r3,004026A0
-  004025E6: 681B      ldr         r3,[r3]
   004025E8: 4798      blx         r3
   004025EA: 2001      movs        r0,#1
   004025EC: 4B2B      ldr         r3,0040269C
-  004025EE: 681B      ldr         r3,[r3]
   004025F0: 4798      blx         r3
   004025F2: 4B28      ldr         r3,00402694
-  004025F4: 681A      ldr         r2,[r3]
   004025F6: 4B28      ldr         r3,00402698
-  004025F8: 681B      ldr         r3,[r3]
   004025FA: 601A      str         r2,[r3]
   004025FC: 4B25      ldr         r3,00402694
-  004025FE: 681A      ldr         r2,[r3]
   00402600: 4B23      ldr         r3,00402690
-  00402602: 6819      ldr         r1,[r3]
   00402604: 4B21      ldr         r3,0040268C
-  00402606: 6818      ldr         r0,[r3]
   00402608: F7FE FD06 bl          00401018
   0040260C: 62F8      str         r0,[r7,#0x2C]
   0040260E: 6AFA      ldr         r2,[r7,#0x2C]
   00402610: 4B18      ldr         r3,00402674
   00402612: 601A      str         r2,[r3]
   00402614: 4B1B      ldr         r3,00402684
-  00402616: 681B      ldr         r3,[r3]
   00402618: 2B00      cmp         r3,#0
   0040261A: D104      bne         00402626
   0040261C: 4B15      ldr         r3,00402674
-  0040261E: 6818      ldr         r0,[r3]
   00402620: 4B19      ldr         r3,00402688
-  00402622: 681B      ldr         r3,[r3]
   00402624: 4798      blx         r3
   00402626: 4B15      ldr         r3,0040267C
-  00402628: 681B      ldr         r3,[r3]
   0040262A: 2B00      cmp         r3,#0
   0040262C: D102      bne         00402634
   0040262E: 4B12      ldr         r3,00402678
-  00402630: 681B      ldr         r3,[r3]
   00402632: 4798      blx         r3
   00402634: E016      b           00402664
   00402636: 6038      str         r0,[r7]
-  00402638: 683B      ldr         r3,[r7]
   0040263A: 64FB      str         r3,[r7,#0x4C]
   0040263C: 6CFA      ldr         r2,[r7,#0x4C]
   0040263E: 4B0D      ldr         r3,00402674
   00402640: 601A      str         r2,[r3]
   00402642: 4B10      ldr         r3,00402684
-  00402644: 681B      ldr         r3,[r3]
   00402646: 2B00      cmp         r3,#0
   00402648: D104      bne         00402654
   0040264A: 4B0A      ldr         r3,00402674
-  0040264C: 6818      ldr         r0,[r3]
   0040264E: 4B0C      ldr         r3,00402680
-  00402650: 681B      ldr         r3,[r3]
   00402652: 4798      blx         r3
   00402654: 4B09      ldr         r3,0040267C
-  00402656: 681B      ldr         r3,[r3]
   00402658: 2B00      cmp         r3,#0
   0040265A: D102      bne         00402662
   0040265C: 4B06      ldr         r3,00402678
-  0040265E: 681B      ldr         r3,[r3]
   00402660: 4798      blx         r3
   00402662: E7FF      b           00402664
   00402664: 4B03      ldr         r3,00402674
-  00402666: 681B      ldr         r3,[r3]
   00402668: 613B      str         r3,[r7,#0x10]
   0040266A: 6938      ldr         r0,[r7,#0x10]
   0040266C: B016      add         sp,sp,#0x58
@@ -800,11 +756,9 @@ namespace Reko.UnitTests.Arch.Arm
   0040277A: 9B02      ldr         r3,[sp,#8]
   0040277C: 333C      adds        r3,r3,#0x3C
   0040277E: 9A02      ldr         r2,[sp,#8]
-  00402780: 681B      ldr         r3,[r3]
   00402782: 4413      add         r3,r3,r2
   00402784: 9301      str         r3,[sp,#4]
   00402786: 9B01      ldr         r3,[sp,#4]
-  00402788: 681A      ldr         r2,[r3]
   0040278A: F244 5350 mov         r3,#0x4550
   0040278E: 429A      cmp         r2,r3
   00402790: D002      beq         00402798
@@ -822,7 +776,6 @@ namespace Reko.UnitTests.Arch.Arm
   004027AA: E014      b           004027D6
   004027AC: 9B01      ldr         r3,[sp,#4]
   004027AE: 3374      adds        r3,r3,#0x74
-  004027B0: 681B      ldr         r3,[r3]
   004027B2: 2B0E      cmp         r3,#0xE
   004027B4: D802      bhi         004027BC
   004027B6: 2300      movs        r3,#0
@@ -831,7 +784,6 @@ namespace Reko.UnitTests.Arch.Arm
   004027BC: 9B01      ldr         r3,[sp,#4]
   004027BE: 3378      adds        r3,r3,#0x78
   004027C0: 3370      adds        r3,r3,#0x70
-  004027C2: 681B      ldr         r3,[r3]
   004027C4: 2B00      cmp         r3,#0
   004027C6: D002      beq         004027CE
   004027C8: 2301      movs        r3,#1
@@ -887,13 +839,11 @@ namespace Reko.UnitTests.Arch.Arm
   00402838: 46EB      mov         r11,sp
   0040283A: F24A 1354 mov         r3,#0xA154
   0040283E: F2C0 0340 movt        r3,#0x40
-  00402842: 6818      ldr         r0,[r3]
   00402844: E8BD 8800 pop         {r11,pc}
   00402848: E92D 4800 push        {r11,lr}
   0040284C: 46EB      mov         r11,sp
   0040284E: F24A 1358 mov         r3,#0xA158
   00402852: F2C0 0340 movt        r3,#0x40
-  00402856: 6818      ldr         r0,[r3]
   00402858: E8BD 8800 pop         {r11,pc}
   0040285C: E92D 4800 push        {r11,lr}
   00402860: 46EB      mov         r11,sp
@@ -916,7 +866,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402892: F24A 1254 mov         r2,#0xA154
   00402896: F2C0 0240 movt        r2,#0x40
   0040289A: 4603      mov         r3,r0
-  0040289C: 6810      ldr         r0,[r2]
   0040289E: 6013      str         r3,[r2]
   004028A0: 2300      movs        r3,#0
   004028A2: 6053      str         r3,[r2,#4]
@@ -951,42 +900,30 @@ namespace Reko.UnitTests.Arch.Arm
   004028FE: 46EB      mov         r11,sp
   00402900: B082      sub         sp,sp,#8
   00402902: 9B04      ldr         r3,[sp,#0x10]
-  00402904: 681B      ldr         r3,[r3]
-  00402906: 681A      ldr         r2,[r3]
   00402908: 4B1C      ldr         r3,0040297C
   0040290A: 429A      cmp         r2,r3
   0040290C: D126      bne         0040295C
   0040290E: 9B04      ldr         r3,[sp,#0x10]
-  00402910: 681B      ldr         r3,[r3]
   00402912: 3310      adds        r3,r3,#0x10
-  00402914: 681B      ldr         r3,[r3]
   00402916: 2B04      cmp         r3,#4
   00402918: D120      bne         0040295C
   0040291A: 9B04      ldr         r3,[sp,#0x10]
-  0040291C: 681B      ldr         r3,[r3]
   0040291E: 3314      adds        r3,r3,#0x14
-  00402920: 681A      ldr         r2,[r3]
   00402922: 4B15      ldr         r3,00402978
   00402924: 429A      cmp         r2,r3
   00402926: D014      beq         00402952
   00402928: 9B04      ldr         r3,[sp,#0x10]
-  0040292A: 681B      ldr         r3,[r3]
   0040292C: 3314      adds        r3,r3,#0x14
-  0040292E: 681A      ldr         r2,[r3]
   00402930: 4B10      ldr         r3,00402974
   00402932: 429A      cmp         r2,r3
   00402934: D00D      beq         00402952
   00402936: 9B04      ldr         r3,[sp,#0x10]
-  00402938: 681B      ldr         r3,[r3]
   0040293A: 3314      adds        r3,r3,#0x14
-  0040293C: 681A      ldr         r2,[r3]
   0040293E: 4B0C      ldr         r3,00402970
   00402940: 429A      cmp         r2,r3
   00402942: D006      beq         00402952
   00402944: 9B04      ldr         r3,[sp,#0x10]
-  00402946: 681B      ldr         r3,[r3]
   00402948: 3314      adds        r3,r3,#0x14
-  0040294A: 681A      ldr         r2,[r3]
   0040294C: 4B07      ldr         r3,0040296C
   0040294E: 429A      cmp         r2,r3
   00402950: D104      bne         0040295C
@@ -1080,7 +1017,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402A36: 9B06      ldr         r3,[sp,#0x18]
   00402A38: 333C      adds        r3,r3,#0x3C
   00402A3A: 9A06      ldr         r2,[sp,#0x18]
-  00402A3C: 681B      ldr         r3,[r3]
   00402A3E: 4413      add         r3,r3,r2
   00402A40: 9301      str         r3,[sp,#4]
   00402A42: 2300      movs        r3,#0
@@ -1108,15 +1044,12 @@ namespace Reko.UnitTests.Arch.Arm
   00402A70: 9B00      ldr         r3,[sp]
   00402A72: 330C      adds        r3,r3,#0xC
   00402A74: 9A07      ldr         r2,[sp,#0x1C]
-  00402A76: 681B      ldr         r3,[r3]
   00402A78: 429A      cmp         r2,r3
   00402A7A: D30D      bcc         00402A98
   00402A7C: 9B00      ldr         r3,[sp]
   00402A7E: F103 020C add         r2,r3,#0xC
   00402A82: 9B00      ldr         r3,[sp]
   00402A84: 3308      adds        r3,r3,#8
-  00402A86: 6812      ldr         r2,[r2]
-  00402A88: 681B      ldr         r3,[r3]
   00402A8A: 441A      add         r2,r2,r3
   00402A8C: 9B07      ldr         r3,[sp,#0x1C]
   00402A8E: 4293      cmp         r3,r2
@@ -1170,7 +1103,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402AFA: E016      b           00402B2A
   00402AFC: 68BB      ldr         r3,[r7,#8]
   00402AFE: 3324      adds        r3,r3,#0x24
-  00402B00: 681B      ldr         r3,[r3]
   00402B02: F013 4F00 tst         r3,#0x80000000
   00402B06: D102      bne         00402B0E
   00402B08: 2301      movs        r3,#1
@@ -1190,7 +1122,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402B24: 603B      str         r3,[r7]
   00402B26: E000      b           00402B2A
   00402B28: E7FF      b           00402B2A
-  00402B2A: 6838      ldr         r0,[r7]
   00402B2C: B00F      add         sp,sp,#0x3C
   00402B2E: E8BD 0880 pop         {r7,r11}
   00402B32: F85D FB0C ldr         pc,[sp],#0xC
@@ -1238,11 +1169,9 @@ namespace Reko.UnitTests.Arch.Arm
   00402B8C: 9B01      ldr         r3,[sp,#4]
   00402B8E: 333C      adds        r3,r3,#0x3C
   00402B90: 9A01      ldr         r2,[sp,#4]
-  00402B92: 681B      ldr         r3,[r3]
   00402B94: 4413      add         r3,r3,r2
   00402B96: 9302      str         r3,[sp,#8]
   00402B98: 9B02      ldr         r3,[sp,#8]
-  00402B9A: 681A      ldr         r2,[r3]
   00402B9C: F244 5350 mov         r3,#0x4550
   00402BA0: 429A      cmp         r2,r3
   00402BA2: D002      beq         00402BAA
@@ -1284,19 +1213,16 @@ namespace Reko.UnitTests.Arch.Arm
   00402C04: 2300      movs        r3,#0
   00402C06: 9305      str         r3,[sp,#0x14]
   00402C08: 4B27      ldr         r3,00402CA8
-  00402C0A: 681A      ldr         r2,[r3]
   00402C0C: 4B28      ldr         r3,00402CB0
   00402C0E: 429A      cmp         r2,r3
   00402C10: D005      beq         00402C1E
   00402C12: 4B25      ldr         r3,00402CA8
-  00402C14: 681B      ldr         r3,[r3]
   00402C16: 43DA      mvns        r2,r3
   00402C18: 4B22      ldr         r3,00402CA4
   00402C1A: 601A      str         r2,[r3]
   00402C1C: E03F      b           00402C9E
   00402C1E: A804      add         r0,sp,#0x10
   00402C20: 4B28      ldr         r3,00402CC4
-  00402C22: 681B      ldr         r3,[r3]
   00402C24: 4798      blx         r3
   00402C26: 9B04      ldr         r3,[sp,#0x10]
   00402C28: 9300      str         r3,[sp]
@@ -1305,7 +1231,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402C2E: 4053      eors        r3,r3,r2
   00402C30: 9300      str         r3,[sp]
   00402C32: 4B23      ldr         r3,00402CC0
-  00402C34: 681B      ldr         r3,[r3]
   00402C36: 4798      blx         r3
   00402C38: 9001      str         r0,[sp,#4]
   00402C3A: 9A00      ldr         r2,[sp]
@@ -1313,7 +1238,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402C3E: 4053      eors        r3,r3,r2
   00402C40: 9300      str         r3,[sp]
   00402C42: 4B1E      ldr         r3,00402CBC
-  00402C44: 681B      ldr         r3,[r3]
   00402C46: 4798      blx         r3
   00402C48: 9002      str         r0,[sp,#8]
   00402C4A: 9A00      ldr         r2,[sp]
@@ -1321,7 +1245,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402C4E: 4053      eors        r3,r3,r2
   00402C50: 9300      str         r3,[sp]
   00402C52: 4B19      ldr         r3,00402CB8
-  00402C54: 681B      ldr         r3,[r3]
   00402C56: 4798      blx         r3
   00402C58: 9107      str         r1,[sp,#0x1C]
   00402C5A: 9006      str         r0,[sp,#0x18]
@@ -1331,7 +1254,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402C62: 9300      str         r3,[sp]
   00402C64: A808      add         r0,sp,#0x20
   00402C66: 4B13      ldr         r3,00402CB4
-  00402C68: 681B      ldr         r3,[r3]
   00402C6A: 4798      blx         r3
   00402C6C: 9A00      ldr         r2,[sp]
   00402C6E: 9B08      ldr         r3,[sp,#0x20]
@@ -1393,19 +1315,15 @@ namespace Reko.UnitTests.Arch.Arm
   00402CE8: F10D 0B04 add         r11,sp,#4
   00402CEC: B087      sub         sp,sp,#0x1C
   00402CEE: 4B28      ldr         r3,00402D90
-  00402CF0: 681B      ldr         r3,[r3]
   00402CF2: 2B00      cmp         r3,#0
   00402CF4: D003      beq         00402CFE
   00402CF6: 4B25      ldr         r3,00402D8C
-  00402CF8: 681B      ldr         r3,[r3]
   00402CFA: 2B00      cmp         r3,#0
   00402CFC: D117      bne         00402D2E
   00402CFE: 4B24      ldr         r3,00402D90
-  00402D00: 681B      ldr         r3,[r3]
   00402D02: 2B00      cmp         r3,#0
   00402D04: D103      bne         00402D0E
   00402D06: 4B21      ldr         r3,00402D8C
-  00402D08: 681B      ldr         r3,[r3]
   00402D0A: 2B00      cmp         r3,#0
   00402D0C: D00F      beq         00402D2E
   00402D0E: 4B27      ldr         r3,00402DAC
@@ -1417,7 +1335,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402D1A: 4922      ldr         r1,00402DA4
   00402D1C: 2002      movs        r0,#2
   00402D1E: 4C20      ldr         r4,00402DA0
-  00402D20: 6824      ldr         r4,[r4]
   00402D22: 47A0      blx         r4
   00402D24: 9004      str         r0,[sp,#0x10]
   00402D26: 9B04      ldr         r3,[sp,#0x10]
@@ -1425,7 +1342,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402D2A: D100      bne         00402D2E
   00402D2C: DEFE      __debugbreak
   00402D2E: 4B18      ldr         r3,00402D90
-  00402D30: 681B      ldr         r3,[r3]
   00402D32: 2B00      cmp         r3,#0
   00402D34: D002      beq         00402D3C
   00402D36: 2300      movs        r3,#0
@@ -1438,21 +1354,18 @@ namespace Reko.UnitTests.Arch.Arm
   00402D44: 2104      movs        r1,#4
   00402D46: 2020      movs        r0,#0x20
   00402D48: 4C13      ldr         r4,00402D98
-  00402D4A: 6824      ldr         r4,[r4]
   00402D4C: 47A0      blx         r4
   00402D4E: 9005      str         r0,[sp,#0x14]
   00402D50: 9B05      ldr         r3,[sp,#0x14]
   00402D52: 9302      str         r3,[sp,#8]
   00402D54: 9802      ldr         r0,[sp,#8]
   00402D56: 4B0F      ldr         r3,00402D94
-  00402D58: 681B      ldr         r3,[r3]
   00402D5A: 4798      blx         r3
   00402D5C: 9006      str         r0,[sp,#0x18]
   00402D5E: 9A06      ldr         r2,[sp,#0x18]
   00402D60: 4B0B      ldr         r3,00402D90
   00402D62: 601A      str         r2,[r3]
   00402D64: 4B0A      ldr         r3,00402D90
-  00402D66: 681A      ldr         r2,[r3]
   00402D68: 4B08      ldr         r3,00402D8C
   00402D6A: 601A      str         r2,[r3]
   00402D6C: 9B02      ldr         r3,[sp,#8]
@@ -1496,19 +1409,15 @@ namespace Reko.UnitTests.Arch.Arm
   00402DBE: 2300      movs        r3,#0
   00402DC0: 60BB      str         r3,[r7,#8]
   00402DC2: 4B29      ldr         r3,00402E68
-  00402DC4: 6818      ldr         r0,[r3]
   00402DC6: 4B29      ldr         r3,00402E6C
-  00402DC8: 681B      ldr         r3,[r3]
   00402DCA: 4798      blx         r3
   00402DCC: 6138      str         r0,[r7,#0x10]
   00402DCE: 693B      ldr         r3,[r7,#0x10]
   00402DD0: 603B      str         r3,[r7]
-  00402DD2: 683B      ldr         r3,[r7]
   00402DD4: F1B3 3FFF cmp         r3,#0xFFFFFFFF
   00402DD8: D107      bne         00402DEA
   00402DDA: 6C38      ldr         r0,[r7,#0x40]
   00402DDC: 4B24      ldr         r3,00402E70
-  00402DDE: 681B      ldr         r3,[r3]
   00402DE0: 4798      blx         r3
   00402DE2: 6178      str         r0,[r7,#0x14]
   00402DE4: 697B      ldr         r3,[r7,#0x14]
@@ -1517,24 +1426,19 @@ namespace Reko.UnitTests.Arch.Arm
   00402DEA: 2008      movs        r0,#8
   00402DEC: F000 FC90 bl          00403710
   00402DF0: 4B1D      ldr         r3,00402E68
-  00402DF2: 6818      ldr         r0,[r3]
   00402DF4: 4B1D      ldr         r3,00402E6C
-  00402DF6: 681B      ldr         r3,[r3]
   00402DF8: 4798      blx         r3
   00402DFA: 61B8      str         r0,[r7,#0x18]
   00402DFC: 69BB      ldr         r3,[r7,#0x18]
   00402DFE: 603B      str         r3,[r7]
   00402E00: 4B17      ldr         r3,00402E60
-  00402E02: 6818      ldr         r0,[r3]
   00402E04: 4B19      ldr         r3,00402E6C
-  00402E06: 681B      ldr         r3,[r3]
   00402E08: 4798      blx         r3
   00402E0A: 61F8      str         r0,[r7,#0x1C]
   00402E0C: 69FB      ldr         r3,[r7,#0x1C]
   00402E0E: 607B      str         r3,[r7,#4]
   00402E10: 6C38      ldr         r0,[r7,#0x40]
   00402E12: 4B14      ldr         r3,00402E64
-  00402E14: 681B      ldr         r3,[r3]
   00402E16: 4798      blx         r3
   00402E18: 6238      str         r0,[r7,#0x20]
   00402E1A: 1D3A      adds        r2,r7,#4
@@ -1544,9 +1448,7 @@ namespace Reko.UnitTests.Arch.Arm
   00402E24: 6278      str         r0,[r7,#0x24]
   00402E26: 6A7B      ldr         r3,[r7,#0x24]
   00402E28: 60BB      str         r3,[r7,#8]
-  00402E2A: 6838      ldr         r0,[r7]
   00402E2C: 4B0D      ldr         r3,00402E64
-  00402E2E: 681B      ldr         r3,[r3]
   00402E30: 4798      blx         r3
   00402E32: 62B8      str         r0,[r7,#0x28]
   00402E34: 6ABA      ldr         r2,[r7,#0x28]
@@ -1554,7 +1456,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402E38: 601A      str         r2,[r3]
   00402E3A: 6878      ldr         r0,[r7,#4]
   00402E3C: 4B09      ldr         r3,00402E64
-  00402E3E: 681B      ldr         r3,[r3]
   00402E40: 4798      blx         r3
   00402E42: 62F8      str         r0,[r7,#0x2C]
   00402E44: 6AFA      ldr         r2,[r7,#0x2C]
@@ -1676,7 +1577,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402FC8: 4806      ldr         r0,00402FE4
   00402FCA: F24C 042C mov         r4,#0xC02C
   00402FCE: F2C0 0440 movt        r4,#0x40
-  00402FD2: 6824      ldr         r4,[r4]
   00402FD4: 47A0      blx         r4
   00402FD6: 7838      ldrb        r0,[r7]
   00402FD8: E000      b           00402FDC
@@ -1706,7 +1606,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403012: 4806      ldr         r0,0040302C
   00403014: F24C 042C mov         r4,#0xC02C
   00403018: F2C0 0440 movt        r4,#0x40
-  0040301C: 6824      ldr         r4,[r4]
   0040301E: 47A0      blx         r4
   00403020: 7838      ldrb        r0,[r7]
   00403022: E000      b           00403026
@@ -1946,7 +1845,6 @@ namespace Reko.UnitTests.Arch.Arm
   004033E0: F2C0 0440 movt        r4,#0x40
   004033E4: 2300      movs        r3,#0
   004033E6: 9301      str         r3,[sp,#4]
-  004033E8: 6824      ldr         r4,[r4]
   004033EA: 9300      str         r3,[sp]
   004033EC: 43DB      mvns        r3,r3
   004033EE: 4642      mov         r2,r8
@@ -1959,7 +1857,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403402: F2C0 0440 movt        r4,#0x40
   00403406: F60D 2348 add         r3,sp,#0xA48
   0040340A: 9001      str         r0,[sp,#4]
-  0040340C: 6824      ldr         r4,[r4]
   0040340E: 9300      str         r3,[sp]
   00403410: F06F 0300 mvn         r3,#0
   00403414: 4642      mov         r2,r8
@@ -1992,7 +1889,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040345E: B13B      cbz         r3,00403470
   00403460: F24C 0330 mov         r3,#0xC030
   00403464: F2C0 0340 movt        r3,#0x40
-  00403468: 681B      ldr         r3,[r3]
   0040346A: 4798      blx         r3
   0040346C: 2800      cmp         r0,#0
   0040346E: D15E      bne         0040352E
@@ -2020,7 +1916,6 @@ namespace Reko.UnitTests.Arch.Arm
   004034A6: F2C0 0440 movt        r4,#0x40
   004034AA: 2300      movs        r3,#0
   004034AC: F50D 6285 add         r2,sp,#0x428
-  004034B0: 6824      ldr         r4,[r4]
   004034B2: F647 7630 mov         r6,#0x7F30
   004034B6: F2C0 0640 movt        r6,#0x40
   004034BA: 9303      str         r3,[sp,#0xC]
@@ -2039,7 +1934,6 @@ namespace Reko.UnitTests.Arch.Arm
   004034DE: F2C0 0440 movt        r4,#0x40
   004034E2: 2300      movs        r3,#0
   004034E4: F50D 62E7 add         r2,sp,#0x738
-  004034E8: 6824      ldr         r4,[r4]
   004034EA: F647 7544 mov         r5,#0x7F44
   004034EE: F2C0 0540 movt        r5,#0x40
   004034F2: 9303      str         r3,[sp,#0xC]
@@ -2161,14 +2055,12 @@ namespace Reko.UnitTests.Arch.Arm
   00403778: F2C0 0340 movt        r3,#0x40
   0040377C: F248 102C mov         r0,#0x812C
   00403780: F2C0 0040 movt        r0,#0x40
-  00403784: 681B      ldr         r3,[r3]
   00403786: 4798      blx         r3
   00403788: B1E0      cbz         r0,004037C4
   0040378A: F24C 0308 mov         r3,#0xC008
   0040378E: F2C0 0340 movt        r3,#0x40
   00403792: F44F 7282 mov         r2,#0x104
   00403796: 4669      mov         r1,sp
-  00403798: 681B      ldr         r3,[r3]
   0040379A: 4798      blx         r3
   0040379C: B190      cbz         r0,004037C4
   0040379E: A982      add         r1,sp,#0x208
@@ -2180,7 +2072,6 @@ namespace Reko.UnitTests.Arch.Arm
   004037B0: F2C0 0340 movt        r3,#0x40
   004037B4: F44F 6210 mov         r2,#0x900
   004037B8: 2100      movs        r1,#0
-  004037BA: 681B      ldr         r3,[r3]
   004037BC: A882      add         r0,sp,#0x208
   004037BE: 4798      blx         r3
   004037C0: 2800      cmp         r0,#0
@@ -2190,7 +2081,6 @@ namespace Reko.UnitTests.Arch.Arm
   004037CC: F248 2050 mov         r0,#0x8250
   004037D0: F2C0 0040 movt        r0,#0x40
   004037D4: F44F 6220 mov         r2,#0xA00
-  004037D8: 681B      ldr         r3,[r3]
   004037DA: 2100      movs        r1,#0
   004037DC: 4798      blx         r3
   004037DE: F20D 4D14 add         sp,sp,#0x414
@@ -2206,14 +2096,12 @@ namespace Reko.UnitTests.Arch.Arm
   00403864: F248 1048 mov         r0,#0x8148
   00403868: F2C0 0040 movt        r0,#0x40
   0040386C: F44F 6200 mov         r2,#0x800
-  00403870: 681B      ldr         r3,[r3]
   00403872: 2100      movs        r1,#0
   00403874: 4798      blx         r3
   00403876: 4605      mov         r5,r0
   00403878: B9AD      cbnz        r5,004038A6
   0040387A: F24C 0320 mov         r3,#0xC020
   0040387E: F2C0 0340 movt        r3,#0x40
-  00403882: 681B      ldr         r3,[r3]
   00403884: 4798      blx         r3
   00403886: 2857      cmp         r0,#0x57
   00403888: D148      bne         0040391C
@@ -2222,7 +2110,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403892: F248 1048 mov         r0,#0x8148
   00403896: F2C0 0040 movt        r0,#0x40
   0040389A: 2200      movs        r2,#0
-  0040389C: 681B      ldr         r3,[r3]
   0040389E: 2100      movs        r1,#0
   004038A0: 4798      blx         r3
   004038A2: 4605      mov         r5,r0
@@ -2232,7 +2119,6 @@ namespace Reko.UnitTests.Arch.Arm
   004038AE: F248 1190 mov         r1,#0x8190
   004038B2: F2C0 0140 movt        r1,#0x40
   004038B6: 4628      mov         r0,r5
-  004038B8: 681B      ldr         r3,[r3]
   004038BA: 4798      blx         r3
   004038BC: 4604      mov         r4,r0
   004038BE: B36C      cbz         r4,0040391C
@@ -2241,7 +2127,6 @@ namespace Reko.UnitTests.Arch.Arm
   004038C8: F248 11A0 mov         r1,#0x81A0
   004038CC: F2C0 0140 movt        r1,#0x40
   004038D0: 4628      mov         r0,r5
-  004038D2: 681B      ldr         r3,[r3]
   004038D4: 4798      blx         r3
   004038D6: 4606      mov         r6,r0
   004038D8: B306      cbz         r6,0040391C
@@ -2250,7 +2135,6 @@ namespace Reko.UnitTests.Arch.Arm
   004038E2: F248 11B4 mov         r1,#0x81B4
   004038E6: F2C0 0140 movt        r1,#0x40
   004038EA: 4628      mov         r0,r5
-  004038EC: 681B      ldr         r3,[r3]
   004038EE: 4798      blx         r3
   004038F0: 4607      mov         r7,r0
   004038F2: B19F      cbz         r7,0040391C
@@ -2267,7 +2151,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040390E: F24C 030C mov         r3,#0xC00C
   00403912: F2C0 0340 movt        r3,#0x40
   00403916: 4628      mov         r0,r5
-  00403918: 681B      ldr         r3,[r3]
   0040391A: 4798      blx         r3
   0040391C: 2000      movs        r0,#0
   0040391E: F50D 7D09 add         sp,sp,#0x224
@@ -2291,7 +2174,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040394E: F24C 030C mov         r3,#0xC00C
   00403952: F2C0 0340 movt        r3,#0x40
   00403956: 4628      mov         r0,r5
-  00403958: 681B      ldr         r3,[r3]
   0040395A: 4798      blx         r3
   0040395C: 2C00      cmp         r4,#0
   0040395E: D1DD      bne         0040391C
@@ -2335,7 +2217,6 @@ namespace Reko.UnitTests.Arch.Arm
   004039C6: F2C0 0340 movt        r3,#0x40
   004039CA: 2100      movs        r1,#0
   004039CC: F44F 6210 mov         r2,#0x900
-  004039D0: 681B      ldr         r3,[r3]
   004039D2: A806      add         r0,sp,#0x18
   004039D4: 4798      blx         r3
   004039D6: F50D 7D09 add         sp,sp,#0x224
@@ -2403,7 +2284,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403B30: F2C0 0440 movt        r4,#0x40
   00403B34: 4605      mov         r5,r0
   00403B36: F04F 0800 mov         r8,#0
-  00403B3A: 6824      ldr         r4,[r4]
   00403B3C: F8C3 8000 str         r8,[r3]
   00403B40: 1E6D      subs        r5,r5,#1
   00403B42: 910D      str         r1,[sp,#0x34]
@@ -2423,7 +2303,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403B66: F2C0 0340 movt        r3,#0x40
   00403B6A: 9A25      ldr         r2,[sp,#0x94]
   00403B6C: 9924      ldr         r1,[sp,#0x90]
-  00403B6E: 681B      ldr         r3,[r3]
   00403B70: 9811      ldr         r0,[sp,#0x44]
   00403B72: 4798      blx         r3
   00403B74: 2800      cmp         r0,#0
@@ -2469,7 +2348,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403BD2: 1C6D      adds        r5,r5,#1
   00403BD4: 7833      ldrb        r3,[r6]
   00403BD6: B953      cbnz        r3,00403BEE
-  00403BD8: 6823      ldr         r3,[r4]
   00403BDA: 2B00      cmp         r3,#0
   00403BDC: D1BA      bne         00403B54
   00403BDE: F7FF FDAF bl          00403740
@@ -2479,12 +2357,10 @@ namespace Reko.UnitTests.Arch.Arm
   00403BE8: 2301      movs        r3,#1
   00403BEA: 7033      strb        r3,[r6]
   00403BEC: E000      b           00403BF0
-  00403BEE: 6820      ldr         r0,[r4]
   00403BF0: F24C 0300 movw        r3,#0xC000
   00403BF4: F2C0 0340 movt        r3,#0x40
   00403BF8: F248 2164 mov         r1,#0x8264
   00403BFC: F2C0 0140 movt        r1,#0x40
-  00403C00: 681B      ldr         r3,[r3]
   00403C02: 4798      blx         r3
   00403C04: 4604      mov         r4,r0
   00403C06: 2C00      cmp         r4,#0
@@ -2505,8 +2381,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C28: 9B08      ldr         r3,[sp,#0x20]
   00403C2A: 2600      movs        r6,#0
   00403C2C: 4618      mov         r0,r3
-  00403C2E: 681B      ldr         r3,[r3]
-  00403C30: 681B      ldr         r3,[r3]
   00403C32: 4798      blx         r3
   00403C34: 4B6B      ldr         r3,00403DE4
   00403C36: 4298      cmp         r0,r3
@@ -2516,7 +2390,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C42: F2C0 0240 movt        r2,#0x40
   00403C46: AB0A      add         r3,sp,#0x28
   00403C48: 4620      mov         r0,r4
-  00403C4A: 6824      ldr         r4,[r4]
   00403C4C: 2100      movs        r1,#0
   00403C4E: 69E4      ldr         r4,[r4,#0x1C]
   00403C50: 47A0      blx         r4
@@ -2526,7 +2399,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C5A: AB07      add         r3,sp,#0x1C
   00403C5C: 463A      mov         r2,r7
   00403C5E: 4620      mov         r0,r4
-  00403C60: 6824      ldr         r4,[r4]
   00403C62: B2A9      uxth        r1,r5
   00403C64: F8CD 8008 str         r8,[sp,#8]
   00403C68: 6A24      ldr         r4,[r4,#0x20]
@@ -2540,7 +2412,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C7E: 9B07      ldr         r3,[sp,#0x1C]
   00403C80: A905      add         r1,sp,#0x14
   00403C82: 4618      mov         r0,r3
-  00403C84: 681B      ldr         r3,[r3]
   00403C86: 6E9B      ldr         r3,[r3,#0x68]
   00403C88: 4798      blx         r3
   00403C8A: 2800      cmp         r0,#0
@@ -2549,7 +2420,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C92: 2B00      cmp         r3,#0
   00403C94: F000 8090 beq         00403DB8
   00403C98: 4618      mov         r0,r3
-  00403C9A: 681B      ldr         r3,[r3]
   00403C9C: 46B0      mov         r8,r6
   00403C9E: 689B      ldr         r3,[r3,#8]
   00403CA0: 4798      blx         r3
@@ -2561,7 +2431,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403CB0: 2300      movs        r3,#0
   00403CB2: 9302      str         r3,[sp,#8]
   00403CB4: 4620      mov         r0,r4
-  00403CB6: 6824      ldr         r4,[r4]
   00403CB8: AB04      add         r3,sp,#0x10
   00403CBA: AA09      add         r2,sp,#0x24
   00403CBC: 68E4      ldr         r4,[r4,#0xC]
@@ -2583,7 +2452,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403CE2: D307      bcc         00403CF4
   00403CE4: 9B05      ldr         r3,[sp,#0x14]
   00403CE6: 4618      mov         r0,r3
-  00403CE8: 681B      ldr         r3,[r3]
   00403CEA: 689B      ldr         r3,[r3,#8]
   00403CEC: 4798      blx         r3
   00403CEE: 2800      cmp         r0,#0
@@ -2597,14 +2465,12 @@ namespace Reko.UnitTests.Arch.Arm
   00403D00: D255      bcs         00403DAE
   00403D02: F24C 0314 mov         r3,#0xC014
   00403D06: F2C0 0340 movt        r3,#0x40
-  00403D0A: 681B      ldr         r3,[r3]
   00403D0C: 4798      blx         r3
   00403D0E: 9B06      ldr         r3,[sp,#0x18]
   00403D10: 2100      movs        r1,#0
   00403D12: 00DA      lsls        r2,r3,#3
   00403D14: F24C 031C mov         r3,#0xC01C
   00403D18: F2C0 0340 movt        r3,#0x40
-  00403D1C: 681B      ldr         r3,[r3]
   00403D1E: 4798      blx         r3
   00403D20: 4680      mov         r8,r0
   00403D22: 2800      cmp         r0,#0
@@ -2613,7 +2479,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403D28: 9002      str         r0,[sp,#8]
   00403D2A: AB06      add         r3,sp,#0x18
   00403D2C: 4620      mov         r0,r4
-  00403D2E: 6824      ldr         r4,[r4]
   00403D30: 9301      str         r3,[sp,#4]
   00403D32: 2500      movs        r5,#0
   00403D34: 68E4      ldr         r4,[r4,#0xC]
@@ -2646,7 +2511,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403D74: F023 437F bic         r3,r3,#0xFF000000
   00403D78: 6013      str         r3,[r2]
   00403D7A: 4620      mov         r0,r4
-  00403D7C: 6824      ldr         r4,[r4]
   00403D7E: 9A0D      ldr         r2,[sp,#0x34]
   00403D80: 990E      ldr         r1,[sp,#0x38]
   00403D82: 6F24      ldr         r4,[r4,#0x70]
@@ -2659,32 +2523,25 @@ namespace Reko.UnitTests.Arch.Arm
   00403D90: 2601      movs        r6,#1
   00403D92: F24C 0314 mov         r3,#0xC014
   00403D96: F2C0 0340 movt        r3,#0x40
-  00403D9A: 681B      ldr         r3,[r3]
   00403D9C: 4798      blx         r3
   00403D9E: F24C 0318 mov         r3,#0xC018
   00403DA2: F2C0 0340 movt        r3,#0x40
   00403DA6: 4642      mov         r2,r8
   00403DA8: 2100      movs        r1,#0
-  00403DAA: 681B      ldr         r3,[r3]
   00403DAC: 4798      blx         r3
   00403DAE: 9B05      ldr         r3,[sp,#0x14]
   00403DB0: 4618      mov         r0,r3
-  00403DB2: 681B      ldr         r3,[r3]
-  00403DB4: 681B      ldr         r3,[r3]
   00403DB6: 4798      blx         r3
   00403DB8: 9B07      ldr         r3,[sp,#0x1C]
   00403DBA: 4618      mov         r0,r3
-  00403DBC: 681B      ldr         r3,[r3]
   00403DBE: 6C1B      ldr         r3,[r3,#0x40]
   00403DC0: 4798      blx         r3
   00403DC2: 9B0A      ldr         r3,[sp,#0x28]
   00403DC4: 4618      mov         r0,r3
-  00403DC6: 681B      ldr         r3,[r3]
   00403DC8: 6B9B      ldr         r3,[r3,#0x38]
   00403DCA: 4798      blx         r3
   00403DCC: 9B08      ldr         r3,[sp,#0x20]
   00403DCE: 4618      mov         r0,r3
-  00403DD0: 681B      ldr         r3,[r3]
   00403DD2: 6ADB      ldr         r3,[r3,#0x2C]
   00403DD4: 4798      blx         r3
   00403DD6: 4630      mov         r0,r6
@@ -2715,7 +2572,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403E14: B082      sub         sp,sp,#8
   00403E16: 9B07      ldr         r3,[sp,#0x1C]
   00403E18: 331C      adds        r3,r3,#0x1C
-  00403E1A: 681A      ldr         r2,[r3]
   00403E1C: 9907      ldr         r1,[sp,#0x1C]
   00403E1E: 9805      ldr         r0,[sp,#0x14]
   00403E20: F000 F814 bl          00403E4C
@@ -2731,7 +2587,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403E52: 46EB      mov         r11,sp
   00403E54: B084      sub         sp,sp,#0x10
   00403E56: 9B08      ldr         r3,[sp,#0x20]
-  00403E58: 681B      ldr         r3,[r3]
   00403E5A: F023 0303 bic         r3,r3,#3
   00403E5E: 9302      str         r3,[sp,#8]
   00403E60: 9B06      ldr         r3,[sp,#0x18]
@@ -2739,10 +2594,8 @@ namespace Reko.UnitTests.Arch.Arm
   00403E64: 9A01      ldr         r2,[sp,#4]
   00403E66: 9B02      ldr         r3,[sp,#8]
   00403E68: 4413      add         r3,r3,r2
-  00403E6A: 681B      ldr         r3,[r3]
   00403E6C: 9300      str         r3,[sp]
   00403E6E: 9B08      ldr         r3,[sp,#0x20]
-  00403E70: 681B      ldr         r3,[r3]
   00403E72: F013 0F01 tst         r3,#1
   00403E76: D005      beq         00403E84
   00403E78: 9A01      ldr         r2,[sp,#4]
@@ -2857,11 +2710,7 @@ namespace Reko.UnitTests.Arch.Arm
   004057A8: B510      push        {r4,lr}
   004057AA: B082      sub         sp,sp,#8
   004057AC: 6038      str         r0,[r7]
-  004057AE: 683B      ldr         r3,[r7]
   004057B0: 637B      str         r3,[r7,#0x34]
-  004057B2: 683B      ldr         r3,[r7]
-  004057B4: 681B      ldr         r3,[r3]
-  004057B6: 681B      ldr         r3,[r3]
   004057B8: 63FB      str         r3,[r7,#0x3C]
   004057BA: 6B79      ldr         r1,[r7,#0x34]
   004057BC: 6BF8      ldr         r0,[r7,#0x3C]
@@ -2873,8 +2722,6 @@ namespace Reko.UnitTests.Arch.Arm
 
   004057E4: 62F8      str         r0,[r7,#0x2C]
   004057E6: 6AFB      ldr         r3,[r7,#0x2C]
-  004057E8: 681B      ldr         r3,[r3]
-  004057EA: 681B      ldr         r3,[r3]
   004057EC: 633B      str         r3,[r7,#0x30]
   004057EE: 6B3A      ldr         r2,[r7,#0x30]
   004057F0: 4B04      ldr         r3,00405804
@@ -2895,8 +2742,6 @@ namespace Reko.UnitTests.Arch.Arm
   00405810: E7FF      b           00405812
   00405812: BD10      pop         {r4,pc}
 
-  0040582C: 6803      ldr         r3,[r0]
-  0040582E: 681A      ldr         r2,[r3]
   00405830: 4B03      ldr         r3,00405840
   00405832: 429A      cmp         r2,r3
   00405834: D101      bne         0040583A
@@ -2907,8 +2752,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040583E: DEFE      __debugbreak
   00405840: 1388      asrs        r0,r1,#0xE
   00405842: 406D      eors        r5,r5,r5
-  00405844: 6803      ldr         r3,[r0]
-  00405846: 681A      ldr         r2,[r3]
   00405848: 4B03      ldr         r3,00405858
   0040584A: 429A      cmp         r2,r3
   0040584C: D101      bne         00405852
@@ -2993,7 +2836,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402132: 9001      str         r0,[sp,#4]
   00402134: 4806      ldr         r0,00402150
   00402136: 4B05      ldr         r3,0040214C
-  00402138: 681B      ldr         r3,[r3]
   0040213A: 4798      blx         r3
   0040213C: 2300      movs        r3,#0
   0040213E: 9300      str         r3,[sp]
@@ -3046,47 +2888,36 @@ namespace Reko.UnitTests.Arch.Arm
   00402216: 601A      str         r2,[r3]
   00402218: 2001      movs        r0,#1
   0040221A: 4B27      ldr         r3,004022B8
-  0040221C: 681B      ldr         r3,[r3]
   0040221E: 4798      blx         r3
   00402220: F06F 0000 mvn         r0,#0
   00402224: 4B23      ldr         r3,004022B4
-  00402226: 681B      ldr         r3,[r3]
   00402228: 4798      blx         r3
   0040222A: 9001      str         r0,[sp,#4]
   0040222C: 9A01      ldr         r2,[sp,#4]
   0040222E: 4B20      ldr         r3,004022B0
   00402230: 601A      str         r2,[r3]
   00402232: 4B1F      ldr         r3,004022B0
-  00402234: 681A      ldr         r2,[r3]
   00402236: 4B1D      ldr         r3,004022AC
   00402238: 601A      str         r2,[r3]
   0040223A: 4B1B      ldr         r3,004022A8
-  0040223C: 681A      ldr         r2,[r3]
   0040223E: 4B19      ldr         r3,004022A4
-  00402240: 681B      ldr         r3,[r3]
   00402242: 601A      str         r2,[r3]
   00402244: 4B16      ldr         r3,004022A0
-  00402246: 681A      ldr         r2,[r3]
   00402248: 4B14      ldr         r3,0040229C
-  0040224A: 681B      ldr         r3,[r3]
   0040224C: 601A      str         r2,[r3]
   0040224E: F000 FDEB bl          00402E28
   00402252: F000 FB59 bl          00402908
   00402256: 4B10      ldr         r3,00402298
-  00402258: 681B      ldr         r3,[r3]
   0040225A: 2B00      cmp         r3,#0
   0040225C: D103      bne         00402266
   0040225E: 480D      ldr         r0,00402294
   00402260: 4B0B      ldr         r3,00402290
-  00402262: 681B      ldr         r3,[r3]
   00402264: 4798      blx         r3
   00402266: 4B09      ldr         r3,0040228C
-  00402268: 681B      ldr         r3,[r3]
   0040226A: F1B3 3FFF cmp         r3,#0xFFFFFFFF
   0040226E: D104      bne         0040227A
   00402270: F06F 0000 mvn         r0,#0
   00402274: 4B04      ldr         r3,00402288
-  00402276: 681B      ldr         r3,[r3]
   00402278: 4798      blx         r3
   0040227A: 2300      movs        r3,#0
   0040227C: 9302      str         r3,[sp,#8]
@@ -3129,25 +2960,21 @@ namespace Reko.UnitTests.Arch.Arm
   00402312: 4817      ldr         r0,00402370
   00402314: F000 FD62 bl          00402DDC
   00402318: 4B14      ldr         r3,0040236C
-  0040231A: 681A      ldr         r2,[r3]
   0040231C: 4B12      ldr         r3,00402368
   0040231E: 601A      str         r2,[r3]
   00402320: 4B11      ldr         r3,00402368
   00402322: 9300      str         r3,[sp]
   00402324: 4B0F      ldr         r3,00402364
-  00402326: 681B      ldr         r3,[r3]
   00402328: 4A0D      ldr         r2,00402360
   0040232A: 490C      ldr         r1,0040235C
   0040232C: 480A      ldr         r0,00402358
   0040232E: 4C09      ldr         r4,00402354
-  00402330: 6824      ldr         r4,[r4]
   00402332: 47A0      blx         r4
   00402334: 9002      str         r0,[sp,#8]
   00402336: 9A02      ldr         r2,[sp,#8]
   00402338: 4B05      ldr         r3,00402350
   0040233A: 601A      str         r2,[r3]
   0040233C: 4B04      ldr         r3,00402350
-  0040233E: 681B      ldr         r3,[r3]
   00402340: 2B00      cmp         r3,#0
   00402342: DA02      bge         0040234A
   00402344: 2008      movs        r0,#8
@@ -3195,7 +3022,6 @@ namespace Reko.UnitTests.Arch.Arm
   004023D6: 62B8      str         r0,[r7,#0x28]
   004023D8: 6ABB      ldr         r3,[r7,#0x28]
   004023DA: 1D1B      adds        r3,r3,#4
-  004023DC: 681B      ldr         r3,[r3]
   004023DE: 60BB      str         r3,[r7,#8]
   004023E0: 2300      movs        r3,#0
   004023E2: 60FB      str         r3,[r7,#0xC]
@@ -3225,7 +3051,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040241A: E000      b           0040241E
   0040241C: E7E2      b           004023E4
   0040241E: 4B6D      ldr         r3,004025D4
-  00402420: 681B      ldr         r3,[r3]
   00402422: 623B      str         r3,[r7,#0x20]
   00402424: F3BF 8F5B dmb         ish
   00402428: 6A3B      ldr         r3,[r7,#0x20]
@@ -3235,7 +3060,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402430: F000 FA64 bl          004028FC
   00402434: E01D      b           00402472
   00402436: 4B67      ldr         r3,004025D4
-  00402438: 681B      ldr         r3,[r3]
   0040243A: 63BB      str         r3,[r7,#0x38]
   0040243C: F3BF 8F5B dmb         ish
   00402440: 6BBB      ldr         r3,[r7,#0x38]
@@ -3262,7 +3086,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040246E: 2301      movs        r3,#1
   00402470: 6013      str         r3,[r2]
   00402472: 4B58      ldr         r3,004025D4
-  00402474: 681B      ldr         r3,[r3]
   00402476: 633B      str         r3,[r7,#0x30]
   00402478: F3BF 8F5B dmb         ish
   0040247C: 6B3B      ldr         r3,[r7,#0x30]
@@ -3276,7 +3099,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402490: 2302      movs        r3,#2
   00402492: 6013      str         r3,[r2]
   00402494: 4B4F      ldr         r3,004025D4
-  00402496: 681B      ldr         r3,[r3]
   00402498: 61BB      str         r3,[r7,#0x18]
   0040249A: F3BF 8F5B dmb         ish
   0040249E: 69BB      ldr         r3,[r7,#0x18]
@@ -3291,7 +3113,6 @@ namespace Reko.UnitTests.Arch.Arm
   004024B2: 4945      ldr         r1,004025C8
   004024B4: 2002      movs        r0,#2
   004024B6: 4C43      ldr         r4,004025C4
-  004024B8: 6824      ldr         r4,[r4]
   004024BA: 47A0      blx         r4
   004024BC: 61F8      str         r0,[r7,#0x1C]
   004024BE: 69FB      ldr         r3,[r7,#0x1C]
@@ -3310,7 +3131,6 @@ namespace Reko.UnitTests.Arch.Arm
   004024DE: D1F9      bne         004024D4
   004024E0: F3BF 8F5B dmb         ish
   004024E4: 4B35      ldr         r3,004025BC
-  004024E6: 681B      ldr         r3,[r3]
   004024E8: 2B00      cmp         r3,#0
   004024EA: D00C      beq         00402506
   004024EC: 4833      ldr         r0,004025BC
@@ -3323,70 +3143,51 @@ namespace Reko.UnitTests.Arch.Arm
   004024FC: 2102      movs        r1,#2
   004024FE: 2000      movs        r0,#0
   00402500: 4B2E      ldr         r3,004025BC
-  00402502: 681B      ldr         r3,[r3]
   00402504: 4798      blx         r3
   00402506: 2001      movs        r0,#1
   00402508: 4B2B      ldr         r3,004025B8
-  0040250A: 681B      ldr         r3,[r3]
   0040250C: 4798      blx         r3
   0040250E: 4B28      ldr         r3,004025B0
-  00402510: 681A      ldr         r2,[r3]
   00402512: 4B28      ldr         r3,004025B4
-  00402514: 681B      ldr         r3,[r3]
   00402516: 601A      str         r2,[r3]
   00402518: 4B25      ldr         r3,004025B0
-  0040251A: 681A      ldr         r2,[r3]
   0040251C: 4B23      ldr         r3,004025AC
-  0040251E: 6819      ldr         r1,[r3]
   00402520: 4B21      ldr         r3,004025A8
-  00402522: 6818      ldr         r0,[r3]
   00402524: F7FE FD72 bl          0040100C
   00402528: 62F8      str         r0,[r7,#0x2C]
   0040252A: 6AFA      ldr         r2,[r7,#0x2C]
   0040252C: 4B18      ldr         r3,00402590
   0040252E: 601A      str         r2,[r3]
   00402530: 4B1B      ldr         r3,004025A0
-  00402532: 681B      ldr         r3,[r3]
   00402534: 2B00      cmp         r3,#0
   00402536: D104      bne         00402542
   00402538: 4B15      ldr         r3,00402590
-  0040253A: 6818      ldr         r0,[r3]
   0040253C: 4B19      ldr         r3,004025A4
-  0040253E: 681B      ldr         r3,[r3]
   00402540: 4798      blx         r3
   00402542: 4B15      ldr         r3,00402598
-  00402544: 681B      ldr         r3,[r3]
   00402546: 2B00      cmp         r3,#0
   00402548: D102      bne         00402550
   0040254A: 4B12      ldr         r3,00402594
-  0040254C: 681B      ldr         r3,[r3]
   0040254E: 4798      blx         r3
   00402550: E016      b           00402580
   00402552: 6038      str         r0,[r7]
-  00402554: 683B      ldr         r3,[r7]
   00402556: 64FB      str         r3,[r7,#0x4C]
   00402558: 6CFA      ldr         r2,[r7,#0x4C]
   0040255A: 4B0D      ldr         r3,00402590
   0040255C: 601A      str         r2,[r3]
   0040255E: 4B10      ldr         r3,004025A0
-  00402560: 681B      ldr         r3,[r3]
   00402562: 2B00      cmp         r3,#0
   00402564: D104      bne         00402570
   00402566: 4B0A      ldr         r3,00402590
-  00402568: 6818      ldr         r0,[r3]
   0040256A: 4B0C      ldr         r3,0040259C
-  0040256C: 681B      ldr         r3,[r3]
   0040256E: 4798      blx         r3
   00402570: 4B09      ldr         r3,00402598
-  00402572: 681B      ldr         r3,[r3]
   00402574: 2B00      cmp         r3,#0
   00402576: D102      bne         0040257E
   00402578: 4B06      ldr         r3,00402594
-  0040257A: 681B      ldr         r3,[r3]
   0040257C: 4798      blx         r3
   0040257E: E7FF      b           00402580
   00402580: 4B03      ldr         r3,00402590
-  00402582: 681B      ldr         r3,[r3]
   00402584: 613B      str         r3,[r7,#0x10]
   00402586: 6938      ldr         r0,[r7,#0x10]
   00402588: B016      add         sp,sp,#0x58
@@ -3453,11 +3254,9 @@ namespace Reko.UnitTests.Arch.Arm
   00402696: 9B02      ldr         r3,[sp,#8]
   00402698: 333C      adds        r3,r3,#0x3C
   0040269A: 9A02      ldr         r2,[sp,#8]
-  0040269C: 681B      ldr         r3,[r3]
   0040269E: 4413      add         r3,r3,r2
   004026A0: 9301      str         r3,[sp,#4]
   004026A2: 9B01      ldr         r3,[sp,#4]
-  004026A4: 681A      ldr         r2,[r3]
   004026A6: F244 5350 mov         r3,#0x4550
   004026AA: 429A      cmp         r2,r3
   004026AC: D002      beq         004026B4
@@ -3475,7 +3274,6 @@ namespace Reko.UnitTests.Arch.Arm
   004026C6: E014      b           004026F2
   004026C8: 9B01      ldr         r3,[sp,#4]
   004026CA: 3374      adds        r3,r3,#0x74
-  004026CC: 681B      ldr         r3,[r3]
   004026CE: 2B0E      cmp         r3,#0xE
   004026D0: D802      bhi         004026D8
   004026D2: 2300      movs        r3,#0
@@ -3484,7 +3282,6 @@ namespace Reko.UnitTests.Arch.Arm
   004026D8: 9B01      ldr         r3,[sp,#4]
   004026DA: 3378      adds        r3,r3,#0x78
   004026DC: 3370      adds        r3,r3,#0x70
-  004026DE: 681B      ldr         r3,[r3]
   004026E0: 2B00      cmp         r3,#0
   004026E2: D002      beq         004026EA
   004026E4: 2301      movs        r3,#1
@@ -3540,13 +3337,11 @@ namespace Reko.UnitTests.Arch.Arm
   00402754: 46EB      mov         r11,sp
   00402756: F24A 1354 mov         r3,#0xA154
   0040275A: F2C0 0340 movt        r3,#0x40
-  0040275E: 6818      ldr         r0,[r3]
   00402760: E8BD 8800 pop         {r11,pc}
   00402764: E92D 4800 push        {r11,lr}
   00402768: 46EB      mov         r11,sp
   0040276A: F24A 1358 mov         r3,#0xA158
   0040276E: F2C0 0340 movt        r3,#0x40
-  00402772: 6818      ldr         r0,[r3]
   00402774: E8BD 8800 pop         {r11,pc}
   00402778: E92D 4800 push        {r11,lr}
   0040277C: 46EB      mov         r11,sp
@@ -3571,7 +3366,6 @@ namespace Reko.UnitTests.Arch.Arm
   004027B2: F24A 1254 mov         r2,#0xA154
   004027B6: F2C0 0240 movt        r2,#0x40
   004027BA: 4603      mov         r3,r0
-  004027BC: 6810      ldr         r0,[r2]
   004027BE: 6013      str         r3,[r2]
   004027C0: 2300      movs        r3,#0
   004027C2: 6053      str         r3,[r2,#4]
@@ -3606,42 +3400,31 @@ namespace Reko.UnitTests.Arch.Arm
   0040281E: 46EB      mov         r11,sp
   00402820: B082      sub         sp,sp,#8
   00402822: 9B04      ldr         r3,[sp,#0x10]
-  00402824: 681B      ldr         r3,[r3]
-  00402826: 681A      ldr         r2,[r3]
+
   00402828: 4B1C      ldr         r3,0040289C
   0040282A: 429A      cmp         r2,r3
   0040282C: D126      bne         0040287C
   0040282E: 9B04      ldr         r3,[sp,#0x10]
-  00402830: 681B      ldr         r3,[r3]
   00402832: 3310      adds        r3,r3,#0x10
-  00402834: 681B      ldr         r3,[r3]
   00402836: 2B04      cmp         r3,#4
   00402838: D120      bne         0040287C
   0040283A: 9B04      ldr         r3,[sp,#0x10]
-  0040283C: 681B      ldr         r3,[r3]
   0040283E: 3314      adds        r3,r3,#0x14
-  00402840: 681A      ldr         r2,[r3]
   00402842: 4B15      ldr         r3,00402898
   00402844: 429A      cmp         r2,r3
   00402846: D014      beq         00402872
   00402848: 9B04      ldr         r3,[sp,#0x10]
-  0040284A: 681B      ldr         r3,[r3]
   0040284C: 3314      adds        r3,r3,#0x14
-  0040284E: 681A      ldr         r2,[r3]
   00402850: 4B10      ldr         r3,00402894
   00402852: 429A      cmp         r2,r3
   00402854: D00D      beq         00402872
   00402856: 9B04      ldr         r3,[sp,#0x10]
-  00402858: 681B      ldr         r3,[r3]
   0040285A: 3314      adds        r3,r3,#0x14
-  0040285C: 681A      ldr         r2,[r3]
   0040285E: 4B0C      ldr         r3,00402890
   00402860: 429A      cmp         r2,r3
   00402862: D006      beq         00402872
   00402864: 9B04      ldr         r3,[sp,#0x10]
-  00402866: 681B      ldr         r3,[r3]
   00402868: 3314      adds        r3,r3,#0x14
-  0040286A: 681A      ldr         r2,[r3]
   0040286C: 4B07      ldr         r3,0040288C
   0040286E: 429A      cmp         r2,r3
   00402870: D104      bne         0040287C
@@ -3735,7 +3518,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402956: 9B06      ldr         r3,[sp,#0x18]
   00402958: 333C      adds        r3,r3,#0x3C
   0040295A: 9A06      ldr         r2,[sp,#0x18]
-  0040295C: 681B      ldr         r3,[r3]
   0040295E: 4413      add         r3,r3,r2
   00402960: 9301      str         r3,[sp,#4]
   00402962: 2300      movs        r3,#0
@@ -3763,15 +3545,12 @@ namespace Reko.UnitTests.Arch.Arm
   00402990: 9B00      ldr         r3,[sp]
   00402992: 330C      adds        r3,r3,#0xC
   00402994: 9A07      ldr         r2,[sp,#0x1C]
-  00402996: 681B      ldr         r3,[r3]
   00402998: 429A      cmp         r2,r3
   0040299A: D30D      bcc         004029B8
   0040299C: 9B00      ldr         r3,[sp]
   0040299E: F103 020C add         r2,r3,#0xC
   004029A2: 9B00      ldr         r3,[sp]
   004029A4: 3308      adds        r3,r3,#8
-  004029A6: 6812      ldr         r2,[r2]
-  004029A8: 681B      ldr         r3,[r3]
   004029AA: 441A      add         r2,r2,r3
   004029AC: 9B07      ldr         r3,[sp,#0x1C]
   004029AE: 4293      cmp         r3,r2
@@ -3825,7 +3604,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402A1A: E016      b           00402A4A
   00402A1C: 68BB      ldr         r3,[r7,#8]
   00402A1E: 3324      adds        r3,r3,#0x24
-  00402A20: 681B      ldr         r3,[r3]
   00402A22: F013 4F00 tst         r3,#0x80000000
   00402A26: D102      bne         00402A2E
   00402A28: 2301      movs        r3,#1
@@ -3845,7 +3623,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402A44: 603B      str         r3,[r7]
   00402A46: E000      b           00402A4A
   00402A48: E7FF      b           00402A4A
-  00402A4A: 6838      ldr         r0,[r7]
   00402A4C: B00F      add         sp,sp,#0x3C
   00402A4E: E8BD 0880 pop         {r7,r11}
   00402A52: F85D FB0C ldr         pc,[sp],#0xC
@@ -3893,11 +3670,9 @@ namespace Reko.UnitTests.Arch.Arm
   00402AAC: 9B01      ldr         r3,[sp,#4]
   00402AAE: 333C      adds        r3,r3,#0x3C
   00402AB0: 9A01      ldr         r2,[sp,#4]
-  00402AB2: 681B      ldr         r3,[r3]
   00402AB4: 4413      add         r3,r3,r2
   00402AB6: 9302      str         r3,[sp,#8]
   00402AB8: 9B02      ldr         r3,[sp,#8]
-  00402ABA: 681A      ldr         r2,[r3]
   00402ABC: F244 5350 mov         r3,#0x4550
   00402AC0: 429A      cmp         r2,r3
   00402AC2: D002      beq         00402ACA
@@ -3939,19 +3714,16 @@ namespace Reko.UnitTests.Arch.Arm
   00402B24: 2300      movs        r3,#0
   00402B26: 9305      str         r3,[sp,#0x14]
   00402B28: 4B27      ldr         r3,00402BC8
-  00402B2A: 681A      ldr         r2,[r3]
   00402B2C: 4B28      ldr         r3,00402BD0
   00402B2E: 429A      cmp         r2,r3
   00402B30: D005      beq         00402B3E
   00402B32: 4B25      ldr         r3,00402BC8
-  00402B34: 681B      ldr         r3,[r3]
   00402B36: 43DA      mvns        r2,r3
   00402B38: 4B22      ldr         r3,00402BC4
   00402B3A: 601A      str         r2,[r3]
   00402B3C: E03F      b           00402BBE
   00402B3E: A804      add         r0,sp,#0x10
   00402B40: 4B28      ldr         r3,00402BE4
-  00402B42: 681B      ldr         r3,[r3]
   00402B44: 4798      blx         r3
   00402B46: 9B04      ldr         r3,[sp,#0x10]
   00402B48: 9300      str         r3,[sp]
@@ -3960,7 +3732,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402B4E: 4053      eors        r3,r3,r2
   00402B50: 9300      str         r3,[sp]
   00402B52: 4B23      ldr         r3,00402BE0
-  00402B54: 681B      ldr         r3,[r3]
   00402B56: 4798      blx         r3
   00402B58: 9001      str         r0,[sp,#4]
   00402B5A: 9A00      ldr         r2,[sp]
@@ -3968,7 +3739,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402B5E: 4053      eors        r3,r3,r2
   00402B60: 9300      str         r3,[sp]
   00402B62: 4B1E      ldr         r3,00402BDC
-  00402B64: 681B      ldr         r3,[r3]
   00402B66: 4798      blx         r3
   00402B68: 9002      str         r0,[sp,#8]
   00402B6A: 9A00      ldr         r2,[sp]
@@ -3976,7 +3746,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402B6E: 4053      eors        r3,r3,r2
   00402B70: 9300      str         r3,[sp]
   00402B72: 4B19      ldr         r3,00402BD8
-  00402B74: 681B      ldr         r3,[r3]
   00402B76: 4798      blx         r3
   00402B78: 9107      str         r1,[sp,#0x1C]
   00402B7A: 9006      str         r0,[sp,#0x18]
@@ -3986,7 +3755,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402B82: 9300      str         r3,[sp]
   00402B84: A808      add         r0,sp,#0x20
   00402B86: 4B13      ldr         r3,00402BD4
-  00402B88: 681B      ldr         r3,[r3]
   00402B8A: 4798      blx         r3
   00402B8C: 9A00      ldr         r2,[sp]
   00402B8E: 9B08      ldr         r3,[sp,#0x20]
@@ -4048,19 +3816,15 @@ namespace Reko.UnitTests.Arch.Arm
   00402C08: F10D 0B04 add         r11,sp,#4
   00402C0C: B087      sub         sp,sp,#0x1C
   00402C0E: 4B28      ldr         r3,00402CB0
-  00402C10: 681B      ldr         r3,[r3]
   00402C12: 2B00      cmp         r3,#0
   00402C14: D003      beq         00402C1E
   00402C16: 4B25      ldr         r3,00402CAC
-  00402C18: 681B      ldr         r3,[r3]
   00402C1A: 2B00      cmp         r3,#0
   00402C1C: D117      bne         00402C4E
   00402C1E: 4B24      ldr         r3,00402CB0
-  00402C20: 681B      ldr         r3,[r3]
   00402C22: 2B00      cmp         r3,#0
   00402C24: D103      bne         00402C2E
   00402C26: 4B21      ldr         r3,00402CAC
-  00402C28: 681B      ldr         r3,[r3]
   00402C2A: 2B00      cmp         r3,#0
   00402C2C: D00F      beq         00402C4E
   00402C2E: 4B27      ldr         r3,00402CCC
@@ -4072,7 +3836,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402C3A: 4922      ldr         r1,00402CC4
   00402C3C: 2002      movs        r0,#2
   00402C3E: 4C20      ldr         r4,00402CC0
-  00402C40: 6824      ldr         r4,[r4]
   00402C42: 47A0      blx         r4
   00402C44: 9004      str         r0,[sp,#0x10]
   00402C46: 9B04      ldr         r3,[sp,#0x10]
@@ -4080,7 +3843,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402C4A: D100      bne         00402C4E
   00402C4C: DEFE      __debugbreak
   00402C4E: 4B18      ldr         r3,00402CB0
-  00402C50: 681B      ldr         r3,[r3]
   00402C52: 2B00      cmp         r3,#0
   00402C54: D002      beq         00402C5C
   00402C56: 2300      movs        r3,#0
@@ -4093,21 +3855,18 @@ namespace Reko.UnitTests.Arch.Arm
   00402C64: 2104      movs        r1,#4
   00402C66: 2020      movs        r0,#0x20
   00402C68: 4C13      ldr         r4,00402CB8
-  00402C6A: 6824      ldr         r4,[r4]
   00402C6C: 47A0      blx         r4
   00402C6E: 9005      str         r0,[sp,#0x14]
   00402C70: 9B05      ldr         r3,[sp,#0x14]
   00402C72: 9302      str         r3,[sp,#8]
   00402C74: 9802      ldr         r0,[sp,#8]
   00402C76: 4B0F      ldr         r3,00402CB4
-  00402C78: 681B      ldr         r3,[r3]
   00402C7A: 4798      blx         r3
   00402C7C: 9006      str         r0,[sp,#0x18]
   00402C7E: 9A06      ldr         r2,[sp,#0x18]
   00402C80: 4B0B      ldr         r3,00402CB0
   00402C82: 601A      str         r2,[r3]
   00402C84: 4B0A      ldr         r3,00402CB0
-  00402C86: 681A      ldr         r2,[r3]
   00402C88: 4B08      ldr         r3,00402CAC
   00402C8A: 601A      str         r2,[r3]
   00402C8C: 9B02      ldr         r3,[sp,#8]
@@ -4151,19 +3910,15 @@ namespace Reko.UnitTests.Arch.Arm
   00402CDE: 2300      movs        r3,#0
   00402CE0: 60BB      str         r3,[r7,#8]
   00402CE2: 4B29      ldr         r3,00402D88
-  00402CE4: 6818      ldr         r0,[r3]
   00402CE6: 4B29      ldr         r3,00402D8C
-  00402CE8: 681B      ldr         r3,[r3]
   00402CEA: 4798      blx         r3
   00402CEC: 6138      str         r0,[r7,#0x10]
   00402CEE: 693B      ldr         r3,[r7,#0x10]
   00402CF0: 603B      str         r3,[r7]
-  00402CF2: 683B      ldr         r3,[r7]
   00402CF4: F1B3 3FFF cmp         r3,#0xFFFFFFFF
   00402CF8: D107      bne         00402D0A
   00402CFA: 6C38      ldr         r0,[r7,#0x40]
   00402CFC: 4B24      ldr         r3,00402D90
-  00402CFE: 681B      ldr         r3,[r3]
   00402D00: 4798      blx         r3
   00402D02: 6178      str         r0,[r7,#0x14]
   00402D04: 697B      ldr         r3,[r7,#0x14]
@@ -4172,24 +3927,19 @@ namespace Reko.UnitTests.Arch.Arm
   00402D0A: 2008      movs        r0,#8
   00402D0C: F000 FC90 bl          00403630
   00402D10: 4B1D      ldr         r3,00402D88
-  00402D12: 6818      ldr         r0,[r3]
   00402D14: 4B1D      ldr         r3,00402D8C
-  00402D16: 681B      ldr         r3,[r3]
   00402D18: 4798      blx         r3
   00402D1A: 61B8      str         r0,[r7,#0x18]
   00402D1C: 69BB      ldr         r3,[r7,#0x18]
   00402D1E: 603B      str         r3,[r7]
   00402D20: 4B17      ldr         r3,00402D80
-  00402D22: 6818      ldr         r0,[r3]
   00402D24: 4B19      ldr         r3,00402D8C
-  00402D26: 681B      ldr         r3,[r3]
   00402D28: 4798      blx         r3
   00402D2A: 61F8      str         r0,[r7,#0x1C]
   00402D2C: 69FB      ldr         r3,[r7,#0x1C]
   00402D2E: 607B      str         r3,[r7,#4]
   00402D30: 6C38      ldr         r0,[r7,#0x40]
   00402D32: 4B14      ldr         r3,00402D84
-  00402D34: 681B      ldr         r3,[r3]
   00402D36: 4798      blx         r3
   00402D38: 6238      str         r0,[r7,#0x20]
   00402D3A: 1D3A      adds        r2,r7,#4
@@ -4199,9 +3949,7 @@ namespace Reko.UnitTests.Arch.Arm
   00402D44: 6278      str         r0,[r7,#0x24]
   00402D46: 6A7B      ldr         r3,[r7,#0x24]
   00402D48: 60BB      str         r3,[r7,#8]
-  00402D4A: 6838      ldr         r0,[r7]
   00402D4C: 4B0D      ldr         r3,00402D84
-  00402D4E: 681B      ldr         r3,[r3]
   00402D50: 4798      blx         r3
   00402D52: 62B8      str         r0,[r7,#0x28]
   00402D54: 6ABA      ldr         r2,[r7,#0x28]
@@ -4209,7 +3957,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402D58: 601A      str         r2,[r3]
   00402D5A: 6878      ldr         r0,[r7,#4]
   00402D5C: 4B09      ldr         r3,00402D84
-  00402D5E: 681B      ldr         r3,[r3]
   00402D60: 4798      blx         r3
   00402D62: 62F8      str         r0,[r7,#0x2C]
   00402D64: 6AFA      ldr         r2,[r7,#0x2C]
@@ -4366,7 +4113,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402EE8: 4806      ldr         r0,00402F04
   00402EEA: F24C 042C mov         r4,#0xC02C
   00402EEE: F2C0 0440 movt        r4,#0x40
-  00402EF2: 6824      ldr         r4,[r4]
   00402EF4: 47A0      blx         r4
   00402EF6: 7838      ldrb        r0,[r7]
   00402EF8: E000      b           00402EFC
@@ -4396,7 +4142,6 @@ namespace Reko.UnitTests.Arch.Arm
   00402F32: 4806      ldr         r0,00402F4C
   00402F34: F24C 042C mov         r4,#0xC02C
   00402F38: F2C0 0440 movt        r4,#0x40
-  00402F3C: 6824      ldr         r4,[r4]
   00402F3E: 47A0      blx         r4
   00402F40: 7838      ldrb        r0,[r7]
   00402F42: E000      b           00402F46
@@ -4709,7 +4454,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403300: F2C0 0440 movt        r4,#0x40
   00403304: 2300      movs        r3,#0
   00403306: 9301      str         r3,[sp,#4]
-  00403308: 6824      ldr         r4,[r4]
   0040330A: 9300      str         r3,[sp]
   0040330C: 43DB      mvns        r3,r3
   0040330E: 4642      mov         r2,r8
@@ -4722,7 +4466,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403322: F2C0 0440 movt        r4,#0x40
   00403326: F60D 2348 add         r3,sp,#0xA48
   0040332A: 9001      str         r0,[sp,#4]
-  0040332C: 6824      ldr         r4,[r4]
   0040332E: 9300      str         r3,[sp]
   00403330: F06F 0300 mvn         r3,#0
   00403334: 4642      mov         r2,r8
@@ -4755,7 +4498,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040337E: B13B      cbz         r3,00403390
   00403380: F24C 0330 mov         r3,#0xC030
   00403384: F2C0 0340 movt        r3,#0x40
-  00403388: 681B      ldr         r3,[r3]
   0040338A: 4798      blx         r3
   0040338C: 2800      cmp         r0,#0
   0040338E: D15E      bne         0040344E
@@ -4783,7 +4525,6 @@ namespace Reko.UnitTests.Arch.Arm
   004033C6: F2C0 0440 movt        r4,#0x40
   004033CA: 2300      movs        r3,#0
   004033CC: F50D 6285 add         r2,sp,#0x428
-  004033D0: 6824      ldr         r4,[r4]
   004033D2: F647 7638 mov         r6,#0x7F38
   004033D6: F2C0 0640 movt        r6,#0x40
   004033DA: 9303      str         r3,[sp,#0xC]
@@ -4802,7 +4543,6 @@ namespace Reko.UnitTests.Arch.Arm
   004033FE: F2C0 0440 movt        r4,#0x40
   00403402: 2300      movs        r3,#0
   00403404: F50D 62E7 add         r2,sp,#0x738
-  00403408: 6824      ldr         r4,[r4]
   0040340A: F647 754C mov         r5,#0x7F4C
   0040340E: F2C0 0540 movt        r5,#0x40
   00403412: 9303      str         r3,[sp,#0xC]
@@ -4925,14 +4665,12 @@ namespace Reko.UnitTests.Arch.Arm
   00403698: F2C0 0340 movt        r3,#0x40
   0040369C: F248 1034 mov         r0,#0x8134
   004036A0: F2C0 0040 movt        r0,#0x40
-  004036A4: 681B      ldr         r3,[r3]
   004036A6: 4798      blx         r3
   004036A8: B1E0      cbz         r0,004036E4
   004036AA: F24C 0308 mov         r3,#0xC008
   004036AE: F2C0 0340 movt        r3,#0x40
   004036B2: F44F 7282 mov         r2,#0x104
   004036B6: 4669      mov         r1,sp
-  004036B8: 681B      ldr         r3,[r3]
   004036BA: 4798      blx         r3
   004036BC: B190      cbz         r0,004036E4
   004036BE: A982      add         r1,sp,#0x208
@@ -4944,7 +4682,6 @@ namespace Reko.UnitTests.Arch.Arm
   004036D0: F2C0 0340 movt        r3,#0x40
   004036D4: F44F 6210 mov         r2,#0x900
   004036D8: 2100      movs        r1,#0
-  004036DA: 681B      ldr         r3,[r3]
   004036DC: A882      add         r0,sp,#0x208
   004036DE: 4798      blx         r3
   004036E0: 2800      cmp         r0,#0
@@ -4954,7 +4691,6 @@ namespace Reko.UnitTests.Arch.Arm
   004036EC: F248 2058 mov         r0,#0x8258
   004036F0: F2C0 0040 movt        r0,#0x40
   004036F4: F44F 6220 mov         r2,#0xA00
-  004036F8: 681B      ldr         r3,[r3]
   004036FA: 2100      movs        r1,#0
   004036FC: 4798      blx         r3
   004036FE: F20D 4D14 add         sp,sp,#0x414
@@ -5018,14 +4754,12 @@ namespace Reko.UnitTests.Arch.Arm
   00403784: F248 1050 mov         r0,#0x8150
   00403788: F2C0 0040 movt        r0,#0x40
   0040378C: F44F 6200 mov         r2,#0x800
-  00403790: 681B      ldr         r3,[r3]
   00403792: 2100      movs        r1,#0
   00403794: 4798      blx         r3
   00403796: 4605      mov         r5,r0
   00403798: B9AD      cbnz        r5,004037C6
   0040379A: F24C 0320 mov         r3,#0xC020
   0040379E: F2C0 0340 movt        r3,#0x40
-  004037A2: 681B      ldr         r3,[r3]
   004037A4: 4798      blx         r3
   004037A6: 2857      cmp         r0,#0x57
   004037A8: D148      bne         0040383C
@@ -5034,7 +4768,6 @@ namespace Reko.UnitTests.Arch.Arm
   004037B2: F248 1050 mov         r0,#0x8150
   004037B6: F2C0 0040 movt        r0,#0x40
   004037BA: 2200      movs        r2,#0
-  004037BC: 681B      ldr         r3,[r3]
   004037BE: 2100      movs        r1,#0
   004037C0: 4798      blx         r3
   004037C2: 4605      mov         r5,r0
@@ -5044,7 +4777,6 @@ namespace Reko.UnitTests.Arch.Arm
   004037CE: F248 1198 mov         r1,#0x8198
   004037D2: F2C0 0140 movt        r1,#0x40
   004037D6: 4628      mov         r0,r5
-  004037D8: 681B      ldr         r3,[r3]
   004037DA: 4798      blx         r3
   004037DC: 4604      mov         r4,r0
   004037DE: B36C      cbz         r4,0040383C
@@ -5053,7 +4785,6 @@ namespace Reko.UnitTests.Arch.Arm
   004037E8: F248 11A8 mov         r1,#0x81A8
   004037EC: F2C0 0140 movt        r1,#0x40
   004037F0: 4628      mov         r0,r5
-  004037F2: 681B      ldr         r3,[r3]
   004037F4: 4798      blx         r3
   004037F6: 4606      mov         r6,r0
   004037F8: B306      cbz         r6,0040383C
@@ -5062,7 +4793,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403802: F248 11BC mov         r1,#0x81BC
   00403806: F2C0 0140 movt        r1,#0x40
   0040380A: 4628      mov         r0,r5
-  0040380C: 681B      ldr         r3,[r3]
   0040380E: 4798      blx         r3
   00403810: 4607      mov         r7,r0
   00403812: B19F      cbz         r7,0040383C
@@ -5079,7 +4809,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040382E: F24C 030C mov         r3,#0xC00C
   00403832: F2C0 0340 movt        r3,#0x40
   00403836: 4628      mov         r0,r5
-  00403838: 681B      ldr         r3,[r3]
   0040383A: 4798      blx         r3
   0040383C: 2000      movs        r0,#0
   0040383E: F50D 7D09 add         sp,sp,#0x224
@@ -5103,7 +4832,6 @@ namespace Reko.UnitTests.Arch.Arm
   0040386E: F24C 030C mov         r3,#0xC00C
   00403872: F2C0 0340 movt        r3,#0x40
   00403876: 4628      mov         r0,r5
-  00403878: 681B      ldr         r3,[r3]
   0040387A: 4798      blx         r3
   0040387C: 2C00      cmp         r4,#0
   0040387E: D1DD      bne         0040383C
@@ -5147,7 +4875,6 @@ namespace Reko.UnitTests.Arch.Arm
   004038E6: F2C0 0340 movt        r3,#0x40
   004038EA: 2100      movs        r1,#0
   004038EC: F44F 6210 mov         r2,#0x900
-  004038F0: 681B      ldr         r3,[r3]
   004038F2: A806      add         r0,sp,#0x18
   004038F4: 4798      blx         r3
   004038F6: F50D 7D09 add         sp,sp,#0x224
@@ -5239,7 +4966,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403A50: F2C0 0440 movt        r4,#0x40
   00403A54: 4605      mov         r5,r0
   00403A56: F04F 0800 mov         r8,#0
-  00403A5A: 6824      ldr         r4,[r4]
   00403A5C: F8C3 8000 str         r8,[r3]
   00403A60: 1E6D      subs        r5,r5,#1
   00403A62: 910D      str         r1,[sp,#0x34]
@@ -5259,7 +4985,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403A86: F2C0 0340 movt        r3,#0x40
   00403A8A: 9A25      ldr         r2,[sp,#0x94]
   00403A8C: 9924      ldr         r1,[sp,#0x90]
-  00403A8E: 681B      ldr         r3,[r3]
   00403A90: 9811      ldr         r0,[sp,#0x44]
   00403A92: 4798      blx         r3
   00403A94: 2800      cmp         r0,#0
@@ -5305,7 +5030,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403AF2: 1C6D      adds        r5,r5,#1
   00403AF4: 7833      ldrb        r3,[r6]
   00403AF6: B953      cbnz        r3,00403B0E
-  00403AF8: 6823      ldr         r3,[r4]
   00403AFA: 2B00      cmp         r3,#0
   00403AFC: D1BA      bne         00403A74
   00403AFE: F7FF FDAF bl          00403660
@@ -5315,12 +5039,10 @@ namespace Reko.UnitTests.Arch.Arm
   00403B08: 2301      movs        r3,#1
   00403B0A: 7033      strb        r3,[r6]
   00403B0C: E000      b           00403B10
-  00403B0E: 6820      ldr         r0,[r4]
   00403B10: F24C 0300 movw        r3,#0xC000
   00403B14: F2C0 0340 movt        r3,#0x40
   00403B18: F248 216C mov         r1,#0x826C
   00403B1C: F2C0 0140 movt        r1,#0x40
-  00403B20: 681B      ldr         r3,[r3]
   00403B22: 4798      blx         r3
   00403B24: 4604      mov         r4,r0
   00403B26: 2C00      cmp         r4,#0
@@ -5341,8 +5063,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403B48: 9B08      ldr         r3,[sp,#0x20]
   00403B4A: 2600      movs        r6,#0
   00403B4C: 4618      mov         r0,r3
-  00403B4E: 681B      ldr         r3,[r3]
-  00403B50: 681B      ldr         r3,[r3]
   00403B52: 4798      blx         r3
   00403B54: 4B6B      ldr         r3,00403D04
   00403B56: 4298      cmp         r0,r3
@@ -5352,7 +5072,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403B62: F2C0 0240 movt        r2,#0x40
   00403B66: AB0A      add         r3,sp,#0x28
   00403B68: 4620      mov         r0,r4
-  00403B6A: 6824      ldr         r4,[r4]
   00403B6C: 2100      movs        r1,#0
   00403B6E: 69E4      ldr         r4,[r4,#0x1C]
   00403B70: 47A0      blx         r4
@@ -5362,7 +5081,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403B7A: AB07      add         r3,sp,#0x1C
   00403B7C: 463A      mov         r2,r7
   00403B7E: 4620      mov         r0,r4
-  00403B80: 6824      ldr         r4,[r4]
   00403B82: B2A9      uxth        r1,r5
   00403B84: F8CD 8008 str         r8,[sp,#8]
   00403B88: 6A24      ldr         r4,[r4,#0x20]
@@ -5376,7 +5094,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403B9E: 9B07      ldr         r3,[sp,#0x1C]
   00403BA0: A905      add         r1,sp,#0x14
   00403BA2: 4618      mov         r0,r3
-  00403BA4: 681B      ldr         r3,[r3]
   00403BA6: 6E9B      ldr         r3,[r3,#0x68]
   00403BA8: 4798      blx         r3
   00403BAA: 2800      cmp         r0,#0
@@ -5385,7 +5102,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403BB2: 2B00      cmp         r3,#0
   00403BB4: F000 8090 beq         00403CD8
   00403BB8: 4618      mov         r0,r3
-  00403BBA: 681B      ldr         r3,[r3]
   00403BBC: 46B0      mov         r8,r6
   00403BBE: 689B      ldr         r3,[r3,#8]
   00403BC0: 4798      blx         r3
@@ -5397,7 +5113,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403BD0: 2300      movs        r3,#0
   00403BD2: 9302      str         r3,[sp,#8]
   00403BD4: 4620      mov         r0,r4
-  00403BD6: 6824      ldr         r4,[r4]
   00403BD8: AB04      add         r3,sp,#0x10
   00403BDA: AA09      add         r2,sp,#0x24
   00403BDC: 68E4      ldr         r4,[r4,#0xC]
@@ -5419,7 +5134,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C02: D307      bcc         00403C14
   00403C04: 9B05      ldr         r3,[sp,#0x14]
   00403C06: 4618      mov         r0,r3
-  00403C08: 681B      ldr         r3,[r3]
   00403C0A: 689B      ldr         r3,[r3,#8]
   00403C0C: 4798      blx         r3
   00403C0E: 2800      cmp         r0,#0
@@ -5433,14 +5147,12 @@ namespace Reko.UnitTests.Arch.Arm
   00403C20: D255      bcs         00403CCE
   00403C22: F24C 0314 mov         r3,#0xC014
   00403C26: F2C0 0340 movt        r3,#0x40
-  00403C2A: 681B      ldr         r3,[r3]
   00403C2C: 4798      blx         r3
   00403C2E: 9B06      ldr         r3,[sp,#0x18]
   00403C30: 2100      movs        r1,#0
   00403C32: 00DA      lsls        r2,r3,#3
   00403C34: F24C 031C mov         r3,#0xC01C
   00403C38: F2C0 0340 movt        r3,#0x40
-  00403C3C: 681B      ldr         r3,[r3]
   00403C3E: 4798      blx         r3
   00403C40: 4680      mov         r8,r0
   00403C42: 2800      cmp         r0,#0
@@ -5449,7 +5161,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C48: 9002      str         r0,[sp,#8]
   00403C4A: AB06      add         r3,sp,#0x18
   00403C4C: 4620      mov         r0,r4
-  00403C4E: 6824      ldr         r4,[r4]
   00403C50: 9301      str         r3,[sp,#4]
   00403C52: 2500      movs        r5,#0
   00403C54: 68E4      ldr         r4,[r4,#0xC]
@@ -5482,7 +5193,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403C94: F023 437F bic         r3,r3,#0xFF000000
   00403C98: 6013      str         r3,[r2]
   00403C9A: 4620      mov         r0,r4
-  00403C9C: 6824      ldr         r4,[r4]
   00403C9E: 9A0D      ldr         r2,[sp,#0x34]
   00403CA0: 990E      ldr         r1,[sp,#0x38]
   00403CA2: 6F24      ldr         r4,[r4,#0x70]
@@ -5495,32 +5205,25 @@ namespace Reko.UnitTests.Arch.Arm
   00403CB0: 2601      movs        r6,#1
   00403CB2: F24C 0314 mov         r3,#0xC014
   00403CB6: F2C0 0340 movt        r3,#0x40
-  00403CBA: 681B      ldr         r3,[r3]
   00403CBC: 4798      blx         r3
   00403CBE: F24C 0318 mov         r3,#0xC018
   00403CC2: F2C0 0340 movt        r3,#0x40
   00403CC6: 4642      mov         r2,r8
   00403CC8: 2100      movs        r1,#0
-  00403CCA: 681B      ldr         r3,[r3]
   00403CCC: 4798      blx         r3
   00403CCE: 9B05      ldr         r3,[sp,#0x14]
   00403CD0: 4618      mov         r0,r3
-  00403CD2: 681B      ldr         r3,[r3]
-  00403CD4: 681B      ldr         r3,[r3]
   00403CD6: 4798      blx         r3
   00403CD8: 9B07      ldr         r3,[sp,#0x1C]
   00403CDA: 4618      mov         r0,r3
-  00403CDC: 681B      ldr         r3,[r3]
   00403CDE: 6C1B      ldr         r3,[r3,#0x40]
   00403CE0: 4798      blx         r3
   00403CE2: 9B0A      ldr         r3,[sp,#0x28]
   00403CE4: 4618      mov         r0,r3
-  00403CE6: 681B      ldr         r3,[r3]
   00403CE8: 6B9B      ldr         r3,[r3,#0x38]
   00403CEA: 4798      blx         r3
   00403CEC: 9B08      ldr         r3,[sp,#0x20]
   00403CEE: 4618      mov         r0,r3
-  00403CF0: 681B      ldr         r3,[r3]
   00403CF2: 6ADB      ldr         r3,[r3,#0x2C]
   00403CF4: 4798      blx         r3
   00403CF6: 4630      mov         r0,r6
@@ -5540,7 +5243,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403D34: B082      sub         sp,sp,#8
   00403D36: 9B07      ldr         r3,[sp,#0x1C]
   00403D38: 331C      adds        r3,r3,#0x1C
-  00403D3A: 681A      ldr         r2,[r3]
   00403D3C: 9907      ldr         r1,[sp,#0x1C]
   00403D3E: 9805      ldr         r0,[sp,#0x14]
   00403D40: F000 F814 bl          00403D6C
@@ -5556,7 +5258,6 @@ namespace Reko.UnitTests.Arch.Arm
   00403D72: 46EB      mov         r11,sp
   00403D74: B084      sub         sp,sp,#0x10
   00403D76: 9B08      ldr         r3,[sp,#0x20]
-  00403D78: 681B      ldr         r3,[r3]
   00403D7A: F023 0303 bic         r3,r3,#3
   00403D7E: 9302      str         r3,[sp,#8]
   00403D80: 9B06      ldr         r3,[sp,#0x18]
@@ -5564,10 +5265,8 @@ namespace Reko.UnitTests.Arch.Arm
   00403D84: 9A01      ldr         r2,[sp,#4]
   00403D86: 9B02      ldr         r3,[sp,#8]
   00403D88: 4413      add         r3,r3,r2
-  00403D8A: 681B      ldr         r3,[r3]
   00403D8C: 9300      str         r3,[sp]
   00403D8E: 9B08      ldr         r3,[sp,#0x20]
-  00403D90: 681B      ldr         r3,[r3]
   00403D92: F013 0F01 tst         r3,#1
   00403D96: D005      beq         00403DA4
   00403D98: 9A01      ldr         r2,[sp,#4]
@@ -5682,11 +5381,7 @@ namespace Reko.UnitTests.Arch.Arm
   004056BC: B510      push        {r4,lr}
   004056BE: B082      sub         sp,sp,#8
   004056C0: 6038      str         r0,[r7]
-  004056C2: 683B      ldr         r3,[r7]
   004056C4: 637B      str         r3,[r7,#0x34]
-  004056C6: 683B      ldr         r3,[r7]
-  004056C8: 681B      ldr         r3,[r3]
-  004056CA: 681B      ldr         r3,[r3]
   004056CC: 63FB      str         r3,[r7,#0x3C]
   004056CE: 6B79      ldr         r1,[r7,#0x34]
   004056D0: 6BF8      ldr         r0,[r7,#0x3C]
@@ -5698,8 +5393,6 @@ namespace Reko.UnitTests.Arch.Arm
 
   004056F8: 62F8      str         r0,[r7,#0x2C]
   004056FA: 6AFB      ldr         r3,[r7,#0x2C]
-  004056FC: 681B      ldr         r3,[r3]
-  004056FE: 681B      ldr         r3,[r3]
   00405700: 633B      str         r3,[r7,#0x30]
   00405702: 6B3A      ldr         r2,[r7,#0x30]
   00405704: 4B04      ldr         r3,00405718
@@ -5720,8 +5413,6 @@ namespace Reko.UnitTests.Arch.Arm
   00405724: E7FF      b           00405726
   00405726: BD10      pop         {r4,pc}
 
-  00405740: 6803      ldr         r3,[r0]
-  00405742: 681A      ldr         r2,[r3]
   00405744: 4B03      ldr         r3,00405754
   00405746: 429A      cmp         r2,r3
   00405748: D101      bne         0040574E
@@ -5732,8 +5423,6 @@ namespace Reko.UnitTests.Arch.Arm
   00405752: DEFE      __debugbreak
   00405754: 1388      asrs        r0,r1,#0xE
   00405756: 406D      eors        r5,r5,r5
-  00405758: 6803      ldr         r3,[r0]
-  0040575A: 681A      ldr         r2,[r3]
   0040575C: 4B03      ldr         r3,0040576C
   0040575E: 429A      cmp         r2,r3
   00405760: D101      bne         00405766

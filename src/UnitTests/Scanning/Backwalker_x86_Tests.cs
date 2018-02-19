@@ -100,6 +100,11 @@ namespace Reko.UnitTests.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
             }
 
+            public List<Block> GetPredecessors(Block block)
+            {
+                return block.Procedure.ControlGraph.Predecessors(block).ToList();
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
             {
                 return arch.GetSubregister(reg, off, width);
@@ -125,9 +130,9 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            public IEnumerable<Instruction> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction).Reverse();
+                return block.Statements.Select(s => s.Instruction);
             }
 
             #endregion

@@ -73,27 +73,7 @@ namespace Reko.Core.Expressions
 
         public override Expression Invert()
         {
-            ConditionCode cc;
-            switch (this.ConditionCode)
-            {
-            case ConditionCode.EQ: cc = ConditionCode.NE; break;
-            case ConditionCode.NE: cc = ConditionCode.EQ; break;
-            case ConditionCode.GT: cc = ConditionCode.LE; break;
-            case ConditionCode.GE: cc = ConditionCode.LT; break;
-            case ConditionCode.LE: cc = ConditionCode.GT; break;
-            case ConditionCode.LT: cc = ConditionCode.GE; break;
-            case ConditionCode.UGT: cc = ConditionCode.ULE; break;
-            case ConditionCode.UGE: cc = ConditionCode.ULT; break;
-            case ConditionCode.ULE: cc = ConditionCode.UGT; break;
-            case ConditionCode.ULT: cc = ConditionCode.UGE; break;
-            case ConditionCode.SG: cc = ConditionCode.NS; break;
-            case ConditionCode.NS: cc = ConditionCode.SG; break;
-            case ConditionCode.PO: cc = ConditionCode.PE; break;
-            case ConditionCode.PE: cc = ConditionCode.PO; break;
-            case ConditionCode.NO: cc = ConditionCode.OV; break;
-            case ConditionCode.OV: cc = ConditionCode.NO; break;
-            default: throw new NotImplementedException("Invert of Test(" + ConditionCode + ") not implemented.");
-            }
+            ConditionCode cc = this.ConditionCode.Invert();
             return new TestCondition(cc, Expression);
         }
     }

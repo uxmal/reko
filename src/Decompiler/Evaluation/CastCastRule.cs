@@ -51,6 +51,13 @@ namespace Reko.Evaluation
             this.ptExp = origExp.DataType as PrimitiveType;
             if (ptC == null || ptCc == null || ptExp == null)
                 return false;
+
+            // If the cast is identical, we don't have to do it twice.
+            if (ptC == ptCc)
+            {
+                this.origExp = cc;
+                return true;
+            }
             // Only match widening / narrowing. 
             //$TODO: the Cast() class should really not appear
             // until after type analysis. It should be replaced

@@ -94,6 +94,7 @@ namespace Reko.Core
         {
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
+            this.Domain = freg.Domain;
             this.Name = name;
             this.DataType = dataType;
         }

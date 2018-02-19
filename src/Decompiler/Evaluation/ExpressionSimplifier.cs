@@ -63,7 +63,8 @@ namespace Reko.Evaluation
         private SelfDpbRule selfdpbRule;
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
-
+        private DistributedCastRule distributedCast;
+        
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
@@ -92,6 +93,7 @@ namespace Reko.Evaluation
             this.selfdpbRule = new SelfDpbRule(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.castCastRule = new CastCastRule(ctx);
+            this.distributedCast = new DistributedCastRule();
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -168,6 +170,11 @@ namespace Reko.Evaluation
                 Changed = true;
                 return binopWithSelf.Transform(ctx).Accept(this);
             }
+            if (distributedCast.Match(binExp))
+            {
+                Changed = true;
+                return distributedCast.Transform(ctx).Accept(this);
+            }
 
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
@@ -225,35 +232,46 @@ namespace Reko.Evaluation
             // (- (+ e c1) c2) ==> (- e (- c2 c1))
             // (- (- e c1) c2) ==> (- e (+ c1 c2))
 
-            if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
-                !cLeftRight.IsReal && !cRight.IsReal)
+            if (binLeft != null && cLeftRight != null && cRight != null)
             {
-                Changed = true;
-                var binOperator = binExp.Operator;
-                Constant c;
-                if (binLeft.Operator == binOperator)
+                if (IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
+                    !cLeftRight.IsReal && !cRight.IsReal)
                 {
-                    c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
-                }
-                else
-                {
-                    if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                    Changed = true;
+                    var binOperator = binExp.Operator;
+                    Constant c;
+                    if (binLeft.Operator == binOperator)
                     {
-                        c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                        c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
                     }
                     else
                     {
-                        binOperator = 
-                            binOperator == Operator.IAdd 
-                                ? Operator.ISub 
-                                : Operator.IAdd;
-                        c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                        if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                        {
+                            c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                        }
+                        else
+                        {
+                            binOperator =
+                                binOperator == Operator.IAdd
+                                    ? Operator.ISub
+                                    : Operator.IAdd;
+                            c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                        }
                     }
+                    if (c.IsIntegerZero)
+                        return binLeft.Left;
+                    return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
                 }
-                if (c.IsIntegerZero)
-                    return binLeft.Left;
-                return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
+                if (binExp.Operator == Operator.IMul && binLeft.Operator == Operator.IMul)
+                {
+                    Changed = true;
+                    var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
+                    if (c.IsIntegerZero)
+                        return c;
+                    else
+                        return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
+                }
             }
 
             // (rel (- e c1) c2) => (rel e c1+c2)
@@ -530,21 +548,21 @@ namespace Reko.Evaluation
             {
                 if (newSeq[0] is Constant c1 && newSeq[1] is Constant c2)
                 {
-                    PrimitiveType tHead = (PrimitiveType)c1.DataType;
-                    PrimitiveType tTail = (PrimitiveType)c2.DataType;
-                    PrimitiveType t;
-                    Changed = true;
-                    if (tHead.Domain == Domain.Selector)            //$REVIEW: seems to require Address, SegmentedAddress?
-                    {
-                        t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
-                        return ctx.MakeSegmentedAddress(c1, c2);
-                    }
-                    else
-                    {
-                        t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
-                        return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
-                    }
+                PrimitiveType tHead = (PrimitiveType)c1.DataType;
+                PrimitiveType tTail = (PrimitiveType)c2.DataType;
+                PrimitiveType t;
+                Changed = true;
+                if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
+                {
+                    t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
+                    return ctx.MakeSegmentedAddress(c1, c2);
                 }
+                else
+                {
+                    t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
+                    return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
+                }
+            }
             }
             if (newSeq.Take(newSeq.Length-1).All(e => e.IsZero))
             {

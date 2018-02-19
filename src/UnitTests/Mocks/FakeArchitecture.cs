@@ -229,11 +229,6 @@ namespace Reko.UnitTests.Mocks
 
         public int InstructionBitSize { get { return 32; } }
 
-		public string RegisterToString(int reg)
-		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
-		}
-
 		public IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, Test_DisassemblyStream.GetEnumerator());
@@ -310,7 +305,14 @@ namespace Reko.UnitTests.Mocks
         {
             if (size == 4)
             {
-                return Address.Ptr32(rdr.ReadLeUInt32());
+                if (rdr.TryReadLeUInt32(out var uaddr))
+                {
+                    return Address.Ptr32(uaddr);
+                }
+                else
+                {
+                    return null;
+                }
             }
             throw new NotImplementedException();
         }
@@ -322,7 +324,7 @@ namespace Reko.UnitTests.Mocks
 
         public Address MakeSegmentedAddress(Constant seg, Constant offset)
         {
-            throw new NotImplementedException();
+            return Address.SegPtr(seg.ToUInt16(), offset.ToUInt16());
         }
 
         public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)

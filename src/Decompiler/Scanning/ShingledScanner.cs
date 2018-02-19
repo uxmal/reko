@@ -273,7 +273,6 @@ namespace Reko.Scanning
             return y;
         }
 
-
         public void AddInstruction(RtlInstructionCluster i)
         {
             //sr.Instructions.Add(i.Address, i);
@@ -307,9 +306,9 @@ namespace Reko.Scanning
 #endif
     }
 
-    // Remove blocks that fall off the end of the segment
-    // or into data.
-    public HashSet<Address> RemoveBadInstructionsFromGraph()
+        // Remove blocks that fall off the end of the segment
+        // or into data.
+        public HashSet<Address> RemoveBadInstructionsFromGraph()
         {
             // Use only for debugging the bad paths.
             //var d = Dijkstra<Address>.ShortestPath(G, bad, (u, v) => 1.0);

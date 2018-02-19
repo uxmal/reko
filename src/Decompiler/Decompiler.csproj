@@ -225,6 +225,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\DistributedCastRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -277,6 +278,9 @@
     </Compile>
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
     <Compile Include="Scanning\Backwalker.cs" />
+    <Compile Include="Scanning\Backwalker2.cs" />
+    <Compile Include="Scanning\BackwardSlicer.cs" />
+    <Compile Include="Scanning\BackwardSlicerHost.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
     <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\DataScanner.cs" />
@@ -303,6 +307,8 @@
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Scanning\ProcedureWorkItem.cs" />
+    <Compile Include="Scanning\ValueSet.cs" />
+    <Compile Include="Scanning\ValueSetEvaluator.cs" />
     <Compile Include="Scanning\VarargsFormatScanner.cs" />
     <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Loading\Loader.cs" />

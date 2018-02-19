@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Analysis
             }
             catch
             {
-                Console.WriteLine(summary);
+                Debug.Print("{0}", summary);
                 throw;
             }
         }

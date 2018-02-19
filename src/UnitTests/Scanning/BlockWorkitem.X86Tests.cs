@@ -356,7 +356,7 @@ namespace Reko.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp =
-                "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+                "\tax = SEQ(0x0C00, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -367,6 +367,8 @@ namespace Reko.UnitTests.Scanning
         {
             BuildTest16(m =>
             {
+                block.Address = Address.SegPtr(0x0C00, 0x0123);
+
                 m.And(m.bx, m.Const(3));
                 m.Add(m.bx, m.bx);
                 m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
@@ -420,7 +422,7 @@ namespace Reko.UnitTests.Scanning
 
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
-            var block = new Block(proc, blockLabel);
+            var block = new Block(proc, blockLabel) { Address = Address.SegPtr(selector, offset) };
             scanner.Expect(x => x.EnqueueJumpTarget(
                 Arg<Address>.Is.NotNull,
                 Arg<Address>.Matches(q => (Niz(q, selector, offset))),

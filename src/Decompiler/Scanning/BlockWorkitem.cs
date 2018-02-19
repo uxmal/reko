@@ -214,17 +214,17 @@ namespace Reko.Scanning
 
         public void SetValue(Expression dst, Expression value)
         {
-            if (dst is Identifier id)
+            switch (dst)
             {
+            case Identifier id:
                 state.SetValue(id, value);
-            }
-            else if (dst is SegmentedAccess smem)
-            {
+                return;
+            case SegmentedAccess smem:
                 state.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
-            }
-            else if (dst is MemoryAccess mem)
-            {
+                return;
+            case MemoryAccess mem:
                 state.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                return;
             }
         }
 
@@ -481,13 +481,13 @@ namespace Reko.Scanning
                     EnsureEdge(blockSource.Procedure, blockFrom, bt);
                 }
                 // Always emit goto statements to avoid error during block splitting
-                //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
-                // predicate. This should be done in a better way; perhaps by keeping track
+                    //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
+                    // predicate. This should be done in a better way; perhaps by keeping track
                 // of scanned blocks in the Scanner class?
-                // The recursive scanning of basic blocks does need improvement;
-                // consider using a similar technique to Shingle scanner, where reachable
-                // statements are collected first, and basic blocks reconstructed afterwards.
-                Emit(new GotoInstruction(addrTarget));
+                    // The recursive scanning of basic blocks does need improvement;
+                    // consider using a similar technique to Shingle scanner, where reachable
+                    // statements are collected first, and basic blocks reconstructed afterwards.
+                    Emit(new GotoInstruction(addrTarget));
                 return false;
             }
             if (g.Target is MemoryAccess mem)
@@ -624,7 +624,7 @@ namespace Reko.Scanning
             var addr = call.Target as Address;
             if (addr == null)
             {
-                addr = program.Platform.ResolveIndirectCall(call);
+            addr = program.Platform.ResolveIndirectCall(call);
             }
             return addr;
         }
@@ -780,15 +780,13 @@ namespace Reko.Scanning
             {
                 Emit(new SideEffect(side.Expression));
                 if (side.Expression is Application appl &&
-                    appl.Procedure is ProcedureConstant fn)
+                    appl.Procedure is ProcedureConstant fn &&
+                    fn.Procedure.Characteristics.Terminates)
                 {
-                        if (fn.Procedure.Characteristics.Terminates)
-                        {
-                            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                            return false;
-                        }
-                    }
+                    scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+                    return false;
                 }
+            }
             return true;
         }
 
@@ -863,64 +861,104 @@ namespace Reko.Scanning
             var listener = scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
+                // Trust the user knows what they're doing.
                 vector = indJump.Table.Addresses;
                 switchExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
                 imgVector = indJump.Table;
             }
             else
             {
-                var bw = new Backwalker<Block,Instruction>(new BackwalkerHost(this), xfer, eval);
-                if (!bw.CanBackwalk())
-                    return false;
-                var bwops = bw.BackWalk(blockCur);
-                if (bwops == null || bwops.Count == 0)
-                    return false;     //$REVIEW: warn?
-                Identifier idIndex = bw.Index != null
-                    ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
-                    : null;
+                const bool useBackwardSlicer = true;
+                if (useBackwardSlicer)
+                {
+                    var bwsHost = new BackwardSlicerHost();
+                    var bws = new BackwardSlicer(bwsHost);
+                    var rtlBlock = bwsHost.GetRtlBlock(blockCur);
+                    if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
+                    {
+                        listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to process indirect jump.");
+                        return false;
+                    }
+                    while (bws.Step())
+                        ;
+
+                    var jumpExpr = bws.JumpTableFormat;
+                    var interval = bws.JumpTableIndexInterval;
+                    if (bws.JumpTableIndexToUse == null)
+                    {
+                        return false;   //$REVIEW: warn?
+                    }
+                    var ctx = new Dictionary<Expression, ValueSet>
+                    {
+                        { bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval) }
+                    };
+                    var vse = new ValueSetEvaluator(program, ctx, state);
+                    var values = jumpExpr.Accept(vse).Values.ToList();
+                    vector = jumpExpr.Accept(vse).Values
+                        .Select(ForceToAddress)
+                        .TakeWhile(a => a != null)
+                        .ToList();
+                    imgVector = new ImageMapVectorTable(
+                        null, // bw.VectorAddress,
+                        vector.ToArray(),
+                        4); // builder.TableByteSize);
+                    switchExp = bws.JumpTableIndexToUse;
+                }
+                else
+                {
+                    var bw = new Backwalker<Block, Instruction>(new BackwalkerHost(this), xfer, eval);
+                    if (!bw.CanBackwalk())
+                        return false;
+                    var bwops = bw.BackWalk(blockCur);
+                    if (bwops == null || bwops.Count == 0)
+                        return false;     //$REVIEW: warn?
+                    Identifier idIndex = bw.Index != null
+                        ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
+                        : null;
 
                 var builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
-                if (bw.VectorAddress == null)
-                    return false;
+                    if (bw.VectorAddress == null)
+                        return false;
 
-                vector = builder.BuildAux(bw, addrSwitch, state);
-                if (vector.Count == 0)
-                {
-                    var rdr = program.CreateImageReader(bw.VectorAddress);
-                    if (!rdr.IsValid)
-                        return false;
-                    // Can't determine the size of the table, but surely it has one entry?
-                    var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                    string msg;
-                    if (this.program.SegmentMap.IsValidAddress(addrEntry))
-                    {
-                        vector.Add(addrEntry);
-                        msg = "Can't determine size of jump vector; probing only one entry.";
-                    }
-                    else
-                    {
-                        // Nope, not even that.
-                        msg = "No valid entries could be found in jump vector.";
-                    }
-                    var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
-                    listener.Warn(nav, msg);
+                    vector = builder.BuildAux(bw, addrSwitch, state);
                     if (vector.Count == 0)
-                        return false;
+                    {
+                        // Can't determine the size of the table, but surely it has one entry?
+                        var rdr = program.CreateImageReader(bw.VectorAddress);
+                        if (!rdr.IsValid)
+                            return false;
+                        string msg;
+                        var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
+                        if (addrEntry != null && this.program.SegmentMap.IsValidAddress(addrEntry))
+                        {
+                            vector.Add(addrEntry);
+                            msg = "Can't determine size of jump vector; probing only one entry.";
+                        }
+                        else
+                        {
+                            // Nope, not even that.
+                            msg = "No valid entries could be found in jump vector.";
+                        }
+                        var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
+                        listener.Warn(nav, msg);
+                        if (vector.Count == 0)
+                            return false;
+                    }
+                    imgVector = new ImageMapVectorTable(
+                        bw.VectorAddress,
+                        vector.ToArray(),
+                        builder.TableByteSize);
+                    switchExp = idIndex;
+                    if (idIndex == null || idIndex.Name == "None")
+                        switchExp = bw.IndexExpression;
                 }
-                imgVector = new ImageMapVectorTable(
-                    bw.VectorAddress,
-                    vector.ToArray(),
-                    builder.TableByteSize);
-                switchExp = idIndex;
-                if (idIndex == null || idIndex.Name == "None")
-                    switchExp = bw.IndexExpression;
             }
 
             if (xfer is RtlCall)
             {
                 ScanCallVectorTargets(vector);
             }
-            else 
+            else
             {
                 var jumpDests = ScanJumpVectorTargets(vector);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
@@ -943,15 +981,41 @@ namespace Reko.Scanning
                     Emit(new SwitchInstruction(switchExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
                 }
             }
-            if (imgVector.Size > 0)
+            if (imgVector.Address != null)
             {
-                program.ImageMap.AddItemWithSize(imgVector.Address, imgVector);
-            }
-            else
-            {
-                program.ImageMap.AddItem(imgVector.Address, imgVector);
+                if (imgVector.Size > 0)
+                {
+                    program.ImageMap.AddItemWithSize(imgVector.Address, imgVector);
+                }
+                else
+                {
+                    program.ImageMap.AddItem(imgVector.Address, imgVector);
+                }
             }
             return true;
+        }
+
+        private Address ForceToAddress(Expression arg)
+        {
+            if (arg is Address addr)
+                return addr;
+            if (arg is Constant c)
+            {
+                if (c.DataType.Size < program.Platform.PointerType.Size)
+                {
+                    var sel = blockCur.Address.Selector.Value;
+                    return program.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
+                }
+                return program.Architecture.MakeAddressFromConstant(c);
+            }
+            if (arg is MkSequence seq)
+            {
+                if (seq.Head is Constant hd && seq.Tail is Constant tl)
+                {
+                    return program.Architecture.MakeSegmentedAddress(hd, tl);
+                }
+            }
+            return null;
         }
 
         private void ScanCallVectorTargets(List<Address> vector)
@@ -959,12 +1023,12 @@ namespace Reko.Scanning
             foreach (Address addr in vector)
             {
                 var st = state.Clone();
-                    var pbase = scanner.ScanProcedure(addr, null, st);
+                var pbase = scanner.ScanProcedure(addr, null, st);
                 if (pbase is Procedure pcallee)
-                    {
-                        program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
-                    }
+                {
+                    program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
                 }
+            }
         }
 
         private List<Block> ScanJumpVectorTargets(List<Address> vector)
@@ -973,12 +1037,12 @@ namespace Reko.Scanning
             foreach (Address addr in vector)
             {
                 var st = state.Clone();
-                    if (!program.SegmentMap.IsValidAddress(addr))
-                        break;
+                if (!program.SegmentMap.IsValidAddress(addr))
+                    break;
                 blocks.Add(BlockFromAddress(ric.Address, addr, blockCur.Procedure, state));
-                }
-            return blocks;
             }
+            return blocks;
+        }
 
         private void Emit(Instruction instruction)
         {
@@ -1127,14 +1191,15 @@ namespace Reko.Scanning
         {
             if (stg == null)
                 return;
-            if (stg is RegisterStorage reg)
+            switch (stg)
             {
+            case RegisterStorage reg:
                 state.SetValue(reg, Constant.Invalid);
-            }
-            else if (stg is SequenceStorage seq)
-            {
+                break;
+            case SequenceStorage seq:
                 TrashVariable(seq.Head);
                 TrashVariable(seq.Tail);
+                break;
             }
         }
 
@@ -1217,6 +1282,11 @@ namespace Reko.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
             }
 
+            public List<Block> GetPredecessors(Block block)
+            {
+                return block.Pred.ToList();
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
             {
                 return arch.GetSubregister(reg, offset, width);
@@ -1242,9 +1312,9 @@ namespace Reko.Scanning
                 return arch.MakeSegmentedAddress(seg, off);
             }
 
-            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            public IEnumerable<Instruction> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction).Reverse();
+                return block.Statements.Select(s => s.Instruction);
             }
         }
     }
