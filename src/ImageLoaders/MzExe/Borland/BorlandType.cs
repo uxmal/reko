@@ -26,7 +26,10 @@ namespace Reko.ImageLoaders.MzExe.Borland
 
     public class Callable : BorlandType
     {
-
+        public bool IsNested { get; internal set; }
+        public bool IsVararg { get; internal set; }
+        public int Type { get; internal set; }
+        public int ReturnType { get; internal set; }
     }
 
     public class StructUnionType : BorlandType
