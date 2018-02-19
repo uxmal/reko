@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2017 John Källén.
+* Copyright (C) 1999-2017 John KÃ¤llÃ©n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -251,7 +251,9 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 	case ARM_OP_FP:
 		snprintf(risky, sizeof(risky), "#%lf", op.fp);
 		if (strcspn(risky, nosuffixRequired) == strlen(risky))
-			strcat_s(risky, sizeof(risky), ".0");
+		{
+			strcat(risky, ".0");
+		}
 		writer.WriteString(risky);
 		break;
 	default:
