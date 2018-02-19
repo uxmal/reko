@@ -18,7 +18,7 @@
 
 #include "stdafx.h"
 #include <ostream>
-#include <strstream>
+#include <sstream>
 #include "reko.h"
 
 #include "functions.h"
@@ -29,7 +29,7 @@
 class StringRenderer : public INativeInstructionWriter
 {
 public: 
-	StringRenderer(std::ostrstream & stm) : stm(stm) {}
+	StringRenderer(std::ostringstream & stm) : stm(stm) {}
 	STDMETHODIMP QueryInterface(REFIID riid, void ** ppvOut) override { return E_NOTIMPL; }
 	STDMETHODIMP_(ULONG) AddRef() override { return 0; }
 	STDMETHODIMP_(ULONG) Release() override { return 0; }
@@ -42,7 +42,7 @@ public:
 	virtual void STDAPICALLTYPE WriteUInt32(uint32_t n) override;
 
 private:
-	std::ostrstream & stm;
+	std::ostringstream & stm;
 };
 
 NativeInstruction::NativeInstruction(cs_insn * instr, NativeInstructionInfo info) :
@@ -227,10 +227,11 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 				writer.WriteAddress(risky, uAddr);
 				writer.WriteChar(']');
 
-				std::ostrstream stm;
+				std::ostringstream stm;
 				auto sr = StringRenderer(stm);
 				WriteMemoryOperand(insn, op, sr);
-				writer.AddAnnotation(stm.str());
+				auto str = stm.str();
+				writer.AddAnnotation(str.c_str());
 			}
 			else
 			{
@@ -251,7 +252,9 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 	case ARM_OP_FP:
 		snprintf(risky, sizeof(risky), "#%lf", op.fp);
 		if (strcspn(risky, nosuffixRequired) == strlen(risky))
+		{
 			strcat_s(risky, sizeof(risky), ".0");
+		}
 		writer.WriteString(risky);
 		break;
 	default:

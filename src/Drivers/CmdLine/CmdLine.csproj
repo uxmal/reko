@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-<!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
+  <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
   <Import Project="$(SolutionDir)Drivers\Common.items" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -101,8 +101,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-
-  
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -135,8 +133,11 @@
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
       <Name>SysV</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Python\Python.csproj">
+      <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
+      <Name>Python</Name>
+    </ProjectReference>
   </ItemGroup>
-
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
