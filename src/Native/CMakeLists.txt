@@ -46,9 +46,11 @@ endif()
 if((UNIX OR MINGW) AND NOT MSVC)
 	find_package(PkgConfig REQUIRED)
 	pkg_check_modules(CAPSTONE REQUIRED capstone)
+	link_directories(${CAPSTONE_LIBRARY_DIRS})
 else()
 	find_library(CAPSTONE_LIBRARIES capstone PATHS ${REKO_BUNDLED_LIBDIRS})
 endif()
 
 add_subdirectory(common)
 add_subdirectory(ArmNative)
+
