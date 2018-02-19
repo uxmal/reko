@@ -68,6 +68,10 @@
     <Compile Include="SysVPlatform.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
+      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Name>X86</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
