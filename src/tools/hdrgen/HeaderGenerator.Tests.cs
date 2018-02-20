@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,6 +59,42 @@ namespace Reko.Tools.HdrGen
     ReadWrite = 6,
     ReadWriteExecute = 7,
 }
+";
+            #endregion
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void Hdrgen_Guid()
+        {
+            var sExp =
+            #region Expected
+@"// {12506D0F-1C67-4828-9601-96F8ED4D162D}
+const IID IID_INativeRewriter =
+    {0x12506d0f,0x1c67,0x4828,{0x96,0x01,0x96,0xf8,0xed,0x4d,0x16,0x2d}};
+";
+            #endregion
+            var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
+            hdrgen.WriteGuidDefinition("INativeRewriter", "12506D0F-1C67-4828-9601-96F8ED4D162D");
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void Hdrgen_Interface()
+        {
+            var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
+            hdrgen.WriteInterfaceDefinition(typeof(INativeRewriter));
+            var sExp =
+            #region Expected
+@"// {12506D0F-1C67-4828-9601-96F8ED4D162D}
+const IID IID_INativeRewriter =
+    {0x12506d0f,0x1c67,0x4828,{0x96,0x01,0x96,0xf8,0xed,0x4d,0x16,0x2d}};
+class INativeRewriter : public IUnknown
+{
+public:
+    virtual int32_t STDAPICALLTYPE Next() = 0;
+    virtual int32_t STDAPICALLTYPE GetCount() = 0;
+};
 ";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,11 @@ namespace Reko.Tools.HdrGen
 {
     public class HeaderGenerator
     {
+        private static Dictionary<Type, string> blittable = new Dictionary<Type, string>
+        {
+            { typeof(int), "int32_t" },
+        };
+
         private Assembly asm;
         private TextWriter w;
 
@@ -67,6 +73,60 @@ namespace Reko.Tools.HdrGen
         {
             var attrs = type.GetCustomAttributes(typeof(NativeInteropAttribute), true);
             return attrs.Length > 0;
+        }
+
+        public void WriteInterfaceDefinition(Type type)
+        {
+            var guid = type.GetCustomAttribute<GuidAttribute>();
+            if (guid != null)
+            {
+                WriteGuidDefinition(type.Name, guid.Value);
+            }
+
+            w.WriteLine("class {0} : public IUnknown", type.Name);
+            w.WriteLine("{");
+            w.WriteLine("public:");
+            foreach (var method in type.GetMethods())
+            {
+                WriteInterfaceMethod(method);
+            }
+            w.WriteLine("};");
+        }
+
+        private void WriteInterfaceMethod(MethodInfo method)
+        {
+            w.Write("    virtual ");
+            if (method.ReturnType == null)
+            {
+                w.Write("STDMETHODCALLIMP");
+            }
+            else if (blittable.TryGetValue(method.ReturnType, out string cppEquivalent))
+            {
+                w.Write("{0} STDAPICALLTYPE", cppEquivalent);
+            }
+            w.Write(" {0}(", method.Name);
+            var sep = "";
+            foreach (var parameter in method.GetParameters())
+            {
+                w.Write(sep);
+                sep = ", ";
+                WriteParameter(parameter);
+            }
+            w.WriteLine(") = 0;");
+        }
+
+        private void WriteParameter(ParameterInfo parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteGuidDefinition(string name, string value)
+        {
+            var guid = new Guid(value);
+            var ab = guid.ToByteArray();
+            w.WriteLine($"// {guid:B}".ToUpper());
+            w.WriteLine("const IID IID_{0} =", name);
+            w.WriteLine("    {0:X};", guid);
         }
 
         private void GenerateOutput(IEnumerable<Type> types, TextWriter w)
