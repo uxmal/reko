@@ -113,7 +113,5 @@ by the PreBuild.targets file.
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.so" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
-
 </Project>
