@@ -203,6 +203,10 @@ namespace Reko.Tools.HdrGen
                 {
                     w.WriteLine("enum class {0};", type.Name);
                 }
+                else if (type.IsValueType)
+                {
+                    w.WriteLine("struct {0};", type.Name);
+                }
                 else if (type.IsInterface)
                 {
                     w.WriteLine("class {0};", type.Name);
@@ -218,6 +222,10 @@ namespace Reko.Tools.HdrGen
                 if (type.IsEnum)
                 {
                     WriteEnumDefinition(type);
+                }
+                else if (type.IsValueType)
+                {
+                    WriteStructDefinition(type);
                 }
                 else if (type.IsInterface)
                 {
@@ -241,6 +249,33 @@ namespace Reko.Tools.HdrGen
                 w.WriteLine("    {0} = {1},", name, value);
             }
             w.WriteLine("}");
+        }
+
+        public void WriteStructDefinition(Type type)
+        {
+            w.WriteLine("struct {0}", type.Name);
+            w.WriteLine("{");
+            foreach (var field in type.GetFields())
+            {
+                WriteField(field);
+            }
+            w.WriteLine("};");
+        }
+
+        public void WriteField(FieldInfo field)
+        {
+            w.Write("    ");
+            if (blittable.TryGetValue(field.FieldType, out string cppEquivalent))
+            {
+                w.Write(cppEquivalent);
+            }
+            else if (field.FieldType == typeof(string))
+            {
+                w.Write("const char *");
+            }
+            else
+                throw new NotImplementedException($"{field.DeclaringType.FullName}.{field.Name} not implemented.");
+            w.WriteLine(" {0};", field.Name);
         }
 
         private void WriteFooter(TextWriter w)

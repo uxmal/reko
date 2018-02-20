@@ -39,6 +39,7 @@ namespace Reko.Core.NativeInterface
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    [NativeInterop]
     public struct NativeInstructionInfo
     {
         public ulong LinearAddress;

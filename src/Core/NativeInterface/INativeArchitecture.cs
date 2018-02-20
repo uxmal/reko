@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 namespace Reko.Core.NativeInterface
 {
     [StructLayout(LayoutKind.Sequential)]
+    [NativeInterop]
     public struct NativeRegister
     {
         public string Name;
