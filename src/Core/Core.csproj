@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -342,6 +342,7 @@
     <Compile Include="NativeInterface\Interfaces\INativeSymbolSource.cs" />
     <Compile Include="NativeInterface\Interfaces\NativeProcessorArchitectureProvider.cs" />
     <Compile Include="NativeInterface\Interfaces\NativeSymbolSourceProvider.cs" />
+    <Compile Include="NativeInterface\NativeInteropAttribute.cs" />
     <Compile Include="NativeInterface\NativeMachineInstruction.cs" />
     <Compile Include="NativeInterface\NativeProcessorArchitecture.cs" />
     <Compile Include="NativeInterface\NativeSymbolSource.cs" />

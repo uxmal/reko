@@ -18,35 +18,19 @@
  */
 #endregion
 
-using Reko.Core.NativeInterface;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Expressions
+namespace Reko.Core.NativeInterface
 {
-    [NativeInterop]
-    public enum ConditionCode
+    /// <summary>
+    /// This attribute is used to indicate an interface is to be generated as C++
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class| AttributeTargets.Struct | AttributeTargets.Enum )]
+    public class NativeInteropAttribute : Attribute
     {
-        None,
-        UGT,	// Unsigned >
-        ULE,	// Unsigned <=
-        ULT,	// Unsigned <
-        GT,		// >
-        GE,		// >=
-        LT,		// <
-        LE,		// <=
-        UGE,	// Unsigned >=
-        NO,		// No overflow
-        NS,		// >= 0
-        NE,		// != 
-        OV,		// Overflow
-        SG,		// < 0
-        EQ,		// ==	
-        PE,     // Parity even
-        PO,     // parity odd
-
-        ALWAYS, // Some architectures have this.
-        NEVER, 
-
-        IS_NAN, // comparison yielded an floating point NaN
     }
 }
