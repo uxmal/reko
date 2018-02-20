@@ -75,7 +75,9 @@ INativeInstruction * Arm32Disassembler::NextInstruction()
 	else
 	{
 		auto info = NativeInstructionInfo{
-			uAddr, 4, static_cast<uint32_t>(InstructionClass::Linear), instr->id
+			uAddr, 4, 
+			static_cast<uint32_t>(InstructionClass::Linear),
+			static_cast<int32_t>(instr->id)
 		};
 		return new NativeInstruction(instr, info);
 	}

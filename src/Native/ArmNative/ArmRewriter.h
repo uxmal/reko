@@ -45,8 +45,8 @@ public:
 	STDMETHOD_(ULONG, AddRef)() override { return ComBase::AddRef(); }
 	STDMETHOD_(ULONG, Release)() override { return ComBase::Release(); }
 
-	STDMETHOD(Next)();
-	int32_t STDMETHODCALLTYPE GetCount();
+	STDMETHOD_(int32_t,Next)();
+	STDMETHOD_(int32_t, GetCount)();
 
 private:
 	void AddConditional(void(*mkInstr)());
@@ -172,3 +172,6 @@ private:
 	}
 #endif
 };
+inline RtlClass operator|(RtlClass a, RtlClass b) {
+	return static_cast<RtlClass>(static_cast<int>(a) | static_cast<int>(b));
+}

@@ -9,7 +9,7 @@
 void ThumbRewriter::RewriteAdr()
 {
 	auto dst = RewriteOp(Dst());
-	auto src = m.Ptr32(instr->address + 4 + Src1().imm);
+	auto src = m.Ptr32(static_cast<uint32_t>(instr->address) + 4 + Src1().imm);
 	m.Assign(dst, src);
 }
 

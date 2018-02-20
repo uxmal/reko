@@ -24,33 +24,34 @@
 #include "Arm64Instruction.h"
 #include "Arm64Architecture.h"
 
-void Arm64Instruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
+STDMETHODIMP Arm64Instruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
 {
 	auto & writer = *w;
 	if (this->instr == nullptr)
 	{
 		writer.WriteOpcode("Invalid");
-		return;
+		return S_OK;
 	}
 	auto & instruction = *static_cast<cs_insn*>(this->instr);
 	writer.WriteOpcode(instruction.mnemonic);
 	auto & ops = instruction.detail->arm64.operands;
 	if (instruction.detail->arm64.op_count < 1)
-		return;
+		return S_OK;
 	writer.Tab();
 	Write(instruction, ops[0], writer, options);
 	if (instruction.detail->arm64.op_count < 2)
-		return;
+		return S_OK;
 	writer.WriteString(",");
 	Write(instruction, ops[1], writer, options);
 	if (instruction.detail->arm64.op_count < 3)
-		return;
+		return S_OK;
 	writer.WriteString(",");
 	Write(instruction, ops[2], writer, options);
 	if (instruction.detail->arm64.op_count < 4)
-		return;
+		return S_OK;
 	writer.WriteString(",");
 	Write(instruction, ops[3], writer, options);
+	return S_OK;
 }
 
 void Arm64Instruction::Write(const cs_insn & instruction, const cs_arm64_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options)

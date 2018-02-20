@@ -45,30 +45,31 @@ STDMETHODIMP Arm64Architecture::QueryInterface(REFIID riid, void ** ppvObject)
 }
 
 
-void STDMETHODCALLTYPE Arm64Architecture::GetAllRegisters(int regKind, int * pcRegs, const NativeRegister ** ppRegs)
+STDMETHODIMP Arm64Architecture::GetAllRegisters(int regKind, int * pcRegs, void ** ppRegs)
 {
 	*pcRegs = ARM64_REG_ENDING;
-	*ppRegs = &aRegs[0];
+	*ppRegs = const_cast<NativeRegister*>(&aRegs[0]);
+	return S_OK;
 }
 
 INativeDisassembler * STDMETHODCALLTYPE Arm64Architecture::CreateDisassembler(
-	const uint8_t * bytes, int length, int offset, uint64_t uAddr)
+	void * bytes, int length, int offset, uint64_t uAddr)
 {
-	auto dasm = new Arm64Disassembler(bytes + offset, length - offset, offset, uAddr);
+	auto dasm = new Arm64Disassembler(reinterpret_cast<uint8_t*>(bytes) + offset, length - offset, offset, uAddr);
 	dasm->AddRef();
 	return dasm;
 }
 
 INativeRewriter * STDAPICALLTYPE Arm64Architecture::CreateRewriter(
-	const uint8_t * rawBytes,
-	uint32_t length,
-	uint32_t offset,
+	void * rawBytes,
+	int32_t length,
+	int32_t offset,
 	uint64_t address,
 	INativeRtlEmitter * m,
 	INativeTypeFactory * typeFactory,
 	INativeRewriterHost * host)
 {
-	return new Arm64Rewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
+	return new Arm64Rewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length - offset, address, m, typeFactory, host);
 }
 
 const NativeRegister Arm64Architecture::aRegs[] = {

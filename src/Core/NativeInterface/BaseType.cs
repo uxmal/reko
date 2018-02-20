@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    [NativeInterop]
     public enum BaseType
     {
         Void,

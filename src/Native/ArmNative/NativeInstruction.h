@@ -28,8 +28,8 @@ public:
 	STDMETHODIMP_(ULONG) AddRef() override { return ComBase::AddRef(); }
 	STDMETHODIMP_(ULONG) Release() override { return ComBase::Release(); }
 
-	void STDAPICALLTYPE GetInfo(NativeInstructionInfo * info) override;
-	void STDAPICALLTYPE Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options) override;
+	STDMETHODIMP GetInfo(NativeInstructionInfo * info) override;
+	STDMETHODIMP Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options) override;
 private:
 	bool WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer);
 	void Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options);

@@ -62,7 +62,7 @@ STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 	return E_NOINTERFACE;
 }
 
-STDMETHODIMP ArmRewriter::Next()
+STDMETHODIMP_(int32_t) ArmRewriter::Next()
 {
 	Dump("Next: %08x", this);
 	if (available == 0)

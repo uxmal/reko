@@ -59,7 +59,7 @@ namespace Reko.Tools.HdrGen
     ReadExecute = 5,
     ReadWrite = 6,
     ReadWriteExecute = 7,
-}
+};
 ";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());
@@ -101,7 +101,6 @@ public:
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        [Test]
         public void Hdrgen_rekodoth()
         {
             var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
@@ -117,7 +116,7 @@ public:
             hdrgen.WriteInterfaceMethod(method);
             var sExp =
             #region Expected
-@"    virtual STDMETHODCALLIMP GetAllRegisters(int32_t registerType, int32_t* n, void ** aregs) = 0;
+@"    virtual HRESULT STDAPICALLTYPE GetAllRegisters(int32_t registerType, int32_t* n, void ** aregs) = 0;
 ";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());

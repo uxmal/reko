@@ -56,7 +56,7 @@ namespace Reko.Tools.HdrGen
                 return;
             }
             var assemblyName = args[0];
-            var asm = Assembly.LoadFrom(assemblyName);
+            var asm = typeof(NativeInteropAttribute).Assembly;
             if (args.Length == 1)
             {
                 var hdrgen = new HeaderGenerator(asm, System.Console.Out);
@@ -98,10 +98,19 @@ namespace Reko.Tools.HdrGen
 
         private IEnumerable<Type> CollectInteropTypes(Assembly asm)
         {
-            return asm.GetTypes()
-                .Where(TypeHasInteropAttribute)
-                .OrderBy(t => t.Name)
-                .ToList();
+            try
+            {
+                var list = asm.GetTypes()
+                    .Where(TypeHasInteropAttribute)
+                    .OrderBy(t => t.Name)
+                    .ToList();
+                Console.Error.WriteLine("There are {0} classes", list.Count);
+                return list;
+            } catch (ReflectionTypeLoadException ex)
+            {
+                Console.Write(string.Join("\r\n\r\n", ex.LoaderExceptions.Select(e => e.Message)));
+                throw;
+            }
         }
 
         private bool TypeHasInteropAttribute(Type type)
@@ -133,7 +142,7 @@ namespace Reko.Tools.HdrGen
             w.Write("    virtual ");
             if (method.ReturnType == typeof(void))
             {
-                w.Write("STDMETHODCALLIMP");
+                w.Write("HRESULT STDAPICALLTYPE");
             }
             else if (blittable.TryGetValue(method.ReturnType, out string cppEquivalent))
             {
@@ -275,7 +284,7 @@ namespace Reko.Tools.HdrGen
                 var value = Convert.ToInt32(Enum.Parse(type, name));
                 w.WriteLine("    {0} = {1},", name, value);
             }
-            w.WriteLine("}");
+            w.WriteLine("};");
         }
 
         public void WriteStructDefinition(Type type)

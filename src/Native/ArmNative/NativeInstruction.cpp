@@ -33,13 +33,13 @@ public:
 	STDMETHODIMP QueryInterface(REFIID riid, void ** ppvOut) override { return E_NOTIMPL; }
 	STDMETHODIMP_(ULONG) AddRef() override { return 0; }
 	STDMETHODIMP_(ULONG) Release() override { return 0; }
-	virtual void STDAPICALLTYPE AddAnnotation(const char * a) override;
-	virtual void STDAPICALLTYPE WriteOpcode(const char * opcode) override;
-	virtual void STDAPICALLTYPE WriteAddress(const char * formattedAddress, uint64_t uAddr) override;
-	virtual void STDAPICALLTYPE Tab() override;
-	virtual void STDAPICALLTYPE WriteString(const char * s) override;
-	virtual void STDAPICALLTYPE WriteChar(wchar_t c) override;
-	virtual void STDAPICALLTYPE WriteUInt32(uint32_t n) override;
+	STDMETHODIMP AddAnnotation(const char * a) override;
+	STDMETHODIMP WriteOpcode(const char * opcode) override;
+	STDMETHODIMP WriteAddress(const char * formattedAddress, uint64_t uAddr) override;
+	STDMETHODIMP Tab() override;
+	STDMETHODIMP WriteString(const char * s) override;
+	STDMETHODIMP WriteChar(wchar_t c) override;
+	STDMETHODIMP WriteUInt32(uint32_t n) override;
 
 private:
 	std::ostringstream & stm;
@@ -74,40 +74,42 @@ HRESULT STDAPICALLTYPE NativeInstruction::QueryInterface(REFIID iid, void ** ppv
 	return E_NOINTERFACE;
 }
 
-void STDAPICALLTYPE NativeInstruction::GetInfo(NativeInstructionInfo * info)
+STDMETHODIMP NativeInstruction::GetInfo(NativeInstructionInfo * info)
 {
 	*info = this->info;
+	return S_OK;
 }
 
-void STDAPICALLTYPE NativeInstruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
+STDMETHODIMP NativeInstruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
 {
 	auto & writer = *w;
 	if (this->instr == nullptr)
 	{
 		writer.WriteOpcode("Invalid");
-		return;
+		return S_OK;
 	}
 	auto & instruction = *static_cast<cs_insn*>(this->instr);
 	writer.WriteOpcode(instruction.mnemonic);
 	auto ops = instruction.detail->arm.operands;
 	if (instruction.detail->arm.op_count < 1)
-		return;
+		return S_OK;
 	writer.Tab();
 	if (WriteRegisterSetInstruction(instruction, writer))
-		return;
+		return S_OK;
 	Write(instruction, ops[0], writer, options);
 	if (instruction.detail->arm.op_count < 2)
-		return;
+		return S_OK;
 	writer.WriteString(",");
 	Write(instruction, ops[1], writer, options);
 	if (instruction.detail->arm.op_count < 3)
-		return;
+		return S_OK;
 	writer.WriteString(",");
 	Write(instruction, ops[2], writer, options);
 	if (instruction.detail->arm.op_count < 4)
-		return;
+		return S_OK;
 	writer.WriteString(",");
 	Write(instruction, ops[3], writer, options);
+	return S_OK;
 }
 
 const char * NativeInstruction::RegName(int reg)
@@ -386,35 +388,43 @@ void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionWriter &
 	}
 }
 
-void StringRenderer::AddAnnotation(const char * a)
+STDMETHODIMP StringRenderer::AddAnnotation(const char * a)
 {
+	return S_OK;
 }
 
-void StringRenderer::WriteOpcode(const char * opcode)
+STDMETHODIMP StringRenderer::WriteOpcode(const char * opcode)
 {
 	stm << opcode;
+	return S_OK;
 }
 
-void StringRenderer::WriteAddress(const char * formattedAddress, uint64_t uAddr)
+STDMETHODIMP StringRenderer::WriteAddress(const char * formattedAddress, uint64_t uAddr)
 {
 	stm << formattedAddress;
+	return S_OK;
 }
 
-void StringRenderer::Tab()
+STDMETHODIMP StringRenderer::Tab()
 {
 	stm << ' ';
+	return S_OK;
 }
 
-void StringRenderer::WriteString(const char * s)
+STDMETHODIMP StringRenderer::WriteString(const char * s)
 {
 	stm << s;
-}
-void StringRenderer::WriteChar(wchar_t c)
-{
-	stm << c;
+	return S_OK;
 }
 
-void StringRenderer::WriteUInt32(uint32_t n)
+STDMETHODIMP StringRenderer::WriteChar(wchar_t c)
+{
+	stm << c;
+	return S_OK;
+}
+
+STDMETHODIMP StringRenderer::WriteUInt32(uint32_t n)
 {
 	stm << std::hex << n << std::dec;
+	return S_OK;
 }

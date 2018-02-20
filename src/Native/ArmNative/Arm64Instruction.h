@@ -6,7 +6,7 @@ public:
 		NativeInstruction(instr, info)
 	{}
 
-	void STDAPICALLTYPE Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options) override;
+	STDMETHODIMP Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options) override;
 
 private:
 	void Write(const cs_insn & instruction, const cs_arm64_op & , INativeInstructionWriter &, MachineInstructionWriterOptions);

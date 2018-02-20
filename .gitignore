@@ -34,4 +34,5 @@ TestResults
 /src/Debug
 /src/Release
 /src/Native/build
+/src/Native/include/reko.h
 /src/WixInstaller/*.user

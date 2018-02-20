@@ -48,28 +48,29 @@ STDMETHODIMP ThumbArchitecture::QueryInterface(REFIID riid, void ** ppvObject)
 }
 
 
-void STDMETHODCALLTYPE ThumbArchitecture::GetAllRegisters(int regKind, int * pcRegs, const NativeRegister ** ppRegs)
+STDMETHODIMP ThumbArchitecture::GetAllRegisters(int regKind, int * pcRegs, void ** ppRegs)
 {
 	*pcRegs = ARM_REG_ENDING;
-	*ppRegs = &ArmArchitecture::aRegs[0];
+	*ppRegs = const_cast<NativeRegister*>(&ArmArchitecture::aRegs[0]);
+	return S_OK;
 }
 
 INativeDisassembler * STDMETHODCALLTYPE ThumbArchitecture::CreateDisassembler(
-	const uint8_t * bytes, int length, int offset, uint64_t uAddr)
+	void * bytes, int length, int offset, uint64_t uAddr)
 {
-	auto dasm = new ThumbDisassembler(bytes + offset, length - offset, offset, uAddr);
+	auto dasm = new ThumbDisassembler(reinterpret_cast<uint8_t*>(bytes) + offset, length - offset, offset, uAddr);
 	dasm->AddRef();
 	return dasm;
 }
 
 INativeRewriter * STDAPICALLTYPE ThumbArchitecture::CreateRewriter(
-	const uint8_t * rawBytes,
-	uint32_t length,
-	uint32_t offset,
+	void * rawBytes,
+	int32_t length,
+	int32_t offset,
 	uint64_t address,
 	INativeRtlEmitter * m,
 	INativeTypeFactory * typeFactory,
 	INativeRewriterHost * host)
 {
-	return new ThumbRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
+	return new ThumbRewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length - offset, address, m, typeFactory, host);
 }

@@ -69,7 +69,7 @@ STDMETHODIMP ThumbRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 }
 
 
-STDMETHODIMP ThumbRewriter::Next()
+STDMETHODIMP_(int32_t) ThumbRewriter::Next()
 {
 start:
 	Dump("Next: %08x", this);
