@@ -121,12 +121,13 @@
       <Name>hdrgen</Name>
     </ProjectReference>
   </ItemGroup>
+
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CleanCMake" AfterTargets="Clean">
     <Exec Condition=" '$(OS)' != 'Unix'" Command="cmake.exe -DACTION=clean -DREKO_PATH=$(SolutionDir)../ -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
     <Exec Condition=" '$(OS)' == 'Unix'" Command="cmake -DACTION=clean -DREKO_PATH=$(SolutionDir)../ -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
   </Target>
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild">
     <!-- Start building the native shared libraries using CMake -->
     <Exec Condition=" '$(OS)' != 'Unix'" Command="..\tools\hdrgen\bin\$(Configuration)\hdrgen.exe $(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll $(ProjectDir)include\reko.h" WorkingDirectory="$(ProjectDir)" />
     <Exec Condition=" '$(OS)' != 'Unix'" Command="cmake.exe -DREKO_PATH=$(SolutionDir)../ -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
