@@ -50,10 +50,37 @@ namespace Reko.Tools.HdrGen
 
         public static void Main(string[] args)
         {
+            if (args.Length <= 0)
+            {
+                Console.WriteLine("usage: hdrgen <.NET assembly file name> [output file name]");
+                return;
+            }
             var assemblyName = args[0];
             var asm = Assembly.LoadFrom(assemblyName);
-            var hdrgen = new HeaderGenerator(asm, System.Console.Out);
-            hdrgen.Execute();
+            if (args.Length == 1)
+            {
+                var hdrgen = new HeaderGenerator(asm, System.Console.Out);
+                hdrgen.Execute();
+            }
+            else
+            {
+                TextWriter w = null;
+                try
+                {
+                    w = File.CreateText(args[1]);
+                    var hdrgen = new HeaderGenerator(asm, w);
+                    hdrgen.Execute();
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"hdrgen: an error occurred while generating headers. {ex.Message}");
+                }
+                finally
+                {
+                    if (w != null)
+                        w.Dispose();
+                }
+            }
         }
 
         public HeaderGenerator(Assembly asm, TextWriter w)
