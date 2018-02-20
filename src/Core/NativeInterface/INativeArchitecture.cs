@@ -40,6 +40,7 @@ namespace Reko.Core.NativeInterface
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("09FFCC1F-60C8-4058-92C2-C90DAF115250")]
     [ComVisible(true)]
+    [NativeInterop]
     public interface INativeArchitecture
     {
         [PreserveSig]

@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -95,6 +96,28 @@ public:
     virtual int32_t STDAPICALLTYPE Next() = 0;
     virtual int32_t STDAPICALLTYPE GetCount() = 0;
 };
+";
+            #endregion
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void Hdrgen_rekodoth()
+        {
+            var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
+            hdrgen.Execute();
+            Debug.WriteLine(sw);
+        }
+
+        [Test]
+        public void Hdrgen_OutParameter()
+        {
+            var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
+            var method = typeof(INativeArchitecture).GetMethod("GetAllRegisters");
+            hdrgen.WriteInterfaceMethod(method);
+            var sExp =
+            #region Expected
+@"    virtual STDMETHODCALLIMP GetAllRegisters(int32_t registerType, int32_t* n, void ** aregs) = 0;
 ";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());

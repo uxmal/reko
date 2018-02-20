@@ -50,6 +50,7 @@ namespace Reko.Core.Machine
     }
 
     [Flags]
+    [NativeInterop]
     public enum MachineInstructionWriterOptions
     {
         None = 0,

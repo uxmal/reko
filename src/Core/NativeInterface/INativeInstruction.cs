@@ -31,6 +31,7 @@ namespace Reko.Core.NativeInterface
     [ComVisible(true)]
     [Guid("2CAF9227-76D6-4DED-BC74-B95801E1524E")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [NativeInterop]
     public interface INativeInstruction
     {
         [PreserveSig] void GetInfo(out NativeInstructionInfo info);

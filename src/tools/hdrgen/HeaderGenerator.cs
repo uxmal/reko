@@ -34,7 +34,15 @@ namespace Reko.Tools.HdrGen
     {
         private static Dictionary<Type, string> blittable = new Dictionary<Type, string>
         {
+            { typeof(byte), "uint8_t" },
+            { typeof(short), "int16_t" },
+            { typeof(ushort), "uint16_t" },
             { typeof(int), "int32_t" },
+            { typeof(uint), "uint32_t" },
+            { typeof(long), "int64_t" },
+            { typeof(ulong), "uint64_t" },
+            { typeof(char), "wchar_t" },
+            { typeof(IntPtr), "void *" },
         };
 
         private Assembly asm;
@@ -93,10 +101,10 @@ namespace Reko.Tools.HdrGen
             w.WriteLine("};");
         }
 
-        private void WriteInterfaceMethod(MethodInfo method)
+        public void WriteInterfaceMethod(MethodInfo method)
         {
             w.Write("    virtual ");
-            if (method.ReturnType == null)
+            if (method.ReturnType == typeof(void))
             {
                 w.Write("STDMETHODCALLIMP");
             }
@@ -104,6 +112,16 @@ namespace Reko.Tools.HdrGen
             {
                 w.Write("{0} STDAPICALLTYPE", cppEquivalent);
             }
+            else if (method.ReturnType.IsEnum)
+            {
+                w.Write("{0} STDAPICALLTYPE", method.ReturnType.Name);
+            }
+            else if (method.ReturnType.IsInterface)
+            {
+                w.Write("{0} * STDAPICALLTYPE", method.ReturnType.Name);
+            }
+            else
+                throw new NotImplementedException($"{method.DeclaringType.Name}.{method.Name}(): return type {method.ReturnType.FullName}");
             w.Write(" {0}(", method.Name);
             var sep = "";
             foreach (var parameter in method.GetParameters())
@@ -117,7 +135,36 @@ namespace Reko.Tools.HdrGen
 
         private void WriteParameter(ParameterInfo parameter)
         {
-            throw new NotImplementedException();
+            var pType = parameter.ParameterType;
+            if (parameter.IsOut)
+            {
+                pType = pType.GetElementType();
+            }
+            if (blittable.TryGetValue(pType, out string cppEquivalent))
+            {
+                w.Write(cppEquivalent);
+            }
+            else if (pType == typeof(string))
+            {
+                var marshalAs = parameter.GetCustomAttribute<MarshalAsAttribute>();
+                if (marshalAs == null || marshalAs.Value != UnmanagedType.LPStr)
+                    throw new InvalidOperationException($"Expected [MarshalAs(LPStr)] attribute on parameter {parameter.Name} of type {pType.FullName} in {parameter.Member.DeclaringType.Name}.{parameter.Member.Name}.");
+                w.Write("const char *");
+            }
+            else if (pType.IsEnum || pType.IsValueType)
+            {
+                w.Write(pType.Name);
+            }
+            else if (pType.IsInterface)
+            {
+                w.Write("{0} *", pType.Name);
+            }
+            else throw new NotImplementedException($"Parameter {parameter.Name} of type {pType.FullName} in {parameter.Member.DeclaringType.Name}.{parameter.Member.Name}.");
+            if (parameter.IsOut)
+            {
+                w.Write("*");
+            }
+            w.Write(" {0}", parameter.Name);
         }
 
         public void WriteGuidDefinition(string name, string value)
@@ -150,7 +197,18 @@ namespace Reko.Tools.HdrGen
 
         private void WriteForwardDeclarations(IEnumerable<Type> types)
         {
-            throw new NotImplementedException();
+            foreach (var type in types)
+            {
+                if (type.IsEnum)
+                {
+                    w.WriteLine("enum class {0};", type.Name);
+                }
+                else if (type.IsInterface)
+                {
+                    w.WriteLine("class {0};", type.Name);
+                }
+            }
+            w.WriteLine();
         }
 
         private void WriteDefinitions(IEnumerable<Type> types)
@@ -161,8 +219,12 @@ namespace Reko.Tools.HdrGen
                 {
                     WriteEnumDefinition(type);
                 }
+                else if (type.IsInterface)
+                {
+                    WriteInterfaceDefinition(type);
+                }
                 else
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(type.FullName);
                 w.WriteLine();
             }
         }
