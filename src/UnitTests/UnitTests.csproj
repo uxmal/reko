@@ -988,7 +988,7 @@
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone*.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.so" />
+    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\libArmNative.so" />
   </ItemGroup>
   <Target Name="AfterBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
