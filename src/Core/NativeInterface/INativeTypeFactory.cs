@@ -30,6 +30,7 @@ namespace Reko.Core.NativeInterface
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("22D115E1-E432-4FD1-86D6-F42225063768")]
     [ComVisible(true)]
+    [NativeInterop]
     public interface INativeTypeFactory
     {
         [PreserveSig] HExpr ArrayOf(HExpr dt, int length);

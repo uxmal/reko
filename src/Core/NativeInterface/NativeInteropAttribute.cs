@@ -29,7 +29,11 @@ namespace Reko.Core.NativeInterface
     /// <summary>
     /// This attribute is used to indicate an interface is to be generated as C++
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class| AttributeTargets.Struct | AttributeTargets.Enum )]
+    [AttributeUsage(
+        AttributeTargets.Class |
+        AttributeTargets.Struct | 
+        AttributeTargets.Enum |
+        AttributeTargets.Interface)]
     public class NativeInteropAttribute : Attribute
     {
     }

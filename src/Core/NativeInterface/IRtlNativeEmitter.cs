@@ -28,11 +28,13 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
+    [NativeInterop]
     public enum HExpr { }
 
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("412E748A-3181-4DBE-AD2A-AE23B5ECEAC2")]
     [ComVisible(true)]
+    [NativeInterop]
     public interface INativeRtlEmitter
     {
         [PreserveSig] void Assign(HExpr dst, HExpr src);
