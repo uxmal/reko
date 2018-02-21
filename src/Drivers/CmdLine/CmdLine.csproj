@@ -74,6 +74,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Name>Microchip.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>

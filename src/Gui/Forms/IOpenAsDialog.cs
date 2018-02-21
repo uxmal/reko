@@ -35,6 +35,7 @@ namespace Reko.Gui.Forms
         IServiceProvider Services { get; set; }
         IComboBox RawFileTypes { get; }
         IComboBox Architectures { get; }
+        IComboBox CPUModels { get; }
         IComboBox Platforms { get; }
         IButton BrowseButton { get; }
         IButton OkButton { get; }

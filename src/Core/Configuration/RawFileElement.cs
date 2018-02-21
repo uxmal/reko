@@ -31,6 +31,7 @@ namespace Reko.Core.Configuration
         string Name { get; set; }
         string Description { get; set; }
         string Architecture { get; set; }
+        string CPUModel { get; set; }
         string Environment { get; set; }
         string BaseAddress { get; set; }
         string Loader { get; set; }
@@ -58,6 +59,8 @@ namespace Reko.Core.Configuration
         public string Description { get; set; }
 
         public string Architecture { get; set; }
+
+        public string CPUModel { get; set; }
 
         public string Environment { get; set; }
 

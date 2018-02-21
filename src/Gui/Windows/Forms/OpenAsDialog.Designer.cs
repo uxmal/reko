@@ -41,6 +41,8 @@
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ddlRawFileTypes = new System.Windows.Forms.ComboBox();
+            this.lblCPUModel = new System.Windows.Forms.Label();
+            this.ddlCPUModels = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -168,6 +170,26 @@
             this.ddlRawFileTypes.Size = new System.Drawing.Size(382, 21);
             this.ddlRawFileTypes.TabIndex = 12;
             // 
+            // lblCPUModel
+            // 
+            this.lblCPUModel.AutoSize = true;
+            this.lblCPUModel.Location = new System.Drawing.Point(190, 190);
+            this.lblCPUModel.Name = "lblCPUModel";
+            this.lblCPUModel.Size = new System.Drawing.Size(122, 13);
+            this.lblCPUModel.TabIndex = 13;
+            this.lblCPUModel.Text = "Select Processor &Model:";
+            // 
+            // ddlCPUModel
+            // 
+            this.ddlCPUModels.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ddlCPUModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlCPUModels.FormattingEnabled = true;
+            this.ddlCPUModels.Location = new System.Drawing.Point(193, 206);
+            this.ddlCPUModels.Name = "ddlCPUModel";
+            this.ddlCPUModels.Size = new System.Drawing.Size(197, 21);
+            this.ddlCPUModels.TabIndex = 14;
+            // 
             // OpenAsDialog
             // 
             this.AcceptButton = this.btnOk;
@@ -175,6 +197,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(402, 330);
+            this.Controls.Add(this.ddlCPUModels);
+            this.Controls.Add(this.lblCPUModel);
             this.Controls.Add(this.ddlRawFileTypes);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAddress);
@@ -216,5 +240,7 @@
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox ddlRawFileTypes;
+        private System.Windows.Forms.Label lblCPUModel;
+        private System.Windows.Forms.ComboBox ddlCPUModels;
     }
 }

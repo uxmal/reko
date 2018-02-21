@@ -503,6 +503,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Name>Microchip.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\tools\xslt\xslt.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}</Project>

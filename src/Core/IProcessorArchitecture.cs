@@ -38,7 +38,7 @@ namespace Reko.Core
         /// Creates an IEnumerable of disassembled MachineInstructions which consumes 
         /// its input from the provided <paramref name="imageReader"/>.
         /// </summary>
-        /// <remarks>This was previously an IEnumerator, but making it IEnumerable lets us use Linq expressions
+        /// <remarks>This was previously an IEnumerator, but making it IEnumerable lets us use LINQ expressions
         /// like Take().</remarks>
         /// <param name="imageReader"></param>
         /// <returns></returns>
@@ -81,7 +81,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Reko.Core
         /// <summary>
         /// Creates a comparer that compares instructions for equality. 
         /// Normalization means some attributes of the instruction are 
-        /// trated as wildcards.
+        /// treated as wildcards.
         /// </summary>
         /// <param name="norm"></param>
         /// <returns></returns>
@@ -133,7 +133,7 @@ namespace Reko.Core
         void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
 
         /// <summary>
-        /// Find the widest subregister that covers the register reg.
+        /// Find the widest sub-register that covers the register reg.
         /// </summary>
         /// <param name="reg"></param>
         /// <param name="bits"></param>
@@ -142,7 +142,7 @@ namespace Reko.Core
 
         RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
-        FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
+        FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bit flags.
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
@@ -150,7 +150,8 @@ namespace Reko.Core
 
         string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
 
-        string Name { get; }                           // Short name used to refer to an architecture.
+        string Name { get; }                                // Short name used to refer to an architecture.
+        string CPUModel { get; set; }                       // Name used to refer to a specific processor model.
         string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
@@ -170,7 +171,7 @@ namespace Reko.Core
         Address MakeAddressFromConstant(Constant c);
 
         /// <summary>
-        /// The dictionary contains options that were loaded from the config file or the executable image. These can be used
+        /// The dictionary contains options that were loaded from the <code>config</code> file or the executable image. These can be used
         /// to customize the properties of the processor.
         /// </summary>
         /// <param name="options"></param>
@@ -198,9 +199,11 @@ namespace Reko.Core
         public ProcessorArchitecture(string archId)
         {
             this.Name = archId;
+            CPUModel = String.Empty;
         }
 
         public string Name { get; }
+        public virtual string CPUModel { get; set; }
         public string Description {get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
@@ -262,14 +265,14 @@ namespace Reko.Core
         public abstract SortedList<string, int> GetOpcodeNames();
 
         /// <summary>
-        /// Get the improper subregister of <paramref name="reg"/> that starts
+        /// Get the improper sub-register of <paramref name="reg"/> that starts
         /// at offset <paramref name="offset"/> and is of size 
         /// <paramref name="width"/>.
         /// </summary>
         /// <remarks>
-        /// Most architectures not have subregisters, and will use this 
+        /// Most architectures not have sub-registers, and will use this 
         /// default implementation. This method is overridden for 
-        /// architectures like x86 and Z80, where subregisters (ah al etc)
+        /// architectures like x86 and Z80, where sub-registers <code>(ah, al, etc)</code>
         /// do exist.
         /// </remarks>
         /// <param name="reg"></param>
@@ -296,4 +299,5 @@ namespace Reko.Core
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
     }
+
 }

@@ -26,12 +26,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Libraries.Microchip;
+
 
 namespace Reko.Gui.Forms
 {
     public class OpenAsInteractor
     {
         private IOpenAsDialog dlg;
+        private PICCrownking picDB;
 
         public void Attach(IOpenAsDialog dlg)
         {
@@ -40,6 +43,7 @@ namespace Reko.Gui.Forms
             dlg.BrowseButton.Click += BrowseButton_Click;
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
+            dlg.Architectures.TextChanged += Architectures_TextChanged;
         }
 
         private void dlg_Load(object sender, EventArgs e)
@@ -47,6 +51,7 @@ namespace Reko.Gui.Forms
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateRawFiles(dcCfg);
             PopulateArchitectures(dcCfg);
+            PopulateCPUModels();
             PopulatePlatforms(dcCfg);
             dlg.AddressTextBox.Text = "0";
             EnableControls();
@@ -55,10 +60,12 @@ namespace Reko.Gui.Forms
         private void EnableControls()
         {
             var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileElement;
+            var arch = ((ListOption)dlg.Architectures.SelectedValue)?.Value as string;
             var unknownRawFileFormat = rawfile == null;
             bool platformRequired = unknownRawFileFormat;
             bool archRequired= unknownRawFileFormat;
             bool addrRequired = unknownRawFileFormat;
+            bool cpuRequired = arch?.StartsWith("pic") ?? false;
             if (!unknownRawFileFormat)
             {
                 platformRequired = string.IsNullOrEmpty(rawfile.Environment);
@@ -67,6 +74,7 @@ namespace Reko.Gui.Forms
             }
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
+            dlg.CPUModels.Enabled = cpuRequired;
             dlg.AddressTextBox.Enabled = addrRequired;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
@@ -114,6 +122,26 @@ namespace Reko.Gui.Forms
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 
+        private void PopulateCPUModels()
+        {
+            ArrayList cpulist = null;
+
+            if (((ListOption)dlg.Architectures.SelectedValue).Value is string sArch)
+            {
+                picDB = PICCrownking.GetDB();
+                if (sArch.StartsWith("pic16"))
+                {
+                    cpulist = new ArrayList(picDB.EnumPICList(p => p.StartsWith("PIC16")).ToArray());
+                }
+                if (sArch.StartsWith("pic18"))
+                {
+                    cpulist = new ArrayList(picDB.EnumPICList(p => p.StartsWith("PIC18")).ToArray());
+                }
+            }
+            dlg.CPUModels.DataSource = cpulist;
+
+        }
+
         private void BrowseButton_Click(object sender, EventArgs e)
         {
            var uiSvc =  dlg.Services.RequireService<IDecompilerShellUiService>();
@@ -134,6 +162,13 @@ namespace Reko.Gui.Forms
         {
             EnableControls();
         }
+
+        private void Architectures_TextChanged(object sender, EventArgs e)
+        {
+            PopulateCPUModels();
+            EnableControls();
+        }
+
     }
 }
 

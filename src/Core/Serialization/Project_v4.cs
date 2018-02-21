@@ -28,7 +28,7 @@ using System.Xml.Serialization;
 namespace Reko.Core.Serialization
 {
     /// <summary>
-    /// Seralization format for decompiler projects.
+    /// Serialization format for decompiler projects.
     /// </summary>
     /// <remarks>
     /// Note that you may safely *add* attributes and elements to the serialization
@@ -47,6 +47,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("arch")]
         public string ArchitectureName;
+
+        [XmlElement("cpumodel")]
+        public string CPUModelName;
 
         [XmlElement("platform")]
         public string PlatformName;

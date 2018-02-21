@@ -42,7 +42,7 @@ using System.Xml;
 namespace Reko.Gui.Forms
 {
     /// <summary>
-    /// Provices a component Container implementation, and specifically handles interactions 
+    /// Provides a component Container implementation, and specifically handles interactions 
     /// with the MainForm. This decouples platform-specific code from the user interaction 
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
@@ -343,6 +343,7 @@ namespace Reko.Gui.Forms
 
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
                 string archName = null;
+                string cpuModel = null;
                 string envName = null;
                 string sAddr = null;
                 string loader = null;
@@ -366,14 +367,16 @@ namespace Reko.Gui.Forms
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
-                Address addrBase;
-                if (!arch.TryParseAddress(sAddr, out addrBase))
+                if (!arch.TryParseAddress(sAddr, out Address addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-
+                cpuModel = dlg.CPUModels.Text;
+                if (arch.Name.StartsWith("pic"))
+                    arch.CPUModel = cpuModel;
                 var details = new LoadDetails
                 {
                     LoaderName = loader,
                     ArchitectureName = archName,
+                    CPUModelName = cpuModel ?? String.Empty,
                     PlatformName = envName,
                     LoadAddress = sAddr,
                     EntryPoint = entry,

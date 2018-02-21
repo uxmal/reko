@@ -54,6 +54,7 @@ namespace Reko.Core
     {
         public string LoaderName;
         public string ArchitectureName;
+        public string CPUModelName;
         public string PlatformName;
         public string LoadAddress;
         public EntryPointElement EntryPoint;

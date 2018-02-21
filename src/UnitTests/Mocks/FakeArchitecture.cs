@@ -67,6 +67,7 @@ namespace Reko.UnitTests.Mocks
 		}
 
         public string Name { get; set; }
+        public string CPUModel { get; set; }
         public string Description { get; set; }
 
         public IEnumerable<MachineInstruction> Test_DisassemblyStream { get; set; }

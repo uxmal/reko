@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Libraries.Microchip;
 using Reko.Loading;
 using System;
 using System.Collections.Generic;
@@ -29,9 +30,8 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace Reko.CmdLine
 {
@@ -44,6 +44,7 @@ namespace Reko.CmdLine
         private IDiagnosticsService diagnosticSvc;
         private CmdLineListener listener;
         private Timer timer;
+        private PICCrownking picDB;
 
         public static void Main(string[] args)
         {
@@ -83,8 +84,7 @@ namespace Reko.CmdLine
             if (pArgs == null)
                 return;
 
-            object defaultTo;
-            if (pArgs.TryGetValue("--default-to", out defaultTo))
+            if (pArgs.TryGetValue("--default-to", out object defaultTo))
             {
                 ldr.DefaultToFormat = (string)defaultTo;
             }
@@ -107,8 +107,7 @@ namespace Reko.CmdLine
 
         private void StartTimer(Dictionary<string, object> pArgs)
         {
-            object oLimit;
-            if (pArgs.TryGetValue("time-limit", out oLimit))
+            if (pArgs.TryGetValue("time-limit", out object oLimit))
             {
                 int msecLimit = 1000 * (int)oLimit;
                 this.timer = new Timer(TimeLimitExpired, null, msecLimit, Timeout.Infinite);
@@ -149,13 +148,11 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
 
-            object loader;
-            pArgs.TryGetValue("--loader", out loader);
+            pArgs.TryGetValue("--loader", out object loader);
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
-                object oHeur;
-                if (pArgs.TryGetValue("heuristics", out oHeur))
+                if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
                 }
@@ -178,29 +175,26 @@ namespace Reko.CmdLine
                 var arch = config.GetArchitecture((string)pArgs["--arch"]);
                 if (arch == null)
                     throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
+                if (pArgs.ContainsKey("--cpumodel")) arch.CPUModel = pArgs["--cpumodel"] as string;
 
-                object sEnv;
-                pArgs.TryGetValue("--env", out sEnv);
+                pArgs.TryGetValue("--env", out object sEnv);
 
-                Address addrBase;
-                object oAddrEntry;
-                if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
+                if (!arch.TryParseAddress((string)pArgs["--base"], out Address addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-                pArgs.TryGetValue("--entry", out oAddrEntry);
+                pArgs.TryGetValue("--entry", out object oAddrEntry);
 
-                object sLoader;
-                pArgs.TryGetValue("--loader", out sLoader);
+                pArgs.TryGetValue("--loader", out object sLoader);
                 var state = CreateInitialState(arch, pArgs);
                 var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
                 {
                     LoaderName = (string)sLoader,
                     ArchitectureName = (string)pArgs["--arch"],
+                    CPUModelName = (string)pArgs["--cpumodel"],
                     PlatformName = (string)sEnv,
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
                 });
-                object oHeur;
-                if (pArgs.TryGetValue("heuristics", out oHeur))
+                if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
                 }
@@ -256,10 +250,20 @@ namespace Reko.CmdLine
                     ShowVersion(w);
                     return null;
                 }
+                else if (arg.StartsWith("--pics"))
+                {
+                    ShowPICs(w);
+                    return null;
+                }
                 else if (args[i] == "--arch")
                 {
                     if (i < args.Length - 1)
                         parsedArgs["--arch"] = args[++i];
+                }
+                else if (args[i] == "--cpumodel")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--cpumodel"] = args[++i];
                 }
                 else if (args[i] == "--env")
                 {
@@ -351,27 +355,66 @@ namespace Reko.CmdLine
             w.WriteLine("    <filename> can be either an executable file or a project file.");
             w.WriteLine();
             w.WriteLine("Options:");
-            w.WriteLine(" --version                Show version number and exit");
-            w.WriteLine(" -h, --help               Show this message and exit");
+            w.WriteLine(" --version                Show version number and exit.");
+            w.WriteLine(" -h, --help               Show this message and exit.");
             w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file");
             w.WriteLine("                          name containing a loader script or the CLR type name");
             w.WriteLine("                          of the loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --cpumodel <cpuname>     Use a specific CPU model.");
+            w.WriteLine("                          Applicable to 'pic16' and 'pic18' architectures only.");
+            w.WriteLine("                          See option '--pics' for a list of PIC models.");
+            w.WriteLine(" --pics                   Show a list of supported PIC models and exit.");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
             DumpEnvironments(config, w, "    {0,-25} {1}");
-            w.WriteLine(" --base <address>         Use <address> as the base address of the program");
+            w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
             w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");
             w.WriteLine("                          to one of the following formats:");
             DumpRawFiles(config, w, "    {0,-25} {1}");
-            w.WriteLine(" --entry <address>        Use <address> as an entry point to the program");
+            w.WriteLine(" --entry <address>        Use <address> as an entry point to the program.");
             w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
             w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
-            w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
+            w.WriteLine(" --time-limit <s>         Limit execution time to s seconds.");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
+        }
+
+        private void ShowPICs(TextWriter w)
+        {
+            picDB = PICCrownking.GetDB();
+            if (picDB == null || picDB.LastError != DBErrorCode.NoError)
+            {
+                Console.WriteLine("No or wrong PIC database.");
+                return;
+            }
+
+            int i = 0;
+            foreach (var pic in picDB.EnumPICList(p => p.StartsWith("PIC16")))
+            {
+                if ((i % 5) == 0)
+                {
+                    i = 0;
+                    w.WriteLine();
+                }
+                w.Write($"{pic,-20}");
+                i++;
+            }
+            w.WriteLine();
+            i = 0;
+            foreach (var pic in picDB.EnumPICList(p => p.StartsWith("PIC18")))
+            {
+                if ((i % 5) == 0)
+                {
+                    i = 0;
+                    w.WriteLine();
+                }
+                w.Write($"{pic,-20}");
+                i++;
+            }
+            w.WriteLine();
         }
 
         private static void DumpArchitectures(IConfigurationService config, TextWriter w, string fmtString)

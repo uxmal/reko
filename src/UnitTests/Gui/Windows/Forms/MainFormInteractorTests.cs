@@ -286,7 +286,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     </user>
   </input>
 </project>";
-            Assert.AreEqual(s, Encoding.UTF8.GetString(xmlStm.ToArray()));
+            var res = Encoding.UTF8.GetString(xmlStm.ToArray());
+            Assert.AreEqual(s, res);
             mr.VerifyAll();
         }
 

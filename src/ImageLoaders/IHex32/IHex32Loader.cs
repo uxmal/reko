@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.IHex32
 
         //TODO: See how to adapt for Microchip PIC IHex32 loading (with memory mapping/checking).
     
-            //TODO: Add at tail, add at head, add inside...
+        //TODO: Add at tail, add at head, add inside...
 
         #region Helper classes
 

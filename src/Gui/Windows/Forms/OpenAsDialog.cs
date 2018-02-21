@@ -40,6 +40,7 @@ namespace Reko.Gui.Windows.Forms
             AddressTextBox = new TextBoxWrapper(txtAddress);
             RawFileTypes = new ComboBoxWrapper(ddlRawFileTypes);
             Architectures = new ComboBoxWrapper(ddlArchitectures);
+            CPUModels = new ComboBoxWrapper(ddlCPUModels);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
             BrowseButton = new ButtonWrapper(btnBrowse);
@@ -55,6 +56,7 @@ namespace Reko.Gui.Windows.Forms
         public ITextBox AddressTextBox { get; private set; }
         public IComboBox RawFileTypes { get; private set; }
         public IComboBox Architectures { get; private set; }
+        public IComboBox CPUModels { get; private set; }
         public IComboBox Platforms { get; private set; }
         public IButton BrowseButton { get; private set; }
         public IButton OkButton { get; private set; }
