@@ -440,9 +440,12 @@ namespace Reko.Scanning
         public SlicerResult VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)
         {
             var se = cof.Expression.Accept(this, BackwardSlicerContext.Cond( RangeOf(cof.Expression)));
-            se.SrcExpr = cof;
-            this.JumpTableIndex = cof.Expression;
-            this.JumpTableIndexToUse = cof.Expression;
+            if (se != null && !se.Stop)
+            {
+                se.SrcExpr = cof;
+                this.JumpTableIndex = cof.Expression;
+                this.JumpTableIndexToUse = cof.Expression;
+            }
             return se;
         }
 
