@@ -82,37 +82,24 @@ namespace Reko.Tools.genPICdb
         }
         private string _mplabXinstalldir = null;
 
-        private string PICLocalDBFilePath
+        private string GenPICdbPath
         {
             get
             {
-                if (_piclocalDBFilePath == null)
+                if (_genPICdbPath == null)
                 {
                     Assembly CrownkingAssembly;
                     CrownkingAssembly = Assembly.GetAssembly(this.GetType());
-                    string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
-                    _piclocalDBFilePath = Path.Combine(sDir, _localdbfile);
+                    _genPICdbPath = Path.GetDirectoryName(CrownkingAssembly.Location);
                 }
-                return _piclocalDBFilePath;
+                return _genPICdbPath;
             }
         }
-        private string _piclocalDBFilePath = null;
+        private string _genPICdbPath = null;
 
-        private string PICDefaultDBFilePath
-        {
-            get
-            {
-                if (_picdefaultDBFilePath == null)
-                {
-                    Assembly CrownkingAssembly;
-                    CrownkingAssembly = Assembly.GetAssembly(this.GetType());
-                    string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
-                    _picdefaultDBFilePath = Path.Combine(sDir, @"..\..", _defaultdbfile);
-                }
-                return _picdefaultDBFilePath;
-            }
-        }
-        private string _picdefaultDBFilePath = null;
+        private string PICLocalDBFilePath => Path.Combine(GenPICdbPath, _localdbfile);
+        private string PICDefaultDBFilePath => Path.Combine(GenPICdbPath, @"..\..", _defaultdbfile);
+        private string PICCopyDBFilePath => Path.Combine(GenPICdbPath, @"..\..", _localdbfile);
 
         private string PacksPath => Path.Combine(MPLABXInstallDir, _packs);
 
@@ -220,12 +207,14 @@ namespace Reko.Tools.genPICdb
             {
                 Console.WriteLine("Keeping a default copy of PIC DB.");
                 File.Copy(PICLocalDBFilePath, PICDefaultDBFilePath, true);
+                File.Copy(PICLocalDBFilePath, PICCopyDBFilePath, true);
                 return 0;
             }
             if (File.Exists(PICDefaultDBFilePath))
             {
                 Console.WriteLine("Copying a default copy of PIC DB.");
                 File.Copy(PICDefaultDBFilePath, PICLocalDBFilePath, true);
+                File.Copy(PICDefaultDBFilePath, PICCopyDBFilePath, true);
                 return 0;
             }
             Console.WriteLine("Unable to find the Microchip MPLAB X IDE installation directory nor a default PIC Database. Please make sure MPLAB X IDE is installed on this system.");

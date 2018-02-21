@@ -123,7 +123,7 @@
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
-    <PICMetadata Include="$(SolutionDir)Tools\genPICdb\picdb.zip" />
+    <PICMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
