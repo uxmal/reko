@@ -879,7 +879,7 @@
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
   </ItemGroup>
   <ItemGroup>
-    <PICMetadata Include="$(SolutionDir)Tools\genPICdb\picdb.zip" />
+    <PICMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
