@@ -604,5 +604,23 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("(byte) d0", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
+
+        [Test]
+        public void Bwslc_DetectUsingExpression()
+        {
+            var r1 = Reg(1);
+            var r2 = Reg(2);
+            var b = Given_Block(0x10);
+            Given_Instrs(b, m => m.Assign(r1, m.Mem32(m.IAdd(r2, 8))));
+            Given_Instrs(b, m => m.Goto(r1));
+
+            var bwslc = new BackwardSlicer(host);
+            Assert.IsTrue(bwslc.Start(b, 0, Target(b)));
+            Assert.AreEqual(new BitRange(0, 32), bwslc.Live[r1].BitRange);
+            Assert.IsTrue(bwslc.Step());
+            Assert.AreEqual(1, bwslc.Live.Count);
+            Assert.AreEqual("@@@", bwslc.Live.First().Key.ToString());
+            Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
+        }
     }
 }
