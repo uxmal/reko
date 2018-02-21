@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -185,15 +185,15 @@
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
-    <PICMetadata Include="$(SolutionDir)Tools\genPICdb\$(OutDir)picdb.zip" />
+    <PICMetadata Include="$(SolutionDir)Tools\genPICdb\$(OutDir)\..\Debug\picdb.zip" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
     <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
     <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
     <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\$(OutDir)Reko.Arch.M68k.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\Microchip\$(OutDir)Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
-    <Architectures Include="$(SolutionDir)Arch\Microchip\$(OutDir)Reko.Arch.Microchip.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
@@ -267,7 +267,7 @@
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying PC definitions database to $(TargetDir)" />
+    <Message Importance="high" Text="Copying PIC definitions database to $(TargetDir)" />
     <Copy SourceFiles="@(PICMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <PropertyGroup>

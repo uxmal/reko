@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -185,7 +185,7 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
-    <Architectures Include="$(ProjectDir)..\..\Arch\Microchip\$(OutDir)Reko.Arch.Microchip.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Microchip\$(OutDir)Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
@@ -245,7 +245,7 @@
     <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying PC definitions database to $(TargetDir)" />
+    <Message Importance="high" Text="Copying PIC definitions database to $(TargetDir)" />
     <Copy SourceFiles="@(PICMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <PropertyGroup>
