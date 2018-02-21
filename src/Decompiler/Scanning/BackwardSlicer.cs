@@ -49,7 +49,7 @@ namespace Reko.Scanning
             this.visited = new HashSet<RtlBlock>();
         }
 
-        public Dictionary<Expression, BitRange> Live { get { return state.Live; } }
+        public Dictionary<Expression, BackwardSlicerContext> Live { get { return state.Live; } }
         public Expression JumpTableFormat { get { return state.JumpTableFormat; } }  // an expression that computes the destination addresses.
 
         public Expression JumpTableIndex { get { return state.JumpTableIndex; } }    // an expression that tests the index 
@@ -117,7 +117,51 @@ namespace Reko.Scanning
         }
     }
 
-    public class SliceState : RtlInstructionVisitor<SlicerResult>, ExpressionVisitor<SlicerResult, BitRange>
+    public enum ContextType
+    {
+        None,
+        Jumptable,
+        Condition,
+    }
+
+    public class BackwardSlicerContext : IComparable<BackwardSlicerContext>
+    {
+        public ContextType Type;
+        public BitRange BitRange;
+
+        public BackwardSlicerContext(ContextType type, BitRange range)
+        {
+            Type = type;
+            BitRange = range;
+        }
+
+        /// <summary>
+        /// The expression is being used in a jump table context.
+        /// </summary>
+        /// <param name="bitRange"></param>
+        /// <returns></returns>
+        public static BackwardSlicerContext Jump(BitRange bitRange)
+        {
+            return new BackwardSlicerContext(ContextType.Jumptable, bitRange);
+        }
+
+        /// <summary>
+        /// The expression is being used in a conditional context.
+        /// </summary>
+        /// <param name="bitRange"></param>
+        /// <returns></returns>
+        public static BackwardSlicerContext Cond(BitRange bitRange)
+        {
+            return new BackwardSlicerContext(ContextType.Condition, bitRange);
+        }
+
+        public int CompareTo(BackwardSlicerContext that)
+        {
+            return this.BitRange.CompareTo(that.BitRange);
+        }
+    }
+
+    public class SliceState : RtlInstructionVisitor<SlicerResult>, ExpressionVisitor<SlicerResult, BackwardSlicerContext>
     {
         private BackwardSlicer slicer;
         public RtlBlock block;
@@ -127,7 +171,7 @@ namespace Reko.Scanning
         public ConditionCode ccNext; // The condition code that is used in a branch.
         public Expression assignLhs; // current LHS
         public bool invertCondition;
-        public Dictionary<Expression, BitRange> Live;
+        public Dictionary<Expression, BackwardSlicerContext> Live;
         private ExpressionValueComparer cmp;
         private ExpressionSimplifier simp;
 
@@ -149,7 +193,7 @@ namespace Reko.Scanning
 
         public bool Start(Expression indirectJump)
         {
-            var sr = indirectJump.Accept(this, RangeOf(indirectJump));
+            var sr = indirectJump.Accept(this, BackwardSlicerContext.Jump(RangeOf(indirectJump)));
             if (JumpTableFormat == null)
             {
                 JumpTableFormat = indirectJump;
@@ -204,8 +248,7 @@ namespace Reko.Scanning
 
         private StorageDomain DomainOf(Expression e)
         {
-            var id = e as Identifier;
-            if (id != null)
+            if (e is Identifier id)
             {
                 return id.Storage.Domain;
             }
@@ -242,7 +285,7 @@ namespace Reko.Scanning
             }
         }
 
-        public SlicerResult VisitAddress(Address addr, BitRange ctx)
+        public SlicerResult VisitAddress(Address addr, BackwardSlicerContext ctx)
         {
             return new SlicerResult
             {
@@ -250,7 +293,7 @@ namespace Reko.Scanning
             };
         }
 
-        public SlicerResult VisitApplication(Application appl, BitRange ctx)
+        public SlicerResult VisitApplication(Application appl, BackwardSlicerContext ctx)
         {
             return new SlicerResult
             {
@@ -258,7 +301,7 @@ namespace Reko.Scanning
             };
         }
 
-        public SlicerResult VisitArrayAccess(ArrayAccess acc, BitRange ctx)
+        public SlicerResult VisitArrayAccess(ArrayAccess acc, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
@@ -291,34 +334,60 @@ namespace Reko.Scanning
             return se;
         }
 
-        public SlicerResult VisitBinaryExpression(BinaryExpression binExp, BitRange ctx)
+        public SlicerResult VisitBinaryExpression(BinaryExpression binExp, BackwardSlicerContext ctx)
         {
-            if (binExp.Operator == Operator.Xor)
+            if ((binExp.Operator == Operator.Xor || binExp.Operator == Operator.ISub) &&
+                cmp.Equals(binExp.Left, binExp.Right))
             {
-                if (cmp.Equals(binExp.Left, binExp.Right))
+                // XOR r,r (or SUB r,r) clears a register. Is it part of a live register?
+                var regDst = assignLhs as Identifier;
+                var regHi = binExp.Left as Identifier;
+                if (regHi != null && regDst != null &&
+                    DomainOf(regDst) == regHi.Storage.Domain &&
+                    regDst.Storage.OffsetOf(regHi.Storage) == 8)
                 {
-                    // XOR r,r clears a register. is it part of a live register?
-                    var regDst = assignLhs as Identifier;
-                    var regHi = binExp.Left as Identifier;
-                    if (regHi != null && regDst != null &&
-                        DomainOf(regDst) == regHi.Storage.Domain &&
-                        regDst.Storage.OffsetOf(regHi.Storage) == 8)
+                    // The 8086 didn't have a MOVZX instruction, so clearing the high byte of a
+                    // register BX was done by issuing XOR BH,BH
+                    var seXor = new SlicerResult
                     {
-                        // The 8086 didn't have a MOVZX instruction, so clearing the high byte of a
-                        // register BX was done by issuing XOR BH,BH
-                        var seXor = new SlicerResult
-                        {
-                            SrcExpr = new Cast(regDst.DataType, new Cast(PrimitiveType.Byte, this.assignLhs)),
-                            LiveExprs = new Dictionary<Expression, BitRange> { { this.assignLhs, new BitRange(0, 8) } }
-                        };
-                        return seXor;
-                    }
+                        SrcExpr = new Cast(regDst.DataType, new Cast(PrimitiveType.Byte, this.assignLhs)),
+                        LiveExprs = new Dictionary<Expression, BackwardSlicerContext> {
+                            {
+                                this.assignLhs, BackwardSlicerContext.Jump(new BitRange(0, 8))
+                            } }
+                    };
+                    return seXor;
                 }
             }
 
             var seLeft = binExp.Left.Accept(this, ctx);
             var seRight = binExp.Right.Accept(this, ctx);
-            if (binExp.Operator == Operator.And)
+            if (seLeft == null && seRight == null)
+                return null;
+            if (binExp.Operator == Operator.ISub)
+            {
+                var domLeft = DomainOf(seLeft.SrcExpr);
+                foreach (var live in Live.Keys)
+                {
+                    if (DomainOf(live) == domLeft)
+                    {
+                        if (cmp.Equals(this.assignLhs, this.JumpTableIndex))
+                        {
+                            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+                            this.JumpTableIndex = live;
+                            this.JumpTableIndexToUse = binExp.Left;
+                            this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
+                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
+                            return new SlicerResult
+                            {
+                                SrcExpr = binExp,
+                                Stop = Live.Count == 1,
+                            };
+                        }
+                    }
+                }
+            }
+            else if (binExp.Operator == Operator.And)
             {
                 this.JumpTableIndex = binExp.Left;
                 this.JumpTableIndexToUse = binExp.Left;
@@ -341,7 +410,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitBranch(RtlBranch branch)
         {
-            var se = branch.Condition.Accept(this, new BitRange(0, 0));
+            var se = branch.Condition.Accept(this, BackwardSlicerContext.Jump(new BitRange(0, 0)));
             var addrTarget = branch.Target as Address;
             if (addrTarget == null)
                 throw new NotImplementedException();    //#REVIEW: do we ever see this?
@@ -357,70 +426,41 @@ namespace Reko.Scanning
             return null;
         }
 
-        public SlicerResult VisitCast(Cast cast, BitRange ctx)
+        public SlicerResult VisitCast(Cast cast, BackwardSlicerContext ctx)
         {
-            ctx = new BitRange(0, (short)cast.DataType.BitSize);
-            return cast.Expression.Accept(this, ctx);
+            var range = new BitRange(0, (short)cast.DataType.BitSize);
+            return cast.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
-        public SlicerResult VisitConditionalExpression(ConditionalExpression c, BitRange context)
+        public SlicerResult VisitConditionalExpression(ConditionalExpression c, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitConditionOf(ConditionOf cof, BitRange ctx)
+        public SlicerResult VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)
         {
-            if (cof.Expression is BinaryExpression bin)
-            {
-                if (bin.Operator == Operator.ISub)
-                {
-                    var domLeft = DomainOf(bin.Left);
-                    foreach (var live in Live.Keys)
-                    {
-                        if (DomainOf(live) == domLeft)
-                        {
-                            if (cmp.Equals(this.assignLhs, this.JumpTableIndex))
-                            {
-                                //$TODO: if not same, inject a statement.
-                                this.JumpTableIndex = live;
-                                this.JumpTableIndexToUse = bin.Left;
-                                this.JumpTableIndexInterval = MakeInterval_ISub(live, bin.Right as Constant);
-                                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
-                                return new SlicerResult
-                                {
-                                    SrcExpr = cof,
-                                    Stop = Live.Count == 1,
-                                };
-                            }
-                        }
-                    }
-                }
-                else
-                    throw new NotImplementedException();
-            }
-            var se = cof.Expression.Accept(this, RangeOf(cof.Expression));
+            var se = cof.Expression.Accept(this, BackwardSlicerContext.Cond( RangeOf(cof.Expression)));
             se.SrcExpr = cof;
             this.JumpTableIndex = cof.Expression;
             this.JumpTableIndexToUse = cof.Expression;
-
             return se;
         }
 
-        public SlicerResult VisitConstant(Constant c, BitRange ctx)
+        public SlicerResult VisitConstant(Constant c, BackwardSlicerContext ctx)
         {
             return new SlicerResult
             {
-                LiveExprs = new Dictionary<Expression, BitRange>(),
+                LiveExprs = new Dictionary<Expression, BackwardSlicerContext>(),
                 SrcExpr = c,
             };
         }
 
-        public SlicerResult VisitDepositBits(DepositBits d, BitRange ctx)
+        public SlicerResult VisitDepositBits(DepositBits d, BackwardSlicerContext ctx)
         {
             var srSrc = d.Source.Accept(this, ctx);
             var brBits = RangeOf(d.InsertedBits);
-            var srBits = d.InsertedBits.Accept(this, brBits);
-            if (brBits == ctx)
+            var srBits = d.InsertedBits.Accept(this, new BackwardSlicerContext(ctx.Type, brBits));
+            if (brBits == ctx.BitRange)
             {
                 return new SlicerResult
                 {
@@ -440,20 +480,20 @@ namespace Reko.Scanning
             }
         }
 
-        public SlicerResult VisitDereference(Dereference deref, BitRange ctx)
+        public SlicerResult VisitDereference(Dereference deref, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
 
-        public SlicerResult VisitFieldAccess(FieldAccess acc, BitRange ctx)
+        public SlicerResult VisitFieldAccess(FieldAccess acc, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
         public SlicerResult VisitGoto(RtlGoto go)
         {
-            var sr = go.Target.Accept(this, RangeOf(go.Target));
+            var sr = go.Target.Accept(this, BackwardSlicerContext.Cond(RangeOf(go.Target)));
             if (JumpTableFormat == null)
             {
                 JumpTableFormat = go.Target;
@@ -466,7 +506,7 @@ namespace Reko.Scanning
             return new BitRange(0, (short)expr.DataType.BitSize);
         }
 
-        public SlicerResult VisitIdentifier(Identifier id, BitRange ctx)
+        public SlicerResult VisitIdentifier(Identifier id, BackwardSlicerContext ctx)
         {
             var sr = new SlicerResult
             {
@@ -486,15 +526,15 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitMemberPointerSelector(MemberPointerSelector mps, BitRange ctx)
+        public SlicerResult VisitMemberPointerSelector(MemberPointerSelector mps, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitMemoryAccess(MemoryAccess access, BitRange ctx)
+        public SlicerResult VisitMemoryAccess(MemoryAccess access, BackwardSlicerContext ctx)
         {
-            var ctxEa = new BitRange(0, (short)access.EffectiveAddress.DataType.BitSize);
-            var srEa = access.EffectiveAddress.Accept(this, ctxEa);
+            var rangeEa = new BitRange(0, (short)access.EffectiveAddress.DataType.BitSize);
+            var srEa = access.EffectiveAddress.Accept(this, new BackwardSlicerContext(ctx.Type, rangeEa));
             return new SlicerResult
             {
                 LiveExprs = srEa.LiveExprs,
@@ -503,7 +543,7 @@ namespace Reko.Scanning
             };
         }
 
-        public SlicerResult VisitMkSequence(MkSequence seq, BitRange ctx)
+        public SlicerResult VisitMkSequence(MkSequence seq, BackwardSlicerContext ctx)
         {
             var srHead = seq.Head.Accept(this, ctx);
             var srTail = seq.Tail.Accept(this, ctx);
@@ -520,22 +560,22 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitOutArgument(OutArgument outArgument, BitRange ctx)
+        public SlicerResult VisitOutArgument(OutArgument outArgument, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitPhiFunction(PhiFunction phi, BitRange ctx)
+        public SlicerResult VisitPhiFunction(PhiFunction phi, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitPointerAddition(PointerAddition pa, BitRange ctx)
+        public SlicerResult VisitPointerAddition(PointerAddition pa, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitProcedureConstant(ProcedureConstant pc, BitRange ctx)
+        public SlicerResult VisitProcedureConstant(ProcedureConstant pc, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
@@ -545,12 +585,12 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitScopeResolution(ScopeResolution scopeResolution, BitRange ctx)
+        public SlicerResult VisitScopeResolution(ScopeResolution scopeResolution, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitSegmentedAccess(SegmentedAccess access, BitRange ctx)
+        public SlicerResult VisitSegmentedAccess(SegmentedAccess access, BackwardSlicerContext ctx)
         {
             var sr = access.EffectiveAddress.Accept(this, ctx);
             return sr;
@@ -561,20 +601,20 @@ namespace Reko.Scanning
             return null;
         }
 
-        public SlicerResult VisitSlice(Slice slice, BitRange ctx)
+        public SlicerResult VisitSlice(Slice slice, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public SlicerResult VisitTestCondition(TestCondition tc, BitRange ctx)
+        public SlicerResult VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)
         {
-            var se = tc.Expression.Accept(this, RangeOf(tc.Expression));
+            var se = tc.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(tc.Expression)));
             this.ccNext = tc.ConditionCode;
             this.JumpTableIndex = tc.Expression;
             return se;
         }
 
-        public SlicerResult VisitUnaryExpression(UnaryExpression unary, BitRange ctx)
+        public SlicerResult VisitUnaryExpression(UnaryExpression unary, BackwardSlicerContext ctx)
         {
             throw new NotImplementedException();
         }
@@ -595,14 +635,14 @@ namespace Reko.Scanning
             return sb.ToString();
         }
 
-        private string DumpLive(Dictionary<Expression, BitRange> live)
+        private string DumpLive(Dictionary<Expression, BackwardSlicerContext> live)
         {
             return string.Format("{{ {0} }}",
                 string.Join(
                     ",",
                     live
                         .OrderBy(l => l.Key.ToString())
-                        .Select(l => $"{{ {l.Key}, {l.Value} }}")));
+                        .Select(l => $"{{ {l.Key}, {l.Value.Type} {l.Value.BitRange} }}")));
         }
 
         public SliceState CreateNew(RtlBlock block, Address addrSucc)
@@ -612,7 +652,7 @@ namespace Reko.Scanning
                 JumpTableFormat = this.JumpTableFormat,
                 JumpTableIndex = this.JumpTableIndex,
                 JumpTableIndexInterval = this.JumpTableIndexInterval,
-                Live = new Dictionary<Expression, BitRange>(this.Live, this.Live.Comparer),
+                Live = new Dictionary<Expression, BackwardSlicerContext>(this.Live, this.Live.Comparer),
                 ccNext = this.ccNext,
                 invertCondition = this.invertCondition,
                 addrSucc = addrSucc
@@ -735,7 +775,7 @@ namespace Reko.Scanning
     public class SlicerResult
     {
         // Live storages are involved in the computation of the jump destinations.
-        public Dictionary<Expression, BitRange> LiveExprs = new Dictionary<Expression, BitRange>();
+        public Dictionary<Expression, BackwardSlicerContext> LiveExprs = new Dictionary<Expression, BackwardSlicerContext>();
         public Expression SrcExpr;
 
         public bool Stop { get; internal set; }

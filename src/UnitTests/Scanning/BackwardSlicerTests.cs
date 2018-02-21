@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Scanning
 
             var bwslc = new BackwardSlicer(host);
             Assert.IsTrue(bwslc.Start(b, 0, Target(b)));
-            Assert.AreEqual(bwslc.Live[r1], new BitRange(0, 32));
+            Assert.AreEqual(new BitRange(0, 32), bwslc.Live[r1].BitRange);
         }
 
         [Test]
@@ -600,9 +600,9 @@ namespace Reko.UnitTests.Scanning
                 ;
             Assert.AreEqual(1, bwslc.Live.Count);
             Assert.AreEqual("(int32) (int16) Mem0[(word32) (word16) ((word32) d0 * 0x00000002) + 0x0010EC32:word16] + 0x0010EC30", bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("v2", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("r1", bwslc.JumpTableIndexToUse.ToString(), "Register to use when indexing");
-            Assert.AreEqual("r1", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("(byte) d0", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
     }
 }
