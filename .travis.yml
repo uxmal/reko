@@ -23,7 +23,7 @@ before_install:
   - sudo chown -R root:root /var/cache/apt
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
-  - sudo apt-get install -y gcc-7 g++-7
+  - sudo apt-get install -y gcc-7-multilib g++-7-multilib
   - mkdir -p $HOME/prefix/bin
   - ln -s /usr/bin/gcc-7 $HOME/prefix/bin/gcc
   - ln -s /usr/bin/g++-7 $HOME/prefix/bin/g++
@@ -44,7 +44,7 @@ install:
 script:
   - source .travis_env
   - msbuild /version
-  - msbuild /p:Configuration=TravisRelease /p:Platform=x64 src/Reko-decompiler.sln
+  - msbuild /p:Configuration=TravisRelease /p:Platform=x86 src/Reko-decompiler.sln
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/tools/c2xml/bin/TravisRelease/c2xml.exe -exclude=UserInterface,FailedTests
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/x64/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,FailedTests
-  - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=TravisRelease
+  - python ./subjects/regressionTests.py --check-output --platform=x86 --configuration=TravisRelease
