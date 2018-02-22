@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using System;
@@ -58,5 +59,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public IComboBox Platforms { get; private set; }
         public IButton BrowseButton { get; private set; }
         public IButton OkButton { get; private set; }
+
+        public Architecture GetSelectedArchitecture()
+        {
+            return (Architecture)((ListOption)Architectures.SelectedValue).Value;
+        }
+
+        public OperatingEnvironment GetSelectedEnvironment()
+        {
+            return (OperatingEnvironment)((ListOption)Platforms.SelectedValue).Value;
+        }
     }
 }

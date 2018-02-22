@@ -40,9 +40,10 @@ namespace Reko.Gui.Forms
             dlg.BrowseButton.Click += BrowseButton_Click;
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
+            dlg.Architectures.SelectedIndexChanged += Architectures_SelectedIndexChanged;
         }
 
-        private void dlg_Load(object sender, EventArgs e)
+         private void dlg_Load(object sender, EventArgs e)
         {
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateRawFiles(dcCfg);
@@ -131,6 +132,11 @@ namespace Reko.Gui.Forms
         }
 
         private void RawFileTypes_TextChanged(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
+
+        private void Architectures_SelectedIndexChanged(object sender, EventArgs e)
         {
             EnableControls();
         }

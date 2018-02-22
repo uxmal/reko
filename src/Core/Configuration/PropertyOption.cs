@@ -18,29 +18,21 @@
  */
 #endregion
 
-using Reko.Core.Configuration;
-using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Forms
+namespace Reko.Core.Configuration
 {
-    public interface IOpenAsDialog : IDialog
+    public class PropertyOption
     {
-        event EventHandler Load;
-
-        ITextBox AddressTextBox { get; }
-        ITextBox FileName { get; }
-        IServiceProvider Services { get; set; }
-        IComboBox RawFileTypes { get; }
-        IComboBox Architectures { get; }
-        IComboBox Platforms { get; }
-        IButton BrowseButton { get; }
-        IButton OkButton { get; }
-
-        Architecture GetSelectedArchitecture();
-        OperatingEnvironment GetSelectedEnvironment();
+        public string Name { get; internal set; }
+        public string Text { get; internal set; }
+        public string Description { get; internal set; }
+        public bool Required { get; internal set; }
+        public string TypeName { get; internal set; }
+        public ListOption_v1[] Choices { get; internal set; }
     }
 }

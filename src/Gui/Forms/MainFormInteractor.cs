@@ -339,9 +339,10 @@ namespace Reko.Gui.Forms
                     sAddr = raw.BaseAddress;
                     entry = raw.EntryPoint;
                 }
-                archName = archName ?? (string) ((ListOption)dlg.Architectures.SelectedValue).Value;
-                var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
-                envName =  envName ?? (envOption?.Name);
+                Architecture archOption = dlg.GetSelectedArchitecture();
+                OperatingEnvironment envOption = dlg.GetSelectedEnvironment();
+                archName = archName ?? archOption?.Name;
+                envName = envName ?? envOption?.Name;
                 sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
 
                 arch = config.GetArchitecture(archName);

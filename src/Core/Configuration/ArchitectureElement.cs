@@ -50,5 +50,10 @@ namespace Reko.Core.Configuration
         /// .NET type name for the architecture.
         /// </summary>
         public string TypeName { get; set; }
+
+        /// <summary>
+        /// Available property options.
+        /// </summary>
+        public List<PropertyOption> Options{ get; set; }
     }
 }
