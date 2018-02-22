@@ -15,3 +15,4 @@ globals_t: (in globals : (ptr (struct "Globals")))
 typedef struct Globals {
 } Eq_1;
 
+
