@@ -189,7 +189,7 @@ namespace Reko.CmdLine
                 {
                     LoaderName = (string)sLoader,
                     ArchitectureName = (string)pArgs["--arch"],
-                    CPUModelName = (string)pArgs["--cpumodel"],
+                    CPUModelName = arch.CPUModel,
                     PlatformName = (string)sEnv,
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
