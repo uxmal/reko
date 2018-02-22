@@ -28,11 +28,11 @@ namespace Reko.Core.Configuration
 {
     public class PropertyOption
     {
-        public string Name { get; internal set; }
-        public string Text { get; internal set; }
-        public string Description { get; internal set; }
-        public bool Required { get; internal set; }
-        public string TypeName { get; internal set; }
-        public ListOption_v1[] Choices { get; internal set; }
+        public string Name { get; set; }
+        public string Text { get; set; }
+        public string Description { get; set; }
+        public bool Required { get; set; }
+        public string TypeName { get; set; }
+        public ListOption_v1[] Choices { get; set; }
     }
 }
