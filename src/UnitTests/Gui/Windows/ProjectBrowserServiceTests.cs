@@ -122,6 +122,8 @@ namespace Reko.UnitTests.Gui.Windows
             public event DragEventHandler DragDrop;
             public event EventHandler DragLeave;
             public event MouseEventHandler MouseWheel;
+            public event EventHandler GotFocus;
+            public event EventHandler LostFocus;
 
             public FakeTreeView()
             {

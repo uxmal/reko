@@ -319,6 +319,7 @@ namespace Reko.Gui.Forms
             {
                 dlg = dlgFactory.CreateOpenAsDialog();
                 dlg.Services = sc;
+                dlg.ArchitectureOptions = new Dictionary<string, object>();
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
@@ -328,7 +329,6 @@ namespace Reko.Gui.Forms
                 string sAddr = null;
                 string loader = null;
                 EntryPointElement entry = null;
-
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
                     RawFileElement raw = null;
@@ -344,10 +344,10 @@ namespace Reko.Gui.Forms
                 archName = archName ?? archOption?.Name;
                 envName = envName ?? envOption?.Name;
                 sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
-
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
+                arch.LoadUserOptions(dlg.ArchitectureOptions);
                 if (!arch.TryParseAddress(sAddr, out var addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
 

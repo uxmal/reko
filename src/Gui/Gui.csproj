@@ -123,6 +123,7 @@
     <Compile Include="Controls\IListBox.cs" />
     <Compile Include="Controls\IListView.cs" />
     <Compile Include="Controls\INumericUpDownWrapper.cs" />
+    <Compile Include="Controls\IPropertyGrid.cs" />
     <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Controls\KeyEventArgs.cs" />

@@ -43,6 +43,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             Architectures = new ComboBoxWrapper(ddlArchitectures);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
+            PropertyGrid = new PropertyGridWrapper(propertyGrid);
             BrowseButton = new ButtonWrapper(btnBrowse);
             OkButton = new ButtonWrapper(btnOk);
 
@@ -57,8 +58,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public IComboBox RawFileTypes { get; private set; }
         public IComboBox Architectures { get; private set; }
         public IComboBox Platforms { get; private set; }
+        public IPropertyGrid PropertyGrid { get; private set; }
         public IButton BrowseButton { get; private set; }
         public IButton OkButton { get; private set; }
+
+        public Dictionary<string, object> ArchitectureOptions { get; set; }
 
         public Architecture GetSelectedArchitecture()
         {

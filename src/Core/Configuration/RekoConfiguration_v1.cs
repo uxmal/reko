@@ -98,7 +98,7 @@ namespace Reko.Core.Configuration
         [DefaultValue(false)]
         public bool Required;
 
-        [XmlArrayItem("Choice")]
+        [XmlElement("Choice", typeof(ListOption_v1))]
         public ListOption_v1 [] Choices;
     }
 

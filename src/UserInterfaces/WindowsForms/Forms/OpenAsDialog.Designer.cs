@@ -41,6 +41,8 @@
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ddlRawFileTypes = new System.Windows.Forms.ComboBox();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -59,13 +61,13 @@
             this.textBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
             this.textBox1.Location = new System.Drawing.Point(8, 29);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(352, 20);
+            this.textBox1.Size = new System.Drawing.Size(353, 20);
             this.textBox1.TabIndex = 1;
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(366, 28);
+            this.btnBrowse.Location = new System.Drawing.Point(367, 28);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(24, 23);
             this.btnBrowse.TabIndex = 2;
@@ -98,7 +100,7 @@
             this.ddlEnvironments.FormattingEnabled = true;
             this.ddlEnvironments.Location = new System.Drawing.Point(8, 113);
             this.ddlEnvironments.Name = "ddlEnvironments";
-            this.ddlEnvironments.Size = new System.Drawing.Size(382, 21);
+            this.ddlEnvironments.Size = new System.Drawing.Size(383, 21);
             this.ddlEnvironments.TabIndex = 3;
             // 
             // ddlArchitectures
@@ -109,14 +111,14 @@
             this.ddlArchitectures.FormattingEnabled = true;
             this.ddlArchitectures.Location = new System.Drawing.Point(8, 161);
             this.ddlArchitectures.Name = "ddlArchitectures";
-            this.ddlArchitectures.Size = new System.Drawing.Size(382, 21);
+            this.ddlArchitectures.Size = new System.Drawing.Size(383, 21);
             this.ddlArchitectures.TabIndex = 5;
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(234, 296);
+            this.btnOk.Location = new System.Drawing.Point(235, 457);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 7;
@@ -127,7 +129,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(315, 296);
+            this.btnCancel.Location = new System.Drawing.Point(316, 457);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
@@ -168,13 +170,34 @@
             this.ddlRawFileTypes.Size = new System.Drawing.Size(382, 21);
             this.ddlRawFileTypes.TabIndex = 12;
             // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.propertyGrid.Location = new System.Drawing.Point(8, 254);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(382, 197);
+            this.propertyGrid.TabIndex = 13;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 238);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(46, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Op&tions:";
+            // 
             // OpenAsDialog
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(402, 330);
+            this.ClientSize = new System.Drawing.Size(403, 491);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.propertyGrid);
             this.Controls.Add(this.ddlRawFileTypes);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAddress);
@@ -216,5 +239,7 @@
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox ddlRawFileTypes;
+        private System.Windows.Forms.PropertyGrid propertyGrid;
+        private System.Windows.Forms.Label label6;
     }
 }

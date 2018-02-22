@@ -32,6 +32,8 @@ namespace Reko.Core.Configuration
         string Description { get; }
 
         string TypeName { get; }
+
+        List<PropertyOption> Options { get; set; }
     }
 
     public class ArchitectureElement : Architecture

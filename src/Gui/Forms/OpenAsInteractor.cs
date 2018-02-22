@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Gui.Windows;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,10 +41,17 @@ namespace Reko.Gui.Forms
             dlg.BrowseButton.Click += BrowseButton_Click;
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
-            dlg.Architectures.SelectedIndexChanged += Architectures_SelectedIndexChanged;
+            dlg.Architectures.TextChanged += Architectures_TextChanged;
+
+            dlg.AddressTextBox.GotFocus += AddressTextBox_GotFocus;
+            dlg.RawFileTypes.GotFocus += RawFileTypes_GotFocus;
+            dlg.Platforms.GotFocus += Platforms_GotFocus;
+            dlg.Architectures.GotFocus += Architectures_GotFocus;
         }
 
-         private void dlg_Load(object sender, EventArgs e)
+  
+
+        private void dlg_Load(object sender, EventArgs e)
         {
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateRawFiles(dcCfg);
@@ -69,6 +77,7 @@ namespace Reko.Gui.Forms
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
             dlg.AddressTextBox.Enabled = addrRequired;
+            dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
 
@@ -111,7 +120,7 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<Architecture>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a.Name });
+                .Select(a => new ListOption { Text = a.Description, Value = a });
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 
@@ -136,8 +145,48 @@ namespace Reko.Gui.Forms
             EnableControls();
         }
 
-        private void Architectures_SelectedIndexChanged(object sender, EventArgs e)
+        private void Architectures_TextChanged(object sender, EventArgs e)
         {
+            OnArchitectureChanged();
+            EnableControls();
+        }
+
+        private void Architectures_GotFocus(object sender, EventArgs e)
+        {
+            OnArchitectureChanged();
+            EnableControls();
+        }
+
+        private void OnArchitectureChanged()
+        {
+            var arch = dlg.GetSelectedArchitecture();
+            if (arch != null && arch.Options?.Count > 0)
+            {
+                dlg.PropertyGrid.SelectedObject = new PropertyOptionsGridAdapter(
+                    dlg.ArchitectureOptions,
+                    arch.Options);
+            }
+            else
+            {
+                dlg.PropertyGrid.SelectedObject = null;
+            }
+        }
+
+        private void Platforms_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
+            EnableControls();
+        }
+
+        private void RawFileTypes_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
+            EnableControls();
+        }
+
+        private void AddressTextBox_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
             EnableControls();
         }
     }

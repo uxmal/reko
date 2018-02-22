@@ -37,8 +37,11 @@ namespace Reko.Gui.Forms
         IComboBox RawFileTypes { get; }
         IComboBox Architectures { get; }
         IComboBox Platforms { get; }
+        IPropertyGrid PropertyGrid { get; }
         IButton BrowseButton { get; }
         IButton OkButton { get; }
+
+        Dictionary<string, object> ArchitectureOptions { get; set; }
 
         Architecture GetSelectedArchitecture();
         OperatingEnvironment GetSelectedEnvironment();
