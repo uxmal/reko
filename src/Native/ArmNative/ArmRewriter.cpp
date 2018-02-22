@@ -38,7 +38,6 @@ ArmRewriter::ArmRewriter(
 	m(*emitter),
 	ntf(*ntf),
 	host(host),
-	cRef(1),
 	instr(nullptr)
 {
 	//Dump(".ctor: %08x", this);

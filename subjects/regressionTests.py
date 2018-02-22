@@ -151,8 +151,9 @@ def processor(dir, rel_pname, exe_and_args):
     os.chdir(dir)
     # print("Processor %s %s %s" % (dir, rel_pname, exe_and_args))
     banner = os.path.join(os.path.relpath(dir, start_dir), rel_pname)
-    if sys.platform == "linux2":
+    if sys.platform.startswith("linux") or sys.platform == "darwin":
         exe_and_args.insert(0, "mono")
+        exe_and_args.insert(1, "--debug") # enables line numbers in stack traces
     output_lines = "=== " + banner + "\n"
     start = time.time()
     # print ("Starting %s at %s" % (banner, start))

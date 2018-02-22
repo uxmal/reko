@@ -34,6 +34,7 @@ namespace Reko.Core.NativeInterface
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("412E748A-3181-4DBE-AD2A-AE23B5ECEAC2")]
     [ComVisible(true)]
+    [ComImport]
     [NativeInterop]
     public interface INativeRtlEmitter
     {

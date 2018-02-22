@@ -29,6 +29,7 @@
 
 ArmArchitecture::ArmArchitecture()
 {
+
 	AddRef();
 }
 
@@ -79,7 +80,9 @@ INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(
 	INativeTypeFactory * typeFactory,
 	INativeRewriterHost * host)
 {
-	return new ArmRewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length-offset, address, m, typeFactory, host);
+	auto rw = new ArmRewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length-offset, address, m, typeFactory, host);
+	rw->AddRef();
+	return rw;
 }
 
 const NativeRegister ArmArchitecture::aRegs[110] = {

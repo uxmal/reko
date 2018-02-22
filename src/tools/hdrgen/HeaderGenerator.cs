@@ -208,8 +208,25 @@ namespace Reko.Tools.HdrGen
             var guid = new Guid(value);
             var ab = guid.ToByteArray();
             w.WriteLine($"// {guid:B}".ToUpper());
-            w.WriteLine("const IID IID_{0} =", name);
-            w.WriteLine("    {0:X};", guid);
+            
+            var guid_args = $"{guid:B}".ToUpper().Replace("{", "").Replace("}", "");
+            var guid_parts = guid_args.Split('-');
+
+            var define_args = new List<string>();
+
+            for(int i=0; i<3; i++){
+                define_args.Add("0x" + guid_parts[i]);
+            }
+            
+            for(int i=3; i<guid_parts.Length; i++){
+                var piece = guid_parts[i];
+                for(int c=0; c<piece.Length; c+=2){
+                    define_args.Add("0x" + piece.Substring(c, 2));
+                }
+            }
+
+            var guid_define = $"DEFINE_GUID(IID_{name}, {string.Join(",", define_args.ToArray())});";
+            w.WriteLine(guid_define);
         }
 
         private void GenerateOutput(IEnumerable<Type> types, TextWriter w)
