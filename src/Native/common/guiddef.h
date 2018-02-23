@@ -26,10 +26,12 @@ typedef struct _GUID {
 } GUID;
 
 
+#ifndef _MSC_VER
 #if defined(__cplusplus) && (USE___UUIDOF == 0)
 extern "C++" {
 __extension__ template<typename T> const GUID &__mingw_uuidof();
 }
+#endif
 #endif
 
 #ifndef FAR
@@ -38,7 +40,7 @@ __extension__ template<typename T> const GUID &__mingw_uuidof();
 
 
 #ifndef DECLSPEC_SELECTANY
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && (_MSC_VER >= 1100)
 #define DECLSPEC_SELECTANY __declspec(selectany)
 #else
 #define DECLSPEC_SELECTANY
