@@ -74,7 +74,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Disassemble a single instruction. Return null if the end of the reader has been reached.
         /// </summary>
         /// <returns>
-        /// A PIC18Instruction.
+        /// A <seealso cref="PIC18Instruction"/> instance.
         /// </returns>
         /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
         ///                                              condition occurs.</exception>

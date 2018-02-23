@@ -23,7 +23,7 @@ namespace Reko.Arch.Microchip.PIC18
 {
     /// <summary>
     /// Values that represent opcodes of the PIC18 Legacy/Extended/Enhanced family.
-    // Note: Opcodes are defined in uppercase to conform to Microchip MASM syntax.
+    // Note: Opcodes are defined in uppercase to conform to Microchip MPASM syntax.
     /// </summary>
     public enum Opcode
     {
@@ -188,7 +188,22 @@ namespace Reko.Arch.Microchip.PIC18
         ///<summary>Subtracts literal from FSR2 and return</summary>
         SUBULNK,
         ///<summary>Move indexed to f (Long range - enhanced PIC18 only)</summary>
-        MOVSFL
+        MOVSFL,
+
+        // Pseudo-instructions
+        
+        /// <summary>Configuration bits pseudo-instruction . </summary>
+        CONFIG,
+        /// <summary>Store string in program memory pseudo-instruction . </summary>
+        DA,
+        /// <summary>Store data byte in program memory pseudo-instruction . </summary>
+        DB,
+        /// <summary>Store data byte in EEPROM memory pseudo-instruction . </summary>
+        DE,
+        /// <summary>Store data word in program memory pseudo-instruction . </summary>
+        DW,
+        /// <summary>Store word in ID locations memory pseudo-instruction . </summary>
+        IDLOCS
     }
 
 }
