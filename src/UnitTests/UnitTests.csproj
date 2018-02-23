@@ -869,6 +869,7 @@
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
@@ -877,9 +878,6 @@
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
     <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.so" />
-  </ItemGroup>
-  <ItemGroup>
-    <PICMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
@@ -905,8 +903,6 @@
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ExternalAssemblies)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="normal" Text="Copying PC definitions database to $(TargetDir)" />
-    <Copy SourceFiles="@(PICMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -204,7 +204,7 @@
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
-    <PICMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
     <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
     <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
@@ -306,7 +306,5 @@
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying PIC definitions database to $(TargetDir)" />
-    <Copy SourceFiles="@(PICMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

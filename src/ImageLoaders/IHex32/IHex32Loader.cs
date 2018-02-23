@@ -35,9 +35,11 @@ namespace Reko.ImageLoaders.IHex32
     public class IHEX32Loader : ImageLoader
     {
 
-        //TODO: See how to adapt for Microchip PIC IHex32 loading (with memory mapping/checking).
-    
-        //TODO: Add at tail, add at head, add inside...
+        //TODO: See how to adapt for Microchip PIC image loading (with memory mapping/checking) or other processors.
+
+        //TODO: As Intel Hex specs do not specify any ordering of records, we should be able, getting a new record,
+        // to add it at tail, at head, or merge with already loaded records.
+        // For the time being we assume we are safe and Hex records are contiguous and sorted in increasing load address.
 
         #region Helper classes
 
@@ -52,7 +54,7 @@ namespace Reko.ImageLoaders.IHex32
                 BaseAddress = bAddr;
                 Datum = new List<byte>();
             }
-            public MemChunk(uint address) : this (Address.Ptr32(address))
+            public MemChunk(uint address) : this(Address.Ptr32(address))
             {
             }
 
@@ -174,27 +176,11 @@ namespace Reko.ImageLoaders.IHex32
         /// <summary>
         /// Loads the image into memory starting at the specified address.
         /// </summary>
-        /// <param name="addrLoad">Base address of program image.</param>
+        /// <param name="addrLoad">Base address of program image. IGNORED.</param>
         /// <returns>
-        /// NOT IMPLEMENTED.
+        /// A <see cref="Program"/> instance.
         /// </returns>
         public override Program Load(Address addrLoad)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Loads the image into memory at the specified address, using the provided
-        /// IProcessorArchitecture and IPlatform. Used when loading raw files; not all image loaders can
-        /// support this.
-        /// </summary>
-        /// <param name="addrLoad">Loading address *IGNORED*.</param>
-        /// <param name="arch">Processor architecture.</param>
-        /// <param name="platform">Platform/operating environment.</param>
-        /// <returns>
-        /// A <see cref="Program"/>.
-        /// </returns>
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             listener = Services.RequireService<DecompilerEventListener>();
             MemoryChunksList memChunks = new MemoryChunksList();
@@ -230,11 +216,29 @@ namespace Reko.ImageLoaders.IHex32
                 segs.AddSegment(seg);
             }
 
-            return new Program(segs, arch, platform);
+            return new Program(segs, null, null);
+        }
+
+        /// <summary>
+        /// Loads the image into memory at the specified address, using the provided
+        /// <seealso cref="IProcessorArchitecture"/> and <seealso cref="IPlatform"/>.
+        /// Used when loading raw files; not all image loaders can support this.
+        /// </summary>
+        /// <param name="addrLoad">Loading address *IGNORED*.</param>
+        /// <param name="arch">Processor architecture.</param>
+        /// <param name="platform">Platform/operating environment.</param>
+        /// <returns>
+        /// A <see cref="Program"/> instance.
+        /// </returns>
+        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        {
+            var prog = Load(addrLoad);
+            return new Program() { SegmentMap = prog.SegmentMap, Architecture = arch, Platform = platform };
         }
 
         /// <summary>
         /// Performs fix-ups of the loaded image, adding findings to the supplied collections.
+        /// Nothing actual can be done with Intel HEX binary files.
         /// </summary>
         /// <param name="program">The program.</param>
         /// <param name="addrLoad">The address at which the program image is loaded.</param>
@@ -251,3 +255,4 @@ namespace Reko.ImageLoaders.IHex32
     }
 
 }
+

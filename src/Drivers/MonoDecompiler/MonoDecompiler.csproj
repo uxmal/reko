@@ -179,7 +179,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\wine\*.spec" />
-    <PICMetadata Include="$(ProjectDir)..\..\tools\genPICdb\picdb.zip" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\tools\genPICdb\picdb.zip" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
@@ -245,8 +245,6 @@
     <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying PIC definitions database to $(TargetDir)" />
-    <Copy SourceFiles="@(PICMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <PropertyGroup>
     <PreBuildEvent>
