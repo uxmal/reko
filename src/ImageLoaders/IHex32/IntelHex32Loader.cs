@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.ImageLoaders.IntelHex32
 {
@@ -35,11 +36,9 @@ namespace Reko.ImageLoaders.IntelHex32
     public class IntelHex32Loader : ImageLoader
     {
 
-        //TODO: See how to adapt for Microchip PIC image loading (with memory mapping/checking) or other processors.
-
         //TODO: As Intel Hex specs do not specify any ordering of records, we should be able, getting a new record,
-        // to add it at tail, at head, or merge with already loaded records.
-        // For the time being we assume we are safe and Hex records are contiguous and sorted in increasing load address.
+        // to add it at tail, at head, or merge with already loaded records - or to create a new memory chunk.
+        // For the time being we assume we are safe and Hex records are contiguous (not overlapping) and somehow sorted in increasing load address order.
 
         #region Helper classes
 
@@ -83,15 +82,8 @@ namespace Reko.ImageLoaders.IntelHex32
                 currMemChunk = null;
             }
 
-            private MemChunk _getPredChunk(Address addr)
-            {
-                foreach (var ch in memChunks.Values)
-                {
-                    if (ch.IsAtHeadOf(addr))
-                        return ch;
-                }
-                return null;
-            }
+            private MemChunk GetPredChunk(Address addr)
+                => memChunks.Values.FirstOrDefault(mchk => mchk.IsAtHeadOf(addr));
 
             /// <summary>
             /// Adds a series of data byte to the memory chunks list as decoded from an IHex32 data record.
@@ -117,7 +109,7 @@ namespace Reko.ImageLoaders.IntelHex32
                     currAddr = Address.Ptr32(address);
                     if (nextAddr != currAddr)
                     {
-                        currMemChunk = _getPredChunk(currAddr);
+                        currMemChunk = GetPredChunk(currAddr);
                         if (currMemChunk == null)
                         {
                             currMemChunk = new MemChunk(currAddr);
@@ -200,9 +192,9 @@ namespace Reko.ImageLoaders.IntelHex32
             int i = 0;
 
             // Generate the image segments with fake names.
-            foreach (var ch in memChunks)
+            foreach (var mchk in memChunks)
             {
-                var mem = new MemoryArea(ch.BaseAddress, ch.Datum.ToArray());
+                var mem = new MemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
                 var seg = new ImageSegment($"CODE_{i++:d2}", mem, AccessMode.ReadExecute);
                 segs.AddSegment(seg);
             }

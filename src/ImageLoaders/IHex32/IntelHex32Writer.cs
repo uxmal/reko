@@ -76,7 +76,6 @@ namespace Reko.ImageLoaders.IntelHex32
                 throw new ArgumentOutOfRangeException(nameof(address), $"Value must be less than 0x{maxSegAddr:X}");
 
             var addressData = FormatAddress(addressType, address);
-
             WriteHexRecord((IntelHex32RecordType)addressType, 0, addressData);
         }
 

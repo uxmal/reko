@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.IntelHex32
 
         #region IDisposable implementation
 
-        private bool _disposedValue; // To detect redundant calls
+        private bool disposedValue; // To detect redundant calls
 
         /// <summary>
         /// Dispose the <see cref="IntelHex32Reader"/>
@@ -64,14 +64,14 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
                     streamReader?.Dispose();
                 }
 
-                _disposedValue = true;
+                disposedValue = true;
             }
         }
 
@@ -116,17 +116,16 @@ namespace Reko.ImageLoaders.IntelHex32
                 lineNum++;
                 hexLine = streamReader.ReadLine();
             }
-            if (streamReader.EndOfStream) return false;
+            if (streamReader.EndOfStream)
+                return false;
 
             var hexRecord = IntelHex32Parser.ParseRecord(hexLine, lineNum);
 
             if (hexRecord.RecordType != IntelHex32RecordType.EndOfFile)
             {
                 address = HandleAddress(hexRecord);
-
                 if (hexRecord.RecordType == IntelHex32RecordType.Data)
                     data = hexRecord.Data.ToArray();
-
                 return true;
             }
 

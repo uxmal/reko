@@ -71,7 +71,6 @@ namespace Reko.ImageLoaders.IntelHex32
             };
 
             hexData.RemoveRange(0, 4);
-
             return newRecord;
         }
 
