@@ -23,33 +23,36 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Reko.ImageLoaders.IHex32
+namespace Reko.ImageLoaders.IntelHex32
 {
 
     /// <summary>
-    /// A writer capable of writing a Intel HEX32 stream
+    /// A writer capable of writing an Intel Hexadecimal 32-bit object format stream.
     /// </summary>
-    public class IHEX32Writer : IDisposable
+    public class IntelHex32Writer : IDisposable
     {
         #region Locals
 
-        private readonly StreamWriter _streamWriter;
-        const string HexDigits = "0123456789ABCDEF";
+        private readonly StreamWriter streamWriter;
+        private const string HexDigits = "0123456789ABCDEF";
+        private const int maxSegAddr = 0x10000;
+        private const int maxRecordDataSize = 255;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///     Construct instance of an <see cref="IHEX32Writer" />.
+        ///     Construct instance of an <see cref="IntelHex32Writer" />.
         /// </summary>
         /// <param name="str">The target stream of the hex file.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IHEX32Writer(Stream str)
+        public IntelHex32Writer(Stream str)
         {
-            if (str == null) throw new ArgumentNullException(nameof(str));
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
 
-            _streamWriter = new StreamWriter(str);
+            streamWriter = new StreamWriter(str);
         }
 
         #endregion
@@ -59,22 +62,22 @@ namespace Reko.ImageLoaders.IHex32
         /// <summary>
         /// Write an address record (type 02, 04 or 05) to the underlying stream
         /// </summary>
-        /// <param name="addressType">The <see cref="IHEX32AddressType" /> address record type to write to the stream</param>
+        /// <param name="addressType">The <see cref="IntelHex32AddressType" /> address record type to write to the stream</param>
         /// <param name="address">The address value to write to the stream. This is either the segment address (type 02) or the upper word of a 32 bit address (type 04 or 05).</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="IHEX32AddressType"/></exception>
-        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="IHEX32AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x10000</exception>
-        public void WriteAddress(IHEX32AddressType addressType, int address)
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="IntelHex32AddressType"/></exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="IntelHex32AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x10000</exception>
+        public void WriteAddress(IntelHex32AddressType addressType, int address)
         {
-            if (!Enum.IsDefined(typeof(IHEX32AddressType), addressType))
+            if (!Enum.IsDefined(typeof(IntelHex32AddressType), addressType))
                 throw new ArgumentOutOfRangeException(nameof(addressType),
-                    $"Value [{addressType}] in not a value of [{nameof(IHEX32AddressType)}]");
+                    $"Value [{addressType}] in not a value of [{nameof(IntelHex32AddressType)}]");
 
-            if ((addressType == IHEX32AddressType.ExtendedSegmentAddress) && (address > 0x10000))
-                throw new ArgumentOutOfRangeException(nameof(address), "Value must be less than 0x10000");
+            if ((addressType == IntelHex32AddressType.ExtendedSegmentAddress) && (address > maxSegAddr))
+                throw new ArgumentOutOfRangeException(nameof(address), $"Value must be less than 0x{maxSegAddr:X}");
 
-            var addressData = _formatAddress(addressType, address);
+            var addressData = FormatAddress(addressType, address);
 
-            _writeHexRecord((IHEX32RecordType)addressType, 0, addressData);
+            WriteHexRecord((IntelHex32RecordType)addressType, 0, addressData);
         }
 
         /// <summary>
@@ -92,10 +95,10 @@ namespace Reko.ImageLoaders.IHex32
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            if (data.Count > 0xFF)
-                throw new ArgumentOutOfRangeException(nameof(data), "Must be less than 255");
+            if (data.Count > maxRecordDataSize)
+                throw new ArgumentOutOfRangeException(nameof(data), $"Must be less than {maxRecordDataSize} bytes long.");
 
-            _writeHexRecord(IHEX32RecordType.Data, address, data);
+            WriteHexRecord(IntelHex32RecordType.Data, address, data);
         }
 
         /// <summary>
@@ -103,10 +106,10 @@ namespace Reko.ImageLoaders.IHex32
         /// </summary>
         public void Close()
         {
-            if (!_disposedValue)
+            if (!disposedValue)
             {
-                _streamWriter?.WriteLine(":00000001FF");
-                _streamWriter?.Flush();
+                streamWriter?.WriteLine(":00000001FF");
+                streamWriter?.Flush();
             }
         }
 
@@ -114,15 +117,15 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Helpers
 
-        private static List<byte> _formatAddress(IHEX32AddressType addressType, int address)
+        private static List<byte> FormatAddress(IntelHex32AddressType addressType, int address)
         {
             var result = new List<byte>();
-            var shift = (byte)(addressType == IHEX32AddressType.ExtendedSegmentAddress ? 4 : 0);
-            shift = (byte)(addressType == IHEX32AddressType.ExtendedLinearAddress ? 16 : shift);
+            var shift = (byte)(addressType == IntelHex32AddressType.ExtendedSegmentAddress ? 4 : 0);
+            shift = (byte)(addressType == IntelHex32AddressType.ExtendedLinearAddress ? 16 : shift);
 
             var addressBytes = BitConverter.GetBytes(address >> shift);
 
-            if (addressType == IHEX32AddressType.StartLinearAddress)
+            if (addressType == IntelHex32AddressType.StartLinearAddress)
             {
                 result.Add(addressBytes[3]);
                 result.Add(addressBytes[2]);
@@ -134,7 +137,7 @@ namespace Reko.ImageLoaders.IHex32
             return result;
         }
 
-        private static byte _calculateCrc(IList<byte> checkSumData)
+        private static byte CalculateChecksum(IList<byte> checkSumData)
         {
             var maskedSumBytes = checkSumData.Sum(x => x) & 0xff;
             var calculatedChecksum = (byte)(256 - maskedSumBytes);
@@ -142,7 +145,7 @@ namespace Reko.ImageLoaders.IHex32
             return calculatedChecksum;
         }
 
-        private static string _toHexString(IList<byte> data)
+        private static string ToHexString(IList<byte> data)
         {
             var result = new char[data.Count * 2];
             for (var i = 0; i < data.Count; i++)
@@ -154,7 +157,7 @@ namespace Reko.ImageLoaders.IHex32
 
             return new string(result);
         }
-        private void _writeHexRecord(IHEX32RecordType recordType, ushort address, IList<byte> data)
+        private void WriteHexRecord(IntelHex32RecordType recordType, ushort address, IList<byte> data)
         {
             var addresBytes = BitConverter.GetBytes(address);
             var hexRecordData = new List<byte>
@@ -165,19 +168,19 @@ namespace Reko.ImageLoaders.IHex32
                 (byte)recordType
             };
             hexRecordData.AddRange(data);
-            var checksum = _calculateCrc(hexRecordData);
+            var checksum = CalculateChecksum(hexRecordData);
             hexRecordData.Add(checksum);
 
-            var hexRecord = $":{_toHexString(hexRecordData)}";
+            var hexRecord = $":{ToHexString(hexRecordData)}";
 
-            _streamWriter.WriteLine(hexRecord);
+            streamWriter.WriteLine(hexRecord);
         }
 
         #endregion
 
         #region IDisposable implementation
 
-        private bool _disposedValue; // To detect redundant calls
+        private bool disposedValue; // To detect redundant calls
 
         /// <summary>
         /// Dispose the <see cref="IntelHEXWriter"/>
@@ -185,15 +188,15 @@ namespace Reko.ImageLoaders.IHex32
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
                     Close();
-                    _streamWriter?.Dispose();
+                    streamWriter?.Dispose();
                 }
 
-                _disposedValue = true;
+                disposedValue = true;
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
 	ProjectSection(SolutionItems) = preProject
@@ -430,7 +430,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrochipPIC", "Arch\Microc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microchip.Utils", "Libraries\Microchip\Utils\Microchip.Utils.csproj", "{45E095E9-D7C2-40AA-913B-AB77582AFBB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHex32", "ImageLoaders\IHex32\IHex32.csproj", "{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelHex32", "ImageLoaders\IHex32\IntelHex32.csproj", "{A66CF7A5-A033-4EEF-B2EF-CBFAE7D2B711}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "genPICdb", "tools\genPICdb\genPICdb.csproj", "{5FF428FE-C17F-4070-93D2-215BFA3B52A8}"
 EndProject

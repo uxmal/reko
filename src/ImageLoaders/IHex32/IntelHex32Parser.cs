@@ -22,9 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.ImageLoaders.IHex32
+namespace Reko.ImageLoaders.IntelHex32
 {
-    public class IHEX32Parser
+    public class IntelHex32Parser
     {
         /// <summary>
         /// Parse a single IHex32 hexadecimal record.
@@ -32,40 +32,40 @@ namespace Reko.ImageLoaders.IHex32
         /// <param name="hexRecord">The hexadecimal record as a string.</param>
         /// <param name="lineNum">(Optional) The line number in the IHex32 binary stream.</param>
         /// <returns>
-        /// An <see cref="IHex32Record"/> .
+        /// An <see cref="IntelHex32Record"/> .
         /// </returns>
-        /// <exception cref="IHEX32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
-        public static IHex32Record ParseRecord(string hexRecord, int lineNum = 0)
+        /// <exception cref="IntelHex32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
+        public static IntelHex32Record ParseRecord(string hexRecord, int lineNum = 0)
         {
             if (hexRecord == null)
-                throw new IHEX32Exception("Hex record line can not be null", lineNum);
+                throw new IntelHex32Exception("Hex record line can not be null", lineNum);
             if (hexRecord.Length < 11)
-                throw new IHEX32Exception($"Hex record line length [{hexRecord}] is less than 11", lineNum);
+                throw new IntelHex32Exception($"Hex record line length [{hexRecord}] is less than 11", lineNum);
             if (hexRecord.Length % 2 == 0)
-                throw new IHEX32Exception($"Hex record has an even number of characters [{hexRecord}]", lineNum);
+                throw new IntelHex32Exception($"Hex record has an even number of characters [{hexRecord}]", lineNum);
             if (!hexRecord.StartsWith(":"))
-                throw new IHEX32Exception($"Illegal line start character [{hexRecord}]", lineNum);
-            var hexData = _tryParseData(hexRecord.Substring(1), lineNum);
+                throw new IntelHex32Exception($"Illegal line start character [{hexRecord}]", lineNum);
+            var hexData = TryParseHexData(hexRecord.Substring(1), lineNum);
 
             if (hexData.Count != hexData[0] + 5)
-                throw new IHEX32Exception($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]", lineNum);
+                throw new IntelHex32Exception($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]", lineNum);
 
-            if (!Enum.IsDefined(typeof(IHEX32RecordType), hexData[3]))
-                throw new IHEX32Exception($"Invalid record type value: [{hexData[3]}]", lineNum);
+            if (!Enum.IsDefined(typeof(IntelHex32RecordType), hexData[3]))
+                throw new IntelHex32Exception($"Invalid record type value: [{hexData[3]}]", lineNum);
 
             var checkSum = hexData.Last();
             hexData.RemoveAt(hexData[0] + 4);
 
-            if (!_verifyChecksum(hexData, checkSum))
-                throw new IHEX32Exception($"Checksum for line [{hexRecord}] is incorrect", lineNum);
+            if (!VerifyChecksum(hexData, checkSum))
+                throw new IntelHex32Exception($"Checksum for line [{hexRecord}] is incorrect", lineNum);
 
             var dataSize = hexData[0];
 
-            var newRecord = new IHex32Record
+            var newRecord = new IntelHex32Record
             {
                 ByteCount = dataSize,
                 Address = ((uint)(hexData[1] << 8) | hexData[2]),
-                RecordType = (IHEX32RecordType)hexData[3],
+                RecordType = (IntelHex32RecordType)hexData[3],
                 Data = hexData,
                 CheckSum = checkSum
             };
@@ -77,7 +77,7 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Helpers
 
-        private static bool _verifyChecksum(IList<byte> checkSumData, int checkSum)
+        private static bool VerifyChecksum(IList<byte> checkSumData, int checkSum)
         {
             var maskedSumBytes = checkSumData.Sum(x => x) & 0xff;
             var calculatedChecksum = (byte)(256 - maskedSumBytes);
@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.IHex32
             return calculatedChecksum == checkSum;
         }
 
-        private static List<byte> _tryParseData(string hexData, int lineNum = 0)
+        private static List<byte> TryParseHexData(string hexData, int lineNum = 0)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.IHex32
             }
             catch (Exception ex)
             {
-                throw new IHEX32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
+                throw new IntelHex32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
             }
         }
 

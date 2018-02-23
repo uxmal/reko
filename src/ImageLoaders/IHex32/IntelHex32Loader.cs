@@ -27,12 +27,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Reko.ImageLoaders.IHex32
+namespace Reko.ImageLoaders.IntelHex32
 {
     /// <summary>
-    /// An Intel HEX32 image loader.
+    /// An Intel Hexadecimal 32-bit object format image (a.k.a. IHEX32) loader.
     /// </summary>
-    public class IHEX32Loader : ImageLoader
+    public class IntelHex32Loader : ImageLoader
     {
 
         //TODO: See how to adapt for Microchip PIC image loading (with memory mapping/checking) or other processors.
@@ -54,24 +54,16 @@ namespace Reko.ImageLoaders.IHex32
                 BaseAddress = bAddr;
                 Datum = new List<byte>();
             }
+
             public MemChunk(uint address) : this(Address.Ptr32(address))
             {
             }
 
-            public bool Contains(Address addr)
-            {
-                return (BaseAddress <= addr && EndAddress > addr);
-            }
+            public bool Contains(Address addr) => (BaseAddress <= addr && EndAddress > addr);
 
-            public bool IsAtTail(Address addr)
-            {
-                return addr == EndAddress;
-            }
+            public bool IsAtTail(Address addr) => addr == EndAddress;
 
-            public bool IsAtHeadOf(Address addr)
-            {
-                return EndAddress == addr;
-            }
+            public bool IsAtHeadOf(Address addr) => EndAddress == addr;
 
         }
 
@@ -138,10 +130,7 @@ namespace Reko.ImageLoaders.IHex32
                 nextAddr = currAddr + data.Length;
             }
 
-            public IEnumerator<MemChunk> GetEnumerator()
-            {
-                return memChunks.Values.GetEnumerator();
-            }
+            public IEnumerator<MemChunk> GetEnumerator() => memChunks.Values.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
@@ -156,14 +145,14 @@ namespace Reko.ImageLoaders.IHex32
 
         #region Constructors
 
-        public IHEX32Loader(IServiceProvider services, string filename, byte[] imgRaw)
+        public IntelHex32Loader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
         }
 
         #endregion
 
-        #region ImageLoader implementation
+        #region ImageLoader interface implementation
 
         /// <summary>
         /// If nothing else is specified, this is the address at which the image will be loaded.
@@ -185,7 +174,7 @@ namespace Reko.ImageLoaders.IHex32
             listener = Services.RequireService<DecompilerEventListener>();
             MemoryChunksList memChunks = new MemoryChunksList();
 
-            using (var rdr = new IHEX32Reader(new MemoryStream(RawImage)))
+            using (var rdr = new IntelHex32Reader(new MemoryStream(RawImage)))
             {
                 try
                 {
@@ -194,11 +183,13 @@ namespace Reko.ImageLoaders.IHex32
                         if (!rdr.Read(out uint address, out byte[] data))
                             break;
                         if (data != null)
+                        {
                             memChunks.AddData(address, data);
+                        }
                     }
 
                 }
-                catch (IHEX32Exception ex)
+                catch (IntelHex32Exception ex)
                 {
                     listener.Error(new NullCodeLocation(""), ex.Message);
                 }
