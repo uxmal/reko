@@ -201,7 +201,7 @@ def save_weights(weights, filename):
         for k in weights:
             f.write("%s|%r\n" % (k, weights[k]))
 
-TIMEOUT = 60  # seconds
+TIMEOUT = 120  # seconds
 WEIGHTS_FILENAME = "subject_weights.txt"
 
 if __name__ == '__main__':
