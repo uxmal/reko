@@ -29,7 +29,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.ImageLoaders.IHex32
+namespace Reko.UnitTests.ImageLoaders.IntelHex32
 {
     [TestFixture]
     public class Hex32LoaderTests
