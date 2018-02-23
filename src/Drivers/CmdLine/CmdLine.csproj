@@ -74,13 +74,15 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
+    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
+      <Name>C2Xml</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
+      <Name>Dol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -144,7 +146,7 @@
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\$(OutDir)Reko.ImageLoaders.Dol.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\IHex32\$(OutDir)Reko.ImageLoaders.IHex32.*" />
+      <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex32\$(OutDir)Reko.ImageLoaders.IntelHex32.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />

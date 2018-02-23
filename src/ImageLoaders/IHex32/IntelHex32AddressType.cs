@@ -18,12 +18,12 @@
  */
 #endregion
 
-namespace Reko.ImageLoaders.IHex32
+namespace Reko.ImageLoaders.IntelHex32
 {
     /// <summary>
-    /// The Address type for address values written to an Intel hex file stream
+    /// The Address type for address values written to an Intel Hex 32 file stream
     /// </summary>
-    public enum IHEX32AddressType : byte
+    public enum IntelHEX32AddressType : byte
     {
         /// <summary>
         /// Indicates the record data field contains a 16-bit segment:base address
@@ -31,12 +31,12 @@ namespace Reko.ImageLoaders.IHex32
         ExtendedSegmentAddress = 2,
 
         /// <summary>
-        /// Indicates the record contains a the upper 16 bit address
+        /// Indicates the record contains the upper 16-bit address
         /// </summary>
         ExtendedLinearAddress = 4,
 
         /// <summary>
-        /// Indicates the record contains a 32 bit address
+        /// Indicates the record contains a 32-bit address
         /// </summary>
         StartLinearAddress = 5
     }

@@ -7,8 +7,8 @@
     <ProjectGuid>{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reko.ImageLoaders.IHex32</RootNamespace>
-    <AssemblyName>Reko.ImageLoaders.IHex32</AssemblyName>
+    <RootNamespace>Reko.ImageLoaders.IntelHex32</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.IntelHex32</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,14 +38,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IHex32AddressType.cs" />
-    <Compile Include="IHex32Exception.cs" />
-    <Compile Include="IHex32Loader.cs" />
-    <Compile Include="IHex32Parser.cs" />
-    <Compile Include="IHex32Reader.cs" />
-    <Compile Include="IHex32Record.cs" />
-    <Compile Include="IHex32RecordType.cs" />
-    <Compile Include="IHex32Writer.cs" />
+    <Compile Include="IntelHex32AddressType.cs" />
+    <Compile Include="IntelHex32Exception.cs" />
+    <Compile Include="IntelHex32Loader.cs" />
+    <Compile Include="IntelHex32Parser.cs" />
+    <Compile Include="IntelHex32Reader.cs" />
+    <Compile Include="IntelHex32Record.cs" />
+    <Compile Include="IntelHex32RecordType.cs" />
+    <Compile Include="IntelHex32Writer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

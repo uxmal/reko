@@ -18,37 +18,37 @@
  */
 #endregion
 
-namespace Reko.ImageLoaders.IHex32
+using System.Collections.Generic;
+
+namespace Reko.ImageLoaders.IntelHex32
 {
-    /// <summary>
-    /// Values that represent Intel Hexadecimal 32-bit record types.
-    /// </summary>
-    public enum IHEX32RecordType : byte
+    public class IntelHex32Record
     {
         /// <summary>
-        /// Indicates the record contains data and a 16-bit loading address for the data.
+        ///     The record type
         /// </summary>
-        Data = 0,
+        public IntelHEX32RecordType RecordType { get; set; }
+
         /// <summary>
-        /// Indicates the record is the marker of End-of-File.
+        ///     The number of bytes in the record
         /// </summary>
-        EndOfFile = 1,
+        public int ByteCount { get; set; }
+
         /// <summary>
-        /// Indicates the record data field contains a 16-bit segment base address.
+        ///     The address of the record
         /// </summary>
-        ExtendedSegmentAddress = 2,
+        public uint Address { get; set; }
+
         /// <summary>
-        /// Indicates the record specifies the initial content of the CS:IP registers.
+        ///     The data from the record
         /// </summary>
-        StartSegmentAddress = 3,
+        public List<byte> Data { get; set; }
+
         /// <summary>
-        /// Indicates the record contains the upper 16-bit address of a linear address.
+        ///     The record checksum
         /// </summary>
-        ExtendedLinearAddress = 4,
-        /// <summary>
-        /// Indicates the record contains a 32 bit start linear address.
-        /// </summary>
-        StartLinearAddress = 5
+        public int CheckSum { get; set; }
+
     }
 
 }

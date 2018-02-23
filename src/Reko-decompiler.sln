@@ -414,7 +414,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtariTOS", "Environments\At
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha", "Arch\Alpha\Alpha.csproj", "{C4C56725-BFD0-405A-802C-2C66FCD0EF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHex32", "ImageLoaders\IHex32\IHex32.csproj", "{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelHex32", "ImageLoaders\IHex32\IntelHex32.csproj", "{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
