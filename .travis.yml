@@ -33,7 +33,7 @@ before_install:
   - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
   - tar -xf 3.0.4.tar.gz
   - cd capstone*
-  - DESTDIR=$HOME/prefix CFLAGS=-m32 LDFLAGS=-m32 make install -j $(grep processor /proc/cpuinfo | wc -l)
+  - DESTDIR=$HOME/prefix make install -j $(grep processor /proc/cpuinfo | wc -l)
   - export PKG_CONFIG_PATH="$HOME/prefix/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
   - popd
 
