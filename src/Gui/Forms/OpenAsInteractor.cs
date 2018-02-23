@@ -186,7 +186,6 @@ namespace Reko.Gui.Forms
 
         private void AddressTextBox_GotFocus(object sender, EventArgs e)
         {
-            dlg.PropertyGrid.SelectedObject = null;
             EnableControls();
         }
     }
