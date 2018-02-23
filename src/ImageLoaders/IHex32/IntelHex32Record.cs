@@ -27,7 +27,7 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <summary>
         ///     The record type
         /// </summary>
-        public IntelHEX32RecordType RecordType { get; set; }
+        public IntelHex32RecordType RecordType { get; set; }
 
         /// <summary>
         ///     The number of bytes in the record

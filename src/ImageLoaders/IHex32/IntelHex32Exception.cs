@@ -23,12 +23,15 @@ using System.Runtime.Serialization;
 
 namespace Reko.ImageLoaders.IntelHex32
 {
-    public class IntelHEX32Exception : Exception
+    /// <summary>
+    /// Exception for signaling Intel Hexadecimal 32-bit object format errors.
+    /// </summary>
+    public class IntelHex32Exception : Exception
     {
         #region Properties
 
         /// <summary>
-        /// Gets the Intel HEX32 record line number at which the exception occurred.
+        /// Gets the Intel IHEX32 record line number at which the exception occurred.
         /// </summary>
         /// <value>
         /// The line number.
@@ -42,8 +45,8 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="lineNo">(Optional) The line number in the HEX32 datum.</param>
-        public IntelHEX32Exception(int lineNo = 0)
+        /// <param name="lineNo">(Optional) The line number in the IHEX32 datum.</param>
+        public IntelHex32Exception(int lineNo = 0)
             : base()
         {
             LineNum = lineNo;
@@ -53,8 +56,8 @@ namespace Reko.ImageLoaders.IntelHex32
         /// Constructor.
         /// </summary>
         /// <param name="message">The message as a string.</param>
-        /// <param name="lineNo">(Optional) The line number in the HEX32 datum.</param>
-        public IntelHEX32Exception(string message, int lineNo = 0)
+        /// <param name="lineNo">(Optional) The line number in the IHEX32 datum.</param>
+        public IntelHex32Exception(string message, int lineNo = 0)
             : base(message)
         {
             LineNum = lineNo;
@@ -65,8 +68,8 @@ namespace Reko.ImageLoaders.IntelHex32
         /// </summary>
         /// <param name="message">The message as a string.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <param name="lineNo">(Optional) The line number in the HEX32 datum.</param>
-        public IntelHEX32Exception(string message, Exception innerException, int lineNo = 0)
+        /// <param name="lineNo">(Optional) The line number in the IHEX32 datum.</param>
+        public IntelHex32Exception(string message, Exception innerException, int lineNo = 0)
             : base(message, innerException)
         {
             LineNum = lineNo;
@@ -79,7 +82,7 @@ namespace Reko.ImageLoaders.IntelHex32
         ///                    holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that
         ///                       contains contextual information about the source or destination.</param>
-        public IntelHEX32Exception(SerializationInfo info, StreamingContext context)
+        public IntelHex32Exception(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             LineNum = (int)info.GetValue(nameof(LineNum), typeof(int));

@@ -25,9 +25,9 @@ namespace Reko.ImageLoaders.IntelHex32
 {
 
     /// <summary>
-    /// A reader capable of reading a Intel HEX32 stream
+    /// A reader capable of reading a Intel Hexadecimal 32-bit format object (a.k.a. IHEX32) stream
     /// </summary>
-    public class IntelHEX32Reader : IDisposable
+    public class IntelHex32Reader : IDisposable
     {
 
         #region Locals
@@ -40,11 +40,11 @@ namespace Reko.ImageLoaders.IntelHex32
         #region Constructors
 
         /// <summary>
-        /// Constructs instance of an <see cref="IntelHEX32Reader" />.
+        /// Constructs instance of an <see cref="IntelHex32Reader" />.
         /// </summary>
         /// <param name="str">The source stream of the hex file.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IntelHEX32Reader(Stream str)
+        public IntelHex32Reader(Stream str)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.IntelHex32
         private bool _disposedValue; // To detect redundant calls
 
         /// <summary>
-        /// Dispose the <see cref="IntelHEX32Reader"/>
+        /// Dispose the <see cref="IntelHex32Reader"/>
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.IntelHex32
         }
 
         /// <summary>
-        /// Dispose the <see cref="IntelHEX32Reader"/>
+        /// Dispose the <see cref="IntelHex32Reader"/>
         /// </summary>
         public void Dispose()
         {
@@ -118,13 +118,13 @@ namespace Reko.ImageLoaders.IntelHex32
             }
             if (streamReader.EndOfStream) return false;
 
-            var hexRecord = IntelHEX32Parser.ParseRecord(hexLine, lineNum);
+            var hexRecord = IntelHex32Parser.ParseRecord(hexLine, lineNum);
 
-            if (hexRecord.RecordType != IntelHEX32RecordType.EndOfFile)
+            if (hexRecord.RecordType != IntelHex32RecordType.EndOfFile)
             {
                 address = HandleAddress(hexRecord);
 
-                if (hexRecord.RecordType == IntelHEX32RecordType.Data)
+                if (hexRecord.RecordType == IntelHex32RecordType.Data)
                     data = hexRecord.Data.ToArray();
 
                 return true;
@@ -141,27 +141,27 @@ namespace Reko.ImageLoaders.IntelHex32
         {
             switch (hexRecord.RecordType)
             {
-                case IntelHEX32RecordType.Data:
+                case IntelHex32RecordType.Data:
                     return AddressBase + hexRecord.Address;
 
-                case IntelHEX32RecordType.ExtendedSegmentAddress:
+                case IntelHex32RecordType.ExtendedSegmentAddress:
                     AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 4;
                     return AddressBase;
 
-                case IntelHEX32RecordType.StartSegmentAddress:
+                case IntelHex32RecordType.StartSegmentAddress:
                     return AddressBase;
 
-                case IntelHEX32RecordType.ExtendedLinearAddress:
+                case IntelHex32RecordType.ExtendedLinearAddress:
                     AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 16;
                     return AddressBase;
 
-                case IntelHEX32RecordType.StartLinearAddress:
+                case IntelHex32RecordType.StartLinearAddress:
                     AddressBase = (((uint)hexRecord.Data[0] << 24) | ((uint)hexRecord.Data[1] << 16) |
                                            ((uint)hexRecord.Data[2] << 8) | hexRecord.Data[3]);
                     return AddressBase;
 
                 default:
-                    throw new IntelHEX32Exception($"Unknown value read for [{nameof(hexRecord.RecordType)}]", lineNum);
+                    throw new IntelHex32Exception($"Unknown value read for [{nameof(hexRecord.RecordType)}]", lineNum);
             }
 
         }

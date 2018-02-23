@@ -30,9 +30,9 @@ using System.IO;
 namespace Reko.ImageLoaders.IntelHex32
 {
     /// <summary>
-    /// An Intel HEX32 image loader.
+    /// An Intel Hexadecimal 32-bit object format image (a.k.a. IHEX32) loader.
     /// </summary>
-    public class IntelHEX32Loader : ImageLoader
+    public class IntelHex32Loader : ImageLoader
     {
 
         //TODO: See how to adapt for Microchip PIC image loading (with memory mapping/checking) or other processors.
@@ -145,7 +145,7 @@ namespace Reko.ImageLoaders.IntelHex32
 
         #region Constructors
 
-        public IntelHEX32Loader(IServiceProvider services, string filename, byte[] imgRaw)
+        public IntelHex32Loader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
         }
@@ -174,7 +174,7 @@ namespace Reko.ImageLoaders.IntelHex32
             listener = Services.RequireService<DecompilerEventListener>();
             MemoryChunksList memChunks = new MemoryChunksList();
 
-            using (var rdr = new IntelHEX32Reader(new MemoryStream(RawImage)))
+            using (var rdr = new IntelHex32Reader(new MemoryStream(RawImage)))
             {
                 try
                 {
@@ -189,7 +189,7 @@ namespace Reko.ImageLoaders.IntelHex32
                     }
 
                 }
-                catch (IntelHEX32Exception ex)
+                catch (IntelHex32Exception ex)
                 {
                     listener.Error(new NullCodeLocation(""), ex.Message);
                 }

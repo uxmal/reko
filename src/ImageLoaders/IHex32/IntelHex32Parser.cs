@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace Reko.ImageLoaders.IntelHex32
 {
-    public class IntelHEX32Parser
+    public class IntelHex32Parser
     {
         /// <summary>
         /// Parse a single IHex32 hexadecimal record.
@@ -34,30 +34,30 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <returns>
         /// An <see cref="IntelHex32Record"/> .
         /// </returns>
-        /// <exception cref="IntelHEX32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
+        /// <exception cref="IntelHex32Exception">Thrown whenever an error is found in the IHex32 record.</exception>
         public static IntelHex32Record ParseRecord(string hexRecord, int lineNum = 0)
         {
             if (hexRecord == null)
-                throw new IntelHEX32Exception("Hex record line can not be null", lineNum);
+                throw new IntelHex32Exception("Hex record line can not be null", lineNum);
             if (hexRecord.Length < 11)
-                throw new IntelHEX32Exception($"Hex record line length [{hexRecord}] is less than 11", lineNum);
+                throw new IntelHex32Exception($"Hex record line length [{hexRecord}] is less than 11", lineNum);
             if (hexRecord.Length % 2 == 0)
-                throw new IntelHEX32Exception($"Hex record has an even number of characters [{hexRecord}]", lineNum);
+                throw new IntelHex32Exception($"Hex record has an even number of characters [{hexRecord}]", lineNum);
             if (!hexRecord.StartsWith(":"))
-                throw new IntelHEX32Exception($"Illegal line start character [{hexRecord}]", lineNum);
+                throw new IntelHex32Exception($"Illegal line start character [{hexRecord}]", lineNum);
             var hexData = TryParseHexData(hexRecord.Substring(1), lineNum);
 
             if (hexData.Count != hexData[0] + 5)
-                throw new IntelHEX32Exception($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]", lineNum);
+                throw new IntelHex32Exception($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]", lineNum);
 
-            if (!Enum.IsDefined(typeof(IntelHEX32RecordType), hexData[3]))
-                throw new IntelHEX32Exception($"Invalid record type value: [{hexData[3]}]", lineNum);
+            if (!Enum.IsDefined(typeof(IntelHex32RecordType), hexData[3]))
+                throw new IntelHex32Exception($"Invalid record type value: [{hexData[3]}]", lineNum);
 
             var checkSum = hexData.Last();
             hexData.RemoveAt(hexData[0] + 4);
 
             if (!VerifyChecksum(hexData, checkSum))
-                throw new IntelHEX32Exception($"Checksum for line [{hexRecord}] is incorrect", lineNum);
+                throw new IntelHex32Exception($"Checksum for line [{hexRecord}] is incorrect", lineNum);
 
             var dataSize = hexData[0];
 
@@ -65,7 +65,7 @@ namespace Reko.ImageLoaders.IntelHex32
             {
                 ByteCount = dataSize,
                 Address = ((uint)(hexData[1] << 8) | hexData[2]),
-                RecordType = (IntelHEX32RecordType)hexData[3],
+                RecordType = (IntelHex32RecordType)hexData[3],
                 Data = hexData,
                 CheckSum = checkSum
             };
@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.IntelHex32
             }
             catch (Exception ex)
             {
-                throw new IntelHEX32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
+                throw new IntelHex32Exception($"Unable to parse bytes for [{hexData}]", ex, lineNum);
             }
         }
 

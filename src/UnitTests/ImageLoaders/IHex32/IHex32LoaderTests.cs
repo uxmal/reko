@@ -82,7 +82,7 @@ namespace Reko.UnitTests.ImageLoaders.IHex32
 :01000600C138
 :00000001FF
 ";
-            var hex = new IntelHEX32Loader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
+            var hex = new IntelHex32Loader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
             var arch = new FakeArchitecture();
             var program = hex.Load(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(3, program.SegmentMap.Segments.Count);

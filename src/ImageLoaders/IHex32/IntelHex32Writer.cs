@@ -27,9 +27,9 @@ namespace Reko.ImageLoaders.IntelHex32
 {
 
     /// <summary>
-    /// A writer capable of writing a Intel HEX32 stream
+    /// A writer capable of writing an Intel Hexadecimal 32-bit object format stream.
     /// </summary>
-    public class IntelHEX32Writer : IDisposable
+    public class IntelHex32Writer : IDisposable
     {
         #region Locals
 
@@ -43,11 +43,11 @@ namespace Reko.ImageLoaders.IntelHex32
         #region Constructors
 
         /// <summary>
-        ///     Construct instance of an <see cref="IntelHEX32Writer" />.
+        ///     Construct instance of an <see cref="IntelHex32Writer" />.
         /// </summary>
         /// <param name="str">The target stream of the hex file.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IntelHEX32Writer(Stream str)
+        public IntelHex32Writer(Stream str)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -62,22 +62,22 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <summary>
         /// Write an address record (type 02, 04 or 05) to the underlying stream
         /// </summary>
-        /// <param name="addressType">The <see cref="IntelHEX32AddressType" /> address record type to write to the stream</param>
+        /// <param name="addressType">The <see cref="IntelHex32AddressType" /> address record type to write to the stream</param>
         /// <param name="address">The address value to write to the stream. This is either the segment address (type 02) or the upper word of a 32 bit address (type 04 or 05).</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="IntelHEX32AddressType"/></exception>
-        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="IntelHEX32AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x10000</exception>
-        public void WriteAddress(IntelHEX32AddressType addressType, int address)
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="IntelHex32AddressType"/></exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="IntelHex32AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x10000</exception>
+        public void WriteAddress(IntelHex32AddressType addressType, int address)
         {
-            if (!Enum.IsDefined(typeof(IntelHEX32AddressType), addressType))
+            if (!Enum.IsDefined(typeof(IntelHex32AddressType), addressType))
                 throw new ArgumentOutOfRangeException(nameof(addressType),
-                    $"Value [{addressType}] in not a value of [{nameof(IntelHEX32AddressType)}]");
+                    $"Value [{addressType}] in not a value of [{nameof(IntelHex32AddressType)}]");
 
-            if ((addressType == IntelHEX32AddressType.ExtendedSegmentAddress) && (address > maxSegAddr))
+            if ((addressType == IntelHex32AddressType.ExtendedSegmentAddress) && (address > maxSegAddr))
                 throw new ArgumentOutOfRangeException(nameof(address), $"Value must be less than 0x{maxSegAddr:X}");
 
             var addressData = FormatAddress(addressType, address);
 
-            WriteHexRecord((IntelHEX32RecordType)addressType, 0, addressData);
+            WriteHexRecord((IntelHex32RecordType)addressType, 0, addressData);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Reko.ImageLoaders.IntelHex32
             if (data.Count > maxRecordDataSize)
                 throw new ArgumentOutOfRangeException(nameof(data), $"Must be less than {maxRecordDataSize} bytes long.");
 
-            WriteHexRecord(IntelHEX32RecordType.Data, address, data);
+            WriteHexRecord(IntelHex32RecordType.Data, address, data);
         }
 
         /// <summary>
@@ -117,15 +117,15 @@ namespace Reko.ImageLoaders.IntelHex32
 
         #region Helpers
 
-        private static List<byte> FormatAddress(IntelHEX32AddressType addressType, int address)
+        private static List<byte> FormatAddress(IntelHex32AddressType addressType, int address)
         {
             var result = new List<byte>();
-            var shift = (byte)(addressType == IntelHEX32AddressType.ExtendedSegmentAddress ? 4 : 0);
-            shift = (byte)(addressType == IntelHEX32AddressType.ExtendedLinearAddress ? 16 : shift);
+            var shift = (byte)(addressType == IntelHex32AddressType.ExtendedSegmentAddress ? 4 : 0);
+            shift = (byte)(addressType == IntelHex32AddressType.ExtendedLinearAddress ? 16 : shift);
 
             var addressBytes = BitConverter.GetBytes(address >> shift);
 
-            if (addressType == IntelHEX32AddressType.StartLinearAddress)
+            if (addressType == IntelHex32AddressType.StartLinearAddress)
             {
                 result.Add(addressBytes[3]);
                 result.Add(addressBytes[2]);
@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.IntelHex32
 
             return new string(result);
         }
-        private void WriteHexRecord(IntelHEX32RecordType recordType, ushort address, IList<byte> data)
+        private void WriteHexRecord(IntelHex32RecordType recordType, ushort address, IList<byte> data)
         {
             var addresBytes = BitConverter.GetBytes(address);
             var hexRecordData = new List<byte>
