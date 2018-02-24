@@ -212,7 +212,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "beginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _beginaddrformatted { get { return $"0x{BeginAddr:X}"; } set { BeginAddr = value.ToUInt32Ex(); } }
+        public string _beginaddrformatted { get => $"0x{BeginAddr:X}";  set => BeginAddr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the begin address of the memory range.
@@ -231,7 +231,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "endaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _endaddrformatted { get { return $"0x{EndAddr:X}"; } set { EndAddr = value.ToUInt32Ex(); } }
+        public string _endaddrformatted { get => $"0x{EndAddr:X}";  set => EndAddr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the end address of the memory range.
@@ -248,10 +248,14 @@ namespace Reko.Libraries.Microchip
 
         public bool Equals(MemoryAddrRange other)
         {
-            if (other == null) return false;
-            if (ReferenceEquals(this, other)) return true;
-            if (MemoryDomain != other.MemoryDomain) return false;
-            if (BeginAddr != other.BeginAddr) return false;
+            if (other is null)
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (MemoryDomain != other.MemoryDomain)
+                return false;
+            if (BeginAddr != other.BeginAddr)
+                return false;
             return (EndAddr == other.EndAddr);
         }
 
@@ -265,20 +269,24 @@ namespace Reko.Libraries.Microchip
 
         public int Compare(MemoryAddrRange x, MemoryAddrRange y)
         {
-            if (ReferenceEquals(x, y)) return 0;
+            if (ReferenceEquals(x, y))
+                return 0;
             return x?.CompareTo(y) ?? -1;
         }
 
         private static int _Compare(MemoryAddrRange x, MemoryAddrRange y)
         {
-            if (ReferenceEquals(x, y)) return 0;
-            if ((object)x == null) return -1;
+            if (ReferenceEquals(x, y))
+                return 0;
+            if ((object)x == null)
+                return -1;
             return x.CompareTo(y);
         }
 
         public bool Equals(MemoryAddrRange x, MemoryAddrRange y)
         {
-            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, y))
+                return true;
             return x?.Equals(y) ?? false;
         }
 
@@ -286,10 +294,14 @@ namespace Reko.Libraries.Microchip
 
         public int CompareTo(MemoryAddrRange other)
         {
-            if (other == null) return 1;
-            if (ReferenceEquals(this, other)) return 0;
-            if (MemoryDomain != other.MemoryDomain) return MemoryDomain.CompareTo(other.MemoryDomain);
-            if (BeginAddr == other.BeginAddr) return EndAddr.CompareTo(other.EndAddr);
+            if (other is null)
+                return 1;
+            if (ReferenceEquals(this, other))
+                return 0;
+            if (MemoryDomain != other.MemoryDomain)
+                return MemoryDomain.CompareTo(other.MemoryDomain);
+            if (BeginAddr == other.BeginAddr)
+                return EndAddr.CompareTo(other.EndAddr);
             return BeginAddr.CompareTo(other.BeginAddr);
         }
 
@@ -344,7 +356,7 @@ namespace Reko.Libraries.Microchip
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "value", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _valueformatted { get { return $"0x{Value:X}"; } set { Value = value.ToInt32Ex(); } }
+        public string ValueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); } 
 
         #endregion
 
@@ -419,23 +431,23 @@ namespace Reko.Libraries.Microchip
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "locsize", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _locsizeformatted { get { return $"0x{LocSize:X}"; } set { LocSize = value.ToUInt32Ex(); } }
+        public string LocSizeFormatted { get => $"0x{LocSize:X}"; set => LocSize = value.ToUInt32Ex(); }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordimpl", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordimplformatted { get { return $"0x{WordImpl:X}"; } set { WordImpl = value.ToUInt32Ex(); } }
+        public string WordImplFormatted { get => $"0x{WordImpl:X}"; set => WordImpl = value.ToUInt32Ex(); }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordinit", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordinitformatted { get { return $"0x{WordInit:X}"; } set { WordInit = value.ToUInt32Ex(); } }
+        public string WordInitFormatted { get => $"0x{WordInit:X}"; set => WordInit = value.ToUInt32Ex(); }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordsafe", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordsafeformatted { get { return $"0x{WordSafe:X}"; } set { WordSafe = value.ToUInt32Ex(); } }
+        public string WordSafeFormatted { get => $"0x{WordSafe:X}"; set => WordSafe = value.ToUInt32Ex(); }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "wordsize", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _wordsizeformatted { get { return $"0x{WordSize:X}"; } set { WordSize = value.ToUInt32Ex(); } }
+        public string WordSizeFormatted { get => $"0x{WordSize:X}"; set => WordSize = value.ToUInt32Ex(); }
 
         #endregion
 
@@ -952,7 +964,7 @@ namespace Reko.Libraries.Microchip
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "unimplval", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _unimplvalformatted { get { return $"{UnimplVal}"; } set { UnimplVal = value.ToInt32Ex(); } }
+        public string UnimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); } 
 
         #endregion
 
@@ -1135,7 +1147,7 @@ namespace Reko.Libraries.Microchip
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "magicoffset", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _magicoffsetformatted { get { return $"0x{MagicOffset:X}"; } set { MagicOffset = value.ToUInt32Ex(); } }
+        public string MagicOffsetFormatted { get => $"0x{MagicOffset:X}"; set => MagicOffset = value.ToUInt32Ex(); } 
 
         #endregion
 
@@ -1253,11 +1265,11 @@ namespace Reko.Libraries.Microchip
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "hwstackdepth", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _hwstackdepthformatted { get { return $"{HWStackDepth}"; } set { HWStackDepth = value.ToInt32Ex(); } }
+        public string HWStackDepthFormatted { get => $"{HWStackDepth}"; set => HWStackDepth = value.ToInt32Ex(); } 
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
         [XmlAttribute(AttributeName = "bankcount", Form = XmlSchemaForm.None, Namespace = "")]
-        public string _bankcountformatted { get { return $"{BankCount}"; } set { BankCount = value.ToInt32Ex(); } }
+        public string BankCountFormatted { get => $"{BankCount}"; set => BankCount = value.ToInt32Ex(); } 
 
         #endregion
 
@@ -1371,7 +1383,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "irq", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _irqformatted { get { return $"{IRQ}"; } set { IRQ = value.ToUInt32Ex(); } }
+        public string IRQFormatted { get => $"{IRQ}"; set => IRQ = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the IRQ number.
@@ -1639,7 +1651,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _offsetformatted { get { return $"{Offset}"; } set { Offset = value.ToInt32Ex(); } }
+        public string OffsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the relative byte offset to add.
@@ -1660,7 +1672,8 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public override string ToString()
         {
-            if (Offset < 10) return $"Adjust {Offset} byte(s)";
+            if (Offset < 10)
+                return $"Adjust {Offset} byte(s)";
             return $"Adjust 0x{Offset:X} bytes";
         }
 
@@ -1726,7 +1739,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _offsetformatted { get { return $"{Offset}"; } set { Offset = value.ToInt32Ex(); } }
+        public string OffsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the relative bit offset to add.
@@ -1747,7 +1760,8 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public override string ToString()
         {
-            if (Offset < 10) return $"Adjust {Offset} bit(s)";
+            if (Offset < 10)
+                return $"Adjust {Offset} bit(s)";
             return $"Adjust 0x{Offset:X} bit(s)";
         }
 
@@ -2107,7 +2121,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _maskformatted { get { return $"0x{Mask:X}"; } set { Mask = value.ToInt32Ex(); } }
+        public string MaskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the mask to isolate device ID.
@@ -2126,7 +2140,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "value", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _valueformatted { get { return $"0x{Value:X}"; } set { Value = value.ToInt32Ex(); } }
+        public string ValueFormatted { get => $"0x{Value:X}"; set => Value = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the generic value of device ID
@@ -2170,7 +2184,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "checksumalgo", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _checksumalgoformatted { get { return $"0x{ChecksumAlgo:X}"; } set { ChecksumAlgo = value.ToInt32Ex(); } }
+        public string ChecksumAlgoFormatted { get => $"0x{ChecksumAlgo:X}"; set => ChecksumAlgo = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the checksum algorithm code.
@@ -2283,7 +2297,7 @@ namespace Reko.Libraries.Microchip
         public bool IsHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
+        public bool IsHiddenSpecified { get => IsHidden; set { } }
 
         /// <summary>
         /// Gets or sets a value indicating whether this configuration pattern is hidden to language tools.
@@ -2295,7 +2309,7 @@ namespace Reko.Libraries.Microchip
         public bool IsLangHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
+        public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
         /// <summary>
         /// Used to serialize <see cref="OscModeIDRef" /> property from/to hexadecimal string.
@@ -2305,10 +2319,10 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "oscmodeidref", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _oscmodeidrefformatted { get { return $"{OscModeIDRef}"; } set { OscModeIDRef = value.ToInt32Ex(); } }
+        public string OscModeIDRefFormatted { get => $"{OscModeIDRef}"; set => OscModeIDRef = value.ToInt32Ex(); } 
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool _oscmodeidrefformattedSpecified { get { return OscModeIDRef != 0; } set { } }
+        public bool OscModeIDRefFormattedSpecified { get => OscModeIDRef != 0; set { } }
 
         /// <summary>
         /// Gets the oscillator mode identifier reference.
@@ -2431,7 +2445,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_baddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _bitaddrformatted { get { return $"{BitAddr}"; } set { BitAddr = value.ToInt32Ex(); } }
+        public string BitAddrFormatted { get => $"{BitAddr}"; set => BitAddr = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit position of the field.
@@ -2453,7 +2467,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of the field.
@@ -2472,7 +2486,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _maskformatted { get { return $"0x{Mask:X}"; } set { Mask = value.ToInt32Ex(); } }
+        public string MaskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit mask of the field in the register.
@@ -2493,7 +2507,7 @@ namespace Reko.Libraries.Microchip
         public bool IsHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
+        public bool IsHiddenSpecified { get => IsHidden; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this configuration field is hidden to language tools.
@@ -2505,7 +2519,7 @@ namespace Reko.Libraries.Microchip
         public bool IsLangHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
+        public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this configuration field is hidden to the MPLAB IDE.
@@ -2517,7 +2531,7 @@ namespace Reko.Libraries.Microchip
         public bool IsIDEHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsIDEHiddenSpecified { get { return IsIDEHidden; } set { } }
+        public bool IsIDEHiddenSpecified { get => IsIDEHidden; set { } }
 
         #endregion
 
@@ -2752,7 +2766,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the memory address of the configuration register
@@ -2801,7 +2815,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of the register.
@@ -2820,7 +2834,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _implformatted { get { return $"0x{Impl:X}"; } set { Impl = value.ToInt32Ex(); } }
+        public string ImplFormatted { get => $"0x{Impl:X}"; set => Impl = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the implemented bits mask.
@@ -2848,7 +2862,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "default", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _defaultformatted { get { return $"0x{Default:X}"; } set { Default = value.ToInt32Ex(); } }
+        public string DefaultFormatted { get => $"0x{Default:X}"; set => Default = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the default value of the register.
@@ -2867,7 +2881,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "factorydefault", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _factorydefaultformatted { get { return $"0x{FactoryDefault:X}"; } set { FactoryDefault = value.ToInt32Ex(); } }
+        public string FactoryDefaultFormatted { get => $"0x{FactoryDefault:X}"; set => FactoryDefault = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the factory default value of the register.
@@ -2888,7 +2902,7 @@ namespace Reko.Libraries.Microchip
         public bool IsLangHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
+        public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
         /// <summary>
         /// Used to serialize <see cref="UnimplVal" /> property from/to hexadecimal string.
@@ -2898,7 +2912,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "unimplval", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _unimplvalformatted { get { return $"{UnimplVal}"; } set { UnimplVal = value.ToInt32Ex(); } }
+        public string UnimplValFormatted { get => $"{UnimplVal}"; set => UnimplVal = value.ToInt32Ex(); } 
 
         [XmlIgnore]
         public int UnimplVal { get; private set; }
@@ -2911,7 +2925,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "unused", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _unusedformatted { get { return $"{Unused}"; } set { Unused = value.ToInt32Ex(); } }
+        public string UnusedFormatted { get => $"{Unused}"; set => Unused = value.ToInt32Ex(); } 
 
         [XmlIgnore]
         public int Unused { get; private set; }
@@ -2924,7 +2938,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "useinchecksum", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _useinchecksumformatted { get { return $"0x{UseInChecksum:X}"; } set { UseInChecksum = value.ToInt32Ex(); } }
+        public string UseInChecksumFormatted { get => $"0x{UseInChecksum:X}"; set => UseInChecksum = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit mask to use in checksum computation.
@@ -3175,7 +3189,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the address of the register.
@@ -3203,7 +3217,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of the register.
@@ -3282,7 +3296,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the starting memory address of the DIA registers.
@@ -3519,7 +3533,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzsize", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzsizeformatted { get { return $"0x{NzSize:X}"; } set { NzSize = value.ToInt32Ex(); } }
+        public string _nzsizeformatted { get => $"0x{NzSize:X}"; set => NzSize = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bytes size of the area.
@@ -3785,7 +3799,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "bank", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _bankformatted { get { return $"{Bank}"; } set { Bank = value.ToInt32Ex(); } }
+        public string BankFormatted { get => $"{Bank}"; set => Bank = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the memory bank number.
@@ -3860,7 +3874,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _offsetformatted { get { return $"{Offset}"; } set { Offset = value.ToInt32Ex(); } }
+        public string OffsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the relative byte offset to add.
@@ -3875,7 +3889,8 @@ namespace Reko.Libraries.Microchip
 
         public override string ToString()
         {
-            if (Offset < 10) return $"Adjust {Offset} byte(s)";
+            if (Offset < 10)
+                return $"Adjust {Offset} byte(s)";
             return $"Adjust 0x{Offset:X} byte(s)";
         }
 
@@ -3941,7 +3956,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "offset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _offsetformatted { get { return $"{Offset}"; } set { Offset = value.ToInt32Ex(); } }
+        public string OffsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the relative bit offset to add.
@@ -3956,7 +3971,8 @@ namespace Reko.Libraries.Microchip
 
         public override string ToString()
         {
-            if (Offset < 10) return $"Adjust {Offset} bit(s)";
+            if (Offset < 10)
+                return $"Adjust {Offset} bit(s)";
             return $"Adjust 0x{Offset:X} bit(s)";
         }
 
@@ -4133,7 +4149,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToUInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of this SFR field.
@@ -4152,7 +4168,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "mask", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _maskformatted { get { return $"0x{Mask:X}"; } set { Mask = value.ToUInt32Ex(); } }
+        public string MaskFormatted { get => $"0x{Mask:X}"; set => Mask = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit mask of this SFR field.
@@ -4173,7 +4189,7 @@ namespace Reko.Libraries.Microchip
         public bool IsLangHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
+        public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR Field is hidden.
@@ -4185,7 +4201,7 @@ namespace Reko.Libraries.Microchip
         public bool IsHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
+        public bool IsHiddenSpecified { get => IsHidden; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR Field is hidden to MPLAB IDE.
@@ -4197,7 +4213,7 @@ namespace Reko.Libraries.Microchip
         public bool IsIDEHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsIDEHiddenSpecified { get { return IsIDEHidden; } set { } }
+        public bool IsIDEHiddenSpecified { get => IsIDEHidden; set { } }
 
         #endregion
 
@@ -4421,7 +4437,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToUInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the data memory address of this SFR.
@@ -4467,7 +4483,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToUInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of this SFR.
@@ -4495,7 +4511,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "impl", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _implformatted { get { return $"0x{Impl:X}"; } set { Impl = value.ToUInt32Ex(); } }
+        public string ImplFormatted { get => $"0x{Impl:X}"; set => Impl = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the implemented bits mask of this SFR.
@@ -4545,7 +4561,7 @@ namespace Reko.Libraries.Microchip
         public bool IsIndirect { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsIndirectSpecified { get { return IsIndirect; } set { } }
+        public bool IsIndirectSpecified { get => IsIndirect; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is volatile.
@@ -4557,7 +4573,7 @@ namespace Reko.Libraries.Microchip
         public bool IsVolatile { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsVolatileSpecified { get { return IsVolatile; } set { } }
+        public bool IsVolatileSpecified { get => IsVolatile; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is hidden.
@@ -4569,7 +4585,7 @@ namespace Reko.Libraries.Microchip
         public bool IsHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsHiddenSpecified { get { return IsHidden; } set { } }
+        public bool IsHiddenSpecified { get => IsHidden; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is hidden to language tools.
@@ -4581,7 +4597,7 @@ namespace Reko.Libraries.Microchip
         public bool IsLangHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsLangHiddenSpecified { get { return IsLangHidden; } set { } }
+        public bool IsLangHiddenSpecified { get => IsLangHidden; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this SFR is hidden to MPLAB IDE.
@@ -4593,7 +4609,7 @@ namespace Reko.Libraries.Microchip
         public bool IsIDEHidden { get; set; }
         [XmlIgnore]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool IsIDEHiddenSpecified { get { return IsIDEHidden; } set { } }
+        public bool IsIDEHiddenSpecified { get => IsIDEHidden; set { } }
 
         /// <summary>
         /// Gets the name of the peripheral this SFR is the base address of.
@@ -4617,7 +4633,7 @@ namespace Reko.Libraries.Microchip
         /// Gets a value indicating whether this SFR is Non-Memory-Mapped.
         /// </summary>
         [XmlIgnore]
-        public bool IsNMMR { get { return !String.IsNullOrEmpty(NMMRID); } set { } }
+        public bool IsNMMR { get => !String.IsNullOrEmpty(NMMRID); set { } }
 
         #endregion
 
@@ -4683,7 +4699,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the memory address of the mirror
@@ -4702,7 +4718,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzsize", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzsizeformatted { get { return $"0x{NzSize:X}"; } set { NzSize = value.ToInt32Ex(); } }
+        public string NzSizeFormatted { get => $"0x{NzSize:X}"; set => NzSize = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the size in bytes of the mirrored area.
@@ -4797,7 +4813,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToUInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the memory address of the joined SFRs.
@@ -4843,7 +4859,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToUInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of the joined SFR.
@@ -5001,7 +5017,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "_addr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _addrformatted { get { return $"0x{Addr:X}"; } set { Addr = value.ToInt32Ex(); } }
+        public string AddrFormatted { get => $"0x{Addr:X}"; set => Addr = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the memory address of the multiplexed SFRs.
@@ -5020,7 +5036,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _nzwidthformatted { get { return $"{NzWidth}"; } set { NzWidth = value.ToInt32Ex(); } }
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bit width of the multiplex.
@@ -5264,7 +5280,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "shadowoffset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _shadowoffsetformatted { get { return $"0x{ShadowOffset:X}"; } set { ShadowOffset = value.ToInt32Ex(); } }
+        public string ShadowOffsetFormatted { get => $"0x{ShadowOffset:X}"; set => ShadowOffset = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the shadow memory address offset.
@@ -5361,7 +5377,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "shadowoffset", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _shadowoffsetformatted { get { return $"0x{ShadowOffset:X}"; } set { ShadowOffset = value.ToInt32Ex(); } }
+        public string ShadowOffsetFormatted { get => $"0x{ShadowOffset:X}"; set => ShadowOffset = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the shadow memory offset.
@@ -5568,7 +5584,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "banksize", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _banksizeformatted { get { return $"0x{BankSize:X}"; } set { BankSize = value.ToInt32Ex(); } }
+        public string BankSizeFormatted { get => $"0x{BankSize:X}"; set => BankSize = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the bytes size of the linear memory bank.
@@ -5587,7 +5603,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "blockbeginaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _blockbeginaddrformatted { get { return $"0x{BlockBeginAddr:X}"; } set { BlockBeginAddr = value.ToUInt32Ex(); } }
+        public string BlockBeginAddrFormatted { get => $"0x{BlockBeginAddr:X}"; set => BlockBeginAddr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the beginning address of the linear memory bank.
@@ -5606,7 +5622,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "blockendaddr", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _blockendaddrformatted { get { return $"0x{BlockEndAddr:X}"; } set { BlockEndAddr = value.ToUInt32Ex(); } }
+        public string BlockEndAddrFormatted { get => $"0x{BlockEndAddr:X}"; set => BlockEndAddr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the ending address of the linear memory bank.
@@ -5710,7 +5726,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "endaddr", Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _endaddrformatted { get { return $"0x{EndAddr:X}"; } set { EndAddr = value.ToUInt32Ex(); } }
+        public string EndAddrFormatted { get => $"0x{EndAddr:X}"; set => EndAddr = value.ToUInt32Ex(); } 
 
         /// <summary>
         /// Gets the highest (end) address of the data memory space.
@@ -5740,7 +5756,7 @@ namespace Reko.Libraries.Microchip
         #region Locals
 
         // Maps the 'InstructionsetID' to internal code.
-        private static Dictionary<string, InstructionSetID> _mapInstrID = new Dictionary<string, InstructionSetID>() {
+        private static Dictionary<string, InstructionSetID> mapInstrID = new Dictionary<string, InstructionSetID>() {
                 { "pic16f77", InstructionSetID.PIC16 },
                 { "cpu_mid_v10", InstructionSetID.PIC16_ENHANCED },
                 { "cpu_p16f1_v1", InstructionSetID.PIC16_ENHANCED_V1 },
@@ -5863,7 +5879,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "procid", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string _procidformatted { get { return $"0x{ProcID:X}"; } set { ProcID = value.ToInt32Ex(); } }
+        public string ProcIDFormatted { get => $"0x{ProcID:X}"; set => ProcID = value.ToInt32Ex(); } 
 
         /// <summary>
         /// Gets the unique processor identifier.
@@ -5894,7 +5910,7 @@ namespace Reko.Libraries.Microchip
         /// True if this PIC supports extended execution mode, false if not.
         /// </value>
         [XmlAttribute(AttributeName = "isextended", DataType = "boolean", Form = XmlSchemaForm.None, Namespace = "")]
-        public bool IsExtended { get { return DataSpace?.ExtendedModeOnly?.Count > 0; } set { } }
+        public bool IsExtended { get => DataSpace?.ExtendedModeOnly?.Count > 0; set { } }
 
         /// <summary>
         /// Gets a value indicating whether this PIC supports freezing of peripherals.
@@ -5945,7 +5961,7 @@ namespace Reko.Libraries.Microchip
             {
                 if (InstructionSet == null)
                     return InstructionSetID.UNDEFINED;
-                if (!_mapInstrID.TryGetValue(InstructionSet.ID, out InstructionSetID id))
+                if (!mapInstrID.TryGetValue(InstructionSet.ID, out InstructionSetID id))
                 {
                     id = InstructionSetID.UNDEFINED;
                     if (Arch == "16xxxx") id = InstructionSetID.PIC16;

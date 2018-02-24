@@ -27,7 +27,6 @@ namespace Reko.Libraries.Microchip
     using static System.Convert;
     using static System.Math;
 
-
     /// <summary>
     /// Values that represent Conversion bases.
     /// </summary>
@@ -57,6 +56,19 @@ namespace Reko.Libraries.Microchip
 
     public static partial class ConvUtils
     {
+        #region Locals
+
+        private const string defaultNullDisplayValue = "?";
+        private static string nullDisplayValue = defaultNullDisplayValue;
+
+        // The power of 1024 suffixes. Uses "usual" notation (not IEC)
+        private static string[] cvShtSuffix = { "", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB" };
+        private static string[] cvLngSuffix = { " byte", " kilobyte", " megabyte", " gigabyte", " terabyte", " petabyte", " exabyte", " zettabyte", " yottabyte" };
+        private static Func<ConvSuffix, string[]> GetConvSuffix =
+            ((esuf) => (esuf == ConvSuffix.Lng ? cvLngSuffix : cvShtSuffix));
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -66,56 +78,72 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
-        #region Locals
+        #region Properties
 
-        private static string _NullDisplayValue = DefaultNullDisplayValue;
-        private const string DefaultNullDisplayValue = "?";
+        /// <summary>
+        /// Gets/sets the string displayed for any nullable value being null.
+        /// </summary>
+        public static string NullDispValue
+        {
+            get => nullDisplayValue ?? defaultNullDisplayValue; 
+            set => nullDisplayValue = value; 
+        }
 
-        // The power of 1024 suffixes. Uses "usual" notation (not IEC)
-        private static string[] _CVShtSuffix = { "", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB" };
-        private static string[] _CVLngSuffix = { " byte", " kilobyte", " megabyte", " gigabyte", " terabyte", " petabyte", " exabyte", " zettabyte", " yottabyte" };
-        private static Func<ConvSuffix, string[]> GetConvSuffix =
-            ((esuf) => (esuf == ConvSuffix.Lng ? _CVLngSuffix : _CVShtSuffix));
+        /// <summary>
+        /// Gets or sets a value indicating whether the string conversion must be made in uppercase letters.
+        /// </summary>
+        /// <value>
+        /// True if convert to uppercase, false if not. Default is true.
+        /// </value>
+        public static bool ConvertUpper { get; set; } = true;
 
         #endregion
 
         #region Helpers
 
-        private static uint _toUInt32Throw(string sNumber)
+        private static uint ToUInt32Throw(string sNumber)
         {
             string s = sNumber.Trim();
-            if (s.Length == 0) throw new FormatException("Empty number");
+            if (s.Length == 0)
+                throw new FormatException("Empty number");
             if (s.Length >= 2 && s[0] == '0')
             {
                 if (s.Length >= 3)
                 {
-                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt32(s, 16);
-                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase)) return Convert.ToUInt32(s.Substring(2), 2);
+                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase))
+                        return ToUInt32(s, 16);
+                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase))
+                        return ToUInt32(s.Substring(2), 2);
                 }
-                return Convert.ToUInt32(s.Substring(1), 8);
+                return ToUInt32(s.Substring(1), 8);
             }
-            return Convert.ToUInt32(s, 10);
+            return ToUInt32(s, 10);
         }
 
-        private static int _toInt32Throw(string sNumber)
+        private static int ToInt32Throw(string sNumber)
         {
             string s = sNumber.Trim();
-            if (s.Length == 0) throw new FormatException("Empty number");
-            if (s[0] == '+') return _toInt32Throw(s.Substring(1));
-            if (s[0] == '-') return -_toInt32Throw(s.Substring(1));
+            if (s.Length == 0)
+                throw new FormatException("Empty number");
+            if (s[0] == '+')
+                return ToInt32Throw(s.Substring(1));
+            if (s[0] == '-')
+                return -ToInt32Throw(s.Substring(1));
             if (s.Length >= 2 && s[0] == '0')
             {
                 if (s.Length >= 3)
                 {
-                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt32(s, 16);
-                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase)) return Convert.ToInt32(s.Substring(2), 2);
+                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase))
+                        return ToInt32(s, 16);
+                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase))
+                        return ToInt32(s.Substring(2), 2);
                 }
-                return Convert.ToInt32(s.Substring(1), 8);
+                return ToInt32(s.Substring(1), 8);
             }
-            return Convert.ToInt32(s, 10);
+            return ToInt32(s, 10);
         }
 
-        private static string _prefix(ConvBase eToBase, bool withprefix)
+        private static string GetPrefix(ConvBase eToBase, bool withprefix)
         {
             if (withprefix)
             {
@@ -132,95 +160,81 @@ namespace Reko.Libraries.Microchip
             return "";
         }
 
-        private static string _toString(byte iNumber, ConvBase eBase)
+        private static string ToStr(byte iNumber, ConvBase eBase)
         {
             string s = Convert.ToString(iNumber, (int)eBase);
             return (ConvertUpper ? s.ToUpperInvariant() : s);
         }
 
-        private static string _toString(short iNumber, ConvBase eBase)
+        private static string ToStr(short iNumber, ConvBase eBase)
         {
             string s = Convert.ToString(iNumber, (int)eBase);
             return (ConvertUpper ? s.ToUpperInvariant() : s);
         }
 
-        private static string _toString(ushort iNumber, ConvBase eBase)
+        private static string ToStr(ushort iNumber, ConvBase eBase)
         {
             string s = Convert.ToString(iNumber, (int)eBase);
             return (ConvertUpper ? s.ToUpperInvariant() : s);
         }
 
-        private static string _toString(int iNumber, ConvBase eBase)
+        private static string ToStr(int iNumber, ConvBase eBase)
         {
             string s = Convert.ToString(iNumber, (int)eBase);
             return (ConvertUpper ? s.ToUpperInvariant() : s);
         }
 
-        private static string _toString(uint iNumber, ConvBase eBase)
+        private static string ToStr(uint iNumber, ConvBase eBase)
         {
             string s = Convert.ToString(iNumber, (int)eBase);
             return (ConvertUpper ? s.ToUpperInvariant() : s);
         }
 
-        private static string _toString(long iNumber, ConvBase eBase)
+        private static string ToStr(long iNumber, ConvBase eBase)
         {
             string s = Convert.ToString(iNumber, (int)eBase);
             return (ConvertUpper ? s.ToUpperInvariant() : s);
         }
 
-        private static ulong _toUInt64Throw(string s)
+        private static ulong ToUInt64Throw(string s)
         {
             if (s.Length >= 2 & s[0] == '0')
             {
                 if (s.Length >= 3)
                 {
-                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase)) return ToUInt64(s, 16);
-                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase)) return ToUInt64(s.Substring(2), 2);
+                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase))
+                        return ToUInt64(s, 16);
+                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase))
+                        return ToUInt64(s.Substring(2), 2);
                 }
                 return ToUInt64(s.Substring(1), 8);
             }
             return ToUInt64(s, 10);
         }
 
-        private static long _toInt64Throw(string sNumber)
+        private static long ToInt64Throw(string sNumber)
         {
             string s = sNumber.Trim();
-            if (s.Length == 0) throw new FormatException("Empty number");
-            if (s[0] == '+') return _toInt64Throw(s.Substring(1));
-            if (s[0] == '-') return -_toInt64Throw(s.Substring(1));
+            if (s.Length == 0)
+                throw new FormatException("Empty number");
+            if (s[0] == '+')
+                return ToInt64Throw(s.Substring(1));
+            if (s[0] == '-')
+                return -ToInt64Throw(s.Substring(1));
             if (s.Length >= 2 && s[0] == '0')
             {
                 if (s.Length >= 3)
                 {
-                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase)) return ToInt64(s, 16);
-                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase)) return ToInt64(s.Substring(2), 2);
+                    if (s.StartsWith("0X", StringComparison.InvariantCultureIgnoreCase))
+                        return ToInt64(s, 16);
+                    if (s.StartsWith("0B", StringComparison.InvariantCultureIgnoreCase))
+                        return ToInt64(s.Substring(2), 2);
                 }
 
                 return ToInt64(s.Substring(1), 8);
             }
             return ToInt64(s, 10);
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets/sets the string displayed for any nullable value being null.
-        /// </summary>
-        public static string NullDispValue
-        {
-            get { return _NullDisplayValue ?? DefaultNullDisplayValue; }
-            set { _NullDisplayValue = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the string conversion must be made in uppercase letters.
-        /// </summary>
-        /// <value>
-        /// True if convert to uppercase, false if not. Default is true.
-        /// </value>
-        public static bool ConvertUpper { get; set; } = true;
 
         #endregion
 
@@ -236,7 +250,8 @@ namespace Reko.Libraries.Microchip
         /// 
         public static bool ToBooleanEx(this string sNumber)
         {
-            if (sNumber == null) return false; ;
+            if (sNumber == null)
+                return false; ;
             string s = sNumber.Trim();
             return (s.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||
                     s.Equals("y", StringComparison.InvariantCultureIgnoreCase) ||
@@ -251,9 +266,10 @@ namespace Reko.Libraries.Microchip
         /// 
         public static bool? NullableToBooleanEx(this string sNumber)
         {
-            if (sNumber == null) return null; ;
-            if (string.IsNullOrWhiteSpace(sNumber)) return null;
-            if (sNumber.Equals(NullDispValue)) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
+            if (sNumber.Equals(NullDispValue))
+                return null;
             return ToBooleanEx(sNumber);
         }
 
@@ -273,11 +289,11 @@ namespace Reko.Libraries.Microchip
         /// 
         public static byte ToByteEx(this string sNumber)
         {
-            if (sNumber == null) return 0; ;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0;
-            uint res = _toUInt32Throw(s);
-            if (res > Byte.MaxValue) throw new OverflowException("Value cannot fit in a byte");
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0;
+            uint res = ToUInt32Throw(sNumber.Trim());
+            if (res > Byte.MaxValue)
+                throw new OverflowException("Value cannot fit in a byte.");
             return (byte)res;
         }
 
@@ -290,24 +306,26 @@ namespace Reko.Libraries.Microchip
         /// 
         public static byte? ToNullableByteEx(this string sNumber)
         {
-            if (sNumber == null) return null; ;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             uint res;
             try
             {
-                res = _toUInt32Throw(s);
+                res = ToUInt32Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a byte");
+                throw new OverflowException("Value cannot fit in a byte.");
             }
             catch
             {
                 return null;
             }
-            if (res > Byte.MaxValue) throw new OverflowException("Value cannot fit in a byte");
+            if (res > Byte.MaxValue)
+                throw new OverflowException("Value cannot fit in a byte.");
             return (byte?)res;
         }
 
@@ -349,7 +367,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>The string representation of <paramref name="iNumber"/> in base <paramref name="eToBase"/>.</returns>
         /// 
         public static string ToStringEx(this byte iNumber, ConvBase eToBase = ConvBase.Decimal, int numdigits = 0, bool withprefix = true)
-            => _prefix(eToBase, withprefix) + _toString(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
+            => GetPrefix(eToBase, withprefix) +
+               ToStr(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
 
         /// <summary>
         /// Converts the value of a nullable byte to its equivalent string representation in a specified base.
@@ -380,11 +399,11 @@ namespace Reko.Libraries.Microchip
         /// 
         public static short ToInt16Ex(this string sNumber)
         {
-            if (sNumber == null) return 0;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0;
-            int res = _toInt32Throw(s);
-            if (res < short.MinValue || res > short.MaxValue) throw new OverflowException("Value cannot fit in a signed 16-bit integer");
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0;
+            int res = ToInt32Throw(sNumber.Trim());
+            if (res < short.MinValue || res > short.MaxValue)
+                throw new OverflowException("Value cannot fit in a signed 16-bit integer.");
             return (short)res;
         }
 
@@ -397,24 +416,26 @@ namespace Reko.Libraries.Microchip
         /// 
         public static short? ToNullableInt16Ex(this string sNumber)
         {
-            if (sNumber == null) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             int res;
             try
             {
-                res = _toInt32Throw(s);
+                res = ToInt32Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a nullable 16-bit signed integer");
+                throw new OverflowException("Value cannot fit in a nullable 16-bit signed integer.");
             }
             catch
             {
                 return null;
             }
-            if (res < short.MinValue || res > short.MaxValue) throw new OverflowException("Value cannot fit in a nullable 16-bit signed integer");
+            if (res < short.MinValue || res > short.MaxValue)
+                throw new OverflowException("Value cannot fit in a nullable 16-bit signed integer.");
             return (short?)res;
         }
 
@@ -456,7 +477,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>The string representation of <paramref name="iNumber"/> in base <paramref name="eToBase"/>.</returns>
         /// 
         public static string ToStringEx(this short iNumber, ConvBase eToBase = ConvBase.Decimal, int numdigits = 0, bool withprefix = true)
-            => _prefix(eToBase, withprefix) + _toString(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
+            => GetPrefix(eToBase, withprefix) +
+               ToStr(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
 
         /// <summary>
         /// Converts the value of a nullable 16-bit integer to its equivalent string representation in a specified base.
@@ -521,11 +543,11 @@ namespace Reko.Libraries.Microchip
         /// 
         public static ushort ToUInt16Ex(this string sNumber)
         {
-            if (null == sNumber) return 0;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0;
-            uint res = _toUInt32Throw(s);
-            if (res > ushort.MaxValue) throw new OverflowException("Value cannot fit in an unsigned 16-bit integer");
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0;
+            uint res = ToUInt32Throw(sNumber.Trim());
+            if (res > ushort.MaxValue)
+                throw new OverflowException("Value cannot fit in an unsigned 16-bit integer.");
             return (ushort)res;
         }
 
@@ -537,24 +559,26 @@ namespace Reko.Libraries.Microchip
         /// 
         public static ushort? ToNullableUInt16Ex(this string sNumber)
         {
-            if (null == sNumber) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             uint res;
             try
             {
-                res = _toUInt32Throw(s);
+                res = ToUInt32Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a nullable 16-bit unsigned integer");
+                throw new OverflowException("Value cannot fit in a nullable 16-bit unsigned integer.");
             }
             catch
             {
                 return null;
             }
-            if (res > ushort.MaxValue) throw new OverflowException("Value cannot fit in a nullable 16-bit unsigned integer");
+            if (res > ushort.MaxValue)
+                throw new OverflowException("Value cannot fit in a nullable 16-bit unsigned integer.");
             return (ushort)res;
         }
 
@@ -596,7 +620,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>The string representation of <paramref name="iNumber"/> in base <paramref name="eToBase"/>.</returns>
         /// 
         public static string ToStringEx(this ushort iNumber, ConvBase eToBase = ConvBase.Decimal, int numdigits = 0, bool withprefix = true)
-            => _prefix(eToBase, withprefix) + _toString(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
+            => GetPrefix(eToBase, withprefix) +
+               ToStr(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
 
         /// <summary>
         /// Converts the value of an unsigned nullable 16-bit integer to its equivalent string representation in a specified base.
@@ -661,11 +686,9 @@ namespace Reko.Libraries.Microchip
         /// 
         public static int ToInt32Ex(this string sNumber)
         {
-            if (sNumber == null) return 0;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0;
-            int res = _toInt32Throw(s);
-            return res;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0;
+            return ToInt32Throw(sNumber.Trim());
         }
 
         /// <summary>
@@ -677,18 +700,19 @@ namespace Reko.Libraries.Microchip
         /// 
         public static int? ToNullableInt32Ex(this string sNumber)
         {
-            if (sNumber == null) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             int res;
             try
             {
-                res = _toInt32Throw(s);
+                res = ToInt32Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a nullable 32-bit signed integer");
+                throw new OverflowException("Value cannot fit in a nullable 32-bit signed integer.");
             }
             catch
             {
@@ -735,7 +759,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>The string representation of <paramref name="iNumber"/> in base <paramref name="eToBase"/>.</returns>
         /// 
         public static string ToStringEx(this int iNumber, ConvBase eToBase = ConvBase.Decimal, int numdigits = 0, bool withprefix = true)
-            => _prefix(eToBase, withprefix) + _toString(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
+            => GetPrefix(eToBase, withprefix) +
+               ToStr(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
 
         /// <summary>
         /// Converts the value of a nullable 32-bit integer to its equivalent string representation in a specified base.
@@ -800,11 +825,9 @@ namespace Reko.Libraries.Microchip
         /// 
         public static uint ToUInt32Ex(this string sNumber)
         {
-            if (sNumber == null) return 0;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0;
-            uint res = _toUInt32Throw(s);
-            return res;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0;
+            return ToUInt32Throw(sNumber.Trim());
         }
 
         /// <summary>
@@ -815,18 +838,19 @@ namespace Reko.Libraries.Microchip
         /// 
         public static uint? ToNullableUInt32Ex(this string sNumber)
         {
-            if (sNumber == null) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             uint res;
             try
             {
-                res = _toUInt32Throw(s);
+                res = ToUInt32Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a nullable 32-bit unsigned integer");
+                throw new OverflowException("Value cannot fit in a nullable 32-bit unsigned integer.");
             }
             catch
             {
@@ -852,11 +876,9 @@ namespace Reko.Libraries.Microchip
         /// 
         public static long ToInt64Ex(this string sNumber)
         {
-            if (sNumber == null) return 0;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0;
-            long res = _toInt64Throw(s);
-            return res;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0;
+            return ToInt64Throw(sNumber.Trim());
         }
 
         /// <summary>
@@ -868,18 +890,19 @@ namespace Reko.Libraries.Microchip
         /// 
         public static long? ToNullableInt64Ex(this string sNumber)
         {
-            if (sNumber == null) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             long res;
             try
             {
-                res = _toInt64Throw(s);
+                res = ToInt64Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a nullable 64-bit signed integer");
+                throw new OverflowException("Value cannot fit in a nullable 64-bit signed integer.");
             }
             catch
             {
@@ -926,7 +949,8 @@ namespace Reko.Libraries.Microchip
         /// <returns>The string representation of <paramref name="iNumber"/> in base <paramref name="eToBase"/>.</returns>
         /// 
         public static string ToStringEx(this long iNumber, ConvBase eToBase = ConvBase.Decimal, int numdigits = 0, bool withprefix = true)
-            => _prefix(eToBase, withprefix) + _toString(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
+            => GetPrefix(eToBase, withprefix) +
+               ToStr(iNumber, eToBase).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
 
         /// <summary>
         /// Converts the value of a nullable 64-bit integer to its equivalent string representation in a specified base.
@@ -991,11 +1015,9 @@ namespace Reko.Libraries.Microchip
         /// 
         public static ulong ToUInt64Ex(this string sNumber)
         {
-            if (sNumber == null) return 0UL;
-            string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return 0UL;
-            ulong res = _toUInt64Throw(s);
-            return res;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return 0UL;
+            return ToUInt64Throw(sNumber.Trim());
         }
 
         /// <summary>
@@ -1006,18 +1028,19 @@ namespace Reko.Libraries.Microchip
         /// 
         public static ulong? ToNullableUInt64Ex(this string sNumber)
         {
-            if (sNumber == null) return null;
+            if (string.IsNullOrWhiteSpace(sNumber))
+                return null;
             string s = sNumber.Trim();
-            if (string.IsNullOrWhiteSpace(s)) return null;
-            if (s.Equals(NullDispValue)) return null;
+            if (s.Equals(NullDispValue))
+                return null;
             ulong res;
             try
             {
-                res = _toUInt64Throw(s);
+                res = ToUInt64Throw(s);
             }
             catch (OverflowException)
             {
-                throw new OverflowException("Value cannot fit in a nullable 64-bit unsigned integer");
+                throw new OverflowException("Value cannot fit in a nullable 64-bit unsigned integer.");
             }
             catch
             {
@@ -1088,7 +1111,7 @@ namespace Reko.Libraries.Microchip
                     return Convert.ToString(iNumber).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             unchecked
             {
                 while (iNumber > 0)
@@ -1105,7 +1128,7 @@ namespace Reko.Libraries.Microchip
             else
                 charArray = sb.ToString().ToCharArray();
             Array.Reverse(charArray);
-            return _prefix(eToBase, withprefix) + new string(charArray).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
+            return GetPrefix(eToBase, withprefix) + new string(charArray).PadLeft((numdigits < 0 ? 0 : numdigits), '0');
         }
 
         /// <summary>

@@ -71,22 +71,24 @@ namespace Reko.Libraries.Microchip
 
         private static XmlSerializer _getSerializer<T>(ref XElement xelem, string sdescendantName = null)
         {
-            if (sdescendantName == null) return new XmlSerializer(typeof(T), xelem.Name.NamespaceName);
+            if (sdescendantName == null)
+                return new XmlSerializer(typeof(T), xelem.Name.NamespaceName);
 
             // Look for a descendant of this element making it the root element.
             xelem = xelem.Descendants().Where((x) => x.Name.LocalName == sdescendantName).FirstOrDefault();
-            if (xelem == null) return null;
+            if (xelem == null)
+                return null;
 
             string snamespace = xelem.GetDefaultNamespace().NamespaceName;
             string stypename = typeof(T).ToString();
 
-            XmlAttributes xAttribs = new XmlAttributes
+            var xAttribs = new XmlAttributes
             {
                 XmlType = new XmlTypeAttribute { Namespace = snamespace, TypeName = stypename },
                 XmlRoot = new XmlRootAttribute { Namespace = snamespace, DataType = stypename }
             };
 
-            XmlAttributeOverrides xOverrides = new XmlAttributeOverrides();
+            var xOverrides = new XmlAttributeOverrides();
             xOverrides.Add(typeof(T), xAttribs);
 
             Type[] extraTypes = new Type[] { typeof(T) };
@@ -614,11 +616,13 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static T ToObject<T>(this XElement xelem, string sDescendantLocalName = null)
         {
-            if (xelem == null) return default(T);
+            if (xelem == null)
+                return default(T);
             try
             {
                 XmlSerializer xmlsr = _getSerializer<T>(ref xelem, sDescendantLocalName);
-                if (xmlsr == null) return default(T);
+                if (xmlsr == null)
+                    return default(T);
                 return (T)xmlsr.Deserialize(xelem.CreateReader());
             }
             catch (Exception ex)
@@ -655,12 +659,12 @@ namespace Reko.Libraries.Microchip
         {
             try
             {
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                var ns = new XmlSerializerNamespaces();
                 if (!string.IsNullOrEmpty(sPrefix) && !string.IsNullOrEmpty(sNamespace))
                     ns.Add(sPrefix, sNamespace);
                 else
                     ns.Add("", "");
-                XDocument xdoc = new XDocument();
+                var xdoc = new XDocument();
                 using (XmlWriter wr = xdoc.CreateWriter())
                 {
                     new XmlSerializer(obj.GetType()).Serialize(wr, obj, ns);
@@ -676,7 +680,7 @@ namespace Reko.Libraries.Microchip
 
         public static T FromXElement<T>(this XElement xElement, string sNamespae = null)
         {
-            T result = default(T);
+            var result = default(T);
             try
             {
                 using (var memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(xElement.ToString()), false))

@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -40,6 +41,83 @@ namespace Reko.Arch.Microchip.PIC18
         OV = 8,
         /// <summary>Negative flag.</summary>
         N = 16,
+    }
+
+    /// <summary>
+    /// Class defining usage and alteration of PIC18 condition flags by instructions.
+    /// </summary>
+    public static class PIC18CC
+    {
+        private static Dictionary<Opcode, FlagM> defCC = new Dictionary<Opcode, FlagM>()
+        {
+            { Opcode.DAW,    FlagM.C },
+            { Opcode.CLRF,   FlagM.Z },
+            { Opcode.ANDLW,  FlagM.Z | FlagM.N },
+            { Opcode.ANDWF,  FlagM.Z | FlagM.N },
+            { Opcode.COMF,   FlagM.Z | FlagM.N },
+            { Opcode.IORLW,  FlagM.Z | FlagM.N },
+            { Opcode.IORWF,  FlagM.Z | FlagM.N },
+            { Opcode.MOVF,   FlagM.Z | FlagM.N },
+            { Opcode.RLNCF,  FlagM.Z | FlagM.N },
+            { Opcode.RRNCF,  FlagM.Z | FlagM.N },
+            { Opcode.XORLW,  FlagM.Z | FlagM.N },
+            { Opcode.XORWF,  FlagM.Z | FlagM.N },
+            { Opcode.RLCF,   FlagM.C | FlagM.Z | FlagM.N },
+            { Opcode.RRCF,   FlagM.C | FlagM.Z | FlagM.N },
+            { Opcode.ADDLW,  FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.ADDWF,  FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.ADDWFC, FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.DECF,   FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.INCF,   FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.NEGF,   FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.RESET,  FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.SUBFWB, FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.SUBLW,  FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.SUBWF,  FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+            { Opcode.SUBWFB, FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+        };
+
+        private static Dictionary<Opcode, FlagM> useCC = new Dictionary<Opcode, FlagM>()
+        {
+                { Opcode.ADDWFC, FlagM.C },
+                { Opcode.BC,     FlagM.C },
+                { Opcode.BNC,    FlagM.C },
+                { Opcode.RLCF,   FlagM.C },
+                { Opcode.RRCF,   FlagM.C },
+                { Opcode.SUBFWB, FlagM.C },
+                { Opcode.SUBWFB, FlagM.C },
+                { Opcode.DAW,    FlagM.C | FlagM.DC },
+                { Opcode.BN,     FlagM.N },
+                { Opcode.BNN,    FlagM.N },
+                { Opcode.BNZ,    FlagM.Z },
+                { Opcode.BZ,     FlagM.Z },
+                { Opcode.BNOV,   FlagM.OV },
+                { Opcode.BOV,    FlagM.OV },
+                { Opcode.RETURN, FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+                { Opcode.RETFIE, FlagM.C | FlagM.DC | FlagM.Z | FlagM.OV | FlagM.N },
+        };
+
+        /// <summary>
+        /// Gets the condition code flags altered by the given opcode.
+        /// </summary>
+        /// <param name="opc">The opcode.</param>
+        public static FlagM Defined(Opcode opc)
+        {
+            if (defCC.TryGetValue(opc, out FlagM flg))
+                return flg;
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the condition code flags used by the given opcode.
+        /// </summary>
+        /// <param name="opc">The opcode.</param>
+        public static FlagM Used(Opcode opc)
+        {
+            if (useCC.TryGetValue(opc, out FlagM flg))
+                return flg;
+            return 0;
+        }
     }
 
 }

@@ -168,6 +168,15 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.TSTFSZ: RewriteTSTFSZ(); break;
                     case Opcode.XORLW: RewriteXORLW(); break;
                     case Opcode.XORWF: RewriteXORWF(); break;
+
+                    // Pseudo-instructions
+                    case Opcode.CONFIG:
+                    case Opcode.DA:
+                    case Opcode.DB:
+                    case Opcode.DE:
+                    case Opcode.DW:
+                    case Opcode.IDLOCS:
+                        throw new AddressCorrelatedException(addr, $"Rewriting of PIC18 instruction '{instrCurr.Opcode}' is not implemented yet.");
                 }
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
                 {
@@ -177,10 +186,7 @@ namespace Reko.Arch.Microchip.PIC18
             yield break; ;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator(); ;
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator(); 
 
         #endregion
 
@@ -495,7 +501,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void SetStatusFlags(Expression dst)
         {
-            FlagM flags = PIC18Instruction.DefCc(instrCurr.Opcode);
+            FlagM flags = PIC18CC.Defined(instrCurr.Opcode);
             if (flags != 0)
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }

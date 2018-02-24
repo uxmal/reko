@@ -157,7 +157,8 @@ namespace Reko.Libraries.Microchip
             LastError = DBErrorCode.NoSuchPIC;
             _checkDBExist();
 
-            if (String.IsNullOrEmpty(sPICName)) return null;
+            if (String.IsNullOrEmpty(sPICName))
+                return null;
             sPICName = sPICName.ToUpperInvariant();
             if (!sPICName.EndsWith(".PIC", true, CultureInfo.InvariantCulture)) sPICName += ".PIC";
             if (sPICName.StartsWith("PIC16", true, CultureInfo.InvariantCulture))

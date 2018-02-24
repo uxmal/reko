@@ -487,6 +487,8 @@ namespace Reko.Libraries.Microchip
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
         /// of the specified unsigned integer value.  Returns 32 if the specified value has no one-bits in its binary representation,
         /// in other words if it is equal to zero.
+        /// </summary>
+        /// <remarks>
         /// <para>
         /// Note that this method is closely related to the logarithm base 2. For all positive int values x:
         /// <list type="bullet">
@@ -494,7 +496,7 @@ namespace Reko.Libraries.Microchip
         /// <item><description>ceil(log2(x)) = 32 - numberOfLeadingZeros(x - 1)</description></item>
         /// </list>
         /// </para>
-        /// </summary>
+        /// </remarks>
         /// <param name="ui">The value whose number of leading zeros is to be computed.</param>
         /// <returns>
         /// The number of zero bits preceding the highest-order ("leftmost") one-bit binary representation of the specified
@@ -545,7 +547,8 @@ namespace Reko.Libraries.Microchip
         {
             unchecked
             {
-                if (ui == 0) return 32;
+                if (ui == 0)
+                    return 32;
                 uint y;
                 int n = 31;
                 y = ui << 16; if (y != 0) { n -= 16; ui = y; }
@@ -583,6 +586,8 @@ namespace Reko.Libraries.Microchip
         /// Returns the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation
         /// of the specified unsigned long value.  Returns 64 if the specified value has no one-bits in its binary representation,
         /// in other words if it is equal to zero.
+        /// </summary>
+        /// <remarks>
         /// <para>
         /// Note that this method is closely related to the logarithm base 2. For all positive int values x:
         /// <list type="bullet">
@@ -590,7 +595,7 @@ namespace Reko.Libraries.Microchip
         /// <item><description>ceil(log2(x)) = 64 - numberOfLeadingZeros(x - 1)</description></item>
         /// </list>
         /// </para>
-        /// </summary>
+        /// </remarks>
         /// <param name="ul">The value whose number of leading zeros is to be computed.</param>
         /// <returns>
         /// The number of zero bits preceding the highest-order ("leftmost") one-bit binary representation of the specified
@@ -644,7 +649,8 @@ namespace Reko.Libraries.Microchip
             unchecked
             {
                 uint x, y;
-                if (ul == 0) return 64;
+                if (ul == 0)
+                    return 64;
                 int n = 63;
                 y = (uint)ul; if (y != 0) { n = n - 32; x = y; } else x = (uint)(ul >> 32);
                 y = x << 16; if (y != 0) { n = n - 16; x = y; }
@@ -674,10 +680,7 @@ namespace Reko.Libraries.Microchip
 
             uint result = ui & ~(alignment - 1);
             if (result == ui)
-            {
                 return result;
-            }
-
             return result + alignment;
         }
 
@@ -696,10 +699,7 @@ namespace Reko.Libraries.Microchip
 
             int result = i & ~(alignment - 1);
             if (result == i)
-            {
                 return result;
-            }
-
             return result + alignment;
         }
 
@@ -940,7 +940,7 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static string ToStringField(this int field, int width, char sset, char sclr = '-')
         {
-            StringBuilder sb = new StringBuilder(width);
+            var sb = new StringBuilder(width);
             int mask = (1 << width) - 1;
             field &= (1 << width) - 1;
             while (width > 0)
@@ -963,7 +963,8 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public static int ToBitField(this string sField, int width, char sset)
         {
-            if (String.IsNullOrEmpty(sField)) return 0;
+            if (String.IsNullOrEmpty(sField))
+                return 0;
             int field = 0;
             int lfield = sField.Length;
             width = Math.Min(lfield, width);
