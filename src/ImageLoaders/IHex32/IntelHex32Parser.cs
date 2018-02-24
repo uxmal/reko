@@ -74,6 +74,9 @@ namespace Reko.ImageLoaders.IntelHex32
             if (!Enum.IsDefined(typeof(IntelHex32RecordType), hexData[3]))
                 throw new IntelHex32Exception($"Intel Hex line has an invalid/unsupported record type value: [{hexData[3]}].", lineNum);
 
+            if ((hexData.Sum(b => b) % 256) != 0)
+                throw new IntelHex32Exception($"Checksum for Intel Hex line [{hexRecord}] is incorrect.", lineNum);
+
             var rdr = new ImageReader(hexData.ToArray());
             var datasize = rdr.ReadByte();
 
@@ -86,17 +89,9 @@ namespace Reko.ImageLoaders.IntelHex32
                 CheckSum = rdr.ReadByte()
             };
 
-            rdr.Offset = 0;
-            byte chk = 0;
-            while (rdr.IsValid)
-            {
-                chk += rdr.ReadByte();
-            }
-            if (chk != 0)
-                throw new IntelHex32Exception($"Checksum for Intel Hex line [{hexRecord}] is incorrect.", lineNum);
-
             return newRecord;
         }
+
 
     }
 
