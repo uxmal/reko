@@ -156,6 +156,7 @@ namespace Reko.ImageLoaders.IntelHex32
 
         /// <summary>
         /// Loads the image into memory starting at the specified address.
+        /// Not used for Intel Hex as this format contains no meta-data.
         /// </summary>
         /// <param name="addrLoad">Base address of program image. IGNORED.</param>
         /// <returns>
@@ -163,8 +164,24 @@ namespace Reko.ImageLoaders.IntelHex32
         /// </returns>
         public override Program Load(Address addrLoad)
         {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Loads the image into memory at the specified address, using the provided
+        /// <seealso cref="IProcessorArchitecture"/> and <seealso cref="IPlatform"/>.
+        /// Used when loading raw files; not all image loaders can support this.
+        /// </summary>
+        /// <param name="addrLoad">Loading address *IGNORED*.</param>
+        /// <param name="arch">Processor architecture.</param>
+        /// <param name="platform">Platform/operating environment.</param>
+        /// <returns>
+        /// A <see cref="Program"/> instance.
+        /// </returns>
+        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        {
             listener = Services.RequireService<DecompilerEventListener>();
-            MemoryChunksList memChunks = new MemoryChunksList();
+            var memChunks = new MemoryChunksList();
 
             using (var rdr = new IntelHex32Reader(new MemoryStream(RawImage)))
             {
@@ -199,24 +216,7 @@ namespace Reko.ImageLoaders.IntelHex32
                 segs.AddSegment(seg);
             }
 
-            return new Program(segs, null, null);
-        }
-
-        /// <summary>
-        /// Loads the image into memory at the specified address, using the provided
-        /// <seealso cref="IProcessorArchitecture"/> and <seealso cref="IPlatform"/>.
-        /// Used when loading raw files; not all image loaders can support this.
-        /// </summary>
-        /// <param name="addrLoad">Loading address *IGNORED*.</param>
-        /// <param name="arch">Processor architecture.</param>
-        /// <param name="platform">Platform/operating environment.</param>
-        /// <returns>
-        /// A <see cref="Program"/> instance.
-        /// </returns>
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
-        {
-            var prog = Load(addrLoad);
-            return new Program() { SegmentMap = prog.SegmentMap, Architecture = arch, Platform = platform };
+            return new Program() { SegmentMap = segs, Architecture = arch, Platform = platform };
         }
 
         /// <summary>
