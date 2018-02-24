@@ -98,21 +98,6 @@ namespace Reko.ImageLoaders.IntelHex32
             return newRecord;
         }
 
-        private static List<byte> TryParseHexData(string hexData, int lineNum = 0)
-        {
-            try
-            {
-                return Enumerable.Range(0, hexData.Length)
-                    .Where(i => (i & 1) == 0)
-                    .Select(i => Convert.ToByte(hexData.Substring(i, 2), 16))
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new IntelHex32Exception($"Unable to parse hexedecimal numbers in Intel Hex line [{hexData}]", ex, lineNum);
-            }
-        }
-
     }
 
 }
