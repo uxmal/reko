@@ -69,6 +69,39 @@ namespace Reko.Arch.Microchip.Common
     public class PICRegisterStorage : FlagRegister
     {
 
+        #region Constructors
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public PICRegisterStorage() 
+            : base("None", -1, PrimitiveType.Byte)
+        {
+            Traits = new PICRegisterTraits();
+            SubRegs = null;
+        }
+
+        /// <summary>
+        /// Constructor of a named PIC register.
+        /// </summary>
+        /// <param name="sfr">The SFR definition.</param>
+        /// <param name="number">The Reko index number of this register.</param>
+        public PICRegisterStorage(SFRDef sfr, int number)
+            : base(sfr.Name, number, sfr.NzWidth.Size2PrimitiveType())
+        {
+            Traits = new PICRegisterTraits(sfr);
+            SubRegs = null;
+        }
+
+        public PICRegisterStorage(JoinedSFRDef jsfr, ICollection<PICRegisterStorage> subregs)
+            : base(jsfr.Name, subregs.First().Number, jsfr.NzWidth.Size2PrimitiveType())
+        {
+            Traits = new PICRegisterTraits(jsfr, subregs);
+            SubRegs = subregs;
+        }
+
+        #endregion
+
         #region Properties
 
         public PICRegisterTraits Traits { get; }
@@ -155,39 +188,6 @@ namespace Reko.Arch.Microchip.Common
 
         #endregion
 
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public PICRegisterStorage() 
-            : base("None", -1, PrimitiveType.Byte)
-        {
-            Traits = new PICRegisterTraits();
-            SubRegs = null;
-        }
-
-        /// <summary>
-        /// Constructor of a named PIC register.
-        /// </summary>
-        /// <param name="sfr">The SFR definition.</param>
-        /// <param name="number">The Reko index number of this register.</param>
-        public PICRegisterStorage(SFRDef sfr, int number)
-            : base(sfr.Name, number, sfr.NzWidth.Size2PrimitiveType())
-        {
-            Traits = new PICRegisterTraits(sfr);
-            SubRegs = null;
-        }
-
-        public PICRegisterStorage(JoinedSFRDef jsfr, ICollection<PICRegisterStorage> subregs)
-            : base(jsfr.Name, subregs.First().Number, jsfr.NzWidth.Size2PrimitiveType())
-        {
-            Traits = new PICRegisterTraits(jsfr, subregs);
-            SubRegs = subregs;
-        }
-
-        #endregion
-
         #region Methods
 
         public override bool Equals(object obj)
@@ -224,6 +224,24 @@ namespace Reko.Arch.Microchip.Common
     public class PICBitFieldStorage : FlagGroupStorage
     {
 
+        #region Constructors
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="reg">The PIC register containing the bit field.</param>
+        /// <param name="sfrdef">The bit field definition per PIC XML definition.</param>
+        /// <param name="bitPos">The least significant bit number as a byte.</param>
+        /// <param name="uMask">The bit field mask.</param>
+        public PICBitFieldStorage(PICRegisterStorage reg, SFRFieldDef sfrdef, byte bitPos, uint uMask)
+            : base(reg, (uMask << bitPos), sfrdef.Name, sfrdef.NzWidth.Size2PrimitiveType())
+        {
+            SFRField = sfrdef;
+            BitPos = bitPos;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -246,24 +264,6 @@ namespace Reko.Arch.Microchip.Common
         /// The width as number of bits.
         /// </value>
         public uint BitWidth => SFRField.NzWidth;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="reg">The PIC register containing the bit field.</param>
-        /// <param name="sfrdef">The bit field definition per PIC XML definition.</param>
-        /// <param name="bitPos">The least significant bit number as a byte.</param>
-        /// <param name="uMask">The bit field mask.</param>
-        public PICBitFieldStorage(PICRegisterStorage reg, SFRFieldDef sfrdef, byte bitPos, uint uMask)
-            : base(reg, (uMask << bitPos), sfrdef.Name, sfrdef.NzWidth.Size2PrimitiveType())
-        {
-            SFRField = sfrdef;
-            BitPos = bitPos;
-        }
 
         #endregion
 

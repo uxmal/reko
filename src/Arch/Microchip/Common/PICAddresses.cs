@@ -33,8 +33,20 @@ namespace Reko.Arch.Microchip.Common
     /// </summary>
     public class PICProgAddress : Address
     {
-        private uint uValue;
+
+        #region Static and Constant fields
+
         public const uint MAXPROGBYTADDR = 0x1FFFFFU;
+
+        #endregion
+
+        #region Members fields
+
+        private uint uValue;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructor.
@@ -45,57 +57,47 @@ namespace Reko.Arch.Microchip.Common
             uValue = addr & MAXPROGBYTADDR;
         }
 
+        #endregion
+
+        #region Properties
+
         public override bool IsNull => false;
-        public override ulong Offset { get { return uValue; } }
-        public override ushort? Selector { get { return null; } }
+        public override ulong Offset => uValue; 
+        public override ushort? Selector => null;
+
+        #endregion
+
+        #region Methods
 
         public override Address Add(long offset)
-        {
-            var uNew = uValue + offset;
-            return new PICProgAddress((uint)uNew);
-        }
+            => new PICProgAddress((uint)(uValue + offset));
 
         public override Address Align(int alignment)
-        {
-            return new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
-        }
+            => new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
 
         public override Expression CloneExpression()
-        {
-            return new PICProgAddress(uValue);
-        }
+            => new PICProgAddress(uValue);
 
         public override string GenerateName(string prefix, string suffix)
-        {
-            return $"{prefix}{uValue:X6}{suffix}";
-        }
+            => $"{prefix}{uValue:X6}{suffix}";
 
         public override Address NewOffset(ulong offset)
-        {
-            return new PICProgAddress((uint)offset);
-        }
+            => new PICProgAddress((uint)offset);
 
         public override Constant ToConstant()
-        {
-            return Constant.UInt32(uValue);
-        }
+            => Constant.UInt32(uValue);
 
         public override ushort ToUInt16()
-        {
-            throw new InvalidOperationException("Returning UInt16 would lose precision.");
-        }
+            => throw new InvalidOperationException("Returning UInt16 would lose precision.");
 
         public override uint ToUInt32()
-        {
-            return uValue;
-        }
+            => uValue;
 
         public override ulong ToLinear()
-        {
-            return uValue;
-        }
+            => uValue;
 
-        public override string ToString() => $"{uValue:X6}";
+        public override string ToString()
+            => $"{uValue:X6}";
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.
@@ -104,7 +106,8 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The <see cref="PICProgAddress"/>.
         /// </returns>
-        public static PICProgAddress Ptr(uint addr) => new PICProgAddress(addr);
+        public static PICProgAddress Ptr(uint addr)
+            => new PICProgAddress(addr);
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified address.
@@ -113,7 +116,10 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The <see cref="PICProgAddress"/>.
         /// </returns>
-        public static PICProgAddress Ptr(Address aaddr) => new PICProgAddress(aaddr.ToUInt32());
+        public static PICProgAddress Ptr(Address aaddr)
+            => new PICProgAddress(aaddr.ToUInt32());
+
+        #endregion
     }
 
     /// <summary>
@@ -121,75 +127,80 @@ namespace Reko.Arch.Microchip.Common
     /// </summary>
     public class PICDataAddress : Address
     {
-        private ushort uValue;
+
+        #region Static and Constant fields
+
         public const uint MAXDATABYTADDR = 0x3FFF;
+
+        #endregion
+
+        #region Members fields
+
+        private ushort uValue;
+
+        #endregion
+
+        #region Constructors
 
         public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)
         {
             uValue = (ushort)(addr & MAXDATABYTADDR);
         }
 
+        #endregion
+
+        #region Properties
+
         public override bool IsNull => false;
-        public override ulong Offset { get { return uValue; } }
-        public override ushort? Selector { get { return null; } }
+        public override ulong Offset => uValue; 
+        public override ushort? Selector => null;
+
+        #endregion
+
+        #region Methods
 
         public override Address Add(long offset)
-        {
-            var uNew = uValue + offset;
-            return new PICProgAddress((uint)uNew);
-        }
+            => new PICProgAddress((uint)(uValue + offset));
 
         public override Address Align(int alignment)
-        {
-            return new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
-        }
+            => new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
 
         public override Expression CloneExpression()
-        {
-            return new PICProgAddress(uValue);
-        }
+            => new PICProgAddress(uValue);
 
         public override string GenerateName(string prefix, string suffix)
-        {
-            return $"{prefix}{uValue:X4}{suffix}";
-        }
+            => $"{prefix}{uValue:X4}{suffix}";
 
         public override Address NewOffset(ulong offset)
-        {
-            return new PICProgAddress((uint)offset);
-        }
+            => new PICProgAddress((uint)offset);
 
         public override Constant ToConstant()
-        {
-            return Constant.UInt16(uValue);
-        }
+            => Constant.UInt16(uValue);
 
         public override ushort ToUInt16()
-        {
-            return uValue;
-        }
+            => uValue;
 
         public override uint ToUInt32()
-        {
-            return uValue;
-        }
+            => uValue;
 
         public override ulong ToLinear()
-        {
-            return uValue;
-        }
+            => uValue;
 
+        public override string ToString()
+            => $"{uValue:X4}";
 
-        public override string ToString() => $"{uValue:X4}";
+        public static PICDataAddress Ptr(uint addr)
+            => new PICDataAddress(addr);
 
-        public static PICDataAddress Ptr(uint addr) => new PICDataAddress(addr);
+        public static PICDataAddress Ptr(Address aaddr)
+            => new PICDataAddress(aaddr.ToUInt32());
 
-        public static PICDataAddress Ptr(Address aaddr) => new PICDataAddress(aaddr.ToUInt32());
+        #endregion
 
     }
 
     /// <summary>
-    /// A PIC banked data memory address. Bank size depends on PIC family.
+    /// A PIC banked data memory address. Bank size depends on PIC family. Class must be inherited.
     /// </summary>
     public abstract class PICBankedAddress : Address
     {
@@ -217,14 +228,16 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         public ushort BankOffset
         {
-            get { return _bankoff; }
-            protected set { _bankoff = (ushort)(value & (BankSize - 1)); }
+            get => bankOff; 
+            protected set => bankOff = (ushort)(value & (BankSize - 1)); 
         }
-        private ushort _bankoff;
+        private ushort bankOff;
 
         #endregion
 
-        #region Overridden 'Address' methods
+        #region Overridden 'Address' properties/methods
+
+        #region Properties
 
         public override bool IsNull => false;
 
@@ -232,57 +245,43 @@ namespace Reko.Arch.Microchip.Common
 
         public override ushort? Selector => BankSelect;
 
-        public override Constant ToConstant()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ushort ToUInt16()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override uint ToUInt32()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ulong ToLinear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Address Add(long offset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Address Align(int alignment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string GenerateName(string prefix, string suffix)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Expression CloneExpression()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Address NewOffset(ulong offset)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool IsZero => false;
 
+        #endregion
+
+        #region Methods
+
+        public override Constant ToConstant()
+            => throw new NotImplementedException();
+
+        public override ushort ToUInt16()
+            => throw new NotImplementedException();
+
+        public override uint ToUInt32()
+            => throw new NotImplementedException();
+
+        public override ulong ToLinear()
+            => throw new NotImplementedException();
+
+        public override Address Add(long offset)
+            => throw new NotImplementedException();
+
+        public override Address Align(int alignment)
+            => throw new NotImplementedException();
+
+        public override string GenerateName(string prefix, string suffix)
+            => throw new NotImplementedException();
+
+        public override Expression CloneExpression()
+            => throw new NotImplementedException();
+
+        public override Address NewOffset(ulong offset)
+            => throw new NotImplementedException();
+
         public override Expression Invert()
-        {
-            return base.Invert();
-        }
+            => base.Invert();
+
+        #endregion
 
         #endregion
 

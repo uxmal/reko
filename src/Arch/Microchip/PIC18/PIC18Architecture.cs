@@ -69,8 +69,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="picDescr">PIC descriptor.</param>
         public PIC18Architecture(PIC picDescr) : this("pic18")
         {
-            _picDescriptor = picDescr ?? throw new ArgumentNullException(nameof(picDescr));
-            CPUModel = _picDescriptor.Name;
+            picDescriptor = picDescr ?? throw new ArgumentNullException(nameof(picDescr));
+            CPUModel = picDescriptor.Name;
         }
 
         #endregion
@@ -81,10 +81,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// Loads the PIC configuration. Creates memory mapper and registers.
         /// </summary>
         /// <param name="picDescr">PIC descriptor.</param>
-        private void _loadConfiguration()
+        private void LoadConfiguration()
         {
-            Description = _picDescriptor.Desc;
-            PIC18Registers.Create(_picDescriptor).LoadRegisters(); 
+            Description = picDescriptor.Desc;
+            PIC18Registers.Create(picDescriptor).LoadRegisters(); 
             StackRegister = PIC18Registers.STKPTR;
         }
 
@@ -99,7 +99,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             get
             {
-                if (_picDescriptor == null)
+                if (picDescriptor is null)
                 {
                     try
                     {
@@ -112,33 +112,33 @@ namespace Reko.Arch.Microchip.PIC18
                         throw new InvalidOperationException($"Unable to retrieve PIC definition for PIC name '{CPUModel}'", ex);
                     }
                 }
-                return _picDescriptor;
+                return picDescriptor;
             }
             private set
             {
-                if (_picDescriptor != value)
+                if (picDescriptor != value)
                 {
-                    _picDescriptor = value;
-                    if (!(_picDescriptor == null))
-                        _loadConfiguration();
+                    picDescriptor = value;
+                    if (!(picDescriptor is null))
+                        LoadConfiguration();
                 }
             }
         }
-        private PIC _picDescriptor;
+        private PIC picDescriptor;
 
         public override string CPUModel
         {
-            get => _cpuModel;
+            get => cpuModel;
             set
             {
-                if (_cpuModel != value)
+                if (cpuModel != value)
                 {
-                    _cpuModel = value;
-                    _picDescriptor = null;
+                    cpuModel = value;
+                    picDescriptor = null;
                 }
             }
         }
-        private string _cpuModel = String.Empty;
+        private string cpuModel = String.Empty;
 
         /// <summary>
         /// Gets or sets the PIC execution mode.
@@ -148,8 +148,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// </value>
         public PICExecMode ExecMode
         {
-            get { return MemoryMapper.ExecMode; }
-            set { MemoryMapper.ExecMode = value; }
+            get => MemoryMapper.ExecMode; 
+            set => MemoryMapper.ExecMode = value; 
         }
 
         /// <summary>
@@ -159,12 +159,12 @@ namespace Reko.Arch.Microchip.PIC18
         {
             get
             {
-                if (_memmapper is null)
-                    _memmapper = PIC18MemoryMapper.Create(PICDescriptor);
-                return _memmapper;
+                if (memMapper is null)
+                    memMapper = PIC18MemoryMapper.Create(PICDescriptor);
+                return memMapper;
             }
         }
-        PIC18MemoryMapper _memmapper;
+        PIC18MemoryMapper memMapper;
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
             => new PIC18Disassembler(this, imageReader);
@@ -287,13 +287,7 @@ namespace Reko.Arch.Microchip.PIC18
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
             if (reg is PICRegisterStorage preg)
-            {
-                foreach (var r in preg.SubRegs)
-                {
-                    if ((r.BitAddress == (ulong)offset) && (r.BitSize == (ulong)width))
-                        return r;
-                }
-            }
+                return preg.SubRegs.FirstOrDefault(r => ((r.BitAddress == (ulong)offset) && (r.BitSize == (ulong)width)));
             return null;
         }
 
@@ -331,7 +325,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override string GrfToString(uint grpFlags)
         {
-            StringBuilder s = new StringBuilder();
+            var sb = new StringBuilder();
             uint bitPos = 0;
             while (grpFlags != 0)
             {
@@ -339,12 +333,12 @@ namespace Reko.Arch.Microchip.PIC18
                 {
                     var f = PIC18Registers.GetBitFieldByReg(PIC18Registers.STATUS, bitPos, 1);
                     if (f != null)
-                        s.Append(f.Name);
+                        sb.Append(f.Name);
                 }
                 grpFlags >>= 1;
                 bitPos++;
             }
-            return s.ToString();
+            return sb.ToString();
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

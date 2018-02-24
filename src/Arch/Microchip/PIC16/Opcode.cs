@@ -132,7 +132,7 @@ namespace Reko.Arch.Microchip.PIC16
         MOVWI_idx,
         ///<summary>Reset processor</summary>
         RESET,
-        ///<summary>Substract W from f with Borrow</summary>
+        ///<summary>Subtract W from f with Borrow</summary>
         SUBWFB
     }
 

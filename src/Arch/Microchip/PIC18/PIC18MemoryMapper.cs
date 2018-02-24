@@ -37,7 +37,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Locals
 
-        private static PIC18MemoryMapper _mapper;
+        private static PIC18MemoryMapper memMapper;
 
         private const string AccessRAMRegionID = "accessram";
         private const string ExtendRAMRegionID = "gpre";
@@ -77,19 +77,20 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
         public static PIC18MemoryMapper Create(PIC pic)
         {
-            if (pic is null) throw new ArgumentNullException(nameof(pic));
-            _mapper = new PIC18MemoryMapper(pic);
-            _mapper.AccessRAMHigh = _mapper.MemoryMap.GetDataRegion(AccessSFRRegionID);
-            if (_mapper.AccessRAMHigh is null)
+            if (pic is null)
+                throw new ArgumentNullException(nameof(pic));
+            memMapper = new PIC18MemoryMapper(pic);
+            memMapper.AccessRAMHigh = memMapper.MemoryMap.GetDataRegion(AccessSFRRegionID);
+            if (memMapper.AccessRAMHigh is null)
                 throw new InvalidOperationException($"Missing '{AccessSFRRegionID}' data memory region.");
-            _mapper.AccessRAMLow = _mapper.MemoryMap.GetDataRegion(AccessRAMRegionID);
-            if (_mapper.AccessRAMLow is null)
+            memMapper.AccessRAMLow = memMapper.MemoryMap.GetDataRegion(AccessRAMRegionID);
+            if (memMapper.AccessRAMLow is null)
             {
-                _mapper.AccessRAMLow = _mapper.MemoryMap.GetDataRegion(ExtendRAMRegionID);
-                if (_mapper.AccessRAMLow is null)
-                    throw new InvalidOperationException($"Missing '{AccessRAMRegionID}'/'{ExtendRAMRegionID}' data memory region.");
+                memMapper.AccessRAMLow = memMapper.MemoryMap.GetDataRegion(ExtendRAMRegionID);
+                if (memMapper.AccessRAMLow is null)
+                    throw new InvalidOperationException($"Missing either '{AccessRAMRegionID}' or '{ExtendRAMRegionID}' data memory region.");
             }
-            return _mapper;
+            return memMapper;
         }
 
         #endregion
@@ -109,7 +110,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </value>
         public PICExecMode ExecMode
         {
-            get { return MemoryMap.ExecMode; }
+            get => MemoryMap.ExecMode; 
             set
             {
                 if (value != MemoryMap.ExecMode)
@@ -126,7 +127,7 @@ namespace Reko.Arch.Microchip.PIC18
                             break;
                     }
                     if (AccessRAMLow is null)
-                        throw new InvalidOperationException($"Missing '{AccessRAMRegionID}'/'{ExtendRAMRegionID}' data memory region.");
+                        throw new InvalidOperationException($"Missing either '{AccessRAMRegionID}' or '{ExtendRAMRegionID}' data memory region.");
                 }
             }
         }
@@ -229,7 +230,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         public bool IsAccessRAMHigh(uint uAddr)
         {
-            Address addr = Address.Ptr32(uAddr);
+            var addr = Address.Ptr32(uAddr);
             return (addr >= AccessRAMLow.LogicalByteAddress.End && addr < topAccessRAM);
         }
 
@@ -245,7 +246,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static PICDataAddress TranslateAccessAddress(PICDataAddress addr) => _mapper?.XlateAccessAddress(addr);
+        public static PICDataAddress TranslateAccessAddress(PICDataAddress addr) => memMapper?.XlateAccessAddress(addr);
 
         /// <summary>
         /// Translates an Access Bank address to actual data memory address.
@@ -255,7 +256,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static PICDataAddress TranslateAccessAddress(Constant cAddr) => _mapper?.XlateAccessAddress(cAddr);
+        public static PICDataAddress TranslateAccessAddress(Constant cAddr) => memMapper?.XlateAccessAddress(cAddr);
 
         /// <summary>
         /// Translates an Access Bank address to actual data memory address.
@@ -265,7 +266,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        public static PICDataAddress TranslateAccessAddress(uint uAddr) => _mapper?.XlateAccessAddress(uAddr);
+        public static PICDataAddress TranslateAccessAddress(uint uAddr) => memMapper?.XlateAccessAddress(uAddr);
 
         /// <summary>
         /// Query if data memory address <paramref name="addr"/> belongs to Access RAM Low range.
@@ -274,7 +275,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM Low, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMLow(PICDataAddress addr) => _mapper?.IsAccessRAMLow(addr) ?? false;
+        public static bool BelongsToAccessRAMLow(PICDataAddress addr) => memMapper?.IsAccessRAMLow(addr) ?? false;
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
@@ -283,7 +284,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMLow(Constant cAddr) => _mapper?.IsAccessRAMLow(cAddr) ?? false;
+        public static bool BelongsToAccessRAMLow(Constant cAddr) => memMapper?.IsAccessRAMLow(cAddr) ?? false;
 
         /// <summary>
         /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM Low range.
@@ -292,7 +293,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="uAddr"/> belongs to Access RAM Low, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMLow(ushort uAddr) => _mapper?.IsAccessRAMLow(uAddr) ?? false;
+        public static bool BelongsToAccessRAMLow(ushort uAddr) => memMapper?.IsAccessRAMLow(uAddr) ?? false;
 
         /// <summary>
         /// Query if data memory address <paramref name="addr"/> belongs to Access RAM High range.
@@ -301,7 +302,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="addr"/> belongs to Access RAM High, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMHigh(PICDataAddress addr) => _mapper?.IsAccessRAMHigh(addr) ?? false;
+        public static bool BelongsToAccessRAMHigh(PICDataAddress addr) => memMapper?.IsAccessRAMHigh(addr) ?? false;
 
         /// <summary>
         /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM High range.
@@ -310,7 +311,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="cAddr"/> belongs to Access RAM High, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMHigh(Constant cAddr) => _mapper?.IsAccessRAMHigh(cAddr) ?? false;
+        public static bool BelongsToAccessRAMHigh(Constant cAddr) => memMapper?.IsAccessRAMHigh(cAddr) ?? false;
 
         /// <summary>
         /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
@@ -319,7 +320,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
         /// </returns>
-        public static bool BelongsToAccessRAMHigh(ushort uAddr) => _mapper?.IsAccessRAMHigh(uAddr) ?? false;
+        public static bool BelongsToAccessRAMHigh(ushort uAddr) => memMapper?.IsAccessRAMHigh(uAddr) ?? false;
 
         #endregion
 

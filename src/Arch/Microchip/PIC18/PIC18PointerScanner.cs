@@ -58,9 +58,9 @@ namespace Reko.Arch.Microchip.PIC18
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
                 ushort word2 = rdr.ReadLeUInt16();
-                if ((word2 & 0xF000) == 0xF000)
+                if ((word2 & 0xF000U) == 0xF000U)
                 {
-                    target = (uint)(sopcode.Extract(0, 8) | (word2 << 8));
+                    target = (uint)(sopcode.Extract(0, 8) | (word2.Extract(0, 12) << 8));
                     return true;
                 }
             }
@@ -84,9 +84,9 @@ namespace Reko.Arch.Microchip.PIC18
                 rdr.IsValidOffset(rdr.Offset + 2u))
             {
                 ushort word2 = rdr.ReadLeUInt16();
-                if ((word2 & 0xF000) == 0xF000)
+                if ((word2 & 0xF000U) == 0xF000U)
                 {
-                    target = (uint)(sopcode.Extract(0, 8) | (word2 << 8));
+                    target = (uint)(sopcode.Extract(0, 8) | (word2.Extract(0, 12) << 8));
                     return true;
                 }
             }

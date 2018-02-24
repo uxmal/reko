@@ -29,7 +29,7 @@ namespace Reko.Arch.Microchip.PIC18
     public interface IOperandShadow
     {
         /// <summary>
-        /// Gets a value indicating whether this shadow flag is present (to be displayed).
+        /// Gets a value indicating whether the shadow flag is present (and to be displayed).
         /// </summary>
         bool IsPresent { get; }
 

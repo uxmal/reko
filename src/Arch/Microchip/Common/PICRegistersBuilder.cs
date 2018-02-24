@@ -33,20 +33,35 @@ namespace Reko.Arch.Microchip.Common
     /// </summary>
     public abstract class PICRegistersBuilder : IMemDataRegionVisitor, IMemDataSymbolVisitor
     {
-        #region Locals
+        #region Member fields
 
-        private int _byteAddr = 0;
-        private int _bitAddr = 0;
-        private int _regIndex = 0;
-        private SFRDef _currentSFRDef = null;
-        private PICRegisterStorage _currentSFRRegister = null;
-        private IPICRegisterSymTable _symTable;
+        private int byteAddr = 0;
+        private int bitAddr = 0;
+        private int regIndex = 0;
+        private SFRDef currentSFRDef = null;
+        private PICRegisterStorage currentSFRRegister = null;
+        private IPICRegisterSymTable symTable;
+
+        public readonly PIC PIC;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pic">The PIC definition.</param>
+        protected PICRegistersBuilder(PIC pic)
+        {
+            PIC = pic;
+        }
 
         #endregion
 
         #region Helpers
 
-        private static PrimitiveType _size2type(uint nzsize)
+        private static PrimitiveType Size2Type(uint nzsize)
         {
             if (nzsize == 0)
                 throw new ArgumentOutOfRangeException(nameof(nzsize));
@@ -69,25 +84,6 @@ namespace Reko.Arch.Microchip.Common
 
         #endregion
 
-        #region Properties/Fields
-
-        public readonly PIC PIC;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="pic">The PIC definition.</param>
-        protected PICRegistersBuilder(PIC pic)
-        {
-            PIC = pic;
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -97,7 +93,7 @@ namespace Reko.Arch.Microchip.Common
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="registersSymTable"/> is null.</exception>
         public virtual void LoadRegisters(IPICRegisterSymTable registersSymTable)
         {
-            _symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
+            symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
 
             foreach (var e in PIC.DataSpace.RegardlessOfMode.Regions)
             {
@@ -118,7 +114,7 @@ namespace Reko.Arch.Microchip.Common
 
         #region Visit the PIC definition and create registers
 
-        #region IMemDataRegionVisitor
+        #region IMemDataRegionVisitor interface implementation
 
         public void Visit(SFRDataSector xmlRegion)
         {
@@ -158,7 +154,7 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(NMMRPlace xmlRegion)
         {
-            if (xmlRegion.RegionID != "peripheralnmmrs")  // Do not consider internal peripherals (for debuggers only).
+            if (xmlRegion.RegionID != "peripheralnmmrs")  // Do not consider internal peripherals (for hardware debuggers only).
                 xmlRegion.SFRDefs.ForEach(e => e.Accept(this));
         }
 
@@ -169,30 +165,29 @@ namespace Reko.Arch.Microchip.Common
 
         #endregion
 
-        #region IMemDataSymbolVisitor
+        #region IMemDataSymbolVisitor interface implementation
 
         public void Visit(DataBitAdjustPoint xmlSymb)
         {
-            _bitAddr += xmlSymb.Offset;
+            bitAddr += xmlSymb.Offset;
         }
 
         public void Visit(DataByteAdjustPoint xmlSymb)
         {
-            _byteAddr += xmlSymb.Offset;
+            byteAddr += xmlSymb.Offset;
         }
 
         public void Visit(JoinedSFRDef xmlSymb)
         {
-            SortedList<PICDataAddress, PICRegisterStorage> subregs = new SortedList<PICDataAddress, PICRegisterStorage>();
+            var subregs = new SortedList<PICDataAddress, PICRegisterStorage>();
             xmlSymb.SFRs.ForEach(e =>
             {
                 e.Accept(this);
-                subregs.Add(_currentSFRRegister.Address, _currentSFRRegister);
+                subregs.Add(currentSFRRegister.Address, currentSFRRegister);
             });
             if (subregs.Count > 0)
             {
-                PICRegisterStorage joined = new PICRegisterStorage(xmlSymb, subregs.Values);
-                _symTable.AddRegister(joined);
+                symTable.AddRegister(new PICRegisterStorage(xmlSymb, subregs.Values));
             }
         }
 
@@ -217,10 +212,10 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(SFRDef xmlSymb)
         {
-            _currentSFRRegister = new PICRegisterStorage(xmlSymb, _regIndex);
-            if (_symTable.AddRegister(_currentSFRRegister) != null)
-                _regIndex++;
-            _currentSFRDef = xmlSymb;
+            currentSFRRegister = new PICRegisterStorage(xmlSymb, regIndex);
+            if (symTable.AddRegister(currentSFRRegister) != null)
+                regIndex++;
+            currentSFRDef = xmlSymb;
 
             xmlSymb.SFRModes.ForEach(e => e.Accept(this));
         }
@@ -232,7 +227,7 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(SFRMode xmlSymb)
         {
-            _bitAddr = 0;
+            bitAddr = 0;
             foreach (var e in xmlSymb.Fields)
             {
                 switch (e)
@@ -252,12 +247,12 @@ namespace Reko.Arch.Microchip.Common
         public void Visit(SFRFieldDef xmlSymb)
         {
             // We do not add SFR Fields which are duplicating the parent SFR register definition (same name or same bit width)
-            if ((xmlSymb.Name != _currentSFRDef.Name) && (xmlSymb.NzWidth != _currentSFRDef.NzWidth))
+            if ((xmlSymb.Name != currentSFRDef.Name) && (xmlSymb.NzWidth != currentSFRDef.NzWidth))
             {
-                var fld = new PICBitFieldStorage(_currentSFRRegister, xmlSymb, (byte)_bitAddr, xmlSymb.Mask);
-                _symTable.AddRegisterField(_currentSFRRegister, fld);
+                var fld = new PICBitFieldStorage(currentSFRRegister, xmlSymb, (byte)bitAddr, xmlSymb.Mask);
+                symTable.AddRegisterField(currentSFRRegister, fld);
             }
-            _bitAddr += (int)xmlSymb.NzWidth;
+            bitAddr += (int)xmlSymb.NzWidth;
         }
 
         public void Visit(SFRFieldSemantic xmlSymb)

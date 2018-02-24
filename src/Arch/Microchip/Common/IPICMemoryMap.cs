@@ -74,12 +74,14 @@ namespace Reko.Arch.Microchip.Common
         IMemoryRegion GetDataRegion(Address aByteAddr);
 
         /// <summary>
+        /// Get a list of data regions.
+        /// </summary>
+        IReadOnlyList<IMemoryRegion> DataRegions { get; }
+
+        /// <summary>
         /// Enumerates the data regions.
         /// </summary>
-        /// <value>
-        /// The data regions enumeration.
-        /// </value>
-        IReadOnlyList<IMemoryRegion> DataRegions { get; }
+        IEnumerable<IMemoryRegion> GetDataRegions { get; }
 
         /// <summary>
         /// Gets the data memory Emulator zone. Valid only if <seealso cref="HasEmulatorZone"/> is true.
@@ -164,12 +166,14 @@ namespace Reko.Arch.Microchip.Common
         IMemoryRegion GetProgramRegion(Address aVirtByteAddr);
 
         /// <summary>
+        /// Gets a list of program regions.
+        /// </summary>
+        IReadOnlyList<IMemoryRegion> ProgramRegions { get; }
+
+        /// <summary>
         /// Enumerates the program regions.
         /// </summary>
-        /// <value>
-        /// The program regions enumeration.
-        /// </value>
-        IReadOnlyList<IMemoryRegion> ProgramRegions { get; }
+        IEnumerable<IMemoryRegion> GetProgramRegions { get; }
 
         /// <summary>
         /// Gets a value indicating whether this PIC memory map has a Debugger program sector.

@@ -34,6 +34,71 @@ namespace Reko.Arch.Microchip.Common
     public class PICRegisterTraits
     {
 
+        #region Constructors
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public PICRegisterTraits()
+        {
+            Name = "None";
+            Desc = "";
+            BitWidth = 8;
+            Impl = 0xFF;
+            Access = "nnnnnnnn";
+            MCLR = "uuuuuuuu";
+            POR = "uuuuuuuu";
+            IsVolatile = false;
+            IsIndirect = false;
+            NMMRID = String.Empty;
+            Address = null;
+
+        }
+
+        public PICRegisterTraits(SFRDef sfr)
+        {
+            if (sfr is null)
+                throw new ArgumentNullException(nameof(sfr));
+            Name = sfr.Name;
+            Desc = sfr.Desc;
+            BitWidth = (int)sfr.NzWidth;
+            Impl = sfr.Impl;
+            Access = sfr.Access;
+            MCLR = sfr.MCLR;
+            POR = sfr.POR;
+            IsVolatile = sfr.IsVolatile;
+            IsIndirect = sfr.IsIndirect;
+            NMMRID = sfr.NMMRID;
+            Address = null;
+            if (string.IsNullOrEmpty(NMMRID) || sfr.Addr != 0)
+            {
+                Address = PICDataAddress.Ptr(sfr.Addr);
+                NMMRID = String.Empty;
+            }
+
+        }
+
+        public PICRegisterTraits(JoinedSFRDef joinedsfr, ICollection<PICRegisterStorage> subregs)
+        {
+            if (joinedsfr is null)
+                throw new ArgumentNullException(nameof(joinedsfr));
+            if (subregs is null)
+                throw new ArgumentNullException(nameof(subregs));
+            Name = joinedsfr.Name;
+            Desc = joinedsfr.Desc;
+            BitWidth = (int)joinedsfr.NzWidth;
+            Address = PICDataAddress.Ptr(joinedsfr.Addr);
+            NMMRID = String.Empty;
+            Access = String.Join("", subregs.Reverse().Select(e => e.Access));
+            MCLR = String.Join("", subregs.Reverse().Select(e => e.MCLR));
+            POR = String.Join("", subregs.Reverse().Select(e => e.POR));
+            Impl = subregs.Reverse().Aggregate(0UL, (total, reg) => total = total * 256 + reg.Impl);
+            IsVolatile = subregs.Any(e => e.IsVolatile == true);
+            IsIndirect = subregs.Any(e => e.IsIndirect == true);
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -95,68 +160,6 @@ namespace Reko.Arch.Microchip.Common
         /// Gets a value indicating whether this PIC register is memory mapped.
         /// </summary>
         public bool IsMemoryMapped => !(Address is null);
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public PICRegisterTraits()
-        {
-            Name = "None";
-            Desc = "";
-            BitWidth = 8;
-            Impl = 0xFF;
-            Access = "nnnnnnnn";
-            MCLR = "uuuuuuuu";
-            POR = "uuuuuuuu";
-            IsVolatile = false;
-            IsIndirect = false;
-            NMMRID = String.Empty;
-            Address = null;
-
-        }
-
-        public PICRegisterTraits(SFRDef sfr)
-        {
-            if (sfr is null) throw new ArgumentNullException(nameof(sfr));
-            Name = sfr.Name;
-            Desc = sfr.Desc;
-            BitWidth = (int)sfr.NzWidth;
-            Impl = sfr.Impl;
-            Access = sfr.Access;
-            MCLR = sfr.MCLR;
-            POR = sfr.POR;
-            IsVolatile = sfr.IsVolatile;
-            IsIndirect = sfr.IsIndirect;
-            NMMRID = sfr.NMMRID;
-            Address = null;
-            if (string.IsNullOrEmpty(NMMRID) || sfr.Addr != 0)
-            {
-                Address = PICDataAddress.Ptr(sfr.Addr);
-                NMMRID = String.Empty;
-            }
-
-        }
-
-        public PICRegisterTraits(JoinedSFRDef joinedsfr, ICollection<PICRegisterStorage> subregs)
-        {
-            if (joinedsfr is null) throw new ArgumentNullException(nameof(joinedsfr));
-            if (subregs is null) throw new ArgumentNullException(nameof(subregs));
-            Name = joinedsfr.Name;
-            Desc = joinedsfr.Desc;
-            BitWidth = (int)joinedsfr.NzWidth;
-            Address = PICDataAddress.Ptr(joinedsfr.Addr);
-            NMMRID = String.Empty;
-            Access = String.Join("", subregs.Reverse().Select(e => e.Access));
-            MCLR = String.Join("", subregs.Reverse().Select(e => e.MCLR));
-            POR = String.Join("", subregs.Reverse().Select(e => e.POR));
-            Impl = subregs.Reverse().Aggregate(0UL, (total, reg) => total = total * 256 + reg.Impl);
-            IsVolatile = subregs.Any(e => e.IsVolatile == true);
-            IsIndirect = subregs.Any(e => e.IsIndirect == true);
-        }
 
         #endregion
 

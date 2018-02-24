@@ -21,28 +21,69 @@
 #endregion
 
 using Reko.Core.Machine;
-using System.Collections.Generic;
-using System;
 using Reko.Libraries.Microchip;
-using Reko.Arch.Microchip.Common;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
 
     /// <summary>
-    /// Models an PIC18 instruction.
+    /// Models a PIC18 instruction.
     /// </summary>
     public class PIC18Instruction : MachineInstruction
     {
+        #region Constant fields
+
         private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
         private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
         private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
         private const InstructionClass Transfer = InstructionClass.Transfer;
 
-        private static Dictionary<Opcode, InstructionClass> classOf;
+        #endregion
+
+        #region Member fields
+
+        private static Dictionary<Opcode, InstructionClass> classOf = new Dictionary<Opcode, InstructionClass>()
+        {
+                { Opcode.invalid, InstructionClass.Invalid },
+                { Opcode.CALL,    LinkTransfer },
+                { Opcode.RCALL,   LinkTransfer },
+                { Opcode.RESET,   Transfer },
+                { Opcode.CALLW,   LinkTransfer },
+                { Opcode.RETURN,  Transfer },
+                { Opcode.RETLW,   Transfer },
+                { Opcode.RETFIE,  Transfer },
+                { Opcode.BRA,     Transfer },
+                { Opcode.GOTO,    Transfer },
+                { Opcode.DECFSZ,  CondLinear },
+                { Opcode.INCFSZ,  CondLinear },
+                { Opcode.INFSNZ,  CondLinear },
+                { Opcode.DCFSNZ,  CondLinear },
+                { Opcode.CPFSLT,  CondLinear },
+                { Opcode.CPFSEQ,  CondLinear },
+                { Opcode.CPFSGT,  CondLinear },
+                { Opcode.TSTFSZ,  CondLinear },
+                { Opcode.BTFSS,   CondLinear },
+                { Opcode.BTFSC,   CondLinear },
+                { Opcode.BZ,      CondTransfer },
+                { Opcode.BNZ,     CondTransfer },
+                { Opcode.BC,      CondTransfer },
+                { Opcode.BNC,     CondTransfer },
+                { Opcode.BOV,     CondTransfer },
+                { Opcode.BNOV,    CondTransfer },
+                { Opcode.BN,      CondTransfer },
+                { Opcode.BNN,     CondTransfer },
+                { Opcode.ADDULNK, Transfer },
+                { Opcode.SUBULNK, Transfer },
+        };
 
         internal MachineOperand op1;
         internal MachineOperand op2;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Instantiates a new <see cref="PIC18Instruction"/> with given <see cref="Opcode"/>, execution mode and operands.
@@ -63,10 +104,14 @@ namespace Reko.Arch.Microchip.PIC18
                 {
                     op2 = ops[1];
                     if (ops.Length >= 3)
-                        throw new ArgumentException("Too many operands.", nameof(ops));
+                        throw new ArgumentException("Too many PIC18 instruction's operands.", nameof(ops));
                 }
             }
         }
+
+        #endregion
+
+        #region Properties
 
         public Opcode Opcode { get; private set; }
 
@@ -111,23 +156,6 @@ namespace Reko.Arch.Microchip.PIC18
         public override int OpcodeAsInteger => (int)Opcode; 
 
         /// <summary>
-        /// Retrieves the I'th operand, or null if there is none at that position.
-        /// </summary>
-        /// <param name="i">Operand's index..</param>
-        /// <returns>
-        /// The designated operand or null.
-        /// </returns>
-        public override MachineOperand GetOperand(int i)
-        {
-            switch (i)
-            {
-                case 0: return op1;
-                case 1: return op2;
-                default: return null;
-            }
-        }
-
-        /// <summary>
         /// Gets the number of operands of this instruction.
         /// </summary>
         /// <value>
@@ -142,6 +170,27 @@ namespace Reko.Arch.Microchip.PIC18
                 if (op2 is null)
                     return 1;
                 return 2;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Retrieves the nth operand, or null if there is none at that position.
+        /// </summary>
+        /// <param name="n">Operand's index..</param>
+        /// <returns>
+        /// The designated operand or null.
+        /// </returns>
+        public override MachineOperand GetOperand(int n)
+        {
+            switch (n)
+            {
+                case 0: return op1;
+                case 1: return op2;
+                default: return null;
             }
         }
 
@@ -272,46 +321,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        /// <summary>
-        /// Static constructor.
-        /// </summary>
-        static PIC18Instruction()
-        {
-            classOf = new Dictionary<Opcode, InstructionClass>()
-            {
-                { Opcode.invalid, InstructionClass.Invalid },
-                { Opcode.CALL,    LinkTransfer },
-                { Opcode.RCALL,   LinkTransfer },
-                { Opcode.RESET,   Transfer },
-                { Opcode.CALLW,   LinkTransfer },
-                { Opcode.RETURN,  Transfer },
-                { Opcode.RETLW,   Transfer },
-                { Opcode.RETFIE,  Transfer },
-                { Opcode.BRA,     Transfer },
-                { Opcode.GOTO,    Transfer },
-                { Opcode.DECFSZ,  CondLinear },
-                { Opcode.INCFSZ,  CondLinear },
-                { Opcode.INFSNZ,  CondLinear },
-                { Opcode.DCFSNZ,  CondLinear },
-                { Opcode.CPFSLT,  CondLinear },
-                { Opcode.CPFSEQ,  CondLinear },
-                { Opcode.CPFSGT,  CondLinear },
-                { Opcode.TSTFSZ,  CondLinear },
-                { Opcode.BTFSS,   CondLinear },
-                { Opcode.BTFSC,   CondLinear },
-                { Opcode.BZ,      CondTransfer },
-                { Opcode.BNZ,     CondTransfer },
-                { Opcode.BC,      CondTransfer },
-                { Opcode.BNC,     CondTransfer },
-                { Opcode.BOV,     CondTransfer },
-                { Opcode.BNOV,    CondTransfer },
-                { Opcode.BN,      CondTransfer },
-                { Opcode.BNN,     CondTransfer },
-                { Opcode.ADDULNK, Transfer },
-                { Opcode.SUBULNK, Transfer },
-            };
-
-        }
+        #endregion
 
     }
 
