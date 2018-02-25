@@ -56,6 +56,12 @@ namespace Reko.Arch.Microchip.Common
         InstructionSetID InstructionSetID { get; }
 
         /// <summary>
+        /// Query if the memory mapper has a region of given sub-domain type.
+        /// </summary>
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/> enumeration.</param>
+        bool HasSubDomain(MemorySubDomain subdom);
+
+        /// <summary>
         /// Gets a data memory region given its name ID.
         /// </summary>
         /// <param name="sregionName">Name ID of the memory region.</param>
@@ -76,15 +82,16 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Get a list of data regions.
         /// </summary>
-        IReadOnlyList<IMemoryRegion> DataRegions { get; }
+        IReadOnlyList<IMemoryRegion> DataRegionsList { get; }
 
         /// <summary>
         /// Enumerates the data regions.
         /// </summary>
-        IEnumerable<IMemoryRegion> GetDataRegions { get; }
+        IEnumerable<IMemoryRegion> DataRegions { get; }
 
         /// <summary>
-        /// Gets the data memory Emulator zone. Valid only if <seealso cref="HasEmulatorZone"/> is true.
+        /// Gets the data memory Emulator zone.
+        /// Valid only if the mapper contains a sub-domain <seealso cref="MemorySubDomain.Emulator"/>.
         /// </summary>
         /// <value>
         /// The emulator zone/region.
@@ -92,60 +99,13 @@ namespace Reko.Arch.Microchip.Common
         IMemoryRegion EmulatorZone { get; }
 
         /// <summary>
-        /// Gets the Linear Data Memory definition. Valid only if <seealso cref="HasLinear"/> is true.
+        /// Gets the Linear Data Memory definition.
+        /// Valid only if the mapper contains a sub-domain <seealso cref="MemorySubDomain.Linear"/>.
         /// </summary>
         /// <value>
         /// The Linear Data Memory region.
         /// </value>
         ILinearRegion LinearSector { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has one or more SFR (Special Functions Register) data sectors.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has one or more SFR data sectors, false if not.
-        /// </value>
-        bool HasSFR { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has one or more GPR (General Purpose Register) data sectors.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has one or more GPR data sectors, false if not.
-        /// </value>
-        bool HasGPR { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has one or more DPR (Dual-Port Register) data sectors.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has one or more DPR data sectors, false if not.
-        /// </value>
-        bool HasDPR { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has one or more NMMR (Non-Memory-Mapped Register) definitions.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has one or more NMMR (Non-Memory-Mapped Register) definitions, false if not.
-        /// </value>
-        bool HasNMMR { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a zone reserved for Emulator.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a zone reserved for Emulator, false if not.
-        /// </value>
-        bool HasEmulatorZone { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Linear Access data sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Linear Access data sector, false if not.
-        /// </value>
-        bool HasLinear { get; }
 
         /// <summary>
         /// Gets a program memory region given its name ID.
@@ -168,100 +128,12 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets a list of program regions.
         /// </summary>
-        IReadOnlyList<IMemoryRegion> ProgramRegions { get; }
+        IReadOnlyList<IMemoryRegion> ProgramRegionsList { get; }
 
         /// <summary>
         /// Enumerates the program regions.
         /// </summary>
-        IEnumerable<IMemoryRegion> GetProgramRegions { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Debugger program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Debugger program sectors, false if not.
-        /// </value>
-        bool HasDebug { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has one or more Code program sectors.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has one or more Code program sectors, false if not.
-        /// </value>
-        bool HasCode { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has one or more External Code program sectors.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has one or more External Code program sectors, false if not.
-        /// </value>
-        bool HasExtCode { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Calibration program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Calibration program sector, false if not.
-        /// </value>
-        bool HasCalibration { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Configuration Fuses program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Configuration Fuses program sector, false if not.
-        /// </value>
-        bool HasConfigFuse { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Device ID program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Device ID program sector, false if not.
-        /// </value>
-        bool HasDeviceID { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Data EEPROM program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Data EEPROM program sector, false if not.
-        /// </value>
-        bool HasEEData { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a User ID program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a User ID program sector, false if not.
-        /// </value>
-        bool HasUserID { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Revision ID program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Revision ID program sector, false if not.
-        /// </value>
-        bool HasRevisionID { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Device Information Area program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Device Information Area program sector, false if not.
-        /// </value>
-        bool HasDIA { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC memory map has a Device Configuration Information program sector.
-        /// </summary>
-        /// <value>
-        /// True if this PIC memory map has a Device Configuration Information program sector, false if not.
-        /// </value>
-        bool HasDCI { get; }
+        IEnumerable<IMemoryRegion> ProgramRegions { get; }
 
     }
 

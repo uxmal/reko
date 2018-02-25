@@ -55,39 +55,45 @@ namespace Reko.Libraries.Microchip
     {
         /// <summary>Memory region is undefined (transient value).</summary>
         Undef = -1,
-        /// <summary>Data region is a Special Function Register.</summary>
+        /// <summary>Data region contains Special Function Registers (SFRDataSector).</summary>
         SFR,
-        /// <summary>Data region is a General Purpose Register.</summary>
+        /// <summary>Data region contains General Purpose Registers (GPRDataSector).</summary>
         GPR,
-        /// <summary>Data region is a Dual-Port Register.</summary>
+        /// <summary>Data region contains Dual-Port Registers (DPRDataSector).</summary>
         DPR,
-        /// <summary>Data region is a Non-Memory-Map Register.</summary>
+        /// <summary>Data region contains Non-Memory-Map Registers (NMMRPlace).</summary>
         NNMR,
-        /// <summary>Data region is a zone reserved for Emulator.</summary>
+        /// <summary>Data region is a zone reserved for Emulator (EmulatorZone).</summary>
         Emulator,
-        /// <summary>Data region is a linear view of data memory.</summary>
+        /// <summary>Data region is a linear view of data memory (LinearDataSector).</summary>
         Linear,
         /// <summary>Data region is a Direct Access Memory space.</summary>
         DMA,
-        /// <summary>Program region is code.</summary>
+        /// <summary>Program region contains code (CodeSector).</summary>
         Code,
-        /// <summary>Program region is external code.</summary>
+        /// <summary>Program region contains external code (ExtCodeSector).</summary>
         ExtCode,
-        /// <summary>Program region is Data EEPROM.</summary>
+        /// <summary>Program region contains Data EEPROM (EEDataSector).</summary>
         EEData,
-        /// <summary>Program region is a Configuration Bits.</summary>
-        Config,
-        /// <summary>Program region is a User IDs words.</summary>
+        /// <summary>Program region contains Configuration Fuses Words (ConfigFuseSector).</summary>
+        DeviceConfig,
+        /// <summary>Program region contains Device Configuration Information (DCISector).</summary>
+        DeviceConfigInfo,
+        /// <summary>Program region contains Device Information Array (DIASector).</summary>
+        DeviceInfoAry,
+        /// <summary>Program region contains User IDs words (UserIDSector).</summary>
         UserID,
-        /// <summary>Program region is a Device IDs words.</summary>
+        /// <summary>Program region contains Device IDs words (DeviceIDsector).</summary>
         DeviceID,
-        /// <summary>Program region is a Revision IDs words.</summary>
+        /// <summary>Program region contains Revision IDs words (RevisionIDSector).</summary>
         RevisionID,
-        /// <summary>Program region is for Debugger.</summary>
+        /// <summary>Program region is used for Debugger (BACKBUGVectorSector).</summary>
         Debugger,
-        /// <summary>Program region is a Calibration words.</summary>
+        /// <summary>Program region contains Calibration words (CalDataZone).</summary>
         Calib,
-        /// <summary>Program region is of other type.</summary>
+        /// <summary>Program region is reserved for Factory Tests (TestZone).</summary>
+        Test,
+        /// <summary>Program region contains unspecified data.</summary>
         Other
     };
 
@@ -1881,7 +1887,7 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class TestZone : ProgMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
+        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Test;
 
         #region Constructors
 
@@ -2156,50 +2162,6 @@ namespace Reko.Libraries.Microchip
     }
 
     /// <summary>
-    /// Device Configuration Register field semantic checksum address range.
-    /// </summary>
-    [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldSemanticChecksum : MemoryAddrRange
-    {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
-
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public DCRFieldSemanticChecksum() { }
-
-        #endregion
-
-        #region Properties
-
-        public override MemoryDomain MemoryDomain => MemoryDomain.Prog;
-
-        /// <summary>
-        /// Used to serialize <see cref="ChecksumAlgo" /> property from/to hexadecimal string.
-        /// </summary>
-        /// <value>
-        /// The checksum algorithm content as an hexadecimal string.
-        /// </value>
-        [XmlAttribute(AttributeName = "checksumalgo", Form = XmlSchemaForm.None, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string ChecksumAlgoFormatted { get => $"0x{ChecksumAlgo:X}"; set => ChecksumAlgo = value.ToInt32Ex(); } 
-
-        /// <summary>
-        /// Gets the checksum algorithm code.
-        /// </summary>
-        /// <value>
-        /// The checksum algorithm code as an integer.
-        /// </value>
-        [XmlIgnore]
-        public int ChecksumAlgo { get; private set; }
-
-        #endregion
-
-    }
-
-    /// <summary>
     /// Device Configuration Register field pattern semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
@@ -2250,15 +2212,6 @@ namespace Reko.Libraries.Microchip
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets the checksum area and algorithm.
-        /// </summary>
-        /// <value>
-        /// The checksum info.
-        /// </value>
-        [XmlElement(ElementName = "Checksum", Form = XmlSchemaForm.None, Namespace = "")]
-        public DCRFieldSemanticChecksum Checksum { get; set; }
 
         /// <summary>
         /// Gets the name of the field.
@@ -2959,7 +2912,7 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ConfigFuseSector : ProgMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Config;
+        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceConfig;
 
         #region Constructors
 
@@ -3326,7 +3279,7 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DIASector : ProgMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
+        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceInfoAry;
 
         #region Constructors
 
@@ -3393,7 +3346,7 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class DCISector : ProgMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Other;
+        public override MemorySubDomain MemorySubDomain => MemorySubDomain.DeviceConfigInfo;
 
         #region Constructors
 
@@ -3460,7 +3413,7 @@ namespace Reko.Libraries.Microchip
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     public sealed class ExtCodeSector : ProgMemoryRegion
     {
-        public override MemorySubDomain MemorySubDomain => MemorySubDomain.Code;
+        public override MemorySubDomain MemorySubDomain => MemorySubDomain.ExtCode;
 
         #region Constructors
 

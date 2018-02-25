@@ -30,7 +30,6 @@ namespace Reko.Arch.Microchip.PIC18
     public class MemoryOperand : MachineOperand
     {
         public RegisterStorage Base;
-        public Constant Offset;
         public Constant IsAccess;
 
         public MemoryOperand(PrimitiveType width) : base(width)

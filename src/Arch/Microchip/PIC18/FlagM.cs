@@ -44,7 +44,7 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// Class defining usage and alteration of PIC18 condition flags by instructions.
+    /// Class defining PIC18 instructions' usage and alteration of ALU condition flags.
     /// </summary>
     public static class PIC18CC
     {

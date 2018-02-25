@@ -48,7 +48,7 @@ namespace Reko.Arch.Microchip.PIC18
             switch (opA)
             {
                 case RegisterOperand regOpA:
-                    RegisterOperand regOpB = (RegisterOperand)opB;
+                    var regOpB = (RegisterOperand)opB;
                     return NormalizeRegisters || regOpA.Register == regOpB.Register;
 
                 case ImmediateOperand immOpA:
@@ -67,8 +67,16 @@ namespace Reko.Arch.Microchip.PIC18
                         return false;
                     return true;
 
+                case PseudoDataOperand pseudoA:
+                    var pseudoB = (PseudoDataOperand)opB;
+                    if (pseudoA.Width != pseudoB.Width)
+                        return false;
+                    if (pseudoA.Values.Length != pseudoB.Values.Length)
+                        return false;
+                    return (pseudoA.Values == pseudoB.Values);
+                    
                 default:
-                    throw new NotImplementedException(string.Format("NYI: {0}", opA.GetType()));
+                    throw new NotImplementedException($"NYI: {opA.GetType()}");
             }
         }
 
@@ -134,6 +142,11 @@ namespace Reko.Arch.Microchip.PIC18
                     return (memOp.Base != null
                         ? base.GetRegisterHash(memOp.Base)
                         : 0);
+
+                case PseudoDataOperand pseudoOp:
+                    return base.NormalizeConstants
+                        ? 1
+                        : pseudoOp.Values.GetHashCode();
 
                 default:
                     throw new NotImplementedException("Unhandled operand type: " + op.GetType().FullName);

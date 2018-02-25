@@ -34,9 +34,6 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         private void CheckProgMap(IPICMemoryMap map)
         {
-            Assert.IsNotNull(map.ProgramRegions);
-            Assert.IsTrue(map.HasCode, "Missing Code region");
-            Assert.IsTrue(map.HasConfigFuse, "Missing Configuration Fuses region");
             foreach (var rgn in map.ProgramRegions)
             {
                 Assert.AreEqual(MemoryDomain.Prog, rgn.TypeOfMemory);
@@ -50,9 +47,6 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         private void CheckDataMap(IPICMemoryMap map)
         {
-            Assert.IsNotNull(map.DataRegions);
-            Assert.IsTrue(map.HasSFR, "Missing SFR region");
-            Assert.IsTrue(map.HasGPR, "Missing GPR region");
             foreach (var rgn in map.DataRegions)
             {
                 Assert.AreEqual(MemoryDomain.Data, rgn.TypeOfMemory);
