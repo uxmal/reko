@@ -1329,6 +1329,39 @@ namespace Reko.Libraries.Microchip
 
     }
 
+    public static class PICArch
+    {
+        private static Dictionary<MemorySubDomain, MemoryDomain> subdom2dom = new Dictionary<MemorySubDomain, MemoryDomain>
+        {
+            { MemorySubDomain.SFR,      MemoryDomain.Data },
+            { MemorySubDomain.GPR,      MemoryDomain.Data },
+            { MemorySubDomain.DPR,      MemoryDomain.Data },
+            { MemorySubDomain.NNMR,     MemoryDomain.Data },
+            { MemorySubDomain.Emulator, MemoryDomain.Data },
+            { MemorySubDomain.Linear,   MemoryDomain.Data },
+            { MemorySubDomain.DMA,      MemoryDomain.Data },
+            { MemorySubDomain.Code,             MemoryDomain.Prog },
+            { MemorySubDomain.ExtCode,          MemoryDomain.Prog },
+            { MemorySubDomain.EEData,           MemoryDomain.Prog },
+            { MemorySubDomain.DeviceConfig,     MemoryDomain.Prog },
+            { MemorySubDomain.DeviceConfigInfo, MemoryDomain.Prog },
+            { MemorySubDomain.DeviceInfoAry,    MemoryDomain.Prog },
+            { MemorySubDomain.UserID,           MemoryDomain.Prog },
+            { MemorySubDomain.DeviceID,         MemoryDomain.Prog },
+            { MemorySubDomain.RevisionID,       MemoryDomain.Prog },
+            { MemorySubDomain.Debugger,         MemoryDomain.Prog },
+            { MemorySubDomain.Calib,            MemoryDomain.Prog },
+            { MemorySubDomain.Test,             MemoryDomain.Prog },
+        };
+
+        public static MemoryDomain GetDomain(MemorySubDomain subdom)
+        {
+            if (subdom2dom.TryGetValue(subdom, out MemoryDomain dom))
+                return dom;
+            return MemoryDomain.Unknown;
+        }
+    }
+
     #endregion
 
     #region InstructionSet definition

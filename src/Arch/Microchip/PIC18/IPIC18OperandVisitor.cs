@@ -4,7 +4,7 @@
     /// <summary>
     /// Interface for PIC18 Operands' visitors.
     /// </summary>
-    public interface IPIC18kOperand
+    public interface IPIC18Operand
     {
         void Accept(IPIC18OperandVisitor visitor);
         T Accept<T>(IPIC18OperandVisitor<T> visitor);
@@ -34,7 +34,12 @@
         void VisitFSRNum(PIC18FSROperand fsrnum);
         void VisitShadow(PIC18ShadowOperand shad);
         void VisitTblRW(PIC18TableReadWriteOperand tblmode);
-
+        void VisitEEPROM(PIC18DataEEPROMOperand eeprom);
+        void VisitASCII(PIC18DataASCIIOperand eeprom);
+        void VisitDB(PIC18DataByteOperand bytes);
+        void VisitDW(PIC18DataWordOperand words);
+        void VisitIDLocs(PIC18IDLocsOperand idlocs);
+        void VisitConfig(PIC18ConfigOperand config);
     }
 
     /// <summary>
@@ -60,7 +65,12 @@
         T VisitFSRNum(PIC18FSROperand fsrnum);
         T VisitShadow(PIC18ShadowOperand shad);
         T VisitTblRW(PIC18TableReadWriteOperand tblmode);
-
+        T VisitEEPROM(PIC18DataEEPROMOperand eeprom);
+        T VisitASCII(PIC18DataASCIIOperand eeprom);
+        T VisitDB(PIC18DataByteOperand bytes);
+        T VisitDW(PIC18DataWordOperand words);
+        T VisitIDLocs(PIC18IDLocsOperand idlocs);
+        T VisitConfig(PIC18ConfigOperand config);
     }
 
     /// <summary>
@@ -87,7 +97,12 @@
         T VisitFSRNum(PIC18FSROperand fsrnum, C context);
         T VisitShadow(PIC18ShadowOperand shad, C context);
         T VisitTblRW(PIC18TableReadWriteOperand tblmode, C context);
-
+        T VisitEEPROM(PIC18DataEEPROMOperand eeprom, C context);
+        T VisitASCII(PIC18DataASCIIOperand eeprom, C context);
+        T VisitDB(PIC18DataByteOperand bytes, C context);
+        T VisitDW(PIC18DataWordOperand words, C context);
+        T VisitIDLocs(PIC18IDLocsOperand idlocs, C context);
+        T VisitConfig(PIC18ConfigOperand config, C context);
     }
 
 }

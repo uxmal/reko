@@ -349,7 +349,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                         // We have some sort of Access Bank RAM type of access; either Lower or Upper area.
                         //
-                        if (PIC18MemoryMapper.BelongsToAccessRAMLow(offset))
+                        if (PIC18MemoryDescriptor.BelongsToAccessRAMLow(offset))
                         {
                             if (bmem.ExecMode == PICExecMode.Traditional)
                             {
@@ -361,7 +361,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                         // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
                         // 
-                        var accAddr = PIC18MemoryMapper.TranslateAccessAddress(offset);
+                        var accAddr = PIC18MemoryDescriptor.TranslateAccessAddress(offset);
                         var sfr = PIC18Registers.GetRegisterBySizedAddr(accAddr, 8) as PICRegisterStorage;
                         if (sfr != PICRegisterStorage.None)
                         {

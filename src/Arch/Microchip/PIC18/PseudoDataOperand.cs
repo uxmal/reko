@@ -36,22 +36,17 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Constructors
 
-        public PseudoDataOperand(PrimitiveType width) : base(width)
-        {
-            Values = new ushort[0];
-        }
-
-        public PseudoDataOperand(PrimitiveType width, byte config) : base(width)
+        public PseudoDataOperand(byte config) : base(PrimitiveType.Byte)
         {
             Values = new ushort[1] { config };
         }
 
-        public PseudoDataOperand(PrimitiveType width, ushort idlocs) : base(width)
+        public PseudoDataOperand(ushort idlocs) : base(PrimitiveType.UInt16)
         {
             Values = new ushort[1] { idlocs };
         }
 
-        public PseudoDataOperand(PrimitiveType width, byte[] db) : base(width)
+        public PseudoDataOperand(params byte[] db) : base(PrimitiveType.Byte)
         {
             if (db is null)
                 throw new ArgumentNullException(nameof(db));
@@ -59,17 +54,13 @@ namespace Reko.Arch.Microchip.PIC18
             Array.Copy(db, Values, Values.Length);
         }
 
-        public PseudoDataOperand(PrimitiveType width, ushort[] dw) : base(width)
+        public PseudoDataOperand(params ushort[] dw) : base(PrimitiveType.UInt16)
         {
             if (dw is null)
                 throw new ArgumentNullException(nameof(dw));
             Values = new ushort[dw.Length];
             Array.Copy(dw, Values, Values.Length);
         }
-
-        #endregion
-
-        #region Methods
 
         #endregion
 

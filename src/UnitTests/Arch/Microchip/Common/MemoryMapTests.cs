@@ -25,7 +25,6 @@ using Reko.Arch.Microchip.Common;
 using NUnit.Framework;
 using Reko.Core;
 
-
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
     [TestFixture]

@@ -219,6 +219,19 @@ namespace Reko.Arch.Microchip.Common
                 return true;
             }
 
+            /// <summary>
+            /// Gets the memory trait corresponding to the specified memory sub-domain.
+            /// </summary>
+            /// <param name="subdom">A sub-domain value from the <see cref="MemorySubDomain"/> enumeration.</param>
+            /// <param name="trait">[out] The memory trait.</param>
+            /// <returns>
+            /// True if it succeeds, false if it fails.
+            /// </returns>
+            public bool GetTrait(MemorySubDomain subdom, out MemTrait trait)
+            {
+                return GetTrait(PICArch.GetDomain(subdom), subdom, out trait);
+            }
+
             #endregion
 
             #region IMemTraitsSymbolVisitor interface implementation
@@ -435,6 +448,9 @@ namespace Reko.Arch.Microchip.Common
             /// </returns>
             public bool Contains(uint uAddr, uint Len = 0)
                 => Contains(Address.Ptr32(uAddr), Len);
+
+            public override string ToString()
+                => $"'{RegionName}': {SubtypeOfMemory}[0x{LogicalByteAddress.Begin:X}-0x{LogicalByteAddress.End:X}]";
 
             #endregion
 

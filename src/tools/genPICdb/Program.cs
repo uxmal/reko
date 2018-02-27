@@ -41,18 +41,18 @@ namespace Reko.Tools.genPICdb
     {
         #region Privates
 
-        private const string _keyW32 = "SOFTWARE\\Microchip";
-        private const string _keyW64 = "SOFTWARE\\Wow6432Node\\Microchip";
+        private const string keyW32 = "SOFTWARE\\Microchip";
+        private const string keyW64 = "SOFTWARE\\Wow6432Node\\Microchip";
 
-        private const string _packs = "packs\\Microchip";
+        private const string packs = "packs\\Microchip";
 
-        private const string _crownkingpath = "mplab_ide\\mplablibs\\modules\\ext";
-        private const string _crownkingfile = "crownking.edc.jar";
+        private const string crownkingpath = "mplab_ide\\mplablibs\\modules\\ext";
+        private const string crownkingfile = "crownking.edc.jar";
 
-        private const string _localdbfile = "picdb.zip";
-        private const string _defaultdbfile = "defaultpicdb.zip";
-        private const string _contentPIC16 = @"content/edc/16xxxx";
-        private const string _contentPIC18 = @"content/edc/18xxxx";
+        private const string localdbfile = "picdb.zip";
+        private const string defaultdbfile = "defaultpicdb.zip";
+        private const string contentPIC16 = @"content/edc/16xxxx";
+        private const string contentPIC18 = @"content/edc/18xxxx";
 
         private bool success = false;
 
@@ -64,46 +64,48 @@ namespace Reko.Tools.genPICdb
         {
             get
             {
-                if (_mplabXinstalldir == null)
+                if (mplabXinstalldir == null)
                 {
                     try
                     {
-                        RegistryKey MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW32);
-                        if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(_keyW64);
-                        _mplabXinstalldir = (string)(MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
+                        RegistryKey MicrochipKey = Registry.LocalMachine.OpenSubKey(keyW32);
+                        if (MicrochipKey?.SubKeyCount <= 0) MicrochipKey = Registry.LocalMachine.OpenSubKey(keyW64);
+                        mplabXinstalldir = (string)(MicrochipKey?.OpenSubKey("MPLAB X")?.GetValue("InstallDir", null));
+                        mplabXversion = new DirectoryInfo(mplabXinstalldir).Name;
                     }
                     catch (Exception ex)
                     {
                         Trace.TraceWarning($"Couldn't get path to Microchip MPLAB X IDE installation directory : {ex.StackTrace}");
                     }
                 }
-                return _mplabXinstalldir;
+                return mplabXinstalldir;
             }
         }
-        private string _mplabXinstalldir = null;
+        private string mplabXinstalldir = null;
+        private string mplabXversion = null;
 
         private string GenPICdbPath
         {
             get
             {
-                if (_genPICdbPath == null)
+                if (genPICdbPath == null)
                 {
                     Assembly CrownkingAssembly;
                     CrownkingAssembly = Assembly.GetAssembly(this.GetType());
-                    _genPICdbPath = Path.GetDirectoryName(CrownkingAssembly.Location);
+                    genPICdbPath = Path.GetDirectoryName(CrownkingAssembly.Location);
                 }
-                return _genPICdbPath;
+                return genPICdbPath;
             }
         }
-        private string _genPICdbPath = null;
+        private string genPICdbPath = null;
 
-        private string PICLocalDBFilePath => Path.Combine(GenPICdbPath, _localdbfile);
-        private string PICDefaultDBFilePath => Path.Combine(GenPICdbPath, @"..\..", _defaultdbfile);
-        private string PICCopyDBFilePath => Path.Combine(GenPICdbPath, @"..\..", _localdbfile);
+        private string PICLocalDBFilePath => Path.Combine(GenPICdbPath, localdbfile);
+        private string PICDefaultDBFilePath => Path.Combine(GenPICdbPath, @"..\..", defaultdbfile);
+        private string PICCopyDBFilePath => Path.Combine(GenPICdbPath, @"..\..", localdbfile);
 
-        private string PacksPath => Path.Combine(MPLABXInstallDir, _packs);
+        private string PacksPath => Path.Combine(MPLABXInstallDir, packs);
 
-        private string CrownkingPath => Path.Combine(MPLABXInstallDir, _crownkingpath);
+        private string CrownkingPath => Path.Combine(MPLABXInstallDir, crownkingpath);
 
         // XML elements we are ignoring. This helps decrease the size of the database.
         private static string[] _unwantednodes =
@@ -125,13 +127,14 @@ namespace Reko.Tools.genPICdb
         private XDocument _pruning(XDocument xdoc)
         {
             XElement xroot = xdoc?.Root;
-            if (xroot == null) return null;
+            if (xroot == null)
+                return null;
             if (xroot.Name.Namespace == XNamespace.None)
                 return xdoc;
             if (xroot.Name.LocalName != "PIC")
                 return null;
 
-            // Remove the unwanted elements
+            // Remove the useless (for us) elements
             foreach (string name in _unwantednodes)
                 xroot.DescendantElements(name).Remove();
 
@@ -154,7 +157,7 @@ namespace Reko.Tools.genPICdb
             return xdoc;
         }
 
-        private bool _filter(string s)
+        private bool Filter(string s)
         {
             return
                 (s.StartsWith("PIC16C") || s.StartsWith("PIC16F"))
@@ -162,14 +165,14 @@ namespace Reko.Tools.genPICdb
                 ((s.StartsWith("PIC18C") || s.StartsWith("PIC18F")) && !s.Contains("J") && !s.Contains("Q"));
         }
 
-        private void _genPICEntry(XDocument xdoc, string subdir, ZipArchive zout)
+        private void GenPICEntry(XDocument xdoc, string subdir, ZipArchive zout)
         {
             PIC pic = xdoc.ToObject<PIC>();
-            XmlSerializer xs = new XmlSerializer(typeof(PIC));
+            var xs = new XmlSerializer(typeof(PIC));
             string picname = pic.Name;
             string picpath = subdir + "/" + picname + ".PIC";
             ZipArchiveEntry picentry = zout.CreateEntry(picpath);
-            using (StreamWriter picw = new StreamWriter(picentry.Open()))
+            using (var picw = new StreamWriter(picentry.Open()))
                 xs.Serialize(picw, pic);
         }
 
@@ -229,7 +232,7 @@ namespace Reko.Tools.genPICdb
         /// </returns>
         private int Ante410Database()
         {
-            string crownkingfilepath = Path.Combine(CrownkingPath, _crownkingfile);
+            string crownkingfilepath = Path.Combine(CrownkingPath, crownkingfile);
             if (!File.Exists(crownkingfilepath))
             {
                 Trace.TraceError($"File not found: '{crownkingfilepath}'.");
@@ -242,7 +245,7 @@ namespace Reko.Tools.genPICdb
             try
             {
                 // Create a new local database
-                using (FileStream outfile = new FileStream(PICLocalDBFilePath, FileMode.Create, FileAccess.Write))
+                using (var outfile = new FileStream(PICLocalDBFilePath, FileMode.Create, FileAccess.Write))
                 {
                     // Those database are compressed (ZIP format)
                     using (ZipArchive crownkingfile = ZipFile.OpenRead(crownkingfilepath),
@@ -251,11 +254,11 @@ namespace Reko.Tools.genPICdb
                         // For each MPLAB X IDE entry, look only for true PIC16 and PIC18
                         foreach (var entry in crownkingfile.Entries)
                         {
-                            if (entry.FullName.StartsWith(_contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
-                                entry.FullName.StartsWith(_contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
+                            if (entry.FullName.StartsWith(contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
+                                entry.FullName.StartsWith(contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
                             {
                                 // Caller may want to filter further valid PIC entries
-                                if (_filter(entry.Name))
+                                if (Filter(entry.Name))
                                 {
                                     // Candidate to extract.
                                     XDocument xdoc;
@@ -267,7 +270,7 @@ namespace Reko.Tools.genPICdb
 
                                     if (xdoc != null)
                                     {
-                                        _genPICEntry(xdoc, Path.GetDirectoryName(entry.FullName), zoutfile);
+                                        GenPICEntry(xdoc, Path.GetDirectoryName(entry.FullName), zoutfile);
                                         numpics++;
                                     }
                                 }
@@ -304,9 +307,9 @@ namespace Reko.Tools.genPICdb
                     foreach (var filename in Directory.EnumerateFiles(edcdir, "PIC*.PIC"))
                     {
                         string picname = Path.GetFileNameWithoutExtension(filename);
-                        if (_filter(picname))
+                        if (Filter(picname))
                         {
-                            XDocument xdoc = XDocument.Load(filename); ;
+                            var xdoc = XDocument.Load(filename); ;
                             xdoc = _pruning(xdoc); // Pruning of the XML tree for unwanted elements
                             if (xdoc != null) yield return xdoc;
                         }
@@ -325,31 +328,31 @@ namespace Reko.Tools.genPICdb
         private int Post410Database()
         {
             int numpics = 0;
-            Console.WriteLine("Using MPLAB X IDE v4.10 or newer installation.");
+            Console.WriteLine($"Using MPLAB X IDE {mplabXversion} installation.");
 
             try
             {
                 // Create a new local database
-                using (FileStream outfile = new FileStream(PICLocalDBFilePath, FileMode.Create, FileAccess.Write))
+                using (var outfile = new FileStream(PICLocalDBFilePath, FileMode.Create, FileAccess.Write))
                 {
                     // This database is compressed (ZIP format)
-                    using (ZipArchive zoutfile = new ZipArchive(outfile, ZipArchiveMode.Create))
+                    using (var zoutfile = new ZipArchive(outfile, ZipArchiveMode.Create))
                     {
                         Console.WriteLine("PIC16...");
                         foreach (XDocument xdoc in _getValidPIC("PIC12*_DFP"))
                         {
-                            _genPICEntry(xdoc, _contentPIC16, zoutfile);
+                            GenPICEntry(xdoc, contentPIC16, zoutfile);
                             numpics++;
                         }
                         foreach (XDocument xdoc in _getValidPIC("PIC16*_DFP"))
                         {
-                            _genPICEntry(xdoc, _contentPIC16, zoutfile);
+                            GenPICEntry(xdoc, contentPIC16, zoutfile);
                             numpics++;
                         }
                         Console.WriteLine("PIC18...");
                         foreach (XDocument xdoc in _getValidPIC("PIC18*_DFP"))
                         {
-                            _genPICEntry(xdoc, _contentPIC18, zoutfile);
+                            GenPICEntry(xdoc, contentPIC18, zoutfile);
                             numpics++;
                         }
                     }

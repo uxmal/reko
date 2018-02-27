@@ -42,13 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DevConfigRegister.cs" />
     <Compile Include="Common\ILinearRegion.cs" />
     <Compile Include="Common\IMemoryRegion.cs" />
+    <Compile Include="Common\IPICDevConfDefs.cs" />
     <Compile Include="Common\PICAddresses.cs" />
+    <Compile Include="Common\PICDevConfDefs.cs" />
     <Compile Include="Common\PICRegisterTraits.cs" />
     <Compile Include="PIC18\IOperandShadow.cs" />
     <Compile Include="Common\IPICMemoryMap.cs" />
-    <Compile Include="Common\IPICMemoryMapper.cs" />
+    <Compile Include="PIC18\IPIC18MemoryDescriptor.cs" />
     <Compile Include="Common\IPICRegisterSymTable.cs" />
     <Compile Include="Common\PICMemoryMap.cs" />
     <Compile Include="Common\PICRegistersBuilder.cs" />
@@ -68,7 +71,7 @@
     <Compile Include="PIC18\PIC18Registers.cs" />
     <Compile Include="PIC18\PIC18Rewriter.cs" />
     <Compile Include="PIC18\PIC18State.cs" />
-    <Compile Include="PIC18\PIC18MemoryMapper.cs" />
+    <Compile Include="PIC18\PIC18MemoryDescriptor.cs" />
     <Compile Include="PIC18\PseudoDataOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

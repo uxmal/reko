@@ -155,16 +155,32 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the PIC memory mapper.
         /// </summary>
-        public PIC18MemoryMapper MemoryMapper
+        public PIC18MemoryDescriptor MemoryMapper
         {
             get
             {
                 if (memMapper is null)
-                    memMapper = PIC18MemoryMapper.Create(PICDescriptor);
+                    memMapper = PIC18MemoryDescriptor.Create(PICDescriptor);
                 return memMapper;
             }
         }
-        PIC18MemoryMapper memMapper;
+        private PIC18MemoryDescriptor memMapper;
+
+        /// <summary>
+        /// Gets the device configuration definitions.
+        /// </summary>
+        public PICDevConfDefs DeviceConfigDefinitions
+        {
+            get
+            {
+                if (deviceConfigDefinitions is null)
+                {
+                    deviceConfigDefinitions = PICDevConfDefs.Create(PICDescriptor);
+                }
+                return deviceConfigDefinitions;
+            }
+        }
+        private PICDevConfDefs deviceConfigDefinitions;
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
             => new PIC18Disassembler(this, imageReader);

@@ -38,7 +38,9 @@ namespace Reko.Arch.Microchip.PIC18
         private EndianImageReader rdr;
         private PIC18Architecture arch;
         private PIC18Instruction instrCur;
-        private PICProgAddress addrCur;
+        private PIC pic;
+        private Address addrCur;
+        private static IMemoryRegion lastusedregion = null;
 
         #endregion
 
@@ -53,6 +55,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             this.arch = arch;
             this.rdr = rdr;
+            pic = this.arch.PICDescriptor;
         }
 
         #endregion
@@ -83,14 +86,65 @@ namespace Reko.Arch.Microchip.PIC18
         ///                                              condition occurs.</exception>
         public override PIC18Instruction DisassembleInstruction()
         {
+            IMemoryRegion GetProgRegion()
+            {
+                if (lastusedregion != null && lastusedregion.Contains(addrCur))
+                    return lastusedregion;
+                return lastusedregion = arch.MemoryMapper.PICMemoryMap.GetProgramRegion(addrCur);
+            }
+
             if (!rdr.IsValid)
                 return null;
-            addrCur = PICProgAddress.Ptr(rdr.Address.ToUInt32());
-            if ((addrCur.Offset & 1) != 0)
-                throw new AddressCorrelatedException(addrCur, $"Attempt to disassemble at odd address : {addrCur.ToString()}.");
+            addrCur = rdr.Address;
+            IMemoryRegion regn = GetProgRegion();
+            if (regn is null)
+                throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
+            if ((addrCur.Offset % (regn.Trait?.LocSize??1)) != 0)
+                throw new AddressCorrelatedException(addrCur, $"Attempt to disassemble at unaligned address {addrCur.ToString()} in region '{regn.RegionName}'.");
 
+            switch (regn.SubtypeOfMemory)
+            {
+                case MemorySubDomain.Code:
+                case MemorySubDomain.ExtCode:
+                case MemorySubDomain.Debugger:
+                    addrCur = PICProgAddress.Ptr(rdr.Address);
+                    return DisasmPIC18Instruction();
+
+                case MemorySubDomain.EEData:
+                    return DisasmEEPROMInstruction();
+
+                case MemorySubDomain.UserID:
+                    return DisasmUserIDInstruction();
+
+                case MemorySubDomain.DeviceConfig:
+                    return DisasmConfigInstruction();
+
+                case MemorySubDomain.DeviceID:
+                    return DisasmDWInstruction();
+
+                case MemorySubDomain.DeviceConfigInfo:
+                case MemorySubDomain.DeviceInfoAry:
+                case MemorySubDomain.RevisionID:
+                case MemorySubDomain.Test:
+                case MemorySubDomain.Other:
+                default:
+                    throw new NotImplementedException($"Disassembly of '{regn.SubtypeOfMemory}' memory region is not yet implemented.");
+            }
+
+        }
+
+        /// <summary>
+        /// Disassembles a "true" PIC18 instruction.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="PIC18Instruction"/> instance.
+        /// </returns>
+        /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
+        ///                                              condition occurs.</exception>
+        private PIC18Instruction DisasmPIC18Instruction()
+        {
             // A PIC18 instruction can be 1, 2 or 3 words long. The 1st word (opcode) determines the actual length of the instruction.
-            
+
             var offset = rdr.Offset;
             if (!rdr.TryReadUInt16(out ushort uInstr))
                 return null;
@@ -124,7 +178,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// True if it succeeds, false if it fails. Reached end of memory or mis-formed binary word.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown <paramref name="rdr"/> argument is null.</exception>
-        private static bool GetAddlWord(EndianImageReader rdr, out ushort w)
+        private static bool GetAddlInstrWord(EndianImageReader rdr, out ushort w)
         {
             if (rdr is null)
                 throw new ArgumentNullException(nameof(rdr));
@@ -372,7 +426,7 @@ namespace Reko.Arch.Microchip.PIC18
 
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
-                if (!GetAddlWord(dasm.rdr, out ushort lsw))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort lsw))
                     return null;
                 if (lsw >= 256)  // second word must be <xxxx 0000 kkkk kkkk>
                     return null;
@@ -477,7 +531,7 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 // This a 2-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
                 return new PIC18Instruction(opcode,dasm.ExecMode,
@@ -501,7 +555,7 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 // This a 2-words instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
 
@@ -525,7 +579,7 @@ namespace Reko.Arch.Microchip.PIC18
             public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
             {
                 // This is a 2-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
 
@@ -552,7 +606,7 @@ namespace Reko.Arch.Microchip.PIC18
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_ENHANCED) // Only supported by PIC18 Enhanced.
                     return null;
                 // This is a 3-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2) || !GetAddlWord(dasm.rdr, out ushort word3))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2) || !GetAddlInstrWord(dasm.rdr, out ushort word3))
                     return null;
                 ushort srcaddr = (ushort)((uInstr.Extract(0, 4) << 10) | word2.Extract(2, 10));
                 ushort dstaddr = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
@@ -586,7 +640,7 @@ namespace Reko.Arch.Microchip.PIC18
                     return null;
 
                 // This is a 2-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
                 switch (dasm.InstructionSetID)
@@ -701,7 +755,7 @@ namespace Reko.Arch.Microchip.PIC18
                     return null;
 
                 // This is a 2-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
                 var zs = (byte)uInstr.Extract(0, 7);
@@ -737,7 +791,7 @@ namespace Reko.Arch.Microchip.PIC18
                     return null;
 
                 // This is a 3-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2) || !GetAddlWord(dasm.rdr, out ushort word3))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2) || !GetAddlInstrWord(dasm.rdr, out ushort word3))
                     return null;
                 byte zs = (byte)word2.Extract(2, 7);
                 ushort fd = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
@@ -772,7 +826,7 @@ namespace Reko.Arch.Microchip.PIC18
                     return null;
 
                 // This is a 2-word instruction.
-                if (!GetAddlWord(dasm.rdr, out ushort word2))
+                if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
                 var zs = (byte)uInstr.Extract(0, 7);
@@ -1118,6 +1172,99 @@ namespace Reko.Arch.Microchip.PIC18
             // 1111 .... .... ....
             new NoOperandOpRec(Opcode.NOP),
         };
+
+        #endregion
+
+        #region Pseudo-instructions decoders
+
+        private PIC18Instruction DisasmEEPROMInstruction()
+        {
+
+            if (!rdr.TryReadByte(out byte uEEByte))
+                return null;
+            instrCur = new PIC18Instruction(Opcode.DE, ExecMode,
+                                            new PIC18DataEEPROMOperand(uEEByte))
+            {
+                Address = addrCur,
+                Length = (int)(rdr.Address - addrCur)
+            };
+
+            return instrCur;
+        }
+
+        private PIC18Instruction DisasmDAInstruction()
+        {
+
+            if (!rdr.TryReadByte(out byte uDAByte))
+                return null;
+            instrCur = new PIC18Instruction(Opcode.DA, ExecMode,
+                                            new PIC18DataASCIIOperand(uDAByte))
+            {
+                Address = addrCur,
+                Length = (int)(rdr.Address - addrCur)
+            };
+
+            return instrCur;
+        }
+
+        private PIC18Instruction DisasmDBInstruction()
+        {
+
+            if (!rdr.TryReadByte(out byte uDBByte))
+                return null;
+            instrCur = new PIC18Instruction(Opcode.DB, ExecMode,
+                                            new PIC18DataByteOperand(uDBByte))
+            {
+                Address = addrCur,
+                Length = (int)(rdr.Address - addrCur)
+            };
+
+            return instrCur;
+        }
+
+        private PIC18Instruction DisasmDWInstruction()
+        {
+
+            if (!rdr.TryReadUInt16(out ushort uDWWord))
+                return null;
+            instrCur = new PIC18Instruction(Opcode.DW, ExecMode,
+                                            new PIC18DataWordOperand(uDWWord))
+            {
+                Address = addrCur,
+                Length = (int)(rdr.Address - addrCur)
+            };
+
+            return instrCur;
+        }
+
+        private PIC18Instruction DisasmUserIDInstruction()
+        {
+
+            if (!rdr.TryReadByte(out byte uIDByte))
+                return null;
+            instrCur = new PIC18Instruction(Opcode.IDLOCS, ExecMode,
+                                            new PIC18DataByteOperand(uIDByte))
+            {
+                Address = addrCur,
+                Length = (int)(rdr.Address - addrCur)
+            };
+
+            return instrCur;
+        }
+
+        private PIC18Instruction DisasmConfigInstruction()
+        {
+
+            if (!rdr.TryReadByte(out byte uConfigByte))
+                return null;
+            instrCur = new PIC18Instruction(Opcode.CONFIG, ExecMode,
+                                            new PIC18ConfigOperand(arch, addrCur, uConfigByte))
+            {
+                Address = addrCur,
+                Length = (int)(rdr.Address - addrCur)
+            };
+            return instrCur;
+        }
 
         #endregion
 

@@ -20,21 +20,23 @@
  */
 #endregion
 
-using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
+using System.Text;
+using System.Linq;
 
 namespace Reko.Arch.Microchip.PIC18
 {
 
+    using Common;
 
     /// <summary>
     /// The notion of PIC18 immediate operand. Must be inherited.
     /// </summary>
-    public abstract class PIC18ImmediateOperand : MachineOperand, IPIC18kOperand
+    public abstract class PIC18ImmediateOperand : MachineOperand, IPIC18Operand
     {
         /// <summary>
         /// The immediate value.
@@ -215,7 +217,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 7-bit unsigned offset operand to FSR2. Used by MOVSF, MOVSFL, MOVSS instructions.
     /// </summary>
-    public class PIC18FSR2IdxOperand : MachineOperand, IPIC18kOperand
+    public class PIC18FSR2IdxOperand : MachineOperand, IPIC18Operand
     {
         /// <summary>
         /// Gets the 7-bit unsigned offset constant.
@@ -245,7 +247,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 Registers Shadowing flag operand. Used by instructions RETFIE, RETURN, CALL.
     /// </summary>
-    public class PIC18ShadowOperand : MachineOperand, IPIC18kOperand, IOperandShadow
+    public class PIC18ShadowOperand : MachineOperand, IPIC18Operand, IOperandShadow
     {
         /// <summary>
         /// Gets the indication if a Shadow Register(s) are used. If false, no Shadow Register(s) used.
@@ -277,7 +279,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// The notion of PIC18 program address operand. Must be inherited.
     /// </summary>
-    public abstract class PIC18ProgAddrOperand : MachineOperand, IPIC18kOperand
+    public abstract class PIC18ProgAddrOperand : MachineOperand, IPIC18Operand
     {
 
         /// <summary>
@@ -388,7 +390,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
     /// </summary>
-    public class PIC18FSROperand : MachineOperand, IPIC18kOperand
+    public class PIC18FSROperand : MachineOperand, IPIC18Operand
     {
         /// <summary>
         /// Gets the FSR register number.
@@ -419,7 +421,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 TBLRD/TBLWT Increment Change mode.
     /// </summary>
-    public class PIC18TableReadWriteOperand : MachineOperand, IPIC18kOperand
+    public class PIC18TableReadWriteOperand : MachineOperand, IPIC18Operand
     {
         /// <summary>
         /// Gets the TBL increment mode.
@@ -467,7 +469,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// The notion of PIC18 data address operand. Must be inherited.
     /// </summary>
-    public abstract class PIC18DataAbsAddrOperand : MachineOperand, IPIC18kOperand
+    public abstract class PIC18DataAbsAddrOperand : MachineOperand, IPIC18Operand
     {
         /// <summary>
         /// Gets the 12/14-bit data memory absolute target address.
@@ -551,7 +553,7 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A PIC18 Bank/Access Data Memory Address operand (like "f,a").
     /// </summary>
-    public class PIC18BankedAccessOperand : MachineOperand, IPIC18kOperand
+    public class PIC18BankedAccessOperand : MachineOperand, IPIC18Operand
     {
 
         /// <summary>
@@ -572,7 +574,7 @@ namespace Reko.Arch.Microchip.PIC18
         public bool IsIndexedAddressing
             => (ExecMode == PICExecMode.Extended &&
                 IsAccessRAM.ToBoolean() &&
-                PIC18MemoryMapper.BelongsToAccessRAMLow(BankAddr.ToByte()));
+                PIC18MemoryDescriptor.BelongsToAccessRAMLow(BankAddr.ToByte()));
 
         public PIC18BankedAccessOperand(PICExecMode mode, byte addr, int a) : base(PrimitiveType.Byte)
         {
@@ -599,9 +601,9 @@ namespace Reko.Arch.Microchip.PIC18
                 writer.Write($"0x{uaddr:X2}");
                 return;
             }
-            if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
+            if (PIC18MemoryDescriptor.BelongsToAccessRAMHigh(uaddr))
             {
-                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
+                var aaddr = PIC18MemoryDescriptor.TranslateAccessAddress(uaddr);
                 var sfr = PIC18Registers.GetRegisterBySizedAddr(aaddr, 8);
                 if (sfr != RegisterStorage.None)
                 {
@@ -657,9 +659,9 @@ namespace Reko.Arch.Microchip.PIC18
                 writer.Write($"0x{uaddr:X2},{bitpos}");
                 return;
             }
-            if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
+            if (PIC18MemoryDescriptor.BelongsToAccessRAMHigh(uaddr))
             {
-                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
+                var aaddr = PIC18MemoryDescriptor.TranslateAccessAddress(uaddr);
                 var sfr = PIC18Registers.GetRegisterBySizedAddr(aaddr, 8);
                 if (sfr != RegisterStorage.None)
                 {
@@ -715,9 +717,9 @@ namespace Reko.Arch.Microchip.PIC18
                 writer.Write($"0x{uaddr:X2}{wdest}");
                 return;
             }
-            if (PIC18MemoryMapper.BelongsToAccessRAMHigh(uaddr))
+            if (PIC18MemoryDescriptor.BelongsToAccessRAMHigh(uaddr))
             {
-                var aaddr = PIC18MemoryMapper.TranslateAccessAddress(uaddr);
+                var aaddr = PIC18MemoryDescriptor.TranslateAccessAddress(uaddr);
                 var sfr = PIC18Registers.GetRegisterBySizedAddr(aaddr, 8);
                 if (sfr != RegisterStorage.None)
                 {
@@ -727,6 +729,143 @@ namespace Reko.Arch.Microchip.PIC18
             }
             writer.Write($"0x{uaddr:X2}{wdest},ACCESS");
 
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 data EEPROM series of bytes.
+    /// </summary>
+    public class PIC18DataEEPROMOperand : PseudoDataOperand, IPIC18Operand
+    {
+
+        public PIC18DataEEPROMOperand(params byte[] eedata) : base(eedata)
+        {
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitEEPROM(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitEEPROM(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitEEPROM(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 declare ASCII bytes operand.
+    /// </summary>
+    public class PIC18DataASCIIOperand : PseudoDataOperand, IPIC18Operand
+    {
+
+        public PIC18DataASCIIOperand(params byte[] bytes) : base(bytes)
+        {
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitASCII(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitASCII(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitASCII(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 declare data bytes operand.
+    /// </summary>
+    public class PIC18DataByteOperand : PseudoDataOperand, IPIC18Operand
+    {
+
+        public PIC18DataByteOperand(params byte[] bytes) : base(bytes)
+        {
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDB(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDB(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDB(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 declare data words operand.
+    /// </summary>
+    public class PIC18DataWordOperand : PseudoDataOperand, IPIC18Operand
+    {
+
+        public PIC18DataWordOperand(params ushort[] words) : base(words)
+        {
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitDW(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitDW(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitDW(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(w => $"0x{w:X4}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 set processor ID locations operand.
+    /// </summary>
+    public class PIC18IDLocsOperand : PseudoDataOperand, IPIC18Operand
+    {
+
+        public PIC18IDLocsOperand(ushort idlocs) : base(idlocs)
+        {
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitIDLocs(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitIDLocs(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitIDLocs(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"0x{Values[0]:X3}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC18 processor configuration bits operand.
+    /// </summary>
+    public class PIC18ConfigOperand : PseudoDataOperand, IPIC18Operand
+    {
+
+        private PIC18Architecture arch;
+        private Address addr;
+
+        public PIC18ConfigOperand(PIC18Architecture arch, Address addr, byte config) : base(config)
+        {
+            this.arch = arch;
+            this.addr = addr;
+        }
+
+        public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitConfig(this);
+        public T Accept<T>(IPIC18OperandVisitor<T> visitor) => visitor.VisitConfig(this);
+        public T Accept<T, C>(IPIC18OperandVisitor<T, C> visitor, C context) => visitor.VisitConfig(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var fuse = Values[0] & 0xFF;
+            var s = arch.DeviceConfigDefinitions.Render(addr, fuse);
+            writer.Write($"0x{addr:X},{s}");
         }
 
     }
