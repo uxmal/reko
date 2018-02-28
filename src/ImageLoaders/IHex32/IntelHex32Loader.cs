@@ -162,10 +162,7 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <returns>
         /// A <see cref="Program"/> instance.
         /// </returns>
-        public override Program Load(Address addrLoad)
-        {
-            throw new NotImplementedException();
-        }
+        public override Program Load(Address addrLoad) => throw new NotImplementedException();
 
         /// <summary>
         /// Loads the image into memory at the specified address, using the provided
@@ -182,6 +179,7 @@ namespace Reko.ImageLoaders.IntelHex32
         {
             listener = Services.RequireService<DecompilerEventListener>();
             var memChunks = new MemoryChunksList();
+            Address addrEp = null;
 
             using (var rdr = new IntelHex32Reader(new MemoryStream(RawImage)))
             {
@@ -194,21 +192,23 @@ namespace Reko.ImageLoaders.IntelHex32
                         if (data != null)
                         {
                             memChunks.AddData(address, data);
+                            continue;
                         }
                     }
+                    addrEp = rdr.StartAddress;
 
                 }
                 catch (IntelHex32Exception ex)
                 {
                     listener.Error(new NullCodeLocation(""), ex.Message);
+                    return null;
                 }
             }
 
             var segs = new SegmentMap(PreferredBaseAddress);
 
-            int i = 0;
-
             // Generate the image segments with fake names.
+            int i = 0;
             foreach (var mchk in memChunks)
             {
                 var mem = new MemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
@@ -216,7 +216,11 @@ namespace Reko.ImageLoaders.IntelHex32
                 segs.AddSegment(seg);
             }
 
-            return new Program() { SegmentMap = segs, Architecture = arch, Platform = platform };
+            var prog = new Program() { SegmentMap = segs, Architecture = arch, Platform = platform };
+            if (addrEp != null)
+                prog.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
+            return prog;
+
         }
 
         /// <summary>
@@ -229,9 +233,7 @@ namespace Reko.ImageLoaders.IntelHex32
         /// The <see cref="RelocationResults"/>.
         /// </returns>
         public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
-        }
+            => new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
 
         #endregion
 
