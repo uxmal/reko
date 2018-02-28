@@ -2406,15 +2406,6 @@ namespace Reko.Libraries.Microchip
         public string CName { get; set; }
 
         /// <summary>
-        /// Gets the name of the bit field.
-        /// </summary>
-        /// <value>
-        /// The name as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets the description of the field.
         /// </summary>
         /// <value>
@@ -2771,18 +2762,6 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
         public string CName { get; set; }
-
-        /// <summary>
-        /// Gets the name of the configuration register.
-        /// </summary>
-        /// <value>
-        /// The name as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Name { get; set; }
-        [XmlIgnore]
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public bool NameSpecified { get; set; }
 
         /// <summary>
         /// Gets the description of the configuration register.
@@ -4110,15 +4089,6 @@ namespace Reko.Libraries.Microchip
         public string CName { get; set; }
 
         /// <summary>
-        /// Gets the name of this SFR Field.
-        /// </summary>
-        /// <value>
-        /// The name as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets the description of this SFR Field.
         /// </summary>
         /// <value>
@@ -4442,15 +4412,6 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
         public string CName { get; set; }
-
-        /// <summary>
-        /// Gets the name of this SFR.
-        /// </summary>
-        /// <value>
-        /// The name as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets the description of this SFR.
@@ -4827,15 +4788,6 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
         public string Desc { get; set; }
-
-        /// <summary>
-        /// Gets the name of the joined SFRs.
-        /// </summary>
-        /// <value>
-        /// The name as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "name", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Name { get; set; }
 
         /// <summary>
         /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.

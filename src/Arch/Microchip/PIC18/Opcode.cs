@@ -203,7 +203,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>Store data word in program memory pseudo-instruction . </summary>
         DW,
         /// <summary>Store word in ID locations memory pseudo-instruction . </summary>
-        IDLOCS
+        __IDLOCS
     }
 
 }

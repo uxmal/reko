@@ -31,7 +31,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A class to provide support for PIC Device Configuration definitions (per ConfigFuseSector content).
     /// </summary>
-    public class PICDevConfDefs : IPICDevConfDefs
+    public class PICDevConfDefs : IDeviceConfigDefs
     {
 
         #region Member fields

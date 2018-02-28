@@ -34,7 +34,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A factory class which constructs the PIC memory map using the individual PIC definition.
     /// </summary>
-    public class PICMemoryMap : IPICMemoryMap
+    public class MemoryMap : IMemoryMap
     {
 
         #region Static and Constant fields
@@ -60,7 +60,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        private PICMemoryMap()
+        private MemoryMap()
         {
         }
 
@@ -68,7 +68,7 @@ namespace Reko.Arch.Microchip.Common
         /// Private constructor creating an instance of memory map for specified PIC.
         /// </summary>
         /// <param name="thePIC">the PIC descriptor.</param>
-        private PICMemoryMap(PIC thePIC)
+        private MemoryMap(PIC thePIC)
         {
             PIC = thePIC;
             traits = new MemTraits(thePIC);
@@ -77,22 +77,22 @@ namespace Reko.Arch.Microchip.Common
         }
 
         /// <summary>
-        /// Creates a new <see cref="IPICMemoryMap"/> instance.
+        /// Creates a new <see cref="IMemoryMap"/> instance.
         /// </summary>
         /// <param name="thePIC">the PIC descriptor.</param>
         /// <returns>
-        /// A <see cref="IPICMemoryMap"/> instance.
+        /// A <see cref="IMemoryMap"/> instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="thePIC"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid data memory size (less than 12 bytes).</exception>
-        public static IPICMemoryMap Create(PIC thePIC)
+        public static IMemoryMap Create(PIC thePIC)
         {
             if (thePIC is null)
                 throw new ArgumentNullException(nameof(thePIC));
             uint datasize = thePIC.DataSpace?.EndAddr ?? 0;
             if (datasize < MinDataMemorySize)
                 throw new ArgumentOutOfRangeException($"Too low data memory size (less than {MinDataMemorySize} bytes). Check PIC definition.");
-            var map = new PICMemoryMap(thePIC);
+            var map = new MemoryMap(thePIC);
             if (!IsValidMap(map))
                 throw new InvalidOperationException($"Mapper cannot be constructed for '{thePIC.Name}' device.");
             return map;
@@ -106,7 +106,7 @@ namespace Reko.Arch.Microchip.Common
 
         public bool HasSubDomain(MemorySubDomain subdom) => subdomains.Contains(subdom);
 
-        private static bool IsValidMap(PICMemoryMap map)
+        private static bool IsValidMap(MemoryMap map)
         {
             if (map.traits == null)
                 return false;
@@ -618,7 +618,7 @@ namespace Reko.Arch.Microchip.Common
             #region Members fields
 
             protected readonly PIC pic;
-            protected readonly PICMemoryMap map;
+            protected readonly MemoryMap map;
             protected readonly MemTraits traits;
             protected List<T> memRegions;
 
@@ -630,7 +630,7 @@ namespace Reko.Arch.Microchip.Common
             /// Constructor.
             /// </summary>
             /// <param name="pic">The PIC definition.</param>
-            protected MemoryMapBase(PIC pic, PICMemoryMap map, MemTraits traits)
+            protected MemoryMapBase(PIC pic, MemoryMap map, MemTraits traits)
             {
                 this.pic = pic;
                 this.map = map;
@@ -712,7 +712,7 @@ namespace Reko.Arch.Microchip.Common
             /// </summary>
             /// <param name="thePIC">The PIC definition.</param>
             /// <param name="traits">The PIC memory traits.</param>
-            public ProgMemoryMap(PIC thePIC, PICMemoryMap map, MemTraits traits) : base(thePIC, map, traits)
+            public ProgMemoryMap(PIC thePIC, MemoryMap map, MemTraits traits) : base(thePIC, map, traits)
             {
                 foreach (var pmr in thePIC.ProgramSpace.Sectors?.OfType<IMemProgramRegionAcceptor>())
                 {
@@ -840,7 +840,7 @@ namespace Reko.Arch.Microchip.Common
             /// <param name="mode">ThePIC execution  mode.</param>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC data memory size is invalid.</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC execution mode is invalid.</exception>
-            public DataMemoryMap(PIC thePIC, PICMemoryMap map, MemTraits traits, PICExecMode mode) : base(thePIC, map, traits)
+            public DataMemoryMap(PIC thePIC, MemoryMap map, MemTraits traits, PICExecMode mode) : base(thePIC, map, traits)
             {
                 uint datasize = thePIC.DataSpace?.EndAddr ?? 0;
                 if (datasize < MinDataMemorySize)
@@ -1180,6 +1180,12 @@ namespace Reko.Arch.Microchip.Common
         public IEnumerable<IMemoryRegion> ProgramRegions => progmap.Regions;
 
         #endregion
+
+        public (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom)
+        {if (!traits.GetTrait(subdom, out MemTrait t))
+                return (0, 0);
+            return (t.LocSize, t.WordSize);
+        }
 
         #endregion
 

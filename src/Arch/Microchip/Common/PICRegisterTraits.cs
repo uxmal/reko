@@ -59,7 +59,7 @@ namespace Reko.Arch.Microchip.Common
         {
             if (sfr is null)
                 throw new ArgumentNullException(nameof(sfr));
-            Name = sfr.Name;
+            Name = sfr.CName;
             Desc = sfr.Desc;
             BitWidth = (int)sfr.NzWidth;
             Impl = sfr.Impl;
@@ -84,7 +84,7 @@ namespace Reko.Arch.Microchip.Common
                 throw new ArgumentNullException(nameof(joinedsfr));
             if (subregs is null)
                 throw new ArgumentNullException(nameof(subregs));
-            Name = joinedsfr.Name;
+            Name = joinedsfr.CName;
             Desc = joinedsfr.Desc;
             BitWidth = (int)joinedsfr.NzWidth;
             Address = PICDataAddress.Ptr(joinedsfr.Addr);

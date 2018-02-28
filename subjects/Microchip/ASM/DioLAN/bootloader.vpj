@@ -1,0 +1,79 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/9.0/vpj.dtd">
+<Project
+	Version="9.0"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config Name="Release">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				RunFromDir="%rw"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				RunFromDir="%rw"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				RunFromDir="%rw"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles">
+				<Exec CmdLine="make clean&amp;&amp;make"/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				RunFromDir="%rw">
+				<Exec CmdLine='"bootloader.exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.cpp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.vb">
+			<F N="boot.c"/>
+			<F N="boot_asm.asm"/>
+			<F N="usb_desc.c"/>
+			<F N="vectors.asm"/>
+			<F N="xtea.asm"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+			<F N="boot.h"/>
+			<F N="boot_if.h"/>
+			<F N="io_cfg.h"/>
+			<F N="typedefs.h"/>
+			<F N="usb_defs.h"/>
+			<F N="usb_desc.h"/>
+		</Folder>
+		<Folder
+			Name="Other Files"
+			Filters="">
+			<F N="18f4455.lkr"/>
+			<F N="18f4455_e.lkr"/>
+			<F N="asm_inc.pl"/>
+			<F
+				N="Makefile"
+				Type="Makefile"/>
+			<F N="README"/>
+			<F N="RELEASE_NOTES"/>
+		</Folder>
+	</Files>
+</Project>

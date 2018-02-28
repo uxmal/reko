@@ -822,13 +822,16 @@ namespace Reko.Arch.Microchip.PIC18
     }
 
     /// <summary>
-    /// A PIC18 set processor ID locations operand.
+    /// A PIC18 set processor ID locations operand (used for __IDLOCS).
     /// </summary>
     public class PIC18IDLocsOperand : PseudoDataOperand, IPIC18Operand
     {
 
-        public PIC18IDLocsOperand(ushort idlocs) : base(idlocs)
+        private Address addr;
+
+        public PIC18IDLocsOperand(Address addr, ushort idlocs) : base(idlocs)
         {
+            this.addr = addr;
         }
 
         public void Accept(IPIC18OperandVisitor visitor) => visitor.VisitIDLocs(this);
@@ -837,13 +840,13 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{Values[0]:X3}");
+            writer.Write($"{addr}, 0x{Values[0]:X3}");
         }
 
     }
 
     /// <summary>
-    /// A PIC18 processor configuration bits operand.
+    /// A PIC18 processor configuration bits operand (used for CONFIG).
     /// </summary>
     public class PIC18ConfigOperand : PseudoDataOperand, IPIC18Operand
     {
@@ -865,7 +868,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             var fuse = Values[0] & 0xFF;
             var s = arch.DeviceConfigDefinitions.Render(addr, fuse);
-            writer.Write($"0x{addr:X},{s}");
+            writer.Write(s);
         }
 
     }

@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -53,7 +52,7 @@ namespace Reko.Arch.Microchip.Common
             if (dcr is null)
                 throw new ArgumentNullException(nameof(dcr));
             Address = Address.Ptr32((uint)dcr.Addr);
-            Name = dcr.NameSpecified ? dcr.Name : dcr.CName;
+            Name = dcr.CName;
             Descr = dcr.Desc;
             BitWidth = dcr.NzWidth;
             Access = dcr.Access;
@@ -96,7 +95,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Enumerates the bit-fields contained in this device configuration register.
         /// </summary>
-        public IEnumerable<DevConfigField> Fields => fields.Select(f => f);
+        public IEnumerable<DevConfigField> Fields => fields;
 
         public override string ToString() => $"{Name}@{Address}";
 
@@ -167,7 +166,7 @@ namespace Reko.Arch.Microchip.Common
         {
             if (dcrfield is null)
                 throw new ArgumentNullException(nameof(dcrfield));
-            Name = dcrfield.Name;
+            Name = dcrfield.CName;
             Descr = dcrfield.Desc;
             RegAddress = regAddr;
             BitWidth = dcrfield.NzWidth;
@@ -225,7 +224,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Enumerates the semantics of this device configuration bit field.
         /// </summary>
-        public IEnumerable<DevConfigSemantic> Semantics => semantics.Select(s => s);
+        public IEnumerable<DevConfigSemantic> Semantics => semantics;
 
         /// <summary>
         /// Gets the semantic that matches the given bit field value.
@@ -249,19 +248,24 @@ namespace Reko.Arch.Microchip.Common
     }
 
     /// <summary>
-    /// <see langword="abstract"/>semantic associated with a value of a PIC device configuration bit-field.
+    /// Semantic associated with a value of a PIC device configuration bit-field.
     /// </summary>
     public class DevConfigSemantic
     {
         #region Member fields
 
+        // 'When' expression in PIC XML is of the form: "(field mask 0xNN) op 0xHH"
+        // with 'mask' being either the AND (&) operator or the OR (|) operator and
+        // with 'op' being one of the comparison operators (==, !=, <, <=, etc...).
+        // So we isolate (1)the mask operator, (2)the mask value, (3)the comparison operator and (4)the expected result.
+        // 
         private const string pattern = @"^\(\s*field\s+([^ ]*)\s+([^ ]*)\s*\)\s+([^ ]*)\s+([^ ]*)$";
-        private static Regex regex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        /// <summary>
+        /// The semantic in case the bit-field value does not correspond to a known value.
+        /// </summary>
         public static DevConfigSemantic invalid =
-            new DevConfigSemantic() { State = "<invalid>",
-            Descr = "Invalid fuse value",
-            When = "?" };
+            new DevConfigSemantic(new DCRFieldSemantic() { CName = "<invalid>", Desc = "Invalid fuse value", When = "?" });
 
         #endregion
 
@@ -286,24 +290,24 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the name of the device configuration bit-field state.
         /// </summary>
-        public string State { get; private set; }
+        public string State { get; }
 
         /// <summary>
         /// Gets the description of the device configuration bit-field state.
         /// </summary>
-        public string Descr { get; private set; }
+        public string Descr { get; }
 
         /// <summary>
         /// Gets the 'when' condition corresponding to the device configuration bit-field state.
         /// </summary>
-        public string When { get; private set; }
+        public string When { get; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Indicates whenever the given value corresponds to a valid device configuration bit-filed state.
+        /// Indicates whenever the given value corresponds to a valid device configuration bit-field state.
         /// </summary>
         /// <param name="value">The bit-field value.</param>
         /// <returns>
@@ -312,7 +316,7 @@ namespace Reko.Arch.Microchip.Common
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         public bool Match(int value)
         {
-            Match m = Regex.Match(When, pattern);
+            var m = Regex.Match(When, pattern);
             if (!m.Success)
                 return false;
             if (m.Groups.Count != 5)

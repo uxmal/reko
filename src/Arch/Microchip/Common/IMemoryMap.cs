@@ -29,7 +29,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// Interface for implementing PIC memory map.
     /// </summary>
-    public interface IPICMemoryMap
+    public interface IMemoryMap
     {
         /// <summary>
         /// Gets the target PIC for this memory map.
@@ -60,6 +60,16 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/> enumeration.</param>
         bool HasSubDomain(MemorySubDomain subdom);
+
+        /// <summary>
+        /// Memory sub-domain sizes.
+        /// </summary>
+        /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/>
+        ///                      enumeration.</param>
+        /// <returns>
+        /// A Tuple containing the location size and wordsize. Returns (0,0) if the subdomain does not exist.
+        /// </returns>
+        (uint LocSize, uint WordSize) SubDomainSizes(MemorySubDomain subdom);
 
         /// <summary>
         /// Gets a data memory region given its name ID.

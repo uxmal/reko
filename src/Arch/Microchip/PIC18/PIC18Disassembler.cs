@@ -24,6 +24,7 @@ using Reko.Libraries.Microchip;
 using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -90,7 +91,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (lastusedregion != null && lastusedregion.Contains(addrCur))
                     return lastusedregion;
-                return lastusedregion = arch.MemoryMapper.PICMemoryMap.GetProgramRegion(addrCur);
+                return lastusedregion = arch.MemoryMapper.MemoryMap.GetProgramRegion(addrCur);
             }
 
             if (!rdr.IsValid)
@@ -1182,8 +1183,17 @@ namespace Reko.Arch.Microchip.PIC18
 
             if (!rdr.TryReadByte(out byte uEEByte))
                 return null;
+            var bl = new List<byte>() { uEEByte };
+            for (int i=0; i<7; i++)
+            {
+                if (!lastusedregion.Contains(rdr.Address))
+                    break;
+                if (!rdr.TryReadByte(out uEEByte))
+                    break;
+                bl.Add(uEEByte);
+            }
             instrCur = new PIC18Instruction(Opcode.DE, ExecMode,
-                                            new PIC18DataEEPROMOperand(uEEByte))
+                                            new PIC18DataEEPROMOperand(bl.ToArray()))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)
@@ -1242,8 +1252,8 @@ namespace Reko.Arch.Microchip.PIC18
 
             if (!rdr.TryReadByte(out byte uIDByte))
                 return null;
-            instrCur = new PIC18Instruction(Opcode.IDLOCS, ExecMode,
-                                            new PIC18DataByteOperand(uIDByte))
+            instrCur = new PIC18Instruction(Opcode.__IDLOCS, ExecMode,
+                                            new PIC18IDLocsOperand(addrCur, uIDByte))
             {
                 Address = addrCur,
                 Length = (int)(rdr.Address - addrCur)

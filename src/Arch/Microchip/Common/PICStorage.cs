@@ -87,14 +87,14 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="sfr">The SFR definition.</param>
         /// <param name="number">The Reko index number of this register.</param>
         public PICRegisterStorage(SFRDef sfr, int number)
-            : base(sfr.Name, number, sfr.NzWidth.Size2PrimitiveType())
+            : base(sfr.CName, number, sfr.NzWidth.Size2PrimitiveType())
         {
             Traits = new PICRegisterTraits(sfr);
             SubRegs = null;
         }
 
         public PICRegisterStorage(JoinedSFRDef jsfr, ICollection<PICRegisterStorage> subregs)
-            : base(jsfr.Name, subregs.First().Number, jsfr.NzWidth.Size2PrimitiveType())
+            : base(jsfr.CName, subregs.First().Number, jsfr.NzWidth.Size2PrimitiveType())
         {
             Traits = new PICRegisterTraits(jsfr, subregs);
             SubRegs = subregs;
@@ -234,7 +234,7 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="bitPos">The least significant bit number as a byte.</param>
         /// <param name="uMask">The bit field mask.</param>
         public PICBitFieldStorage(PICRegisterStorage reg, SFRFieldDef sfrdef, byte bitPos, uint uMask)
-            : base(reg, (uMask << bitPos), sfrdef.Name, sfrdef.NzWidth.Size2PrimitiveType())
+            : base(reg, (uMask << bitPos), sfrdef.CName, sfrdef.NzWidth.Size2PrimitiveType())
         {
             SFRField = sfrdef;
             BitPos = bitPos;

@@ -247,7 +247,7 @@ namespace Reko.Arch.Microchip.Common
         public void Visit(SFRFieldDef xmlSymb)
         {
             // We do not add SFR Fields which are duplicating the parent SFR register definition (same name or same bit width)
-            if ((xmlSymb.Name != currentSFRDef.Name) && (xmlSymb.NzWidth != currentSFRDef.NzWidth))
+            if ((xmlSymb.CName != currentSFRDef.CName) && (xmlSymb.NzWidth != currentSFRDef.NzWidth))
             {
                 var fld = new PICBitFieldStorage(currentSFRRegister, xmlSymb, (byte)bitAddr, xmlSymb.Mask);
                 symTable.AddRegisterField(currentSFRRegister, fld);

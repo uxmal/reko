@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
     public class MemoryMapTests
     {
 
-        private void CheckProgMap(IPICMemoryMap map)
+        private void CheckProgMap(IMemoryMap map)
         {
             foreach (var rgn in map.ProgramRegions)
             {
@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             }
         }
 
-        private void CheckDataMap(IPICMemoryMap map)
+        private void CheckDataMap(IMemoryMap map)
         {
             foreach (var rgn in map.DataRegions)
             {
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_TraditionalTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC16, map.InstructionSetID);
 
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_EnhancedTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, map.InstructionSetID);
 
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_EnhancedV1Tests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC16_ENHANCED_V1, map.InstructionSetID);
 
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18MemoryMapper_TraditionalTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18, map.InstructionSetID);
 
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18MemoryMapper_ExtendedTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18));
             map.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18, map.InstructionSetID);
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdMemoryMapper_TraditionalTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, map.InstructionSetID);
 
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdMemoryMapper_ExtendedTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
             map.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Extended, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, map.InstructionSetID);
@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdMemoryMapper_TraditionalTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, map.InstructionSetID);
 
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdMemoryMapper_ExtendedTests()
         {
-            IPICMemoryMap map = PICMemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
+            IMemoryMap map = MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
             map.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Extended, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, map.InstructionSetID);

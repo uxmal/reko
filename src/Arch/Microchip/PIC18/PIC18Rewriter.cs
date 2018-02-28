@@ -175,8 +175,9 @@ namespace Reko.Arch.Microchip.PIC18
                     case Opcode.DB:
                     case Opcode.DE:
                     case Opcode.DW:
-                    case Opcode.IDLOCS:
-                        throw new AddressCorrelatedException(addr, $"Rewriting of PIC18 instruction '{instrCurr.Opcode}' is not implemented yet.");
+                    case Opcode.__IDLOCS:
+                        m.Invalid();
+                        break;
                 }
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
                 {

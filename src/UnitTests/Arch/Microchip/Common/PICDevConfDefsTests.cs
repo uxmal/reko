@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16DevConf_Tests()
         {
-            IPICDevConfDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16));
+            IDeviceConfigDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16));
             var dcr = defs.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x2007), dcr.Address);
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhDevConf_Tests()
         {
-            IPICDevConfDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
+            IDeviceConfigDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
             var dcr = defs.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhV1DevConf_Tests()
         {
-            IPICDevConfDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
+            IDeviceConfigDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
             var dcr = defs.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18DevConf_Tests()
         {
-            IPICDevConfDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18));
+            IDeviceConfigDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18));
             var dcr = defs.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdDevConf_Tests()
         {
-            IPICDevConfDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
+            IDeviceConfigDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
             var dcr = defs.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdDevConf_Tests()
         {
-            IPICDevConfDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
+            IDeviceConfigDefs defs = PICDevConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
             var dcr = defs.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);

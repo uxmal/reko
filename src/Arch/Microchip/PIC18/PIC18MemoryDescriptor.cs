@@ -64,8 +64,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// <param name="pic">The target PIC.</param>
         private PIC18MemoryDescriptor(PIC pic)
         {
-            PICMemoryMap = Common.PICMemoryMap.Create(pic);
-            PICConfDefinitions = PICDevConfDefs.Create(pic);
+            MemoryMap = Common.MemoryMap.Create(pic);
+            DeviceConfigDefinitions = PICDevConfDefs.Create(pic);
         }
 
         /// <summary>
@@ -81,13 +81,13 @@ namespace Reko.Arch.Microchip.PIC18
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             memDescr = new PIC18MemoryDescriptor(pic);
-            memDescr.AccessRAMHigh = memDescr.PICMemoryMap.GetDataRegion(AccessSFRRegionID);
+            memDescr.AccessRAMHigh = memDescr.MemoryMap.GetDataRegion(AccessSFRRegionID);
             if (memDescr.AccessRAMHigh is null)
                 throw new InvalidOperationException($"Missing '{AccessSFRRegionID}' data memory region.");
-            memDescr.AccessRAMLow = memDescr.PICMemoryMap.GetDataRegion(AccessRAMRegionID);
+            memDescr.AccessRAMLow = memDescr.MemoryMap.GetDataRegion(AccessRAMRegionID);
             if (memDescr.AccessRAMLow is null)
             {
-                memDescr.AccessRAMLow = memDescr.PICMemoryMap.GetDataRegion(ExtendRAMRegionID);
+                memDescr.AccessRAMLow = memDescr.MemoryMap.GetDataRegion(ExtendRAMRegionID);
                 if (memDescr.AccessRAMLow is null)
                     throw new InvalidOperationException($"Missing either '{AccessRAMRegionID}' or '{ExtendRAMRegionID}' data memory region.");
             }
@@ -99,11 +99,11 @@ namespace Reko.Arch.Microchip.PIC18
         #region IPIC18MemoryDescriptor interface
 
         /// <summary>
-        /// The memory map associated with this memory mapper.
+        /// The memory description associated with this memory descriptor.
         /// </summary>
-        public IPICMemoryMap PICMemoryMap { get; }
+        public IMemoryMap MemoryMap { get; }
 
-        public IPICDevConfDefs PICConfDefinitions { get; }
+        public IDeviceConfigDefs DeviceConfigDefinitions { get; }
 
         /// <summary>
         /// Gets or sets the PIC execution mode.
@@ -113,20 +113,20 @@ namespace Reko.Arch.Microchip.PIC18
         /// </value>
         public PICExecMode ExecMode
         {
-            get => PICMemoryMap.ExecMode; 
+            get => MemoryMap.ExecMode; 
             set
             {
-                if (value != PICMemoryMap.ExecMode)
+                if (value != MemoryMap.ExecMode)
                 {
-                    PICMemoryMap.ExecMode = value;
-                    switch (PICMemoryMap.ExecMode)
+                    MemoryMap.ExecMode = value;
+                    switch (MemoryMap.ExecMode)
                     {
                         case PICExecMode.Traditional:
-                            AccessRAMLow = PICMemoryMap.GetDataRegion(AccessRAMRegionID);
+                            AccessRAMLow = MemoryMap.GetDataRegion(AccessRAMRegionID);
                             break;
 
                         case PICExecMode.Extended:
-                            AccessRAMLow = PICMemoryMap.GetDataRegion(ExtendRAMRegionID);
+                            AccessRAMLow = MemoryMap.GetDataRegion(ExtendRAMRegionID);
                             break;
                     }
                     if (AccessRAMLow is null)

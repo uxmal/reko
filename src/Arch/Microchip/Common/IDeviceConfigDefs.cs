@@ -27,7 +27,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// Interface for PIC Device Configuration Fuses definitions.
     /// </summary>
-    public interface IPICDevConfDefs
+    public interface IDeviceConfigDefs
     {
         /// <summary>
         /// Gets a Device Configuration Register by its name.
