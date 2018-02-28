@@ -27,6 +27,8 @@ namespace Reko.Libraries.Microchip
     using System.IO.Compression;
     using System.Reflection;
     using System.Xml.Linq;
+    using System.Linq;
+    using System.Text.RegularExpressions;
 
 
     /// <summary>
@@ -36,38 +38,54 @@ namespace Reko.Libraries.Microchip
     {
         #region Privates
 
-        private const string _localdbfile = "picdb.zip";
-        private const string _contentPIC16 = @"content/edc/16xxxx";
-        private const string _contentPIC18 = @"content/edc/18xxxx";
+        private const string localdbfile = "picdb.zip";
+        private const string contentPIC16 = @"content/edc/16xxxx";
+        private const string contentPIC18 = @"content/edc/18xxxx";
 
         private static PICCrownking currentDB = null;
 
-        private PICCrownkingException _raiseError(DBErrorCode err, string msg)
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Specialized default constructor for use only by derived class.
+        /// </summary>
+        protected PICCrownking()
+        {
+            OpenDB();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private PICCrownkingException RaiseError(DBErrorCode err, string msg)
         {
             LastError = err;
             return new PICCrownkingException(err, msg);
         }
 
-        private void _checkDBExist()
+        private void CheckDBExist()
         {
             if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
             {
-                throw _raiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
+                throw RaiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
             }
         }
 
-        private string _getPICLocalDBFilePath()
+        private string GetPICLocalDBFilePath()
         {
             Assembly CrownkingAssembly;
             CrownkingAssembly = Assembly.GetAssembly(this.GetType());
             string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
-            string path = Path.Combine(sDir, _localdbfile);
+            string path = Path.Combine(sDir, localdbfile);
             return path;
         }
 
-        private void _openDB()
+        private void OpenDB()
         {
-            CurrentDBPath = _getPICLocalDBFilePath();
+            CurrentDBPath = GetPICLocalDBFilePath();
 
             // No local database, check presence of IDE X database
             if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
@@ -79,18 +97,6 @@ namespace Reko.Libraries.Microchip
             // Local database is present. Check if out-of-date versus optional IDE X database
             Status = DBStatus.DBOK;
             LastError = DBErrorCode.NoError;
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Specialized default constructor for use only by derived class.
-        /// </summary>
-        protected PICCrownking()
-        {
-            _openDB();
         }
 
         #endregion
@@ -155,16 +161,16 @@ namespace Reko.Libraries.Microchip
             XElement xmlpic = null;
             string contentpath = null;
             LastError = DBErrorCode.NoSuchPIC;
-            _checkDBExist();
+            CheckDBExist();
 
             if (String.IsNullOrEmpty(sPICName))
                 return null;
             sPICName = sPICName.ToUpperInvariant();
             if (!sPICName.EndsWith(".PIC", true, CultureInfo.InvariantCulture)) sPICName += ".PIC";
             if (sPICName.StartsWith("PIC16", true, CultureInfo.InvariantCulture))
-                contentpath = _contentPIC16;
+                contentpath = contentPIC16;
             if (sPICName.StartsWith("PIC18", true, CultureInfo.InvariantCulture))
-                contentpath = _contentPIC18;
+                contentpath = contentPIC18;
 
             if (contentpath != null)
             {
@@ -202,17 +208,20 @@ namespace Reko.Libraries.Microchip
         /// </remarks>
         public IEnumerable<string> EnumPICList(Func<string, bool> filter)
         {
-            _checkDBExist();
+            CheckDBExist();
+            var zlist = new List<ZipArchiveEntry>();
             using (ZipArchive jarfile = ZipFile.OpenRead(CurrentDBPath))
             {
-                foreach (var entry in jarfile.Entries)
+                zlist.AddRange(jarfile.Entries.OrderByNatural(e => e.Name));
+            }
+            
+            foreach (var entry in zlist)
+            {
+                if (entry.FullName.StartsWith(contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
+                    entry.FullName.StartsWith(contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
                 {
-                    if (entry.FullName.StartsWith(_contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
-                        entry.FullName.StartsWith(_contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
-                    {
-                        if (filter(entry.Name))
-                            yield return Path.GetFileNameWithoutExtension(entry.Name);
-                    }
+                    if (filter(entry.Name))
+                        yield return Path.GetFileNameWithoutExtension(entry.Name);
                 }
             }
         }
@@ -226,7 +235,8 @@ namespace Reko.Libraries.Microchip
         /// <remarks>
         /// Only PIC16 and PIC18 are listed whatever database content is.
         /// </remarks>
-        public IEnumerable<string> EnumPICList() => EnumPICList(filt => true);
+        public IEnumerable<string> EnumPICList()
+            => EnumPICList(filt => true);
 
         #endregion
 

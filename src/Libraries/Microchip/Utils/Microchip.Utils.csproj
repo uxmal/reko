@@ -47,6 +47,7 @@
     <Compile Include="BitsUtils.cs" />
     <Compile Include="ConvUtils.cs" />
     <Compile Include="IPICVisitor.cs" />
+    <Compile Include="NaturalComparer.cs" />
     <Compile Include="PIC.cs" />
     <Compile Include="PICCrownking.cs" />
     <Compile Include="PICCrownkingCodes.cs" />

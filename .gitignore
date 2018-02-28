@@ -27,3 +27,5 @@ TestResults
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release
+/subjects/Microchip/ASM/DioLAN/bootloader.asm
+/subjects/Microchip/ASM/DioLAN/bootloader.dis
