@@ -47,7 +47,7 @@
     <Compile Include="Common\IMemoryRegion.cs" />
     <Compile Include="Common\IDeviceConfigDefs.cs" />
     <Compile Include="Common\PICAddresses.cs" />
-    <Compile Include="Common\PICDevConfDefs.cs" />
+    <Compile Include="Common\PICDeviceConfDefs.cs" />
     <Compile Include="Common\PICRegisterTraits.cs" />
     <Compile Include="PIC18\IOperandShadow.cs" />
     <Compile Include="Common\IMemoryMap.cs" />

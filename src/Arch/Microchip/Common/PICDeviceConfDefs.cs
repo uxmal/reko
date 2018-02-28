@@ -31,7 +31,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A class to provide support for PIC Device Configuration definitions (per ConfigFuseSector content).
     /// </summary>
-    public class PICDevConfDefs : IDeviceConfigDefs
+    public class PICDeviceConfDefs : IDeviceConfigDefs
     {
 
         #region Member fields
@@ -42,30 +42,32 @@ namespace Reko.Arch.Microchip.Common
 
         #region Constructors
 
-        private PICDevConfDefs(PIC thePIC)
+        private PICDeviceConfDefs(PIC thePIC)
         {
             PIC = thePIC;
             dcregisters = new SortedList<Address, DevConfigRegister>();
             foreach (var cfs in PIC.ProgramSpace.Sectors.OfType<ConfigFuseSector>())
             {
-                foreach (var dcr in cfs.Defs.OfType<DCRDef>())
+                foreach (var dcrdef in cfs.Defs.OfType<DCRDef>())
                 {
-                    var dcreg = new DevConfigRegister(dcr);
-                    foreach (var dcm in dcr.DCRModes)
+                    var dcreg = new DevConfigRegister(dcrdef);
+                    foreach (var dcrmode in dcrdef.DCRModes)
                     {
                         int ibit = 0;
-                        foreach (var dcf in dcm.Fields)
+                        foreach (var dcrfield in dcrmode.Fields)
                         {
-                            switch (dcf)
+                            switch (dcrfield)
                             {
                                 case DataBitAdjustPoint adj:
                                     ibit += adj.Offset;
                                     break;
-                                case DCRFieldDef dcrfd:
-                                    var dcrfdef = new DevConfigField(dcrfd, dcreg.Address, ibit);
-                                    ibit += dcrfd.NzWidth;
+                                case DCRFieldDef dcrfieldddef:
+                                    if (dcrfieldddef.IsHidden || dcrfieldddef.IsLangHidden)
+                                        continue;
+                                    var dcrfdef = new DevConfigField(dcrfieldddef, dcreg.Address, ibit);
+                                    ibit += dcrfieldddef.NzWidth;
                                     dcreg.AddField(dcrfdef);
-                                    foreach (var dcsem in dcrfd.DCRFieldSemantics)
+                                    foreach (var dcsem in dcrfieldddef.DCRFieldSemantics)
                                     {
                                         dcrfdef.AddSemantic(new DevConfigSemantic(dcsem));
                                     }
@@ -78,13 +80,13 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
-        public static PICDevConfDefs Create(PIC thePIC)
+        public static PICDeviceConfDefs Create(PIC thePIC)
         {
             if (thePIC is null)
                 throw new ArgumentNullException(nameof(thePIC));
             if (thePIC.ProgramSpace is null)
                 throw new InvalidOperationException($"Can't create PIC Device Configuration definitions.");
-            var dcrconf = new PICDevConfDefs(thePIC);
+            var dcrconf = new PICDeviceConfDefs(thePIC);
             return dcrconf;
         }
 
