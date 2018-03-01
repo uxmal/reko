@@ -90,7 +90,7 @@
     <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
     <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
     <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
-    <Compile Include="Arch\Microchip\Common\PICDevConfDefsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\DeviceConfigDefsTests.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Arch\Microchip\Object2XElementTest.cs" />

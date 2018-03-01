@@ -102,31 +102,31 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             pic = PICSamples.GetSample(InstructionSetID.PIC18);
             arch = new PIC18Architecture(pic) { ExecMode = PICExecMode.Traditional };
             Assert.AreEqual(
-                "ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC,ANDLW",
+                "__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
             arch.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(
-                "ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC,ANDLW",
+                "__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
 
             pic = PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED);
             arch = new PIC18Architecture(pic) { ExecMode = PICExecMode.Traditional };
             Assert.AreEqual(
-                "ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC,ANDLW",
+                "__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
             arch.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(
-                "ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC,ANDLW",
+                "__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
 
             pic = PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED);
             arch = new PIC18Architecture(pic) { ExecMode = PICExecMode.Traditional };
             Assert.AreEqual(
-                "ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC,ANDLW",
+                "__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
             arch.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(
-                "ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC,ANDLW",
+                "__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF,ADDWFC",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
         }
 

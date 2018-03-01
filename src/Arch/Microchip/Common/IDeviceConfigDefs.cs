@@ -57,7 +57,7 @@ namespace Reko.Arch.Microchip.Common
         DevConfigField GetDCRField(string name);
 
         /// <summary>
-        /// Renders the Device Configuration state given its value.
+        /// Renders the Device Configuration Register state given its value.
         /// </summary>
         /// <param name="dcr">The Device Configuration Register of interest.</param>
         /// <param name="value">The value assigned to this register.</param>
@@ -67,7 +67,7 @@ namespace Reko.Arch.Microchip.Common
         string Render(DevConfigRegister dcr, int value);
 
         /// <summary>
-        /// Renders the Device Configuration state at given address for given value.
+        /// Renders the Device Configuration Register state at given address for given value.
         /// </summary>
         /// <param name="addr">The Device Configuration Register memory address.</param>
         /// <param name="value">The value assigned to this register.</param>

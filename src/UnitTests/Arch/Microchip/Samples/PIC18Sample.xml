@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- PIC sample for the 'InstructionSetID.PIC18' instruction set. ("pic18") -->
 <PIC xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PIC18F1220" arch="18xxxx" desc="" procid="0xA122" dsid="30009605" dosid="00296" isextended="false" hasfreeze="false" isdebuggable="false" informedby="DOS PS DS" masksetid="" psid="30009592">
   <ArchDef desc="18xxxx" name="18xxxx">
@@ -23,10 +23,10 @@
     <UserIDSector beginaddr="0x200000" endaddr="0x200008" regionid="idlocs" issection="false" />
     <ConfigFuseSector beginaddr="0x300000" endaddr="0x30000E" regionid="config">
       <AdjustPoint offset="1" />
-      <DCRDef _addr="0x300001" cname="CONFIG1H" name="CONFIG1H" desc="" nzwidth="8" impl="0xCF" access="nn--nnnn" default="0xCF" factorydefault="0xCF" unimplval="0" unused="0" useinchecksum="0xCF">
+      <DCRDef _addr="0x300001" cname="CONFIG1H" desc="" nzwidth="8" impl="0xCF" access="nn--nnnn" default="0xCF" factorydefault="0xCF" unimplval="0" unused="0" useinchecksum="0xCF">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="OSC" name="OSC" desc="Oscillator Selection bits" _baddr="0" nzwidth="4" mask="0xF">
+            <DCRFieldDef cname="OSC" desc="Oscillator Selection bits" nzwidth="4" mask="0xF">
               <DCRFieldSemantic cname="RC" desc="External RC oscillator, CLKO function on RA6" when="(field &amp; 0xc) == 0xc" />
               <DCRFieldSemantic cname="INTIO1" desc="Internal RC oscillator, CLKO function on RA6 and port function on RA7" when="(field &amp; 0xf) == 0x9" />
               <DCRFieldSemantic cname="INTIO2" desc="Internal RC oscillator, port function on RA6 and port function on RA7" when="(field &amp; 0xf) == 0x8" />
@@ -39,29 +39,29 @@
               <DCRFieldSemantic cname="LP" desc="LP Oscillator" when="(field &amp; 0xf) == 0x0" oscmodeidref="9" />
             </DCRFieldDef>
             <AdjustPoint offset="2" />
-            <DCRFieldDef cname="FSCM" name="FSCM" desc="Fail-Safe Clock Monitor Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="FSCM" desc="Fail-Safe Clock Monitor Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="Fail-Safe Clock Monitor enabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="Fail-Safe Clock Monitor disabled" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="IESO" name="IESO" desc="Internal External Switchover bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="IESO" desc="Internal External Switchover bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="Internal External Switchover mode enabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="Internal External Switchover mode disabled" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x300002" cname="CONFIG2L" name="CONFIG2L" desc="" nzwidth="8" impl="0xF" access="----nnnn" default="0xF" factorydefault="0xF" unimplval="0" unused="0" useinchecksum="0xF">
+      <DCRDef _addr="0x300002" cname="CONFIG2L" desc="" nzwidth="8" impl="0xF" access="----nnnn" default="0xF" factorydefault="0xF" unimplval="0" unused="0" useinchecksum="0xF">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="PWRT" name="PWRT" desc="Power-up Timer Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="PWRT" desc="Power-up Timer Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="PWRT disabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="PWRT enabled" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="BOR" name="BOR" desc="Brown-out Reset Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="BOR" desc="Brown-out Reset Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="Brown-out Reset enabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="Brown-out Reset disabled" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="BORV" name="BORV" desc="Brown-out Reset Voltage bits" _baddr="0" nzwidth="2" mask="0x3">
+            <DCRFieldDef cname="BORV" desc="Brown-out Reset Voltage bits" nzwidth="2" mask="0x3">
               <DCRFieldSemantic cname="" desc="Reserved" when="(field &amp; 0x3) == 0x3" islanghidden="true" />
               <DCRFieldSemantic cname="27" desc="VBOR set to 2.7V" when="(field &amp; 0x3) == 0x2" />
               <DCRFieldSemantic cname="42" desc="VBOR set to 4.2V" when="(field &amp; 0x3) == 0x1" />
@@ -70,14 +70,14 @@
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x300003" cname="CONFIG2H" name="CONFIG2H" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" default="0x1F" factorydefault="0x1F" unimplval="0" unused="0" useinchecksum="0x1F">
+      <DCRDef _addr="0x300003" cname="CONFIG2H" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" default="0x1F" factorydefault="0x1F" unimplval="0" unused="0" useinchecksum="0x1F">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="WDT" name="WDT" desc="Watchdog Timer Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="WDT" desc="Watchdog Timer Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="WDT enabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="WDT disabled (control is placed on the SWDTEN bit)" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="WDTPS" name="WDTPS" desc="Watchdog Timer Postscale Select bits" _baddr="0" nzwidth="4" mask="0xF">
+            <DCRFieldDef cname="WDTPS" desc="Watchdog Timer Postscale Select bits" nzwidth="4" mask="0xF">
               <DCRFieldSemantic cname="32768" desc="1:32768" when="(field &amp; 0xf) == 0xf" />
               <DCRFieldSemantic cname="16384" desc="1:16384" when="(field &amp; 0xf) == 0xe" />
               <DCRFieldSemantic cname="8192" desc="1:8192" when="(field &amp; 0xf) == 0xd" />
@@ -99,31 +99,31 @@
         </DCRModeList>
       </DCRDef>
       <AdjustPoint offset="1" />
-      <DCRDef _addr="0x300005" cname="CONFIG3H" name="CONFIG3H" desc="" nzwidth="8" impl="0x80" access="n-------" default="0x80" factorydefault="0x80" unimplval="0" unused="0" useinchecksum="0x80">
+      <DCRDef _addr="0x300005" cname="CONFIG3H" desc="" nzwidth="8" impl="0x80" access="n-------" default="0x80" factorydefault="0x80" unimplval="0" unused="0" useinchecksum="0x80">
         <DCRModeList>
           <DCRMode id="DS.0">
             <AdjustPoint offset="7" />
-            <DCRFieldDef cname="MCLRE" name="MCLRE" desc="MCLR Pin Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="MCLRE" desc="MCLR Pin Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="MCLR pin enabled, RA5 input pin disabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="RA5 input pin enabled, MCLR disabled" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x300006" cname="CONFIG4L" name="CONFIG4L" desc="" nzwidth="8" impl="0x85" access="n----n-n" default="0x85" factorydefault="0x85" unimplval="0" unused="0" useinchecksum="0x85">
+      <DCRDef _addr="0x300006" cname="CONFIG4L" desc="" nzwidth="8" impl="0x85" access="n----n-n" default="0x85" factorydefault="0x85" unimplval="0" unused="0" useinchecksum="0x85">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="STVR" name="STVR" desc="Stack Full/Underflow Reset Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="STVR" desc="Stack Full/Underflow Reset Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="Stack full/underflow will cause Reset" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="Stack full/underflow will not cause Reset" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
             <AdjustPoint offset="1" />
-            <DCRFieldDef cname="LVP" name="LVP" desc="Low-Voltage ICSP Enable bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="LVP" desc="Low-Voltage ICSP Enable bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="ON" desc="Low-Voltage ICSP enabled" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="OFF" desc="Low-Voltage ICSP disabled" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
             <AdjustPoint offset="4" />
-            <DCRFieldDef cname="DEBUG" name="DEBUG" desc="Background Debugger Enable bit" _baddr="0" nzwidth="1" mask="0x1" isidehidden="true">
+            <DCRFieldDef cname="DEBUG" desc="Background Debugger Enable bit" nzwidth="1" mask="0x1" isidehidden="true">
               <DCRFieldSemantic cname="OFF" desc="Background debugger disabled, RB6 and RB7 configured as general purpose I/O pins" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Background debugger enabled, RB6 and RB7 are dedicated to In-Circuit Debug" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
@@ -131,99 +131,87 @@
         </DCRModeList>
       </DCRDef>
       <AdjustPoint offset="1" />
-      <DCRDef _addr="0x300008" cname="CONFIG5L" name="CONFIG5L" desc="" nzwidth="8" impl="0x3" access="------nn" default="0x3" factorydefault="0x3" unimplval="0" unused="0" useinchecksum="0x3">
+      <DCRDef _addr="0x300008" cname="CONFIG5L" desc="" nzwidth="8" impl="0x3" access="------nn" default="0x3" factorydefault="0x3" unimplval="0" unused="0" useinchecksum="0x3">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="CP0" name="CP0" desc="Code Protection bit" _baddr="0" nzwidth="1" mask="0x1">
-              <DCRFieldSemantic cname="OFF" desc="Block 0 (00200-0007FFh) not code-protected" when="(field &amp; 0x1) == 0x1">
-                <Checksum beginaddr="0x0" endaddr="0x0" checksumalgo="0x0" />
-              </DCRFieldSemantic>
-              <DCRFieldSemantic cname="ON" desc="Block 0 (00200-0007FFh) code-protected" when="(field &amp; 0x1) == 0x0">
-                <Checksum beginaddr="0x200" endaddr="0x800" checksumalgo="0x27" />
-              </DCRFieldSemantic>
+            <DCRFieldDef cname="CP0" desc="Code Protection bit" nzwidth="1" mask="0x1">
+              <DCRFieldSemantic cname="OFF" desc="Block 0 (00200-0007FFh) not code-protected" when="(field &amp; 0x1) == 0x1" />
+              <DCRFieldSemantic cname="ON" desc="Block 0 (00200-0007FFh) code-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="CP1" name="CP1" desc="Code Protection bit" _baddr="0" nzwidth="1" mask="0x1">
-              <DCRFieldSemantic cname="OFF" desc="Block 1 (000800-000FFFh) not code-protected" when="(field &amp; 0x1) == 0x1">
-                <Checksum beginaddr="0x0" endaddr="0x0" checksumalgo="0x0" />
-              </DCRFieldSemantic>
-              <DCRFieldSemantic cname="ON" desc="Block 1 (000800-000FFFh) code-protected" when="(field &amp; 0x1) == 0x0">
-                <Checksum beginaddr="0x800" endaddr="0x1000" checksumalgo="0x27" />
-              </DCRFieldSemantic>
+            <DCRFieldDef cname="CP1" desc="Code Protection bit" nzwidth="1" mask="0x1">
+              <DCRFieldSemantic cname="OFF" desc="Block 1 (000800-000FFFh) not code-protected" when="(field &amp; 0x1) == 0x1" />
+              <DCRFieldSemantic cname="ON" desc="Block 1 (000800-000FFFh) code-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x300009" cname="CONFIG5H" name="CONFIG5H" desc="" nzwidth="8" impl="0xC0" access="nn------" default="0xC0" factorydefault="0xC0" unimplval="0" unused="0" useinchecksum="0xC0">
+      <DCRDef _addr="0x300009" cname="CONFIG5H" desc="" nzwidth="8" impl="0xC0" access="nn------" default="0xC0" factorydefault="0xC0" unimplval="0" unused="0" useinchecksum="0xC0">
         <DCRModeList>
           <DCRMode id="DS.0">
             <AdjustPoint offset="6" />
-            <DCRFieldDef cname="CPB" name="CPB" desc="Boot Block Code Protection bit" _baddr="0" nzwidth="1" mask="0x1">
-              <DCRFieldSemantic cname="OFF" desc="Boot Block (000000-0001FFh) not code-protected" when="(field &amp; 0x1) == 0x1">
-                <Checksum beginaddr="0x0" endaddr="0x0" checksumalgo="0x0" />
-              </DCRFieldSemantic>
-              <DCRFieldSemantic cname="ON" desc="Boot Block (000000-0001FFh) code-protected" when="(field &amp; 0x1) == 0x0">
-                <Checksum beginaddr="0x0" endaddr="0x200" checksumalgo="0x27" />
-              </DCRFieldSemantic>
+            <DCRFieldDef cname="CPB" desc="Boot Block Code Protection bit" nzwidth="1" mask="0x1">
+              <DCRFieldSemantic cname="OFF" desc="Boot Block (000000-0001FFh) not code-protected" when="(field &amp; 0x1) == 0x1" />
+              <DCRFieldSemantic cname="ON" desc="Boot Block (000000-0001FFh) code-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="CPD" name="CPD" desc="Data EEPROM Code Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="CPD" desc="Data EEPROM Code Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Data EEPROM not code-protected" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Data EEPROM code-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x30000A" cname="CONFIG6L" name="CONFIG6L" desc="" nzwidth="8" impl="0x3" access="------nn" default="0x3" factorydefault="0x3" unimplval="0" unused="0" useinchecksum="0x3">
+      <DCRDef _addr="0x30000A" cname="CONFIG6L" desc="" nzwidth="8" impl="0x3" access="------nn" default="0x3" factorydefault="0x3" unimplval="0" unused="0" useinchecksum="0x3">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="WRT0" name="WRT0" desc="Write Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="WRT0" desc="Write Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Block 0 (00200-0007FFh) not write-protected" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Block 0 (00200-000F7Fh) write-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="WRT1" name="WRT1" desc="Write Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="WRT1" desc="Write Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Block 1 (000800-000FFFh) not write-protected" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Block 1 (000800-000FFFh) write-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x30000B" cname="CONFIG6H" name="CONFIG6H" desc="" nzwidth="8" impl="0xE0" access="nnn-----" default="0xE0" factorydefault="0xE0" unimplval="0" unused="0" useinchecksum="0xE0">
+      <DCRDef _addr="0x30000B" cname="CONFIG6H" desc="" nzwidth="8" impl="0xE0" access="nnn-----" default="0xE0" factorydefault="0xE0" unimplval="0" unused="0" useinchecksum="0xE0">
         <DCRModeList>
           <DCRMode id="DS.0">
             <AdjustPoint offset="5" />
-            <DCRFieldDef cname="WRTC" name="WRTC" desc="Configuration Register Write Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="WRTC" desc="Configuration Register Write Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Configuration registers (300000-3000FFh) not write-protected" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Configuration registers (300000-3000FFh) write-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="WRTB" name="WRTB" desc="Boot Block Write Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="WRTB" desc="Boot Block Write Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Boot Block (000000-0001FFh) not write-protected" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Boot Block (000000-0001FFh) write-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="WRTD" name="WRTD" desc="Data EEPROM Write Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="WRTD" desc="Data EEPROM Write Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Data EEPROM not write-protected" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Data EEPROM write-protected" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x30000C" cname="CONFIG7L" name="CONFIG7L" desc="" nzwidth="8" impl="0x3" access="------nn" default="0x3" factorydefault="0x3" unimplval="0" unused="0" useinchecksum="0x3">
+      <DCRDef _addr="0x30000C" cname="CONFIG7L" desc="" nzwidth="8" impl="0x3" access="------nn" default="0x3" factorydefault="0x3" unimplval="0" unused="0" useinchecksum="0x3">
         <DCRModeList>
           <DCRMode id="DS.0">
-            <DCRFieldDef cname="EBTR0" name="EBTR0" desc="Table Read Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="EBTR0" desc="Table Read Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Block 0 (00200-0007FFh) not protected from table reads executed in other blocks" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Block 0 (00200-0007FFh) protected from table reads executed in other blocks" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
-            <DCRFieldDef cname="EBTR1" name="EBTR1" desc="Table Read Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="EBTR1" desc="Table Read Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Block 1 (000800-000FFFh) not protected from table reads executed in other blocks" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Block 1 (000800-000FFFh) protected from table reads executed in other blocks" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
           </DCRMode>
         </DCRModeList>
       </DCRDef>
-      <DCRDef _addr="0x30000D" cname="CONFIG7H" name="CONFIG7H" desc="" nzwidth="8" impl="0x40" access="-n------" default="0x40" factorydefault="0x40" unimplval="0" unused="0" useinchecksum="0x40">
+      <DCRDef _addr="0x30000D" cname="CONFIG7H" desc="" nzwidth="8" impl="0x40" access="-n------" default="0x40" factorydefault="0x40" unimplval="0" unused="0" useinchecksum="0x40">
         <DCRModeList>
           <DCRMode id="DS.0">
             <AdjustPoint offset="6" />
-            <DCRFieldDef cname="EBTRB" name="EBTRB" desc="Boot Block Table Read Protection bit" _baddr="0" nzwidth="1" mask="0x1">
+            <DCRFieldDef cname="EBTRB" desc="Boot Block Table Read Protection bit" nzwidth="1" mask="0x1">
               <DCRFieldSemantic cname="OFF" desc="Boot Block (000000-0001FFh) not protected from table reads executed in other blocks" when="(field &amp; 0x1) == 0x1" />
               <DCRFieldSemantic cname="ON" desc="Boot Block (000000-0001FFh) protected from table reads executed in other blocks" when="(field &amp; 0x1) == 0x0" />
             </DCRFieldDef>
@@ -246,1288 +234,1288 @@
       <GPRDataSector beginaddr="0x0" endaddr="0x80" regionid="accessram" bank="0" shadowoffset="0x0" />
       <GPRDataSector beginaddr="0x80" endaddr="0x100" regionid="gpr0" bank="0" shadowoffset="0x0" />
       <SFRDataSector beginaddr="0xF80" endaddr="0x1000" regionid="accesssfr" bank="15">
-        <SFRDef _addr="0xF80" cname="PORTA" name="PORTA" desc="" nzwidth="8" impl="0xFF" access="nnrnnnnn" mclr="uu0u0000" por="xx0x0000" isvolatile="true">
+        <SFRDef _addr="0xF80" cname="PORTA" desc="" nzwidth="8" impl="0xFF" access="nnrnnnnn" mclr="uu0u0000" por="xx0x0000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RA0" name="RA0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA1" name="RA1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA2" name="RA2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA3" name="RA3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA4" name="RA4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA5" name="RA5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA6" name="RA6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA7" name="RA7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="AN0" name="AN0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="AN1" name="AN1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="AN2" name="AN2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="AN3" name="AN3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN3" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="MCLR" name="MCLR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CLKO" name="CLKO" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CLKI" name="CLKI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="MCLR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CLKO" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CLKI" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="LVDIN" name="LVDIN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="VREFM" name="VREFM" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="VREFP" name="VREFP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0CKI" name="T0CKI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDIN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="VREFM" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="VREFP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0CKI" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="OSC2" name="OSC2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="OSC1" name="OSC1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OSC2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OSC1" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.2">
               <AdjustPoint offset="5" />
-              <SFRFieldDef cname="nMCLR" name="nMCLR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CLKOUT" name="CLKOUT" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CLKIN" name="CLKIN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nMCLR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CLKOUT" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CLKIN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
-              <SFRFieldDef cname="ULPWUIN" name="ULPWUIN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ULPWUIN" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="6" />
-              <SFRFieldDef cname="RJPU" name="RJPU" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RJPU" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xF81" cname="PORTB" name="PORTB" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <SFRDef _addr="0xF81" cname="PORTB" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RB0" name="RB0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB1" name="RB1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB2" name="RB2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB3" name="RB3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB4" name="RB4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB5" name="RB5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB6" name="RB6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB7" name="RB7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="AN4" name="AN4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="AN5" name="AN5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN5" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="CCP1" name="CCP1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="AN6" name="AN6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PGM" name="PGM" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PGC" name="PGC" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PGD" name="PGD" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="AN6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PGM" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PGC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PGD" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
-              <SFRFieldDef cname="INT0" name="INT0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT1" name="INT1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2" name="INT2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="KBI0" name="KBI0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="KBI1" name="KBI1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="KBI2" name="KBI2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="KBI3" name="KBI3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="KBI0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="KBI1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="KBI2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="KBI3" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.2">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="CK" name="CK" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="P1B" name="P1B" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="P1A" name="P1A" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="DT" name="DT" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CK" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="P1B" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="P1A" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="DT" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="P1C" name="P1C" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="P1D" name="P1D" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="P1C" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="P1D" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.3">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TX" name="TX" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="RX" name="RX" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RX" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="T1OSO" name="T1OSO" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T1OSI" name="T1OSI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1OSO" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1OSI" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.4">
               <AdjustPoint offset="6" />
-              <SFRFieldDef cname="T13CKI" name="T13CKI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T13CKI" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.5">
               <AdjustPoint offset="6" />
-              <SFRFieldDef cname="T1CKI" name="T1CKI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1CKI" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="CCP2_PA2" name="CCP2_PA2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP2_PA2" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="7" />
-        <SFRDef _addr="0xF89" cname="LATA" name="LATA" desc="" nzwidth="8" impl="0xDF" access="nn-nnnnn" mclr="uu-uuuuu" por="xx-xxxxx" isvolatile="true">
+        <SFRDef _addr="0xF89" cname="LATA" desc="" nzwidth="8" impl="0xDF" access="nn-nnnnn" mclr="uu-uuuuu" por="xx-xxxxx" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="LATA0" name="LATA0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATA1" name="LATA1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATA2" name="LATA2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATA3" name="LATA3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATA4" name="LATA4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA4" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="LATA6" name="LATA6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATA7" name="LATA7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATA7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
-              <SFRFieldDef cname="LA0" name="LA0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LA1" name="LA1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LA2" name="LA2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LA3" name="LA3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LA4" name="LA4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA4" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="LA6" name="LA6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LA7" name="LA7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LA7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xF8A" cname="LATB" name="LATB" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <SFRDef _addr="0xF8A" cname="LATB" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="LATB0" name="LATB0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB1" name="LATB1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB2" name="LATB2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB3" name="LATB3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB4" name="LATB4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB5" name="LATB5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB6" name="LATB6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LATB7" name="LATB7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LATB7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
-              <SFRFieldDef cname="LB0" name="LB0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB1" name="LB1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB2" name="LB2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB3" name="LB3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB4" name="LB4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB5" name="LB5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB6" name="LB6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LB7" name="LB7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LB7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="7" />
-        <SFRDef _addr="0xF92" cname="TRISA" name="TRISA" desc="" nzwidth="8" impl="0xDF" access="nn-nnnnn" mclr="11-11111" por="11-11111" isvolatile="true">
+        <SFRDef _addr="0xF92" cname="TRISA" desc="" nzwidth="8" impl="0xDF" access="nn-nnnnn" mclr="11-11111" por="11-11111" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TRISA0" name="TRISA0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISA1" name="TRISA1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISA2" name="TRISA2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISA3" name="TRISA3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISA4" name="TRISA4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA4" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TRISA6" name="TRISA6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISA7" name="TRISA7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISA7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="RA0" name="RA0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA1" name="RA1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA2" name="RA2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA3" name="RA3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA4" name="RA4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA4" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="RA6" name="RA6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RA7" name="RA7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RA7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xF93" cname="TRISB" name="TRISB" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="11111111" por="11111111" isvolatile="true">
+        <SFRDef _addr="0xF93" cname="TRISB" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="11111111" por="11111111" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TRISB0" name="TRISB0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB1" name="TRISB1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB2" name="TRISB2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB3" name="TRISB3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB4" name="TRISB4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB5" name="TRISB5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB6" name="TRISB6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRISB7" name="TRISB7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRISB7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="RB0" name="RB0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB1" name="RB1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB2" name="RB2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB3" name="RB3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB4" name="RB4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB5" name="RB5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB6" name="RB6" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RB7" name="RB7" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RB7" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="7" />
-        <SFRDef _addr="0xF9B" cname="OSCTUNE" name="OSCTUNE" desc="" nzwidth="8" impl="0x3F" access="--nnnnnn" mclr="--000000" por="--000000" isvolatile="true">
+        <SFRDef _addr="0xF9B" cname="OSCTUNE" desc="" nzwidth="8" impl="0x3F" access="--nnnnnn" mclr="--000000" por="--000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TUN" name="TUN" desc="" nzwidth="6" mask="0x3F" />
+              <SFRFieldDef cname="TUN" desc="" nzwidth="6" mask="0x3F" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="TUN0" name="TUN0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TUN1" name="TUN1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TUN2" name="TUN2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TUN3" name="TUN3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TUN4" name="TUN4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TUN5" name="TUN5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TUN0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TUN1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TUN2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TUN3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TUN4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TUN5" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="1" />
-        <SFRDef _addr="0xF9D" cname="PIE1" name="PIE1" desc="" nzwidth="8" impl="0x77" access="-nnn-nnn" mclr="-000-000" por="-000-000" isvolatile="true">
+        <SFRDef _addr="0xF9D" cname="PIE1" desc="" nzwidth="8" impl="0x77" access="-nnn-nnn" mclr="-000-000" por="-000-000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TMR1IE" name="TMR1IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR2IE" name="TMR2IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1IE" name="CCP1IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR1IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR2IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1IE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TXIE" name="TXIE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RCIE" name="RCIE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ADIE" name="ADIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TXIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RCIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADIE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="4" />
-              <SFRFieldDef cname="TX1IE" name="TX1IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RC1IE" name="RC1IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX1IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RC1IE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xF9E" cname="PIR1" name="PIR1" desc="" nzwidth="8" impl="0x77" access="-nrr-nnn" mclr="-000-000" por="-000-000" isvolatile="true">
+        <SFRDef _addr="0xF9E" cname="PIR1" desc="" nzwidth="8" impl="0x77" access="-nrr-nnn" mclr="-000-000" por="-000-000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TMR1IF" name="TMR1IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR2IF" name="TMR2IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1IF" name="CCP1IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR1IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR2IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1IF" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TXIF" name="TXIF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RCIF" name="RCIF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ADIF" name="ADIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TXIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RCIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADIF" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="4" />
-              <SFRFieldDef cname="TX1IF" name="TX1IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RC1IF" name="RC1IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX1IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RC1IF" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xF9F" cname="IPR1" name="IPR1" desc="" nzwidth="8" impl="0x77" access="-nnn-nnn" mclr="-111-111" por="-111-111" isvolatile="true">
+        <SFRDef _addr="0xF9F" cname="IPR1" desc="" nzwidth="8" impl="0x77" access="-nnn-nnn" mclr="-111-111" por="-111-111" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TMR1IP" name="TMR1IP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR2IP" name="TMR2IP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1IP" name="CCP1IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR1IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR2IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1IP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TXIP" name="TXIP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RCIP" name="RCIP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ADIP" name="ADIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TXIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RCIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADIP" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="4" />
-              <SFRFieldDef cname="TX1IP" name="TX1IP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RC1IP" name="RC1IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX1IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RC1IP" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFA0" cname="PIE2" name="PIE2" desc="" nzwidth="8" impl="0x96" access="n--n-nn-" mclr="0--0-00-" por="0--0-00-" isvolatile="true">
+        <SFRDef _addr="0xFA0" cname="PIE2" desc="" nzwidth="8" impl="0x96" access="n--n-nn-" mclr="0--0-00-" por="0--0-00-" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TMR3IE" name="TMR3IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LVDIE" name="LVDIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR3IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDIE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="EEIE" name="EEIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="EEIE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="OSCFIE" name="OSCFIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OSCFIE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFA1" cname="PIR2" name="PIR2" desc="" nzwidth="8" impl="0x96" access="n--n-nn-" mclr="0--0-00-" por="0--0-00-" isvolatile="true">
+        <SFRDef _addr="0xFA1" cname="PIR2" desc="" nzwidth="8" impl="0x96" access="n--n-nn-" mclr="0--0-00-" por="0--0-00-" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TMR3IF" name="TMR3IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LVDIF" name="LVDIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR3IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDIF" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="EEIF" name="EEIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="EEIF" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="OSCFIF" name="OSCFIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OSCFIF" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFA2" cname="IPR2" name="IPR2" desc="" nzwidth="8" impl="0x96" access="n--n-nn-" mclr="1--1-11-" por="1--1-11-" isvolatile="true">
+        <SFRDef _addr="0xFA2" cname="IPR2" desc="" nzwidth="8" impl="0x96" access="n--n-nn-" mclr="1--1-11-" por="1--1-11-" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TMR3IP" name="TMR3IP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LVDIP" name="LVDIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR3IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDIP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="EEIP" name="EEIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="EEIP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="OSCFIP" name="OSCFIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OSCFIP" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="3" />
-        <SFRDef _addr="0xFA6" cname="EECON1" name="EECON1" desc="" nzwidth="8" impl="0xDF" access="nn-nnnss" mclr="uu-0u000" por="xx-0x000" isvolatile="true">
+        <SFRDef _addr="0xFA6" cname="EECON1" desc="" nzwidth="8" impl="0xDF" access="nn-nnnss" mclr="uu-0u000" por="xx-0x000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RD" name="RD" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="WR" name="WR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="WREN" name="WREN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="WRERR" name="WRERR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="FREE" name="FREE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RD" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="WR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="WREN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="WRERR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="FREE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="CFGS" name="CFGS" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="EEPGD" name="EEPGD" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CFGS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="EEPGD" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="6" />
-              <SFRFieldDef cname="EEFS" name="EEFS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="EEFS" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFA7" cname="EECON2" name="EECON2" desc="" nzwidth="8" impl="0xFF" access="wwwwwwww" mclr="--------" por="--------" isvolatile="true">
+        <SFRDef _addr="0xFA7" cname="EECON2" desc="" nzwidth="8" impl="0xFF" access="wwwwwwww" mclr="--------" por="--------" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="EECON2" name="EECON2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="EECON2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFA8" cname="EEDATA" name="EEDATA" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFA8" cname="EEDATA" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="EEDATA" name="EEDATA" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="EEDATA" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFA9" cname="EEADR" name="EEADR" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFA9" cname="EEADR" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="EEADR" name="EEADR" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="EEADR" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFAA" cname="BAUDCTL" name="BAUDCTL" desc="" nzwidth="8" impl="0x5B" access="-r-nn-nn" mclr="-1-10-00" por="-1-10-00" isvolatile="true">
+        <SFRDef _addr="0xFAA" cname="BAUDCTL" desc="" nzwidth="8" impl="0x5B" access="-r-nn-nn" mclr="-1-10-00" por="-1-10-00" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="ABDEN" name="ABDEN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="WUE" name="WUE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ABDEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="WUE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="BRG16" name="BRG16" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SCKP" name="SCKP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="BRG16" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SCKP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="RCIDL" name="RCIDL" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RCIDL" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="6" />
-              <SFRFieldDef cname="RCMT" name="RCMT" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RCMT" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="W4E" name="W4E" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="W4E" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFAB" cname="RCSTA" name="RCSTA" desc="" nzwidth="8" impl="0xFF" access="nnnnnrrr" mclr="0000000x" por="0000000x" isvolatile="true">
+        <SFRDef _addr="0xFAB" cname="RCSTA" desc="" nzwidth="8" impl="0xFF" access="nnnnnrrr" mclr="0000000x" por="0000000x" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RX9D" name="RX9D" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="OERR" name="OERR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="FERR" name="FERR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ADDEN" name="ADDEN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CREN" name="CREN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SREN" name="SREN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RX9" name="RX9" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SPEN" name="SPEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RX9D" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OERR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="FERR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADDEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CREN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SREN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RX9" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SPEN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="ADEN" name="ADEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADEN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="5" />
-              <SFRFieldDef cname="SRENA" name="SRENA" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SRENA" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFAC" cname="TXSTA" name="TXSTA" desc="" nzwidth="8" impl="0xFF" access="nnnnnnrn" mclr="00000010" por="00000010" isvolatile="true">
+        <SFRDef _addr="0xFAC" cname="TXSTA" desc="" nzwidth="8" impl="0xFF" access="nnnnnnrn" mclr="00000010" por="00000010" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TX9D" name="TX9D" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRMT" name="TRMT" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="BRGH" name="BRGH" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SENDB" name="SENDB" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SYNC" name="SYNC" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TXEN" name="TXEN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TX9" name="TX9" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CSRC" name="CSRC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX9D" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRMT" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="BRGH" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SENDB" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SYNC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TXEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX9" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CSRC" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
-              <SFRFieldDef cname="TX9D1" name="TX9D1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TRMT1" name="TRMT1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="BRGH1" name="BRGH1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SENDB1" name="SENDB1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SYNC1" name="SYNC1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TXEN1" name="TXEN1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TX91" name="TX91" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CSRC1" name="CSRC1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX9D1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TRMT1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="BRGH1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SENDB1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SYNC1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TXEN1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TX91" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CSRC1" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFAD" cname="TXREG" name="TXREG" desc="" nzwidth="8" impl="0xFF" access="wwwwwwww" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFAD" cname="TXREG" desc="" nzwidth="8" impl="0xFF" access="wwwwwwww" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TXREG" name="TXREG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="TXREG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFAE" cname="RCREG" name="RCREG" desc="" nzwidth="8" impl="0xFF" access="rrrrrrrr" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFAE" cname="RCREG" desc="" nzwidth="8" impl="0xFF" access="rrrrrrrr" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RCREG" name="RCREG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="RCREG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFAF" cname="SPBRG" name="SPBRG" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFAF" cname="SPBRG" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="SPBRG" name="SPBRG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="SPBRG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFB0" cname="SPBRGH" name="SPBRGH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFB0" cname="SPBRGH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="SPBRGH" name="SPBRGH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="SPBRGH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFB1" cname="T3CON" name="T3CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFB1" cname="T3CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TMR3ON" name="TMR3ON" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR3CS" name="TMR3CS" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nT3SYNC" name="nT3SYNC" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T3CCP1" name="T3CCP1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T3CKPS" name="T3CKPS" desc="" nzwidth="2" mask="0x3" />
-              <SFRFieldDef cname="T3CCP2" name="T3CCP2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RD16" name="RD16" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR3ON" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR3CS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nT3SYNC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T3CCP1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T3CKPS" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="T3CCP2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RD16" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="T3SYNC" name="T3SYNC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T3SYNC" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="T3CKPS0" name="T3CKPS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T3CKPS1" name="T3CKPS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T3CKPS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T3CKPS1" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="SOSCEN3" name="SOSCEN3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SOSCEN3" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="RD163" name="RD163" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RD163" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.1">
               <AdjustPoint offset="7" />
-              <SFRFieldDef cname="T3RD16" name="T3RD16" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T3RD16" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFB2" cname="TMR3" desc="" name="TMR3" nzwidth="16">
-          <SFRDef _addr="0xFB2" cname="TMR3L" name="TMR3L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <JoinedSFRDef _addr="0xFB2" cname="TMR3" desc="" nzwidth="16">
+          <SFRDef _addr="0xFB2" cname="TMR3L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TMR3L" name="TMR3L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TMR3L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFB3" cname="TMR3H" name="TMR3H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+          <SFRDef _addr="0xFB3" cname="TMR3H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TMR3H" name="TMR3H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TMR3H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
         <AdjustPoint offset="2" />
-        <SFRDef _addr="0xFB6" cname="ECCPAS" name="ECCPAS" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFB6" cname="ECCPAS" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PSSBD" name="PSSBD" desc="" nzwidth="2" mask="0x3" />
-              <SFRFieldDef cname="PSSAC" name="PSSAC" desc="" nzwidth="2" mask="0x3" />
-              <SFRFieldDef cname="ECCPAS" name="ECCPAS" desc="" nzwidth="3" mask="0x7" />
-              <SFRFieldDef cname="ECCPASE" name="ECCPASE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PSSBD" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="PSSAC" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="ECCPAS" desc="" nzwidth="3" mask="0x7" />
+              <SFRFieldDef cname="ECCPASE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="PSSBD0" name="PSSBD0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PSSBD1" name="PSSBD1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PSSAC0" name="PSSAC0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PSSAC1" name="PSSAC1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ECCPAS0" name="ECCPAS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ECCPAS1" name="ECCPAS1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ECCPAS2" name="ECCPAS2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PSSBD0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PSSBD1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PSSAC0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PSSAC1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ECCPAS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ECCPAS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ECCPAS2" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFB7" cname="PWM1CON" name="PWM1CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFB7" cname="PWM1CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PDC" name="PDC" desc="" nzwidth="7" mask="0x7F" />
-              <SFRFieldDef cname="PRSEN" name="PRSEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC" desc="" nzwidth="7" mask="0x7F" />
+              <SFRFieldDef cname="PRSEN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="PDC0" name="PDC0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PDC1" name="PDC1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PDC2" name="PDC2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PDC3" name="PDC3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PDC4" name="PDC4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PDC5" name="PDC5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PDC6" name="PDC6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PDC6" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="5" />
-        <SFRDef _addr="0xFBD" cname="CCP1CON" name="CCP1CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFBD" cname="CCP1CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="CCP1M" name="CCP1M" desc="" nzwidth="4" mask="0xF" />
-              <SFRFieldDef cname="DC1B" name="DC1B" desc="" nzwidth="2" mask="0x3" />
-              <SFRFieldDef cname="P1M" name="P1M" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="CCP1M" desc="" nzwidth="4" mask="0xF" />
+              <SFRFieldDef cname="DC1B" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="P1M" desc="" nzwidth="2" mask="0x3" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="CCP1M0" name="CCP1M0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1M1" name="CCP1M1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1M2" name="CCP1M2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1M3" name="CCP1M3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="DC1B0" name="DC1B0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="DC1B1" name="DC1B1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="P1M0" name="P1M0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="P1M1" name="P1M1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1M0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1M1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1M2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1M3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="DC1B0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="DC1B1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="P1M0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="P1M1" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
               <AdjustPoint offset="4" />
-              <SFRFieldDef cname="CCP1Y" name="CCP1Y" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CCP1X" name="CCP1X" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1Y" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CCP1X" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFBE" cname="CCPR1" desc="" name="CCPR1" nzwidth="16">
-          <SFRDef _addr="0xFBE" cname="CCPR1L" name="CCPR1L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <JoinedSFRDef _addr="0xFBE" cname="CCPR1" desc="" nzwidth="16">
+          <SFRDef _addr="0xFBE" cname="CCPR1L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="CCPR1L" name="CCPR1L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="CCPR1L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFBF" cname="CCPR1H" name="CCPR1H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+          <SFRDef _addr="0xFBF" cname="CCPR1H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="CCPR1H" name="CCPR1H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="CCPR1H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFC0" cname="ADCON2" name="ADCON2" desc="" nzwidth="8" impl="0xBF" access="n-nnnnnn" mclr="0-000000" por="0-000000" isvolatile="true">
+        <SFRDef _addr="0xFC0" cname="ADCON2" desc="" nzwidth="8" impl="0xBF" access="n-nnnnnn" mclr="0-000000" por="0-000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="ADCS" name="ADCS" desc="" nzwidth="3" mask="0x7" />
-              <SFRFieldDef cname="ACQT" name="ACQT" desc="" nzwidth="3" mask="0x7" />
+              <SFRFieldDef cname="ADCS" desc="" nzwidth="3" mask="0x7" />
+              <SFRFieldDef cname="ACQT" desc="" nzwidth="3" mask="0x7" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="ADFM" name="ADFM" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADFM" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="ADCS0" name="ADCS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ADCS1" name="ADCS1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ADCS2" name="ADCS2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ACQT0" name="ACQT0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ACQT1" name="ACQT1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="ACQT2" name="ACQT2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADCS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADCS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADCS2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ACQT0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ACQT1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ACQT2" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFC1" cname="ADCON1" name="ADCON1" desc="" nzwidth="8" impl="0x7F" access="-nnnnnnn" mclr="-0000000" por="-0000000" isvolatile="true">
+        <SFRDef _addr="0xFC1" cname="ADCON1" desc="" nzwidth="8" impl="0x7F" access="-nnnnnnn" mclr="-0000000" por="-0000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PCFG" name="PCFG" desc="" nzwidth="7" mask="0x7F" />
+              <SFRFieldDef cname="PCFG" desc="" nzwidth="7" mask="0x7F" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="PCFG0" name="PCFG0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PCFG1" name="PCFG1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PCFG2" name="PCFG2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PCFG3" name="PCFG3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PCFG4" name="PCFG4" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PCFG5" name="PCFG5" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PCFG6" name="PCFG6" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG5" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PCFG6" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="CHSN3" name="CHSN3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="VCFG01" name="VCFG01" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="VCFG11" name="VCFG11" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CHSN3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="VCFG01" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="VCFG11" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFC2" cname="ADCON0" name="ADCON0" desc="" nzwidth="8" impl="0xDF" access="nn-nnnnn" mclr="00-00000" por="00-00000" isvolatile="true">
+        <SFRDef _addr="0xFC2" cname="ADCON0" desc="" nzwidth="8" impl="0xDF" access="nn-nnnnn" mclr="00-00000" por="00-00000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="ADON" name="ADON" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="GO_nDONE" name="GO/nDONE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CHS" name="CHS" desc="" nzwidth="3" mask="0x7" />
+              <SFRFieldDef cname="ADON" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GO_nDONE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CHS" desc="" nzwidth="3" mask="0x7" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="VCFG" name="VCFG" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="VCFG" desc="" nzwidth="2" mask="0x3" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="GO" name="GO" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CHS0" name="CHS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CHS1" name="CHS1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="CHS2" name="CHS2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GO" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CHS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CHS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CHS2" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="VCFG0" name="VCFG0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="VCFG1" name="VCFG1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="VCFG0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="VCFG1" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="DONE" name="DONE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="DONE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.2">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="nDONE" name="nDONE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nDONE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.3">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="GO_DONE" name="GO_DONE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GO_DONE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="GODONE" name="GODONE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GODONE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="5" />
-              <SFRFieldDef cname="ADCAL" name="ADCAL" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ADCAL" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFC3" cname="ADRES" desc="" name="ADRES" nzwidth="16">
-          <SFRDef _addr="0xFC3" cname="ADRESL" name="ADRESL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <JoinedSFRDef _addr="0xFC3" cname="ADRES" desc="" nzwidth="16">
+          <SFRDef _addr="0xFC3" cname="ADRESL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="ADRESL" name="ADRESL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="ADRESL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFC4" cname="ADRESH" name="ADRESH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+          <SFRDef _addr="0xFC4" cname="ADRESH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="ADRESH" name="ADRESH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="ADRESH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
         <AdjustPoint offset="5" />
-        <SFRDef _addr="0xFCA" cname="T2CON" name="T2CON" desc="" nzwidth="8" impl="0x7F" access="-nnnnnnn" mclr="-0000000" por="-0000000" isvolatile="true">
+        <SFRDef _addr="0xFCA" cname="T2CON" desc="" nzwidth="8" impl="0x7F" access="-nnnnnnn" mclr="-0000000" por="-0000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="T2CKPS" name="T2CKPS" desc="" nzwidth="2" mask="0x3" />
-              <SFRFieldDef cname="TMR2ON" name="TMR2ON" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TOUTPS" name="TOUTPS" desc="" nzwidth="4" mask="0xF" />
+              <SFRFieldDef cname="T2CKPS" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="TMR2ON" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TOUTPS" desc="" nzwidth="4" mask="0xF" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="T2CKPS0" name="T2CKPS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T2CKPS1" name="T2CKPS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T2CKPS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T2CKPS1" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TOUTPS0" name="TOUTPS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TOUTPS1" name="TOUTPS1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TOUTPS2" name="TOUTPS2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TOUTPS3" name="TOUTPS3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TOUTPS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TOUTPS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TOUTPS2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TOUTPS3" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFCB" cname="PR2" name="PR2" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="11111111" por="11111111" isvolatile="true">
+        <SFRDef _addr="0xFCB" cname="PR2" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="11111111" por="11111111" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PR2" name="PR2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="PR2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFCC" cname="TMR2" name="TMR2" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFCC" cname="TMR2" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TMR2" name="TMR2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="TMR2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFCD" cname="T1CON" name="T1CON" desc="" nzwidth="8" impl="0xFF" access="nrnnnnnn" mclr="u0uuuuuu" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFCD" cname="T1CON" desc="" nzwidth="8" impl="0xFF" access="nrnnnnnn" mclr="u0uuuuuu" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TMR1ON" name="TMR1ON" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR1CS" name="TMR1CS" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nT1SYNC" name="nT1SYNC" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T1OSCEN" name="T1OSCEN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T1CKPS" name="T1CKPS" desc="" nzwidth="2" mask="0x3" />
-              <SFRFieldDef cname="T1RUN" name="T1RUN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RD16" name="RD16" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR1ON" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR1CS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nT1SYNC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1OSCEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1CKPS" desc="" nzwidth="2" mask="0x3" />
+              <SFRFieldDef cname="T1RUN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RD16" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="4" />
-              <SFRFieldDef cname="T1CKPS0" name="T1CKPS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T1CKPS1" name="T1CKPS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1CKPS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1CKPS1" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="T1SYNC" name="T1SYNC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1SYNC" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="SOSCEN" name="SOSCEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SOSCEN" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="T1RD16" name="T1RD16" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T1RD16" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFCE" cname="TMR1" desc="" name="TMR1" nzwidth="16">
-          <SFRDef _addr="0xFCE" cname="TMR1L" name="TMR1L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <JoinedSFRDef _addr="0xFCE" cname="TMR1" desc="" nzwidth="16">
+          <SFRDef _addr="0xFCE" cname="TMR1L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TMR1L" name="TMR1L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TMR1L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFCF" cname="TMR1H" name="TMR1H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+          <SFRDef _addr="0xFCF" cname="TMR1H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TMR1H" name="TMR1H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TMR1H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFD0" cname="RCON" name="RCON" desc="" nzwidth="8" impl="0x9F" access="n--nnnnn" mclr="0--uqquu" por="0--11100" isvolatile="true">
+        <SFRDef _addr="0xFD0" cname="RCON" desc="" nzwidth="8" impl="0x9F" access="n--nnnnn" mclr="0--uqquu" por="0--11100" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="nBOR" name="nBOR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nPOR" name="nPOR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nPD" name="nPD" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nTO" name="nTO" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nRI" name="nRI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nBOR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nPOR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nPD" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nTO" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nRI" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="IPEN" name="IPEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IPEN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="BOR" name="BOR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="POR" name="POR" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PD" name="PD" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TO" name="TO" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RI" name="RI" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="BOR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="POR" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PD" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TO" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RI" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFD1" cname="WDTCON" name="WDTCON" desc="" nzwidth="8" impl="0x1" access="-------n" mclr="-------0" por="-------0" isvolatile="true">
+        <SFRDef _addr="0xFD1" cname="WDTCON" desc="" nzwidth="8" impl="0x1" access="-------n" mclr="-------0" por="-------0" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="SWDTEN" name="SWDTEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SWDTEN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="SWDTE" name="SWDTE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SWDTE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFD2" cname="LVDCON" name="LVDCON" desc="" nzwidth="8" impl="0x3F" access="--nnnnnn" mclr="--000101" por="--000101" isvolatile="true">
+        <SFRDef _addr="0xFD2" cname="LVDCON" desc="" nzwidth="8" impl="0x3F" access="--nnnnnn" mclr="--000101" por="--000101" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="LVDL" name="LVDL" desc="" nzwidth="4" mask="0xF" />
-              <SFRFieldDef cname="LVDEN" name="LVDEN" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="IRVST" name="IRVST" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDL" desc="" nzwidth="4" mask="0xF" />
+              <SFRFieldDef cname="LVDEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IRVST" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="LVDL0" name="LVDL0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LVDL1" name="LVDL1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LVDL2" name="LVDL2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="LVDL3" name="LVDL3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDL0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDL1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDL2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="LVDL3" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="IVRST" name="IVRST" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IVRST" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFD3" cname="OSCCON" name="OSCCON" desc="" nzwidth="8" impl="0xFF" access="nnnnrnnn" mclr="000000q0" por="0000q000" isvolatile="true">
+        <SFRDef _addr="0xFD3" cname="OSCCON" desc="" nzwidth="8" impl="0xFF" access="nnnnrnnn" mclr="000000q0" por="0000q000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="SCS0" name="SCS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SCS1" name="SCS1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="IOFS" name="IOFS" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="OSTS" name="OSTS" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="IRCF" name="IRCF" desc="" nzwidth="3" mask="0x7" />
-              <SFRFieldDef cname="IDLEN" name="IDLEN" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SCS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SCS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IOFS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OSTS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IRCF" desc="" nzwidth="3" mask="0x7" />
+              <SFRFieldDef cname="IDLEN" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="SCS" name="SCS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SCS" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="FLTS" name="FLTS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="FLTS" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="IRCF0" name="IRCF0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="IRCF1" name="IRCF1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="IRCF2" name="IRCF2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IRCF0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IRCF1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="IRCF2" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
         <AdjustPoint offset="1" />
-        <SFRDef _addr="0xFD5" cname="T0CON" name="T0CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="11111111" por="11111111" isvolatile="true">
+        <SFRDef _addr="0xFD5" cname="T0CON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="11111111" por="11111111" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="T0PS" name="T0PS" desc="" nzwidth="3" mask="0x7" />
-              <SFRFieldDef cname="PSA" name="PSA" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0SE" name="T0SE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0CS" name="T0CS" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T08BIT" name="T08BIT" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR0ON" name="TMR0ON" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0PS" desc="" nzwidth="3" mask="0x7" />
+              <SFRFieldDef cname="PSA" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0SE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0CS" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T08BIT" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR0ON" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="T0PS0" name="T0PS0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0PS1" name="T0PS1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0PS2" name="T0PS2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0PS0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0PS1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0PS2" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="3" />
-              <SFRFieldDef cname="T016BIT" name="T016BIT" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T016BIT" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFD6" cname="TMR0" desc="" name="TMR0" nzwidth="16">
-          <SFRDef _addr="0xFD6" cname="TMR0L" name="TMR0L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
+        <JoinedSFRDef _addr="0xFD6" cname="TMR0" desc="" nzwidth="16">
+          <SFRDef _addr="0xFD6" cname="TMR0L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TMR0L" name="TMR0L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TMR0L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFD7" cname="TMR0H" name="TMR0H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+          <SFRDef _addr="0xFD7" cname="TMR0H" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TMR0H" name="TMR0H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TMR0H" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFD8" cname="STATUS" name="STATUS" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" mclr="---uuuuu" por="---xxxxx">
+        <SFRDef _addr="0xFD8" cname="STATUS" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" mclr="---uuuuu" por="---xxxxx">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="C" name="C" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="DC" name="DC" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="Z" name="Z" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="OV" name="OV" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="N" name="N" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="C" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="DC" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="Z" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OV" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="N" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="HT.0">
-              <SFRFieldDef cname="CARRY" name="CARRY" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="CARRY" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="ZERO" name="ZERO" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="OVERFLOW" name="OVERFLOW" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="NEGATIVE" name="NEGATIVE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="ZERO" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="OVERFLOW" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="NEGATIVE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFD9" cname="FSR2" desc="" name="FSR2" nzwidth="16">
-          <SFRDef _addr="0xFD9" cname="FSR2L" name="FSR2L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
+        <JoinedSFRDef _addr="0xFD9" cname="FSR2" desc="" nzwidth="16">
+          <SFRDef _addr="0xFD9" cname="FSR2L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="FSR2L" name="FSR2L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="FSR2L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFDA" cname="FSR2H" name="FSR2H" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----0000" por="----0000">
+          <SFRDef _addr="0xFDA" cname="FSR2H" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----0000" por="----0000">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="FSR2H" name="FSR2H" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
+                <SFRFieldDef cname="FSR2H" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFDB" cname="PLUSW2" name="PLUSW2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFDB" cname="PLUSW2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PLUSW2" name="PLUSW2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="PLUSW2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFDC" cname="PREINC2" name="PREINC2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFDC" cname="PREINC2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PREINC2" name="PREINC2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="PREINC2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFDD" cname="POSTDEC2" name="POSTDEC2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFDD" cname="POSTDEC2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="POSTDEC2" name="POSTDEC2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="POSTDEC2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFDE" cname="POSTINC2" name="POSTINC2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFDE" cname="POSTINC2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="POSTINC2" name="POSTINC2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="POSTINC2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFDF" cname="INDF2" name="INDF2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true">
+        <SFRDef _addr="0xFDF" cname="INDF2" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="INDF2" name="INDF2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="INDF2" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFE0" cname="BSR" name="BSR" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----0000" por="----0000">
+        <SFRDef _addr="0xFE0" cname="BSR" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----0000" por="----0000">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="BSR" name="BSR" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
+              <SFRFieldDef cname="BSR" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFE1" cname="FSR1" desc="" name="FSR1" nzwidth="16">
-          <SFRDef _addr="0xFE1" cname="FSR1L" name="FSR1L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
+        <JoinedSFRDef _addr="0xFE1" cname="FSR1" desc="" nzwidth="16">
+          <SFRDef _addr="0xFE1" cname="FSR1L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="FSR1L" name="FSR1L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="FSR1L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFE2" cname="FSR1H" name="FSR1H" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----uuuu" por="----0000">
+          <SFRDef _addr="0xFE2" cname="FSR1H" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----uuuu" por="----0000">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="FSR1H" name="FSR1H" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
-              </SFRMode>
-            </SFRModeList>
-          </SFRDef>
-        </JoinedSFRDef>
-        <SFRDef _addr="0xFE3" cname="PLUSW1" name="PLUSW1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
-          <SFRModeList>
-            <SFRMode id="DS.0">
-              <SFRFieldDef cname="PLUSW1" name="PLUSW1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-            </SFRMode>
-          </SFRModeList>
-        </SFRDef>
-        <SFRDef _addr="0xFE4" cname="PREINC1" name="PREINC1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
-          <SFRModeList>
-            <SFRMode id="DS.0">
-              <SFRFieldDef cname="PREINC1" name="PREINC1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-            </SFRMode>
-          </SFRModeList>
-        </SFRDef>
-        <SFRDef _addr="0xFE5" cname="POSTDEC1" name="POSTDEC1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
-          <SFRModeList>
-            <SFRMode id="DS.0">
-              <SFRFieldDef cname="POSTDEC1" name="POSTDEC1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-            </SFRMode>
-          </SFRModeList>
-        </SFRDef>
-        <SFRDef _addr="0xFE6" cname="POSTINC1" name="POSTINC1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
-          <SFRModeList>
-            <SFRMode id="DS.0">
-              <SFRFieldDef cname="POSTINC1" name="POSTINC1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-            </SFRMode>
-          </SFRModeList>
-        </SFRDef>
-        <SFRDef _addr="0xFE7" cname="INDF1" name="INDF1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true">
-          <SFRModeList>
-            <SFRMode id="DS.0">
-              <SFRFieldDef cname="INDF1" name="INDF1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-            </SFRMode>
-          </SFRModeList>
-        </SFRDef>
-        <SFRDef _addr="0xFE8" cname="WREG" name="WREG" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
-          <SFRModeList>
-            <SFRMode id="DS.0">
-              <SFRFieldDef cname="WREG" name="WREG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-            </SFRMode>
-          </SFRModeList>
-        </SFRDef>
-        <JoinedSFRDef _addr="0xFE9" cname="FSR0" desc="" name="FSR0" nzwidth="16">
-          <SFRDef _addr="0xFE9" cname="FSR0L" name="FSR0L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
-            <SFRModeList>
-              <SFRMode id="DS.0">
-                <SFRFieldDef cname="FSR0L" name="FSR0L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-              </SFRMode>
-            </SFRModeList>
-          </SFRDef>
-          <SFRDef _addr="0xFEA" cname="FSR0H" name="FSR0H" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----uuuu" por="----0000">
-            <SFRModeList>
-              <SFRMode id="DS.0">
-                <SFRFieldDef cname="FSR0H" name="FSR0H" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
+                <SFRFieldDef cname="FSR1H" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFEB" cname="PLUSW0" name="PLUSW0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFE3" cname="PLUSW1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PLUSW0" name="PLUSW0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="PLUSW1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFEC" cname="PREINC0" name="PREINC0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFE4" cname="PREINC1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="PREINC0" name="PREINC0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="PREINC1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFED" cname="POSTDEC0" name="POSTDEC0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFE5" cname="POSTDEC1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="POSTDEC0" name="POSTDEC0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="POSTDEC1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFEE" cname="POSTINC0" name="POSTINC0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+        <SFRDef _addr="0xFE6" cname="POSTINC1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="POSTINC0" name="POSTINC0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="POSTINC1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFEF" cname="INDF0" name="INDF0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true">
+        <SFRDef _addr="0xFE7" cname="INDF1" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="INDF0" name="INDF0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="INDF1" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFF0" cname="INTCON3" name="INTCON3" desc="" nzwidth="8" impl="0xDB" access="nn-nn-nn" mclr="11-00-00" por="11-00-00" isvolatile="true">
+        <SFRDef _addr="0xFE8" cname="WREG" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="INT1IF" name="INT1IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2IF" name="INT2IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="WREG" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+            </SFRMode>
+          </SFRModeList>
+        </SFRDef>
+        <JoinedSFRDef _addr="0xFE9" cname="FSR0" desc="" nzwidth="16">
+          <SFRDef _addr="0xFE9" cname="FSR0L" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
+            <SFRModeList>
+              <SFRMode id="DS.0">
+                <SFRFieldDef cname="FSR0L" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              </SFRMode>
+            </SFRModeList>
+          </SFRDef>
+          <SFRDef _addr="0xFEA" cname="FSR0H" desc="" nzwidth="8" impl="0xF" access="----nnnn" mclr="----uuuu" por="----0000">
+            <SFRModeList>
+              <SFRMode id="DS.0">
+                <SFRFieldDef cname="FSR0H" desc="" nzwidth="4" mask="0xF" islanghidden="true" />
+              </SFRMode>
+            </SFRModeList>
+          </SFRDef>
+        </JoinedSFRDef>
+        <SFRDef _addr="0xFEB" cname="PLUSW0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+          <SFRModeList>
+            <SFRMode id="DS.0">
+              <SFRFieldDef cname="PLUSW0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+            </SFRMode>
+          </SFRModeList>
+        </SFRDef>
+        <SFRDef _addr="0xFEC" cname="PREINC0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+          <SFRModeList>
+            <SFRMode id="DS.0">
+              <SFRFieldDef cname="PREINC0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+            </SFRMode>
+          </SFRModeList>
+        </SFRDef>
+        <SFRDef _addr="0xFED" cname="POSTDEC0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+          <SFRModeList>
+            <SFRMode id="DS.0">
+              <SFRFieldDef cname="POSTDEC0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+            </SFRMode>
+          </SFRModeList>
+        </SFRDef>
+        <SFRDef _addr="0xFEE" cname="POSTINC0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true" isvolatile="true">
+          <SFRModeList>
+            <SFRMode id="DS.0">
+              <SFRFieldDef cname="POSTINC0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+            </SFRMode>
+          </SFRModeList>
+        </SFRDef>
+        <SFRDef _addr="0xFEF" cname="INDF0" desc="" nzwidth="8" impl="0x0" access="--------" mclr="--------" por="--------" isindirect="true">
+          <SFRModeList>
+            <SFRMode id="DS.0">
+              <SFRFieldDef cname="INDF0" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+            </SFRMode>
+          </SFRModeList>
+        </SFRDef>
+        <SFRDef _addr="0xFF0" cname="INTCON3" desc="" nzwidth="8" impl="0xDB" access="nn-nn-nn" mclr="11-00-00" por="11-00-00" isvolatile="true">
+          <SFRModeList>
+            <SFRMode id="DS.0">
+              <SFRFieldDef cname="INT1IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2IF" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INT1IE" name="INT1IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2IE" name="INT2IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT1IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2IE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INT1IP" name="INT1IP" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2IP" name="INT2IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT1IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2IP" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="INT1F" name="INT1F" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2F" name="INT2F" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT1F" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2F" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INT1E" name="INT1E" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2E" name="INT2E" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT1E" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2E" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INT1P" name="INT1P" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT2P" name="INT2P" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT1P" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT2P" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFF1" cname="INTCON2" name="INTCON2" desc="" nzwidth="8" impl="0xF5" access="nnnn-n-n" mclr="1111-1-1" por="1111-1-1" isvolatile="true">
+        <SFRDef _addr="0xFF1" cname="INTCON2" desc="" nzwidth="8" impl="0xF5" access="nnnn-n-n" mclr="1111-1-1" por="1111-1-1" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RBIP" name="RBIP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RBIP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="TMR0IP" name="TMR0IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR0IP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INTEDG2" name="INTEDG2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INTEDG1" name="INTEDG1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INTEDG0" name="INTEDG0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="nRBPU" name="nRBPU" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INTEDG2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INTEDG1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INTEDG0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="nRBPU" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="T0IP" name="T0IP" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0IP" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="4" />
-              <SFRFieldDef cname="RBPU" name="RBPU" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RBPU" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0xFF2" cname="INTCON" name="INTCON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="0000000u" por="0000000x" isvolatile="true">
+        <SFRDef _addr="0xFF2" cname="INTCON" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="0000000u" por="0000000x" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="RBIF" name="RBIF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT0IF" name="INT0IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR0IF" name="TMR0IF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="RBIE" name="RBIE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="INT0IE" name="INT0IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="TMR0IE" name="TMR0IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PEIE_GIEL" name="PEIE/GIEL" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="GIE_GIEH" name="GIE/GIEH" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RBIF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT0IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR0IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="RBIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT0IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="TMR0IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PEIE_GIEL" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GIE_GIEH" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INT0F" name="INT0F" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0IF" name="T0IF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT0F" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0IF" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INT0E" name="INT0E" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="T0IE" name="T0IE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="PEIE" name="PEIE" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="GIE" name="GIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INT0E" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="T0IE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="PEIE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GIE" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="INTF" name="INTF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INTF" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="INTE" name="INTE" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="INTE" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="GIEL" name="GIEL" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="GIEH" name="GIEH" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GIEL" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="GIEH" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFF3" cname="PROD" desc="" name="PROD" nzwidth="16">
-          <SFRDef _addr="0xFF3" cname="PRODL" name="PRODL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
+        <JoinedSFRDef _addr="0xFF3" cname="PROD" desc="" nzwidth="16">
+          <SFRDef _addr="0xFF3" cname="PRODL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="PRODL" name="PRODL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="PRODL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFF4" cname="PRODH" name="PRODH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
+          <SFRDef _addr="0xFF4" cname="PRODH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="PRODH" name="PRODH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="PRODH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFF5" cname="TABLAT" name="TABLAT" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <SFRDef _addr="0xFF5" cname="TABLAT" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="TABLAT" name="TABLAT" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              <SFRFieldDef cname="TABLAT" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFF6" cname="TBLPTR" desc="" name="TBLPTR" nzwidth="24">
-          <SFRDef _addr="0xFF6" cname="TBLPTRL" name="TBLPTRL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+        <JoinedSFRDef _addr="0xFF6" cname="TBLPTR" desc="" nzwidth="24">
+          <SFRDef _addr="0xFF6" cname="TBLPTRL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TBLPTRL" name="TBLPTRL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TBLPTRL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFF7" cname="TBLPTRH" name="TBLPTRH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+          <SFRDef _addr="0xFF7" cname="TBLPTRH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TBLPTRH" name="TBLPTRH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TBLPTRH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFF8" cname="TBLPTRU" name="TBLPTRU" desc="" nzwidth="8" impl="0x3F" access="--nnnnnn" mclr="--000000" por="--000000" isvolatile="true">
+          <SFRDef _addr="0xFF8" cname="TBLPTRU" desc="" nzwidth="8" impl="0x3F" access="--nnnnnn" mclr="--000000" por="--000000" isvolatile="true">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TBLPTRU" name="TBLPTRU" desc="" nzwidth="5" mask="0x1F" islanghidden="true" />
-                <SFRFieldDef cname="ACSS" name="ACSS" desc="" nzwidth="1" mask="0x1" islanghidden="true" />
-              </SFRMode>
-            </SFRModeList>
-          </SFRDef>
-        </JoinedSFRDef>
-        <JoinedSFRDef _addr="0xFF9" cname="PCLAT" desc="" name="PCLAT" nzwidth="24">
-          <SFRDef _addr="0xFF9" cname="PCL" name="PCL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
-            <SFRModeList>
-              <SFRMode id="DS.0">
-                <SFRFieldDef cname="PCL" name="PCL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-              </SFRMode>
-            </SFRModeList>
-          </SFRDef>
-          <SFRDef _addr="0xFFA" cname="PCLATH" name="PCLATH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
-            <SFRModeList>
-              <SFRMode id="DS.0">
-                <SFRFieldDef cname="PCH" name="PCH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
-              </SFRMode>
-            </SFRModeList>
-          </SFRDef>
-          <SFRDef _addr="0xFFB" cname="PCLATU" name="PCLATU" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" mclr="---00000" por="---00000" isvolatile="true">
-            <SFRModeList>
-              <SFRMode id="DS.0">
-                <SFRFieldDef cname="PCU" name="PCU" desc="" nzwidth="5" mask="0x1F" islanghidden="true" />
+                <SFRFieldDef cname="TBLPTRU" desc="" nzwidth="5" mask="0x1F" islanghidden="true" />
+                <SFRFieldDef cname="ACSS" desc="" nzwidth="1" mask="0x1" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
-        <SFRDef _addr="0xFFC" cname="STKPTR" name="STKPTR" desc="" nzwidth="8" impl="0xDF" access="cc-nnnnn" mclr="00-00000" por="00-00000" isvolatile="true">
+        <JoinedSFRDef _addr="0xFF9" cname="PCLAT" desc="" nzwidth="24">
+          <SFRDef _addr="0xFF9" cname="PCL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+            <SFRModeList>
+              <SFRMode id="DS.0">
+                <SFRFieldDef cname="PCL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              </SFRMode>
+            </SFRModeList>
+          </SFRDef>
+          <SFRDef _addr="0xFFA" cname="PCLATH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000" isvolatile="true">
+            <SFRModeList>
+              <SFRMode id="DS.0">
+                <SFRFieldDef cname="PCH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+              </SFRMode>
+            </SFRModeList>
+          </SFRDef>
+          <SFRDef _addr="0xFFB" cname="PCLATU" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" mclr="---00000" por="---00000" isvolatile="true">
+            <SFRModeList>
+              <SFRMode id="DS.0">
+                <SFRFieldDef cname="PCU" desc="" nzwidth="5" mask="0x1F" islanghidden="true" />
+              </SFRMode>
+            </SFRModeList>
+          </SFRDef>
+        </JoinedSFRDef>
+        <SFRDef _addr="0xFFC" cname="STKPTR" desc="" nzwidth="8" impl="0xDF" access="cc-nnnnn" mclr="00-00000" por="00-00000" isvolatile="true">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="STKPTR" name="STKPTR" desc="" nzwidth="5" mask="0x1F" />
+              <SFRFieldDef cname="STKPTR" desc="" nzwidth="5" mask="0x1F" />
               <AdjustPoint offset="1" />
-              <SFRFieldDef cname="STKUNF" name="STKUNF" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="STKFUL" name="STKFUL" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKUNF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKFUL" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.0">
-              <SFRFieldDef cname="STKPTR0" name="STKPTR0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="STKPTR1" name="STKPTR1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="STKPTR2" name="STKPTR2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="STKPTR3" name="STKPTR3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="STKPTR4" name="STKPTR4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKPTR0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKPTR1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKPTR2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKPTR3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKPTR4" desc="" nzwidth="1" mask="0x1" />
               <AdjustPoint offset="2" />
-              <SFRFieldDef cname="STKOVF" name="STKOVF" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="STKOVF" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
             <SFRMode id="LT.1">
-              <SFRFieldDef cname="SP0" name="SP0" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SP1" name="SP1" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SP2" name="SP2" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SP3" name="SP3" desc="" nzwidth="1" mask="0x1" />
-              <SFRFieldDef cname="SP4" name="SP4" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SP0" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SP1" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SP2" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SP3" desc="" nzwidth="1" mask="0x1" />
+              <SFRFieldDef cname="SP4" desc="" nzwidth="1" mask="0x1" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <JoinedSFRDef _addr="0xFFD" cname="TOS" desc="" name="TOS" nzwidth="24">
-          <SFRDef _addr="0xFFD" cname="TOSL" name="TOSL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000">
+        <JoinedSFRDef _addr="0xFFD" cname="TOS" desc="" nzwidth="24">
+          <SFRDef _addr="0xFFD" cname="TOSL" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TOSL" name="TOSL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TOSL" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFFE" cname="TOSH" name="TOSH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000">
+          <SFRDef _addr="0xFFE" cname="TOSH" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="00000000" por="00000000">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TOSH" name="TOSH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
+                <SFRFieldDef cname="TOSH" desc="" nzwidth="8" mask="0xFF" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
-          <SFRDef _addr="0xFFF" cname="TOSU" name="TOSU" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" mclr="---00000" por="---00000">
+          <SFRDef _addr="0xFFF" cname="TOSU" desc="" nzwidth="8" impl="0x1F" access="---nnnnn" mclr="---00000" por="---00000">
             <SFRModeList>
               <SFRMode id="DS.0">
-                <SFRFieldDef cname="TOSU" name="TOSU" desc="" nzwidth="5" mask="0x1F" islanghidden="true" />
+                <SFRFieldDef cname="TOSU" desc="" nzwidth="5" mask="0x1F" islanghidden="true" />
               </SFRMode>
             </SFRModeList>
           </SFRDef>
         </JoinedSFRDef>
       </SFRDataSector>
       <NMMRPlace regionid="peripheralnmmrs">
-        <SFRDef _addr="0x0" cname="TMR0_Internal" name="TMR0_Internal" desc="" nzwidth="16" impl="0xFFFF" access="rrrrrrrrrrrrrrrr" mclr="uuuuuuuuuuuuuuuu" por="xxxxxxxxxxxxxxxx" isvolatile="true" nmmrid="10">
+        <SFRDef _addr="0x0" cname="TMR0_Internal" desc="" nzwidth="16" impl="0xFFFF" access="rrrrrrrrrrrrrrrr" mclr="uuuuuuuuuuuuuuuu" por="xxxxxxxxxxxxxxxx" isvolatile="true" nmmrid="10">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalTMR" name="InternalTMR" desc="" nzwidth="16" mask="0xFFFF" />
+              <SFRFieldDef cname="InternalTMR" desc="" nzwidth="16" mask="0xFFFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0x0" cname="TMR0_Prescale" name="TMR0_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="18">
+        <SFRDef _addr="0x0" cname="TMR0_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="18">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalPS" name="InternalPS" desc="" nzwidth="8" mask="0xFF" />
+              <SFRFieldDef cname="InternalPS" desc="" nzwidth="8" mask="0xFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0x0" cname="TMR1_Internal" name="TMR1_Internal" desc="" nzwidth="16" impl="0xFFFF" access="rrrrrrrrrrrrrrrr" mclr="uuuuuuuuuuuuuuuu" por="xxxxxxxxxxxxxxxx" isvolatile="true" nmmrid="12">
+        <SFRDef _addr="0x0" cname="TMR1_Internal" desc="" nzwidth="16" impl="0xFFFF" access="rrrrrrrrrrrrrrrr" mclr="uuuuuuuuuuuuuuuu" por="xxxxxxxxxxxxxxxx" isvolatile="true" nmmrid="12">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalTMR" name="InternalTMR" desc="" nzwidth="16" mask="0xFFFF" />
+              <SFRFieldDef cname="InternalTMR" desc="" nzwidth="16" mask="0xFFFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0x0" cname="TMR1_Prescale" name="TMR1_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="19">
+        <SFRDef _addr="0x0" cname="TMR1_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="19">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalPS" name="InternalPS" desc="" nzwidth="8" mask="0xFF" />
+              <SFRFieldDef cname="InternalPS" desc="" nzwidth="8" mask="0xFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0x0" cname="TMR2_Prescale" name="TMR2_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="20">
+        <SFRDef _addr="0x0" cname="TMR2_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="20">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalPS" name="InternalPS" desc="" nzwidth="8" mask="0xFF" />
+              <SFRFieldDef cname="InternalPS" desc="" nzwidth="8" mask="0xFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0x0" cname="TMR3_Internal" name="TMR3_Internal" desc="" nzwidth="16" impl="0xFFFF" access="rrrrrrrrrrrrrrrr" mclr="uuuuuuuuuuuuuuuu" por="xxxxxxxxxxxxxxxx" isvolatile="true" nmmrid="14">
+        <SFRDef _addr="0x0" cname="TMR3_Internal" desc="" nzwidth="16" impl="0xFFFF" access="rrrrrrrrrrrrrrrr" mclr="uuuuuuuuuuuuuuuu" por="xxxxxxxxxxxxxxxx" isvolatile="true" nmmrid="14">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalTMR" name="InternalTMR" desc="" nzwidth="16" mask="0xFFFF" />
+              <SFRFieldDef cname="InternalTMR" desc="" nzwidth="16" mask="0xFFFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>
-        <SFRDef _addr="0x0" cname="TMR3_Prescale" name="TMR3_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="21">
+        <SFRDef _addr="0x0" cname="TMR3_Prescale" desc="" nzwidth="8" impl="0xFF" access="nnnnnnnn" mclr="uuuuuuuu" por="xxxxxxxx" isvolatile="true" nmmrid="21">
           <SFRModeList>
             <SFRMode id="DS.0">
-              <SFRFieldDef cname="InternalPS" name="InternalPS" desc="" nzwidth="8" mask="0xFF" />
+              <SFRFieldDef cname="InternalPS" desc="" nzwidth="8" mask="0xFF" />
             </SFRMode>
           </SFRModeList>
         </SFRDef>

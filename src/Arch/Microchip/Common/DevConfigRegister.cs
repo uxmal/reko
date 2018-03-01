@@ -37,7 +37,7 @@ namespace Reko.Arch.Microchip.Common
         #region Member fields
 
         private HashSet<DevConfigField> fields;
-
+        private List<DevConfigIllegal> illegals;
         #endregion
 
         #region Constructors
@@ -59,6 +59,7 @@ namespace Reko.Arch.Microchip.Common
             Impl = dcr.Impl;
             DefaultValue = dcr.Default;
             fields = new HashSet<DevConfigField>();
+            illegals = new List<DevConfigIllegal>();
         }
 
         #endregion
@@ -69,10 +70,13 @@ namespace Reko.Arch.Microchip.Common
         /// Adds a bit-field to this device configuration register.
         /// </summary>
         /// <param name="dcf">The <see cref="DevConfigField"/> instance to add.</param>
-        public void AddField(DevConfigField dcf)
-        {
-            fields.Add(dcf);
-        }
+        public void AddField(DevConfigField dcf) => fields.Add(dcf);
+
+        /// <summary>
+        /// Adds an illegal condition.
+        /// </summary>
+        /// <param name="dill">The illegal condition descriptor.</param>
+        public void AddIllegal(DevConfigIllegal dill) => illegals.Add(dill);
 
         /// <summary>
         /// Gets a device configuration bit-field given its position in this device configuration register.
@@ -96,6 +100,11 @@ namespace Reko.Arch.Microchip.Common
         /// Enumerates the bit-fields contained in this device configuration register.
         /// </summary>
         public IEnumerable<DevConfigField> Fields => fields;
+
+        /// <summary>
+        /// Enurates the illegal conditions for this Device Configuration Register.
+        /// </summary>
+        public IEnumerable<DevConfigIllegal> Illegals => illegals;
 
         public override string ToString() => $"{Name}@{Address}";
 
@@ -162,15 +171,15 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="dcrfield">The <see cref="DCRFieldDef"/> describing the field.</param>
         /// <param name="bitpos">The bit position of the device configuration bit-field.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcrfield"/> is null.</exception>
-        public DevConfigField(DCRFieldDef dcrfield, Address regAddr, int bitpos)
+        public DevConfigField(DCRFieldDef dcrfield, Address regAddr)
         {
             if (dcrfield is null)
                 throw new ArgumentNullException(nameof(dcrfield));
             Name = dcrfield.CName;
             Descr = dcrfield.Desc;
             RegAddress = regAddr;
+            BitPos = dcrfield.BitAddr;
             BitWidth = dcrfield.NzWidth;
-            BitPos = bitpos;
             BitMask = dcrfield.Mask;
             semantics = new List<DevConfigSemantic>();
         }
@@ -326,29 +335,120 @@ namespace Reko.Arch.Microchip.Common
 
         private static bool EvaluateWhen(int iValueToTest, string whenOper, string whenMask, string whenCompare, string expectedResult)
         {
-            int Mask = whenMask.ToInt32Ex();
-            int Value = expectedResult.ToInt32Ex();
+            int mask = whenMask.ToInt32Ex();
+            int expectValue = expectedResult.ToInt32Ex();
             if (whenOper == "&")
-                iValueToTest &= Mask;
+                iValueToTest &= mask;
             if (whenOper == "|")
-                iValueToTest |= Mask;
+                iValueToTest |= mask;
             if (whenCompare == "==")
-                return (iValueToTest == Value);
+                return (iValueToTest == expectValue);
             if (whenCompare == "!=")
-                return (iValueToTest != Value);
+                return (iValueToTest != expectValue);
             if (whenCompare == ">")
-                return (iValueToTest > Value);
+                return (iValueToTest > expectValue);
             if (whenCompare == ">=")
-                return (iValueToTest >= Value);
+                return (iValueToTest >= expectValue);
             if (whenCompare == "<=")
-                return (iValueToTest <= Value);
+                return (iValueToTest <= expectValue);
             if (whenCompare == "<")
-                return (iValueToTest < Value);
+                return (iValueToTest < expectValue);
             return false;
         }
 
         public override string ToString()
-            => $"When '{When}' then fuse = {State} : '{Descr}'";
+            => $"When '{When}' then fuse={State}, meaning '{Descr}'";
+
+        #endregion
+
+    }
+
+    /// <summary>
+    /// Represents an illegal condition for a Device Configuration Register's content.
+    /// </summary>
+    public class DevConfigIllegal
+    {
+
+        #region Members
+
+        // 'When' expression in PIC XML is of the form: "(reg mask 0xNN) op 0xHH"
+        // with 'mask' being either the AND (&) operator or the OR (|) operator and
+        // with 'op' being one of the comparison operators (==, !=, <, <=, etc...).
+        // So we isolate (1)the mask operator, (2)the mask value, (3)the comparison operator and (4)the expected result.
+        // 
+        private const string pattern = @"^\(\s*reg\s+([^ ]*)\s+([^ ]*)\s*\)\s+([^ ]*)\s+([^ ]*)$";
+
+        #endregion
+
+        #region Constructors
+
+        public DevConfigIllegal(DCRDefIllegal dcrill)
+        {
+            When = dcrill.When;
+            Descr = dcrill.Desc;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the description of the illegal device configuration register state.
+        /// </summary>
+        public string Descr { get; }
+
+        /// <summary>
+        /// Gets the 'when' condition corresponding to illegal state.
+        /// </summary>
+        public string When { get; }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Indicates whenever the given value corresponds to an invalid device configuration register state.
+        /// </summary>
+        /// <param name="value">The register value.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        public bool Match(int value)
+        {
+            var m = Regex.Match(When, pattern);
+            if (!m.Success)
+                return false;
+            if (m.Groups.Count != 5)
+                throw new InvalidOperationException($"Undecipherable when-pattern: '{When}'.");
+            return EvaluateWhen(value, m.Groups[1].Value, m.Groups[2].Value, m.Groups[3].Value, m.Groups[4].Value);
+        }
+
+        private static bool EvaluateWhen(int iValueToTest, string whenOper, string whenMask, string whenCompare, string expectedResult)
+        {
+            int mask = whenMask.ToInt32Ex();
+            int expectValue = expectedResult.ToInt32Ex();
+            if (whenOper == "&")
+                iValueToTest &= mask;
+            if (whenOper == "|")
+                iValueToTest |= mask;
+            if (whenCompare == "==")
+                return (iValueToTest == expectValue);
+            if (whenCompare == "!=")
+                return (iValueToTest != expectValue);
+            if (whenCompare == ">")
+                return (iValueToTest > expectValue);
+            if (whenCompare == ">=")
+                return (iValueToTest >= expectValue);
+            if (whenCompare == "<=")
+                return (iValueToTest <= expectValue);
+            if (whenCompare == "<")
+                return (iValueToTest < expectValue);
+            return false;
+        }
+
+        public override string ToString()
+            => $"When '{When}' then '{Descr}'";
 
         #endregion
 

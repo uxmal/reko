@@ -2415,24 +2415,11 @@ namespace Reko.Libraries.Microchip
         public string Desc { get; set; }
 
         /// <summary>
-        /// Used to serialize <see cref="BitAddr" /> property from/to hexadecimal string.
-        /// </summary>
-        /// <value>
-        /// The bit address content as an hexadecimal string.
-        /// </value>
-        [XmlAttribute(AttributeName = "_baddr", Form = XmlSchemaForm.None, Namespace = "")]
-        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string BitAddrFormatted { get => $"{BitAddr}"; set => BitAddr = value.ToInt32Ex(); } 
-
-        /// <summary>
-        /// Gets the bit position of the field.
+        /// Gets the bit position of the field. (Not defined by Microchip).
         /// </summary>
         /// <remarks>
-        /// This value must be set by caller.
+        /// This value must be set by consumer.
         /// </remarks>
-        /// <value>
-        /// The lowest bit starting this field.
-        /// </value>
         [XmlIgnore]
         public int BitAddr { get; set; }
 

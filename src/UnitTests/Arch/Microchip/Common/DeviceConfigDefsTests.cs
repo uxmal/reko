@@ -28,14 +28,14 @@ using Reko.Core;
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
     [TestFixture]
-    public class PICDevConfDefsTests
+    public class DeviceConfigDefsTests
     {
 
         [Test]
         public void PIC16DevConf_Tests()
         {
-            IDeviceConfigDefs defs = PICDeviceConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16));
-            var dcr = defs.GetDCR("CONFIG1");
+            IDeviceConfigDefs defs = DeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16));
+            var dcr = defs.GetDCR("CONFIG");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x2007), dcr.Address);
 
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhDevConf_Tests()
         {
-            IDeviceConfigDefs defs = PICDeviceConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
+            IDeviceConfigDefs defs = DeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
             var dcr = defs.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
@@ -68,13 +68,13 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhV1DevConf_Tests()
         {
-            IDeviceConfigDefs defs = PICDeviceConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
-            var dcr = defs.GetDCR("CONFIG1");
+            IDeviceConfigDefs defs = DeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
+            var dcr = defs.GetDCR("CONFIG4");
             Assert.IsNotNull(dcr);
-            Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
+            Assert.AreEqual(Address.Ptr32(0x800A), dcr.Address);
 
             var s = defs.Render(dcr, 0xFFFF);
-            Assert.AreEqual("FEXTOSC=ECH, RSTOSC=EXT1X, CLKOUTEN=OFF, CSWEN=ON, FCMEN=ON", s);
+            Assert.AreEqual("BBSIZE=BB512, BBEN=OFF, SAFEN=OFF, WRTAPP=OFF, WRTB=OFF, WRTC=OFF, WRTSAF=OFF, LVP=ON", s);
 
             var dcf = defs.GetDCRField("WDTE");
             Assert.IsNotNull(dcf);
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18DevConf_Tests()
         {
-            IDeviceConfigDefs defs = PICDeviceConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18));
+            IDeviceConfigDefs defs = DeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18));
             var dcr = defs.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
@@ -109,13 +109,13 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdDevConf_Tests()
         {
-            IDeviceConfigDefs defs = PICDeviceConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
-            var dcr = defs.GetDCR("CONFIG1H");
+            IDeviceConfigDefs defs = DeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
+            var dcr = defs.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
-            Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
+            Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
 
             var s = defs.Render(dcr, 0xFF);
-            Assert.AreEqual("FOSC=<invalid>, PCLKEN=OFF, FCMEN=ON, IESO=ON", s);
+            Assert.AreEqual("nPWRTEN=OFF, BOREN=SBORDIS, BORV=190, nLPBOR=OFF", s);
 
             var dcf = defs.GetDCRField("WDTEN");
             Assert.IsNotNull(dcf);
@@ -131,13 +131,13 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdDevConf_Tests()
         {
-            IDeviceConfigDefs defs = PICDeviceConfDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
-            var dcr = defs.GetDCR("CONFIG1H");
+            IDeviceConfigDefs defs = DeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
+            var dcr = defs.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
-            Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
+            Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
 
             var s = defs.Render(dcr, 0xFF);
-            Assert.AreEqual("CLKOUTEN=OFF, PR1WAY=ON, CSWEN=OFF, FCMEN=ON", s);
+            Assert.AreEqual("MCLRE=EXTMCLR, PWRTS=PWRT_OFF, MVECEN=ON, IVT1WAY=ON, LPBOREN=OFF, BOREN=SBORDIS", s);
 
             var dcf = defs.GetDCRField("WDTE");
             Assert.IsNotNull(dcf);

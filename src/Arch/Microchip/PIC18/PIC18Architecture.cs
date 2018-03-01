@@ -169,18 +169,18 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Gets the device configuration definitions.
         /// </summary>
-        public PICDeviceConfDefs DeviceConfigDefinitions
+        public IDeviceConfigDefs DeviceConfigDefinitions
         {
             get
             {
                 if (deviceConfigDefinitions is null)
                 {
-                    deviceConfigDefinitions = PICDeviceConfDefs.Create(PICDescriptor);
+                    deviceConfigDefinitions = DeviceConfigDefs.Create(PICDescriptor);
                 }
                 return deviceConfigDefinitions;
             }
         }
-        private PICDeviceConfDefs deviceConfigDefinitions;
+        private IDeviceConfigDefs deviceConfigDefinitions;
 
         public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
             => new PIC18Disassembler(this, imageReader);

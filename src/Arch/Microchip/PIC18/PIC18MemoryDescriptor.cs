@@ -65,7 +65,7 @@ namespace Reko.Arch.Microchip.PIC18
         private PIC18MemoryDescriptor(PIC pic)
         {
             MemoryMap = Common.MemoryMap.Create(pic);
-            DeviceConfigDefinitions = PICDeviceConfDefs.Create(pic);
+            DeviceConfigDefinitions = DeviceConfigDefs.Create(pic);
         }
 
         /// <summary>
