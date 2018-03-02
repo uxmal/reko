@@ -1,0 +1,6 @@
+<!DOCTYPE Workspace SYSTEM "http://www.slickedit.com/dtd/vse/9.0/vpw.dtd">
+<Workspace Version="9.0" VendorName="SlickEdit">
+	<Projects>
+		<Project File="bootloader.vpj"/>
+	</Projects>
+</Workspace>
