@@ -25,7 +25,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
-using System.Text;
 using System.Linq;
 
 namespace Reko.Arch.Microchip.PIC18
@@ -598,7 +597,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             if (!IsAccessRAM.ToBoolean())
             {
-                writer.Write($"0x{uaddr:X2}");
+                writer.Write($"0x{uaddr:X2},BANKED");
                 return;
             }
             if (PIC18MemoryDescriptor.BelongsToAccessRAMHigh(uaddr))
@@ -656,7 +655,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             if (!IsAccessRAM.ToBoolean())
             {
-                writer.Write($"0x{uaddr:X2},{bitpos}");
+                writer.Write($"0x{uaddr:X2},{bitpos},BANKED");
                 return;
             }
             if (PIC18MemoryDescriptor.BelongsToAccessRAMHigh(uaddr))
@@ -714,7 +713,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
             if (!IsAccessRAM.ToBoolean())
             {
-                writer.Write($"0x{uaddr:X2}{wdest}");
+                writer.Write($"0x{uaddr:X2}{wdest},BANKED");
                 return;
             }
             if (PIC18MemoryDescriptor.BelongsToAccessRAMHigh(uaddr))

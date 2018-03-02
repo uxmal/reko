@@ -58,7 +58,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
-            InstructionBitSize = 16;
+            InstructionBitSize = 8;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Byte;
         }

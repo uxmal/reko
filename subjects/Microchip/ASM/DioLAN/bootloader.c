@@ -4,13 +4,3 @@
 
 #include "bootloader.h"
 
-// 00000000: void fn00000000()
-void fn00000000()
-{
-}
-
-// 00021A: void fn00021A()
-void fn00021A()
-{
-}
-

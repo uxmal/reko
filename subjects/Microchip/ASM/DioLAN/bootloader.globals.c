@@ -4,8 +4,4 @@
 
 #include "bootloader.h"
 
-byte g_a0014[];
-byte g_a0017[] = 
-	{
-	};
 

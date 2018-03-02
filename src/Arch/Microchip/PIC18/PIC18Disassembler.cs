@@ -100,8 +100,12 @@ namespace Reko.Arch.Microchip.PIC18
             IMemoryRegion regn = GetProgRegion();
             if (regn is null)
                 throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
-            if ((addrCur.Offset % (regn.Trait?.LocSize??1)) != 0)
-                throw new AddressCorrelatedException(addrCur, $"Attempt to disassemble at unaligned address {addrCur.ToString()} in region '{regn.RegionName}'.");
+            if ((addrCur.Offset % (regn.Trait?.LocSize ?? 1)) != 0)
+            {
+                instrCur = new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur, Length = 1 };
+                rdr.Offset += 1; // Consume only the first byte of the binary instruction.
+                return instrCur;
+            }
 
             switch (regn.SubtypeOfMemory)
             {
@@ -237,7 +241,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             private Opcode opcode;
 
-            public NoOperandOpRec(Opcode opc) 
+            public NoOperandOpRec(Opcode opc)
             {
                 opcode = opc;
             }
@@ -535,7 +539,7 @@ namespace Reko.Arch.Microchip.PIC18
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
-                return new PIC18Instruction(opcode,dasm.ExecMode,
+                return new PIC18Instruction(opcode, dasm.ExecMode,
                                             new PIC18Data12bitAbsAddrOperand(uInstr.Extract(0, 12)),
                                             new PIC18Data12bitAbsAddrOperand(word2));
             }
@@ -650,7 +654,7 @@ namespace Reko.Arch.Microchip.PIC18
                     case InstructionSetID.PIC18_EXTENDED:
                         if (word2 > 0xFF) // Second word must be 'xxxx-0000-kkkk-kkkk'
                             return null;
-                        return new PIC18Instruction(opcode,dasm.ExecMode,
+                        return new PIC18Instruction(opcode, dasm.ExecMode,
                                                     new PIC18FSROperand(fsrnum),
                                                     new PIC18Immed12Operand((ushort)((uInstr.Extract(0, 4) << 8) | word2)));
 
@@ -1184,7 +1188,7 @@ namespace Reko.Arch.Microchip.PIC18
             if (!rdr.TryReadByte(out byte uEEByte))
                 return null;
             var bl = new List<byte>() { uEEByte };
-            for (int i=0; i<7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 if (!lastusedregion.Contains(rdr.Address))
                     break;

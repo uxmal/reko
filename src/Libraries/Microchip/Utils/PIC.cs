@@ -5923,6 +5923,7 @@ namespace Reko.Libraries.Microchip
         private static readonly Dictionary<string, SFRBitAccess> _xlat2Access = new Dictionary<string, SFRBitAccess>()
         {
             { "x", SFRBitAccess.RW },               // read-write
+            { "n", SFRBitAccess.RW },               // read-write
             { "X", SFRBitAccess.RW_Persistant },    // read-write persistent
             { "r", SFRBitAccess.ROnly },            // read-only
             { "w", SFRBitAccess.WOnly },            // write-only
@@ -5934,9 +5935,9 @@ namespace Reko.Libraries.Microchip
         };
 
         /// <summary>
-        /// Translates the SFR access mode string to a value from the <see cref="SFRBitAccess"/> enumeration.
+        /// Translates the first char of a SFR access mode string to a value from the <see cref="SFRBitAccess"/> enumeration.
         /// </summary>
-        /// <param name="sAccess">The access mode string.</param>
+        /// <param name="sAccess">The access mode string. Only first char is used.</param>
         /// <returns>
         /// A value from <see cref="SFRBitAccess"/> enumeration.
         /// </returns>
