@@ -46,7 +46,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private static Dictionary<Opcode, InstructionClass> classOf = new Dictionary<Opcode, InstructionClass>()
         {
-                { Opcode.invalid, InstructionClass.Invalid },
+                { Opcode.invalid,   InstructionClass.Invalid },
+                { Opcode.unaligned, InstructionClass.Invalid },
                 { Opcode.CALL,      LinkTransfer },
                 { Opcode.RCALL,     LinkTransfer },
                 { Opcode.RESET,     Transfer },
@@ -151,7 +152,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <value>
         /// True if this instruction is valid, false if not.
         /// </value>
-        public override bool IsValid => (Opcode != Opcode.invalid);
+        public override bool IsValid => (Opcode != Opcode.invalid && Opcode != Opcode.unaligned);
 
         /// <summary>
         /// Each different supported opcode should have a different numerical value, exposed here.

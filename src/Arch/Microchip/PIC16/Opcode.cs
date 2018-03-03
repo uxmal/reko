@@ -24,116 +24,132 @@ namespace Reko.Arch.Microchip.PIC16
 {
     /// <summary>
     /// Values that represent opcodes of the PIC16 Mid-Range/Enhanced family.
+    /// Note: Opcodes are defined in uppercase to conform to Microchip MPASM user's guide syntax.
     /// </summary>
     public enum Opcode
     {
         illegal,
-        ///<summary>Add literal with W</summary>
+        ///<summary>Add literal with W.</summary>
         ADDLW,
-        ///<summary>Add W with f</summary>
+        ///<summary>Add W with f.</summary>
         ADDWF,
-        ///<summary>AND literal with W</summary>
+        ///<summary>AND literal with W.</summary>
         ANDLW,
-        ///<summary>AND W with f</summary>
+        ///<summary>AND W with f.</summary>
         ANDWF,
-        ///<summary>Bit clear f</summary>
+        ///<summary>Bit clear f.</summary>
         BCF,
-        ///<summary>Relative branch with W</summary>
+        ///<summary>Relative branch with W.</summary>
         BRW,
-        ///<summary>Bit set f</summary>
+        ///<summary>Bit set f.</summary>
         BSF,
-        ///<summary>Bit test f, skip if clear</summary>
+        ///<summary>Bit test f, skip if clear.</summary>
         BTFSC,
-        ///<summary>Bit test f,  skip if set</summary>
+        ///<summary>Bit test f,  skip if set.</summary>
         BTFSS,
-        ///<summary>Call subroutine</summary>
+        ///<summary>Call subroutine.</summary>
         CALL,
-        ///<summary>Clear f</summary>
+        ///<summary>Clear f.</summary>
         CLRF,
-        ///<summary>Clear W</summary>
+        ///<summary>Clear W.</summary>
         CLRW,
-        ///<summary>Clear watchdog timer</summary>
+        ///<summary>Clear watchdog timer.</summary>
         CLRWDT,
-        ///<summary>Complement f</summary>
+        ///<summary>Complement f.</summary>
         COMF,
-        ///<summary>Decrement f</summary>
+        ///<summary>Decrement f.</summary>
         DECF,
         ///<summary>Decrement f, skip if 0</summary>
         DECFSZ,
         ///<summary>Unconditional branch</summary>
         GOTO,
-        ///<summary>Increment f</summary>
+        ///<summary>Increment f.</summary>
         INCF,
-        ///<summary>Increment f, skip if 0</summary>
+        ///<summary>Increment f, skip if 0.</summary>
         INCFSZ,
-        ///<summary>Inclusive OR literal with W</summary>
+        ///<summary>Inclusive OR literal with W.</summary>
         IORLW,
-        ///<summary>Inclusive OR W with f</summary>
+        ///<summary>Inclusive OR W with f.</summary>
         IORWF,
-        ///<summary>Move f</summary>
+        ///<summary>Move f.</summary>
         MOVF,
-        ///<summary>Move literal to W</summary>
+        ///<summary>Move literal to W.</summary>
         MOVLW,
-        ///<summary>Move W to f</summary>
+        ///<summary>Move W to f.</summary>
         MOVWF,
-        ///<summary>No operation</summary>
+        ///<summary>No operation.</summary>
         NOP,
-        ///<summary>Load OPTION register with W</summary>
+        ///<summary>Load OPTION register with W.</summary>
         OPTION,
-        ///<summary>Return from interrupt</summary>
+        ///<summary>Return from interrupt.</summary>
         RETFIE,
-        ///<summary>Return with literal in W</summary>
+        ///<summary>Return with literal in W.</summary>
         RETLW,
-        ///<summary>Return from subroutine</summary>
+        ///<summary>Return from subroutine.</summary>
         RETURN,
         ///<summary>Rotate left f through Carry</summary>
         RLF,
-        ///<summary>Rotate right f through Carry</summary>
+        ///<summary>Rotate right f through Carry.</summary>
         RRF,
-        ///<summary>Enter sleep mode</summary>
+        ///<summary>Enter sleep mode.</summary>
         SLEEP,
-        ///<summary>Substract W from literal</summary>
+        ///<summary>Substract W from literal.</summary>
         SUBLW,
-        ///<summary>Substract W from f</summary>
+        ///<summary>Substract W from f.</summary>
         SUBWF,
-        ///<summary>Swap nibbles in f</summary>
+        ///<summary>Swap nibbles in f.</summary>
         SWAPF,
-        ///<summary>Load TRIS register with W</summary>
+        ///<summary>Load TRIS register with W.</summary>
         TRIS,
-        ///<summary>Exclusive OR literal with W</summary>
+        ///<summary>Exclusive OR literal with W.</summary>
         XORLW,
-        ///<summary>Exclusive OR W with f</summary>
+        ///<summary>Exclusive OR W with f.</summary>
         XORWF,
-        ///<summary>Add literal to FSRn</summary>
+        ///<summary>Add literal to FSRn.</summary>
         ADDFSR,
-        ///<summary>Add W and CARRY bit to f</summary>
+        ///<summary>Add W and CARRY bit to f.</summary>
         ADDWFC,
-        ///<summary>Arithmetic right shift</summary>
+        ///<summary>Arithmetic right shift.</summary>
         ASRF,
-        ///<summary>Relative branch</summary>
+        ///<summary>Relative branch.</summary>
         BRA,
-        ///<summary>Subroutine call with W</summary>
+        ///<summary>Subroutine call with W.</summary>
         CALLW,
-        ///<summary>Logical left shift</summary>
+        ///<summary>Logical left shift.</summary>
         LSLF,
-        ///<summary>Logical right shift</summary>
+        ///<summary>Logical right shift.</summary>
         LSRF,
-        ///<summary>Move INDFn to W</summary>
+        ///<summary>Move INDFn to W - or - Move k[FSRn] to W.</summary>
         MOVIW,
-        ///<summary>Move k[FSRn] to W</summary>
-        moviw_idx,
-        ///<summary>Move literal to BSR</summary>
+        ///<summary>Move literal to BSR.</summary>
         MOVLB,
-        ///<summary>Move literal to PCLATH</summary>
+        ///<summary>Move literal to PCLATH.</summary>
         MOVLP,
-        ///<summary>Move W to INDFn</summary>
+        ///<summary>Move W to INDFn -or - Move W to k[FSRn].</summary>
         MOVWI,
-        ///<summary>Move W to k[FSRn]</summary>
-        MOVWI_idx,
-        ///<summary>Reset processor</summary>
+        ///<summary>Reset processor.</summary>
         RESET,
-        ///<summary>Subtract W from f with Borrow</summary>
-        SUBWFB
+        ///<summary>Subtract W from f with Borrow.</summary>
+        SUBWFB,
+
+        // Pseudo-instructions
+
+        /// <summary>Configuration bits pseudo-instruction.</summary>
+        __CONFIG,
+        /// <summary>Store string in program memory pseudo-instruction.</summary>
+        DA,
+        /// <summary>Store data byte in program memory pseudo-instruction.</summary>
+        DB,
+        /// <summary>Store data byte in EEPROM memory pseudo-instruction.</summary>
+        DE,
+        /// <summary>Define table in program memory pseudo-instruction.</summary>
+        DT,
+        /// <summary>Define table in program memory pseudo-instruction (Extended PIC16 only).</summary>
+        DTM,
+        /// <summary>Store data word in program memory pseudo-instruction.</summary>
+        DW,
+        /// <summary>Store word in ID locations memory pseudo-instruction.</summary>
+        __IDLOCS
     }
 
 }

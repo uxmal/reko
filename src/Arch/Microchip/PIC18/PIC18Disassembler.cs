@@ -102,7 +102,7 @@ namespace Reko.Arch.Microchip.PIC18
                 throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
             if ((addrCur.Offset % (regn.Trait?.LocSize ?? 1)) != 0)
             {
-                instrCur = new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur, Length = 1 };
+                instrCur = new PIC18Instruction(Opcode.unaligned, ExecMode) { Address = addrCur, Length = 1 };
                 rdr.Offset += 1; // Consume only the first byte of the binary instruction.
                 return instrCur;
             }

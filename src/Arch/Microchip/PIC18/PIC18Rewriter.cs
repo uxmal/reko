@@ -88,7 +88,10 @@ namespace Reko.Arch.Microchip.PIC18
                     default:
                         throw new AddressCorrelatedException(addr, $"Rewriting of PIC18 instruction '{instrCurr.Opcode}' is not implemented yet.");
 
-                    case Opcode.invalid: m.Invalid(); break;
+                    case Opcode.invalid:
+                    case Opcode.unaligned:
+                        m.Invalid();
+                        break;
                     case Opcode.ADDFSR: RewriteADDFSR(); break;
                     case Opcode.ADDLW: RewriteADDLW(); break;
                     case Opcode.ADDULNK: RewriteADDULNK(); break;
