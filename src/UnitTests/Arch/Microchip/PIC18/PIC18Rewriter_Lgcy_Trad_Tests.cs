@@ -2133,15 +2133,15 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             ExecTest(Words(0x16E6),
                 "0|L--|000200(2): 3 instructions",
                     "1|L--|Data[FSR1:byte] = WREG & Data[FSR1:byte]",
-                    "2|L--|FSR1 = FSR1 + 0x0001",
-                    "3|L--|ZN = cond(Data[FSR1:byte])"
+                    "2|L--|ZN = cond(Data[FSR1:byte])",
+                    "3|L--|FSR1 = FSR1 + 0x0001"
                 );
             // ADDWF POSTDEC0,F,ACCESS
             ExecTest(Words(0x26ED),
                 "0|L--|000200(2): 3 instructions",
                     "1|L--|Data[FSR0:byte] = WREG + Data[FSR0:byte]",
-                    "2|L--|FSR0 = FSR0 - 0x0001",
-                    "3|L--|CDCZOVN = cond(Data[FSR0:byte])"
+                    "2|L--|CDCZOVN = cond(Data[FSR0:byte])",
+                    "3|L--|FSR0 = FSR0 - 0x0001"
                 );
             // SUBWFB PREINC2,F,ACCESS
             ExecTest(Words(0x5ADC),

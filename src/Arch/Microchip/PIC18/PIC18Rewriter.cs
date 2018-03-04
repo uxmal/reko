@@ -326,41 +326,35 @@ namespace Reko.Arch.Microchip.PIC18
         /// Gets the source/destination direct address (SFR register or memory), addressing mode and actual source memory access
         /// of a single operand instruction. (e.g. "SETF f,a").
         /// </summary>
-        /// <param name="op">The instruction operand.</param>
-        /// <param name="ptr">[out] The source/destination pointer expression to access memory.</param>
+        /// <param name="opernd">The instruction operand.</param>
+        /// <param name="memExpr">[out] The source/destination pointer expression to access memory.</param>
         /// <returns>
         /// Addressing mode and source memory/register.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        private (IndirectRegOp, Expression) GetUnaryPtrs(MachineOperand op, out Expression ptr)
+        private (IndirectRegOp indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
         {
-            (IndirectRegOp indop, Expression adr) GetMemoryBankAccess()
+            (IndirectRegOp indMode, Expression memPtr) GetMemoryBankAccess()
             {
 
-                switch (op)
+                switch (opernd)
                 {
                     case PIC18BankedAccessOperand bmem:
                         var offset = bmem.BankAddr;
 
                         // Check if access is a Direct Addressing one (bank designated by BSR).
                         // 
-                        if (!bmem.IsAccessRAM.ToBoolean())
-                        {
-                            // Address is BSR direct addressing.
-                            Identifier bsr = binder.EnsureRegister(PIC18Registers.BSR);
-                            return (IndirectRegOp.None, DataMem8(m.IAdd(m.Shl(bsr, 8), offset)));
-                        }
+                        if (!bmem.IsAccessRAM.ToBoolean()) // Address is BSR direct addressing.
+                            return (IndirectRegOp.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(PIC18Registers.BSR), 8), offset)));
 
                         // We have some sort of Access Bank RAM type of access; either Lower or Upper area.
                         //
                         if (PIC18MemoryDescriptor.BelongsToAccessRAMLow(offset))
                         {
                             if (bmem.ExecMode == PICExecMode.Traditional)
-                            {
                                 return (IndirectRegOp.None, DataMem8(offset));
-                            }
-                            // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
-                            return (IndirectRegOp.None, DataMem8(m.IAdd(Fsr2, offset)));
+                            
+                            return (IndirectRegOp.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
                         }
 
                         // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
@@ -381,72 +375,70 @@ namespace Reko.Arch.Microchip.PIC18
                 }
             }
 
-            var (indop, adr) = GetMemoryBankAccess();
-            switch (indop)
+            var (indMode, memPtr) = GetMemoryBankAccess();
+            switch (indMode)
             {
                 case IndirectRegOp.None:    // Direct mode
-                    ptr = adr;
+                    memExpr = memPtr;
                     break;
 
                 case IndirectRegOp.INDF:    // Indirect modes
                 case IndirectRegOp.POSTDEC:
                 case IndirectRegOp.POSTINC:
                 case IndirectRegOp.PREINC:
-                    ptr = DataMem8(adr);
+                    memExpr = DataMem8(memPtr);
                     break;
 
                 case IndirectRegOp.PLUSW:   // Indirect-indexed mode
-                    ptr = DataMem8(m.IAdd(adr, Wreg));
+                    memExpr = DataMem8(m.IAdd(memPtr, Wreg));
                     break;
 
                 default:
                     throw new InvalidOperationException("Unable to adjust indirect pointer.");
             }
 
-            return (indop, adr);
+            return (indMode, memPtr);
         }
 
         /// <summary>
         /// Gets the source address (SFR register or memory), addressing mode, actual source memory access
         /// and actual destination access of a dual operand instruction (e.g. "ADDWF f,d,a").
         /// </summary>
-        /// <param name="op">The instruction operand.</param>
-        /// <param name="derefptr">[out] The source pointer expression to access memory.</param>
+        /// <param name="opernd">The instruction operand.</param>
+        /// <param name="memExpr">[out] The source pointer expression to access memory.</param>
         /// <param name="dst">[out] Destination access expression (WREG or memory access).</param>
         /// <returns>
         /// Addressing mode and source memory/register.
         /// </returns>
-        private (IndirectRegOp, Expression) GetBinaryPtrs(MachineOperand op, out Expression derefptr, out Expression dst)
+        private (IndirectRegOp indMode, Expression memPtr) GetBinaryPtrs(MachineOperand opernd, out Expression memExpr, out Expression dst)
         {
-
             bool DestIsWreg()
             {
-                if (op is PIC18DataByteAccessWithDestOperand bytedst)
+                if (opernd is PIC18DataByteAccessWithDestOperand bytedst)
                     return bytedst.WregIsDest.ToBoolean();
                 return false;
             }
 
-            var (indop, adr) = GetUnaryPtrs(op, out derefptr);
-            dst = (DestIsWreg() ? Wreg : derefptr);
-            return (indop, adr);
+            var (indMode, memPtr) = GetUnaryPtrs(opernd, out memExpr);
+            dst = (DestIsWreg() ? Wreg : memExpr);
+            return (indMode, memPtr);
         }
 
         /// <summary>
         /// Gets the source/destination absolute address (SFR register or memory), addressing mode and actual memory access
         /// of an absolute address instruction. (e.g. the <code>"fd"</code> of <code>"MOVSF zs,fd"</code>).
         /// </summary>
-        /// <param name="op">The instruction operand.</param>
-        /// <param name="derefptr">[out] The source/destination pointer expression to access memory.</param>
+        /// <param name="opernd">The instruction operand.</param>
+        /// <param name="memExpr">[out] The source/destination pointer expression to access memory.</param>
         /// <returns>
         /// Addressing mode and source memory/register.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the instruction operand is invalid.</exception>
-        private (IndirectRegOp, Expression) GetUnaryAbsPtrs(MachineOperand op, out Expression derefptr)
+        private (IndirectRegOp indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
         {
-
-            (IndirectRegOp indop, Expression adr) GetDataAbsAddress()
+            (IndirectRegOp indMode, Expression memPtr) GetDataAbsAddress()
             {
-                switch (op)
+                switch (opernd)
                 {
                     case PIC18DataAbsAddrOperand memabsaddr:
                         var reg = PIC18Registers.GetRegisterBySizedAddr(memabsaddr.DataTarget, 8);
@@ -454,10 +446,10 @@ namespace Reko.Arch.Microchip.PIC18
                         {
                             if (sfr != PICRegisterStorage.None)
                             {
-                                var indmode = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
-                                if (indmode != IndirectRegOp.None)
-                                    return (indmode, binder.EnsureRegister(fsr));
-                                return (indmode, binder.EnsureRegister(sfr));
+                                var imode = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
+                                if (imode != IndirectRegOp.None)
+                                    return (imode, binder.EnsureRegister(fsr));
+                                return (imode, binder.EnsureRegister(sfr));
                             }
                         }
                         return (IndirectRegOp.None, DataMem8(PICDataAddress.Ptr(memabsaddr.DataTarget)));
@@ -467,32 +459,32 @@ namespace Reko.Arch.Microchip.PIC18
                 }
             }
 
-            var (indop, adr) = GetDataAbsAddress();
-            switch (indop)
+            var (indMode, memPtr) = GetDataAbsAddress();
+            switch (indMode)
             {
                 case IndirectRegOp.None:    // Direct mode
-                    derefptr = adr;
+                    memExpr = memPtr;
                     break;
 
                 case IndirectRegOp.INDF:    // Indirect modes
                 case IndirectRegOp.POSTDEC:
                 case IndirectRegOp.POSTINC:
                 case IndirectRegOp.PREINC:
-                    derefptr = DataMem8(adr);
+                    memExpr = DataMem8(memPtr);
                     break;
 
                 case IndirectRegOp.PLUSW:   // Indirect-indexed mode
-                    derefptr = DataMem8(m.IAdd(adr, Wreg));
+                    memExpr = DataMem8(m.IAdd(memPtr, Wreg));
                     break;
 
                 default:
                     throw new InvalidOperationException("Unable to adjust indirect pointer.");
             }
 
-            return (indop, adr);
+            return (indMode, memPtr);
         }
 
-        private void RewriteCondBranch(TestCondition test)
+        private void CondBranch(TestCondition test)
         {
             rtlc = RtlClass.ConditionalTransfer;
             if (instrCurr.op1 is PIC18ProgRel8AddrOperand brop)
@@ -503,6 +495,37 @@ namespace Reko.Arch.Microchip.PIC18
             throw new InvalidOperationException("Wrong 8-bit relative PIC address");
         }
 
+        private void CondSkipIndirect(Expression cond, IndirectRegOp indMode, Expression memPtr)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            switch (indMode)
+            {
+                case IndirectRegOp.None:
+                case IndirectRegOp.INDF:
+                case IndirectRegOp.PLUSW:
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+
+                case IndirectRegOp.POSTINC:
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    break;
+
+                case IndirectRegOp.POSTDEC:
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
+                    break;
+
+                case IndirectRegOp.PREINC:
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+            }
+        }
+
+        private PICProgAddress SkipToAddr()
+            => PICProgAddress.Ptr(instrCurr.Address + instrCurr.Length + 2);
+
         private void SetStatusFlags(Expression dst)
         {
             FlagM flags = PIC18CC.Defined(instrCurr.Opcode);
@@ -510,8 +533,67 @@ namespace Reko.Arch.Microchip.PIC18
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
-        private PICProgAddress SkipToAddr()
-            => PICProgAddress.Ptr(instrCurr.Address + instrCurr.Length + 2);
+        private void ArithAssign(Expression dst, Expression src)
+        {
+            m.Assign(dst, src);
+            SetStatusFlags(dst);
+        }
+
+        private void ArithAssignIndirect(Expression dst, Expression src, IndirectRegOp indMode, Expression memPtr)
+        {
+            switch (indMode)
+            {
+                case IndirectRegOp.None:
+                case IndirectRegOp.INDF:
+                case IndirectRegOp.PLUSW:
+                    ArithAssign(dst, src);
+                    break;
+
+                case IndirectRegOp.POSTDEC:
+                    ArithAssign(dst, src);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
+                    break;
+
+                case IndirectRegOp.POSTINC:
+                    ArithAssign(dst, src);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    break;
+
+                case IndirectRegOp.PREINC:
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    ArithAssign(dst, src);
+                    break;
+            }
+        }
+
+        private void ArithCondSkip(Expression dst, Expression src, Expression cond, IndirectRegOp indMode, Expression memPtr)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            switch (indMode)
+            {
+                case IndirectRegOp.None:
+                case IndirectRegOp.INDF:
+                case IndirectRegOp.PLUSW:
+                    m.Assign(dst, src);
+                    break;
+
+                case IndirectRegOp.POSTDEC:
+                    m.Assign(dst, src);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
+                    break;
+
+                case IndirectRegOp.POSTINC:
+                    m.Assign(dst, src);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    break;
+
+                case IndirectRegOp.PREINC:
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    m.Assign(dst, src);
+                    break;
+            }
+            m.Branch(cond, SkipToAddr(), rtlc);
+        }
 
         #endregion
 
@@ -540,176 +622,76 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteADDWF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-                
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.IAdd(Wreg, derefptr));
-                    break;
-
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.IAdd(Wreg, derefptr));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.IAdd(Wreg, derefptr));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.IAdd(Wreg, derefptr));
-                    break;
-
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.IAdd(Wreg, memExpr), indMode, memPtr);
         }
 
         private void RewriteADDWFC()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.IAdd(m.IAdd(Wreg, derefptr), carry));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.IAdd(m.IAdd(Wreg, derefptr), carry));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.IAdd(m.IAdd(Wreg, derefptr), carry));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(m.IAdd(adr, 1), carry));
-                    m.Assign(dst, m.IAdd(Wreg, derefptr));
-                    break;
-            }
-            SetStatusFlags(dst);
+            ArithAssignIndirect(dst, m.IAdd(m.IAdd(Wreg, memExpr), carry), indMode, memPtr);
         }
 
         private void RewriteANDLW()
         {
             var k = GetImmediateValue(instrCurr.op1);
-            var res = m.And(Wreg, k);
-            m.Assign(Wreg, res);
-            SetStatusFlags(Wreg);
+            ArithAssign(Wreg, m.And(Wreg, k));
         }
 
         private void RewriteANDWF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.And(Wreg, derefptr));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.And(Wreg, derefptr));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.And(Wreg, derefptr));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.And(Wreg, derefptr));
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.And(Wreg, memExpr), indMode, memPtr);
         }
 
         private void RewriteBC()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.ULT, FlagGroup(FlagM.C)));
+            CondBranch(m.Test(ConditionCode.ULT, FlagGroup(FlagM.C)));
         }
 
         private void RewriteBCF()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
             var mask = GetBitMask(instrCurr.op1, true);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, m.And(derefptr, mask));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, m.And(derefptr, mask));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, m.And(derefptr, mask));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, m.And(derefptr, mask));
-                    break;
-
-            }
+            ArithAssignIndirect(memExpr, m.And(memExpr, mask), indMode, memPtr);
         }
 
         private void RewriteBN()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.LT, FlagGroup(FlagM.N)));
+            CondBranch(m.Test(ConditionCode.LT, FlagGroup(FlagM.N)));
         }
 
         private void RewriteBNC()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.UGE, FlagGroup(FlagM.C)));
+            CondBranch(m.Test(ConditionCode.UGE, FlagGroup(FlagM.C)));
         }
 
         private void RewriteBNN()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.GE, FlagGroup(FlagM.N)));
+            CondBranch(m.Test(ConditionCode.GE, FlagGroup(FlagM.N)));
         }
 
         private void RewriteBNOV()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.NO, FlagGroup(FlagM.OV)));
+            CondBranch(m.Test(ConditionCode.NO, FlagGroup(FlagM.OV)));
         }
 
         private void RewriteBOV()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.OV, FlagGroup(FlagM.OV)));
+            CondBranch(m.Test(ConditionCode.OV, FlagGroup(FlagM.OV)));
         }
 
         private void RewriteBNZ()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.NE, FlagGroup(FlagM.Z)));
+            CondBranch(m.Test(ConditionCode.NE, FlagGroup(FlagM.Z)));
         }
 
         private void RewriteBRA()
@@ -725,62 +707,39 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteBSF()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
             var mask = GetBitMask(instrCurr.op1, false);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, m.Or(derefptr, mask));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, m.Or(derefptr, mask));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, m.Or(derefptr, mask));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, m.Or(derefptr, mask));
-                    break;
-            }
+            ArithAssignIndirect(memExpr, m.Or(memExpr, mask), indMode, memPtr);
         }
 
         private void RewriteBTFSC()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
             var mask = GetBitMask(instrCurr.op1, false);
             Expression res = null;
 
-            switch (indop)
+            switch (indMode)
             {
                 case IndirectRegOp.None:
                 case IndirectRegOp.INDF:
                 case IndirectRegOp.PLUSW:
-                    res = m.And(derefptr, mask);
+                    res = m.And(memExpr, mask);
                     break;
 
                 case IndirectRegOp.POSTDEC:
-                    res = m.And(derefptr, mask);
-                    m.Assign(adr, m.ISub(adr, 1));
+                    res = m.And(memExpr, mask);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
                 case IndirectRegOp.POSTINC:
-                    res = m.And(derefptr, mask);
-                    m.Assign(adr, m.IAdd(adr, 1));
+                    res = m.And(memExpr, mask);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
                 case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    res = m.And(derefptr, mask);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    res = m.And(memExpr, mask);
                     break;
             }
             m.Branch(m.Eq0(res), SkipToAddr(), rtlc);
@@ -789,31 +748,31 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteBTFSS()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
             var mask = GetBitMask(instrCurr.op1, false);
             Expression res = null;
 
-            switch (indop)
+            switch (indMode)
             {
                 case IndirectRegOp.None:
                 case IndirectRegOp.INDF:
                 case IndirectRegOp.PLUSW:
-                    res = m.And(derefptr, mask);
+                    res = m.And(memExpr, mask);
                     break;
 
                 case IndirectRegOp.POSTDEC:
-                    res = m.And(derefptr, mask);
-                    m.Assign(adr, m.ISub(adr, 1));
+                    res = m.And(memExpr, mask);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
                 case IndirectRegOp.POSTINC:
-                    res = m.And(derefptr, mask);
-                    m.Assign(adr, m.IAdd(adr, 1));
+                    res = m.And(memExpr, mask);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
                 case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    res = m.And(derefptr, mask);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    res = m.And(memExpr, mask);
                     break;
 
             }
@@ -822,39 +781,15 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteBTG()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
             var mask = GetBitMask(instrCurr.op1, false);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, m.Xor(derefptr, mask));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, m.Xor(derefptr, mask));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, m.Xor(derefptr, mask));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, m.Xor(derefptr, mask));
-                    break;
-
-            }
+            ArithAssignIndirect(memExpr, m.Xor(memExpr, mask), indMode, memPtr);
         }
 
         private void RewriteBZ()
         {
             // TODO: review RTL to use for flag test.
-            RewriteCondBranch(m.Test(ConditionCode.EQ, FlagGroup(FlagM.Z)));
+            CondBranch(m.Test(ConditionCode.EQ, FlagGroup(FlagM.Z)));
         }
 
         private void RewriteCALL()
@@ -899,29 +834,29 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCLRF()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
 
-            switch (indop)
+            switch (indMode)
             {
                 case IndirectRegOp.None:
                 case IndirectRegOp.INDF:
                 case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, 0);
+                    m.Assign(memExpr, 0);
                     break;
 
                 case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, 0);
-                    m.Assign(adr, m.ISub(adr, 1));
+                    m.Assign(memExpr, 0);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
                 case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, 0);
-                    m.Assign(adr, m.IAdd(adr, 1));
+                    m.Assign(memExpr, 0);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
                 case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, 0);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    m.Assign(memExpr, 0);
                     break;
             }
             m.Assign(binder.EnsureFlagGroup(PIC18Registers.Z), Constant.Bool(true));
@@ -956,124 +891,29 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCOMF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Comp(derefptr));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Comp(derefptr));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Comp(derefptr));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Comp(derefptr));
-                    break;
-            }
-
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.Comp(memExpr), indMode, memPtr);
         }
 
         private void RewriteCPFSEQ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Branch(m.Eq(derefptr, Wreg), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Branch(m.Eq(derefptr, Wreg), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Branch(m.Eq(derefptr, Wreg), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Branch(m.Eq(derefptr, Wreg), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            CondSkipIndirect(m.Eq(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteCPFSGT()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Branch(m.Ugt(derefptr, Wreg), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Branch(m.Ugt(derefptr, Wreg), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Branch(m.Ugt(derefptr, Wreg), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Branch(m.Ugt(derefptr, Wreg), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            CondSkipIndirect(m.Ugt(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteCPFSLT()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Branch(m.Ult(derefptr, Wreg), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Branch(m.Ult(derefptr, Wreg), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Branch(m.Ult(derefptr, Wreg), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Branch(m.Ult(derefptr, Wreg), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            CondSkipIndirect(m.Ult(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteDAW()
@@ -1087,194 +927,49 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteDECF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.ISub(memExpr, 1), indMode, memPtr);
         }
 
         private void RewriteDECFSZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    break;
-            }
-            m.Branch(m.Eq0(dst), SkipToAddr(), rtlc);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithCondSkip(dst, m.ISub(memExpr, 1), m.Eq0(dst), indMode, memPtr);
         }
 
         private void RewriteDCFSNZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.ISub(derefptr, 1));
-                    break;
-            }
-            m.Branch(m.Ne0(dst), SkipToAddr(), rtlc);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithCondSkip(dst, m.ISub(memExpr, 1), m.Ne0(dst), indMode, memPtr);
         }
 
         private void RewriteGOTO()
         {
 
             rtlc = RtlClass.Transfer;
-            var target = GetProgramAddress(instrCurr.op1);
-            m.Goto(target);
+            m.Goto(GetProgramAddress(instrCurr.op1));
         }
 
         private void RewriteINCF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.IAdd(memExpr, 1), indMode, memPtr);
         }
 
         private void RewriteINCFSZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    break;
-            }
-            m.Branch(m.Eq0(dst), SkipToAddr(), rtlc);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithCondSkip(dst, m.IAdd(memExpr, 1), m.Eq0(dst), indMode, memPtr);
         }
 
         private void RewriteINFSNZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.IAdd(derefptr, 1));
-                    break;
-            }
-            m.Branch(m.Ne0(dst), SkipToAddr(), rtlc);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithCondSkip(dst, m.IAdd(memExpr, 1), m.Ne0(dst), indMode, memPtr);
         }
 
         private void RewriteIORLW()
@@ -1286,32 +981,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteIORWF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Or(Wreg, derefptr));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Or(Wreg, derefptr));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Or(Wreg, derefptr));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Or(Wreg, derefptr));
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.Or(Wreg, memExpr), indMode, memPtr);
         }
 
         private void RewriteLFSR()
@@ -1319,37 +990,12 @@ namespace Reko.Arch.Microchip.PIC18
             var sfrN = GetFSRNum(instrCurr.op1);
             var k = GetImmediateValue(instrCurr.op2);
             m.Assign(sfrN, k);
-            SetStatusFlags(sfrN);
         }
 
         private void RewriteMOVF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, derefptr);
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, derefptr);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, derefptr);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, derefptr);
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, memExpr, indMode, memPtr);
         }
 
         private void RewriteMOVFF()
@@ -1487,31 +1133,8 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteMOVSF()
         {
             var zs = GetFSR2IdxAddress(instrCurr.op1);
-            var (indop, adr) = GetUnaryAbsPtrs(instrCurr.op2, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, zs);
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, zs);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, zs);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, zs);
-                    break;
-            }
+            var (indMode, memPtr) = GetUnaryAbsPtrs(instrCurr.op2, out Expression memExpr);
+            ArithAssignIndirect(memExpr, zs, indMode, memPtr);
         }
 
         private void RewriteMOVSS()
@@ -1523,31 +1146,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteMOVWF()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, Wreg);
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, Wreg);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, Wreg);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, Wreg);
-                    break;
-            }
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            ArithAssignIndirect(memExpr, Wreg, indMode, memPtr);
         }
 
         private void RewriteMULLW()
@@ -1560,61 +1160,14 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteMULWF()
         {
             var prod = binder.EnsureRegister(PIC18Registers.PROD);
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(prod, m.UMul(derefptr, Wreg));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(prod, m.UMul(derefptr, Wreg));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(prod, m.UMul(derefptr, Wreg));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(prod, m.UMul(derefptr, Wreg));
-                    break;
-            }
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            ArithAssignIndirect(prod, m.UMul(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteNEGF()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, m.Neg(derefptr));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, m.Neg(derefptr));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, m.Neg(derefptr));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, m.Neg(derefptr));
-                    break;
-            }
-            SetStatusFlags(derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            ArithAssignIndirect(memExpr, m.Neg(memExpr), indMode, memPtr);
         }
 
         private void RewritePOP()
@@ -1640,7 +1193,6 @@ namespace Reko.Arch.Microchip.PIC18
             var k = GetImmediateValue(instrCurr.op1);
             m.Assign(DataMem8(Fsr2), k);
             m.Assign(Fsr2, m.IAdd(Fsr2, 1));
-            SetStatusFlags(Fsr2);
         }
 
         private void RewriteRCALL()
@@ -1715,162 +1267,40 @@ namespace Reko.Arch.Microchip.PIC18
         {
             //TODO:  PseudoProcedure(__rlcf) ?
 
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlcf", PrimitiveType.Byte, derefptr, carry)));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlcf", PrimitiveType.Byte, derefptr, carry)));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlcf", PrimitiveType.Byte, derefptr, carry)));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlcf", PrimitiveType.Byte, derefptr, carry)));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-
-            SetStatusFlags(dst);
+            ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rlcf", PrimitiveType.Byte, memExpr, carry)), indMode, memPtr);
         }
 
         private void RewriteRLNCF()
         {
             //TODO:  PseudoProcedure(__rlncf) ?
 
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlncf", PrimitiveType.Byte, derefptr)));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlncf", PrimitiveType.Byte, derefptr)));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlncf", PrimitiveType.Byte, derefptr)));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rlncf", PrimitiveType.Byte, derefptr)));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rlncf", PrimitiveType.Byte, memExpr)), indMode, memPtr);
         }
 
         private void RewriteRRCF()
         {
             //TODO:  PseudoProcedure(__rrcf) ?
 
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrcf", PrimitiveType.Byte, derefptr, carry)));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrcf", PrimitiveType.Byte, derefptr, carry)));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrcf", PrimitiveType.Byte, derefptr, carry)));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrcf", PrimitiveType.Byte, derefptr, carry)));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-            SetStatusFlags(dst);
+            ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rrcf", PrimitiveType.Byte, memExpr, carry)), indMode, memPtr);
         }
 
         private void RewriteRRNCF()
         {
             //TODO:  PseudoProcedure(__rrncf) ?
 
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrncf", PrimitiveType.Byte, derefptr)));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrncf", PrimitiveType.Byte, derefptr)));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrncf", PrimitiveType.Byte, derefptr)));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__rrncf", PrimitiveType.Byte, derefptr)));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rrncf", PrimitiveType.Byte, memExpr)), indMode, memPtr);
         }
 
         private void RewriteSETF()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(derefptr, 255);
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(derefptr, 255);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(derefptr, 255);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(derefptr, 255);
-                    break;
-            }
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
+            ArithAssignIndirect(memExpr, Constant.Byte(255), indMode, memPtr);
         }
 
         private void RewriteSLEEP()
@@ -1905,46 +1335,19 @@ namespace Reko.Arch.Microchip.PIC18
             var fsr = GetFSRNum(instrCurr.op1);
             var k = GetImmediateValue(instrCurr.op2);
             m.Assign(fsr, m.ISub(fsr, k));
-            SetStatusFlags(fsr);
         }
 
         private void RewriteSUBFWB()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
             var borrow = m.Not(FlagGroup(FlagM.C));
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.ISub(m.ISub(Wreg, derefptr), borrow));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.ISub(m.ISub(Wreg, derefptr), borrow));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.ISub(m.ISub(Wreg, derefptr), borrow));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.ISub(m.ISub(Wreg, derefptr), borrow));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-            }
-            SetStatusFlags(dst);
+            ArithAssignIndirect(dst, m.ISub(m.ISub(Wreg, memExpr), borrow), indMode, memPtr);
         }
 
         private void RewriteSUBLW()
         {
             var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.ISub(k, Wreg));
-            SetStatusFlags(Wreg);
+            ArithAssign(Wreg, m.ISub(k, Wreg));
         }
 
         private void RewriteSUBULNK()
@@ -1962,93 +1365,21 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteSUBWF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.ISub(derefptr, Wreg));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.ISub(derefptr, Wreg));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.ISub(derefptr, Wreg));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.ISub(derefptr, Wreg));
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.ISub(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteSUBWFB()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
             var borrow = m.Not(FlagGroup(FlagM.C));
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.ISub(m.ISub(derefptr, Wreg), borrow));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.ISub(m.ISub(derefptr, Wreg), borrow));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.ISub(m.ISub(derefptr, Wreg), borrow));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.ISub(m.ISub(derefptr, Wreg), borrow));
-                    break;
-            }
-            SetStatusFlags(dst);
+            ArithAssignIndirect(dst, m.ISub(m.ISub(memExpr, Wreg), borrow), indMode, memPtr);
         }
 
         private void RewriteSWAPF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, derefptr)));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, derefptr)));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, derefptr)));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, derefptr)));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, memExpr)), indMode, memPtr);
         }
 
         private void RewriteTBLRD()
@@ -2067,70 +1398,21 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteTSTFSZ()
         {
-            var (indop, adr) = GetUnaryPtrs(instrCurr.op1, out Expression derefptr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
             rtlc = RtlClass.ConditionalTransfer;
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Branch(m.Eq0(derefptr), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Branch(m.Eq0(derefptr), SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Branch(m.Eq0(derefptr), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Branch(m.Eq0(derefptr), SkipToAddr(), rtlc);
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-            }
-
+            CondSkipIndirect(m.Eq0(memExpr), indMode, memPtr);
         }
 
         private void RewriteXORLW()
         {
             var src = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.Xor(Wreg, src));
-            SetStatusFlags(Wreg);
+            ArithAssign(Wreg, m.Xor(Wreg, src));
         }
 
         private void RewriteXORWF()
         {
-            var (indop, adr) = GetBinaryPtrs(instrCurr.op1, out Expression derefptr, out Expression dst);
-
-            switch (indop)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, m.Xor(Wreg, derefptr));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, m.Xor(Wreg, derefptr));
-                    m.Assign(adr, m.ISub(adr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, m.Xor(Wreg, derefptr));
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(adr, m.IAdd(adr, 1));
-                    m.Assign(dst, m.Xor(Wreg, derefptr));
-                    break;
-            }
-            SetStatusFlags(dst);
+            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            ArithAssignIndirect(dst, m.Xor(Wreg, memExpr), indMode, memPtr);
         }
 
         #endregion

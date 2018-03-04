@@ -1,0 +1,349 @@
+// _reset
+// Return size: 0
+void _reset()
+fn00000000_entry:
+	// succ:  l00000000
+l00000000:
+	STKPTR = fp
+	goto 0x00013A
+	// succ:  l00013A
+l00013A:
+	FSR1 = 0x0080
+	FSR2 = 0x0080
+	TBLPTRU = 0x00
+	Z = true
+	Data[0x01:byte] = Data[0x01:byte] & 0xBF
+	STKPTR = STKPTR + 0x01
+	Stack[STKPTR] = 0x00014A
+	TOS = 0x00014A
+	call _do_cinit (retsize: 0;)
+fn00000000_exit:
+
+
+// IT_low
+// Return size: 0
+void IT_low()
+fn000008_entry:
+	// succ:  l000008
+l000008:
+	STKPTR = fp
+	goto 0x0000FC
+	// succ:  l0000FC
+l0000FC:
+	FSR1 = FSR1 + 0x0001
+	Data[FSR1:byte] = FSR2H
+	FSR2H = FSR1H
+	Data[FSR1:byte] = Data[FSR1:byte]
+	FSR1 = FSR1 + 0x0001
+	ZN = cond(Data[FSR1:byte])
+	branch (INTCON & 0x04) != 0x00 l00010A
+	// succ:  l000108 l00010A
+l000108:
+	goto 0x000112
+	goto l000112
+	// succ:  l000112
+l00010A:
+	INTCON = INTCON & 0xFB
+	BSR = 0x00
+	Data[(BSR << 0x08) + 0xCA:byte] = Data[(BSR << 0x08) + 0xCA:byte] | 0x01
+	LATB = LATB ^ 0x01
+	// succ:  l000112
+l000112:
+	Data[FSR1:byte] = Data[FSR1:byte]
+	FSR1 = FSR1 - 0x0001
+	ZN = cond(Data[FSR1:byte])
+	FSR2H = Data[FSR1:byte]
+	FSR1 = FSR1 - 0x0001
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn000008_exit
+fn000008_exit:
+
+
+// _do_cinit
+// Return size: 0
+void _do_cinit()
+fn00000E_entry:
+	// succ:  l00000E
+l00000E:
+	STKPTR = fp
+	WREG = 0x06
+	TBLPTRL = WREG
+	WREG = 0x00
+	TBLPTRH = WREG
+	WREG = 0x00
+	TBLPTRU = WREG
+	BSR = 0x00
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC5:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC6:byte] = WREG
+	// succ:  l000028
+l000028:
+	branch Test(NE,Z) l000030
+	// succ:  l00002A l000030
+l00002A:
+	branch Data[(BSR << 0x08) + 0xC5:byte] == 0x00 l00002E
+	// succ:  l00002C l00002E
+l00002C:
+	goto 0x000030
+	goto l000030
+	// succ:  l000030
+l00002E:
+	goto 0x0000AA
+	goto l0000AA
+	// succ:  l0000AA
+l000030:
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC0:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC1:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC2:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	FSR0L = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	FSR0H = WREG
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC3:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[(BSR << 0x08) + 0xC4:byte] = WREG
+	__tblrd(TBLPTR, 0x01)
+	__tblrd(TBLPTR, 0x01)
+	Data[0x00C7:byte] = TBLPTRL
+	Data[0x00C8:byte] = TBLPTRH
+	Data[0x00C9:byte] = TBLPTRU
+	TBLPTRL = Data[0x00C0:byte]
+	TBLPTRH = Data[0x00C1:byte]
+	TBLPTRU = Data[0x00C2:byte]
+	BSR = 0x00
+	Data[(BSR << 0x08) + 0xC3:byte] = Data[(BSR << 0x08) + 0xC3:byte]
+	ZN = cond(Data[(BSR << 0x08) + 0xC3:byte])
+	// succ:  l000080
+l000080:
+	branch Test(NE,Z) l000086
+	// succ:  l000082 l000086
+l000082:
+	Data[(BSR << 0x08) + 0xC4:byte] = Data[(BSR << 0x08) + 0xC4:byte]
+	ZN = cond(Data[(BSR << 0x08) + 0xC4:byte])
+	branch Test(EQ,Z) l000094
+	// succ:  l000086 l000094
+l000086:
+	__tblrd(TBLPTR, 0x01)
+	WREG = TABLAT
+	ZN = cond(WREG)
+	Data[FSR0:byte] = WREG
+	FSR0 = FSR0 + 0x0001
+	Data[(BSR << 0x08) + 0xC3:byte] = Data[(BSR << 0x08) + 0xC3:byte] - 0x01
+	CDCZOVN = cond(Data[(BSR << 0x08) + 0xC3:byte])
+	branch Test(ULT,C) l000080
+	// succ:  l000090 l000080
+l000090:
+	Data[(BSR << 0x08) + 0xC4:byte] = Data[(BSR << 0x08) + 0xC4:byte] - 0x01
+	CDCZOVN = cond(Data[(BSR << 0x08) + 0xC4:byte])
+	goto l000086
+	// succ:  l000086
+l000094:
+	TBLPTRL = Data[0x00C7:byte]
+	TBLPTRH = Data[0x00C8:byte]
+	TBLPTRU = Data[0x00C9:byte]
+	BSR = 0x00
+	Data[(BSR << 0x08) + 0xC5:byte] = Data[(BSR << 0x08) + 0xC5:byte] - 0x01
+	CDCZOVN = cond(Data[(BSR << 0x08) + 0xC5:byte])
+	WREG = 0x00
+	Data[(BSR << 0x08) + 0xC6:byte] = Data[(BSR << 0x08) + 0xC6:byte] - WREG - !C
+	CDCZOVN = cond(Data[(BSR << 0x08) + 0xC6:byte])
+	goto l000028
+	// succ:  l000028
+l0000AA:
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn00000E_exit
+fn00000E_exit:
+
+
+// main
+// Return size: 0
+void main()
+fn000000AC_entry:
+	// succ:  l000000AC
+l000000AC:
+	STKPTR = fp
+	BSR = 0x00
+	Data[(BSR << 0x08) + 0xCA:byte] = 0x00
+	Z = true
+	WREG = 0x20
+	INTCON = WREG
+	WREG = 0x84
+	INTCON2 = WREG
+	RCON = RCON | 0x80
+	TMR0H = 0x00
+	Z = true
+	TMR0L = 0x00
+	Z = true
+	WREG = 0x82
+	T0CON = WREG
+	INTCON = INTCON | 0x80
+	TRISB = 0x00
+	Z = true
+	WREG = 0x01
+	Data[FSR1:byte] = WREG
+	FSR1 = FSR1 + 0x0001
+	STKPTR = STKPTR + 0x01
+	Stack[STKPTR] = 0x0000CC
+	TOS = 0x0000CC
+	call doloop (retsize: 0;)
+fn000000AC_exit:
+
+
+// doloop
+// Return size: 0
+void doloop()
+fn0000D0_entry:
+	// succ:  l0000D0
+l0000D0:
+	STKPTR = fp
+	Data[FSR1:byte] = FSR2L
+	FSR1 = FSR1 + 0x0001
+	FSR2L = FSR1L
+	// succ:  l0000D8
+l0000D8:
+	WREG = 0xFE
+	WREG = Data[FSR2 + WREG:byte]
+	ZN = cond(WREG)
+	branch Test(EQ,Z) l0000F4
+	// succ:  l0000DE l0000F4
+l0000DE:
+	BSR = 0x00
+	branch (Data[(BSR << 0x08) + 0xCA:byte] & 0x01) != 0x00 l0000E4
+	// succ:  l0000E2 l0000E4
+l0000E2:
+	goto 0x0000F2
+	goto l0000F2
+	// succ:  l0000F2
+l0000E4:
+	Data[(BSR << 0x08) + 0xCA:byte] = Data[(BSR << 0x08) + 0xCA:byte] & 0xFE
+	WREG = LATB
+	ZN = cond(WREG)
+	WREG = WREG & 0x01
+	ZN = cond(WREG)
+	branch Test(EQ,Z) l0000F0
+	// succ:  l0000EC l0000F0
+l0000EC:
+	LATB = LATB | 0x80
+	goto l0000F2
+	// succ:  l0000F2
+l0000F0:
+	LATB = LATB & 0x7F
+	// succ:  l0000F2
+l0000F2:
+	goto 0x0000D8
+	goto l0000D8
+	// succ:  l0000D8
+l0000F4:
+	Data[FSR1:byte] = Data[FSR1:byte]
+	FSR1 = FSR1 - 0x0001
+	ZN = cond(Data[FSR1:byte])
+	FSR2L = Data[FSR1:byte]
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn0000D0_exit
+fn0000D0_exit:
+
+
+// __zero_memory
+// Return size: 0
+void __zero_memory()
+fn0000011A_entry:
+	// succ:  l0000011A
+l0000011A:
+	STKPTR = fp
+	WREG = 0x00
+	PRODL = WREG
+	FSR0 = 0x0000
+	WREG = 0x01
+	STKPTR = STKPTR + 0x01
+	Stack[STKPTR] = 0x000126
+	TOS = 0x000126
+	call zero_block (retsize: 0;)
+fn0000011A_exit:
+
+
+// zero_block
+// Return size: 0
+void zero_block()
+fn000128_entry:
+	// succ:  l000128
+l000128:
+	STKPTR = fp
+	branch FSR0H <u WREG l00012C
+	// succ:  l00012A l00012C
+l00012A:
+	goto 0x000130
+	goto l000130
+	// succ:  l000130
+l00012C:
+	Data[FSR0:byte] = 0x00
+	FSR0 = FSR0 + 0x0001
+	Z = true
+	goto l000128
+	// succ:  l000128
+l000130:
+	WREG = PRODL
+	ZN = cond(WREG)
+	// succ:  l000132
+l000132:
+	branch FSR0L <u WREG l000136
+	// succ:  l000134 l000136
+l000134:
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn000128_exit
+l000136:
+	Data[FSR0:byte] = 0x00
+	FSR0 = FSR0 + 0x0001
+	Z = true
+	goto l000132
+	// succ:  l000132
+fn000128_exit:
+
+
+// __init
+// Return size: 0
+void __init()
+fn000156_entry:
+	// succ:  l000156
+l000156:
+	STKPTR = fp
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn000156_exit
+fn000156_exit:
+
+
