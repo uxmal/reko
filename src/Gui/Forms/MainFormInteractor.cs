@@ -514,6 +514,7 @@ namespace Reko.Gui.Forms
                 });
                 prev.EnterPage();
                 CurrentPhase = prev;
+                projectBrowserSvc.Reload();
             }
             catch (Exception ex)
             {
