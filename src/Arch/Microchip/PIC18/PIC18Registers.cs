@@ -34,21 +34,21 @@ namespace Reko.Arch.Microchip.PIC18
 {
 
     /// <summary>
-    /// Values that represent FSR indirect registers operation.
+    /// Values that represent indirect addressing using FSR indirect pseudo-registers.
     /// </summary>
     public enum IndirectRegOp : byte
     {
-        /// <summary> No operation using FSR register. </summary>
+        /// <summary> No indirect read/write access. </summary>
         None,
-        /// <summary> Indirect read/write using FSR register. </summary>
+        /// <summary> Indirect read/write using FSRx register (INDFx). </summary>
         INDF,
-        /// <summary> Indirect read/write using FSR register, then increments FSR. </summary>
+        /// <summary> Indirect read/write using post-incremented FSRx register (POSTINCx). </summary>
         POSTINC,
-        /// <summary> Indirect read/write using FSR register, then decrements FSR. </summary>
+        /// <summary> Indirect read/write using post-decremented FSRx register (POSTDECx). </summary>
         POSTDEC,
-        /// <summary> Increments FSR then indirect read/write using FSR register. </summary>
+        /// <summary> Indirect read/write using pre-incremented FSRx register (PREINCx). </summary>
         PREINC,
-        /// <summary> Adds FSR and WREG then indirect read/write using FSR register. </summary>
+        /// <summary> Indirect read/write using FSRx register + WREG offset (PLUSWx). </summary>
         PLUSW
     }
 
@@ -231,7 +231,6 @@ namespace Reko.Arch.Microchip.PIC18
             = new Dictionary<RegSizedAddress, RegisterStorage>();
         private static Dictionary<BitFieldAddr, BitFieldList> RegsBitFields
             = new Dictionary<BitFieldAddr, BitFieldList>();
-
 
         #endregion
 
@@ -525,7 +524,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="pic">The PIC18 definition.</param>
+        /// <param name="pic">The PIC18 definition descriptor.</param>
         private PIC18Registers(PIC pic) : base(pic)
         {
             lock (symTabLock)
@@ -629,7 +628,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// They are retrieved from the registers symbol table which has been previously populated by loading the PIC definition.
         /// </summary>
         /// <remarks>
-        /// This permits to still get a direct reference to standard registers and keeps having flexibility on definitions.
+        /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
         /// </remarks>
         /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
         private void SetCoreRegisters()
@@ -711,10 +710,14 @@ namespace Reko.Arch.Microchip.PIC18
             TBLPTRH.BitAddress = 8;
             TBLPTRU.BitAddress = 16;
 
+            // Shadow registers (if they exist).
+            
             STATUS_CSHAD = PeekRegisterStorageByName("STATUS_CSHAD");
             WREG_CSHAD = PeekRegisterStorageByName("WREG_CSHAD");
             BSR_CSHAD = PeekRegisterStorageByName("BSR_CSHAD");
 
+            // Registers used for indirect memory adressing modes. An other ugly aspect of Microchip PICs.
+            
             indirectParents.Clear();
             indirectParents.Add(PLUSW0, (IndirectRegOp.PLUSW, FSR0));
             indirectParents.Add(PREINC0, (IndirectRegOp.PREINC, FSR0));
@@ -732,6 +735,8 @@ namespace Reko.Arch.Microchip.PIC18
             indirectParents.Add(POSTINC2, (IndirectRegOp.POSTINC, FSR2));
             indirectParents.Add(INDF2, (IndirectRegOp.INDF, FSR2));
 
+            // Some registers are invalid memory destination for some instructions.
+            
             invalidMovfflDests.Clear();
             invalidMovfflDests.Add(PCL);
             invalidMovfflDests.Add(TOSL);
@@ -862,33 +867,35 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets a register by its address and bit width or <seealso cref="RegisterStorage.None"/>.
+        /// Gets a register by its address/bit-width.
         /// </summary>
-        /// <param name="address">The data memory address with bit width.</param>
-        /// <returns>
-        /// The register or null.
-        /// </returns>
-        public static RegisterStorage GetRegisterBySizedAddr(PICDataAddress address, int bwidth)
-        {
-            var regaddr = new RegSizedAddress(address, bwidth);
-            return registers?.PeekRegisterStorageBySizedAddr(regaddr) ?? RegisterStorage.None;
-        }
-
-        /// <summary>
-        /// Gets a register by its absolute address or <seealso cref="RegisterStorage.None"/>.
-        /// </summary>
-        /// <param name="uAddr">The absolute address of the register.</param>
+        /// <param name="addr">The data memory address of the register.</param>
+        /// <param name="bW">The bit width of the register.</param>
         /// <returns>
         /// The register or <seealso cref="RegisterStorage.None"/>.
         /// </returns>
-        public static RegisterStorage GetRegisterBySizedAddr(ushort uAddr, int bwidth)
+        public static RegisterStorage GetRegisterBySizedAddr(PICDataAddress addr, int bW)
         {
-            var regaddr = new RegSizedAddress(uAddr, bwidth);
+            var regaddr = new RegSizedAddress(addr, bW);
             return registers?.PeekRegisterStorageBySizedAddr(regaddr) ?? RegisterStorage.None;
         }
 
         /// <summary>
-        /// Gets a register by its index number or <seealso cref="RegisterStorage.None"/>.
+        /// Gets a register by its absolute address/bit-width.
+        /// </summary>
+        /// <param name="uAddr">The absolute address of the register.</param>
+        /// <param name="bW">The bit width of the register.</param>
+        /// <returns>
+        /// The register or <seealso cref="RegisterStorage.None"/>.
+        /// </returns>
+        public static RegisterStorage GetRegisterBySizedAddr(ushort uAddr, int bW)
+        {
+            var regaddr = new RegSizedAddress(uAddr, bW);
+            return registers?.PeekRegisterStorageBySizedAddr(regaddr) ?? RegisterStorage.None;
+        }
+
+        /// <summary>
+        /// Gets a register by its index number.
         /// </summary>
         /// <param name="number">Index number of the register.</param>
         /// <returns>
@@ -900,7 +907,7 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets a standard (core) register by its index or <seealso cref="RegisterStorage.None"/>.
+        /// Gets a standard (core) register by its index.
         /// </summary>
         /// <param name="i">Zero-based index of the register.</param>
         /// <returns>
@@ -912,11 +919,11 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets a register bit field by its name or null.
+        /// Gets a register bit-field by its name.
         /// </summary>
-        /// <param name="name">The name as a string.</param>
+        /// <param name="name">The name of the bit-field as a string.</param>
         /// <returns>
-        /// The bit field or null.
+        /// The bit-field instance or null.
         /// </returns>
         public static FlagGroupStorage GetBitFieldByName(string name)
         {
@@ -924,14 +931,14 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets a register bit field by its register address and bit position/width or null.
-        /// If <paramref name="bitwidth"/> is 0, then the widest bit field is retrieved.
+        /// Gets a register bit-field by its parent register address and bit position/width or null.
+        /// If <paramref name="bitwidth"/> is 0, then the widest bit-field is retrieved.
         /// </summary>
         /// <param name="regAddress">The parent register address.</param>
-        /// <param name="bitPos">The bit position.</param>
-        /// <param name="bitWidth">(Optional) The bit field width.</param>
+        /// <param name="bitPos">The bit position of the bit-field.</param>
+        /// <param name="bitWidth">(Optional) The bit-field width.</param>
         /// <returns>
-        /// The bit field or null.
+        /// The bit-field instance or null.
         /// </returns>
         public static FlagGroupStorage GetBitFieldByAddr(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
         {
@@ -939,14 +946,14 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets a register bit field by its register and bit position/width or null.
-        /// If <paramref name="bitWidth"/> is 0, then the widest bit field is retrieved.
+        /// Gets a register bit field by its parent register and bit position/width.
+        /// If <paramref name="bitWidth"/> is 0, then the widest bit-field is retrieved.
         /// </summary>
         /// <param name="reg">The parent register.</param>
-        /// <param name="bitPos">The bit position.</param>
-        /// <param name="bitWidth">(Optional) The bit field width.</param>
+        /// <param name="bitPos">The bit position of the bit-field.</param>
+        /// <param name="bitWidth">(Optional) The bit-field width.</param>
         /// <returns>
-        /// The bit field or null.
+        /// The bit-field instance or null.
         /// </returns>
         public static FlagGroupStorage GetBitFieldByReg(PICRegisterStorage reg, uint bitPos, uint bitWidth = 0)
         {
@@ -956,14 +963,14 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets a register bit field by its register name and bit position/width or null.
+        /// Gets a register bit-field by its parent register name and bit position/width or null.
         /// If <paramref name="bitWidth"/> is 0, then the widest bit field is retrieved.
         /// </summary>
         /// <param name="name">The parent register name.</param>
-        /// <param name="bitPos">The bit position.</param>
+        /// <param name="bitPos">The bit position of the bit-field.</param>
         /// <param name="bitWidth">(Optional) The bit field width.</param>
         /// <returns>
-        /// The bit field or null.
+        /// The bit-field instance or null.
         /// </returns>
         public static FlagGroupStorage GetBitFieldByName(string name, uint bitPos, uint bitWidth = 0)
         {
@@ -971,27 +978,28 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
         /// <summary>
-        /// Gets the maximum number of registers.
+        /// Gets the maximum number of PIC18 registers.
         /// </summary>
         public static int Max => RegsByAddr.Count;
 
         /// <summary>
-        /// Query if '<paramref name="sfr"/>' register has indirect operation.
+        /// Query if '<paramref name="sfr"/>' register is an indirect register (INDFx, PLUSWx, POSTINCx,... ) and get the associated FSR register.
+        /// Returns the indirect addressing mode if applicable, else return None if <paramref name="sfr"/> is not an indirect register.
         /// </summary>
-        /// <param name="sfr">The FSR register (FSR0, FSR1, FSR2).</param>
-        /// <param name="iop">[out] The indirect operation.</param>
+        /// <param name="sfr">The register used in instruction's operand.</param>
+        /// <param name="parentFSR">[out] The actual FSR index register if <paramref name="sfr"/> is an indirect register.</param>
         /// <returns>
-        /// True if indirect operation exists, false if not.
+        /// The indirect addressing mode, or None.
         /// </returns>
-        public static IndirectRegOp IndirectOpMode(PICRegisterStorage sfr, out PICRegisterStorage parentsfr)
+        public static IndirectRegOp IndirectOpMode(PICRegisterStorage sfr, out PICRegisterStorage parentFSR)
         {
-            parentsfr = PICRegisterStorage.None;
+            parentFSR = PICRegisterStorage.None;
             if (sfr is null)
                 return IndirectRegOp.None;
-            if (indirectParents.TryGetValue(sfr, out (IndirectRegOp iop, PICRegisterStorage fsr) ent))
+            if (indirectParents.TryGetValue(sfr, out (IndirectRegOp indMode, PICRegisterStorage fsr) ent))
             {
-                parentsfr = ent.fsr;
-                return ent.iop;
+                parentFSR = ent.fsr;
+                return ent.indMode;
             }
             return IndirectRegOp.None;
         }

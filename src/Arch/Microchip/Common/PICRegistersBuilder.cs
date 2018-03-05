@@ -70,13 +70,13 @@ namespace Reko.Arch.Microchip.Common
             if (nzsize <= 8)
                 return PrimitiveType.Byte;
             if (nzsize <= 16)
-                return PrimitiveType.Word16;
+                return PrimitiveType.UInt16;
             if (nzsize <= 32)
-                return PrimitiveType.Word32;
+                return PrimitiveType.UInt32;
             if (nzsize <= 64)
-                return PrimitiveType.Word64;
+                return PrimitiveType.UInt64;
             if (nzsize <= 128)
-                return PrimitiveType.Word128;
+                return PrimitiveType.UInt128;
             if (nzsize <= 256)
                 return PrimitiveType.Word256;
             throw new ArgumentOutOfRangeException(nameof(nzsize));

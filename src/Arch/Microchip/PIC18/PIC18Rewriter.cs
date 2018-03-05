@@ -220,7 +220,7 @@ namespace Reko.Arch.Microchip.PIC18
         private static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PIC18Registers.GlobalData, ea, PrimitiveType.Byte);
 
-        private Expression GetFSRNum(MachineOperand op)
+        private Expression GetFSRRegister(MachineOperand op)
         {
             switch (op)
             {
@@ -442,14 +442,14 @@ namespace Reko.Arch.Microchip.PIC18
                 {
                     case PIC18DataAbsAddrOperand memabsaddr:
                         var reg = PIC18Registers.GetRegisterBySizedAddr(memabsaddr.DataTarget, 8);
-                        if (reg is PICRegisterStorage sfr)
+                        if (reg is PICRegisterStorage sfrReg)
                         {
-                            if (sfr != PICRegisterStorage.None)
+                            if (sfrReg != PICRegisterStorage.None)
                             {
-                                var imode = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
+                                var imode = PIC18Registers.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
                                 if (imode != IndirectRegOp.None)
                                     return (imode, binder.EnsureRegister(fsr));
-                                return (imode, binder.EnsureRegister(sfr));
+                                return (imode, binder.EnsureRegister(sfrReg));
                             }
                         }
                         return (IndirectRegOp.None, DataMem8(PICDataAddress.Ptr(memabsaddr.DataTarget)));
@@ -507,12 +507,12 @@ namespace Reko.Arch.Microchip.PIC18
                     break;
 
                 case IndirectRegOp.POSTINC:
-                    m.Branch(cond, SkipToAddr(), rtlc);
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
                 case IndirectRegOp.POSTDEC:
-                    m.Branch(cond, SkipToAddr(), rtlc);
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
                     m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
@@ -575,31 +575,34 @@ namespace Reko.Arch.Microchip.PIC18
                 case IndirectRegOp.INDF:
                 case IndirectRegOp.PLUSW:
                     m.Assign(dst, src);
+                    m.Branch(cond, SkipToAddr(), rtlc);
                     break;
 
                 case IndirectRegOp.POSTDEC:
                     m.Assign(dst, src);
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
                     m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
                 case IndirectRegOp.POSTINC:
                     m.Assign(dst, src);
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
                 case IndirectRegOp.PREINC:
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     m.Assign(dst, src);
+                    m.Branch(cond, SkipToAddr(), rtlc);
                     break;
             }
-            m.Branch(cond, SkipToAddr(), rtlc);
         }
 
         #endregion
 
         private void RewriteADDFSR()
         {
-            var fsr = GetFSRNum(instrCurr.op1);
+            var fsr = GetFSRRegister(instrCurr.op1);
             var k = GetImmediateValue(instrCurr.op2);
             m.Assign(fsr, m.IAdd(fsr, k));
         }
@@ -987,7 +990,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteLFSR()
         {
-            var sfrN = GetFSRNum(instrCurr.op1);
+            var sfrN = GetFSRRegister(instrCurr.op1);
             var k = GetImmediateValue(instrCurr.op2);
             m.Assign(sfrN, k);
         }
@@ -1332,7 +1335,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteSUBFSR()
         {
-            var fsr = GetFSRNum(instrCurr.op1);
+            var fsr = GetFSRRegister(instrCurr.op1);
             var k = GetImmediateValue(instrCurr.op2);
             m.Assign(fsr, m.ISub(fsr, k));
         }

@@ -104,27 +104,24 @@ namespace Reko.Arch.Microchip.Common
 
         #region Properties
 
+        /// <summary>
+        /// Gets the traits of the PIC register.
+        /// </summary>
         public PICRegisterTraits Traits { get; }
 
         /// <summary>
         /// Gets the data memory address of this register (or null if Non-Memory-Mapped).
         /// </summary>
-        /// <value>
-        /// The address or null.
-        /// </value>
         public PICDataAddress Address => Traits.Address;
 
         /// <summary>
-        /// Gets the Non-Memory-Mapped ID or null if register has a memory address.
+        /// Gets the Non-Memory-Mapped ID or null if register is memory-mapped.
         /// </summary>
         public string NMMRID => Traits.NMMRID;
 
         /// <summary>
-        /// Gets a value indicating whether this register is Non-Memory-Mapped.
+        /// Gets a value indicating whether this register is Memory-Mapped (true) or Non-Memory-Mapped (false)..
         /// </summary>
-        /// <value>
-        /// True if this register is Non-Memory-Mapped, false if not.
-        /// </value>
         public bool IsMemoryMapped => Traits.IsMemoryMapped; 
 
         /// <summary>
@@ -146,7 +143,7 @@ namespace Reko.Arch.Microchip.Common
         public string POR => Traits.POR;
 
         /// <summary>
-        /// Gets the implementation mask.
+        /// Gets the implementation bit-mask.
         /// </summary>
         public ulong Impl => Traits.Impl;
 
@@ -161,7 +158,7 @@ namespace Reko.Arch.Microchip.Common
         public bool IsIndirect => Traits.IsIndirect;
 
         /// <summary>
-        /// Gets the actual bit width of this register.
+        /// Gets the actual bit width of this PIC register.
         /// </summary>
         /// <value>
         /// The width in number of bits.
