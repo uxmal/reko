@@ -27,9 +27,10 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
-	[ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [Guid("12506D0F-1C67-4828-9601-96F8ED4D162D")]
+    [ComVisible(true)]
+    [ComImport]
     [NativeInterop]
     public interface INativeRewriter
     {

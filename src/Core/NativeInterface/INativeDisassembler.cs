@@ -26,6 +26,7 @@ namespace Reko.Core.NativeInterface
     [ComVisible(true)]
     [Guid("10475E6B-D167-4DB3-B211-610F6073A313")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [ComImport]
     [NativeInterop]
     public interface INativeDisassembler
     {

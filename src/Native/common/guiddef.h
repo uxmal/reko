@@ -18,36 +18,35 @@
 #endif
 
 
-#ifdef __WIDL__
-typedef struct {
-  unsigned long Data1;
-  unsigned short Data2;
-  unsigned short Data3;
-  byte Data4[8];
-} GUID;
-#else
 typedef struct _GUID {
   unsigned __LONG32 Data1;
   unsigned short Data2;
   unsigned short Data3;
   unsigned char Data4[8];
 } GUID;
-#endif
-#endif
 
+
+#ifndef _MSC_VER
 #if defined(__cplusplus) && (USE___UUIDOF == 0)
 extern "C++" {
 __extension__ template<typename T> const GUID &__mingw_uuidof();
 }
+#endif
 #endif
 
 #ifndef FAR
 #define FAR
 #endif
 
+
 #ifndef DECLSPEC_SELECTANY
+#if defined(_MSC_VER) && (_MSC_VER >= 1100)
 #define DECLSPEC_SELECTANY __declspec(selectany)
+#else
+#define DECLSPEC_SELECTANY
 #endif
+#endif
+
 
 #ifndef EXTERN_C
 #ifdef __cplusplus
@@ -110,11 +109,6 @@ typedef FMTID *LPFMTID;
 #define FMTID_NULL GUID_NULL
 #define IsEqualFMTID(rfmtid1, rfmtid2) IsEqualGUID (rfmtid1, rfmtid2)
 
-#ifdef __WIDL_proxy
-#define __MIDL_CONST
-#else
-#define __MIDL_CONST const
-#endif
 
 #ifndef _REFGUID_DEFINED
 #define _REFGUID_DEFINED
@@ -153,9 +147,9 @@ typedef FMTID *LPFMTID;
 #endif
 #endif
 
-#ifndef __WIDL__
 #ifndef _SYS_GUID_OPERATORS_
 #define _SYS_GUID_OPERATORS_
+
 #include <string.h>
 
 #ifdef __cplusplus
@@ -166,27 +160,11 @@ __inline int InlineIsEqualGUID (REFGUID rguid1, REFGUID rguid2) {
 __inline int IsEqualGUID (REFGUID rguid1, REFGUID rguid2) {
   return !memcmp (&rguid1,&rguid2, sizeof (GUID));
 }
-#else
-#define InlineIsEqualGUID(rguid1, rguid2) ((&(rguid1)->Data1)[0] == (&(rguid2)->Data1)[0] && (&(rguid1)->Data1)[1] == (&(rguid2)->Data1)[1] && (&(rguid1)->Data1)[2] == (&(rguid2)->Data1)[2] && (&(rguid1)->Data1)[3] == (&(rguid2)->Data1)[3])
-#define IsEqualGUID(rguid1, rguid2) (!memcmp (rguid1, rguid2, sizeof (GUID)))
-#endif
 
-#ifdef __INLINE_ISEQUAL_GUID
-#undef IsEqualGUID
-#define IsEqualGUID(rguid1, rguid2) InlineIsEqualGUID (rguid1, rguid2)
-#endif
-
-#define IsEqualIID(riid1, riid2) IsEqualGUID (riid1, riid2)
-#define IsEqualCLSID(rclsid1, rclsid2) IsEqualGUID (rclsid1, rclsid2)
-
-#if !defined (_SYS_GUID_OPERATOR_EQ_) && !defined (_NO_SYS_GUID_OPERATOR_EQ_)
-#define _SYS_GUID_OPERATOR_EQ_
-#ifdef __cplusplus
-__inline bool operator== (REFGUID guidOne, REFGUID guidOther) { return !!IsEqualGUID (guidOne, guidOther); }
+__inline bool operator== (REFGUID guidOne, REFGUID guidOther) { return !!InlineIsEqualGUID (guidOne, guidOther); }
 __inline bool operator!= (REFGUID guidOne, REFGUID guidOther) { return ! (guidOne == guidOther); }
-#endif
-#endif
 
+#endif
 #endif
 #endif
 #endif

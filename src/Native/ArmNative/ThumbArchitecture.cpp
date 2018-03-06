@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2018 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -72,5 +72,7 @@ INativeRewriter * STDAPICALLTYPE ThumbArchitecture::CreateRewriter(
 	INativeTypeFactory * typeFactory,
 	INativeRewriterHost * host)
 {
-	return new ThumbRewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length - offset, address, m, typeFactory, host);
+	auto rw = new ThumbRewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length - offset, address, m, typeFactory, host);
+	rw->AddRef();
+	return rw;
 }

@@ -90,8 +90,7 @@ namespace Reko.Arch.Arm
                 this.iHost = GetCOMInterface(host, IID_INativeRewriterHost);
 
 				IntPtr unk = CreateNativeRewriter(hBytes.AddrOfPinnedObject(), bytes.Length, (int)outer.rdr.Offset, addr, iRtlEmitter, iNtf, iHost);
-				this.native = (INativeRewriter)Marshal.GetObjectForIUnknown(unk);
-				//Marshal.Release(unk);
+                this.native = (INativeRewriter)Marshal.GetObjectForIUnknown(unk);
             }
 
             public RtlInstructionCluster Current { get; private set; }

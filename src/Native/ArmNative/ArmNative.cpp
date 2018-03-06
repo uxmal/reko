@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2018 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,9 @@ extern "C" {
 			INativeTypeFactory * typeFactory,
 			INativeRewriterHost * host)
 	{
-		return new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
+		auto rw = new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
+		rw->AddRef();
+		return rw;
 	}
 
 	DLLEXPORT INativeArchitecture *

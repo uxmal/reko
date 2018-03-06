@@ -55,7 +55,6 @@ namespace Reko.Arch.Arm
 
             var unk = CreateNativeArchitecture("arm");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
-	        Marshal.Release(unk);
 
             GetRegistersFromNative();
             StackRegister = regsByName["sp"];
