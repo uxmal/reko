@@ -260,7 +260,8 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 		writer.WriteString(risky);
 		break;
 	default:
-		writer.WriteString("$$ UNSUPPORTED");
+		snprintf(risky, sizeof(risky), "$$ UNSUPPORTED operand type %d (%x)", op.type, op.type);
+		writer.WriteString(risky);
 		//throw new NotImplementedException(string.Format(
 		//	"Can't disassemble {0} {1}. Unknown operand type: {2}",
 		//	instruction.Mnemonic,
