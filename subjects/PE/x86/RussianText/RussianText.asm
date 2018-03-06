@@ -16,11 +16,11 @@ _GetExceptDLLinfo proc
 
 ;; fn00401084: 00401084
 fn00401084 proc
-	pusha	
+	pusha
 	mov	ebx,BCB05000
 	push	ebx
 	push	00000BAD
-	ret	
+	ret
 00401091    B9 9C 00 00 00 0B C9 74 4D 83 3D 8B 20 40 00  .......tM.=. @.
 004010A0 00 73 0A B8 FE 00 00 00 E8 D7 FF FF FF B9 9C 00 .s..............
 004010B0 00 00 51 6A 08 E8 9E 01 00 00 50 E8 9E 01 00 00 ..Qj......P.....
@@ -51,7 +51,7 @@ l00401123:
 	call	0040127E
 
 l0040113C:
-	ret	
+	ret
 0040113D                                        C3 83 3D              ..=
 00401140 8B 20 40 00 00 72 10 E8 BF FF FF FF FF 35 8B 20 . @..r.......5. 
 00401150 40 00 E8 2D 01 00 00 C3                         @..-....       
@@ -61,7 +61,7 @@ fn00401158 proc
 	mov	eax,[0040208B]
 	mov	edx,fs:[002C]
 	mov	eax,[edx+eax*4]
-	ret	
+	ret
 00401167                      90                                .       
 
 ;; main: 00401168
@@ -73,17 +73,17 @@ main proc
 	pop	ecx
 	xor	eax,eax
 	pop	ebp
-	ret	
+	ret
 0040117A                               90 90                       ..   
 
 ;; fn0040117C: 0040117C
 fn0040117C proc
-	ret	
+	ret
 0040117D                                        90 90 90              ...
 
 ;; fn00401180: 00401180
 fn00401180 proc
-	ret	
+	ret
 00401181    90 90 90 68 84 21 40 00 6A 00 E8 BC 00 00 00  ...h.!@.j......
 00401190 50 E8 BC 00 00 00 A3 B4 21 40 00 83 3D B4 21 40 P.......!@..=.!@
 004011A0 00 00 75 0A C7 05 B4 21 40 00 98 20 40 00 C3 90 ..u....!@.. @...
@@ -125,7 +125,7 @@ l004011D7:
 	pop	ecx
 	pop	ecx
 	pop	ebp
-	ret	
+	ret
 004011FB                                  90                        .   
 
 ;; fn004011FC: 004011FC
@@ -141,7 +141,7 @@ fn004011FC proc
 	mov	dword ptr [ebx+04],004020E4
 	pop	ebx
 	pop	ebp
-	ret	
+	ret
 00401223          90 E8 AF 00 00 00 A1 EC 50 40 00 8B 10    ........P@...
 00401230 89 15 B8 21 40 00 8B 0D F0 50 40 00 8B 01 A3 BC ...!@....P@.....
 00401240 21 40 00 C3 E8 65 00 00 00 C3 90 90 FF 25 54 50 !@...e.......%TP

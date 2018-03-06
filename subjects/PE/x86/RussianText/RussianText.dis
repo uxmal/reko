@@ -1,265 +1,313 @@
-// _GetExceptDLLinfo
-// Return size: 4
-define _GetExceptDLLinfo
+void _GetExceptDLLinfo()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut:
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
+// Preserved: esp
 __GetExceptDLLinfo_entry:
-	// succ:  l00401071
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l00401071:
-	esp = fp
-	Top = 0
-	// succ:  l00401071_thunk_fn004011FC
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l00401071_thunk_fn004011FC:
-	call fn004011FC (retsize: 0;)
+	fn004011FC(dwArg04)
 	return
-	// succ:  __GetExceptDLLinfo_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 __GetExceptDLLinfo_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> edx:<invalid>
 
 
-// fn00401084
-// Return size: 4
-define fn00401084
+
+void fn00401084()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: bh bl bx ebx esp rbx rsp sp spl
+// Preserved:
 fn00401084_entry:
-	// succ:  l00401084
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
 l00401084:
-	esp = fp
-	Top = 0
-	v3 = esp
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ecx
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = edx
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = v3
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = edi
-	ebx = 0xBCB05000
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x00000BAD
 	return
-	// succ:  fn00401084_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 fn00401084_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000028 ebx:0xBCB05000 -40(fp):0x00000BAD -36(fp):0xBCB05000 -32(fp):edi -28(fp):esi -24(fp):ebp -20(fp):fp -16(fp):ebx -12(fp):edx -8(fp):ecx -4(fp):eax
 
 
-// fn0040110B
-// Return size: 4
-define fn0040110B
+
+void fn0040110B(word32 eax)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  eax
+// LiveOut:
+// Trashed: SCZO ah al ax eax esp rax rsp sp spl
+// Preserved: eax
 fn0040110B_entry:
-	// succ:  l0040110B
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
 l0040110B:
-	esp = fp
-	Top = 0
-	SCZO = cond(Mem0[0x0040208B:word32] - 0x00000000)
-	branch Test(ULT,C) l0040113C
-	// succ:  l00401114 l0040113C
+	branch Mem0[0x0040208B:word32] <u 0x00000000 l0040113C
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
 l00401114:
-	v5 = Mem0[0x0040208B:word32]
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = v5
-	call __CRTL_TLS_GetValue (retsize: 4;)
-	esp = esp + 0xFFFFFFFC
-	eax = eax | eax
-	SZO = cond(eax)
-	C = false
-	branch Test(EQ,Z) l0040113C
-	// succ:  l00401123 l0040113C
+	word32 esp_19
+	byte SCZO_20
+	byte C_21
+	word32 eax_22
+	byte SZO_23
+	byte Z_24
+	call __CRTL_TLS_GetValue (retsize: 4; depth: 8)
+		uses: C_4,dwLoc04_18,eax,esp_17,SCZO_3,SZO,Z
+		defs: C_21,eax_22,esp_19,SCZO_20,SZO_23,Z_24
+	branch eax_22 == 0x00000000 l0040113C
+// DataOut: eax esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l00401123:
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x00000008
-	eax = GetProcessHeap()
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
-	eax = HeapFree(Mem0[esp:HANDLE], Mem0[esp + 4:DWORD], Mem0[esp + 8:LPVOID])
-	esp = esp + 0x0000000C
-	v9 = Mem0[0x0040208B:word32]
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = v9
-	call __CRTL_TLS_ExitThread (retsize: 4;)
-	esp = esp + 0xFFFFFFFC
-	// succ:  l0040113C
+	Mem30[esp_19 - 0x00000004:word32] = eax_22
+	Mem32[esp_19 - 0x00000008:word32] = 0x00000008
+	Mem35[esp_19 - 0x0000000C:word32] = GetProcessHeap()
+	word32 eax_36 = HeapFree(Mem35[esp_19 - 0x0000000C:HANDLE], Mem35[esp_19 - 0x00000008:DWORD], Mem35[esp_19 - 0x00000004:LPVOID])
+	Mem40[esp_19 - 0x00000004:word32] = Mem35[0x0040208B:word32]
+	word32 esp_41
+	byte SCZO_42
+	byte C_43
+	word32 eax_44
+	byte SZO_45
+	byte Z_46
+	call __CRTL_TLS_ExitThread (retsize: 4; depth: 4)
+		uses: C_28,dwLoc04_18,eax_36,esp_39,SCZO_20,SZO_26,Z_27
+		defs: C_43,eax_44,esp_41,SCZO_42,SZO_45,Z_46
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:eax -4(fp):<invalid>
+
 l0040113C:
 	return
-	// succ:  fn0040110B_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> -4(fp):<invalid>
+
 fn0040110B_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> eax:<invalid> -4(fp):<invalid>
 
 
-// fn00401158
-// Return size: 4
-define fn00401158
+
+word32 fn00401158()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut: eax
+// Trashed: ah al ax dh dl dx eax edx rax rdx
+// Preserved: esp
 fn00401158_entry:
-	// succ:  l00401158
+// DataOut: ebx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l00401158:
-	esp = fp
-	Top = 0
-	eax = Mem0[0x0040208B:word32]
-	edx = Mem0[fs:0x002C:word32]
-	eax = Mem0[edx + eax * 0x00000004:word32]
-	return
-	// succ:  fn00401158_exit
+	return Mem0[Mem0[fs:0x002C:word32] + Mem0[0x0040208B:word32] * 0x00000004:word32]
+// DataOut: eax ebx fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 fn00401158_exit:
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> edx:<invalid>
 
 
-// main
-// Return size: 4
-int32 main(int32 argc, char ** argv)
+
+int32 main(int32 argc, char * * argv)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx eax ecx rax rcx
+// Preserved: ebp esp
 main_entry:
-	// succ:  l00401168
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
 l00401168:
-	Mem0[fp + 0x00000004:int32] = argc
-	Mem0[fp + 0x00000008:(ptr (ptr char))] = argv
-	esp = fp
-	Top = 0
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
-	ebp = esp
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x004020A4
-	call printf (retsize: 4;)
-	esp = esp + 0xFFFFFFFC
-	ecx = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	eax = eax ^ eax
-	SZO = cond(eax)
-	C = false
-	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	return
-	// succ:  main_exit
+	printf(0x004020A4)
+	return 0x00000000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> ecx:0x004020A4 ebp:ebp -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
 
 
-// fn0040117C
-// Return size: 4
-define fn0040117C
+
+void fn0040117C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: esp
 fn0040117C_entry:
-	// succ:  l0040117C
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l0040117C:
-	esp = fp
-	Top = 0
 	return
-	// succ:  fn0040117C_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 fn0040117C_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
-// fn00401180
-// Return size: 4
-define fn00401180
+
+void fn00401180()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: esp
 fn00401180_entry:
-	// succ:  l00401180
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l00401180:
-	esp = fp
-	Top = 0
 	return
-	// succ:  fn00401180_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 fn00401180_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
 
 
-// fn004011B0
-// Return size: 4
-define fn004011B0
+
+void fn004011B0(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut:
+// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp rax rbp rbx rcx rdx rsp sp spl
+// Preserved: ebp ebx esp
+// Stack args: Stack +0004(32)
 fn004011B0_entry:
-	// succ:  l004011B0
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
+
 l004011B0:
-	esp = fp
-	Top = 0
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
-	ebp = esp
-	esp = esp + 0xFFFFFFF8
-	SCZO = cond(esp)
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
-	ebx = Mem0[ebp + 0x00000008:word32]
-	SZO = cond(ebx & ebx)
-	C = false
-	al = Test(NE,Z)
-	eax = eax & 0x00000001
-	SZO = cond(eax)
-	C = false
-	SZO = cond(ebx & ebx)
-	C = false
-	branch Test(NE,Z) l004011D7
-	// succ:  l004011C6 l004011D7
+	word32 esp_29 = fp + 0xFFFFFFF0
+	word32 ebx_11 = dwArg04
+	branch dwArg04 != 0x00000000 l004011D7
+// DataOut: ebx esp fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Local -0008(32)
+
 l004011C6:
-	SZO = cond(ebx & ebx)
-	C = false
-	branch Test(NE,Z) l004011D7
-	// succ:  l004011CA l004011D7
+	branch dwArg04 != 0x00000000 l004011D7
+// DataOut: ebx esp fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// LocalsOut: fp(32) Local -0008(32)
+
 l004011CA:
-	edx = ebp - 0x00000008
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = edx
-	call fn004011FC (retsize: 4;)
-	esp = esp + 0x00000004
-	ecx = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	ebx = Mem0[ebp - 0x00000004:word32]
-	// succ:  l004011D7
+	fn004011FC(fp - 0x0000000C)
+	esp_29 = fp + 0xFFFFFFF4
+	ebx_11 = dwLoc08
+// DataOut: ebx esp fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+
 l004011D7:
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x0000009C
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
-	call fn00401158 (retsize: 4;)
-	eax = eax + 0x00000000
-	SCZO = cond(eax)
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
-	call memcpy (retsize: 4;)
-	esp = esp + 0xFFFFFFFC
-	esp = esp + 0x0000000C
-	SCZO = cond(esp)
-	call _InitTermAndUnexPtrs$qv (retsize: 4;)
-	esp = esp + 0xFFFFFFFC
-	ebx = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	ecx = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	ecx = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	word32 esp_30 = esp_29 - 0x00000004
+	Mem31[esp_30:word32] = 0x0000009C
+	Mem33[esp_30 - 0x00000004:word32] = ebx_11
+	Mem37[esp_30 - 0x00000008:word32] = fn00401158()
+	memcpy(Mem37[esp_30 - 0x00000008:(ptr void)], Mem37[esp_30 - 0x00000004:(ptr void)], Mem37[esp_30:size_t])
+	_InitTermAndUnexPtrs()
 	return
-	// succ:  fn004011B0_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:ebx -20(fp):fp - 0x0000000C -16(fp):ebx -4(fp):ebp
+
 fn004011B0_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -16(fp):ebx -4(fp):ebp
 
 
-// fn004011FC
-// Return size: 0
-define fn004011FC
+
+void fn004011FC(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fs
+// LiveOut:
+// Trashed: SCZO ah al ax dh dl dx eax edx rax rdx
+// Preserved: ebp ebx esp
+// Stack args: Stack +0004(32)
 fn004011FC_entry:
-	// succ:  l004011FC
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
 l004011FC:
-	esp = fp
-	Top = 0
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
-	ebp = esp
-	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
-	ebx = Mem0[ebp + 0x00000008:word32]
-	call fn00401158 (retsize: 4;)
-	eax = eax + 0x0000001C
-	SCZO = cond(eax)
-	Mem0[0x004020F8:word32] = eax
-	Mem0[ebx:word32] = 0x82727349
-	Mem0[ebx + 0x00000004:word32] = 0x004020E4
-	ebx = Mem0[esp:word32]
-	esp = esp + 0x00000004
-	ebp = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	Mem14[0x004020F8:word32] = fn00401158() + 0x0000001C
+	Mem15[dwArg04:word32] = 0x82727349
+	Mem16[dwArg04 + 0x00000004:word32] = 0x004020E4
 	return
-	// succ:  fn004011FC_exit
+// DataOut: fs
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 fn004011FC_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp ebx:ebx eax:<invalid> edx:<invalid> -8(fp):ebx -4(fp):ebp
+
 
 

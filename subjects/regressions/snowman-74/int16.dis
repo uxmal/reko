@@ -1,25 +1,27 @@
 int32 get(int32 dwArg04)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ecx:[0..31] Stack +0004:[0..31]
-// LiveOut: eax
-// Trashed: eax
-// Preserved:
+// MayUse:  ecx
+// LiveOut:
+// Trashed: SCZO ah al ax eax rax
+// Preserved: ecx esp
+// Stack args: Stack +0004(32)
 ?get@A@@AAEHH@Z_entry:
-// DataOut:
+// DataOut: ecx
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: esp:fp
+// LocalsOut: Stack +0004(32)
 
 l10071000:
-	return Mem7[this:word32] + dwArg04
+	return Mem0[this:word32] + dwArg04
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: esp:fp
 
 ?get@A@@AAEHH@Z_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: esp:fp ecx:this eax:<invalid> 4(fp):dwArg04
 
 
 
@@ -27,24 +29,24 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: eax
-// Trashed: eax
-// Preserved:
+// LiveOut:
+// Trashed: ah al ax eax rax
+// Preserved: esp
 DllMain_entry:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: esp:fp
 
 l10071010:
 	return 0x00000001
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: esp:fp
 
 DllMain_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: esp:fp eax:0x00000001 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
 
 
 

@@ -1946,8 +1946,8 @@ SysCtlClkVerificationClear proc
 ;; UARTParityModeSet: 00009F39
 UARTParityModeSet proc
 	ldrbthi	r2,[r0],r10,ror #6
-	mrsgt	r1,The given key was not present in the dictionary.
-
+	mrsgt	r1,spsr
+	subgt	r7,r7,r2,rrx
 
 ;; UARTParityModeGet: 00009F45
 UARTParityModeGet proc

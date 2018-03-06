@@ -1,54 +1,82 @@
-// get
-// Return size: 4
 char * get(uint32 n)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax eax rax
+// Preserved: esp
+// Stack args: Stack +0004(32)
 get_entry:
-	// succ:  l10071000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: Stack +0004(32)
+
 l10071000:
-	Mem0[fp + 0x00000004:uint32] = n
-	esp = fp
-	Top = 0
-	eax = Mem0[esp + 0x00000004:word32]
-	eax = eax + 0x00000001
-	SZO = cond(eax)
-	SCZO = cond(eax - 0x00000003)
-	branch Test(UGT,CZ) l10071029
-	// succ:  l1007100A l10071029
-l1007100A:
-	switch (eax) { l10071011 l10071017 l1007101D }
-	// succ:  l10071011 l10071017 l1007101D
-l10071011:
-	eax = 0x10072018
-	return
-	// succ:  get_exit
-l10071017:
-	eax = 0x10072014
-	return
-	// succ:  get_exit
-l1007101D:
-	eax = 0x10072010
-	return
-	// succ:  get_exit
+	branch n >u 0xFFFFFFFE l10071029
+// DataOut: eax
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l10071029:
-	eax = 0x10072000
-	return
-	// succ:  get_exit
+	return 0x10072000
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l1007100A:
+	switch (n + 0x00000001) { l10071011 l10071017 l1007101D }
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l1007101D:
+	return 0x10072010
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l10071017:
+	return 0x10072014
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
+l10071011:
+	return 0x10072018
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:n + 0x00000001 4(fp):n
+
 get_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> 4(fp):n
 
 
-// DllMain
-// Return size: 4
+
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+// stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: ah al ax eax rax
+// Preserved: esp
 DllMain_entry:
-	// succ:  l10071080
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 l10071080:
-	Mem0[fp + 0x00000004:HANDLE] = hModule
-	Mem0[fp + 0x00000004:DWORD] = dwReason
-	Mem0[fp + 0x00000004:LPVOID] = lpReserved
-	esp = fp
-	Top = 0
-	eax = 0x00000001
-	return
-	// succ:  DllMain_exit
+	return 0x00000001
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
 DllMain_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:0x00000001 4(fp):hModule 8(fp):dwReason 12(fp):lpReserved
+
 
 

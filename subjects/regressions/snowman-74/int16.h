@@ -42,7 +42,7 @@ T_6: (in this + 0x00000000 : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_7: (in Mem7[this + 0x00000000:word32] : word32)
+T_7: (in Mem0[this + 0x00000000:word32] : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
