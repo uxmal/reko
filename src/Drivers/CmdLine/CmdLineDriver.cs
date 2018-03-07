@@ -385,9 +385,9 @@ namespace Reko.CmdLine
         private void ShowPICs(TextWriter w)
         {
             picDB = PICCrownking.GetDB();
-            if (picDB == null || picDB.LastError != DBErrorCode.NoError)
+            if (picDB == null || PICCrownking.LastError != DBErrorCode.NoError)
             {
-                Console.WriteLine("No or wrong PIC database.");
+                Console.WriteLine($"No or wrong PIC database (Error={PICCrownking.LastError}).");
                 return;
             }
 

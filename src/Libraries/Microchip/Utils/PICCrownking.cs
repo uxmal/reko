@@ -109,7 +109,7 @@ namespace Reko.Libraries.Microchip
         /// <value>
         /// The last error as a value from <see cref="DBErrorCode"/> enumeration.
         /// </value>
-        public DBErrorCode LastError { get; private set; }
+        public static DBErrorCode LastError { get; private set; }
 
         /// <summary>
         /// Gets the status the PIC database
@@ -117,7 +117,7 @@ namespace Reko.Libraries.Microchip
         /// <value>
         /// The database status as a value from <see cref="DBStatus"/> enumeration.
         /// </value>
-        public DBStatus Status { get; private set; }
+        public static DBStatus Status { get; private set; }
 
         /// <summary>
         /// Gets the full pathname of the current database file.
@@ -140,8 +140,9 @@ namespace Reko.Libraries.Microchip
         {
             if (currentDB == null)
             {
+               
                 currentDB = new PICCrownking();
-                if (currentDB.LastError != DBErrorCode.NoError)
+                if (LastError != DBErrorCode.NoError)
                     currentDB = null;
             }
             return currentDB;
