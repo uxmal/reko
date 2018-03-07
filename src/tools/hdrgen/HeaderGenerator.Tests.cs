@@ -71,12 +71,12 @@ namespace Reko.Tools.HdrGen
             var sExp =
             #region Expected
 @"// {12506D0F-1C67-4828-9601-96F8ED4D162D}
-const IID IID_INativeRewriter =
-    {0x12506d0f,0x1c67,0x4828,{0x96,0x01,0x96,0xf8,0xed,0x4d,0x16,0x2d}};
+DEFINE_GUID(IID_INativeRewriter, 0x12506D0F,0x1C67,0x4828,0x96,0x01,0x96,0xF8,0xED,0x4D,0x16,0x2D);
 ";
             #endregion
             var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
             hdrgen.WriteGuidDefinition("INativeRewriter", "12506D0F-1C67-4828-9601-96F8ED4D162D");
+            Debug.Print(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -88,8 +88,7 @@ const IID IID_INativeRewriter =
             var sExp =
             #region Expected
 @"// {12506D0F-1C67-4828-9601-96F8ED4D162D}
-const IID IID_INativeRewriter =
-    {0x12506d0f,0x1c67,0x4828,{0x96,0x01,0x96,0xf8,0xed,0x4d,0x16,0x2d}};
+DEFINE_GUID(IID_INativeRewriter, 0x12506D0F,0x1C67,0x4828,0x96,0x01,0x96,0xF8,0xED,0x4D,0x16,0x2D);
 class INativeRewriter : public IUnknown
 {
 public:
@@ -98,6 +97,7 @@ public:
 };
 ";
             #endregion
+            Debug.Print(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
