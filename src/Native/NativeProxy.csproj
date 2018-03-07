@@ -129,7 +129,6 @@
   </Target>
   <Target Name="AfterBuild">
     <!-- Start building the native shared libraries using CMake -->
-    <Message Importance="High" Text="***** HELLO EVERYBODY AND MY PLATFORM IS $(Platform)" />
     <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="..\tools\hdrgen\bin\$(Configuration)\hdrgen.exe $(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll $(ProjectDir)include\reko.h" WorkingDirectory="$(ProjectDir)" />
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="../tools/hdrgen/bin/$(Configuration)/hdrgen.exe $(SolutionDir)Core/bin/$(Configuration)/Reko.Core.dll $(ProjectDir)include/reko.h" WorkingDirectory="$(ProjectDir)" />
     <!-- FIXME: not all C# configurations are valid CMake configurations -->
