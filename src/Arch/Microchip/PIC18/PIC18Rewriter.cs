@@ -360,10 +360,10 @@ namespace Reko.Arch.Microchip.PIC18
                         // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
                         // 
                         var accAddr = PIC18MemoryDescriptor.RemapDataAddress(offset.ToUInt16());
-                        var sfr = PIC18Registers.GetRegisterBySizedAddr(accAddr, 8) as PICRegisterStorage;
-                        if (sfr != PICRegisterStorage.None)
+                        var sfr = PICRegisters.GetRegisterBySizedAddr(accAddr, 8);
+                        if (sfr != RegisterStorage.None)
                         {
-                            var iop = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
+                            var iop = PIC18Registers.IndirectOpMode(sfr as PICRegisterStorage, out PICRegisterStorage fsr);
                             if (iop != IndirectRegOp.None)
                                 return (iop, binder.EnsureRegister(fsr));
                             return (iop, binder.EnsureRegister(sfr));
