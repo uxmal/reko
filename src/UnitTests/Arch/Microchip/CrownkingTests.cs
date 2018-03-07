@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         public void LoadDB()
         {
             db = PICCrownking.GetDB();
-            Assert.That(db, Is.Not.Null, "No accessible PIC XML database");
+            Assert.That(db, Is.Not.Null, $"No accessible PIC XML database - {PICCrownking.LastErrMsg}.");
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         private PIC _getPIC(string sPICName)
         {
             PIC pic = db.GetPIC(sPICName);
-            Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for {sPICName}.");
+            Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}.");
             Assert.That(pic.Name, Is.EqualTo(sPICName));
             return pic;
         }
@@ -83,14 +83,14 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
         {
             string sPICName = "PIC16F84A";
             XElement xpic = db.GetPICAsXML(sPICName);
-            Assert.That(xpic, Is.Not.Null, $"Unable to load {sPICName} XML");
+            Assert.That(xpic, Is.Not.Null, $"Unable to load '{sPICName}' XML - {PICCrownking.LastErrMsg}.");
             Assert.That(xpic.Name.LocalName, Is.EqualTo("PIC"));
             Assert.That(xpic.Attribute("name").Value, Is.EqualTo(sPICName));
             Assert.That(xpic.Attribute("arch").Value, Is.EqualTo("16xxxx"));
             Assert.That(xpic.GetAsBoolean("isextended"), Is.False);
 
             PIC pic = xpic.ToObject<PIC>();
-            Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for {sPICName}.");
+            Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}..");
             Assert.That(pic.Name, Is.EqualTo(sPICName));
             Assert.That(pic.Arch, Is.EqualTo("16xxxx"));
             Assert.That(pic.IsExtended, Is.False);

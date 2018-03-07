@@ -27,8 +27,6 @@ namespace Reko.Libraries.Microchip
     using System.IO.Compression;
     using System.Reflection;
     using System.Xml.Linq;
-    using System.Linq;
-    using System.Text.RegularExpressions;
 
 
     /// <summary>
@@ -66,10 +64,20 @@ namespace Reko.Libraries.Microchip
             return new PICCrownkingException(err, msg);
         }
 
+        private void SetError(DBErrorCode dberr, DBStatus stat, string errMsg)
+        {
+            LastError = dberr;
+            Status = stat;
+            LastErrMsg = errMsg;
+        }
+
         private void CheckDBExist()
         {
             if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
             {
+                SetError(DBErrorCode.NoDBFile,
+                         DBStatus.NoDB,
+                         (CurrentDBPath==null? "Unable to get PIC DB file pathname" : "PIC DB file not found"));
                 throw RaiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
             }
         }
@@ -85,18 +93,16 @@ namespace Reko.Libraries.Microchip
 
         private void OpenDB()
         {
+            SetError(DBErrorCode.NoError, DBStatus.DBOK, string.Empty);
             CurrentDBPath = GetPICLocalDBFilePath();
 
             // No local database, check presence of IDE X database
             if (CurrentDBPath == null || !File.Exists(CurrentDBPath))
             {
-                Status = DBStatus.NoDB;
-                LastError = DBErrorCode.NoDBFile;
-                return;
+                SetError(DBErrorCode.NoDBFile,
+                         DBStatus.NoDB,
+                         (CurrentDBPath == null ? "Unable to get PIC DB file pathname" : "PIC DB file not found"));
             }
-            // Local database is present. Check if out-of-date versus optional IDE X database
-            Status = DBStatus.DBOK;
-            LastError = DBErrorCode.NoError;
         }
 
         #endregion
@@ -109,7 +115,15 @@ namespace Reko.Libraries.Microchip
         /// <value>
         /// The last error as a value from <see cref="DBErrorCode"/> enumeration.
         /// </value>
-        public static DBErrorCode LastError { get; private set; }
+        public static DBErrorCode LastError { get; private set; } = DBErrorCode.NoError;
+
+        /// <summary>
+        /// Gets the last error message.
+        /// </summary>
+        /// <value>
+        /// The last error message.
+        /// </value>
+        public static string LastErrMsg { get; private set; } = string.Empty;
 
         /// <summary>
         /// Gets the status the PIC database
@@ -117,7 +131,7 @@ namespace Reko.Libraries.Microchip
         /// <value>
         /// The database status as a value from <see cref="DBStatus"/> enumeration.
         /// </value>
-        public static DBStatus Status { get; private set; }
+        public static DBStatus Status { get; private set; } = DBStatus.DBOK;
 
         /// <summary>
         /// Gets the full pathname of the current database file.
@@ -140,10 +154,11 @@ namespace Reko.Libraries.Microchip
         {
             if (currentDB == null)
             {
-               
                 currentDB = new PICCrownking();
                 if (LastError != DBErrorCode.NoError)
+                {
                     currentDB = null;
+                }
             }
             return currentDB;
         }
@@ -161,7 +176,7 @@ namespace Reko.Libraries.Microchip
         {
             XElement xmlpic = null;
             string contentpath = null;
-            LastError = DBErrorCode.NoSuchPIC;
+            SetError(DBErrorCode.NoSuchPIC, DBStatus.DBOK, $"PIC '{sPICName}' not found in database");
             CheckDBExist();
 
             if (String.IsNullOrEmpty(sPICName))
@@ -184,13 +199,17 @@ namespace Reko.Libraries.Microchip
                         {
                             using (var eo = entry.Open())
                                 xmlpic = XDocument.Load(eo)?.Root;
-                            LastError = xmlpic == null ? DBErrorCode.WrongDB : DBErrorCode.NoError;
+                            if (xmlpic == null)
+                                SetError(DBErrorCode.WrongDB, DBStatus.DBOK, "Invalid PIC database format");
+                            else
+                                SetError(DBErrorCode.NoError, DBStatus.DBOK, string.Empty);
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     xmlpic = null;
+                    SetError(DBErrorCode.NoSuchPIC, DBStatus.DBOK, $"{nameof(GetPICAsXML)}: {ex.Message}");
                 }
             }
 

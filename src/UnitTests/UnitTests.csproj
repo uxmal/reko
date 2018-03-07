@@ -871,7 +871,7 @@
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Tools\genPICdb\picdb.zip" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
