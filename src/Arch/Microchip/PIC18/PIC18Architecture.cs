@@ -104,7 +104,7 @@ namespace Reko.Arch.Microchip.PIC18
                     try
                     {
                         PICCrownking db = PICCrownking.GetDB() ??
-                            throw new InvalidOperationException($"Cannot get access to PIC database. DBError={PICCrownking.LastError}.");
+                            throw new InvalidOperationException($"Cannot get access to PIC database. (DBError={PICCrownking.LastErrMsg}).");
                         PIC pic = db.GetPIC(CPUModel) ?? throw new InvalidOperationException($"No such PIC: '{CPUModel}'");
                         PICDescriptor = pic;
                     }
