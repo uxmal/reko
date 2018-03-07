@@ -48,27 +48,34 @@
     <Compile Include="Common\IDeviceConfigDefs.cs" />
     <Compile Include="Common\PICAddresses.cs" />
     <Compile Include="Common\DeviceConfigDefs.cs" />
+    <Compile Include="Common\PICRegisters.cs" />
     <Compile Include="Common\PICRegisterTraits.cs" />
+    <Compile Include="PIC16\FlagM.cs" />
+    <Compile Include="PIC16\IOperandVisitor.cs" />
+    <Compile Include="PIC16\Instruction.cs" />
+    <Compile Include="PIC16\Operands.cs" />
+    <Compile Include="PIC16\PIC16EMemoryDescriptor.cs" />
+    <Compile Include="PIC16\Registers.cs" />
     <Compile Include="PIC18\IOperandShadow.cs" />
     <Compile Include="Common\IMemoryMap.cs" />
-    <Compile Include="PIC18\IPIC18MemoryDescriptor.cs" />
+    <Compile Include="Common\IPICMemoryDescriptor.cs" />
     <Compile Include="Common\IPICRegisterSymTable.cs" />
     <Compile Include="Common\MemoryMap.cs" />
     <Compile Include="Common\PICRegistersBuilder.cs" />
     <Compile Include="Common\PICStorage.cs" />
     <Compile Include="PIC16\Opcode.cs" />
     <Compile Include="PIC18\FlagM.cs" />
-    <Compile Include="PIC18\IPIC18OperandVisitor.cs" />
+    <Compile Include="PIC18\IOperandVisitor.cs" />
     <Compile Include="PIC18\MemoryOperand.cs" />
     <Compile Include="PIC18\Opcode.cs" />
-    <Compile Include="PIC18\PIC18BankedAddress.cs" />
+    <Compile Include="PIC18\BankedAddress.cs" />
     <Compile Include="PIC18\PIC18Disassembler.cs" />
-    <Compile Include="PIC18\PIC18Instruction.cs" />
+    <Compile Include="PIC18\Instruction.cs" />
     <Compile Include="PIC18\PIC18Architecture.cs" />
     <Compile Include="PIC18\PIC18InstructionComparer.cs" />
-    <Compile Include="PIC18\PIC18Operand.cs" />
+    <Compile Include="PIC18\Operands.cs" />
     <Compile Include="PIC18\PIC18PointerScanner.cs" />
-    <Compile Include="PIC18\PIC18Registers.cs" />
+    <Compile Include="PIC18\Registers.cs" />
     <Compile Include="PIC18\PIC18Rewriter.cs" />
     <Compile Include="PIC18\PIC18State.cs" />
     <Compile Include="PIC18\PIC18MemoryDescriptor.cs" />
@@ -86,5 +93,6 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

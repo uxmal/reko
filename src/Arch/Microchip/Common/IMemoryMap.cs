@@ -48,6 +48,11 @@ namespace Reko.Arch.Microchip.Common
         PICExecMode ExecMode { get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether this map is valid. Meaning it contains all the mandatory information.
+        /// </summary>
+        bool IsValid { get; }
+
+        /// <summary>
         /// Gets the instruction set identifier of the target PIC.
         /// </summary>
         /// <value>
@@ -118,6 +123,15 @@ namespace Reko.Arch.Microchip.Common
         ILinearRegion LinearSector { get; }
 
         /// <summary>
+        /// Remap a data memory address.
+        /// </summary>
+        /// <param name="lAddr">The logical memory address.</param>
+        /// <returns>
+        /// The physical memory address.
+        /// </returns>
+        PICDataAddress RemapDataAddress(PICDataAddress lAddr);
+
+        /// <summary>
         /// Gets a program memory region given its name ID.
         /// </summary>
         /// <param name="sregionName">Name ID of the memory region.</param>
@@ -145,6 +159,14 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         IEnumerable<IMemoryRegion> ProgramRegions { get; }
 
+        /// <summary>
+        /// Remap a program memory address.
+        /// </summary>
+        /// <param name="lAddr">The logical memory address.</param>
+        /// <returns>
+        /// The physical memory address.
+        /// </returns>
+        PICProgAddress RemapProgramAddress(PICProgAddress lAddr);
     }
 
 }

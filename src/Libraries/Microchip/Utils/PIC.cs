@@ -5680,7 +5680,8 @@ namespace Reko.Libraries.Microchip
     {
         #region Locals
 
-        // Maps the 'InstructionsetID' to internal code.
+        // Maps the 'InstructionsetID' identifiers to internal code.
+        //
         private static Dictionary<string, InstructionSetID> mapInstrID = new Dictionary<string, InstructionSetID>() {
                 { "pic16f77", InstructionSetID.PIC16 },
                 { "cpu_mid_v10", InstructionSetID.PIC16_ENHANCED },

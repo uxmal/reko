@@ -20,7 +20,6 @@
  */
 #endregion
 
-using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -33,6 +32,7 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
+    using Common;
 
     public class PIC18Rewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -349,7 +349,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                         // We have some sort of Access Bank RAM type of access; either Lower or Upper area.
                         //
-                        if (PIC18MemoryDescriptor.BelongsToAccessRAMLow(offset))
+                        if (PIC18MemoryDescriptor.CanBeFSR2IndexAddress(offset.ToUInt16()))
                         {
                             if (bmem.ExecMode == PICExecMode.Traditional)
                                 return (IndirectRegOp.None, DataMem8(offset));
@@ -359,7 +359,7 @@ namespace Reko.Arch.Microchip.PIC18
 
                         // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
                         // 
-                        var accAddr = PIC18MemoryDescriptor.TranslateAccessAddress(offset);
+                        var accAddr = PIC18MemoryDescriptor.RemapDataAddress(offset.ToUInt16());
                         var sfr = PIC18Registers.GetRegisterBySizedAddr(accAddr, 8) as PICRegisterStorage;
                         if (sfr != PICRegisterStorage.None)
                         {

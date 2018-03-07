@@ -43,12 +43,12 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the logical byte addresses range.
         /// </summary>
-        AddressRange LogicalByteAddress { get; }
+        AddressRange LogicalByteAddrRange { get; }
 
         /// <summary>
         /// Gets the corresponding physical byte addresses range.
         /// </summary>
-        AddressRange PhysicalByteAddress { get; }
+        AddressRange PhysicalByteAddrRange { get; }
 
         /// <summary>
         /// Gets the memory region total size in bytes.

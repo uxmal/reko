@@ -65,6 +65,8 @@ namespace Reko.Arch.Microchip.PIC18
                         return false;
                     if (memOpA.Width != memOpB.Width)
                         return false;
+                    if (memOpA.IsAccess != memOpB.IsAccess)
+                        return false;
                     return true;
 
                 case PseudoDataOperand pseudoA:
@@ -73,7 +75,7 @@ namespace Reko.Arch.Microchip.PIC18
                         return false;
                     if (pseudoA.Values.Length != pseudoB.Values.Length)
                         return false;
-                    return (pseudoA.Values == pseudoB.Values);
+                    return NormalizeConstants || (pseudoA.Values == pseudoB.Values);
                     
                 default:
                     throw new NotImplementedException($"NYI: {opA.GetType()}");

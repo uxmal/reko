@@ -32,7 +32,7 @@ namespace Reko.Arch.Microchip.PIC18
 {
 
     /// <summary>
-    /// The state of an PIC18 processor. Used in the Scanning phase of the decompiler.
+    /// The state of a PIC18 processor. Used in the Scanning phase of the decompiler.
     /// </summary>
     public class PIC18State : ProcessorState
     {

@@ -23,22 +23,31 @@
 namespace Reko.Arch.Microchip.PIC16
 {
     /// <summary>
-    /// Values that represent opcodes of the PIC16 Mid-Range/Enhanced family.
+    /// Values that represent opcodes of the PIC16 family.
     /// Note: Opcodes are defined in uppercase to conform to Microchip MPASM user's guide syntax.
     /// </summary>
     public enum Opcode
     {
-        illegal,
+        invalid,
+        unaligned,
+        ///<summary>Add literal with FSR.</summary>
+        ADDFSR,
         ///<summary>Add literal with W.</summary>
         ADDLW,
         ///<summary>Add W with f.</summary>
         ADDWF,
+        ///<summary>Add W and Carry bit with f.</summary>
+        ADDWFC,
         ///<summary>AND literal with W.</summary>
         ANDLW,
         ///<summary>AND W with f.</summary>
         ANDWF,
+        ///<summary>Arithmetic Right shift.</summary>
+        ASRF,
         ///<summary>Bit clear f.</summary>
         BCF,
+        ///<summary>Relative branch.</summary>
+        BRA,
         ///<summary>Relative branch with W.</summary>
         BRW,
         ///<summary>Bit set f.</summary>
@@ -49,6 +58,8 @@ namespace Reko.Arch.Microchip.PIC16
         BTFSS,
         ///<summary>Call subroutine.</summary>
         CALL,
+        ///<summary>Subroutine Call With W.</summary>
+        CALLW,
         ///<summary>Clear f.</summary>
         CLRF,
         ///<summary>Clear W.</summary>
@@ -71,16 +82,30 @@ namespace Reko.Arch.Microchip.PIC16
         IORLW,
         ///<summary>Inclusive OR W with f.</summary>
         IORWF,
+        ///<summary>Logical Left Shift.</summary>
+        LSLF,
+        ///<summary>Logical Right Shift.</summary>
+        LSRF,
         ///<summary>Move f.</summary>
         MOVF,
+        ///<summary>Move INDFn to W - or - Move k[FSRn] to W.</summary>
+        MOVIW,
+        ///<summary>Move literal to BSR.</summary>
+        MOVLB,
+        ///<summary>Move literal to PCLATH.</summary>
+        MOVLP,
         ///<summary>Move literal to W.</summary>
         MOVLW,
         ///<summary>Move W to f.</summary>
         MOVWF,
+        ///<summary>Move W to INDFn -or - Move W to k[FSRn].</summary>
+        MOVWI,
         ///<summary>No operation.</summary>
         NOP,
         ///<summary>Load OPTION register with W.</summary>
         OPTION,
+        ///<summary>Software Reset.</summary>
+        RESET,
         ///<summary>Return from interrupt.</summary>
         RETFIE,
         ///<summary>Return with literal in W.</summary>
@@ -97,6 +122,8 @@ namespace Reko.Arch.Microchip.PIC16
         SUBLW,
         ///<summary>Substract W from f.</summary>
         SUBWF,
+        ///<summary>Subtract W from f with Borrow.</summary>
+        SUBWFB,
         ///<summary>Swap nibbles in f.</summary>
         SWAPF,
         ///<summary>Load TRIS register with W.</summary>
@@ -105,32 +132,6 @@ namespace Reko.Arch.Microchip.PIC16
         XORLW,
         ///<summary>Exclusive OR W with f.</summary>
         XORWF,
-        ///<summary>Add literal to FSRn.</summary>
-        ADDFSR,
-        ///<summary>Add W and CARRY bit to f.</summary>
-        ADDWFC,
-        ///<summary>Arithmetic right shift.</summary>
-        ASRF,
-        ///<summary>Relative branch.</summary>
-        BRA,
-        ///<summary>Subroutine call with W.</summary>
-        CALLW,
-        ///<summary>Logical left shift.</summary>
-        LSLF,
-        ///<summary>Logical right shift.</summary>
-        LSRF,
-        ///<summary>Move INDFn to W - or - Move k[FSRn] to W.</summary>
-        MOVIW,
-        ///<summary>Move literal to BSR.</summary>
-        MOVLB,
-        ///<summary>Move literal to PCLATH.</summary>
-        MOVLP,
-        ///<summary>Move W to INDFn -or - Move W to k[FSRn].</summary>
-        MOVWI,
-        ///<summary>Reset processor.</summary>
-        RESET,
-        ///<summary>Subtract W from f with Borrow.</summary>
-        SUBWFB,
 
         // Pseudo-instructions
 
