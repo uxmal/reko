@@ -77,7 +77,9 @@ namespace Reko.Libraries.Microchip
             {
                 SetError(DBErrorCode.NoDBFile,
                          DBStatus.NoDB,
-                         (CurrentDBPath==null? "Unable to get PIC DB file pathname" : "PIC DB file not found"));
+                         nameof(CheckDBExist) + ": " + (CurrentDBPath == null
+                                                            ? "Unable to get PIC DB file pathname"
+                                                            : $"PIC DB file '{CurrentDBPath}' not found"));
                 throw RaiseError(DBErrorCode.NoDBFile, "No Microchip XML PIC definitions available on this system");
             }
         }
@@ -85,7 +87,7 @@ namespace Reko.Libraries.Microchip
         private string GetPICLocalDBFilePath()
         {
             Assembly CrownkingAssembly;
-            CrownkingAssembly = Assembly.GetAssembly(this.GetType());
+            CrownkingAssembly = Assembly.GetAssembly(GetType());
             string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
             string path = Path.Combine(sDir, localdbfile);
             return path;
@@ -101,7 +103,9 @@ namespace Reko.Libraries.Microchip
             {
                 SetError(DBErrorCode.NoDBFile,
                          DBStatus.NoDB,
-                         (CurrentDBPath == null ? "Unable to get PIC DB file pathname" : "PIC DB file not found"));
+                         nameof(OpenDB) + ": " + (CurrentDBPath == null
+                                                    ? "Unable to get PIC DB file pathname"
+                                                    : $"PIC DB file '{CurrentDBPath}' not found"));
             }
         }
 
