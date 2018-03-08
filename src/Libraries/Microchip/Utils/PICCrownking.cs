@@ -90,6 +90,11 @@ namespace Reko.Libraries.Microchip
             CrownkingAssembly = Assembly.GetAssembly(GetType());
             string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
             string path = Path.Combine(sDir, localdbfile);
+            if (!File.Exists(path))
+            {
+                sDir = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                path = Path.Combine(sDir, localdbfile);
+            }
             return path;
         }
 
