@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         public override Address LoadAddress
         {
-            get { return Address.SegPtr(0, 0); }
+            get { return Address.Ptr16(0); }
         }
 
         protected override ImageWriter CreateImageWriter(byte[] bytes)
@@ -73,6 +73,54 @@ namespace Reko.UnitTests.Arch.i8051
         {
             var instr = DisassembleBytes(0x02, 0x12, 0x34);
             Assert.AreEqual("ljmp\t1234", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_jbc()
+        {
+            var instr = DisassembleBytes(0x10,0x82,0x0D);
+            Assert.AreEqual("jbc\tP0.2,0010", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_inc()
+        {
+            var instr = DisassembleBytes(0x08);
+            Assert.AreEqual("inc\tR0", instr.ToString());
+
+            instr = DisassembleBytes(0x04);
+            Assert.AreEqual("inc\tA", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_add()
+        {
+            var instr = DisassembleBytes(0x25, 0x25);
+            Assert.AreEqual("add\tA,[0025]", instr.ToString());
+
+            instr = DisassembleBytes(0x2B);
+            Assert.AreEqual("add\tA,R3", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_anl()
+        {
+            var instr = DisassembleBytes(0xB0, 0x93);
+            Assert.AreEqual("anl\tC,/P1.3", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_mov()
+        {
+            var instr = DisassembleBytes(0xA2,0x84);
+            Assert.AreEqual("mov\tC,P0.4", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_sjmp()
+        {
+            var instr = DisassembleBytes(0x80, 0xFE);
+            Assert.AreEqual("sjmp\t0000", instr.ToString());
         }
     }
 }

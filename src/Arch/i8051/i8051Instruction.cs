@@ -51,20 +51,27 @@ namespace Reko.Arch.i8051
         }
 
         public Opcode Opcode { get; set; }
-        public MachineOperand Operand { get; set; }
+        public MachineOperand Operand1 { get; set; }
+        public MachineOperand Operand2 { get; set; }
 
         public override MachineOperand GetOperand(int i)
         {
-            return (i == 0) ? Operand : null;
+            if (i == 0) return Operand1;
+            if (i == 1) return Operand2;
+            return null;
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
-            if (Operand == null)
+            if (Operand1 == null)
                 return;
             writer.Tab();
-            Operand.Write(writer, options);
+            Operand1.Write(writer, options);
+            if (Operand2 == null)
+                return;
+            writer.Write(",");
+            Operand2.Write(writer, options);
         }
     }
 }

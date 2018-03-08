@@ -20,11 +20,13 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +35,15 @@ namespace Reko.Arch.i8051
 {
     public class i8051Architecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public i8051Architecture(string archId) : base(archId)
         {
+            this.StackRegister = Registers.SP;
+            this.WordWidth = PrimitiveType.Byte;
+            this.PointerType = PrimitiveType.Ptr16;
+            this.InstructionBitSize = 8;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -44,27 +53,27 @@ namespace Reko.Arch.i8051
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new BeImageReader(img, addrBegin, addrEnd);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            return new LeImageReader(img, off);
+            return new BeImageReader(img, off);
         }
 
         public override ImageWriter CreateImageWriter()
         {
-            throw new NotImplementedException();
+            return new BeImageWriter();
         }
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -94,7 +103,13 @@ namespace Reko.Arch.i8051
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var grfStg))
+                return grfStg;
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            grfStg = new FlagGroupStorage(Registers.PSW, grf, GrfToString(grf), dt);
+            flagGroups.Add(grfStg.FlagGroupBits, grfStg);
+            return grfStg;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -129,7 +144,11 @@ namespace Reko.Arch.i8051
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            if ((grf & (uint)FlagM.C) != 0)
+                sb.Append("C");
+            Debug.Assert(sb.Length > 0);
+            return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -149,7 +168,7 @@ namespace Reko.Arch.i8051
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 }

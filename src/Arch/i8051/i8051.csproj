@@ -41,13 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitOperand.cs" />
     <Compile Include="i8051Architecture.cs" />
     <Compile Include="i8051Disassembler.cs" />
     <Compile Include="i8051Instruction.cs" />
     <Compile Include="i8051Rewriter.cs" />
     <Compile Include="i8051State.cs" />
+    <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

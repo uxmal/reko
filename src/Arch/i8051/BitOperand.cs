@@ -18,52 +18,38 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Core.Machine
+namespace Reko.Arch.i8051
 {
-    /// <summary>
-    /// Represents a register operand of a <code>MachineInstruction</code>. Most
-    /// modern architectures support this.
-    /// </summary>
-    public class RegisterOperand : MachineOperand
+    public class BitOperand : MachineOperand
     {
-        private RegisterStorage reg;
-
-        public RegisterOperand(RegisterStorage reg) :
-            base(reg.DataType)
+        public BitOperand(RegisterStorage sfr, int bit, bool negated) : base(PrimitiveType.Bool)
         {
-            this.reg = reg;
+            this.Register = sfr;
+            this.Bit = bit;
+            this.Negated = negated;
         }
 
-        public RegisterStorage Register
-        {
-            get { return reg; }
-        }
+        public RegisterStorage Register { get; }
+        public int Bit { get; }
+        public bool Negated { get; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString(reg.Name);
+            if (Negated)
+            {
+                writer.Write("/");
+            }
+            writer.Write(Register.Name);
+            writer.Write($".{Bit}");
         }
     }
-
-    public class FlagGroupOperand : MachineOperand
-    {
-        public FlagGroupOperand(FlagGroupStorage grf) : base((PrimitiveType)grf.DataType)
-        {
-            this.FlagGroup = grf;
-        }
-
-        public FlagGroupStorage FlagGroup { get; }
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.Write(FlagGroup.Name);
-        }
-    }
-
 }

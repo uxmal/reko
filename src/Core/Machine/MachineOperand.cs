@@ -140,8 +140,7 @@ namespace Reko.Core.Machine
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var s = FormatValue(value);
-            var pt = value.DataType as PrimitiveType;
-            if (pt != null)
+            if (value.DataType is PrimitiveType pt)
             {
                 if (pt.Domain == Domain.Pointer)
                     writer.WriteAddress(s, Address.FromConstant(value));

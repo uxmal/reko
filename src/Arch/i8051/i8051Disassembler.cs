@@ -20,10 +20,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.i8051
@@ -51,32 +53,61 @@ namespace Reko.Arch.i8051
         private i8051Instruction Decode(Opcode opcode, byte uInstr, string fmt)
         {
             byte b;
-            MachineOperand op = null;
+            var ops = new List<MachineOperand>();
             foreach (var ch in fmt)
             {
                 switch (ch)
                 {
-                case 'a': // An 11-bit address destination. This argument is used by ACALL and AJMP instructions. The target of the CALL or JMP must lie within the same 2K page as the first byte of the following instruction.
+                case ',':
+                    continue;
+                case 'j': // An 11-bit address destination. This argument is used by ACALL and AJMP instructions. The target of the CALL or JMP must lie within the same 2K page as the first byte of the following instruction.
                     if (!rdr.TryReadByte(out b))
                         return null;
-                    op = AddressOperand.Ptr16(
+                    ops.Add(AddressOperand.Ptr16(
                         (ushort)(
                             (rdr.Address.ToLinear() & ~0x7Ful) |
                             (uInstr & 0xE0u) << 3 |
-                            b));
+                            b)));
                     break;
-                case 'A': // A 16-bit address destination. This argument is used by LCALL and LJMP instructions.
+                case 'J': // A 16-bit address destination. This argument is used by LCALL and LJMP instructions.
                     if (!rdr.TryReadBeUInt16(out var uAddr)) // Yes, big endian!
                         return null;
-                    op = AddressOperand.Ptr16(uAddr);
+                    ops.Add(AddressOperand.Ptr16(uAddr));
+                    break;
+                case 'o': // A signed (two's complement) 8-bit offset (-128 to 127) relative to the first byte of the following instruction.
+                    if (!rdr.TryReadByte(out b))
+                        return null;
+                    ops.Add(AddressOperand.Create(rdr.Address + (sbyte)b));
+                    break;
+                case 'A': // The accumulator.
+                    ops.Add(new RegisterOperand(Registers.A));
+                    break;
+                case 'd': // An internal data RAM location (0-127) or SFR (128-255).
+                    if (!rdr.TryReadByte(out b))
+                        return null;
+                    ops.Add(new MemoryOperand(Address.Ptr16(b)));
+                    break;
+                case 'r': // Register r0-r7
+                    ops.Add(Reg(uInstr&7));
                     break;
                 case 'b': // A direct addressed bit in internal data RAM or SFR memory.
-                case 'd': // An internal data RAM location (0-127) or SFR (128-255).
+                    if (!rdr.TryReadByte(out b))
+                        return null;
+                    ops.Add(BitReg(b, false));
+                    break;
+                case 'B': // A direct addressed bit in internal data RAM or SFR memory.
+                    if (!rdr.TryReadByte(out b))
+                        return null;
+                    ops.Add(BitReg(b, true));
+                    break;
+                case 'C':
+                    ops.Add(new FlagGroupOperand(arch.GetFlagGroup((uint)FlagM.C)));
+                    break;
                 case 'i': // A constant included in the instruction encoding.
-                case 'o': // A signed (two's complement) 8-bit offset (-128 to 127) relative to the first byte of the following instruction.
                 case '@': // @Ri	An internal data RAM location (0-255) addressed indirectly through R0 or R1.
-                case 'r': // Regi
-                    throw new NotSupportedException();
+                default:
+                    EmitUnitTest(opcode, uInstr);
+                    break;
                 }
             }
 
@@ -85,8 +116,32 @@ namespace Reko.Arch.i8051
                 Opcode = opcode,
                 Address = this.addr,
                 Length = (int)(rdr.Address - this.addr),
-                Operand = op,
+                Operand1 = ops.Count >= 1 ? ops[0] : null,
+                Operand2 = ops.Count >= 2 ? ops[1] : null,
             };
+        }
+
+        private RegisterOperand Reg(int r)
+        {
+            return new RegisterOperand(Registers.GetRegister(r));
+        }
+
+        private BitOperand BitReg(int b, bool neg)
+        {
+            var reg = Registers.GetRegister(b & 0xF0);
+            return new BitOperand(reg, b & 0x7, neg);
+        }
+
+        private void EmitUnitTest(Opcode opcode, byte uInstr)
+        {
+            Debug.Print(
+$@"    [Test]
+        public void I8051_dis_{opcode}()
+        {{
+            var instr = DisassembleBytes(0x{uInstr:X2});
+            Assert.AreEqual(""@@@"", instr.ToString());
+        }}
+");
         }
 
         private abstract class Decoder
@@ -114,27 +169,27 @@ namespace Reko.Arch.i8051
 
         private static readonly Decoder[] decoders = new Decoder[256] {
         /*
-/*00	1	*/ new ByteDecoder(Opcode.nop, "X"), 
-/*01	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
-/*02	3	*/ new ByteDecoder(Opcode.ljmp, "A"), // 	addr16
-/*03	1	*/ new ByteDecoder(Opcode.rr, "X"), // 	A
-/*04	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	A
+/*00	1	*/ new ByteDecoder(Opcode.nop, ""), 
+/*01	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
+/*02	3	*/ new ByteDecoder(Opcode.ljmp, "J"), // 	addr16
+/*03	1	*/ new ByteDecoder(Opcode.rr, "A"), // 	A
+/*04	1	*/ new ByteDecoder(Opcode.inc, "A"), // 	A
 /*05	2	*/ new ByteDecoder(Opcode.inc, "X"), // 	direct
 /*06	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	@R0
 /*07	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	@R1
-/*08	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R0
-/*09	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R1
-/*0A	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R2
-/*0B	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R3
-/*0C	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R4
-/*0D	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R5
-/*0E	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R6
-/*0F	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	R7
-/*10	3	*/ new ByteDecoder(Opcode.jbc, "X"), // 	bit, offset
-/*11	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
-/*12	3	*/ new ByteDecoder(Opcode.lcall, "X"), // 	addr16
-/*13	1	*/ new ByteDecoder(Opcode.rrc, "X"), // 	A
-/*14	1	*/ new ByteDecoder(Opcode.dec, "X"), // 	A
+/*08	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R0
+/*09	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R1
+/*0A	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R2
+/*0B	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R3
+/*0C	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R4
+/*0D	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R5
+/*0E	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R6
+/*0F	1	*/ new ByteDecoder(Opcode.inc, "r"), // 	R7
+/*10	3	*/ new ByteDecoder(Opcode.jbc, "b,o"), // 	bit, offset
+/*11	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
+/*12	3	*/ new ByteDecoder(Opcode.lcall, "J"), // 	addr16
+/*13	1	*/ new ByteDecoder(Opcode.rrc, "A"), // 	A
+/*14	1	*/ new ByteDecoder(Opcode.dec, "A"), // 	A
 /*15	2	*/ new ByteDecoder(Opcode.dec, "X"), // 	direct
 /*16	1	*/ new ByteDecoder(Opcode.dec, "X"), // 	@R0
 /*17	1	*/ new ByteDecoder(Opcode.dec, "X"), // 	@R1
@@ -147,23 +202,23 @@ namespace Reko.Arch.i8051
 /*1E	1	*/ new ByteDecoder(Opcode.dec, "X"), // 	R6
 /*1F	1	*/ new ByteDecoder(Opcode.dec, "X"), // 	R7
 /*20	3	*/ new ByteDecoder(Opcode.jb, "X"), // 	bit, offset
-/*21	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
+/*21	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
 /*22	1	*/ new ByteDecoder(Opcode.ret, "X"), // 	 
 /*23	1	*/ new ByteDecoder(Opcode.rl, "X"), // 	A
 /*24	2	*/ new ByteDecoder(Opcode.add, "X"), // 	A, #immed
-/*25	2	*/ new ByteDecoder(Opcode.add, "X"), // 	A, direct
+/*25	2	*/ new ByteDecoder(Opcode.add, "A,d"), // 	A, direct
 /*26	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, @R0
 /*27	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, @R1
-/*28	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R0
-/*29	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R1
-/*2A	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R2
-/*2B	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R3
-/*2C	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R4
-/*2D	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R5
-/*2E	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R6
-/*2F	1	*/ new ByteDecoder(Opcode.add, "X"), // 	A, R7
+/*28	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R0
+/*29	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R1
+/*2A	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R2
+/*2B	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R3
+/*2C	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R4
+/*2D	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R5
+/*2E	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R6
+/*2F	1	*/ new ByteDecoder(Opcode.add, "A,r"), // 	A, R7
 /*30	3	*/ new ByteDecoder(Opcode.jnb, "X"), // 	bit, offset
-/*31	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*31	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*32	1	*/ new ByteDecoder(Opcode.reti, "X"), // 	 
 /*33	1	*/ new ByteDecoder(Opcode.rlc, "X"), // 	A
 /*34	2	*/ new ByteDecoder(Opcode.addc, "X"), // 	A, #immed
@@ -179,7 +234,7 @@ namespace Reko.Arch.i8051
 /*3E	1	*/ new ByteDecoder(Opcode.addc, "X"), // 	A, R6
 /*3F	1	*/ new ByteDecoder(Opcode.addc, "X"), // 	A, R7
 /*40	2	*/ new ByteDecoder(Opcode.jc, "X"), // 	offset
-/*41	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
+/*41	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
 /*42	2	*/ new ByteDecoder(Opcode.orl, "X"), // 	direct, A
 /*43	3	*/ new ByteDecoder(Opcode.orl, "X"), // 	direct, #immed
 /*44	2	*/ new ByteDecoder(Opcode.orl, "X"), // 	A, #immed
@@ -195,7 +250,7 @@ namespace Reko.Arch.i8051
 /*4E	1	*/ new ByteDecoder(Opcode.orl, "X"), // 	A, R6
 /*4F	1	*/ new ByteDecoder(Opcode.orl, "X"), // 	A, R7
 /*50	2	*/ new ByteDecoder(Opcode.jnc, "X"), // 	offset
-/*51	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*51	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*52	2	*/ new ByteDecoder(Opcode.anl, "X"), // 	direct, A
 /*53	3	*/ new ByteDecoder(Opcode.anl, "X"), // 	direct, #immed
 /*54	2	*/ new ByteDecoder(Opcode.anl, "X"), // 	A, #immed
@@ -211,7 +266,7 @@ namespace Reko.Arch.i8051
 /*5E	1	*/ new ByteDecoder(Opcode.anl, "X"), // 	A, R6
 /*5F	1	*/ new ByteDecoder(Opcode.anl, "X"), // 	A, R7
 /*60	2	*/ new ByteDecoder(Opcode.jz, "X"), // 	offset
-/*61	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
+/*61	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
 /*62	2	*/ new ByteDecoder(Opcode.xrl, "X"), // 	direct, A
 /*63	3	*/ new ByteDecoder(Opcode.xrl, "X"), // 	direct, #immed
 /*64	2	*/ new ByteDecoder(Opcode.xrl, "X"), // 	A, #immed
@@ -227,7 +282,7 @@ namespace Reko.Arch.i8051
 /*6E	1	*/ new ByteDecoder(Opcode.xrl, "X"), // 	A, R6
 /*6F	1	*/ new ByteDecoder(Opcode.xrl, "X"), // 	A, R7
 /*70	2	*/ new ByteDecoder(Opcode.jnz, "X"), // 	offset
-/*71	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*71	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*72	2	*/ new ByteDecoder(Opcode.orl, "X"), // 	C, bit
 /*73	1	*/ new ByteDecoder(Opcode.jmp, "X"), // 	@A+DPTR
 /*74	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	A, #immed
@@ -243,8 +298,8 @@ namespace Reko.Arch.i8051
 /*7E	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	R6, #immed
 /*7F	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	R7, #immed	 	
 
-/*80	2	*/ new ByteDecoder(Opcode.sjmp, "X"), // 	offset
-/*81	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
+/*80	2	*/ new ByteDecoder(Opcode.sjmp, "o"), // 	offset
+/*81	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
 /*82	2	*/ new ByteDecoder(Opcode.anl, "X"), // 	C, bit
 /*83	1	*/ new ByteDecoder(Opcode.movc, "X"), // 	A, @A+PC
 /*84	1	*/ new ByteDecoder(Opcode.div, "X"), // 	AB
@@ -260,7 +315,7 @@ namespace Reko.Arch.i8051
 /*8E	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	direct, R6
 /*8F	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	direct, R7
 /*90	3	*/ new ByteDecoder(Opcode.mov, "X"), // 	DPTR, #immed
-/*91	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*91	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*92	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	bit, C
 /*93	1	*/ new ByteDecoder(Opcode.movc, "X"), // 	A, @A+DPTR
 /*94	2	*/ new ByteDecoder(Opcode.subb, "X"), // 	A, #immed
@@ -276,8 +331,8 @@ namespace Reko.Arch.i8051
 /*9E	1	*/ new ByteDecoder(Opcode.subb, "X"), // 	A, R6
 /*9F	1	*/ new ByteDecoder(Opcode.subb, "X"), // 	A, R7
 /*A0	2	*/ new ByteDecoder(Opcode.orl, "X"), // 	C, /bit
-/*A1	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
-/*A2	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	C, bit
+/*A1	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
+/*A2	2	*/ new ByteDecoder(Opcode.mov, "C,b"), // 	C, bit
 /*A3	1	*/ new ByteDecoder(Opcode.inc, "X"), // 	DPTR
 /*A4	1	*/ new ByteDecoder(Opcode.mul, "X"), // 	AB
 /*A5	 	*/ new ByteDecoder(Opcode.reserved, "X"), // 	 
@@ -291,8 +346,8 @@ namespace Reko.Arch.i8051
 /*AD	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	R5, direct
 /*AE	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	R6, direct
 /*AF	2	*/ new ByteDecoder(Opcode.mov, "X"), // 	R7, direct
-/*B0	2	*/ new ByteDecoder(Opcode.anl, "X"), // 	C, /bit
-/*B1	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*B0	2	*/ new ByteDecoder(Opcode.anl, "C,B"), // 	C, /bit
+/*B1	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*B2	2	*/ new ByteDecoder(Opcode.cpl, "X"), // 	bit
 /*B3	1	*/ new ByteDecoder(Opcode.cpl, "X"), // 	C
 /*B4	3	*/ new ByteDecoder(Opcode.cjne, "X"), // 	A, #immed, offset
@@ -308,7 +363,7 @@ namespace Reko.Arch.i8051
 /*BE	3	*/ new ByteDecoder(Opcode.cjne, "X"), // 	R6, #immed, offset
 /*BF	3	*/ new ByteDecoder(Opcode.cjne, "X"), // 	R7, #immed, offset
 /*C0	2	*/ new ByteDecoder(Opcode.push, "X"), // 	direct
-/*C1	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
+/*C1	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
 /*C2	2	*/ new ByteDecoder(Opcode.clr, "X"), // 	bit
 /*C3	1	*/ new ByteDecoder(Opcode.clr, "X"), // 	C
 /*C4	1	*/ new ByteDecoder(Opcode.swap, "X"), // 	A
@@ -324,7 +379,7 @@ namespace Reko.Arch.i8051
 /*CE	1	*/ new ByteDecoder(Opcode.xch, "X"), // 	A, R6
 /*CF	1	*/ new ByteDecoder(Opcode.xch, "X"), // 	A, R7
 /*D0	2	*/ new ByteDecoder(Opcode.pop, "X"), // 	direct
-/*D1	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*D1	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*D2	2	*/ new ByteDecoder(Opcode.setb, "X"), // 	bit
 /*D3	1	*/ new ByteDecoder(Opcode.setb, "X"), // 	C
 /*D4	1	*/ new ByteDecoder(Opcode.da, "X"), // 	A
@@ -340,7 +395,7 @@ namespace Reko.Arch.i8051
 /*DE	2	*/ new ByteDecoder(Opcode.djnz, "X"), // 	R6, offset
 /*DF	2	*/ new ByteDecoder(Opcode.djnz, "X"), // 	R7, offset
 /*E0	1	*/ new ByteDecoder(Opcode.movx, "X"), // 	A, @DPTR
-/*E1	2	*/ new ByteDecoder(Opcode.ajmp, "a"), // 	addr11
+/*E1	2	*/ new ByteDecoder(Opcode.ajmp, "j"), // 	addr11
 /*E2	1	*/ new ByteDecoder(Opcode.movx, "X"), // 	A, @R0
 /*E3	1	*/ new ByteDecoder(Opcode.movx, "X"), // 	A, @R1
 /*E4	1	*/ new ByteDecoder(Opcode.clr, "X"), // 	A
@@ -356,7 +411,7 @@ namespace Reko.Arch.i8051
 /*EE	1	*/ new ByteDecoder(Opcode.mov, "X"), // 	A, R6
 /*EF	1	*/ new ByteDecoder(Opcode.mov, "X"), // 	A, R7
 /*F0	1	*/ new ByteDecoder(Opcode.movx, "X"), // 	@DPTR, A
-/*F1	2	*/ new ByteDecoder(Opcode.acall, "X"), // 	addr11
+/*F1	2	*/ new ByteDecoder(Opcode.acall, "j"), // 	addr11
 /*F2	1	*/ new ByteDecoder(Opcode.movx, "X"), // 	@R0, A
 /*F3	1	*/ new ByteDecoder(Opcode.movx, "X"), // 	@R1, A
 /*F4	1	*/ new ByteDecoder(Opcode.cpl, "X"), // 	A
