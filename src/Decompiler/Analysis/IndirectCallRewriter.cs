@@ -111,6 +111,11 @@ namespace Reko.Analysis
                 call,
                 program.Architecture.StackRegister,
                 ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
+            AdjustRegisterAfterCall(
+                stm,
+                call,
+                program.Architecture.FpuStackRegister,
+                -ft.FpuStackDelta);
             var ab = program.Architecture.CreateFrameApplicationBuilder(
                  proc.Frame, call.CallSite, call.Callee);
             stm.Instruction = ab.CreateInstruction(ft, null);
