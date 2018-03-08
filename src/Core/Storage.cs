@@ -468,6 +468,15 @@ namespace Reko.Core
             this.Name = $"{head.Name}:{tail.Name}";
 		}
 
+        public SequenceStorage(string name, Storage head, Storage tail)
+            : base("Sequence")
+        {
+            this.Head = head;
+            this.Tail = tail;
+            this.Name = name;
+
+        }
+
         public Storage Head { get; private set; }
         public Storage Tail { get; private set; }
 

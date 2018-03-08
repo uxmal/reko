@@ -53,11 +53,13 @@ namespace Reko.Arch.i8051
         public Opcode Opcode { get; set; }
         public MachineOperand Operand1 { get; set; }
         public MachineOperand Operand2 { get; set; }
+        public MachineOperand Operand3 { get; set; }
 
         public override MachineOperand GetOperand(int i)
         {
             if (i == 0) return Operand1;
             if (i == 1) return Operand2;
+            if (i == 2) return Operand3;
             return null;
         }
 
@@ -72,6 +74,10 @@ namespace Reko.Arch.i8051
                 return;
             writer.Write(",");
             Operand2.Write(writer, options);
+            if (Operand3 == null)
+                return;
+            writer.Write(",");
+            Operand3.Write(writer, options);
         }
     }
 }

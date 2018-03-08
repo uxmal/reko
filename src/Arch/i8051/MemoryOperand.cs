@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -26,16 +27,51 @@ namespace Reko.Arch.i8051
 {
     public class MemoryOperand : MachineOperand
     {
-        public MemoryOperand(Expression ea) : base(PrimitiveType.Byte)
+        private MemoryOperand() : base(PrimitiveType.Byte)
         {
-            this.EffectiveAddress = ea;
+
         }
 
-        public Expression EffectiveAddress { get; set; }
+        public static MemoryOperand Direct(Expression ea)
+        {
+            return new MemoryOperand { DirectAddress = ea };
+        }
+
+        public static MemoryOperand Indirect(Storage reg)
+        {
+            return new MemoryOperand { Register = reg };
+        }
+
+        public static MemoryOperand Indexed(Expression @base, RegisterStorage idx)
+        {
+            return new MemoryOperand { DirectAddress = @base, Index = idx };
+        }
+
+        public static MemoryOperand Indexed(Storage @base, RegisterStorage idx)
+        {
+            return new MemoryOperand { Register = @base, Index = idx };
+        }
+
+        public Expression DirectAddress { get; set; }
+        public Storage Register { get; set; }
+        public RegisterStorage Index { get; set; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"[{EffectiveAddress}]");
+            if (Index != null)
+            {
+                writer.Write("@");
+                writer.Write(Register.Name);
+                writer.Write("+");
+                writer.Write(Index.Name);
+            }
+            else
+            {
+                if (DirectAddress != null)
+                    writer.Write($"[{DirectAddress}]");
+                else
+                    writer.Write($"@{Register.Name}");
+            }
         }
     }
 }
