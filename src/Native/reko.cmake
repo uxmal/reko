@@ -1,16 +1,16 @@
 function(check_msys output)
-	set(SHELL "$ENV{SHELL}")
-
-	# If there's no SHELL it's not msys
-	if(NOT SHELL)
+	execute_process(
+		COMMAND uname -o
+		OUTPUT_VARIABLE ostype
+		RESULT_VARIABLE result
+	)
+	if(NOT result EQUAL 0)
 		set(${output} FALSE PARENT_SCOPE)
 		return()
 	endif()
 
-	execute_process(
-		COMMAND ${SHELL} -c 'echo -ne $OSTYPE'
-		OUTPUT_VARIABLE ostype
-	)
+	string(TOLOWER "${ostype}" ostype)
+	string(STRIP "${ostype}" ostype)
 
 	if(${ostype} STREQUAL "msys")
 		set(${output} TRUE PARENT_SCOPE)
@@ -49,8 +49,6 @@ function(invoke_cmake name path build_dir)
 		file(MAKE_DIRECTORY ${build_dir})
 	endif()
 
-	check_msys(IS_MSYS)
-
 	if(WIN32)
 		message(STATUS "IS_MSYS: ${IS_MSYS}")
 		if(IS_MSYS)
@@ -61,7 +59,7 @@ function(invoke_cmake name path build_dir)
 			set(GENERATOR ${REKO_COMPILER})
 		endif()
 	endif()
-	
+
 	set(CMAKE_ARGS ${path})
 	if(GENERATOR)
 		list(APPEND CMAKE_ARGS -G ${GENERATOR})
@@ -115,6 +113,11 @@ message("")
 
 include(ProcessorCount)
 ProcessorCount(NUM_THREADS)
+
+if(NOT DEFINED IS_MSYS)
+	check_msys(IS_MSYS)
+endif()
+
 
 message(STATUS "Building native libraries")
 process_project(native ${CMAKE_CURRENT_SOURCE_DIR})
