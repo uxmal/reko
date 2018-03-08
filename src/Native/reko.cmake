@@ -49,9 +49,9 @@ function(invoke_cmake name path build_dir)
 		file(MAKE_DIRECTORY ${build_dir})
 	endif()
 
-	if(WIN32)
-		check_msys(IS_MSYS)
+	check_msys(IS_MSYS)
 
+	if(WIN32)
 		message(STATUS "IS_MSYS: ${IS_MSYS}")
 		if(IS_MSYS)
 			set(GENERATOR "MSYS Makefiles")
@@ -89,8 +89,16 @@ function(invoke_cmake name path build_dir)
 		message(FATAL_ERROR "[CMake] ${name} configuration failed for: ${path}")
 	endif()
 
+	set(build_args "")
+
+	if(IS_MSYS OR MINGW OR UNIX)
+		list(APPEND build_args -- -j ${NUM_THREADS})
+	elseif(WIN32 AND MSVC)
+		list(APPEND build_args -- /m:${NUM_THREADS})
+	endif()
+
 	execute_process(
-		COMMAND ${CMAKE_COMMAND} --build .
+		COMMAND ${CMAKE_COMMAND} --build . ${build_args}
 		WORKING_DIRECTORY ${build_dir}
 		RESULT_VARIABLE retcode
 	)
@@ -104,6 +112,9 @@ message("== Configuration ==")
 message("=> Build Type: ${CMAKE_BUILD_TYPE}")
 message("=> Generator : ${REKO_COMPILER}")
 message("")
+
+include(ProcessorCount)
+ProcessorCount(NUM_THREADS)
 
 message(STATUS "Building native libraries")
 process_project(native ${CMAKE_CURRENT_SOURCE_DIR})
