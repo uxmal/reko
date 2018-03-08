@@ -60,5 +60,19 @@ namespace Reko.UnitTests.Arch.i8051
             var instr = DisassembleBytes(0);
             Assert.AreEqual("nop", instr.ToString());
         }
+
+        [Test]
+        public void I8051_dis_ajmp()
+        {
+            var instr = DisassembleBytes(0xE1, 0xFF);
+            Assert.AreEqual("ajmp\t07FF", instr.ToString());
+        }
+
+        [Test]
+        public void I8051_dis_ljmp()
+        {
+            var instr = DisassembleBytes(0x02, 0x12, 0x34);
+            Assert.AreEqual("ljmp\t1234", instr.ToString());
+        }
     }
 }
