@@ -1,0 +1,1 @@
+https://github.com/lwfinger/rtlwifi_new/tree/master/firmware/rtlwifi
