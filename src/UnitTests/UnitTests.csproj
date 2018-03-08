@@ -139,6 +139,7 @@
   <ItemGroup>
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
+    <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
@@ -695,6 +696,10 @@
     <ProjectReference Include="..\Arch\Cil\Cil.csproj">
       <Project>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</Project>
       <Name>Cil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\i8051\i8051.csproj">
+      <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>
+      <Name>i8051</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\M68k.Design\M68k.Design.csproj">
       <Project>{90b83ec1-915b-471b-8f86-6a71b17db6a1}</Project>

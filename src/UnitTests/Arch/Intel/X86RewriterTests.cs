@@ -139,8 +139,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
-                PseudoProcedure p;
-                if (ppp.TryGetValue(name, out p))
+                if (ppp.TryGetValue(name, out var p))
                     return p;
                 p = new PseudoProcedure(name, returnType, arity);
                 ppp.Add(name, p);
@@ -178,8 +177,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstruction)
             {
-                ImportReference p;
-                if (importThunks.TryGetValue(addrThunk, out p))
+                if (importThunks.TryGetValue(addrThunk, out var p))
                     throw new NotImplementedException();
                 else
                     return null;
