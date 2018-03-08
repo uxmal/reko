@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -56,7 +56,9 @@
     <Compile Include="XMLHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
+    <Content Include="L:\Software\Visual Studio\Source\Repos\reko\src\tools\genPICdb\picdb.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Core.csproj">
@@ -66,7 +68,7 @@
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying PIC Database to $(TargetDir)" />
-    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" />
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

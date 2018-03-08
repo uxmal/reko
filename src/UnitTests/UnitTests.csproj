@@ -95,7 +95,7 @@
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
-    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler _Enhd_Extd_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Enhd_Extd_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTestsBase.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Enhd_Trad_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Extd_Extd_Tests.cs" />
