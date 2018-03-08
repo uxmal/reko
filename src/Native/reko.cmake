@@ -28,7 +28,7 @@ function(clear_cache build_dir)
 endfunction()
 
 function(process_project name path)
-	set(BUILD_DIR ${path}/build/${REKO_PLATFORM})
+	set(BUILD_DIR ${path}/build/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE})
 
 	if(ACTION STREQUAL "clean")
 		clean_project(${name} ${path} ${BUILD_DIR})

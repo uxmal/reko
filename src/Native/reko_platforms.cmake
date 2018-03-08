@@ -1,3 +1,15 @@
+function(set_output_dir target outdir)
+	foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+		set_target_properties(${target}
+			PROPERTIES
+			RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${outdir}
+			LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${outdir}
+			ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${outdir}
+		)
+	endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+endfunction()
+
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	set(IS_AMD64 ON)
 else()

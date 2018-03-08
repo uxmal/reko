@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -973,23 +973,17 @@
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
-  <!-- We're forced to do this because the VC++ and the VC# teams apparently
-      couldn't agree on the name of the i386 platform. The VC++ team call it
-      Win32 and the C# team call it x86... Thanks Microsoft.
-  -->
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.dll" />
-    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.pdb" />
+  
+  <!-- TODO: Duplicated in Common.items -->
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.dll" />
-    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\ArmNative.pdb" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone*.dll" />
-  </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <ExternalComponents Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\libArmNative.so" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
   </ItemGroup>
+  
   <Target Name="AfterBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Message Importance="high" Text="External components @(ExternalComponents)" />

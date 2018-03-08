@@ -101,17 +101,12 @@ by the PreBuild.targets file.
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <Architectures Include="$(SolutionDir)Native\build\x86\ArmNative\$(Configuration)\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)Native\build\x86\ArmNative\$(Configuration)\ArmNative.pdb" />
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <Architectures Include="$(SolutionDir)Native\build\x64\ArmNative\$(Configuration)\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)Native\build\x64\ArmNative\$(Configuration)\ArmNative.pdb" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
-  </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\ArmNative\$(Configuration)\libArmNative.so" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
   </ItemGroup>
 </Project>
