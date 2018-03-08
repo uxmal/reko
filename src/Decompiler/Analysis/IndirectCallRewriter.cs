@@ -275,12 +275,25 @@ namespace Reko.Analysis
             return a;
         }
 
+        public override Instruction TransformStore(Store store)
+        {
+            store.Src = store.Src.Accept(this);
+            store.Dst = TransformDst(store.Dst);
+            return store;
+        }
+
         public override Expression VisitApplication(Application appl)
         {
             appl.Procedure = appl.Procedure.Accept(this);
             for (int i = 0; i < appl.Arguments.Length; ++i)
                 appl.Arguments[i] = TransformArgument(appl.Arguments[i]);
             return appl;
+        }
+
+        private Expression TransformDst(Expression dst)
+        {
+            var dstTransformer = new DestinationTransformer(this);
+            return dst.Accept(dstTransformer);
         }
 
         private Expression TransformArgument(Expression arg)
@@ -334,29 +347,63 @@ namespace Reko.Analysis
                 FirstOrDefault();
         }
 
-        class ArgumentTransformer : InstructionTransformer
+        abstract class UsedIdsTransformer : InstructionTransformer
         {
             SsaIdentifierTransformer outer;
 
-            public ArgumentTransformer(SsaIdentifierTransformer outer)
+            public UsedIdsTransformer(SsaIdentifierTransformer outer)
             {
                 this.outer = outer;
             }
 
+            public abstract Expression VisitMemoryIdentifier(MemoryIdentifier id);
+
             public override Expression VisitIdentifier(Identifier id)
             {
-                if (id is MemoryIdentifier)
-                {
-                    var sid = outer.ssa.Identifiers.Add(
-                        id, outer.stm, null, false);
-                    sid.DefStatement = null;
-                    sid.Uses.Add(outer.stm);
-                    return sid.Identifier;
-                }
+                if (id is MemoryIdentifier memoryId)
+                    return VisitMemoryIdentifier(memoryId);
                 var usedId = outer.FindUsedId(outer.call, id.Storage);
                 if (usedId != null)
                     usedId.Accept(outer);
                 return usedId ?? outer.InvalidArgument();
+            }
+        }
+
+        class ArgumentTransformer : UsedIdsTransformer
+        {
+            SsaIdentifierTransformer outer;
+
+            public ArgumentTransformer(SsaIdentifierTransformer outer) :
+                base(outer)
+            {
+                this.outer = outer;
+            }
+
+            public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
+            {
+                var sid = outer.ssa.Identifiers.Add(
+                    id, outer.stm, null, false);
+                sid.DefStatement = null;
+                sid.Uses.Add(outer.stm);
+                return sid.Identifier;
+            }
+        }
+
+        class DestinationTransformer : UsedIdsTransformer
+        {
+            SsaIdentifierTransformer outer;
+
+            public DestinationTransformer(SsaIdentifierTransformer outer) :
+                base(outer)
+            {
+                this.outer = outer;
+            }
+
+            public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
+            {
+                var sid = outer.ssa.Identifiers.Add(
+                    id, outer.stm, null, false);
+                return sid.Identifier;
             }
         }
     }
