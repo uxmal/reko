@@ -100,7 +100,11 @@ namespace Reko.Analysis
             var ft = pt.Pointee as FunctionType;
             if (ft == null)
                 return;
-            AdjustStackPointerAfterCall(stm, call, ft.StackDelta);
+            AdjustRegisterAfterCall(
+                stm,
+                call,
+                program.Architecture.StackRegister,
+                ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
             var ab = new ApplicationBuilder(
                 program.Architecture, proc.Frame, call.CallSite,
                 call.Callee, ft, false);
@@ -109,16 +113,17 @@ namespace Reko.Analysis
             changed = true;
         }
 
-        private void AdjustStackPointerAfterCall(
+        private void AdjustRegisterAfterCall(
             Statement stm,
             CallInstruction call,
-            int stackDelta)
+            RegisterStorage register,
+            int delta)
         {
             // Locate the post-call definition of the stack pointer, if any
             var defSpBinding = call.Definitions.Where(
                 d => d.Identifier is Identifier).Where(
                 d => ((Identifier)d.Identifier).Storage ==
-                    program.Architecture.StackRegister)
+                    register)
                 .FirstOrDefault();
             if (defSpBinding == null)
                 return;
@@ -127,17 +132,11 @@ namespace Reko.Analysis
                 return;
             var usedSpExp = call.Uses.Select(u => u.Expression).
                 OfType<Identifier>().Where(
-                u => u.Storage == program.Architecture.StackRegister)
+                u => u.Storage == register)
                 .FirstOrDefault();
             if (usedSpExp == null)
                 return;
-            var retSize = call.CallSite.SizeOfReturnAddressOnStack;
-            var offset = stackDelta - retSize;
-            Expression src;
-            if (offset == 0)
-                src = usedSpExp;
-            else
-                src = m.IAdd(usedSpExp, Constant.Word32(offset));
+            var src = AddConstant(usedSpExp, register.DataType.Size, delta);
             // Generate a statement that adjusts the stack pointer according to
             // the calling convention.
             var ass = new Assignment(defSpId, src);
@@ -147,6 +146,22 @@ namespace Reko.Analysis
             defSid.DefStatement = stackStm;
             call.Definitions.Remove(defSpBinding);
             Use(stackStm, src);
+        }
+
+        private Expression AddConstant(Expression e, int cSize, int cValue)
+        {
+            if (cValue == 0)
+            {
+                return e;
+            }
+            else if (cValue > 0)
+            {
+                return m.IAdd(e, Constant.Word(cSize, cValue));
+            }
+            else
+            {
+                return m.ISub(e, Constant.Word(cSize, -cValue));
+            }
         }
 
         private void Use(Statement stm, Expression e)
