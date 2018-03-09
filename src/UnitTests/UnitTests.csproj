@@ -975,7 +975,7 @@
   </ItemGroup>
   
   <!-- TODO: Duplicated in Common.items -->
-  <ItemGroup Condition=" '$(OS)' == 'Windows_NT'">
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' AND '$(Platform)' != 'AnyCPU' ">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
