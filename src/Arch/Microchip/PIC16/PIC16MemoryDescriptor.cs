@@ -28,12 +28,12 @@ namespace Reko.Arch.Microchip.PIC16
 
     using Common;
 
-    public class PIC16EMemoryDescriptor : IPICMemoryDescriptor
+    public class PIC16MemoryDescriptor : IPICMemoryDescriptor
     {
 
         #region Locals
 
-        private static PIC16EMemoryDescriptor memDescr;
+        private static PIC16MemoryDescriptor memDescr;
 
         #endregion
 
@@ -134,7 +134,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        private PIC16EMemoryDescriptor()
+        private PIC16MemoryDescriptor()
         {
         }
 
@@ -142,7 +142,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// Private constructor creating an instance of memory descriptor for specified PIC.
         /// </summary>
         /// <param name="pic">The target PIC.</param>
-        private PIC16EMemoryDescriptor(PIC pic)
+        private PIC16MemoryDescriptor(PIC pic)
         {
             memoryMap = PIC16MemoryMap.Create(pic);
             DeviceConfigDefinitions = DeviceConfigDefs.Create(pic);
@@ -156,11 +156,11 @@ namespace Reko.Arch.Microchip.PIC16
         /// A <see cref="IPICMemoryDescriptor"/> instance.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
-        public static PIC16EMemoryDescriptor Create(PIC pic)
+        public static PIC16MemoryDescriptor Create(PIC pic)
         {
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
-            memDescr = new PIC16EMemoryDescriptor(pic);
+            memDescr = new PIC16MemoryDescriptor(pic);
             return memDescr;
         }
 

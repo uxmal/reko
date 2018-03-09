@@ -110,6 +110,30 @@ namespace Reko.Arch.Microchip.PIC16
     }
 
     /// <summary>
+    /// A PIC16 6-bit signed immediate operand. Used by ADDFSR instruction.
+    /// </summary>
+    public class PIC16Signed6Operand : PIC16ImmediateOperand
+    {
+        /// <summary>
+        /// Instantiates a 5-bit unsigned immediate operand. Used by MOVLB instruction.
+        /// </summary>
+        /// <param name="b">The byte value.</param>
+        public PIC16Signed6Operand(short s) : base(Constant.SByte((sbyte)s), PrimitiveType.Byte)
+        {
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitSigned6(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitSigned6(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitSigned6(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"{ImmediateValue}");
+        }
+
+    }
+
+    /// <summary>
     /// A PIC16 7-bit unsigned immediate operand. Used by MOVLP instruction.
     /// </summary>
     public class PIC16Immed7Operand : PIC16ImmediateOperand
@@ -153,6 +177,381 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.Write($"{ImmediateValue}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 Bank Data Memory Address operand (like "f").
+    /// </summary>
+    public class PIC16BankedOperand : MachineOperand, IOperand
+    {
+
+        /// <summary>
+        /// Gets the 7-bit memory address.
+        /// </summary>
+        public readonly Constant BankAddr;
+
+        public PIC16BankedOperand(byte addr) : base(PrimitiveType.Byte)
+        {
+            BankAddr = Constant.Byte((byte)(addr & 0x7F));
+        }
+
+        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitDataBanked(this);
+        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDataBanked(this);
+        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDataBanked(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            ushort uaddr = BankAddr.ToByte();
+
+            var aaddr = PIC16MemoryDescriptor.TranslateDataAddress(uaddr);
+            var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
+            if (sfr != RegisterStorage.None)
+            {
+                writer.Write($"{sfr.Name}");
+                return;
+            }
+
+            writer.Write($"0x{uaddr:X2}");
+
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 data memory bit  with destination operand (like "f,b").
+    /// Used by Bit-oriented instructions (BCF, BTFSS, ...)
+    /// </summary>
+    public class PIC16DataBitOperand : PIC16BankedOperand
+    {
+        /// <summary>
+        /// Gets the bit number (value between 0 and 7).
+        /// </summary>
+        /// <value>
+        /// The bit number.
+        /// </value>
+        public readonly Constant BitNumber;
+
+        /// <summary>
+        /// Instantiates a bit number operand. Used by Bit-oriented instructions (BCF, BTFSS, ...).
+        /// </summary>
+        /// <param name="b">The byte value.</param>
+        public PIC16DataBitOperand(byte addr, byte b) : base(addr)
+        {
+            BitNumber = Constant.Byte(b);
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitDataBit(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDataBit(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDataBit(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            byte uaddr = BankAddr.ToByte();
+            byte bitpos = BitNumber.ToByte();
+
+            base.Write(writer, options);
+
+            var aaddr = PIC16MemoryDescriptor.TranslateDataAddress(uaddr);
+            var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
+            if (sfr != RegisterStorage.None)
+            {
+                var bitname = PICRegisters.GetBitFieldByAddr(aaddr, bitpos, 1);
+                if (bitname != null)
+                {
+                    writer.Write($",{bitname.Name}");
+                    return;
+                }
+                writer.Write($",{bitpos}");
+                return;
+            }
+
+            writer.Write($",{bitpos}");
+
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 Bank Data Memory Address with destination operand (like "f,d").
+    /// </summary>
+    public class PIC16DataByteWithDestOperand : PIC16BankedOperand
+    {
+
+        /// <summary>
+        /// Gets the indication if the Working Register is the destination of the operation.
+        /// If false, the File Register designated by the address is the destination.
+        /// </summary>
+        public readonly Constant WregIsDest;
+
+        public PIC16DataByteWithDestOperand(byte addr, int d) : base(addr)
+        {
+            WregIsDest = Constant.Bool(d == 0);
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitDataByte(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDataByte(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDataByte(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            byte uaddr = BankAddr.ToByte();
+            string wdest = (WregIsDest.ToBoolean() ? ",W" : ",F");
+
+            base.Write(writer, options);
+            writer.Write(wdest);
+
+        }
+
+    }
+
+    /// <summary>
+    /// The notion of PIC16 program address operand. Must be inherited.
+    /// </summary>
+    public abstract class PIC16ProgAddrOperand : MachineOperand, IOperand
+    {
+
+        /// <summary>
+        /// Gets the target absolute code target address. This is a word-aligned address.
+        /// </summary>
+        public uint CodeTarget { get; protected set; }
+
+        public PIC16ProgAddrOperand() : base(PrimitiveType.Ptr32)
+        {
+        }
+
+        public abstract void Accept(IOperandVisitor visitor);
+        public abstract T Accept<T>(IOperandVisitor<T> visitor);
+        public abstract T Accept<T, C>(IOperandVisitor<T, C> visitor, C context);
+
+    }
+
+    /// <summary>
+    /// A PIC16 9-bit code relative offset operand.
+    /// </summary>
+    public class PIC16ProgRel9AddrOperand : PIC16ProgAddrOperand
+    {
+        /// <summary>
+        /// Gets the relative offset. This a word offset.
+        /// </summary>
+        public readonly short RelativeWordOffset;
+
+        /// <summary>
+        /// Instantiates a 9-bit code relative offset operand.
+        /// </summary>
+        /// <param name="off">The off.</param>
+        /// <param name="instrAddr">The instruction address.</param>
+        public PIC16ProgRel9AddrOperand(short off, Address instrAddr)
+        {
+            RelativeWordOffset = off;
+            CodeTarget = (uint)((long)instrAddr.ToUInt32() + 2 + (off * 2)) & PICProgAddress.MAXPROGBYTADDR;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"0x{CodeTarget:X6}");
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitProgRel9(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitProgRel9(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitProgRel9(this, context);
+
+    }
+
+    /// <summary>
+    /// A PIC16 Absolute Code Address operand. Used by GOTO, CALL instructions.
+    /// </summary>
+    public class PIC16ProgAbsAddrOperand : PIC16ProgAddrOperand
+    {
+
+        /// <summary>
+        /// Instantiates a Absolute Code Address operand. Used by GOTO, CALL instructions.
+        /// </summary>
+        /// <param name="absaddr">The program word address.</param>
+        public PIC16ProgAbsAddrOperand(uint absaddr)
+        {
+            CodeTarget = (absaddr << 1) & PICProgAddress.MAXPROGBYTADDR;
+        }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"0x{CodeTarget:X6}");
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitProgAbs(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitProgAbs(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitProgAbs(this, context);
+
+    }
+
+    /// <summary>
+    /// A PIC16 FSRn register operand. Used by ADDFSR, MOVIW, MOVWI instructions.
+    /// </summary>
+    public class PIC16FSROperand : MachineOperand, IOperand
+    {
+        /// <summary>
+        /// Gets the FSR register number.
+        /// </summary>
+        public readonly Constant FSRNum;
+
+        /// <summary>
+        /// Instantiates a FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
+        /// </summary>
+        /// <param name="fsrnum">The FSR register number [0, 1, 2].</param>
+        public PIC16FSROperand(byte fsrnum) : base(PrimitiveType.Byte)
+        {
+            FSRNum = Constant.Byte(fsrnum);
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitFSRNum(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRNum(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRNum(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            byte num = FSRNum.ToByte();
+            writer.Write($"FSR{num}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 data EEPROM series of bytes.
+    /// </summary>
+    public class PIC16DataEEPROMOperand : PseudoDataOperand, IOperand
+    {
+
+        public PIC16DataEEPROMOperand(params byte[] eedata) : base(eedata)
+        {
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitEEPROM(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitEEPROM(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitEEPROM(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 declare ASCII bytes operand.
+    /// </summary>
+    public class PIC16DataASCIIOperand : PseudoDataOperand, IOperand
+    {
+
+        public PIC16DataASCIIOperand(params byte[] bytes) : base(bytes)
+        {
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitASCII(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitASCII(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitASCII(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 declare data bytes operand.
+    /// </summary>
+    public class PIC16DataByteOperand : PseudoDataOperand, IOperand
+    {
+
+        public PIC16DataByteOperand(params byte[] bytes) : base(bytes)
+        {
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitDB(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDB(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDB(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 declare data words operand.
+    /// </summary>
+    public class PIC16DataWordOperand : PseudoDataOperand, IOperand
+    {
+
+        public PIC16DataWordOperand(params ushort[] words) : base(words)
+        {
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitDW(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitDW(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitDW(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            string s = string.Join(",", Values.Select(w => $"0x{w:X4}"));
+            writer.Write(s);
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 set processor ID locations operand (used for __IDLOCS).
+    /// </summary>
+    public class PIC16IDLocsOperand : PseudoDataOperand, IOperand
+    {
+
+        private Address addr;
+
+        public PIC16IDLocsOperand(Address addr, ushort idlocs) : base(idlocs)
+        {
+            this.addr = addr;
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitIDLocs(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitIDLocs(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitIDLocs(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.Write($"{addr}, 0x{Values[0]:X3}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 processor configuration bits operand (used for __CONFIG).
+    /// </summary>
+    public class PIC16ConfigOperand : PseudoDataOperand, IOperand
+    {
+
+        private PIC16Architecture arch;
+        private Address addr;
+
+        public PIC16ConfigOperand(PIC16Architecture arch, Address addr, ushort config) : base(config)
+        {
+            this.arch = arch;
+            this.addr = addr;
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitConfig(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitConfig(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitConfig(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var fuse = Values[0] & 0x3FFF;
+            var s = arch.DeviceConfigDefinitions.Render(addr, fuse);
+            writer.Write(s);
         }
 
     }

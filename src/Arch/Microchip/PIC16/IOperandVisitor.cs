@@ -24,7 +24,7 @@ namespace Reko.Arch.Microchip.PIC16
 {
 
     /// <summary>
-    /// Interface for PIC16-Enhanced Operands' visitors.
+    /// Interface for PIC16 Operands' visitors.
     /// </summary>
     public interface IOperand
     {
@@ -42,6 +42,19 @@ namespace Reko.Arch.Microchip.PIC16
         void VisitImm5(PIC16Immed5Operand imm5);
         void VisitImm7(PIC16Immed7Operand imm7);
         void VisitImm8(PIC16Immed8Operand imm8);
+        void VisitSigned6(PIC16Signed6Operand sgn6);
+        void VisitDataBanked(PIC16BankedOperand bank);
+        void VisitDataBit(PIC16DataBitOperand bit);
+        void VisitDataByte(PIC16DataByteWithDestOperand byt);
+        void VisitProgRel9(PIC16ProgRel9AddrOperand rel9);
+        void VisitProgAbs(PIC16ProgAbsAddrOperand tgt);
+        void VisitFSRNum(PIC16FSROperand fsr);
+        void VisitEEPROM(PIC16DataEEPROMOperand eeprom);
+        void VisitASCII(PIC16DataASCIIOperand ascii);
+        void VisitDB(PIC16DataByteOperand bytes);
+        void VisitDW(PIC16DataWordOperand words);
+        void VisitIDLocs(PIC16IDLocsOperand idlocs);
+        void VisitConfig(PIC16ConfigOperand config);
     }
 
     /// <summary>
@@ -53,6 +66,19 @@ namespace Reko.Arch.Microchip.PIC16
         T VisitImm5(PIC16Immed5Operand imm5);
         T VisitImm7(PIC16Immed7Operand imm7);
         T VisitImm8(PIC16Immed8Operand imm8);
+        T VisitSigned6(PIC16Signed6Operand sgn6);
+        T VisitDataBanked(PIC16BankedOperand bank);
+        T VisitDataBit(PIC16DataBitOperand bit);
+        T VisitDataByte(PIC16DataByteWithDestOperand byt);
+        T VisitProgRel9(PIC16ProgRel9AddrOperand rel9);
+        T VisitProgAbs(PIC16ProgAbsAddrOperand tgt);
+        T VisitFSRNum(PIC16FSROperand fsr);
+        T VisitEEPROM(PIC16DataEEPROMOperand eeprom);
+        T VisitASCII(PIC16DataASCIIOperand ascii);
+        T VisitDB(PIC16DataByteOperand bytes);
+        T VisitDW(PIC16DataWordOperand words);
+        T VisitIDLocs(PIC16IDLocsOperand idlocs);
+        T VisitConfig(PIC16ConfigOperand config);
     }
 
     /// <summary>
@@ -65,6 +91,19 @@ namespace Reko.Arch.Microchip.PIC16
         T VisitImm5(PIC16Immed5Operand imm5, C context);
         T VisitImm7(PIC16Immed7Operand imm7, C context);
         T VisitImm8(PIC16Immed8Operand imm8, C context);
+        T VisitSigned6(PIC16Signed6Operand sgn6, C context);
+        T VisitDataBanked(PIC16BankedOperand bank, C context);
+        T VisitDataBit(PIC16DataBitOperand bit, C context);
+        T VisitDataByte(PIC16DataByteWithDestOperand byt, C context);
+        T VisitProgRel9(PIC16ProgRel9AddrOperand rel9, C context);
+        T VisitProgAbs(PIC16ProgAbsAddrOperand tgt, C context);
+        T VisitFSRNum(PIC16FSROperand fsr, C context);
+        T VisitEEPROM(PIC16DataEEPROMOperand eeprom, C context);
+        T VisitASCII(PIC16DataASCIIOperand ascii, C context);
+        T VisitDB(PIC16DataByteOperand bytes, C context);
+        T VisitDW(PIC16DataWordOperand words, C context);
+        T VisitIDLocs(PIC16IDLocsOperand idlocs, C context);
+        T VisitConfig(PIC16ConfigOperand config, C context);
     }
 
 }

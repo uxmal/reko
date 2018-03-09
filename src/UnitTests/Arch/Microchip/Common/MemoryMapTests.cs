@@ -27,7 +27,7 @@ using Reko.Libraries.Microchip;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
-    using static Reko.Arch.Microchip.PIC16.PIC16EMemoryDescriptor;
+    using static Reko.Arch.Microchip.PIC16.PIC16MemoryDescriptor;
     using static Reko.Arch.Microchip.PIC18.PIC18MemoryDescriptor;
 
     [TestFixture]

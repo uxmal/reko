@@ -24,20 +24,21 @@ using Reko.Core;
 using Reko.Core.Machine;
 using System;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.Microchip.PIC16
 {
+
     using Common;
 
     /// <summary>
-    /// Compares pairs of PIC18 instructions -- for equality only.
+    /// Compares pairs of PIC16 instructions -- for equality only.
     /// </summary>
     /// <remarks>
     /// Used by the InstructionTrie class.
     /// </remarks>
     /// 
-    public class PIC18InstructionComparer : InstructionComparer
+    public class PIC16InstructionComparer : InstructionComparer
     {
-        public PIC18InstructionComparer(Normalize norm)
+        public PIC16InstructionComparer(Normalize norm)
             : base(norm)
         {
         }
@@ -68,7 +69,7 @@ namespace Reko.Arch.Microchip.PIC18
                     if (pseudoA.Values.Length != pseudoB.Values.Length)
                         return false;
                     return NormalizeConstants || (pseudoA.Values == pseudoB.Values);
-                    
+
                 default:
                     throw new NotImplementedException($"NYI: {opA.GetType()}");
             }
@@ -82,8 +83,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns></returns>
         public override bool CompareOperands(MachineInstruction a, MachineInstruction b)
         {
-            var instrA = (PIC18Instruction)a;
-            var instrB = (PIC18Instruction)b;
+            var instrA = (PIC16Instruction)a;
+            var instrB = (PIC16Instruction)b;
 
             if (instrA.Opcode != instrB.Opcode)
                 return false;
@@ -104,7 +105,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override int GetOperandsHash(MachineInstruction inst)
         {
-            var instr = (PIC18Instruction)inst;
+            var instr = (PIC16Instruction)inst;
             int hash = instr.NumberOfOperands.GetHashCode();
             if (instr.NumberOfOperands > 0)
             {

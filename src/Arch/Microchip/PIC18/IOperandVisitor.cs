@@ -57,7 +57,7 @@ namespace Reko.Arch.Microchip.PIC18
         void VisitShadow(PIC18ShadowOperand shad);
         void VisitTblRW(PIC18TableReadWriteOperand tblmode);
         void VisitEEPROM(PIC18DataEEPROMOperand eeprom);
-        void VisitASCII(PIC18DataASCIIOperand eeprom);
+        void VisitASCII(PIC18DataASCIIOperand ascii);
         void VisitDB(PIC18DataByteOperand bytes);
         void VisitDW(PIC18DataWordOperand words);
         void VisitIDLocs(PIC18IDLocsOperand idlocs);
@@ -88,7 +88,7 @@ namespace Reko.Arch.Microchip.PIC18
         T VisitShadow(PIC18ShadowOperand shad);
         T VisitTblRW(PIC18TableReadWriteOperand tblmode);
         T VisitEEPROM(PIC18DataEEPROMOperand eeprom);
-        T VisitASCII(PIC18DataASCIIOperand eeprom);
+        T VisitASCII(PIC18DataASCIIOperand ascii);
         T VisitDB(PIC18DataByteOperand bytes);
         T VisitDW(PIC18DataWordOperand words);
         T VisitIDLocs(PIC18IDLocsOperand idlocs);
@@ -120,7 +120,7 @@ namespace Reko.Arch.Microchip.PIC18
         T VisitShadow(PIC18ShadowOperand shad, C context);
         T VisitTblRW(PIC18TableReadWriteOperand tblmode, C context);
         T VisitEEPROM(PIC18DataEEPROMOperand eeprom, C context);
-        T VisitASCII(PIC18DataASCIIOperand eeprom, C context);
+        T VisitASCII(PIC18DataASCIIOperand ascii, C context);
         T VisitDB(PIC18DataByteOperand bytes, C context);
         T VisitDW(PIC18DataWordOperand words, C context);
         T VisitIDLocs(PIC18IDLocsOperand idlocs, C context);

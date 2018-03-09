@@ -32,14 +32,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    /// <summary>
-    /// PIC18 processor architecture.
-    /// </summary>
-    public class PIC18Architecture : PICArchitecture
+    public class PIC16Architecture : PICArchitecture
     {
 
         #region Constructors
@@ -47,13 +44,13 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public PIC18Architecture() : this("pic18") { }
+        public PIC16Architecture() : this("pic16") { }
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        public PIC18Architecture(string archID) : base(archID)
+        public PIC16Architecture(string archID) : base(archID)
         {
         }
 
@@ -61,7 +58,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Constructor. Used for tests purpose.
         /// </summary>
         /// <param name="picDescr">PIC descriptor.</param>
-        public PIC18Architecture(PIC picDescr) : base("pic18", picDescr)
+        public PIC16Architecture(PIC picDescr) : base("pic16", picDescr)
         {
         }
 
@@ -76,8 +73,8 @@ namespace Reko.Arch.Microchip.PIC18
         protected override void LoadConfiguration()
         {
             Description = picDescriptor.Desc;
-            PIC18Registers.Create(picDescriptor).LoadRegisters(); 
-            StackRegister = PIC18Registers.STKPTR;
+            PIC16Registers.Create(picDescriptor).LoadRegisters();
+            StackRegister = PIC16Registers.STKPTR;
         }
 
         #endregion
@@ -92,17 +89,17 @@ namespace Reko.Arch.Microchip.PIC18
             get
             {
                 if (memDescr is null)
-                    memDescr = PIC18MemoryDescriptor.Create(PICDescriptor);
+                    memDescr = PIC16MemoryDescriptor.Create(PICDescriptor);
                 return memDescr;
             }
         }
-        private PIC18MemoryDescriptor memDescr;
+        private PIC16MemoryDescriptor memDescr;
 
-        public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
-            => new PIC18Disassembler(this, imageReader);
+        public PIC16Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
+            => new PIC16Disassembler(this, imageReader);
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
-            => new PIC18InstructionComparer(norm);
+            => new PIC16InstructionComparer(norm);
 
         public override SortedList<string, int> GetOpcodeNames()
         {
@@ -129,7 +126,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grpFlags) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(PIC18Registers.STATUS, grpFlags, GrfToString(grpFlags), dt);
+            var fl = new FlagGroupStorage(PIC16Registers.STATUS, grpFlags, GrfToString(grpFlags), dt);
             flagGroups.Add(fl);
             return fl;
         }
@@ -141,12 +138,17 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 switch (flgsName[i])
                 {
-                    case 'C': grf |= FlagM.C; break;
-                    case 'Z': grf |= FlagM.Z; break;
-                    case 'D': grf |= FlagM.DC; break;
-                    case 'O': grf |= FlagM.OV; break;
-                    case 'N': grf |= FlagM.N; break;
-                    default: return null;
+                    case 'C':
+                        grf |= FlagM.C;
+                        break;
+                    case 'Z':
+                        grf |= FlagM.Z;
+                        break;
+                    case 'D':
+                        grf |= FlagM.DC;
+                        break;
+                    default:
+                        return null;
                 }
             }
             return GetFlagGroup((uint)grf);
@@ -167,7 +169,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
-            throw new NotImplementedException("There is no wider register for PIC18");
+            throw new NotImplementedException("There is no wider register for PIC16");
         }
 
         /// <summary>
@@ -198,20 +200,20 @@ namespace Reko.Arch.Microchip.PIC18
             => CreateDisassemblerImpl(imageReader);
 
         public override ProcessorState CreateProcessorState()
-            => new PIC18State(this);
+            => new PIC16State(this);
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-            => new PIC18Rewriter(this, rdr, (PIC18State)state, frame, host);
+            => new PIC16Rewriter(this, rdr, (PIC16State)state, frame, host);
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
-            return new PIC18PointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
+            return new PIC16PointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
-            throw new NotImplementedException("PIC18 has no explicit argument stack");
+            throw new NotImplementedException("PIC16 has no explicit argument stack");
         }
 
         public override string GrfToString(uint grpFlags)
@@ -222,7 +224,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if ((grpFlags & 1) != 0)
                 {
-                    var f = PICRegisters.GetBitFieldByReg(PIC18Registers.STATUS, bitPos, 1);
+                    var f = PICRegisters.GetBitFieldByReg(PIC16Registers.STATUS, bitPos, 1);
                     if (f != null)
                         sb.Append(f.Name);
                 }

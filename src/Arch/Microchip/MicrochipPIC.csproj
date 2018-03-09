@@ -48,13 +48,17 @@
     <Compile Include="Common\IDeviceConfigDefs.cs" />
     <Compile Include="Common\PICAddresses.cs" />
     <Compile Include="Common\DeviceConfigDefs.cs" />
+    <Compile Include="Common\PICArchitecture.cs" />
     <Compile Include="Common\PICRegisters.cs" />
     <Compile Include="Common\PICRegisterTraits.cs" />
     <Compile Include="PIC16\FlagM.cs" />
     <Compile Include="PIC16\IOperandVisitor.cs" />
     <Compile Include="PIC16\Instruction.cs" />
     <Compile Include="PIC16\Operands.cs" />
-    <Compile Include="PIC16\PIC16EMemoryDescriptor.cs" />
+    <Compile Include="PIC16\PIC16Architecture.cs" />
+    <Compile Include="PIC16\PIC16Disassembler.cs" />
+    <Compile Include="PIC16\PIC16MemoryDescriptor.cs" />
+    <Compile Include="PIC16\PIC16InstructionComparer.cs" />
     <Compile Include="PIC16\Registers.cs" />
     <Compile Include="PIC18\IOperandShadow.cs" />
     <Compile Include="Common\IMemoryMap.cs" />
@@ -66,7 +70,6 @@
     <Compile Include="PIC16\Opcode.cs" />
     <Compile Include="PIC18\FlagM.cs" />
     <Compile Include="PIC18\IOperandVisitor.cs" />
-    <Compile Include="PIC18\MemoryOperand.cs" />
     <Compile Include="PIC18\Opcode.cs" />
     <Compile Include="PIC18\BankedAddress.cs" />
     <Compile Include="PIC18\PIC18Disassembler.cs" />
@@ -79,7 +82,7 @@
     <Compile Include="PIC18\PIC18Rewriter.cs" />
     <Compile Include="PIC18\PIC18State.cs" />
     <Compile Include="PIC18\PIC18MemoryDescriptor.cs" />
-    <Compile Include="PIC18\PseudoDataOperand.cs" />
+    <Compile Include="Common\PseudoDataOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

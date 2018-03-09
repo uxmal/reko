@@ -28,9 +28,9 @@ namespace Reko.Arch.Microchip.PIC16
     using Common;
 
     /// <summary>
-    /// This class implements the PIC16-ENhanced registers pool.
+    /// This class implements the PIC16 registers pool.
     /// </summary>
-    public class PIC16ERegisters : PICRegisters
+    public class PIC16Registers : PICRegisters
     {
         #region Constructors
 
@@ -38,12 +38,12 @@ namespace Reko.Arch.Microchip.PIC16
         /// Constructor.
         /// </summary>
         /// <param name="pic">The PIC definition descriptor.</param>
-        private PIC16ERegisters(PIC pic) : base(pic)
+        private PIC16Registers(PIC pic) : base(pic)
         {
         }
 
         /// <summary>
-        /// Creates a new <see cref="PIC16ERegisters"/> instance.
+        /// Creates a new <see cref="PIC16Registers"/> instance.
         /// </summary>
         /// <param name="pic">The PIC definition.</param>
         /// <returns>
@@ -54,7 +54,7 @@ namespace Reko.Arch.Microchip.PIC16
         {
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
-            registers = new PIC16ERegisters(pic);
+            registers = new PIC16Registers(pic);
             return registers;
         }
 
@@ -156,6 +156,11 @@ namespace Reko.Arch.Microchip.PIC16
         /// FSR1 pseudo-register (alias to FSR1H:FSR1L).
         /// </summary>
         public static PICRegisterStorage FSR1 { get; private set; }
+
+        /// <summary>
+        /// STKPTR pseudo-register.
+        /// </summary>
+        public static PICRegisterStorage STKPTR { get; private set; }
 
         protected override void SetCoreRegisters()
         {

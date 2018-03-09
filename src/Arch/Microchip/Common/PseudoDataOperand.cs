@@ -24,7 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.Microchip.Common
 {
     public abstract class PseudoDataOperand : MachineOperand
     {

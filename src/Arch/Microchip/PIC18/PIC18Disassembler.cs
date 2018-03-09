@@ -21,15 +21,16 @@
 #endregion
 
 using Reko.Libraries.Microchip;
-using Reko.Arch.Microchip.Common;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
+    using Common;
+
     /// <summary>
-    /// A Microchip PIC18 disassembler. Valid only for code program memory regions.
+    /// A Microchip PIC18 disassembler. Valid for most of code program memory regions.
     /// </summary>
     public class PIC18Disassembler : DisassemblerBase<PIC18Instruction>
     {
@@ -91,7 +92,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (lastusedregion != null && lastusedregion.Contains(addrCur))
                     return lastusedregion;
-                return lastusedregion = arch.MemoryMapper.MemoryMap.GetProgramRegion(addrCur);
+                return lastusedregion = arch.MemoryDescriptor.MemoryMap.GetProgramRegion(addrCur);
             }
 
             if (!rdr.IsValid)
@@ -127,9 +128,9 @@ namespace Reko.Arch.Microchip.PIC18
                 case MemorySubDomain.DeviceID:
                     return DisasmDWInstruction();
 
-                case MemorySubDomain.DeviceConfigInfo:
-                case MemorySubDomain.DeviceInfoAry:
-                case MemorySubDomain.RevisionID:
+                case MemorySubDomain.DeviceConfigInfo:  //TODO: Decode DCI
+                case MemorySubDomain.DeviceInfoAry:     //TODO: Decode DIA 
+                case MemorySubDomain.RevisionID:        //TODO: Decode Revision ID
                 case MemorySubDomain.Test:
                 case MemorySubDomain.Other:
                 default:

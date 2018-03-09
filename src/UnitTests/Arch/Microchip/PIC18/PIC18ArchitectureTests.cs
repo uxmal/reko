@@ -55,13 +55,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
             Assert.AreEqual(arch.CPUModel, pic.Name);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryMapper);
+            Assert.NotNull(arch.MemoryDescriptor);
 
             arch.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
             Assert.AreEqual(arch.CPUModel, pic.Name);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryMapper);
+            Assert.NotNull(arch.MemoryDescriptor);
 
             pic = PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED);
             arch = new PIC18Architecture(pic);
@@ -71,13 +71,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
             Assert.AreEqual(arch.CPUModel, pic.Name);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryMapper);
+            Assert.NotNull(arch.MemoryDescriptor);
 
             arch.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
             Assert.AreEqual(arch.CPUModel, pic.Name);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryMapper);
+            Assert.NotNull(arch.MemoryDescriptor);
 
             pic = PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED);
             arch = new PIC18Architecture(pic);
@@ -87,13 +87,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
             Assert.AreEqual(arch.CPUModel, pic.Name);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryMapper);
+            Assert.NotNull(arch.MemoryDescriptor);
 
             arch.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
             Assert.AreEqual(arch.CPUModel, pic.Name);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryMapper);
+            Assert.NotNull(arch.MemoryDescriptor);
         }
 
         [Test]
