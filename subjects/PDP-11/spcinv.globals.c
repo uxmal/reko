@@ -32,7 +32,7 @@ word16 g_w0DAA = 0x0000;
 Eq_137 g_a0DAC[] = 
 	{
 	};
-Eq_779 g_a0DB8[] = 
+Eq_783 g_a0DB8[] = 
 	{
 	};
 word16 g_a0DC4[] = 
@@ -60,16 +60,16 @@ ptr16 g_a0E30[] =
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_3111 g_a0EE6[] = 
+Eq_3119 g_a0EE6[] = 
 	{
 	};
-Eq_3110 g_a0EE9[] = 
+Eq_3118 g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_3114 g_a0EF0[] = 
+Eq_3122 g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -81,7 +81,7 @@ word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
 word16 g_w0EFC = 0x0000;
 word16 g_w0EFE = 0x0000;
-struct Eq_1678 * g_ptr0F00 = null;
+struct Eq_1682 * g_ptr0F00 = null;
 word16 g_w0F02 = 0x0000;
 struct Eq_3 * g_ptr0F04 = null;
 byte g_b0F05 = 0x00;

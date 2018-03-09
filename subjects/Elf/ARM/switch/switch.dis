@@ -937,7 +937,7 @@ l000086F8:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x00000010 r10:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -12(fp):lr -8(fp):r10 -4(fp):r5 0(fp):r4
 
-l000086F8_thunk__fini:
+l000086FC_thunk__fini:
 	_fini(r5)
 	return
 // DataOut:

@@ -1519,7 +1519,7 @@ l0B3E:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l0B3E_thunk_fn0B60:
+l0B42_thunk_fn0B60:
 	word16 r3_9
 	fn0B60(r0, r3, out r3_9)
 	return r3_9
@@ -1860,7 +1860,7 @@ l0CFA:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l0CFA_thunk_fn0D50:
+l0CFC_thunk_fn0D50:
 	fn0D50()
 	return
 // DataOut: pc r2 sp
@@ -2931,7 +2931,7 @@ l0FCC:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l100A_thunk_fn1AA2:
+l1010_thunk_fn1AA2:
 	word16 r2_44
 	word16 r3_45
 	return fn1AA2(r3_26, out r2_44, out r3_45)
@@ -3529,7 +3529,7 @@ l1386:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r2:<invalid>
 
-l1386_thunk_fn1836:
+l138A_thunk_fn1836:
 	word16 r2_33
 	word16 r3_34
 	word16 r4_35
