@@ -12,7 +12,7 @@
 08FC: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 08DA: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0904: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0915: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0916: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 091F: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 130B: warning: Procedure fn12D8 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 130B: warning: Procedure fn12D8 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -590,7 +590,7 @@ Parameter name: index
 00000000004033E3: warning: Unable to resolve imported reference _obstack_begin.
 0000000000404DB6: warning: Unable to resolve imported reference freecon.
 0000000000407FA1: warning: Unable to resolve imported reference __xstat.
-000000000040E93F: warning: Procedure fn000000000040E930 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000000040E941: warning: Procedure fn000000000040E930 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000405836: warning: Unable to resolve imported reference error.
 0000000000405043: warning: Unable to resolve imported reference strcoll.
 0000000000411824: warning: Unable to resolve imported reference getfilecon.
@@ -611,12 +611,12 @@ Parameter name: index
 0000000000408587: warning: Unable to resolve imported reference stpncpy.
 00000000004085C2: warning: Unable to resolve imported reference __xstat.
 0000000000411844: warning: Unable to resolve imported reference lgetfilecon.
-000000000041182E: warning: Procedure fn0000000000411820 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000000041182F: warning: Procedure fn0000000000411820 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040352A: warning: Unable to resolve imported reference opendir.
 000000000040354C: warning: Unable to resolve imported reference dirfd.
 0000000000403565: warning: Unable to resolve imported reference __fxstat.
 0000000000404EE5: warning: Unable to resolve imported reference _setjmp.
-000000000040D697: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000000040D69A: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000403E9D: warning: Unable to resolve imported reference __xstat.
 000000000040406E: warning: Unable to resolve imported reference _obstack_newchunk.
 00000000004044A8: warning: Unable to resolve imported reference __overflow.
@@ -633,7 +633,7 @@ Parameter name: index
 00000000004045E9: warning: Unable to resolve imported reference __overflow.
 000000000040437B: warning: Unable to resolve imported reference error.
 000000000040535A: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
-000000000040D43B: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000000040D43E: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004053E1: warning: Unable to resolve imported reference __ctype_b_loc.
 0000000000405394: warning: Unable to resolve imported reference fwrite_unlocked.
 0000000000405412: warning: Unable to resolve imported reference __ctype_get_mb_cur_max.
@@ -885,7 +885,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 00000000004012D5: warning: Unable to resolve imported reference png_error.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400DAB: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000400DC0: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000400DC1: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400B80: warning: Unable to resolve imported reference png_get_tRNS.
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 00401828: warning: Expected sizes of arrays to have been determined by now
@@ -897,7 +897,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 === Elf\x86-64\simd_double\simd_double
 === Hunk-m68k\BENCHFN
 *** Hunk-m68k\BENCHFN
-000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002F9E.
     Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4536 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
@@ -915,7 +915,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHLNG
 *** Hunk-m68k\BENCHLNG
-000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001444: error: An error occurred while processing the statement branch d2_107 - Mem163[fp + 0xFFFFFFF0:word32] < 0x00000000 l0000144A.
     Pulling difference int32 and ptr32
@@ -933,7 +933,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 === Hunk-m68k\BENCHMUL
 *** Hunk-m68k\BENCHMUL
-000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000326E: error: An error occurred while processing the statement branch d0 - d5_2510 >=u 0x00000000 l00003226.
     Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_5234 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
@@ -952,7 +952,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 === Hunk-m68k\BYTEOPS
 === Hunk-m68k\FIBO
 *** Hunk-m68k\FIBO
-000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000300A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00002FC2.
     Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_4545 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
@@ -971,7 +971,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 === Hunk-m68k\MATRIXMU
 === Hunk-m68k\MAX
 *** Hunk-m68k\MAX
-000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000184A: error: An error occurred while processing the statement branch d0 - d5_2509 >=u 0x00000000 l00001802.
     Pulling difference (ptr (struct 0004 (0 (ptr (struct (0 T_889 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
@@ -994,7 +994,7 @@ fn00000000004028C0: warning: Structure analysis stopped making progress, quittin
 0800:1764: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:17AB: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1788: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1782: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1785: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:17E6: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1895: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:196C: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -1709,7 +1709,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
 0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
 0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
 00000001400011CC: warning: Procedure fn00000001400011B0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000000014000143D: warning: Procedure Win32CrtStartup previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000140001441: warning: Procedure Win32CrtStartup previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000140001DF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_set_app_type.
 0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
 0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
@@ -2502,7 +2502,7 @@ fn03B2: warning: Structure analysis stopped making progress, quitting. Please re
 === regressions\reko-90\PP.EXE
 *** regressions\reko-90\PP.EXE
 Borland C v3 runtime detected
-0800:8BC5: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:8BC8: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2522,7 +2522,7 @@ Borland C v3 runtime detected
 0800:9127: warning: Procedure fn0800_8F97 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0800:920B: warning: Procedure fn0800_8F97 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0800:93BA: warning: Procedure fn0800_93C5 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:93EC: warning: Procedure fn0800_93C5 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:93ED: warning: Procedure fn0800_93C5 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: error: An error occurred while processing instruction at address 0800:9F9D.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2665,7 +2665,7 @@ fn1483_1BB8: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
 fn1483_1BB9: error: An error occurred during data flow analysis.
     Index was outside the bounds of the array.
-       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 385
+       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 387
    at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 85
    at Reko.Core.Code.InstructionVisitorBase.VisitReturnInstruction(ReturnInstruction ret) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 108
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
@@ -2696,4 +2696,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 49 binaries in 45.05 seconds ---
+Decompiled 49 binaries in 30.96 seconds ---
