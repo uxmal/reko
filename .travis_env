@@ -1,23 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 ##
 ## Copyright(C) 2018 Stefano Moioli <smxdev4@gmail.com>
 ## This file is part of Reko Decompiler
 ##
-
+set -x
 export PATH="$HOME/prefix/bin:$PATH"
-export PKG_CONFIG_PATH="$HOME/prefix/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CC=$HOME/prefix/bin/gcc
 export CXX=$HOME/prefix/bin/g++
 
+APT_CACHE_DIR="$HOME/apt_cache"
+REKO_PREFIX="$HOME/prefix"
+
+CAPSTONE_VERSION=3.0.4
+CAPSTONE_EXT="tar.gz"
+CAPSTONE_URL="https://github.com/aquynh/capstone/archive/${CAPSTONE_VERSION}.${CAPSTONE_EXT}"
+
+export PKG_CONFIG_PATH="${REKO_PREFIX}/usr/lib/pkgconfig:${PKG_CONFIG_PATH}"
+
 function before_install(){
-	CAPSTONE_VERSION=3.0.4
-	CAPSTONE_EXT="tar.gz"
-	CAPSTONE_URL="https://github.com/aquynh/capstone/archive/${CAPSTONE_VERSION}.${CAPSTONE_EXT}"
-
-	APT_CACHE_DIR="$HOME/apt_cache"
-	REKO_PREFIX="$HOME/prefix"
-
-
 	# Initialize cache if needed
 	[ ! -d ${APT_CACHE_DIR}/cache ] && mkdir -p ${APT_CACHE_DIR}/cache
   	[ ! -d ${APT_CACHE_DIR}/lib ] && mkdir -p ${APT_CACHE_DIR}/lib
@@ -54,7 +54,6 @@ function before_install(){
 
 	# Download and build capstone
 	echo "Building capstone..."
-
 	pushd ${REKO_PREFIX}/tmp
 		wget ${CAPSTONE_URL}
 		tar -xf "${CAPSTONE_VERSION}.${CAPSTONE_EXT}"
@@ -63,6 +62,5 @@ function before_install(){
 		# Install capstone to custom prefix
 		echo "Installing capstone..."
 		DESTDIR=${REKO_PREFIX} make install -j $(grep processor /proc/cpuinfo | wc -l)
-		export PKG_CONFIG_PATH="${REKO_PREFIX}/usr/lib/pkgconfig:${PKG_CONFIG_PATH}"
 	popd
 }
