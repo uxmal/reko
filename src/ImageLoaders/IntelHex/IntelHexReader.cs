@@ -22,13 +22,13 @@ using System;
 using System.IO;
 using Reko.Core;
 
-namespace Reko.ImageLoaders.IntelHex32
+namespace Reko.ImageLoaders.IntelHex
 {
 
     /// <summary>
     /// A reader capable of reading a Intel Hexadecimal 32-bit format object (a.k.a. IHEX32) stream.
     /// </summary>
-    public class IntelHex32Reader : IDisposable
+    public class IntelHexReader : IDisposable
     {
 
         #region Locals
@@ -43,11 +43,11 @@ namespace Reko.ImageLoaders.IntelHex32
         #region Constructors
 
         /// <summary>
-        /// Constructs instance of an <see cref="IntelHex32Reader" />.
+        /// Constructs instance of an <see cref="IntelHexReader" />.
         /// </summary>
         /// <param name="str">The source stream of the hex file.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
-        public IntelHex32Reader(Stream str)
+        public IntelHexReader(Stream str)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
@@ -62,7 +62,7 @@ namespace Reko.ImageLoaders.IntelHex32
         private bool disposedValue; // To detect redundant calls
 
         /// <summary>
-        /// Dispose the <see cref="IntelHex32Reader"/>
+        /// Dispose the <see cref="IntelHexReader"/>
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.IntelHex32
         }
 
         /// <summary>
-        /// Dispose the <see cref="IntelHex32Reader"/>
+        /// Dispose the <see cref="IntelHexReader"/>
         /// </summary>
         public void Dispose()
         {
@@ -89,8 +89,6 @@ namespace Reko.ImageLoaders.IntelHex32
 
         #endregion
 
-        #region Properties
-
         /// <summary>
         /// Gets or sets the base address for loading/dumping the 16-bit IHex32 records.
         /// </summary>
@@ -99,9 +97,7 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <summary>
         /// Gets the start address (program entry point).
         /// </summary>
-        public Address StartAddress { get; set; } = null;
-
-        #endregion
+        public Address StartAddress { get; private set; } = null;
 
         #region Methods
 
@@ -117,7 +113,7 @@ namespace Reko.ImageLoaders.IntelHex32
         /// An address value may be read without corresponding data bytes. This occurs for record
         /// types 02, 04, 05.
         /// </remarks>
-        public bool Read(out uint address, out byte[] data)
+        public bool TryReadRecord(out uint address, out byte[] data)
         {
             data = null;
             address = 0;
@@ -131,12 +127,12 @@ namespace Reko.ImageLoaders.IntelHex32
             if (streamReader.EndOfStream)
                 return false;
 
-            var hexRecord = IntelHex32Parser.ParseRecord(hexLine, lineNum);
+            var hexRecord = IntelHexParser.ParseRecord(hexLine, lineNum);
 
-            if (hexRecord.RecordType != IntelHex32RecordType.EndOfFile)
+            if (hexRecord.RecordType != IntelHexRecordType.EndOfFile)
             {
                 address = HandleAddress(hexRecord);
-                if (hexRecord.RecordType == IntelHex32RecordType.Data)
+                if (hexRecord.RecordType == IntelHexRecordType.Data)
                     data = hexRecord.Data.ToArray();
                 return true;
             }
@@ -144,49 +140,45 @@ namespace Reko.ImageLoaders.IntelHex32
             return false;
         }
 
-        #endregion
-
-        #region Helpers
-
-        private uint HandleAddress(IntelHex32Record hexRecord)
+        private uint HandleAddress(IntelHexRecord hexRecord)
         {
             switch (hexRecord.RecordType)
             {
-                case IntelHex32RecordType.Data:
+                case IntelHexRecordType.Data:
                     return AddressBase + hexRecord.Address;
 
-                case IntelHex32RecordType.ExtendedSegmentAddress:
+                case IntelHexRecordType.ExtendedSegmentAddress:
                     if (IsLinear)
-                        throw new IntelHex32Exception($"Mixed segmented/linear address.", lineNum);
+                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
                     IsSegmented = true;
                     AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 4;
                     return AddressBase;
 
-                case IntelHex32RecordType.ExtendedLinearAddress:
+                case IntelHexRecordType.ExtendedLinearAddress:
                     if (IsSegmented)
-                        throw new IntelHex32Exception($"Mixed segmented/linear address.", lineNum);
+                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
                     IsLinear = true;
                     AddressBase = (((uint)hexRecord.Data[0] << 8) | hexRecord.Data[1]) << 16;
                     return AddressBase;
 
-                case IntelHex32RecordType.StartSegmentAddress:
+                case IntelHexRecordType.StartSegmentAddress:
                     if (IsLinear)
-                        throw new IntelHex32Exception($"Mixed segmented/linear address.", lineNum);
+                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
                     IsSegmented = true;
                     StartAddress = Address.SegPtr((ushort)((hexRecord.Data[0] << 8) | hexRecord.Data[1]),
                                                   (ushort)((hexRecord.Data[2] << 8) | hexRecord.Data[3]));
                     return AddressBase;
 
-                case IntelHex32RecordType.StartLinearAddress:
+                case IntelHexRecordType.StartLinearAddress:
                     if (IsSegmented)
-                        throw new IntelHex32Exception($"Mixed segmented/linear address.", lineNum);
+                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
                     IsLinear = true;
                     StartAddress = Address.Ptr32(((uint)hexRecord.Data[0] << 24) | ((uint)hexRecord.Data[1] << 16) |
                                            ((uint)hexRecord.Data[2] << 8) | hexRecord.Data[3]);
                     return AddressBase;
 
                 default:
-                    throw new IntelHex32Exception($"Unknown value read for [{nameof(hexRecord.RecordType)}]", lineNum);
+                    throw new IntelHexException($"Unknown value read for [{nameof(hexRecord.RecordType)}]", lineNum);
             }
 
         }

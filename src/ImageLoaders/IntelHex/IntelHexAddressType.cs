@@ -18,12 +18,12 @@
  */
 #endregion
 
-namespace Reko.ImageLoaders.IntelHex32
+namespace Reko.ImageLoaders.IntelHex
 {
     /// <summary>
     /// The Address type for address values written to an Intel Hexadecimal 32-bit object format stream.
     /// </summary>
-    public enum IntelHex32AddressType : byte
+    public enum IntelHexAddressType : byte
     {
         /// <summary>
         /// Indicates the record data field contains a 16-bit segment:base address

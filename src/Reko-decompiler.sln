@@ -414,8 +414,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtariTOS", "Environments\At
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha", "Arch\Alpha\Alpha.csproj", "{C4C56725-BFD0-405A-802C-2C66FCD0EF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelHex32", "ImageLoaders\IHex32\IntelHex32.csproj", "{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -2338,36 +2336,6 @@ Global
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06}.TravisRelease|x86.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|.NET.Build.0 = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|Win32.Build.0 = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Debug|x86.Build.0 = Debug|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|.NET.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|.NET.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|Win32.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|Win32.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|x86.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.Release|x86.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|.NET.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|Win32.Build.0 = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|x86.ActiveCfg = Release|Any CPU
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2441,7 +2409,6 @@ Global
 		{1E57924E-B623-4894-8E3A-87E3E99E2303} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{73E8B629-F836-4CA6-B003-DAE0809B8A7A} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{C4C56725-BFD0-405A-802C-2C66FCD0EF06} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
-		{E2215927-CB38-4E9D-9F85-FD23AF5D3F77} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B695387-7C8B-4E2A-9CFC-874423BDE6AC}

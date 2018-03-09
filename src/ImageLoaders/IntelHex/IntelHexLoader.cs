@@ -28,12 +28,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Reko.ImageLoaders.IntelHex32
+namespace Reko.ImageLoaders.IntelHex
 {
+
     /// <summary>
     /// An Intel Hexadecimal 32-bit object format image (a.k.a. IHEX32) loader.
     /// </summary>
-    public class IntelHex32Loader : ImageLoader
+    public class HexLoader : ImageLoader
     {
 
         //TODO: As Intel Hex specs do not specify any ordering of records, we should be able, getting a new record,
@@ -42,19 +43,22 @@ namespace Reko.ImageLoaders.IntelHex32
 
         #region Helper classes
 
-        internal class MemChunk
+        /// <summary>
+        /// A memory chunk. Consecutive bytes loaded at a given start memory address.
+        /// </summary>
+        internal class MemoryChunk
         {
             public readonly Address BaseAddress;
             public List<byte> Datum;
             public Address EndAddress => BaseAddress + Datum.Count;
 
-            public MemChunk(Address bAddr)
+            public MemoryChunk(Address bAddr)
             {
                 BaseAddress = bAddr;
                 Datum = new List<byte>();
             }
 
-            public MemChunk(uint address) : this(Address.Ptr32(address))
+            public MemoryChunk(uint address) : this(Address.Ptr32(address))
             {
             }
 
@@ -69,20 +73,20 @@ namespace Reko.ImageLoaders.IntelHex32
         /// <summary>
         /// List of memory chunks.
         /// </summary>
-        internal class MemoryChunksList : IEnumerable<MemChunk>
+        internal class MemoryChunksList : IEnumerable<MemoryChunk>
         {
             private Address currAddr = null;
             private Address nextAddr = null;
-            private SortedList<Address, MemChunk> memChunks;
-            private MemChunk currMemChunk;
+            private SortedList<Address, MemoryChunk> memChunks;
+            private MemoryChunk currMemChunk;
 
             public MemoryChunksList()
             {
-                memChunks = new SortedList<Address, MemChunk>();
+                memChunks = new SortedList<Address, MemoryChunk>();
                 currMemChunk = null;
             }
 
-            private MemChunk GetPredChunk(Address addr)
+            private MemoryChunk GetPredChunk(Address addr)
                 => memChunks.Values.FirstOrDefault(mchk => mchk.IsAtHeadOf(addr));
 
             /// <summary>
@@ -101,7 +105,7 @@ namespace Reko.ImageLoaders.IntelHex32
                 if (currAddr == null)
                 {
                     currAddr = Address.Ptr32(address);
-                    currMemChunk = new MemChunk(currAddr);
+                    currMemChunk = new MemoryChunk(currAddr);
                     memChunks.Add(currAddr, currMemChunk);
                 }
                 else
@@ -112,7 +116,7 @@ namespace Reko.ImageLoaders.IntelHex32
                         currMemChunk = GetPredChunk(currAddr);
                         if (currMemChunk == null)
                         {
-                            currMemChunk = new MemChunk(currAddr);
+                            currMemChunk = new MemoryChunk(currAddr);
                             memChunks.Add(currAddr, currMemChunk);
                         }
                     }
@@ -122,7 +126,7 @@ namespace Reko.ImageLoaders.IntelHex32
                 nextAddr = currAddr + data.Length;
             }
 
-            public IEnumerator<MemChunk> GetEnumerator() => memChunks.Values.GetEnumerator();
+            public IEnumerator<MemoryChunk> GetEnumerator() => memChunks.Values.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
@@ -137,7 +141,7 @@ namespace Reko.ImageLoaders.IntelHex32
 
         #region Constructors
 
-        public IntelHex32Loader(IServiceProvider services, string filename, byte[] imgRaw)
+        public HexLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
         }
@@ -181,13 +185,13 @@ namespace Reko.ImageLoaders.IntelHex32
             var memChunks = new MemoryChunksList();
             Address addrEp = null;
 
-            using (var rdr = new IntelHex32Reader(new MemoryStream(RawImage)))
+            using (var rdr = new IntelHexReader(new MemoryStream(RawImage)))
             {
                 try
                 {
                     for (; ; )
                     {
-                        if (!rdr.Read(out uint address, out byte[] data))
+                        if (!rdr.TryReadRecord(out uint address, out byte[] data))
                             break;
                         if (data != null)
                         {
@@ -198,7 +202,7 @@ namespace Reko.ImageLoaders.IntelHex32
                     addrEp = rdr.StartAddress;
 
                 }
-                catch (IntelHex32Exception ex)
+                catch (IntelHexException ex)
                 {
                     listener.Error(new NullCodeLocation(""), ex.Message);
                     return null;

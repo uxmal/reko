@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -145,7 +145,6 @@
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\$(OutDir)Reko.ImageLoaders.Dol.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
-      <ImageLoaders Include="$(SolutionDir)ImageLoaders\IHex32\$(OutDir)Reko.ImageLoaders.IntelHex32.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
       <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />

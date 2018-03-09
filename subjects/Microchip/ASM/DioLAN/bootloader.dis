@@ -1,0 +1,168 @@
+// fn00000000
+// Return size: 0
+void fn00000000()
+fn00000000_entry:
+	// succ:  l00000000 l00000000
+l00000000:
+	STKPTR = fp
+	STKPTR = fp
+	TBLPTRU = 0x00
+	Z = true
+	TBLPTRH = 0x00
+	Z = true
+	goto l00000C
+	// succ:  l00000C
+l00000000:
+	TBLPTRU = 0x00
+	Z = true
+	TBLPTRH = 0x00
+	Z = true
+	goto l00000C
+	// succ:  l00000C
+l00000C:
+	WREG = 0x0F
+	ADCON1 = WREG
+	goto l000500
+	// succ:  l000500
+l00000C:
+	WREG = 0x0F
+	ADCON1 = WREG
+	goto l000500
+	// succ:  l000500
+l000500:
+	WREG = 0x00
+	EEADR = WREG
+	WREG = 0x01
+	EECON1 = WREG
+	WREG = 0x5A
+	WREG = EEDATA - WREG
+	CDCZOVN = cond(WREG)
+	branch Test(EQ,Z) l00051A
+	goto l00050E
+	// succ:  l00050E l00051A
+l000500:
+	WREG = 0x00
+	EEADR = WREG
+	WREG = 0x01
+	EECON1 = WREG
+	WREG = 0x5A
+	WREG = EEDATA - WREG
+	CDCZOVN = cond(WREG)
+	branch Test(EQ,Z) l00051A
+	goto l00050E
+	// succ:  l00050E l00051A
+l00050E:
+	Data[0x0F96:byte] = 0xFF
+	branch (PORTE & 0x01) == 0x00 l000514
+	goto l000512
+	// succ:  l000512 l000514
+l00050E:
+	Data[0x0F96:byte] = 0xFF
+	branch (PORTE & 0x01) == 0x00 l000514
+	goto l000512
+	// succ:  l000512 l000514
+l000512:
+	goto 0x000800
+	goto l000800
+	// succ:  l000800
+l000512:
+	goto 0x000800
+	goto l000800
+	// succ:  l000800
+l000514:
+l000514:
+l00051A:
+	Data[0x0F96:byte] = Data[0x0F96:byte] & 0xFE
+	Data[0x0F8D:byte] = Data[0x0F8D:byte] & 0xFE
+	Data[(BSR << 0x08) + 0x14:byte] = 0x00
+	Z = true
+	STKPTR = STKPTR + 0x01
+	Stack[STKPTR] = 0x000522
+	TOS = 0x000522
+	call fn00021A (retsize: 0;)
+l00051A:
+	Data[0x0F96:byte] = Data[0x0F96:byte] & 0xFE
+	Data[0x0F8D:byte] = Data[0x0F8D:byte] & 0xFE
+	Data[(BSR << 0x08) + 0x14:byte] = 0x00
+	Z = true
+	STKPTR = STKPTR + 0x01
+	Stack[STKPTR] = 0x000522
+	TOS = 0x000522
+	call fn00021A (retsize: 0;)
+l000800:
+	goto 0x000800
+	goto l000800
+	// succ:  l000800
+l000800:
+	goto 0x000800
+	goto l000800
+	// succ:  l000800
+fn00000000_exit:
+
+
+// fn00021A
+// Return size: 0
+void fn00021A()
+fn00021A_entry:
+	// succ:  l00021A l00021A
+l00021A:
+	STKPTR = fp
+	STKPTR = fp
+	WREG = 0x14
+	UCFG = WREG
+	UIE = 0x00
+	Z = true
+	WREG = 0x08
+	UCON = WREG
+	goto l000224
+	// succ:  l000224
+l00021A:
+	WREG = 0x14
+	UCFG = WREG
+	UIE = 0x00
+	Z = true
+	WREG = 0x08
+	UCON = WREG
+	goto l000224
+	// succ:  l000224
+l000224:
+	branch (UCON & 0x20) == 0x00 l000228
+	goto l000226
+	// succ:  l000226 l000228
+l000224:
+	branch (UCON & 0x20) == 0x00 l000228
+	goto l000226
+	// succ:  l000226 l000228
+l000226:
+	goto 0x000224
+	goto l000224
+	// succ:  l000224
+l000226:
+	goto 0x000224
+	goto l000224
+	// succ:  l000224
+l000228:
+	UIR = 0x00
+	Z = true
+	WREG = 0x11
+	UIE = WREG
+	WREG = 0x02
+	Data[(BSR << 0x08) + 0x17:byte] = WREG
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn00021A_exit
+l000228:
+	UIR = 0x00
+	Z = true
+	WREG = 0x11
+	UIE = WREG
+	WREG = 0x02
+	Data[(BSR << 0x08) + 0x17:byte] = WREG
+	STKPTR = STKPTR - 0x01
+	TOS = Stack[STKPTR]
+	return
+	// succ:  fn00021A_exit
+fn00021A_exit:
+
+
