@@ -27,8 +27,8 @@ function before_install(){
 
 	# Restore APT state from cache
 	echo "Restoring APT Cache..."
-	sudo cp -Rv ${APT_CACHE_DIR}/cache /var/cache/apt
-	sudo cp -Rv ${APT_CACHE_DIR}/lib /var/lib/apt
+	sudo cp -Rv ${APT_CACHE_DIR}/cache/. /var/cache/apt/
+	sudo cp -Rv ${APT_CACHE_DIR}/lib/. /var/lib/apt/
 	sudo chown -R root:root /var/lib/apt
 	sudo chown -R root:root /var/cache/apt
 
@@ -43,8 +43,8 @@ function before_install(){
 	echo "Rebuilding APT Cache..."
 	rm -Rf ${APT_CACHE_DIR}
 	mkdir -p ${APT_CACHE_DIR}
-	sudo cp -Rv /var/lib/apt ${APT_CACHE_DIR}/lib
-	sudo cp -Rv /var/cache/apt ${APT_CACHE_DIR}/cache
+	sudo cp -Rv /var/lib/apt/. ${APT_CACHE_DIR}/lib/
+	sudo cp -Rv /var/cache/apt/. ${APT_CACHE_DIR}/cache/
 	sudo chown -R travis:travis ${APT_CACHE_DIR}
 
 	# Prepare custom build prefix
