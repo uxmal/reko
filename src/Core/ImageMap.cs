@@ -63,7 +63,7 @@ namespace Reko.Core
             {
                 // Outside of range.
                 Items.Add(itemNew.Address, itemNew);
-                MapChanged.Fire(this);
+                FireMapChanged();
                 return itemNew;
             }
             else
@@ -79,13 +79,13 @@ namespace Reko.Core
                         itemNew.Size = (uint)(item.Size - delta);
                         item.Size = (uint)delta;
                         Items.Add(itemNew.Address, itemNew);
-                        MapChanged.Fire(this);
+                        FireMapChanged();
                         return itemNew;
                     }
                     else
                     {
                         Items.Add(itemNew.Address, itemNew);
-                        MapChanged.Fire(this);
+                        FireMapChanged();
                         return itemNew;
                     }
                 }
@@ -98,7 +98,7 @@ namespace Reko.Core
                         item.Address += itemNew.Size;
                         Items[itemNew.Address] = itemNew;
                         Items[item.Address] = item;
-                        MapChanged.Fire(this);
+                        FireMapChanged();
                         return itemNew;
                     }
                     if (item.GetType() != itemNew.GetType())    //$BUGBUG: replaces the type.
@@ -106,7 +106,7 @@ namespace Reko.Core
                         Items[itemNew.Address] = itemNew;
                         itemNew.Size = item.Size;
                     }
-                    MapChanged.Fire(this);
+                    FireMapChanged();
                     return item;
                 }
             }
@@ -158,7 +158,7 @@ namespace Reko.Core
                     Items.Add(item.Address, item);
                 }
             }
-            MapChanged.Fire(this);
+            FireMapChanged();
         }
 
         private DataType ChopAfter(DataType type, int offset)
@@ -227,7 +227,7 @@ namespace Reko.Core
                 Items.Remove(nextItem.Address);
             }
 
-            MapChanged.Fire(this);
+            FireMapChanged();
         }
 
         /// <summary>
@@ -251,6 +251,33 @@ namespace Reko.Core
 		{
             return Items.TryGetValue(addr, out item);
 		}
+
+        //$TODO: the following code is a stopgap to prevent unnecessary reloading
+        // of the user interface during background operations. In the future,
+        // Reko will need to handle this in a better way, but the changes required
+        // are rather large. See GitHub [issue #567](https://github.com/uxmal/reko/issues/567)
+        // for the gory details.
+        private bool mapChangedEventHandlerPaused;
+        private bool mapChangedPendingEvents;
+
+        private void FireMapChanged()
+        {
+            if (!mapChangedEventHandlerPaused) MapChanged.Fire(this);
+            else mapChangedPendingEvents = true;
+        }
+
+        public void PauseEventHandler()
+        {
+            mapChangedEventHandlerPaused = true;
+        }
+
+        public void UnpauseEventHandler()
+        {
+            mapChangedEventHandlerPaused = false;
+            if (mapChangedPendingEvents) MapChanged.Fire(this);
+            mapChangedPendingEvents = false;
+        }
+
 
         // class ItemComparer //////////////////////////////////////////////////
 

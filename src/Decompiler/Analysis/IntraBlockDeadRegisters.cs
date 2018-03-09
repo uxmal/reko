@@ -125,7 +125,9 @@ namespace Reko.Analysis
 
             public bool VisitArrayAccess(ArrayAccess acc)
             {
-                throw new NotImplementedException();
+                var dead = acc.Array.Accept(this);
+                dead &= acc.Index.Accept(this);
+                return dead;
             }
 
             public bool VisitCast(Cast cast)

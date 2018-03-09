@@ -480,16 +480,14 @@ namespace Reko.Scanning
                     var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                     EnsureEdge(blockSource.Procedure, blockFrom, bt);
                 }
-                if (blockCur.Statements.Count == 0)
-                {
-                    //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
-                    // predicate. This should be done in a better way; perhaps by keeping track
-                    // of scanned blocks in the Scanner class? 
-                    // The recursive scanning of basic blocks does need improvement;
-                    // consider using a similar technique to Shingle scanner, where reachable
-                    // statements are collected first, and basic blocks reconstructed afterwards.
-                    Emit(new GotoInstruction(addrTarget));
-                }
+                // Always emit goto statements to avoid error during block splitting
+                //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
+                // predicate. This should be done in a better way; perhaps by keeping track
+                // of scanned blocks in the Scanner class?
+                // The recursive scanning of basic blocks does need improvement;
+                // consider using a similar technique to Shingle scanner, where reachable
+                // statements are collected first, and basic blocks reconstructed afterwards.
+                Emit(new GotoInstruction(addrTarget));
                 return false;
             }
             if (g.Target is MemoryAccess mem)

@@ -55,7 +55,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HexLoader.cs" />
+    <Compile Include="IntelHexLoader.cs" />
+    <Compile Include="IntelHexWriter.cs" />
+    <Compile Include="IntelHexReader.cs" />
+    <Compile Include="IntelHexRecord.cs" />
+    <Compile Include="IntelHexParser.cs" />
+    <Compile Include="IntelHexException.cs" />
+    <Compile Include="IntelHexRecordType.cs" />
+    <Compile Include="IntelHexAddressType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

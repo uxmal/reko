@@ -207,6 +207,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_SavePrompt(true);
             dcSvc.Stub(d => d.Decompiler = null);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
+            brSvc.Expect(b => b.Reload());
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();

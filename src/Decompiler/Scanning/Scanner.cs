@@ -941,6 +941,25 @@ namespace Reko.Scanning
                 // Use has requested shingle scanning of remaining areas.
                 ShingleScanProcedures();
             }
+            RemoveRedundantGotos();
+        }
+
+        private void RemoveRedundantGotos()
+        {
+            var blocks = Program.Procedures.Values.SelectMany(
+                p => p.ControlGraph.Blocks);
+            foreach(var block in blocks)
+            {
+                RemoveRedundantGotos(block);
+            }
+        }
+
+        private void RemoveRedundantGotos(Block block)
+        {
+            if (block.Statements.Count == 0)
+                return;
+            if (block.Statements.Last.Instruction is GotoInstruction)
+                block.Statements.Remove(block.Statements.Last);
         }
 
         /// <summary>
