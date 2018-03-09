@@ -42,6 +42,7 @@ namespace Reko.Arch.i8051
             this.StackRegister = Registers.SP;
             this.WordWidth = PrimitiveType.Byte;
             this.PointerType = PrimitiveType.Ptr16;
+            this.FramePointerType = PrimitiveType.Byte; // tiny stack pointer!
             this.InstructionBitSize = 8;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
@@ -88,12 +89,12 @@ namespace Reko.Arch.i8051
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new i8051State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new i8051Rewriter(this, rdr, state, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
