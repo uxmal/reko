@@ -77,6 +77,15 @@ function(invoke_cmake name path build_dir)
 		list(APPEND CMAKE_ARGS "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
 	endif()
 
+	if(QUICK_CONFIGURE)
+		message(STATUS "Skipping compiler sanity checks")
+		list(APPEND CMAKE_ARGS
+			"-DQUICK_CONFIGURE=ON"
+			"-DCMAKE_C_COMPILER_FORCED=ON"
+			"-DCMAKE_CXX_COMPILER_FORCED=ON"
+		)		
+	endif()
+
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}
 		WORKING_DIRECTORY ${build_dir}

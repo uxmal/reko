@@ -156,7 +156,7 @@ def processor(dir, rel_pname, exe_and_args):
         exe_and_args.insert(1, "--debug") # enables line numbers in stack traces
     output_lines = "=== " + banner + "\n"
     start = time.time()
-    # print ("Starting %s at %s" % (banner, start))
+    sys.stderr.write("Starting %s at %s\n" % (banner, start))
 
     proc = subprocess.Popen(exe_and_args,
         stdout=subprocess.PIPE,
