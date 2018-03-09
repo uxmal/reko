@@ -28,7 +28,7 @@ after_build:
         7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/.;
         "[after_build] compressing CmdLine...";
         7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/.;
-        mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
+        mv ./src/WixInstaller/bin/$env:PLATFORM/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         ;
         <# Append the short hash to the .msi setup #>;
         $filePath = $env:artifacts_dir + "/*.msi";
