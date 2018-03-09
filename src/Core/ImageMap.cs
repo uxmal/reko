@@ -251,8 +251,12 @@ namespace Reko.Core
 		{
             return Items.TryGetValue(addr, out item);
 		}
-	    
-	    
+
+        //$TODO: the following code is a stopgap to prevent unnecessary reloading
+        // of the user interface during background operations. In the future,
+        // Reko will need to handle this in a better way, but the changes required
+        // are rather large. See GitHub [issue #567](https://github.com/uxmal/reko/issues/567)
+        // for the gory details.
         private bool mapChangedEventHandlerPaused;
         private bool mapChangedPendingEvents;
 
