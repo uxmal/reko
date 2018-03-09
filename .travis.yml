@@ -15,46 +15,8 @@ cache:
     - $HOME/apt_cache
 
 before_install:
-  # Restore APT state from cache
-  - echo "Restoring APT Cache..."
-  - [ ! -d $HOME/apt_cache/cache ] && mkdir -p $HOME/apt_cache/cache
-  - [ ! -d $HOME/apt_cache/lib ] && mkdir -p $HOME/apt_cache/lib
-  - sudo cp -Rv $HOME/apt_cache/cache /var/cache/apt
-  - sudo cp -Rv $HOME/apt_cache/lib /var/lib/apt
-  - sudo chown -R root:root /var/lib/apt
-  - sudo chown -R root:root /var/cache/apt
-  # Check for new versions of packages
-  - echo "Checking for package updates..."
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-  - sudo apt-get install -y gcc-7-multilib g++-7-multilib
-  - sudo apt-get autoclean
-  # Re-create APT cache from the current state
-  - echo "Rebuilding APT Cache..."
-  - rm -Rf $HOME/apt_cache
-  - mkdir $HOME/apt_cache
-  - sudo cp -Rv /var/lib/apt $HOME/apt_cache/lib
-  - sudo cp -Rv /var/cache/apt $HOME/apt_cache/cache
-  - sudo chown -R travis:travis $HOME/apt_cache
-  # Prepare custom build prefix
-  - echo "Setting up build environment..."
-  - mkdir -p $HOME/prefix/bin
-  - ln -s /usr/bin/gcc-7 $HOME/prefix/bin/gcc
-  - ln -s /usr/bin/g++-7 $HOME/prefix/bin/g++
-  # Load custom environment variables
   - source .travis_env
-  # Download and build capstone
-  - echo "Building capstone..."
-  - mkdir -p $HOME/capstone
-  - pushd $HOME/capstone
-  - wget https://github.com/aquynh/capstone/archive/3.0.4.tar.gz
-  - tar -xf 3.0.4.tar.gz
-  - cd capstone*
-  # Install capstone to custom prefix
-  - echo "Installing capstone..."
-  - DESTDIR=$HOME/prefix make install -j $(grep processor /proc/cpuinfo | wc -l)
-  - export PKG_CONFIG_PATH="$HOME/prefix/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
-  - popd
+  - before_install
 
 install:
   - nuget restore src/Reko-decompiler.sln
