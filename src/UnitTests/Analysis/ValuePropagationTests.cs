@@ -280,7 +280,7 @@ namespace Reko.UnitTests.Analysis
 
             var x = m.Reg32("x");
 			var y = m.Reg32("y");
-            var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
+            var stmX = m.Assign(x, m.Mem32(Constant.Word32(0x1000300)));
             var stmY = m.Assign(y, m.ISub(x, 2));
 			var stm = m.BranchIf(m.Eq(y, 0), "test");
 			Assert.AreEqual("x = Mem2[0x01000300:word32]", stmX.ToString());
@@ -299,7 +299,7 @@ namespace Reko.UnitTests.Analysis
             var y = m.Reg32("y");
             var z = m.Reg32("z");
             var w = m.Reg32("w");
-			m.Assign(x, m.LoadDw(Constant.Word32(0x10004000)));
+			m.Assign(x, m.Mem32(Constant.Word32(0x10004000)));
             var stmX = m.Block.Statements.Last();
             m.Assign(y, x);
             var stmY = m.Block.Statements.Last();

@@ -30,6 +30,7 @@ using Reko.Core.Machine;
 
 namespace Reko.Arch.i8051
 {
+    // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
     public class i8051Disassembler : Core.DisassemblerBase<i8051Instruction>
     {
         private i8051Architecture arch;
@@ -107,7 +108,7 @@ namespace Reko.Arch.i8051
                     ops.Add(MemoryOperand.Indirect(Registers.DPTR));
                     break;
                 case 'p':   // DPTR register pair
-                    ops.Add(new RegisterOperand(Registers.DPTR));
+                    ops.Add(new SequenceOperand(Registers.DPTR));
                     break;
                 case 'i': // A constant included in the instruction encoding.
                     if (!rdr.TryReadByte(out b))
@@ -130,7 +131,7 @@ namespace Reko.Arch.i8051
                     break;
 
                 case '*': // AB register pair
-                    ops.Add(new RegisterOperand(Registers.AB));
+                    ops.Add(new SequenceOperand(Registers.AB));
                     break;
                 default:
                     EmitUnitTest(opcode, uInstr);

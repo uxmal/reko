@@ -60,17 +60,17 @@ namespace Reko.Arch.i8051
         {
             if (Index != null)
             {
-                writer.Write("@");
-                writer.Write(Register.Name);
-                writer.Write("+");
-                writer.Write(Index.Name);
+                writer.WriteString("@");
+                writer.WriteString(Register.Name);
+                writer.WriteString("+");
+                writer.WriteString(Index.Name);
             }
             else
             {
                 if (DirectAddress != null)
-                    writer.Write($"[{DirectAddress}]");
+                    writer.WriteString($"[{DirectAddress}]");
                 else
-                    writer.Write($"@{Register.Name}");
+                    writer.WriteString($"@{Register.Name}");
             }
         }
     }

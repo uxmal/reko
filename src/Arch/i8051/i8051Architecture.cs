@@ -148,13 +148,19 @@ namespace Reko.Arch.i8051
             var sb = new StringBuilder();
             if ((grf & (uint)FlagM.C) != 0)
                 sb.Append("C");
+            if ((grf & (uint)FlagM.AC) != 0)
+                sb.Append("A");
+            if ((grf & (uint)FlagM.OV) != 0)
+                sb.Append("O");
+            if ((grf & (uint)FlagM.P) != 0)
+                sb.Append("P");
             Debug.Assert(sb.Length > 0);
             return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

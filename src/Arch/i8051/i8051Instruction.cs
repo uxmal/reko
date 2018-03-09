@@ -72,11 +72,11 @@ namespace Reko.Arch.i8051
             Operand1.Write(writer, options);
             if (Operand2 == null)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Operand2.Write(writer, options);
             if (Operand3 == null)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             Operand3.Write(writer, options);
         }
     }

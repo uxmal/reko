@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Mocks
             Ssa.Identifiers.Add(idNew, sid);
         }
 
-        public new MemoryAccess LoadDw(Expression ea)
+        public new MemoryAccess Mem32(Expression ea)
         {
             var access = base.Mem32(ea);
             AddMemIdToSsa(access);

@@ -62,7 +62,22 @@ namespace Reko.Core.Machine
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(FlagGroup.Name);
+            writer.WriteString(FlagGroup.Name);
+        }
+    }
+
+    public class SequenceOperand : MachineOperand
+    {
+        public SequenceOperand(SequenceStorage seq) : base((PrimitiveType) seq.DataType)
+        {
+            this.Sequence = seq;
+        }
+
+        public SequenceStorage Sequence { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString(Sequence.Name);
         }
     }
 

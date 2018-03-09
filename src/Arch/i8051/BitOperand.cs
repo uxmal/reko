@@ -46,10 +46,10 @@ namespace Reko.Arch.i8051
         {
             if (Negated)
             {
-                writer.Write("/");
+                writer.WriteString("/");
             }
-            writer.Write(Register.Name);
-            writer.Write($".{Bit}");
+            writer.WriteString(Register.Name);
+            writer.WriteString($".{Bit}");
         }
     }
 }

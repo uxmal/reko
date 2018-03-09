@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			Identifier head = new Identifier(Registers.dx.Name, Registers.dx.DataType, Registers.dx);
 			Identifier tail = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
-			Identifier seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(head.Storage, tail.Storage));
+			Identifier seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(head.Storage, tail.Storage, PrimitiveType.Word32));
 			SerializedSequence sq = new SerializedSequence((SequenceStorage) seq.Storage);
 			Assert.AreEqual("dx", sq.Registers[0].Name);
 			Assert.AreEqual("ax", sq.Registers[1].Name);
