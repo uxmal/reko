@@ -154,7 +154,7 @@
         <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.Xtensa.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
-        <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/ArmNative/$(var.Configuration)/ArmNative.dll" />
+        <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
 
         <!-- Symbol sources -->
         <File Source="$(var.LGSymLoader.TargetPath)" />
