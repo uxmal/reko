@@ -17,6 +17,8 @@ cache:
 before_install:
   # Restore APT state from cache
   - echo "Restoring APT Cache..."
+  - [ ! -d $HOME/apt_cache/cache ] && mkdir -p $HOME/apt_cache/cache
+  - [ ! -d $HOME/apt_cache/lib ] && mkdir -p $HOME/apt_cache/lib
   - sudo cp -Rv $HOME/apt_cache/cache /var/cache/apt
   - sudo cp -Rv $HOME/apt_cache/lib /var/lib/apt
   - sudo chown -R root:root /var/lib/apt
