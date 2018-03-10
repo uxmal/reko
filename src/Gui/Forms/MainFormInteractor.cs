@@ -130,6 +130,8 @@ namespace Reko.Gui.Forms
             //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
             //MainForm.InitialPage.IsDirty = false;         //$REENABLE
 
+            UpdateWindowTitle();
+
             return form;
         }
 
@@ -759,7 +761,9 @@ namespace Reko.Gui.Forms
                 //    sb.Append('*');
                 sb.Append(" - ");
             }
-            sb.Append("Reko Decompiler");
+            sb.AppendFormat(
+                "Reko Decompiler ({0})", 
+                Environment.Is64BitProcess ? "64-bit" : "32-bit");
             MainForm.TitleText = sb.ToString();
         }
 

@@ -317,6 +317,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Given_MainFormInteractor();
             Given_UiSvc_IgnoresCommands();
+            dcSvc.Stub(d => d.ProjectName).Return("foo.exe");
             mr.ReplayAll();
 
             When_MainFormInteractorWithLoader();
@@ -337,6 +338,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Mfi_StatusBarServiceSetText()
         {
             Given_MainFormInteractor();
+            dcSvc.Stub(d => d.ProjectName).Return("foo.exe");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -352,6 +354,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_UiSvc_ReturnsFalseOnQueryStatus();
             Given_NoDecompilerInstance();
+            dcSvc.Stub(d => d.ProjectName).Return("foo.exe");
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
@@ -419,6 +422,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             };
             
             dcSvc.Stub(d => d.Decompiler).Return(decompiler);
+            dcSvc.Stub(d => d.ProjectName).Return("foo.exe");
             decompiler.Stub(d => d.Project).Return(project);
             decompiler.Stub(d => d.Load(Arg<string>.Is.NotNull, Arg<string>.Is.Null)).Return(false);
         }
@@ -452,6 +456,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             var docWindows = new List<IWindowFrame>();
             uiSvc.Stub(u => u.DocumentWindows).Return(docWindows);
+            dcSvc.Stub(d => d.ProjectName).Return("foo.exe");
             //form.Expect(f => f.CloseAllDocumentWindows());
             Given_LoadPreferences();
             Given_CommandNotHandledBySubwindow();
@@ -629,6 +634,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Stub(f => f.StatusStrip).Return(statusStrip);
             form.Stub(f => f.AddProjectBrowserToolbar(null)).IgnoreArguments();
             form.Stub(f => f.ProjectBrowserToolbar).Return(brToolbar);
+            form.Stub(f => f.TitleText = "main.exe ").IgnoreArguments();
             form.Load += null;
             LastCall.IgnoreArguments();
             form.Closed += null;
