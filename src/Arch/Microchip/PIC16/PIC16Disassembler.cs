@@ -235,6 +235,77 @@ namespace Reko.Arch.Microchip.PIC16
         }
 
         /// <summary>
+        /// NOP Instruction.
+        /// </summary>
+        private class NOPBasicOpRec : Decoder
+        {
+            private Opcode opcode;
+
+            public NOPBasicOpRec()
+            {
+                opcode = Opcode.NOP;
+            }
+
+            public override PIC16Instruction Decode(ushort uInstr, PIC16Disassembler dasm)
+            {
+                if (uInstr.Extract(0, 4) == 0)
+                    return new PIC16Instruction(opcode);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// RETURN/RETFIE Instruction.
+        /// </summary>
+        private class RETBasicOpRec : Decoder
+        {
+            public RETBasicOpRec()
+            {
+            }
+
+            public override PIC16Instruction Decode(ushort uInstr, PIC16Disassembler dasm)
+            {
+                if (uInstr == 0x0008)
+                    return new PIC16Instruction(Opcode.RETURN);
+                if (uInstr == 0x0009)
+                    return new PIC16Instruction(Opcode.RETFIE);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// A mix of instructions. Avoid huge decoder tables.
+        /// </summary>
+        private class MiscBasicOpRec : Decoder
+        {
+            public MiscBasicOpRec()
+            {
+            }
+
+            public override PIC16Instruction Decode(ushort uInstr, PIC16Disassembler dasm)
+            {
+                switch (uInstr.Extract(0, 3))
+                {
+                    case 0b000:
+                        return new PIC16Instruction(Opcode.NOP);
+                    case 0b010:
+                        return new PIC16Instruction(Opcode.OPTION);
+                    case 0b011:
+                        return new PIC16Instruction(Opcode.SLEEP);
+                    case 0b100:
+                        return new PIC16Instruction(Opcode.CLRWDT);
+                    case 0b101:
+                    case 0b110:
+                    case 0b111:
+                        return new PIC16Instruction(Opcode.TRIS,
+                                                    new PIC16TrisNumOperand((byte)uInstr.Extract(0, 3)));
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Instruction in the form <code>'..-..bb-bfff-ffff'</code>  (BSF, BCF, BTFSS, BTFSC)
         /// </summary>
         private class MemoryBitOpRec : Decoder
@@ -376,13 +447,13 @@ namespace Reko.Arch.Microchip.PIC16
         }
 
         /// <summary>
-        /// Instruction GOTO/CALL decoder.
+        /// Instruction MOVIW/MOVWI decoder.
         /// </summary>
-        private class MovIdx1OpRec : Decoder
+        private class MoviIdx1OpRec : Decoder
         {
             private Opcode opcode;
 
-            public MovIdx1OpRec(Opcode opc)
+            public MoviIdx1OpRec(Opcode opc)
             {
                 opcode = opc;
             }
@@ -390,11 +461,11 @@ namespace Reko.Arch.Microchip.PIC16
             public override PIC16Instruction Decode(ushort uInstr, PIC16Disassembler dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(2, 1);
-                byte idxcode = (byte)uInstr.Extract(0, 2);
+                byte modecode = (byte)uInstr.Extract(0, 2);
 
                 return new PIC16Instruction(opcode,
                                             new PIC16FSROperand(fsrnum),
-                                            new PIC16FSRIdxOperand(idxcode));
+                                            new PIC16FSRIncDecModOperand(modecode));
             }
         }
 
@@ -411,15 +482,25 @@ namespace Reko.Arch.Microchip.PIC16
                     new SubDecoder(4, 3, new Decoder[8]
                     {
             // 00 0000 0000 ....
+                        new NOPBasicOpRec(),
             // 00 0000 0001 ....
                         new InvalidOpRec(),
             // 00 0000 0010 ....
+                        new NOPBasicOpRec(),
             // 00 0000 0011 ....
                         new InvalidOpRec(),
             // 00 0000 0100 ....
+                        new NOPBasicOpRec(),
             // 00 0000 0101 ....
                         new InvalidOpRec(),
-            // 00 0000 0110 ....
+            // 00 0000 0110 ?...
+                        new SubDecoder(3, 1, new Decoder[2]
+                        {
+            // 00 0000 0110 0...
+                            new MiscBasicOpRec(),
+            // 00 0000 0110 1...
+                            new RETBasicOpRec()
+                        }),
             // 00 0000 0111 ....
                         new InvalidOpRec()
                     }),
@@ -526,21 +607,25 @@ namespace Reko.Arch.Microchip.PIC16
                     new SubDecoder(4, 3, new Decoder[8]
                     {
             // 00 0000 0000 ....
+            null,
             // 00 0000 0001 ?...
                         new SubDecoder(3, 1, new Decoder[2]
                         {
             // 00 0000 0001 0...
-                            new MovIdx1OpRec(Opcode.MOVIW),
+                            new MoviIdx1OpRec(Opcode.MOVIW),
             // 00 0000 0001 1...
-                            new MovIdx1OpRec(Opcode.MOVWI)
+                            new MoviIdx1OpRec(Opcode.MOVWI)
                         }),
             // 00 0000 0010 ....
+            null, //TODO: ++++++++++ decode opcode ++++++++++
             // 00 0000 0011 ....
+            null,
             // 00 0000 0100 ....
                         new InvalidOpRec(),
             // 00 0000 0101 ....
                         new InvalidOpRec(),
             // 00 0000 0110 ....
+            null,
             // 00 0000 0111 ....
                         new InvalidOpRec()
                     }),

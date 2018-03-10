@@ -417,6 +417,82 @@ namespace Reko.Arch.Microchip.PIC16
     }
 
     /// <summary>
+    /// A PIC16 FSR register increment/decrement operand. Used by MOVIW, MOVWI instructions.
+    /// </summary>
+    public class PIC16FSRIncDecModOperand : MachineOperand, IOperand
+    {
+        /// <summary>
+        /// Gets the FSR register number.
+        /// </summary>
+        public readonly Constant FSRIncDecMode;
+
+        /// <summary>
+        /// Instantiates a FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
+        /// </summary>
+        /// <param name="incdecmode">The FSR register number [0, 1, 2].</param>
+        public PIC16FSRIncDecModOperand(byte incdecmode) : base(PrimitiveType.Byte)
+        {
+            FSRIncDecMode = Constant.Byte(incdecmode);
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitIncDecFSR(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitIncDecFSR(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitIncDecFSR(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            byte num = FSRIncDecMode.ToByte();
+            writer.Write($"FSR{num}");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC16 TRISn register operand. Used by TRIS instruction.
+    /// </summary>
+    public class PIC16TrisNumOperand : MachineOperand, IOperand
+    {
+        /// <summary>
+        /// Gets the TRIS register number.
+        /// </summary>
+        public readonly Constant TRISNum;
+
+        /// <summary>
+        /// Instantiates a TRISn register operand. Used by TRIS instructions.
+        /// </summary>
+        /// <param name="trisnum">The TRIS register number [5, 6, 7].</param>
+        public PIC16TrisNumOperand(byte trisnum) : base(PrimitiveType.Byte)
+        {
+            TRISNum = Constant.Byte(trisnum);
+        }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitTRISNum(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitTRISNum(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitTRISNum(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            byte num = TRISNum.ToByte();
+            switch (num)
+            {
+                case 5:
+                    writer.Write($"TRISA");
+                    break;
+                case 6:
+                    writer.Write($"TRISB");
+                    break;
+                case 7:
+                    writer.Write($"TRISC");
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid TRIS number: {num}");
+            }
+        }
+
+    }
+
+
+    /// <summary>
     /// A PIC16 data EEPROM series of bytes.
     /// </summary>
     public class PIC16DataEEPROMOperand : PseudoDataOperand, IOperand
