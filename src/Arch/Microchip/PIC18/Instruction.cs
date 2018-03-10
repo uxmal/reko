@@ -210,7 +210,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (opshad1.IsPresent)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     writer.Tab();
                     op1.Write(writer, options);
                 }
@@ -224,12 +224,12 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if (opshad2.IsPresent)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     op2.Write(writer, options);
                 }
                 return;
             }
-            writer.Write(",");
+            writer.WriteString(",");
             op2.Write(writer, options);
         }
 

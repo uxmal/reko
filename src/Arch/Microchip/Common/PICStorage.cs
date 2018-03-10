@@ -66,7 +66,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// Defines a PIC register (with/without named bit fields).
     /// </summary>
-    public class PICRegisterStorage : FlagRegister
+    public class PICRegisterStorage : RegisterStorage
     {
 
         #region Constructors
@@ -74,8 +74,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public PICRegisterStorage() 
-            : base("None", -1, PrimitiveType.Byte)
+        public PICRegisterStorage() : base("None", -1, 0, PrimitiveType.Byte)
         {
             Traits = new PICRegisterTraits();
             SubRegs = null;
@@ -87,14 +86,14 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="sfr">The SFR definition.</param>
         /// <param name="number">The Reko index number of this register.</param>
         public PICRegisterStorage(SFRDef sfr, int number)
-            : base(sfr.CName, number, sfr.NzWidth.Size2PrimitiveType())
+            : base(sfr.CName, number, 0, sfr.NzWidth.Size2PrimitiveType())
         {
             Traits = new PICRegisterTraits(sfr);
             SubRegs = null;
         }
 
         public PICRegisterStorage(JoinedSFRDef jsfr, ICollection<PICRegisterStorage> subregs)
-            : base(jsfr.CName, subregs.First().Number, jsfr.NzWidth.Size2PrimitiveType())
+            : base(jsfr.CName, subregs.First().Number, 0, jsfr.NzWidth.Size2PrimitiveType())
         {
             Traits = new PICRegisterTraits(jsfr, subregs);
             SubRegs = subregs;

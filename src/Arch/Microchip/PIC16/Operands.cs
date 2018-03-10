@@ -104,7 +104,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{ImmediateValue.ToByte():X2}");
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -128,7 +128,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{ImmediateValue.ToByte():X2}");
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -152,7 +152,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{ImmediateValue}");
+            writer.WriteString($"{ImmediateValue}");
         }
 
     }

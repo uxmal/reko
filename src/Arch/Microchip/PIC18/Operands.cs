@@ -101,7 +101,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{ImmediateValue.ToByte():X2}");
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -125,7 +125,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{ImmediateValue.ToByte():X2}");
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -149,7 +149,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{ImmediateValue}");
+            writer.WriteString($"{ImmediateValue}");
         }
 
     }
@@ -176,9 +176,9 @@ namespace Reko.Arch.Microchip.PIC18
             ushort immAddr = ImmediateValue.ToUInt16();
             RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(immAddr, 8);
             if (sfr != RegisterStorage.None)
-                writer.Write($"{sfr.Name}");
+                writer.WriteString($"{sfr.Name}");
             else
-                writer.Write($"0x{immAddr:X4}");
+                writer.WriteString($"0x{immAddr:X4}");
         }
 
     }
@@ -205,9 +205,9 @@ namespace Reko.Arch.Microchip.PIC18
             ushort immAddr = ImmediateValue.ToUInt16();
             RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(immAddr, 8);
             if (sfr != RegisterStorage.None)
-                writer.Write($"{sfr.Name}");
+                writer.WriteString($"{sfr.Name}");
             else
-                writer.Write($"0x{immAddr:X4}");
+                writer.WriteString($"0x{immAddr:X4}");
         }
 
     }
@@ -237,7 +237,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"[0x{Offset.ToByte():X2}]");
+            writer.WriteString($"[0x{Offset.ToByte():X2}]");
         }
 
     }
@@ -267,7 +267,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(IsPresent ? "FAST" : "");
+            writer.WriteString(IsPresent ? "FAST" : "");
         }
 
         public bool IsPresent => IsShadow.ToBoolean();
@@ -318,7 +318,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{CodeTarget:X6}");
+            writer.WriteString($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitProgRel8(this);
@@ -350,7 +350,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{CodeTarget:X6}");
+            writer.WriteString($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitProgRel11(this);
@@ -376,7 +376,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{CodeTarget:X6}");
+            writer.WriteString($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitProgAbs(this);
@@ -411,7 +411,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             byte num = FSRNum.ToByte();
-            writer.Write($"FSR{num}");
+            writer.WriteString($"FSR{num}");
         }
 
     }
@@ -445,19 +445,19 @@ namespace Reko.Arch.Microchip.PIC18
             switch (mode)
             {
                 case 0:
-                    writer.Write("*");
+                    writer.WriteString("*");
                     break;
                 case 1:
-                    writer.Write("*+");
+                    writer.WriteString("*+");
                     break;
                 case 2:
-                    writer.Write("*-");
+                    writer.WriteString("*-");
                     break;
                 case 3:
-                    writer.Write("+*");
+                    writer.WriteString("+*");
                     break;
                 default:
-                    writer.Write($"Invalid TBLRD/TBLWT mode: {mode}");
+                    writer.WriteString($"Invalid TBLRD/TBLWT mode: {mode}");
                     break;
             }
         }
@@ -486,9 +486,9 @@ namespace Reko.Arch.Microchip.PIC18
         {
             RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(DataTarget, 8);
             if (sfr != RegisterStorage.None)
-                writer.Write($"{sfr.Name}");
+                writer.WriteString($"{sfr.Name}");
             else
-                writer.Write($"{DataTarget}");
+                writer.WriteString($"{DataTarget}");
         }
 
     }
@@ -507,9 +507,9 @@ namespace Reko.Arch.Microchip.PIC18
         {
             RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(DataTarget, 8);
             if (sfr != RegisterStorage.None)
-                writer.Write($"{sfr.Name}");
+                writer.WriteString($"{sfr.Name}");
             else
-                writer.Write($"0x{DataTarget:X3}");
+                writer.WriteString($"0x{DataTarget:X3}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitDataAbs12(this);
@@ -537,9 +537,9 @@ namespace Reko.Arch.Microchip.PIC18
         {
             RegisterStorage sfr = PIC18Registers.GetRegisterBySizedAddr(DataTarget, 8);
             if (sfr != RegisterStorage.None)
-                writer.Write($"{sfr.Name}");
+                writer.WriteString($"{sfr.Name}");
             else
-                writer.Write($"0x{DataTarget:X4}");
+                writer.WriteString($"0x{DataTarget:X4}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitDataAbs14(this);
@@ -591,13 +591,13 @@ namespace Reko.Arch.Microchip.PIC18
 
             if (IsIndexedAddressing)
             {
-                writer.Write($"[0x{uaddr:X2}]");
+                writer.WriteString($"[0x{uaddr:X2}]");
                 return;
             }
 
             if (!IsAccessRAM.ToBoolean())
             {
-                writer.Write($"0x{uaddr:X2},BANKED");
+                writer.WriteString($"0x{uaddr:X2},BANKED");
                 return;
             }
 
@@ -605,11 +605,11 @@ namespace Reko.Arch.Microchip.PIC18
             var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
             if (sfr != RegisterStorage.None)
             {
-                writer.Write($"{sfr.Name},ACCESS");
+                writer.WriteString($"{sfr.Name},ACCESS");
                 return;
             }
 
-            writer.Write($"0x{uaddr:X2},ACCESS");
+            writer.WriteString($"0x{uaddr:X2},ACCESS");
 
         }
 
@@ -649,13 +649,13 @@ namespace Reko.Arch.Microchip.PIC18
 
             if (IsIndexedAddressing)
             {
-                writer.Write($"[0x{uaddr:X2}],{bitpos}");
+                writer.WriteString($"[0x{uaddr:X2}],{bitpos}");
                 return;
             }
 
             if (!IsAccessRAM.ToBoolean())
             {
-                writer.Write($"0x{uaddr:X2},{bitpos},BANKED");
+                writer.WriteString($"0x{uaddr:X2},{bitpos},BANKED");
                 return;
             }
 
@@ -666,14 +666,14 @@ namespace Reko.Arch.Microchip.PIC18
                 var bitname = PICRegisters.GetBitFieldByAddr(aaddr, bitpos, 1);
                 if (bitname != null)
                 {
-                    writer.Write($"{sfr.Name},{bitname.Name},ACCESS");
+                    writer.WriteString($"{sfr.Name},{bitname.Name},ACCESS");
                     return;
                 }
-                writer.Write($"{sfr.Name},{bitpos},ACCESS");
+                writer.WriteString($"{sfr.Name},{bitpos},ACCESS");
                 return;
             }
 
-            writer.Write($"0x{uaddr:X2},{bitpos},ACCESS");
+            writer.WriteString($"0x{uaddr:X2},{bitpos},ACCESS");
 
         }
 
@@ -707,13 +707,13 @@ namespace Reko.Arch.Microchip.PIC18
 
             if (IsIndexedAddressing)
             {
-                writer.Write($"[0x{uaddr:X2}]{wdest}");
+                writer.WriteString($"[0x{uaddr:X2}]{wdest}");
                 return;
             }
 
             if (!IsAccessRAM.ToBoolean())
             {
-                writer.Write($"0x{uaddr:X2}{wdest},BANKED");
+                writer.WriteString($"0x{uaddr:X2}{wdest},BANKED");
                 return;
             }
 
@@ -721,11 +721,11 @@ namespace Reko.Arch.Microchip.PIC18
             var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
             if (sfr != RegisterStorage.None)
             {
-                writer.Write($"{sfr.Name}{wdest},ACCESS");
+                writer.WriteString($"{sfr.Name}{wdest},ACCESS");
                 return;
             }
 
-            writer.Write($"0x{uaddr:X2}{wdest},ACCESS");
+            writer.WriteString($"0x{uaddr:X2}{wdest},ACCESS");
 
         }
 
@@ -748,7 +748,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -770,7 +770,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -792,7 +792,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -814,7 +814,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(w => $"0x{w:X4}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -838,7 +838,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{addr}, 0x{Values[0]:X3}");
+            writer.WriteString($"{addr}, 0x{Values[0]:X3}");
         }
 
     }
@@ -866,7 +866,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             var fuse = Values[0] & 0xFF;
             var s = arch.DeviceConfigDefinitions.Render(addr, fuse);
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
