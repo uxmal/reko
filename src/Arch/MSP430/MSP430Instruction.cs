@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,15 +83,15 @@ namespace Reko.Arch.Msp430
             if (repeatReg != null)
             {
                 writer.WriteOpcode("rpt");
-                writer.Write(" ");
-                writer.Write(repeatReg.Name);
-                writer.Write(" ");
+                writer.WriteString(" ");
+                writer.WriteString(repeatReg.Name);
+                writer.WriteString(" ");
             } else if (repeatImm > 1)
             {
                 writer.WriteOpcode("rpt");
-                writer.Write(" #");
-                writer.Write(repeatImm.ToString());
-                writer.Write(" ");
+                writer.WriteString(" #");
+                writer.WriteString(repeatImm.ToString());
+                writer.WriteString(" ");
             }
             var sb = new StringBuilder(opcode.ToString());
             if (dataWidth != null)
@@ -109,7 +109,7 @@ namespace Reko.Arch.Msp430
                 Write(op1, writer, options);
                 if (op2 != null)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     Write(op2, writer, options);
                 }
             }
@@ -119,11 +119,11 @@ namespace Reko.Arch.Msp430
         {
             if (op is AddressOperand && (InstructionClass & InstructionClass.Transfer) == 0)
             {
-                writer.Write("&");
+                writer.WriteString("&");
             }
             if (op is ImmediateOperand && opcode != Opcode.call)
             {
-                writer.Write("#");
+                writer.WriteString("#");
             }
             op.Write(writer, options);
         }

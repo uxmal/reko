@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.Arch.Msp430
                 }
                 else
                 {
-                    writer.Write("{0:X4}({1})", Offset, Base.Name);
+                    writer.WriteFormat("{0:X4}({1})", Offset, Base.Name);
                 }
             }
             else if (Offset < 0)
@@ -56,15 +56,15 @@ namespace Reko.Arch.Msp430
                 }
                 else
                 {
-                    writer.Write("-{0:X4}({1})", -Offset, Base.Name);
+                    writer.WriteFormat("-{0:X4}({1})", -Offset, Base.Name);
                 }
             }
             else
             {
-                writer.Write('@');
-                writer.Write(Base.Name);
+                writer.WriteChar('@');
+                writer.WriteString(Base.Name);
                 if (PostIncrement)
-                    writer.Write('+');
+                    writer.WriteChar('+');
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public MSP430DisassemblerTests()
         {
-            this.arch = new Msp430Architecture();
+            this.arch = new Msp430Architecture("msp430");
         }
 
         public override IProcessorArchitecture Architecture

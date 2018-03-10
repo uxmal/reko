@@ -729,9 +729,9 @@
       <Project>{DC11ED7F-97F6-4488-86B4-EEC67DD1F511}</Project>
       <Name>Mos6502</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\MSP430\Msp430.csproj">
-      <Project>{FF9E9894-F7E2-464D-B288-4157B864D053}</Project>
-      <Name>Msp430</Name>
+    <ProjectReference Include="..\Arch\MSP430\MSP430.csproj">
+      <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
+      <Name>MSP430</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>

@@ -89,14 +89,6 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Arch\MSP430\MSP430.csproj">
-      <Name>Msp430</Name>
-      <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Name>Pdp11</Name>
       <Project>{cd10a2c6-246c-4cbb-8e92-86579714795a}</Project>

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,20 +129,20 @@ namespace Reko.Arch.Msp430
                 if (mop.PostIncrement)
                 {
                     var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Load(op.Width, ea));
+                    m.Assign(tmp, m.Mem(op.Width, ea));
                     m.Assign(ea, m.IAdd(ea, m.Int16((short)op.Width.Size)));
                     return tmp;
                 }
                 else if (mop.Offset != 0)
                 {
                     var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Load(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                    m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
                     return tmp;
                 }
                 else
                 {
                     var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Load(op.Width, ea));
+                    m.Assign(tmp, m.Mem(op.Width, ea));
                     return tmp;
                 }
             }
@@ -177,15 +177,15 @@ namespace Reko.Arch.Msp430
                     ea = m.IAdd(ea, m.Int16(mop.Offset));
                 }
                 var tmp = binder.CreateTemporary(mop.Width);
-                m.Assign(tmp, m.Load(tmp.DataType, ea));
+                m.Assign(tmp, m.Mem(tmp.DataType, ea));
                 m.Assign(tmp, fn(tmp, src));
-                m.Assign(m.Load(tmp.DataType, ea.CloneExpression()), tmp);
+                m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
                 return tmp;
             }
             var aop = op as AddressOperand;
             if (aop != null)
             {
-                var mem = m.Load(op.Width, aop.Address);
+                var mem = m.Mem(op.Width, aop.Address);
                 m.Assign(mem, fn(mem, src));
                 return mem;
             }
@@ -305,7 +305,7 @@ namespace Reko.Arch.Msp430
             var sp = binder.EnsureRegister(Registers.sp);
             while (c > 0)
             {
-                m.Assign(binder.EnsureRegister(Registers.GpRegisters[iReg]), m.LoadW(sp));
+                m.Assign(binder.EnsureRegister(Registers.GpRegisters[iReg]), m.Mem16(sp));
                 m.Assign(sp, m.IAdd(sp, m.Int32(2)));
                 ++iReg;
                 --c;
@@ -325,7 +325,7 @@ namespace Reko.Arch.Msp430
             while (c > 0)
             {
                 m.Assign(sp, m.ISub(sp, m.Int32(2)));
-                m.Assign(m.LoadW(sp), binder.EnsureRegister(Registers.GpRegisters[iReg]));
+                m.Assign(m.Mem16(sp), binder.EnsureRegister(Registers.GpRegisters[iReg]));
                 --iReg;
                 --c;
             }

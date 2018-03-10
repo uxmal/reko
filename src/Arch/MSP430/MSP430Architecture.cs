@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Arch.Msp430
         public readonly static PrimitiveType Word20 = PrimitiveType.Word32;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Msp430Architecture()
+        public Msp430Architecture(string archName) : base(archName)
         {
             this.InstructionBitSize = 16;
             this.StackRegister = Registers.sp;
@@ -178,6 +178,11 @@ namespace Reko.Arch.Msp430
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

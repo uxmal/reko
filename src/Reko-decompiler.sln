@@ -383,7 +383,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omf", "ImageLoaders\Omf\Omf.csproj", "{0E00ED86-372C-4497-85BB-428BDD1C5CCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSP430", "Arch\MSP430\MSP430.csproj", "{FF9E9894-F7E2-464D-B288-4157B864D053}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msp430", "Arch\MSP430\Msp430.csproj", "{FF9E9894-F7E2-464D-B288-4157B864D053}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1736,36 +1735,24 @@ Global
 		{0E00ED86-372C-4497-85BB-428BDD1C5CCF}.TravisRelease|x64.Build.0 = Release|Any CPU
 		{0E00ED86-372C-4497-85BB-428BDD1C5CCF}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{0E00ED86-372C-4497-85BB-428BDD1C5CCF}.TravisRelease|x86.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|.NET.Build.0 = Debug|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|Win32.Build.0 = Debug|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|x64.Build.0 = Debug|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Debug|x86.Build.0 = Debug|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|.NET.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|.NET.Build.0 = Release|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|Win32.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|Win32.Build.0 = Release|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|x64.Build.0 = Release|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|x86.ActiveCfg = Release|Any CPU
 		{FF9E9894-F7E2-464D-B288-4157B864D053}.Release|x86.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|.NET.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Mixed Platforms.ActiveCfg = TravisRelease|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Mixed Platforms.Build.0 = TravisRelease|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Win32.Build.0 = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|x86.ActiveCfg = Release|Any CPU
-		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Any CPU.ActiveCfg = TravisRelease|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|Any CPU.Build.0 = TravisRelease|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|x64.ActiveCfg = TravisRelease|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|x64.Build.0 = TravisRelease|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|x86.ActiveCfg = TravisRelease|Any CPU
+		{FF9E9894-F7E2-464D-B288-4157B864D053}.TravisRelease|x86.Build.0 = TravisRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

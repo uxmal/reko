@@ -12,7 +12,7 @@ namespace Reko.Arch.Msp430
 
         public static RegisterStorage pc = new RegisterStorage("pc", 0, 0, Msp430Architecture.Word20);
         public static RegisterStorage sp = new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20);
-        public static FlagRegister sr = new FlagRegister("sr", 2, Msp430Architecture.Word20);
+        public static RegisterStorage sr = new RegisterStorage("sr", 2, 0, Msp430Architecture.Word20);
 
         static Registers()
         {

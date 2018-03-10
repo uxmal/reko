@@ -1212,7 +1212,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
-            case ElfMachine.EM_MSP430: return new Msp430Relocator(this);
+            case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
@@ -1295,14 +1295,11 @@ namespace Reko.ImageLoaders.Elf
             var rdr = imgLoader.CreateReader(sh.FileOffset);
             for (ulong i = 0; i < entries; ++i)
             {
-                uint offset;
-                if (!rdr.TryReadUInt32(out offset))
+                if (!rdr.TryReadUInt32(out uint offset))
                     return;
-                uint info;
-                if (!rdr.TryReadUInt32(out info))
+                if (!rdr.TryReadUInt32(out uint info))
                     return;
-                int addend;
-                if (!rdr.TryReadInt32(out addend))
+                if (!rdr.TryReadInt32(out int addend))
                     return;
 
                 uint sym = info >> 8;
