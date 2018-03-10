@@ -295,7 +295,7 @@ l0000000000400514:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rax:0x0000000000000000
 
-l000000000040051F_thunk_register_tm_clones:
+l0000000000400520_thunk_register_tm_clones:
 	register_tm_clones(r8_54)
 	return
 // DataOut:

@@ -18,10 +18,12 @@
  */
 #endregion
 
+using Reko.Core.NativeInterface;
 using System;
 
 namespace Reko.Core.Expressions
 {
+    [NativeInterop]
     public enum ConditionCode
     {
         None,

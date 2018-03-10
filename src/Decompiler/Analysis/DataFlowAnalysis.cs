@@ -80,6 +80,8 @@ namespace Reko.Analysis
                     var sst = BuildSsaTransform(proc);
                     var ssa = sst.SsaState;
 
+                    if (proc.Name == "_sin")    //$DEBUG
+                        proc.ToString();
                     var fuser = new UnalignedMemoryAccessFuser(ssa);
                     fuser.Transform();
 

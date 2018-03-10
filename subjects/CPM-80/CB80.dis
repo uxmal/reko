@@ -1662,7 +1662,7 @@ l090F:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
 
-l0915_thunk_fn08EC:
+l0916_thunk_fn08EC:
 	fn08EC(b_104, e_100, l_179, h_180)
 	return
 // DataOut: af d e hl sp
@@ -1777,7 +1777,7 @@ l08EC:
 // DataOut (flags): C
 // SymbolicIn: sp:fp
 
-l08F2_thunk_fn08FD:
+l08F3_thunk_fn08FD:
 	fn08FD(b, e, l_4, h_5)
 	return
 // DataOut: af b d e h hl l sp

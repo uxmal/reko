@@ -32,7 +32,7 @@ using System.Windows.Forms;
 namespace Reko.WindowsDecompiler
 {
 	public class Driver
-	{
+    {
         [STAThread]
         public static void Main(string[] args)
         {

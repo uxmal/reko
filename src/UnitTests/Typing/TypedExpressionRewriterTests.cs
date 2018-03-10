@@ -1138,7 +1138,7 @@ test_exit:
                 var rbp = new Identifier("rbp", PrimitiveType.Word64, new RegisterStorage("rbp", 5, 0, PrimitiveType.Word64));
                 var rsi = new Identifier("rsi", PrimitiveType.Word64, new RegisterStorage("rsi", 6, 0, PrimitiveType.Word64));
                 var rdi = new Identifier("rsp", PrimitiveType.Word64, new RegisterStorage("rdi", 7, 0, PrimitiveType.Word64));
-                var rflags = new FlagRegister("rflags", 42, PrimitiveType.Word64);
+                var rflags = new RegisterStorage("rflags", 42, 0, PrimitiveType.Word64);
                 var SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(rflags, 0xF, "SZCO", PrimitiveType.Byte));
                 var Z = new Identifier("Z", PrimitiveType.Bool, new FlagGroupStorage(rflags, 0x2, "Z", PrimitiveType.Bool));
 

@@ -77,12 +77,10 @@ namespace Reko.Core
 
         private void DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter)
         {
-            ImageMapBlock block = i as ImageMapBlock;
-            if (block != null)
+            if (i is ImageMapBlock block)
             {
                 formatter.WriteLine();
-                Procedure proc;
-                if (program.Procedures.TryGetValue(block.Address, out proc))
+                if (program.Procedures.TryGetValue(block.Address, out var proc))
                 {
                     formatter.WriteComment(string.Format(
                         ";; {0}: {1}", proc.Name, block.Address));
@@ -97,14 +95,15 @@ namespace Reko.Core
                 {
                     formatter.Write(block.Block.Name);
                     formatter.Write(":");
+                    if (block.Block.Name == "l00000065")    //$DEBUG
+                        block.ToString();
                     formatter.WriteLine();
                 }
                 DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);
                 return;
             }
 
-            ImageMapVectorTable table = i as ImageMapVectorTable;
-            if (table != null)
+            if (i is ImageMapVectorTable table)
             {
                 formatter.WriteLine(";; Code vector at {0} ({1} bytes)",
                     table.Address, table.Size);
@@ -148,8 +147,7 @@ namespace Reko.Core
             const int BytesPerLine = 16;
             var linAddr = address.ToLinear();
             ulong cSkip = linAddr - BytesPerLine * (linAddr / BytesPerLine);
-            ImageSegment segment;
-            if (!map.TryFindSegment(address, out segment) || segment.MemoryArea == null)
+            if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea == null)
                 return;
             byte[] prevLine = null;
             bool showEllipsis = true;
@@ -224,8 +222,7 @@ namespace Reko.Core
 
         public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, Formatter formatter)
         {
-            ImageSegment segment;
-            if (!map.TryFindSegment(addrStart, out segment))
+            if (!map.TryFindSegment(addrStart, out var segment))
                 return;
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(segment.MemoryArea, addrStart));
             try
@@ -250,16 +247,16 @@ namespace Reko.Core
         {
             Address addrBegin = instr.Address;
             if (ShowAddresses)
-                writer.Write("{0} ", addrBegin);
+                writer.WriteFormat("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
                 WriteByteRange(mem, instr.Address, instr.Address + instr.Length, writer);
                 if (instr.Length * 3 < 16)
                 {
-                    writer.Write(new string(' ', 16 - (instr.Length * 3)));
+                    writer.WriteString(new string(' ', 16 - (instr.Length * 3)));
                 }
             }
-            writer.Write("\t");
+            writer.WriteString("\t");
             writer.Address = addrBegin;
             writer.Address = instr.Address;
             instr.Render(writer, MachineInstructionWriterOptions.None);
@@ -269,8 +266,7 @@ namespace Reko.Core
 
         private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter w)
         {
-            ImageSegment segment;
-            if (!map.TryFindSegment(item.Address, out segment) || segment.MemoryArea == null)
+            if (!map.TryFindSegment(item.Address, out var segment) || segment.MemoryArea == null)
                 return;
             WriteLabel(item.Address, w);
 
@@ -280,9 +276,8 @@ namespace Reko.Core
 
         private void WriteLabel(Address addr, Formatter w)
         {
-            ImageSymbol sym;
-            if (program.ImageSymbols.TryGetValue(addr, out sym) &&
-             !string.IsNullOrEmpty(sym.Name))
+            if (program.ImageSymbols.TryGetValue(addr, out var sym) &&
+                !string.IsNullOrEmpty(sym.Name))
             {
                 w.Write(sym.Name);
                 w.Write("\t\t; {0}",addr);
@@ -301,7 +296,7 @@ namespace Reko.Core
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)
 			{
-				writer.Write(string.Format("{0:X2} ", rdr.ReadByte()));
+				writer.WriteString(string.Format("{0:X2} ", rdr.ReadByte()));
 			}
 		}
 
@@ -326,30 +321,36 @@ namespace Reko.Core
                 formatter.Write("\t");
             }
 
-            public void Write(string s)
+            public void WriteString(string s)
             {
                 chars += (s ?? "").Length;
                 formatter.Write(s);
             }
 
-            public void Write(uint n)
+            public void WriteUInt32(uint n)
             {
                 var nn = n.ToString();
                 chars += nn.Length;
                 formatter.Write(nn);
             }
 
-            public void Write(char c)
+            public void WriteChar(char c)
             {
                 ++chars;
                 formatter.Write(c);
             }
 
-            public void Write(string fmt, params object[] parms)
+            public void WriteFormat(string fmt, params object[] parms)
             {
                 var s = string.Format(fmt, parms);
                 chars += s.Length;
                 formatter.Write(s);
+            }
+
+            public void WriteAddress(string formattedAddress, ulong uAddr)
+            {
+                chars += formattedAddress.Length;
+                formatter.WriteHyperlink(formattedAddress, uAddr);
             }
 
             public void WriteAddress(string formattedAddress, Address addr)
@@ -374,8 +375,8 @@ namespace Reko.Core
                         formatter.WriteSpaces(pad);
                         chars += pad;
                     }
-                    Write("; ");
-                    Write(string.Join(", ", annotations));
+                    WriteString("; ");
+                    WriteString(string.Join(", ", annotations));
                     annotations.Clear();
                 }
                 chars = 0;

@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch
                 this.arch = arch;
             }
 
-            public PseudoProcedure EnsurePseudoProcedure_DEAD(string name, DataType returnType, int arity)
+            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
                 return new PseudoProcedure(name, returnType, arity);
             }

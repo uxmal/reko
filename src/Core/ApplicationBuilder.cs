@@ -161,11 +161,6 @@ namespace Reko.Core
             return frame.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
-        public Expression VisitFlagRegister(FlagRegister freg)
-        {
-            throw new NotSupportedException();
-        }
-
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
             return frame.EnsureFpuStackVariable(fpu.FpuStackOffset - site.FpuStackDepthBefore, fpu.DataType);

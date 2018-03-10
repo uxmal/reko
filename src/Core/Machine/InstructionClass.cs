@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace Reko.Core.Machine
     /// Classifies a machine instruction according to its behavior.
     /// </summary>
     [Flags]
+    [NativeInterop]
     public enum InstructionClass
     {
         None,

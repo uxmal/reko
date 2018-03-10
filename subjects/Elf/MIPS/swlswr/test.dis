@@ -504,7 +504,7 @@ l000007D4:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l000007E4_thunk_register_tm_clones:
+l000007E8_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:

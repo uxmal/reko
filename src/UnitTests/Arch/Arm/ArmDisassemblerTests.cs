@@ -32,10 +32,10 @@ namespace Reko.UnitTests.Arch.Arm
 {
     public abstract class ArmTestBase
     {
-        protected static Arm32Instruction Disassemble(byte[] bytes)
+        protected static MachineInstruction Disassemble(byte[] bytes)
         {
             var image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
-            var dasm = new Arm32Disassembler(new Arm32ProcessorArchitecture("arm32"), image.CreateLeReader(0));
+            var dasm = new Arm32Architecture("arm32").CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
         }
 
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new Arm32ProcessorArchitecture("arm32");
+            return new Arm32Architecture("arm32");
         }
 
         [Test]
@@ -311,7 +311,6 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("ldm\tfp!,{r1,r3}", instr.ToString());
         }
 
-
         [Test]
         public void ArmDasm_blx()
         {
@@ -344,14 +343,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldrsb_indexed()
         {
             var instr = Disassemble32(0xE19120D3);
-            Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
+            Assert.AreEqual("ldrsb\tr2,[r1,-r3]", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_ldrsb_negativeIndex()
         {
             var instr = Disassemble32(0xE11120D3);
-            Assert.AreEqual("ldrsb\tr2,[r1,-r3]", instr.ToString());
+            Assert.AreEqual("ldrsb\tr2,[r1,r3]", instr.ToString());
         }
 
         [Test]
@@ -408,6 +407,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble32(0xC1431903);
             Assert.AreEqual("mrsgt\tr1,spsr", instr.ToString());
-        }
+    }
     }
 }

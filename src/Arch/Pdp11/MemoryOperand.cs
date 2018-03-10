@@ -72,10 +72,10 @@ namespace Reko.Arch.Pdp11
                 if (Register == Registers.pc &&
                     (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
-                    writer.Write("@(");
+                    writer.WriteString("@(");
                     var ea = writer.Address + 4 + EffectiveAddress;
                     writer.WriteAddress(ea.ToString(), ea);
-                    writer.Write(")");
+                    writer.WriteString(")");
                     return;
                 }
                 fmt = "@{1:X4}({0})";
@@ -88,7 +88,7 @@ namespace Reko.Arch.Pdp11
                 return;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
             }
-            writer.Write(string.Format(fmt, Register, EffectiveAddress));
+            writer.WriteString(string.Format(fmt, Register, EffectiveAddress));
         }
     }
 

@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Analysis
 	public class ConditionCodeEliminatorTests : AnalysisTestBase
 	{
 		private SsaIdentifierCollection ssaIds;
-        private FlagRegister freg;
+        private RegisterStorage freg;
         private SsaState ssaState;
         private ProcedureBuilder m;
         private ConditionCodeEliminator cce;
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Analysis
             m = new ProcedureBuilder();
             ssaState = new SsaState(m.Procedure, null);
             ssaIds = ssaState.Identifiers;
-            freg = new FlagRegister("flags", 32, PrimitiveType.Word32);
+            freg = new RegisterStorage("flags", 32, 0, PrimitiveType.Word32);
 		}
 
         private void Given_ConditionCodeEliminator()
@@ -410,7 +410,7 @@ done:
                 var r2 = MockReg(m, 2);
                 var r3 = MockReg(m, 3);
                 var r4 = MockReg(m, 4);
-                var flags = new FlagRegister("flags", 0x0A, PrimitiveType.Word32);
+                var flags = new RegisterStorage("flags", 0x0A, 0, PrimitiveType.Word32);
                 var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
 
