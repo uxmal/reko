@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +33,10 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmArchitecture : ProcessorArchitecture
     {
-        public WasmArchitecture()
+        public WasmArchitecture(string archName) : base(archName)
         {
-            this.PointerType = PrimitiveType.Pointer32;
-            this.FramePointerType = PrimitiveType.Pointer32;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.FramePointerType = PrimitiveType.Ptr32;
             this.StackRegister = new RegisterStorage("sp", 0, 0, PointerType);
         }
 
@@ -85,12 +85,12 @@ namespace Reko.ImageLoaders.WebAssembly
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new WasmRewriter(this, rdr, frame);
+            return new WasmRewriter(this, rdr, binder);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
 
         public WasmRewriterTests()
         {
-            this.arch = new WasmArchitecture();
+            this.arch = new WasmArchitecture("wasm");
         }
 
         public override IProcessorArchitecture Architecture
@@ -47,7 +47,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             get { return arch; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return new WasmRewriter(arch, mem.CreateLeReader(mem.BaseAddress), arch.CreateFrame());
         }

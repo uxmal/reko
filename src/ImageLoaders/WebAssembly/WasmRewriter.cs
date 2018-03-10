@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,14 +37,15 @@ namespace Reko.ImageLoaders.WebAssembly
         private WasmArchitecture arch;
         private IEnumerator<WasmInstruction> dasm;
         private WasmInstruction instr;
-        private Frame frame;
+        private RtlClass rtlc;
+        private IStorageBinder binder;
         private RtlEmitter m;
 
-        public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, Frame frame)
+        public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, IStorageBinder binder)
         {
             this.arch = arch;
             this.dasm = new WasmDisassembler(rdr).GetEnumerator();
-            this.frame = frame;
+            this.binder = binder;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -52,16 +53,19 @@ namespace Reko.ImageLoaders.WebAssembly
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var rtlc = new RtlInstructionCluster(instr.Address, instr.Length);
-                rtlc.Class = RtlClass.Linear;
-                m = new RtlEmitter(rtlc.Instructions);
+                this.rtlc = RtlClass.Linear;
+                var instrs = new List<RtlInstruction>();
+                m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
                 {
                 case Opcode.i32_const: Const(PrimitiveType.Word32); break;
                 case Opcode.f32_const: Const(PrimitiveType.Real32); break;
                 default: m.Invalid(); break;
                 }
-                yield return rtlc;
+                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
+                {
+                    Class = this.rtlc
+                };
             }
         }
 
@@ -72,14 +76,14 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void Push(Expression exp)
         {
-            var sp = frame.EnsureRegister(arch.StackRegister);
+            var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(sp, m.ISub(sp, m.Int32(8)));
-            m.Assign(m.Load(exp.DataType, sp), exp);
+            m.Assign(m.Mem(exp.DataType, sp), exp);
         }
 
         private void Const(DataType dt)
         {
-            var tmp = frame.CreateTemporary(dt);
+            var tmp = binder.CreateTemporary(dt);
             m.Assign(tmp, ((ImmediateOperand)instr.Operands[0]).Value);
             Push(tmp);
         }
