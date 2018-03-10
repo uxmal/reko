@@ -136,6 +136,18 @@ namespace Reko.UnitTests.Environments.SysV
                 return sb;
             }
 
+            public StringBuilder VisitQualifiedType(QualifiedType_v1 qt)
+            {
+                switch (qt.Qualifier)
+                {
+                case Qualifier.Const: sb.Append("const ");         break;
+                case Qualifier.Volatile: sb.Append("volatile ");   break;
+                case Qualifier.Restricted: sb.Append("restrict "); break;
+                }
+                qt.DataType.Accept(this);
+                return sb;
+            }
+
             public StringBuilder VisitReference(ReferenceType_v1 reference)
             {
                 var n = name;

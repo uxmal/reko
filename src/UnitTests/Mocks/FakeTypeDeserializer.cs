@@ -61,9 +61,14 @@ namespace Reko.UnitTests.Mocks
             return new Pointer(pointer.DataType.Accept(this), ptrSize);
         }
 
-        public DataType VisitReference(ReferenceType_v1 pointer)
+        public DataType VisitReference(ReferenceType_v1 refTo)
         {
-            return new ReferenceTo(pointer.Referent.Accept(this));
+            return new ReferenceTo(refTo.Referent.Accept(this));
+        }
+
+        public DataType VisitQualifiedType(QualifiedType_v1 qt)
+        {
+            return new QualifiedType(qt.DataType.Accept(this), qt.Qualifier);
         }
 
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
