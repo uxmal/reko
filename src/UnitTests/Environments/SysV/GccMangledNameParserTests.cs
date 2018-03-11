@@ -138,13 +138,13 @@ namespace Reko.UnitTests.Environments.SysV
 
             public StringBuilder VisitQualifiedType(QualifiedType_v1 qt)
             {
+                qt.DataType.Accept(this);
                 switch (qt.Qualifier)
                 {
-                case Qualifier.Const: sb.Append("const ");         break;
-                case Qualifier.Volatile: sb.Append("volatile ");   break;
-                case Qualifier.Restricted: sb.Append("restrict "); break;
+                case Qualifier.Const: sb.Append(" const"); break;
+                case Qualifier.Volatile: sb.Append(" volatile"); break;
+                case Qualifier.Restricted: sb.Append(" restrict"); break;
                 }
-                qt.DataType.Accept(this);
                 return sb;
             }
 
@@ -328,7 +328,7 @@ namespace Reko.UnitTests.Environments.SysV
         public void Gmnp_std_string()
         {
             RunTest(
-                "std::string::assign(std::string &)",
+                "std::string::assign(std::string & const)",
                 "_ZNSs6assignERKSs");
         }
 
@@ -370,6 +370,14 @@ namespace Reko.UnitTests.Environments.SysV
             RunTest(
                 "foo(int(bar *) *)",
                 "_Z3fooPFiP3barE");
+        }
+
+        [Test]
+        public void Gmnp_ConstPtr()
+        {
+            RunTest(
+              "foo(bar * const)",
+              "_Z3fooKP3bar");
         }
 
         [Test]
