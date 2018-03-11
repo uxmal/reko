@@ -355,6 +355,6 @@ namespace Reko.UnitTests.Analysis
             RunIndirectCallRewriter();
 
             Assert.AreEqual("a = fn(b)", callStm.Instruction.ToString());
-    }
+        }
     }
 }
