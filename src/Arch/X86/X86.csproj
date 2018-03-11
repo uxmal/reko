@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FastcallConvention.cs" />
     <Compile Include="ThisCallConvention.cs" />
     <Compile Include="X86CallingConvention.cs" />
     <Compile Include="X86Disassembler.0F38.cs" />
