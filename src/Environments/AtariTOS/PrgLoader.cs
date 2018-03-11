@@ -79,12 +79,12 @@ namespace Reko.Environments.AtariTOS
         {
             var sr = new StructureReader<PrgHeader>(rdr);
             var h = sr.Read();
-            if (!h.HasValue || h.Value.Magic != 0x601A)
+            if (h.Magic != 0x601A)
             {
                 hdr = default(PrgHeader);
                 return false;
             }
-            hdr = h.Value;
+            hdr = h;
             return true;
         }
 
@@ -97,8 +97,7 @@ namespace Reko.Environments.AtariTOS
 
         bool PerformRelocations(MemoryArea mem, ImageReader rdr)
         {
-            uint fixup;
-            if (!rdr.TryReadBeUInt32(out fixup))
+            if (!rdr.TryReadBeUInt32(out uint fixup))
                 return false;
             if (fixup == 0)
                 return true;    // no relocations to do.
@@ -111,10 +110,9 @@ namespace Reko.Environments.AtariTOS
                 mem.WriteBeUInt32(offset, l);
                 mem.Relocations.AddPointerReference(mem.BaseAddress.ToLinear() + offset, l);
 
-                byte b;
                 for(;;)
                 {
-                    if (!rdr.TryReadByte(out b))
+                    if (!rdr.TryReadByte(out byte b))
                         return false;
                     if (b == 0)
                         return true;

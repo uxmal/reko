@@ -120,19 +120,19 @@ namespace Reko.Arch.PowerPC
                 op1.Write(writer, options);
                 if (op2 != null)
                 {
-                    writer.Write(',');
+                    writer.WriteChar(',');
                     op2.Write(writer, options);
                     if (op3 != null)
                     {
-                        writer.Write(',');
+                        writer.WriteChar(',');
                         op3.Write(writer, options);
                         if (op4 != null)
                         {
-                            writer.Write(",");
+                            writer.WriteChar(',');
                             op4.Write(writer, options);
                             if (op5 != null)
                             {
-                                writer.Write(",");
+                                writer.WriteChar(',');
                                 op5.Write(writer, options);
                             }
                         }
@@ -241,7 +241,7 @@ namespace Reko.Arch.PowerPC
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             if (condition > 3)
-                writer.Write("cr{0}+", condition >> 2);
+                writer.WriteFormat("cr{0}+", condition >> 2);
             var s = "";
             switch (condition & 3)
             {
@@ -250,7 +250,7 @@ namespace Reko.Arch.PowerPC
             case 2: s = "eq"; break;
             case 3: s = "so"; break;
             }
-            writer.Write(s);
+            writer.WriteString(s);
         }
     }
 }

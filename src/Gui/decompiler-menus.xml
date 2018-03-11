@@ -143,6 +143,8 @@
   
   <cmd id="CollapseAllNodes" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="Collapse.ico" tip="Collapse All"></cmd>
   
+  <cmd id="LoadSymbols" cmdSet="Reko" container="GrpBrowser">Load Symbols...</cmd>
+  
 	<!-- Placements ======================================================= -->
 
   <placement item="FileOpen" container="GrpFile" />

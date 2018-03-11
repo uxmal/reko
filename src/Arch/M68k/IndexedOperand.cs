@@ -86,47 +86,47 @@ namespace Reko.Arch.M68k
             //preindex = (extension & 7) > 0 && (extension & 7) < 4;
             //postindex = (extension & 7) > 4;
 
-            writer.Write("(");
+            writer.WriteString("(");
             if (preindex || postindex)
-                writer.Write("[");
+                writer.WriteString("[");
             var sep = "";
             if (Base != null)
             {
-                writer.Write(MachineOperand.FormatValue(Base));
+                writer.WriteString(MachineOperand.FormatValue(Base));
                 sep = ",";
             }
             if (base_reg != null)
             {
-                writer.Write(sep);
-                writer.Write(base_reg.ToString());
+                writer.WriteString(sep);
+                writer.WriteString(base_reg.ToString());
                 sep = ",";
             }
             if (postindex)
             {
-                writer.Write("]");
+                writer.WriteString("]");
                 sep = ",";
             }
             if (index_reg != null)
             {
-                writer.Write(sep);
-                writer.Write(index_reg.Name);
+                writer.WriteString(sep);
+                writer.WriteString(index_reg.Name);
                 if (index_reg_width.BitSize == 16)
-                    writer.Write(".w");
+                    writer.WriteString(".w");
                 if (index_scale > 1)
-                    writer.Write("*{0}", index_scale);
+                    writer.WriteFormat("*{0}", index_scale);
                 sep = ",";
             }
             if (preindex)
             {
-                writer.Write("]");
+                writer.WriteString("]");
                 sep = ",";
             }
             if (outer != null)
             {
-                writer.Write(sep);
-                writer.Write(MachineOperand.FormatSignedValue(outer));
+                writer.WriteString(sep);
+                writer.WriteString(MachineOperand.FormatSignedValue(outer));
             }
-            writer.Write(")");
+            writer.WriteString(")");
         }
     }
 }

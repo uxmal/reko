@@ -223,7 +223,8 @@ namespace Reko.Core
                 }
                 catch
                 {
-                    dt = new UnknownType();
+                    Debug.Print("** Dropping exception on floor ***********");
+                    dt = new UnknownType(platform.PointerType.Size);
                 }
             }
             return new Pointer(dt, platform.PointerType.Size);

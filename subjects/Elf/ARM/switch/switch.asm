@@ -89,6 +89,8 @@ _start proc
 	bl	$00008324
 	bl	$00008314
 	strheq	r8,[r0],-r0
+
+l00008364:
 	andeq	r8,r0,ip,asr r5
 
 l00008368:

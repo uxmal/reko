@@ -24,6 +24,7 @@ using Reko.Gui.Windows.Controls;
 using System.Collections.Generic;
 using System;
 using System.Text;
+using Reko.Core.NativeInterface;
 
 namespace Reko.Gui.Windows
 {
@@ -71,6 +72,11 @@ namespace Reko.Gui.Windows
             line.Add(span);
         }
 
+        public void WriteAddress(string formattedAddres, ulong uAddr)
+        {
+            WriteAddress(formattedAddres, Address.Ptr64(uAddr));
+        }
+
         public void Tab()
         {
             TerminateSpan();
@@ -90,22 +96,22 @@ namespace Reko.Gui.Windows
             sb = new StringBuilder();
         }
 
-        public void Write(char c)
+        public void WriteChar(char c)
         {
             sb.Append(c);
         }
 
-        public void Write(uint n)
+        public void WriteUInt32(uint n)
         {
             sb.Append(n);
         }
 
-        public void Write(string s)
+        public void WriteString(string s)
         {
             sb.Append(s);
         }
 
-        public void Write(string fmt, params object[] parms)
+        public void WriteFormat(string fmt, params object[] parms)
         {
             sb.AppendFormat(fmt, parms);
         }

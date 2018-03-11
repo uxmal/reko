@@ -2,19 +2,19 @@
 a6:a6
     def:  def a6
     uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-          flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+          NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
 Mem0:Global memory
     def:  def Mem0
     uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-          flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+          NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
 fp0_2: orig: fp0
     def:  fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-    uses: flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+    uses: NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
-flags_3: orig: flags
-    def:  flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+NZCV_3: orig: NZCV
+    def:  NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
 // FCmpFragment
 // Return size: 0
 void FCmpFragment(ptr32 a6)
@@ -24,7 +24,7 @@ FCmpFragment_entry:
 	// succ:  l1
 l1:
 	fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-	flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+	NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
 	branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
 	// succ:  l2 l1
 l2:
@@ -35,19 +35,19 @@ FCmpFragment_exit:
 a6:a6
     def:  def a6
     uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-          flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+          NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
 Mem0:Global memory
     def:  def Mem0
     uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-          flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+          NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
 fp0_2: orig: fp0
     def:  fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-    uses: flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+    uses: NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
-flags_3: orig: flags
-    def:  flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+NZCV_3: orig: NZCV
+    def:  NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
 // FCmpFragment
 // Return size: 0
 void FCmpFragment(ptr32 a6)
@@ -57,7 +57,7 @@ FCmpFragment_entry:
 	// succ:  l1
 l1:
 	fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
-	flags_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
+	NZCV_3 = cond((real96) fp0_2 - Mem0[a6 + 0x00000008:real96])
 	branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
 	// succ:  l2 l1
 l2:

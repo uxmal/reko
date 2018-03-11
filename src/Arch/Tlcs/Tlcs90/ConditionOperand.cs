@@ -38,7 +38,7 @@ namespace Reko.Arch.Tlcs
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(Code.ToString());
+            writer.WriteString(Code.ToString());
         }
     }
 

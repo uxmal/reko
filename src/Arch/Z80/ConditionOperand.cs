@@ -39,7 +39,7 @@ namespace Reko.Arch.Z80
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(Code.ToString());
+            writer.WriteString(Code.ToString());
         }
     }
 }

@@ -146,12 +146,12 @@ namespace Reko.Core.Machine
                 if (pt.Domain == Domain.Pointer)
                     writer.WriteAddress(s, Address.FromConstant(value));
                 else
-                    writer.Write(s);
+                    writer.WriteString(s);
             }
             else if (value.DataType is Pointer)
                 writer.WriteAddress(s, Address.FromConstant(value));
             else 
-                writer.Write(s);
+                writer.WriteString(s);
         }
 
 		public Constant Value
@@ -271,7 +271,7 @@ namespace Reko.Core.Machine
 
 		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-			writer.Write("st(" + fpuReg + ")");
+			writer.WriteString("st(" + fpuReg + ")");
 		}
 	}
 }

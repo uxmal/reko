@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Arm
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ThumbProcessorArchitecture("arm-thumb");
+            return new ThumbArchitecture("arm-thumb");
         }
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, EndianImageReader rdr)
         {
-            return new ThumbDisassembler(rdr).GetEnumerator();
+            return arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
         [Test]

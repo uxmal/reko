@@ -71,7 +71,7 @@ namespace Reko.Arch.Pdp11
                 OpToString(op1, options, writer);
                 if (op2 != null)
                 {
-                    writer.Write(",");
+                    writer.WriteString(",");
                     OpToString(op2, options, writer);
                 }
             }
@@ -84,7 +84,7 @@ namespace Reko.Arch.Pdp11
         {
             if (op is ImmediateOperand)
             {
-                writer.Write("#" + op.ToString());
+                writer.WriteString("#" + op.ToString());
             }
             else
             {

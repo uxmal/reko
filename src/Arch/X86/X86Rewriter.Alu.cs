@@ -437,8 +437,8 @@ namespace Reko.Arch.X86
         {
             if (instrCur.code == Opcode.and)
             {
-                var r = instrCur.op1 as RegisterOperand;
-                if (r != null && r.Register == arch.StackRegister &&
+                if (instrCur.op1 is RegisterOperand r &&
+                    r.Register == arch.StackRegister &&
                     instrCur.op2 is ImmediateOperand)
                 {
                     m.SideEffect(host.PseudoProcedure("__align", VoidType.Instance, SrcOp(instrCur.op1)));
@@ -951,7 +951,6 @@ namespace Reko.Arch.X86
             var incOperator = GetIncrementOperator();
 
             Identifier regDX;
-            PseudoProcedure ppp;
             switch (instrCur.code)
             {
             default:

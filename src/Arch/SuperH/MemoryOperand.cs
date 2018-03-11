@@ -55,13 +55,13 @@ namespace Reko.Arch.SuperH
         {
             switch(mode)
             {
-            case AddressingMode.Indirect: writer.Write(string.Format("@{0}", this.reg.Name)); break;
-            case AddressingMode.IndirectDisplacement: writer.Write(string.Format("@({0},{1})", disp, this.reg.Name)); break;
-            case AddressingMode.IndirectPreDecr: writer.Write(string.Format("@-{0}", reg.Name)); break;
-            case AddressingMode.IndirectPostIncr: writer.Write(string.Format("@{0}+", reg.Name)); break;
-            case AddressingMode.IndexedIndirect: writer.Write(string.Format("@(r0,{0})", reg.Name)); break;
-            case AddressingMode.GbrIndexedIndirect: writer.Write("@(r0,gbr)"); break;
-            case AddressingMode.PcRelativeDisplacement: writer.Write(string.Format("@({0:X2},pc)", disp)); break;
+            case AddressingMode.Indirect: writer.WriteString(string.Format("@{0}", this.reg.Name)); break;
+            case AddressingMode.IndirectDisplacement: writer.WriteString(string.Format("@({0},{1})", disp, this.reg.Name)); break;
+            case AddressingMode.IndirectPreDecr: writer.WriteString(string.Format("@-{0}", reg.Name)); break;
+            case AddressingMode.IndirectPostIncr: writer.WriteString(string.Format("@{0}+", reg.Name)); break;
+            case AddressingMode.IndexedIndirect: writer.WriteString(string.Format("@(r0,{0})", reg.Name)); break;
+            case AddressingMode.GbrIndexedIndirect: writer.WriteString("@(r0,gbr)"); break;
+            case AddressingMode.PcRelativeDisplacement: writer.WriteString(string.Format("@({0:X2},pc)", disp)); break;
             default: throw new NotImplementedException(string.Format("AddressingMode.{0}", mode));
             }
         }

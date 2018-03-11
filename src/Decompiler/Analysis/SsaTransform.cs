@@ -356,7 +356,9 @@ namespace Reko.Analysis
                             if (implicitRegs.Contains(reg))
                                 continue;
                         }
-                        else if (!(id.Storage is FlagGroupStorage))
+                        else if (
+                            !(id.Storage is FlagGroupStorage) &&
+                            !(id.Storage is FpuStackStorage))
                         {
                             continue;
                         }
@@ -687,7 +689,8 @@ namespace Reko.Analysis
                 {
                     var id = (Identifier)def.Identifier;
                     if (IsMutableRegister(id.Storage) || id.Storage is FlagGroupStorage ||
-                        id.Storage is StackLocalStorage)
+                        id.Storage is StackLocalStorage ||
+                        id.Storage is FpuStackStorage)
                     {
                         def.Identifier = NewDef(id, null, false);
                     }

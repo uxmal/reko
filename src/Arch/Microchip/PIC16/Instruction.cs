@@ -183,7 +183,7 @@ namespace Reko.Arch.Microchip.PIC16
             op1.Write(writer, options);
             if (op2 is null)
                 return;
-            writer.Write(",");
+            writer.WriteString(",");
             op2.Write(writer, options);
         }
 

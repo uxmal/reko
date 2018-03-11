@@ -30,7 +30,6 @@ namespace Reko.Core
 	public interface StorageVisitor<T>
 	{
 		T VisitFlagGroupStorage(FlagGroupStorage grf);
-        T VisitFlagRegister(FlagRegister freg);
 		T VisitFpuStackStorage(FpuStackStorage fpu);
 		T VisitMemoryStorage(MemoryStorage global);
 		T VisitStackLocalStorage(StackLocalStorage local);
@@ -44,7 +43,6 @@ namespace Reko.Core
     public interface StorageVisitor<C, T>
     {
         T VisitFlagGroupStorage(FlagGroupStorage grf, C context);
-        T VisitFlagRegister(FlagRegister freg, C context);
         T VisitFpuStackStorage(FpuStackStorage fpu, C context);
         T VisitMemoryStorage(MemoryStorage global, C context);
         T VisitStackLocalStorage(StackLocalStorage local, C context);

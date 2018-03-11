@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                var flags = new FlagRegister("flags", 8, PrimitiveType.Word32);
+                var flags = new RegisterStorage("flags", 8, 0, PrimitiveType.Word32);
                 var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
                 var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Analysis
         {
             RunTest(m =>
             {
-                var flags = new FlagRegister("flags", 17, PrimitiveType.Word32);
+                var flags = new RegisterStorage("flags", 17, 0, PrimitiveType.Word32);
                 var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
                 var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);

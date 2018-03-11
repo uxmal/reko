@@ -19,13 +19,22 @@ TestResults
 /src/tools/reko.config
 /src/Reko-decompiler.VC.db
 **/ipch/
+/subjects/subject_weights.txt
+/subjects/regressionTests.pyc
 
 # MSVC build directories
 **/x86/Debug
 **/x86/Release
-**/x86/Debug
+**/x64/Debug
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release
+/src/Arch/ArmNative/Debug
+/src/Arch/ArmNative/Release
+/src/Debug
+/src/Release
+/src/Native/build
+/src/Native/include/reko.h
+/src/WixInstaller/*.user
 /subjects/Microchip/ASM/DioLAN/bootloader.asm
 /subjects/Microchip/ASM/DioLAN/bootloader.dis

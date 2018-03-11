@@ -104,7 +104,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{ImmediateValue.ToByte():X2}");
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -128,7 +128,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{ImmediateValue}");
+            writer.WriteString($"{ImmediateValue}");
         }
 
     }
@@ -152,7 +152,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{ImmediateValue.ToByte():X2}");
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
         }
 
     }
@@ -176,7 +176,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{ImmediateValue}");
+            writer.WriteString($"{ImmediateValue}");
         }
 
     }
@@ -209,11 +209,11 @@ namespace Reko.Arch.Microchip.PIC16
             var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
             if (sfr != RegisterStorage.None)
             {
-                writer.Write($"{sfr.Name}");
+                writer.WriteString($"{sfr.Name}");
                 return;
             }
 
-            writer.Write($"0x{uaddr:X2}");
+            writer.WriteString($"0x{uaddr:X2}");
 
         }
 
@@ -260,14 +260,14 @@ namespace Reko.Arch.Microchip.PIC16
                 var bitname = PICRegisters.GetBitFieldByAddr(aaddr, bitpos, 1);
                 if (bitname != null)
                 {
-                    writer.Write($",{bitname.Name}");
+                    writer.WriteString($",{bitname.Name}");
                     return;
                 }
-                writer.Write($",{bitpos}");
+                writer.WriteString($",{bitpos}");
                 return;
             }
 
-            writer.Write($",{bitpos}");
+            writer.WriteString($",{bitpos}");
 
         }
 
@@ -300,7 +300,7 @@ namespace Reko.Arch.Microchip.PIC16
             string wdest = (WregIsDest.ToBoolean() ? ",W" : ",F");
 
             base.Write(writer, options);
-            writer.Write(wdest);
+            writer.WriteString(wdest);
 
         }
 
@@ -350,7 +350,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{CodeTarget:X6}");
+            writer.WriteString($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitProgRel9(this);
@@ -376,7 +376,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"0x{CodeTarget:X6}");
+            writer.WriteString($"0x{CodeTarget:X6}");
         }
 
         public override void Accept(IOperandVisitor visitor) => visitor.VisitProgAbs(this);
@@ -411,7 +411,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             byte num = FSRNum.ToByte();
-            writer.Write($"FSR{num}");
+            writer.WriteString($"FSR{num}");
         }
 
     }
@@ -442,7 +442,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             byte num = FSRIncDecMode.ToByte();
-            writer.Write($"FSR{num}");
+            writer.WriteString($"FSR{num}");
         }
 
     }
@@ -476,13 +476,13 @@ namespace Reko.Arch.Microchip.PIC16
             switch (num)
             {
                 case 5:
-                    writer.Write($"TRISA");
+                    writer.WriteString($"TRISA");
                     break;
                 case 6:
-                    writer.Write($"TRISB");
+                    writer.WriteString($"TRISB");
                     break;
                 case 7:
-                    writer.Write($"TRISC");
+                    writer.WriteString($"TRISC");
                     break;
                 default:
                     throw new InvalidOperationException($"Invalid TRIS number: {num}");
@@ -509,7 +509,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -531,7 +531,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -553,7 +553,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(b => $"0x{b:X2}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -575,7 +575,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             string s = string.Join(",", Values.Select(w => $"0x{w:X4}"));
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }
@@ -599,7 +599,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write($"{addr}, 0x{Values[0]:X3}");
+            writer.WriteString($"{addr}, 0x{Values[0]:X3}");
         }
 
     }
@@ -627,7 +627,7 @@ namespace Reko.Arch.Microchip.PIC16
         {
             var fuse = Values[0] & 0x3FFF;
             var s = arch.DeviceConfigDefinitions.Render(addr, fuse);
-            writer.Write(s);
+            writer.WriteString(s);
         }
 
     }

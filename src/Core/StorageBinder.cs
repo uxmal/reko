@@ -35,7 +35,7 @@ namespace Reko.Core
         // Equals() implementations.
 
         private Dictionary<RegisterStorage, Identifier> regs;
-        private Dictionary<FlagRegister, Dictionary<uint, Identifier>> grfs;
+        private Dictionary<RegisterStorage, Dictionary<uint, Identifier>> grfs;
         private Dictionary<Storage, Dictionary<Storage, Identifier>> seqs;
         private Dictionary<int, Identifier> fpus;
         private List<Identifier> ids;
@@ -43,7 +43,7 @@ namespace Reko.Core
         public StorageBinder()
         {
             this.regs = new Dictionary<RegisterStorage, Identifier>();
-            this.grfs = new Dictionary<FlagRegister, Dictionary<uint, Identifier>>();
+            this.grfs = new Dictionary<RegisterStorage, Dictionary<uint, Identifier>>();
             this.seqs = new Dictionary<Storage, Dictionary<Storage, Identifier>>();
             this.fpus = new Dictionary<int, Identifier>();
             this.ids = new List<Identifier>();
@@ -71,7 +71,7 @@ namespace Reko.Core
             return EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
-        public Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType)
+        public Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType)
         {
             Identifier id;
             Dictionary<uint, Identifier> grfs;
@@ -145,11 +145,6 @@ namespace Reko.Core
         Identifier StorageVisitor<Identifier>.VisitFlagGroupStorage(FlagGroupStorage grf)
         {
             return this.EnsureFlagGroup(grf);
-        }
-
-        Identifier StorageVisitor<Identifier>.VisitFlagRegister(FlagRegister freg)
-        {
-            return this.EnsureRegister(freg);
         }
 
         Identifier StorageVisitor<Identifier>.VisitFpuStackStorage(FpuStackStorage fpu)

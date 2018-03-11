@@ -26,7 +26,7 @@ namespace Reko.Core.Types
 {
 	public class UnknownType : DataType
 	{
-		public UnknownType()
+		public UnknownType(int size = 0)
 		{
 		}
 
