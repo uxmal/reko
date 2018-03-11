@@ -55,11 +55,12 @@ namespace Reko.Core.Types
         }
     }
 
+    [Flags]
     public enum Qualifier
     {
-        None,
-        Const,
-        Volatile,
-        Restricted, // C99
+        None = 0,
+        Const = 1,
+        Volatile = 2,
+        Restricted = 4, // C99
     }
 }

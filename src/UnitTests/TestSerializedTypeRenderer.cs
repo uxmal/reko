@@ -116,13 +116,27 @@ namespace Reko.UnitTests
 
         public StringBuilder VisitQualifiedType(QualifiedType_v1 qt)
         {
-            switch (qt.Qualifier)
+            var isPtrLike = (qt.DataType is PointerType_v1 || qt.DataType is ReferenceType_v1);
+            if (isPtrLike)
             {
-            case Qualifier.Const: sb.Append("const "); break;
-            case Qualifier.Volatile: sb.Append("volatile "); break;
-            case Qualifier.Restricted: sb.Append("restrict "); break;
+                qt.DataType.Accept(this);
+                switch (qt.Qualifier)
+                {
+                case Qualifier.Const: sb.Append(" const"); break;
+                case Qualifier.Volatile: sb.Append(" volatile"); break;
+                case Qualifier.Restricted: sb.Append(" restrict"); break;
+                }
             }
-            qt.DataType.Accept(this);
+            else
+            {
+                switch (qt.Qualifier)
+                {
+                case Qualifier.Const: sb.Append("const "); break;
+                case Qualifier.Volatile: sb.Append("volatile "); break;
+                case Qualifier.Restricted: sb.Append("restrict "); break;
+                }
+                qt.DataType.Accept(this);
+            }
             return sb;
         }
 
