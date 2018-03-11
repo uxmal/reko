@@ -78,7 +78,7 @@ namespace Reko.Typing
 
         public bool VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitEquivalenceClass(EquivalenceClass eq)
@@ -113,6 +113,11 @@ namespace Reko.Typing
         public bool VisitPrimitive(PrimitiveType pt)
         {
             return false;
+        }
+
+        public bool VisitQualifiedType(QualifiedType qt)
+        {
+            return Find(qt.DataType);
         }
 
         public bool VisitReference(ReferenceTo refTo)

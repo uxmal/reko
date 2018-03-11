@@ -60,6 +60,11 @@ namespace Reko.Core.CLanguage
             return 4;           //$BUGBUG: architecture dependent
         }
 
+        public int VisitQualifiedType(QualifiedType_v1 qt)
+        {
+            return qt.DataType.Accept(this);
+        }
+
         public int VisitReference(ReferenceType_v1 pointer)
         {
             return 4;           //$BUGBUG: architecture dependent

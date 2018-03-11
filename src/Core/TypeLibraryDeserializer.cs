@@ -241,6 +241,12 @@ namespace Reko.Core
             return new MemberPointer(baseType, dt, platform.PointerType.Size);
         }
 
+        public DataType VisitQualifiedType(QualifiedType_v1 qt)
+        {
+            var dt = qt.DataType.Accept(this);
+            return new QualifiedType(dt, qt.Qualifier);
+        }
+
         public DataType VisitReference(ReferenceType_v1 reference)
         {
             DataType dt;

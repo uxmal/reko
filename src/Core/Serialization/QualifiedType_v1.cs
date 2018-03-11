@@ -18,30 +18,26 @@
  */
 #endregion
 
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-    public interface ISerializedTypeVisitor<T>
+    public class QualifiedType_v1 : SerializedType
     {
-        T VisitPrimitive(PrimitiveType_v1 primitive);
-        T VisitPointer(PointerType_v1 pointer);
-        T VisitQualifiedType(QualifiedType_v1 qt);
-        T VisitReference(ReferenceType_v1 referenceType_v1);
-        T VisitCode(CodeType_v1 code);
-        T VisitMemberPointer(MemberPointer_v1 memptr);
-        T VisitArray(ArrayType_v1 array);
-        T VisitSignature(SerializedSignature signature);
-        T VisitStructure(StructType_v1 structure);
-        T VisitTypedef(SerializedTypedef typedef);
-        T VisitTypeReference(TypeReference_v1 typeReference);
-        T VisitUnion(UnionType_v1 union);
-        T VisitEnum(SerializedEnumType serializedEnumType);
-        T VisitTemplate(SerializedTemplate serializedTemplate);
-        T VisitVoidType(VoidType_v1 serializedVoidType);
-        T VisitString(StringType_v2 str);
+        public SerializedType DataType;
+
+        [XmlAttribute("q")]
+        public Qualifier Qualifier;
+
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitQualifiedType(this);
+        }
     }
 }
