@@ -79,7 +79,7 @@ namespace Reko.WindowsItp
             }
         }
 
-        public FormWindowState WindowState
+        public Reko.Gui.Forms.FormWindowState WindowState
         {
             get
             {

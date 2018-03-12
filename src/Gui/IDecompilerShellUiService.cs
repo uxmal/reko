@@ -22,7 +22,6 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
@@ -36,7 +35,20 @@ namespace Reko.Gui
         IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane);
         IWindowFrame FindWindow(string windowType);
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
-        ContextMenu GetContextMenu(int menuID);
+        void SetContextMenu(object control, int menuID);
         DialogResult ShowModalDialog(IDialog dlg);
+        void WithWaitCursor(Action p);
+    }
+
+    public enum DialogResult
+    {
+        None = 0,
+        OK = 1,
+        Cancel = 2,
+        Abort = 3,
+        Retry = 4,
+        Ignore = 5,
+        Yes = 6,
+        No = 7
     }
 }

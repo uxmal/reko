@@ -25,8 +25,6 @@ using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -35,8 +33,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace Reko.Gui.Forms
@@ -48,12 +44,11 @@ namespace Reko.Gui.Forms
     /// </summary>
     public class MainFormInteractor :
         ICommandTarget,
-        DecompilerHost,
-        IStatusBarService
+        DecompilerHost
     {
+        private IDecompilerShellUiService uiSvc;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
-        private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticsSvc;
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
@@ -69,7 +64,6 @@ namespace Reko.Gui.Forms
         private IFinalPageInteractor pageFinal;
 
         private MruList mru;
-        private DecompilerMenus dm;
         private string projectFileName;
         private IServiceContainer sc;
         private IConfigurationService config;
@@ -84,18 +78,49 @@ namespace Reko.Gui.Forms
             this.mru = new MruList(MaxMruItems);
             this.mru.Load(MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
-            this.CancellationTokenSource = new CancellationTokenSource();
         }
 
-        public CancellationTokenSource CancellationTokenSource { get; private set; }
         public IServiceProvider Services { get { return sc; } }
+
+        public void Attach(IMainForm mainForm)
+        {
+            this.form = mainForm;
+
+            uiSvc = sc.RequireService<IDecompilerShellUiService>();
+            subWindowCommandTarget = uiSvc;
+
+            var svcFactory = sc.RequireService<IServiceFactory>();
+            CreateServices(svcFactory, sc);
+            CreatePhaseInteractors(svcFactory);
+            projectBrowserSvc.Clear();
+
+            var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
+            // It's ok if we can't load settings, just proceed with defaults.
+            try
+            {
+                uiPrefsSvc.Load();
+                if (uiPrefsSvc.WindowSize != new System.Drawing.Size())
+                    form.Size = uiPrefsSvc.WindowSize;
+                form.WindowState = uiPrefsSvc.WindowState;
+            }
+            catch { };
+            SwitchInteractor(pageInitial);
+            form.UpdateToolbarState();
+
+            form.Closed += this.MainForm_Closed;
+
+            //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
+            //MainForm.InitialPage.IsDirty = false;         //$REENABLE
+
+            UpdateWindowTitle();
+        }
 
         private void CreatePhaseInteractors(IServiceFactory svcFactory)
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
             pageScanned = svcFactory.CreateScannedPageInteractor();
-            pageAnalyzed = svcFactory.CreateAnalyzedPageInteractor();
-            pageFinal = svcFactory.CreateFinalPageInteractor();
+            pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
+            pageFinal = new FinalPageInteractor(sc);
         }
 
         public virtual IDecompiler CreateDecompiler(ILoader ldr)
@@ -103,39 +128,7 @@ namespace Reko.Gui.Forms
             return new DecompilerDriver(ldr, sc);
         }
 
-        public IMainForm LoadForm()
-        {
-            this.form = dlgFactory.CreateMainForm();
-
-            dm = new DecompilerMenus(this);
-            form.Menu = dm.MainMenu;
-            dm.MainToolbar.Text = "";
-            dm.MainToolbar.ImageList = form.ImageList;
-            dm.ProjectBrowserToolbar.ImageList = form.ImageList;
-            form.AddToolbar(dm.MainToolbar);
-            form.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
-
-            var svcFactory = sc.RequireService<IServiceFactory>();
-            CreateServices(svcFactory, sc, dm);
-            CreatePhaseInteractors(svcFactory);
-            projectBrowserSvc.Clear();
-
-            form.Load += this.MainForm_Loaded;
-            form.Closed += this.MainForm_Closed;
-            form.ProcessCommandKey += this.MainForm_ProcessCommandKey;
-
-            form.ToolBar.ItemClicked += toolBar_ItemClicked;
-            form.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
-
-            //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
-            //MainForm.InitialPage.IsDirty = false;         //$REENABLE
-
-            UpdateWindowTitle();
-
-            return form;
-        }
-
-        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc, DecompilerMenus dm)
+        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
             sc.AddService<DecompilerHost>(this);
 
@@ -145,22 +138,21 @@ namespace Reko.Gui.Forms
             var cmdFactory = new Commands.CommandFactory(sc);
             sc.AddService<ICommandFactory>(cmdFactory);
 
-            sc.AddService(typeof(IStatusBarService), (IStatusBarService)this);
+            var sbSvc = svcFactory.CreateStatusBarService();
+            sc.AddService<IStatusBarService>(sbSvc);
 
-            diagnosticsSvc = svcFactory.CreateDiagnosticsService(form.DiagnosticsList);
+            diagnosticsSvc = svcFactory.CreateDiagnosticsService();
             sc.AddService(typeof(IDiagnosticsService), diagnosticsSvc);
 
             decompilerSvc = svcFactory.CreateDecompilerService();
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
-            uiSvc = svcFactory.CreateShellUiService(form, dm);
-            subWindowCommandTarget = uiSvc;
-            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
 
-            var codeViewSvc = new CodeViewerServiceImpl(sc);
+            var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);
-            var segmentViewSvc = new ImageSegmentServiceImpl(sc);
+
+            var segmentViewSvc = svcFactory.CreateImageSegmentService();
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
             var del = svcFactory.CreateDecompilerEventListener();
@@ -180,7 +172,7 @@ namespace Reko.Gui.Forms
             var tlSvc = svcFactory.CreateTypeLibraryLoaderService();
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
 
-            this.projectBrowserSvc = svcFactory.CreateProjectBrowserService(form.ProjectBrowser);
+            this.projectBrowserSvc = svcFactory.CreateProjectBrowserService();
             sc.AddService<IProjectBrowserService>(projectBrowserSvc);
 
             var upSvc = svcFactory.CreateUiPreferencesService();
@@ -189,13 +181,11 @@ namespace Reko.Gui.Forms
             var fsSvc = svcFactory.CreateFileSystemService();
             sc.AddService<IFileSystemService>(fsSvc);
 
-            this.searchResultsTabControl = svcFactory.CreateTabControlHost(form.TabControl);
-            sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
-
-            srSvc = svcFactory.CreateSearchResultService(form.FindResultsList);
+            srSvc = svcFactory.CreateSearchResultService();
             sc.AddService<ISearchResultService>(srSvc);
-            searchResultsTabControl.Attach((IWindowPane) srSvc, form.FindResultsPage);
-            searchResultsTabControl.Attach((IWindowPane) diagnosticsSvc, form.DiagnosticsPage);
+
+            this.searchResultsTabControl = svcFactory.CreateTabControlHost();
+            sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 
             var resEditService = svcFactory.CreateResourceEditorService();
             sc.AddService<IResourceEditorService>(resEditService);
@@ -216,16 +206,6 @@ namespace Reko.Gui.Forms
                 return StreamWriter.Null;
             var fsSvc = Services.RequireService<IFileSystemService>();
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
-        }
-
-        public virtual XmlWriter CreateXmlWriter(string filename)
-        {
-            if (string.IsNullOrEmpty(filename))
-                return new XmlTextWriter(StreamWriter.Null);
-            var fsSvc = Services.RequireService<IFileSystemService>();
-            var xw = new XmlTextWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
-            xw.Formatting = Formatting.Indented;
-            return xw;
         }
 
         public IPhasePageInteractor CurrentPhase
@@ -265,26 +245,22 @@ namespace Reko.Gui.Forms
                 Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
                 uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
             }
+            finally
+            {
+                Services.RequireService<IStatusBarService>().SetText("");
+        }
         }
 
         public void OpenBinaryWithPrompt()
         {
-            Cursor.Current = Cursors.WaitCursor;
-            try
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var fileName = uiSvc.ShowOpenFileDialog(null);
+            if (fileName != null)
             {
-                if (form.ShowDialog(form.OpenFileDialog) == DialogResult.OK)
-                {
-                    mru.Use(form.OpenFileDialog.FileName);
-                    OpenBinary(form.OpenFileDialog.FileName, (filename) =>
-                        pageInitial.OpenBinary(filename));
+                mru.Use(fileName);
+                uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
                 }
             }
-            finally
-            {
-                Cursor.Current = Cursors.Arrow;
-                form.SetStatus("");
-            }
-        }
 
         /// <summary>
         /// Prompts the user for a metadata file and adds to the project.
@@ -535,7 +511,7 @@ namespace Reko.Gui.Forms
 
         public void ShowAboutBox()
         {
-            using (AboutDialog dlg = new AboutDialog())
+            using (var dlg = dlgFactory.CreateAboutDialog())
             {
                 uiSvc.ShowModalDialog(dlg);
             }
@@ -658,7 +634,8 @@ namespace Reko.Gui.Forms
             if (program != null)
             {
                 var cgvSvc = sc.RequireService<ICallGraphViewService>();
-                cgvSvc.ShowCallgraph(program);
+                var title = string.Format("{0} {1}", program.Name, Resources.CallGraphTitle);
+                cgvSvc.ShowCallgraph(program, title);
             }
         }
 
@@ -686,7 +663,7 @@ namespace Reko.Gui.Forms
                 return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
-                string newName = PromptForFilename(
+                string newName = uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.Programs[0].Filename,
                         Project_v3.FileExtension));
@@ -704,15 +681,6 @@ namespace Reko.Gui.Forms
                 saver.Save(sProject, xw);
             }
             return true;
-        }
-
-        protected virtual string PromptForFilename(string suggestedName)
-        {
-            form.SaveFileDialog.FileName = suggestedName;
-            if (DialogResult.OK != form.ShowDialog(form.SaveFileDialog))
-                return null;
-            else
-                return form.SaveFileDialog.FileName;
         }
 
         private static string SettingsDirectory
@@ -747,7 +715,7 @@ namespace Reko.Gui.Forms
                 interactor.PerformWork(workerDlgSvc);
             });
             interactor.EnterPage();
-            UpdateToolbarState();
+            form.UpdateToolbarState();
         }
 
         public void UpdateWindowTitle()
@@ -776,9 +744,9 @@ namespace Reko.Gui.Forms
         /// <returns></returns>
         private ICommandTarget GetSubCommandTarget()
         {
-            if (form.TabControl.ContainsFocus)
+            if (searchResultsTabControl.ContainsFocus)
                 return searchResultsTabControl;
-            if (form.ProjectBrowser.Focused)
+            if (projectBrowserSvc.ContainsFocus)
                 return projectBrowserSvc;
             return subWindowCommandTarget;
         }
@@ -861,19 +829,19 @@ namespace Reko.Gui.Forms
             var ct = GetSubCommandTarget();
             if (ct != null && ct.Execute(cmdId))
             {
-                UpdateToolbarState();
+                form.UpdateToolbarState();
                 return true;
             }
             if (currentPhase != null && currentPhase.Execute(cmdId))
             {
-                UpdateToolbarState();
+                form.UpdateToolbarState();
                 return true;
             }
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 if (ExecuteMruFile(cmdId.ID))
                 {
-                    UpdateToolbarState();
+                    form.UpdateToolbarState();
                     return false;
                 }
 
@@ -909,7 +877,7 @@ namespace Reko.Gui.Forms
 
                 case CmdIds.HelpAbout: ShowAboutBox(); retval = true; break;
                 }
-                UpdateToolbarState();
+                form.UpdateToolbarState();
                 return retval;
             }
             return false;
@@ -937,15 +905,6 @@ namespace Reko.Gui.Forms
                 return decompilerSvc.Decompiler.Project != null;
             }
         }
-        #endregion
-
-        #region IStatusBarService Members ////////////////////////////////////
-
-        public void SetText(string text)
-        {
-            form.StatusStrip.Items[0].Text = text;
-        }
-
         #endregion
 
         #region DecompilerHost Members //////////////////////////////////
@@ -1009,22 +968,6 @@ namespace Reko.Gui.Forms
             form.Close();
         }
 
-        private void MainForm_Loaded(object sender, System.EventArgs e)
-        {
-            var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
-            // It's ok if we can't load settings, just proceed with defaults.
-            try
-            {
-                uiPrefsSvc.Load();
-                if (uiPrefsSvc.WindowSize != new System.Drawing.Size())
-                    form.Size = uiPrefsSvc.WindowSize;
-                form.WindowState = uiPrefsSvc.WindowState;
-            }
-            catch { };
-            SwitchInteractor(pageInitial);
-            UpdateToolbarState();
-        }
-
         private void MainForm_Closed(object sender, System.EventArgs e)
         {
             var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
@@ -1039,44 +982,9 @@ namespace Reko.Gui.Forms
             catch { }
         }
 
-        private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
-        {
-            dm.ProcessKey(uiSvc, e);
-        }
-
-        private void toolBar_ItemClicked(object sender, System.Windows.Forms.ToolStripItemClickedEventArgs e)
-        {
-            MenuCommand cmd = e.ClickedItem.Tag as MenuCommand;
-            if (cmd == null) throw new NotImplementedException("Button not hooked up.");
-            Execute(cmd.CommandID);
-        }
-
-        private void UpdateToolbarState()
-        {
-            var status = new CommandStatus();
-            var text = new CommandText();
-            foreach (ToolStripItem item in form.ToolBar.Items)
-            {
-                var cmd = item.Tag as MenuCommand;
-                if (cmd != null)
-                {
-                    text.Text = null;
-                    var st = QueryStatus(cmd.CommandID, status, text);
-					item.Enabled = st && (status.Status & MenuStatus.Enabled) != 0;
-                    if (!string.IsNullOrEmpty(text.Text))
-                        item.Text = text.Text;
-                }
-            }
-        }
-
         private void InitialPage_IsDirtyChanged(object sender, EventArgs e)
         {
             UpdateWindowTitle();
         }
-
-        public virtual void Run()
-        {
-            Application.Run((Form)LoadForm());
         }
-    }
 }

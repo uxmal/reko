@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
   <Import Project="$(SolutionDir)Drivers\Common.items" />
@@ -140,6 +140,7 @@
     <ProjectReference Include="..\..\Libraries\Python\Python.csproj">
       <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Name>Python</Name>
+      <Name>Dol</Name>
       <Name>Dol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">

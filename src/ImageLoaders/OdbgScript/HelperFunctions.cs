@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {

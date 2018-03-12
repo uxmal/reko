@@ -112,12 +112,12 @@ namespace Reko.Core.Services
 
         public void ShowStatus(string caption)
         {
-            throw new NotImplementedException();
+            //$TODO: show something
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)
         {
-            throw new NotImplementedException();
+            //$TODO: show progress
         }
 
         public ICodeLocation CreateAddressNavigator(Program program, Address address)

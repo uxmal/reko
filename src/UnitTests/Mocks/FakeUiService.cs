@@ -25,7 +25,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
+using Form = System.Windows.Forms.Form;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -118,9 +119,8 @@ namespace Reko.UnitTests.Mocks
 
         public IEnumerable<IWindowFrame> ToolWindows { get; set; }
 
-        public ContextMenu GetContextMenu(int menuId)
+        public void SetContextMenu(object control, int menuId)
         {
-            return new ContextMenu();
         }
 
         public IWindowFrame FindWindow(string windowType)
@@ -143,6 +143,11 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public void WithWaitCursor(Action action)
+        {
+            action();
+        }
+
         #region ICommandTarget Members
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -154,12 +159,6 @@ namespace Reko.UnitTests.Mocks
         {
             return false;
         }
-
-        #endregion
-
-        #region IDecompilerShellUiService Members
-
-
 
         #endregion
 

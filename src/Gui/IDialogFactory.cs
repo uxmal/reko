@@ -21,19 +21,18 @@
 using Reko.Core;
 using Reko.Gui.Forms;
 using System;
-using Reko.Gui.Windows.Forms;
 using Reko.Core.Machine;
 
 namespace Reko.Gui
 {
     public interface IDialogFactory
     {
+        IDialog CreateAboutDialog();
         IAssembleFileDialog CreateAssembleFileDialog();
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();
         ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
         IFindStringsDialog CreateFindStringDialog();
-        IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
         IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc);
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);

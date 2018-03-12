@@ -25,10 +25,10 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
-using Reko.Gui.Windows.Controls;
-using Reko.Gui.Windows.Forms;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
+using Reko.UserInterfaces.WindowsForms.Controls;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -76,10 +76,10 @@ namespace Reko.WindowsItp
         {
             var sc = new System.ComponentModel.Design.ServiceContainer();
             sc.AddService(typeof(ISettingsService), new DummySettingsService());
-            using (var dlg = new Reko.Gui.Windows.Forms.SearchDialog())
+            using (var dlg = new Reko.UserInterfaces.WindowsForms.Forms.SearchDialog())
             {
                 dlg.Services = sc;
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     //string.foo();
                 }

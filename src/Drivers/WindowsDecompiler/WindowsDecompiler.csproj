@@ -206,6 +206,10 @@
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
       <Name>NativeProxy</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

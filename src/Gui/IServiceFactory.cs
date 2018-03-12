@@ -23,11 +23,9 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Forms;
 using Reko.Loading;
 using System;
-using System.Windows.Forms;
+using System.ComponentModel.Design;
 
 namespace Reko.Gui
 {
@@ -38,155 +36,29 @@ namespace Reko.Gui
     {
         DecompilerEventListener CreateDecompilerEventListener();
         IArchiveBrowserService CreateArchiveBrowserService();
+        ICodeViewerService CreateCodeViewerService();
         IConfigurationService CreateDecompilerConfiguration();
-        IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm);
         IDecompilerService CreateDecompilerService();
-        IDiagnosticsService CreateDiagnosticsService(ListView list);
+        IDiagnosticsService CreateDiagnosticsService();
         IDisassemblyViewService CreateDisassemblyViewService();
         IFileSystemService CreateFileSystemService();
+        ImageSegmentService CreateImageSegmentService();
+
         InitialPageInteractor CreateInitialPageInteractor();
         IScannedPageInteractor CreateScannedPageInteractor();
         IAnalyzedPageInteractor CreateAnalyzedPageInteractor();
         IFinalPageInteractor CreateFinalPageInteractor();
         ILowLevelViewService CreateMemoryViewService();
-        IProjectBrowserService CreateProjectBrowserService(ITreeView treeView);
-        ISearchResultService CreateSearchResultService(ListView listView);
+        IProjectBrowserService CreateProjectBrowserService();
+        ISearchResultService CreateSearchResultService();
         IResourceEditorService CreateResourceEditorService();
-        ITabControlHostService CreateTabControlHost(TabControl tabControl);
+        ITabControlHostService CreateTabControlHost();
         ITypeLibraryLoaderService CreateTypeLibraryLoaderService();
         IUiPreferencesService CreateUiPreferencesService();
         ILoader CreateLoader();
         ICallGraphViewService CreateCallGraphViewService();
+        IStatusBarService CreateStatusBarService();
         IViewImportsService CreateViewImportService();
         ISymbolLoadingService CreateSymbolLoadingService();
-    }
-
-    public class ServiceFactory : IServiceFactory
-    {
-        private IServiceProvider services;
-
-        public ServiceFactory(IServiceProvider services)
-        {
-            this.services = services;
-        }
-
-        public IArchiveBrowserService CreateArchiveBrowserService()
-        {
-            return new ArchiveBrowserService(services);
-        }
-
-        public IConfigurationService CreateDecompilerConfiguration()
-        {
-            return RekoConfigurationService.Load();
-        }
-
-        public IDiagnosticsService CreateDiagnosticsService(ListView list)
-        {
-            var d = new DiagnosticsInteractor();
-            d.Attach(list);
-            return d;
-        }
-
-        public IDecompilerShellUiService CreateShellUiService(IMainForm form, DecompilerMenus dm)
-        {
-            return new DecompilerShellUiService(form, dm, form.OpenFileDialog, form.SaveFileDialog, services);
-        }
-
-        public ILowLevelViewService CreateMemoryViewService()
-        {
-            return new LowLevelViewServiceImpl(services);
-        }
-
-        public IDisassemblyViewService CreateDisassemblyViewService()
-        {
-            return new DisassemblyViewServiceImpl(services);
-        }
-
-        public IDecompilerService CreateDecompilerService()
-        {
-            return new DecompilerService();
-        }
-
-        public ILoader CreateLoader()
-        {
-            return new Loader(services);
-        }
-
-        public DecompilerEventListener CreateDecompilerEventListener()
-        {
-            return new WindowsDecompilerEventListener(services);
-        }
-
-        public InitialPageInteractor CreateInitialPageInteractor()
-        {
-            return new InitialPageInteractorImpl(this.services);
-        }
-
-        public IScannedPageInteractor CreateScannedPageInteractor()
-        {
-            return new ScannedPageInteractor(services);
-        }
-
-        public IAnalyzedPageInteractor CreateAnalyzedPageInteractor()
-        {
-            return new AnalyzedPageInteractorImpl(services);
-        }
-
-        public IFinalPageInteractor CreateFinalPageInteractor()
-        {
-            return new FinalPageInteractor(services);
-        }
-
-        public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()
-        {
-            return new TypeLibraryLoaderServiceImpl(services);
-        }
-
-        public IProjectBrowserService CreateProjectBrowserService(ITreeView treeView)
-        {
-            return new ProjectBrowserService(services, treeView);
-        }
-
-        public ISearchResultService CreateSearchResultService(ListView listView)
-        {
-            return new SearchResultServiceImpl(services, listView);
-        }
-
-        public IResourceEditorService CreateResourceEditorService()
-        {
-            return new ResourceEditorService(services);
-        }
-
-        public ITabControlHostService CreateTabControlHost(TabControl tabControl)
-        {
-            return new TabControlHost(services, tabControl);
-        }
-
-        public IUiPreferencesService CreateUiPreferencesService()
-        {
-            var configSvc = services.RequireService<IConfigurationService>();
-            var settingsSvc = services.RequireService<ISettingsService>();
-            return new UiPreferencesService(configSvc, settingsSvc);
-        }
-
-        public IFileSystemService CreateFileSystemService()
-        {
-            return new FileSystemServiceImpl();
-        }
-
-        public ICallGraphViewService CreateCallGraphViewService()
-        {
-            return new CallGraphViewService(services);
-        }
-
-        public IViewImportsService CreateViewImportService()
-        {
-            return new ViewImportsService(services);
-        }
-
-        public ISymbolLoadingService CreateSymbolLoadingService()
-        {
-            return new SymbolLoadingService(services);
-        }
     }
 }

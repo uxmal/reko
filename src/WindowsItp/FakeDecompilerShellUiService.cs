@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 using Reko.Gui;
-
+using ContextMenu = System.Windows.Forms.ContextMenu;
+using Form = System.Windows.Forms.Form;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 namespace Reko.WindowsItp
 {
     public class FakeDecompilerShellUiService : IDecompilerShellUiService
@@ -64,11 +65,6 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public ContextMenu GetContextMenu(int menuID)
-        {
-            return new ContextMenu();
-        }
-
         public bool Prompt(string prompt)
         {
             throw new NotImplementedException();
@@ -77,6 +73,10 @@ namespace Reko.WindowsItp
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             throw new NotImplementedException();
+        }
+
+        public void SetContextMenu(object control, int menuID)
+        {
         }
 
         public void ShowError(Exception ex, string format, params object[] args)
@@ -99,7 +99,7 @@ namespace Reko.WindowsItp
             using (var ofd = new OpenFileDialog())
             {
                 ofd.FileName = fileName;
-                if (DialogResult.OK== ofd.ShowDialog(form))
+                if (DialogResult.OK == (DialogResult) ofd.ShowDialog(form))
                 {
                     return ofd.FileName;
                 }
@@ -113,6 +113,11 @@ namespace Reko.WindowsItp
         public string ShowSaveFileDialog(string fileName)
         {
             throw new NotImplementedException();
+        }
+
+        public void WithWaitCursor(Action action)
+        {
+            action();
         }
     }
 }
