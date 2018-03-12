@@ -279,7 +279,7 @@ l0000000000400DBA:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp rdi:0x0000000000601E10 rax:0x0000000000000000
 
-l0000000000400DC0_thunk_register_tm_clones:
+l0000000000400DC1_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:

@@ -48,397 +48,83 @@
 ; 00010854  22 00000002 abort
 ; 00010858  22 00000004 __libc_start_main
 ;;; Segment .init (000082F0)
-
-;; _init: 000082F0
-_init proc
-	str	lr,[sp,-#4]!
-	bl	$0000836C
-	bl	$00008404
-	bl	$0000870C
-	pop	{pc}
+000082F0 04 E0 2D E5 1C 00 00 EB 41 00 00 EB 02 01 00 EB ..-.....A.......
+00008300 04 F0 9D E4                                     ....           
 ;;; Segment .plt (00008304)
 00008304             04 E0 2D E5 10 E0 9F E5 0E E0 8F E0     ..-.........
-00008310 08 F0 BE E5                                     ....           
-
-;; abort: 00008314
-abort proc
-	ldr	ip,[pc,#4]                                             ; 00008320
-	add	ip,pc,ip
-	ldr	pc,[ip]
-00008320 34 85 00 00                                     4...           
-
-;; __libc_start_main: 00008324
-__libc_start_main proc
-	ldr	ip,[pc,#4]                                             ; 00008330
-	add	ip,pc,ip
-	ldr	pc,[ip]
+00008310 08 F0 BE E5 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 ................
+00008320 34 85 00 00 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 4...............
 00008330 28 85 00 00                                     (...           
 ;;; Segment .text (00008334)
-
-;; _start: 00008334
-_start proc
-	ldr	ip,[pc,#&24]                                           ; 00008360
-	mov	fp,#0
-	pop	{r1}
-	mov	r2,sp
-	str	r2,[sp,-#4]!
-	str	r0,[sp,-#4]!
-	ldr	r0,[pc,#&10]                                           ; 00008364
-	ldr	r3,[pc,#&10]                                           ; 00008368
-	str	ip,[sp,-#4]!
-	bl	$00008324
-	bl	$00008314
-	strheq	r8,[r0],-r0
-	andeq	r8,r0,ip,asr r5
-
-l00008368:
-	andeq	r8,r0,r4,asr r6
-
-;; call_gmon_start: 0000836C
-call_gmon_start proc
-	push	{r10,lr}
-	ldr	r10,[pc,#&1C]                                          ; 00008394
-	ldr	r3,[pc,#&1C]                                           ; 00008398
-	add	r10,pc,r10
-	ldr	r3,[r10,r3]
-	cmp	r3,#0
-	popeq	{r10,pc}
-
-l00008388:
-	mov	lr,pc
-	mov	pc,r3
-00008390 00 84 BD E8 C8 84 00 00 14 00 00 00             ............   
-
-;; __do_global_dtors_aux: 0000839C
-__do_global_dtors_aux proc
-	push	{r4-r5,lr}
-	ldr	r5,[pc,#&4C]                                           ; 000083F4
-	ldrb	r3,[r5]
-	cmp	r3,#0
-	popne	{r4-r5,pc}
-
-l000083B0:
-	ldr	r4,[pc,#&40]                                           ; 000083F8
-	ldr	r3,[r4]
-	ldr	r2,[r3]
-	cmp	r2,#0
-	beq	$000083E8
-
-l000083C4:
-	ldr	r3,[r4]
-	add	r3,r3,#4
-	str	r3,[r4]
-	mov	lr,pc
-	mov	pc,r2
-000083D8                         00 30 94 E5 00 20 93 E5         .0... ..
-000083E0 00 00 52 E3 F6 FF FF 1A                         ..R.....       
-
-l000083E8:
-	mov	r3,#1
-	strb	r3,[r5]
-	pop	{r4-r5,pc}
-000083F4             70 08 01 00 64 07 01 00                 p...d...   
-
-;; call___do_global_dtors_aux: 000083FC
-call___do_global_dtors_aux proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
-
-;; frame_dummy: 00008404
-frame_dummy proc
-	ldr	r0,[pc,#&18]                                           ; 00008424
-	ldr	r3,[r0]
-	cmp	r3,#0
-	moveq	pc,lr
-
-l00008414:
-	ldr	r3,[pc,#&C]                                            ; 00008428
-	cmp	r3,#0
-	moveq	pc,lr
-
-l00008420:
-	b	$00000000
-00008424             44 08 01 00 00 00 00 00                 D.......   
-
-;; call_frame_dummy: 0000842C
-call_frame_dummy proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
-
-;; frobulate: 00008434
-frobulate proc
-	mov	ip,sp
-	push	{fp-ip,lr-pc}
-	sub	fp,ip,#4
-	sub	sp,sp,#4
-	str	r0,[fp,-#&10]
-	ldr	r2,[fp,-#&10]
-	ldr	r3,[fp,-#&10]
-	mul	r3,r2,r3
-	mov	r0,r3
-	mov	r1,#&530
-	add	r1,r1,#9
-	bl	$00008588
-	mov	r3,r0
-	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
-
-;; bazulate: 00008470
-bazulate proc
-	mov	ip,sp
-	push	{r4,fp-ip,lr-pc}
-	sub	fp,ip,#4
-	sub	sp,sp,#8
-	str	r0,[fp,-#&14]
-	str	r1,[fp,-#&18]
-	ldr	r2,[fp,-#&14]
-	ldr	r3,[fp,-#&18]
-	add	r4,r2,r3
-	ldr	r0,[fp,-#&14]
-	bl	$00008434
-	mov	r3,r0
-	mov	r0,r4
-	mov	r1,r3
-	bl	$00008588
-	mov	r4,r0
-	ldr	r0,[fp,-#&18]
-	bl	$00008434
-	mov	r3,r0
-	mov	r0,r4
-	mov	r1,r3
-	bl	$00008588
-	mov	r3,r0
-	mov	r0,r3
-	ldmdb	fp,r4,fp,sp
-
-;; switcheroo: 000084D4
-switcheroo proc
-	mov	ip,sp
-	push	{fp-ip,lr-pc}
-	sub	fp,ip,#4
-	sub	sp,sp,#4
-	str	r0,[fp,-#&10]
-	ldr	r3,[fp,-#&10]
-	cmp	r3,#6
-	ldrls	pc,[pc,r3,lsl #2]                                    ; 000084F8
-
-l000084F4:
-	b	$00008540
-000084F8                         14 85 00 00 14 85 00 00         ........
+00008334             24 C0 9F E5 00 B0 A0 E3 04 10 9D E4     $...........
+00008340 0D 20 A0 E1 04 20 2D E5 04 00 2D E5 10 00 9F E5 . ... -...-.....
+00008350 10 30 9F E5 04 C0 2D E5 F1 FF FF EB EC FF FF EB .0....-.........
+00008360 B0 86 00 00 5C 85 00 00 54 86 00 00 00 44 2D E9 ....\...T....D-.
+00008370 1C A0 9F E5 1C 30 9F E5 0A A0 8F E0 03 30 9A E7 .....0.......0..
+00008380 00 00 53 E3 00 84 BD 08 0F E0 A0 E1 03 F0 A0 E1 ..S.............
+00008390 00 84 BD E8 C8 84 00 00 14 00 00 00 30 40 2D E9 ............0@-.
+000083A0 4C 50 9F E5 00 30 D5 E5 00 00 53 E3 30 80 BD 18 LP...0....S.0...
+000083B0 40 40 9F E5 00 30 94 E5 00 20 93 E5 00 00 52 E3 @@...0... ....R.
+000083C0 08 00 00 0A 00 30 94 E5 04 30 83 E2 00 30 84 E5 .....0...0...0..
+000083D0 0F E0 A0 E1 02 F0 A0 E1 00 30 94 E5 00 20 93 E5 .........0... ..
+000083E0 00 00 52 E3 F6 FF FF 1A 01 30 A0 E3 00 30 C5 E5 ..R......0...0..
+000083F0 30 80 BD E8 70 08 01 00 64 07 01 00 04 E0 2D E5 0...p...d.....-.
+00008400 04 F0 9D E4 18 00 9F E5 00 30 90 E5 00 00 53 E3 .........0....S.
+00008410 0E F0 A0 01 0C 30 9F E5 00 00 53 E3 0E F0 A0 01 .....0....S.....
+00008420 F6 DE FF EA 44 08 01 00 00 00 00 00 04 E0 2D E5 ....D.........-.
+00008430 04 F0 9D E4 0D C0 A0 E1 00 D8 2D E9 04 B0 4C E2 ..........-...L.
+00008440 04 D0 4D E2 10 00 0B E5 10 20 1B E5 10 30 1B E5 ..M...... ...0..
+00008450 92 03 03 E0 03 00 A0 E1 53 1E A0 E3 09 10 81 E2 ........S.......
+00008460 48 00 00 EB 00 30 A0 E1 03 00 A0 E1 00 A8 1B E9 H....0..........
+00008470 0D C0 A0 E1 10 D8 2D E9 04 B0 4C E2 08 D0 4D E2 ......-...L...M.
+00008480 14 00 0B E5 18 10 0B E5 14 20 1B E5 18 30 1B E5 ......... ...0..
+00008490 03 40 82 E0 14 00 1B E5 E5 FF FF EB 00 30 A0 E1 .@...........0..
+000084A0 04 00 A0 E1 03 10 A0 E1 36 00 00 EB 00 40 A0 E1 ........6....@..
+000084B0 18 00 1B E5 DE FF FF EB 00 30 A0 E1 04 00 A0 E1 .........0......
+000084C0 03 10 A0 E1 2F 00 00 EB 00 30 A0 E1 03 00 A0 E1 ..../....0......
+000084D0 10 A8 1B E9 0D C0 A0 E1 00 D8 2D E9 04 B0 4C E2 ..........-...L.
+000084E0 04 D0 4D E2 10 00 0B E5 10 30 1B E5 06 00 53 E3 ..M......0....S.
+000084F0 03 F1 9F 97 11 00 00 EA 14 85 00 00 14 85 00 00 ................
 00008500 14 85 00 00 40 85 00 00 20 85 00 00 40 85 00 00 ....@... ...@...
 00008510 34 85 00 00 10 00 1B E5 C5 FF FF EB 0A 00 00 EA 4...............
 00008520 10 30 1B E5 03 30 43 E2 03 00 A0 E1 C0 FF FF EB .0...0C.........
 00008530 05 00 00 EA 10 00 1B E5 10 10 1B E5 CB FF FF EB ................
-
-l00008540:
-	mov	r0,#0
-	mov	r1,#0
-	bl	$00008470
-	ldr	r3,[fp,-#&10]
-	add	r3,r3,#1
-	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
-
-;; main: 0000855C
-main proc
-	mov	ip,sp
-	push	{fp-ip,lr-pc}
-	sub	fp,ip,#4
-	sub	sp,sp,#8
-	str	r0,[fp,-#&10]
-	str	r1,[fp,-#&14]
-	ldr	r0,[fp,-#&10]
-	bl	$000084D4
-	mov	r3,#0
-	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
-
-;; __divsi3: 00008588
-__divsi3 proc
-	eor	ip,r0,r1
-	mov	r3,#1
-	mov	r2,#0
-	cmp	r1,#0
-	rsbmi	r1,r1,#0
-
-l0000859C:
-	beq	$00008628
-
-l000085A0:
-	cmp	r0,#0
-	rsbmi	r0,r0,#0
-
-l000085A8:
-	cmp	r0,r1
-	blo	$00008618
-
-l000085B0:
-	cmp	r1,#1<<28
-	cmplo	r1,r0
-
-l000085B8:
-	lsllo	r1,r1,lsl #4
-
-l000085BC:
-	lsllo	r3,r3,lsl #4
-
-l000085C0:
-	blo	$000085B0
-
-l000085C4:
-	cmp	r1,#&80000000
-	cmplo	r1,r0
-
-l000085CC:
-	lsllo	r1,r1,lsl #1
-
-l000085D0:
-	lsllo	r3,r3,lsl #1
-
-l000085D4:
-	blo	$000085C4
-
-l000085D8:
-	cmp	r0,r1
-	subhs	r0,r0,r1
-
-l000085E0:
-	orrhs	r2,r2,r3
-
-l000085E4:
-	cmp	r0,r1,lsr #1
-	subhs	r0,r0,r1,lsr #1
-
-l000085EC:
-	orrhs	r2,r2,r3,lsr #1
-
-l000085F0:
-	cmp	r0,r1,lsr #2
-	subhs	r0,r0,r1,lsr #2
-
-l000085F8:
-	orrhs	r2,r2,r3,lsr #2
-
-l000085FC:
-	cmp	r0,r1,lsr #3
-	subhs	r0,r0,r1,lsr #3
-
-l00008604:
-	orrhs	r2,r2,r3,lsr #3
-
-l00008608:
-	cmp	r0,#0
-	lsrsne	r3,r3,lsr #4
-
-l00008610:
-	lsrne	r1,r1,lsr #4
-
-l00008614:
-	bne	$000085D8
-
-l00008618:
-	mov	r0,r2
-	cmp	ip,#0
-	rsbmi	r0,r0,#0
-
-l00008624:
-	mov	pc,lr
-
-l00008628:
-	str	lr,[sp,-#4]!
-	bl	$00008638
-	mov	r0,#0
-	pop	{pc}
-
-;; __div0: 00008638
-__div0 proc
-	push	{r1,lr}
-	svc	#&900014
-	cmn	r0,#&3E8
-	pophs	{r1,pc}
-
-l00008648:
-	mov	r1,#8
-	svc	#&900025
-	pop	{r1,pc}
-
-;; __libc_csu_init: 00008654
-__libc_csu_init proc
-	push	{r4-r6,r10,lr}
-	mov	r4,#0
-	ldr	r10,[pc,#&40]                                          ; 000086A4
-	add	r10,pc,r10
-	bl	$000082F0
-	ldr	r3,[pc,#&38]                                           ; 000086A8
-	ldr	r2,[pc,#&38]                                           ; 000086AC
-	ldr	r1,[r10,r3]
-	ldr	r3,[r10,r2]
-	rsb	r3,r1,r3
-	cmp	r4,r3,asr #2
-	pophs	{r4-r6,r10,pc}
-
-l00008684:
-	mov	r6,r1
-	mov	r5,r3
-	mov	lr,pc
-	ldr	pc,[r6,r4,lsl #2]
-00008694             01 40 84 E2 45 01 54 E1 FA FF FF 3A     .@..E.T....:
+00008540 00 00 A0 E3 00 10 A0 E3 C8 FF FF EB 10 30 1B E5 .............0..
+00008550 01 30 83 E2 03 00 A0 E1 00 A8 1B E9 0D C0 A0 E1 .0..............
+00008560 00 D8 2D E9 04 B0 4C E2 08 D0 4D E2 10 00 0B E5 ..-...L...M.....
+00008570 14 10 0B E5 10 00 1B E5 D5 FF FF EB 00 30 A0 E3 .............0..
+00008580 03 00 A0 E1 00 A8 1B E9 01 C0 20 E0 01 30 A0 E3 .......... ..0..
+00008590 00 20 A0 E3 00 00 51 E3 00 10 61 42 21 00 00 0A . ....Q...aB!...
+000085A0 00 00 50 E3 00 00 60 42 01 00 50 E1 19 00 00 3A ..P...`B..P....:
+000085B0 01 02 51 E3 00 00 51 31 01 12 A0 31 03 32 A0 31 ..Q...Q1...1.2.1
+000085C0 FA FF FF 3A 02 01 51 E3 00 00 51 31 81 10 A0 31 ...:..Q...Q1...1
+000085D0 83 30 A0 31 FA FF FF 3A 01 00 50 E1 01 00 40 20 .0.1...:..P...@ 
+000085E0 03 20 82 21 A1 00 50 E1 A1 00 40 20 A3 20 82 21 . .!..P...@ . .!
+000085F0 21 01 50 E1 21 01 40 20 23 21 82 21 A1 01 50 E1 !.P.!.@ #!.!..P.
+00008600 A1 01 40 20 A3 21 82 21 00 00 50 E3 23 32 B0 11 ..@ .!.!..P.#2..
+00008610 21 12 A0 11 EF FF FF 1A 02 00 A0 E1 00 00 5C E3 !.............\.
+00008620 00 00 60 42 0E F0 A0 E1 04 E0 2D E5 01 00 00 EB ..`B......-.....
+00008630 00 00 A0 E3 04 F0 9D E4 02 40 2D E9 14 00 90 EF .........@-.....
+00008640 FA 0F 70 E3 02 80 BD 28 08 10 A0 E3 25 00 90 EF ..p....(....%...
+00008650 02 80 BD E8 70 44 2D E9 00 40 A0 E3 40 A0 9F E5 ....pD-..@..@...
+00008660 0A A0 8F E0 21 FF FF EB 38 30 9F E5 38 20 9F E5 ....!...80..8 ..
+00008670 03 10 9A E7 02 30 9A E7 03 30 61 E0 43 01 54 E1 .....0...0a.C.T.
+00008680 70 84 BD 28 01 60 A0 E1 03 50 A0 E1 0F E0 A0 E1 p..(.`...P......
+00008690 04 F1 96 E7 01 40 84 E2 45 01 54 E1 FA FF FF 3A .....@..E.T....:
 000086A0 70 84 BD E8 E0 81 00 00 18 00 00 00 1C 00 00 00 p...............
-
-;; __libc_csu_fini: 000086B0
-__libc_csu_fini proc
-	push	{r4-r5,r10,lr}
-	ldr	r10,[pc,#&44]                                          ; 00008700
-	ldr	r3,[pc,#&44]                                           ; 00008704
-	ldr	r2,[pc,#&44]                                           ; 00008708
-	add	r10,pc,r10
-	ldr	r1,[r10,r3]
-	ldr	r3,[r10,r2]
-	rsb	r3,r1,r3
-	asr	r4,r3,asr #2
-	cmp	r4,#0
-	sub	r4,r4,#1
-	beq	$000086F8
-
-l000086E0:
-	mov	r5,r1
-	mov	lr,pc
-	ldr	pc,[r5,r4,lsl #2]
-000086EC                                     00 00 54 E3             ..T.
-000086F0 01 40 44 E2 FA FF FF 1A                         .@D.....       
-
-l000086F8:
-	pop	{r4-r5,r10,lr}
-	b	$0000874C
-00008700 80 81 00 00 20 00 00 00 24 00 00 00             .... ...$...   
-
-;; __do_global_ctors_aux: 0000870C
-__do_global_ctors_aux proc
-	push	{r4,lr}
-	ldr	r3,[pc,#&28]                                           ; 00008740
-	ldr	r2,[r3,-#4]
-	cmn	r2,#1
-	sub	r4,r3,#4
-	popeq	{r4,pc}
-
-l00008724:
-	mov	r3,r2
-	mov	lr,pc
-	mov	pc,r3
+000086B0 30 44 2D E9 44 A0 9F E5 44 30 9F E5 44 20 9F E5 0D-.D...D0..D ..
+000086C0 0A A0 8F E0 03 10 9A E7 02 30 9A E7 03 30 61 E0 .........0...0a.
+000086D0 43 41 A0 E1 00 00 54 E3 01 40 44 E2 05 00 00 0A CA....T..@D.....
+000086E0 01 50 A0 E1 0F E0 A0 E1 04 F1 95 E7 00 00 54 E3 .P............T.
+000086F0 01 40 44 E2 FA FF FF 1A 30 44 BD E8 12 00 00 EA .@D.....0D......
+00008700 80 81 00 00 20 00 00 00 24 00 00 00 10 40 2D E9 .... ...$....@-.
+00008710 28 30 9F E5 04 20 13 E5 01 00 72 E3 04 40 43 E2 (0... ....r..@C.
+00008720 10 80 BD 08 02 30 A0 E1 0F E0 A0 E1 03 F0 A0 E1 .....0..........
 00008730 04 30 34 E5 01 00 73 E3 FA FF FF 1A 10 80 BD E8 .04...s.........
-00008740 38 08 01 00                                     8...           
-
-;; call___do_global_ctors_aux: 00008744
-call___do_global_ctors_aux proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+00008740 38 08 01 00 04 E0 2D E5 04 F0 9D E4             8.....-.....   
 ;;; Segment .fini (0000874C)
-
-;; _fini: 0000874C
-_fini proc
-	str	lr,[sp,-#4]!
-	bl	$0000839C
-	pop	{pc}
+0000874C                                     04 E0 2D E5             ..-.
+00008750 11 FF FF EB 04 F0 9D E4                         ........       
 ;;; Segment .rodata (00008758)
 00008758                         01 00 02 00                     ....   
 ;;; Segment .data (0001075C)

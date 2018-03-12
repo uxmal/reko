@@ -17427,7 +17427,7 @@ l000000000040D420:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-l000000000040D43B_thunk_fn000000000040D240:
+l000000000040D43E_thunk_fn000000000040D240:
 	word64 rsi_31
 	return fn000000000040D240(edx_22, rax_16, rdi, fs, out rsi_31)
 // DataOut: eax ebx fs r10 r11 r12 r13d r14 r15 r15d r8 r9 rsi xmm0 xmm1 xmm2 xmm3
@@ -17799,7 +17799,7 @@ l000000000040D690:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-l000000000040D697_thunk_fn000000000040D450:
+l000000000040D69A_thunk_fn000000000040D450:
 	word64 rsi_12
 	word32 r13d_13
 	fn000000000040D450(eax_5, rsi, rdi, r8, r11, r15, out rsi_12, out r13d_13)
@@ -19876,7 +19876,7 @@ l000000000040E930:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-l000000000040E93F_thunk_fn000000000040E450:
+l000000000040E941_thunk_fn000000000040E450:
 	word32 ebx_14
 	word64 r8_15
 	word64 r9_16
@@ -22596,7 +22596,7 @@ l0000000000411820:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-l000000000041182E_thunk_fn00000000004117B0:
+l000000000041182F_thunk_fn00000000004117B0:
 	return fn00000000004117B0(rsi, edi_11)
 // DataOut: eax fs r10 r11 r12 r14 r15 r8 r9 rbp xmm0 xmm1 xmm2 xmm3
 // DataOut (flags): 

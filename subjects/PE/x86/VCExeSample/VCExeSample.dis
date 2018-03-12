@@ -275,13 +275,13 @@ l004011E2:
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 l004011F2:
-	Mem52[Mem52[Mem52[0x00403024:word32]:word32]:word32](Mem52[0x00403024:word32], rArg04)
+	Mem54[Mem54[Mem54[0x00403024:word32]:word32]:word32](Mem54[0x00403024:word32], rArg04)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 l0040120D:
-	test6(Mem38[0x00403018:word32], 0x00000006, 0x00000007)
+	test6(Mem40[0x00403018:word32], 0x00000006, 0x00000007)
 	return ebp
 // DataOut: ebp esp
 // DataOut (flags): 
@@ -309,15 +309,14 @@ loop_test9_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00401230:
-	word32 dwLoc08_12 = 0x00000000
+	word32 dwLoc08_10 = 0x00000000
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l00401248:
-	Mem21[Mem21[Mem21[0x00403024:word32]:word32] + 0x00000004:word32](Mem21[0x00403024:word32], dwLoc08_12, (real64) rArg04)
-	branch rArg0 <= (real64) dwLoc08_12 l00401294
+	branch Mem19[Mem19[Mem19[0x00403024:word32]:word32] + 0x00000004:word32](Mem19[0x00403024:word32], dwLoc08_10, (real64) rArg04) <= (real64) dwLoc08_10 l00401294
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
@@ -335,15 +334,14 @@ loop_test9_exit:
 // SymbolicIn: esp:fp ebp:ebp ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 
 l00401278:
-	rArg0 = (real64) rArg04
-	Mem39[Mem39[Mem39[0x00403024:word32]:word32]:word32](Mem39[0x00403024:word32], rArg0)
+	Mem40[Mem40[Mem40[0x00403024:word32]:word32]:word32](Mem40[0x00403024:word32], (real64) rArg04)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l0040123F:
-	dwLoc08_12 = dwLoc08_12 + 0x00000001
+	dwLoc08_10 = dwLoc08_10 + 0x00000001
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
