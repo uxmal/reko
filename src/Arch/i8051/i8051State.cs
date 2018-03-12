@@ -33,10 +33,12 @@ namespace Reko.Arch.i8051
     public class i8051State : ProcessorState
     {
         private i8051Architecture arch;
+        private Dictionary<RegisterStorage, Constant> regValues;
 
         public i8051State(i8051Architecture arch)
         {
             this.arch = arch;
+            this.regValues = new Dictionary<RegisterStorage, Constant>();
         }
 
         public override IProcessorArchitecture Architecture {  get { return arch; } }
@@ -48,37 +50,40 @@ namespace Reko.Arch.i8051
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (regValues.TryGetValue(r, out var v))
+                return v;
+            else
+                return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(returnAddressSize, 0);
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
+            regValues[Registers.PC] = Constant.Word16(addr.ToUInt16());
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
+            if (v.IsValid)
+                this.regValues[r] = v;
+            else
+                this.regValues.Remove(r);
         }
     }
 }
