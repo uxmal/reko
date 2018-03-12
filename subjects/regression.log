@@ -128,673 +128,196 @@ fn092A: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
-00008009: error: Value cannot be null.
-Parameter name: dictionary
-00000059: error: Value cannot be null.
-Parameter name: dictionary
-0000016D: error: Value cannot be null.
-Parameter name: dictionary
-00000429: error: Value cannot be null.
-Parameter name: dictionary
-000005B1: error: Value cannot be null.
-Parameter name: dictionary
-00000A21: error: Value cannot be null.
-Parameter name: dictionary
-00001689: error: Value cannot be null.
-Parameter name: dictionary
-00008A35: error: Value cannot be null.
-Parameter name: dictionary
-0000A00D: error: Value cannot be null.
-Parameter name: dictionary
-0000A5C5: error: Value cannot be null.
-Parameter name: dictionary
-0000A24D: error: Value cannot be null.
-Parameter name: dictionary
-0000A249: error: Value cannot be null.
-Parameter name: dictionary
-0000A245: error: Value cannot be null.
-Parameter name: dictionary
-0000A241: error: Value cannot be null.
-Parameter name: dictionary
-0000A23D: error: Value cannot be null.
-Parameter name: dictionary
-0000A225: error: Value cannot be null.
-Parameter name: dictionary
-0000A221: error: Value cannot be null.
-Parameter name: dictionary
-0000A219: error: Value cannot be null.
-Parameter name: dictionary
-0000A211: error: Value cannot be null.
-Parameter name: dictionary
-0000A209: error: Value cannot be null.
-Parameter name: dictionary
-0000A201: error: Value cannot be null.
-Parameter name: dictionary
-0000A1F9: error: Value cannot be null.
-Parameter name: dictionary
-0000A1E1: error: Value cannot be null.
-Parameter name: dictionary
-0000A1C9: error: Value cannot be null.
-Parameter name: dictionary
-0000A1C1: error: Value cannot be null.
-Parameter name: dictionary
-0000A1B9: error: Value cannot be null.
-Parameter name: dictionary
-0000A1B1: error: Value cannot be null.
-Parameter name: dictionary
-0000A1A9: error: Value cannot be null.
-Parameter name: dictionary
-0000A195: error: Value cannot be null.
-Parameter name: dictionary
-0000A181: error: Value cannot be null.
-Parameter name: dictionary
-0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A16D: error: Value cannot be null.
-Parameter name: dictionary
-0000A161: error: Value cannot be null.
-Parameter name: dictionary
-0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A14D: error: Value cannot be null.
-Parameter name: dictionary
-0000A141: error: Value cannot be null.
-Parameter name: dictionary
-0000A129: error: Value cannot be null.
-Parameter name: dictionary
-0000A0F5: error: Value cannot be null.
-Parameter name: dictionary
-0000A0ED: error: Value cannot be null.
-Parameter name: dictionary
-0000A0E5: error: Value cannot be null.
-Parameter name: dictionary
-0000A0DD: error: Value cannot be null.
-Parameter name: dictionary
-0000A0D9: error: Value cannot be null.
-Parameter name: dictionary
-0000A0CD: error: Value cannot be null.
-Parameter name: dictionary
-0000A0C1: error: Value cannot be null.
-Parameter name: dictionary
-0000A0B9: error: Value cannot be null.
-Parameter name: dictionary
-0000A099: error: Value cannot be null.
-Parameter name: dictionary
-0000A079: error: Value cannot be null.
-Parameter name: dictionary
-0000A065: error: Value cannot be null.
-Parameter name: dictionary
-0000A055: error: Value cannot be null.
-Parameter name: dictionary
-0000A045: error: Value cannot be null.
-Parameter name: dictionary
-0000A035: error: Value cannot be null.
-Parameter name: dictionary
-0000A025: error: Value cannot be null.
-Parameter name: dictionary
-0000A019: error: Value cannot be null.
-Parameter name: dictionary
-00009FED: error: Value cannot be null.
-Parameter name: dictionary
-00009FD5: error: Value cannot be null.
-Parameter name: dictionary
-00009FA9: error: Value cannot be null.
-Parameter name: dictionary
-00009F4D: error: Value cannot be null.
-Parameter name: dictionary
-00009F45: error: Value cannot be null.
-Parameter name: dictionary
-00009F39: error: Value cannot be null.
-Parameter name: dictionary
-00009F29: error: Value cannot be null.
-Parameter name: dictionary
-00009F0D: error: Value cannot be null.
-Parameter name: dictionary
-00009EF1: error: Value cannot be null.
-Parameter name: dictionary
-00009ED5: error: Value cannot be null.
-Parameter name: dictionary
-00009EC5: error: Value cannot be null.
-Parameter name: dictionary
-00009E8D: error: Value cannot be null.
-Parameter name: dictionary
-00009E7D: error: Value cannot be null.
-Parameter name: dictionary
-00009E69: error: Value cannot be null.
-Parameter name: dictionary
-00009DF1: error: Value cannot be null.
-Parameter name: dictionary
-00009D31: error: Value cannot be null.
-Parameter name: dictionary
-00009D21: error: Value cannot be null.
-Parameter name: dictionary
-00009D11: error: Value cannot be null.
-Parameter name: dictionary
-00009D05: error: Value cannot be null.
-Parameter name: dictionary
-00009CE5: error: Value cannot be null.
-Parameter name: dictionary
-00009CE1: error: Value cannot be null.
-Parameter name: dictionary
-00009CD1: error: Value cannot be null.
-Parameter name: dictionary
-00009CC5: error: Value cannot be null.
-Parameter name: dictionary
-00009CB9: error: Value cannot be null.
-Parameter name: dictionary
-00009CAD: error: Value cannot be null.
-Parameter name: dictionary
-00009C95: error: Value cannot be null.
-Parameter name: dictionary
-00009C89: error: Value cannot be null.
-Parameter name: dictionary
-00009C79: error: Value cannot be null.
-Parameter name: dictionary
-00009C69: error: Value cannot be null.
-Parameter name: dictionary
-00009C55: error: Value cannot be null.
-Parameter name: dictionary
-00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
-00009C41: error: Value cannot be null.
-Parameter name: dictionary
-00009C25: error: Value cannot be null.
-Parameter name: dictionary
-00009C09: error: Value cannot be null.
-Parameter name: dictionary
-00009BED: error: Value cannot be null.
-Parameter name: dictionary
-00009BD1: error: Value cannot be null.
-Parameter name: dictionary
-00009BB5: error: Value cannot be null.
-Parameter name: dictionary
-00009B99: error: Value cannot be null.
-Parameter name: dictionary
-00009B7D: error: Value cannot be null.
-Parameter name: dictionary
-00009B3D: error: Value cannot be null.
-Parameter name: dictionary
-00009B21: error: Value cannot be null.
-Parameter name: dictionary
-00009B0D: error: Value cannot be null.
-Parameter name: dictionary
-00009AF5: error: Value cannot be null.
-Parameter name: dictionary
-00009ADD: error: Value cannot be null.
-Parameter name: dictionary
-00009AC9: error: Value cannot be null.
-Parameter name: dictionary
-00009AB9: error: Value cannot be null.
-Parameter name: dictionary
-00009AA9: error: Value cannot be null.
-Parameter name: dictionary
-00009A99: error: Value cannot be null.
-Parameter name: dictionary
-00009A95: error: Value cannot be null.
-Parameter name: dictionary
-00009A89: error: Value cannot be null.
-Parameter name: dictionary
-00009A7D: error: Value cannot be null.
-Parameter name: dictionary
-00009A75: error: Value cannot be null.
-Parameter name: dictionary
-00009A61: error: Value cannot be null.
-Parameter name: dictionary
-00009A4D: error: Value cannot be null.
-Parameter name: dictionary
-00009A41: error: Value cannot be null.
-Parameter name: dictionary
-00009A35: error: Value cannot be null.
-Parameter name: dictionary
-000099E9: error: Value cannot be null.
-Parameter name: dictionary
-000099C1: error: Value cannot be null.
-Parameter name: dictionary
-00009975: error: Value cannot be null.
-Parameter name: dictionary
-000098F1: error: Value cannot be null.
-Parameter name: dictionary
-00009881: error: Value cannot be null.
-Parameter name: dictionary
-000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-000097CD: error: Value cannot be null.
-Parameter name: dictionary
-00009781: error: Value cannot be null.
-Parameter name: dictionary
-00009739: error: Value cannot be null.
-Parameter name: dictionary
-00009705: error: Value cannot be null.
-Parameter name: dictionary
-000096C5: error: Value cannot be null.
-Parameter name: dictionary
-0000969D: error: Value cannot be null.
-Parameter name: dictionary
-00009695: error: Value cannot be null.
-Parameter name: dictionary
-00009639: error: Value cannot be null.
-Parameter name: dictionary
-000095DD: error: Value cannot be null.
-Parameter name: dictionary
-000095BD: error: Value cannot be null.
-Parameter name: dictionary
-00009591: error: Value cannot be null.
-Parameter name: dictionary
-00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
-00009569: error: Value cannot be null.
-Parameter name: dictionary
-0000954D: error: Value cannot be null.
-Parameter name: dictionary
-00009539: error: Value cannot be null.
-Parameter name: dictionary
-00009505: error: Value cannot be null.
-Parameter name: dictionary
-00009501: error: Value cannot be null.
-Parameter name: dictionary
-000094FD: error: Value cannot be null.
-Parameter name: dictionary
-000094F9: error: Value cannot be null.
-Parameter name: dictionary
-000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
-000094F5: error: Value cannot be null.
-Parameter name: dictionary
-000094F1: error: Value cannot be null.
-Parameter name: dictionary
-000094ED: error: Value cannot be null.
-Parameter name: dictionary
-000094C9: error: Value cannot be null.
-Parameter name: dictionary
-000094A5: error: Value cannot be null.
-Parameter name: dictionary
-00009481: error: Value cannot be null.
-Parameter name: dictionary
-0000945D: error: Value cannot be null.
-Parameter name: dictionary
-00009455: error: Value cannot be null.
-Parameter name: dictionary
-0000944D: error: Value cannot be null.
-Parameter name: dictionary
-000093B1: error: Value cannot be null.
-Parameter name: dictionary
-00009315: error: Value cannot be null.
-Parameter name: dictionary
-0000930D: error: Value cannot be null.
-Parameter name: dictionary
-000092FD: error: Value cannot be null.
-Parameter name: dictionary
-000092ED: error: Value cannot be null.
-Parameter name: dictionary
-000092E1: error: Value cannot be null.
-Parameter name: dictionary
-0000925D: error: Value cannot be null.
-Parameter name: dictionary
-000091C9: error: Value cannot be null.
-Parameter name: dictionary
-00009195: error: Value cannot be null.
-Parameter name: dictionary
-0000915D: error: Value cannot be null.
-Parameter name: dictionary
-00009135: error: Value cannot be null.
-Parameter name: dictionary
-0000910D: error: Value cannot be null.
-Parameter name: dictionary
-000090C5: error: Value cannot be null.
-Parameter name: dictionary
-00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
-00009095: error: Value cannot be null.
-Parameter name: dictionary
-00008F2D: error: Value cannot be null.
-Parameter name: dictionary
-00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00008EF1: error: Value cannot be null.
-Parameter name: dictionary
-00008E41: error: Value cannot be null.
-Parameter name: dictionary
-00008E1D: error: Value cannot be null.
-Parameter name: dictionary
-00008DE5: error: Value cannot be null.
-Parameter name: dictionary
-00008DB9: error: Value cannot be null.
-Parameter name: dictionary
-00008D8D: error: Value cannot be null.
-Parameter name: dictionary
-00008D4D: error: Value cannot be null.
-Parameter name: dictionary
-00008D29: error: Value cannot be null.
-Parameter name: dictionary
-00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
-00008D05: error: Value cannot be null.
-Parameter name: dictionary
-00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
-00008CE5: error: Value cannot be null.
-Parameter name: dictionary
-00008CC1: error: Value cannot be null.
-Parameter name: dictionary
-00008C99: error: Value cannot be null.
-Parameter name: dictionary
-00008C75: error: Value cannot be null.
-Parameter name: dictionary
-00008C4D: error: Value cannot be null.
-Parameter name: dictionary
-00008C21: error: Value cannot be null.
-Parameter name: dictionary
-00008BF9: error: Value cannot be null.
-Parameter name: dictionary
-00008BD1: error: Value cannot be null.
-Parameter name: dictionary
-00008BA5: error: Value cannot be null.
-Parameter name: dictionary
-00008B6D: error: Value cannot be null.
-Parameter name: dictionary
-00008B45: error: Value cannot be null.
-Parameter name: dictionary
-00008B1D: error: Value cannot be null.
-Parameter name: dictionary
-00008AE5: error: Value cannot be null.
-Parameter name: dictionary
-00008AB9: error: Value cannot be null.
-Parameter name: dictionary
-00008A89: error: Value cannot be null.
-Parameter name: dictionary
-00008A61: error: Value cannot be null.
-Parameter name: dictionary
-000089FD: error: Value cannot be null.
-Parameter name: dictionary
-000089C5: error: Value cannot be null.
-Parameter name: dictionary
-00008999: error: Value cannot be null.
-Parameter name: dictionary
-00008975: error: Value cannot be null.
-Parameter name: dictionary
-0000894D: error: Value cannot be null.
-Parameter name: dictionary
-00008929: error: Value cannot be null.
-Parameter name: dictionary
-00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
-00008905: error: Value cannot be null.
-Parameter name: dictionary
-000088E1: error: Value cannot be null.
-Parameter name: dictionary
-000088C1: error: Value cannot be null.
-Parameter name: dictionary
-0000889D: error: Value cannot be null.
-Parameter name: dictionary
-00008875: error: Value cannot be null.
-Parameter name: dictionary
-0000884D: error: Value cannot be null.
-Parameter name: dictionary
-00008809: error: Value cannot be null.
-Parameter name: dictionary
-000087DD: error: Value cannot be null.
-Parameter name: dictionary
-000087D1: error: Value cannot be null.
-Parameter name: dictionary
-00008785: error: Value cannot be null.
-Parameter name: dictionary
-000086E9: error: Value cannot be null.
-Parameter name: dictionary
-00008671: error: Value cannot be null.
-Parameter name: dictionary
-00008631: error: Value cannot be null.
-Parameter name: dictionary
-000085F5: error: Value cannot be null.
-Parameter name: dictionary
-000085DD: error: Value cannot be null.
-Parameter name: dictionary
-000085B1: error: Value cannot be null.
-Parameter name: dictionary
-00008579: error: Value cannot be null.
-Parameter name: dictionary
-00008565: error: Value cannot be null.
-Parameter name: dictionary
-00008535: error: Value cannot be null.
-Parameter name: dictionary
-0000852D: error: Value cannot be null.
-Parameter name: dictionary
-000084D5: error: Value cannot be null.
-Parameter name: dictionary
-000084A1: error: Value cannot be null.
-Parameter name: dictionary
-00008401: error: Value cannot be null.
-Parameter name: dictionary
-00008365: error: Value cannot be null.
-Parameter name: dictionary
-00008341: error: Value cannot be null.
-Parameter name: dictionary
-0000830D: error: Value cannot be null.
-Parameter name: dictionary
-000082F1: error: Value cannot be null.
-Parameter name: dictionary
-000082E9: error: Value cannot be null.
-Parameter name: dictionary
-000082D1: error: Value cannot be null.
-Parameter name: dictionary
-0000829D: error: Value cannot be null.
-Parameter name: dictionary
-00008221: error: Value cannot be null.
-Parameter name: dictionary
-00008211: error: Value cannot be null.
-Parameter name: dictionary
-0000818D: error: Value cannot be null.
-Parameter name: dictionary
-00008185: error: Value cannot be null.
-Parameter name: dictionary
-00008109: error: Value cannot be null.
-Parameter name: dictionary
-000080A1: error: Value cannot be null.
-Parameter name: dictionary
-00008069: error: Value cannot be null.
-Parameter name: dictionary
-00008039: error: Value cannot be null.
-Parameter name: dictionary
-00008035: error: Value cannot be null.
-Parameter name: dictionary
-00008005: error: Value cannot be null.
-Parameter name: dictionary
-00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
-00008001: error: Value cannot be null.
-Parameter name: dictionary
-000019D5: error: Value cannot be null.
-Parameter name: dictionary
-000019D1: error: Value cannot be null.
-Parameter name: dictionary
-000019A5: error: Value cannot be null.
-Parameter name: dictionary
-00001989: error: Value cannot be null.
-Parameter name: dictionary
-000018F9: error: Value cannot be null.
-Parameter name: dictionary
-00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00001891: error: Value cannot be null.
-Parameter name: dictionary
-00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00001875: error: Value cannot be null.
-Parameter name: dictionary
-000017C5: error: Value cannot be null.
-Parameter name: dictionary
-000017A9: error: Value cannot be null.
-Parameter name: dictionary
-00001795: error: Value cannot be null.
-Parameter name: dictionary
-00001785: error: Value cannot be null.
-Parameter name: dictionary
-00001781: error: Value cannot be null.
-Parameter name: dictionary
-0000172D: error: Value cannot be null.
-Parameter name: dictionary
-00001715: error: Value cannot be null.
-Parameter name: dictionary
-000016E5: error: Value cannot be null.
-Parameter name: dictionary
-00001555: error: Value cannot be null.
-Parameter name: dictionary
-00001551: error: Value cannot be null.
-Parameter name: dictionary
-000013B1: error: Value cannot be null.
-Parameter name: dictionary
-0000137D: error: Value cannot be null.
-Parameter name: dictionary
-00001335: error: Value cannot be null.
-Parameter name: dictionary
-000012F1: error: Value cannot be null.
-Parameter name: dictionary
-000012D5: error: Value cannot be null.
-Parameter name: dictionary
-00001251: error: Value cannot be null.
-Parameter name: dictionary
-000011BD: error: Value cannot be null.
-Parameter name: dictionary
-000011AD: error: Value cannot be null.
-Parameter name: dictionary
-00001159: error: Value cannot be null.
-Parameter name: dictionary
-00001145: error: Value cannot be null.
-Parameter name: dictionary
-00001139: error: Value cannot be null.
-Parameter name: dictionary
-00001121: error: Value cannot be null.
-Parameter name: dictionary
-000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-000010D9: error: Value cannot be null.
-Parameter name: dictionary
-00001081: error: Value cannot be null.
-Parameter name: dictionary
-0000101D: error: Value cannot be null.
-Parameter name: dictionary
-00000FF9: error: Value cannot be null.
-Parameter name: dictionary
-00000FDD: error: Value cannot be null.
-Parameter name: dictionary
-00000F81: error: Value cannot be null.
-Parameter name: dictionary
-00000F49: error: Value cannot be null.
-Parameter name: dictionary
-00000E6D: error: Value cannot be null.
-Parameter name: dictionary
-00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
-00000D6D: error: Value cannot be null.
-Parameter name: dictionary
-00000D01: error: Value cannot be null.
-Parameter name: dictionary
-00000C61: error: Value cannot be null.
-Parameter name: dictionary
-00000BD5: error: Value cannot be null.
-Parameter name: dictionary
-00000B0D: error: Value cannot be null.
-Parameter name: dictionary
-00000A59: error: Value cannot be null.
-Parameter name: dictionary
-00000A45: error: Value cannot be null.
-Parameter name: dictionary
-00000A39: error: Value cannot be null.
-Parameter name: dictionary
-00000A2D: error: Value cannot be null.
-Parameter name: dictionary
-00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-00000A0D: error: Value cannot be null.
-Parameter name: dictionary
-000009ED: error: Value cannot be null.
-Parameter name: dictionary
-00000991: error: Value cannot be null.
-Parameter name: dictionary
-00000971: error: Value cannot be null.
-Parameter name: dictionary
-0000091D: error: Value cannot be null.
-Parameter name: dictionary
-000008B5: error: Value cannot be null.
-Parameter name: dictionary
-0000085D: error: Value cannot be null.
-Parameter name: dictionary
-00000799: error: Value cannot be null.
-Parameter name: dictionary
-00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00000701: error: Value cannot be null.
-Parameter name: dictionary
-000006DD: error: Value cannot be null.
-Parameter name: dictionary
-000006AD: error: Value cannot be null.
-Parameter name: dictionary
-00000631: error: Value cannot be null.
-Parameter name: dictionary
-00000605: error: Value cannot be null.
-Parameter name: dictionary
-000005D5: error: Value cannot be null.
-Parameter name: dictionary
-000005B5: error: Value cannot be null.
-Parameter name: dictionary
-000005A1: error: Value cannot be null.
-Parameter name: dictionary
-00000595: error: Value cannot be null.
-Parameter name: dictionary
-00000525: error: Value cannot be null.
-Parameter name: dictionary
-000004C5: error: Value cannot be null.
-Parameter name: dictionary
-00000459: error: Value cannot be null.
-Parameter name: dictionary
+0000800D: warning: Call target address FF48A91D is invalid.
+00008019: warning: Call target address 00C89029 is invalid.
+00008031: error: Rewriting ARM opcode 'cdp2' is not supported yet.
+00000431: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
 00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
-00000455: error: Value cannot be null.
-Parameter name: dictionary
-0000043D: error: Value cannot be null.
-Parameter name: dictionary
-000002D9: error: Value cannot be null.
-Parameter name: dictionary
-000002A5: error: Value cannot be null.
-Parameter name: dictionary
-00000191: error: Value cannot be null.
-Parameter name: dictionary
-000000ED: error: Value cannot be null.
-Parameter name: dictionary
-0000804C: error: Rewriting ARM opcode 'stc2' is not supported yet.
-00008070: error: Rewriting ARM opcode 'mcrr2' is not supported yet.
-00008074: error: Rewriting ARM opcode 'stcmi' is not supported yet.
-00008078: error: Rewriting ARM opcode 'stceq' is not supported yet.
-0000807C: error: Rewriting ARM opcode 'vmax.s8' is not supported yet.
-error: An error occurred during decompilation. System.DivideByZeroException: Attempted to divide by zero.
-   at Reko.Core.NativeInterface.INativeRewriter.Next()
-   at Reko.Arch.Arm.ArmRewriter.Enumerator.MoveNext() in C:\dev\uxmal\reko\master\src\Arch\Arm\ArmRewriter.cs:line 137
-   at Reko.Scanning.ShingledScanner.ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, UInt64 workToDo) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 185
-   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 162
-   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 115
-   at Reko.Scanning.Scanner.ShingleScanProcedures() in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1048
-   at Reko.Scanning.Scanner.ScanImage() in C:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 942
-   at Reko.DecompilerDriver.ScanProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 422
-   at Reko.DecompilerDriver.ScanPrograms() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 410
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 162
+0000A5DD: error: Rewriting ARM opcode 'ldchs' is not supported yet.
+0000A5F5: error: Rewriting ARM opcode 'ldcls' is not supported yet.
+0000A631: error: Rewriting ARM opcode 'mrrc' is not supported yet.
+0000A269: error: Rewriting ARM opcode 'ldclvs' is not supported yet.
+0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
+0000A085: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
+0000A045: warning: Call target address 001B0DF1 is invalid.
+00009E8D: warning: Call target address 0130C965 is invalid.
+00009E91: warning: Call target address 01A12BBD is invalid.
+00009D09: error: Rewriting ARM opcode 'ldcpl' is not supported yet.
+00009CD1: warning: Call target address 0128A605 is invalid.
+00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
+00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
+00009C45: error: Rewriting ARM opcode 'ldclpl' is not supported yet.
+00009C0D: warning: Call target address 000EA7C1 is invalid.
+00009BD5: warning: Call target address 000EA789 is invalid.
+00009B9D: warning: Call target address 000EA751 is invalid.
+00009901: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
+00009891: error: Rewriting ARM opcode 'ssub8ne' is not supported yet.
+000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+000096C9: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00009599: error: Rewriting ARM opcode 'mcrrne' is not supported yet.
+00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
+00009569: error: Rewriting ARM opcode 'uqsub8eq' is not supported yet.
+00009501: warning: Call target address FEF858C9 is invalid.
+000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
+000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
+000094A9: warning: Call target address 00909891 is invalid.
+000091D1: error: Rewriting ARM opcode 'ldceq' is not supported yet.
+000091E5: error: Rewriting ARM opcode 'mcrrhi' is not supported yet.
+000091F5: error: Rewriting ARM opcode 'ldceq' is not supported yet.
+00009209: warning: Call target address 010CBD0D is invalid.
+00009211: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
+00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
+00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
+000090A1: error: Rewriting ARM opcode 'ldclmi' is not supported yet.
+00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00008F21: error: Rewriting ARM opcode 'vcvt.u32.f32' is not supported yet.
+00008E45: error: Rewriting ARM opcode 'stceq' is not supported yet.
+00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
+00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
+00008C25: error: Rewriting ARM opcode 'ldclls' is not supported yet.
+00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00008811: warning: Call target address 011ACD31 is invalid.
+00008795: warning: Call target address FFE66B5D is invalid.
+000085FD: error: Rewriting ARM opcode 'stceq' is not supported yet.
+000085E5: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
+00008569: warning: Call target address 003C8D31 is invalid.
+00008539: error: Rewriting ARM opcode 'ldclne' is not supported yet.
+0000837D: warning: Call target address FFE47745 is invalid.
+00008381: warning: Call target address 01B03135 is invalid.
+0000829D: warning: Call target address 0118B979 is invalid.
+00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
+00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
+000019D9: error: Rewriting ARM opcode 'ldclgt' is not supported yet.
+00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+0000189D: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
+000018A9: error: Rewriting ARM opcode 'stceq' is not supported yet.
+00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00001879: error: Rewriting ARM opcode 'ldclvc' is not supported yet.
+0000188D: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+0000155D: error: Rewriting ARM opcode 'stc2l' is not supported yet.
+000013B1: warning: Call target address FED1D4E5 is invalid.
+000013B9: warning: Call target address 000A1391 is invalid.
+000013C1: warning: Call target address 010A1389 is invalid.
+000012F9: error: Rewriting ARM opcode 'stceq' is not supported yet.
+000012D5: warning: Call target address 01A17C09 is invalid.
+000012D9: warning: Call target address 01A179A5 is invalid.
+000012DD: warning: Call target address 00C81899 is invalid.
+00001121: warning: Call target address 01A17655 is invalid.
+000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000F65: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000E75: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000EA1: error: Rewriting ARM opcode 'ldclmi' is not supported yet.
+00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+00000D71: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000BF1: warning: Call target address 01A19079 is invalid.
+00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
+000009FD: warning: Call target address 012C128D is invalid.
+000008CD: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
+00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
+00000621: warning: Call target address 0118891D is invalid.
+00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
+0000A4B8: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
+0000A4EC: error: Rewriting ARM opcode 'usateq' is not supported yet.
+0000A544: error: Rewriting ARM opcode 'stcge' is not supported yet.
+000094FD: error: An error occurred while processing instruction at address 000094FD.
+    Expected stack depth to be known.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 159
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 215
+: error: Error when reconstructing types.
+    Parameter count must match.
+       at Reko.Typing.EquivalenceClassBuilder.VisitApplication(Application appl) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 132
+   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
+   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in C:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 113
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Typing.EquivalenceClassBuilder.Build(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\EquivalenceClassBuilder.cs:line 67
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 87
+   at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
+xQueueGiveMutexRecursive: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+vTaskEndScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xTaskNotifyWait: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+uxTaskResetEventItemValue: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+pvTaskIncrementMutexHeldCount: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xPortStartScheduler: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+ResetISR: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+PDCWrite: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+xQueueCRSend: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+xPortRaisePrivilege: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+vStartFlashCoRoutines: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+MPU_xTaskCreate: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+GPIOPadConfigSet: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlPeripheralDisable: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+SysCtlPeripheralSleepDisable: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+SysCtlPeripheralDeepSleepDisable: error: An error occurred while rewriting procedure to high-level language.
+    Index was outside the bounds of the array.
+       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
+   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
+   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
+   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 483
+SysCtlReset: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+SysCtlADCSpeedSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+UARTCharNonBlockingPut: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 === Elf\ARM\switch\switch
-*** Elf\ARM\switch\switch
-00008334: error: Value cannot be null.
-Parameter name: dictionary
-000082F0: error: Value cannot be null.
-Parameter name: dictionary
-0000836C: error: Value cannot be null.
-Parameter name: dictionary
-0000842C: error: Value cannot be null.
-Parameter name: dictionary
-000086B0: error: Value cannot be null.
-Parameter name: dictionary
-0000874C: error: Value cannot be null.
-Parameter name: dictionary
-00008744: error: Value cannot be null.
-Parameter name: dictionary
-0000870C: error: Value cannot be null.
-Parameter name: dictionary
-00008654: error: Value cannot be null.
-Parameter name: dictionary
-00008638: error: Value cannot be null.
-Parameter name: dictionary
-00008588: error: Value cannot be null.
-Parameter name: dictionary
-0000855C: error: Value cannot be null.
-Parameter name: dictionary
-000084D4: error: Value cannot be null.
-Parameter name: dictionary
-00008470: error: Value cannot be null.
-Parameter name: dictionary
-00008434: error: Value cannot be null.
-Parameter name: dictionary
-00008404: error: Value cannot be null.
-Parameter name: dictionary
-000083FC: error: Value cannot be null.
-Parameter name: dictionary
-0000839C: error: Value cannot be null.
-Parameter name: dictionary
 === Elf\MIPS\redir\redir
 *** Elf\MIPS\redir\redir
 00400BB8: warning: Unable to resolve imported reference __xpg_basename.
@@ -2993,4 +2516,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 50 binaries in 43.49 seconds ---
+Decompiled 50 binaries in 33.08 seconds ---

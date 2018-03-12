@@ -185,7 +185,6 @@ namespace Reko.Scanning
                 }
                 if (assSrc is ConditionOf cof && UsedFlagIdentifier != null)
                 {
-
                     var grfDef = (((Identifier)assDst).Storage as FlagGroupStorage).FlagGroupBits;
                     var grfUse = (UsedFlagIdentifier.Storage as FlagGroupStorage).FlagGroupBits;
                     if ((grfDef & grfUse) == 0)
