@@ -135,47 +135,13 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// A flag register is a special kind of register that can store one 
-    /// or more bit registers.
-    /// </summary>
-    public class FlagRegister : RegisterStorage
-    {
-        public FlagRegister(string name, int flagDomain, PrimitiveType size) :
-            base(
-                name,
-                flagDomain,
-                0,
-                size)
-        {
-        }
-
-        public override T Accept<T>(StorageVisitor<T> visitor)
-        {
-            return visitor.VisitFlagRegister(this);
-        }
-
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
-        {
-            return visitor.VisitFlagRegister(this, context);
-        }
-
-        public override int OffsetOf(Storage storage)
-        {
-            if (storage is FlagRegister)
-                return 0;
-            else
-                return -1;
-        }
-    }
-
-    /// <summary>
     /// This class represents groups of bits stored in flag registers. 
     /// Typically, these are the Carry, Zero, Overflow etc flags that are set
     /// after ALU operations.
     /// </summary>
 	public class FlagGroupStorage : Storage
     {
-        public FlagGroupStorage(FlagRegister freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
+        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
         {
             this.Domain = freg.Domain;
             this.FlagRegister = freg;
@@ -188,7 +154,7 @@ namespace Reko.Core
         /// <summary>
         /// The register in which bits of the flag group are located.
         /// </summary>
-        public FlagRegister FlagRegister { get; private set; }
+        public RegisterStorage FlagRegister { get; private set; }
         public uint FlagGroupBits { get; private set; }
         public DataType DataType { get; private set; }
 
@@ -678,16 +644,27 @@ namespace Reko.Core
 
 	public class SequenceStorage : Storage
 	{
-		public SequenceStorage(Storage head, Storage tail) 
+		public SequenceStorage(Storage head, Storage tail, DataType dt) 
 			: base("Sequence")		
 		{
 			this.Head = head;
 			this.Tail = tail;
             this.Name = $"{head.Name}:{tail.Name}";
+            this.DataType = dt;
 		}
+
+        public SequenceStorage(string name, Storage head, Storage tail, DataType dt)
+            : base("Sequence")
+        {
+            this.Head = head;
+            this.Tail = tail;
+            this.Name = name;
+            this.DataType = dt;
+        }
 
         public Storage Head { get; private set; }
         public Storage Tail { get; private set; }
+        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

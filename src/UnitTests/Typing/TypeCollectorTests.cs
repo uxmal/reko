@@ -207,6 +207,14 @@ namespace Reko.UnitTests.Typing
             RunTest(mock, "Typing/TycoFramePointer.txt");
         }
 
+
+        [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        public void TycoReg00014()
+        {
+            RunTest32("Fragments/regressions/r00014.asm", "Typing/TycoReg00014.txt");
+        }
+
         [Test]
         public void TycoReg00300()
         {
@@ -246,6 +254,38 @@ namespace Reko.UnitTests.Typing
                 Identifier eax = m.Local32("eax");
                 var call = n.Assign(eax, n.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), n.Word32(3)));
             }, "Typing/TycoCallFunctionWithArraySize.txt");
+        }
+
+        [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
+        public void TycoSignedUnsignedAdd()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier b = m.Local32("b");
+                Identifier c = m.Local32("c");
+                a.DataType = PrimitiveType.Int32;
+                b.DataType = PrimitiveType.UInt32;
+                m.Assign(c, m.IAdd(a, b));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoSignedUnsignedAdd.txt");
+        }
+
+        [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
+        public void TycoStructMembers()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier ptr = m.Local32("ptr");
+                Identifier b16 = m.Local16("b16");
+                Identifier c16 = m.Local16("c16");
+                m.Store(m.IAdd(ptr, 200), m.Word32(0x1234));
+                m.Store(m.IAdd(ptr, 12), m.Word32(0x5678));
+                m.Assign(b16, m.Or(m.Mem16(m.IAdd(ptr, 14)), m.Word16(0x00FF)));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoStructMembers.txt");
         }
     }
 }

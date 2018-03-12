@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -12,8 +12,6 @@
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,13 +44,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArchSpecific\AlphaCallingConvention.cs" />
+    <Compile Include="ArchSpecific\Arm64CallingConvention.cs" />
     <Compile Include="ArchSpecific\ArmCallingConvention.cs" />
     <Compile Include="ArchSpecific\Avr8CallingConvention.cs" />
     <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
@@ -70,13 +68,13 @@
     <Compile Include="SysVPlatform.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
+      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Name>X86</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
-      <Project>{500c7c4b-5b7a-40e0-beed-75ddf1ba78d5}</Project>
-      <Name>C2Xml</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +90,8 @@
        Other similar extension points exist, see Microsoft.Common.targets.
        -->
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
     <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
     <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
   </Target>

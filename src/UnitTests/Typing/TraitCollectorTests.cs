@@ -316,6 +316,7 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.IntegrationTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void TrcoReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");

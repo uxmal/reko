@@ -38,8 +38,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseMSBuildEngine>True</UseMSBuildEngine>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -265,6 +263,7 @@
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
     <Compile Include="Loading\SignatureLoader.cs" />
+    <Compile Include="Loading\SymbolLoadingService.cs" />
     <Compile Include="Loading\UnpackerSignatureLoader.cs" />
     <Compile Include="Loading\UnpackingService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

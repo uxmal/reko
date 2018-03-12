@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            this.arch = new X86ArchitectureFlat32();
+            this.arch = new X86ArchitectureFlat32("x86-protected-32");
             this.frame = arch.CreateFrame();
             this.callee = frame.EnsureRegister(Registers.eax);
         }

@@ -34,7 +34,7 @@ namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : ProcessorArchitecture
     {
-        public Mos6502ProcessorArchitecture()
+        public Mos6502ProcessorArchitecture(string archId) : base(archId)
         {
             CarryFlagMask = (uint)FlagM.CF;
             InstructionBitSize = 8;
@@ -46,7 +46,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Disassembler(imageReader.Clone());
+            return new Disassembler((LeImageReader)imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
@@ -175,7 +175,7 @@ namespace Reko.Arch.Mos6502
         public static readonly RegisterStorage y = RegisterStorage.Reg8("y", 2);
         public static readonly RegisterStorage s = RegisterStorage.Reg8("s", 3);
 
-        public static readonly FlagRegister p = new FlagRegister("p", 10, PrimitiveType.Byte);
+        public static readonly RegisterStorage p = new RegisterStorage("p", 10, 0, PrimitiveType.Byte);
 
         public static readonly RegisterStorage N = new RegisterStorage("N", 4, 0, PrimitiveType.Byte);
         public static readonly RegisterStorage V = new RegisterStorage("V", 5, 0, PrimitiveType.Byte);

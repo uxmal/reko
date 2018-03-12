@@ -1129,5 +1129,40 @@ test_exit:
             });
             RunTest(pb.BuildProgram());
         }
+
+        [Test(Description = "@smx-smx discovered that 64-bit ELF binaries always have an issue with a variable" + 
+            " being used both as a signed and an unsigned integer.")]
+        public void TerUnsignedSigned()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("register_tm_clones", m =>
+            {
+                var rax = new Identifier("rax", PrimitiveType.Word64, new RegisterStorage("rax", 0, 0, PrimitiveType.Word64));
+                var rsp = new Identifier("rsp", PrimitiveType.Word64, new RegisterStorage("rsp", 4, 0, PrimitiveType.Word64));
+                var rbp = new Identifier("rbp", PrimitiveType.Word64, new RegisterStorage("rbp", 5, 0, PrimitiveType.Word64));
+                var rsi = new Identifier("rsi", PrimitiveType.Word64, new RegisterStorage("rsi", 6, 0, PrimitiveType.Word64));
+                var rdi = new Identifier("rsp", PrimitiveType.Word64, new RegisterStorage("rdi", 7, 0, PrimitiveType.Word64));
+                var rflags = new RegisterStorage("rflags", 42, 0, PrimitiveType.Word64);
+                var SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(rflags, 0xF, "SZCO", PrimitiveType.Byte));
+                var Z = new Identifier("Z", PrimitiveType.Bool, new FlagGroupStorage(rflags, 0x2, "Z", PrimitiveType.Bool));
+
+                //m.Assign(rsp, m.Frame.FramePointer);
+                m.Assign(rdi, 0x0000000000201028);
+                m.Assign(rsi, 0x0000000000201028);
+                //m.Assign(rsp, m.ISub(rsp, 0x0000000000000008));
+
+    
+                m.Assign(rsi, m.ISub(rsi, rdi));
+                m.BranchIf(m.Eq0(m.IAdd(m.Sar(rsi, 0x0000000000000003),
+                    m.Sar(m.Shr(m.Sar(rsi, 0x0000000000000003), 0x3F), 1))), "mHyperSpace");
+
+                m.Label("mHello");
+                m.Store(m.Word64(42), rsi);
+                m.Label("mHyperspace");
+
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
     }
 }

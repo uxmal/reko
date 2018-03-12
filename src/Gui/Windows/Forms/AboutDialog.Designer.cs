@@ -133,6 +133,5 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label lblCopyleft;
-
     }
 }

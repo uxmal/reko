@@ -198,7 +198,8 @@ namespace Reko.Core.Expressions
             var dtField = field.DataType.ResolveAs<DataType>();
             if (dtField == null)
                 return null;
-            //$BUG: offset != field.Offset?
+            //$TODO This really should be offset != field.Offset
+            // However doing so causes a regression in hello_ppc.exe
             if (offset >= field.Offset + dtField.Size)
                 return null;
             return factory.CreatePointer(dtField, dtLeft.Size);
@@ -206,22 +207,33 @@ namespace Reko.Core.Expressions
 
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
-            var ptLeft = dtLeft as PrimitiveType;
+            var ptLeft = dtLeft.ResolveAs<PrimitiveType>();
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
             if (ptLeft != null && ptLeft.Domain == Domain.Pointer)
             {
                 if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
-            
-            if (ptLeft != null && ptLeft.IsIntegral)
+
+            if (ptLeft != null && ptLeft.IsIntegral && ptRight != null && ptRight.IsIntegral)
             {
-                if (ptRight != null)
+                // According to the C language definition, the sum
+                // of unsigned and signed integers is always unsigned.
+                if (ptLeft.Domain == Domain.UnsignedInt)
+                {
+                    return ptLeft;
+                }
+                if (ptRight.Domain == Domain.UnsignedInt)
+                {
                     return ptRight;
+                }
             }
-            if (dtLeft is Pointer)
+            if (dtLeft.ResolveAs<Pointer>() != null)
             {
-                return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+                if (dtLeft is TypeReference)
+                    return dtLeft;
+                else 
+                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
             return dtLeft;
         }

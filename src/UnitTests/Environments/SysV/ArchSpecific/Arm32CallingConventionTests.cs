@@ -39,14 +39,14 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private readonly PrimitiveType i16 = PrimitiveType.Int16;
         private readonly VoidType v = VoidType.Instance;
 
-        private Arm32ProcessorArchitecture arch;
+        private Arm32Architecture arch;
         private CallingConvention cc;
         private ICallingConventionEmitter ccr;
 
         [SetUp]
         public void Setup()
         {
-            arch = new Arm32ProcessorArchitecture();
+            arch = new Arm32Architecture("arm32");
         }
 
         private Pointer Ptr(DataType dt)

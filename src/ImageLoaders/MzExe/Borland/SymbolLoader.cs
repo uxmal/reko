@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -23,6 +23,7 @@ using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -65,23 +66,17 @@ namespace Reko.ImageLoaders.MzExe.Borland
             dataSize += exeLoader.e_cbLastPage;
             var rdr = new LeImageReader(rawImage, dataSize);
             var srdr = new StructureReader<debug_header>(rdr);
-            var header = srdr.Read();
-            if (!header.HasValue || header.Value.magic_number != MagicNumber)
+            this.header = srdr.Read();
+            if (this.header.magic_number != MagicNumber)
             {
                 return false;
             }
-            this.header = header.Value;
             this.name_pool_offset = rawImage.Length - this.header.names;
             if (this.header.extension_size == 0x20)
             {
                 var ext = new StructureReader<header_extension_20>(rdr);
                 var extHdr = ext.Read();
-                if (!extHdr.HasValue)
-                {
-                    //$TODO: warn
-                    return false;
-                }
-                name_pool_offset = rdr.Offset + (int)extHdr.Value.name_pool_offset;
+                name_pool_offset = rdr.Offset + (int)extHdr.name_pool_offset;
             }
             else if (this.header.extension_size != 0)
             {
@@ -113,18 +108,15 @@ namespace Reko.ImageLoaders.MzExe.Borland
             return true;
         }
 
-        private void LoadSymbolTable(ImageReader rdr, string[] names)
+        private void LoadSymbolTable(LeImageReader rdr, string[] names)
         {
             var srdr = new StructureReader<symbol_record>(rdr);
             int nSym = 0;
             this.symbols = new symbol_record[header.symbols_count];
             while (nSym < header.symbols_count)
             {
-                var hsym = srdr.Read();
-                if (!hsym.HasValue)
-                    break;
-                this.symbols[nSym] = hsym.Value;
-                var sym = hsym.Value;
+                var sym = srdr.Read();
+                this.symbols[nSym] = sym;
                 var symClass = ClassifySymbol(sym.flags, names[sym.symbol_name], ref sym);
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Symbol:  {names[sym.symbol_name]} ({nSym})");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    Type:  {sym.symbol_type:X4}");
@@ -140,10 +132,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nMod = 0;
             while (nMod < header.modules_count)
             {
-                var hmod = srdr.Read();
-                if (!hmod.HasValue)
-                    break;
-                var mod = hmod.Value;
+                var mod = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Module:         {names[mod.module_name]}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    Language:     {ClassifyProgrammingLanguage(mod.language)}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    Flags:        {mod.flags:X2}");
@@ -160,10 +149,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nSrc = 0;
             while (nSrc < header.source_count)
             {
-                ushort iFileName;
-                uint timestamp;
-                if (!rdr.TryReadLeUInt16(out iFileName) ||
-                    !rdr.TryReadLeUInt32(out timestamp))
+                if (!rdr.TryReadLeUInt16(out ushort iFileName) ||
+                    !rdr.TryReadLeUInt32(out uint timestamp))
                     break;
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Source file:  {names[iFileName]}");
                 ++nSrc;
@@ -176,10 +163,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nScopes = 0;
             while (nScopes < header.scopes_count)
             {
-                var hscope = srdr.Read();
-                if (hscope == null)
-                    break;
-                var scope = hscope.Value;
+                var scope = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Scope:");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    autos_index:     {scope.autos_index}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    autos_count:     {scope.autos_count}");
@@ -196,10 +180,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             var srdr = new StructureReader<line_number>(rdr);
             for (int nLineNos = 0; nLineNos < header.lines_count; ++nLineNos)
             {
-                var hline = srdr.Read();
-                if (hline == null)
-                    break;
-                var line = hline.Value;
+                var line = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, $"    line_number_value:  {line.line_number_value}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    line_number_offset: {line.line_number_offset}");
             }
@@ -211,10 +192,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nSegs = 0;
             while (nSegs < header.segment_count)
             {
-                var hseg = srdr.Read();
-                if (hseg == null)
-                    break;
-                var seg = hseg.Value;
+                var seg = srdr.Read();
 
                 DebugEx.PrintIf(trace.TraceVerbose, "  Segment");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    mod_index: {seg.mod_index}");
@@ -234,10 +212,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             var srdr = new StructureReader<correlation_record>(rdr);
             for (int iCorr = 0; iCorr < header.correlation_count; ++iCorr)
             {
-                var hcorr = srdr.Read();
-                if (hcorr == null)
-                    break;
-                var corr = hcorr.Value;
+                var corr = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, "  Correlation");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    segment_index: {corr.segment_index}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    file_index: {corr.file_index}");
@@ -541,13 +516,10 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             this.types = new Dictionary<ushort, BorlandType>();
             for (int i = 0; i < header.types_count; ++i)
             {
-                byte type_id;
-                ushort type_name;
-                ushort type_size;
                 // The type records are either 8 or 16 bytes long
-                if (!rdr.TryReadByte(out type_id) ||
-                    !rdr.TryReadLeUInt16(out type_name) ||
-                    !rdr.TryReadLeUInt16(out type_size))
+                if (!rdr.TryReadByte(out byte type_id) ||
+                    !rdr.TryReadLeUInt16(out ushort type_name) ||
+                    !rdr.TryReadLeUInt16(out ushort type_size))
                 {
                     break;
                 }
@@ -559,9 +531,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 BorlandType bt = null;
                 switch (type_id)
                 {
-                case 0x00:
+                case TID_VOID:
                 default:
                     {
+                        if (TID_VOID != type_id)
+                            DebugEx.PrintIf(trace.TraceVerbose, $"No special support for type {type_id:X2}, fallback to void");
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
                         DebugEx.PrintIf(trace.TraceVerbose, $"    {b2:X2} {w:X4}");
@@ -571,13 +545,14 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 case TID_SCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.SChar8()); break;
                 case TID_SINT: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int16()); break;
                 case TID_SLONG: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int32()); break;
-                case TID_SQUAD: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Int64()); break;
                 case TID_UCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UChar8()); break;
                 case TID_UINT: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt16()); break;
                 case TID_ULONG: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt32()); break;
-                case TID_UQUAD: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.UInt64()); break;
                 case TID_PCHAR: ++i; bt = ClassifyRangeType(rdr, PrimitiveType_v1.Char8()); break;
 
+                case TID_SQUAD: bt = ClassifyType(rdr, PrimitiveType_v1.Int64()); break;
+                case TID_UQUAD: bt = ClassifyType(rdr, PrimitiveType_v1.UInt64()); break;
+                
                 case TID_FLOAT: bt = ClassifyType(rdr, PrimitiveType_v1.Real32()); break;
                 //case TID_TPREAL: ClassifyPrimitiveType(rdr, PrimitiveType_v1.TPREAL()); break;
                 case TID_DOUBLE: bt = ClassifyType(rdr, PrimitiveType_v1.Real64()); break;
@@ -586,19 +561,83 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 case TID_BOOL: bt = ClassifyType(rdr, PrimitiveType_v1.Bool()); break;
                 case TID_TBYTE: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Any, ByteSize = 10 }); break;
                 case TID_PWORD: bt = ClassifyType(rdr, new PrimitiveType_v1 { Domain = Core.Types.Domain.Any, ByteSize = 6 }); break;
+                
                 case TID_NEAR: bt = ClassifyComplex(rdr, t => PointerType_v1.Create(t, 2), "near *"); break;
                 case TID_FAR: bt = ClassifyComplex(rdr, t => PointerType_v1.Create(t, 4), "far *"); break;
+           
                 case TID_CARRAY: bt = ClassifyComplex(rdr, t => new ArrayType_v1 { ElementType = t, Length = 1 /*//$TODO: unknown length */}, "C Array[]"); break;
+                case TID_PARRAY:
+                    {
+                        ++i;
+                        var filler1 = rdr.ReadByte();
+                        var elementType = rdr.ReadLeUInt16();
+                        var arrayIndexType = rdr.ReadLeUInt16();
+                        var filler2 = rdr.ReadLeUInt16();
+                        var filler3 = rdr.ReadLeUInt16();
+                        var filler4 = rdr.ReadLeUInt16();
+                        SerializedType indexDataType;
+                        if (elementType > iType) DebugEx.PrintIf(trace.TraceWarning, $"    array defined before its element type: {elementType:X4}");
+                        if (arrayIndexType > iType)
+                        {
+                            DebugEx.PrintIf(trace.TraceWarning, $"    array defined before its index type: {arrayIndexType:X4}");
+                            indexDataType = null;
+                        }
+                        else indexDataType = ((SimpleType) types[arrayIndexType]).DataType;
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    Pascal Array[]: {filler1:X2} {elementType:X4}({GetKnownTypeName(elementType)})" +
+                                                            $" {arrayIndexType:X4}{indexDataType} {filler2:X4}{filler3:X4}{filler4:X4}");
+                        // TODO: Get upper index value from arrayIndexType
+                        bt = new ComplexType
+                        {
+                            ConstructType = t => new ArrayType_v1 { ElementType = t, Length = 1 /*//$TODO: unknown length */},
+                            SubType = elementType,
+                        };
+                        break;
+                    }
+                    
+                case TID_TFILE:
+                    {
+                        DebugEx.PrintIf(trace.TraceVerbose, "      Text File");
+                        bt = ClassifyType(rdr, new VoidType_v1()); break;
+                    }
+                case TID_BFILE:
+                    {
+                        DebugEx.PrintIf(trace.TraceVerbose, "      Binary File");
+                        bt = ClassifyType(rdr, new VoidType_v1()); break;
+                    }
+                    
+                case TID_PSTR:
+                    {
+                        var maxLenght = rdr.ReadByte();
+                        var w = rdr.ReadLeUInt16();
+                        // TODO: Use special SerializedType
+                        SerializedType dt = new ArrayType_v1 {ElementType = PrimitiveType_v1.UChar8(), Length = type_size};
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    PascalString MaxLenght={maxLenght:X2} {w:X4} {dt}");
+                        bt = new SimpleType { DataType = dt };
+                        break;
+                    }
+                    
                 case TID_FUNCTION:
                     {
                         var b2 = rdr.ReadByte();
-                        var w = rdr.ReadLeUInt16();
-                        var lang = ClassifyFuncProgrammingLanguage(b2 & 0x7);
-                        var nested = (b2 & 0x40) != 0 ? " nested" : "";
-                        var varargs = (b2 & 0x80) != 0 ? " varargs" : "";
-                        var additional = (b2 & 0x38) != 0 ? $" additional bits: {(b2 & 0x38):X2}" : "";
-                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: returns {w:X4} ({lang}{varargs}{nested}{additional})");
-                        bt = new Callable { };
+                        var retType = rdr.ReadLeUInt16();
+                        var type = b2 & 0x7;
+                        var lang = ClassifyFuncProgrammingLanguage(type);
+                        var isNested = (b2 & 0x40) != 0;
+                        var isVararg = (b2 & 0x80) != 0;
+                        var additionalBits = b2 & 0x38;
+                        
+                        DebugEx.PrintIf(trace.TraceVerbose, $"    function/procedure: {b2:X2} returns {retType:X4}({GetKnownTypeName(retType)}) ({lang}" +
+                                                            $"{(isVararg ? " varargs" : "")}" +
+                                                            $"{(isNested ? " nested" : "")}" +
+                                                            $"{(additionalBits != 0 ? $" additional bits: {additionalBits:X2}" : "")})");
+                        
+                        bt = new Callable
+                        {
+                            IsNested = isNested,
+                            IsVararg = isVararg,
+                            Type = type,
+                            ReturnType = retType,
+                        };
                         break;
                     }
                 case TID_LABEL:
@@ -633,17 +672,27 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     }
                 }
                 bt.name = names[type_name];
+                if (iType == 1 && type_id == 0) bt.name = "void";
                 types[(ushort)iType] = bt;
             }
         }
 
+        private string GetKnownTypeName(ushort typeNumber)
+        {
+            if (typeNumber == 0) return "<no-type>"; 
+            BorlandType type;
+            return types.TryGetValue(typeNumber, out type) ? type.name : "<unknown>";
+        }
+
         private BorlandType ClassifyRangeType(LeImageReader rdr, SerializedType pt)
         {
-            var b2 = rdr.ReadByte();
-            var w = rdr.ReadLeUInt16();
-            var w0 = rdr.ReadLeUInt32();
-            var w1 = rdr.ReadLeUInt32();
-            DebugEx.PrintIf(trace.TraceVerbose, $"    {b2:X2} {w:X4} [{w0:X8} {w1:X8}] {pt}");
+            var filler = rdr.ReadByte();
+            var parent = rdr.ReadLeUInt16();
+            var lower = rdr.ReadLeInt32();
+            var upper = rdr.ReadLeInt32();
+            var parentType = parent != 0 ? $" ({GetKnownTypeName(parent)})" : ""; 
+            DebugEx.PrintIf(trace.TraceVerbose, $"    {filler:X2} {parent:X4}{parentType} [{lower:X8}..{upper:X8}] {pt}");
+            // TODO: Add limits into type
             return new SimpleType { DataType = pt };
         }
 
@@ -655,11 +704,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             return new SimpleType { DataType = dt };
         }
 
-        private BorlandType ClassifyComplex(LeImageReader rdr, Func<SerializedType,SerializedType> ctor, string msg)
+        private ComplexType ClassifyComplex(LeImageReader rdr, Func<SerializedType,SerializedType> ctor, string msg)
         {
             var b2 = rdr.ReadByte();
             var w = rdr.ReadLeUInt16();
-            DebugEx.PrintIf(trace.TraceVerbose, $"    {msg}: {w:X4}");
+            DebugEx.PrintIf(trace.TraceVerbose, $"    {msg}: {w:X4} ({GetKnownTypeName(w)})");
             return new ComplexType
             {
                 ConstructType = ctor,
@@ -822,8 +871,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 if (iType == 0)
                     continue;
                 var type = this.types[iType];
-                var callable = type as Callable;
-                if (callable != null)
+                if (type is Callable callable)
                 {
                     imgSym.Type = SymbolType.Procedure;
                 }

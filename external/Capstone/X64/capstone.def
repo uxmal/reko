@@ -1,0 +1,48 @@
+Microsoft (R) COFF/PE Dumper Version 12.00.40629.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file capstone.dll
+
+File Type: DLL
+
+  Section contains the following exports for capstone.dll
+
+    00000000 characteristics
+    55A5DBBE time date stamp Wed Jul 15 06:04:14 2015
+        0.00 version
+           1 ordinal base
+          20 number of functions
+          20 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00001050 cs_close
+          2    1 000010C0 cs_disasm
+          3    2 00001510 cs_disasm_ex
+          4    3 00001520 cs_disasm_iter
+          5    4 00001710 cs_errno
+          6    5 00001720 cs_free
+          7    6 00001770 cs_group_name
+          8    7 00001790 cs_insn_group
+          9    8 000017F0 cs_insn_name
+         10    9 00001810 cs_malloc
+         11    A 00001890 cs_op_count
+         12    B 00001A80 cs_op_index
+         13    C 00001D80 cs_open
+         14    D 00001EC0 cs_option
+         15    E 000020F0 cs_reg_name
+         16    F 00002110 cs_reg_read
+         17   10 00002170 cs_reg_write
+         18   11 000021D0 cs_strerror
+         19   12 00002290 cs_support
+         20   13 00002320 cs_version
+
+  Summary
+
+      130000 .data
+        4000 .pdata
+       97000 .rdata
+        6000 .reloc
+        1000 .rsrc
+       AE000 .text

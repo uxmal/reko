@@ -74,7 +74,7 @@ namespace Reko.Typing
                         return;
                     try
                     {
-                        stm.Instruction.Accept(this);
+                       stm.Instruction.Accept(this);
                     }
                     catch (Exception ex)
                     {

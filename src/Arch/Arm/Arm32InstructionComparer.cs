@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
-using Gee.External.Capstone.Arm;
 
 namespace Reko.Arch.Arm
 {
@@ -37,8 +36,9 @@ namespace Reko.Arch.Arm
 
         public override bool CompareOperands(MachineInstruction x, MachineInstruction y)
         {
-            var a = (Arm32Instruction)x;
-            var b = (Arm32Instruction)y;
+            return false;
+            /*
+            var b = (Arm32InstructionOld)y;
             var aInvalid = a.instruction == null;
             var bInvalid = b.instruction == null;
 
@@ -98,12 +98,16 @@ namespace Reko.Arch.Arm
                     aop.Type);
                 }
             }
+
             return true;
+        */
         }
 
         public override int GetOperandsHash(MachineInstruction instr)
         {
-            var arm = ((Arm32Instruction)instr).instruction;
+            return 1;
+            /*
+            var arm = ((Arm32InstructionOld)instr).instruction;
             if (arm == null)
                 return 0;
             var ops = arm.ArchitectureDetail.Operands;
@@ -152,6 +156,7 @@ namespace Reko.Arch.Arm
                 }
             }
             return hash;
+            */
         }
     }
 }

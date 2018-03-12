@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            this.arch = new X86ArchitectureReal();
+            this.arch = new X86ArchitectureReal("x86-real-16");
             this.platform = new MsdosPlatform(sc, arch);
 
             ArgumentSerializer argSer = new ArgumentSerializer(arch);

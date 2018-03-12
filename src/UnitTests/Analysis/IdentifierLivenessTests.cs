@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Analysis
 
 		public IdentifierLivenessTests()
 		{
-			arch = new X86ArchitectureReal();
+			arch = new X86ArchitectureReal("x86-real-16");
 		}
 
 		[SetUp]

@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(IDiagnosticsService))).Return(new FakeDiagnosticsService());
             services.Replay();
             configSvc.Replay();
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             win32 = new Reko.Environments.Windows.Win32Platform(services, arch);
         }
 
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new X86TextAssembler(services, new X86ArchitectureFlat32());
+            var asm = new X86TextAssembler(services, new X86ArchitectureFlat32("x86-protected-32"));
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);

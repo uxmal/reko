@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
 
         public FuncsFileParserTests()
         {
-            this.arch = new Reko.Arch.M68k.M68kArchitecture();
+            this.arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
         }
 
         private FuncsFileParser CreateParser(string file)

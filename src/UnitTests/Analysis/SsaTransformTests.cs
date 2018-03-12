@@ -2961,7 +2961,7 @@ proc1_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 8, PrimitiveType.Byte));
-                var flags = m.Frame.EnsureFlagGroup(new FlagRegister("FLAGS", 142, PrimitiveType.Word32), 7, "SZC", PrimitiveType.Byte);
+                var flags = m.Frame.EnsureFlagGroup(new RegisterStorage("FLAGS", 142, 0, PrimitiveType.Word32), 7, "SZC", PrimitiveType.Byte);
 
                 m.Assign(eax, 4);
                 m.Store(m.Word32(0x00123400), eax);

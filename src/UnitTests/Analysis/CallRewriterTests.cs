@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             program = new Program();
-            program.Architecture = new X86ArchitectureFlat32();
+            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());

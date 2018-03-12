@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             platform = new Win32Platform(null, arch);
         }
 
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core.Serialization
         public void X86ps_SerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32,
-                new SequenceStorage(Registers.es, Registers.bx));
+                new SequenceStorage(Registers.es, Registers.bx, PrimitiveType.SegPtr32));
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 

@@ -125,7 +125,9 @@ namespace Reko.Analysis
 
             public bool VisitArrayAccess(ArrayAccess acc)
             {
-                throw new NotImplementedException();
+                var dead = acc.Array.Accept(this);
+                dead &= acc.Index.Accept(this);
+                return dead;
             }
 
             public bool VisitCast(Cast cast)
@@ -353,11 +355,6 @@ namespace Reko.Analysis
                 deadFlags &= ~grf.FlagGroupBits;
             }
             return true;
-        }
-
-        public bool VisitFlagRegister(FlagRegister freg, bool defining)
-        {
-            return false;
         }
 
         public bool VisitFpuStackStorage(FpuStackStorage fpu, bool defining)

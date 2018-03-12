@@ -973,11 +973,6 @@ namespace Reko.Analysis
                 return new FlagGroupTransformer(id, grf, stm, transform);
             }
 
-            public IdentifierTransformer VisitFlagRegister(FlagRegister freg)
-            {
-                return new RegisterTransformer(id, stm, transform);
-            }
-
             public IdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
                 return new FpuStackTransformer(id, fpu, stm, transform);

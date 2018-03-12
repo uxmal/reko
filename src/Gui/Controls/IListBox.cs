@@ -27,12 +27,13 @@ using Reko.Core;
 
 namespace Reko.Gui.Controls
 {
-    public interface IListBox
+    public interface IListBox : IControl
     {
         event EventHandler SelectedIndexChanged;
 
         object DataSource { get; set; }
         IList Items { get; }
+        ICollection SelectedItems { get; }
         int SelectedIndex { get; set; }
         object SelectedItem { get; set; }
 

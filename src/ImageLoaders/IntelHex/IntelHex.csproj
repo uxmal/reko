@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,6 +42,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,12 +55,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HexLoader.cs" />
+    <Compile Include="IntelHexLoader.cs" />
+    <Compile Include="IntelHexWriter.cs" />
+    <Compile Include="IntelHexReader.cs" />
+    <Compile Include="IntelHexRecord.cs" />
+    <Compile Include="IntelHexParser.cs" />
+    <Compile Include="IntelHexException.cs" />
+    <Compile Include="IntelHexRecordType.cs" />
+    <Compile Include="IntelHexAddressType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

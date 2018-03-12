@@ -173,8 +173,9 @@ namespace Reko.UnitTests.Scanning
 
             var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.Process();
-            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = 0x00000003", block.Statements[0].ToString());
+            Assert.AreEqual("goto 0x00104000", block.Statements[1].ToString());
             Assert.AreEqual(1, proc.ControlGraph.Successors(block).Count);
             var items = new List<Block>(proc.ControlGraph.Successors(block));
             Assert.AreSame(next, items[0]);
@@ -264,7 +265,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithConstant()
         {
-            program.Architecture = new X86ArchitectureFlat32();
+            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig);
@@ -297,7 +298,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_CallingAllocaWithNonConstant()
         {
             arch = mr.Stub<IProcessorArchitecture>();
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, arch);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);
@@ -475,8 +476,9 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
             wi.Process();
 
-            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
+            Assert.AreEqual("goto 0x00100100", block.Statements[1].ToString());
 
             Assert.AreEqual("l00101000", block.Succ[0].Name);
             mr.VerifyAll();

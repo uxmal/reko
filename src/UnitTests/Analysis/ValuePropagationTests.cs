@@ -385,7 +385,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier y_3 = Reg32("y_3");
 			Identifier z_4 = Reg32("z_4");
 			Identifier w_5 = Reg32("w_5");
-            m.Assign(x_2, m.LoadDw(m.Word32(0x10004000)));
+            m.Assign(x_2, m.Mem32(m.Word32(0x10004000)));
             m.Assign(y_3, x_2);
             m.Assign(z_4, m.IAdd(y_3, 2));
             m.Assign(w_5, y_3);

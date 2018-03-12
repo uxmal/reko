@@ -152,6 +152,12 @@ namespace Reko.Environments.Windows
                                 Registers.ecx,
                                 Architecture.WordWidth.Size,
                                 Architecture.PointerType.Size);
+            case "__fastcall":
+                return new FastcallConvention(
+                                Registers.ecx,
+                                Registers.edx,
+                                Architecture.WordWidth.Size,
+                                Architecture.PointerType.Size);
             }
             throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }

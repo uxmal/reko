@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Z80
         [SetUp]
         public void Setup()
         {
-            this.arch = new Z80ProcessorArchitecture();
+            this.arch = new Z80ProcessorArchitecture("z80");
         }
 
         [Test]

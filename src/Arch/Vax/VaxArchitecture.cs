@@ -57,7 +57,7 @@ namespace Reko.Arch.Vax
             Registers.pc,
         };
 
-        public VaxArchitecture()
+        public VaxArchitecture(string name) : base(name)
         {
             InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr32;

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Vax
 
         public VaxDisassemblerTests()
         {
-            this.arch = new VaxArchitecture();
+            this.arch = new VaxArchitecture("vax");
         }
 
         public override IProcessorArchitecture Architecture

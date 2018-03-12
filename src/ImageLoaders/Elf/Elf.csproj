@@ -30,8 +30,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +87,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelaSegmentRenderer.cs" />
     <Compile Include="Relocators\AlphaRelocator.cs" />
+    <Compile Include="Relocators\Arm64Relocator.cs" />
     <Compile Include="Relocators\ArmRelocator.cs" />
     <Compile Include="Relocators\AvrRelocator.cs" />
     <Compile Include="Relocators\ElfRelocator.cs" />

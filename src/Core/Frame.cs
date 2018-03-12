@@ -100,7 +100,14 @@ namespace Reko.Core
         public Identifier CreateSequence(Storage head, Storage tail, DataType dt)
         {
             Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
-                SequenceStorage(head, tail));
+                SequenceStorage(head, tail, dt));
+            identifiers.Add(id);
+            return id;
+        }
+
+        public Identifier CreateSequence(string name, Storage head, Storage tail, DataType dt)
+        {
+            var id = new Identifier(name, dt, new SequenceStorage(head, tail, dt));
             identifiers.Add(id);
             return id;
         }
@@ -116,6 +123,7 @@ namespace Reko.Core
             var seq = stgForeign as SequenceStorage;
             if (seq != null)
                 return EnsureSequence(
+                    seq.Name,
                     seq.Head, 
                     seq.Tail, 
                     PrimitiveType.CreateWord(
@@ -156,7 +164,7 @@ namespace Reko.Core
 			return id;
 		}
 
-        public Identifier EnsureFlagGroup(FlagRegister freg, uint grfMask, string name, DataType dt)
+        public Identifier EnsureFlagGroup(RegisterStorage freg, uint grfMask, string name, DataType dt)
 		{
 			if (grfMask == 0)
 				return null;
@@ -233,13 +241,23 @@ namespace Reko.Core
 			return idSeq;
 		}
 
-		/// <summary>
-		/// Makes sure that there is a local variable at the given offset.
-		/// </summary>
-		/// <param name="cbOffset"></param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public Identifier EnsureStackLocal(int cbOffset, DataType type)
+        public Identifier EnsureSequence(string name, Storage head, Storage tail, DataType dt)
+        {
+            Identifier idSeq = FindSequence(head, tail);
+            if (idSeq == null)
+            {
+                idSeq = CreateSequence(name, head, tail, dt);
+            }
+            return idSeq;
+        }
+
+        /// <summary>
+        /// Makes sure that there is a local variable at the given offset.
+        /// </summary>
+        /// <param name="cbOffset"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public Identifier EnsureStackLocal(int cbOffset, DataType type)
 		{
 			return EnsureStackLocal(cbOffset, type, null);
 		}

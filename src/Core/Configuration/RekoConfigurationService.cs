@@ -46,6 +46,7 @@ namespace Reko.Core.Configuration
 
          OperatingEnvironment GetEnvironment(string envName);
          IProcessorArchitecture GetArchitecture(string archLabel);
+         ICollection<SymbolSource> GetSymbolSources();
          Assembler GetAssembler(string assemblerName);
          RawFileElement GetRawFile(string rawFileFormat);
 
@@ -67,6 +68,7 @@ namespace Reko.Core.Configuration
         private List<Architecture> architectures;
         private List<OperatingEnvironment> opEnvs;
         private List<AssemblerElement> asms;
+        private List<SymbolSource> symSources;
         private List<RawFileElement> rawFiles;
         private UiPreferencesConfiguration uiPreferences;
 
@@ -77,6 +79,7 @@ namespace Reko.Core.Configuration
             this.architectures = LoadCollection(config.Architectures, LoadArchitecture);
             this.opEnvs = LoadCollection(config.Environments, LoadEnvironment);
             this.asms = LoadCollection(config.Assemblers, LoadAssembler);
+            this.symSources = LoadCollection(config.SymbolSources, LoadSymbolSource);
             this.rawFiles = LoadCollection(config.RawFiles, LoadRawFile);
             this.uiPreferences = new UiPreferencesConfiguration();
             if (config.UiPreferences != null)
@@ -146,6 +149,17 @@ namespace Reko.Core.Configuration
                 Description = sAsm.Description,
                 Name = sAsm.Name,
                 TypeName = sAsm.Type,
+            };
+        }
+
+        private SymbolSource LoadSymbolSource(SymbolSource_v1 sSymSrc)
+        {
+            return new SymbolSourceDefinition
+            {
+                Description = sSymSrc.Description,
+                Name = sSymSrc.Name,
+                Extension = sSymSrc.Extension,
+                TypeName = sSymSrc.Type,
             };
         }
 
@@ -274,6 +288,11 @@ namespace Reko.Core.Configuration
             return architectures;
         }
 
+        public virtual ICollection<SymbolSource> GetSymbolSources()
+        {
+            return symSources;
+        }
+
         public virtual ICollection<OperatingEnvironment> GetEnvironments()
         {
             return opEnvs;
@@ -299,8 +318,7 @@ namespace Reko.Core.Configuration
             Type t = Type.GetType(elem.TypeName, true);
             if (t == null)
                 return null;
-            var arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);
-            arch.Name = elem.Name;
+            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, elem.Name);
             arch.Description = elem.Description;
             return arch;
         }

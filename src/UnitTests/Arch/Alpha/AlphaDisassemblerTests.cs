@@ -38,8 +38,7 @@ namespace Reko.UnitTests.Arch.Alpha
         [SetUp]
         public void Setup()
         {
-            this.arch = new AlphaArchitecture();
-            arch.Name = "alpha";
+            this.arch = new AlphaArchitecture("alpha");
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }

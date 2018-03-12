@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch.Mos6502
     [TestFixture]
     class RewriterTests : RewriterTestBase
     {
-        private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture();
+        private Mos6502ProcessorArchitecture arch = new Mos6502ProcessorArchitecture("mos6502");
         private MemoryArea image;
         private Address addrBase = Address.Ptr16(0x0200);
 

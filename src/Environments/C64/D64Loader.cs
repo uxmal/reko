@@ -140,7 +140,7 @@ namespace Reko.Environments.C64
                     return program;
                 }
             }
-            var arch = new Mos6502ProcessorArchitecture();
+            var arch = new Mos6502ProcessorArchitecture("mos6502");
             var mem = new MemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
@@ -160,7 +160,7 @@ namespace Reko.Environments.C64
                 return LoadPrg(imageBytes);
             case FileType.SEQ:
                 var mem = new MemoryArea(addrPreferred, imageBytes);
-                var arch = new Mos6502ProcessorArchitecture();
+                var arch = new Mos6502ProcessorArchitecture("mos6502");
                 return new Program(
                     new SegmentMap(
                         mem.BaseAddress,

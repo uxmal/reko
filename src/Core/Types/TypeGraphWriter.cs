@@ -172,6 +172,22 @@ namespace Reko.Core.Types
             return writer;
 		}
 
+        public Formatter VisitQualifiedType(QualifiedType qt)
+        {
+            if (qt.Qualifier == Qualifier.None)
+                return qt.DataType.Accept(this);
+            writer.Write("(");
+            switch (qt.Qualifier)
+            {
+            case Qualifier.Const: writer.Write("const"); break;
+            case Qualifier.Volatile: writer.Write("volatile"); break;
+            case Qualifier.Restricted: writer.Write("restrict"); break;
+            }
+            qt.DataType.Accept(this);
+            writer.Write(")");
+            return writer;
+        }
+
         public Formatter VisitReference(ReferenceTo refTo)
         {
             writer.Write("(ref ");

@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Environments.MacOS
 
         public PascalCallingConventionTests()
         {
-            this.arch = new M68kArchitecture();
+            this.arch = new M68kArchitecture("m68k");
         }
 
         [SetUp]

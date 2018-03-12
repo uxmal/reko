@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         public Avr8DisassemblerTests()
         {
-            this.arch = new Avr8Architecture();
+            this.arch = new Avr8Architecture("avr8");
         }
 
         public override IProcessorArchitecture Architecture

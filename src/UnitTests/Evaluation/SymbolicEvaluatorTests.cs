@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Evaluation
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
             frame = new Frame(arch.FramePointerType);
             listener = new FakeDecompilerEventListener();
         }

@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.M68k
         [SetUp]
         public void Setup()
         {
-            arch = new M68kArchitecture();
+            arch = new M68kArchitecture("m68k");
             state = new M68kState(arch);
         }
 

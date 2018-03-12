@@ -88,6 +88,7 @@ namespace Reko.Core.Serialization
                     new XmlElementAttribute("prim", typeof(PrimitiveType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("code", typeof(CodeType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("ptr", typeof(PointerType_v1)) { Namespace = @namespace},
+                    new XmlElementAttribute("qual", typeof(QualifiedType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("arr", typeof(ArrayType_v1)) { Namespace = @namespace},
                     new XmlElementAttribute("enum", typeof(SerializedEnumType)) { Namespace = @namespace},
                     new XmlElementAttribute("str", typeof(StringType_v2)) { Namespace = @namespace},

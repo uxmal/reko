@@ -130,6 +130,8 @@ namespace Reko.Gui.Forms
             //form.InitialPage.IsDirtyChanged += new EventHandler(InitialPage_IsDirtyChanged);//$REENABLE
             //MainForm.InitialPage.IsDirty = false;         //$REENABLE
 
+            UpdateWindowTitle();
+
             return form;
         }
 
@@ -203,6 +205,9 @@ namespace Reko.Gui.Forms
 
             var viewImpSvc = svcFactory.CreateViewImportService();
             sc.AddService<IViewImportsService>(viewImpSvc);
+
+            var symLdrSvc = svcFactory.CreateSymbolLoadingService();
+            sc.AddService<ISymbolLoadingService>(symLdrSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -514,6 +519,7 @@ namespace Reko.Gui.Forms
                 });
                 prev.EnterPage();
                 CurrentPhase = prev;
+                projectBrowserSvc.Reload();
             }
             catch (Exception ex)
             {
@@ -755,7 +761,9 @@ namespace Reko.Gui.Forms
                 //    sb.Append('*');
                 sb.Append(" - ");
             }
-            sb.Append("Reko Decompiler");
+            sb.AppendFormat(
+                "Reko Decompiler ({0})", 
+                Environment.Is64BitProcess ? "64-bit" : "32-bit");
             MainForm.TitleText = sb.ToString();
         }
 

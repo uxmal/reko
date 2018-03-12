@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Mocks
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
             platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata.Clone()));
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
             var ccStdcall = new X86CallingConvention(4, 4, 4, false, false);

@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs90RewriterTests : RewriterTestBase
     {
-        private Tlcs90Architecture arch = new Tlcs90Architecture();
+        private Tlcs90Architecture arch = new Tlcs90Architecture("tlcs90");
         private Address baseAddr = Address.Ptr16(0x0100);
         private Tlcs90State state;
         private MemoryArea image;

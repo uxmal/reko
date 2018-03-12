@@ -662,8 +662,8 @@ void fn002005F5(word32 xwa)
 
 // MayUse:  w xwa
 // LiveOut:
-// Trashed: SZHVNC sr w
-// Preserved: xix xsp
+// Trashed: SZHVNC w
+// Preserved: sr xix xsp
 fn002005F5_entry:
 // DataOut: w xwa
 // DataOut (flags): 
@@ -706,7 +706,7 @@ l00200609:
 fn002005F5_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: xsp:fp w:w * 0x02 * 0x02 + (w * 0x02) * 0x02 xix:xix sr:<invalid> -6(fp):xix -2(fp):sr
+// SymbolicIn: xsp:fp w:w * 0x02 * 0x02 + (w * 0x02) * 0x02 xix:xix sr:sr -6(fp):xix -2(fp):sr
 
 
 

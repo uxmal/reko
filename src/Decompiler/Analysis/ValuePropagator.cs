@@ -214,7 +214,7 @@ namespace Reko.Analysis
                 throw new NotImplementedException();
             }
 
-            public Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType)
+            public Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType)
             {
                 throw new NotImplementedException();
             }
@@ -251,6 +251,11 @@ namespace Reko.Analysis
             }
 
             public Identifier EnsureSequence(Storage head, Storage tail, DataType dt)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier EnsureSequence(string name, Storage head, Storage tail, DataType dt)
             {
                 throw new NotImplementedException();
             }

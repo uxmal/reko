@@ -102,5 +102,14 @@ namespace Reko.WindowsItp
                     new UiStyleElement { Name = UiStyles.CodeComment, ForeColor="#00C000" },
                 };
         }
+
+        public ICollection<SymbolSource> GetSymbolSources()
+        {
+            return new List<SymbolSource>
+            {
+                new SymbolSourceDefinition { Name = "Bobsym", Description="BOB symbol loader", TypeName="BobSymSource,Bob" },
+                new SymbolSourceDefinition { Name = "PDB", Description="PDB", TypeName="PDBSymSource,PDBLoader" }
+            };
+        }
     }
 }

@@ -334,7 +334,7 @@ ProcedureBuilder_exit:
 ";
             RunStringTest(sExp, m =>
             {
-                var eflags = new FlagRegister("eflags", 9, PrimitiveType.Word32);
+                var eflags = new RegisterStorage("eflags", 9, 0, PrimitiveType.Word32);
                 var sz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var cz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var c = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("C"));

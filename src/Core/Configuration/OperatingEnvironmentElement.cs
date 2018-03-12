@@ -73,7 +73,7 @@ namespace Reko.Core.Configuration
 
         public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
-            var type = Type.GetType(TypeName);
+            var type = Type.GetType(TypeName, true);
             if (type == null)
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));

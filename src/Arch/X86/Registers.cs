@@ -72,7 +72,7 @@ namespace Reko.Arch.X86
         public static readonly FlagGroupStorage O;
         public static readonly FlagGroupStorage P;
 
-        public static readonly FlagRegister eflags;
+        public static readonly RegisterStorage eflags;
 
         public static readonly RegisterStorage FPUF;
         public static readonly RegisterStorage FPST;    // virtual register; the x87 FPU stack pointer.
@@ -222,7 +222,7 @@ namespace Reko.Arch.X86
             ds = SegmentRegister("ds", 27);
             fs = SegmentRegister("fs", 28);
             gs = SegmentRegister("gs", 29);
-            eflags = new FlagRegister("eflags", 32, PrimitiveType.Word32);
+            eflags = new RegisterStorage("eflags", 32, 0, PrimitiveType.Word32);
             S = FlagRegister("S", eflags, FlagM.SF);
             C = FlagRegister("C", eflags, FlagM.CF);
             Z = FlagRegister("Z", eflags, FlagM.ZF);
@@ -231,7 +231,7 @@ namespace Reko.Arch.X86
             P = FlagRegister("P", eflags, FlagM.PF);
             EflagsBits = new FlagGroupStorage[] { S, C, Z, D, O, P };
 
-            FPUF = new FlagRegister("FPUF", 38, PrimitiveType.Byte);
+            FPUF = new RegisterStorage("FPUF", 38, 0, PrimitiveType.Byte);
             FPST = new RegisterStorage("FPST", 39, 0, PrimitiveType.Byte); 
 
             rax = new RegisterStorage("rax", 0, 0, PrimitiveType.Word64);
@@ -533,7 +533,7 @@ namespace Reko.Arch.X86
             };
         }
 
-        private static FlagGroupStorage FlagRegister(string name, FlagRegister freg,  FlagM grf)
+        private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, FlagM grf)
         {
             return new FlagGroupStorage(freg, (uint)grf, name, PrimitiveType.Bool);
         }

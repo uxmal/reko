@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
         }
 
         private void When_Lookup_Procedure(string moduleName, string procName)

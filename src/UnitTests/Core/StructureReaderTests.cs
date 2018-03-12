@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Core
         {
             var rdr = new LeImageReader(new byte[] { 0x34, 0x12 });
 			var test = new StructureReader<TestStruct>(rdr).Read();
-			Assert.AreEqual((ushort) 0x1234, test.Value.usField);
+			Assert.AreEqual((ushort) 0x1234, test.usField);
         }
 
         public struct TestStruct2
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Core
         {
             var rdr = new LeImageReader(new byte[] { 0x34, 0x12, 0xAB, 0xCD, 0x78, 0x56, 0x34, 0x12 });
 			var test = new StructureReader<TestStruct2>(rdr).Read();
-            Assert.AreEqual((int) 0x12345678, test.Value.lField);
+            Assert.AreEqual((int) 0x12345678, test.lField);
         }
 
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core
                 0xAB, 0xCD, 
                 0x78, 0x56, 0x34, 0x12 });
 			var test = new StructureReader<TestStruct3>(rdr).Read();
-            Assert.AreEqual((int) 0x12345678, test.Value.lField);
+            Assert.AreEqual((int) 0x12345678, test.lField);
         }
 
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -97,8 +97,8 @@ namespace Reko.UnitTests.Core
                 0x42, 0x79, 0x65, 0x21, 0x00});
 
 			var test = new StructureReader<TestStruct4>(rdr).Read();
-            Assert.AreEqual("Hi", test.Value.sField04);
-            Assert.AreEqual("Bye!", test.Value.sFieldnn);
+            Assert.AreEqual("Hi", test.sField04);
+            Assert.AreEqual("Bye!", test.sFieldnn);
         }
 
 #if false

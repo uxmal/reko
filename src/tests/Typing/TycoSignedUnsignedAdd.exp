@@ -1,0 +1,31 @@
+// Fn
+// Return size: 0
+define Fn
+Fn_entry:
+	// succ:  l1
+l1:
+	c = a + b
+Fn_exit:
+
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr (struct))
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in a : int32)
+  Class: Eq_2
+  DataType: int32
+  OrigDataType: int32
+T_3: (in b : uint32)
+  Class: Eq_3
+  DataType: uint32
+  OrigDataType: uint32
+T_4: (in a + b : word32)
+  Class: Eq_4
+  DataType: uint32
+  OrigDataType: uint32
+T_5: (in c : word32)
+  Class: Eq_4
+  DataType: uint32
+  OrigDataType: uint32

@@ -41,7 +41,7 @@ namespace Reko.Environments.C64
         private SortedList<ushort, C64BasicInstruction> program;
         private RegisterStorage stackRegister = new RegisterStorage("sp", 1, 0, PrimitiveType.Ptr16);
 
-        public C64Basic(SortedList<ushort, C64BasicInstruction> program)
+        public C64Basic(SortedList<ushort, C64BasicInstruction> program) : base("c64Basic")
         {
             this.program = program;
             this.PointerType = PrimitiveType.Ptr16;

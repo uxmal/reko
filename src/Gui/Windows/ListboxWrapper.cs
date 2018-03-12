@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Collections;
+using System.Drawing;
 
 namespace Reko.Gui.Windows
 {
@@ -45,8 +46,13 @@ namespace Reko.Gui.Windows
 
         public object DataSource { get { return lbx.DataSource; } set { lbx.DataSource = value; } }
         public IList Items { get { return lbx.Items; } }
+        public ICollection SelectedItems { get { return lbx.SelectedItems; } }
         public int SelectedIndex { get { return lbx.SelectedIndex; } set { lbx.SelectedIndex = value; } }
         public object SelectedItem { get { return lbx.SelectedItem; } set { lbx.SelectedItem = value; } }
+
+        public Color ForeColor { get { return lbx.ForeColor; } set { lbx.ForeColor = value; } }
+        public Color BackColor { get { return lbx.BackColor; } set { lbx.BackColor = value; } }
+        public bool Enabled { get { return lbx.Enabled; } set { lbx.Enabled = value; } }
 
         public void AddItems(IEnumerable items)
         {

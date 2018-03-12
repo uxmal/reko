@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         public Tlcs900DisassemblerTests()
         {
-            this.arch = new Tlcs900Architecture();
+            this.arch = new Tlcs900Architecture("tlcs900");
         }
 
         public override IProcessorArchitecture Architecture

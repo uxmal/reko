@@ -18,244 +18,153 @@
  */
 #endregion
 
-using Gee.External.Capstone;
-using Gee.External.Capstone.Arm;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.NativeInterface;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reko.Arch.Arm
 {
-    public partial class ThumbRewriter : IEnumerable<RtlInstructionCluster>
+    public class ThumbRewriterNew : IEnumerable<RtlInstructionCluster>
     {
-        private IEnumerator<Arm32Instruction> instrs;
-        private IStorageBinder frame;
+        private Dictionary<int, RegisterStorage> regs;
+        private INativeArchitecture nArch;
+        private EndianImageReader rdr;
+        private IStorageBinder binder;
         private IRewriterHost host;
-        private Instruction<ArmInstruction,ArmRegister,ArmInstructionGroup,ArmInstructionDetail> instr;
-        private ArmInstructionOperand[] ops;
-        private RtlClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
-        private RtlEmitter m;
-        private int itState;
-        private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
+        public ThumbRewriterNew(Dictionary<int, RegisterStorage> regs, INativeArchitecture nArch, EndianImageReader rdr, ArmProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            this.instrs = CreateInstructionStream(rdr);
-            this.frame = frame;
+            this.regs = regs;
+            this.nArch = nArch;
+            this.rdr = rdr;
+            this.binder = binder;
             this.host = host;
-            this.itState = 0;
-            this.itStateCondition = ArmCodeCondition.AL;
-        }
-
-        private IEnumerator<Arm32Instruction> CreateInstructionStream(EndianImageReader rdr)
-        {
-            return new ThumbDisassembler(rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            while (instrs.MoveNext())
-            {
-                if (!instrs.Current.TryGetInternal(out this.instr))
-                {
-                    continue;
-                    throw new AddressCorrelatedException(
-                        instrs.Current.Address,
-                        "Invalid opcode cannot be rewritten to IR.");
+            var bytes = rdr.Bytes;
+            var offset = (int)rdr.Offset;
+            var addr = rdr.Address.ToLinear();
+            return new Enumerator(regs, this);
                 }
-                this.ops = instr.ArchitectureDetail.Operands;
-                this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
-                this.m = new RtlEmitter(rtlInstructions);
-                switch (instr.Id)
-                {
-                default:
-                    throw new AddressCorrelatedException(
-                      instrs.Current.Address,
-                      "Rewriting ARM Thumb opcode '{0}' ({1}) is not supported yet.",
-                      instr.Mnemonic, instr.Id);
-                case ArmInstruction.ADD: RewriteBinop((a, b) => m.IAdd(a, b)); break;
-                case ArmInstruction.ADDW: RewriteAddw(); break;
-                case ArmInstruction.ADR: RewriteAdr(); break;
-                case ArmInstruction.AND: RewriteAnd(); break;
-                case ArmInstruction.ASR: RewriteShift(m.Sar); break;
-                case ArmInstruction.B: RewriteB(); break;
-                case ArmInstruction.BIC: RewriteBic(); break;
-                case ArmInstruction.BL: RewriteBl(); break;
-                case ArmInstruction.BLX: RewriteBlx(); break;
-                case ArmInstruction.BX: RewriteBx(); break;
-                case ArmInstruction.CBZ: RewriteCbnz(m.Eq0); break;
-                case ArmInstruction.CBNZ: RewriteCbnz(m.Ne0); break;
-                case ArmInstruction.CMP: RewriteCmp(); break;
-                case ArmInstruction.DMB: RewriteDmb(); break;
-                case ArmInstruction.EOR: RewriteEor(); break;
-                case ArmInstruction.IT: RewriteIt(); continue;  // Don't emit anything yet.;
-                case ArmInstruction.LDR: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Word32); break;
-                case ArmInstruction.LDRB: RewriteLdr(PrimitiveType.UInt32,PrimitiveType.Byte); break;
-                case ArmInstruction.LDRSB: RewriteLdr(PrimitiveType.Int32,PrimitiveType.SByte); break;
-                case ArmInstruction.LDREX: RewriteLdrex(); break;
-                case ArmInstruction.LDRH: RewriteLdr(PrimitiveType.UInt32, PrimitiveType.Word16); break;
-                case ArmInstruction.LSL: RewriteShift(m.Shl); break;
-                case ArmInstruction.LSR: RewriteShift(m.Shr); break;
-                case ArmInstruction.MOV: RewriteMov(); break;
-                case ArmInstruction.MOVT: RewriteMovt(); break;
-                case ArmInstruction.MOVW: RewriteMovw(); break;
-                case ArmInstruction.MRC: RewriteMrc(); break;
-                case ArmInstruction.MVN: RewriteMvn(); break;
-                case ArmInstruction.POP: RewritePop(); break;
-                case ArmInstruction.PUSH: RewritePush(); break;
-                case ArmInstruction.RSB: RewriteRsb(); break;
-                case ArmInstruction.STM: RewriteStm(); break;
-                case ArmInstruction.STR: RewriteStr(PrimitiveType.Word32); break;
-                case ArmInstruction.STRH: RewriteStr(PrimitiveType.Word16); break;
-                case ArmInstruction.STRB: RewriteStr(PrimitiveType.Byte); break;
-                case ArmInstruction.STREX: RewriteStrex(); break;
-                case ArmInstruction.SUB: RewriteBinop((a, b) => m.ISub(a, b)); break;
-                case ArmInstruction.SUBW: RewriteSubw(); break;
-                case ArmInstruction.TRAP: RewriteTrap(); break;
-                case ArmInstruction.TST: RewriteTst(); break;
-                case ArmInstruction.UDF: RewriteUdf(); break;
-                case ArmInstruction.UXTH: RewriteUxth(); break;
-                }
-                itState = (itState << 1) & 0x0F;
-                if (itState == 0)
-                {
-                    itStateCondition = ArmCodeCondition.AL;
-                }
-                yield return new RtlInstructionCluster(
-                    instrs.Current.Address,
-                    instr.Bytes.Length,
-                    rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
-                
-            }
-        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        private Expression GetReg(ArmRegister armRegister)
+        public class Enumerator : IEnumerator<RtlInstructionCluster>
         {
-            return frame.EnsureRegister(A32Registers.RegisterByCapstoneID[armRegister]);
+            private INativeRewriter native;
+            private byte[] bytes;
+            private GCHandle hBytes;
+            private RtlEmitter m;
+            private NativeTypeFactory ntf;
+            private NativeRtlEmitter rtlEmitter;
+            private ArmNativeRewriterHost host;
+            private IntPtr iRtlEmitter;
+            private IntPtr iNtf;
+            private IntPtr iHost;
+
+            public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterNew outer)
+            {
+                this.bytes = outer.rdr.Bytes;
+                ulong addr = outer.rdr.Address.ToLinear();
+                this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+
+                this.m = new RtlEmitter(new List<RtlInstruction>());
+                this.ntf = new NativeTypeFactory();
+                this.rtlEmitter = new NativeRtlEmitter(m, ntf, outer.host);
+                this.host = new ArmNativeRewriterHost(regs, outer.binder, outer.host, this.ntf, rtlEmitter);
+
+                this.iRtlEmitter = GetCOMInterface(rtlEmitter, IID_IRtlEmitter);
+                this.iNtf = GetCOMInterface(ntf, IID_INativeTypeFactory);
+                this.iHost = GetCOMInterface(host, IID_INativeRewriterHost);
+
+                this.native = outer.nArch.CreateRewriter(
+                    hBytes.AddrOfPinnedObject(),
+                    bytes.Length,
+                    (int)outer.rdr.Offset,
+                    addr,
+                    rtlEmitter,
+                    ntf,
+                    host);
         }
 
-        private Expression RewriteOp(ArmInstructionOperand op, DataType accessSize= null)
-        {
-            switch (op.Type)
-            {
-            case ArmInstructionOperandType.Register:
-                return GetReg(op.RegisterValue.Value);
-            case ArmInstructionOperandType.Immediate:
-                if (accessSize != null)
-                    return Constant.Create(accessSize, op.ImmediateValue.Value);
-                else 
-                    return Constant.Int32(op.ImmediateValue.Value);
-            case ArmInstructionOperandType.Memory:
-                var mem = op.MemoryValue;
-                var ea = EffectiveAddress(mem);
-                return m.Mem(accessSize, ea);
-            default:
-                throw new NotImplementedException(op.Type.ToString());
-            }
-        }
+            public RtlInstructionCluster Current { get; private set; }
 
-        private Expression EffectiveAddress(ArmInstructionMemoryOperandValue mem)
-        {
-            var baseReg = GetReg(mem.BaseRegister);
-            var ea = baseReg;
-            if (mem.Displacement > 0)
-            {
-                ea = m.IAdd(ea, Constant.Int32(mem.Displacement));
-            }
-            else if (mem.Displacement < 0)
-            {
-                ea = m.ISub(ea, Constant.Int32(-mem.Displacement));
-            }
-            else if (mem.IndexRegister != ArmRegister.Invalid)
-            {
-                ea = m.IAdd(ea, GetReg(mem.IndexRegister));
-            }
-            return ea;
-        }
+            object IEnumerator.Current { get { return Current; } }
 
-        private TestCondition TestCond(ArmCodeCondition cond)
+            private IntPtr GetCOMInterface(object o, Guid iid)
         {
-            switch (cond)
+                var iUnknown = Marshal.GetIUnknownForObject(o);
+                IntPtr intf;
+                var hr2 = Marshal.QueryInterface(iUnknown, ref iid, out intf);
+                return intf;
+            }
+
+            public void Dispose()
+        {
+                if (this.native != null)
             {
-            default:
-                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
-            case ArmCodeCondition.HS:
-                return new TestCondition(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Byte));
-            case ArmCodeCondition.LO:
-                return new TestCondition(ConditionCode.ULT, FlagGroup(FlagM.CF, "C", PrimitiveType.Byte));
-            case ArmCodeCondition.EQ:
-                return new TestCondition(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
-            case ArmCodeCondition.GE:
-                return new TestCondition(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
-            case ArmCodeCondition.GT:
-                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
-            case ArmCodeCondition.HI:
-                return new TestCondition(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
-            case ArmCodeCondition.LE:
-                return new TestCondition(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", PrimitiveType.Byte));
-            case ArmCodeCondition.LS:
-                return new TestCondition(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
-            case ArmCodeCondition.LT:
-                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte));
-            case ArmCodeCondition.MI:
-                return new TestCondition(ConditionCode.LT, FlagGroup(FlagM.NF, "N", PrimitiveType.Byte));
-            case ArmCodeCondition.PL:
-                return new TestCondition(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF, "NZ", PrimitiveType.Byte));
-            case ArmCodeCondition.NE:
-                return new TestCondition(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Byte));
-            case ArmCodeCondition.VS:
-                return new TestCondition(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Byte));
+                    int n = native.GetCount();
+                    Marshal.ReleaseComObject(this.native);
+                    this.native = null;
+            }
+                if (iHost != null)
+            {
+                    Marshal.Release(iHost);
+            }
+                if (iNtf != null)
+            {
+                    Marshal.Release(iNtf);
+            }
+                if (iRtlEmitter != null)
+                {
+                    Marshal.Release(iRtlEmitter);
+        }
+                if (this.hBytes != null && this.hBytes.IsAllocated)
+        {
+                    this.hBytes.Free();
             }
         }
 
-        private Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
+            public bool MoveNext()
         {
-            return frame.EnsureFlagGroup(A32Registers.cpsr, (uint)bits, name, type);
+                m.Instructions = new List<RtlInstruction>();
+                int n = native.GetCount();
+                if (native.Next() == 1)
+                    return false;
+                this.Current = this.rtlEmitter.ExtractCluster();
+                return true;
         }
 
-        private void Predicate(ArmCodeCondition cond, RtlInstruction instr)
+            public void Reset()
         {
-            if (cond == ArmCodeCondition.AL)
-                m.Emit(instr);
-            else
-            {
-                m.BranchInMiddleOfInstruction(
-                    TestCond(cond).Invert(),
-                    Address.Ptr32((uint)(this.instr.Address + this.instr.Bytes.Length)),
-                    RtlClass.ConditionalTransfer);
-                m.Emit(instr);
+                throw new NotSupportedException();
         }
         }
 
-        private void Predicate(ArmCodeCondition cond, Expression dst, Expression src)
+        static ThumbRewriterNew()
         {
-            RtlInstruction instr;
-            if (dst is Identifier id && id.Storage == A32Registers.pc)
-            {
-                rtlc = RtlClass.Transfer;
-                instr = new RtlGoto(src, RtlClass.Transfer);
+            IID_INativeRewriter = typeof(INativeRewriter).GUID;
+            IID_INativeRewriterHost = typeof(INativeRewriterHost).GUID;
+            IID_INativeTypeFactory = typeof(INativeTypeFactory).GUID;
+            IID_IRtlEmitter = typeof(INativeRtlEmitter).GUID;
             }
-            else
-            {
-                instr = new RtlAssignment(dst, src);
+
+        private static Guid IID_INativeRewriter;
+        private static Guid IID_INativeRewriterHost;
+        private static Guid IID_IRtlEmitter;
+        private static Guid IID_INativeTypeFactory;
             }
-            Predicate(cond, instr);
-        }
-    }
 }

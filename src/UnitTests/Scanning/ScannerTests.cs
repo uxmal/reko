@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
             this.scan = this.CreateScanner(this.program);
@@ -114,12 +114,12 @@ namespace Reko.UnitTests.Scanning
             scan.EnqueueImageSymbol(sym, true);
         }
 
-        private void AssertProgram(string sExpected, Program program)
+        private void AssertProgram(string sExpected, bool showEdges, Program program)
         {
             var sw = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
-                proc.Write(false, false, sw);
+                proc.Write(false, showEdges, sw);
                 sw.WriteLine();
             }
             var sActual = sw.ToString();
@@ -128,6 +128,11 @@ namespace Reko.UnitTests.Scanning
                 Debug.WriteLine(sActual);
                 Assert.AreEqual(sExpected, sActual);
             }
+        }
+
+        private void AssertProgram(string sExpected, Program prog)
+        {
+            AssertProgram(sExpected, false, prog);
         }
 
         private SerializedType Char()
@@ -173,7 +178,7 @@ namespace Reko.UnitTests.Scanning
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new FakePlatform(null, arch);
             platform.Test_DefaultCallingConvention = "__cdecl";
             this.program = new Program
@@ -312,7 +317,7 @@ namespace Reko.UnitTests.Scanning
         {
             program = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal("x86-real-16")), addr, new List<ImageSymbol>());
             m.i86();
 
             m.Proc("main");
@@ -395,7 +400,7 @@ fn0C00_0000_exit:
 
         private void Given_x86_Flat32()
         {
-            arch = new X86ArchitectureFlat32();
+            arch = new X86ArchitectureFlat32("x86-protected-32");
         }
 
         [Test]
@@ -513,6 +518,56 @@ fn00001100_exit:
 
 ";
             AssertProgram(sExp, program);
+        }
+
+        [Test]
+        public void Scanner_CommonJump()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                // 0x1000:
+                m => { m.Assign(reg1, m.Word32(0)); },
+                // 0x1004:
+                m => { m.Goto(Address.Ptr32(0x1100)); }
+            });
+            Given_Trace(new RtlTrace(0x1100)
+            {
+                // 0x1100:
+                m => { m.Assign(reg1, m.Word32(1)); },
+                // 0x1104:
+                m => { m.Goto(Address.Ptr32(0x1004)); },
+            });
+            fakeArch.Test_IgnoreAllUnkownTraces();
+
+            scan.EnqueueImageSymbol(
+                new ImageSymbol(Address.Ptr32(0x1000))
+                {
+                    ProcessorState = arch.CreateProcessorState(),
+                },
+                true);
+            scan.ScanImage();
+
+            var sExp =
+@"// fn00001000
+// Return size: 0
+define fn00001000()
+fn00001000_entry:
+	// succ:  l00001000
+l00001000:
+	r63 = fp
+	r1 = 0x00000000
+	// succ:  l00001004
+l00001004:
+	// succ:  l00001100
+l00001100:
+	r1 = 0x00000001
+	goto l00001004
+	// succ:  l00001004
+fn00001000_exit:
+
+";
+            AssertProgram(sExp, true, program);
         }
 
         [Test]
@@ -710,6 +765,7 @@ l00001108:
 	r1 = Mem0[r63 + 0x00000004:word32]
 	r1 = r1 - 0x00000001
 	Mem0[r63 + 0x00000004:word32] = r1
+	goto 0x00001200
 l00001114_thunk_fn00001200:
 	call fn00001200 (retsize: 0;)
 	return
@@ -730,6 +786,7 @@ l00001208:
 	r1 = Mem0[r63 + 0x00000004:word32]
 	r1 = r1 - 0x00000001
 	Mem0[r63 + 0x00000004:word32] = r1
+	goto 0x00001100
 l00001214_thunk_fn00001100:
 	call fn00001100 (retsize: 0;)
 	return

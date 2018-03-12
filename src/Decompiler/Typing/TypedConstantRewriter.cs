@@ -123,7 +123,8 @@ namespace Reko.Typing
             }
             else
             {
-                this.c = addr.ToConstant();  //$BUG: won't work for x86.
+                this.c = addr.ToConstant();
+                this.c.TypeVariable = addr.TypeVariable;
                 var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
                 this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
                 this.dereferenced = dereferenced;
@@ -290,6 +291,11 @@ namespace Reko.Typing
             }
 			return e;
 		}
+
+        public Expression VisitQualifiedType(QualifiedType qt)
+        {
+            return qt.DataType.Accept(this);
+        }
 
         public Expression VisitReference(ReferenceTo refTo)
         {

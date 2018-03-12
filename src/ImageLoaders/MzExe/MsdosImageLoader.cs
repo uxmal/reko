@@ -171,9 +171,10 @@ namespace Reko.ImageLoaders.MzExe
         [Conditional("DEBUG")]
         public void DumpSegments(SegmentMap segmentMap)
         {
-            foreach (var seg in this.segmentMap.Segments.Values)
+  			Debug.Print("Found {0} segments: ", segmentMap.Segments.Values.Count);
+            foreach (var seg in segmentMap.Segments.Values)
             {
-                Debug.Print("{0} {1} size:{2}", seg.Name, seg.Address, seg.Size);
+                Debug.Print("  {0} {1} size:{2}", seg.Name, seg.Address, seg.Size);
             }
         }
 	}

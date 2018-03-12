@@ -50,17 +50,9 @@ namespace Reko.Arch.M68k
             else
             {
                 rtlc = RtlClass.ConditionalTransfer;
-                var test = m.Test(cc, binder.EnsureRegister(Registers.fpsr));
+                var test = m.Test(cc, FpuFlagGroup());
                 m.Branch(test, addr, rtlc);
             }
-        }
-        private void RewriteFbcc(Func<Expression, Expression> fnTest)
-        {
-            rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(fnTest(
-                binder.EnsureRegister(Registers.fpsr)),
-                ((M68kAddressOperand)di.op1).Address,
-                RtlClass.ConditionalTransfer);
         }
 
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
@@ -72,23 +64,29 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(opDst));
+            m.Assign(FpuFlagGroup(), m.Cond(opDst));
         }
 
         private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
         {
             var op = orw.RewriteUnary(di.op1, di.Address, di.dataWidth, unaryOpGen);
-            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(op));
+            m.Assign(FpuFlagGroup(), m.Cond(op));
+        }
+
+        private Identifier FpuFlagGroup()
+        {
+            return binder.EnsureFlagGroup(
+                Registers.fpsr,
+                0xF0000000u,
+                "FPUFLAGS",
+                PrimitiveType.Byte);
         }
 
         private void RewriteFcmp()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteSrc(di.op2, di.Address);
-            var tmp = binder.CreateTemporary(opDst.DataType);
-            m.Assign(
-                binder.EnsureRegister(Registers.fpsr), 
-                m.Cond(m.FSub(opDst, opSrc)));
+            m.Assign(FpuFlagGroup(), m.Cond(m.ISub(opDst, opSrc)));
         }
 
         private void RewriteFmove()
@@ -100,7 +98,7 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(opDst));
+            m.Assign(FpuFlagGroup(), m.Cond(opDst));
         }
 
         private void RewriteFmovecr()
@@ -108,8 +106,7 @@ namespace Reko.Arch.M68k
             var opSrc = (M68kImmediateOperand)di.op1;
             int n = opSrc.Constant.ToInt32();
             Expression src;
-            double d;
-            if (fpuRomConstants.TryGetValue(n, out d))
+            if (fpuRomConstants.TryGetValue(n, out double d))
             {
                 src = Constant.Real64(d);
                 src.DataType = PrimitiveType.Real80;

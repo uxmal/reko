@@ -8,8 +8,11 @@ namespace Reko.WindowsItp
 {
     public class FakeDecompilerShellUiService : IDecompilerShellUiService
     {
-        public FakeDecompilerShellUiService()
+        private Form form;
+
+        public FakeDecompilerShellUiService(Form form)
         {
+            this.form = form;
         }
 
         public IWindowFrame ActiveFrame
@@ -93,7 +96,18 @@ namespace Reko.WindowsItp
 
         public string ShowOpenFileDialog(string fileName)
         {
-            throw new NotImplementedException();
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.FileName = fileName;
+                if (DialogResult.OK== ofd.ShowDialog(form))
+                {
+                    return ofd.FileName;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public string ShowSaveFileDialog(string fileName)

@@ -92,7 +92,7 @@ namespace Reko.Arch.SuperH
             Render(op1, writer, options);
             if (op2 != null)
             {
-                writer.Write(',');
+                writer.WriteChar(',');
                 Render(op2, writer, options);
             }
         }
@@ -102,7 +102,7 @@ namespace Reko.Arch.SuperH
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
-                writer.Write('#');
+                writer.WriteChar('#');
                 immOp.Write(writer, options);
                 return;
             }
@@ -118,9 +118,9 @@ namespace Reko.Arch.SuperH
                 var addr = Core.Address.Ptr32(uAddr);
                 if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
-                    writer.Write('(');
+                    writer.WriteChar('(');
                     writer.WriteAddress(addr.ToString(), addr);
-                    writer.Write(')');
+                    writer.WriteChar(')');
                     writer.AddAnnotation(op.ToString());
                 }
                 else

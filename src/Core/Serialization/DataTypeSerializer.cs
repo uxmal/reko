@@ -128,6 +128,15 @@ namespace Reko.Core.Serialization
             };
         }
 
+        public SerializedType VisitQualifiedType(QualifiedType qt)
+        {
+            return new QualifiedType_v1
+            {
+                DataType = qt.DataType.Accept(this),
+                Qualifier = qt.Qualifier,
+            };
+        }
+
         public SerializedType VisitReference(ReferenceTo refTo)
         {
             return new ReferenceType_v1

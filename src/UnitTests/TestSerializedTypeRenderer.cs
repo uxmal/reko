@@ -114,6 +114,32 @@ namespace Reko.UnitTests
             return sb;
         }
 
+        public StringBuilder VisitQualifiedType(QualifiedType_v1 qt)
+        {
+            var isPtrLike = (qt.DataType is PointerType_v1 || qt.DataType is ReferenceType_v1);
+            if (isPtrLike)
+            {
+                qt.DataType.Accept(this);
+                switch (qt.Qualifier)
+                {
+                case Qualifier.Const: sb.Append(" const"); break;
+                case Qualifier.Volatile: sb.Append(" volatile"); break;
+                case Qualifier.Restricted: sb.Append(" restrict"); break;
+                }
+            }
+            else
+            {
+                switch (qt.Qualifier)
+                {
+                case Qualifier.Const: sb.Append("const "); break;
+                case Qualifier.Volatile: sb.Append("volatile "); break;
+                case Qualifier.Restricted: sb.Append("restrict "); break;
+                }
+                qt.DataType.Accept(this);
+            }
+            return sb;
+        }
+
         public StringBuilder VisitReference(ReferenceType_v1 reference)
         {
             var n = name;

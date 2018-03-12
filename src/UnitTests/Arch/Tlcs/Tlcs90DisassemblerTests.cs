@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 {
     public class Tlcs90DisassemblerTests : DisassemblerTestBase<Tlcs90Instruction>
     {
-        private Tlcs90Architecture arch = new Tlcs90Architecture();
+        private Tlcs90Architecture arch = new Tlcs90Architecture("tlcs90");
 
         public override IProcessorArchitecture Architecture
         {

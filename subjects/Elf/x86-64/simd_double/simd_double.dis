@@ -269,7 +269,7 @@ l0000000000000720:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
-l0000000000000724_thunk_register_tm_clones:
+l0000000000000725_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:

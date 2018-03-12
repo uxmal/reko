@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,38 @@ namespace Reko.Core.Machine
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.Write(reg.ToString());
+            writer.WriteString(reg.Name);
         }
     }
+
+    public class FlagGroupOperand : MachineOperand
+    {
+        public FlagGroupOperand(FlagGroupStorage grf) : base((PrimitiveType)grf.DataType)
+        {
+            this.FlagGroup = grf;
+        }
+
+        public FlagGroupStorage FlagGroup { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString(FlagGroup.Name);
+        }
+    }
+
+    public class SequenceOperand : MachineOperand
+    {
+        public SequenceOperand(SequenceStorage seq) : base((PrimitiveType) seq.DataType)
+        {
+            this.Sequence = seq;
+        }
+
+        public SequenceStorage Sequence { get; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString(Sequence.Name);
+        }
+    }
+
 }

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,8 @@ namespace Reko.Gui.Design
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.EditProperties: 
+                case CmdIds.EditProperties:
+                case CmdIds.LoadSymbols:
                     status.Status = MenuStatus.Enabled|MenuStatus.Visible;
                     return true;
                 }
@@ -102,9 +104,28 @@ namespace Reko.Gui.Design
                     var uiSvc = Services.RequireService<IDecompilerShellUiService>();
                     uiSvc.ShowModalDialog(dlg);
                     return true;
+                case CmdIds.LoadSymbols:
+                    return LoadSymbols();
                 }
             }
             return base.Execute(cmdId);
+        }
+
+        private bool LoadSymbols()
+        {
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var filename = uiSvc.ShowOpenFileDialog("");
+            if (filename == null)
+            {
+                // user canceled.
+                return true;
+            }
+
+            var symService = Services.RequireService<ISymbolLoadingService>();
+            var symSource = symService.GetSymbolSource(filename);
+            var symbols = symSource.GetAllSymbols();
+
+            return true;
         }
     }
 }

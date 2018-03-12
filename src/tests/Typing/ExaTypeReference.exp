@@ -12,7 +12,7 @@ T_3: (in b : INT)
   Class: Eq_2
   DataType: INT
   OrigDataType: INT
-T_4: (in a + b : INT)
-  Class: Eq_2
+T_4: (in a + b : word32)
+  Class: Eq_4
   DataType: INT
   OrigDataType: INT

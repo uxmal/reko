@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Environments.Ps3
         [Test]
         public void Ps3p_GetTrampoline()
         {
-            var arch = new PowerPcBe64Architecture();
+            var arch = new PowerPcBe64Architecture("ppc-be-64");
             var m = new InstructionBuilder(arch, Address.Ptr32(0x10030000));
             m.Lis(m.r11, 0x1006);
             m.Lwz(m.r11, 0x1234, m.r11);

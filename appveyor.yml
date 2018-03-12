@@ -1,9 +1,12 @@
-version: 0.7.2.{build}
+version: 0.8.0.{build}
 
 init: 
   - git config --global core.autocrlf true 
+ # The commented out line below displays RDP details for debugging on an AppVeyor VM
+ # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 image: Visual Studio 2017
+platform: x86
 
 configuration: Release
 
@@ -17,15 +20,15 @@ environment:
 after_build:
   - ps : >-
         $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
-        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
+        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/Reko.Core.dll | % VersionInfo | % ProductVersion;
         mkdir $env:artifacts_dir;
         ;
         <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
         "[after_build] compressing WindowsDecompiler...";
-        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:CONFIGURATION/.;
+        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/.;
         "[after_build] compressing CmdLine...";
-        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:CONFIGURATION/.;
-        mv ./src/WixInstaller/bin/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
+        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/.;
+        mv ./src/WixInstaller/bin/$env:PLATFORM/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
         ;
         <# Append the short hash to the .msi setup #>;
         $filePath = $env:artifacts_dir + "/*.msi";
@@ -36,8 +39,8 @@ after_build:
 
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=FailedTests /framework:net-4.5
-  - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.5
-  - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION%
+  - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.5
+  - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:
   - path: bin/*.msi
@@ -46,3 +49,8 @@ artifacts:
     name: Reko WinForms driver
   - path: bin/CmdLine-*.zip
     name: Reko CmdLine driver
+
+on_finish:
+# The commented out line below displays will keep the AppVeyor VM alive long enough for a RDP diagnostic
+# session
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

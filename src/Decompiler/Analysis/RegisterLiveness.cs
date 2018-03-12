@@ -883,11 +883,6 @@ namespace Reko.Analysis
 				return (grf.FlagGroupBits & liveState.Grf) != 0;
 			}
 
-            public bool VisitFlagRegister(FlagRegister freg)
-            {
-                return liveState.LiveStorages.ContainsKey(freg);
-            }
-
             public bool VisitSequenceStorage(SequenceStorage seq)
 			{
 				var f = seq.Head.Accept(this);

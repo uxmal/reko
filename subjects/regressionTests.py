@@ -6,11 +6,15 @@
 # * a subject.cmd file containing reko command lines to execute.
 
 from optparse import OptionParser
+from threading import Thread
+from datetime import datetime
+import multiprocessing as mp
 import os
 import os.path
 import re
 import subprocess
 import sys
+import time
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(script_dir)
@@ -22,6 +26,9 @@ parser.add_option("-c", "--configuration", dest="configuration",
 parser.add_option("-o", "--check-output", dest="check_output",
                   action="store_true",
                   help="check output files", default=False)
+parser.add_option("-p", "--platform", dest="platform",
+                  help="define platform (x86, x64)",
+                  default="x64")
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
     dirs = [script_dir]
@@ -31,8 +38,15 @@ reko_cmdline_dir = os.path.abspath(script_dir + "/../src/Drivers/CmdLine")
 
 start_dir = os.getcwd()
 
-reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
+reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, "decompile.exe")
+
 output_extensions = [".asm", ".c", ".dis", ".h"]
+
+class Job:
+    def __init__(self, dir, rel_pname, exe_and_args):
+        self.dir = dir
+        self.rel_pname = rel_pname
+        self.exe_and_args = exe_and_args
 
 # Split a command line, but allow quotation marks to
 # delimit file names containing spaces.
@@ -68,38 +82,37 @@ def clear_dir(dir_name, files):
             if pname.endswith(ext):
                 os.remove(os.path.join(dir_name, pname))
 
-def run_test(dir_name, files):
+def collect_jobs(dir_name, files, pool_state):
     needClear = True
     for pname in files:
         if pname.endswith(".dcproject"):
             if needClear:
                 clear_dir(dir_name, files)
                 needClear = False
-            execute_in_dir(execute_reko_project, dir_name, pname)
+            collect_job_in_dir(collect_reko_project, dir_name, pname, pool_state)
 
     scr_name = os.path.join(dir_name, "subject.cmd")
     if os.path.isfile(scr_name):
         if needClear:
             clear_dir(dir_name, files)
             needClear = False
-        execute_in_dir(execute_command_file, dir_name, scr_name)
+        collect_job_in_dir(collect_command_file, dir_name, scr_name, pool_state)
 
-def execute_in_dir(fn, dir, fname):
+def collect_job_in_dir(fn, dir, fname, pool_state):
     oldDir = os.getcwd()
     os.chdir(dir)
-    fn(dir, fname)
+    fn(dir, fname, pool_state)
     os.chdir(oldDir)
 
-def execute_reko_project(dir, pname):
-    execute_command([reko_cmdline, pname], pname)
-
+def collect_reko_project(dir, pname, pool_state):
+    return collect_job([reko_cmdline, pname], dir, pname, pool_state)
 
 # Remove any comment on the line
 def strip_comment(line):
     return re.sub('#.*', '', line)
 
-# Find all commands to execute.
-def execute_command_file(dir, scr_name):
+# Find all commands to execute in a subject.cmd file
+def collect_command_file(dir, scr_name, jobs):
     f = open("subject.cmd")
     lines = f.readlines()
     f.close()
@@ -112,21 +125,49 @@ def execute_command_file(dir, scr_name):
             continue
         exe_and_args[0] = reko_cmdline
         # Assumes the binary's name is the last item on the command line.
-        execute_command(exe_and_args, exe_and_args[-1])
+        collect_job(exe_and_args, dir, exe_and_args[-1], jobs)
 
-def execute_command(exe_and_args, pname):
-    rel_pname = os.path.join(os.path.relpath(os.getcwd(), start_dir), pname)
-    
-    if sys.platform == "linux2":
+
+def collect_job(exe_and_args, dir, pname, jobs):
+    jobs.append(Job(dir, pname, exe_and_args))
+
+
+
+def start_jobs(jobs, pool):
+    results = []
+    for job in jobs:
+        results.append(pool.apply_async(processor, (job.dir, job.rel_pname, job.exe_and_args)))
+    return results
+
+# Order jobs by descending weight; long-running jobs will be started first.
+def schedule_jobs(jobs, weights):
+    for job in jobs:
+        if job.rel_pname in weights:
+            job.weight = weights[job.rel_pname]
+        else:
+            job.weight = 1.0
+    return sorted(jobs,key=lambda j: j.weight,reverse=True)
+
+def processor(dir, rel_pname, exe_and_args):
+    os.chdir(dir)
+    # print("Processor %s %s %s" % (dir, rel_pname, exe_and_args))
+    banner = os.path.join(os.path.relpath(dir, start_dir), rel_pname)
+    if sys.platform.startswith("linux") or sys.platform == "darwin":
         exe_and_args.insert(0, "mono")
-    print("=== " + rel_pname)
+        exe_and_args.insert(1, "--debug") # enables line numbers in stack traces
+    output_lines = "=== " + banner + "\n"
+    start = time.time()
+    sys.stderr.write("%s: Starting %s\n" % (datetime.now().strftime("%H:%M:%S.%f"), banner))
+
     proc = subprocess.Popen(exe_and_args,
         stdout=subprocess.PIPE,
         universal_newlines=True)
     out = proc.communicate()[0]
+    new_weight = time.time() - start
     if "error" in out.lower():
-        print("*** " + rel_pname)
-        print(out)
+        output_lines += "*** " + banner + "\n"
+        output_lines += out
+    return (rel_pname, new_weight, output_lines)
 
 def check_output_files():
     proc = subprocess.Popen(["git", "status", "."],
@@ -145,9 +186,52 @@ def check_output_files():
         print("Output files differ from repository")
         exit(1)
 
-for dir in dirs:
-    for root, subdirs, files in os.walk(dir):
-        run_test(root, files)
 
-if options.check_output:
-    check_output_files()
+def load_weights(filename):
+    if os.path.isfile(filename):
+        with open(filename) as f:
+            lines = f.readlines()
+            splits= [line.split("|") for line in lines]
+            weights = { path: float(weight) for (path, weight) in splits }
+            return weights
+    else:
+        return {}
+
+def save_weights(weights, filename):
+    with open(filename, "w") as f:
+        for k in weights:
+            f.write("%s|%r\n" % (k, weights[k]))
+
+TIMEOUT = 120  # seconds
+WEIGHTS_FILENAME = "subject_weights.txt"
+
+if __name__ == '__main__':
+    mp.freeze_support()     # Needed to keep Windows happy.
+
+    start_time = time.time()
+
+    weights = load_weights(WEIGHTS_FILENAME)
+
+    jobs = []
+    for dir in dirs:
+        for root, subdirs, files in os.walk(dir):
+            collect_jobs(root, files, jobs)
+
+    jobs = schedule_jobs(jobs, weights)
+    pool = mp.Pool(processes=8)
+    queue = start_jobs(jobs, pool)
+    new_weights = {}
+    outputs = []
+    for result in queue:
+        x = result.get(timeout=TIMEOUT)
+        new_weights[x[0]] = x[1]
+        outputs.append(x[2])
+
+    for output in sorted(outputs):
+        sys.stdout.write(output)
+
+    save_weights(new_weights, WEIGHTS_FILENAME)
+    if options.check_output:
+        check_output_files()
+
+    print("Decompiled %s binaries in %.2f seconds ---" % (len(queue), time.time() - start_time))

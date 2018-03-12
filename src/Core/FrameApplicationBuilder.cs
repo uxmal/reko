@@ -88,11 +88,6 @@ namespace Reko.Core
             return binder.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
-        public Expression VisitFlagRegister(FlagRegister freg)
-        {
-            return binder.EnsureRegister(freg);
-        }
-
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
             if (ensureVariables)

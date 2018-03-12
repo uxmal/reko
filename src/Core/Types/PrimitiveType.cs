@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -92,7 +93,7 @@ namespace Reko.Core.Types
 			return this;
 		}
 
-		public int Compare(object a)
+		public int Compare(PrimitiveType a)
 		{
 			PrimitiveType p = (PrimitiveType) a;
 			int d = (int) Domain - (int) p.Domain;
@@ -122,56 +123,38 @@ namespace Reko.Core.Types
 
         private static PrimitiveType Create(Domain dom, int byteSize, string name)
 		{
+            if (mpBitWidthToAllowableDomain.TryGetValue(byteSize, out var domainMask))
+            {
+                dom &= domainMask;
+            }
 			PrimitiveType p = new PrimitiveType(dom, byteSize*8, null);
-			PrimitiveType shared;
-            if (!cache.TryGetValue(p, out shared))
-			{
-				shared = p;
-				shared.Name = name != null ? name : GenerateName(dom, p.BitSize);
+            if (!cache.TryGetValue(p, out var shared))
+            {
+                shared = p;
+                shared.Name = name != null ? name : GenerateName(dom, p.BitSize);
                 cache.Add(shared, shared);
                 lookupByName.Add(shared.Name, shared);
-			}
+            }
 			return shared;
 		}
 
         public static PrimitiveType CreateWord(int byteSize)
-		{
-			Domain w;
-			string name;
-			switch (byteSize)
-			{
-			case 1:
-				w = Domain.Boolean|Domain.Character|Domain.Integer;
-				name = "byte";
-				break;
-			case 2:
-				w = Domain.Character|Domain.Integer| Domain.Pointer|Domain.Offset|Domain.Selector;
-				name = "word16";
-				break;
-			case 4:
-                w = Domain.Integer|Domain.Pointer|Domain.Real|Domain.SegPointer;
-				name = "word32";
-				break;
-			case 8:
-                w = Domain.Integer|Domain.Pointer|Domain.Real;
-				name = "word64";
-				break;
-            case 10:
-                w = Domain.Integer|Domain.Real|Domain.Bcd;
-                name = "word80";
-                break;
-            case 16:
-                w = Domain.Integer|Domain.Real;
-                name = "word128";
-                break;
-            case 32:
-                w = Domain.Integer|Domain.Real;
-                name = "word256";
-                break;
-            default:
-				throw new ArgumentException("Only word sizes 1, 2, 4, 8, 10, 16, and 32 bytes are supported.");
-			}
-			return Create(w, (short) byteSize, name);
+        {
+            Domain w;
+            string name;
+            if (byteSize == 1)
+            {
+                name = "byte";
+            }
+            else
+            { 
+                name = $"word{byteSize * 8}";
+            }
+            if (!mpBitWidthToAllowableDomain.TryGetValue(byteSize, out var dom))
+            {
+                dom = Domain.UnsignedInt | Domain.Integer | Domain.Pointer;
+            }
+			return Create(dom, (short) byteSize, name);
 		}
 
         public Domain Domain { get; private set; }
@@ -232,6 +215,8 @@ namespace Reko.Core.Types
 					sb.Append('u');
                 if ((dom & Domain.SignedInt) != 0)
                     sb.Append('i');
+                if ((dom & Domain.SegPointer) != 0)
+                    sb.Append('s');
                 if ((dom & Domain.Pointer) != 0)
                     sb.Append('p');
                 if ((dom & Domain.Offset) != 0)
@@ -326,41 +311,54 @@ namespace Reko.Core.Types
 
 		private static Dictionary<PrimitiveType,PrimitiveType> cache;
         private static Dictionary<string, PrimitiveType> lookupByName;
+        private static Dictionary<int, Domain> mpBitWidthToAllowableDomain;
 
-		static PrimitiveType()
-		{
-			cache = new Dictionary<PrimitiveType,PrimitiveType>();
+        static PrimitiveType()
+        {
+            cache = new Dictionary<PrimitiveType, PrimitiveType>();
             lookupByName = new Dictionary<string, PrimitiveType>();
+            mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
+            {
+                { 0, Domain.Any },
+                { 1, Domain.Boolean|Domain.Character|Domain.Integer },
+                { 2, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
+                { 4, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
+                { 8, Domain.Integer | Domain.Pointer | Domain.Real },
+                { 10, Domain.Integer | Domain.Real | Domain.Bcd },
+                { 12, Domain.Integer | Domain.Real },
+                { 16, Domain.Integer | Domain.Real },
+                { 32, Domain.Integer | Domain.Real },
+            };
 
-			Byte = CreateWord(1);
-			Bool = Create(Domain.Boolean, 1);
-		    Char = Create(Domain.Character, 1);
-			SByte = Create(Domain.SignedInt, 1);
-			UInt8 = Create(Domain.UnsignedInt, 1);
+            Byte = CreateWord(1);
+            Bool = Create(Domain.Boolean, 1);
+            Char = Create(Domain.Character, 1);
+            SByte = Create(Domain.SignedInt, 1);
+            UInt8 = Create(Domain.UnsignedInt, 1);
 
-			Word16 = CreateWord(2);
-			Int16 = Create(Domain.SignedInt, 2);
-			UInt16 = Create(Domain.UnsignedInt, 2);
-			Ptr16 = Create(Domain.Pointer, 2);
-			SegmentSelector = Create(Domain.Selector, 2);
+            Word16 = CreateWord(2);
+            Int16 = Create(Domain.SignedInt, 2);
+            UInt16 = Create(Domain.UnsignedInt, 2);
+            Ptr16 = Create(Domain.Pointer, 2);
+            SegmentSelector = Create(Domain.Selector, 2);
             WChar = Create(Domain.Character, 2);
             Offset16 = Create(Domain.Offset, 2);
 
-			Word32 = CreateWord(4);
-			Int32 = Create(Domain.SignedInt, 4);
-			UInt32 = Create(Domain.UnsignedInt, 4);
-			Ptr32 = Create(Domain.Pointer, 4);
+            Word32 = CreateWord(4);
+            Int32 = Create(Domain.SignedInt, 4);
+            UInt32 = Create(Domain.UnsignedInt, 4);
+            Ptr32 = Create(Domain.Pointer, 4);
             SegPtr32 = Create(Domain.SegPointer, 4);
             Real32 = Create(Domain.Real, 4);
 
-			Word64 = CreateWord(8);
-			Int64 = Create(Domain.SignedInt, 8);
-			UInt64 = Create(Domain.UnsignedInt, 8);
-			Ptr64 = Create(Domain.Pointer, 8);
-			Real64 = Create(Domain.Real, 8);
+            Word64 = CreateWord(8);
+            Int64 = Create(Domain.SignedInt, 8);
+            UInt64 = Create(Domain.UnsignedInt, 8);
+            Ptr64 = Create(Domain.Pointer, 8);
+            Real64 = Create(Domain.Real, 8);
 
             Word80 = CreateWord(10);
-			Real80 = Create(Domain.Real, 10);
+            Real80 = Create(Domain.Real, 10);
             Bcd80 = Create(Domain.Bcd, 10);
 
             Real96 = Create(Domain.Real, 12);
@@ -369,7 +367,7 @@ namespace Reko.Core.Types
             Int128 = Create(Domain.SignedInt, 16);
             UInt128 = Create(Domain.UnsignedInt, 16);
             Real128 = Create(Domain.Real, 16);
-        
+
             Word256 = CreateWord(32);
         }
 

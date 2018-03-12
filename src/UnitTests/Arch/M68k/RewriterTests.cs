@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.M68k
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private M68kArchitecture arch = new M68kArchitecture();
+        private M68kArchitecture arch = new M68kArchitecture("m68k");
         private Address addrBase = Address.Ptr32(0x00010000);
         private MemoryArea mem;
 
@@ -1178,7 +1178,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(6): 2 instructions",
                 "1|L--|fp0 = (real80) Mem0[a6 + -8:real64]",
-                "2|L--|fpsr = cond(fp0)");
+                "2|L--|FPUFLAGS = cond(fp0)");
         }
 
         [Test]
@@ -1189,7 +1189,7 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(6): 3 instructions",
                 "1|L--|v4 = (real64) fp0",
                 "2|L--|Mem0[a6 + -8:real64] = v4",
-                "3|L--|fpsr = cond(v4)");
+                "3|L--|FPUFLAGS = cond(v4)");
         }
 
         [Test]
@@ -1199,7 +1199,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                "0|L--|00010000(6): 2 instructions",
                "1|L--|fp0 = fp0 * Mem0[a6 + 8:real64]",
-               "2|L--|fpsr = cond(fp0)");
+               "2|L--|FPUFLAGS = cond(fp0)");
         }
 
 
@@ -1210,7 +1210,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                "0|L--|00010000(12): 2 instructions",
                "1|L--|fp0 = fp0 / 6.0",
-               "2|L--|fpsr = cond(fp0)");
+               "2|L--|FPUFLAGS = cond(fp0)");
         }
 
         [Test]
@@ -1226,10 +1226,10 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68krw_fcmp()
         {
-            Rewrite(0xF22E, 0x5438, 0x0010);  // fcmpd % fp@(16),% fp0 
+            Rewrite(0xF22E, 0x5438, 0x0010);  // fcmpd a6(16),fp0 
             AssertCode(
                "0|L--|00010000(6): 1 instructions",
-               "1|L--|fpsr = cond((real64) fp0 - Mem0[a6 + 16:real64])");
+               "1|L--|FPUFLAGS = cond((real64) fp0 - Mem0[a6 + 16:real64])");
         }
 
         [Test]
@@ -1238,7 +1238,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0xF29C, 0x00E0);  // fbnge 0x000000e8
             AssertCode(
                "0|T--|00010000(4): 1 instructions",
-               "1|T--|if (Test(LT,fpsr)) branch 000100E2");
+               "1|T--|if (Test(LT,FPUFLAGS)) branch 000100E2");
         }
 
         [Test]
@@ -1472,7 +1472,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0xF684, 0x0678);    // fbolt$00001CCE
             AssertCode(
                 "0|T--|00010000(4): 1 instructions",
-                "1|T--|if (Test(LT,fpsr)) branch 0001067A");
+                "1|T--|if (Test(LT,FPUFLAGS)) branch 0001067A");
         }
 
         [Test]

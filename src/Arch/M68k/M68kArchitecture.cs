@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M68kArchitecture()
+        public M68kArchitecture(string archId) : base(archId)
         {
             InstructionBitSize = 16;
             FramePointerType = PrimitiveType.Ptr32;
@@ -194,6 +194,8 @@ namespace Reko.Arch.M68k
 
         public override string GrfToString(uint grf)
         {
+            if ((grf & 0xF0000000u) == 0xF0000000u) //$HACK: grftostring needs a FlagRegister
+                return "FPUFLAGS";
             StringBuilder s = new StringBuilder();
             for (int r = 0; grf != 0; ++r, grf >>= 1)
             {

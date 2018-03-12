@@ -45,7 +45,7 @@ l000005C0:
 	word32 r25_27
 	word32 ra_28
 	word32 r2_29
-	bcuiposr0 None_30
+	bcuisposr0 None_30
 	call Mem0[ra + 0x000104F4:word32] + 2004 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc10_7,None,r2_11,r25_23,r28_21,ra,sp_6
 		defs: None_30,r2_29,r25_27,r28_26,ra_28,sp_25
@@ -70,7 +70,7 @@ l000005E4:
 	word32 r25_38
 	word32 ra_39
 	word32 r2_40
-	bcuiposr0 None_41
+	bcuisposr0 None_41
 	call Mem0[ra_28 + 0x000104D0:word32] + 2416 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc10_7,None_30,r2_29,r25_35,r28_33,ra_28,sp_25
 		defs: None_41,r2_40,r25_38,r28_37,ra_39,sp_36
@@ -96,7 +96,7 @@ l000005AC:
 	word32 r25_15
 	word32 ra_16
 	word32 r2_17
-	bcuiposr0 None_18
+	bcuisposr0 None_18
 	call r25_12 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc10_7,r2_11,r25_12,r28_5,ra,sp_6
 		defs: None_18,r2_17,r25_15,r28_14,ra_16,sp_13
@@ -504,7 +504,7 @@ l000007D4:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l000007E4_thunk_register_tm_clones:
+l000007E8_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 // DataOut:
@@ -788,7 +788,7 @@ l00000A30:
 	word32 r28_17
 	word32 r25_18
 	word32 ra_19
-	bcuiposr0 None_20
+	bcuisposr0 None_20
 	call Mem0[ra + 0x00010084:word32] + 1780 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc10_7,r25_15,r28_12,ra,sp_6
 		defs: None_20,r25_18,r28_17,ra_19,sp_16

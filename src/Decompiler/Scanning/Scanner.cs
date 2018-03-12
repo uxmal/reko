@@ -803,10 +803,11 @@ namespace Reko.Scanning
             }
         }
 
-        [Obsolete]
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
         {
-            throw new NotSupportedException();
+            var args = Enumerable.Range(0, arity).Select(i => Constant.Create(Program.Architecture.WordWidth, 0)).ToArray();
+            var ppp = Program.EnsurePseudoProcedure(name, returnType, args);
+            return ppp;
         }
 
         public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
@@ -933,6 +934,25 @@ namespace Reko.Scanning
                 // Use has requested shingle scanning of remaining areas.
                 ShingleScanProcedures();
             }
+            RemoveRedundantGotos();
+        }
+
+        private void RemoveRedundantGotos()
+        {
+            var blocks = Program.Procedures.Values.SelectMany(
+                p => p.ControlGraph.Blocks);
+            foreach(var block in blocks)
+            {
+                RemoveRedundantGotos(block);
+            }
+        }
+
+        private void RemoveRedundantGotos(Block block)
+        {
+            if (block.Statements.Count == 0)
+                return;
+            if (block.Statements.Last.Instruction is GotoInstruction)
+                block.Statements.Remove(block.Statements.Last);
         }
 
         /// <summary>

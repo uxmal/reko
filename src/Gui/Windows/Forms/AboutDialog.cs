@@ -32,8 +32,11 @@ namespace Reko.Gui.Windows.Forms
         public AboutDialog()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0} {0}", AssemblyTitle);
-            this.lblVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            this.Text = String.Format("About {0}", AssemblyTitle);
+            this.lblVersion.Text = String.Format(
+                "Version {0} ({1})",
+                AssemblyVersion,
+                Environment.Is64BitProcess ? "64-bit" : "32-bit");
             linkLabel1.LinkClicked += delegate(object o, LinkLabelLinkClickedEventArgs e)
             {
                 System.Diagnostics.Process.Start(linkLabel1.Text);

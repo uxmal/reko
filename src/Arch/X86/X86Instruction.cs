@@ -118,12 +118,12 @@ namespace Reko.Arch.X86
             if (repPrefix == 3)
             {
                 writer.WriteOpcode("rep");
-                writer.Write(' ');
+                writer.WriteChar(' ');
             }
             else if (repPrefix == 2)
             {
                 writer.WriteOpcode("repne");
-                writer.Write(' ');
+                writer.WriteChar(' ');
             }
 
             // Get opcode. 
@@ -173,11 +173,11 @@ namespace Reko.Arch.X86
                 Write(op1, writer, options);
 				if (Operands >= 2)
 				{
-					writer.Write(',');
+					writer.WriteChar(',');
 					Write(op2, writer, options);
 					if (Operands >= 3)
 					{
-						writer.Write(",");
+						writer.WriteString(",");
 						Write(op3, writer, options);
 					}
 				}
@@ -186,17 +186,16 @@ namespace Reko.Arch.X86
 
         private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 if (memOp.Base == Registers.rip)
                 {
                     var addr = this.Address + this.Length + memOp.Offset.ToInt32();
                     if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                     {
-                        writer.Write("[");
+                        writer.WriteString("[");
                         writer.WriteAddress(addr.ToString(), addr);
-                        writer.Write("]");
+                        writer.WriteString("]");
                         writer.AddAnnotation(op.ToString());
                     }
                     else

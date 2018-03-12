@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Gui
         {
             var list = new List<TextSpan>();
             var df = new DisassemblyFormatter(program, null, list);
-            df.Write("Hello");
+            df.WriteString("Hello");
             df.NewLine();
 
             Assert.AreEqual(1, list.Count);

@@ -39,8 +39,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseMSBuildEngine>True</UseMSBuildEngine>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>

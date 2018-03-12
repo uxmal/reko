@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         public XtensaDisassemblerTests()
         {
-            this.arch = new XtensaArchitecture();
+            this.arch = new XtensaArchitecture("xtensa");
         }
 
         public override IProcessorArchitecture Architecture

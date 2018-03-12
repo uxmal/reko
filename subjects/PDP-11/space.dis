@@ -35,7 +35,7 @@ l0220:
 	word16 r3_306
 	word16 r2_307
 	byte NZV_308
-	bcuiposr0 None_309
+	bcuisposr0 None_309
 	call r0_5 (retsize: 2; depth: 2 FPU: 2;)
 		uses: C_3,N,None,NZ_6,NZV,NZVC,pc,r0_5,r1_2,r2,r3,r4,r5,sp_1,V_8,Z_7,ZC
 		defs: C_295,N_297,None_309,NZ_301,NZV_308,NZVC_304,pc_299,r0_300,r1_294,r2_307,r3_306,r4_302,r5_303,sp_293,V_296,Z_298,ZC_305
@@ -268,7 +268,7 @@ l03B2:
 	word16 r3_239
 	word16 r2_240
 	byte NZV_241
-	bcuiposr0 None_242
+	bcuisposr0 None_242
 	call v76_162 + 0x0002 (retsize: 4; depth: 4 FPU: 2;)
 		uses: C_182,N_56,None_18,NZ_224,NZV_105,NZVC_158,pc_25,r0_170,r1_27,r2_151,r3_83,r4_167,r5_36,sp_221,V_225,Z_181,ZC_152
 		defs: C_228,N_230,None_242,NZ_234,NZV_241,NZVC_237,pc_232,r0_233,r1_227,r2_240,r3_239,r4_235,r5_236,sp_226,V_229,Z_231,ZC_238
@@ -294,7 +294,7 @@ l0370:
 	word16 r3_217
 	word16 r2_218
 	byte NZV_219
-	bcuiposr0 None_220
+	bcuisposr0 None_220
 	call Mem175[v76_162 + 0x0002:word16] (retsize: 4; depth: 4 FPU: 2;)
 		uses: C_182,N_56,None_18,NZ_180,NZV_105,NZVC_158,pc_25,r0_170,r1_27,r2_151,r3_83,r4_203,r5_36,sp_163,V_183,Z_181,ZC_152
 		defs: C_206,N_208,None_220,NZ_212,NZV_219,NZVC_215,pc_210,r0_211,r1_205,r2_218,r3_217,r4_213,r5_214,sp_204,V_207,Z_209,ZC_216
@@ -1519,7 +1519,7 @@ l0B3E:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l0B3E_thunk_fn0B60:
+l0B42_thunk_fn0B60:
 	word16 r3_9
 	fn0B60(r0, r3, out r3_9)
 	return r3_9
@@ -1860,7 +1860,7 @@ l0CFA:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l0CFA_thunk_fn0D50:
+l0CFC_thunk_fn0D50:
 	fn0D50()
 	return
 // DataOut: pc r2 sp
@@ -2931,7 +2931,7 @@ l0FCC:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l100A_thunk_fn1AA2:
+l1010_thunk_fn1AA2:
 	word16 r2_44
 	word16 r3_45
 	return fn1AA2(r3_26, out r2_44, out r3_45)
@@ -3529,7 +3529,7 @@ l1386:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r2:<invalid>
 
-l1386_thunk_fn1836:
+l138A_thunk_fn1836:
 	word16 r2_33
 	word16 r3_34
 	word16 r4_35
@@ -10086,7 +10086,7 @@ l46BA:
 	word16 r3_157
 	word16 pc_158
 	byte ZC_159
-	bcuiposr0 None_160
+	bcuisposr0 None_160
 	call 0x474C (retsize: 2; depth: 2 FPU: 2;)
 		uses: C_120,N_83,None,NZ_136,NZV_126,NZVC_124,pc,r0_134,r1_133,r2_65,r3,r4_132,r5_135,sp_78,V_138,wLoc02_4,wLoc04_7,wLoc06_10,wLoc08_13,wLoc0A_16,wLoc0C_79,wLoc0E_140,Z_137,ZC
 		defs: C_152,N_153,None_160,NZ_146,NZV_156,NZVC_155,pc_158,r0_150,r1_149,r2_151,r3_157,r4_148,r5_145,sp_144,V_147,Z_154,ZC_159
@@ -10106,7 +10106,7 @@ l46BA:
 	word16 r3_176
 	word16 pc_177
 	byte ZC_178
-	bcuiposr0 None_179
+	bcuisposr0 None_179
 	call Mem128[(r4_148 << 1) + 0x46C4:word16] (retsize: 4; depth: 4 FPU: 2;)
 		uses: C_152,N_153,None_160,NZ_146,NZV_156,NZVC_162,pc_158,r0_150,r1_149,r2_151,r3_157,r4_161,r5_145,sp_144,V_147,wLoc02_4,wLoc04_7,wLoc06_10,wLoc08_13,wLoc0A_16,wLoc0C_79,wLoc0E_140,Z_154,ZC_159
 		defs: C_171,N_172,None_179,NZ_165,NZV_175,NZVC_174,pc_177,r0_169,r1_168,r2_170,r3_176,r4_167,r5_164,sp_163,V_166,Z_173,ZC_178

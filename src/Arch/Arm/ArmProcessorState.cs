@@ -33,13 +33,14 @@ namespace Reko.Arch.Arm
     public class ArmProcessorState : ProcessorState
     {
         private IProcessorArchitecture arch;
-        private uint isValid;
-        private ulong[] regData;
+        private Dictionary<int, ulong> regData;
+        private RegisterStorage pc;
 
         public ArmProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
-            this.regData = new ulong[48];
+            this.regData = new Dictionary<int, ulong>();
+            this.pc = arch.GetRegister("pc");
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -47,15 +48,15 @@ namespace Reko.Arch.Arm
         public override ProcessorState Clone()
         {
             var state = new ArmProcessorState(arch);
-            state.isValid = this.isValid;
-            state.regData = (ulong[])regData.Clone();
+            state.regData = new Dictionary<int, ulong>(regData);
             return state;
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            if (((isValid >> r.Number) & 1) != 0)
-                return Constant.Create(r.DataType, regData[r.Number]);
+            ulong uVal;
+            if (regData.TryGetValue(r.Number, out uVal))
+                return Constant.Create(r.DataType, uVal);
             else
                 return Constant.Invalid;
         }
@@ -64,20 +65,17 @@ namespace Reko.Arch.Arm
         {
             if (v.IsValid)
             {
-                isValid |= 1u << r.Number;
-                regData[r.Number] = v.ToUInt32();
+                regData[r.Number] = v.ToUInt64();
             }
             else
             {
-                isValid &= ~(1u << r.Number);
-                regData[r.Number] = 0xCCCCCCCC;
+                regData.Remove(r.Number);
             }
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            regData[A32Registers.pc.Number] = addr.ToUInt32();
-            isValid |= 1u << A32Registers.pc.Number;
+            regData[pc.Number] = addr.ToUInt32();
         }
 
         public override void OnProcedureEntered()

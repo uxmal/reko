@@ -23,7 +23,7 @@ namespace Reko.WindowsItp
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var arch = new X86ArchitectureFlat32();
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
             var program = new Core.Program(imageMap, arch, new DefaultPlatform(null, arch));
             var project = new Project { Programs = { program } };
             pbs.Load(project);

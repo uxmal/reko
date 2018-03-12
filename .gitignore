@@ -6,6 +6,7 @@ TestResults
 /src/.vs
 *.csproj.user
 *.vcxproj.user
+*.wixproj.user
 *.opensdf
 *.sdf
 *.suo
@@ -19,13 +20,20 @@ TestResults
 /src/tools/reko.config
 /src/Reko-decompiler.VC.db
 **/ipch/
+/subjects/subject_weights.txt
+/subjects/regressionTests.pyc
 
 # MSVC build directories
 **/x86/Debug
 **/x86/Release
-**/x86/Debug
+**/x64/Debug
 **/x64/Release
 /subjects/**/Debug
 /subjects/**/Release
-# added by @uxmal to avoid trouble when switching between branches.
-/src/UserInterfaces/Electron
+/src/Arch/ArmNative/Debug
+/src/Arch/ArmNative/Release
+/src/Debug
+/src/Release
+/src/Native/build
+/src/Native/include/reko.h
+/src/WixInstaller/*.user

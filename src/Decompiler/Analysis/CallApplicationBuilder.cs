@@ -80,11 +80,6 @@ namespace Reko.Analysis
             return map[grf.Domain].Expression;
         }
 
-        public Expression VisitFlagRegister(FlagRegister freg)
-        {
-            throw new NotImplementedException();
-        }
-
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
             foreach (var de in this.map
