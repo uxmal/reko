@@ -11,6 +11,9 @@
     <user>
       <address>0000</address>
       <processor name="8051" />
+      <procedure name="fn0000">
+        <address>0000</address>
+      </procedure>
       <registerValues />
     </user>
   </input>
