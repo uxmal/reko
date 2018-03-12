@@ -2519,7 +2519,7 @@ l0000374E:
 														d0_1012 = fn00003CCC(a6, dwArg00, out d1_1021, out a1, out a5);
 														d1 = d0_1012;
 													}
-													Mem953[a7_149 + 0x0034:word32] = Mem940[a7_149 + 0x0034:word32] + 0x01;
+													a7_149[0x01] = (struct Eq_4538) ((word416) a7_149[0x01] + 0x01);
 													int32 d0_962 = (int32) globals->a28B1[DPB(d0_1012, (byte) d1, 0) & 0xFF];
 													d5_1223 = d1;
 													d3_1151 = v387_928 + 0x01;

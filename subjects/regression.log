@@ -2495,6 +2495,7 @@ fn03B2: warning: Structure analysis stopped making progress, quitting. Please re
 00000823: warning: Expected sizes of arrays to have been determined by now
 00000823: warning: Expected sizes of arrays to have been determined by now
 === VMS-vax\unzip.dcproject
+=== i8051\rtl8188efw.dcproject
 === regressions\angr-148\test
 === regressions\reko-121\m68k_jump.dcproject
 === regressions\reko-351\a.out
@@ -2696,4 +2697,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 49 binaries in 33.27 seconds ---
+Decompiled 50 binaries in 33.86 seconds ---

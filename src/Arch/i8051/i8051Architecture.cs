@@ -140,7 +140,7 @@ namespace Reko.Arch.i8051
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.GetRegisters();
         }
 
         public override string GrfToString(uint grf)
@@ -154,7 +154,6 @@ namespace Reko.Arch.i8051
                 sb.Append("O");
             if ((grf & (uint)FlagM.P) != 0)
                 sb.Append("P");
-            Debug.Assert(sb.Length > 0);
             return sb.ToString();
         }
 

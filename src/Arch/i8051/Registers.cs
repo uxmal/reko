@@ -138,6 +138,11 @@ namespace Reko.Arch.i8051
             regsByNumber.Add(i, reg);
             return reg;
         }
+
+        public static RegisterStorage[] GetRegisters()
+        {
+            return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
+        }
     }
 
     [Flags]
