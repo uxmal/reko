@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,6 +84,7 @@ namespace Reko.Core.Rtl
     /// delay slots on architectures like MIPS and SPARC.
     /// </summary>
     [Flags]
+    [NativeInterop]
     public enum RtlClass
     {
         None,

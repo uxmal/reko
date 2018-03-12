@@ -73,11 +73,9 @@ namespace Reko
 
         public DecompilerDriver(ILoader ldr, IServiceProvider services)
         {
-            if (ldr == null)
-                throw new ArgumentNullException("ldr");
+            this.loader = ldr ?? throw new ArgumentNullException("ldr");
             if (services == null)
                 throw new ArgumentNullException("services");
-            this.loader = ldr;
             this.host = services.RequireService<DecompilerHost>();
             this.services = services;
             this.eventListener = services.RequireService<DecompilerEventListener>();
@@ -389,9 +387,8 @@ namespace Reko
             var program = paddr.Program;
             if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
                 scanner = CreateScanner(program);
-            Procedure_v1 sProc;
             var procName = program.User.Procedures.TryGetValue(
-                paddr.Address, out sProc) ? sProc.Name : null;
+                paddr.Address, out var sProc) ? sProc.Name : null;
             return scanner.ScanProcedure(
                 paddr.Address,
                 procName, 
@@ -444,8 +441,7 @@ namespace Reko
                 {
                 //$BUG: need access to platform.Metadata.
                     var sser = program.CreateProcedureSerializer();
-                    Address addr;
-                    if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
+                    if (program.Architecture.TryParseAddress(sc.InstructionAddress, out var addr))
                     {
                         return new KeyValuePair<Address, FunctionType>(
                             addr,

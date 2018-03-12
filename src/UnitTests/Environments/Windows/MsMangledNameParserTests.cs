@@ -75,7 +75,9 @@ namespace Reko.UnitTests.Environments.Windows
         {
             //$TODO: need support for full C++ type system for this, since the 'A' in 'ABV0' is a C++ reference.
             // For now, fake it with a pointer.
-            RunTest("__thiscall public: void exception::exception(exception *)", "??0exception@@QAE@ABV0@@Z");
+            RunTest(
+                "__thiscall public: void exception::exception(const exception *)",
+                "??0exception@@QAE@ABV0@@Z");
         }
 
         [Test]
@@ -83,7 +85,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_method_in_class_in_namespace()
         {
             RunTest(
-                "__thiscall public: char * std::basic_string::c_str()",
+                "__thiscall public: const char * std::basic_string::c_str()",
                 "?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QBEPBDXZ");
         }
 
@@ -91,7 +93,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_const_ptr()
         {
             RunTest(
-                "__thiscall public: int32_t foo::foox(foo *)",
+                "__thiscall public: int32_t foo::foox(const foo *)",
                 "?foox@foo@@QBEHPBV1@@Z");
         }
 
@@ -115,7 +117,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_string_ctor()
         {
             RunTest(
-                "__thiscall public: void std::basic_string::basic_string(basic_string *)",
+                "__thiscall public: void std::basic_string::basic_string(const basic_string *)",
                 "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z");
         }
 
@@ -123,7 +125,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_wchar_t()
         {
             RunTest(
-                "__stdcall uint32_t HashKey(wchar_t *)",
+                "__stdcall uint32_t HashKey(const wchar_t *)",
                 "??$HashKey@PB_W@@YGIPB_W@Z");
         }
 
@@ -171,7 +173,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_name_with_namespace()
         {
             RunTest(
-                "__thiscall public: void ATL::CSimpleStringT::CSimpleStringT(CSimpleStringT *)",
+                "__thiscall public: void ATL::CSimpleStringT::CSimpleStringT(const CSimpleStringT *)",
                 "??0?$CSimpleStringT@_W$00@ATL@@QAE@ABV?$CSimpleStringT@_W$0A@@1@@Z");
         }
 
@@ -187,7 +189,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression2()
         {
             RunTest(
-                "__stdcall int32_t ATL::AtlIAccessibleGetIDsOfNamesHelper(_GUID *, wchar_t * *, uint32_t, uint32_t, int32_t *)",
+                "__stdcall int32_t ATL::AtlIAccessibleGetIDsOfNamesHelper(const _GUID *, wchar_t * *, uint32_t, uint32_t, int32_t *)",
                 "?AtlIAccessibleGetIDsOfNamesHelper@ATL@@YGJABU_GUID@@PAPA_WIKPAJ@Z");
         }
 
@@ -211,7 +213,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_Ellipses()
         {
             RunTest(
-                "__cdecl void AfxTrace(char *, void ...)",
+                "__cdecl void AfxTrace(const char *, void ...)",
                 "?AfxTrace@@YAXPBDZZ");
         }
 
@@ -283,7 +285,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void PMNP_regression11()
         {
             RunTest(
-                "__stdcall void CopyElements(COleVariant *, COleVariant *, int32_t)",
+                "__stdcall void CopyElements(COleVariant *, const COleVariant *, int32_t)",
                 "??$CopyElements@VCOleVariant@@@@YGXPAVCOleVariant@@PBV0@H@Z");
         }
 
@@ -319,6 +321,22 @@ namespace Reko.UnitTests.Environments.Windows
             RunTest(
                 "@@@",
                 "?GetPropertiesPriv@CPropertySet@@AAEPAV?$hash_map@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@VCValue@@VLECSimpleStringHash@@U?$equal_to@V?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DV?$char_traits@D@_STL@@V?$allocator@D@2@@_STL@@VCValue@@@_STL@@@2@@_STL@@XZ");
+        }
+
+        [Test]
+        public void PMNP_const_char_ptr()
+        {
+            RunTest(
+                "__cdecl int32_t foo(char * const)",
+                "?foo@@YAHQAD@Z");
+        }
+
+        [Test]
+        public void PMNP_const_char_const_ptr()
+        {
+            RunTest(
+                "__cdecl int32_t foo(const char * const)",
+                "?foo@@YAHQBD@Z");
         }
     }
 }

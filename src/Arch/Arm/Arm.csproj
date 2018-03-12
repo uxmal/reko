@@ -30,8 +30,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,30 +67,20 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Gee.External.Capstone">
-      <HintPath>..\..\..\external\Capstone.NET\Gee.External.Capstone.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="A64Registers.cs" />
     <Compile Include="AArch64.cs" />
-    <Compile Include="AArch64Disassembler.cs" />
     <Compile Include="AArch64Instruction.cs" />
-    <Compile Include="Arm32Disassembler.cs" />
+    <Compile Include="Arm32Architecture.cs" />
+    <Compile Include="Arm64State.cs" />
+    <Compile Include="ArmNativeRewriterHost.cs" />
+    <Compile Include="ArmRewriter.cs" />
     <Compile Include="Arm32Instruction.cs" />
     <Compile Include="Arm32InstructionComparer.cs" />
-    <Compile Include="Arm32ProcessorArchitecture.cs" />
     <Compile Include="ArmProcessorState.cs" />
-    <Compile Include="ArmRewriter.Alu.cs" />
-    <Compile Include="ArmRewriter.cs" />
-    <Compile Include="ArmRewriter.Vector.cs" />
+    <Compile Include="FlagM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="A32Registers.cs" />
-    <Compile Include="RegisterRangeOperand.cs" />
     <Compile Include="ThumbProcessorArchitecture.cs" />
-    <Compile Include="ThumbDisassembler.cs" />
-    <Compile Include="ThumbRewriter.Alu.cs" />
-    <Compile Include="ThumbRewriter.Control.cs" />
     <Compile Include="ThumbRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +105,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ArmRewriter.System.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

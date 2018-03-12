@@ -180,8 +180,9 @@ namespace Reko.UnitTests.Scanning
 
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
-            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = 0x00000003", block.Statements[0].ToString());
+            Assert.AreEqual("goto 0x00104000", block.Statements[1].ToString());
             Assert.AreEqual(1, proc.ControlGraph.Successors(block).Count);
             var items = new List<Block>(proc.ControlGraph.Successors(block));
             Assert.AreSame(next, items[0]);
@@ -484,8 +485,9 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
-            Assert.AreEqual(1, block.Statements.Count);
+            Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
+            Assert.AreEqual("goto 0x00100100", block.Statements[1].ToString());
 
             Assert.AreEqual("l00101000", block.Succ[0].Name);
             mr.VerifyAll();

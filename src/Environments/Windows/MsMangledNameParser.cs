@@ -315,7 +315,7 @@ namespace Reko.Environments.Windows
         {
             this.Modifier = modifier;
             var convention = ParseCallingConvention();
-            var returnStorageClass = ParseReturnStorageClass();
+            var returnStorageClass = ParseReturnQualifier();
             var retType = ParseDataTypeCode(new List<Argument_v1>());
             var args = ParseArgumentList();
             return new SerializedSignature
@@ -324,24 +324,24 @@ namespace Reko.Environments.Windows
                 IsInstanceMethod = this.isInstanceMethod,
                 EnclosingType = null,
                 Arguments = args,
-                ReturnValue = new Argument_v1 { Type = retType != null ? retType : new VoidType_v1() }
+                ReturnValue = new Argument_v1 { Type = retType ?? new VoidType_v1() }
             };
         }
 
-        public string ParseReturnStorageClass()
+        public Qualifier ParseReturnQualifier()
         {
             if (PeekAndDiscard('?'))
             {
                 switch (str[i++])
                 {
-                case 'A': return "";
-                case 'B': return "const";
-                case 'C': return "volatile";
-                case 'D': return "const volatile";
-                default: return "?storage class?";
+                case 'A': return Qualifier.None;
+                case 'B': return Qualifier.Const;
+                case 'C': return Qualifier.Volatile;
+                case 'D': return Qualifier.Const | Qualifier.Volatile;
+                default: throw new FormatException($"Unexpected return qualifier {str[i - 1]}.");
                 }
             }
-            return "";
+            return Qualifier.None;
         }
 
         public SerializedSignature ParseStaticMethod(string modifier)
@@ -574,8 +574,8 @@ namespace Reko.Environments.Windows
             case '7': return compoundArgs[7].Type;
             case '8': return compoundArgs[8].Type;
             case '9': return compoundArgs[9].Type;
-            case 'A': return ParsePointer(compoundArgs);        //$TODO: really is a lvalue reference but is implemented as a pointer on Win32...
-            case 'B': return ParsePointer(compoundArgs);        //$TODO: really is a volatile lvalue reference but is implemented as a pointer on Win32...
+            case 'A': return ParsePointer(compoundArgs, Qualifier.None);        //$TODO: really is a lvalue reference but is implemented as a pointer on Win32...
+            case 'B': return ParsePointer(compoundArgs, Qualifier.Volatile);    //$TODO: really is a volatile lvalue reference but is implemented as a pointer on Win32...
             case 'C': return new PrimitiveType_v1(Domain.Character | Domain.SignedInt, 1);
             case 'D': return new PrimitiveType_v1(Domain.Character, 1);
             case 'E': return new PrimitiveType_v1(Domain.Character | Domain.UnsignedInt, 1);
@@ -588,9 +588,9 @@ namespace Reko.Environments.Windows
             case 'M': return new PrimitiveType_v1(Domain.Real, 4);
             case 'N': return new PrimitiveType_v1(Domain.Real, 8);
             case 'O': return new PrimitiveType_v1(Domain.Real, 10);
-            case 'P': return ParsePointer(compoundArgs);    // pointer
-            case 'Q': return ParsePointer(compoundArgs);    // const pointer
-            case 'R': return ParsePointer(compoundArgs);    // volatile pointer
+            case 'P': return ParsePointer(compoundArgs, Qualifier.None);    // pointer
+            case 'Q': return ParsePointer(compoundArgs, Qualifier.Const);    // const pointer
+            case 'R': return ParsePointer(compoundArgs, Qualifier.Volatile);    // volatile pointer
             case 'T': return ParseStructure(compoundArgs);  // union 
             case 'U': return ParseStructure(compoundArgs); // struct (see below)
             case 'V': return ParseStructure(compoundArgs); // class (see below)
@@ -615,7 +615,7 @@ namespace Reko.Environments.Windows
                 case '$':
                     switch (str[i++])
                     {
-                    case 'Q': return ParsePointer(compoundArgs); //$ rvalue reference
+                    case 'Q': return ParsePointer(compoundArgs, Qualifier.None); //$ rvalue reference
                     }
                     Error("Unsupported type code '$${0}'.", str[i - 1]); return null;
                 default:
@@ -627,7 +627,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public SerializedType ParsePointer(List<Argument_v1> compoundArgs)
+        public SerializedType ParsePointer(List<Argument_v1> compoundArgs, Qualifier q)
         {
             int size = 4;       //$TODO: should follow platform pointer size, really.
             SerializedType type;
@@ -638,20 +638,35 @@ namespace Reko.Environments.Windows
             switch (str[i++])
             {
             case 'A': type = ParseDataTypeCode(new List<Argument_v1>()); break;       //$BUG: assumes 32-bitness
-            case 'B': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const ptr
-            case 'C': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // volatile ptr
-            case 'D': type = ParseDataTypeCode(new List<Argument_v1>()); break;       // const volatile ptr
+            case 'B': type = Qualify(ParseDataTypeCode(new List<Argument_v1>()), Qualifier.Const); break;       // const ptr
+            case 'C': type = Qualify(ParseDataTypeCode(new List<Argument_v1>()), Qualifier.Volatile); break;       // volatile ptr
+            case 'D': type = Qualify(ParseDataTypeCode(new List<Argument_v1>()), Qualifier.Const|Qualifier.Volatile); break;       // const volatile ptr
             case '6': type = ParseFunctionTypeCode(); break;     // fn ptr
             case '8': return ParseMemberFunctionPointerCode(size, compoundArgs);
             default: Error("Unsupported pointer code 'P{0}'.", str[i - 1]); return null;
             }
-            var pType = new PointerType_v1
+            SerializedType pType = new PointerType_v1
             {
                 DataType = type,
                 PointerSize = size,
             };
+            if (q != Qualifier.None)
+            {
+                pType = new QualifiedType_v1
+                {
+                    DataType = pType,
+                    Qualifier = q,
+                };
+            }
             compoundArgs.Add(new Argument_v1 { Type = pType });
             return pType;
+        }
+
+        private SerializedType Qualify(SerializedType t, Qualifier q)
+        {
+            if (q == Qualifier.None)
+                return t;
+            return new QualifiedType_v1 { DataType = t, Qualifier = q };
         }
 
         public TypeReference_v1 ParseStructure(List<Argument_v1> compoundArgs)

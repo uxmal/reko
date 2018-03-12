@@ -275,5 +275,10 @@ namespace Reko.UnitTests.Arch.Intel
         {
             throw new NotImplementedException();
         }
+
+        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

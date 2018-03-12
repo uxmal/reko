@@ -501,7 +501,8 @@ namespace Reko.UnitTests.Scanning
                 "\tSZO = cond(esi)" + nl +
                 "\tC = false" + nl + 
                 "\tesi = esi + 0x00000001" + nl +
-                "\tSZO = cond(esi)" + nl;
+                "\tSZO = cond(esi)" + nl +
+                 "\tgoto 0C00:0003" + nl;
             var sw = new StringWriter();
             block.Write(sw);
             Assert.AreEqual(sExp, sw.ToString());

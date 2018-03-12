@@ -140,18 +140,17 @@ namespace Reko.Core.Machine
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             var s = FormatValue(value);
-            var pt = value.DataType as PrimitiveType;
-            if (pt != null)
+            if (value.DataType is PrimitiveType pt)
             {
                 if (pt.Domain == Domain.Pointer)
                     writer.WriteAddress(s, Address.FromConstant(value));
                 else
-                    writer.Write(s);
+                    writer.WriteString(s);
             }
             else if (value.DataType is Pointer)
                 writer.WriteAddress(s, Address.FromConstant(value));
             else 
-                writer.Write(s);
+                writer.WriteString(s);
         }
 
 		public Constant Value
@@ -271,7 +270,7 @@ namespace Reko.Core.Machine
 
 		public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-			writer.Write("st(" + fpuReg + ")");
+			writer.WriteString("st(" + fpuReg + ")");
 		}
 	}
 }

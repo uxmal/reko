@@ -167,6 +167,14 @@ namespace Reko.Gui.Windows
                 Stride = stride
             };
         }
+
+        public ISymbolSourceDialog CreateSymbolSourceDialog()
+        {
+            return new SymbolSourceDialog
+            {
+                Services = this.services
+            };
+        }
     }
 }
 

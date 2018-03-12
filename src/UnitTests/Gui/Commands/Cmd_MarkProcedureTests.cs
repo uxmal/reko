@@ -52,6 +52,7 @@ namespace Reko.UnitTests.Gui.Commands
                     mem.BaseAddress,
                     new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute))
             };
+            program.BuildImageMap();
         }
 
         [Test]
@@ -69,6 +70,7 @@ namespace Reko.UnitTests.Gui.Commands
             sc.AddService<IDecompilerShellUiService>(new FakeShellUiService());
             dc.Expect(d => d.ScanProcedure(progaddr)).IgnoreArguments().Return(proc);
             brSvc.Expect(b => b.Reload());
+            brSvc.Stub(b => b.CurrentProgram).Return(program);
             mr.ReplayAll();
 
             var locations = new[] { new ProgramAddress(program, addr) };

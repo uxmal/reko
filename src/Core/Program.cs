@@ -327,24 +327,21 @@ namespace Reko.Core
         // Convenience functions.
         public EndianImageReader CreateImageReader(Address addr)
         {
-            ImageSegment segment;
-            if (!SegmentMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
                  throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
 
         public ImageWriter CreateImageWriter(Address addr)
         {
-            ImageSegment segment;
-            if (!SegmentMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageWriter(segment.MemoryArea, addr);
         }
 
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
-            ImageSegment segment;
-            if (!SegmentMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out var segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateDisassembler(
                 Architecture.CreateImageReader(segment.MemoryArea, addr));
@@ -473,20 +470,18 @@ namespace Reko.Core
         private static Identifier IdFromExpression(Expression arg, int i)
         {
             var id = arg as Identifier;
-            var stg = id != null ? id.Storage : null;
+            var stg = id?.Storage;
             return new Identifier("", arg.DataType, stg);
         }
 
         public PseudoProcedure EnsurePseudoProcedure(string name, FunctionType sig)
         {
-            Dictionary<FunctionType, PseudoProcedure> de;
-            if (!PseudoProcedures.TryGetValue(name, out de))
+            if (!PseudoProcedures.TryGetValue(name, out var de))
             {
                 de = new Dictionary<FunctionType, PseudoProcedure>(new DataTypeComparer());
                 PseudoProcedures[name] = de;
             }
-            PseudoProcedure intrinsic;
-            if (!de.TryGetValue(sig, out intrinsic))
+            if (!de.TryGetValue(sig, out var intrinsic))
             {
                 intrinsic = new PseudoProcedure(name, sig);
                 de.Add(sig, intrinsic);
@@ -496,8 +491,7 @@ namespace Reko.Core
 
         public Procedure_v1 EnsureUserProcedure(Address address, string name, bool decompile = true)
         {
-            Procedure_v1 up;
-            if (!User.Procedures.TryGetValue(address, out up))
+            if (!User.Procedures.TryGetValue(address, out var up))
             {
                 up = new Procedure_v1
                 {
@@ -512,8 +506,7 @@ namespace Reko.Core
 
         public GlobalDataItem_v2 ModifyUserGlobal(Address address, SerializedType dataType, string name)
         {
-            GlobalDataItem_v2 gbl;
-            if (!User.Globals.TryGetValue(address, out gbl))
+            if (!User.Globals.TryGetValue(address, out var gbl))
             {
                 gbl = new GlobalDataItem_v2()
                 {
@@ -549,10 +542,7 @@ namespace Reko.Core
         {
             User.Globals.Remove(address);
             // Do not remove block data item
-            ImageMapItem item;
-            if (ImageMap.TryFindItemExact(address, out item) &&
-                item is ImageMapBlock
-            )
+            if (ImageMap.TryFindItemExact(address, out var item) && item is ImageMapBlock)
                 return;
             ImageMap.RemoveItem(address);
         }

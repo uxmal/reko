@@ -9,7 +9,7 @@ Mem0:Global memory
 fp0_2: orig: fp0
     def:  fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
     uses: branch (real96) fp0_2 == Mem0[a6 + 0x00000008:real96] l1
-flags_3: orig: flags
+NZCV_3: orig: NZCV
 // FCmpFragment
 // Return size: 0
 void FCmpFragment(ptr32 a6)

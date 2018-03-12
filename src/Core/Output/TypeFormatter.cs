@@ -425,6 +425,19 @@ namespace Reko.Core.Output
             return writer;
 		}
 
+        public Formatter VisitQualifiedType(QualifiedType qt)
+        {
+            switch (qt.Qualifier)
+            {
+            case Qualifier.Const: writer.WriteKeyword("const"); break;
+            case Qualifier.Volatile: writer.WriteKeyword("volatile"); break;
+            case Qualifier.Restricted: writer.WriteKeyword("restricted"); break;
+            }
+            writer.Write(" ");
+            qt.DataType.Accept(this);
+            return writer;
+        }
+
         public Formatter VisitReference(ReferenceTo refTo)
         {
             if (mode == Mode.Writing)

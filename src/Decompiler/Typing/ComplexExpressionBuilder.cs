@@ -261,6 +261,10 @@ namespace Reko.Typing
             return FallbackExpression();
         }
 
+        public Expression VisitQualifiedType(QualifiedType qt)
+        {
+            return qt.DataType.Accept(this);
+        }
 
         public Expression VisitReference(ReferenceTo refTo)
         {

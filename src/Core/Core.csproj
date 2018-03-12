@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProjectGuid>{5C315C78-1F97-4B16-81AA-917284969DFE}</ProjectGuid>
@@ -37,8 +37,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -57,7 +55,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -87,6 +84,74 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
+    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCpu</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
+    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>AnyCpu</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -167,6 +232,7 @@
     <Compile Include="Assemblers\Assembler.cs" />
     <Compile Include="Assemblers\Emitter.cs" />
     <Compile Include="Assemblers\Symbol.cs" />
+    <Compile Include="BinaryReaderExtensions.cs" />
     <Compile Include="CallingConvention.cs" />
     <Compile Include="CharacteristicsLibrary.cs" />
     <Compile Include="CLanguage\CBasicType.cs" />
@@ -200,6 +266,7 @@
     <Compile Include="Configuration\RawFileElement.cs" />
     <Compile Include="Configuration\RekoConfiguration_v1.cs" />
     <Compile Include="Configuration\SignatureFileElement.cs" />
+    <Compile Include="Configuration\SymbolSource.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
     <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
@@ -209,8 +276,8 @@
     <Compile Include="Dfa\PatternParser.cs" />
     <Compile Include="Dfa\State.cs" />
     <Compile Include="Dfa\TreeNode.cs" />
-    <Compile Include="Endianess.cs" />
     <Compile Include="EndianImageReader.cs" />
+    <Compile Include="Endianness.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="EventEx.cs" />
@@ -243,9 +310,12 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="ImageReaderExtensions.cs" />
     <Compile Include="ImageReader.cs" />
+    <Compile Include="ImageStream.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
+    <Compile Include="ISymbolSource.cs" />
     <Compile Include="IRFormat\IRFormatLexer.cs" />
     <Compile Include="IRFormat\IRFormatParser.cs" />
     <Compile Include="IRFormat\IRProcedureBuilder.cs" />
@@ -264,6 +334,28 @@
     <Compile Include="Lib\UbjsonMarker.cs" />
     <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
+    <Compile Include="NativeInterface\CustomAnsiStringMarshaler.cs" />
+    <Compile Include="NativeInterface\ILibraryLoader.cs" />
+    <Compile Include="NativeInterface\INativeArchitecture.cs" />
+    <Compile Include="NativeInterface\INativeDisassembler.cs" />
+    <Compile Include="NativeInterface\INativeInstruction.cs" />
+    <Compile Include="NativeInterface\INativeInstructionWriter.cs" />
+    <Compile Include="NativeInterface\Interfaces\INativeSymbolSource.cs" />
+    <Compile Include="NativeInterface\Interfaces\NativeProcessorArchitectureProvider.cs" />
+    <Compile Include="NativeInterface\Interfaces\NativeSymbolSourceProvider.cs" />
+    <Compile Include="NativeInterface\NativeInteropAttribute.cs" />
+    <Compile Include="NativeInterface\NativeMachineInstruction.cs" />
+    <Compile Include="NativeInterface\NativeProcessorArchitecture.cs" />
+    <Compile Include="NativeInterface\NativeSymbolSource.cs" />
+    <Compile Include="NativeInterface\PosixLibraryLoader.cs" />
+    <Compile Include="NativeInterface\WindowsLibraryLoader.cs" />
+    <Compile Include="NativeInterface\BaseType.cs" />
+    <Compile Include="NativeInterface\INativeRewriter.cs" />
+    <Compile Include="NativeInterface\INativeTypeFactory.cs" />
+    <Compile Include="NativeInterface\Interop.cs" />
+    <Compile Include="NativeInterface\IRtlNativeEmitter.cs" />
+    <Compile Include="NativeInterface\NativeTypeFactory.cs" />
+    <Compile Include="NativeInterface\RtlNativeEmitter.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\IRFormatter.cs" />
     <Compile Include="Output\JsonFormatter.cs" />
@@ -361,6 +453,7 @@
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
     <Compile Include="Serialization\Project_v4.cs" />
+    <Compile Include="Serialization\QualifiedType_v1.cs" />
     <Compile Include="Serialization\ReferenceType_v1.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
     <Compile Include="Serialization\SerializedProject.cs" />
@@ -630,6 +723,7 @@
     <Compile Include="Services\IDiagnosticsService.cs" />
     <Compile Include="Services\IFileSystemService.cs" />
     <Compile Include="Services\IOracleService.cs" />
+    <Compile Include="Services\ISymbolLoadingService.cs" />
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
@@ -692,6 +786,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\QualifiedType.cs" />
     <Compile Include="Types\ReferenceTo.cs" />
     <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">

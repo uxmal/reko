@@ -289,8 +289,7 @@ namespace Reko.Arch.X86
 
             // Reset the state of the currentInstruction
             this.currentDecodingContext.Reset();
-            byte op;
-            if (!rdr.TryReadByte(out op))
+            if (!rdr.TryReadByte(out byte op))
                 return null;
             try
             {
@@ -648,8 +647,7 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
                 int grp = Group - 1;
-                byte modRm;
-                if (!disasm.TryEnsureModRM(out modRm))
+                if (!disasm.TryEnsureModRM(out byte modRm))
                     return null;
                 OpRec opRec = s_aOpRecGrp[grp * 8 + ((modRm >> 3) & 0x07)];
                 return opRec.Decode(disasm, op, opFormat + format);
@@ -672,8 +670,7 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                byte modRm;
-                if (!disasm.TryEnsureModRM(out modRm))
+                if (!disasm.TryEnsureModRM(out byte modRm))
                     return null;
                 if ((modRm & 0xC0) == 0xC0)
                     return regInstrs[modRm & 0x07].Decode(disasm, op, opFormat);
@@ -686,8 +683,7 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                byte modRM;
-                if (!disasm.TryEnsureModRM(out modRM))
+                if (!disasm.TryEnsureModRM(out byte modRM))
                     return null;
                 OpRec opRec;
                 int iOpRec = (op & 0x07) * 0x48;
@@ -753,8 +749,7 @@ namespace Reko.Arch.X86
                 var instr = s_aOpRec0F[op].Decode(disasm, op, opFormat);
                 if (instr == null)
                     return instr;
-                Opcode vexCode;
-                if (!s_mpVex.TryGetValue(instr.code, out vexCode))
+                if (!s_mpVex.TryGetValue(instr.code, out var vexCode))
                 {
                     Debug.Print("Failed to map {0} to VEX counterpart", instr.code);
                     return null;
@@ -983,8 +978,7 @@ namespace Reko.Arch.X86
 		{
             if (!this.currentDecodingContext.IsModRegMemByteActive())
             {
-                byte modrm = 0;
-                if (!rdr.TryReadByte(out modrm))
+                if (!rdr.TryReadByte(out var modrm))
                 {
                     modRm = 0;
                     return false;
@@ -1280,16 +1274,14 @@ namespace Reko.Arch.X86
 
 		public ImmediateOperand CreateImmediateOperand(PrimitiveType immWidth, PrimitiveType instrWidth)
 		{
-            Constant c;
-            if (!rdr.TryReadLe(immWidth, out c))
+            if (!rdr.TryReadLe(immWidth, out var c))
                 return null;
 			return new ImmediateOperand(c);
 		}
 
 		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
 		{
-            byte modRm;
-            if (!TryEnsureModRM(out modRm))
+            if (!TryEnsureModRM(out var modRm))
                 return null;
 
 			int  rm = this.currentDecodingContext.ModRegMemByte & 0x07;
@@ -1374,8 +1366,7 @@ namespace Reko.Arch.X86
 				{
                     // We have SIB'ness, your majesty!
 
-                    byte sib;
-                    if (!rdr.TryReadByte(out sib))
+                    if (!rdr.TryReadByte(out byte sib))
                         return null;
 					if (((this.currentDecodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{

@@ -36,6 +36,7 @@ namespace Reko.Core.Types
         T VisitPrimitive(PrimitiveType pt);
         T VisitMemberPointer(MemberPointer memptr);
         T VisitPointer(Pointer ptr);
+        T VisitQualifiedType(QualifiedType qt);
         T VisitReference(ReferenceTo refTo);
         T VisitString(StringType str);
         T VisitStructure(StructureType str);
@@ -57,7 +58,9 @@ namespace Reko.Core.Types
         void VisitPrimitive(PrimitiveType pt);
         void VisitMemberPointer(MemberPointer memptr);
         void VisitPointer(Pointer ptr);
+        void VisitQualifiedType(QualifiedType qt);
         void VisitReference(ReferenceTo refTo);
+
         void VisitString(StringType str);
         void VisitStructure(StructureType str);
         void VisitTypeReference(TypeReference typeref);

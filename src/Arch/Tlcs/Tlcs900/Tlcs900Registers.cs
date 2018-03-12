@@ -56,8 +56,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
         public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Byte);
         public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
 
-        public static readonly FlagRegister sr = new FlagRegister("sr", 8, PrimitiveType.Word16);
-        public static readonly FlagRegister f = new FlagRegister("f", 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage sr = new RegisterStorage("sr", 8, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage f = new RegisterStorage("f", 8, 0, PrimitiveType.Byte);
 
         internal static RegisterStorage[] regs;
         internal static Dictionary<RegisterStorage, Dictionary<int, RegisterStorage>> Subregisters;

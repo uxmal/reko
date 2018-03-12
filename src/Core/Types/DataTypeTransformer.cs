@@ -102,6 +102,12 @@ namespace Reko.Core.Types
 			return ptr;
 		}
 
+        public virtual DataType VisitQualifiedType(QualifiedType qt)
+        {
+            qt.DataType = qt.DataType.Accept(this);
+            return qt;
+        }
+
         public virtual DataType VisitReference(ReferenceTo refTo)
         {
             refTo.Referent = refTo.Referent.Accept(this);

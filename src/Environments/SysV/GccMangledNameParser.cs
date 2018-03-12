@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -327,48 +328,47 @@ namespace Reko.Environments.SysV
 
         private SerializedType Type()
         {
+            var qual = CvQualifier();
             switch (str[i++])
             {
             case 'v': return new VoidType_v1();
-            case 'b': return PrimitiveType_v1.Bool();
-            case 'c': return PrimitiveType_v1.Char8();
-            case 'h': return PrimitiveType_v1.UChar8();
-            case 's': return PrimitiveType_v1.Int16();
-            case 't': return PrimitiveType_v1.UInt16();
-            case 'i': return PrimitiveType_v1.Int32();
-            case 'j': return PrimitiveType_v1.UInt32();
-            case 'l': return PrimitiveType_v1.Int64();
-            case 'm': return PrimitiveType_v1.UInt64();
-            case 'w': return PrimitiveType_v1.WChar16();
-            case 'f': return PrimitiveType_v1.Real32();
-            case 'd': return PrimitiveType_v1.Real64();
+            case 'b': return Qualify(PrimitiveType_v1.Bool(), qual);
+            case 'c': return Qualify(PrimitiveType_v1.Char8(), qual);
+            case 'h': return Qualify(PrimitiveType_v1.UChar8(), qual);
+            case 's': return Qualify(PrimitiveType_v1.Int16(), qual);
+            case 't': return Qualify(PrimitiveType_v1.UInt16(), qual);
+            case 'i': return Qualify(PrimitiveType_v1.Int32(), qual);
+            case 'j': return Qualify(PrimitiveType_v1.UInt32(), qual);
+            case 'l': return Qualify(PrimitiveType_v1.Int64(), qual);
+            case 'm': return Qualify(PrimitiveType_v1.UInt64(), qual);
+            case 'w': return Qualify(PrimitiveType_v1.WChar16(), qual);
+            case 'f': return Qualify(PrimitiveType_v1.Real32(), qual);
+            case 'd': return Qualify(PrimitiveType_v1.Real64(), qual);
             case 'F': --i; return FunctionType(); 
             case 'N': --i; return CreateTypeReference(NestedName()); 
             case 'P':
                 var ptr = new PointerType_v1 { DataType = Type(), PointerSize = ptrSize };
                 AddSubstitution(ptr);
-                return ptr;
+                return Qualify(ptr, qual);
             case 'R':
-                //$TODO: Reko doesn't have a concept of 'const' or 'volatile'. 
-                // Needs to be implemented for completeness, but should not affect
-                // quality of decompilation.
-                var qual = CvQualifier();
-                return new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+                qual = CvQualifier();
+                var r = new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+                return Qualify(r, qual);
             case 'S':
                 switch (str[i++])
                 {
                 case 't':
-                    return new TypeReference_v1
+                    return Qualify(new TypeReference_v1
                     {
                         Scope = new[] { "std" },
                         TypeName = Type().ToString(),
-                    };
+                    }, qual);
                 case 's':
-                    return new TypeReference_v1
+                    return Qualify(new TypeReference_v1
                     {
                         Scope = new[] { "std" },
                         TypeName = "string"
-                    };
+                    }, qual);
                 default:
                     int iStart = --i;
                     while (str[i] != '_')
@@ -376,7 +376,7 @@ namespace Reko.Environments.SysV
                     ++i;
                     var sub = str.Substring(iStart, i - iStart);
                     Debug.Print(sub);
-                    return (SerializedType)substitutions[sub];
+                    return Qualify((SerializedType)substitutions[sub], qual);
                 }
                 throw new NotImplementedException();
             default:
@@ -388,15 +388,23 @@ namespace Reko.Environments.SysV
                         TypeName = UnqualifiedName()
                     };
                     AddSubstitution(tref);
-                    return tref;
+                    return Qualify(tref, qual);
                 }
                 throw new NotImplementedException(string.Format("Unknown GCC type code '{0}' ({1}).", str[i], str.Substring(i)));
             }
         }
+
+        private SerializedType Qualify(SerializedType t, Qualifier q)
+        {
+            if (q == Qualifier.None)
+                return t;
+            return new QualifiedType_v1 { DataType = t, Qualifier = q };
+        }
+
         /*
-         * <function-type> ::= [<CV-qualifiers>] [Dx] F [Y] <bare-function-type> [<ref-qualifier>] E
-         * <bare-function-type> ::= <signature type>+
-         */
+* <function-type> ::= [<CV-qualifiers>] [Dx] F [Y] <bare-function-type> [<ref-qualifier>] E
+* <bare-function-type> ::= <signature type>+
+*/
         private SerializedSignature FunctionType()
         {
             Expect('F');
@@ -430,17 +438,16 @@ namespace Reko.Environments.SysV
             };
         }
 
-        private char CvQualifier()
+        private Qualifier CvQualifier()
         {
             char c = str[i];
-            if (c == 'K' ||  // const
-                c == 'V' ||  // volatile
-                c == 'r')    // restrict
+            switch (str[i])
             {
-                ++i;
-                return c;
+            case 'K': ++i; return Qualifier.Const;
+            case 'V': ++i; return Qualifier.Volatile;
+            case 'r': ++i; return Qualifier.Restricted;
+            default: return Qualifier.None;
             }
-            return '\0';
         }
     }
 

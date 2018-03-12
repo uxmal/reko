@@ -23,6 +23,7 @@ using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -65,23 +66,17 @@ namespace Reko.ImageLoaders.MzExe.Borland
             dataSize += exeLoader.e_cbLastPage;
             var rdr = new LeImageReader(rawImage, dataSize);
             var srdr = new StructureReader<debug_header>(rdr);
-            var header = srdr.Read();
-            if (!header.HasValue || header.Value.magic_number != MagicNumber)
+            this.header = srdr.Read();
+            if (this.header.magic_number != MagicNumber)
             {
                 return false;
             }
-            this.header = header.Value;
             this.name_pool_offset = rawImage.Length - this.header.names;
             if (this.header.extension_size == 0x20)
             {
                 var ext = new StructureReader<header_extension_20>(rdr);
                 var extHdr = ext.Read();
-                if (!extHdr.HasValue)
-                {
-                    //$TODO: warn
-                    return false;
-                }
-                name_pool_offset = rdr.Offset + (int)extHdr.Value.name_pool_offset;
+                name_pool_offset = rdr.Offset + (int)extHdr.name_pool_offset;
             }
             else if (this.header.extension_size != 0)
             {
@@ -113,18 +108,15 @@ namespace Reko.ImageLoaders.MzExe.Borland
             return true;
         }
 
-        private void LoadSymbolTable(ImageReader rdr, string[] names)
+        private void LoadSymbolTable(LeImageReader rdr, string[] names)
         {
             var srdr = new StructureReader<symbol_record>(rdr);
             int nSym = 0;
             this.symbols = new symbol_record[header.symbols_count];
             while (nSym < header.symbols_count)
             {
-                var hsym = srdr.Read();
-                if (!hsym.HasValue)
-                    break;
-                this.symbols[nSym] = hsym.Value;
-                var sym = hsym.Value;
+                var sym = srdr.Read();
+                this.symbols[nSym] = sym;
                 var symClass = ClassifySymbol(sym.flags, names[sym.symbol_name], ref sym);
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Symbol:  {names[sym.symbol_name]} ({nSym})");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    Type:  {sym.symbol_type:X4}");
@@ -140,10 +132,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nMod = 0;
             while (nMod < header.modules_count)
             {
-                var hmod = srdr.Read();
-                if (!hmod.HasValue)
-                    break;
-                var mod = hmod.Value;
+                var mod = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Module:         {names[mod.module_name]}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    Language:     {ClassifyProgrammingLanguage(mod.language)}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    Flags:        {mod.flags:X2}");
@@ -160,10 +149,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nSrc = 0;
             while (nSrc < header.source_count)
             {
-                ushort iFileName;
-                uint timestamp;
-                if (!rdr.TryReadLeUInt16(out iFileName) ||
-                    !rdr.TryReadLeUInt32(out timestamp))
+                if (!rdr.TryReadLeUInt16(out ushort iFileName) ||
+                    !rdr.TryReadLeUInt32(out uint timestamp))
                     break;
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Source file:  {names[iFileName]}");
                 ++nSrc;
@@ -176,10 +163,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nScopes = 0;
             while (nScopes < header.scopes_count)
             {
-                var hscope = srdr.Read();
-                if (hscope == null)
-                    break;
-                var scope = hscope.Value;
+                var scope = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, $"  Scope:");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    autos_index:     {scope.autos_index}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    autos_count:     {scope.autos_count}");
@@ -196,10 +180,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             var srdr = new StructureReader<line_number>(rdr);
             for (int nLineNos = 0; nLineNos < header.lines_count; ++nLineNos)
             {
-                var hline = srdr.Read();
-                if (hline == null)
-                    break;
-                var line = hline.Value;
+                var line = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, $"    line_number_value:  {line.line_number_value}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    line_number_offset: {line.line_number_offset}");
             }
@@ -211,10 +192,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             int nSegs = 0;
             while (nSegs < header.segment_count)
             {
-                var hseg = srdr.Read();
-                if (hseg == null)
-                    break;
-                var seg = hseg.Value;
+                var seg = srdr.Read();
 
                 DebugEx.PrintIf(trace.TraceVerbose, "  Segment");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    mod_index: {seg.mod_index}");
@@ -234,10 +212,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
             var srdr = new StructureReader<correlation_record>(rdr);
             for (int iCorr = 0; iCorr < header.correlation_count; ++iCorr)
             {
-                var hcorr = srdr.Read();
-                if (hcorr == null)
-                    break;
-                var corr = hcorr.Value;
+                var corr = srdr.Read();
                 DebugEx.PrintIf(trace.TraceVerbose, "  Correlation");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    segment_index: {corr.segment_index}");
                 DebugEx.PrintIf(trace.TraceVerbose, $"    file_index: {corr.file_index}");
@@ -541,13 +516,10 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             this.types = new Dictionary<ushort, BorlandType>();
             for (int i = 0; i < header.types_count; ++i)
             {
-                byte type_id;
-                ushort type_name;
-                ushort type_size;
                 // The type records are either 8 or 16 bytes long
-                if (!rdr.TryReadByte(out type_id) ||
-                    !rdr.TryReadLeUInt16(out type_name) ||
-                    !rdr.TryReadLeUInt16(out type_size))
+                if (!rdr.TryReadByte(out byte type_id) ||
+                    !rdr.TryReadLeUInt16(out ushort type_name) ||
+                    !rdr.TryReadLeUInt16(out ushort type_size))
                 {
                     break;
                 }
@@ -899,8 +871,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 if (iType == 0)
                     continue;
                 var type = this.types[iType];
-                var callable = type as Callable;
-                if (callable != null)
+                if (type is Callable callable)
                 {
                     imgSym.Type = SymbolType.Procedure;
                 }

@@ -114,12 +114,13 @@ namespace Reko.UnitTests.Scanning
             scan.EnqueueImageSymbol(sym, true);
         }
 
-        private void AssertProgram(string sExpected, Program prog)
+        private void AssertProgram(
+            string sExpected, bool showEdges, Program prog)
         {
             var sw = new StringWriter();
             foreach (var proc in prog.Procedures.Values)
             {
-                proc.Write(false, false, sw);
+                proc.Write(false, showEdges, sw);
                 sw.WriteLine();
             }
             var sActual = sw.ToString();
@@ -128,6 +129,11 @@ namespace Reko.UnitTests.Scanning
                 Debug.WriteLine(sActual);
                 Assert.AreEqual(sExpected, sActual);
             }
+        }
+
+        private void AssertProgram(string sExpected, Program prog)
+        {
+            AssertProgram(sExpected, false, prog);
         }
 
         private SerializedType Char()
@@ -515,6 +521,56 @@ fn00001100_exit:
         }
 
         [Test]
+        public void Scanner_CommonJump()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                // 0x1000:
+                m => { m.Assign(reg1, m.Word32(0)); },
+                // 0x1004:
+                m => { m.Goto(Address.Ptr32(0x1100)); }
+            });
+            Given_Trace(new RtlTrace(0x1100)
+            {
+                // 0x1100:
+                m => { m.Assign(reg1, m.Word32(1)); },
+                // 0x1104:
+                m => { m.Goto(Address.Ptr32(0x1004)); },
+            });
+            fakeArch.Test_IgnoreAllUnkownTraces();
+
+            scan.EnqueueImageSymbol(
+                new ImageSymbol(Address.Ptr32(0x1000))
+                {
+                    ProcessorState = arch.CreateProcessorState(this.program.SegmentMap),
+                },
+                true);
+            scan.ScanImage();
+
+            var sExp =
+@"// fn00001000
+// Return size: 0
+void fn00001000()
+fn00001000_entry:
+	// succ:  l00001000
+l00001000:
+	r63 = fp
+	r1 = 0x00000000
+	// succ:  l00001004
+l00001004:
+	// succ:  l00001100
+l00001100:
+	r1 = 0x00000001
+	goto l00001004
+	// succ:  l00001004
+fn00001000_exit:
+
+";
+            AssertProgram(sExp, true, program);
+        }
+
+        [Test]
         public void Scanner_Trampoline()
         {
             var scan = CreateScanner(0x1000, 0x2000);
@@ -709,6 +765,7 @@ l00001108:
 	r1 = Mem0[r63 + 0x00000004:word32]
 	r1 = r1 - 0x00000001
 	Mem0[r63 + 0x00000004:word32] = r1
+	goto 0x00001200
 l00001114_thunk_fn00001200:
 	call fn00001200 (retsize: 0;)
 	return
@@ -729,6 +786,7 @@ l00001208:
 	r1 = Mem0[r63 + 0x00000004:word32]
 	r1 = r1 - 0x00000001
 	Mem0[r63 + 0x00000004:word32] = r1
+	goto 0x00001100
 l00001214_thunk_fn00001100:
 	call fn00001100 (retsize: 0;)
 	return

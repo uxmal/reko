@@ -136,6 +136,11 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
+        public void VisitQualifiedType(QualifiedType qt)
+        {
+            qt.DataType.Accept(this);
+        }
+
         public void VisitReference(ReferenceTo refTo)
         {
             throw new NotImplementedException();

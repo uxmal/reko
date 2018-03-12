@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.IO;
 using System.Text;
 
 namespace Reko.Core
@@ -109,6 +110,7 @@ namespace Reko.Core
 
         public Address Address { get { return addrStart + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
+        public MemoryArea Image { get { return image; } }
         public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
@@ -409,9 +411,21 @@ namespace Reko.Core
         public long PeekBeInt64(uint offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
 
 
-        public void Seek(int offset)
+        public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)
         {
-            off = off + offset;
+            switch (origin)
+            {
+            case SeekOrigin.Begin:
+                off = offStart + offset;
+                break;
+            case SeekOrigin.Current:
+                off += offset;
+                break;
+            case SeekOrigin.End:
+                off = offEnd + offset;
+                break;
+            }
+            return off;
         }
 
         public byte[] ReadToEnd()
@@ -421,5 +435,11 @@ namespace Reko.Core
             return ab;
         }
 
+        public int Read(byte[] buffer, int offset, int count)
+        {
+            int bytesRead = (int)Math.Min(count, offEnd - offset);
+            Array.Copy(bytes, offset, buffer, 0, bytesRead);
+            return bytesRead;
+        }
     }
 }

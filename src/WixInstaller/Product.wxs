@@ -28,10 +28,10 @@
   <Product
     Id="$(var.RekoProductCode)"
     Version="$(var.RekoVersion)"
-    Name="Reko Decompiler"
+    Name="$(var.ProductName)"
     Language="1033"
     Manufacturer="jklSoft"
-    UpgradeCode="267A75B3-F33E-4987-9BF6-114D1A6CE44E">
+    UpgradeCode="$(var.UpgradeCode)">
 
     <Package
       InstallerVersion="200"
@@ -43,7 +43,7 @@
     <MediaTemplate EmbedCab="yes"/>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="jklSoftFolder" Name="jklSoft">
           <Directory Id="INSTALLFOLDER" Name="Reko">
           </Directory>
@@ -154,7 +154,11 @@
         <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.Xtensa.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
+        <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
 
+        <!-- Symbol sources -->
+        <File Source="$(var.LGSymLoader.TargetPath)" />
+        
         <!-- Libraries -->
         <File Source="$(var.Libc.TargetPath)" />
         <File Source="$(var.Python.TargetPath)" />
@@ -175,9 +179,7 @@
         <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" />
         
         <!-- External files -->
-        <File Source="$(var.SolutionDir)..\external\Capstone.NET\capstone.dll" />
-        <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.dll" />
-        <File Source="$(var.SolutionDir)..\external\Capstone.NET\Gee.External.Capstone.Proxy.dll" />
+        <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
         <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.dll" />
         <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.Drawing.dll" />
         <File Source="$(var.SolutionDir)..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll" />

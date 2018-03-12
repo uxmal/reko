@@ -60,7 +60,7 @@ namespace Reko.Arch.Mos6502
             case AddressMode.IndirectIndexed: fmt = "(${0:X2}),{1}"; break;
             default: throw new NotSupportedException();
             }
-            writer.Write(string.Format(fmt, o, Register));
+            writer.WriteString(string.Format(fmt, o, Register));
         }
     }
 

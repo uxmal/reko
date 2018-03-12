@@ -19,9 +19,11 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reko.Core.Machine
@@ -30,7 +32,7 @@ namespace Reko.Core.Machine
     /// Used to render machine instructions into text. The abstraction
     /// offers opportunities to perform syntax highlighting etc.
     /// </summary>
-    public interface MachineInstructionWriter
+    public interface MachineInstructionWriter : INativeInstructionWriter
     {
         /// <summary>
         /// The current platform we're in. May be null, so make sure
@@ -43,21 +45,12 @@ namespace Reko.Core.Machine
         /// </summary>
         Address Address { get; set; }
 
-        /// <summary>
-        /// Annotations are displayed as comments at the end of the line.
-        /// </summary>
-        /// <param name="a"></param>
-        void AddAnnotation(string a);   
-        void WriteOpcode(string opcode);
         void WriteAddress(string formattedAddress, Address addr);
-        void Tab();
-        void Write(char c);
-        void Write(uint n);
-        void Write(string s);
-        void Write(string fmt, params object[] parms);
+        void WriteFormat(string fmt, params object[] parms);
     }
 
     [Flags]
+    [NativeInterop]
     public enum MachineInstructionWriterOptions
     {
         None = 0,
@@ -101,22 +94,27 @@ namespace Reko.Core.Machine
             sb.Append(formattedAddress);
         }
 
-        public void Write(char c)
+        public void WriteAddress(string formattedAddres, ulong uAddr)
+        {
+            WriteAddress(formattedAddres, Address.Ptr64(uAddr));
+        }
+
+        public void WriteChar(char c)
         {
             sb.Append(c);
         }
 
-        public void Write(string s)
+        public void WriteString(string s)
         {
             sb.Append(s);
         }
 
-        public void Write(uint u)
+        public void WriteUInt32(uint u)
         {
             sb.Append(u);
         }
 
-        public void Write(string fmt, params object[] parms)
+        public void WriteFormat(string fmt, params object[] parms)
         {
             sb.AppendFormat(fmt, parms);
         }

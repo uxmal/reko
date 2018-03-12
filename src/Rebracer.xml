@@ -23,6 +23,33 @@
       </ToolsOptionsSubCategory>
     </ToolsOptionsCategory>
     <ToolsOptionsCategory name="TextEditor">
+      <ToolsOptionsSubCategory name="CSharp">
+        <PropertyValue name="AutoListMembers">true</PropertyValue>
+        <PropertyValue name="AutoListParams">true</PropertyValue>
+        <PropertyValue name="BraceCompletion">true</PropertyValue>
+        <PropertyValue name="CutCopyBlankLines">true</PropertyValue>
+        <PropertyValue name="EnableLeftClickForURLs">true</PropertyValue>
+        <PropertyValue name="HideAdvancedMembers">true</PropertyValue>
+        <PropertyValue name="IndentSize">4</PropertyValue>
+        <PropertyValue name="IndentStyle">2</PropertyValue>
+        <PropertyValue name="InsertTabs">false</PropertyValue>
+        <PropertyValue name="OverviewWidth">58</PropertyValue>
+        <PropertyValue name="ShowAnnotations">true</PropertyValue>
+        <PropertyValue name="ShowCaretPosition">true</PropertyValue>
+        <PropertyValue name="ShowChanges">true</PropertyValue>
+        <PropertyValue name="ShowErrors">true</PropertyValue>
+        <PropertyValue name="ShowHorizontalScrollBar">true</PropertyValue>
+        <PropertyValue name="ShowLineNumbers">true</PropertyValue>
+        <PropertyValue name="ShowMarks">true</PropertyValue>
+        <PropertyValue name="ShowNavigationBar">true</PropertyValue>
+        <PropertyValue name="ShowPreview">true</PropertyValue>
+        <PropertyValue name="ShowVerticalScrollBar">true</PropertyValue>
+        <PropertyValue name="TabSize">4</PropertyValue>
+        <PropertyValue name="UseMapMode">false</PropertyValue>
+        <PropertyValue name="VirtualSpace">false</PropertyValue>
+        <PropertyValue name="WordWrap">false</PropertyValue>
+        <PropertyValue name="WordWrapGlyphs">true</PropertyValue>
+      </ToolsOptionsSubCategory>
       <ToolsOptionsSubCategory name="CSharp-Specific">
         <PropertyValue name="AddImport_SuggestForTypesInNuGetPackages">0</PropertyValue>
         <PropertyValue name="AddImport_SuggestForTypesInReferenceAssemblies">0</PropertyValue>
@@ -354,24 +381,6 @@
         <PropertyValue name="Wrapping_KeepStatementsOnSingleLine">1</PropertyValue>
         <PropertyValue name="Wrapping_PreserveSingleLine">1</PropertyValue>
       </ToolsOptionsSubCategory>
-      <ToolsOptionsSubCategory name="JavaScript Specific">
-        <PropertyValue name="DownloadRemoteReferences">false</PropertyValue>
-        <PropertyValue name="FormatCompletedBlockOnRightCurlyBrace">true</PropertyValue>
-        <PropertyValue name="FormatCompletedLineOnEnter">true</PropertyValue>
-        <PropertyValue name="FormatCompletedStatementOnSemicolon">true</PropertyValue>
-        <PropertyValue name="FormatOnPaste">true</PropertyValue>
-        <PropertyValue name="ImplicitReferencesString">Implicit (Windows)|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\domWindows.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js;Implicit (Windows 8.1)|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\sitetypesWindows.js|$(VSInstallDir)\JavaScript\References\domWindows_8.1.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js;Implicit (Windows Phone 8.1)|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\sitetypesWindows.js|$(VSInstallDir)\JavaScript\References\domWindowsPhone_8.1.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js;Implicit (Web)|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\sitetypesWeb.js|$(VSInstallDir)\JavaScript\References\domWeb.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js;Dedicated Worker|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\dedicatedworker.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js;Generic|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js;Implicit (Apache Cordova)|$(VSInstallDir)\JavaScript\References\libhelp.js|$(VSInstallDir)\JavaScript\References\sitetypesWeb.js|$(VSInstallDir)\JavaScript\References\domWeb.js|$(VSInstallDir)\JavaScript\References\underscorefilter.js|$(VSInstallDir)\JavaScript\References\showPlainComments.js|$(VSInstallDir)\JavaScript\References\multiDeviceApps.js;</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterCommaDelimiter">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterFunctionKeywordForAnonymousFunctions">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterKeywordsInControlFlowStatements">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis">false</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterSemicolonInForStatements">true</PropertyValue>
-        <PropertyValue name="InsertSpaceBeforeAndAfterBinaryOperators">true</PropertyValue>
-        <PropertyValue name="PlaceOpenBraceOnNewLineForControlBlocks">false</PropertyValue>
-        <PropertyValue name="PlaceOpenBraceOnNewLineForFunctionsAndClasses">false</PropertyValue>
-        <PropertyValue name="ShowErrorsAsWarnings">true</PropertyValue>
-        <PropertyValue name="ShowSyntaxErrors">true</PropertyValue>
-      </ToolsOptionsSubCategory>
       <ToolsOptionsSubCategory name="C/C++ Specific">
         <PropertyValue name="AddSemicolonForClassTypes">true</PropertyValue>
         <PropertyValue name="AlignParameters">false</PropertyValue>
@@ -488,53 +497,6 @@
         <PropertyValue name="SuspendNewSingleFileISenseDuringDebugging">false</PropertyValue>
         <PropertyValue name="TrimSpaceAroundScope">true</PropertyValue>
         <PropertyValue name="TrimSpaceUnaryOperator">true</PropertyValue>
-      </ToolsOptionsSubCategory>
-      <ToolsOptionsSubCategory name="TypeScript Specific">
-        <PropertyValue name="AutomaticallyCompileTypeScriptFilesWhenSavedWhenNoSolution">false</PropertyValue>
-        <PropertyValue name="CompletionChars">{}[]().,:;+-*/%&amp;|^!~=&lt;&gt;? </PropertyValue>
-        <PropertyValue name="ES3ForFilesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="ES5ForFilesThatAreNotPartOfAProject">true</PropertyValue>
-        <PropertyValue name="ES6ForFilesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="FormatCompletedBlockOnLeftCurlyBrace">true</PropertyValue>
-        <PropertyValue name="FormatCompletedBlockOnRightCurlyBrace">true</PropertyValue>
-        <PropertyValue name="FormatCompletedLineOnEnter">true</PropertyValue>
-        <PropertyValue name="FormatCompletedStatementOnSemicolon">true</PropertyValue>
-        <PropertyValue name="FormatOnPaste">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterCommaDelimiter">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterFunctionKeywordForAnonymousFunctions">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterKeywordsInControlFlowStatements">true</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis">false</PropertyValue>
-        <PropertyValue name="InsertSpaceAfterSemicolonInForStatements">true</PropertyValue>
-        <PropertyValue name="InsertSpaceBeforeAndAfterBinaryOperators">true</PropertyValue>
-        <PropertyValue name="OnlyAnalyzeProjectsWithOpenDocuments">false</PropertyValue>
-        <PropertyValue name="OnlyUseTabOrEnterToCommit">true</PropertyValue>
-        <PropertyValue name="PlaceOpenBraceOnNewLineForControlBlocks">false</PropertyValue>
-        <PropertyValue name="PlaceOpenBraceOnNewLineForFunctions">false</PropertyValue>
-        <PropertyValue name="ShowGruntGulpDialogForAspNet">true</PropertyValue>
-        <PropertyValue name="ShowJSErrorsAsWarnings">true</PropertyValue>
-        <PropertyValue name="ShowJSSyntaxErrors">true</PropertyValue>
-        <PropertyValue name="ShowVirtualProjectsInSolutionExplorerWhenNoSolution">true</PropertyValue>
-        <PropertyValue name="ShowVirtualProjectsInSolutionExplorerWhenSolutionOpen">false</PropertyValue>
-        <PropertyValue name="UseAMDCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="UseCommonJSCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="UseES2015CodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="UseJsxPreserveForFilesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="UseJsxReactForFilesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="UseSystemCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
-        <PropertyValue name="UseTypeScriptLanguageServiceForJavaScript">true</PropertyValue>
-        <PropertyValue name="UseUMDCodeGenerationForModulesThatAreNotPartOfAProject">false</PropertyValue>
-      </ToolsOptionsSubCategory>
-      <ToolsOptionsSubCategory name="HTMLX Specific">
-        <PropertyValue name="EnableTagHelperTooltips">true</PropertyValue>
-        <PropertyValue name="EnableTagNavigator">false</PropertyValue>
-        <PropertyValue name="EnableTooltips">true</PropertyValue>
-        <PropertyValue name="EnableValidation">true</PropertyValue>
-        <PropertyValue name="ErrorsAsWarnings">true</PropertyValue>
-        <PropertyValue name="FormatOnPaste">true</PropertyValue>
-        <PropertyValue name="IdentifyHelpfulExtensions">true</PropertyValue>
-        <PropertyValue name="InsertAttributeValueQuotes">true</PropertyValue>
-        <PropertyValue name="InsertClosingTag">true</PropertyValue>
-        <PropertyValue name="XHtmlCodingStyle">true</PropertyValue>
       </ToolsOptionsSubCategory>
     </ToolsOptionsCategory>
   </ToolsOptions>
