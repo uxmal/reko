@@ -361,9 +361,15 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public Func<
+            IProcessorArchitecture, IStorageBinder, CallSite, Expression,
+            FrameApplicationBuilder>
+                Test_CreateFrameApplicationBuilder =
+                    (arch, binder, site, callee) =>
+                    new FrameApplicationBuilder(arch, binder, site, callee, false);
         public FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
         {
-            return new FrameApplicationBuilder(this, binder, site, callee, false);
+            return Test_CreateFrameApplicationBuilder(this, binder, site, callee);
         }
 
         public Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
