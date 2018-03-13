@@ -1,6 +1,9 @@
 #!/bin/bash
-trap 'jobs -p | xargs kill' EXIT
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
+# Watch changes for app-main
 tsc --watch &
+
+# Watch changes for app-renderer and invoke electron
 cd app
-./node_modules/.bin/webpack --progress --colors --watch
+node dev.js

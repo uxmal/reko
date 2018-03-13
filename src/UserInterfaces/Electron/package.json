@@ -29,13 +29,15 @@
   },
   "homepage": "https://github.com/uxmal/reko#readme",
   "devDependencies": {
-    "typescript": "^2.5.3",
+    "@types/node": "^9.4.7",
+    "typescript": "^2.7.2",
     "vue-devtools": "^3.1.9"
   },
   "dependencies": {
     "@types/handlebars": "^4.0.36",
-    "edge": "git+https://github.com/tjanczuk/edge.git#v8.2.1",
-    "electron": "^1.7.9",
-    "handlebars": "^4.0.10"
+    "electron": "^1.8.3",
+    "electron-edge-js": "^8.3.2",
+    "handlebars": "^4.0.11",
+    "node-gyp": "^3.6.2"
   }
 }

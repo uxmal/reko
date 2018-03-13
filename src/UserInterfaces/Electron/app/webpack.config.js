@@ -91,7 +91,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.vue', ],
     alias: {
-      'element-default.css$': 'element-ui/lib/theme-default/index.css',
+      'element-default.css$': 'element-ui/lib/theme-chalk/index.css',
       'bootstrap.min.css$': 'bootstrap/dist/css/bootstrap.min.css',
       'vue$': 'vue/dist/vue.esm.js'
     }

@@ -24,7 +24,7 @@
     "@types/jquery": "^3.2.15",
     "bootstrap": "^3.3.7",
     "css-modules-require-hook": "^4.2.2",
-    "element-ui": "^1.4.7",
+    "element-ui": "^2.2.1",
     "handlebars": "^4.0.11",
     "handlebars-loader": "^1.6.0",
     "jquery": "^3.2.1",

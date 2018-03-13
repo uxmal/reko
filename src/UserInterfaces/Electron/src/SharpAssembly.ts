@@ -1,4 +1,11 @@
-var edge = require("edge");
+import { resolve } from "path";
+
+interface envAny {
+	[key:string]: any;
+}
+let processEnv:envAny = process.env;
+
+const edge = require("electron-edge-js");
 
 export default class SharpAssembly {
 	private assembly:string;

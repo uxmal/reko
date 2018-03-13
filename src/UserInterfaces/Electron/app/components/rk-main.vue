@@ -1,7 +1,8 @@
 <template>
   <div>
     <p>{{msg}}</p>
-    <Test />
+    <rktree />
+    <rktextview />
   </div>
 </template>
 
@@ -9,14 +10,21 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 
+import RekoTreeView from "./rk-tree.vue";
+import RekoTextView from "./rk-textview.vue";
+import RekoTreeItem from './rk-treeitem.vue';
+
 import Test from './test.vue';
 
 @Component({
   components: {
-    foo: Test
+    rktree: RekoTreeView,
+    rktextview: RekoTextView,
+    rktreeitem: RekoTreeItem,
+    rktest: Test
   }
 })
-export default class App extends Vue {
+export default class RekoApp extends Vue {
   msg:string = 'Welcome to Your Vue.js App';
   
   data = function(){
@@ -24,6 +32,11 @@ export default class App extends Vue {
       msg: "Hello World"
     }
   }
+
+  public procedures(arg:any){
+    //TODO
+  }
+
 }
 </script>
 

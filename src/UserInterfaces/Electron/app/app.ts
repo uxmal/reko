@@ -9,7 +9,7 @@ import Handlebars = require("handlebars");
 //import ComponentLoader from './ComponentLoader';
 
 import Vue from 'vue';
-import App from './components/app.vue';
+import RekoApp from './components/rk-main.vue';
 import Test from './components/test.vue';
 
 const Element = require("element-ui");
@@ -22,6 +22,7 @@ Vue.use(Element); //we want to use widgets from element-ui
 //const delims = ["<%", "%>"];
 
 var browser:Browser = new Browser();
+var app:RekoApp = new RekoApp();
 
 function renderProcedure(data:string){
 	$("#reko-procedure")
@@ -31,6 +32,9 @@ function renderProcedure(data:string){
 function setup(){
 	// Render a procedure
 	ipcRenderer.on("procedure", (event:any, arg:any) => {
+		console.log("EMIT");
+		app.procedures(arg);
+
 		renderProcedure(arg);
 		browser.update();
 	});
@@ -71,11 +75,7 @@ function setup(){
 }
 
 $(document).ready(function(e){
-	Vue.component("reko-app", App);
-	new Vue({
-	  el: '#app',
-	  template: "<reko-app />"
-	});
+	app.$mount("#app");
 
 	//$CLEANUP: Remove once we complete vuejs
 	const index = require("./views/index.tpl");

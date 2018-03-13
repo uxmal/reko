@@ -2,6 +2,7 @@ import * as electron from 'electron';
 import {app, dialog, Menu, BrowserWindow, ipcMain} from 'electron';
 
 import SharpAssembly from "./SharpAssembly";
+import { resolve } from 'path';
 
 var util = require('util');
 
@@ -43,7 +44,7 @@ function renderProcedure(result:any){
 	mainWindow.webContents.send("procedure", result);
 }
 
-var rekoUi:SharpAssembly = new SharpAssembly("generated/assemblies/Reko.Gui.Electron.Adapter.dll");
+var rekoUi:SharpAssembly = new SharpAssembly(resolve("generated/assemblies/Reko.Gui.Electron.Adapter.dll"));
 var rootType:string = "Reko.Gui.Electron.Adapter.ElectronDecompilerDriver";
 var reko:any;
 
@@ -81,7 +82,7 @@ function afterInit(){
 	console.log("$$$ About to decompile");
 	SharpAssembly.InvokeAsync(createReko, {
 		appConfig: resolve("generated/assemblies/reko.config"),
-		fileName: "E:/dec/Aberaham.exe",
+		fileName: "E:/dec/Aberaham_0.dir/Aberaham.exe",
 		//fileName: "C:/dev/uxmal/reko/zoo/users/smxsmx/abheram/Aberaham.exe",
 		notify: function (data:any, callback:any) {
 			//console.log(JSON.stringify(data));
