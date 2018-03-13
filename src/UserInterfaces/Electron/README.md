@@ -14,6 +14,11 @@
 ## Development notes
 Run `dev.sh` to edit files on the fly without having to rebuild every time
 
+dev.sh will:
+
+- Invoke `tsc --watch` to monitor changes in `src/`
+- Invoke `app/dev.js`, a wrapper around `webpack --watch` to monitor changes in `app/`. `electron` is automatically started after the first run.
+
 To refresh the page (and see changes) press `CTRL-SHIFT-I` while focused on the electron window to open the dev tools, then click on the development tools to gain focus and press `F5`
 
 Note that if you edit webpack.config.js you'll need to restart `dev.sh`
@@ -85,3 +90,5 @@ Open the file in a text editor and delete msvs_version
 ### [handlebars-loader doesn't support Webpack 4](https://github.com/pcardune/handlebars-loader/issues/155)
 
 This is a low priority issue, but if we'll ever have to upgrade to Webpack 4 we should keep an eye on it
+
+Handlebars was used before the VueJS components were added and won't be required anymore once the jQuery/bootstrap/handlebars code is removed
