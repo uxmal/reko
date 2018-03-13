@@ -465,11 +465,11 @@ namespace Reko.Gui
             {
                 if (style.Background != null)
                 {
-                    ctrl.BackColor = style.Background.Color;
+                    ctrl.BackColor = style.Background.Color.ToArgb();
                 }
                 if (style.Foreground != null)
                 {
-                    ctrl.ForeColor = style.Foreground.Color;
+                    ctrl.ForeColor = style.Foreground.Color.ToArgb();
                 }
             }
         }

@@ -35,8 +35,8 @@ namespace Reko.UnitTests.Mocks
             get { return text == null ? "" : text; }
             set { text = value; TextChanged.Fire(this); }
         }
-        public Color BackColor { get; set; }
-        public Color ForeColor { get; set; }
+        public int? BackColor { get; set; }
+        public int? ForeColor { get; set; }
 
         public void SelectAll()
         {

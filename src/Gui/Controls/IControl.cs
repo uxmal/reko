@@ -24,8 +24,8 @@ namespace Reko.Gui.Controls
 {
     public interface IControl
     {
-        Color ForeColor { get; set; }
-        Color BackColor { get; set; }
+        int? ForeColor { get; set; }
+        int? BackColor { get; set; }
         bool Enabled { get; set; }
     }
 }

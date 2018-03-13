@@ -39,11 +39,11 @@ namespace Reko.UserInterfaces.WindowsForms
             this.list = list;
         }
 
-        public Color BackColor { get { return list.BackColor; } set { list.BackColor = value;  } }
+        public int? BackColor { get { return list.BackColor.ToArgb(); } set { list.BackColor = Color.FromArgb(value.Value);  } }
 
         public bool Enabled { get { return list.Enabled; } set { list.Enabled = value; } }
 
-        public Color ForeColor { get { return list.ForeColor; } set { list.ForeColor = value; } }
+        public int? ForeColor { get { return list.ForeColor.ToArgb(); } set { list.ForeColor = Color.FromArgb(value.Value); } }
 
         public object DataSource
         {

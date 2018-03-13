@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Gui.Windows
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
 
-            public Color ForeColor
+            public int? ForeColor
             {
                 get
                 {
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Gui.Windows
                 }
             }
 
-            public Color BackColor
+            public int? BackColor
             {
                 get
                 {

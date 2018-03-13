@@ -41,8 +41,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public bool Enabled { get { return textbox.Enabled; } set { textbox.Enabled = value; } }
         public string Text { get { return textbox.Text; } set { textbox.Text = value; } }
-        public Color BackColor { get { return textbox.BackColor; } set { textbox.BackColor = value; } }
-        public Color ForeColor { get { return textbox.ForeColor; } set { textbox.ForeColor = value; } }
+        public int? BackColor { get { return textbox.BackColor.ToArgb(); } set { textbox.BackColor = Color.FromArgb(value.Value); } }
+        public int? ForeColor { get { return textbox.ForeColor.ToArgb(); } set { textbox.ForeColor = Color.FromArgb(value.Value); } }
 
         public void SelectAll()
         {

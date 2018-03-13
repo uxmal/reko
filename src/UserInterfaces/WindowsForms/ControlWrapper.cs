@@ -37,8 +37,8 @@ namespace Reko.UserInterfaces.WindowsForms
             this.ctrl = ctrl;
         }
 
-        public Color BackColor { get { return ctrl.BackColor; } set { ctrl.BackColor = value; } }
-        public Color ForeColor { get { return ctrl.ForeColor; } set { ctrl.ForeColor = value; } }
+        public int? BackColor { get { return ctrl.BackColor.ToArgb(); } set { ctrl.BackColor = Color.FromArgb(value.Value); } }
+        public int? ForeColor { get { return ctrl.ForeColor.ToArgb(); } set { ctrl.ForeColor = Color.FromArgb(value.Value); } }
         public bool Enabled { get { return ctrl.Enabled; } set { ctrl.Enabled = value; } }
     }
 }

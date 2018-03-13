@@ -50,8 +50,8 @@ namespace Reko.UserInterfaces.WindowsForms
         public int SelectedIndex { get { return lbx.SelectedIndex; } set { lbx.SelectedIndex = value; } }
         public object SelectedItem { get { return lbx.SelectedItem; } set { lbx.SelectedItem = value; } }
 
-        public Color ForeColor { get { return lbx.ForeColor; } set { lbx.ForeColor = value; } }
-        public Color BackColor { get { return lbx.BackColor; } set { lbx.BackColor = value; } }
+        public int? ForeColor { get { return lbx.ForeColor.ToArgb(); } set { lbx.ForeColor = Color.FromArgb(value.Value); } }
+        public int? BackColor { get { return lbx.BackColor.ToArgb(); } set { lbx.BackColor = Color.FromArgb(value.Value); } }
         public bool Enabled { get { return lbx.Enabled; } set { lbx.Enabled = value; } }
 
         public void AddItems(IEnumerable items)

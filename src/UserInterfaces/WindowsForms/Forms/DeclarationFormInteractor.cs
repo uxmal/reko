@@ -165,22 +165,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var procText = declarationForm.TextBox.Text;
             if (TryParseSignature(procText, out sProc))
             {
-                declarationForm.TextBox.ForeColor = SystemColors.ControlText;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText.ToArgb();
                 return;
             }
             if (!editProcedure && TryParseGlobal(procText, out global))
             {
-                declarationForm.TextBox.ForeColor = SystemColors.ControlText;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText.ToArgb();
                 return;
             }
             // If parser failed, perhaps it's simply a valid name? 
             if (UserSignatureBuilder.IsValidCIdentifier(procText))
             {
-                declarationForm.TextBox.ForeColor = SystemColors.ControlText; ;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText.ToArgb();
                 return;
             }
             // Not valid name either, die.
-            declarationForm.TextBox.ForeColor = Color.Red;
+            declarationForm.TextBox.ForeColor = Color.Red.ToArgb();
         }
 
         private bool TryParseSignature(string txtSignature, out ProcedureBase_v1 sProc)

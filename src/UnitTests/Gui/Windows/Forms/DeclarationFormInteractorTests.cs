@@ -151,9 +151,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual("", declarationForm.TextBox.Text);
             declarationForm.TextBox.Text = "int a(";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(Color.Red.ToArgb(), declarationForm.TextBox.ForeColor);
             declarationForm.TextBox.Text = "int a";
-            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(SystemColors.ControlText.ToArgb(), declarationForm.TextBox.ForeColor);
             When_FormClosed();
             Assert.AreEqual(3, program.ImageMap.Items.Count);
             Assert.AreEqual(1, program.User.Globals.Count);
@@ -182,7 +182,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             When_DeclarationFormCreated(0x16);
             Assert.AreEqual("float test(float b)", declarationForm.TextBox.Text);
             declarationForm.TextBox.Text = "float test(floatb b)";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(Color.Red.ToArgb(), declarationForm.TextBox.ForeColor);
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             When_DeclarationFormCreated(0x15);
             Assert.AreEqual("fn123", declarationForm.TextBox.Text);
             declarationForm.TextBox.Text = "fn123456";
-            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(SystemColors.ControlText.ToArgb(), declarationForm.TextBox.ForeColor);
             When_FormClosed();
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 declarationForm.HintText);
 
             declarationForm.TextBox.Text = "foo";
-            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(SystemColors.ControlText.ToArgb(), declarationForm.TextBox.ForeColor);
             When_FormClosed();
 
             Assert.AreEqual("foo", program.Procedures.Values[0].Name);
@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                  declarationForm.HintText);
 
             declarationForm.TextBox.Text = "f@oo";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(Color.Red.ToArgb(), declarationForm.TextBox.ForeColor);
             When_FormClosed();
 
             Assert.AreEqual("fnTest", program.Procedures.Values[0].Name);
@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             When_DeclarationFormCreated(0x19);
 
             declarationForm.TextBox.Text = "int a";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual(Color.Red.ToArgb(), declarationForm.TextBox.ForeColor);
             When_FormClosed();
 
             Assert.AreEqual(0, program.User.Globals.Count);
@@ -348,8 +348,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(1, program.Procedures.Count);
         }
 
-            public Color BackColor { get; set; }
-            public Color ForeColor { get; set; }
+            public int? BackColor { get; set; }
+            public int? ForeColor { get; set; }
 
             public void SelectAll()
             {
@@ -361,7 +361,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 throw new NotImplementedException();
             }
 
-        public event EventHandler<KeyEventArgs> KeyDown;
+            public event EventHandler<KeyEventArgs> KeyDown;
             public event EventHandler TextChanged;
             public event EventHandler LostFocus;
 
