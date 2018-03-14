@@ -182,16 +182,18 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
+            this.dataFlow = new ProgramDataFlow(progBuilder.Program);
+
 
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
             var sst = new SsaTransform(
-                new Program { Architecture = arch },
+                progBuilder.Program,
                 proc,
                 new HashSet<Procedure>(),
                 importResolver,
                 dataFlow);
-
+            sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
             vp.Transform();
 
@@ -231,7 +233,6 @@ namespace Reko.UnitTests.Analysis
                 Assert.AreEqual(sExp, sActual);
             }
 
-            dataFlow.ProcedureFlows.Add(proc, flow);
             return proc;
         }
 
@@ -240,8 +241,8 @@ namespace Reko.UnitTests.Analysis
         public void TrfStackPreserved()
         {
             var sExp =
-@"Preserved: fp,r1,r63
-Trashed: Global memory,Local -0004
+@"Preserved: r1,r63
+Trashed: 
 ";
             RunTest(sExp, m =>
             {
@@ -265,9 +266,9 @@ Trashed: Global memory,Local -0004
         public void TrfConstants()
         {
             var sExp =
-@"Preserved: fp,r63
-Trashed: ds,Local -0002
-Constants: ds:0x0C00,Local -0002:0x0C00
+@"Preserved: r63
+Trashed: ds
+Constants: ds:0x0C00
 ";
             RunTest(sExp, m =>
             {
@@ -286,7 +287,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
         public void TrfConstNonConst()
         {
             var sExp =
-@"Preserved: ax
+@"Preserved: 
 Trashed: cl,cx
 ";
             RunTest(sExp, m =>
@@ -337,7 +338,7 @@ Constants: cl:0x00
         [Test(Description="Tests propagation between caller and callee.")]
         public void TrfSubroutine_WithRegisterParameters()
         {
-            var sExp1 = string.Join(Environment.NewLine,new []{"Preserved: r2","Trashed: r1",""});
+            var sExp1 = string.Join(Environment.NewLine,new []{"Preserved: ","Trashed: r1",""});
 
             // Subroutine does a small calculation in registers
             RunTest(sExp1, "Addition", m =>
@@ -348,7 +349,7 @@ Constants: cl:0x00
                 m.Return();
             });
 
-            var sExp2 = string.Join(Environment.NewLine,new []{"Preserved: ","Trashed: Global memory,r1,r2",""});
+            var sExp2 = string.Join(Environment.NewLine,new []{"Preserved: ","Trashed: r1,r2",""});
 
             RunTest(sExp2, m =>
             {

@@ -46,8 +46,8 @@ l0C00_0015:
 l0C00_0019:
 	ax = ax - 0x0001
 	SZO = cond(ax)
-	// succ:  l0C00_0019_thunk_fn0C00_0020
-l0C00_0019_thunk_fn0C00_0020:
+	// succ:  l0C00_001A_thunk_fn0C00_0020
+l0C00_001A_thunk_fn0C00_0020:
 	call fn0C00_0020 (retsize: 0;)
 	return
 	// succ:  fn0C00_0015_exit
@@ -81,8 +81,8 @@ l0C00_0020:
 l0C00_0024:
 	ax = ax - 0x0001
 	SZO = cond(ax)
-	// succ:  l0C00_0024_thunk_fn0C00_0015
-l0C00_0024_thunk_fn0C00_0015:
+	// succ:  l0C00_0025_thunk_fn0C00_0015
+l0C00_0025_thunk_fn0C00_0015:
 	call fn0C00_0015 (retsize: 0;)
 	return
 	// succ:  fn0C00_0020_exit

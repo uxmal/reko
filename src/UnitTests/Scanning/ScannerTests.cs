@@ -551,7 +551,7 @@ fn00001100_exit:
             var sExp =
 @"// fn00001000
 // Return size: 0
-define fn00001000()
+define fn00001000
 fn00001000_entry:
 	// succ:  l00001000
 l00001000:

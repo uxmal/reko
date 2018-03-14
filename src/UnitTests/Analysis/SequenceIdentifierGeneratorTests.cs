@@ -80,10 +80,10 @@ namespace Reko.UnitTests.Analysis
 @"r2:r2
 r1:r1
 Mem3: orig: Mem0
-    def:  Mem3[0x00002000:uipr64] = r2_r1
+    def:  Mem3[0x00002000:word64] = r2_r1
 r2_r1:Sequence r2:r1
     def:  def r2_r1
-    uses: Mem3[0x00002000:uipr64] = r2_r1
+    uses: Mem3[0x00002000:word64] = r2_r1
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -91,7 +91,7 @@ ProcedureBuilder_entry:
 	def r2_r1
 	// succ:  l1
 l1:
-	Mem3[0x00002000:uipr64] = r2_r1
+	Mem3[0x00002000:word64] = r2_r1
 ProcedureBuilder_exit:
 ";
             #endregion
