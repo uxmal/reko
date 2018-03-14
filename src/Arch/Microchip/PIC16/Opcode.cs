@@ -102,8 +102,6 @@ namespace Reko.Arch.Microchip.PIC16
         MOVWI,
         ///<summary>No operation.</summary>
         NOP,
-        ///<summary>Load OPTION register with W.</summary>
-        OPTION,
         ///<summary>Software Reset.</summary>
         RESET,
         ///<summary>Return from interrupt.</summary>
@@ -126,8 +124,6 @@ namespace Reko.Arch.Microchip.PIC16
         SUBWFB,
         ///<summary>Swap nibbles in f.</summary>
         SWAPF,
-        ///<summary>Load TRIS register with W.</summary>
-        TRIS,
         ///<summary>Exclusive OR literal with W.</summary>
         XORLW,
         ///<summary>Exclusive OR W with f.</summary>

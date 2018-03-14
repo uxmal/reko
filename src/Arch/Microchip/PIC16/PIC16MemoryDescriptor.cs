@@ -85,7 +85,7 @@ namespace Reko.Arch.Microchip.PIC16
                 {
                     case InstructionSetID.PIC16:
                     case InstructionSetID.PIC16_ENHANCED:
-                    case InstructionSetID.PIC16_ENHANCED_V1:
+                    case InstructionSetID.PIC16_FULLFEATURED:
                         var map = new PIC16MemoryMap(thePIC);
                         if (!map.IsValid)
                             throw new InvalidOperationException($"Mapper cannot be constructed for '{thePIC.Name}' device.");
@@ -145,7 +145,7 @@ namespace Reko.Arch.Microchip.PIC16
         private PIC16MemoryDescriptor(PIC pic)
         {
             memoryMap = PIC16MemoryMap.Create(pic);
-            DeviceConfigDefinitions = DeviceConfigDefs.Create(pic);
+            DeviceConfigDefinitions = PICDeviceConfigDefs.Create(pic);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Reko.Arch.Microchip.PIC16
         public IMemoryMap MemoryMap => memoryMap;
         private PIC16MemoryMap memoryMap;
 
-        public IDeviceConfigDefs DeviceConfigDefinitions { get; }
+        public IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
 
         /// <summary>
         /// Gets or sets the PIC execution mode.

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -146,6 +146,7 @@
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Enhd_Extd_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTestsBase.cs" />
@@ -984,7 +985,6 @@
     <Compile Include="TestCode\X86\Switch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Arch\Microchip\PIC16\" />
     <Folder Include="Core\Machine\" />
   </ItemGroup>
   <ItemGroup>
@@ -1013,7 +1013,6 @@
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1035,7 +1034,6 @@
     </Content>
   </ItemGroup>
   <Target Name="BeforeBuild">
-
     <!-- TODO: Duplicated in Common.items -->
     <ItemGroup Condition=" '$(OS)' == 'Windows_NT' AND '$(Platform)' != 'AnyCPU' ">
       <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
@@ -1046,10 +1044,8 @@
       <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
     </ItemGroup>
   </Target>
-  
   <Target Name="AfterBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
-
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

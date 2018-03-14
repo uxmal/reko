@@ -69,7 +69,6 @@ namespace Reko.Arch.Microchip.PIC16
         /// <summary>
         /// Loads the PIC configuration. Creates memory mapper and registers.
         /// </summary>
-        /// <param name="picDescr">PIC descriptor.</param>
         protected override void LoadConfiguration()
         {
             Description = picDescriptor.Desc;
@@ -95,8 +94,8 @@ namespace Reko.Arch.Microchip.PIC16
         }
         private PIC16MemoryDescriptor memDescr;
 
-        public PIC16Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
-            => new PIC16Disassembler(this, imageReader);
+        public PIC16DisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
+            => new PIC16DisassemblerBase(this, imageReader);
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             => new PIC16InstructionComparer(norm);

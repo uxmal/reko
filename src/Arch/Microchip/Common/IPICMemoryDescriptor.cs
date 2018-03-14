@@ -40,7 +40,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the PIC Device Configuration Registers definitions.
         /// </summary>
-        IDeviceConfigDefs DeviceConfigDefinitions { get; }
+        IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
 
         /// <summary>
         /// Gets or sets the PIC execution mode.

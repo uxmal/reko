@@ -27,25 +27,25 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// Interface for PIC Device Configuration Fuses definitions.
     /// </summary>
-    public interface IDeviceConfigDefs
+    public interface IPICDeviceConfigDefs
     {
         /// <summary>
         /// Gets a Device Configuration Register by its name.
         /// </summary>
         /// <param name="name">The name of the register.</param>
         /// <returns>
-        /// A <see cref="DevConfigRegister"/> instance or null.
+        /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        DevConfigRegister GetDCR(string name);
+        PICDevConfigRegister GetDCR(string name);
 
         /// <summary>
         /// Gets a Device Configuration Register by its memory address.
         /// </summary>
         /// <param name="addr">The memory address.</param>
         /// <returns>
-        /// A <see cref="DevConfigRegister"/> instance or null.
+        /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        DevConfigRegister GetDCR(Address addr);
+        PICDevConfigRegister GetDCR(Address addr);
 
         /// <summary>
         /// Gets a Device Configuration Field by its name.
@@ -64,7 +64,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// A human-readable string.
         /// </returns>
-        string Render(DevConfigRegister dcr, int value);
+        string Render(PICDevConfigRegister dcr, int value);
 
         /// <summary>
         /// Renders the Device Configuration Register state at given address for given value.

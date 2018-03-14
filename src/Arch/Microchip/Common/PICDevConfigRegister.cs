@@ -32,7 +32,7 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A PIC device configuration register/fuse.
     /// </summary>
-    public class DevConfigRegister
+    public class PICDevConfigRegister
     {
         #region Member fields
 
@@ -47,7 +47,7 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         /// <param name="dcr">The <see cref="DCRDef"/> instance describing the register.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="dcr"/> is null.</exception>
-        public DevConfigRegister(DCRDef dcr)
+        public PICDevConfigRegister(DCRDef dcr)
         {
             if (dcr is null)
                 throw new ArgumentNullException(nameof(dcr));

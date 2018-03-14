@@ -134,6 +134,30 @@ namespace Reko.Arch.Microchip.PIC16
     }
 
     /// <summary>
+    /// A PIC16 6-bit unsigned immediate operand. Used by MOVLP instruction.
+    /// </summary>
+    public class PIC16Immed6Operand : PIC16ImmediateOperand
+    {
+        /// <summary>
+        /// Instantiates a 6-bit unsigned immediate operand. Used by MOVLP instruction.
+        /// </summary>
+        /// <param name="b">The byte value.</param>
+        public PIC16Immed6Operand(byte b) : base(Constant.Byte(b), PrimitiveType.Byte)
+        {
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitImm6(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitImm6(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitImm6(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString($"0x{ImmediateValue.ToByte():X2}");
+        }
+
+    }
+
+    /// <summary>
     /// A PIC16 7-bit unsigned immediate operand. Used by MOVLP instruction.
     /// </summary>
     public class PIC16Immed7Operand : PIC16ImmediateOperand
@@ -385,107 +409,137 @@ namespace Reko.Arch.Microchip.PIC16
 
     }
 
-    /// <summary>
-    /// A PIC16 FSRn register operand. Used by ADDFSR, MOVIW, MOVWI instructions.
-    /// </summary>
-    public class PIC16FSROperand : MachineOperand, IOperand
+    public abstract class PIC16FSROperand : MachineOperand, IOperand
     {
         /// <summary>
         /// Gets the FSR register number.
         /// </summary>
         public readonly Constant FSRNum;
 
-        /// <summary>
-        /// Instantiates a FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
-        /// </summary>
-        /// <param name="fsrnum">The FSR register number [0, 1, 2].</param>
         public PIC16FSROperand(byte fsrnum) : base(PrimitiveType.Byte)
         {
             FSRNum = Constant.Byte(fsrnum);
         }
 
-        public void Accept(IOperandVisitor visitor) => visitor.VisitFSRNum(this);
-        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRNum(this);
-        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRNum(this, context);
+        public abstract void Accept(IOperandVisitor visitor);
+        public abstract T Accept<T>(IOperandVisitor<T> visitor);
+        public abstract T Accept<T, C>(IOperandVisitor<T, C> visitor, C context);
+
+    }
+
+    /// <summary>
+    /// A PIC16 FSRn arithmetic operand. Used by ADDFSR instructions.
+    /// </summary>
+    public class PIC16FSRArithOperand : PIC16FSROperand
+    {
+        /// <summary>
+        /// Gets the 6-bit signed offset [-32..31].
+        /// </summary>
+        public readonly Constant Offset;
+
+        /// <summary>
+        /// Instantiates a FSRn indirect indexed operand. Used by MOVIW, MOVWI instructions.
+        /// </summary>
+        /// <param name="fsrnum">The FSR register number [0, 1].</param>
+        public PIC16FSRArithOperand(byte fsrnum, sbyte off) : base(fsrnum)
+        {
+            Offset = Constant.SByte(off);
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitFSRArith(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRArith(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRArith(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             byte num = FSRNum.ToByte();
-            writer.WriteString($"FSR{num}");
+            writer.WriteString($"FSR{num},{Offset}");
         }
 
     }
 
     /// <summary>
-    /// A PIC16 FSR register increment/decrement operand. Used by MOVIW, MOVWI instructions.
+    /// A PIC16 FSRn indirect indexed operand. Used by MOVIW, MOVWI instructions.
     /// </summary>
-    public class PIC16FSRIncDecModOperand : MachineOperand, IOperand
+    public class PIC16FSRIndexedOperand : PIC16FSROperand
     {
         /// <summary>
-        /// Gets the FSR register number.
+        /// Gets the 6-bit signed offset [-32..31].
         /// </summary>
-        public readonly Constant FSRIncDecMode;
+        public readonly Constant Offset;
+
+        /// <summary>
+        /// Instantiates a FSRn indirect indexed operand. Used by MOVIW, MOVWI instructions.
+        /// </summary>
+        /// <param name="fsrnum">The FSR register number [0, 1].</param>
+        public PIC16FSRIndexedOperand(byte fsrnum, sbyte off) : base(fsrnum)
+        {
+            Offset = Constant.SByte(off);
+        }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitFSRIndexed(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRIndexed(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRIndexed(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            byte num = FSRNum.ToByte();
+            writer.WriteString($"{Offset.ToByte()}[{num}]");
+        }
+
+    }
+
+    /// <summary>
+    /// Values that represent the PIC16 FSR Increment/Decrement modes.
+    /// </summary>
+    public enum FSRIncDecMode : byte
+    {
+        PreInc = 0,
+        PreDec = 1,
+        PostInc = 2,
+        PostDec = 3
+    };
+
+    /// <summary>
+    /// A PIC16 FSR register increment/decrement operand. Used by MOVIW, MOVWI instructions.
+    /// </summary>
+    public class PIC16FSRIncDecOperand : PIC16FSROperand
+    {
+        /// <summary>
+        /// Gets the FSR increment/decrement mode.
+        /// </summary>
+        public readonly FSRIncDecMode FSRIncDecMode;
 
         /// <summary>
         /// Instantiates a FSRn register operand. Used by LFSR, ADDFSR, SUBFSR instructions.
         /// </summary>
         /// <param name="incdecmode">The FSR register number [0, 1, 2].</param>
-        public PIC16FSRIncDecModOperand(byte incdecmode) : base(PrimitiveType.Byte)
+        public PIC16FSRIncDecOperand(byte fsrnum, byte incdecmode) : base(fsrnum)
         {
-            FSRIncDecMode = Constant.Byte(incdecmode);
+            FSRIncDecMode = (FSRIncDecMode)incdecmode;
         }
 
-        public void Accept(IOperandVisitor visitor) => visitor.VisitIncDecFSR(this);
-        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitIncDecFSR(this);
-        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitIncDecFSR(this, context);
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitIncDecFSR(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitIncDecFSR(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitIncDecFSR(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            byte num = FSRIncDecMode.ToByte();
-            writer.WriteString($"FSR{num}");
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC16 TRISn register operand. Used by TRIS instruction.
-    /// </summary>
-    public class PIC16TrisNumOperand : MachineOperand, IOperand
-    {
-        /// <summary>
-        /// Gets the TRIS register number.
-        /// </summary>
-        public readonly Constant TRISNum;
-
-        /// <summary>
-        /// Instantiates a TRISn register operand. Used by TRIS instructions.
-        /// </summary>
-        /// <param name="trisnum">The TRIS register number [5, 6, 7].</param>
-        public PIC16TrisNumOperand(byte trisnum) : base(PrimitiveType.Byte)
-        {
-            TRISNum = Constant.Byte(trisnum);
-        }
-
-        public void Accept(IOperandVisitor visitor) => visitor.VisitTRISNum(this);
-        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitTRISNum(this);
-        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitTRISNum(this, context);
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            byte num = TRISNum.ToByte();
-            switch (num)
+            string fsr = $"FSR{FSRNum.ToByte()}";
+            switch (FSRIncDecMode)
             {
-                case 5:
-                    writer.WriteString($"TRISA");
+                case FSRIncDecMode.PreInc:
+                    writer.WriteString($"++{fsr}");
                     break;
-                case 6:
-                    writer.WriteString($"TRISB");
+                case FSRIncDecMode.PreDec:
+                    writer.WriteString($"--{fsr}");
                     break;
-                case 7:
-                    writer.WriteString($"TRISC");
+                case FSRIncDecMode.PostInc:
+                    writer.WriteString($"{fsr}++");
                     break;
-                default:
-                    throw new InvalidOperationException($"Invalid TRIS number: {num}");
+                case FSRIncDecMode.PostDec:
+                    writer.WriteString($"{fsr}--");
+                    break;
             }
         }
 

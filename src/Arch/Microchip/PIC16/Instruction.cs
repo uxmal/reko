@@ -21,24 +21,17 @@
 #endregion
 
 using Reko.Core.Machine;
-using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC16
 {
+    using Common;
+
     /// <summary>
     /// Models a PIC16 instruction.
     /// </summary>
-    public class PIC16Instruction : MachineInstruction
+    public class PIC16Instruction : PICInstruction<Opcode>
     {
-        #region Constant fields
-
-        private const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
-        private const InstructionClass CondTransfer = InstructionClass.Conditional | InstructionClass.Transfer;
-        private const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
-        private const InstructionClass Transfer = InstructionClass.Transfer;
-
-        #endregion
 
         #region Member fields
 
@@ -49,6 +42,7 @@ namespace Reko.Arch.Microchip.PIC16
                 { Opcode.CALL,      LinkTransfer },
                 { Opcode.CALLW,     LinkTransfer },
                 { Opcode.BRA,       Transfer },
+                { Opcode.BRW,       Transfer },
                 { Opcode.GOTO,      Transfer },
                 { Opcode.RESET,     Transfer },
                 { Opcode.RETURN,    Transfer },
@@ -68,40 +62,20 @@ namespace Reko.Arch.Microchip.PIC16
                 { Opcode.__IDLOCS,  InstructionClass.None },
         };
 
-        internal MachineOperand op1;
-        internal MachineOperand op2;
-
         #endregion
 
-        #region Constructors
-
         /// <summary>
-        /// Instantiates a new <see cref="PIC16Instruction"/> with given <see cref="Opcode"/>, execution mode and operands.
+        /// Instantiates a new <see cref="PIC16Instruction"/> with given <see cref="Opcode"/> and operands.
         /// Throws an <see cref="ArgumentException"/> in more than 2 operands are provided.
         /// </summary>
         /// <param name="opc">The PIC16 opcode.</param>
         /// <param name="ops">Zero, one or two instruction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
         public PIC16Instruction(Opcode opc, params MachineOperand[] ops)
+            : base(opc, ops)
         {
-            Opcode = opc;
-            if (ops.Length >= 1)
-            {
-                op1 = ops[0];
-                if (ops.Length >= 2)
-                {
-                    op2 = ops[1];
-                    if (ops.Length >= 3)
-                        throw new ArgumentException("Too many PIC16 instruction's operands.", nameof(ops));
-                }
-            }
         }
 
-        #endregion
-
-        #region Properties
-
-        public Opcode Opcode { get; }
 
         /// <summary>
         /// The control-flow kind of the instruction.
@@ -132,48 +106,6 @@ namespace Reko.Arch.Microchip.PIC16
         /// </value>
         public override int OpcodeAsInteger => (int)Opcode;
 
-        /// <summary>
-        /// Gets the number of operands of this instruction.
-        /// </summary>
-        /// <value>
-        /// The number of operands as an integer.
-        /// </value>
-        public byte NumberOfOperands
-        {
-            get
-            {
-                if (op1 is null)
-                    return 0;
-                if (op2 is null)
-                    return 1;
-                return 2;
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Retrieves the nth operand, or null if there is none at that position.
-        /// </summary>
-        /// <param name="n">Operand's index..</param>
-        /// <returns>
-        /// The designated operand or null.
-        /// </returns>
-        public override MachineOperand GetOperand(int n)
-        {
-            switch (n)
-            {
-                case 0:
-                    return op1;
-                case 1:
-                    return op2;
-                default:
-                    return null;
-            }
-        }
-
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
@@ -186,8 +118,6 @@ namespace Reko.Arch.Microchip.PIC16
             writer.WriteString(",");
             op2.Write(writer, options);
         }
-
-        #endregion
 
     }
 

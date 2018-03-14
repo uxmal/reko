@@ -31,26 +31,26 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A class to provide support for PIC Device Configuration definitions (per ConfigFuseSector content).
     /// </summary>
-    public class DeviceConfigDefs : IDeviceConfigDefs
+    public class PICDeviceConfigDefs : IPICDeviceConfigDefs
     {
 
         #region Member fields
 
-        private SortedList<Address, DevConfigRegister> dcregisters;
+        private SortedList<Address, PICDevConfigRegister> dcregisters;
 
         #endregion
 
         #region Constructors
 
-        private DeviceConfigDefs(PIC thePIC)
+        private PICDeviceConfigDefs(PIC thePIC)
         {
             PIC = thePIC;
-            dcregisters = new SortedList<Address, DevConfigRegister>();
+            dcregisters = new SortedList<Address, PICDevConfigRegister>();
             foreach (var cfs in PIC.ProgramSpace.Sectors.OfType<ConfigFuseSector>())
             {
                 foreach (var dcrdef in cfs.Defs.OfType<DCRDef>())
                 {
-                    var dcreg = new DevConfigRegister(dcrdef);
+                    var dcreg = new PICDevConfigRegister(dcrdef);
                     foreach (var ilg in dcrdef.Illegals)
                     {
                         dcreg.AddIllegal(new DevConfigIllegal(ilg));
@@ -85,13 +85,13 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
-        public static IDeviceConfigDefs Create(PIC thePIC)
+        public static IPICDeviceConfigDefs Create(PIC thePIC)
         {
             if (thePIC is null)
                 throw new ArgumentNullException(nameof(thePIC));
             if (thePIC.ProgramSpace is null)
                 throw new InvalidOperationException($"Can't create PIC Device Configuration definitions.");
-            var dcrconf = new DeviceConfigDefs(thePIC);
+            var dcrconf = new PICDeviceConfigDefs(thePIC);
             return dcrconf;
         }
 
@@ -116,9 +116,9 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         /// <param name="name">The name of the register.</param>
         /// <returns>
-        /// A <see cref="DevConfigRegister"/> instance or null.
+        /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public DevConfigRegister GetDCR(string name)
+        public PICDevConfigRegister GetDCR(string name)
             => dcregisters.FirstOrDefault(dcr => dcr.Value.Name == name).Value;
 
         /// <summary>
@@ -126,9 +126,9 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         /// <param name="addr">The memory address.</param>
         /// <returns>
-        /// A <see cref="DevConfigRegister"/> instance or null.
+        /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public DevConfigRegister GetDCR(Address addr)
+        public PICDevConfigRegister GetDCR(Address addr)
             => dcregisters.ContainsKey(addr) ? dcregisters[addr] : null;
 
         public DevConfigField GetDCRField(string name)
@@ -142,7 +142,7 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// A human-readable string describing the configuration bits/fuses.
         /// </returns>
-        public string Render(DevConfigRegister dcr, int value)
+        public string Render(PICDevConfigRegister dcr, int value)
         {
             value &= dcr.Impl;
             var ilg = dcr.Illegals.FirstOrDefault(p => p.Match(value));

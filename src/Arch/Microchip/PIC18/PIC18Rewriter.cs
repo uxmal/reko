@@ -37,8 +37,6 @@ namespace Reko.Arch.Microchip.PIC18
     public class PIC18Rewriter : IEnumerable<RtlInstructionCluster>
     {
 
-        #region Locals
-
         private PIC18Architecture arch;
         private IStorageBinder binder;
         private IRewriterHost host;
@@ -52,10 +50,6 @@ namespace Reko.Arch.Microchip.PIC18
         private Identifier Wreg;    // cached WREG register identifier
         private Identifier Fsr2;    // cached FSR2 register identifier
 
-        #endregion
-
-        #region Constructors
-
         public PIC18Rewriter(PIC18Architecture arch, EndianImageReader rdr, PIC18State state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
@@ -66,9 +60,6 @@ namespace Reko.Arch.Microchip.PIC18
             dasm = disasm.GetEnumerator();
         }
 
-        #endregion
-
-        #region IEnumerable implementation
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -192,7 +183,6 @@ namespace Reko.Arch.Microchip.PIC18
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator(); 
 
-        #endregion
 
         #region Helpers
 

@@ -221,7 +221,7 @@ namespace Reko.Arch.Microchip.PIC18
         private PIC18MemoryDescriptor(PIC pic)
         {
             memoryMap = PIC18MemoryMap.Create(pic);
-            DeviceConfigDefinitions = DeviceConfigDefs.Create(pic);
+            DeviceConfigDefinitions = PICDeviceConfigDefs.Create(pic);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace Reko.Arch.Microchip.PIC18
         public IMemoryMap MemoryMap => memoryMap;
         private PIC18MemoryMap memoryMap;
 
-        public IDeviceConfigDefs DeviceConfigDefinitions { get; }
+        public IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
 
         /// <summary>
         /// Gets or sets the PIC execution mode.

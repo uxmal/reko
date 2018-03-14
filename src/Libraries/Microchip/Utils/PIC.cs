@@ -126,7 +126,7 @@ namespace Reko.Libraries.Microchip
         /// <summary> PIC Instruction Set is PIC16 like pic16f1946 - mid-range enhanced 5-bit BSR. Identified as InstructionSet="cpu_mid_v10" in XML definition.</summary>
         PIC16_ENHANCED,
         /// <summary> PIC Instruction Set is PIC16 like pic16f15313 - mid-range enhanced 6-bit BSR. Identified as InstructionSet="cpu_p16f1_v1" in XML definition.</summary>
-        PIC16_ENHANCED_V1,
+        PIC16_FULLFEATURED,
         /// <summary> PIC Instruction Set is traditional PIC18 like pic18f1220 - without any extended mode. Identified as InstructionSet="pic18" in XML definition.</summary>
         PIC18,
         /// <summary> PIC Instruction Set is PIC18 like pic18f1230 - with extended execution mode capabilities. Identified as InstructionSet="egg" in XML definition.</summary>
@@ -5685,7 +5685,7 @@ namespace Reko.Libraries.Microchip
         private static Dictionary<string, InstructionSetID> mapInstrID = new Dictionary<string, InstructionSetID>() {
                 { "pic16f77", InstructionSetID.PIC16 },
                 { "cpu_mid_v10", InstructionSetID.PIC16_ENHANCED },
-                { "cpu_p16f1_v1", InstructionSetID.PIC16_ENHANCED_V1 },
+                { "cpu_p16f1_v1", InstructionSetID.PIC16_FULLFEATURED },
                 { "egg", InstructionSetID.PIC18_EXTENDED },
                 { "pic18", InstructionSetID.PIC18 },
                 { "cpu_pic18f_v6", InstructionSetID.PIC18_ENHANCED }
@@ -5891,7 +5891,7 @@ namespace Reko.Libraries.Microchip
                 {
                     id = InstructionSetID.UNDEFINED;
                     if (Arch == "16xxxx") id = InstructionSetID.PIC16;
-                    if (Arch == "16Exxx") id = InstructionSetID.PIC16_ENHANCED_V1;
+                    if (Arch == "16Exxx") id = InstructionSetID.PIC16_FULLFEATURED;
                     if (Arch == "18xxxx") id = (IsExtended ? InstructionSetID.PIC18_EXTENDED : InstructionSetID.PIC18);
                 }
                 return id;

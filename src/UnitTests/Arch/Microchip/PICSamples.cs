@@ -18,7 +18,7 @@ namespace Reko.UnitTests.Arch.Microchip
             {
                 { InstructionSetID.PIC16, "PIC16Sample.xml" },
                 { InstructionSetID.PIC16_ENHANCED, "PIC16EnhSample.xml" },
-                { InstructionSetID.PIC16_ENHANCED_V1, "PIC16EnhV1Sample.xml" },
+                { InstructionSetID.PIC16_FULLFEATURED, "PIC16EnhV1Sample.xml" },
                 { InstructionSetID.PIC18, "PIC18Sample.xml" },
                 { InstructionSetID.PIC18_EXTENDED, "PIC18ExtdSample.xml" },
                 { InstructionSetID.PIC18_ENHANCED, "PIC18EnhSample.xml" }

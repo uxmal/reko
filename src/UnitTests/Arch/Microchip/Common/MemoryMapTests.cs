@@ -88,9 +88,9 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_EnhancedV1Tests()
         {
-            IMemoryMap map = PIC16MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED_V1));
+            IMemoryMap map = PIC16MemoryMap.Create(PICSamples.GetSample(InstructionSetID.PIC16_FULLFEATURED));
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC16_ENHANCED_V1, map.InstructionSetID);
+            Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, map.InstructionSetID);
 
             CheckProgMap(map);
             CheckDataMap(map);

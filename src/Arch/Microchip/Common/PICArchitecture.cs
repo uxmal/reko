@@ -40,13 +40,12 @@ namespace Reko.Arch.Microchip.Common
     {
         protected List<FlagGroupStorage> flagGroups;
 
-        #region Constructors
 
         /// <summary>
-        /// Constructor.
+        /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        public PICArchitecture(string archID) : base(archID)
+        protected PICArchitecture(string archID) : base(archID)
         {
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
@@ -59,19 +58,17 @@ namespace Reko.Arch.Microchip.Common
         /// Constructor. Used for tests purpose.
         /// </summary>
         /// <param name="picDescr">PIC descriptor.</param>
-        public PICArchitecture(string picFamily, PIC picDescr) : this(picFamily)
+        protected PICArchitecture(string picFamily, PIC picDescr) : this(picFamily)
         {
             picDescriptor = picDescr ?? throw new ArgumentNullException(nameof(picDescr));
             CPUModel = picDescriptor.Name;
         }
 
-        #endregion
-
-        #region Helpers
-
+        /// <summary>
+        /// Loads the PIC configuration. Creates memory mapper and registers for the targetted PIC.
+        /// </summary>
         protected abstract void LoadConfiguration();
 
-        #endregion
 
         #region Public Methods/Properties
 
@@ -147,18 +144,18 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the device configuration definitions.
         /// </summary>
-        public IDeviceConfigDefs DeviceConfigDefinitions
+        public IPICDeviceConfigDefs DeviceConfigDefinitions
         {
             get
             {
                 if (deviceConfigDefinitions is null)
                 {
-                    deviceConfigDefinitions = DeviceConfigDefs.Create(PICDescriptor);
+                    deviceConfigDefinitions = PICDeviceConfigDefs.Create(PICDescriptor);
                 }
                 return deviceConfigDefinitions;
             }
         }
-        private IDeviceConfigDefs deviceConfigDefinitions;
+        private IPICDeviceConfigDefs deviceConfigDefinitions;
 
         public override RegisterStorage GetRegister(int i)
             => PICRegisters.GetCoreRegisterByIdx(i);

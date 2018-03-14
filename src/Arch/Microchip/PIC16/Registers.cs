@@ -21,6 +21,8 @@
 #endregion
 
 using Reko.Libraries.Microchip;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Arch.Microchip.PIC16
@@ -161,6 +163,11 @@ namespace Reko.Arch.Microchip.PIC16
         /// STKPTR pseudo-register.
         /// </summary>
         public static PICRegisterStorage STKPTR { get; private set; }
+
+        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
+        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte);
+        public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
+
 
         protected override void SetCoreRegisters()
         {

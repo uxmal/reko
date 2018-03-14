@@ -42,21 +42,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DevConfigRegister.cs" />
+    <Compile Include="Common\PICDevConfigRegister.cs" />
     <Compile Include="Common\ILinearRegion.cs" />
     <Compile Include="Common\IMemoryRegion.cs" />
-    <Compile Include="Common\IDeviceConfigDefs.cs" />
+    <Compile Include="Common\IPICDeviceConfigDefs.cs" />
     <Compile Include="Common\PICAddresses.cs" />
-    <Compile Include="Common\DeviceConfigDefs.cs" />
+    <Compile Include="Common\PICDeviceConfigDefs.cs" />
     <Compile Include="Common\PICArchitecture.cs" />
+    <Compile Include="Common\PICInstruction.cs" />
     <Compile Include="Common\PICRegisters.cs" />
     <Compile Include="Common\PICRegisterTraits.cs" />
+    <Compile Include="PIC16\Basic\PIC16BasicDisasm.cs" />
+    <Compile Include="PIC16\Enhanced\PIC16EnhancedDisasm.cs" />
     <Compile Include="PIC16\FlagM.cs" />
+    <Compile Include="PIC16\FullFeatured\PIC16FullDisasm.cs" />
     <Compile Include="PIC16\IOperandVisitor.cs" />
     <Compile Include="PIC16\Instruction.cs" />
     <Compile Include="PIC16\Operands.cs" />
     <Compile Include="PIC16\PIC16Architecture.cs" />
-    <Compile Include="PIC16\PIC16Disassembler.cs" />
+    <Compile Include="PIC16\PIC16DisassemblerBase.cs" />
     <Compile Include="PIC16\PIC16MemoryDescriptor.cs" />
     <Compile Include="PIC16\PIC16InstructionComparer.cs" />
     <Compile Include="PIC16\PIC16PointerScanner.cs" />
