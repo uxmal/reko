@@ -30,11 +30,11 @@ using System.Collections;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class ListViewWrapper : IListView
+    public class ListViewWrapper : ControlWrapper, IListView
     {
         private ListView list;
 
-        public ListViewWrapper(ListView list)
+        public ListViewWrapper(ListView list) : base(list)
         {
             this.list = list;
         }

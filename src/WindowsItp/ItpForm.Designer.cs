@@ -59,6 +59,7 @@
             this.controlsToolStripMenuItem,
             this.dialogsToolStripMenuItem,
             this.loadingToolStripMenuItem});
+
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(284, 24);
@@ -104,6 +105,7 @@
             // 
             // treeViewToolStripMenuItem
             // 
+
             this.treeViewToolStripMenuItem.Name = "treeViewToolStripMenuItem";
             this.treeViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.treeViewToolStripMenuItem.Text = "&Tree View";
@@ -132,6 +134,7 @@
             // 
             // byteMapViewToolStripMenuItem
             // 
+
             this.byteMapViewToolStripMenuItem.Name = "byteMapViewToolStripMenuItem";
             this.byteMapViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.byteMapViewToolStripMenuItem.Text = "&Byte Map View";
@@ -139,6 +142,7 @@
             // 
             // dialogsToolStripMenuItem
             // 
+
             this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.searchToolStripMenuItem,
             this.projectBrowserToolStripMenuItem,
@@ -146,7 +150,7 @@
             this.preferencesToolStripMenuItem,
             this.assumeRegistesToolStripMenuItem,
             this.procedureToolStripMenuItem,
-            this.symbolSourcesToolStripMenuItem});
+            this.symbolSourcesToolStripMenuItem,
             this.procedureToolStripMenuItem,
             this.propertyOptionsToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
@@ -163,6 +167,7 @@
             // 
             // projectBrowserToolStripMenuItem
             // 
+
             this.projectBrowserToolStripMenuItem.Name = "projectBrowserToolStripMenuItem";
             this.projectBrowserToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.projectBrowserToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
@@ -255,7 +260,6 @@
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

@@ -276,6 +276,7 @@ namespace Reko.WindowsItp
             var dlg = new SymbolSourceDialog();
             dlg.Services = sc;
             dlg.ShowDialog(this);
+        }
 
         private void propertyOptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
