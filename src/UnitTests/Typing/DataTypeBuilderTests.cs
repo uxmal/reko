@@ -113,6 +113,9 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
+
         public void DtbArrayLoopMock()
         {
             var pb = new Mocks.ProgramBuilder();
@@ -408,6 +411,8 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.IntegrationTests)]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DtbReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");

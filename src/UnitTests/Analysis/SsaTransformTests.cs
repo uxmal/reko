@@ -2860,6 +2860,8 @@ proc1_exit:
         }
 
         [Test]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void SsaTransBlockLiveness()
         {
             var sExp =
