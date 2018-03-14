@@ -171,7 +171,6 @@ namespace Reko.UnitTests.Analysis
 		[Test]
  
         [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaNegsNots()
 		{
 			RunFileTest_x86_real("Fragments/negsnots.asm", "Analysis/DfaNegsNots.txt");

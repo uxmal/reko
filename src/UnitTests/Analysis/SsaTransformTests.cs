@@ -2860,8 +2860,6 @@ proc1_exit:
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void SsaTransBlockLiveness()
         {
             var sExp =
@@ -2944,7 +2942,7 @@ m2_number:
 	return
 	// succ:  proc1_exit
 m4_not_number:
-	eax_15 = eax_13, eax_13
+	eax_15 = PHI(eax, eax_13)
 	al_6 = 0x00
 	eax_16 = DPB(eax_15, al_6, 8) (alias)
 	return

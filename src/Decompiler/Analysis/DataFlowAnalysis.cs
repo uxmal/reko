@@ -188,12 +188,11 @@ namespace Reko.Analysis
             var deadStms = new List<Statement>();
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {
-                var u = stm.Instruction as UseInstruction;
-                if (u != null)
+                if (stm.Instruction is UseInstruction u &&
+                    u.Expression is Identifier id &&
+                    flow.Preserved.Contains(id.Storage))
                 {
-                    var id = u.Expression as Identifier;
-                    if (id != null && flow.Preserved.Contains(id.Storage))
-                        deadStms.Add(stm);
+                    deadStms.Add(stm);
                 }
             }
             foreach (var stm in deadStms)
@@ -217,8 +216,7 @@ namespace Reko.Analysis
             var flow = this.flow[proc];
             foreach (Statement stm in program.CallGraph.CallerStatements(proc))
             {
-                SsaState ssa;
-                if (!mpProcSsa.TryGetValue(stm.Block.Procedure, out ssa))
+                if (!mpProcSsa.TryGetValue(stm.Block.Procedure, out var ssa))
                     continue;
 
                 // We have a call statement that calls `proc`. Make sure 
@@ -349,7 +347,6 @@ namespace Reko.Analysis
             {
                 // We are assuming phi functions are already generated.
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
-
                 return sst;
             }
         }

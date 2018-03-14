@@ -185,6 +185,7 @@ namespace Reko.Analysis
 
             var stms = sortedIds.Select(id => new Statement(0, new UseInstruction(id), block)).ToList();
             block.Statements.AddRange(stms);
+            DebugEx.PrintIf(trace.TraceVerbose, "AddUsesToExitBlock");
             stms.ForEach(u =>
             {
                 var use = (UseInstruction)u.Instruction;
@@ -197,8 +198,7 @@ namespace Reko.Analysis
             var wl = new WorkList<Block>();
             var preds = new HashSet<Block>();
             wl.Add(start);
-            Block b;
-            while (wl.GetWorkItem(out b))
+            while (wl.GetWorkItem(out var b))
             {
                 foreach (var p in b.Pred)
                 {
@@ -216,8 +216,7 @@ namespace Reko.Analysis
         {
             foreach (var id in ids)
             {
-                var seq = id.Storage as SequenceStorage;
-                if (seq != null)
+                if (id.Storage is SequenceStorage seq)
                 {
                     yield return ssa.Procedure.Frame.EnsureIdentifier(seq.Head);
                     yield return ssa.Procedure.Frame.EnsureIdentifier(seq.Tail);
@@ -246,8 +245,7 @@ namespace Reko.Analysis
                 if (id.Storage is RegisterStorage)
                 {
                     var dom = id.Storage.Domain;
-                    HashSet<Identifier> aliases;
-                    if (registerBag.TryGetValue(dom, out aliases))
+                    if (registerBag.TryGetValue(dom, out var aliases))
                     {
                         aliases.RemoveWhere(a => id.Storage.Covers(a.Storage));
                         if (!aliases.Any(a => a.Storage.Covers(id.Storage)))
@@ -280,8 +278,7 @@ namespace Reko.Analysis
             uint grfTotal = 0;
             foreach (var id in ids)
             {
-                var grf = id.Storage as FlagGroupStorage;
-                if (grf != null)
+                if (id.Storage is FlagGroupStorage grf)
                 {
                     grfTotal |= grf.FlagGroupBits;
                 }
@@ -307,8 +304,7 @@ namespace Reko.Analysis
         {
             foreach (var id in ids)
             {
-                var grf = id.Storage as FlagGroupStorage;
-                if (grf != null)
+                if (id.Storage is FlagGroupStorage grf)
                 {
                     foreach (var bit in grf.GetFlagBitMasks())
                     {
@@ -383,10 +379,8 @@ namespace Reko.Analysis
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);
             }
-            ProcedureFlow calleeFlow;
-            var proc = callee as Procedure;
-            if (proc != null && 
-                programFlow.ProcedureFlows.TryGetValue(proc, out calleeFlow) && 
+            if (callee is Procedure proc &&
+                programFlow.ProcedureFlows.TryGetValue(proc, out var calleeFlow) && 
                 !sccProcs.Contains(proc))
             {
                 GenerateUseDefsForKnownCallee(ci, proc, calleeFlow);
@@ -579,19 +573,16 @@ namespace Reko.Analysis
 
         private ProcedureBase GetCalleeProcedure(CallInstruction ci)
         {
-            Identifier id;
-            ProcedureConstant pc;
-            if (ci.Callee.As(out id))
+            if (ci.Callee is Identifier id)
             {
-                pc = ssa.Identifiers[id].DefExpression as ProcedureConstant;
-                if (pc == null)
-                    return null;
+                if (ssa.Identifiers[id].DefExpression is ProcedureConstant pc)
+                    return pc.Procedure;
             }
-            else if (!ci.Callee.As(out pc))
+            else if (ci.Callee is ProcedureConstant pc2)
             {
-                return null;
+                return pc2.Procedure;
             }
-            return pc.Procedure;
+            return null;
         }
 
         public override Instruction TransformDefInstruction(DefInstruction def)
@@ -603,8 +594,7 @@ namespace Reko.Analysis
         {
             store.Src = store.Src.Accept(this);
             var exp = TransformLValue(store.Dst, store.Src);
-            var idDst = exp as Identifier;
-            if (idDst != null)
+            if (exp is Identifier idDst)
             {
                 return new Assignment(idDst, store.Src);
             }
@@ -617,8 +607,7 @@ namespace Reko.Analysis
 
         private Expression TransformLValue(Expression exp, Expression src)
         { 
-            var acc = exp as MemoryAccess;
-            if (acc != null)
+            if (exp is MemoryAccess acc)
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
                 {
@@ -637,8 +626,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var sa = acc as SegmentedAccess;
-                    if (sa != null)
+                    if (acc is SegmentedAccess sa)
                         sa.BasePointer = sa.BasePointer.Accept(this);
                     acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
                     if (!this.RenameFrameAccesses)
@@ -667,24 +655,19 @@ namespace Reko.Analysis
         {
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                var outArg = appl.Arguments[i] as OutArgument;
-                if (outArg != null)
+                if (appl.Arguments[i] is OutArgument outArg &&
+                    outArg.Expression is Identifier id)
                 {
-                    var id = outArg.Expression as Identifier;
-                    if (id != null)
-                    {
-                        var idOut = NewDef(id, appl, true);
-                        outArg = new OutArgument(outArg.DataType, idOut);
-                        appl.Arguments[i] = outArg;
-                        ssa.Identifiers[idOut].DefExpression = outArg;
-                        continue;
-                    }
+                    var idOut = NewDef(id, appl, true);
+                    outArg = new OutArgument(outArg.DataType, idOut);
+                    appl.Arguments[i] = outArg;
+                    ssa.Identifiers[idOut].DefExpression = outArg;
+                    continue;
                 }
                 appl.Arguments[i] = appl.Arguments[i].Accept(this);
             }
             appl.Procedure = appl.Procedure.Accept(this);
-            var pc = appl.Procedure as ProcedureConstant;
-            if (pc != null)
+            if (appl.Procedure is ProcedureConstant pc)
             {
                 blockstates[block].terminates |= ProcedureTerminates(pc.Procedure);
             }
@@ -695,13 +678,9 @@ namespace Reko.Analysis
         {
             if (proc.Characteristics != null && proc.Characteristics.Terminates)
                 return true;
-            var callee = proc as Procedure;
-            if (callee == null)
-                return false;
-
-            ProcedureFlow pflow;
-            return 
-                programFlow.ProcedureFlows.TryGetValue(callee, out pflow) &&
+            return
+                proc is Procedure callee &&
+                programFlow.ProcedureFlows.TryGetValue(callee, out ProcedureFlow pflow) &&
                 pflow.TerminatesProcess;
         }
 
@@ -713,9 +692,8 @@ namespace Reko.Analysis
 
         public override Expression VisitOutArgument(OutArgument outArg)
         {
-            var id = outArg.Expression as Identifier;
             Expression exp;
-            if (id != null)
+            if (outArg.Expression is Identifier id)
             {
                 if (RenameFrameAccesses)
                 {
@@ -735,8 +713,7 @@ namespace Reko.Analysis
 
         public Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
         {
-            SsaIdentifier sidOld;
-            if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out sidOld))
+            if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out var sidOld))
             {
                 if (sidOld.OriginalIdentifier != sidOld.Identifier)
                 {
@@ -782,16 +759,12 @@ namespace Reko.Analysis
             }
 
             var ea = access.EffectiveAddress.Accept(this);
-            BinaryExpression bin;
-            Identifier id;
-            Constant c = null;
-            if (ea.As(out bin) &&
-                bin.Left.As(out id) &&
-                bin.Right.As(out c))
+            if (ea is BinaryExpression bin &&
+                bin.Left is Identifier id && 
+                bin.Right is Constant c)
             {
                 var sid = ssa.Identifiers[id];
-                var cOther = sid.DefExpression as Constant;
-                if (cOther != null)
+                if (sid.DefExpression is Constant cOther)
                 {
                     c = bin.Operator.ApplyConstants(cOther, c);
                     sid.Uses.Remove(stmCur);
@@ -923,6 +896,9 @@ namespace Reko.Analysis
 #endif
         }
 
+        /// <summary>
+        /// Describes a set of identifiers that alias each other.
+        /// </summary>
         public class AliasState
         {
             public SsaIdentifier SsaId;        // The id that actually was modified.
@@ -1056,8 +1032,7 @@ namespace Reko.Analysis
             /// <returns></returns>
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                AliasState prevState;
-                if (bs.currentDef.TryGetValue(id.Storage.Domain, out prevState) &&
+                if (bs.currentDef.TryGetValue(id.Storage.Domain, out var prevState) &&
                     id.Storage.Covers(prevState.SsaId.Identifier.Storage))
                 {
                     prevState = null;
@@ -1128,12 +1103,14 @@ namespace Reko.Analysis
             /// <param name="idTo"></param>
             /// <param name="sidFrom"></param>
             /// <returns></returns>
-            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
+            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom, SsaBlockState bsTo)
             {
                 var sidFrom = aliasFrom.SsaId;
                 var blockFrom = sidFrom.DefStatement.Block;
                 var stgFrom = sidFrom.Identifier.Storage;
                 var stgTo = id.Storage;
+                DebugEx.PrintIf(trace.TraceVerbose, "  MaybeGenerateAliasStatement({0},{1})", sidFrom.Identifier.Name, id.Name);
+
                 if (stgFrom == stgTo)
                 {
                     aliasFrom.Aliases[id] = sidFrom;
@@ -1144,6 +1121,8 @@ namespace Reko.Analysis
                 SsaIdentifier sidUse;
                 if (stgFrom.Covers(stgTo))
                 {
+                    // Defined identifer is "wider" than the storage
+                    // being read.
                     int offset = stgFrom.OffsetOf(stgTo);
                     if (offset > 0)
                         e = new Slice(id.DataType, sidFrom.Identifier, offset);
@@ -1154,12 +1133,13 @@ namespace Reko.Analysis
                 else if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
                 {
                     // There is a previous alias, try using that.
-                    sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
+                    sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState, bsTo);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 else 
                 {
                     this.liveBits = this.liveBits - stgFrom.GetBitRange();
+                    DebugEx.PrintIf(trace.TraceVerbose, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
                     sidUse = ReadVariableRecursive(blockstates[blockFrom], true);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
@@ -1292,8 +1272,7 @@ namespace Reko.Analysis
                 DebugEx.PrintIf(trace.TraceVerbose, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
                 foreach (var use in users)
                 {
-                    var phiAss = use.Instruction as PhiAssignment;
-                    if (phiAss != null)
+                    if (use.Instruction is PhiAssignment phiAss)
                     {
                         var sidU = ssaIds[phiAss.Dst];
                         var sidNew = TryRemoveTrivial(sidU);
@@ -1304,8 +1283,7 @@ namespace Reko.Analysis
                         }
                     }
                 }
-                AliasState alias;
-                if (blockstates[phi.DefStatement.Block].currentDef.TryGetValue(same.Storage.Domain, out alias))
+                if (blockstates[phi.DefStatement.Block].currentDef.TryGetValue(same.Storage.Domain, out var alias))
                 {
                     alias.SsaId = outer.ssa.Identifiers[same];
                 }
@@ -1338,8 +1316,7 @@ namespace Reko.Analysis
                 }
                 foreach (var bs in outer.blockstates.Values)
                 {
-                    AliasState alias;
-                    if (bs.currentDef.TryGetValue(sidOld.Identifier.Storage.Domain, out alias))
+                    if (bs.currentDef.TryGetValue(sidOld.Identifier.Storage.Domain, out var alias))
                     {
                         if (alias.SsaId == sidOld)
                         {
@@ -1359,14 +1336,15 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
-                AliasState alias;
-                if (!bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
+                DebugEx.PrintIf(trace.TraceVerbose, "  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
+                if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
                     return null;
 
                 // Identifier id is defined locally in this block.
                 // Has the alias already been calculated?
                 for (var a = alias; a != null; a = a.PrevState)
                 {
+                    DebugEx.PrintIf(trace.TraceVerbose, "    found alias ({0}, {1}, ({2})", bs.Block.Name, a.SsaId.Identifier.Name, string.Join(",", a.Aliases.Select(aa => aa.Value.Identifier.Name)));
                     SsaIdentifier ssaId = a.SsaId;
                     if (a.SsaId.OriginalIdentifier == id ||
                         a.Aliases.TryGetValue(id, out ssaId))
@@ -1379,9 +1357,12 @@ namespace Reko.Analysis
                     {
                         if (generateAlias)
                         {
-                            var sid = MaybeGenerateAliasStatement(a);
-                            bs.currentDef[id.Storage.Domain] = a;
-                            return sid;
+                            var sid = MaybeGenerateAliasStatement(a, bs);
+                            if (sid != null)
+                            {
+                                bs.currentDef[id.Storage.Domain] = a;
+                                return sid;
+                            }
                         }
                         else
                             return alias.SsaId;
@@ -1419,8 +1400,7 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
-                AliasState alias;
-                if (!bs.currentDef.TryGetValue(flagGroup.FlagRegister.Domain, out alias))
+                if (!bs.currentDef.TryGetValue(flagGroup.FlagRegister.Domain, out var alias))
                     return null;
 
                 // Defined locally in this block.
@@ -1455,7 +1435,7 @@ namespace Reko.Analysis
             /// after the defining statement.
             /// </summary>
             /// <returns></returns>
-            protected new SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
+            protected  SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
             {
                 var sidFrom = aliasFrom.SsaId;
                 var b = sidFrom.DefStatement.Block;
@@ -1716,17 +1696,14 @@ namespace Reko.Analysis
                     return sidTo;
                 }
 
-                Assignment assHead, assTail;
-                if (head.DefStatement.Instruction.As(out assHead) &&
-                    tail.DefStatement.Instruction.As(out assTail))
+                if (head.DefStatement.Instruction is Assignment assHead &&
+                    tail.DefStatement.Instruction is Assignment assTail)
                 {
-                    Identifier id;
                     // If x_2 = Slice(y_3); z_4 = (cast) y_3 return y_3
-                    var slHead = assHead.Src as Slice;
-                    var caTail = assTail.Src as Cast;
-                    if (slHead != null && caTail != null &&
+                    if (assHead.Src is Slice slHead && 
+                        assTail.Src is Cast caTail &&
                         slHead.Expression == caTail.Expression &&
-                        slHead.Expression.As(out id))
+                        slHead.Expression is Identifier id)
                     {
                         return ssaIds[id];
                     }
@@ -1776,8 +1753,7 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
-                SsaIdentifier sid;
-                bs.currentFpuDef.TryGetValue(fpu.FpuStackOffset, out sid);
+                bs.currentFpuDef.TryGetValue(fpu.FpuStackOffset, out var sid);
                 return sid;
             }
 

@@ -121,9 +121,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
-
         public void TtranIntegers()
         {
             RunTest16("Fragments/type/integraltypes.asm", "Typing/TtranIntegers.txt");
