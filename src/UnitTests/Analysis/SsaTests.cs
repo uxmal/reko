@@ -192,6 +192,12 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        public void SsaNegsNots()
+        {
+            RunFileTest_x86_real("Fragments/negsnots.asm", "Analysis/SsaNegsNots.txt");
+        }
+
+        [Test]
         public void SsaOutParamters()
         {
             var m = new ProcedureBuilder("foo");

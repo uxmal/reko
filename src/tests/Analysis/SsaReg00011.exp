@@ -42,6 +42,7 @@ ax_4: orig: ax
     uses: es_5 = ax_4
           al_45 = (byte) ax_4 (alias)
           ah_46 = SLICE(ax_4, byte, 8) (alias)
+          ax_48 = DPB(ax_4, ah_46, 8) (alias)
 es_5: orig: es
     def:  es_5 = ax_4
     uses: Mem37[es_5:bx_36:byte] = al_31
@@ -116,7 +117,7 @@ al_29: orig: al
     def:  al_29 = PHI(al_45, al_31)
     uses: al_31 = al_29 | ah_46
 ax_48: orig: ax
-    def:  ax_48 = DPB(ax, ah_46, 8) (alias)
+    def:  ax_48 = DPB(ax_4, ah_46, 8) (alias)
     uses: use ax_48
 al_31: orig: al
     def:  al_31 = al_29 | ah_46
@@ -129,9 +130,6 @@ SZO_32: orig: SZO
 C_33: orig: C
     def:  C_33 = false
     uses: use C_33
-ax:ax
-    def:  def ax
-    uses: ax_48 = DPB(ax, ah_46, 8) (alias)
 bx_35: orig: bx
     def:  bx_35 = PHI(bx_6, bx_38)
     uses: bx_36 = DPB(bx_35, bl_11, 0) (alias)
@@ -177,7 +175,7 @@ ah_46: orig: ah
     def:  ah_46 = SLICE(ax_4, byte, 8) (alias)
     uses: al_31 = al_29 | ah_46
           ah_26 = ah_46 & 0x0F
-          ax_48 = DPB(ax, ah_46, 8) (alias)
+          ax_48 = DPB(ax_4, ah_46, 8) (alias)
 Z_52: orig: Z
     def:  Z_52 = SLICE(SZO_39, bool, 2) (alias)
     uses: use Z_52
@@ -186,7 +184,6 @@ Z_52: orig: Z
 define fn0C00_0004
 fn0C00_0004_entry:
 	def fp
-	def ax
 	// succ:  l0C00_0004
 l0C00_0004:
 	sp_2 = fp
@@ -194,7 +191,7 @@ l0C00_0004:
 	ax_4 = 0x4DE1
 	al_45 = (byte) ax_4 (alias)
 	ah_46 = SLICE(ax_4, byte, 8) (alias)
-	ax_48 = DPB(ax, ah_46, 8) (alias)
+	ax_48 = DPB(ax_4, ah_46, 8) (alias)
 	es_5 = ax_4
 	bx_6 = 0x0FFF
 	bh_41 = SLICE(bx_6, byte, 8) (alias)

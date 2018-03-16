@@ -860,7 +860,7 @@ namespace Reko.Analysis
             {
                 var phiBlock = phi.DefStatement.Block;
                 var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
-                x.AddPhiOperandsCore(phi, true);
+                x.AddPhiOperandsCore(phi);
             }
             incompletePhis.Clear();
         }
@@ -1011,7 +1011,7 @@ namespace Reko.Analysis
 
             public virtual Expression NewUse(SsaBlockState bs)
             {
-                var sid = ReadVariable(bs, true);
+                var sid = ReadVariable(bs);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
             }
@@ -1048,23 +1048,21 @@ namespace Reko.Analysis
             /// If no definition of <paramref name="id"/> is found, a new 
             /// DefStatement is created in the entry block of the procedure,
             /// </summary>
-            /// <param name="id"></param>
-            /// <param name="b"></param>
-            /// <param name="aliasProbe"></param>
+            /// <param name="bs"></param>
             /// <returns></returns>
-            public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool generateAlias)
+            public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
-                var sid = ReadBlockLocalVariable(bs, generateAlias);
+                var sid = ReadBlockLocalVariable(bs);
                 if (sid != null)
                     return sid;
                 // Keep probin'.
-                return ReadVariableRecursive(bs, generateAlias);
+                return ReadVariableRecursive(bs);
             }
 
 
-            public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias);
+            public abstract SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs);
 
-            public SsaIdentifier ReadVariableRecursive(SsaBlockState bs, bool generateAlias)
+            public SsaIdentifier ReadVariableRecursive(SsaBlockState bs)
             {
                 SsaIdentifier val;
                 if (false)  // !sealedBlocks.Contains(b))
@@ -1081,14 +1079,14 @@ namespace Reko.Analysis
                 else if (bs.Block.Pred.Count == 1)
                 {
                     // Search for the variable in the single predecessor.
-                    val = ReadVariable(blockstates[bs.Block.Pred[0]], generateAlias);
+                    val = ReadVariable(blockstates[bs.Block.Pred[0]]);
                 }
                 else
                 {
                     // Break potential cycles with operandless phi
                     val = NewPhi(id, bs.Block);
                     WriteVariable(bs, val, false);
-                    val = AddPhiOperands(val, generateAlias);
+                    val = AddPhiOperands(val);
                 }
                 if (val != null)
                     WriteVariable(bs, val, false);
@@ -1140,7 +1138,7 @@ namespace Reko.Analysis
                 {
                     this.liveBits = this.liveBits - stgFrom.GetBitRange();
                     DebugEx.PrintIf(trace.TraceVerbose, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
-                    sidUse = ReadVariableRecursive(blockstates[blockFrom], true);
+                    sidUse = ReadVariableRecursive(bsTo);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
@@ -1194,7 +1192,7 @@ namespace Reko.Analysis
                 return sid;
             }
 
-            private SsaIdentifier AddPhiOperands(SsaIdentifier phi, bool generateAlias)
+            private SsaIdentifier AddPhiOperands(SsaIdentifier phi)
             {
                 // Determine operands from predecessors.
                 var preds = phi.DefStatement.Block.Pred;
@@ -1208,13 +1206,13 @@ namespace Reko.Analysis
                     outer.incompletePhis.Add(phi);
                     return phi;
                 }
-                return AddPhiOperandsCore(phi, generateAlias);
+                return AddPhiOperandsCore(phi);
             }
 
-            public SsaIdentifier AddPhiOperandsCore(SsaIdentifier phi, bool generateAlias)
+            public SsaIdentifier AddPhiOperandsCore(SsaIdentifier phi)
             {
                 var preds = phi.DefStatement.Block.Pred;
-                var sids = preds.Select(p => ReadVariable(blockstates[p], generateAlias)).ToArray();
+                var sids = preds.Select(p => ReadVariable(blockstates[p])).ToArray();
                 GeneratePhiFunction(phi, sids);
 
                 return TryRemoveTrivial(phi);
@@ -1334,7 +1332,7 @@ namespace Reko.Analysis
             {
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 DebugEx.PrintIf(trace.TraceVerbose, "  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
@@ -1355,17 +1353,12 @@ namespace Reko.Analysis
                     // Does the alias overlap the probed value?
                     if (a.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
                     {
-                        if (generateAlias)
+                        var sid = MaybeGenerateAliasStatement(a, bs);
+                        if (sid != null)
                         {
-                            var sid = MaybeGenerateAliasStatement(a, bs);
-                            if (sid != null)
-                            {
-                                bs.currentDef[id.Storage.Domain] = a;
-                                return sid;
-                            }
+                            bs.currentDef[id.Storage.Domain] = a;
+                            return sid;
                         }
-                        else
-                            return alias.SsaId;
                     }
                 }
                 return null;
@@ -1398,7 +1391,7 @@ namespace Reko.Analysis
                 return e;
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 if (!bs.currentDef.TryGetValue(flagGroup.FlagRegister.Domain, out var alias))
                     return null;
@@ -1417,13 +1410,8 @@ namespace Reko.Analysis
                     // Does ssaId cover the probed value?
                     if (a.SsaId.Identifier.Storage.OverlapsWith(this.flagGroup))
                     {
-                        if (generateAlias)
-                        {
                             var sid = MaybeGenerateAliasStatement(a);
                             return sid;
-                        }
-                        else
-                            return alias.SsaId;
                     }
                 }
                 return null;
@@ -1478,7 +1466,7 @@ namespace Reko.Analysis
                     else
                     {
                         this.liveBits = this.liveBits - stgFrom.GetBitRange();
-                        sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
+                        sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block]);
                     }
 
                     this.flagGroup = oldGrf;
@@ -1518,7 +1506,7 @@ namespace Reko.Analysis
 
             public override Expression NewUse(SsaBlockState bs)
             {
-                var sid = ReadVariable(bs, false);
+                var sid = ReadVariable(bs);
                 sid.Uses.Add(stm);
                 return sid.Identifier;
             }
@@ -1528,7 +1516,7 @@ namespace Reko.Analysis
                 return WriteVariable(bs, sid, true);
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
                     .OrderByDescending(i => i.Key.End - i.Key.Start)
@@ -1650,16 +1638,16 @@ namespace Reko.Analysis
                 this.seq = seq;
             }
 
-            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadVariable(SsaBlockState bs)
             {
                 var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
-                var head = ss.ReadVariable(bs, generateAlias);
+                var head = ss.ReadVariable(bs);
                 ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
-                var tail = ss.ReadVariable(bs, generateAlias);
+                var tail = ss.ReadVariable(bs);
                 return Fuse(head, tail);
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 // We shouldn't reach this, as ReadVariable above should have 
                 // broken the sequence into a head and tail read.
@@ -1751,7 +1739,7 @@ namespace Reko.Analysis
                 return base.NewDef(bs, sid);
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 bs.currentFpuDef.TryGetValue(fpu.FpuStackOffset, out var sid);
                 return sid;

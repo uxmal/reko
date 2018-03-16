@@ -38,7 +38,7 @@ namespace Reko.Analysis
 			if (id == null)
 				throw new ArgumentNullException("id");
 			if (idOrig == null)
-				throw new ArgumentNullException("eOrig");
+				throw new ArgumentNullException("idOrig");
 			this.Identifier = id;
 			this.OriginalIdentifier = idOrig;
 			this.DefStatement = stmDef;
