@@ -28,15 +28,19 @@ using System.Text;
 using System.Windows.Forms;
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Scanning;
 
 namespace Reko.Gui.Windows.Forms
 {
     public partial class FindStringsDialog : Form, IFindStringsDialog
     {
+        private FindStringsDialogInteractor interactor;
+
         public FindStringsDialog()
         {
             InitializeComponent();
-            new FindStringsDialogInteractor().Attach(this);
+            this.interactor = new FindStringsDialogInteractor();
+            this.interactor.Attach(this);
         }
 
         public int MinLength { get { return Convert.ToInt32(this.numericUpDown1.Value); } set { } }
@@ -45,38 +49,9 @@ namespace Reko.Gui.Windows.Forms
 
         public ComboBox StringKindList { get { return ddlStringKind; } }
 
-        public StringType GetStringType()
+        public StringFinderCriteria GetCriteria()
         {
-            var charType = ddlCharSize.SelectedIndex > 0
-                ? PrimitiveType.WChar
-                : PrimitiveType.Char;
-            switch (ddlStringKind.SelectedIndex)
-            {
-            default: return StringType.NullTerminated(charType);
-            case 1: return StringType.LengthPrefixedStringType(charType, PrimitiveType.Byte);
-            case 2: case 3: return StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16);
-            }
-        }
-
-        public Encoding GetEncoding()
-        {
-            switch (ddlCharSize.SelectedIndex)
-            {
-            default: return Encoding.ASCII;
-            case 1: return Encoding.GetEncoding("utf-16LE");
-            case 2: return Encoding.GetEncoding("utf-16BE");
-            }
-        }
-
-        public Func<MemoryArea,Address,Address,EndianImageReader> GetReaderCreator()
-        {
-            switch (ddlCharSize.SelectedIndex)
-            {
-            default:
-                return (m, a, b) => new LeImageReader(m, a, b);
-            case 3:
-                return (m, a, b) => new BeImageReader(m, a, b);
-            }
+            return interactor.GetCriteria();
         }
     }
 }
