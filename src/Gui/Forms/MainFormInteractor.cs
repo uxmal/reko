@@ -561,17 +561,20 @@ namespace Reko.Gui.Forms
                         .SelectMany(program => 
                             program.SegmentMap.Segments.Values.SelectMany(seg =>
                             {
+                                var linBaseAddr = seg.MemoryArea.BaseAddress.ToLinear();
                                 return re.GetMatches(
                                         seg.MemoryArea.Bytes,
                                         0,
                                         (int)seg.MemoryArea.Length)
                                     .Where(o => filter(o, program))
-                                    .Select(offset => new ProgramAddress(
-                                        program,
-                                        program.SegmentMap.MapLinearAddressToAddress(
-                                            seg.MemoryArea.BaseAddress.ToLinear() + (ulong)offset)));
+                                    .Select(offset => new AddressSearchHit
+                                    {
+                                        Program = program,
+                                        Address = program.SegmentMap.MapLinearAddressToAddress(
+                                            linBaseAddr + (ulong)offset)
+                                    });
                             }));
-                    srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
+                    srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
             }
         }
@@ -625,13 +628,18 @@ namespace Reko.Gui.Forms
             {
                 if (uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
                 {
+                    var criteria = new StringFinderCriteria
+                    {
+                        StringType = dlgStrings.GetStringType(),
+                        MinimumLength = dlgStrings.MinLength,
+                        CreateReader = dlgStrings.GetReaderCreator(),
+                        Encoding = dlgStrings.GetEncoding(),
+                    };
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
-                        .SelectMany(p => new StringFinder(p).FindStrings(
-                            dlgStrings.GetStringType(),
-                            dlgStrings.MinLength));
+                        .SelectMany(p => new StringFinder(p).FindStrings(criteria));
                     srSvc.ShowAddressSearchResults(
                        hits,
-                       AddressSearchDetails.Strings);
+                       new StringSearchDetails(criteria.Encoding));
                 }
             }
         }

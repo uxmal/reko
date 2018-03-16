@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core;
 using Reko.Core.Types;
 
 namespace Reko.Gui
@@ -31,5 +32,8 @@ namespace Reko.Gui
         int MinLength { get; set; }
 
         StringType GetStringType();
+
+        Func<MemoryArea, Address, Address, EndianImageReader> GetReaderCreator();
+        Encoding GetEncoding();
     }
 }

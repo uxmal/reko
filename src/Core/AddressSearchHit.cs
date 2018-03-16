@@ -18,24 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Gui.Controls;
-using Reko.Gui.Windows;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Reflection;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Core
 {
-    /// <summary>
-    /// The Search Result Service is used to show the results of some kind of
-    /// search.
-    /// </summary>
-    public interface ISearchResultService 
+    public class AddressSearchHit
     {
-        void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails code);
-        void ShowSearchResults(ISearchResult result);
+        public Program Program;
+        public Address Address;
+        public int Length;
     }
 }

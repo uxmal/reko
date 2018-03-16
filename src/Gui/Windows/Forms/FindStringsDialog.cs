@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Reko.Core;
 using Reko.Core.Types;
 
 namespace Reko.Gui.Windows.Forms
@@ -38,13 +39,13 @@ namespace Reko.Gui.Windows.Forms
             new FindStringsDialogInteractor().Attach(this);
         }
 
-        public int MinLength { get {  return Convert.ToInt32(this.numericUpDown1.Value); } set { } }
+        public int MinLength { get { return Convert.ToInt32(this.numericUpDown1.Value); } set { } }
 
-        public ComboBox CharacterSizeList {  get { return ddlCharSize; } }
+        public ComboBox CharacterSizeList { get { return ddlCharSize; } }
 
         public ComboBox StringKindList { get { return ddlStringKind; } }
 
-        public StringType GetStringType ()
+        public StringType GetStringType()
         {
             var charType = ddlCharSize.SelectedIndex > 0
                 ? PrimitiveType.WChar
@@ -53,8 +54,28 @@ namespace Reko.Gui.Windows.Forms
             {
             default: return StringType.NullTerminated(charType);
             case 1: return StringType.LengthPrefixedStringType(charType, PrimitiveType.Byte);
-            case 2: return StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16);
-            case 3: return StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt32);
+            case 2: case 3: return StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16);
+            }
+        }
+
+        public Encoding GetEncoding()
+        {
+            switch (ddlCharSize.SelectedIndex)
+            {
+            default: return Encoding.ASCII;
+            case 1: return Encoding.GetEncoding("utf-16LE");
+            case 2: return Encoding.GetEncoding("utf-16BE");
+            }
+        }
+
+        public Func<MemoryArea,Address,Address,EndianImageReader> GetReaderCreator()
+        {
+            switch (ddlCharSize.SelectedIndex)
+            {
+            default:
+                return (m, a, b) => new LeImageReader(m, a, b);
+            case 3:
+                return (m, a, b) => new BeImageReader(m, a, b);
             }
         }
     }
