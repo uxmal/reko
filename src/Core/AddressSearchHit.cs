@@ -22,16 +22,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Scanning;
+using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Core
 {
-    public interface IFindStringsDialog : IDialog
+    public class AddressSearchHit
     {
-        int MinLength { get; set; }
-
-        StringFinderCriteria GetCriteria();
+        public Program Program;
+        public Address Address;
+        public int Length;
     }
 }

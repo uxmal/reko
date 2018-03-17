@@ -40,24 +40,30 @@ namespace Reko.Scanning
             this.program = program;
         }
 
-        public IEnumerable<ProgramAddress> FindStrings(StringType stringType, int minLength)
+        public IEnumerable<AddressSearchHit> FindStrings(StringFinderCriteria criteria)
         {
             foreach (var segment in program.SegmentMap.Segments.Values)
             {
                 Address segEnd = Address.Min(
                     segment.Address + segment.Size,
                     segment.MemoryArea.BaseAddress + segment.MemoryArea.Bytes.Length);
-                var rdr = program.Architecture.CreateImageReader(segment.MemoryArea, segment.Address);
+                var rdr = criteria.CreateReader(segment.MemoryArea, segment.Address, segEnd);
                 Address addrStartRun = null;
                 int cValid = 0;
-                while (rdr.Address < segEnd)
+                var charType = (PrimitiveType)criteria.StringType.ElementType;
+                while (rdr.IsValid && rdr.TryRead(charType, out var c))
                 {
-                    byte ch = rdr.ReadByte();
-                    if (!IsValid((char)ch))
+                    var ch = (char)c.ToInt32();
+                    if (!IsValid(ch))
                     {
-                        if (ch == 0 && cValid >= minLength)
+                        if (ch == 0 && cValid >= criteria.MinimumLength)
                         {
-                            yield return new ProgramAddress(program, addrStartRun);
+                            yield return new AddressSearchHit
+                            {
+                                Program = program,
+                                Address = addrStartRun,
+                                Length = cValid * charType.Size,
+                            };
                         }
                         addrStartRun = null;
                         cValid = 0;
@@ -65,16 +71,26 @@ namespace Reko.Scanning
                     else
                     {
                         if (addrStartRun == null)
-                            addrStartRun = rdr.Address - 1;
+                            addrStartRun = rdr.Address - charType.Size;
                         ++cValid;
                     }
                 }
             }
         }
 
+        //$TODO: This assumes only ASCII values are valid.
+        // How to deal with Swedish? Cyrillic? Chinese?
         public bool IsValid(char ch)
         {
             return (' ' <= ch && ch < 0x7F);
         }
+    }
+
+    public class StringFinderCriteria
+    {
+        public StringType StringType;
+        public int MinimumLength;
+        public Func<MemoryArea, Address, Address, EndianImageReader> CreateReader;
+        public Encoding Encoding;
     }
 }
