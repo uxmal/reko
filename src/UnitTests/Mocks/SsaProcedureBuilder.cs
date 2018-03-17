@@ -43,13 +43,22 @@ namespace Reko.UnitTests.Mocks
             this.Ssa = new SsaState(Procedure, null);
         }
 
-        private Identifier Reg(string name, PrimitiveType pt)
+        public RegisterStorage RegisterStorage(string name, PrimitiveType pt)
         {
-            var r = new RegisterStorage(name, Ssa.Identifiers.Count, 0, pt);
-            var id = new Identifier(r.Name, r.DataType, r);
+            return new RegisterStorage(name, Ssa.Identifiers.Count, 0, pt);
+        }
+
+        public Identifier Reg(string name, RegisterStorage r)
+        {
+            var id = new Identifier(name, r.DataType, r);
             var sid = new SsaIdentifier(id, id, null, null, false);
             Ssa.Identifiers.Add(id, sid);
             return sid.Identifier;
+        }
+
+        private Identifier Reg(string name, PrimitiveType pt)
+        {
+            return Reg(name, RegisterStorage(name, pt));
         }
 
         public override Identifier Local32(string name, int offset)
