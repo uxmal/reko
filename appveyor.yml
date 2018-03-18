@@ -40,7 +40,8 @@ after_build:
 test_script:
   - cmd: nunit-console-x86.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=FailedTests /framework:net-4.5
   - cmd: nunit-console-x86.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.5
-  - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
+# Disabled temporarily as per discussion in #320
+#  - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:
   - path: bin/*.msi

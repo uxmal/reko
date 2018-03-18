@@ -17,8 +17,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using System;
+using System.Text;
+using Reko.Core;
+using Reko.Core.Types;
+using Reko.Scanning;
 
 namespace Reko.Gui.Windows.Forms
 {
@@ -33,13 +37,54 @@ namespace Reko.Gui.Windows.Forms
         public void Attach(FindStringsDialog dlg)
         {
             this.dlg = dlg;
-            dlg.Load += dlg_Load;
+            dlg.Load += Dialog_Load;
         }
 
-        private void dlg_Load(object sender, EventArgs e)
+        private void Dialog_Load(object sender, EventArgs e)
         {
             dlg.StringKindList.SelectedIndex = 0;
             dlg.CharacterSizeList.SelectedIndex = 0;
+        }
+
+        public StringFinderCriteria GetCriteria()
+        {
+            Encoding encoding;
+            PrimitiveType charType;
+            Func<MemoryArea, Address, Address, EndianImageReader> rdrCreator;
+            switch (dlg.CharacterSizeList.SelectedIndex)
+            {
+            default:
+                encoding = Encoding.ASCII;
+                charType = PrimitiveType.Char;
+                rdrCreator = (m, a, b) => new LeImageReader(m, a, b);
+                break;
+            case 1:
+                encoding = Encoding.GetEncoding("utf-16LE");
+                charType = PrimitiveType.WChar;
+                rdrCreator = (m, a, b) => new LeImageReader(m, a, b);
+                break;
+            case 2:
+                encoding = Encoding.GetEncoding("utf-16BE");
+                charType = PrimitiveType.WChar;
+                rdrCreator = (m, a, b) => new BeImageReader(m, a, b);
+                break;
+            }
+
+            StringType strType;
+            switch (dlg.StringKindList.SelectedIndex)
+            {
+            default: strType = StringType.NullTerminated(charType); break;
+            case 1: strType = StringType.LengthPrefixedStringType(charType, PrimitiveType.Byte); break;
+            case 2: case 3: strType = StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16); break;
+            }
+
+            return new StringFinderCriteria
+            {
+                StringType = strType,
+                Encoding = encoding,
+                MinimumLength = dlg.MinLength,
+                CreateReader = rdrCreator,
+            };
         }
     }
 }

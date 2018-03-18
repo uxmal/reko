@@ -49,10 +49,10 @@ namespace Reko.Gui.Commands
                 new AddressSearchResult(
                     Services,
                     progAddresses,
-                    AddressSearchDetails.Code));
+                    new CodeSearchDetails()));
         }
 
-        private IEnumerable<ProgramAddress> GetPointersInSegment(ImageSegment s)
+        private IEnumerable<AddressSearchHit> GetPointersInSegment(ImageSegment s)
         {
             var rdr = s.CreateImageReader(program.Architecture);
             return program.Platform.CreatePointerScanner(
@@ -60,7 +60,12 @@ namespace Reko.Gui.Commands
                     rdr,
                     addresses,
                     PointerScannerFlags.All)
-                    .Select(a => new ProgramAddress(program, a));
+                    .Select(a => new AddressSearchHit
+                    {
+                        Program = program,
+                        Address = a,
+                        Length = 1
+                    });
         }
     }
 }

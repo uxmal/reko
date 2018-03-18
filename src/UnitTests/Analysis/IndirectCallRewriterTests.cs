@@ -25,11 +25,13 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -154,6 +156,18 @@ namespace Reko.UnitTests.Analysis
             params Identifier[] parameters)
         {
             return new TypeReference(name, FnPtr32(returnValue, parameters));
+        }
+
+        private void SetFPUStackDelta(DataType fnPtr, int fpuStackDelta)
+        {
+            if (fnPtr is Pointer ptr && ptr.Pointee is FunctionType ft)
+            {
+                ft.FpuStackDelta = fpuStackDelta;
+            }
+            else
+            {
+                Assert.Fail("Fail to set fpu stack delta: should be pointer to function");
+            }
         }
 
         private Identifier VoidId()
@@ -292,6 +306,47 @@ namespace Reko.UnitTests.Analysis
             m.Ssa.CheckUses(s => Assert.Fail(s));
         }
 
+        private void When_FpuStackRegisterSet(string name)
+        {
+            var top = m.RegisterStorage(name, PrimitiveType.Byte);
+            var arch = (FakeArchitecture)m.Architecture;
+            arch.FpuStackRegister = top;
+        }
+
+        private void Given_ApplicationBuilder(
+            Func<IStorageBinder, (Identifier, Expression)> returnBinder)
+        {
+            var architecture = (FakeArchitecture)m.Architecture;
+            architecture.Test_CreateFrameApplicationBuilder =
+                (arch, binder, site, callee) =>
+                {
+                    var ab = new FakeFrameApplicationBuilder(
+                        null, binder, site, callee);
+                    var (ret, value) = returnBinder(m.Ssa.Procedure.Frame);
+                    ab.Test_AddReturnValue(ret, value);
+                    return ab;
+                };
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            var writer = new StringWriter();
+            var textFormatter = new TextFormatter(writer)
+            {
+                Indentation = 0,
+            };
+            textFormatter.WriteLine();
+            var codeFormatter = new CodeFormatter(textFormatter);
+            foreach (var stm in m.Ssa.Procedure.Statements)
+                stm.Instruction.Accept(codeFormatter);
+            var actual = writer.ToString();
+            if (expected != actual)
+            {
+                Debug.Print(actual);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
         [Test]
         public void Icrw_NoArguments()
         {
@@ -355,6 +410,39 @@ namespace Reko.UnitTests.Analysis
             RunIndirectCallRewriter();
 
             Assert.AreEqual("a = fn(b)", callStm.Instruction.ToString());
+        }
+
+        [Test]
+        public void Icrw_FPUStackReturn()
+        {
+            When_FpuStackRegisterSet("FakeTop");
+            var top = m.Architecture.FpuStackRegister;
+            var top_1 = m.Reg("FakeTop_1", top);
+            var top_2 = m.Reg("FakeTop_2", top);
+            var st = m.RegisterStorage("FakeST", PrimitiveType.Word32);
+            var st_3 = m.Reg("FakeST_3", st);
+            var fn = m.Reg32("fn");
+            var ret = Identifier.CreateTemporary("ret", PrimitiveType.Word32);
+            fn.DataType = FnPtr32(ret);
+            SetFPUStackDelta(fn.DataType, 5);
+            Given_ApplicationBuilder((binder) =>
+            {
+                var index = binder.EnsureRegister(top);
+                var array = binder.EnsureRegister(st);
+                return (ret, new ArrayAccess(ret.DataType, array, index));
+            });
+            var uses = new Identifier[] { top_1, st_3 };
+            var defines = new Identifier[] { top_2 };
+            m.Call(fn, 4, uses, defines);
+
+            RunIndirectCallRewriter();
+
+            var expected =
+@"
+FakeST_3[FakeTop_1] = fn()
+FakeTop_2 = FakeTop_1 - 0x05
+";
+            AssertProcedureCode(expected);
         }
     }
 }

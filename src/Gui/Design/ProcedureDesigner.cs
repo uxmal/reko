@@ -151,8 +151,13 @@ namespace Reko.Gui.Design
                 },
                 PointerScannerFlags.All);
             resultSvc.ShowAddressSearchResults(
-                addrControl.Select(a => new ProgramAddress(program, a)),
-                AddressSearchDetails.Code);
+                addrControl.Select(a => new AddressSearchHit
+                {
+                    Program = program,
+                    Address = a,
+                    Length = 1
+                }),
+                new CodeSearchDetails());
         }
 
         private void Rename()
