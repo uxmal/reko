@@ -74,6 +74,7 @@ es_cx_19: orig: es_cx
     def:  es_cx_19 = Mem16[ds:0x0214:segptr32]
     uses: es_20 = SLICE(es_cx_19, selector, 16) (alias)
           cx_22 = (word16) es_cx_19 (alias)
+          cx_46 = (word16) es_cx_19 (alias)
 es_20: orig: es
     def:  es_20 = SLICE(es_cx_19, selector, 16) (alias)
     uses: bx_21 = es_20
@@ -136,7 +137,7 @@ SCZO_37: orig: SCZO
 cl_38: orig: cl
     def:  cl_38 = Mem29[ds:0x0221:byte]
     uses: SCZO_39 = cond(cl_38 - 0x3A)
-          cx_47 = DPB(cx, cl_38, 0) (alias)
+          cx_47 = DPB(cx_46, cl_38, 0) (alias)
 SCZO_39: orig: SCZO
     def:  SCZO_39 = cond(cl_38 - 0x3A)
     uses: C_40 = SLICE(SCZO_39, bool, 1) (alias)
@@ -162,11 +163,11 @@ Mem44: orig: Mem0
 C_45: orig: C
     def:  C_45 = SLICE(SCZO_43, bool, 1) (alias)
     uses: use C_45
-cx:cx
-    def:  def cx
-    uses: cx_47 = DPB(cx, cl_38, 0) (alias)
+cx_46: orig: cx
+    def:  cx_46 = (word16) es_cx_19 (alias)
+    uses: cx_47 = DPB(cx_46, cl_38, 0) (alias)
 cx_47: orig: cx
-    def:  cx_47 = DPB(cx, cl_38, 0) (alias)
+    def:  cx_47 = DPB(cx_46, cl_38, 0) (alias)
     uses: use cx_47
 O_48: orig: O
     def:  O_48 = SLICE(SCZO_43, bool, 4) (alias)
@@ -184,7 +185,6 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
-	def cx
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
@@ -205,6 +205,7 @@ l0C00_0000:
 	es_cx_19 = Mem16[ds:0x0214:segptr32]
 	es_20 = SLICE(es_cx_19, selector, 16) (alias)
 	cx_22 = (word16) es_cx_19 (alias)
+	cx_46 = (word16) es_cx_19 (alias)
 	bx_21 = es_20
 	ax_23 = ax_17 - cx_22
 	SCZO_24 = cond(ax_23)
@@ -222,7 +223,7 @@ l0C00_0000:
 	ax_36 = ax_30 + ax_30 + C_35
 	SCZO_37 = cond(ax_36)
 	cl_38 = Mem29[ds:0x0221:byte]
-	cx_47 = DPB(cx, cl_38, 0) (alias)
+	cx_47 = DPB(cx_46, cl_38, 0) (alias)
 	SCZO_39 = cond(cl_38 - 0x3A)
 	C_40 = SLICE(SCZO_39, bool, 1) (alias)
 	C_41 = !C_40

@@ -2862,10 +2862,15 @@ proc1_exit:
         [Test]
         public void SsaTransBlockLiveness()
         {
+            //$TODO: the generation of 
+            //           eax_13 = DPB(eax_12, al_3, 8) (alias)
+            // although not incorrect is redundant. Investigate ways
+            // to get rid of it.
             var sExp =
             #region Expected
 @"eax_1: orig: eax
     def:  eax_1 = 0x00000004
+    uses: eax_12 = DPB(eax_1, al_3, 8) (alias)
 Mem2: orig: Mem0
     def:  Mem2[0x00123400:word32] = 0x00000004
     uses: al_3 = Mem2[0x00123408:byte]
@@ -2873,7 +2878,8 @@ al_3: orig: al
     def:  al_3 = Mem2[0x00123408:byte]
     uses: SZC_4 = cond(al_3 - 0x30)
           SZC_5 = cond(al_3 - 0x39)
-          eax_13 = DPB(eax, al_3, 8) (alias)
+          eax_12 = DPB(eax_1, al_3, 8) (alias)
+          eax_13 = DPB(eax_12, al_3, 8) (alias)
 SZC_4: orig: SZC
     def:  SZC_4 = cond(al_3 - 0x30)
     uses: branch Test(LT,SZC_4) m4_not_number
@@ -2892,19 +2898,19 @@ C:C
 eax_11: orig: eax
     def:  eax_11 = PHI(eax_14, eax_16)
     uses: use eax_11
-eax:eax
-    def:  def eax
-    uses: eax_13 = DPB(eax, al_3, 8) (alias)
-          eax_15 = PHI(eax, eax_13)
+eax_12: orig: eax
+    def:  eax_12 = DPB(eax_1, al_3, 8) (alias)
+    uses: eax_13 = DPB(eax_12, al_3, 8) (alias)
+          eax_15 = PHI(eax_12, eax_13)
 eax_13: orig: eax
-    def:  eax_13 = DPB(eax, al_3, 8) (alias)
+    def:  eax_13 = DPB(eax_12, al_3, 8) (alias)
     uses: eax_14 = DPB(eax_13, al_7, 8) (alias)
-          eax_15 = PHI(eax, eax_13)
+          eax_15 = PHI(eax_12, eax_13)
 eax_14: orig: eax
     def:  eax_14 = DPB(eax_13, al_7, 8) (alias)
     uses: eax_11 = PHI(eax_14, eax_16)
 eax_15: orig: eax
-    def:  eax_15 = PHI(eax, eax_13)
+    def:  eax_15 = PHI(eax_12, eax_13)
     uses: eax_16 = DPB(eax_15, al_6, 8) (alias)
 eax_16: orig: eax
     def:  eax_16 = DPB(eax_15, al_6, 8) (alias)
@@ -2920,7 +2926,6 @@ Z:Z
 define proc1
 proc1_entry:
 	def C
-	def eax
 	def S
 	def Z
 	// succ:  l1
@@ -2928,7 +2933,8 @@ l1:
 	eax_1 = 0x00000004
 	Mem2[0x00123400:word32] = 0x00000004
 	al_3 = Mem2[0x00123408:byte]
-	eax_13 = DPB(eax, al_3, 8) (alias)
+	eax_12 = DPB(eax_1, al_3, 8) (alias)
+	eax_13 = DPB(eax_12, al_3, 8) (alias)
 	SZC_4 = cond(al_3 - 0x30)
 	branch Test(LT,SZC_4) m4_not_number
 	// succ:  m1_maybe_number m4_not_number
@@ -2942,7 +2948,7 @@ m2_number:
 	return
 	// succ:  proc1_exit
 m4_not_number:
-	eax_15 = PHI(eax, eax_13)
+	eax_15 = PHI(eax_12, eax_13)
 	al_6 = 0x00
 	eax_16 = DPB(eax_15, al_6, 8) (alias)
 	return

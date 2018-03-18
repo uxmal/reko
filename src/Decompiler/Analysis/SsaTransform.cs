@@ -48,7 +48,7 @@ namespace Reko.Analysis
     /// </remarks>
     public class SsaTransform : InstructionTransformer 
     {
-        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Verbose };
+        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
 
         private IProcessorArchitecture arch;
         private Program program;
@@ -1046,10 +1046,12 @@ namespace Reko.Analysis
             /// <returns></returns>
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                if (bs.currentDef.TryGetValue(id.Storage.Domain, out var prevState) &&
-                    id.Storage.Covers(prevState.SsaId.Identifier.Storage))
+                if (bs.currentDef.TryGetValue(id.Storage.Domain, out var prevState))
                 {
-                    prevState = null;
+                    while (prevState != null && id.Storage.Covers(prevState.SsaId.Identifier.Storage))
+                    {
+                        prevState = prevState.PrevState;
+                    }
                 }
                 bs.currentDef[id.Storage.Domain] = new AliasState(sid, prevState);
                 return sid.Identifier;

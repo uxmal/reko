@@ -40,145 +40,141 @@ Top_3: orig: Top
 ax_4: orig: ax
     def:  ax_4 = 0x4DE1
     uses: es_5 = ax_4
-          al_45 = (byte) ax_4 (alias)
-          ah_46 = SLICE(ax_4, byte, 8) (alias)
-          ax_48 = DPB(ax_4, ah_46, 8) (alias)
 es_5: orig: es
     def:  es_5 = ax_4
-    uses: Mem37[es_5:bx_36:byte] = al_31
+    uses: Mem36[es_5:bx_35:byte] = al_29
           use es_5
 bx_6: orig: bx
     def:  bx_6 = 0x0FFF
-    uses: bh_41 = SLICE(bx_6, byte, 8) (alias)
-          bl_43 = (byte) bx_6 (alias)
-          bx_35 = PHI(bx_6, bx_38)
+    uses: bh_40 = SLICE(bx_6, byte, 8) (alias)
+          bl_42 = (byte) bx_6 (alias)
+          bx_33 = PHI(bx_6, bx_37)
 bh_7: orig: bh
-    def:  bh_7 = PHI(bh_41, bh_42)
+    def:  bh_7 = PHI(bh_40, bh_41)
     uses: al_8 = bh_7
+          bx_34 = DPB(bx_33, bh_7, 8) (alias)
 al_8: orig: al
     def:  al_8 = bh_7
     uses: al_9 = al_8 + 0x01
 al_9: orig: al
     def:  al_9 = al_8 + 0x01
     uses: SZO_10 = cond(al_9)
+          ax_16 = ah_13 *u al_9
 SZO_10: orig: SZO
     def:  SZO_10 = cond(al_9)
 bl_11: orig: bl
-    def:  bl_11 = PHI(bl_43, bl_44)
+    def:  bl_11 = PHI(bl_42, bl_43)
     uses: ah_12 = bl_11
-          al_21 = bl_11
-          bx_36 = DPB(bx_35, bl_11, 0) (alias)
+          al_20 = bl_11
+          bx_35 = DPB(bx_34, bl_11, 0) (alias)
 ah_12: orig: ah
     def:  ah_12 = bl_11
     uses: ah_13 = ah_12 & 0x0F
 ah_13: orig: ah
     def:  ah_13 = ah_12 & 0x0F
     uses: SZO_14 = cond(ah_13)
-          ax_17 = ah_13 *u al_16
+          ax_16 = ah_13 *u al_9
 SZO_14: orig: SZO
     def:  SZO_14 = cond(ah_13)
 C_15: orig: C
     def:  C_15 = false
-al_16: orig: al
-    def:  al_16 = PHI(al_45, al_31)
-    uses: ax_17 = ah_13 *u al_16
-ax_17: orig: ax
-    def:  ax_17 = ah_13 *u al_16
-    uses: SCZO_18 = cond(ax_17)
-          ax_19 = ax_17 << 0x0004
-SCZO_18: orig: SCZO
-    def:  SCZO_18 = cond(ax_17)
-ax_19: orig: ax
-    def:  ax_19 = ax_17 << 0x0004
-    uses: SCZO_20 = cond(ax_19)
-SCZO_20: orig: SCZO
-    def:  SCZO_20 = cond(ax_19)
+ax_16: orig: ax
+    def:  ax_16 = ah_13 *u al_9
+    uses: SCZO_17 = cond(ax_16)
+          ax_18 = ax_16 << 0x0004
+SCZO_17: orig: SCZO
+    def:  SCZO_17 = cond(ax_16)
+ax_18: orig: ax
+    def:  ax_18 = ax_16 << 0x0004
+    uses: SCZO_19 = cond(ax_18)
+          ah_24 = SLICE(ax_18, byte, 8) (alias)
+          al_28 = (byte) ax_18 (alias)
+          ax_44 = DPB(ax_18, al_29, 0) (alias)
+SCZO_19: orig: SCZO
+    def:  SCZO_19 = cond(ax_18)
+al_20: orig: al
+    def:  al_20 = bl_11
+    uses: al_21 = al_20 & 0xF0
 al_21: orig: al
-    def:  al_21 = bl_11
-    uses: al_22 = al_21 & 0xF0
-al_22: orig: al
-    def:  al_22 = al_21 & 0xF0
-    uses: SZO_23 = cond(al_22)
-SZO_23: orig: SZO
-    def:  SZO_23 = cond(al_22)
-C_24: orig: C
-    def:  C_24 = false
-O_49: orig: O
-    def:  O_49 = SLICE(SZO_39, bool, 4) (alias)
-    uses: use O_49
-ah_26: orig: ah
-    def:  ah_26 = ah_46 & 0x0F
-    uses: SZO_27 = cond(ah_26)
-SZO_27: orig: SZO
-    def:  SZO_27 = cond(ah_26)
-C_28: orig: C
-    def:  C_28 = false
+    def:  al_21 = al_20 & 0xF0
+    uses: SZO_22 = cond(al_21)
+SZO_22: orig: SZO
+    def:  SZO_22 = cond(al_21)
+C_23: orig: C
+    def:  C_23 = false
+ah_24: orig: ah
+    def:  ah_24 = SLICE(ax_18, byte, 8) (alias)
+    uses: ah_25 = ah_24 & 0x0F
+          al_29 = al_28 | ah_24
+ah_25: orig: ah
+    def:  ah_25 = ah_24 & 0x0F
+    uses: SZO_26 = cond(ah_25)
+SZO_26: orig: SZO
+    def:  SZO_26 = cond(ah_25)
+C_27: orig: C
+    def:  C_27 = false
+al_28: orig: al
+    def:  al_28 = (byte) ax_18 (alias)
+    uses: al_29 = al_28 | ah_24
 al_29: orig: al
-    def:  al_29 = PHI(al_45, al_31)
-    uses: al_31 = al_29 | ah_46
-ax_48: orig: ax
-    def:  ax_48 = DPB(ax_4, ah_46, 8) (alias)
-    uses: use ax_48
-al_31: orig: al
-    def:  al_31 = al_29 | ah_46
-    uses: SZO_32 = cond(al_31)
-          Mem37[es_5:bx_36:byte] = al_31
-          al_16 = PHI(al_45, al_31)
-          al_29 = PHI(al_45, al_31)
-SZO_32: orig: SZO
-    def:  SZO_32 = cond(al_31)
-C_33: orig: C
-    def:  C_33 = false
-    uses: use C_33
+    def:  al_29 = al_28 | ah_24
+    uses: SZO_30 = cond(al_29)
+          Mem36[es_5:bx_35:byte] = al_29
+          ax_44 = DPB(ax_18, al_29, 0) (alias)
+SZO_30: orig: SZO
+    def:  SZO_30 = cond(al_29)
+C_31: orig: C
+    def:  C_31 = false
+    uses: use C_31
+ax_44: orig: ax
+    def:  ax_44 = DPB(ax_18, al_29, 0) (alias)
+    uses: use ax_44
+bx_33: orig: bx
+    def:  bx_33 = PHI(bx_6, bx_37)
+    uses: bx_34 = DPB(bx_33, bh_7, 8) (alias)
+bx_34: orig: bx
+    def:  bx_34 = DPB(bx_33, bh_7, 8) (alias)
+    uses: bx_35 = DPB(bx_34, bl_11, 0) (alias)
 bx_35: orig: bx
-    def:  bx_35 = PHI(bx_6, bx_38)
-    uses: bx_36 = DPB(bx_35, bl_11, 0) (alias)
-bx_36: orig: bx
-    def:  bx_36 = DPB(bx_35, bl_11, 0) (alias)
-    uses: Mem37[es_5:bx_36:byte] = al_31
-          bx_38 = bx_36 - 0x0001
-Mem37: orig: Mem0
-    def:  Mem37[es_5:bx_36:byte] = al_31
-bx_38: orig: bx
-    def:  bx_38 = bx_36 - 0x0001
-    uses: SZO_39 = cond(bx_38)
-          bh_42 = SLICE(bx_38, byte, 8) (alias)
-          bl_44 = (byte) bx_38 (alias)
-          bx_35 = PHI(bx_6, bx_38)
-          use bx_38
-SZO_39: orig: SZO
-    def:  SZO_39 = cond(bx_38)
-    uses: S_40 = SLICE(SZO_39, bool, 0) (alias)
-          O_49 = SLICE(SZO_39, bool, 4) (alias)
-          Z_52 = SLICE(SZO_39, bool, 2) (alias)
-S_40: orig: S
-    def:  S_40 = SLICE(SZO_39, bool, 0) (alias)
-    uses: branch Test(NS,S_40) l0C00_000C
-          use S_40
+    def:  bx_35 = DPB(bx_34, bl_11, 0) (alias)
+    uses: Mem36[es_5:bx_35:byte] = al_29
+          bx_37 = bx_35 - 0x0001
+Mem36: orig: Mem0
+    def:  Mem36[es_5:bx_35:byte] = al_29
+bx_37: orig: bx
+    def:  bx_37 = bx_35 - 0x0001
+    uses: SZO_38 = cond(bx_37)
+          bh_41 = SLICE(bx_37, byte, 8) (alias)
+          bl_43 = (byte) bx_37 (alias)
+          bx_33 = PHI(bx_6, bx_37)
+          use bx_37
+SZO_38: orig: SZO
+    def:  SZO_38 = cond(bx_37)
+    uses: S_39 = SLICE(SZO_38, bool, 0) (alias)
+          O_45 = SLICE(SZO_38, bool, 4) (alias)
+          Z_48 = SLICE(SZO_38, bool, 2) (alias)
+S_39: orig: S
+    def:  S_39 = SLICE(SZO_38, bool, 0) (alias)
+    uses: branch Test(NS,S_39) l0C00_000C
+          use S_39
+bh_40: orig: bh
+    def:  bh_40 = SLICE(bx_6, byte, 8) (alias)
+    uses: bh_7 = PHI(bh_40, bh_41)
 bh_41: orig: bh
-    def:  bh_41 = SLICE(bx_6, byte, 8) (alias)
-    uses: bh_7 = PHI(bh_41, bh_42)
-bh_42: orig: bh
-    def:  bh_42 = SLICE(bx_38, byte, 8) (alias)
-    uses: bh_7 = PHI(bh_41, bh_42)
+    def:  bh_41 = SLICE(bx_37, byte, 8) (alias)
+    uses: bh_7 = PHI(bh_40, bh_41)
+bl_42: orig: bl
+    def:  bl_42 = (byte) bx_6 (alias)
+    uses: bl_11 = PHI(bl_42, bl_43)
 bl_43: orig: bl
-    def:  bl_43 = (byte) bx_6 (alias)
-    uses: bl_11 = PHI(bl_43, bl_44)
-bl_44: orig: bl
-    def:  bl_44 = (byte) bx_38 (alias)
-    uses: bl_11 = PHI(bl_43, bl_44)
-al_45: orig: al
-    def:  al_45 = (byte) ax_4 (alias)
-    uses: al_16 = PHI(al_45, al_31)
-          al_29 = PHI(al_45, al_31)
-ah_46: orig: ah
-    def:  ah_46 = SLICE(ax_4, byte, 8) (alias)
-    uses: al_31 = al_29 | ah_46
-          ah_26 = ah_46 & 0x0F
-          ax_48 = DPB(ax_4, ah_46, 8) (alias)
-Z_52: orig: Z
-    def:  Z_52 = SLICE(SZO_39, bool, 2) (alias)
-    uses: use Z_52
+    def:  bl_43 = (byte) bx_37 (alias)
+    uses: bl_11 = PHI(bl_42, bl_43)
+O_45: orig: O
+    def:  O_45 = SLICE(SZO_38, bool, 4) (alias)
+    uses: use O_45
+Z_48: orig: Z
+    def:  Z_48 = SLICE(SZO_38, bool, 2) (alias)
+    uses: use Z_48
 // fn0C00_0004
 // Return size: 2
 define fn0C00_0004
@@ -189,21 +185,17 @@ l0C00_0004:
 	sp_2 = fp
 	Top_3 = 0
 	ax_4 = 0x4DE1
-	al_45 = (byte) ax_4 (alias)
-	ah_46 = SLICE(ax_4, byte, 8) (alias)
-	ax_48 = DPB(ax_4, ah_46, 8) (alias)
 	es_5 = ax_4
 	bx_6 = 0x0FFF
-	bh_41 = SLICE(bx_6, byte, 8) (alias)
-	bl_43 = (byte) bx_6 (alias)
+	bh_40 = SLICE(bx_6, byte, 8) (alias)
+	bl_42 = (byte) bx_6 (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	bx_35 = PHI(bx_6, bx_38)
-	al_29 = PHI(al_45, al_31)
-	al_16 = PHI(al_45, al_31)
-	bl_11 = PHI(bl_43, bl_44)
-	bx_36 = DPB(bx_35, bl_11, 0) (alias)
-	bh_7 = PHI(bh_41, bh_42)
+	bx_33 = PHI(bx_6, bx_37)
+	bl_11 = PHI(bl_42, bl_43)
+	bx_35 = DPB(bx_34, bl_11, 0) (alias)
+	bh_7 = PHI(bh_40, bh_41)
+	bx_34 = DPB(bx_33, bh_7, 8) (alias)
 	al_8 = bh_7
 	al_9 = al_8 + 0x01
 	SZO_10 = cond(al_9)
@@ -211,41 +203,44 @@ l0C00_000C:
 	ah_13 = ah_12 & 0x0F
 	SZO_14 = cond(ah_13)
 	C_15 = false
-	ax_17 = ah_13 *u al_16
-	SCZO_18 = cond(ax_17)
-	ax_19 = ax_17 << 0x0004
-	SCZO_20 = cond(ax_19)
-	al_21 = bl_11
-	al_22 = al_21 & 0xF0
-	SZO_23 = cond(al_22)
-	C_24 = false
-	ah_26 = ah_46 & 0x0F
-	SZO_27 = cond(ah_26)
-	C_28 = false
-	al_31 = al_29 | ah_46
-	SZO_32 = cond(al_31)
-	C_33 = false
-	Mem37[es_5:bx_36:byte] = al_31
-	bx_38 = bx_36 - 0x0001
-	bh_42 = SLICE(bx_38, byte, 8) (alias)
-	bl_44 = (byte) bx_38 (alias)
-	SZO_39 = cond(bx_38)
-	S_40 = SLICE(SZO_39, bool, 0) (alias)
-	O_49 = SLICE(SZO_39, bool, 4) (alias)
-	Z_52 = SLICE(SZO_39, bool, 2) (alias)
-	branch Test(NS,S_40) l0C00_000C
+	ax_16 = ah_13 *u al_9
+	SCZO_17 = cond(ax_16)
+	ax_18 = ax_16 << 0x0004
+	ah_24 = SLICE(ax_18, byte, 8) (alias)
+	al_28 = (byte) ax_18 (alias)
+	SCZO_19 = cond(ax_18)
+	al_20 = bl_11
+	al_21 = al_20 & 0xF0
+	SZO_22 = cond(al_21)
+	C_23 = false
+	ah_25 = ah_24 & 0x0F
+	SZO_26 = cond(ah_25)
+	C_27 = false
+	al_29 = al_28 | ah_24
+	ax_44 = DPB(ax_18, al_29, 0) (alias)
+	SZO_30 = cond(al_29)
+	C_31 = false
+	Mem36[es_5:bx_35:byte] = al_29
+	bx_37 = bx_35 - 0x0001
+	bh_41 = SLICE(bx_37, byte, 8) (alias)
+	bl_43 = (byte) bx_37 (alias)
+	SZO_38 = cond(bx_37)
+	S_39 = SLICE(SZO_38, bool, 0) (alias)
+	O_45 = SLICE(SZO_38, bool, 4) (alias)
+	Z_48 = SLICE(SZO_38, bool, 2) (alias)
+	branch Test(NS,S_39) l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
-	use ax_48
-	use bx_38
-	use C_33
+	use ax_44
+	use bx_37
+	use C_31
 	use es_5
-	use O_49
-	use S_40
+	use O_45
+	use S_39
 	use sp_2
 	use Top_3
-	use Z_52
+	use Z_48
 

@@ -245,7 +245,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void VpReg00011()
         {
             RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");

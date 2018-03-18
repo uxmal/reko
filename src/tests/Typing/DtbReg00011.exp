@@ -15,17 +15,18 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	byte al_20 = 0xE1
-	word16 bx_25 = 0x0FFF
+	word16 bx_23 = 0x0FFF
+	byte bh_30 = 0x0F
 	byte bl_10 = 0xFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	word16 bx_26 = DPB(bx_25, bl_10, 0)
-	al_20 = al_20 | 0x4D
-	Mem27[0x4DE1:bx_26 + 0x0000:byte] = al_20
-	bx_25 = bx_26 - 0x0001
-	bl_10 = (byte) (bx_26 - 0x0001) (alias)
-	branch bx_26 >= 0x0001 l0C00_000C
+	word16 ax_13 = (bl_10 & 0x0F) *u (bh_30 + 0x01)
+	word16 bx_25 = DPB(DPB(bx_23, bh_30, 8), bl_10, 0)
+	Mem26[0x4DE1:bx_25 + 0x0000:byte] = (byte) (ax_13 << 0x0004) | SLICE(ax_13 << 0x0004, byte, 8)
+	bx_23 = bx_25 - 0x0001
+	bh_30 = SLICE(bx_25 - 0x0001, byte, 8) (alias)
+	bl_10 = (byte) (bx_25 - 0x0001) (alias)
+	branch bx_25 >= 0x0001 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return
@@ -40,35 +41,60 @@ Eq_2: (ptr (fn T_4 ()))
 	T_3 (in signature of fn0C00_0004 : void)
 Eq_4: void
 	T_4 (in fn0C00_0004() : void)
-Eq_5: byte
-	T_5 (in al_20 : byte)
-	T_6 (in 0xE1 : byte)
-	T_14 (in al_20 | 0x4D : byte)
-	T_18 (in Mem27[0x4DE1:bx_26 + 0x0000:byte] : byte)
-Eq_7: (memptr T_15 (struct (0 T_18 t0000)))
-	T_7 (in bx_25 : word16)
-	T_8 (in 0x0FFF : word16)
-	T_20 (in bx_26 - 0x0001 : word16)
+Eq_5: (memptr T_26 (struct (0 T_29 t0000)))
+	T_5 (in bx_23 : word16)
+	T_6 (in 0x0FFF : word16)
+	T_31 (in bx_25 - 0x0001 : word16)
+Eq_7: bu8
+	T_7 (in bh_30 : byte)
+	T_8 (in 0x0F : byte)
+	T_33 (in SLICE(bx_25 - 0x0001, byte, 8) : byte)
 Eq_9: byte
 	T_9 (in bl_10 : byte)
 	T_10 (in 0xFF : byte)
-	T_22 (in (byte) (bx_26 - 0x0001) : byte)
-Eq_11: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
-	T_11 (in bx_26 : word16)
-	T_12 (in DPB(bx_25, bl_10, 0) : word16)
-	T_19 (in 0x0001 : word16)
-Eq_13: byte
-	T_13 (in 0x4D : byte)
-Eq_15: (ptr (segment))
-	T_15 (in 0x4DE1 : selector)
-Eq_16: word16
-	T_16 (in 0x0000 : word16)
-Eq_17: word16
-	T_17 (in bx_26 + 0x0000 : word16)
-Eq_21: (memptr T_15 (struct (0 T_18 t0000)))
-	T_21 (in bx_26 - 0x0001 : word16)
-Eq_23: bool
-	T_23 (in bx_26 >= 0x0001 : bool)
+	T_35 (in (byte) (bx_25 - 0x0001) : byte)
+Eq_11: uint16
+	T_11 (in ax_13 : word16)
+	T_16 (in (bl_10 & 0x0F) *u (bh_30 + 0x01) : uint16)
+Eq_12: byte
+	T_12 (in 0x0F : byte)
+Eq_13: bu8
+	T_13 (in bl_10 & 0x0F : byte)
+Eq_14: bu8
+	T_14 (in 0x01 : byte)
+Eq_15: bu8
+	T_15 (in bh_30 + 0x01 : byte)
+Eq_17: (union (int16 u1) ((memptr T_26 (struct (0 T_29 t0000))) u0))
+	T_17 (in bx_25 : word16)
+	T_19 (in DPB(DPB(bx_23, bh_30, 8), bl_10, 0) : word16)
+	T_30 (in 0x0001 : word16)
+Eq_18: word16
+	T_18 (in DPB(bx_23, bh_30, 8) : word16)
+Eq_20: word16
+	T_20 (in 0x0004 : word16)
+Eq_21: ui16
+	T_21 (in ax_13 << 0x0004 : word16)
+Eq_22: byte
+	T_22 (in (byte) (ax_13 << 0x0004) : byte)
+Eq_23: ui16
+	T_23 (in ax_13 << 0x0004 : word16)
+Eq_24: byte
+	T_24 (in SLICE(ax_13 << 0x0004, byte, 8) : byte)
+Eq_25: byte
+	T_25 (in (byte) (ax_13 << 0x0004) | SLICE(ax_13 << 0x0004, byte, 8) : byte)
+	T_29 (in Mem26[0x4DE1:bx_25 + 0x0000:byte] : byte)
+Eq_26: (ptr (segment))
+	T_26 (in 0x4DE1 : selector)
+Eq_27: word16
+	T_27 (in 0x0000 : word16)
+Eq_28: word16
+	T_28 (in bx_25 + 0x0000 : word16)
+Eq_32: (memptr T_26 (struct (0 T_29 t0000)))
+	T_32 (in bx_25 - 0x0001 : word16)
+Eq_34: (memptr T_26 (struct (0 T_29 t0000)))
+	T_34 (in bx_25 - 0x0001 : word16)
+Eq_36: bool
+	T_36 (in bx_25 >= 0x0001 : bool)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -86,22 +112,22 @@ T_4: (in fn0C00_0004() : void)
   Class: Eq_4
   DataType: void
   OrigDataType: void
-T_5: (in al_20 : byte)
+T_5: (in bx_23 : word16)
   Class: Eq_5
-  DataType: byte
-  OrigDataType: byte
-T_6: (in 0xE1 : byte)
+  DataType: (memptr T_26 (struct (0 T_29 t0000)))
+  OrigDataType: (memptr T_26 (struct (0 T_29 t0000)))
+T_6: (in 0x0FFF : word16)
   Class: Eq_5
-  DataType: byte
-  OrigDataType: byte
-T_7: (in bx_25 : word16)
-  Class: Eq_7
-  DataType: (memptr T_15 (struct (0 T_18 t0000)))
-  OrigDataType: (memptr T_15 (struct (0 T_18 t0000)))
-T_8: (in 0x0FFF : word16)
-  Class: Eq_7
-  DataType: (memptr T_15 (struct (0 T_18 t0000)))
+  DataType: (memptr T_26 (struct (0 T_29 t0000)))
   OrigDataType: word16
+T_7: (in bh_30 : byte)
+  Class: Eq_7
+  DataType: bu8
+  OrigDataType: bu8
+T_8: (in 0x0F : byte)
+  Class: Eq_7
+  DataType: bu8
+  OrigDataType: byte
 T_9: (in bl_10 : byte)
   Class: Eq_9
   DataType: byte
@@ -110,55 +136,107 @@ T_10: (in 0xFF : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_11: (in bx_26 : word16)
+T_11: (in ax_13 : word16)
   Class: Eq_11
-  DataType: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
-  OrigDataType: (union (ci16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
-T_12: (in DPB(bx_25, bl_10, 0) : word16)
-  Class: Eq_11
-  DataType: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
-  OrigDataType: word16
-T_13: (in 0x4D : byte)
+  DataType: uint16
+  OrigDataType: uint16
+T_12: (in 0x0F : byte)
+  Class: Eq_12
+  DataType: byte
+  OrigDataType: byte
+T_13: (in bl_10 & 0x0F : byte)
   Class: Eq_13
-  DataType: byte
-  OrigDataType: byte
-T_14: (in al_20 | 0x4D : byte)
-  Class: Eq_5
-  DataType: byte
-  OrigDataType: byte
-T_15: (in 0x4DE1 : selector)
+  DataType: bu8
+  OrigDataType: bu8
+T_14: (in 0x01 : byte)
+  Class: Eq_14
+  DataType: bu8
+  OrigDataType: bu8
+T_15: (in bh_30 + 0x01 : byte)
   Class: Eq_15
+  DataType: bu8
+  OrigDataType: bu8
+T_16: (in (bl_10 & 0x0F) *u (bh_30 + 0x01) : uint16)
+  Class: Eq_11
+  DataType: uint16
+  OrigDataType: uint16
+T_17: (in bx_25 : word16)
+  Class: Eq_17
+  DataType: (union (int16 u1) ((memptr T_26 (struct (0 T_29 t0000))) u0))
+  OrigDataType: (union (ci16 u1) ((memptr T_26 (struct (0 T_29 t0000))) u0))
+T_18: (in DPB(bx_23, bh_30, 8) : word16)
+  Class: Eq_18
+  DataType: word16
+  OrigDataType: word16
+T_19: (in DPB(DPB(bx_23, bh_30, 8), bl_10, 0) : word16)
+  Class: Eq_17
+  DataType: (union (int16 u1) ((memptr T_26 (struct (0 T_29 t0000))) u0))
+  OrigDataType: word16
+T_20: (in 0x0004 : word16)
+  Class: Eq_20
+  DataType: word16
+  OrigDataType: word16
+T_21: (in ax_13 << 0x0004 : word16)
+  Class: Eq_21
+  DataType: ui16
+  OrigDataType: ui16
+T_22: (in (byte) (ax_13 << 0x0004) : byte)
+  Class: Eq_22
+  DataType: byte
+  OrigDataType: byte
+T_23: (in ax_13 << 0x0004 : word16)
+  Class: Eq_23
+  DataType: ui16
+  OrigDataType: ui16
+T_24: (in SLICE(ax_13 << 0x0004, byte, 8) : byte)
+  Class: Eq_24
+  DataType: byte
+  OrigDataType: byte
+T_25: (in (byte) (ax_13 << 0x0004) | SLICE(ax_13 << 0x0004, byte, 8) : byte)
+  Class: Eq_25
+  DataType: byte
+  OrigDataType: byte
+T_26: (in 0x4DE1 : selector)
+  Class: Eq_26
   DataType: (ptr (segment))
   OrigDataType: (ptr (segment))
-T_16: (in 0x0000 : word16)
-  Class: Eq_16
+T_27: (in 0x0000 : word16)
+  Class: Eq_27
   DataType: word16
   OrigDataType: word16
-T_17: (in bx_26 + 0x0000 : word16)
-  Class: Eq_17
+T_28: (in bx_25 + 0x0000 : word16)
+  Class: Eq_28
   DataType: word16
   OrigDataType: word16
-T_18: (in Mem27[0x4DE1:bx_26 + 0x0000:byte] : byte)
-  Class: Eq_5
+T_29: (in Mem26[0x4DE1:bx_25 + 0x0000:byte] : byte)
+  Class: Eq_25
   DataType: byte
   OrigDataType: byte
-T_19: (in 0x0001 : word16)
-  Class: Eq_11
-  DataType: (union (int16 u1) ((memptr T_15 (struct (0 T_18 t0000))) u0))
+T_30: (in 0x0001 : word16)
+  Class: Eq_17
+  DataType: (union (int16 u1) ((memptr T_26 (struct (0 T_29 t0000))) u0))
   OrigDataType: int16
-T_20: (in bx_26 - 0x0001 : word16)
+T_31: (in bx_25 - 0x0001 : word16)
+  Class: Eq_5
+  DataType: (memptr T_26 (struct (0 T_29 t0000)))
+  OrigDataType: (memptr T_26 (struct (0 T_29 t0000)))
+T_32: (in bx_25 - 0x0001 : word16)
+  Class: Eq_32
+  DataType: (memptr T_26 (struct (0 T_29 t0000)))
+  OrigDataType: (memptr T_26 (struct (0 T_29 t0000)))
+T_33: (in SLICE(bx_25 - 0x0001, byte, 8) : byte)
   Class: Eq_7
-  DataType: (memptr T_15 (struct (0 T_18 t0000)))
-  OrigDataType: (memptr T_15 (struct (0 T_18 t0000)))
-T_21: (in bx_26 - 0x0001 : word16)
-  Class: Eq_21
-  DataType: (memptr T_15 (struct (0 T_18 t0000)))
-  OrigDataType: (memptr T_15 (struct (0 T_18 t0000)))
-T_22: (in (byte) (bx_26 - 0x0001) : byte)
+  DataType: bu8
+  OrigDataType: byte
+T_34: (in bx_25 - 0x0001 : word16)
+  Class: Eq_34
+  DataType: (memptr T_26 (struct (0 T_29 t0000)))
+  OrigDataType: (memptr T_26 (struct (0 T_29 t0000)))
+T_35: (in (byte) (bx_25 - 0x0001) : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_23: (in bx_26 >= 0x0001 : bool)
-  Class: Eq_23
+T_36: (in bx_25 >= 0x0001 : bool)
+  Class: Eq_36
   DataType: bool
   OrigDataType: bool

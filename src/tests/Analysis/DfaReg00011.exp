@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: ax bx C es O S Top Z
+// Trashed: SCZO ah al ax bh bl bx eax ebx es rax rbx
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -19,7 +19,7 @@ fn0C00_0000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: ax bx C es O S Top Z
+// Trashed: SCZO ah al ax bh bl bx eax ebx es rax rbx
 // Preserved: sp
 // fn0C00_0004
 // Return size: 0
@@ -27,19 +27,16 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 bx_36 = 0x0FFF
-	byte bh_42 = 0x0F
-	byte bl_11 = 0xFF
+	word16 bx_23 = 0x0FFF
+	byte bh_24 = 0x0F
+	byte bl_25 = 0xFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	word16 bx_37 = DPB(bx_36, bl_11, 0)
-	Mem38[0x4DE1:bx_37:byte] = DPB(bl_11, al_31, 0)
-	byte ah_26 = SLICE(DPB((bl_11 & 0x0F) *u (bh_42 + 0x01) << 0x0004, bl_11, 0), byte, 8)
-	al_31 = bl_11 | DPB(ah_26, ah_26 & 0x0F, 8)
-	bx_36 = bx_37 - 0x0001
-	bh_42 = SLICE(bx_37 - 0x0001, byte, 8) (alias)
-	bl_11 = (byte) (bx_37 - 0x0001) (alias)
-	branch bx_37 >= 0x0001 l0C00_000C
+	Mem22[0x4DE1:bx_23:byte] = bl_25 & 0xF0 | SLICE((bl_25 & 0x0F) *u (bh_24 + 0x01) << 0x0004, byte, 8) & 0x0F
+	bx_23 = bx_23 - 0x0001
+	bh_24 = SLICE(bx_23, byte, 8) (alias)
+	bl_25 = (byte) bx_23 (alias)
+	branch bx_23 >= 0x0000 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return
