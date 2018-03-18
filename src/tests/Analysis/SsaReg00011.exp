@@ -3,13 +3,16 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: call fn0C00_0004 (retsize: 2;)	uses: sp:sp_2	defs: sp:sp_4
+    uses: call fn0C00_0004 (retsize: 2;)	uses: sp:sp_2,Top:Top_3	defs: sp:sp_4,Top:Top_5
 Top_3: orig: Top
     def:  Top_3 = 0
-    uses: use Top_3
+    uses: call fn0C00_0004 (retsize: 2;)	uses: sp:sp_2,Top:Top_3	defs: sp:sp_4,Top:Top_5
 sp_4: orig: sp
-    def:  call fn0C00_0004 (retsize: 2;)	uses: sp:sp_2	defs: sp:sp_4
+    def:  call fn0C00_0004 (retsize: 2;)	uses: sp:sp_2,Top:Top_3	defs: sp:sp_4,Top:Top_5
     uses: use sp_4
+Top_5: orig: Top
+    def:  call fn0C00_0004 (retsize: 2;)	uses: sp:sp_2,Top:Top_3	defs: sp:sp_4,Top:Top_5
+    uses: use Top_5
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -20,13 +23,13 @@ l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
 	call fn0C00_0004 (retsize: 2;)
-		uses: sp:sp_2
-		defs: sp:sp_4
+		uses: sp:sp_2,Top:Top_3
+		defs: sp:sp_4,Top:Top_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use sp_4
-	use Top_3
+	use Top_5
 
 fp:fp
     def:  def fp

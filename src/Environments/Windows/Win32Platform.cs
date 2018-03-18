@@ -108,6 +108,7 @@ namespace Reko.Environments.Windows
                 Registers.ecx,
                 Registers.edx,
                 Registers.esp,
+                Registers.Top,
             };
         }
 

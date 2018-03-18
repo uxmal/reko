@@ -62,6 +62,7 @@ namespace Reko.Environments.Windows
                 Registers.dx,
                 Registers.bx,
                 Registers.sp,
+                Registers.Top,
             };
         }
 
