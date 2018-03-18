@@ -4,18 +4,18 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_13 = 0x0000
+	word16 ax_12 = 0x0000
 	// succ:  l0C00_0002
 l0C00_0002:
 	branch bx == 0x0000 l0C00_000D
 	// succ:  l0C00_0006 l0C00_000D
 l0C00_0006:
-	ax_13 = ax_13 + 0x0001
+	ax_12 = ax_12 + 0x0001
 	bx = Mem0[ds:bx + 0x0004:word16]
 	goto l0C00_0002
 	// succ:  l0C00_0002
 l0C00_000D:
-	Mem15[ds:0x0200:word16] = ax_13
+	Mem14[ds:0x0200:word16] = ax_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -42,7 +42,7 @@ T_3: (in ds : selector)
   Class: Eq_3
   DataType: (ptr Eq_3)
   OrigDataType: (ptr (segment (200 T_7 t0200)))
-T_4: (in ax_13 : word16)
+T_4: (in ax_12 : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
@@ -54,7 +54,7 @@ T_6: (in 0x0200 : word16)
   Class: Eq_6
   DataType: (memptr (ptr Eq_3) word16)
   OrigDataType: (memptr T_3 (struct (0 T_7 t0000)))
-T_7: (in Mem15[ds:0x0200:word16] : word16)
+T_7: (in Mem14[ds:0x0200:word16] : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
@@ -62,7 +62,7 @@ T_8: (in 0x0001 : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_9: (in ax_13 + 0x0001 : word16)
+T_9: (in ax_12 + 0x0001 : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16

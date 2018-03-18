@@ -4,7 +4,7 @@ void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_12
+	word16 ax_11
 	branch ax != 0x0001 l0C00_0015
 	// succ:  l0C00_0005 l0C00_0015
 l0C00_0005:
@@ -14,29 +14,29 @@ l0C00_000A:
 	branch ax != 0x0003 l0C00_0015
 	// succ:  l0C00_000F l0C00_0015
 l0C00_000F:
-	ax_12 = 0x0001
+	ax_11 = 0x0001
 	goto l0C00_001A
 	// succ:  l0C00_001A
 l0C00_0015:
-	ax_12 = 0x0000
+	ax_11 = 0x0000
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_26
-	Mem20[ds:0x0300:word16] = ax_12
-	branch ax_12 != 0x000A l0C00_002E
+	word16 ax_24
+	Mem19[ds:0x0300:word16] = ax_11
+	branch ax_11 != 0x000A l0C00_002E
 	// succ:  l0C00_0023 l0C00_002E
 l0C00_0023:
-	branch ax_12 != 0x000B l0C00_002E
+	branch ax_11 != 0x000B l0C00_002E
 	// succ:  l0C00_0028 l0C00_002E
 l0C00_0028:
-	ax_26 = 0x0001
+	ax_24 = 0x0001
 	goto l0C00_0030
 	// succ:  l0C00_0030
 l0C00_002E:
-	ax_26 = 0x0000
+	ax_24 = 0x0000
 	// succ:  l0C00_0030
 l0C00_0030:
-	Mem33[ds:0x0302:word16] = ax_26
+	Mem31[ds:0x0302:word16] = ax_24
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -47,35 +47,35 @@ void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_12
+	word16 ax_11
 	branch ax != 0x0001 || (ax != 0x0002 || ax != 0x0003) l0C00_0015
 	goto l0C00_000F
 	// succ:  l0C00_000F l0C00_0015
 l0C00_0005:
 l0C00_000A:
 l0C00_000F:
-	ax_12 = 0x0001
+	ax_11 = 0x0001
 	goto l0C00_001A
 	// succ:  l0C00_001A
 l0C00_0015:
-	ax_12 = 0x0000
+	ax_11 = 0x0000
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_26
-	Mem20[ds:0x0300:word16] = ax_12
-	branch ax_12 != 0x000A || ax_12 != 0x000B l0C00_002E
+	word16 ax_24
+	Mem19[ds:0x0300:word16] = ax_11
+	branch ax_11 != 0x000A || ax_11 != 0x000B l0C00_002E
 	goto l0C00_0028
 	// succ:  l0C00_0028 l0C00_002E
 l0C00_0023:
 l0C00_0028:
-	ax_26 = 0x0001
+	ax_24 = 0x0001
 	goto l0C00_0030
 	// succ:  l0C00_0030
 l0C00_002E:
-	ax_26 = 0x0000
+	ax_24 = 0x0000
 	// succ:  l0C00_0030
 l0C00_0030:
-	Mem33[ds:0x0302:word16] = ax_26
+	Mem31[ds:0x0302:word16] = ax_24
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

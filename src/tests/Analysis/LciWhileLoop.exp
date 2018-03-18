@@ -9,29 +9,29 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	Mem7[ss:fp - 0x0002:word16] = bp
-	ax_13 = Mem7[ss:fp + 0x0004:word16]
-	bx_10 = 0x0000
-	branch ax_13 <= 0x0000 l0C00_0015
+	ax_12 = Mem7[ss:fp + 0x0004:word16]
+	bx_9 = 0x0000
+	branch ax_12 <= 0x0000 l0C00_0015
 	// succ:  l0C00_000C l0C00_0015
 l0C00_000C:
-	cx_21 = ax_13
+	cx_20 = ax_12
 	// succ:  l0C00_000E
 l0C00_000E:
-	cx_23 = PHI(cx_21, cx_26)
-	bx_22 = PHI(bx_10, bx_24)
-	bx_24 = bx_22 + cx_23
-	cx_26 = cx_23 - 0x0001
-	branch cx_26 != 0x0000 l0C00_000E
+	cx_22 = PHI(cx_20, cx_25)
+	bx_21 = PHI(bx_9, bx_23)
+	bx_23 = bx_21 + cx_22
+	cx_25 = cx_22 - 0x0001
+	branch cx_25 != 0x0000 l0C00_000E
 	// succ:  l0C00_0012 l0C00_000E
 l0C00_0012:
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0015:
-	bx_20 = -ax_13
+	bx_19 = -ax_12
 	// succ:  l0C00_0019
 l0C00_0019:
-	bx_27 = PHI(bx_24, bx_20)
-	Mem31[ds:0x0300:word16] = bx_27
+	bx_26 = PHI(bx_23, bx_19)
+	Mem30[ds:0x0300:word16] = bx_26
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

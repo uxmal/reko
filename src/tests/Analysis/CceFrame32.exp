@@ -62,12 +62,12 @@ Mem11: orig: Mem0
     uses: Mem15 = PHI(Mem11, Mem31)
 SCZO_12: orig: SCZO
 Z_13: orig: Z
-dwLoc04_41: orig: dwLoc04
+dwLoc04_40: orig: dwLoc04
 Mem15: orig: Mem0
     def:  Mem15 = PHI(Mem11, Mem31)
     uses: edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]
 eax_16: orig: eax
-    def:  eax_16 = (int32) wLoc08_43
+    def:  eax_16 = (int32) wLoc08_42
     uses: edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]
 ecx_17: orig: ecx
     def:  ecx_17 = dwArg04
@@ -79,7 +79,7 @@ SZO_19: orig: SZO
 C_20: orig: C
 Z_21: orig: Z
 eax_22: orig: eax
-    def:  eax_22 = (int32) wLoc08_45
+    def:  eax_22 = (int32) wLoc08_44
     uses: branch eax_22 >= 0x00007FFF l1000005A
 SCZO_23: orig: SCZO
 SO_24: orig: SO
@@ -87,33 +87,32 @@ dwArg04:Stack +0004
     def:  def dwArg04
     uses: branch dwArg04 != 0x00000000 l1000002F
           ecx_17 = dwArg04
-wLoc08_43: orig: wLoc08
-    def:  wLoc08_43 = 0x0000
-    uses: eax_16 = (int32) wLoc08_43
+wLoc08_42: orig: wLoc08
+    def:  wLoc08_42 = 0x0000
+    uses: eax_16 = (int32) wLoc08_42
 ax_27: orig: ax
 cx_28: orig: cx
 cx_29: orig: cx
 SCZO_30: orig: SCZO
 Mem31: orig: Mem0
     uses: Mem15 = PHI(Mem11, Mem31)
-ax:ax
-ax_33: orig: ax
-SZO_34: orig: SZO
-C_35: orig: C
-dwLoc08_42: orig: dwLoc08
-esp_37: orig: esp
-Mem38: orig: Mem0
-ebp_39: orig: ebp
-esp_40: orig: esp
-wLoc08_45: orig: wLoc08
-    def:  wLoc08_45 = PHI(wLoc08_43, wLoc08_45)
-    uses: eax_22 = (int32) wLoc08_45
+ax_32: orig: ax
+SZO_33: orig: SZO
+C_34: orig: C
+dwLoc08_41: orig: dwLoc08
+esp_36: orig: esp
+Mem37: orig: Mem0
+ebp_38: orig: ebp
+esp_39: orig: esp
+wLoc08_44: orig: wLoc08
+    def:  wLoc08_44 = PHI(wLoc08_42, wLoc08_44)
+    uses: eax_22 = (int32) wLoc08_44
+wLoc08_46: orig: wLoc08
 wLoc08_47: orig: wLoc08
-wLoc08_48: orig: wLoc08
+dwLoc04_48: orig: dwLoc04
 dwLoc04_49: orig: dwLoc04
 dwLoc04_50: orig: dwLoc04
-dwLoc04_51: orig: dwLoc04
-    def:  dwLoc04_51 = PHI(dwLoc04_41, dwLoc04_51)
+    def:  dwLoc04_50 = PHI(dwLoc04_40, dwLoc04_50)
 // fn10000017
 // Return size: 4
 define fn10000017
@@ -121,7 +120,7 @@ fn10000017_entry:
 	def dwArg04
 	// succ:  l10000017
 l10000017:
-	wLoc08_43 = 0x0000
+	wLoc08_42 = 0x0000
 	branch dwArg04 != 0x00000000 l1000002F
 	// succ:  l10000027 l1000002F
 l10000027:
@@ -129,13 +128,13 @@ l10000027:
 	// succ:  l1000005E
 l1000002F:
 	Mem15 = PHI(Mem11, Mem31)
-	eax_16 = (int32) wLoc08_43
+	eax_16 = (int32) wLoc08_42
 	ecx_17 = dwArg04
 	edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]
 	branch edx_18 == 0x00000000 l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:
-	eax_22 = (int32) wLoc08_45
+	eax_22 = (int32) wLoc08_44
 	branch eax_22 >= 0x00007FFF l1000005A
 	// succ:  l10000049 l1000005A
 l10000049:

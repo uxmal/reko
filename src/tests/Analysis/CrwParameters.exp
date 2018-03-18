@@ -93,19 +93,19 @@ fn0C00_0027_entry:
 	def Mem0
 	// succ:  l0C00_0027
 l0C00_0027:
-	ax_5 = 0x0000
-	si_9 = si
+	ax_4 = 0x0000
+	si_8 = si
 	branch si == 0x0000 l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
-	ax_15 = Mem0[ds:si:word16]
-	si_16 = si + 0x0002
+	ax_14 = Mem0[ds:si:word16]
+	si_15 = si + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
-	si_23 = PHI(si_9, si_16)
-	ax_17 = PHI(ax_5, ax_15)
-	siOut = si_23
-	return ax_17
+	si_22 = PHI(si_8, si_15)
+	ax_16 = PHI(ax_4, ax_14)
+	siOut = si_22
+	return ax_16
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
 Register word16 fn0C00_002F(Register word16 si, Register selector ds, Register out ptr16 siOut)

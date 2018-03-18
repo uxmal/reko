@@ -7,38 +7,37 @@ bx:bx
           branch bx > 0x0000 l0C00_000D
 SCZO_5: orig: SCZO
 Z_6: orig: Z
-ax:ax
-ax_8: orig: ax
-    def:  ax_8 = 0x0000
-    uses: ax_14 = PHI(ax_13, ax_8, ax_12)
-SZO_9: orig: SZO
-C_10: orig: C
-SZO_11: orig: SZO
+ax_7: orig: ax
+    def:  ax_7 = 0x0000
+    uses: ax_13 = PHI(ax_12, ax_7, ax_11)
+SZO_8: orig: SZO
+C_9: orig: C
+SZO_10: orig: SZO
+ax_11: orig: ax
+    def:  ax_11 = 0x0001
+    uses: ax_13 = PHI(ax_12, ax_7, ax_11)
 ax_12: orig: ax
-    def:  ax_12 = 0x0001
-    uses: ax_14 = PHI(ax_13, ax_8, ax_12)
+    def:  ax_12 = 0xFFFF
+    uses: ax_13 = PHI(ax_12, ax_7, ax_11)
 ax_13: orig: ax
-    def:  ax_13 = 0xFFFF
-    uses: ax_14 = PHI(ax_13, ax_8, ax_12)
-ax_14: orig: ax
-    def:  ax_14 = PHI(ax_13, ax_8, ax_12)
-    uses: Mem17[ds:0x0100:word16] = ax_14
-C_18: orig: C
+    def:  ax_13 = PHI(ax_12, ax_7, ax_11)
+    uses: Mem16[ds:0x0100:word16] = ax_13
+C_17: orig: C
 ds:ds
     def:  def ds
-    uses: Mem17[ds:0x0100:word16] = ax_14
-Mem17: orig: Mem0
-    def:  Mem17[ds:0x0100:word16] = ax_14
-C_19: orig: C
+    uses: Mem16[ds:0x0100:word16] = ax_13
+Mem16: orig: Mem0
+    def:  Mem16[ds:0x0100:word16] = ax_13
+C_18: orig: C
+O_19: orig: O
 O_20: orig: O
 O_21: orig: O
-O_22: orig: O
+S_22: orig: S
 S_23: orig: S
 S_24: orig: S
-S_25: orig: S
+Z_27: orig: Z
 Z_28: orig: Z
 Z_29: orig: Z
-Z_30: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
@@ -53,19 +52,19 @@ l0C00_0005:
 	branch bx > 0x0000 l0C00_000D
 	// succ:  l0C00_0007 l0C00_000D
 l0C00_0007:
-	ax_13 = 0xFFFF
+	ax_12 = 0xFFFF
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_000D:
-	ax_12 = 0x0001
+	ax_11 = 0x0001
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_0013:
-	ax_8 = 0x0000
+	ax_7 = 0x0000
 	// succ:  l0C00_0015
 l0C00_0015:
-	ax_14 = PHI(ax_13, ax_8, ax_12)
-	Mem17[ds:0x0100:word16] = ax_14
+	ax_13 = PHI(ax_12, ax_7, ax_11)
+	Mem16[ds:0x0100:word16] = ax_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

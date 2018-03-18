@@ -29,29 +29,29 @@ fn0040000C_entry:
 l0040000C:
 	word32 ecx_11 = Mem7[dwArg04 + 0x0000003C:word32] + dwArg04
 	word32 esi_19 = (word32) Mem18[ecx_11 + 0x00000006:word16]
-	word32 edx_21 = 0x00000000
-	word32 eax_24 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11 + 0x0000000C
+	word32 edx_20 = 0x00000000
+	word32 eax_23 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11 + 0x0000000C
 	branch esi_19 <=u 0x00000000 l0040004B
 	// succ:  l0040002E l0040004B
 l0040002E:
 	// succ:  l00400031
 l00400031:
-	word32 ecx_32 = Mem23[eax_24 + 0x00000000:word32]
-	branch dwArg08 <u ecx_32 l00400041
+	word32 ecx_31 = Mem22[eax_23 + 0x00000000:word32]
+	branch dwArg08 <u ecx_31 l00400041
 	// succ:  l00400038 l00400041
 l00400038:
-	branch dwArg08 <u Mem23[eax_24 + 0x00000008:word32] + ecx_32 l0040004D
+	branch dwArg08 <u Mem22[eax_23 + 0x00000008:word32] + ecx_31 l0040004D
 	// succ:  l00400041 l0040004D
 l00400041:
-	edx_21 = edx_21 + 0x00000001
-	eax_24 = eax_24 + 0x00000028
-	branch edx_21 <u esi_19 l00400031
+	edx_20 = edx_20 + 0x00000001
+	eax_23 = eax_23 + 0x00000028
+	branch edx_20 <u esi_19 l00400031
 	// succ:  l0040004B l00400031
 l0040004B:
-	eax_24 = 0x00000000
+	eax_23 = 0x00000000
 	// succ:  l0040004D
 l0040004D:
-	return eax_24
+	return eax_23
 	// succ:  fn0040000C_exit
 fn0040000C_exit:
 

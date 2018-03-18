@@ -125,8 +125,6 @@ Z_11: orig: Z
 ax_12: orig: ax
     def:  ax_12 = ax_9 - 0x0001
     uses: SZO_13 = cond(ax_12)
-          ax_15 = ax_12 ^ ax_12
-          ax_15 = ax_12 ^ ax_12
           branch ax_12 != 0x0000 l0C00_0022
 SZO_13: orig: SZO
     def:  SZO_13 = cond(ax_12)
@@ -134,7 +132,7 @@ SZO_13: orig: SZO
 Z_14: orig: Z
     def:  Z_14 = SLICE(SZO_13, bool, 2) (alias)
 ax_15: orig: ax
-    def:  ax_15 = ax_12 ^ ax_12
+    def:  ax_15 = 0x0000
     uses: SZO_16 = cond(ax_15)
 SZO_16: orig: SZO
     def:  SZO_16 = cond(ax_15)
@@ -187,7 +185,7 @@ l0C00_001E:
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_0022:
-	ax_15 = ax_12 ^ ax_12
+	ax_15 = 0x0000
 	SZO_16 = cond(ax_15)
 	C_17 = false
 	return

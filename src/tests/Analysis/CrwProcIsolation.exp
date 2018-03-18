@@ -82,7 +82,7 @@ fn0C00_0014_entry:
 	def ax
 	// succ:  l0C00_0014
 l0C00_0014:
-	ax_9 = ax - 0x0001
-	return ax_9
+	ax_8 = ax - 0x0001
+	return ax_8
 	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:

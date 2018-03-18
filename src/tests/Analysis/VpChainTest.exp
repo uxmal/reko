@@ -158,8 +158,6 @@ sp_4: orig: sp
 si:si
     def:  def si
     uses: Mem7[ss:sp_4:word16] = si
-          si_8 = si ^ si
-          si_8 = si ^ si
 ss:ss
     def:  def ss
     uses: Mem7[ss:sp_4:word16] = si
@@ -168,7 +166,7 @@ Mem7: orig: Mem0
     def:  Mem7[ss:sp_4:word16] = si
     uses: si_23 = Mem7[ss:sp_4:word16]
 si_8: orig: si
-    def:  si_8 = si ^ si
+    def:  si_8 = 0x0000
     uses: SZO_9 = cond(si_8)
           si_14 = PHI(si_8, si_15)
 SZO_9: orig: SZO
@@ -225,7 +223,7 @@ l0C00_000F:
 	Top_3 = 0
 	sp_4 = sp_2 - 0x0002
 	Mem7[ss:sp_4:word16] = si
-	si_8 = si ^ si
+	si_8 = 0x0000
 	SZO_9 = cond(si_8)
 	C_10 = false
 	goto l0C00_0018

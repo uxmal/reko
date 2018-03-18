@@ -14,10 +14,9 @@ Mem0:Global
 FPUF_8: orig: FPUF
 Top_9: orig: Top
 SCZO_10: orig: SCZO
-ecx:ecx
-ecx_12: orig: ecx
-SZO_13: orig: SZO
-C_14: orig: C
+ecx_11: orig: ecx
+SZO_12: orig: SZO
+C_13: orig: C
 rArg0:FPU +0
     def:  def rArg0
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C

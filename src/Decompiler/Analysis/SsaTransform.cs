@@ -684,6 +684,20 @@ namespace Reko.Analysis
                 pflow.TerminatesProcess;
         }
 
+        public override Expression VisitBinaryExpression(BinaryExpression binExp)
+        {
+            // Handling sub(R,R) and xor(R,R) specially, since they otherwise
+            // introduce a false use of R.
+            if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.Xor)
+            {
+                if (binExp.Left is Identifier id && binExp.Right == id)
+                {
+                    var c = Constant.Zero(id.DataType);
+                    return c;
+                }
+            }
+            return base.VisitBinaryExpression(binExp);
+        }
 
         public override Expression VisitIdentifier(Identifier id)
         {

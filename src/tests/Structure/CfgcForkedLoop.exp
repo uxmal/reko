@@ -4,22 +4,22 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_20 = 0x0000
+	word16 ax_19 = 0x0000
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0005:
-	word16 si_14 = Mem0[ds:0x0300:word16]
-	branch si_14 == 0x0000 l0C00_0012
+	word16 si_13 = Mem0[ds:0x0300:word16]
+	branch si_13 == 0x0000 l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
-	ax_20 = ax_20 + Mem0[ds:si_14:word16]
+	ax_19 = ax_19 + Mem0[ds:si_13:word16]
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0012:
-	ax_20 = ax_20 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
+	ax_19 = ax_19 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
 	// succ:  l0C00_0019
 l0C00_0019:
-	branch ax_20 < bx l0C00_0005
+	branch ax_19 < bx l0C00_0005
 	// succ:  l0C00_001D l0C00_0005
 l0C00_001D:
 	return
@@ -30,23 +30,23 @@ fn0C00_0000_exit:
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
-	word16 ax_20 = 0x0000
+	word16 ax_19 = 0x0000
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0000:
 l0C00_0005:
-	word16 si_14 = Mem0[ds:0x0300:word16]
-	branch si_14 == 0x0000 l0C00_0012
+	word16 si_13 = Mem0[ds:0x0300:word16]
+	branch si_13 == 0x0000 l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
-	ax_20 = ax_20 + Mem0[ds:si_14:word16]
+	ax_19 = ax_19 + Mem0[ds:si_13:word16]
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0012:
-	ax_20 = ax_20 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
+	ax_19 = ax_19 + Mem0[ds:Mem0[ds:0x0302:word16] + 0x0004:word16]
 	// succ:  l0C00_0019
 l0C00_0019:
-	branch ax_20 < bx l0C00_0005
+	branch ax_19 < bx l0C00_0005
 	// succ:  l0C00_001D l0C00_0005
 l0C00_001D:
 	return

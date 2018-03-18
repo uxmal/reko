@@ -7,27 +7,27 @@ fn0C00_0000_entry:
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	dx_5 = 0x0000
-	cx_8 = 0x0004
-	di_9 = 0x0004
+	dx_4 = 0x0000
+	cx_7 = 0x0004
+	di_8 = 0x0004
 	// succ:  l0C00_0008
 l0C00_0008:
-	di_21 = PHI(di_9, di_21, di_22)
-	cx_18 = PHI(cx_8, cx_19, cx_20)
-	dx_15 = PHI(dx_5, dx_16, dx_16)
-	si_11 = PHI(si, si_14, si_14)
-	si_14 = si_11 + 0x0002
-	dx_16 = dx_15 + Mem0[ds:si_11:word16]
-	cx_19 = cx_18 - 0x0001
-	branch cx_19 != 0x0000 l0C00_0008
+	di_20 = PHI(di_8, di_20, di_21)
+	cx_17 = PHI(cx_7, cx_18, cx_19)
+	dx_14 = PHI(dx_4, dx_15, dx_15)
+	si_10 = PHI(si, si_13, si_13)
+	si_13 = si_10 + 0x0002
+	dx_15 = dx_14 + Mem0[ds:si_10:word16]
+	cx_18 = cx_17 - 0x0001
+	branch cx_18 != 0x0000 l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
 l0C00_000D:
-	cx_20 = 0x0004
-	di_22 = di_21 - 0x0001
-	branch di_22 != 0x0000 l0C00_0008
+	cx_19 = 0x0004
+	di_21 = di_20 - 0x0001
+	branch di_21 != 0x0000 l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
-	Mem25[ds:0x0300:word16] = dx_16
+	Mem24[ds:0x0300:word16] = dx_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

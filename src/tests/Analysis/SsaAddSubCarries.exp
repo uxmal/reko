@@ -89,8 +89,6 @@ ax_23: orig: ax
     def:  ax_23 = ax_17 - cx_22
     uses: SCZO_24 = cond(ax_23)
           Mem25[ds:0x0218:word16] = ax_23
-          ax_30 = ax_23 ^ ax_23
-          ax_30 = ax_23 ^ ax_23
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(ax_23)
     uses: C_26 = SLICE(SCZO_24, bool, 1) (alias)
@@ -111,7 +109,7 @@ Mem29: orig: Mem0
     uses: cl_33 = Mem29[ds:0x0220:byte]
           cl_38 = Mem29[ds:0x0221:byte]
 ax_30: orig: ax
-    def:  ax_30 = ax_23 ^ ax_23
+    def:  ax_30 = 0x0000
     uses: SZO_31 = cond(ax_30)
           ax_36 = ax_30 + ax_30 + C_35
           ax_36 = ax_30 + ax_30 + C_35
@@ -215,7 +213,7 @@ l0C00_0000:
 	dx_27 = dx_18 - bx_21 - C_26
 	SCZO_28 = cond(dx_27)
 	Mem29[ds:0x021A:word16] = dx_27
-	ax_30 = ax_23 ^ ax_23
+	ax_30 = 0x0000
 	SZO_31 = cond(ax_30)
 	C_32 = false
 	cl_33 = Mem29[ds:0x0220:byte]

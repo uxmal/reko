@@ -99,11 +99,11 @@ l0C00_0020:
 l0C00_0024:
 	// succ:  l0C00_0025_thunk_fn0C00_0015
 l0C00_0025_thunk_fn0C00_0015:
-	ax_16 = DPB(ax_16, fn0C00_0015(ax - 0x0001), 0)
-	return (byte) ax_16
+	ax_15 = DPB(ax_15, fn0C00_0015(ax - 0x0001), 0)
+	return (byte) ax_15
 	// succ:  fn0C00_0020_exit
 l0C00_0028:
-	ax_19 = DPB(ax, 0x00, 0) (alias)
-	return (byte) ax_19
+	ax_18 = DPB(ax, 0x00, 0) (alias)
+	return (byte) ax_18
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:

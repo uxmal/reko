@@ -7,7 +7,7 @@ l0C00_0000:
 	Mem5[ds:0x0300:word16] = 0x0000
 	Mem6[ds:0x0302:word16] = 0x00CA
 	Mem7[ds:0x0304:word16] = 0x0194
-	Mem14[ds:0x0306:word16] = Mem7[ds:0x0302:word16] + Mem7[ds:0x0304:word16]
+	Mem13[ds:0x0306:word16] = Mem7[ds:0x0302:word16] + Mem7[ds:0x0304:word16]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -66,6 +66,6 @@ T_16 (in Mem7[ds:0x0302:word16] + Mem7[ds:0x0304:word16] : word16)
 T_17 (in 0x0306 : word16)
 	trait_primitive(word16)
 	trait_mem(T_2:T_18, 0)
-T_18 (in Mem14[ds:0x0306:word16] : word16)
+T_18 (in Mem13[ds:0x0306:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_16)
