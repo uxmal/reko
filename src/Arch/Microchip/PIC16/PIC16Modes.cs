@@ -30,11 +30,16 @@ namespace Reko.Arch.Microchip.PIC16
 
     internal class PIC16BasicMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic16";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC16Architecture(ArchitectureID, this);
+
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16BasicDisasm.Create(arch, rdr);
 
-        public override void CreateRegisters(PIC pic)
-            => PIC16BasicRegisters.Create(pic);
+        public override void CreateRegisters()
+            => PIC16BasicRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC16BaseRewriter.Create(arch, dasm, state, binder, host);
@@ -44,17 +49,20 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override PICProcessorState CreateProcessorState(PICArchitecture arch)
             => new PIC16State(arch);
-
     }
 
     internal class PIC16EnhancedMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic16";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC16Architecture(ArchitectureID, this);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16EnhancedDisasm.Create(arch, rdr);
 
-        public override void CreateRegisters(PIC pic)
-            => PIC16EnhancedRegisters.Create(pic);
+        public override void CreateRegisters()
+            => PIC16EnhancedRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC16EnhancedRewriter.Create(arch, dasm, state, binder, host);
@@ -69,12 +77,16 @@ namespace Reko.Arch.Microchip.PIC16
 
     internal class PIC16FullMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic16";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC16Architecture(ArchitectureID, this);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16FullDisasm.Create(arch, rdr);
 
-        public override void CreateRegisters(PIC pic)
-            => PIC16FullRegisters.Create(pic);
+        public override void CreateRegisters()
+            => PIC16FullRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC16FullRewriter.Create(arch, dasm, state, binder, host);

@@ -43,17 +43,29 @@ namespace Reko.Arch.Microchip.Common
                 { InstructionSetID.PIC18_ENHANCED, new PIC18EnhancedMode() },
             };
 
+        /// <summary>
+        /// Specialised default constructor for use only by derived class.
+        /// </summary>
         protected PICProcessorMode()
         { }
 
-        public static PICProcessorMode Create(string picName)
+        /// <summary>
+        /// Gets the processor mode corresponding to the given processor name.
+        /// </summary>
+        /// <param name="procName">Name of the processor.</param>
+        /// <returns>
+        /// The processor mode.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown the processor name is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown the PIC database is not accessible.</exception>
+        public static PICProcessorMode GetMode(string procName)
         {
-            if (string.IsNullOrEmpty(picName))
-                throw new ArgumentNullException(nameof(picName));
+            if (string.IsNullOrEmpty(procName))
+                throw new ArgumentNullException(nameof(procName));
             var db = PICCrownking.GetDB();
             if (db is null)
-                throw new InvalidOperationException("Can't get PIC database.");
-            var pic = db.GetPIC(picName);
+                throw new InvalidOperationException("Can't get the PIC database.");
+            var pic = db.GetPIC(procName);
             if (pic is null)
                 return null;
             if (modes.TryGetValue(pic.GetInstructionSetID, out PICProcessorMode mode))
@@ -64,18 +76,75 @@ namespace Reko.Arch.Microchip.Common
             return null;
         }
 
+        /// <summary>
+        /// Gets the PIC descriptor.
+        /// </summary>
         public PIC PICDescriptor { get; private set; }
 
+        /// <summary>
+        /// Gets the PIC name.
+        /// </summary>
         public string PICName => PICDescriptor?.Name;
 
+        /// <summary>
+        /// Gets the identifier name of the processor architecture.
+        /// </summary>
+        public abstract string ArchitectureID { get; }
+
+        /// <summary>
+        /// Creates the PIC architecture.
+        /// </summary>
+        /// <param name="mode">The processor mode.</param>
+        /// <returns>
+        /// The new architecture.
+        /// </returns>
+        public abstract PICArchitecture CreateArchitecture();
+
+        /// <summary>
+        /// Creates a disassembler for the target processor.
+        /// </summary>
+        /// <param name="arch">The architecture of the processor.</param>
+        /// <param name="rdr">The memory image reader.</param>
+        /// <returns>
+        /// The new disassembler.
+        /// </returns>
         public abstract PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr);
 
-        public abstract void CreateRegisters(PIC pic);
+        /// <summary>
+        /// Creates the registers for the PIC.
+        /// </summary>
+        /// <param name="pic">The PIC descriptor.</param>
+        public abstract void CreateRegisters();
 
+        /// <summary>
+        /// Creates the instructions IL rewriter for the target processor.
+        /// </summary>
+        /// <param name="arch">The architecture of the processor.</param>
+        /// <param name="dasm">The disassembler.</param>
+        /// <param name="state">The processor state.</param>
+        /// <param name="binder">The storage binder.</param>
+        /// <param name="host">The host.</param>
+        /// <returns>
+        /// The new rewriter.
+        /// </returns>
         public abstract PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host);
 
+        /// <summary>
+        /// Creates the processor state.
+        /// </summary>
+        /// <param name="arch">The architecture of the processor.</param>
+        /// <returns>
+        /// The new processor state.
+        /// </returns>
         public abstract PICProcessorState CreateProcessorState(PICArchitecture arch);
 
+        /// <summary>
+        /// Makes memory address from constant value.
+        /// </summary>
+        /// <param name="c">A Constant to process.</param>
+        /// <returns>
+        /// The memory Address.
+        /// </returns>
         public abstract Address MakeAddressFromConstant(Constant c);
 
     }

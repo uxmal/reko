@@ -30,11 +30,16 @@ namespace Reko.Arch.Microchip.PIC18
 
     internal class PIC18LegacyMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic18";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC18Architecture(ArchitectureID, this);
+
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18DisassemblerBase.Create(arch, rdr);
 
-        public override void CreateRegisters(PIC pic)
-            => PIC18LegacyRegisters.Create(pic);
+        public override void CreateRegisters()
+            => PIC18LegacyRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC18Rewriter.Create(arch, dasm, state, binder, host);
@@ -49,11 +54,16 @@ namespace Reko.Arch.Microchip.PIC18
 
     internal class PIC18EggMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic18";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC18Architecture(ArchitectureID, this);
+
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18DisassemblerBase.Create(arch, rdr);
 
-        public override void CreateRegisters(PIC pic)
-            => PIC18EggRegisters.Create(pic);
+        public override void CreateRegisters()
+            => PIC18EggRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC18Rewriter.Create(arch, dasm, state, binder, host);
@@ -63,16 +73,20 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override PICProcessorState CreateProcessorState(PICArchitecture arch)
             => new PIC18State(arch);
-
     }
 
     internal class PIC18EnhancedMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic18";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC18Architecture(ArchitectureID, this);
+
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18DisassemblerBase.Create(arch, rdr);
 
-        public override void CreateRegisters(PIC pic)
-            => PIC18EnhancedRegisters.Create(pic);
+        public override void CreateRegisters()
+            => PIC18EnhancedRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC18Rewriter.Create(arch, dasm, state, binder, host);
@@ -82,7 +96,6 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override PICProcessorState CreateProcessorState(PICArchitecture arch)
             => new PIC18State(arch);
-
     }
 
 }

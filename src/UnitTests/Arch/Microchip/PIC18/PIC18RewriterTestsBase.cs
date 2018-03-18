@@ -70,11 +70,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
 
         protected void SetPICMode(string picName, PICExecMode mode)
         {
-            picMode = PICProcessorMode.Create(picName);
-            arch = new PIC18Architecture("pic", picMode)
-            {
-                ExecMode = mode
-            };
+            picMode = PICProcessorMode.GetMode(picName);
+            arch = picMode.CreateArchitecture();
+            arch.ExecMode = mode;
             state = picMode.CreateProcessorState(arch);
         }
 

@@ -27,17 +27,19 @@ using Reko.Arch.Microchip.PIC18;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
+    using static Common.Sample;
+
     [TestFixture]
     public class PIC18Registers_Lgcy_Extd_Tests
     {
-        private PIC18Architecture arch;
+        private PICProcessorMode picMode;
+        private PICArchitecture arch;
 
         public PIC18Registers_Lgcy_Extd_Tests()
         {
-            arch = new PIC18Architecture("pic", PICProcessorMode.Create("PIC18F1220"))
-            {
-                ExecMode = PICExecMode.Extended
-            };
+            picMode = PICProcessorMode.GetMode(PIC18LegacyName);
+            arch = picMode.CreateArchitecture();
+            arch.ExecMode = PICExecMode.Extended;
         }
 
         [Test]

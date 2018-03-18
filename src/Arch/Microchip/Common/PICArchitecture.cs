@@ -54,11 +54,6 @@ namespace Reko.Arch.Microchip.Common
             LoadConfiguration();
         }
 
-        /// <summary>
-        /// Loads the PIC configuration. Creates memory mapper and registers for the targetted PIC.
-        /// </summary>
-        protected abstract void LoadConfiguration();
-
 
         #region Public Methods/Properties
 
@@ -102,6 +97,11 @@ namespace Reko.Arch.Microchip.Common
 
         protected PICProcessorMode ProcessorMode { get; }
 
+        /// <summary>
+        /// Loads the PIC configuration. Creates memory mapper and registers for the targetted PIC.
+        /// </summary>
+        protected abstract void LoadConfiguration();
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             => new PICInstructionComparer(norm);
 
@@ -141,24 +141,23 @@ namespace Reko.Arch.Microchip.Common
         /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
         ///                                     illegal values.</exception>
         public override RegisterStorage GetRegister(string regName)
-        {
-            var r = PICRegisters.GetRegister(regName);
-            if (r == RegisterStorage.None)
-                throw new ArgumentException($"'{regName}' is not a known register name.");
-            return r;
-        }
+            => PICRegisters.GetRegister(regName);
 
         public override RegisterStorage[] GetRegisters()
             => PICRegisters.GetRegisters;
 
+        /// <summary>
+        /// Attempts to get a <see cref="RegisterStorage"/> from its name.
+        /// </summary>
+        /// <param name="regName">Name of the register.</param>
+        /// <param name="reg">[out] The register.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
         public override bool TryGetRegister(string regName, out RegisterStorage reg)
         {
-            reg = default(RegisterStorage);
             var res = PICRegisters.TryGetRegister(regName, out var preg);
-            if (res)
-            {
-                reg = preg;
-            }
+            reg = preg;
             return res;
         }
 

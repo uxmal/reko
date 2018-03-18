@@ -54,7 +54,7 @@ namespace Reko.Arch.Microchip.PIC16
         protected override void LoadConfiguration()
         {
             Description = PICDescriptor.Desc;
-            ProcessorMode.CreateRegisters(PICDescriptor);
+            ProcessorMode.CreateRegisters();
             StackRegister = PIC16Registers.STKPTR;
         }
 

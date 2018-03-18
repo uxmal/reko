@@ -67,7 +67,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_TraditionalTests()
         {
-            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16BasicName));
+            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC16, map.InstructionSetID);
@@ -79,7 +80,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_EnhancedTests()
         {
-            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16EnhancedName));
+            var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, map.InstructionSetID);
@@ -91,7 +93,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16MemoryMapper_EnhancedV1Tests()
         {
-            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16FullFeaturedName));
+            var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, map.InstructionSetID);
@@ -103,7 +106,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18MemoryMapper_TraditionalTests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18LegacyName));
+            var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18, map.InstructionSetID);
@@ -119,7 +123,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18MemoryMapper_ExtendedTests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18LegacyName));
+            var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             map.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
@@ -135,7 +140,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdMemoryMapper_TraditionalTests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EggName));
+            var picMode = PICProcessorMode.GetMode(PIC18EggName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, map.InstructionSetID);
@@ -150,7 +156,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdMemoryMapper_ExtendedTests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EggName));
+            var picMode = PICProcessorMode.GetMode(PIC18EggName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             map.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Extended, map.ExecMode);
@@ -166,7 +173,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdMemoryMapper_TraditionalTests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EnhancedName));
+            var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
             Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, map.InstructionSetID);
@@ -181,7 +189,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdMemoryMapper_ExtendedTests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EnhancedName));
+            var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
+            var arch = picMode.CreateArchitecture();
             IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
             map.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(PICExecMode.Extended, map.ExecMode);

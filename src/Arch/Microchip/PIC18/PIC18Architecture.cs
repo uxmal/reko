@@ -58,7 +58,7 @@ namespace Reko.Arch.Microchip.PIC18
         protected override void LoadConfiguration()
         {
             Description = PICDescriptor.Desc;
-            ProcessorMode.CreateRegisters(PICDescriptor);
+            ProcessorMode.CreateRegisters();
             StackRegister = PIC18Registers.STKPTR;
         }
 

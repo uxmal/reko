@@ -20,11 +20,8 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
-using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC16;
-using Reko.Arch.Microchip.PIC18;
 using NUnit.Framework;
+using Reko.Arch.Microchip.Common;
 using Reko.Core;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
@@ -38,7 +35,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16DevConf_Tests()
         {
-            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16BasicName));
+            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
+            var arch = picMode.CreateArchitecture();
             IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG");
             Assert.IsNotNull(dcr);
@@ -56,7 +54,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhDevConf_Tests()
         {
-            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16EnhancedName));
+            var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
+            var arch = picMode.CreateArchitecture();
             IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
@@ -74,7 +73,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16FullDevConf_Tests()
         {
-            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16FullFeaturedName));
+            var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
+            var arch = picMode.CreateArchitecture();
             IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG4");
             Assert.IsNotNull(dcr);
@@ -94,7 +94,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18DevConf_Tests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18LegacyName));
+            var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
+            var arch = picMode.CreateArchitecture();
             IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
@@ -115,9 +116,10 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         }
 
         [Test]
-        public void PIC18ExtdDevConf_Tests()
+        public void PIC18EggDevConf_Tests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EggName));
+            var picMode = PICProcessorMode.GetMode(PIC18EggName);
+            var arch = picMode.CreateArchitecture();
             IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
@@ -140,7 +142,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdDevConf_Tests()
         {
-            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EnhancedName));
+            var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
+            var arch = picMode.CreateArchitecture();
             IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);

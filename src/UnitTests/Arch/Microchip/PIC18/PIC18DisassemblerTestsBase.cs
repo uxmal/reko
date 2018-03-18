@@ -64,11 +64,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 
         protected void SetPICMode(string picName, PICExecMode mode)
         {
-            picMode = PICProcessorMode.Create(picName);
-            arch = new PIC18Architecture("pic", picMode)
-            {
-                ExecMode = mode
-            };
+            picMode = PICProcessorMode.GetMode(picName);
+            arch = picMode.CreateArchitecture();
+            arch.ExecMode = mode;
         }
 
     }
