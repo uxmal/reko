@@ -1,24 +1,26 @@
 fp:fp
     def:  def fp
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
+    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
 sp_2: orig: sp
 Top_3: orig: Top
 sp_4: orig: sp
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
 al:al
     def:  def al
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
+    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
 al_6: orig: al
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
-    uses: Mem9[ds:0x0300:byte] = al_6
-C_7: orig: C
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
-    uses: branch C_7 l0C00_0009
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
+    uses: Mem10[ds:0x0300:byte] = al_6
+Top_7: orig: Top
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
+C_8: orig: C
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
+    uses: branch C_8 l0C00_0009
 ds:ds
     def:  def ds
-    uses: Mem9[ds:0x0300:byte] = al_6
-Mem9: orig: Mem0
-    def:  Mem9[ds:0x0300:byte] = al_6
+    uses: Mem10[ds:0x0300:byte] = al_6
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0300:byte] = al_6
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -29,12 +31,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000A (retsize: 2;)
-		uses: al:al,sp:fp
-		defs: al:al_6,C:C_7
-	branch C_7 l0C00_0009
+		uses: al:al,sp:fp,Top:0
+		defs: al:al_6,C:C_8
+	branch C_8 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem9[ds:0x0300:byte] = al_6
+	Mem10[ds:0x0300:byte] = al_6
 	// succ:  l0C00_0009
 l0C00_0009:
 	return

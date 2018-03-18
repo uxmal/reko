@@ -68,6 +68,7 @@ namespace Reko.Environments.Msdos
                 Registers.dx,
                 Registers.bx,
                 Registers.sp,
+                Registers.Top,
             };
         }
 
