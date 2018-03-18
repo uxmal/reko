@@ -27,27 +27,23 @@ namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    public class PIC16BaseRewriter : PIC16Rewriter
+    public class PIC16BasicRewriter : PIC16RewriterBase
     {
 
-        private PIC16BaseRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        private PIC16BasicRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             : base(arch, dasm, state, binder, host)
         {
         }
 
-        public static PIC16BaseRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public static PICRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            if (arch is null)
-                throw new ArgumentNullException(nameof(arch));
-            if (dasm is null)
-                throw new ArgumentNullException(nameof(dasm));
-            if (state is null)
-                throw new ArgumentNullException(nameof(state));
-            if (binder is null)
-                throw new ArgumentNullException(nameof(binder));
-            if (host is null)
-                throw new ArgumentNullException(nameof(host));
-            return new PIC16BaseRewriter(arch, dasm, state, binder, host);
+            return new PIC16BasicRewriter(
+                arch ?? throw new ArgumentNullException(nameof(arch)),
+                dasm ?? throw new ArgumentNullException(nameof(dasm)),
+                state ?? throw new ArgumentNullException(nameof(state)),
+                binder ?? throw new ArgumentNullException(nameof(binder)),
+                host ?? throw new ArgumentNullException(nameof(host))
+              );
         }
 
         protected override void RewriteInstr()

@@ -42,7 +42,7 @@ namespace Reko.Arch.Microchip.PIC18
             => PIC18LegacyRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
-            => PIC18Rewriter.Create(arch, dasm, state, binder, host);
+            => PIC18LegacyRewriter.Create(arch, dasm, state, binder, host);
 
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());
@@ -66,7 +66,7 @@ namespace Reko.Arch.Microchip.PIC18
             => PIC18EggRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
-            => PIC18Rewriter.Create(arch, dasm, state, binder, host);
+            => PIC18EggRewriter.Create(arch, dasm, state, binder, host);
 
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());
@@ -89,7 +89,7 @@ namespace Reko.Arch.Microchip.PIC18
             => PIC18EnhancedRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
-            => PIC18Rewriter.Create(arch, dasm, state, binder, host);
+            => PIC18EnhancedRewriter.Create(arch, dasm, state, binder, host);
 
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());

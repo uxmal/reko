@@ -27,39 +27,26 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
     using Common;
 
-    public class PIC18Rewriter : PICRewriter
+    /// <summary>
+    /// The PIC18 instructions rewriter base. Must be inherited.
+    /// </summary>
+    public abstract class PIC18RewriterBase : PICRewriter
     {
 
-        private Identifier Fsr2;    // cached FSR2 register identifier
+        protected Identifier Fsr2;    // cached FSR2 register identifier
 
-        public PIC18Rewriter(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        protected PIC18RewriterBase(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             : base(arch, disasm, state, binder, host)
         {
             Fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
         }
 
         protected override Identifier GetWReg => binder.EnsureRegister(PIC18Registers.WREG);
-
-        public static PICRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
-        {
-            if (arch is null)
-                throw new ArgumentNullException(nameof(arch));
-            if (dasm is null)
-                throw new ArgumentNullException(nameof(dasm));
-            if (state is null)
-                throw new ArgumentNullException(nameof(state));
-            if (binder is null)
-                throw new ArgumentNullException(nameof(binder));
-            if (host is null)
-                throw new ArgumentNullException(nameof(host));
-            return new PIC18Rewriter(arch, dasm, state, binder, host);
-        }
 
         protected override void RewriteInstr()
         {
@@ -75,14 +62,8 @@ namespace Reko.Arch.Microchip.PIC18
                 case Opcode.unaligned:
                     m.Invalid();
                     break;
-                case Opcode.ADDFSR:
-                    RewriteADDFSR();
-                    break;
                 case Opcode.ADDLW:
                     RewriteADDLW();
-                    break;
-                case Opcode.ADDULNK:
-                    RewriteADDULNK();
                     break;
                 case Opcode.ADDWF:
                     RewriteADDWF();
@@ -141,9 +122,6 @@ namespace Reko.Arch.Microchip.PIC18
                 case Opcode.CALL:
                     RewriteCALL();
                     break;
-                case Opcode.CALLW:
-                    RewriteCALLW();
-                    break;
                 case Opcode.CLRF:
                     RewriteCLRF();
                     break;
@@ -201,23 +179,11 @@ namespace Reko.Arch.Microchip.PIC18
                 case Opcode.MOVFF:
                     RewriteMOVFF();
                     break;
-                case Opcode.MOVFFL:
-                    RewriteMOVFF();
-                    break;
                 case Opcode.MOVLB:
                     RewriteMOVLB();
                     break;
                 case Opcode.MOVLW:
                     RewriteMOVLW();
-                    break;
-                case Opcode.MOVSF:
-                    RewriteMOVSF();
-                    break;
-                case Opcode.MOVSFL:
-                    RewriteMOVSF();
-                    break;
-                case Opcode.MOVSS:
-                    RewriteMOVSS();
                     break;
                 case Opcode.MOVWF:
                     RewriteMOVWF();
@@ -239,9 +205,6 @@ namespace Reko.Arch.Microchip.PIC18
                     break;
                 case Opcode.PUSH:
                     RewritePUSH();
-                    break;
-                case Opcode.PUSHL:
-                    RewritePUSHL();
                     break;
                 case Opcode.RCALL:
                     RewriteRCALL();
@@ -276,17 +239,11 @@ namespace Reko.Arch.Microchip.PIC18
                 case Opcode.SLEEP:
                     RewriteSLEEP();
                     break;
-                case Opcode.SUBFSR:
-                    RewriteSUBFSR();
-                    break;
                 case Opcode.SUBFWB:
                     RewriteSUBFWB();
                     break;
                 case Opcode.SUBLW:
                     RewriteSUBLW();
-                    break;
-                case Opcode.SUBULNK:
-                    RewriteSUBULNK();
                     break;
                 case Opcode.SUBWF:
                     RewriteSUBWF();
@@ -328,12 +285,12 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Helpers
 
-        private Identifier FlagGroup(FlagM flags)
+        protected Identifier FlagGroup(FlagM flags)
         {
             return binder.EnsureFlagGroup(PIC18Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
-        private ArrayAccess PushToHWStackAccess()
+        protected ArrayAccess PushToHWStackAccess()
         {
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             var slot = m.ARef(PrimitiveType.Ptr32, PIC18Registers.GlobalStack, stkptr);
@@ -341,7 +298,7 @@ namespace Reko.Arch.Microchip.PIC18
             return slot;
         }
 
-        private ArrayAccess PopFromHWStackAccess()
+        protected ArrayAccess PopFromHWStackAccess()
         {
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
@@ -349,10 +306,10 @@ namespace Reko.Arch.Microchip.PIC18
             return slot;
         }
 
-        private static MemoryAccess DataMem8(Expression ea)
+        protected static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PIC18Registers.GlobalData, ea, PrimitiveType.Byte);
 
-        private Expression GetFSRRegister(MachineOperand op)
+        protected Expression GetFSRRegister(MachineOperand op)
         {
             switch (op)
             {
@@ -374,7 +331,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private Expression GetImmediateValue(MachineOperand op)
+        protected Expression GetImmediateValue(MachineOperand op)
         {
             switch (op)
             {
@@ -386,7 +343,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private Expression GetProgramAddress(MachineOperand op)
+        protected Expression GetProgramAddress(MachineOperand op)
         {
             switch (op)
             {
@@ -398,7 +355,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private Expression GetTBLRWMode(MachineOperand op)
+        protected Expression GetTBLRWMode(MachineOperand op)
         {
             switch (op)
             {
@@ -410,7 +367,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private Constant GetShadow(MachineOperand op)
+        protected Constant GetShadow(MachineOperand op)
         {
             switch (op)
             {
@@ -434,7 +391,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private Constant GetBitMask(MachineOperand op, bool revert)
+        protected Constant GetBitMask(MachineOperand op, bool revert)
         {
             switch (op)
             {
@@ -450,9 +407,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         #endregion
 
-        #region Rewrite methods
+        #region Rewrite methods common to all PIC18 instruction-sets.
 
-        #region Instructions Rewriter Helpers
 
         /// <summary>
         /// Gets the source/destination direct address (SFR register or memory), addressing mode and actual source memory access
@@ -464,7 +420,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Addressing mode and source memory/register.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        private (IndirectRegOp indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
+        protected (IndirectRegOp indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
         {
             (IndirectRegOp indMode, Expression memPtr) GetMemoryBankAccess()
             {
@@ -494,7 +450,7 @@ namespace Reko.Arch.Microchip.PIC18
                         var accAddr = PIC18MemoryDescriptor.RemapDataAddress(offset.ToUInt16());
                         if (PICRegisters.TryGetRegister(accAddr, 8, out var sfr))
                         {
-                            var iop = PIC18Registers.IndirectOpMode(sfr as PICRegisterStorage, out PICRegisterStorage fsr);
+                            var iop = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
                             if (iop != IndirectRegOp.None)
                                 return (iop, binder.EnsureRegister(fsr));
                             return (iop, binder.EnsureRegister(sfr));
@@ -541,7 +497,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// Addressing mode and source memory/register.
         /// </returns>
-        private (IndirectRegOp indMode, Expression memPtr) GetBinaryPtrs(MachineOperand opernd, out Expression memExpr, out Expression dst)
+        protected (IndirectRegOp indMode, Expression memPtr) GetBinaryPtrs(MachineOperand opernd, out Expression memExpr, out Expression dst)
         {
             bool DestIsWreg()
             {
@@ -565,7 +521,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// Addressing mode and source memory/register.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the instruction operand is invalid.</exception>
-        private (IndirectRegOp indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
+        protected (IndirectRegOp indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
         {
             (IndirectRegOp indMode, Expression memPtr) GetDataAbsAddress()
             {
@@ -614,7 +570,7 @@ namespace Reko.Arch.Microchip.PIC18
             return (indMode, memPtr);
         }
 
-        private void CondBranch(TestCondition test)
+        protected void CondBranch(TestCondition test)
         {
             rtlc = RtlClass.ConditionalTransfer;
             if (instrCurr.op1 is PIC18ProgRel8AddrOperand brop)
@@ -625,7 +581,7 @@ namespace Reko.Arch.Microchip.PIC18
             throw new InvalidOperationException("Wrong 8-bit relative PIC address");
         }
 
-        private void CondSkipIndirect(Expression cond, IndirectRegOp indMode, Expression memPtr)
+        protected void CondSkipIndirect(Expression cond, IndirectRegOp indMode, Expression memPtr)
         {
             rtlc = RtlClass.ConditionalTransfer;
             switch (indMode)
@@ -653,23 +609,23 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private PICProgAddress SkipToAddr()
+        protected PICProgAddress SkipToAddr()
             => PICProgAddress.Ptr(instrCurr.Address + instrCurr.Length + 2);
 
-        private void SetStatusFlags(Expression dst)
+        protected void SetStatusFlags(Expression dst)
         {
             FlagM flags = PIC18CC.Defined(instrCurr.Opcode);
             if (flags != 0)
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
-        private void ArithAssign(Expression dst, Expression src)
+        protected void ArithAssign(Expression dst, Expression src)
         {
             m.Assign(dst, src);
             SetStatusFlags(dst);
         }
 
-        private void ArithAssignIndirect(Expression dst, Expression src, IndirectRegOp indMode, Expression memPtr)
+        protected void ArithAssignIndirect(Expression dst, Expression src, IndirectRegOp indMode, Expression memPtr)
         {
             switch (indMode)
             {
@@ -696,7 +652,7 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private void ArithCondSkip(Expression dst, Expression src, Expression cond, IndirectRegOp indMode, Expression memPtr)
+        protected void ArithCondSkip(Expression dst, Expression src, Expression cond, IndirectRegOp indMode, Expression memPtr)
         {
             rtlc = RtlClass.ConditionalTransfer;
             switch (indMode)
@@ -728,7 +684,6 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        #endregion
 
         private void RewriteADDFSR()
         {
@@ -1131,7 +1086,7 @@ namespace Reko.Arch.Microchip.PIC18
             ArithAssignIndirect(dst, memExpr, indMode, memPtr);
         }
 
-        private void RewriteMOVFF()
+        protected void RewriteMOVFF()
         {
             var (indops, adrfs) = GetUnaryAbsPtrs(instrCurr.op1, out Expression derefptrs);
             var (indopd, adrfd) = GetUnaryAbsPtrs(instrCurr.op2, out Expression derefptrd);

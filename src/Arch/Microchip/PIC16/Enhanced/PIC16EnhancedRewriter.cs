@@ -29,7 +29,7 @@ namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    public class PIC16EnhancedRewriter : PIC16Rewriter
+    public class PIC16EnhancedRewriter : PIC16RewriterBase
     {
 
         private PIC16EnhancedRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -37,19 +37,15 @@ namespace Reko.Arch.Microchip.PIC16
         {
         }
 
-        public static PIC16EnhancedRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public static PICRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            if (arch is null)
-                throw new ArgumentNullException(nameof(arch));
-            if (dasm is null)
-                throw new ArgumentNullException(nameof(dasm));
-            if (state is null)
-                throw new ArgumentNullException(nameof(state));
-            if (binder is null)
-                throw new ArgumentNullException(nameof(binder));
-            if (host is null)
-                throw new ArgumentNullException(nameof(host));
-            return new PIC16EnhancedRewriter(arch, dasm, state, binder, host);
+            return new PIC16EnhancedRewriter(
+                arch ?? throw new ArgumentNullException(nameof(arch)),
+                dasm ?? throw new ArgumentNullException(nameof(dasm)),
+                state ?? throw new ArgumentNullException(nameof(state)),
+                binder ?? throw new ArgumentNullException(nameof(binder)),
+                host ?? throw new ArgumentNullException(nameof(host))
+              );
         }
 
 

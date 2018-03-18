@@ -30,10 +30,10 @@ namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    public abstract class PIC16Rewriter : PICRewriter
+    public abstract class PIC16RewriterBase : PICRewriter
     {
 
-        protected PIC16Rewriter(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        protected PIC16RewriterBase(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             : base(arch, disasm, state, binder, host)
         {
         }

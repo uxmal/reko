@@ -42,7 +42,7 @@ namespace Reko.Arch.Microchip.PIC16
             => PIC16BasicRegisters.Create(PICDescriptor);
 
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
-            => PIC16BaseRewriter.Create(arch, dasm, state, binder, host);
+            => PIC16BasicRewriter.Create(arch, dasm, state, binder, host);
 
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());
