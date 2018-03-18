@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
     public class PIC18DisassemblerTestsBase
     {
-        protected PICProcessorMode picMode;
+        protected IPICProcessorMode picMode;
         protected static PICArchitecture arch;
         protected Address baseAddr = Address.Ptr32(0x200);
 

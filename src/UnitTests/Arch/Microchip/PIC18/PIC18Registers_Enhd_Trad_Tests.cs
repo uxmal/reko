@@ -34,10 +34,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
     {
         private PICArchitecture arch;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public PIC18Registers_Enhd_Trad_Tests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
-            arch = picMode.CreateArchitecture();
+            arch = PICProcessorMode.GetMode(PIC18EnhancedName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Traditional;
         }
 

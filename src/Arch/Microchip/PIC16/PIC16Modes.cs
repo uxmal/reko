@@ -22,7 +22,6 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Libraries.Microchip;
 
 namespace Reko.Arch.Microchip.PIC16
 {

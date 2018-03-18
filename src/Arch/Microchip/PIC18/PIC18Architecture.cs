@@ -46,7 +46,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
         /// <param name="mode">The PIC mode. Contains details and creators for target PIC18.</param>
-        public PIC18Architecture(string archID, PICProcessorMode mode)
+        public PIC18Architecture(string archID, IPICProcessorMode mode)
             : base(archID, mode)
         {
         }

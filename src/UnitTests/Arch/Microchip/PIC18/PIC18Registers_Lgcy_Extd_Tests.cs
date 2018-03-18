@@ -32,13 +32,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
     [TestFixture]
     public class PIC18Registers_Lgcy_Extd_Tests
     {
-        private PICProcessorMode picMode;
         private PICArchitecture arch;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public PIC18Registers_Lgcy_Extd_Tests()
         {
-            picMode = PICProcessorMode.GetMode(PIC18LegacyName);
-            arch = picMode.CreateArchitecture();
+            arch = PICProcessorMode.GetMode(PIC18LegacyName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Extended;
         }
 

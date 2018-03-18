@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IPICProcessorMode.cs" />
     <Compile Include="Common\PICDisassemblerBase.cs" />
     <Compile Include="Common\PICInstructionComparer.cs" />
     <Compile Include="Common\PICOpcodes.cs" />

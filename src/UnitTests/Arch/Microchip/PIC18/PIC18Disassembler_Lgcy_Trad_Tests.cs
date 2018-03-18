@@ -20,22 +20,20 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
 using NUnit.Framework;
+using Reko.Libraries.Microchip;
 
+// As of today there are 3 flavors of PIC18 with potentially 2 execution modes:
+//  - legacy (a.k.a. "pic18"), traditional execution mode
+//  - extended (a.k.a. "egg"), traditional/extended execution modes
+//  - enhanced (a.k.a. "cpu_pic18f_v6"), traditional/extended execution modes
+// This means we have 5 different contexts to check.
+// In addition the extended and enhanced PIC18 disassemblers use the legacy disassembler for legacy instructions.
+//
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
     using static Common.Sample;
 
-    /// <summary>
-    /// As of today there are 3 flavors of PIC18 :
-    ///  - legacy (a.k.a. "pic18"),
-    ///  - extended (a.k.a. "egg")
-    ///  - enhanced (a.k.a. "cpu_pic18f_v6")
-    /// And there are 2 execution modes (traditional and extended).
-    /// This means we have 6 different contexts to check. Note: Legacy PIC18 supports traditional
-    /// execution mode only.
-    /// </summary>
     [TestFixture]
     public class PIC18Disassembler_Lgcy_Trad_Tests : PIC18DisassemblerTestsBase
     {

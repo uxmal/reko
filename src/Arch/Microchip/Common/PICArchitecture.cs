@@ -40,7 +40,7 @@ namespace Reko.Arch.Microchip.Common
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        protected PICArchitecture(string archID, PICProcessorMode mode) : base(archID)
+        protected PICArchitecture(string archID, IPICProcessorMode mode) : base(archID)
         {
             if (mode is null)
                 throw new ArgumentNullException(nameof(mode));
@@ -95,7 +95,7 @@ namespace Reko.Arch.Microchip.Common
         }
         private IPICDeviceConfigDefs deviceConfigDefinitions;
 
-        protected PICProcessorMode ProcessorMode { get; }
+        protected IPICProcessorMode ProcessorMode { get; }
 
         /// <summary>
         /// Loads the PIC configuration. Creates memory mapper and registers for the targetted PIC.
