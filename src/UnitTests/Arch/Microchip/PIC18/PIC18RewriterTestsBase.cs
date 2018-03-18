@@ -33,16 +33,19 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
 {
     public class PIC18RewriterTestsBase : RewriterTestBase
     {
-        protected static PIC18Architecture arch;
+        protected PICProcessorMode picMode;
+        protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
-        protected PIC18State state;
+        protected PICProcessorState state;
         protected MemoryArea image;
 
         public override IProcessorArchitecture Architecture => arch;
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
-            return new PIC18Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+            var disasm = picMode.CreateDisassembler(arch, new LeImageReader(image, 0));
+            var rwtr = picMode.CreateRewriter(arch, disasm, state, frame, host);
+            return rwtr;
         }
 
         public override Address LoadAddress => baseAddr;
@@ -65,13 +68,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             return sPIC + "[" + string.Join("-", words.Select(w => w.ToString("X4"))) + "] ";
         }
 
-        protected void SetPICMode(InstructionSetID id, PICExecMode mode)
+        protected void SetPICMode(string picName, PICExecMode mode)
         {
-            arch = new PIC18Architecture(PICSamples.GetSample(id))
+            picMode = PICProcessorMode.Create(picName);
+            arch = new PIC18Architecture("pic", picMode)
             {
                 ExecMode = mode
             };
-            state = (PIC18State)arch.CreateProcessorState();
+            state = picMode.CreateProcessorState(arch);
         }
 
         protected void AssertCode(string mesg, params string[] expected)

@@ -21,12 +21,13 @@
 #endregion
 
 using Reko.Core.Machine;
+using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {
-    public abstract class PICInstruction<T> : MachineInstruction where T : struct 
+    public class PICInstruction : MachineInstruction 
     {
 
         public const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
@@ -34,8 +35,53 @@ namespace Reko.Arch.Microchip.Common
         public const InstructionClass LinkTransfer = InstructionClass.Call | InstructionClass.Transfer;
         public const InstructionClass Transfer = InstructionClass.Transfer;
 
-        internal MachineOperand op1;
-        internal MachineOperand op2;
+        public readonly MachineOperand op1;
+        public readonly MachineOperand op2;
+
+        private static Dictionary<Opcode, InstructionClass> classOf = new Dictionary<Opcode, InstructionClass>()
+        {
+                { Opcode.ADDULNK,   Transfer },
+                { Opcode.BRA,       Transfer },
+                { Opcode.BRW,       Transfer },
+                { Opcode.GOTO,      Transfer },
+                { Opcode.RESET,     Transfer },
+                { Opcode.RETFIE,    Transfer },
+                { Opcode.RETLW,     Transfer },
+                { Opcode.RETURN,    Transfer },
+                { Opcode.SUBULNK,   Transfer },
+                { Opcode.BC,        CondTransfer },
+                { Opcode.BN,        CondTransfer },
+                { Opcode.BNC,       CondTransfer },
+                { Opcode.BNN,       CondTransfer },
+                { Opcode.BNOV,      CondTransfer },
+                { Opcode.BNZ,       CondTransfer },
+                { Opcode.BOV,       CondTransfer },
+                { Opcode.BZ,        CondTransfer },
+                { Opcode.BTFSC,     CondLinear },
+                { Opcode.BTFSS,     CondLinear },
+                { Opcode.CPFSEQ,    CondLinear },
+                { Opcode.CPFSGT,    CondLinear },
+                { Opcode.CPFSLT,    CondLinear },
+                { Opcode.DCFSNZ,    CondLinear },
+                { Opcode.DECFSZ,    CondLinear },
+                { Opcode.INCFSZ,    CondLinear },
+                { Opcode.INFSNZ,    CondLinear },
+                { Opcode.TSTFSZ,    CondLinear },
+                { Opcode.CALL,      LinkTransfer },
+                { Opcode.CALLW,     LinkTransfer },
+                { Opcode.RCALL,     LinkTransfer },
+                { Opcode.CONFIG,    InstructionClass.None },
+                { Opcode.DA,        InstructionClass.None },
+                { Opcode.DB,        InstructionClass.None },
+                { Opcode.DE,        InstructionClass.None },
+                { Opcode.DT,        InstructionClass.None },
+                { Opcode.DTM,       InstructionClass.None },
+                { Opcode.DW,        InstructionClass.None },
+                { Opcode.__CONFIG,  InstructionClass.None },
+                { Opcode.__IDLOCS,  InstructionClass.None },
+                { Opcode.invalid,   InstructionClass.Invalid },
+                { Opcode.unaligned, InstructionClass.Invalid },
+        };
 
 
         /// <summary>
@@ -45,7 +91,7 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="opc">The PIC opcode.</param>
         /// <param name="ops">Zero, one or two instruction's operands ops.</param>
         /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
-        public PICInstruction(T opc, params MachineOperand[] ops)
+        public PICInstruction(Opcode opc, params MachineOperand[] ops)
         {
             Opcode = opc;
             if (ops.Length >= 1)
@@ -63,7 +109,23 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the opcode.
         /// </summary>
-        public T Opcode { get; }
+        public Opcode Opcode { get; }
+
+        /// <summary>
+        /// Each different supported opcode should have a different numerical value, exposed here.
+        /// </summary>
+        /// <value>
+        /// The opcode as integer.
+        /// </value>
+        public override int OpcodeAsInteger => (int)Opcode;
+
+        /// <summary>
+        /// Returns true if the instruction is valid.
+        /// </summary>
+        /// <value>
+        /// True if this instruction is valid, false if not.
+        /// </value>
+        public override bool IsValid => (Opcode != Opcode.invalid && Opcode != Opcode.unaligned);
 
         /// <summary>
         /// Gets the number of operands of this instruction.
@@ -101,6 +163,59 @@ namespace Reko.Arch.Microchip.Common
                 default:
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this PIC instruction is used in extended-mode instruction set only.
+        /// </summary>
+        /// <value>
+        /// True if this PIC is in extended-mode, false if not.
+        /// </value>
+        public PICExecMode ExecMode { get; set; } = PICExecMode.Traditional;
+
+        /// <summary>
+        /// The control-flow kind of the instruction.
+        /// </summary>
+        public override InstructionClass InstructionClass
+        {
+            get
+            {
+                if (!classOf.TryGetValue(Opcode, out InstructionClass il))
+                    il = InstructionClass.Linear;
+                return il;
+            }
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            if (op1 is null)
+                return;
+            if (op1 is IOperandShadow opshad1)
+            {
+                if (opshad1.IsPresent)
+                {
+                    writer.WriteString(",");
+                    writer.Tab();
+                    op1.Write(writer, options);
+                }
+                return;
+            }
+            writer.Tab();
+            op1.Write(writer, options);
+            if (op2 is null)
+                return;
+            if (op2 is IOperandShadow opshad2)
+            {
+                if (opshad2.IsPresent)
+                {
+                    writer.WriteString(",");
+                    op2.Write(writer, options);
+                }
+                return;
+            }
+            writer.WriteString(",");
+            op2.Write(writer, options);
         }
 
     }

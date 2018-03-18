@@ -1,150 +1,120 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region License
+/* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Libraries.Microchip;
+using System;
 
 namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    public class PIC16Rewriter : IEnumerable<RtlInstructionCluster>
+    public abstract class PIC16Rewriter : PICRewriter
     {
 
-        private PIC16Architecture arch;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private PIC16DisassemblerBase disasm;
-        private IEnumerator<PIC16Instruction> dasm;
-        private EndianImageReader rdr;
-        private PIC16State state;
-        private PIC16Instruction instrCurr;
-        private RtlClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
-        private RtlEmitter m;
-        private Identifier Wreg;    // cached WREG register identifier
-
-        public PIC16Rewriter(PIC16Architecture arch, EndianImageReader rdr, PIC16State state, IStorageBinder binder, IRewriterHost host)
+        protected PIC16Rewriter(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+            : base(arch, disasm, state, binder, host)
         {
-            this.arch = arch;
-            this.rdr = rdr;
-            this.state = state;
-            this.binder = binder;
-            this.host = host;
-            disasm = new PIC16DisassemblerBase(arch, rdr);
-            dasm = disasm.GetEnumerator();
         }
 
-        public IEnumerator<RtlInstructionCluster> GetEnumerator()
+        protected override void RewriteInstr()
         {
-            while (dasm.MoveNext())
+            var addr = instrCurr.Address;
+            var len = instrCurr.Length;
+
+            switch (instrCurr.Opcode)
             {
-                instrCurr = dasm.Current;
-                var addr = instrCurr.Address;
-                var len = instrCurr.Length;
-                rtlc = RtlClass.Linear;
-                rtlInstructions = new List<RtlInstruction>();
-                m = new RtlEmitter(rtlInstructions);
-                Wreg = binder.EnsureRegister(PIC16Registers.WREG);
+                default:
+                    throw new AddressCorrelatedException(addr, $"Rewriting of PIC16 instruction '{instrCurr.Opcode}' is not implemented yet.");
 
-                switch (instrCurr.Opcode)
-                {
-                    default:
-                        throw new AddressCorrelatedException(addr, $"Rewriting of PIC16 instruction '{instrCurr.Opcode}' is not implemented yet.");
+                case Opcode.invalid:
+                case Opcode.unaligned:
+                    m.Invalid();
+                    break;
 
-                    case Opcode.invalid:
-                    case Opcode.unaligned:
-                        m.Invalid();
-                        break;
+                case Opcode.ADDLW:
+                case Opcode.ADDWF:
+                case Opcode.ANDLW:
+                case Opcode.ANDWF:
+                case Opcode.BCF:
+                case Opcode.BRA:
+                case Opcode.BSF:
+                case Opcode.BTFSC:
+                case Opcode.BTFSS:
+                case Opcode.CALL:
+                case Opcode.CLRF:
+                case Opcode.CLRW:
+                case Opcode.CLRWDT:
+                case Opcode.COMF:
+                case Opcode.DECF:
+                case Opcode.DECFSZ:
+                case Opcode.GOTO:
+                case Opcode.INCF:
+                case Opcode.INCFSZ:
+                case Opcode.IORLW:
+                case Opcode.IORWF:
+                case Opcode.MOVF:
+                case Opcode.MOVLW:
+                case Opcode.MOVWF:
+                case Opcode.NOP:
+                case Opcode.RETFIE:
+                case Opcode.RETLW:
+                case Opcode.RETURN:
+                case Opcode.RLF:
+                case Opcode.RRF:
+                case Opcode.SLEEP:
+                case Opcode.SUBLW:
+                case Opcode.SUBWF:
+                case Opcode.SWAPF:
+                case Opcode.XORLW:
+                case Opcode.XORWF:
 
-                    case Opcode.ADDFSR:
-                    case Opcode.ADDLW:
-                    case Opcode.ADDWF:
-                    case Opcode.ADDWFC:
-                    case Opcode.ANDLW:
-                    case Opcode.ANDWF:
-                    case Opcode.ASRF:
-                    case Opcode.BCF:
-                    case Opcode.BRA:
-                    case Opcode.BRW:
-                    case Opcode.BSF:
-                    case Opcode.BTFSC:
-                    case Opcode.BTFSS:
-                    case Opcode.CALL:
-                    case Opcode.CALLW:
-                    case Opcode.CLRF:
-                    case Opcode.CLRW:
-                    case Opcode.CLRWDT:
-                    case Opcode.COMF:
-                    case Opcode.DECF:
-                    case Opcode.DECFSZ:
-                    case Opcode.GOTO:
-                    case Opcode.INCF:
-                    case Opcode.INCFSZ:
-                    case Opcode.IORLW:
-                    case Opcode.IORWF:
-                    case Opcode.LSLF:
-                    case Opcode.LSRF:
-                    case Opcode.MOVF:
-                    case Opcode.MOVIW:
-                    case Opcode.MOVLB:
-                    case Opcode.MOVLP:
-                    case Opcode.MOVLW:
-                    case Opcode.MOVWF:
-                    case Opcode.MOVWI:
-                    case Opcode.NOP:
-                    case Opcode.OPTION:
-                    case Opcode.RESET:
-                    case Opcode.RETFIE:
-                    case Opcode.RETLW:
-                    case Opcode.RETURN:
-                    case Opcode.RLF:
-                    case Opcode.RRF:
-                    case Opcode.SLEEP:
-                    case Opcode.SUBLW:
-                    case Opcode.SUBWF:
-                    case Opcode.SUBWFB:
-                    case Opcode.SWAPF:
-                    case Opcode.TRIS:
-                    case Opcode.XORLW:
-                    case Opcode.XORWF:
-
-                    // Pseudo-instructions
-                    case Opcode.__CONFIG:
-                    case Opcode.DA:
-                    case Opcode.DB:
-                    case Opcode.DE:
-                    case Opcode.DT:
-                    case Opcode.DTM:
-                    case Opcode.DW:
-                    case Opcode.__IDLOCS:
-                        m.Invalid();
-                        break;
-                }
-                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                // Pseudo-instructions
+                case Opcode.__CONFIG:
+                case Opcode.DA:
+                case Opcode.DB:
+                case Opcode.DE:
+                case Opcode.DT:
+                case Opcode.DTM:
+                case Opcode.DW:
+                case Opcode.__IDLOCS:
+                    m.Invalid();
+                    break;
             }
-            yield break;
+
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        protected override Identifier GetWReg => binder.EnsureRegister(PIC16Registers.WREG);
 
         #region Helpers
 
-        private Identifier FlagGroup(FlagM flags)
+        protected Identifier FlagGroup(FlagM flags)
         {
             return binder.EnsureFlagGroup(PIC16Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
         }
 
-        private ArrayAccess PushToHWStackAccess()
+        protected ArrayAccess PushToHWStackAccess()
         {
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             var slot = m.ARef(PrimitiveType.Ptr32, PIC16Registers.GlobalStack, stkptr);
@@ -152,7 +122,7 @@ namespace Reko.Arch.Microchip.PIC16
             return slot;
         }
 
-        private ArrayAccess PopFromHWStackAccess()
+        protected ArrayAccess PopFromHWStackAccess()
         {
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
@@ -160,29 +130,10 @@ namespace Reko.Arch.Microchip.PIC16
             return slot;
         }
 
-        private static MemoryAccess DataMem8(Expression ea)
+        protected static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PIC16Registers.GlobalData, ea, PrimitiveType.Byte);
 
-        private Expression GetFSRRegister(MachineOperand op)
-        {
-            if (op is PIC16FSROperand fsr)
-            {
-                switch (fsr.FSRNum.ToByte())
-                {
-                    case 0:
-                        return binder.EnsureRegister(PIC16Registers.FSR0);
-                    case 1:
-                        return binder.EnsureRegister(PIC16Registers.FSR1);
-                    default:
-                        throw new InvalidOperationException($"Invalid FSR number: {fsr.FSRNum.ToByte()}");
-                }
-            }
-            else
-                throw new InvalidOperationException($"Invalid FSR operand.");
-
-        }
-
-        private Expression GetImmediateValue(MachineOperand op)
+        protected Expression GetImmediateValue(MachineOperand op)
         {
             switch (op)
             {
@@ -194,7 +145,7 @@ namespace Reko.Arch.Microchip.PIC16
             }
         }
 
-        private Expression GetProgramAddress(MachineOperand op)
+        protected Expression GetProgramAddress(MachineOperand op)
         {
             switch (op)
             {
@@ -206,7 +157,7 @@ namespace Reko.Arch.Microchip.PIC16
             }
         }
 
-        private Constant GetBitMask(MachineOperand op, bool revert)
+        protected Constant GetBitMask(MachineOperand op, bool revert)
         {
             switch (op)
             {
@@ -220,10 +171,6 @@ namespace Reko.Arch.Microchip.PIC16
                     throw new InvalidOperationException("Invalid bit number operand.");
             }
         }
-
-        #endregion
-
-        #region Rewrite methods
 
         #endregion
 

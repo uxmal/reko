@@ -52,7 +52,6 @@ namespace Reko.Arch.Microchip.PIC16
         void VisitFSRArith(PIC16FSRArithOperand arith);
         void VisitFSRIndexed(PIC16FSRIndexedOperand index);
         void VisitIncDecFSR(PIC16FSRIncDecOperand mode);
-        void VisitTRISNum(PIC16TrisNumOperand tris);
         void VisitEEPROM(PIC16DataEEPROMOperand eeprom);
         void VisitASCII(PIC16DataASCIIOperand ascii);
         void VisitDB(PIC16DataByteOperand bytes);
@@ -80,7 +79,6 @@ namespace Reko.Arch.Microchip.PIC16
         T VisitFSRArith(PIC16FSRArithOperand arith);
         T VisitFSRIndexed(PIC16FSRIndexedOperand index);
         T VisitIncDecFSR(PIC16FSRIncDecOperand mode);
-        T VisitTRISNum(PIC16TrisNumOperand tris);
         T VisitEEPROM(PIC16DataEEPROMOperand eeprom);
         T VisitASCII(PIC16DataASCIIOperand ascii);
         T VisitDB(PIC16DataByteOperand bytes);
@@ -109,7 +107,6 @@ namespace Reko.Arch.Microchip.PIC16
         T VisitFSRArith(PIC16FSRArithOperand arith, C context);
         T VisitFSRIndexed(PIC16FSRIndexedOperand index, C context);
         T VisitIncDecFSR(PIC16FSRIncDecOperand mode, C context);
-        T VisitTRISNum(PIC16TrisNumOperand tris, C context);
         T VisitEEPROM(PIC16DataEEPROMOperand eeprom, C context);
         T VisitASCII(PIC16DataASCIIOperand ascii, C context);
         T VisitDB(PIC16DataByteOperand bytes, C context);

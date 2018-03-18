@@ -33,33 +33,13 @@ namespace Reko.Arch.Microchip.Common
     /// </summary>
     public abstract class PICRegistersBuilder : IMemDataRegionVisitor, IMemDataSymbolVisitor
     {
-        #region Member fields
-
         private int byteAddr = 0;
         private int bitAddr = 0;
         private int regIndex = 0;
         private SFRDef currentSFRDef = null;
         private PICRegisterStorage currentSFRRegister = null;
         private IPICRegisterSymTable symTable;
-
-        public readonly PIC PIC;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="pic">The PIC definition.</param>
-        protected PICRegistersBuilder(PIC pic)
-        {
-            PIC = pic;
-        }
-
-        #endregion
-
-        #region Helpers
+        private PIC pic;
 
         private static PrimitiveType Size2Type(uint nzsize)
         {
@@ -82,7 +62,6 @@ namespace Reko.Arch.Microchip.Common
             throw new ArgumentOutOfRangeException(nameof(nzsize));
         }
 
-        #endregion
 
         #region Methods
 
@@ -91,11 +70,12 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         /// <param name="registersSymTable">The registers symbol table interface.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="registersSymTable"/> is null.</exception>
-        public virtual void LoadRegisters(IPICRegisterSymTable registersSymTable)
+        protected void LoadRegistersInTable(IPICRegisterSymTable registersSymTable, PIC thePIC)
         {
             symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
+            pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
 
-            foreach (var e in PIC.DataSpace.RegardlessOfMode.Regions)
+            foreach (var e in pic.DataSpace.RegardlessOfMode.Regions)
             {
                 if (e is SFRDataSector sfrsect)
                 {

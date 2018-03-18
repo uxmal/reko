@@ -22,20 +22,15 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
+using Reko.Core.Machine;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {
-    using Common;
-
     public abstract class PICArchitecture : ProcessorArchitecture
     {
         protected List<FlagGroupStorage> flagGroups;
@@ -45,23 +40,18 @@ namespace Reko.Arch.Microchip.Common
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        protected PICArchitecture(string archID) : base(archID)
+        protected PICArchitecture(string archID, PICProcessorMode mode) : base(archID)
         {
+            if (mode is null)
+                throw new ArgumentNullException(nameof(mode));
+            ProcessorMode = mode;
+            PICDescriptor = mode.PICDescriptor;
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;
             InstructionBitSize = 8;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Byte;
-        }
-
-        /// <summary>
-        /// Constructor. Used for tests purpose.
-        /// </summary>
-        /// <param name="picDescr">PIC descriptor.</param>
-        protected PICArchitecture(string picFamily, PIC picDescr) : this(picFamily)
-        {
-            picDescriptor = picDescr ?? throw new ArgumentNullException(nameof(picDescr));
-            CPUModel = picDescriptor.Name;
+            LoadConfiguration();
         }
 
         /// <summary>
@@ -75,54 +65,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public PIC PICDescriptor
-        {
-            get
-            {
-                if (picDescriptor is null)
-                {
-                    try
-                    {
-                        PICCrownking db = PICCrownking.GetDB() ??
-                            throw new InvalidOperationException($"Cannot get access to PIC database. (DBError={PICCrownking.LastErrMsg}).");
-                        PIC pic = db.GetPIC(CPUModel) ?? throw new InvalidOperationException($"No such PIC: '{CPUModel}'");
-                        PICDescriptor = pic;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new InvalidOperationException($"Unable to retrieve PIC definition for PIC name '{CPUModel}'", ex);
-                    }
-                }
-                return picDescriptor;
-            }
-            private set
-            {
-                if (picDescriptor != value)
-                {
-                    picDescriptor = value;
-                    if (!(picDescriptor is null))
-                        LoadConfiguration();
-                }
-            }
-        }
-        protected PIC picDescriptor;
-
-        /// <summary>
-        /// Gets or sets the CPU model.
-        /// </summary>
-        public override string CPUModel
-        {
-            get => cpuModel;
-            set
-            {
-                if (cpuModel != value)
-                {
-                    cpuModel = value;
-                    picDescriptor = null;
-                }
-            }
-        }
-        private string cpuModel = String.Empty;
+        public PIC PICDescriptor { get; }
 
         /// <summary>
         /// Gets or sets the PIC execution mode.
@@ -130,7 +73,7 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// The PIC execution mode.
         /// </value>
-        public PICExecMode ExecMode
+        public virtual PICExecMode ExecMode
         {
             get => MemoryDescriptor.ExecMode;
             set => MemoryDescriptor.ExecMode = value;
@@ -157,14 +100,51 @@ namespace Reko.Arch.Microchip.Common
         }
         private IPICDeviceConfigDefs deviceConfigDefinitions;
 
-        public override RegisterStorage GetRegister(int i)
-            => PICRegisters.GetCoreRegisterByIdx(i);
+        protected PICProcessorMode ProcessorMode { get; }
 
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+            => new PICInstructionComparer(norm);
+
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            return Enum.GetValues(typeof(Opcode))
+                .Cast<Opcode>()
+                .ToSortedList(
+                    v => v.ToString().ToUpper(),
+                    v => (int)v);
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            if (!Enum.TryParse(name, true, out Opcode result))
+                return null;
+            return (int)result;
+        }
+
+        /// <summary>
+        /// Gets a register given its index number.
+        /// </summary>
+        /// <param name="i">Zero-based index of the register.</param>
+        /// <returns>
+        /// The register instance or null.
+        /// </returns>
+        public override RegisterStorage GetRegister(int i)
+            => PICRegisters.PeekRegisterByIdx(i);
+
+        /// <summary>
+        /// Gets a register given its name.
+        /// </summary>
+        /// <param name="regName">Name of the register.</param>
+        /// <returns>
+        /// The register.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
+        ///                                     illegal values.</exception>
         public override RegisterStorage GetRegister(string regName)
         {
-            var r = PICRegisters.GetRegisterByName(regName);
+            var r = PICRegisters.GetRegister(regName);
             if (r == RegisterStorage.None)
-                throw new ArgumentException($"'{regName}' is not a register name.");
+                throw new ArgumentException($"'{regName}' is not a known register name.");
             return r;
         }
 
@@ -173,8 +153,13 @@ namespace Reko.Arch.Microchip.Common
 
         public override bool TryGetRegister(string regName, out RegisterStorage reg)
         {
-            reg = PICRegisters.GetRegisterByName(regName);
-            return (reg != RegisterStorage.None);
+            reg = default(RegisterStorage);
+            var res = PICRegisters.TryGetRegister(regName, out var preg);
+            if (res)
+            {
+                reg = preg;
+            }
+            return res;
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)

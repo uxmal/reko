@@ -27,162 +27,304 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
     using Common;
 
-    public class PIC18Rewriter : IEnumerable<RtlInstructionCluster>
+    public class PIC18Rewriter : PICRewriter
     {
 
-        private PIC18Architecture arch;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private PIC18Disassembler disasm;
-        private IEnumerator<PIC18Instruction> dasm;
-        private PIC18State state;
-        private PIC18Instruction instrCurr;
-        private RtlClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
-        private RtlEmitter m;
-        private Identifier Wreg;    // cached WREG register identifier
         private Identifier Fsr2;    // cached FSR2 register identifier
 
-        public PIC18Rewriter(PIC18Architecture arch, EndianImageReader rdr, PIC18State state, IStorageBinder binder, IRewriterHost host)
+        public PIC18Rewriter(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+            : base(arch, disasm, state, binder, host)
         {
-            this.arch = arch;
-            this.state = state;
-            this.binder = binder;
-            this.host = host;
-            disasm = new PIC18Disassembler(arch, rdr);
-            dasm = disasm.GetEnumerator();
+            Fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
         }
 
+        protected override Identifier GetWReg => binder.EnsureRegister(PIC18Registers.WREG);
 
-        public IEnumerator<RtlInstructionCluster> GetEnumerator()
+        public static PICRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            while (dasm.MoveNext())
+            if (arch is null)
+                throw new ArgumentNullException(nameof(arch));
+            if (dasm is null)
+                throw new ArgumentNullException(nameof(dasm));
+            if (state is null)
+                throw new ArgumentNullException(nameof(state));
+            if (binder is null)
+                throw new ArgumentNullException(nameof(binder));
+            if (host is null)
+                throw new ArgumentNullException(nameof(host));
+            return new PIC18Rewriter(arch, dasm, state, binder, host);
+        }
+
+        protected override void RewriteInstr()
+        {
+            var addr = instrCurr.Address;
+            var len = instrCurr.Length;
+
+            switch (instrCurr.Opcode)
             {
-                instrCurr = dasm.Current;
-                var addr = instrCurr.Address;
-                var len = instrCurr.Length;
-                rtlc = RtlClass.Linear;
-                rtlInstructions = new List<RtlInstruction>();
-                m = new RtlEmitter(rtlInstructions);
-                Wreg = binder.EnsureRegister(PIC18Registers.WREG);
-                Fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
+                default:
+                    throw new AddressCorrelatedException(addr, $"Rewriting of PIC18 instruction '{instrCurr.Opcode}' is not implemented yet.");
 
-                switch (instrCurr.Opcode)
-                {
-                    default:
-                        throw new AddressCorrelatedException(addr, $"Rewriting of PIC18 instruction '{instrCurr.Opcode}' is not implemented yet.");
+                case Opcode.invalid:
+                case Opcode.unaligned:
+                    m.Invalid();
+                    break;
+                case Opcode.ADDFSR:
+                    RewriteADDFSR();
+                    break;
+                case Opcode.ADDLW:
+                    RewriteADDLW();
+                    break;
+                case Opcode.ADDULNK:
+                    RewriteADDULNK();
+                    break;
+                case Opcode.ADDWF:
+                    RewriteADDWF();
+                    break;
+                case Opcode.ADDWFC:
+                    RewriteADDWFC();
+                    break;
+                case Opcode.ANDLW:
+                    RewriteANDLW();
+                    break;
+                case Opcode.ANDWF:
+                    RewriteANDWF();
+                    break;
+                case Opcode.BC:
+                    RewriteBC();
+                    break;
+                case Opcode.BCF:
+                    RewriteBCF();
+                    break;
+                case Opcode.BN:
+                    RewriteBN();
+                    break;
+                case Opcode.BNC:
+                    RewriteBNC();
+                    break;
+                case Opcode.BNN:
+                    RewriteBNN();
+                    break;
+                case Opcode.BNOV:
+                    RewriteBNOV();
+                    break;
+                case Opcode.BNZ:
+                    RewriteBNZ();
+                    break;
+                case Opcode.BOV:
+                    RewriteBOV();
+                    break;
+                case Opcode.BRA:
+                    RewriteBRA();
+                    break;
+                case Opcode.BSF:
+                    RewriteBSF();
+                    break;
+                case Opcode.BTFSC:
+                    RewriteBTFSC();
+                    break;
+                case Opcode.BTFSS:
+                    RewriteBTFSS();
+                    break;
+                case Opcode.BTG:
+                    RewriteBTG();
+                    break;
+                case Opcode.BZ:
+                    RewriteBZ();
+                    break;
+                case Opcode.CALL:
+                    RewriteCALL();
+                    break;
+                case Opcode.CALLW:
+                    RewriteCALLW();
+                    break;
+                case Opcode.CLRF:
+                    RewriteCLRF();
+                    break;
+                case Opcode.CLRWDT:
+                    RewriteCLRWDT();
+                    break;
+                case Opcode.COMF:
+                    RewriteCOMF();
+                    break;
+                case Opcode.CPFSEQ:
+                    RewriteCPFSEQ();
+                    break;
+                case Opcode.CPFSGT:
+                    RewriteCPFSGT();
+                    break;
+                case Opcode.CPFSLT:
+                    RewriteCPFSLT();
+                    break;
+                case Opcode.DAW:
+                    RewriteDAW();
+                    break;
+                case Opcode.DCFSNZ:
+                    RewriteDCFSNZ();
+                    break;
+                case Opcode.DECF:
+                    RewriteDECF();
+                    break;
+                case Opcode.DECFSZ:
+                    RewriteDECFSZ();
+                    break;
+                case Opcode.GOTO:
+                    RewriteGOTO();
+                    break;
+                case Opcode.INCF:
+                    RewriteINCF();
+                    break;
+                case Opcode.INCFSZ:
+                    RewriteINCFSZ();
+                    break;
+                case Opcode.INFSNZ:
+                    RewriteINFSNZ();
+                    break;
+                case Opcode.IORLW:
+                    RewriteIORLW();
+                    break;
+                case Opcode.IORWF:
+                    RewriteIORWF();
+                    break;
+                case Opcode.LFSR:
+                    RewriteLFSR();
+                    break;
+                case Opcode.MOVF:
+                    RewriteMOVF();
+                    break;
+                case Opcode.MOVFF:
+                    RewriteMOVFF();
+                    break;
+                case Opcode.MOVFFL:
+                    RewriteMOVFF();
+                    break;
+                case Opcode.MOVLB:
+                    RewriteMOVLB();
+                    break;
+                case Opcode.MOVLW:
+                    RewriteMOVLW();
+                    break;
+                case Opcode.MOVSF:
+                    RewriteMOVSF();
+                    break;
+                case Opcode.MOVSFL:
+                    RewriteMOVSF();
+                    break;
+                case Opcode.MOVSS:
+                    RewriteMOVSS();
+                    break;
+                case Opcode.MOVWF:
+                    RewriteMOVWF();
+                    break;
+                case Opcode.MULLW:
+                    RewriteMULLW();
+                    break;
+                case Opcode.MULWF:
+                    RewriteMULWF();
+                    break;
+                case Opcode.NEGF:
+                    RewriteNEGF();
+                    break;
+                case Opcode.NOP:
+                    m.Nop();
+                    break;
+                case Opcode.POP:
+                    RewritePOP();
+                    break;
+                case Opcode.PUSH:
+                    RewritePUSH();
+                    break;
+                case Opcode.PUSHL:
+                    RewritePUSHL();
+                    break;
+                case Opcode.RCALL:
+                    RewriteRCALL();
+                    break;
+                case Opcode.RESET:
+                    RewriteRESET();
+                    break;
+                case Opcode.RETFIE:
+                    RewriteRETFIE();
+                    break;
+                case Opcode.RETLW:
+                    RewriteRETLW();
+                    break;
+                case Opcode.RETURN:
+                    RewriteRETURN();
+                    break;
+                case Opcode.RLCF:
+                    RewriteRLCF();
+                    break;
+                case Opcode.RLNCF:
+                    RewriteRLNCF();
+                    break;
+                case Opcode.RRCF:
+                    RewriteRRCF();
+                    break;
+                case Opcode.RRNCF:
+                    RewriteRRNCF();
+                    break;
+                case Opcode.SETF:
+                    RewriteSETF();
+                    break;
+                case Opcode.SLEEP:
+                    RewriteSLEEP();
+                    break;
+                case Opcode.SUBFSR:
+                    RewriteSUBFSR();
+                    break;
+                case Opcode.SUBFWB:
+                    RewriteSUBFWB();
+                    break;
+                case Opcode.SUBLW:
+                    RewriteSUBLW();
+                    break;
+                case Opcode.SUBULNK:
+                    RewriteSUBULNK();
+                    break;
+                case Opcode.SUBWF:
+                    RewriteSUBWF();
+                    break;
+                case Opcode.SUBWFB:
+                    RewriteSUBWFB();
+                    break;
+                case Opcode.SWAPF:
+                    RewriteSWAPF();
+                    break;
+                case Opcode.TBLRD:
+                    RewriteTBLRD();
+                    break;
+                case Opcode.TBLWT:
+                    RewriteTBLWT();
+                    break;
+                case Opcode.TSTFSZ:
+                    RewriteTSTFSZ();
+                    break;
+                case Opcode.XORLW:
+                    RewriteXORLW();
+                    break;
+                case Opcode.XORWF:
+                    RewriteXORWF();
+                    break;
 
-                    case Opcode.invalid:
-                    case Opcode.unaligned:
-                        m.Invalid();
-                        break;
-                    case Opcode.ADDFSR: RewriteADDFSR(); break;
-                    case Opcode.ADDLW: RewriteADDLW(); break;
-                    case Opcode.ADDULNK: RewriteADDULNK(); break;
-                    case Opcode.ADDWF: RewriteADDWF(); break;
-                    case Opcode.ADDWFC: RewriteADDWFC(); break;
-                    case Opcode.ANDLW: RewriteANDLW(); break;
-                    case Opcode.ANDWF: RewriteANDWF(); break;
-                    case Opcode.BC: RewriteBC(); break;
-                    case Opcode.BCF: RewriteBCF(); break;
-                    case Opcode.BN: RewriteBN(); break;
-                    case Opcode.BNC: RewriteBNC(); break;
-                    case Opcode.BNN: RewriteBNN(); break;
-                    case Opcode.BNOV: RewriteBNOV(); break;
-                    case Opcode.BNZ: RewriteBNZ(); break;
-                    case Opcode.BOV: RewriteBOV(); break;
-                    case Opcode.BRA: RewriteBRA(); break;
-                    case Opcode.BSF: RewriteBSF(); break;
-                    case Opcode.BTFSC: RewriteBTFSC(); break;
-                    case Opcode.BTFSS: RewriteBTFSS(); break;
-                    case Opcode.BTG: RewriteBTG(); break;
-                    case Opcode.BZ: RewriteBZ(); break;
-                    case Opcode.CALL: RewriteCALL(); break;
-                    case Opcode.CALLW: RewriteCALLW(); break;
-                    case Opcode.CLRF: RewriteCLRF(); break;
-                    case Opcode.CLRWDT: RewriteCLRWDT(); break;
-                    case Opcode.COMF: RewriteCOMF(); break;
-                    case Opcode.CPFSEQ: RewriteCPFSEQ(); break;
-                    case Opcode.CPFSGT: RewriteCPFSGT(); break;
-                    case Opcode.CPFSLT: RewriteCPFSLT(); break;
-                    case Opcode.DAW: RewriteDAW(); break;
-                    case Opcode.DCFSNZ: RewriteDCFSNZ(); break;
-                    case Opcode.DECF: RewriteDECF(); break;
-                    case Opcode.DECFSZ: RewriteDECFSZ(); break;
-                    case Opcode.GOTO: RewriteGOTO(); break;
-                    case Opcode.INCF: RewriteINCF(); break;
-                    case Opcode.INCFSZ: RewriteINCFSZ(); break;
-                    case Opcode.INFSNZ: RewriteINFSNZ(); break;
-                    case Opcode.IORLW: RewriteIORLW(); break;
-                    case Opcode.IORWF: RewriteIORWF(); break;
-                    case Opcode.LFSR: RewriteLFSR(); break;
-                    case Opcode.MOVF: RewriteMOVF(); break;
-                    case Opcode.MOVFF: RewriteMOVFF(); break;
-                    case Opcode.MOVFFL: RewriteMOVFF(); break;
-                    case Opcode.MOVLB: RewriteMOVLB(); break;
-                    case Opcode.MOVLW: RewriteMOVLW(); break;
-                    case Opcode.MOVSF: RewriteMOVSF(); break;
-                    case Opcode.MOVSFL: RewriteMOVSF(); break;
-                    case Opcode.MOVSS: RewriteMOVSS(); break;
-                    case Opcode.MOVWF: RewriteMOVWF(); break;
-                    case Opcode.MULLW: RewriteMULLW(); break;
-                    case Opcode.MULWF: RewriteMULWF(); break;
-                    case Opcode.NEGF: RewriteNEGF(); break;
-                    case Opcode.NOP: m.Nop(); break;
-                    case Opcode.POP: RewritePOP(); break;
-                    case Opcode.PUSH: RewritePUSH(); break;
-                    case Opcode.PUSHL: RewritePUSHL(); break;
-                    case Opcode.RCALL: RewriteRCALL(); break;
-                    case Opcode.RESET: RewriteRESET(); break;
-                    case Opcode.RETFIE: RewriteRETFIE(); break;
-                    case Opcode.RETLW: RewriteRETLW(); break;
-                    case Opcode.RETURN: RewriteRETURN(); break;
-                    case Opcode.RLCF: RewriteRLCF(); break;
-                    case Opcode.RLNCF: RewriteRLNCF(); break;
-                    case Opcode.RRCF: RewriteRRCF(); break;
-                    case Opcode.RRNCF: RewriteRRNCF(); break;
-                    case Opcode.SETF: RewriteSETF(); break;
-                    case Opcode.SLEEP: RewriteSLEEP(); break;
-                    case Opcode.SUBFSR: RewriteSUBFSR(); break;
-                    case Opcode.SUBFWB: RewriteSUBFWB(); break;
-                    case Opcode.SUBLW: RewriteSUBLW(); break;
-                    case Opcode.SUBULNK: RewriteSUBULNK(); break;
-                    case Opcode.SUBWF: RewriteSUBWF(); break;
-                    case Opcode.SUBWFB: RewriteSUBWFB(); break;
-                    case Opcode.SWAPF: RewriteSWAPF(); break;
-                    case Opcode.TBLRD: RewriteTBLRD(); break;
-                    case Opcode.TBLWT: RewriteTBLWT(); break;
-                    case Opcode.TSTFSZ: RewriteTSTFSZ(); break;
-                    case Opcode.XORLW: RewriteXORLW(); break;
-                    case Opcode.XORWF: RewriteXORWF(); break;
-
-                    // Pseudo-instructions
-                    case Opcode.CONFIG:
-                    case Opcode.DA:
-                    case Opcode.DB:
-                    case Opcode.DE:
-                    case Opcode.DW:
-                    case Opcode.__IDLOCS:
-                        m.Invalid();
-                        break;
-                }
-                yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                // Pseudo-instructions
+                case Opcode.CONFIG:
+                case Opcode.DA:
+                case Opcode.DB:
+                case Opcode.DE:
+                case Opcode.DW:
+                case Opcode.__IDLOCS:
+                    m.Invalid();
+                    break;
             }
-            yield break; ;
+
         }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator(); 
-
 
         #region Helpers
 
@@ -350,8 +492,7 @@ namespace Reko.Arch.Microchip.PIC18
                         // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
                         // 
                         var accAddr = PIC18MemoryDescriptor.RemapDataAddress(offset.ToUInt16());
-                        var sfr = PICRegisters.GetRegisterBySizedAddr(accAddr, 8);
-                        if (sfr != RegisterStorage.None)
+                        if (PICRegisters.TryGetRegister(accAddr, 8, out var sfr))
                         {
                             var iop = PIC18Registers.IndirectOpMode(sfr as PICRegisterStorage, out PICRegisterStorage fsr);
                             if (iop != IndirectRegOp.None)
@@ -431,8 +572,7 @@ namespace Reko.Arch.Microchip.PIC18
                 switch (opernd)
                 {
                     case PIC18DataAbsAddrOperand memabsaddr:
-                        var reg = PIC18Registers.GetRegisterBySizedAddr(memabsaddr.DataTarget, 8);
-                        if (reg is PICRegisterStorage sfrReg)
+                        if (PICRegisters.TryGetRegister(memabsaddr.DataTarget, 8, out var sfrReg))
                         {
                             if (sfrReg != PICRegisterStorage.None)
                             {

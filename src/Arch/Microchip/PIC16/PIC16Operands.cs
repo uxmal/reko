@@ -20,16 +20,11 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Libraries.Microchip;
+using System.Linq;
 
 namespace Reko.Arch.Microchip.PIC16
 {
@@ -230,15 +225,12 @@ namespace Reko.Arch.Microchip.PIC16
             ushort uaddr = BankAddr.ToByte();
 
             var aaddr = PIC16MemoryDescriptor.TranslateDataAddress(uaddr);
-            var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
-            if (sfr != RegisterStorage.None)
+            if (PICRegisters.TryGetRegister(aaddr, 8, out var sfr))
             {
                 writer.WriteString($"{sfr.Name}");
                 return;
             }
-
             writer.WriteString($"0x{uaddr:X2}");
-
         }
 
     }
@@ -278,10 +270,9 @@ namespace Reko.Arch.Microchip.PIC16
             base.Write(writer, options);
 
             var aaddr = PIC16MemoryDescriptor.TranslateDataAddress(uaddr);
-            var sfr = PICRegisters.GetRegisterBySizedAddr(aaddr, 8);
-            if (sfr != RegisterStorage.None)
+            if (PICRegisters.TryGetRegister(aaddr, 8, out var sfr))
             {
-                var bitname = PICRegisters.GetBitFieldByAddr(aaddr, bitpos, 1);
+                var bitname = PICRegisters.PeekBitFieldFromRegister(aaddr, bitpos, 1);
                 if (bitname != null)
                 {
                     writer.WriteString($",{bitname.Name}");
@@ -664,10 +655,10 @@ namespace Reko.Arch.Microchip.PIC16
     public class PIC16ConfigOperand : PseudoDataOperand, IOperand
     {
 
-        private PIC16Architecture arch;
+        private PICArchitecture arch;
         private Address addr;
 
-        public PIC16ConfigOperand(PIC16Architecture arch, Address addr, ushort config) : base(config)
+        public PIC16ConfigOperand(PICArchitecture arch, Address addr, ushort config) : base(config)
         {
             this.arch = arch;
             this.addr = addr;

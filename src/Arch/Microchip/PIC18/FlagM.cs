@@ -25,6 +25,9 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
+
+    using Common;
+
     /// <summary>
     /// Values that represent PIC18 condition code flags in STATUS register.
     /// </summary>

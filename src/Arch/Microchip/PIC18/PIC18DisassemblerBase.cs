@@ -32,128 +32,48 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A Microchip PIC18 disassembler. Valid for most of code program memory regions.
     /// </summary>
-    public class PIC18Disassembler : DisassemblerBase<PIC18Instruction>
+    public class PIC18DisassemblerBase : PICDisassemblerBase
     {
 
-        #region Locals
-
-        private EndianImageReader rdr;
-        private PIC18Architecture arch;
-        private PIC18Instruction instrCur;
-        private PIC pic;
-        private Address addrCur;
-        private static IMemoryRegion lastusedregion = null;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="rdr">The memory reader.</param>
-        /// <param name="instrsetID">Identifier for the PIC instruction set.</param>
-        public PIC18Disassembler(PIC18Architecture arch, EndianImageReader rdr)
+        protected PIC18DisassemblerBase(PICArchitecture arch, EndianImageReader rdr)
+            : base(arch, rdr)
         {
-            this.arch = arch;
-            this.rdr = rdr;
-            pic = this.arch.PICDescriptor;
         }
 
-        #endregion
+        public static PICDisassemblerBase Create(PICArchitecture arch, EndianImageReader rdr)
+        {
+            if (arch is null)
+                throw new ArgumentNullException(nameof(arch));
+            if (rdr is null)
+                throw new ArgumentNullException(nameof(rdr));
+            return new PIC18DisassemblerBase(arch, rdr);
+        }
 
-        #region Properties
 
         /// <summary>
-        /// Gets the PIC18 execution mode this disassembler is configured to.
+        /// Gets the PIC18 execution mode this PIC18 disassembler is configured to.
         /// </summary>
-        public PICExecMode ExecMode => arch?.ExecMode ?? PICExecMode.Traditional;
+        public override PICExecMode ExecMode => arch?.ExecMode ?? PICExecMode.Traditional;
 
         /// <summary>
         /// Gets the PIC instruction-set identifier.
         /// </summary>
-        public InstructionSetID InstructionSetID => arch?.PICDescriptor?.GetInstructionSetID ?? InstructionSetID.PIC18_ENHANCED;
+        public override InstructionSetID InstructionSetID => arch?.PICDescriptor?.GetInstructionSetID ?? InstructionSetID.PIC18_ENHANCED;
 
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Disassemble a single instruction. Return null if the end of the reader has been reached.
-        /// </summary>
-        /// <returns>
-        /// A <seealso cref="PIC18Instruction"/> instance.
-        /// </returns>
-        /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
-        ///                                              condition occurs.</exception>
-        public override PIC18Instruction DisassembleInstruction()
-        {
-            IMemoryRegion GetProgRegion()
-            {
-                if (lastusedregion != null && lastusedregion.Contains(addrCur))
-                    return lastusedregion;
-                return lastusedregion = arch.MemoryDescriptor.MemoryMap.GetProgramRegion(addrCur);
-            }
-
-            if (!rdr.IsValid)
-                return null;
-            addrCur = rdr.Address;
-            IMemoryRegion regn = GetProgRegion();
-            if (regn is null)
-                throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
-            if ((addrCur.Offset % (regn.Trait?.LocSize ?? 1)) != 0)
-            {
-                instrCur = new PIC18Instruction(Opcode.unaligned, ExecMode) { Address = addrCur, Length = 1 };
-                rdr.Offset += 1; // Consume only the first byte of the binary instruction.
-                return instrCur;
-            }
-
-            switch (regn.SubtypeOfMemory)
-            {
-                case MemorySubDomain.Code:
-                case MemorySubDomain.ExtCode:
-                case MemorySubDomain.Debugger:
-                    addrCur = PICProgAddress.Ptr(rdr.Address);
-                    return DisasmPIC18Instruction();
-
-                case MemorySubDomain.EEData:
-                    return DisasmEEPROMInstruction();
-
-                case MemorySubDomain.UserID:
-                    return DisasmUserIDInstruction();
-
-                case MemorySubDomain.DeviceConfig:
-                    return DisasmConfigInstruction();
-
-                case MemorySubDomain.DeviceID:
-                    return DisasmDWInstruction();
-
-                case MemorySubDomain.DeviceConfigInfo:  //TODO: Decode DCI
-                case MemorySubDomain.DeviceInfoAry:     //TODO: Decode DIA 
-                case MemorySubDomain.RevisionID:        //TODO: Decode Revision ID
-                case MemorySubDomain.Test:
-                case MemorySubDomain.Other:
-                default:
-                    throw new NotImplementedException($"Disassembly of '{regn.SubtypeOfMemory}' memory region is not yet implemented.");
-            }
-
-        }
 
         /// <summary>
         /// Disassembles a "true" PIC18 instruction.
         /// </summary>
         /// <returns>
-        /// A <see cref="PIC18Instruction"/> instance.
+        /// A <see cref="PICInstruction"/> instance.
         /// </returns>
         /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
         ///                                              condition occurs.</exception>
-        private PIC18Instruction DisasmPIC18Instruction()
+        protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
             // A PIC18 instruction can be 1, 2 or 3 words long. The 1st word (opcode) determines the actual length of the instruction.
 
             var offset = rdr.Offset;
-            if (!rdr.TryReadUInt16(out ushort uInstr))
-                return null;
             try
             {
                 instrCur = opcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
@@ -166,11 +86,12 @@ namespace Reko.Arch.Microchip.PIC18
             // If there is no legal instruction, consume only one word and return an Illegal pseudo-instruction.
             if (instrCur is null)
             {
-                instrCur = new PIC18Instruction(Opcode.invalid, ExecMode) { Address = addrCur };
-                rdr.Offset = offset + 2; // Consume only the first word of the binary instruction.
+                instrCur = new PICInstruction(Opcode.invalid);
+                rdr.Offset = offset; // Consume only the first word of the binary instruction.
             }
             instrCur.Address = addrCur;
             instrCur.Length = (int)(rdr.Address - addrCur);
+            instrCur.ExecMode = ExecMode;
             return instrCur;
         }
 
@@ -196,13 +117,11 @@ namespace Reko.Arch.Microchip.PIC18
             return true;
         }
 
-        #endregion
-
         #region Instruction Decoder
 
         private abstract class Decoder
         {
-            public abstract PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm);
+            public abstract PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm);
         }
 
         private class SubDecoder : Decoder
@@ -218,7 +137,7 @@ namespace Reko.Arch.Microchip.PIC18
                 this.decoders = decoders;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 return decoders[uInstr.Extract(bitpos, width)].Decode(uInstr, dasm);
             }
@@ -229,7 +148,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         private class InvalidOpRec : Decoder
         {
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 return null;
             }
@@ -247,9 +166,9 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode);
+                return new PICInstruction(opcode) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -265,10 +184,10 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (uInstr == 0x00FFU)
-                    return new PIC18Instruction(opcode, dasm.ExecMode);
+                    return new PICInstruction(opcode) { ExecMode = dasm.ExecMode };
                 return null;
             }
         }
@@ -285,11 +204,11 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED)
                     return null;
-                return new PIC18Instruction(opcode, dasm.ExecMode);
+                return new PICInstruction(opcode) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -305,13 +224,13 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18DataBitAccessOperand(dasm.ExecMode,
-                                                                          (byte)uInstr.Extract(0, 8),
-                                                                          uInstr.Extract(8, 1),
-                                                                          (byte)uInstr.Extract(9, 3)));
+                var adr = (byte)uInstr.Extract(0, 8);
+                var acc = uInstr.Extract(8, 1);
+                var bit = (byte)uInstr.Extract(9, 3);
+                var operd = new PIC18DataBitAccessOperand(dasm.ExecMode, adr, acc, bit);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -327,12 +246,12 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18BankedAccessOperand(dasm.ExecMode,
-                                                                         (byte)uInstr.Extract(0, 8),
-                                                                         uInstr.Extract(8, 1)));
+                var adr = (byte)uInstr.Extract(0, 8);
+                var acc = uInstr.Extract(8, 1);
+                var operd = new PIC18BankedAccessOperand(dasm.ExecMode, adr, acc);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -349,13 +268,13 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18DataByteAccessWithDestOperand(dasm.ExecMode,
-                                                                                   (byte)uInstr.Extract(0, 8),
-                                                                                   uInstr.Extract(8, 1),
-                                                                                   uInstr.Extract(9, 1)));
+                var adr = (byte)uInstr.Extract(0, 8);
+                var acc = uInstr.Extract(8, 1);
+                var dst = uInstr.Extract(9, 1);
+                var operd = new PIC18DataByteAccessWithDestOperand(dasm.ExecMode, adr, acc, dst);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -371,10 +290,11 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18Immed8Operand((byte)uInstr.Extract(0, 8)));
+                var imm = (byte)uInstr.Extract(0, 8);
+                var operd = new PIC18Immed8Operand(imm);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -390,7 +310,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 byte bsrval = (byte)uInstr.Extract(0, 8);
 
@@ -401,16 +321,14 @@ namespace Reko.Arch.Microchip.PIC18
                     case InstructionSetID.PIC18_EXTENDED:
                         if (bsrval >= 16)
                             return null;
-                        return new PIC18Instruction(opcode,
-                                                    dasm.ExecMode,
-                                                    new PIC18Immed4Operand(bsrval));
+                        var operd4 = new PIC18Immed4Operand(bsrval);
+                        return new PICInstruction(opcode, operd4) { ExecMode = dasm.ExecMode };
 
                     case InstructionSetID.PIC18_ENHANCED:
                         if (bsrval >= 64)
                             return null;
-                        return new PIC18Instruction(opcode,
-                                                    dasm.ExecMode,
-                                                    new PIC18Immed6Operand(bsrval));
+                        var operd6 = new PIC18Immed6Operand(bsrval);
+                        return new PICInstruction(opcode, operd6) { ExecMode = dasm.ExecMode };
 
                     default:
                         throw new NotImplementedException();
@@ -430,7 +348,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (!GetAddlInstrWord(dasm.rdr, out ushort lsw))
                     return null;
@@ -438,8 +356,8 @@ namespace Reko.Arch.Microchip.PIC18
                     return null;
 
                 var msw = uInstr.Extract(0, 4);
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18Data12bitAbsAddrOperand((ushort)((msw << 8) | lsw)));
+                var operd = new PIC18Data12bitAbsAddrOperand((ushort)((msw << 8) | lsw));
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -455,10 +373,10 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18ShadowOperand(uInstr.Extract(0, 1)));
+                var operd = new PIC18ShadowOperand(uInstr.Extract(0, 1));
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -474,12 +392,10 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18ProgRel8AddrOperand((sbyte)(uInstr.ExtractSignExtend(0, 8)),
-                                                                          dasm.addrCur));
+                var operd = new PIC18ProgRel8AddrOperand((sbyte)(uInstr.ExtractSignExtend(0, 8)), dasm.addrCur);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -495,11 +411,10 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18ProgRel11AddrOperand(uInstr.ExtractSignExtend(0, 11),
-                                                                          dasm.addrCur));
+                var operd = new PIC18ProgRel11AddrOperand(uInstr.ExtractSignExtend(0, 11), dasm.addrCur);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -515,10 +430,10 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18TableReadWriteOperand(uInstr.Extract(0, 2)));
+                var operd = new PIC18TableReadWriteOperand(uInstr.Extract(0, 2));
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -534,15 +449,15 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 // This a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18Data12bitAbsAddrOperand(uInstr.Extract(0, 12)),
-                                            new PIC18Data12bitAbsAddrOperand(word2));
+                var opers = new PIC18Data12bitAbsAddrOperand(uInstr.Extract(0, 12));
+                var operd = new PIC18Data12bitAbsAddrOperand(word2);
+                return new PICInstruction(opcode, opers, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -558,15 +473,14 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 // This a 2-words instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
-
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18ProgAbsAddrOperand(dstaddr));
+                var operd = new PIC18ProgAbsAddrOperand(dstaddr);
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -582,16 +496,15 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
                 uint dstaddr = (uint)(uInstr.Extract(0, 8) | (word2 << 8));
-
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18ProgAbsAddrOperand(dstaddr),
-                                            new PIC18ShadowOperand(uInstr.Extract(8, 1)));
+                var operd = new PIC18ProgAbsAddrOperand(dstaddr);
+                var shad = new PIC18ShadowOperand(uInstr.Extract(8, 1));
+                return new PICInstruction(opcode, operd, shad) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -607,7 +520,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_ENHANCED) // Only supported by PIC18 Enhanced.
                     return null;
@@ -618,12 +531,12 @@ namespace Reko.Arch.Microchip.PIC18
                 ushort dstaddr = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
-                if (PIC18Registers.NotAllowedMovlDest(dstaddr))
+                if (PIC18EnhancedRegisters.NotAllowedMovlDest(dstaddr))
                     return null;
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18Data14bitAbsAddrOperand(srcaddr),
-                                            new PIC18Data14bitAbsAddrOperand(dstaddr));
+                var opers = new PIC18Data14bitAbsAddrOperand(srcaddr);
+                var operd = new PIC18Data14bitAbsAddrOperand(dstaddr);
+                return new PICInstruction(opcode, opers, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -639,7 +552,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(4, 4);
                 if (fsrnum >= 3)
@@ -649,22 +562,21 @@ namespace Reko.Arch.Microchip.PIC18
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
+                var fsrn = new PIC18FSROperand(fsrnum);
                 switch (dasm.InstructionSetID)
                 {
                     case InstructionSetID.PIC18:
                     case InstructionSetID.PIC18_EXTENDED:
                         if (word2 > 0xFF) // Second word must be 'xxxx-0000-kkkk-kkkk'
                             return null;
-                        return new PIC18Instruction(opcode, dasm.ExecMode,
-                                                    new PIC18FSROperand(fsrnum),
-                                                    new PIC18Immed12Operand((ushort)((uInstr.Extract(0, 4) << 8) | word2)));
+                        var imm12 = new PIC18Immed12Operand((ushort)((uInstr.Extract(0, 4) << 8) | word2));
+                        return new PICInstruction(opcode, fsrn, imm12) { ExecMode = dasm.ExecMode };
 
                     case InstructionSetID.PIC18_ENHANCED:
                         if (word2 > 0x3FF) // Second word must be 'xxxx-00kk-kkkk-kkkk'
                             return null;
-                        return new PIC18Instruction(opcode, dasm.ExecMode,
-                                                    new PIC18FSROperand(fsrnum),
-                                                    new PIC18Immed14Operand((ushort)((uInstr.Extract(0, 4) << 10) | word2)));
+                        var imm14 = new PIC18Immed14Operand((ushort)((uInstr.Extract(0, 4) << 10) | word2));
+                        return new PICInstruction(opcode, fsrn, imm14) { ExecMode = dasm.ExecMode };
 
                     default:
                         throw new InvalidOperationException($"Unknown PIC18 instruction set: {dasm.InstructionSetID}");
@@ -687,7 +599,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(6, 2);
                 if (fsrnum >= 3)
@@ -711,9 +623,9 @@ namespace Reko.Arch.Microchip.PIC18
                         throw new NotImplementedException();
                 }
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18FSROperand(fsrnum),
-                                            new PIC18Immed6Operand((byte)uInstr.Extract(0, 6)));
+                var fsrn = new PIC18FSROperand(fsrnum);
+                var imm6 = new PIC18Immed6Operand((byte)uInstr.Extract(0, 6));
+                return new PICInstruction(opcode, fsrn, imm6) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -729,15 +641,15 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED)
                     return null;
                 if (dasm.ExecMode != PICExecMode.Extended) // Only supported by PIC18 running in Extended Execution mode.
                     return null;
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18Immed6Operand((byte)uInstr.Extract(0, 6)));
+                var operd = new PIC18Immed6Operand((byte)uInstr.Extract(0, 6));
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -753,7 +665,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // PIC running in Extended Execution mode?
                     return null;
@@ -768,12 +680,12 @@ namespace Reko.Arch.Microchip.PIC18
                 var fd = word2;
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
-                if (PIC18Registers.NotAllowedMovlDest(fd))
+                if (PIC18EnhancedRegisters.NotAllowedMovlDest(fd))
                     return null;
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18FSR2IdxOperand(zs),
-                                            new PIC18Data12bitAbsAddrOperand(fd));
+                var operzs = new PIC18FSR2IdxOperand(zs);
+                var operfd = new PIC18Data12bitAbsAddrOperand(fd);
+                return new PICInstruction(opcode, operzs, operfd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -789,7 +701,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
                     return null;
@@ -803,12 +715,12 @@ namespace Reko.Arch.Microchip.PIC18
                 ushort fd = (ushort)(word3.Extract(0, 12) | (word2.Extract(0, 2) << 12));
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
-                if (PIC18Registers.NotAllowedMovlDest(fd))
+                if (PIC18EnhancedRegisters.NotAllowedMovlDest(fd))
                     return null;
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18FSR2IdxOperand(zs),
-                                            new PIC18Data14bitAbsAddrOperand(fd));
+                var operzs = new PIC18FSR2IdxOperand(zs);
+                var operfd = new PIC18Data14bitAbsAddrOperand(fd);
+                return new PICInstruction(opcode, operzs, operfd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -824,7 +736,7 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
                     return null;
@@ -835,12 +747,10 @@ namespace Reko.Arch.Microchip.PIC18
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
                     return null;
 
-                var zs = (byte)uInstr.Extract(0, 7);
-                var zd = (byte)word2.Extract(0, 7);
+                var operzs = new PIC18FSR2IdxOperand((byte)uInstr.Extract(0, 7));
+                var operzd = new PIC18FSR2IdxOperand((byte)word2.Extract(0, 7));
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18FSR2IdxOperand(zs),
-                                            new PIC18FSR2IdxOperand(zd));
+                return new PICInstruction(opcode, operzs, operzd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -856,15 +766,15 @@ namespace Reko.Arch.Microchip.PIC18
                 opcode = opc;
             }
 
-            public override PIC18Instruction Decode(ushort uInstr, PIC18Disassembler dasm)
+            public override PICInstruction Decode(ushort uInstr, PIC18DisassemblerBase dasm)
             {
                 if (dasm.ExecMode != PICExecMode.Extended) // Is PIC running in Extended Execution mode...
                     return null;
                 if (dasm.InstructionSetID < InstructionSetID.PIC18_EXTENDED) // ... and being a PIC18 Extended and later.
                     return null;
 
-                return new PIC18Instruction(opcode, dasm.ExecMode,
-                                            new PIC18Immed8Operand((byte)uInstr.Extract(0, 8)));
+                var operd = new PIC18Immed8Operand((byte)uInstr.Extract(0, 8));
+                return new PICInstruction(opcode, operd) { ExecMode = dasm.ExecMode };
             }
         }
 
@@ -1183,7 +1093,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Pseudo-instructions decoders
 
-        private PIC18Instruction DisasmEEPROMInstruction()
+        protected override PICInstruction DecodeEEPROMInstruction()
         {
 
             if (!rdr.TryReadByte(out byte uEEByte))
@@ -1197,89 +1107,99 @@ namespace Reko.Arch.Microchip.PIC18
                     break;
                 bl.Add(uEEByte);
             }
-            instrCur = new PIC18Instruction(Opcode.DE, ExecMode,
-                                            new PIC18DataEEPROMOperand(bl.ToArray()))
+            instrCur = new PICInstruction(Opcode.DE, new PIC18DataEEPROMOperand(bl.ToArray()))
             {
                 Address = addrCur,
-                Length = (int)(rdr.Address - addrCur)
+                Length = (int)(rdr.Address - addrCur),
+                ExecMode = ExecMode
             };
 
             return instrCur;
         }
 
-        private PIC18Instruction DisasmDAInstruction()
+        protected override PICInstruction DecodeDAInstruction()
         {
 
             if (!rdr.TryReadByte(out byte uDAByte))
                 return null;
-            instrCur = new PIC18Instruction(Opcode.DA, ExecMode,
-                                            new PIC18DataASCIIOperand(uDAByte))
+            instrCur = new PICInstruction(Opcode.DA, new PIC18DataASCIIOperand(uDAByte))
             {
                 Address = addrCur,
-                Length = (int)(rdr.Address - addrCur)
+                Length = (int)(rdr.Address - addrCur),
+                ExecMode = ExecMode
             };
 
             return instrCur;
         }
 
-        private PIC18Instruction DisasmDBInstruction()
+        protected override PICInstruction DecodeDBInstruction()
         {
 
             if (!rdr.TryReadByte(out byte uDBByte))
                 return null;
-            instrCur = new PIC18Instruction(Opcode.DB, ExecMode,
-                                            new PIC18DataByteOperand(uDBByte))
+            instrCur = new PICInstruction(Opcode.DB, new PIC18DataByteOperand(uDBByte))
             {
                 Address = addrCur,
-                Length = (int)(rdr.Address - addrCur)
+                Length = (int)(rdr.Address - addrCur),
+                ExecMode = ExecMode
             };
 
             return instrCur;
         }
 
-        private PIC18Instruction DisasmDWInstruction()
+        protected override PICInstruction DecodeDWInstruction()
         {
 
             if (!rdr.TryReadUInt16(out ushort uDWWord))
                 return null;
-            instrCur = new PIC18Instruction(Opcode.DW, ExecMode,
-                                            new PIC18DataWordOperand(uDWWord))
+            instrCur = new PICInstruction(Opcode.DW, new PIC18DataWordOperand(uDWWord))
             {
                 Address = addrCur,
-                Length = (int)(rdr.Address - addrCur)
+                Length = (int)(rdr.Address - addrCur),
+                ExecMode = ExecMode
             };
 
             return instrCur;
         }
 
-        private PIC18Instruction DisasmUserIDInstruction()
+        protected override PICInstruction DecodeUserIDInstruction()
         {
 
             if (!rdr.TryReadByte(out byte uIDByte))
                 return null;
-            instrCur = new PIC18Instruction(Opcode.__IDLOCS, ExecMode,
-                                            new PIC18IDLocsOperand(addrCur, uIDByte))
+            instrCur = new PICInstruction(Opcode.__IDLOCS, new PIC18IDLocsOperand(addrCur, uIDByte))
             {
                 Address = addrCur,
-                Length = (int)(rdr.Address - addrCur)
+                Length = (int)(rdr.Address - addrCur),
+                ExecMode = ExecMode
             };
 
             return instrCur;
         }
 
-        private PIC18Instruction DisasmConfigInstruction()
+        protected override PICInstruction DecodeConfigInstruction()
         {
 
             if (!rdr.TryReadByte(out byte uConfigByte))
                 return null;
-            instrCur = new PIC18Instruction(Opcode.CONFIG, ExecMode,
-                                            new PIC18ConfigOperand(arch, addrCur, uConfigByte))
+            instrCur = new PICInstruction(Opcode.CONFIG, new PIC18ConfigOperand(arch, addrCur, uConfigByte))
             {
                 Address = addrCur,
-                Length = (int)(rdr.Address - addrCur)
+                Length = (int)(rdr.Address - addrCur),
+                ExecMode = ExecMode
             };
             return instrCur;
         }
+
+        protected override PICInstruction DecodeDCIInstruction() => throw new NotImplementedException();
+
+        protected override PICInstruction DecodeDIAInstruction() => throw new NotImplementedException();
+
+        protected override PICInstruction DecodeRevisionIDInstruction() => throw new NotImplementedException();
+
+        protected override PICInstruction DecodeDTInstruction() => throw new NotImplementedException();
+
+        protected override PICInstruction DecodeDTMInstruction() => throw new NotImplementedException();
 
         #endregion
 

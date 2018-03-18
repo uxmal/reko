@@ -375,8 +375,6 @@ namespace Reko.Gui.Forms
                 if (!arch.TryParseAddress(sAddr, out Address addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
                 cpuModel = dlg.CPUModels.Text;
-                if (arch.Name.StartsWith("pic"))
-                    arch.CPUModel = cpuModel;
                 var details = new LoadDetails
                 {
                     LoaderName = loader,

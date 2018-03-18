@@ -4008,7 +4008,7 @@ namespace Reko.Libraries.Microchip
     /// SFR bits-field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("SFRField = {Name}")]
+    [DebuggerDisplay("SFRField = {CName}")]
     public sealed class SFRFieldDef : MemDataSymbolAcceptor
     {
         #region Constructors
@@ -4313,7 +4313,7 @@ namespace Reko.Libraries.Microchip
     /// Special Function Register (SFR) definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("SFR = {Name}")]
+    [DebuggerDisplay("SFR = {CName}")]
     public sealed class SFRDef : MemDataSymbolAcceptor
     {
         #region Constructors

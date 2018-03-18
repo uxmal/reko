@@ -25,6 +25,8 @@ using NUnit.Framework;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
+    using static Common.Sample;
+
     /// <summary>
     /// As of today there are 3 flavors of PIC18 :
     ///  - legacy (a.k.a. "pic18"),
@@ -41,7 +43,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [TestFixtureSetUp]
         public void OneSetup()
         {
-            SetPICMode(InstructionSetID.PIC18, PICExecMode.Extended);
+            SetPICMode(PIC18LegacyName, PICExecMode.Extended);
         }
 
         [Test]

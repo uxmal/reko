@@ -22,6 +22,7 @@
 
 using Reko.Libraries.Microchip;
 using NUnit.Framework;
+using Reko.Arch.Microchip.Common;
 using Reko.Arch.Microchip.PIC18;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
@@ -33,7 +34,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 
         public PIC18Registers_Extd_Extd_Tests()
         {
-            arch = new PIC18Architecture(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED))
+            arch = new PIC18Architecture("pic", PICProcessorMode.Create("PIC18F25K50"))
             {
                 ExecMode = PICExecMode.Extended
             };

@@ -26,7 +26,6 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,50 +41,32 @@ namespace Reko.Arch.Microchip.PIC18
     public class PIC18Architecture : PICArchitecture
     {
 
-        #region Constructors
-
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public PIC18Architecture() : this("pic18") { }
-
-        /// <summary>
-        /// Constructor.
+        /// Instantiates a new PIC18 architecture.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        public PIC18Architecture(string archID) : base(archID)
+        /// <param name="mode">The PIC mode. Contains details and creators for target PIC18.</param>
+        public PIC18Architecture(string archID, PICProcessorMode mode)
+            : base(archID, mode)
         {
         }
 
-        /// <summary>
-        /// Constructor. Used for tests purpose.
-        /// </summary>
-        /// <param name="picDescr">PIC descriptor.</param>
-        public PIC18Architecture(PIC picDescr) : base("pic18", picDescr)
-        {
-        }
-
-        #endregion
-
-        #region Helpers
 
         /// <summary>
         /// Loads the PIC configuration. Creates memory mapper and registers.
         /// </summary>
-        /// <param name="picDescr">PIC descriptor.</param>
         protected override void LoadConfiguration()
         {
-            Description = picDescriptor.Desc;
-            PIC18Registers.Create(picDescriptor).LoadRegisters(); 
+            Description = PICDescriptor.Desc;
+            ProcessorMode.CreateRegisters(PICDescriptor);
             StackRegister = PIC18Registers.STKPTR;
         }
 
-        #endregion
 
         #region Public Methods/Properties
 
         /// <summary>
-        /// Gets the PIC memory mapper.
+        /// Gets the PIC18 memory mapper.
         /// </summary>
         public override IPICMemoryDescriptor MemoryDescriptor
         {
@@ -98,27 +79,8 @@ namespace Reko.Arch.Microchip.PIC18
         }
         private PIC18MemoryDescriptor memDescr;
 
-        public PIC18Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
-            => new PIC18Disassembler(this, imageReader);
-
-        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
-            => new PIC18InstructionComparer(norm);
-
-        public override SortedList<string, int> GetOpcodeNames()
-        {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
-                .ToSortedList(
-                    v => v.ToString().ToUpper(),
-                    v => (int)v);
-        }
-
-        public override int? GetOpcodeNumber(string name)
-        {
-            if (!Enum.TryParse(name, true, out Opcode result))
-                return null;
-            return (int)result;
-        }
+        public PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
+            => ProcessorMode.CreateDisassembler(this, imageReader);
 
         public override FlagGroupStorage GetFlagGroup(uint grpFlags)
         {
@@ -198,10 +160,10 @@ namespace Reko.Arch.Microchip.PIC18
             => CreateDisassemblerImpl(imageReader);
 
         public override ProcessorState CreateProcessorState()
-            => new PIC18State(this);
+            => ProcessorMode.CreateProcessorState(this);
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-            => new PIC18Rewriter(this, rdr, (PIC18State)state, frame, host);
+            => ProcessorMode.CreateRewriter(this, ProcessorMode.CreateDisassembler(this, rdr), (PIC18State)state, frame, host);
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
@@ -222,7 +184,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 if ((grpFlags & 1) != 0)
                 {
-                    var f = PICRegisters.GetBitFieldByReg(PIC18Registers.STATUS, bitPos, 1);
+                    var f = PICRegisters.PeekBitFieldFromRegister(PIC18Registers.STATUS, bitPos, 1);
                     if (f != null)
                         sb.Append(f.Name);
                 }

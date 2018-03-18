@@ -25,6 +25,8 @@ using NUnit.Framework;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
+    using static Common.Sample;
+
     /// <summary>
     /// As of today there are 3 flavors of PIC18 :
     ///  - legacy (a.k.a. "pic18"),
@@ -40,7 +42,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [TestFixtureSetUp]
         public void OneSetup()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Extended);
+            SetPICMode(PIC18EnhancedName, PICExecMode.Extended);
         }
 
         [Test]
@@ -335,7 +337,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void Disasm_DCFSNZ_Enhd_Extd()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Extended);
             VerifyDisasm("DCFSNZ\t[0x12],W", "", 0x4C12);
             VerifyDisasm("DCFSNZ\t[0x5A],W", "", 0x4C5A);
             VerifyDisasm("DCFSNZ\tFSR0L,W,ACCESS", "", 0x4CE9);
@@ -731,7 +732,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void Disasm_SUBWF_Enhd_Extd()
         {
-            SetPICMode(InstructionSetID.PIC18_ENHANCED, PICExecMode.Extended);
             VerifyDisasm("SUBWF\t[0x12],W", "", 0x5C12);
             VerifyDisasm("SUBWF\t[0x5A],W", "", 0x5C5A);
             VerifyDisasm("SUBWF\tFSR0L,W,ACCESS", "", 0x5CE9);

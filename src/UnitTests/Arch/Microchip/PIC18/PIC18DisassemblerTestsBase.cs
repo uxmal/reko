@@ -22,6 +22,7 @@
 
 using Reko.Libraries.Microchip;
 using NUnit.Framework;
+using Reko.Arch.Microchip.Common;
 using Reko.Arch.Microchip.PIC18;
 using Reko.Core;
 using Reko.Core.Machine;
@@ -31,7 +32,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
     public class PIC18DisassemblerTestsBase
     {
-        protected static PIC18Architecture arch;
+        protected PICProcessorMode picMode;
+        protected static PICArchitecture arch;
         protected Address baseAddr = Address.Ptr32(0x200);
 
         private MachineInstruction _runTest(params ushort[] words)
@@ -43,7 +45,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             }).ToArray();
             var image = new MemoryArea(baseAddr, bytes);
             var rdr = new LeImageReader(image, 0);
-            var dasm = new PIC18Disassembler(arch, rdr);
+            var dasm = picMode.CreateDisassembler(arch, rdr);
             return dasm.First();
         }
 
@@ -60,9 +62,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             Assert.AreEqual(sExpected, instr.ToString(), _fmtBinary(sMesg, words));
         }
 
-        protected void SetPICMode(InstructionSetID id, PICExecMode mode)
+        protected void SetPICMode(string picName, PICExecMode mode)
         {
-            arch = new PIC18Architecture(PICSamples.GetSample(id))
+            picMode = PICProcessorMode.Create(picName);
+            arch = new PIC18Architecture("pic", picMode)
             {
                 ExecMode = mode
             };

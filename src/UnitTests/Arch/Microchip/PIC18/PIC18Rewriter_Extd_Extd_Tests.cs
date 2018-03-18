@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         [TestFixtureSetUp]
         public void OneSetup_Extd_Extd()
         {
-            SetPICMode(InstructionSetID.PIC18_EXTENDED, PICExecMode.Extended);
+            SetPICMode("PIC18F25K50", PICExecMode.Extended);
         }
 
         [Test]

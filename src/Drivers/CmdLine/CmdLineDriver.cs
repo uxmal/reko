@@ -175,7 +175,8 @@ namespace Reko.CmdLine
                 var arch = config.GetArchitecture((string)pArgs["--arch"]);
                 if (arch == null)
                     throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
-                if (pArgs.ContainsKey("--cpumodel")) arch.CPUModel = pArgs["--cpumodel"] as string;
+                string cpuModel = string.Empty;
+                if (pArgs.ContainsKey("--cpumodel")) cpuModel = pArgs["--cpumodel"] as string;
 
                 pArgs.TryGetValue("--env", out object sEnv);
 
@@ -189,7 +190,7 @@ namespace Reko.CmdLine
                 {
                     LoaderName = (string)sLoader,
                     ArchitectureName = (string)pArgs["--arch"],
-                    CPUModelName = arch.CPUModel,
+                    CPUModelName = cpuModel,
                     PlatformName = (string)sEnv,
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }

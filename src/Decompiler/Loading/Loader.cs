@@ -151,7 +151,7 @@ namespace Reko.Loading
         public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
         { 
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
-            arch.CPUModel = details.CPUModelName;
+            var cpuModel = details.CPUModelName;
             var platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
             if (addrLoad == null)
             {
@@ -181,7 +181,7 @@ namespace Reko.Loading
                 }
             }
             program.Name = Path.GetFileName(filename);
-            program.User.Processor = arch.CPUModel;
+            program.User.Processor = cpuModel;
 //            program.User.CPUModel = details.CPUModelName;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;

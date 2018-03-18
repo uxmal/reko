@@ -143,6 +143,7 @@
     <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
     <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
     <Compile Include="Arch\Microchip\Common\DeviceConfigDefsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\SamplePICNames.cs" />
     <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
@@ -167,8 +168,6 @@
     <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Extd_Extd_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Extd_Trad_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Rewriter_Lgcy_Trad_Tests.cs" />
-    <Compile Include="Arch\Microchip\PICSamples.cs" />
-    <Compile Include="Arch\Microchip\PICSamplesTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
@@ -1012,26 +1011,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Arch\Microchip\Samples\PIC16EnhSample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC16EnhV1Sample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC16Sample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC18EnhSample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC18ExtdSample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Arch\Microchip\Samples\PIC18Sample.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Target Name="BeforeBuild">
     <!-- TODO: Duplicated in Common.items -->

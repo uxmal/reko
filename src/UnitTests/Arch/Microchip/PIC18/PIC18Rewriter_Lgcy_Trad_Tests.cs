@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         [TestFixtureSetUp]
         public void OneSetup_Lgcy_Trad()
         {
-            SetPICMode(InstructionSetID.PIC18, PICExecMode.Traditional);
+            SetPICMode("PIC18F1220", PICExecMode.Traditional);
         }
 
         [Test]

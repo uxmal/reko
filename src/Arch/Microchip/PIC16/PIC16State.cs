@@ -1,30 +1,68 @@
-﻿using Reko.Core;
-using Reko.Core.Code;
+﻿#region License
+/* 
+ * Copyright (C) 2017-2018 Christian Hostelet.
+ * inspired by work of:
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Microchip.PIC16
 {
-    public class PIC16State: ProcessorState
+    using Common;
+
+    public class PIC16State: PICProcessorState
     {
-        private PIC16Architecture pIC16Architecture;
 
-        public PIC16State(PIC16Architecture pIC16Architecture) => this.pIC16Architecture = pIC16Architecture;
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="arch">The PIC16 target architecture.</param>
+        public PIC16State(PICArchitecture pArch) 
+            : base(pArch)
+        {
+        }
 
-        public override IProcessorArchitecture Architecture => throw new NotImplementedException();
+        /// <summary>
+        /// Copy Constructor.
+        /// </summary>
+        /// <param name="st">The PIC16 state to copy.</param>
+        public PIC16State(PIC16State st) : base(st)
+        {
+        }
 
-        public override ProcessorState Clone() => throw new NotImplementedException();
-        public override Constant GetRegister(RegisterStorage r) => throw new NotImplementedException();
-        public override void SetRegister(RegisterStorage r, Constant v) => throw new NotImplementedException();
-        public override void SetInstructionPointer(Address addr) => throw new NotImplementedException();
-        public override void OnProcedureEntered() => throw new NotImplementedException();
-        public override void OnProcedureLeft(FunctionType procedureSignature) => throw new NotImplementedException();
-        public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize) => throw new NotImplementedException();
-        public override void OnAfterCall(FunctionType sigCallee) => throw new NotImplementedException();
+        /// <summary>
+        /// Makes a deep copy of this <see cref="PIC16State"/> instance.
+        /// </summary>
+        public override ProcessorState Clone() => new PIC16State(this);
+
+        /// <summary>
+        /// Sets the instruction pointer (PC - Program Counter).
+        /// </summary>
+        /// <param name="addr">The address to assign to the PC.</param>
+        public override void SetInstructionPointer(Address addr)
+        {
+            uint off = addr.ToUInt32();
+            SetRegister(PIC16Registers.PCL, Constant.Byte((byte)(off)));
+            SetRegister(PIC16Registers.PCLATH, Constant.Byte((byte)(off>>8)));
+        }
+
     }
+
 }

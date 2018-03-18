@@ -26,7 +26,6 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,49 +38,30 @@ namespace Reko.Arch.Microchip.PIC16
     public class PIC16Architecture : PICArchitecture
     {
 
-        #region Constructors
-
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public PIC16Architecture() : this("pic16") { }
-
-        /// <summary>
-        /// Constructor.
+        /// Instantiates a new PIC16 architecture.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        public PIC16Architecture(string archID) : base(archID)
+        /// <param name="mode">The PIC mode. Contains details and creators for target PIC16.</param>
+        public PIC16Architecture(string archID, PICProcessorMode mode)
+            : base(archID, mode)
         {
         }
 
         /// <summary>
-        /// Constructor. Used for tests purpose.
-        /// </summary>
-        /// <param name="picDescr">PIC descriptor.</param>
-        public PIC16Architecture(PIC picDescr) : base("pic16", picDescr)
-        {
-        }
-
-        #endregion
-
-        #region Helpers
-
-        /// <summary>
-        /// Loads the PIC configuration. Creates memory mapper and registers.
+        /// Loads the PIC16 configuration. Creates memory mapper and registers.
         /// </summary>
         protected override void LoadConfiguration()
         {
-            Description = picDescriptor.Desc;
-            PIC16Registers.Create(picDescriptor).LoadRegisters();
+            Description = PICDescriptor.Desc;
+            ProcessorMode.CreateRegisters(PICDescriptor);
             StackRegister = PIC16Registers.STKPTR;
         }
-
-        #endregion
 
         #region Public Methods/Properties
 
         /// <summary>
-        /// Gets the PIC memory mapper.
+        /// Gets the PIC16 memory mapper.
         /// </summary>
         public override IPICMemoryDescriptor MemoryDescriptor
         {
@@ -94,27 +74,8 @@ namespace Reko.Arch.Microchip.PIC16
         }
         private PIC16MemoryDescriptor memDescr;
 
-        public PIC16DisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
-            => new PIC16DisassemblerBase(this, imageReader);
-
-        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
-            => new PIC16InstructionComparer(norm);
-
-        public override SortedList<string, int> GetOpcodeNames()
-        {
-            return Enum.GetValues(typeof(Opcode))
-                .Cast<Opcode>()
-                .ToSortedList(
-                    v => v.ToString().ToUpper(),
-                    v => (int)v);
-        }
-
-        public override int? GetOpcodeNumber(string name)
-        {
-            if (!Enum.TryParse(name, true, out Opcode result))
-                return null;
-            return (int)result;
-        }
+        public PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
+            => ProcessorMode.CreateDisassembler(this, imageReader);
 
         public override FlagGroupStorage GetFlagGroup(uint grpFlags)
         {
@@ -199,10 +160,10 @@ namespace Reko.Arch.Microchip.PIC16
             => CreateDisassemblerImpl(imageReader);
 
         public override ProcessorState CreateProcessorState()
-            => new PIC16State(this);
+            => ProcessorMode.CreateProcessorState(this);
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-            => new PIC16Rewriter(this, rdr, (PIC16State)state, frame, host);
+            => ProcessorMode.CreateRewriter(this, ProcessorMode.CreateDisassembler(this, rdr), (PIC16State)state, frame, host);
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
@@ -223,7 +184,7 @@ namespace Reko.Arch.Microchip.PIC16
             {
                 if ((grpFlags & 1) != 0)
                 {
-                    var f = PICRegisters.GetBitFieldByReg(PIC16Registers.STATUS, bitPos, 1);
+                    var f = PICRegisters.PeekBitFieldFromRegister(PIC16Registers.STATUS, bitPos, 1);
                     if (f != null)
                         sb.Append(f.Name);
                 }

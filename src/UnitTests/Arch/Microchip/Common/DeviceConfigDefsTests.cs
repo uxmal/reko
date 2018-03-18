@@ -22,11 +22,15 @@
 
 using Reko.Libraries.Microchip;
 using Reko.Arch.Microchip.Common;
+using Reko.Arch.Microchip.PIC16;
+using Reko.Arch.Microchip.PIC18;
 using NUnit.Framework;
 using Reko.Core;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
+    using static Common.Sample;
+
     [TestFixture]
     public class DeviceConfigDefsTests
     {
@@ -34,13 +38,14 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16DevConf_Tests()
         {
-            IPICDeviceConfigDefs defs = PICDeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16));
+            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16BasicName));
+            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x2007), dcr.Address);
 
             var s = defs.Render(dcr, 0xFFFF);
-            Assert.AreEqual("FOSC=RC, WDTE=ON, PWRTE=OFF, CP=OFF, BOREN=ON", s);
+            Assert.AreEqual("FOSC=EXTRC, WDTE=ON, PWRTE=OFF, CP=OFF", s);
 
             var dcf = defs.GetDCRField("WDTE");
             Assert.AreEqual("WDTE", dcf.Name);
@@ -51,7 +56,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC16EnhDevConf_Tests()
         {
-            IPICDeviceConfigDefs defs = PICDeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_ENHANCED));
+            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16EnhancedName));
+            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
@@ -66,9 +72,10 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         }
 
         [Test]
-        public void PIC16EnhV1DevConf_Tests()
+        public void PIC16FullDevConf_Tests()
         {
-            IPICDeviceConfigDefs defs = PICDeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC16_FULLFEATURED));
+            var arch = new PIC16Architecture("pic", PICProcessorMode.Create(PIC16FullFeaturedName));
+            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG4");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x800A), dcr.Address);
@@ -87,7 +94,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18DevConf_Tests()
         {
-            IPICDeviceConfigDefs defs = PICDeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18));
+            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18LegacyName));
+            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
@@ -109,7 +117,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18ExtdDevConf_Tests()
         {
-            IPICDeviceConfigDefs defs = PICDeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_EXTENDED));
+            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EggName));
+            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
@@ -131,7 +140,8 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         [Test]
         public void PIC18EnhdDevConf_Tests()
         {
-            IPICDeviceConfigDefs defs = PICDeviceConfigDefs.Create(PICSamples.GetSample(InstructionSetID.PIC18_ENHANCED));
+            var arch = new PIC18Architecture("pic", PICProcessorMode.Create(PIC18EnhancedName));
+            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
             var dcr = defs.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);

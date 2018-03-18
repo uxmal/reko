@@ -38,9 +38,18 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         /// <param name="arch">The PIC architecture.</param>
         /// <param name="rdr">The memory segment reader.</param>
-        public PIC16BasicDisasm(PIC16Architecture arch, EndianImageReader rdr)
+        protected PIC16BasicDisasm(PICArchitecture arch, EndianImageReader rdr)
             : base(arch, rdr)
         {
+        }
+
+        public static PICDisassemblerBase Create(PICArchitecture arch, EndianImageReader rdr)
+        {
+            if (arch is null)
+                throw new ArgumentNullException(nameof(arch));
+            if (rdr is null)
+                throw new ArgumentNullException(nameof(rdr));
+            return new PIC16BasicDisasm(arch, rdr);
         }
 
         /// <summary>
@@ -48,21 +57,23 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         public override InstructionSetID InstructionSetID => InstructionSetID.PIC16;
 
+
         /// <summary>
         /// Disassembles a single Basic PIC16 instruction.
+        /// First try for any instruction-set specific decoding. If fail, fall to common decoder.
         /// </summary>
         /// <returns>
-        /// A <see cref="PIC16Instruction"/> instance.
+        /// A <see cref="PICInstruction"/> instance.
         /// </returns>
         /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
         ///                                              condition occurs.</exception>
-        protected override PIC16Instruction DecodePIC16Instruction(ushort uInstr, PICProgAddress addr)
+        protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
             try
             {
                 instrCur = opcodesTable[uInstr.Extract(12, 2)].Decode(uInstr, addr);
                 if (instrCur is null)
-                    instrCur = base.DecodePIC16Instruction(uInstr, addr);
+                    instrCur = base.DecodePICInstruction(uInstr, addr); // Fall to common PIC16 instruction decoder
             }
             catch (AddressCorrelatedException)
             {
@@ -75,13 +86,12 @@ namespace Reko.Arch.Microchip.PIC16
 
             if (instrCur is null)
             {
-                instrCur = new PIC16Instruction(Opcode.invalid);
+                instrCur = new PICInstruction(Opcode.invalid);
             }
             instrCur.Address = addrCur;
             instrCur.Length = 2;
             return instrCur;
         }
-
 
         private static Decoder[] opcodesTable = new Decoder[4]
         {
@@ -119,41 +129,37 @@ namespace Reko.Arch.Microchip.PIC16
                 })
             })
         };
-        
+       
 
         /// <summary>
         /// A mix of instructions. Avoid huge decoder tables.
         /// </summary>
         private class B00_0000_0_OpRec : Decoder
         {
-            public B00_0000_0_OpRec()
-            {
-            }
-
-            public override PIC16Instruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
             {
                 switch (uInstr)
                 {
                     case 0b00_0000_0000_1000:
-                        return new PIC16Instruction(Opcode.RETURN);
+                        return new PICInstruction(Opcode.RETURN);
 
                     case 0b00_0000_0000_1001:
-                        return new PIC16Instruction(Opcode.RETFIE);
+                        return new PICInstruction(Opcode.RETFIE);
 
                     case 0b00_0000_0000_0000:
                     case 0b00_0000_0010_0000:
                     case 0b00_0000_0100_0000:
                     case 0b00_0000_0110_0000:
-                        return new PIC16Instruction(Opcode.NOP);
+                        return new PICInstruction(Opcode.NOP);
 
                     case 0b00_0000_0110_0011:
-                        return new PIC16Instruction(Opcode.SLEEP);
+                        return new PICInstruction(Opcode.SLEEP);
 
                     case 0b00_0000_0110_0100:
-                        return new PIC16Instruction(Opcode.CLRWDT);
+                        return new PICInstruction(Opcode.CLRWDT);
 
                     default:
-                        return new PIC16Instruction(Opcode.invalid);
+                        return new PICInstruction(Opcode.invalid);
                 }
             }
         }

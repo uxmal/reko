@@ -25,17 +25,14 @@ using System;
 
 namespace Reko.Arch.Microchip.PIC16
 {
-
     using Common;
 
     public class PIC16MemoryDescriptor : IPICMemoryDescriptor
     {
 
-        #region Locals
-
         private static PIC16MemoryDescriptor memDescr;
+        private PIC16MemoryMap memoryMap;
 
-        #endregion
 
         #region Inner classes
 
@@ -129,7 +126,6 @@ namespace Reko.Arch.Microchip.PIC16
 
         #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
@@ -164,7 +160,6 @@ namespace Reko.Arch.Microchip.PIC16
             return memDescr;
         }
 
-        #endregion
 
         #region IPICMemoryDescriptor interface
 
@@ -172,7 +167,6 @@ namespace Reko.Arch.Microchip.PIC16
         /// The memory description associated with this memory descriptor.
         /// </summary>
         public IMemoryMap MemoryMap => memoryMap;
-        private PIC16MemoryMap memoryMap;
 
         public IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
 
@@ -210,7 +204,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// <returns>
         /// The actual data memory Address.
         /// </returns>
-        internal static PICDataAddress TranslateDataAddress(uint uAddr) => memDescr?.MemoryMap.RemapDataAddress(PICDataAddress.Ptr(uAddr));
+        internal static PICDataAddress TranslateDataAddress(uint uAddr) => TranslateDataAddress(PICDataAddress.Ptr(uAddr));
 
         #endregion
 
