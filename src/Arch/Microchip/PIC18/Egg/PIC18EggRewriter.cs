@@ -61,24 +61,31 @@ namespace Reko.Arch.Microchip.PIC18
                 case Opcode.ADDFSR:
                     RewriteADDFSR();
                     break;
+
                 case Opcode.ADDULNK:
                     RewriteADDULNK();
                     break;
+
                 case Opcode.CALLW:
                     RewriteCALLW();
                     break;
+
                 case Opcode.MOVSF:
                     RewriteMOVSF();
                     break;
+
                 case Opcode.MOVSS:
                     RewriteMOVSS();
                     break;
+
                 case Opcode.PUSHL:
                     RewritePUSHL();
                     break;
+
                 case Opcode.SUBFSR:
                     RewriteSUBFSR();
                     break;
+
                 case Opcode.SUBULNK:
                     RewriteSUBULNK();
                     break;
@@ -96,8 +103,11 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteADDULNK()
         {
             var k = GetImmediateValue(instrCurr.op1);
+            var tos = binder.EnsureRegister(PIC18Registers.TOS);
+
             m.Assign(Fsr2, m.IAdd(Fsr2, k));
-            SetStatusFlags(Fsr2);
+            var src = PopFromHWStackAccess();
+            m.Assign(tos, src);
             rtlc = RtlClass.Transfer;
             m.Return(0, 0);
         }
@@ -156,9 +166,9 @@ namespace Reko.Arch.Microchip.PIC18
             m.Assign(Fsr2, m.ISub(Fsr2, k));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
+            rtlc = RtlClass.Transfer;
             m.Return(0, 0);
         }
-
 
         private Expression GetFSR2IdxAddress(MachineOperand op)
         {

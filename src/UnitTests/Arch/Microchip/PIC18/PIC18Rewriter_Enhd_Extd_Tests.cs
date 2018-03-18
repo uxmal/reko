@@ -41,9 +41,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void Rewriter_ADDULNK_Enhd_Extd()
         {
             ExecTest(Words(0xE8C6),
-                "0|T--|000200(2): 2 instructions",
+                "0|T--|000200(2): 4 instructions",
                     "1|L--|FSR2 = FSR2 + 0x06",
-                    "2|T--|return (0,0)"
+                    "2|L--|STKPTR = STKPTR - 0x01",
+                    "3|L--|TOS = Stack[STKPTR]",
+                    "4|T--|return (0,0)"
                 );
 
         }
