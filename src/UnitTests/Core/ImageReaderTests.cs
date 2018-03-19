@@ -80,14 +80,13 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        [Ignore("Please make this pass")]
         public void ImrReadIntoMiddleOfBuffer()
         {
             var rdr = new ImageReader(new byte[] { 1, 2, 3, 4 });
             var buf = new byte[10];
             var read = rdr.Read(buf, 2, buf.Length);
             Assert.AreEqual(2, read);
-            Assert.AreEqual(4, rdr.Offset);
+            Assert.AreEqual(2, rdr.Offset);
             Assert.AreEqual(0, buf[0]);
             Assert.AreEqual(0, buf[1]);
             Assert.AreEqual(1, buf[2]);

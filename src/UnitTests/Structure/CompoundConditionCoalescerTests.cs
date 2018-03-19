@@ -67,7 +67,6 @@ namespace Reko.UnitTests.Structure
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
 		public void CccAsciiHex()
 		{

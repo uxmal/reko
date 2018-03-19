@@ -432,6 +432,7 @@ namespace Reko.Core
         {
             var ab = new byte[this.offEnd - Offset];
             Array.Copy(Bytes, (int)Offset, ab, 0, ab.Length);
+            off += ab.Length;
             return ab;
         }
 
@@ -439,6 +440,7 @@ namespace Reko.Core
         {
             int bytesRead = (int)Math.Min(count, offEnd - offset);
             Array.Copy(bytes, offset, buffer, 0, bytesRead);
+            off += bytesRead;
             return bytesRead;
         }
     }

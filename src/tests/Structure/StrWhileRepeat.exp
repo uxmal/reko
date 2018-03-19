@@ -2,49 +2,49 @@
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
-	word16 ax_2 = 0x0000
+	word16 ax_12 = 0x0000
 	goto l0C00_000A
 	// succ:  l0C00_000A
 l0C00_0000:
 l0C00_0005:
-	ax_2 = ax_2 + Mem0[ds:bx:word16]
+	ax_12 = ax_12 + Mem0[ds:bx:word16]
 	bx = Mem0[ds:bx + 0x0002:word16]
 	// succ:  l0C00_000A
 l0C00_000A:
 	branch bx != 0x0000 l0C00_0005
 	// succ:  l0C00_000E l0C00_0005
 l0C00_000E:
-	Mem14[ds:0x0300:word16] = ax_2
-	word16 ax_16 = 0x0000
+	Mem18[ds:0x0300:word16] = ax_12
+	word16 ax_19 = 0x0000
 	// succ:  l0C00_0014
 l0C00_0014:
-	word16 si_23 = Mem14[ds:si + 0x0002:word16]
-	ax_16 = ax_16 + Mem14[ds:si:word16]
-	si = si_23
-	branch si_23 != 0x0000 l0C00_0014
+	word16 si_27 = Mem18[ds:si + 0x0002:word16]
+	ax_19 = ax_19 + Mem18[ds:si:word16]
+	si = si_27
+	branch si_27 != 0x0000 l0C00_0014
 	// succ:  l0C00_001D l0C00_0014
 l0C00_001D:
-	Mem28[ds:0x0302:word16] = ax_16
+	Mem32[ds:0x0302:word16] = ax_19
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 void fn0C00_0000(word16 bx, word16 si, selector ds)
 {
-	word16 ax_2 = 0x0000;
+	word16 ax_12 = 0x0000;
 	while (bx != 0x0000)
 	{
-		ax_2 = ax_2 + Mem0[ds:bx:word16];
+		ax_12 = ax_12 + Mem0[ds:bx:word16];
 		bx = Mem0[ds:bx + 0x0002:word16];
 	}
-	Mem14[ds:0x0300:word16] = ax_2;
-	word16 ax_16 = 0x0000;
+	Mem18[ds:0x0300:word16] = ax_12;
+	word16 ax_19 = 0x0000;
 	do
 	{
-		word16 si_23 = Mem14[ds:si + 0x0002:word16];
-		ax_16 = ax_16 + Mem14[ds:si:word16];
-		si = si_23;
-	} while (si_23 != 0x0000);
-	Mem28[ds:0x0302:word16] = ax_16;
+		word16 si_27 = Mem18[ds:si + 0x0002:word16];
+		ax_19 = ax_19 + Mem18[ds:si:word16];
+		si = si_27;
+	} while (si_27 != 0x0000);
+	Mem32[ds:0x0302:word16] = ax_19;
 }
 ===========================

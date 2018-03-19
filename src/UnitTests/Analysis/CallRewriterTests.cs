@@ -162,7 +162,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFactorial()
         {
@@ -170,7 +169,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFactorialReg()
         {
@@ -232,7 +230,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwMutual()
         {
@@ -240,7 +237,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void CrwMemPreserve()
         {
             RunFileTest_x86_real("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
@@ -261,7 +257,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
 
         public void CrwFibonacci()
         {
@@ -269,7 +264,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.UnitTests)]
         public void CrwRegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, new BitRange(0, 32));

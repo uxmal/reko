@@ -131,7 +131,6 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-        [Ignore(Categories.FailedTests)]
 		public void RwReg00006()
 		{
 			RunTest("Fragments/regressions/r00006.asm", "Intel/RwReg00006.txt");
