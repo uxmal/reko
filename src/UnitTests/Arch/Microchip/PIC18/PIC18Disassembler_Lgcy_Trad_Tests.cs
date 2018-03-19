@@ -34,6 +34,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
     using static Common.Sample;
 
+    // This series of tests permits to check all the instructions common to all PIC18 in traditional execution mode.
+    // 
     [TestFixture]
     public class PIC18Disassembler_Lgcy_Trad_Tests : PIC18DisassemblerTestsBase
     {

@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,9 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
 using Reko.Core;
+using Reko.Libraries.Microchip;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {

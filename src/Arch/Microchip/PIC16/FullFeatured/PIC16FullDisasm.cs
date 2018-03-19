@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Arch.Microchip.PIC16
     using Common;
 
     /// <summary>
-    /// A full-featured family PIC16 disassembler.
+    /// A full-featured-PIC16 disassembler.
     /// </summary>
     public class PIC16FullDisasm : PIC16BasicDisasm
     {
@@ -45,11 +45,10 @@ namespace Reko.Arch.Microchip.PIC16
 
         public new static PICDisassemblerBase Create(PICArchitecture arch, EndianImageReader rdr)
         {
-            if (arch is null)
-                throw new ArgumentNullException(nameof(arch));
-            if (rdr is null)
-                throw new ArgumentNullException(nameof(rdr));
-            return new PIC16FullDisasm(arch, rdr);
+            return new PIC16FullDisasm(
+                arch ?? throw new ArgumentNullException(nameof(arch)),
+                rdr ?? throw new ArgumentNullException(nameof(rdr))
+                );
         }
 
         /// <summary>

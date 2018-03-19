@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Arch.Microchip.PIC18
             => new PIC18Architecture(ArchitectureID, this);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
-            => PIC18DisassemblerBase.Create(arch, rdr);
+            => PIC18LegacyDisasm.Create(arch, rdr);
 
         public override void CreateRegisters()
             => PIC18LegacyRegisters.Create(PICDescriptor);
@@ -60,7 +60,7 @@ namespace Reko.Arch.Microchip.PIC18
             => new PIC18Architecture(ArchitectureID, this);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
-            => PIC18DisassemblerBase.Create(arch, rdr);
+            => PIC18EggDisasm.Create(arch, rdr);
 
         public override void CreateRegisters()
             => PIC18EggRegisters.Create(PICDescriptor);
@@ -83,7 +83,7 @@ namespace Reko.Arch.Microchip.PIC18
             => new PIC18Architecture(ArchitectureID, this);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
-            => PIC18DisassemblerBase.Create(arch, rdr);
+            => PIC18EnhancedDisasm.Create(arch, rdr);
 
         public override void CreateRegisters()
             => PIC18EnhancedRegisters.Create(PICDescriptor);

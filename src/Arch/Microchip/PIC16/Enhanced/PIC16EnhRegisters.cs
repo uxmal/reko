@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,9 +49,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static void Create(PIC pic)
         {
-            if (pic is null)
-                throw new ArgumentNullException(nameof(pic));
-            PICRegisters.LoadRegisters(pic);
+            PICRegisters.LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             new PIC16EnhancedRegisters().SetCoreRegisters();
         }
 

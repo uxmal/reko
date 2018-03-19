@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_ADDWF_Lgcy_StillTrad()
+        public void Disasm_Lgcy_StillInTradMode()
         {
             VerifyDisasm("ADDWF\t0x12,W,ACCESS", "", 0x2412);
             VerifyDisasm("CPFSEQ\t0x12,ACCESS", "", 0x6212);

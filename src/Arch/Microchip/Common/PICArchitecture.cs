@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,9 +42,7 @@ namespace Reko.Arch.Microchip.Common
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
         protected PICArchitecture(string archID, IPICProcessorMode mode) : base(archID)
         {
-            if (mode is null)
-                throw new ArgumentNullException(nameof(mode));
-            ProcessorMode = mode;
+            ProcessorMode = mode ?? throw new ArgumentNullException(nameof(mode));
             PICDescriptor = mode.PICDescriptor;
             flagGroups = new List<FlagGroupStorage>();
             FramePointerType = PrimitiveType.Offset16;

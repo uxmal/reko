@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,9 @@ namespace Reko.Arch.Microchip.PIC16
     /// A Microchip PIC16 *partial* disassembler.
     /// Valid for most of program memory regions (code, eeprom, config, ...).
     /// For PIC16 instructions, only the instructions common to all PIC16 families are decoded here.
-    /// Further decoding is required by each PIC family's disassembler.
+    /// For each PIC16 family (basic, enhanced, full-featured) a specific decoder must take care of
+    /// decoding instructions that are specific to the said-target family and uses this inherited disassembler
+    /// only for the balance of instructions.
     /// This 2-stage decoding permits to ease the maintenance, the tests and decreases the total size of the decoder tables
     /// </summary>
     public class PIC16DisassemblerBase : PICDisassemblerBase
@@ -43,8 +45,8 @@ namespace Reko.Arch.Microchip.PIC16
         /// Instantiates a base PIC16 disassembler.
         /// </summary>
         /// <param name="arch">The PIC architecture.</param>
-        /// <param name="rdr">The memory reader.</param>
-        public PIC16DisassemblerBase(PICArchitecture arch, EndianImageReader rdr)
+        /// <param name="rdr">The memory image reader.</param>
+        protected PIC16DisassemblerBase(PICArchitecture arch, EndianImageReader rdr)
             : base(arch, rdr)
         {
         }
@@ -81,7 +83,7 @@ namespace Reko.Arch.Microchip.PIC16
                 throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} binary code 0x{uInstr:X4}.");
             }
 
-            // If there is a legal instruction, consume only one word.
+            // All legal PIC16 instructions are one word long.
             if (instrCur != null)
             {
                 instrCur.Address = addrCur;
@@ -163,17 +165,6 @@ namespace Reko.Arch.Microchip.PIC16
             new WrongDecoder()                                      // 11 .... .... ....
 
         };
-
-        /// <summary>
-        /// Return <code>null</code> to indicate further decoding is required.
-        /// </summary>
-        protected class UseBaseDecode : Decoder
-        {
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
-            {
-                return null;
-            }
-        }
 
         /// <summary>
         /// Forgot to define a valid entry in the decoder table. Should not occur...

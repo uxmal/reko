@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -234,9 +234,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
         public static PIC18MemoryDescriptor Create(PIC pic)
         {
-            if (pic is null)
-                throw new ArgumentNullException(nameof(pic));
-            memDescr = new PIC18MemoryDescriptor(pic);
+            memDescr = new PIC18MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
             return memDescr;
         }
 

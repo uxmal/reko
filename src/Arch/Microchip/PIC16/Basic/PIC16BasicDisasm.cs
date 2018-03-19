@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * inspired by work from:
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,11 +45,10 @@ namespace Reko.Arch.Microchip.PIC16
 
         public static PICDisassemblerBase Create(PICArchitecture arch, EndianImageReader rdr)
         {
-            if (arch is null)
-                throw new ArgumentNullException(nameof(arch));
-            if (rdr is null)
-                throw new ArgumentNullException(nameof(rdr));
-            return new PIC16BasicDisasm(arch, rdr);
+            return new PIC16BasicDisasm(
+                arch ?? throw new ArgumentNullException(nameof(arch)),
+                rdr ?? throw new ArgumentNullException(nameof(rdr))
+                );
         }
 
         /// <summary>
@@ -129,7 +128,17 @@ namespace Reko.Arch.Microchip.PIC16
                 })
             })
         };
-       
+
+        /// <summary>
+        /// Return <code>null</code> to indicate further decoding is required.
+        /// </summary>
+        protected class UseBaseDecode : Decoder
+        {
+            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// A mix of instructions. Avoid huge decoder tables.

@@ -29,16 +29,16 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
     /// PIC18 extended("egg")/traditional execution mode rewriter tests.
     /// </summary>
     [TestFixture]
-    public class PIC18Rewriter_Extd_Trad_Tests : PIC18RewriterTestsBase
+    public class PIC18Rewriter_Egg_Trad_Tests : PIC18RewriterTestsBase
     {
         [TestFixtureSetUp]
-        public void OneSetup_Extd_Trad()
+        public void OneSetup_Egg_Trad()
         {
             SetPICMode("PIC18F25K50", PICExecMode.Traditional);
         }
 
         [Test]
-        public void Rewriter_ADDLW_Extd_Trad()
+        public void Rewriter_ADDLW_Egg_Trad()
         {
             ExecTest(Words(0x0F00),
                 "0|L--|000200(2): 2 instructions",
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_ADDWF_Extd_Trad()
+        public void Rewriter_ADDWF_Egg_Trad()
         {
             ExecTest(Words(0x2400),
                 "0|L--|000200(2): 2 instructions",
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_ADDWFC_Extd_Trad()
+        public void Rewriter_ADDWFC_Egg_Trad()
         {
             ExecTest(Words(0x2000),
                 "0|L--|000200(2): 2 instructions",
@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_ANDLW_Extd_Trad()
+        public void Rewriter_ANDLW_Egg_Trad()
         {
             ExecTest(Words(0x0B00),
                "0|L--|000200(2): 2 instructions", "1|L--|WREG = WREG & 0x00", "2|L--|ZN = cond(WREG)"
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_ANDWF_Extd_Trad()
+        public void Rewriter_ANDWF_Egg_Trad()
         {
             ExecTest(Words(0x1400),
                 "0|L--|000200(2): 2 instructions",
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BC_Extd_Trad()
+        public void Rewriter_BC_Egg_Trad()
         {
             ExecTest(Words(0xE200),
                 "0|T--|000200(2): 1 instructions",
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BCF_Extd_Trad()
+        public void Rewriter_BCF_Egg_Trad()
         {
             ExecTest(Words(0x9001),
                 "0|L--|000200(2): 1 instructions",
@@ -267,7 +267,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BN_Extd_Trad()
+        public void Rewriter_BN_Egg_Trad()
         {
             ExecTest(Words(0xE600),
                 "0|T--|000200(2): 1 instructions",
@@ -284,7 +284,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BNC_Extd_Trad()
+        public void Rewriter_BNC_Egg_Trad()
         {
             ExecTest(Words(0xE300),
                 "0|T--|000200(2): 1 instructions",
@@ -301,7 +301,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BNN_Extd_Trad()
+        public void Rewriter_BNN_Egg_Trad()
         {
             ExecTest(Words(0xE700),
                 "0|T--|000200(2): 1 instructions",
@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BNOV_Extd_Trad()
+        public void Rewriter_BNOV_Egg_Trad()
         {
             ExecTest(Words(0xE500),
                 "0|T--|000200(2): 1 instructions",
@@ -335,7 +335,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BNZ_Extd_Trad()
+        public void Rewriter_BNZ_Egg_Trad()
         {
             ExecTest(Words(0xE100),
                 "0|T--|000200(2): 1 instructions",
@@ -352,7 +352,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BOV_Extd_Trad()
+        public void Rewriter_BOV_Egg_Trad()
         {
             ExecTest(Words(0xE400),
                 "0|T--|000200(2): 1 instructions",
@@ -369,7 +369,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BRA_Extd_Trad()
+        public void Rewriter_BRA_Egg_Trad()
         {
             ExecTest(Words(0xD000),
                 "0|T--|000200(2): 1 instructions",
@@ -390,7 +390,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BSF_Extd_Trad()
+        public void Rewriter_BSF_Egg_Trad()
         {
             ExecTest(Words(0x8001),
                 "0|L--|000200(2): 1 instructions",
@@ -411,7 +411,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BTFSC_Extd_Trad()
+        public void Rewriter_BTFSC_Egg_Trad()
         {
             ExecTest(Words(0xB000),
                 "0|T--|000200(2): 1 instructions",
@@ -424,7 +424,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BTFSS_Extd_Trad()
+        public void Rewriter_BTFSS_Egg_Trad()
         {
             ExecTest(Words(0xA002),
                 "0|T--|000200(2): 1 instructions",
@@ -437,7 +437,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BTG_Extd_Trad()
+        public void Rewriter_BTG_Egg_Trad()
         {
             ExecTest(Words(0x7001),
                 "0|L--|000200(2): 1 instructions",
@@ -458,7 +458,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_BZ_Extd_Trad()
+        public void Rewriter_BZ_Egg_Trad()
         {
             ExecTest(Words(0xE000),
                 "0|T--|000200(2): 1 instructions",
@@ -475,7 +475,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CALL_Extd_Trad()
+        public void Rewriter_CALL_Egg_Trad()
         {
             ExecTest(Words(0xEC06, 0xF000),
                 "0|T--|000200(4): 4 instructions",
@@ -512,7 +512,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CALLW_Extd_Trad()
+        public void Rewriter_CALLW_Egg_Trad()
         {
             ExecTest(Words(0x0014),
                 "0|T--|000200(2): 4 instructions",
@@ -525,7 +525,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CLRF_Extd_Trad()
+        public void Rewriter_CLRF_Egg_Trad()
         {
             ExecTest(Words(0x6A01),
                 "0|L--|000200(2): 2 instructions",
@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CLRWDT_Extd_Trad()
+        public void Rewriter_CLRWDT_Egg_Trad()
         {
             ExecTest(Words(0x0004),
                 "0|L--|000200(2): 1 instructions",
@@ -564,7 +564,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_COMF_Extd_Trad()
+        public void Rewriter_COMF_Egg_Trad()
         {
             ExecTest(Words(0x1C00),
                 "0|L--|000200(2): 2 instructions",
@@ -619,7 +619,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CPFSEQ_Extd_Trad()
+        public void Rewriter_CPFSEQ_Egg_Trad()
         {
             ExecTest(Words(0x6200),
                 "0|T--|000200(2): 1 instructions",
@@ -648,7 +648,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CPFSGT_Extd_Trad()
+        public void Rewriter_CPFSGT_Egg_Trad()
         {
             ExecTest(Words(0x6400),
                 "0|T--|000200(2): 1 instructions",
@@ -677,7 +677,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_CPFSLT_Extd_Trad()
+        public void Rewriter_CPFSLT_Egg_Trad()
         {
             ExecTest(Words(0x6000),
                 "0|T--|000200(2): 1 instructions",
@@ -706,7 +706,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_DAW_Extd_Trad()
+        public void Rewriter_DAW_Egg_Trad()
         {
             ExecTest(Words(0x0007),
                 "0|L--|000200(2): 2 instructions",
@@ -715,7 +715,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_DCFSNZ_Extd_Trad()
+        public void Rewriter_DCFSNZ_Egg_Trad()
         {
             ExecTest(Words(0x4C00),
                 "0|T--|000200(2): 2 instructions",
@@ -771,7 +771,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_DECF_Extd_Trad()
+        public void Rewriter_DECF_Egg_Trad()
         {
             ExecTest(Words(0x0400),
                 "0|L--|000200(2): 2 instructions",
@@ -827,7 +827,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_DECFSZ_Extd_Trad()
+        public void Rewriter_DECFSZ_Egg_Trad()
         {
             ExecTest(Words(0x2C00),
                 "0|T--|000200(2): 2 instructions",
@@ -883,7 +883,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_GOTO_Extd_Trad()
+        public void Rewriter_GOTO_Egg_Trad()
         {
             ExecTest(Words(0xEF00, 0xF000),
                 "0|T--|000200(4): 1 instructions",
@@ -896,7 +896,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_INCF_Extd_Trad()
+        public void Rewriter_INCF_Egg_Trad()
         {
             ExecTest(Words(0x2800),
                 "0|L--|000200(2): 2 instructions",
@@ -952,7 +952,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_INCFSZ_Extd_Trad()
+        public void Rewriter_INCFSZ_Egg_Trad()
         {
             ExecTest(Words(0x3C00),
                 "0|T--|000200(2): 2 instructions",
@@ -1008,7 +1008,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_INFSNZ_Extd_Trad()
+        public void Rewriter_INFSNZ_Egg_Trad()
         {
             ExecTest(Words(0x4800),
                 "0|T--|000200(2): 2 instructions",
@@ -1064,7 +1064,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_IORLW_Extd_Trad()
+        public void Rewriter_IORLW_Egg_Trad()
         {
             ExecTest(Words(0x0900),
                 "0|L--|000200(2): 2 instructions",
@@ -1079,7 +1079,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_IORWF_Extd_Trad()
+        public void Rewriter_IORWF_Egg_Trad()
         {
             ExecTest(Words(0x1000),
                 "0|L--|000200(2): 2 instructions",
@@ -1134,7 +1134,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_LFSR_Extd_Trad()
+        public void Rewriter_LFSR_Egg_Trad()
         {
             ExecTest(Words(0xEE01, 0xF023),
                 "0|L--|000200(4): 1 instructions",
@@ -1151,7 +1151,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MOVF_Extd_Trad()
+        public void Rewriter_MOVF_Egg_Trad()
         {
             ExecTest(Words(0x5000),
                 "0|L--|000200(2): 2 instructions",
@@ -1206,7 +1206,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MOVFF_Extd_Trad()
+        public void Rewriter_MOVFF_Egg_Trad()
         {
             ExecTest(Words(0xC123, 0xF456),
                 "0|L--|000200(4): 1 instructions",
@@ -1215,7 +1215,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MOVLB_Extd_Trad()
+        public void Rewriter_MOVLB_Egg_Trad()
         {
             ExecTest(Words(0x0100),
                 "0|L--|000200(2): 1 instructions",
@@ -1228,7 +1228,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MOVLW_Extd_Trad()
+        public void Rewriter_MOVLW_Egg_Trad()
         {
             ExecTest(Words(0x0E00),
                 "0|L--|000200(2): 1 instructions",
@@ -1245,7 +1245,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MOVWF_Extd_Trad()
+        public void Rewriter_MOVWF_Egg_Trad()
         {
             ExecTest(Words(0x6E01),
                 "0|L--|000200(2): 1 instructions",
@@ -1270,7 +1270,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MULLW_Extd_Trad()
+        public void Rewriter_MULLW_Egg_Trad()
         {
             ExecTest(Words(0x0D00),
                 "0|L--|000200(2): 1 instructions",
@@ -1283,7 +1283,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_MULWF_Extd_Trad()
+        public void Rewriter_MULWF_Egg_Trad()
         {
             ExecTest(Words(0x0344),
                 "0|L--|000200(2): 1 instructions",
@@ -1308,7 +1308,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_NEGF_Extd_Trad()
+        public void Rewriter_NEGF_Egg_Trad()
         {
             ExecTest(Words(0x6C01),
                 "0|L--|000200(2): 2 instructions",
@@ -1337,7 +1337,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_NOP_Extd_Trad()
+        public void Rewriter_NOP_Egg_Trad()
         {
 
             ExecTest(Words(0x0000),
@@ -1365,7 +1365,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_POP_Extd_Trad()
+        public void Rewriter_POP_Egg_Trad()
         {
             ExecTest(Words(0x0006),
                 "0|L--|000200(2): 2 instructions",
@@ -1375,7 +1375,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_PUSH_Extd_Trad()
+        public void Rewriter_PUSH_Egg_Trad()
         {
             ExecTest(Words(0x0005),
                 "0|L--|000200(2): 3 instructions",
@@ -1386,7 +1386,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RCALL_Extd_Trad()
+        public void Rewriter_RCALL_Egg_Trad()
         {
             ExecTest(Words(0xD800),
                 "0|T--|000200(2): 4 instructions",
@@ -1412,7 +1412,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RESET_Extd_Trad()
+        public void Rewriter_RESET_Egg_Trad()
         {
             ExecTest(Words(0x00FF),
                 "0|H--|000200(2): 2 instructions",
@@ -1422,7 +1422,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RETFIE_Extd_Trad()
+        public void Rewriter_RETFIE_Egg_Trad()
         {
             ExecTest(Words(0x0010),
                 "0|T--|000200(2): 3 instructions",
@@ -1439,7 +1439,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RETLW_Extd_Trad()
+        public void Rewriter_RETLW_Egg_Trad()
         {
             ExecTest(Words(0x0C00),
                 "0|T--|000200(2): 4 instructions",
@@ -1465,7 +1465,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RETURN_Extd_Trad()
+        public void Rewriter_RETURN_Egg_Trad()
         {
             ExecTest(Words(0x0012),
                 "0|T--|000200(2): 3 instructions",
@@ -1482,7 +1482,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RLCF_Extd_Trad()
+        public void Rewriter_RLCF_Egg_Trad()
         {
             ExecTest(Words(0x3400),
                 "0|L--|000200(2): 2 instructions",
@@ -1537,7 +1537,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RLNCF_Extd_Trad()
+        public void Rewriter_RLNCF_Egg_Trad()
         {
             ExecTest(Words(0x4400),
                 "0|L--|000200(2): 2 instructions",
@@ -1592,7 +1592,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RRCF_Extd_Trad()
+        public void Rewriter_RRCF_Egg_Trad()
         {
             ExecTest(Words(0x3000),
                 "0|L--|000200(2): 2 instructions",
@@ -1647,7 +1647,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_RRNCF_Extd_Trad()
+        public void Rewriter_RRNCF_Egg_Trad()
         {
             ExecTest(Words(0x4000),
                 "0|L--|000200(2): 2 instructions",
@@ -1702,7 +1702,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SETF_Extd_Trad()
+        public void Rewriter_SETF_Egg_Trad()
         {
             ExecTest(Words(0x6801),
                 "0|L--|000200(2): 1 instructions",
@@ -1728,7 +1728,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SLEEP_Extd_Trad()
+        public void Rewriter_SLEEP_Egg_Trad()
         {
             ExecTest(Words(0x0003),
                 "0|L--|000200(2): 2 instructions",
@@ -1738,7 +1738,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SUBFWB_Extd_Trad()
+        public void Rewriter_SUBFWB_Egg_Trad()
         {
             ExecTest(Words(0x5400),
                 "0|L--|000200(2): 2 instructions",
@@ -1793,7 +1793,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SUBLW_Extd_Trad()
+        public void Rewriter_SUBLW_Egg_Trad()
         {
             ExecTest(Words(0x0800),
                 "0|L--|000200(2): 2 instructions",
@@ -1808,7 +1808,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SUBWF_Extd_Trad()
+        public void Rewriter_SUBWF_Egg_Trad()
         {
             ExecTest(Words(0x5C00),
                 "0|L--|000200(2): 2 instructions",
@@ -1863,7 +1863,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SUBWFB_Extd_Trad()
+        public void Rewriter_SUBWFB_Egg_Trad()
         {
             ExecTest(Words(0x5800),
                 "0|L--|000200(2): 2 instructions",
@@ -1918,7 +1918,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_SWAPF_Extd_Trad()
+        public void Rewriter_SWAPF_Egg_Trad()
         {
             ExecTest(Words(0x3800),
                 "0|L--|000200(2): 1 instructions",
@@ -1963,7 +1963,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_TBLRD_Extd_Trad()
+        public void Rewriter_TBLRD_Egg_Trad()
         {
             ExecTest(Words(0x0008),
                 "0|L--|000200(2): 1 instructions",
@@ -1984,7 +1984,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_TBLWT_Extd_Trad()
+        public void Rewriter_TBLWT_Egg_Trad()
         {
             ExecTest(Words(0x000C),
                 "0|L--|000200(2): 1 instructions",
@@ -2005,7 +2005,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_TSTFSZ_Extd_Trad()
+        public void Rewriter_TSTFSZ_Egg_Trad()
         {
             ExecTest(Words(0x6600),
                 "0|T--|000200(2): 1 instructions",
@@ -2034,7 +2034,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_XORLW_Extd_Trad()
+        public void Rewriter_XORLW_Egg_Trad()
         {
             ExecTest(Words(0x0A00),
                 "0|L--|000200(2): 2 instructions",
@@ -2049,7 +2049,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_XORWF_Extd_Trad()
+        public void Rewriter_XORWF_Egg_Trad()
         {
             ExecTest(Words(0x1800),
                 "0|L--|000200(2): 2 instructions",
@@ -2104,7 +2104,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter_Indirect_Extd_Trad()
+        public void Rewriter_Indirect_Egg_Trad()
         {
             // TSTFSZ INDF2,ACCESS
             ExecTest(Words(0x66DF),
@@ -2185,7 +2185,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         }
 
         [Test]
-        public void Rewriter__Invalid_Extd_Trad()
+        public void Rewriter__Invalid_Egg_Trad()
         {
             ExecTest(Words(0x0001),
                 "0|L--|000200(2): 1 instructions",

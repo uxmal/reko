@@ -86,13 +86,16 @@
     <Compile Include="Common\MemoryMap.cs" />
     <Compile Include="Common\PICRegistersBuilder.cs" />
     <Compile Include="Common\PICStorage.cs" />
+    <Compile Include="PIC18\Egg\PIC18EggDisasm.cs" />
     <Compile Include="PIC18\Egg\PIC18EggRegisters.cs" />
     <Compile Include="PIC18\Egg\PIC18EggRewriter.cs" />
+    <Compile Include="PIC18\Enhanced\PIC18EnhancedDisasm.cs" />
     <Compile Include="PIC18\Enhanced\PIC18EnhancedRegisters.cs" />
     <Compile Include="PIC18\Enhanced\PIC18EnhancedRewriter.cs" />
     <Compile Include="PIC18\FlagM.cs" />
     <Compile Include="PIC18\IOperandVisitor.cs" />
     <Compile Include="PIC18\BankedAddress.cs" />
+    <Compile Include="PIC18\Legacy\PIC18LegacyDisasm.cs" />
     <Compile Include="PIC18\Legacy\PIC18LegacyRegisters.cs" />
     <Compile Include="PIC18\Legacy\PIC18LegacyRewriter.cs" />
     <Compile Include="PIC18\PIC18DisassemblerBase.cs" />
@@ -118,6 +121,8 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Microchip.licenseheader" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
