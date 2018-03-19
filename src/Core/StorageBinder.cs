@@ -31,9 +31,6 @@ namespace Reko.Core
     /// </summary>
     public class StorageBinder : IStorageBinder, StorageVisitor<Identifier>
     {
-        //$TODO: In analysis-development, storages have GetHashCode() and 
-        // Equals() implementations.
-
         private Dictionary<RegisterStorage, Identifier> regs;
         private Dictionary<RegisterStorage, Dictionary<uint, Identifier>> grfs;
         private Dictionary<Storage, Dictionary<Storage, Identifier>> seqs;
@@ -73,14 +70,12 @@ namespace Reko.Core
 
         public Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType)
         {
-            Identifier id;
-            Dictionary<uint, Identifier> grfs;
-            if (!this.grfs.TryGetValue(flagRegister, out grfs))
+            if (!this.grfs.TryGetValue(flagRegister, out var grfs))
             {
                 grfs = new Dictionary<uint, Identifier>();
                 this.grfs.Add(flagRegister, grfs);
             }
-            if (grfs.TryGetValue(flagGroupBits, out id))
+            if (grfs.TryGetValue(flagGroupBits, out var id))
                 return id;
             var grf = new FlagGroupStorage(flagRegister, flagGroupBits, name, dataType);
             id = new Identifier(name, dataType, grf);
@@ -119,8 +114,7 @@ namespace Reko.Core
         {
             if (reg == null)
                 return null;
-            Identifier id;
-            if (regs.TryGetValue(reg, out id))
+            if (regs.TryGetValue(reg, out var id))
                 return id;
             id = new Identifier(reg.Name, reg.DataType, reg);
             regs.Add(reg, id);
@@ -130,14 +124,12 @@ namespace Reko.Core
 
         public Identifier EnsureSequence(Storage head, Storage tail, DataType dataType)
         {
-            Identifier id;
-            Dictionary<Storage, Identifier> seqs;
-            if (!this.seqs.TryGetValue(head, out seqs))
+            if (!this.seqs.TryGetValue(head, out var seqs))
             {
                 seqs = new Dictionary<Storage, Identifier>();
                 this.seqs.Add(head, seqs);
             }
-            if (seqs.TryGetValue(tail, out id))
+            if (seqs.TryGetValue(tail, out var id))
                 return id;
             var seq = new SequenceStorage(head, tail, dataType);
             id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dataType, seq);

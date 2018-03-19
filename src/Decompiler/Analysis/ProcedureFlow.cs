@@ -131,14 +131,12 @@ namespace Reko.Analysis
 
 		public bool IsLiveOut(Identifier id)
 		{
-			FlagGroupStorage flags = id.Storage as FlagGroupStorage;
-			if (flags != null)
+			if (id.Storage is FlagGroupStorage flags)
 			{
 				uint grf = flags.FlagGroupBits;
 				return ((grf & grfLiveOut) != 0);
 			}
-			RegisterStorage reg = id.Storage as RegisterStorage;
-			if (reg != null)
+			if (id.Storage is RegisterStorage reg)
 			{
                 return LiveOut.ContainsKey(reg);
 			}
@@ -154,10 +152,9 @@ namespace Reko.Analysis
         /// <returns></returns>
         public int GetFpuStackDelta(IProcessorArchitecture arch)
         {
-            Constant c;
             var fpuStackReg = arch.FpuStackRegister;
             if (fpuStackReg == null ||
-                !Constants.TryGetValue(fpuStackReg, out c))
+                !Constants.TryGetValue(fpuStackReg, out var c))
             {
                 return 0;
             }

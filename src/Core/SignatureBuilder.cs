@@ -89,10 +89,5 @@ namespace Reko.Core
 		{
 			return new FunctionType(ret, args.ToArray());
 		}
-
-		public Identifier CreateOutIdentifier(Procedure proc, Identifier id)
-		{
-			return proc.Frame.CreateTemporary(id.Name + "Out", id.DataType);
-		}
 	}
 }

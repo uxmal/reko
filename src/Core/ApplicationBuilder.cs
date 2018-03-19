@@ -96,12 +96,11 @@ namespace Reko.Core
                 dtOut,
                 actuals.ToArray());
 
-            Identifier idOut;
             if (expOut == null)
             {
                 return new SideEffect(appl);
             }
-            else if (expOut.As(out idOut))
+            else if (expOut is Identifier idOut)
             {
                 if (expOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
                 {
