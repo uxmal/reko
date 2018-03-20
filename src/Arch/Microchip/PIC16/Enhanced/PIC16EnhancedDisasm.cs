@@ -69,7 +69,7 @@ namespace Reko.Arch.Microchip.PIC16
         {
             try
             {
-                instrCur = opcodesTable[uInstr.Extract(12, 2)].Decode(uInstr, addr);
+                instrCur = opcodesTable[uInstr.Extract(12, 2)].Decode(uInstr, this);
                 if (instrCur is null)
                     instrCur = base.DecodePICInstruction(uInstr, addr);
             }
@@ -179,7 +179,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         private class B00_0000_0000_OpRec : Decoder
         {
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 switch (uInstr)
                 {
@@ -212,7 +212,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         private class B00_0000_0110_OpRec : Decoder
         {
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 switch (uInstr)
                 {
@@ -233,7 +233,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         private class B00_0001_0_OpRec : Decoder
         {
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 switch (uInstr)
                 {

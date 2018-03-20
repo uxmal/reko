@@ -76,7 +76,7 @@ namespace Reko.Arch.Microchip.PIC16
         {
             try
             {
-                instrCur = opcodesTable[uInstr.Extract(12, 2)].Decode(uInstr, addr);
+                instrCur = opcodesTable[uInstr.Extract(12, 2)].Decode(uInstr, this);
             }
             catch (Exception ex)
             {
@@ -93,30 +93,6 @@ namespace Reko.Arch.Microchip.PIC16
         }
 
         #region Instruction Decoder helpers
-
-        protected abstract class Decoder
-        {
-            public abstract PICInstruction Decode(ushort uInstr, PICProgAddress addr);
-        }
-
-        protected class SubDecoder : Decoder
-        {
-            private int bitpos;
-            private int width;
-            private Decoder[] decoders;
-
-            public SubDecoder(int bitpos, int width, Decoder[] decoders)
-            {
-                this.bitpos = (bitpos < 0 ? 0 : bitpos);
-                this.width = (width <= 0 ? 1 : width);
-                this.decoders = decoders;
-            }
-
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
-            {
-                return decoders[uInstr.Extract(bitpos, width)].Decode(uInstr, addr);
-            }
-        }
 
         private static Decoder[] opcodesTable = new Decoder[4]
         {
@@ -167,28 +143,6 @@ namespace Reko.Arch.Microchip.PIC16
         };
 
         /// <summary>
-        /// Forgot to define a valid entry in the decoder table. Should not occur...
-        /// </summary>
-        protected class WrongDecoder : Decoder
-        {
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
-            {
-                throw new InvalidOperationException($"BUG! Missing decoder entry for PIC16 instruction 0x{uInstr:X4} at {addr}");
-            }
-        }
-
-        /// <summary>
-        /// Invalid instruction. Not legal for any PIC16.
-        /// </summary>
-        protected class InvalidOpRec : Decoder
-        {
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
-            {
-                return new PICInstruction(Opcode.invalid);
-            }
-        }
-
-        /// <summary>
         /// Instruction with no operand.
         /// </summary>
         protected class NoOperandOpRec : Decoder
@@ -200,7 +154,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 return new PICInstruction(opcode);
             }
@@ -218,7 +172,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16DataBitOperand((byte)uInstr.Extract(0, 7), (byte)uInstr.Extract(7, 3));
                 return new PICInstruction(opcode, operd);
@@ -237,7 +191,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16BankedOperand((byte)uInstr.Extract(0, 7));
                 return new PICInstruction(opcode, operd);
@@ -256,7 +210,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16DataByteWithDestOperand((byte)uInstr.Extract(0, 7), (byte)uInstr.Extract(7, 1));
                 return new PICInstruction(opcode, operd);
@@ -275,7 +229,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16Immed5Operand((byte)uInstr.Extract(0, 5));
                 return new PICInstruction(opcode, operd);
@@ -294,7 +248,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16Immed7Operand((byte)uInstr.Extract(0, 7));
                 return new PICInstruction(opcode, operd);
@@ -313,7 +267,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16Immed8Operand((byte)uInstr.Extract(0, 8));
                 return new PICInstruction(opcode, operd);
@@ -332,9 +286,9 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                var operd = new PIC16ProgRel9AddrOperand(uInstr.ExtractSignExtend(0, 9), addr);
+                var operd = new PIC16ProgRel9AddrOperand(uInstr.ExtractSignExtend(0, 9), dasm.addrCur);
                 return new PICInstruction(opcode, operd);
             }
         }
@@ -351,7 +305,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(6, 1);
                 sbyte lit = (sbyte)uInstr.ExtractSignExtend(0, 6);
@@ -372,7 +326,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(6, 1);
                 sbyte lit = (sbyte)uInstr.ExtractSignExtend(0, 6);
@@ -393,7 +347,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(2, 1);
                 byte modecode = (byte)uInstr.Extract(0, 2);
@@ -414,7 +368,7 @@ namespace Reko.Arch.Microchip.PIC16
                 opcode = opc;
             }
 
-            public override PICInstruction Decode(ushort uInstr, PICProgAddress addr)
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var operd = new PIC16ProgAbsAddrOperand(uInstr.Extract(0, 11));
                 return new PICInstruction(opcode, operd);
@@ -423,7 +377,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         #endregion
 
-        #region Pseudo-instructions disassemblers
+        #region Pseudo-instructions disassemblers for PIC16
 
         protected override PICInstruction DecodeEEPROMInstruction()
         {

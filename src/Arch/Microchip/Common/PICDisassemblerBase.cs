@@ -136,7 +136,55 @@ namespace Reko.Arch.Microchip.Common
 
         }
 
-        #region Methods defined by derived classes
+        #region Clases/Methods defined for derived classes
+
+        protected abstract class Decoder
+        {
+            public abstract PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm);
+        }
+
+        protected class SubDecoder : Decoder
+        {
+            private int bitpos;
+            private int width;
+            private Decoder[] decoders;
+
+            public SubDecoder(int bitpos, int width, Decoder[] decoders)
+            {
+                this.decoders = decoders ?? throw new ArgumentNullException(nameof(decoders));
+                this.bitpos = (bitpos < 0 ? 0 : bitpos);
+                this.width = (width <= 0 ? 1 : width);
+                if (decoders.Length != (1 << width))
+                    throw new ArgumentOutOfRangeException(nameof(width), "Wrong decoder table size.");
+            }
+
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
+            {
+                return decoders[uInstr.Extract(bitpos, width)].Decode(uInstr, dasm);
+            }
+        }
+
+        /// <summary>
+        /// Forgot to define a valid entry in the decoder table. Should not occur...
+        /// </summary>
+        protected class WrongDecoder : Decoder
+        {
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
+            {
+                throw new InvalidOperationException($"BUG! Missing decoder entry for PIC instruction 0x{uInstr:X4}.");
+            }
+        }
+
+        /// <summary>
+        /// Invalid instruction. Return <code>null</code> to indicate an invalid instruction.
+        /// </summary>
+        protected class InvalidOpRec : Decoder
+        {
+            public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
+            {
+                return new PICInstruction(Opcode.invalid);
+            }
+        }
 
         protected abstract PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr);
 
