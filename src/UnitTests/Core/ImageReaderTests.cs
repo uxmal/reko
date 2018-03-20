@@ -80,6 +80,7 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void ImrReadIntoMiddleOfBuffer()
         {
             var rdr = new ImageReader(new byte[] { 1, 2, 3, 4 });

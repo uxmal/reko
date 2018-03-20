@@ -1,8 +1,8 @@
 void main(Register selector ds)
-// MayUse:  ds
+// MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO ax bx al bl ah bh
-// Preserved: sp
+// Trashed: ax sp Top
+// Preserved:
 // main
 // Return size: 0
 // Mem0:Global
@@ -10,26 +10,26 @@ void main(Register selector ds)
 // sp:sp
 // ax:ax
 // ds:ds
+// Top:Top
 // return address size: 2
 void main(selector ds)
 main_entry:
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
-	ax = Mem0[ds:0x0300:word16]
-	memfoo()
-	Mem0[ds:0x0302:word16] = ax
-	ax = Mem0[ds:0x0300:word16]
-	ax = membar(ax, ds)
-	Mem0[ds:0x0304:word16] = ax
+	ax_7 = memfoo()
+	Mem9[ds:0x0302:word16] = ax_7
+	ax_10 = Mem9[ds:0x0300:word16]
+	ax_11 = membar(ax_10)
+	Mem13[ds:0x0304:word16] = ax_11
 	return
 	// succ:  main_exit
 main_exit:
-void memfoo()
-// MayUse:  ax cx bx ds
-// LiveOut:
-// Trashed: SCZO ax cx bx al cl bl ah ch bh
-// Preserved: sp
+Register word16 memfoo()
+// MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] ds:[0..15]
+// LiveOut: ax
+// Trashed: ax
+// Preserved:
 // memfoo
 // Return size: 2
 // Mem0:Global
@@ -40,55 +40,83 @@ void memfoo()
 // bx:bx
 // cx:cx
 // cl:cl
-// SCZO:Flags
+// SCZO:SCZO
+// Top:Top
+// S:S
+// C:C
+// Z:Z
+// O:O
 // return address size: 2
-void memfoo()
+word16 memfoo()
 memfoo_entry:
+	def fp
+	def ax
+	def ds
+	def bx
+	def cx
 	// succ:  l0C00_0017
 l0C00_0017:
-	sp = fp
-	Mem0[ds:0x0400:word16] = ax
-	Mem0[ds:0x0402:word16] = bx
-	Mem0[ds:0x0404:word16] = cx
-	bx = Mem0[ds:0x0100:word16]
-	cl = Mem0[ds:bx + 0x0042:byte]
-	ax = Mem0[ds:bx + 0x0040:word16]
-	ax = ax << cl
-	SCZO = cond(ax)
-	Mem0[ds:0x0102:word16] = ax
-	ax = Mem0[ds:0x0400:word16]
-	bx = Mem0[ds:0x0402:word16]
-	cx = Mem0[ds:0x0404:word16]
-	return
+	sp_2 = fp
+	Top_3 = 0
+	Mem6[ds:0x0400:word16] = ax
+	Mem8[ds:0x0402:word16] = bx
+	Mem10[ds:0x0404:word16] = cx
+	bx_11 = Mem10[ds:0x0100:word16]
+	cl_12 = Mem10[ds:bx_11 + 0x0042:byte]
+	ax_13 = Mem10[ds:bx_11 + 0x0040:word16]
+	ax_14 = ax_13 << cl_12
+	SCZO_15 = cond(ax_14)
+	C_20 = SLICE(SCZO_15, bool, 1) (alias)
+	O_21 = SLICE(SCZO_15, bool, 4) (alias)
+	S_22 = SLICE(SCZO_15, bool, 0) (alias)
+	Z_23 = SLICE(SCZO_15, bool, 2) (alias)
+	Mem16[ds:0x0102:word16] = ax_14
+	ax_17 = Mem16[ds:0x0400:word16]
+	bx_18 = Mem16[ds:0x0402:word16]
+	cx_19 = Mem16[ds:0x0404:word16]
+	return ax_17
 	// succ:  memfoo_exit
 memfoo_exit:
-Register word16 membar(Register word16 ax, Register selector ds)
-// MayUse:  ax ds
+Register word16 membar(Register word16 ax)
+// MayUse:  ax:[0..15] ds:[0..15]
 // LiveOut: ax
-// Trashed: SCZO ax bx al bl ah bh
-// Preserved: sp
+// Trashed: ax
+// Preserved:
 // membar
-// Return size: 0
+// Return size: 2
 // Mem0:Global
 // fp:fp
 // sp:sp
 // ds:ds
 // ax:ax
 // bx:bx
-// SCZO:Flags
+// SCZO:SCZO
+// Top:Top
+// S:S
+// C:C
+// Z:Z
+// O:O
 // return address size: 2
-word16 membar(word16 ax, selector ds)
+word16 membar(word16 ax)
 membar_entry:
+	def ax
+	def fp
+	def ds
 	// succ:  l0C00_0040
 l0C00_0040:
-	sp = fp
-	Mem0[ds:0x0500:word16] = ax
-	bx = Mem0[ds:0x1000:word16]
-	ax = Mem0[ds:bx:word16]
-	ax = ax + Mem0[ds:bx + 0x0002:word16]
-	SCZO = cond(ax)
-	Mem0[ds:bx + 0x0004:word16] = ax
-	ax = Mem0[ds:0x0500:word16]
-	return ax
+	sp_4 = fp
+	Top_5 = 0
+	Mem7[ds:0x0500:word16] = ax
+	bx_8 = Mem7[ds:0x1000:word16]
+	ax_9 = Mem7[ds:bx_8:word16]
+	ax_10 = ax_9 + Mem7[ds:bx_8 + 0x0002:word16]
+	SCZO_11 = cond(ax_10)
+	C_14 = SLICE(SCZO_11, bool, 1) (alias)
+	O_15 = SLICE(SCZO_11, bool, 4) (alias)
+	S_16 = SLICE(SCZO_11, bool, 0) (alias)
+	Z_17 = SLICE(SCZO_11, bool, 2) (alias)
+	Mem12[ds:bx_8 + 0x0004:word16] = ax_10
+	ax_13 = Mem12[ds:0x0500:word16]
+	return ax_13
 	// succ:  membar_exit
 membar_exit:

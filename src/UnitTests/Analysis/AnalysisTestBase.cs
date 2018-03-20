@@ -161,6 +161,33 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
+        protected static Program RewriteMsdosAssembler(string relativePath, Action<Program> postLoad)
+        {
+            var arch = new X86ArchitectureReal("x86-real-16");
+            var sc = new ServiceContainer();
+            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
+            var env = MockRepository.GenerateStub<OperatingEnvironment>();
+            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
+            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            cfgSvc.Replay();
+            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
+            env.Replay();
+            tlSvc.Replay();
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            Program program;
+            Assembler asm = new X86TextAssembler(sc, arch);
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
+            {
+                program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
+                program.Platform = new MsdosPlatform(sc, program.Architecture);
+            }
+            Rewrite(program, asm, postLoad);
+            return program;
+        }
+
         protected Program RewriteFile32(string sourceFile)
         {
             return RewriteFile32(sourceFile, null);
@@ -193,7 +220,7 @@ namespace Reko.UnitTests.Analysis
             Assembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
             program.Platform = new MsdosPlatform(null, program.Architecture);
-            Rewrite(program, asm, null);
+            Rewrite(program, asm, (string)null);
             return program;
         }
 
@@ -202,7 +229,7 @@ namespace Reko.UnitTests.Analysis
             Assembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
             var program = asm.AssembleFragment(Address.Ptr32(0x00400000), s);
             program.Platform = new DefaultPlatform(null, program.Architecture);
-            Rewrite(program, asm, null);
+            Rewrite(program, asm, (string)null);
             return program;
         }
 
@@ -237,18 +264,51 @@ namespace Reko.UnitTests.Analysis
             scan.ScanImage();
         }
 
+        private static void Rewrite(Program program, Assembler asm, Action<Program> postLoad)
+        {
+            var fakeDiagnosticsService = new FakeDiagnosticsService();
+            var fakeConfigService = new FakeDecompilerConfiguration();
+            var eventListener = new FakeDecompilerEventListener();
+            var sc = new ServiceContainer();
+            sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
+            sc.AddService<IConfigurationService>(fakeConfigService);
+            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            var loader = new Loader(sc);
+            var project = new Project
+            {
+                Programs = { program }
+            };
+            postLoad(program);
+            var scan = new Scanner(
+                program,
+                new ImportResolver(project, program, eventListener),
+                sc);
+
+            scan.EnqueueImageSymbol(new ImageSymbol(asm.StartAddress), true);
+            foreach (var f in project.Programs)
+            {
+                foreach (var sp in f.User.Procedures.Values)
+                {
+                    scan.EnqueueUserProcedure(sp);
+                }
+            }
+            scan.ScanImage();
+        }
+
         #region X86-specific
         // Run x86-specific test (deprecated for unit testing as they require a specific architecture --
         // try not to use these)
         public static void RunTest_x86_real(string sourceFile, Action<Program, TextWriter> test, string outputFile)
         {
-            Program program = RewriteMsdosAssembler(sourceFile, null);
+            Program program = RewriteMsdosAssembler(sourceFile, (string)null);
             SaveRunOutput(program, test, outputFile);
         }
 
 		protected void RunFileTest_x86_real(string sourceFile, string outputFile)
 		{
-			Program program = RewriteMsdosAssembler(sourceFile, null);
+			Program program = RewriteMsdosAssembler(sourceFile, (string)null);
             SaveRunOutput(program, RunTest, outputFile);
 		}
 

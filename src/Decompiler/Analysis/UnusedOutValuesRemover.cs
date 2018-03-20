@@ -73,8 +73,7 @@ namespace Reko.Analysis
                     return;
                 change = false;
                 this.wl = new WorkList<SsaState>(ssts.Select(t => t.SsaState));
-                SsaState ssa;
-                while (wl.GetWorkItem(out ssa))
+                while (wl.GetWorkItem(out SsaState ssa))
                 {
                     if (this.eventListener.IsCanceled())
                         return;
@@ -99,8 +98,7 @@ namespace Reko.Analysis
         private void CollectLiveOutStorages()
         {
             var wl = new WorkList<SsaState>(ssts.Select(s => s.SsaState));
-            SsaState ssa;
-            while (wl.GetWorkItem(out ssa))
+            while (wl.GetWorkItem(out SsaState ssa))
             {
                 var liveOut = CollectLiveOutStorages(ssa.Procedure);
                 var changed = MergeLiveOut(dataFlow.ProcedureFlows[ssa.Procedure], liveOut);
@@ -270,9 +268,8 @@ namespace Reko.Analysis
                         if (sid.Uses.Count > 0)
                         {
                             var br = urf.Classify(ssaCaller, sid, true);
-                            BitRange brOld;
                             DebugEx.PrintIf(trace.TraceVerbose, "  {0}: {1}", sid.Identifier.Name, br);
-                            if (liveOutStorages.TryGetValue(def.Storage, out brOld))
+                            if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
                                 br = br | brOld;
                                 liveOutStorages[def.Storage] = br;

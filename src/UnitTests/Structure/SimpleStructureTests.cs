@@ -258,6 +258,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void StrReg00013()
         {

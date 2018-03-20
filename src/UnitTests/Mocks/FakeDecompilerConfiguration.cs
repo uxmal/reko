@@ -30,6 +30,12 @@ namespace Reko.UnitTests.Mocks
     public class FakeDecompilerConfiguration : IConfigurationService
     {
         private List<LoaderConfiguration> imageLoaders = new List<LoaderConfiguration>();
+        private IServiceProvider services;
+
+        public FakeDecompilerConfiguration(IServiceProvider services = null)
+        {
+            this.services = services;
+        }
 
         public ICollection<LoaderConfiguration> GetImageLoaders()
         {
@@ -78,7 +84,7 @@ namespace Reko.UnitTests.Mocks
 
         public Assembler GetAssembler(string sAsm)
         {
-            throw new NotImplementedException();
+            return new Reko.Assemblers.x86.X86TextAssembler(services, new Reko.Arch.X86.X86ArchitectureReal("x86-real-16"));
         }
 
         public OperatingEnvironment GetEnvironment(string envName)

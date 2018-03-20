@@ -139,6 +139,19 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
+        private void AddUserProc(Program program, Address address, string name, SerializedSignature sSig)
+        {
+            program.User.Procedures.Add(
+                address,
+                new Procedure_v1
+                {
+                    Name = name,
+                    Address = address.ToString(),
+                    Decompile = true,
+                    Signature = sSig,
+                });
+        }
+
         [Test]
         [Category(Categories.IntegrationTests)]
         public void CrwAsciiHex()
@@ -154,7 +167,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-       // [Ignore(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwEvenOdd()
         {
@@ -163,6 +176,7 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CrwFactorial()
         {
             RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
@@ -170,6 +184,7 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CrwFactorialReg()
         {
             RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
@@ -230,6 +245,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwMutual()
         {
@@ -239,8 +255,17 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void CrwMemPreserve()
         {
-            RunFileTest_x86_real("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
+            Program program = RewriteMsdosAssembler("Fragments/multiple/mempreserve.asm", p =>
+            {
+                var ax = new Argument_v1 { Kind = new Register_v1 { Name = "ax" } };
+                AddUserProc(p, Address.SegPtr(0x0C00, 0x0000), "main", null);
+                AddUserProc(p, Address.SegPtr(0x0C00, 0x0017), "memfoo", new SerializedSignature { Arguments = new Argument_v1[0], ReturnValue = ax });
+                AddUserProc(p, Address.SegPtr(0x0C00, 0x0040), "membar", new SerializedSignature { Arguments = new Argument_v1[1] { ax }, ReturnValue = ax });
+            });
+            SaveRunOutput(program, RunTest, "Analysis/CrwMemPreserve.txt");
         }
+
+  
 
         [Test]
         [Category(Categories.IntegrationTests)]
@@ -257,6 +282,8 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
 
         public void CrwFibonacci()
         {

@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.IntegrationTests)]
-        //[Ignore(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void CoaAddSubCarries()
         {
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
