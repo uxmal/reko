@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,8 +60,7 @@ namespace Reko.Analysis
 				int bitWidth = (int) o;
 				if (bitWidth < id.DataType.BitSize)
 				{
-					PrimitiveType pt = id.DataType as PrimitiveType;
-					if (pt != null)
+					if (id.DataType is PrimitiveType pt)
 					{
 						id.DataType = PrimitiveType.Create(pt.Domain, bitWidth/8);
 					}
@@ -117,7 +116,7 @@ namespace Reko.Analysis
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(platform.Architecture);
-				crw.EnsureSignature(proc, flow);
+				crw.EnsureSignature(proc, proc.Frame, flow);
 			}
 
 			foreach (SsaTransform sst in ssts)
@@ -135,15 +134,14 @@ namespace Reko.Analysis
         /// modified in the exit block, and ensures that all the registers
         /// accessed by the procedure are in the procedure Frame.
 		/// </summary>
-		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
+		public void EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow)
 		{
             // If we already have a signature, we don't need to do this work.
 			if (proc.Signature.ParametersValid)
 				return;
 
             var allLiveOut = flow.LiveOut;
-			var sb = new SignatureBuilder(proc.Frame, platform.Architecture);
-            var frame = proc.Frame;
+			var sb = new SignatureBuilder(frame, platform.Architecture);
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
             AddModifiedFlags(frame, flow.grfLiveOut, sb);
@@ -217,7 +215,7 @@ namespace Reko.Analysis
 			proc.Signature = sig;
 		}
 
-        private void AddModifiedFlags(Frame frame, IEnumerable<Storage> allLiveOut, SignatureBuilder sb)
+        private void AddModifiedFlags(IStorageBinder frame, IEnumerable<Storage> allLiveOut, SignatureBuilder sb)
         {
             foreach (var grf in allLiveOut
                 .OfType<FlagGroupStorage>()
@@ -227,7 +225,7 @@ namespace Reko.Analysis
             }
         }
 
-        private void AddModifiedFlags(Frame frame, uint grf, SignatureBuilder sb)
+        private void AddModifiedFlags(IStorageBinder frame, uint grf, SignatureBuilder sb)
         {
             if (grf == 0)
                 return;
@@ -245,8 +243,7 @@ namespace Reko.Analysis
 					int externalOffset = f.ExternalOffset(id);		//$REFACTOR: do this with BindToExternalFrame.
 					if (externalOffset >= startOffset)
 					{
-						Identifier vOld;
-                        if (!arguments.TryGetValue(externalOffset, out vOld) ||
+                        if (!arguments.TryGetValue(externalOffset, out var vOld) ||
                             vOld.DataType.Size < id.DataType.Size)
                         {
                             arguments[externalOffset] = id;
@@ -286,17 +283,6 @@ namespace Reko.Analysis
 			}
 			return false;
 		}
-
-
-        //protected virtual ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
-        //{
-        //    return new FrameApplicationBuilder(
-        //        Program.Architecture,
-        //        proc.Frame,
-        //        call.CallSite,
-        //        fn,
-        //        true);
-        //}
 
         private ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
         {
@@ -361,8 +347,7 @@ namespace Reko.Analysis
             int unConverted = 0;
             foreach (Statement stm in proc.Statements)
             {
-                CallInstruction ci = stm.Instruction as CallInstruction;
-                if (ci != null)
+                if (stm.Instruction is CallInstruction ci)
                 {
                     if (!RewriteCall(proc, stm, ci))
                         ++unConverted;
@@ -421,8 +406,7 @@ namespace Reko.Analysis
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
                 var stm = block.Statements[i];
-                var ret = stm.Instruction as ReturnInstruction;
-                if (ret != null)
+                if (stm.Instruction is ReturnInstruction ret)
                 {
                     Expression e = sid.Identifier;
                     if (idRet.DataType.Size < e.DataType.Size)

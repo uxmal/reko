@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Analysis
     public class LongAddRewriterTests : AnalysisTestBase
     {
         private IStorageBinder binder;
-        private LongAddRewriter2 rw;
+        private LongAddRewriter rw;
         private IProcessorArchitecture arch;
         private Program program;
         private Identifier ax;
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Analysis
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
 
-                var larw = new LongAddRewriter2(program.Architecture, sst.SsaState);
+                var larw = new LongAddRewriter(program.Architecture, sst.SsaState);
                 larw.Transform();
 
                 proc.Write(false, writer);
@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Analysis
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            rw = new LongAddRewriter2(arch, sst.SsaState);
+            rw = new LongAddRewriter(arch, sst.SsaState);
             this.ssa = sst.SsaState;
         }
 

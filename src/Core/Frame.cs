@@ -328,7 +328,7 @@ namespace Reko.Core
 			if (fstVar != null)
 				return fstVar.FpuStackOffset;
 
-			throw new ArgumentOutOfRangeException("var", "Variable must be an argument.");
+			throw new ArgumentOutOfRangeException("id", "Identifier must be an argument.");
 		}
 
 		public Identifier FindSequence(Storage n1, Storage n2)

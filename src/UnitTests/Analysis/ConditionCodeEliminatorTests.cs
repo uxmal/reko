@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Analysis
                     importResolver, 
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
-                var larw = new LongAddRewriter2(program.Architecture, ssa);
+                var larw = new LongAddRewriter(program.Architecture, ssa);
                 larw.Transform();
 
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);

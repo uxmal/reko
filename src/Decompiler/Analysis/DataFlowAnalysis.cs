@@ -305,14 +305,19 @@ namespace Reko.Analysis
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();
 
+                // After value propagation expressions like (x86) 
+                // mem[esp_42+4] will have been converted to mem[fp - 30]. 
+                // We also hope that procedure constants
+                // kept in registers are propagated to the corresponding call
+                // sites.
                 var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
                 vp.Transform();
 
-                // Propagate condition codes and registers. At the end, the hope
-                // is that all statements like (x86) mem[esp_42+4] will have been
-                // converted to mem[fp - 30]. We also hope that procedure constants
-                // kept in registers are propagated to the corresponding call
-                // sites.
+                // Fuse additions and subtractions that are linked by the carry flag.
+                var larw = new LongAddRewriter(program.Architecture, ssa);
+                larw.Transform();
+
+                // Propagate condition codes and registers. 
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
