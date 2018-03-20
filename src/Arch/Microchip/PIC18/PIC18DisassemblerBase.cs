@@ -273,9 +273,11 @@ namespace Reko.Arch.Microchip.PIC18
 
             public SubDecoder(int bitpos, int width, Decoder[] decoders)
             {
+                this.decoders = decoders ?? throw new ArgumentNullException(nameof(decoders));
                 this.bitpos = (bitpos < 0 ? 0 : bitpos);
                 this.width = (width <= 0 ? 1 : width);
-                this.decoders = decoders;
+                if (decoders.Length != (1 << width))
+                    throw new ArgumentOutOfRangeException(nameof(width), "Wrong decoder table size.");
             }
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)

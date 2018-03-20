@@ -119,43 +119,6 @@ namespace Reko.Arch.Microchip.PIC18
             yield break;
         }
 
-        /// <summary>
-        /// Find the widest sub-register that covers the register reg. Not implemented.
-        /// </summary>
-        /// <param name="reg">.</param>
-        /// <param name="bits">.</param>
-        /// <returns>
-        /// Not implemented.
-        /// </returns>
-        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-        {
-            throw new NotImplementedException("There is no wider register for PIC18");
-        }
-
-        /// <summary>
-        /// Get the improper sub-register of <paramref name="reg" /> that starts at offset
-        /// <paramref name="offset" /> and is of size <paramref name="width"/>.
-        /// </summary>
-        /// <param name="reg">The parent register.</param>
-        /// <param name="offset">The bit offset.</param>
-        /// <param name="width">The bit width.</param>
-        /// <returns>
-        /// The sub-register or null.
-        /// </returns>
-        /// <remarks>
-        /// Most architectures do not have sub-registers, and will use a default implementation. This
-        /// method is overridden for architectures like x86 and Z80, where sub-registers (<code>"ah", "al"</code>, etc)
-        /// do exist.
-        /// </remarks>
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (offset == 0 && reg.BitSize == (ulong)width)
-                return reg;
-            if (reg is PICRegisterStorage preg)
-                return preg.SubRegs.FirstOrDefault(r => ((r.BitAddress == (ulong)offset) && (r.BitSize == (ulong)width)));
-            return null;
-        }
-
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             => CreateDisassemblerImpl(imageReader);
 

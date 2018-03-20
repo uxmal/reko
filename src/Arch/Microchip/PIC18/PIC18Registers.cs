@@ -312,16 +312,6 @@ namespace Reko.Arch.Microchip.PIC18
             TOS = PICRegisters.GetRegister("TOS");
             PCLAT = PICRegisters.GetRegister("PCLAT");
             TBLPTR = PICRegisters.GetRegister("TBLPTR");
-            PRODH.BitAddress = 8;
-            FSR0H.BitAddress = 8;
-            FSR1H.BitAddress = 8;
-            FSR2H.BitAddress = 8;
-            TOSH.BitAddress = 8;
-            TOSU.BitAddress = 16;
-            PCLATH.BitAddress = 8;
-            PCLATU.BitAddress = 16;
-            TBLPTRH.BitAddress = 8;
-            TBLPTRU.BitAddress = 16;
 
             // Registers used for indirect memory adressing modes. An other ugly aspect of Microchip PICs.
 

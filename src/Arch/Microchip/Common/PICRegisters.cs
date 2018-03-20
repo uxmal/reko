@@ -196,12 +196,15 @@ namespace Reko.Arch.Microchip.Common
             = new Dictionary<RegSizedAddrKey, PICRegisterStorage>();
         private static Dictionary<BitFieldAddrKey, BitFieldList> UniqueBitFieldsAddr
             = new Dictionary<BitFieldAddrKey, BitFieldList>();
+        private static Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> JoineeRegisters
+            = new Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>>();
+        private static Dictionary<RegisterStorage, RegisterStorage> JoinedRegisters
+            = new Dictionary<RegisterStorage, RegisterStorage>();
 
         /// <summary>
-        /// Instantiates a new empty registers table.
+        /// Instantiates a new empty registers pool.
         /// </summary>
-        /// <param name="pic">The PIC definition descriptor.</param>
-        public PICRegisters() : base()
+        private PICRegisters() : base()
         {
             Reset();
         }
@@ -228,6 +231,8 @@ namespace Reko.Arch.Microchip.Common
                 UniqueFieldNames.Clear();
                 UniqueRegsAddr.Clear();
                 UniqueBitFieldsAddr.Clear();
+                JoineeRegisters.Clear();
+                JoinedRegisters.Clear();
             }
         }
 
@@ -243,11 +248,17 @@ namespace Reko.Arch.Microchip.Common
         /// </returns>
         PICRegisterStorage IPICRegisterSymTable.AddRegister(PICRegisterStorage reg)
         {
+            if (reg is null)
+                return null;
+
             RegSizedAddrKey addr =
                 (reg.IsMemoryMapped
                     ? new RegSizedAddrKey(reg.Address, reg.BitWidth)
                     : new RegSizedAddrKey(reg.NMMRID, reg.BitWidth)
                 );
+
+            var subdic = new Dictionary<uint, RegisterStorage>();
+            reg.SubRegs?.ToList().ForEach(r => subdic.Add(((uint)(r.BitWidth << 8) | (uint)r.BitAddress), r));
 
             lock (symTabLock)
             {
@@ -257,6 +268,11 @@ namespace Reko.Arch.Microchip.Common
                     return null;   // Do not duplicate register with same address and bit width
                 UniqueRegNames[reg.Name] = reg;
                 UniqueRegsAddr[addr] = reg;
+                if (reg.SubRegs != null)
+                {
+                    JoineeRegisters.Add(reg, subdic);
+                    reg.SubRegs?.ToList().ForEach(sr => JoinedRegisters.Add(sr, reg));
+                }
             }
             return reg;
         }
@@ -531,6 +547,53 @@ namespace Reko.Arch.Microchip.Common
         /// Gets the maximum number of PIC18 registers.
         /// </summary>
         public static int Max => UniqueRegsAddr.Count;
+
+        /// <summary>
+        /// Get the proper sub-register of <paramref name="reg" /> that starts at offset
+        /// <paramref name="offset" /> and is of size <paramref name="width"/>.
+        /// </summary>
+        /// <param name="reg">The parent register.</param>
+        /// <param name="offset">The bit offset of the sub-register.</param>
+        /// <param name="width">The bit width of the sub-register.</param>
+        /// <returns>
+        /// The sub-register.
+        /// </returns>
+        /// <remarks>
+        /// Most architectures not have sub-registers, and will use this default implementation. This
+        /// method is overridden for architectures like x86 and Z80, where sub-registers <code>(ah, al,
+        /// etc)</code>
+        /// do exist.
+        /// </remarks>
+        public static RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (offset == 0 && reg.BitSize == (ulong)width)
+                return reg;
+            if (!JoineeRegisters.TryGetValue(reg, out var dict))
+                return null;
+            if (!dict.TryGetValue((uint)(offset + (width << 8)), out var subReg))
+                return null;
+            return subReg;
+        }
+
+        /// <summary>
+        /// Gets widest sub-register.
+        /// </summary>
+        /// <param name="reg">The parent register.</param>
+        /// <param name="regs">The regs.</param>
+        /// <returns>
+        /// The widest sub-register.
+        /// </returns>
+        public static RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
+            => throw new NotImplementedException("PIC has no wider-register.");
+
+        public static RegisterStorage GetParentRegister(RegisterStorage subreg)
+        {
+            if (subreg is null)
+                return null;
+            if (!JoinedRegisters.TryGetValue(subreg, out var par))
+                return null;
+            return par;
+        }
 
         #endregion
 

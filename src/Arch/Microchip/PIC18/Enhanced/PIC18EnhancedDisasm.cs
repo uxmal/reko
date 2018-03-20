@@ -62,12 +62,16 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         public override PICExecMode ExecMode => arch.ExecMode;
 
+
+        /// <summary>
+        /// Gets the opcodes table corresponding to this PIC family.
+        /// </summary>
         protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
             var offset = rdr.Offset;
             try
             {
-                instrCur = opcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
+                instrCur = enhancedOpcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
                 if (instrCur is null)
                     instrCur = base.DecodePICInstruction(uInstr, addr); // Fall to common PIC18 instruction decoder
             }
@@ -97,46 +101,31 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// The PIC18 Enhanced opcodes decoder table.
         /// </summary>
-        private static Decoder[] opcodesTable = new Decoder[16]
+        private static Decoder[] enhancedOpcodesTable = new Decoder[16]
         {
-
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
-                    new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0000 ????
+                    new SubDecoder(2, 2, new Decoder[4] {           // 0000 0000 0000 ??..
+                        new SubDecoder(0, 2, new Decoder[4] {       // 0000 0000 0000 00??
                         new NoOperandOpRec(Opcode.NOP),             // 0000 0000 0000 0000
                         new InvalidOpRec(),                         // 0000 0000 0000 0001
                         new MovsflOpRec(Opcode.MOVSFL),             // 0000 0000 0000 0010
                         new UseBaseDecode(),                        // 0000 0000 0000 0011
-                        new UseBaseDecode(),                        // 0000 0000 0000 0100
-                        new UseBaseDecode(),                        // 0000 0000 0000 0101
-                        new UseBaseDecode(),                        // 0000 0000 0000 0110
-                        new UseBaseDecode(),                        // 0000 0000 0000 0111
-                        new UseBaseDecode(),                        // 0000 0000 0000 1000
-                        new UseBaseDecode(),                        // 0000 0000 0000 1001
-                        new UseBaseDecode(),                        // 0000 0000 0000 1010
-                        new UseBaseDecode(),                        // 0000 0000 0000 1011
-                        new UseBaseDecode(),                        // 0000 0000 0000 1100
-                        new UseBaseDecode(),                        // 0000 0000 0000 1101
-                        new UseBaseDecode(),                        // 0000 0000 0000 1110
-                        new UseBaseDecode()                         // 0000 0000 0000 1111
+                        }),
+                        new UseBaseDecode(),                        // 0000 0000 0000 01..
+                        new UseBaseDecode(),                        // 0000 0000 0000 10..
+                        new UseBaseDecode(),                        // 0000 0000 0000 11..
                     }),
-                    new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0001 ????
-                        new UseBaseDecode(),                        // 0000 0000 0001 0000
-                        new UseBaseDecode(),                        // 0000 0000 0001 0001
-                        new UseBaseDecode(),                        // 0000 0000 0001 0010
-                        new UseBaseDecode(),                        // 0000 0000 0001 0011
-                        new NoOperandOpRec(Opcode.CALLW),           // 0000 0000 0001 0100
-                        new InvalidOpRec(),                         // 0000 0000 0001 0101
-                        new InvalidOpRec(),                         // 0000 0000 0001 0110
-                        new InvalidOpRec(),                         // 0000 0000 0001 0111
-                        new InvalidOpRec(),                         // 0000 0000 0001 1000
-                        new InvalidOpRec(),                         // 0000 0000 0001 1001
-                        new InvalidOpRec(),                         // 0000 0000 0001 1010
-                        new InvalidOpRec(),                         // 0000 0000 0001 1011
-                        new InvalidOpRec(),                         // 0000 0000 0001 1100
-                        new InvalidOpRec(),                         // 0000 0000 0001 1101
-                        new InvalidOpRec(),                         // 0000 0000 0001 1110
-                        new InvalidOpRec(),                         // 0000 0000 0001 1111
+                    new SubDecoder(2, 2, new Decoder[4] {           // 0000 0000 0001 ??..
+                        new UseBaseDecode(),                        // 0000 0000 0001 00..
+                        new SubDecoder(0, 2, new Decoder[4] {       // 0000 0000 0001 01??
+                            new NoOperandOpRec(Opcode.CALLW),       // 0000 0000 0001 0100
+                            new InvalidOpRec(),                     // 0000 0000 0001 0101
+                            new InvalidOpRec(),                     // 0000 0000 0001 0110
+                            new InvalidOpRec(),                     // 0000 0000 0001 0111
+                        }),
+                        new InvalidOpRec(),                         // 0000 0000 0001 10..
+                        new InvalidOpRec(),                         // 0000 0000 0001 11..
                     }),
                     new InvalidOpRec(),                             // 0000 0000 0010 ....
                     new InvalidOpRec(),                             // 0000 0000 0011 ....
@@ -210,7 +199,6 @@ namespace Reko.Arch.Microchip.PIC18
             }),
             new NoOperandOpRec(Opcode.NOP),                         // 1111 .... .... ....
         };
-
 
         /// <summary>
         /// Instruction MOVLB with <code>'....-....-0000-kkkk'</code> or <code>'....-....-00kk-kkkk'</code> immediate value.

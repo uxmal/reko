@@ -21,8 +21,6 @@
 #endregion
 
 using Reko.Libraries.Microchip;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
 using System;
 
 namespace Reko.Arch.Microchip.PIC16

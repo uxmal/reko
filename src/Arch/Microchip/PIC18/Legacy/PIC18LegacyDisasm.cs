@@ -61,12 +61,15 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         public override InstructionSetID InstructionSetID => InstructionSetID.PIC18;
 
+        /// <summary>
+        /// Gets the opcodes table corresponding to this PIC family.
+        /// </summary>
         protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
             var offset = rdr.Offset;
             try
             {
-                instrCur = opcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
+                instrCur = legacyOpcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
                 if (instrCur is null)
                     instrCur = base.DecodePICInstruction(uInstr, addr); // Fall to common PIC18 instruction decoder
             }
@@ -96,45 +99,26 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// The PIC18 Legacy opcodes decoder table.
         /// </summary>
-        private static Decoder[] opcodesTable = new Decoder[16]
+        private static Decoder[] legacyOpcodesTable = new Decoder[16]
         {
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
                 new SubDecoder(4, 4, new Decoder[16] {              // 0000 0000 ???? ....
-                    new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0000 ????
-                        new NoOperandOpRec(Opcode.NOP),             // 0000 0000 0000 0000
-                        new InvalidOpRec(),                         // 0000 0000 0000 0001
-                        new InvalidOpRec(),                         // 0000 0000 0000 0010
-                        new NoOperandOpRec(Opcode.SLEEP),           // 0000 0000 0000 0011
-                        new NoOperandOpRec(Opcode.CLRWDT),          // 0000 0000 0000 0100
-                        new NoOperandOpRec(Opcode.PUSH),            // 0000 0000 0000 0101
-                        new NoOperandOpRec(Opcode.POP),             // 0000 0000 0000 0110
-                        new NoOperandOpRec(Opcode.DAW),             // 0000 0000 0000 0111
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1000
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1001
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1010
-                        new TblOpRec(Opcode.TBLRD),                 // 0000 0000 0000 1011
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1100
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1101
-                        new TblOpRec(Opcode.TBLWT),                 // 0000 0000 0000 1110
-                        new TblOpRec(Opcode.TBLWT)                  // 0000 0000 0000 1111
+                    new SubDecoder(2, 2, new Decoder[4] {           // 0000 0000 0000 ??..
+                        new SubDecoder(0, 2, new Decoder[4] {       // 0000 0000 0000 00??
+                            new NoOperandOpRec(Opcode.NOP),         // 0000 0000 0000 0000
+                            new InvalidOpRec(),                     // 0000 0000 0000 0001
+                            new InvalidOpRec(),                     // 0000 0000 0000 0010
+                            new UseBaseDecode(),                    // 0000 0000 0000 0011
+                        }),
+                        new UseBaseDecode(),                        // 0000 0000 0000 01..
+                        new UseBaseDecode(),                        // 0000 0000 0000 10..
+                        new UseBaseDecode(),                        // 0000 0000 0000 11..
                     }),
-                    new SubDecoder(0, 4, new Decoder[16] {          // 0000 0000 0001 ????
-                        new ShadowOpRec(Opcode.RETFIE),             // 0000 0000 0001 0000
-                        new ShadowOpRec(Opcode.RETFIE),             // 0000 0000 0001 0001
-                        new ShadowOpRec(Opcode.RETURN),             // 0000 0000 0001 0010
-                        new ShadowOpRec(Opcode.RETURN),             // 0000 0000 0001 0011
-                        new InvalidOpRec(),                         // 0000 0000 0001 0100
-                        new InvalidOpRec(),                         // 0000 0000 0001 0101
-                        new InvalidOpRec(),                         // 0000 0000 0001 0110
-                        new InvalidOpRec(),                         // 0000 0000 0001 0111
-                        new InvalidOpRec(),                         // 0000 0000 0001 1000
-                        new InvalidOpRec(),                         // 0000 0000 0001 1001
-                        new InvalidOpRec(),                         // 0000 0000 0001 1010
-                        new InvalidOpRec(),                         // 0000 0000 0001 1011
-                        new InvalidOpRec(),                         // 0000 0000 0001 1100
-                        new InvalidOpRec(),                         // 0000 0000 0001 1101
-                        new InvalidOpRec(),                         // 0000 0000 0001 1110
-                        new InvalidOpRec(),                         // 0000 0000 0001 1111
+                    new SubDecoder(2, 2, new Decoder[4] {           // 0000 0000 0001 ??..
+                        new UseBaseDecode(),                        // 0000 0000 0001 00..
+                        new InvalidOpRec(),                         // 0000 0000 0001 01..
+                        new InvalidOpRec(),                         // 0000 0000 0001 10..
+                        new InvalidOpRec(),                         // 0000 0000 0001 11..
                     }),
                     new InvalidOpRec(),                             // 0000 0000 0010 ....
                     new InvalidOpRec(),                             // 0000 0000 0011 ....

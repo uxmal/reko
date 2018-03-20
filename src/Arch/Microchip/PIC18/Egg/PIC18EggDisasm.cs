@@ -62,12 +62,15 @@ namespace Reko.Arch.Microchip.PIC18
         /// </summary>
         public override PICExecMode ExecMode => arch.ExecMode;
 
+        /// <summary>
+        /// Gets the opcodes table corresponding to this PIC family.
+        /// </summary>
         protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
             var offset = rdr.Offset;
             try
             {
-                instrCur = opcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
+                instrCur = eggOpcodesTable[uInstr.Extract(12, 4)].Decode(uInstr, this);
                 if (instrCur is null)
                     instrCur = base.DecodePICInstruction(uInstr, addr); // Fall to common PIC18 instruction decoder
             }
@@ -97,7 +100,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary>
         /// The PIC18 Egg/Extended opcodes decoder table.
         /// </summary>
-        private static Decoder[] opcodesTable = new Decoder[16]
+        private static Decoder[] eggOpcodesTable = new Decoder[16]
         {
 
             new SubDecoder(8, 4, new Decoder[16] {                  // 0000 ???? .... ....
@@ -210,7 +213,6 @@ namespace Reko.Arch.Microchip.PIC18
             }),
             new NoOperandOpRec(Opcode.NOP),                         // 1111 .... .... ....
         };
-
 
         /// <summary>
         /// Instruction MOVLB with <code>'....-....-0000-kkkk'</code> or <code>'....-....-00kk-kkkk'</code> immediate value.

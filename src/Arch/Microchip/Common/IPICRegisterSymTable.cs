@@ -20,7 +20,6 @@
  */
 #endregion
 
-using Reko.Core;
 
 namespace Reko.Arch.Microchip.Common
 {

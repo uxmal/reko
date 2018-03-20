@@ -24,9 +24,11 @@ using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using Reko.Arch.Microchip.Common;
 using Reko.Arch.Microchip.PIC18;
+using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18
 {
@@ -204,21 +206,21 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         {
             var arch = PICProcessorMode.GetMode(PIC18LegacyName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Traditional;
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
             arch.ExecMode = PICExecMode.Extended;
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 
             arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Traditional;
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
             arch.ExecMode = PICExecMode.Extended;
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 
             arch = PICProcessorMode.GetMode(PIC18EnhancedName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Traditional;
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
             arch.ExecMode = PICExecMode.Extended;
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 
         }
 
@@ -227,31 +229,31 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Traditional;
-            Assert.AreEqual("STATUS", PICRegisters.GetRegister("STATUS").Name);
-            Assert.AreEqual("FSR2L", PICRegisters.GetRegister("FSR2L").Name);
-            Assert.AreEqual("FSR2H", PICRegisters.GetRegister("FSR2H").Name);
-            Assert.AreEqual("FSR1L", PICRegisters.GetRegister("FSR1L").Name);
-            Assert.AreEqual("FSR1H", PICRegisters.GetRegister("FSR1H").Name);
-            Assert.AreEqual("FSR0L", PICRegisters.GetRegister("FSR0L").Name);
-            Assert.AreEqual("FSR0H", PICRegisters.GetRegister("FSR0H").Name);
-            Assert.AreEqual("BSR", PICRegisters.GetRegister("BSR").Name);
-            Assert.AreEqual("TOSU", PICRegisters.GetRegister("TOSU").Name);
-            Assert.AreEqual("TOSH", PICRegisters.GetRegister("TOSH").Name);
-            Assert.AreEqual("TOSL", PICRegisters.GetRegister("TOSL").Name);
-            Assert.AreEqual("WREG", PICRegisters.GetRegister("WREG").Name);
+            Assert.AreEqual("STATUS", arch.GetRegister("STATUS").Name);
+            Assert.AreEqual("FSR2L", arch.GetRegister("FSR2L").Name);
+            Assert.AreEqual("FSR2H", arch.GetRegister("FSR2H").Name);
+            Assert.AreEqual("FSR1L", arch.GetRegister("FSR1L").Name);
+            Assert.AreEqual("FSR1H", arch.GetRegister("FSR1H").Name);
+            Assert.AreEqual("FSR0L", arch.GetRegister("FSR0L").Name);
+            Assert.AreEqual("FSR0H", arch.GetRegister("FSR0H").Name);
+            Assert.AreEqual("BSR", arch.GetRegister("BSR").Name);
+            Assert.AreEqual("TOSU", arch.GetRegister("TOSU").Name);
+            Assert.AreEqual("TOSH", arch.GetRegister("TOSH").Name);
+            Assert.AreEqual("TOSL", arch.GetRegister("TOSL").Name);
+            Assert.AreEqual("WREG", arch.GetRegister("WREG").Name);
             arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual("STATUS", PICRegisters.GetRegister("STATUS").Name);
-            Assert.AreEqual("FSR2L", PICRegisters.GetRegister("FSR2L").Name);
-            Assert.AreEqual("FSR2H", PICRegisters.GetRegister("FSR2H").Name);
-            Assert.AreEqual("FSR1L", PICRegisters.GetRegister("FSR1L").Name);
-            Assert.AreEqual("FSR1H", PICRegisters.GetRegister("FSR1H").Name);
-            Assert.AreEqual("FSR0L", PICRegisters.GetRegister("FSR0L").Name);
-            Assert.AreEqual("FSR0H", PICRegisters.GetRegister("FSR0H").Name);
-            Assert.AreEqual("BSR", PICRegisters.GetRegister("BSR").Name);
-            Assert.AreEqual("TOSU", PICRegisters.GetRegister("TOSU").Name);
-            Assert.AreEqual("TOSH", PICRegisters.GetRegister("TOSH").Name);
-            Assert.AreEqual("TOSL", PICRegisters.GetRegister("TOSL").Name);
-            Assert.AreEqual("WREG", PICRegisters.GetRegister("WREG").Name);
+            Assert.AreEqual("STATUS", arch.GetRegister("STATUS").Name);
+            Assert.AreEqual("FSR2L", arch.GetRegister("FSR2L").Name);
+            Assert.AreEqual("FSR2H", arch.GetRegister("FSR2H").Name);
+            Assert.AreEqual("FSR1L", arch.GetRegister("FSR1L").Name);
+            Assert.AreEqual("FSR1H", arch.GetRegister("FSR1H").Name);
+            Assert.AreEqual("FSR0L", arch.GetRegister("FSR0L").Name);
+            Assert.AreEqual("FSR0H", arch.GetRegister("FSR0H").Name);
+            Assert.AreEqual("BSR", arch.GetRegister("BSR").Name);
+            Assert.AreEqual("TOSU", arch.GetRegister("TOSU").Name);
+            Assert.AreEqual("TOSH", arch.GetRegister("TOSH").Name);
+            Assert.AreEqual("TOSL", arch.GetRegister("TOSL").Name);
+            Assert.AreEqual("WREG", arch.GetRegister("WREG").Name);
         }
 
         [Test]
@@ -259,19 +261,48 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
             arch.ExecMode = PICExecMode.Traditional;
-            Assert.AreSame(PIC18Registers.WREG, PICRegisters.GetRegister("WREG"));
-            Assert.AreSame(PIC18Registers.STATUS, PICRegisters.GetRegister("STATUS"));
-            Assert.AreSame(PIC18Registers.BSR, PICRegisters.GetRegister("BSR"));
-            Assert.AreSame(PIC18Registers.PCL, PICRegisters.GetRegister("PCL"));
-            Assert.AreSame(PIC18Registers.INDF0, PICRegisters.GetRegister("INDF0"));
-            Assert.AreSame(PIC18Registers.INDF2, PICRegisters.GetRegister("INDF2"));
+            Assert.AreSame(PIC18Registers.WREG, arch.GetRegister("WREG"));
+            Assert.AreSame(PIC18Registers.STATUS, arch.GetRegister("STATUS"));
+            Assert.AreSame(PIC18Registers.BSR, arch.GetRegister("BSR"));
+            Assert.AreSame(PIC18Registers.PCL, arch.GetRegister("PCL"));
+            Assert.AreSame(PIC18Registers.INDF0, arch.GetRegister("INDF0"));
+            Assert.AreSame(PIC18Registers.INDF2, arch.GetRegister("INDF2"));
             arch.ExecMode = PICExecMode.Extended;
-            Assert.AreSame(PIC18Registers.WREG, PICRegisters.GetRegister("WREG"));
-            Assert.AreSame(PIC18Registers.STATUS, PICRegisters.GetRegister("STATUS"));
-            Assert.AreSame(PIC18Registers.BSR, PICRegisters.GetRegister("BSR"));
-            Assert.AreSame(PIC18Registers.PCL, PICRegisters.GetRegister("PCL"));
-            Assert.AreSame(PIC18Registers.INDF0, PICRegisters.GetRegister("INDF0"));
-            Assert.AreSame(PIC18Registers.FSR1, PICRegisters.GetRegister("FSR1"));
+            Assert.AreSame(PIC18Registers.WREG, arch.GetRegister("WREG"));
+            Assert.AreSame(PIC18Registers.STATUS, arch.GetRegister("STATUS"));
+            Assert.AreSame(PIC18Registers.BSR, arch.GetRegister("BSR"));
+            Assert.AreSame(PIC18Registers.PCL, arch.GetRegister("PCL"));
+            Assert.AreSame(PIC18Registers.INDF0, arch.GetRegister("INDF0"));
+            Assert.AreSame(PIC18Registers.FSR1, arch.GetRegister("FSR1"));
+        }
+
+        [Test]
+        public void PIC18arch_GetSubregisterTests()
+        {
+            var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
+            arch.ExecMode = PICExecMode.Traditional;
+            Assert.AreSame(PIC18Registers.FSR0L, arch.GetSubregister(PIC18Registers.FSR0, 0, 8));
+            Assert.AreSame(PIC18Registers.FSR0H, arch.GetSubregister(PIC18Registers.FSR0, 8, 8));
+            Assert.AreSame(PIC18Registers.FSR0, arch.GetSubregister(PIC18Registers.FSR0, 0, 16));
+            arch.ExecMode = PICExecMode.Extended;
+            Assert.AreSame(PIC18Registers.FSR1L, arch.GetSubregister(PIC18Registers.FSR1, 0, 8));
+            Assert.AreSame(PIC18Registers.FSR1H, arch.GetSubregister(PIC18Registers.FSR1, 8, 8));
+            Assert.AreSame(PIC18Registers.FSR2L, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 0, 8));
+            Assert.AreSame(PIC18Registers.FSR2H, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 8, 8));
+            Assert.AreSame(PIC18Registers.FSR2, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 0, 16));
+        }
+
+        [Test]
+        public void PIC18arch_GetParentRegisterTests()
+        {
+            var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
+            arch.ExecMode = PICExecMode.Traditional;
+            Assert.IsNull(arch.GetParentRegister(PIC18Registers.TOS));
+            Assert.AreSame(PIC18Registers.TOS, arch.GetParentRegister(PIC18Registers.TOSL));
+            Assert.AreSame(PIC18Registers.TOS, arch.GetParentRegister(PIC18Registers.TOSU));
+            arch.ExecMode = PICExecMode.Extended;
+            Assert.AreSame(PIC18Registers.TOS, arch.GetParentRegister(PIC18Registers.TOSH));
+            Assert.IsNull(arch.GetParentRegister(PIC18Registers.WREG));
         }
 
     }

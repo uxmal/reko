@@ -148,6 +148,9 @@
     <Compile Include="Arch\Microchip\CrownkingTests.cs" />
     <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16ArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Registers_Basic_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Registers_Enh_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Registers_Full_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18Disassembler_Enhd_Extd_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18DisassemblerTestsBase.cs" />
