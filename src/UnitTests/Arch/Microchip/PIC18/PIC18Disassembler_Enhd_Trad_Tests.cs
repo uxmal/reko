@@ -32,13 +32,14 @@ using Reko.Libraries.Microchip;
 //
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
+    using Common;
     using static Common.Sample;
 
     // The only additional/modified instructions for this PIC18 in traditional
     // execution mode are 'ADDFSR', 'CALLW', 'MOVFFL', 'MOVLB', 'SUBFSR'.
     // 
     [TestFixture]
-    public class PIC18Disassembler_Enhd_Trad_Tests : PIC18DisassemblerTestsBase
+    public class PIC18Disassembler_Enhd_Trad_Tests : DisassemblerTestsBase
     {
         [TestFixtureSetUp]
         public void OneSetup()
@@ -47,27 +48,27 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_ADDFSR_Enhd_Trad()
+        public void PIC18EnhdTrad_Disasm_ADDFSR()
         {
             VerifyDisasm("ADDFSR\tFSR0,0x00", "", 0xE800);
             VerifyDisasm("ADDFSR\tFSR1,0x35", "", 0xE875);
         }
 
        [Test]
-        public void Disasm_CALLW_Enhd_Trad()
+        public void PIC18EnhdTrad_Disasm_CALLW()
         {
             VerifyDisasm("CALLW", "", 0x0014);
         }
 
         [Test]
-        public void Disasm_MOVFFL_Enhd_Trad()
+        public void PIC18EnhdTrad_Disasm_MOVFFL()
         {
             VerifyDisasm("MOVFFL\t0x3C00,0x0000", "", 0x006F, 0xF000, 0xF000);
             VerifyDisasm("MOVFFL\tPORTB,PORTA", "", 0x006F, 0xFF2F, 0xFFCA);
         }
 
         [Test]
-        public void Disasm_MOVLB_Enhd_Trad()
+        public void PIC18EnhdTrad_Disasm_MOVLB()
         {
             VerifyDisasm("MOVLB\t0x00", "", 0x0100);
             VerifyDisasm("MOVLB\t0x07", "", 0x0107);
@@ -75,14 +76,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SUBFSR_Enhd_Trad()
+        public void PIC18EnhdTrad_Disasm_SUBFSR()
         {
             VerifyDisasm("SUBFSR\tFSR0,0x00", "", 0xE900);
             VerifyDisasm("SUBFSR\tFSR1,0x35", "", 0xE975);
         }
 
         [Test]
-        public void Disasm_Invalids_Enhd_Trad()
+        public void PIC18EnhdTrad_Disasm_Invalids()
         {
             VerifyDisasm("invalid", "(MOVLB) too large value", 0x0180);
             VerifyDisasm("invalid", "(MOVLB) too large value", 0x01E0);

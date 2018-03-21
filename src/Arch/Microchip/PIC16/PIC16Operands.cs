@@ -429,7 +429,7 @@ namespace Reko.Arch.Microchip.PIC16
         public readonly Constant Offset;
 
         /// <summary>
-        /// Instantiates a FSRn indirect indexed operand. Used by MOVIW, MOVWI instructions.
+        /// Instantiates a FSRn immediate operand. Used by ADDFSR instructions.
         /// </summary>
         /// <param name="fsrnum">The FSR register number [0, 1].</param>
         public PIC16FSRArithOperand(byte fsrnum, sbyte off) : base(fsrnum)
@@ -444,7 +444,11 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             byte num = FSRNum.ToByte();
-            writer.WriteString($"FSR{num},{Offset}");
+            short off = Offset.ToInt16();
+            if (off < 0)
+                writer.WriteString($"FSR{num},-0x{-off:X}");
+            else
+                writer.WriteString($"FSR{num},0x{off:X}");
         }
 
     }
@@ -475,7 +479,11 @@ namespace Reko.Arch.Microchip.PIC16
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             byte num = FSRNum.ToByte();
-            writer.WriteString($"{Offset.ToByte()}[{num}]");
+            short off = Offset.ToInt16();
+            if (off < 0)
+                writer.WriteString($"-0x{-off:X}[{num}]");
+            else
+                writer.WriteString($"0x{off:X}[{num}]");
         }
 
     }

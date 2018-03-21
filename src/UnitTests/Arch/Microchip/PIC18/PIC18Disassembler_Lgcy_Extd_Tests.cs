@@ -32,10 +32,11 @@ using Reko.Libraries.Microchip;
 //
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
+    using Common;
     using static Common.Sample;
 
     [TestFixture]
-    public class PIC18Disassembler_Lgcy_Extd_Tests : PIC18DisassemblerTestsBase
+    public class PIC18Disassembler_Lgcy_Extd_Tests : DisassemblerTestsBase
     {
 
         [TestFixtureSetUp]
@@ -45,13 +46,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_Lgcy_CantBeExtend()
+        public void PIC18Lgcy_Disasm_CantBeExtend()
         {
             Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
         }
 
         [Test]
-        public void Disasm_Lgcy_StillInTradMode()
+        public void PIC18Lgcy_Disasm_StillInTradMode()
         {
             VerifyDisasm("ADDWF\t0x12,W,ACCESS", "", 0x2412);
             VerifyDisasm("CPFSEQ\t0x12,ACCESS", "", 0x6212);

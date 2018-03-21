@@ -20,17 +20,16 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC18;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Libraries.Microchip;
 using System.Linq;
 
-namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
+namespace Reko.UnitTests.Arch.Microchip.Common
 {
-    public class PIC18DisassemblerTestsBase
+    public class DisassemblerTestsBase
     {
         protected IPICProcessorMode picMode;
         protected static PICArchitecture arch;
@@ -62,7 +61,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
             Assert.AreEqual(sExpected, instr.ToString(), _fmtBinary(sMesg, words));
         }
 
-        protected void SetPICMode(string picName, PICExecMode mode)
+        protected void SetPICMode(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
             picMode = PICProcessorMode.GetMode(picName);
             arch = picMode.CreateArchitecture();

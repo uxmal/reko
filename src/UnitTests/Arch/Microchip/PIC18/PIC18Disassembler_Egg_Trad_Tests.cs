@@ -32,12 +32,13 @@ using Reko.Libraries.Microchip;
 //
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
+    using Common;
     using static Common.Sample;
 
     // The only additional instruction for this PIC18 in traditional execution mode is 'CALLW'.
     // 
     [TestFixture]
-    public class PIC18Disassembler_Extd_Trad_Tests : PIC18DisassemblerTestsBase
+    public class PIC18Disassembler_Extd_Trad_Tests : DisassemblerTestsBase
     {
         [TestFixtureSetUp]
         public void OneSetup()
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CheckSomeLgcyInTradMode()
+        public void PIC18EggTrad_Disasm_CheckSomeLgcy()
         {
             VerifyDisasm("ADDWF\t0x12,W,ACCESS", "", 0x2412);
             VerifyDisasm("CPFSEQ\t0x12,ACCESS", "", 0x6212);
@@ -55,13 +56,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CALLW_Egg_Trad()
+        public void PIC18EggTrad_Disasm_CALLW()
         {
             VerifyDisasm("CALLW", "", 0x0014);
         }
 
         [Test]
-        public void Disasm_Invalids_Egg_Trad()
+        public void PIC18EggTrad_Disasm_Invalids()
         {
             VerifyDisasm("invalid", "(MOVLB) too large value", 0x0140);
             VerifyDisasm("invalid", "(MOVLB) too large value", 0x0180);

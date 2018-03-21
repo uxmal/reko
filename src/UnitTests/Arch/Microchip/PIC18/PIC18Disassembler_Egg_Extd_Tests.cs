@@ -32,10 +32,11 @@ using Reko.Libraries.Microchip;
 //
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
 {
+    using Common;
     using static Common.Sample;
 
     [TestFixture]
-    public class PIC18Disassembler_Egg_Extd_Tests : PIC18DisassemblerTestsBase
+    public class PIC18Disassembler_Egg_Extd_Tests : DisassemblerTestsBase
     {
         [TestFixtureSetUp]
         public void OneSetup()
@@ -44,21 +45,21 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_ADDFSR_Egg_Extd()
+        public void PIC18EggExtd_Disasm_ADDFSR()
         {
             VerifyDisasm("ADDFSR\tFSR0,0x00", "", 0xE800);
             VerifyDisasm("ADDFSR\tFSR1,0x35", "", 0xE875);
         }
 
         [Test]
-        public void Disasm_ADDULNK_Egg_Extd()
+        public void PIC18EggExtd_Disasm_ADDULNK()
         {
             VerifyDisasm("ADDULNK\t0x00", "", 0xE8C0);
             VerifyDisasm("ADDULNK\t0x35", "", 0xE8F5);
         }
 
         [Test]
-        public void Disasm_ADDWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_ADDWF()
         {
             VerifyDisasm("ADDWF\t[0x12],W", "", 0x2412);
             VerifyDisasm("ADDWF\t[0x5A],W", "", 0x245A);
@@ -75,7 +76,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_ADDWFC_Egg_Extd()
+        public void PIC18EggExtd_Disasm_ADDWFC()
         {
             VerifyDisasm("ADDWFC\t[0x12],W", "", 0x2012);
             VerifyDisasm("ADDWFC\t[0x5A],W", "", 0x205A);
@@ -92,7 +93,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_ANDWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_ANDWF()
         {
             VerifyDisasm("ANDWF\t[0x23],W", "", 0x1423);
             VerifyDisasm("ANDWF\t[0x5A],W", "", 0x145A);
@@ -109,7 +110,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BC_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BC()
         {
             VerifyDisasm("BC\t0x000202", "", 0xE200);
             VerifyDisasm("BC\t0x000248", "", 0xE223);
@@ -118,7 +119,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BCF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BCF()
         {
             VerifyDisasm("BCF\t[0x03],0", "", 0x9003);
             VerifyDisasm("BCF\tPORTA,RA7,ACCESS", "", 0x9E80);
@@ -129,7 +130,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BN_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BN()
         {
             VerifyDisasm("BN\t0x000202", "", 0xE600);
             VerifyDisasm("BN\t0x000248", "", 0xE623);
@@ -138,7 +139,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BNC_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BNC()
         {
             VerifyDisasm("BNC\t0x000202", "", 0xE300);
             VerifyDisasm("BNC\t0x000248", "", 0xE323);
@@ -147,7 +148,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BNN_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BNN()
         {
             VerifyDisasm("BNN\t0x000202", "", 0xE700);
             VerifyDisasm("BNN\t0x000248", "", 0xE723);
@@ -156,7 +157,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BNOV_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BNOV()
         {
             VerifyDisasm("BNOV\t0x000202", "", 0xE500);
             VerifyDisasm("BNOV\t0x000248", "", 0xE523);
@@ -165,7 +166,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BNZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BNZ()
         {
             VerifyDisasm("BNZ\t0x000202", "", 0xE100);
             VerifyDisasm("BNZ\t0x000248", "", 0xE123);
@@ -174,7 +175,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BOV_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BOV()
         {
             VerifyDisasm("BOV\t0x000202", "", 0xE400);
             VerifyDisasm("BOV\t0x000248", "", 0xE423);
@@ -183,7 +184,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BRA_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BRA()
         {
             VerifyDisasm("BRA\t0x000202", "", 0xD000);
             VerifyDisasm("BRA\t0x0002AC", "", 0xD055);
@@ -192,7 +193,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BSF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BSF()
         {
             VerifyDisasm("BSF\t[0x03],0", "", 0x8003);
             VerifyDisasm("BSF\tPORTB,RB7,ACCESS", "", 0x8E81);
@@ -203,7 +204,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BTG_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BTG()
         {
             VerifyDisasm("BTG\t[0x03],0", "", 0x7003);
             VerifyDisasm("BTG\tTRISA,TRISA7,ACCESS", "", 0x7E92);
@@ -214,7 +215,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BTFSC_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BTFSC()
         {
             VerifyDisasm("BTFSC\t[0x03],0", "", 0xB003);
             VerifyDisasm("BTFSC\tPORTA,RA7,ACCESS", "", 0xBE80);
@@ -225,7 +226,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BTFSS_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BTFSS()
         {
             VerifyDisasm("BTFSS\t[0x03],0", "", 0xA003);
             VerifyDisasm("BTFSS\tPORTA,RA7,ACCESS", "", 0xAE80);
@@ -236,7 +237,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_BZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_BZ()
         {
             VerifyDisasm("BZ\t0x000202", "", 0xE000);
             VerifyDisasm("BZ\t0x000248", "", 0xE023);
@@ -245,7 +246,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CALL_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CALL()
         {
             VerifyDisasm("CALL\t0x00000C", "", 0xEC06, 0xF000);
             VerifyDisasm("CALL\t0x068A24", "", 0xEC12, 0xF345);
@@ -254,13 +255,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CALLW_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CALLW()
         {
             VerifyDisasm("CALLW", "", 0x0014);
         }
 
         [Test]
-        public void Disasm_CLRF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CLRF()
         {
             VerifyDisasm("CLRF\t[0x12]", "", 0x6A12);
             VerifyDisasm("CLRF\t[0x5A]", "", 0x6A5A);
@@ -271,13 +272,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CLRWDT_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CLRWDT()
         {
             VerifyDisasm("CLRWDT", "", 0x0004);
         }
 
         [Test]
-        public void Disasm_COMF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_COMF()
         {
             VerifyDisasm("COMF\t[0x12],W", "", 0x1C12);
             VerifyDisasm("COMF\t[0x5A],W", "", 0x1C5A);
@@ -294,7 +295,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CPFSEQ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CPFSEQ()
         {
             VerifyDisasm("CPFSEQ\t[0x12]", "", 0x6212);
             VerifyDisasm("CPFSEQ\t[0x5A]", "", 0x625A);
@@ -305,7 +306,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CPFSGT_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CPFSGT()
         {
             VerifyDisasm("CPFSGT\t[0x12]", "", 0x6412);
             VerifyDisasm("CPFSGT\t[0x5A]", "", 0x645A);
@@ -316,7 +317,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_CPFSLT_Egg_Extd()
+        public void PIC18EggExtd_Disasm_CPFSLT()
         {
             VerifyDisasm("CPFSLT\t[0x12]", "", 0x6012);
             VerifyDisasm("CPFSLT\t[0x5A]", "", 0x605A);
@@ -327,13 +328,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_DAW_Egg_Extd()
+        public void PIC18EggExtd_Disasm_DAW()
         {
             VerifyDisasm("DAW", "", 0x0007);
         }
 
         [Test]
-        public void Disasm_DCFSNZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_DCFSNZ()
         {
             VerifyDisasm("DCFSNZ\t[0x12],W", "", 0x4C12);
             VerifyDisasm("DCFSNZ\t[0x5A],W", "", 0x4C5A);
@@ -350,7 +351,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_DECF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_DECF()
         {
             VerifyDisasm("DECF\t[0x01],W", "", 0x0401);
             VerifyDisasm("DECF\t[0x5F],W", "", 0x045F);
@@ -365,7 +366,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_DECFSZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_DECFSZ()
         {
             VerifyDisasm("DECFSZ\t[0x12],W", "", 0x2C12);
             VerifyDisasm("DECFSZ\t[0x5A],W", "", 0x2C5A);
@@ -382,14 +383,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_GOTO_Egg_Extd()
+        public void PIC18EggExtd_Disasm_GOTO()
         {
             VerifyDisasm("GOTO\t0x000006", "", 0xEF03, 0xF000);
             VerifyDisasm("GOTO\t0x0F12AC", "", 0xEF56, 0xF789);
         }
 
         [Test]
-        public void Disasm_INCF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_INCF()
         {
             VerifyDisasm("INCF\t[0x01],W", "", 0x2801);
             VerifyDisasm("INCF\t[0x5F],W", "", 0x285F);
@@ -404,7 +405,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_INCFSZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_INCFSZ()
         {
             VerifyDisasm("INCFSZ\t[0x12],W", "", 0x3C12);
             VerifyDisasm("INCFSZ\t[0x5A],W", "", 0x3C5A);
@@ -421,7 +422,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_INFSNZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_INFSNZ()
         {
             VerifyDisasm("INFSNZ\t[0x12],W", "", 0x4812);
             VerifyDisasm("INFSNZ\t[0x5A],W", "", 0x485A);
@@ -438,7 +439,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_IORWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_IORWF()
         {
             VerifyDisasm("IORWF\t[0x23],W", "", 0x1023);
             VerifyDisasm("IORWF\t[0x5A],W", "", 0x105A);
@@ -455,7 +456,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_LFSR_Egg_Extd()
+        public void PIC18EggExtd_Disasm_LFSR()
         {
             VerifyDisasm("LFSR\tFSR0,0x0300", "", 0xEE03, 0xF000);
             VerifyDisasm("LFSR\tFSR0,0x0034", "", 0xEE00, 0xF034);
@@ -463,7 +464,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_MOVF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MOVF()
         {
             VerifyDisasm("MOVF\t[0x12],W", "", 0x5012);
             VerifyDisasm("MOVF\t[0x5A],W", "", 0x505A);
@@ -480,14 +481,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_MOVFF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MOVFF()
         {
             VerifyDisasm("MOVFF\t0x000,0x123", "", 0xC000, 0xF123);
             VerifyDisasm("MOVFF\tPORTA,PORTB", "", 0xCF80, 0xFF81);
         }
 
         [Test]
-        public void Disasm_MOVLB_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MOVLB()
         {
             VerifyDisasm("MOVLB\t0x00", "", 0x0100);
             VerifyDisasm("MOVLB\t0x07", "", 0x0107);
@@ -495,7 +496,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_MOVSF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MOVSF()
         {
             VerifyDisasm("MOVSF\t[0x00],0x000", "", 0xEB00, 0xF000);
             VerifyDisasm("MOVSF\t[0x75],0x033", "", 0xEB75, 0xF033);
@@ -503,14 +504,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_MOVSS_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MOVSS()
         {
             VerifyDisasm("MOVSS\t[0x00],[0x01]", "", 0xEB80, 0xF001);
             VerifyDisasm("MOVSS\t[0x75],[0x44]", "", 0xEBF5, 0xF044);
         }
 
         [Test]
-        public void Disasm_MOVWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MOVWF()
         {
             VerifyDisasm("MOVWF\t[0x12]", "", 0x6E12);
             VerifyDisasm("MOVWF\t[0x5A]", "", 0x6E5A);
@@ -521,7 +522,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_MULWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_MULWF()
         {
             VerifyDisasm("MULWF\t[0x01]", "", 0x0201);
             VerifyDisasm("MULWF\t[0x43]", "", 0x0243);
@@ -532,7 +533,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_NEGF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_NEGF()
         {
             VerifyDisasm("NEGF\t[0x12]", "", 0x6C12);
             VerifyDisasm("NEGF\t[0x5A]", "", 0x6C5A);
@@ -543,7 +544,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_NOP_Egg_Extd()
+        public void PIC18EggExtd_Disasm_NOP()
         {
             VerifyDisasm("NOP", "", 0x0000);
             VerifyDisasm("NOP", "", 0xF000);
@@ -551,32 +552,32 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SLEEP_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SLEEP()
         {
             VerifyDisasm("SLEEP", "", 0x0003);
         }
 
         [Test]
-        public void Disasm_POP_Egg_Extd()
+        public void PIC18EggExtd_Disasm_POP()
         {
             VerifyDisasm("POP", "", 0x0006);
         }
 
         [Test]
-        public void Disasm_PUSH_Egg_Extd()
+        public void PIC18EggExtd_Disasm_PUSH()
         {
             VerifyDisasm("PUSH", "", 0x0005);
         }
 
         [Test]
-        public void Disasm_PUSHL_Egg_Extd()
+        public void PIC18EggExtd_Disasm_PUSHL()
         {
             VerifyDisasm("PUSHL\t0x00", "", 0xEA00);
             VerifyDisasm("PUSHL\t0xF5", "", 0xEAF5);
         }
 
         [Test]
-        public void Disasm_RCALL_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RCALL()
         {
             VerifyDisasm("RCALL\t0x000204", "", 0xD801);
             VerifyDisasm("RCALL\t0x000356", "", 0xD8AA);
@@ -587,27 +588,27 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_RESET_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RESET()
         {
             VerifyDisasm("RESET", "", 0x00FF);
         }
 
         [Test]
-        public void Disasm_RETFIE_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RETFIE()
         {
             VerifyDisasm("RETFIE", "", 0x0010);
             VerifyDisasm("RETFIE,\tFAST", "", 0x0011);
         }
 
         [Test]
-        public void Disasm_RETURN_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RETURN()
         {
             VerifyDisasm("RETURN", "", 0x0012);
             VerifyDisasm("RETURN,\tFAST", "", 0x0013);
         }
 
         [Test]
-        public void Disasm_RLCF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RLCF()
         {
             VerifyDisasm("RLCF\t[0x12],W", "", 0x3412);
             VerifyDisasm("RLCF\t[0x5A],W", "", 0x345A);
@@ -624,7 +625,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_RLNCF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RLNCF()
         {
             VerifyDisasm("RLNCF\t[0x12],W", "", 0x4412);
             VerifyDisasm("RLNCF\t[0x5A],W", "", 0x445A);
@@ -641,7 +642,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_RRCF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RRCF()
         {
             VerifyDisasm("RRCF\t[0x12],W", "", 0x3012);
             VerifyDisasm("RRCF\t[0x5A],W", "", 0x305A);
@@ -658,7 +659,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_RRNCF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_RRNCF()
         {
             VerifyDisasm("RRNCF\t[0x12],W", "", 0x4012);
             VerifyDisasm("RRNCF\t[0x5A],W", "", 0x405A);
@@ -675,7 +676,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SETF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SETF()
         {
             VerifyDisasm("SETF\t[0x12]", "", 0x6812);
             VerifyDisasm("SETF\t[0x5A]", "", 0x685A);
@@ -686,14 +687,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SUBFSR_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SUBFSR()
         {
             VerifyDisasm("SUBFSR\tFSR0,0x00", "", 0xE900);
             VerifyDisasm("SUBFSR\tFSR1,0x35", "", 0xE975);
         }
 
         [Test]
-        public void Disasm_SUBFWB_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SUBFWB()
         {
             VerifyDisasm("SUBFWB\t[0x12],W", "", 0x5412);
             VerifyDisasm("SUBFWB\t[0x5A],W", "", 0x545A);
@@ -710,14 +711,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SUBULNK_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SUBULNK()
         {
             VerifyDisasm("SUBULNK\t0x00", "", 0xE9C0);
             VerifyDisasm("SUBULNK\t0x35", "", 0xE9F5);
         }
 
         [Test]
-        public void Disasm_SUBWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SUBWF()
         {
             VerifyDisasm("SUBWF\t[0x12],W", "", 0x5C12);
             VerifyDisasm("SUBWF\t[0x5A],W", "", 0x5C5A);
@@ -734,7 +735,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SUBWFB_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SUBWFB()
         {
             VerifyDisasm("SUBWFB\t[0x12],W", "", 0x5812);
             VerifyDisasm("SUBWFB\t[0x5A],W", "", 0x585A);
@@ -751,7 +752,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_SWAPF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_SWAPF()
         {
             VerifyDisasm("SWAPF\t[0x12],W", "", 0x3812);
             VerifyDisasm("SWAPF\t[0x5A],W", "", 0x385A);
@@ -768,7 +769,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_TBLRD_Egg_Extd()
+        public void PIC18EggExtd_Disasm_TBLRD()
         {
             VerifyDisasm("TBLRD\t*", "", 0x0008);
             VerifyDisasm("TBLRD\t*+", "", 0x0009);
@@ -777,7 +778,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_TBLWT_Egg_Extd()
+        public void PIC18EggExtd_Disasm_TBLWT()
         {
             VerifyDisasm("TBLWT\t*", "", 0x000C);
             VerifyDisasm("TBLWT\t*+", "", 0x000D);
@@ -786,7 +787,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_TSTFSZ_Egg_Extd()
+        public void PIC18EggExtd_Disasm_TSTFSZ()
         {
             VerifyDisasm("TSTFSZ\t[0x12]", "", 0x6612);
             VerifyDisasm("TSTFSZ\t[0x5A]", "", 0x665A);
@@ -797,7 +798,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_XORWF_Egg_Extd()
+        public void PIC18EggExtd_Disasm_XORWF()
         {
             VerifyDisasm("XORWF\t[0x23],W", "", 0x1823);
             VerifyDisasm("XORWF\t[0x5A],W", "", 0x185A);
@@ -814,7 +815,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_xxxLW_Egg_Extd()
+        public void PIC18EggExtd_Disasm_xxxLW()
         {
             VerifyDisasm("SUBLW\t0x00", "", 0x0800);
             VerifyDisasm("SUBLW\t0xAA", "", 0x08AA);
@@ -835,7 +836,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_Indirect_Egg_Extd()
+        public void PIC18EggExtd_Disasm_Indirect()
         {
             VerifyDisasm("TSTFSZ\tINDF2,ACCESS", "", 0x66DF);
             VerifyDisasm("DECF\tPLUSW2,W,ACCESS", "", 0x04DB);
@@ -853,7 +854,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         }
 
         [Test]
-        public void Disasm_Invalids_Egg_Extd()
+        public void PIC18EggExtd_Disasm_Invalids()
         {
             VerifyDisasm("invalid", "unknown opcode", 0x0001);
             VerifyDisasm("invalid", "missing second word", 0x0002);
