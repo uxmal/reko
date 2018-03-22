@@ -384,6 +384,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("invalid", "unknown opcode", 0x000D);
             VerifyDisasm("invalid", "unknown opcode", 0x000E);
             VerifyDisasm("invalid", "unknown opcode", 0x000F);
+            VerifyDisasm("invalid", "unknown opcode", 0x0061);
+            VerifyDisasm("invalid", "unknown opcode", 0x0062);
         }
 
         [Test]
@@ -392,6 +394,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("invalid", "unknown opcode", 0x0001);
             VerifyDisasm("invalid", "unknown opcode", 0x000A);
             VerifyDisasm("invalid", "unknown opcode", 0x000B);
+            VerifyDisasm("invalid", "unknown opcode", 0x0065);
+            VerifyDisasm("invalid", "unknown opcode", 0x0066);
+            VerifyDisasm("invalid", "unknown opcode", 0x0067);
             for (ushort uCode = 0x0010; uCode <= 0x1F; uCode++)
             {
                 VerifyDisasm("invalid", "unknown opcode", uCode);

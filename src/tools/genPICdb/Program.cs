@@ -33,13 +33,14 @@ using System.Xml.Serialization;
 
 namespace Reko.Tools.genPICdb
 {
+    using static PICConstants;
+
     /// <summary>
     /// A program to generate the PIC definition database from the MPLAB X IDE installation.
     /// The Microchip MPLAB X IDE is freely available at www.microchip.com as a development tool.
     /// </summary>
     class Program
     {
-        #region Privates
 
         private const string keyW32 = "SOFTWARE\\Microchip";
         private const string keyW64 = "SOFTWARE\\Wow6432Node\\Microchip";
@@ -49,14 +50,11 @@ namespace Reko.Tools.genPICdb
         private const string crownkingpath = "mplab_ide\\mplablibs\\modules\\ext";
         private const string crownkingfile = "crownking.edc.jar";
 
-        private const string localdbfile = "picdb.zip";
         private const string defaultdbfile = "defaultpicdb.zip";
-        private const string contentPIC16 = @"content/edc/16xxxx";
-        private const string contentPIC18 = @"content/edc/18xxxx";
 
         private bool success = false;
 
-        #endregion
+        private PartInfo partsinfo = new PartInfo();
 
         #region Helpers
 
@@ -99,9 +97,9 @@ namespace Reko.Tools.genPICdb
         }
         private string genpicdbpath = null;
 
-        private string PicLocalDBFilePath => Path.Combine(GenPICDBPath, localdbfile);
+        private string PicLocalDBFilePath => Path.Combine(GenPICDBPath, LocalDBFilename);
         private string PicDefaultDBFilePath => Path.Combine(GenPICDBPath, @"..\..", defaultdbfile);
-        private string PicCopyDBFilePath => Path.Combine(GenPICDBPath, @"..\..", localdbfile);
+        private string PicCopyDBFilePath => Path.Combine(GenPICDBPath, @"..\..", LocalDBFilename);
 
         private string PathToPacks => Path.Combine(MPLABXInstallDir, packs);
 
@@ -169,18 +167,38 @@ namespace Reko.Tools.genPICdb
             return
                 (s.StartsWith("PIC16F")
                 ||
-                (s.StartsWith("PIC18F")) && !s.Contains("J") && !s.Contains("Q"));
+                (s.StartsWith("PIC18")) && !s.Contains("18LF") && !s.Contains("J") && !s.Contains("Q"));
         }
 
         private void WritePICEntry(XDocument xdoc, string subdir, ZipArchive zout)
         {
             PIC pic = xdoc.ToObject<PIC>();
+            partsinfo.Parts.Add(new PICPart(pic.Name, pic.ProcID));
             var xs = new XmlSerializer(typeof(PIC));
             string picname = pic.Name;
             string picpath = subdir + "/" + picname + ".PIC";
             ZipArchiveEntry picentry = zout.CreateEntry(picpath);
             using (var picw = new StreamWriter(picentry.Open()))
                 xs.Serialize(picw, pic);
+        }
+
+        private bool AcceptPICEntry(ZipArchiveEntry picentry, Func<string, bool> filter)
+        {
+            return ((picentry.FullName.StartsWith(ContentPIC16Path + "/PIC16", true, CultureInfo.InvariantCulture) ||
+                     picentry.FullName.StartsWith(ContentPIC18Path + "/PIC18", true, CultureInfo.InvariantCulture))
+                     && filter(picentry.Name));
+        }
+
+        private void WritePartsInfo(ZipArchive zout)
+        {
+            if (partsinfo.Parts.Count() <= 0)
+                return;
+            partsinfo.Version = mplabXVersion;
+            var xdoc = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+            xdoc.Add(partsinfo.ToXElement());
+            ZipArchiveEntry partsentry = zout.CreateEntry(PartsinfoFilename);
+            using (var partw = new StreamWriter(partsentry.Open()))
+                xdoc.Save(partw);
         }
 
         #endregion
@@ -262,28 +280,24 @@ namespace Reko.Tools.genPICdb
                         // For each MPLAB X IDE entry, look only for true PIC16 and PIC18
                         foreach (var entry in crownkingfile.Entries)
                         {
-                            if (entry.FullName.StartsWith(contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
-                                entry.FullName.StartsWith(contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
+                            if (AcceptPICEntry(entry, FilterPICName))
                             {
-                                // Caller may want to filter further valid PIC entries
-                                if (FilterPICName(entry.Name))
+                                // Candidate to extract.
+                                XDocument xdoc;
+                                using (var eo = entry.Open())
                                 {
-                                    // Candidate to extract.
-                                    XDocument xdoc;
-                                    using (var eo = entry.Open())
-                                    {
-                                        xdoc = XDocument.Load(entry.Open());
-                                        xdoc = Pruning(xdoc); // Pruning of the XML tree for unwanted elements
-                                    }
+                                    xdoc = XDocument.Load(entry.Open());
+                                    xdoc = Pruning(xdoc); // Pruning of the XML tree for unwanted elements
+                                }
 
-                                    if (xdoc != null)
-                                    {
-                                        WritePICEntry(xdoc, Path.GetDirectoryName(entry.FullName), zoutfile);
-                                        numpics++;
-                                    }
+                                if (xdoc != null)
+                                {
+                                    WritePICEntry(xdoc, Path.GetDirectoryName(entry.FullName), zoutfile);
+                                    numpics++;
                                 }
                             }
                         }
+                        WritePartsInfo(zoutfile);
                     }
                 }
                 if (numpics > 0)
@@ -317,7 +331,7 @@ namespace Reko.Tools.genPICdb
                         string picname = Path.GetFileNameWithoutExtension(filename);
                         if (FilterPICName(picname))
                         {
-                            var xdoc = XDocument.Load(filename); ;
+                            var xdoc = XDocument.Load(filename); 
                             xdoc = Pruning(xdoc); // Pruning of the XML tree for unwanted elements
                             if (xdoc != null) yield return xdoc;
                         }
@@ -353,16 +367,16 @@ namespace Reko.Tools.genPICdb
                             xver.Save(picw);
                         }
 
-                            Console.Write("PIC16F");
+                        Console.Write("PIC16F");
                         foreach (XDocument xdoc in GetValidPIC("PIC12*_DFP"))
                         {
-                            WritePICEntry(xdoc, contentPIC16, zoutfile);
+                            WritePICEntry(xdoc, ContentPIC16Path, zoutfile);
                             numpics++;
                             Console.Write(".");
                         }
                         foreach (XDocument xdoc in GetValidPIC("PIC16*_DFP"))
                         {
-                            WritePICEntry(xdoc, contentPIC16, zoutfile);
+                            WritePICEntry(xdoc, ContentPIC16Path, zoutfile);
                             numpics++;
                             Console.Write(".");
                         }
@@ -370,11 +384,12 @@ namespace Reko.Tools.genPICdb
                         Console.Write("PIC18F");
                         foreach (XDocument xdoc in GetValidPIC("PIC18*_DFP"))
                         {
-                            WritePICEntry(xdoc, contentPIC18, zoutfile);
+                            WritePICEntry(xdoc, ContentPIC18Path, zoutfile);
                             numpics++;
                             Console.Write(".");
                         }
                         Console.WriteLine("done.");
+                        WritePartsInfo(zoutfile);
                     }
                 }
                 if (numpics > 0)

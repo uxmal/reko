@@ -62,8 +62,8 @@
     <Compile Include="PIC16\Basic\PIC16BasicDisasm.cs" />
     <Compile Include="PIC16\Basic\PIC16BasicRegisters.cs" />
     <Compile Include="PIC16\Basic\PIC16BasicRewriter.cs" />
-    <Compile Include="PIC16\Enhanced\PIC16EnhancedRewriter.cs" />
-    <Compile Include="PIC16\Enhanced\PIC16EnhancedDisasm.cs" />
+    <Compile Include="PIC16\Enhanced\PIC16EnhdRewriter.cs" />
+    <Compile Include="PIC16\Enhanced\PIC16EnhdDisasm.cs" />
     <Compile Include="PIC16\Enhanced\PIC16EnhRegisters.cs" />
     <Compile Include="PIC16\FlagM.cs" />
     <Compile Include="PIC16\FullFeatured\PIC16FullRewriter.cs" />

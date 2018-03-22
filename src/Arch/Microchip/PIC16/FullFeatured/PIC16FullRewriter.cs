@@ -29,7 +29,7 @@ namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    public class PIC16FullRewriter : PIC16RewriterBase
+    public class PIC16FullRewriter : PIC16BasicRewriter
     {
 
         private PIC16FullRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -37,7 +37,7 @@ namespace Reko.Arch.Microchip.PIC16
         {
         }
 
-        public static PICRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public new static PICRewriter Create(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new PIC16FullRewriter(
                 arch ?? throw new ArgumentNullException(nameof(arch)),
@@ -48,6 +48,9 @@ namespace Reko.Arch.Microchip.PIC16
               );
         }
 
+        /// <summary>
+        /// Actual instruction rewriter method for Full-Featured PIC16.
+        /// </summary>
         protected override void RewriteInstr()
         {
             switch (instrCurr.Opcode)
@@ -59,6 +62,7 @@ namespace Reko.Arch.Microchip.PIC16
                 case Opcode.ADDFSR:
                 case Opcode.ADDWFC:
                 case Opcode.ASRF:
+                case Opcode.BRA:
                 case Opcode.BRW:
                 case Opcode.CALLW:
                 case Opcode.LSLF:
@@ -69,6 +73,7 @@ namespace Reko.Arch.Microchip.PIC16
                 case Opcode.MOVWI:
                 case Opcode.RESET:
                 case Opcode.SUBWFB:
+                case Opcode.TRIS:
                     break;
             }
 

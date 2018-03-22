@@ -18,45 +18,37 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Linq;
+
 namespace Reko.Libraries.Microchip
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Reflection;
-    using System.Xml.Linq;
-
+    using static PICConstants;
 
     /// <summary>
     /// This factory class provides methods for loading Microchip PIC definition (XML) from the MPLAB X IDE (a.k.a. Crownking) database or a local copy of it.
     /// </summary>
-    public class PICCrownking
+    public sealed class PICCrownking
     {
-        #region Privates
-
-        private const string localdbfile = "picdb.zip";
-        private const string contentPIC16 = @"content/edc/16xxxx";
-        private const string contentPIC18 = @"content/edc/18xxxx";
-
         private static PICCrownking currentDB = null;
-
-        #endregion
-
-        #region Constructors
+        private static PartInfo partslist = null;
 
         /// <summary>
-        /// Specialized default constructor for use only by derived class.
+        /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        protected PICCrownking()
+        private PICCrownking()
         {
             OpenDB();
         }
 
-        #endregion
 
-        #region Methods
+        #region Local properties/methods
 
         private PICCrownkingException RaiseError(DBErrorCode err, string msg)
         {
@@ -89,11 +81,11 @@ namespace Reko.Libraries.Microchip
             Assembly CrownkingAssembly;
             CrownkingAssembly = Assembly.GetAssembly(GetType());
             string sDir = Path.GetDirectoryName(CrownkingAssembly.Location);
-            string path = Path.Combine(sDir, localdbfile);
+            string path = Path.Combine(sDir, LocalDBFilename);
             if (!File.Exists(path))
             {
                 sDir = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                path = Path.Combine(sDir, localdbfile);
+                path = Path.Combine(sDir, LocalDBFilename);
             }
             return path;
         }
@@ -114,12 +106,49 @@ namespace Reko.Libraries.Microchip
             }
         }
 
+        private bool AcceptPICEntry(ZipArchiveEntry picentry, Func<string, bool> filter)
+        {
+            return ((picentry.FullName.StartsWith(ContentPIC16Path + "/PIC16", true, CultureInfo.InvariantCulture) ||
+                     picentry.FullName.StartsWith(ContentPIC18Path + "/PIC18", true, CultureInfo.InvariantCulture))
+                     && filter(picentry.Name));
+        }
+
+        private PartInfo PartsInfo
+        {
+            get
+            {
+                CheckDBExist();
+                if (partslist == null)
+                {
+                    try
+                    {
+                        using (ZipArchive picdbzipfile = ZipFile.OpenRead(CurrentDBPath))
+                        {
+                            var entry = picdbzipfile.GetEntry(PartsinfoFilename);
+                            if (entry != null)
+                            {
+                                using (var eo = entry.Open())
+                                {
+                                    partslist = XDocument.Load(eo).Root.ToObject<PartInfo>();
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        partslist = null;
+                    }
+                }
+                return partslist;
+            }
+        }
+
         #endregion
 
         #region Public API
 
         /// <summary>
-        /// Gets the last error encountered.
+        /// Gets the last error code encountered.
         /// </summary>
         /// <value>
         /// The last error as a value from <see cref="DBErrorCode"/> enumeration.
@@ -173,7 +202,7 @@ namespace Reko.Libraries.Microchip
         }
 
         /// <summary>
-        /// Gets a PIC XML definition from the database.
+        /// Gets a PIC XML definition from the database given the name of the PIC.
         /// </summary>
         /// <param name="sPICName">The name of the PIC being looked for.</param>
         /// <returns>
@@ -191,19 +220,20 @@ namespace Reko.Libraries.Microchip
             if (String.IsNullOrEmpty(sPICName))
                 return null;
             sPICName = sPICName.ToUpperInvariant();
-            if (!sPICName.EndsWith(".PIC", true, CultureInfo.InvariantCulture)) sPICName += ".PIC";
+            if (!sPICName.EndsWith(".PIC", true, CultureInfo.InvariantCulture))
+                sPICName += ".PIC";
             if (sPICName.StartsWith("PIC16", true, CultureInfo.InvariantCulture))
-                contentpath = contentPIC16;
+                contentpath = ContentPIC16Path;
             if (sPICName.StartsWith("PIC18", true, CultureInfo.InvariantCulture))
-                contentpath = contentPIC18;
+                contentpath = ContentPIC18Path;
 
             if (contentpath != null)
             {
                 try
                 {
-                    using (ZipArchive jarfile = ZipFile.OpenRead(CurrentDBPath))
+                    using (ZipArchive picdbzipfile = ZipFile.OpenRead(CurrentDBPath))
                     {
-                        ZipArchiveEntry entry = jarfile.GetEntry(contentpath + "/" + sPICName);
+                        ZipArchiveEntry entry = picdbzipfile.GetEntry(contentpath + "/" + sPICName);
                         if (entry != null)
                         {
                             using (var eo = entry.Open())
@@ -226,6 +256,25 @@ namespace Reko.Libraries.Microchip
         }
 
         /// <summary>
+        /// Gets a PIC XML definition from the database given the processor ID of the PIC.
+        /// </summary>
+        /// <param name="procID">Identifier for the processor.</param>
+        /// <returns>
+        /// The XML document as retrieved from the active Microchip database. Or null if not found or no
+        /// database.
+        /// </returns>
+        public XElement GetPICAsXML(int procID)
+        {
+            if (PartsInfo != null)
+            {
+                var picName = PartsInfo.Parts.Where(p => p.ProcID == procID).Select(p => p.Name).FirstOrDefault();
+                if (picName != null)
+                    return GetPICAsXML(picName);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Enumerates the PIC names contained in the current database.
         /// </summary>
         /// <param name="filter">A filter predicate to select categories of PIC names.</param>
@@ -237,22 +286,11 @@ namespace Reko.Libraries.Microchip
         /// </remarks>
         public IEnumerable<string> EnumPICList(Func<string, bool> filter)
         {
-            CheckDBExist();
-            var zlist = new List<ZipArchiveEntry>();
-            using (ZipArchive jarfile = ZipFile.OpenRead(CurrentDBPath))
-            {
-                zlist.AddRange(jarfile.Entries.OrderByNatural(e => e.Name));
-            }
-            
-            foreach (var entry in zlist)
-            {
-                if (entry.FullName.StartsWith(contentPIC16 + "/PIC16", true, CultureInfo.InvariantCulture) ||
-                    entry.FullName.StartsWith(contentPIC18 + "/PIC18", true, CultureInfo.InvariantCulture))
-                {
-                    if (filter(entry.Name))
-                        yield return Path.GetFileNameWithoutExtension(entry.Name);
-                }
-            }
+            if (PartsInfo == null)
+                yield break;
+            foreach (var part in PartsInfo.PICNamesList(filter))
+                yield return part;
+
         }
 
         /// <summary>
@@ -266,6 +304,20 @@ namespace Reko.Libraries.Microchip
         /// </remarks>
         public IEnumerable<string> EnumPICList()
             => EnumPICList(filt => true);
+
+        /// <summary>
+        /// Gets PIC information given its name.
+        /// </summary>
+        /// <param name="picName">Name of the PIC.</param>
+        public (string Name, int ID)? GetPICInfo(string picName)
+            => PartsInfo?.Parts.Where(p => p.Name == picName).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
+
+        /// <summary>
+        /// Gets PIC information given its processor ID.
+        /// </summary>
+        /// <param name="picID">Identifier for the PIC.</param>
+        public (string Name, int ID)? GetPICInfo(int picID)
+            => PartsInfo?.Parts.Where(p => p.ProcID == picID).Select(p => (p.Name, p.ProcID)).FirstOrDefault();
 
         #endregion
 

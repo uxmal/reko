@@ -544,6 +544,47 @@ namespace Reko.Arch.Microchip.PIC16
 
     }
 
+    /// <summary>
+    /// A PIC16 TRIS register index. Used by TRIS instruction.
+    /// </summary>
+    public class PIC16TrisNumOperand : MachineOperand, IOperand
+    {
+        /// <summary>
+        /// Gets the TRIS register index [5-7].
+        /// </summary>
+        public readonly Constant TrisNum;
+
+        /// <summary>
+        /// Instantiates a TRIS register operand. Used by TRIS instruction.
+        /// </summary>
+        /// <param name="trisnum">The TRIS register number [5, 6, 7].</param>
+        public PIC16TrisNumOperand(byte trisnum) : base(PrimitiveType.Byte)
+        {
+            TrisNum = Constant.Byte(trisnum);
+        }
+
+        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitTrisNum(this);
+        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitTrisNum(this);
+        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitTrisNum(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            switch (TrisNum.ToByte())
+            {
+                case 5:
+                    writer.WriteString("A");
+                    break;
+                case 6:
+                    writer.WriteString("B");
+                    break;
+                case 7:
+                    writer.WriteString("C");
+                    break;
+            }
+        }
+
+    }
+
 
     /// <summary>
     /// A PIC16 data EEPROM series of bytes.

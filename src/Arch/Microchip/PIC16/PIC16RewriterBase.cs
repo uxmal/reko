@@ -38,6 +38,11 @@ namespace Reko.Arch.Microchip.PIC16
         {
         }
 
+        /// <summary>
+        /// Actual instruction rewriter method for all PIC16 families.
+        /// </summary>
+        /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
+        ///                                              condition occurs.</exception>
         protected override void RewriteInstr()
         {
             var addr = instrCurr.Address;
@@ -54,41 +59,111 @@ namespace Reko.Arch.Microchip.PIC16
                     break;
 
                 case Opcode.ADDLW:
+                    Rewrite_ADDLW();
+                    break;
                 case Opcode.ADDWF:
+                    Rewrite_ADDWF();
+                    break;
                 case Opcode.ANDLW:
+                    Rewrite_ANDLW();
+                    break;
                 case Opcode.ANDWF:
+                    Rewrite_ANDWF();
+                    break;
                 case Opcode.BCF:
-                case Opcode.BRA:
+                    Rewrite_BCF();
+                    break;
                 case Opcode.BSF:
+                    Rewrite_BSF();
+                    break;
                 case Opcode.BTFSC:
+                    Rewrite_BTFSC();
+                    break;
                 case Opcode.BTFSS:
+                    Rewrite_BTFSS();
+                    break;
                 case Opcode.CALL:
+                    Rewrite_CALL();
+                    break;
                 case Opcode.CLRF:
+                    Rewrite_CLRF();
+                    break;
                 case Opcode.CLRW:
+                    Rewrite_CLRW();
+                    break;
                 case Opcode.CLRWDT:
+                    Rewrite_CLRWDT();
+                    break;
                 case Opcode.COMF:
+                    Rewrite_COMF();
+                    break;
                 case Opcode.DECF:
+                    Rewrite_DECF();
+                    break;
                 case Opcode.DECFSZ:
+                    Rewrite_DECFSZ();
+                    break;
                 case Opcode.GOTO:
+                    Rewrite_GOTO();
+                    break;
                 case Opcode.INCF:
+                    Rewrite_INCF();
+                    break;
                 case Opcode.INCFSZ:
+                    Rewrite_INCFSZ();
+                    break;
                 case Opcode.IORLW:
+                    Rewrite_IORLW();
+                    break;
                 case Opcode.IORWF:
+                    Rewrite_IORWF();
+                    break;
                 case Opcode.MOVF:
+                    Rewrite_MOVF();
+                    break;
                 case Opcode.MOVLW:
+                    Rewrite_MOVLW();
+                    break;
                 case Opcode.MOVWF:
+                    Rewrite_MOVWF();
+                    break;
                 case Opcode.NOP:
+                    m.Nop();
+                    break;
                 case Opcode.RETFIE:
+                    Rewrite_RETFIE();
+                    break;
                 case Opcode.RETLW:
+                    Rewrite_RETLW();
+                    break;
                 case Opcode.RETURN:
+                    Rewrite_RETURN();
+                    break;
                 case Opcode.RLF:
+                    Rewrite_RLF();
+                    break;
                 case Opcode.RRF:
+                    Rewrite_RRF();
+                    break;
                 case Opcode.SLEEP:
+                    Rewrite_SLEEP();
+                    break;
                 case Opcode.SUBLW:
+                    Rewrite_SUBLW();
+                    break;
                 case Opcode.SUBWF:
+                    Rewrite_SUBWF();
+                    break;
                 case Opcode.SWAPF:
+                    Rewrite_SWAPF();
+                    break;
                 case Opcode.XORLW:
+                    Rewrite_XORLW();
+                    break;
                 case Opcode.XORWF:
+                    Rewrite_XORWF();
+                    break;
+
 
                 // Pseudo-instructions
                 case Opcode.__CONFIG:
@@ -105,13 +180,24 @@ namespace Reko.Arch.Microchip.PIC16
 
         }
 
+        /// <summary>
+        /// Gets the working register (WREG) which is often used implicitly by PIC instructions.
+        /// </summary>
+        /// <value>
+        /// The WREG register.
+        /// </value>
         protected override Identifier GetWReg => binder.EnsureRegister(PIC16Registers.WREG);
-
-        #region Helpers
 
         protected Identifier FlagGroup(FlagM flags)
         {
             return binder.EnsureFlagGroup(PIC16Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+        }
+
+        protected void SetStatusFlags(Expression dst)
+        {
+            FlagM flags = PIC16CC.Defined(instrCurr.Opcode);
+            if (flags != 0)
+                m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
         protected ArrayAccess PushToHWStackAccess()
@@ -172,7 +258,158 @@ namespace Reko.Arch.Microchip.PIC16
             }
         }
 
-        #endregion
+        private void Rewrite_ADDLW()
+        {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, m.IAdd(Wreg, k));
+            SetStatusFlags(Wreg);
+        }
+
+        private void Rewrite_ADDWF()
+        {
+
+        }
+
+        private void Rewrite_ANDLW()
+        {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, m.And(Wreg, k));
+            SetStatusFlags(Wreg);
+        }
+
+        private void Rewrite_ANDWF()
+        {
+
+        }
+
+        void Rewrite_BCF()
+        {
+        }
+
+        void Rewrite_BSF()
+        {
+        }
+
+        void Rewrite_BTFSC()
+        {
+        }
+
+        void Rewrite_BTFSS()
+        {
+        }
+
+        void Rewrite_CALL()
+        {
+        }
+
+        void Rewrite_CLRF()
+        {
+        }
+
+        void Rewrite_CLRW()
+        {
+        }
+
+        void Rewrite_CLRWDT()
+        {
+        }
+
+        void Rewrite_COMF()
+        {
+        }
+
+        void Rewrite_DECF()
+        {
+        }
+
+        void Rewrite_DECFSZ()
+        {
+        }
+
+        void Rewrite_GOTO()
+        {
+        }
+
+        void Rewrite_INCF()
+        {
+        }
+
+        void Rewrite_INCFSZ()
+        {
+        }
+
+        void Rewrite_IORLW()
+        {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, m.Or(Wreg, k));
+            SetStatusFlags(Wreg);
+        }
+
+        void Rewrite_IORWF()
+        {
+        }
+
+        void Rewrite_MOVF()
+        {
+        }
+
+        void Rewrite_MOVLW()
+        {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, k);
+            SetStatusFlags(Wreg);
+        }
+
+        void Rewrite_MOVWF()
+        {
+        }
+
+        void Rewrite_RETFIE()
+        {
+        }
+
+        void Rewrite_RETLW()
+        {
+        }
+
+        void Rewrite_RETURN()
+        {
+        }
+
+        void Rewrite_RLF()
+        {
+        }
+
+        void Rewrite_RRF()
+        {
+        }
+
+        void Rewrite_SLEEP()
+        {
+        }
+
+        void Rewrite_SUBLW()
+        {
+        }
+
+        void Rewrite_SUBWF()
+        {
+        }
+
+        void Rewrite_SWAPF()
+        {
+        }
+
+        void Rewrite_XORLW()
+        {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, m.Xor(Wreg, k));
+            SetStatusFlags(Wreg);
+        }
+
+        void Rewrite_XORWF()
+        {
+        }
 
     }
 

@@ -205,6 +205,8 @@ namespace Reko.Arch.Microchip.Common
         TBLRD,
         ///<summary>Table write. (PIC18)</summary>
         TBLWT,
+        ///<summary>Load TRIS register with W. (PIC16+)</summary>
+        TRIS,
         ///<summary>Test f,  skip if 0. (PIC18)</summary>
         TSTFSZ,
         ///<summary>Exclusive OR literal with WREG. (PIC16, PIC18)</summary>

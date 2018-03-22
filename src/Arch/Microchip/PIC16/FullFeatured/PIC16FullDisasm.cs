@@ -199,6 +199,11 @@ namespace Reko.Arch.Microchip.PIC16
                     case 0b00_0000_0110_0100:
                         return new PICInstruction(Opcode.CLRWDT);
 
+                    case 0b00_0000_0110_0101:
+                    case 0b00_0000_0110_0110:
+                    case 0b00_0000_0110_0111:
+                        return new PICInstruction(Opcode.TRIS, new PIC16TrisNumOperand((byte)uInstr.Extract(0, 3)));
+
                     default:
                         return new PICInstruction(Opcode.invalid);
                 }

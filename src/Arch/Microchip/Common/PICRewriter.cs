@@ -28,6 +28,9 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {
+    /// <summary>
+    /// A PIC IL rewriter abstract class.
+    /// </summary>
     public abstract class PICRewriter : IEnumerable<RtlInstructionCluster>
     {
         protected PICArchitecture arch;
@@ -75,8 +78,14 @@ namespace Reko.Arch.Microchip.Common
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        /// <summary>
+        /// Actual instruction rewriter method must be implemented by derived classes.
+        /// </summary>
         protected abstract void RewriteInstr();
 
+        /// <summary>
+        /// Gets the working register (WREG) which is often used implicitly by PIC instructions.
+        /// </summary>
         protected abstract Identifier GetWReg { get; }
 
     }

@@ -69,11 +69,19 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
             }
         }
 
-        private PIC _getPIC(string sPICName)
+        private PIC GetPIC(string sPICName)
         {
             PIC pic = db.GetPIC(sPICName);
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}.");
             Assert.That(pic.Name, Is.EqualTo(sPICName));
+            return pic;
+        }
+
+        private PIC GetPIC(int iProcID)
+        {
+            PIC pic = db.GetPIC(iProcID);
+            Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '0x{iProcID:X}' - {PICCrownking.LastErrMsg}.");
+            Assert.That(pic.Name, Is.EqualTo(iProcID));
             return pic;
         }
 
@@ -88,30 +96,35 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
             Assert.That(xpic.Attribute("name").Value, Is.EqualTo(sPICName));
             Assert.That(xpic.Attribute("arch").Value, Is.EqualTo("16xxxx"));
             Assert.That(xpic.GetAsBoolean("isextended"), Is.False);
+            int procID = 0x6F84;
+            xpic = db.GetPICAsXML(procID);
+            Assert.That(xpic, Is.Not.Null, $"Unable to load '0x{procID:X}' XML - {PICCrownking.LastErrMsg}.");
+            Assert.That(xpic.Name.LocalName, Is.EqualTo("PIC"));
 
             PIC pic = xpic.ToObject<PIC>();
             Assert.That(pic, Is.Not.Null, $"Unable to get PIC object for '{sPICName}' - {PICCrownking.LastErrMsg}..");
             Assert.That(pic.Name, Is.EqualTo(sPICName));
             Assert.That(pic.Arch, Is.EqualTo("16xxxx"));
+            Assert.That(pic.ProcID, Is.EqualTo(procID));
             Assert.That(pic.IsExtended, Is.False);
 
             sPICName = "PIC16F1825";
-            pic = _getPIC(sPICName);
+            pic = GetPIC(sPICName);
             Assert.That(pic.Arch, Is.EqualTo("16Exxx"));
             Assert.That(pic.IsExtended, Is.False);
 
             sPICName = "PIC18F25K50";
-            pic = _getPIC(sPICName);
+            pic = GetPIC(sPICName);
             Assert.That(pic.Arch, Is.EqualTo("18xxxx"));
             Assert.That(pic.IsExtended, Is.True);
 
             sPICName = "PIC16F15313";
-            pic = _getPIC(sPICName);
+            pic = GetPIC(sPICName);
             Assert.That(pic.Arch, Is.EqualTo("16Exxx"));
             Assert.That(pic.IsExtended, Is.False);
 
             sPICName = "PIC18F24K42";
-            pic = _getPIC(sPICName);
+            pic = GetPIC(sPICName);
             Assert.That(pic.Arch, Is.EqualTo("18xxxx"));
 
             xpic = pic.ToXElement();

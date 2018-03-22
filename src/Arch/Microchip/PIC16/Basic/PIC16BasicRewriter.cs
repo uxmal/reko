@@ -30,7 +30,7 @@ namespace Reko.Arch.Microchip.PIC16
     public class PIC16BasicRewriter : PIC16RewriterBase
     {
 
-        private PIC16BasicRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+        protected PIC16BasicRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             : base(arch, dasm, state, binder, host)
         {
         }
@@ -46,6 +46,9 @@ namespace Reko.Arch.Microchip.PIC16
               );
         }
 
+        /// <summary>
+        /// Actual instruction rewriter method for Basic PIC16.
+        /// </summary>
         protected override void RewriteInstr()
         {
             base.RewriteInstr();

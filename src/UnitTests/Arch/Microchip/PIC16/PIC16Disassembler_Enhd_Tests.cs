@@ -248,6 +248,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         }
 
         [Test]
+        public void PIC16Enhd_Disasm_TRIS()
+        {
+            VerifyDisasm("TRIS\tA", "", 0x0065);
+            VerifyDisasm("TRIS\tB", "", 0x0066);
+            VerifyDisasm("TRIS\tC", "", 0x0067);
+        }
+
+        [Test]
         public void PIC16Enhd_Disasm_xxxLW()
         {
             VerifyDisasm("ADDLW\t0x88", "", 0x3E88);
@@ -260,21 +268,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("SUBLW\t0x05", "", 0x3C05);
             VerifyDisasm("XORLW\t0x00", "", 0x3A00);
             VerifyDisasm("XORLW\t0xAA", "", 0x3AAA);
-        }
-
-        [Test]
-        public void PIC16_Disasm_Invalids_All()
-        {
-            VerifyDisasm("invalid", "unknown opcode", 0x0002);
-            VerifyDisasm("invalid", "unknown opcode", 0x0003);
-            VerifyDisasm("invalid", "unknown opcode", 0x0004);
-            VerifyDisasm("invalid", "unknown opcode", 0x0005);
-            VerifyDisasm("invalid", "unknown opcode", 0x0006);
-            VerifyDisasm("invalid", "unknown opcode", 0x0007);
-            VerifyDisasm("invalid", "unknown opcode", 0x000C);
-            VerifyDisasm("invalid", "unknown opcode", 0x000D);
-            VerifyDisasm("invalid", "unknown opcode", 0x000E);
-            VerifyDisasm("invalid", "unknown opcode", 0x000F);
         }
 
         [Test]
