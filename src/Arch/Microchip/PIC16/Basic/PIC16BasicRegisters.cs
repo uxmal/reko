@@ -52,7 +52,10 @@ namespace Reko.Arch.Microchip.PIC16
         }
 
         /// <summary> Register Page in STATUS register. </summary>
-        public static PICBitFieldStorage RP { get; protected set; }
+        public static PICBitFieldStorage RP0 { get; protected set; }
+
+        /// <summary> Register Page in STATUS register. </summary>
+        public static PICBitFieldStorage RP1 { get; protected set; }
 
         /// <summary> INDF special function register. </summary>
         public static PICRegisterStorage INDF { get; private set; }
@@ -80,7 +83,8 @@ namespace Reko.Arch.Microchip.PIC16
                 PICRegisters.TryGetBitField("TO", out to);
             }
             TO = to;
-            RP = PICRegisters.GetBitField("RP");
+            RP0 = PICRegisters.GetBitField("RP0");
+            RP1 = PICRegisters.GetBitField("RP1");
             FSR = PICRegisters.GetRegister("FSR");
 
             WREG = PICRegisters.GetRegister("WREG");

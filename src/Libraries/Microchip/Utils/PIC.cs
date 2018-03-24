@@ -1459,7 +1459,7 @@ namespace Reko.Libraries.Microchip
 
     #region ProgramSpace XML element
 
-    public abstract class MemProgramSymbolAcceptor : IMemProgramSymbolAcceptor
+    public abstract class MemProgramSymbolAcceptorBase : IMemProgramSymbolAcceptor
     {
 
         #region IMemProgramSymbolAcceptor interface
@@ -1634,7 +1634,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust byte address pointing in program memory spaces.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ProgByteAdjustPoint : MemProgramSymbolAcceptor
+    public sealed class ProgByteAdjustPoint : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -1722,7 +1722,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust bit address pointing in program memory slots.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class ProgBitAdjustPoint : MemProgramSymbolAcceptor
+    public sealed class ProgBitAdjustPoint : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -2198,7 +2198,7 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register field pattern semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldSemantic : MemProgramSymbolAcceptor
+    public sealed class DCRFieldSemantic : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -2339,7 +2339,7 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register Field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRFieldDef : MemProgramSymbolAcceptor
+    public sealed class DCRFieldDef : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -2505,7 +2505,7 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register mode.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRMode : MemProgramSymbolAcceptor
+    public sealed class DCRMode : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -2580,7 +2580,7 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register illegal definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRDefIllegal : MemProgramSymbolAcceptor
+    public sealed class DCRDefIllegal : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -2654,7 +2654,7 @@ namespace Reko.Libraries.Microchip
     /// Device Configuration Register definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DCRDef : MemProgramSymbolAcceptor
+    public sealed class DCRDef : MemProgramSymbolAcceptorBase
     {
 
         #region Constructors
@@ -3085,7 +3085,7 @@ namespace Reko.Libraries.Microchip
     /// Device Information Area (DIA) register.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DeviceRegister : MemProgramSymbolAcceptor
+    public sealed class DeviceRegister : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -3188,7 +3188,7 @@ namespace Reko.Libraries.Microchip
     /// Device Information Area register array.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DIARegisterArray : MemProgramSymbolAcceptor
+    public sealed class DIARegisterArray : MemProgramSymbolAcceptorBase
     {
         #region Constructors
 
@@ -3563,7 +3563,7 @@ namespace Reko.Libraries.Microchip
 
     #region DataSpace XML element
 
-    public abstract class MemDataSymbolAcceptor : IMemDataSymbolAcceptor
+    public abstract class MemDataSymbolAcceptorBase : IMemDataSymbolAcceptor
     {
 
         #region IMemDataSymbolAcceptor interface
@@ -3603,7 +3603,7 @@ namespace Reko.Libraries.Microchip
 
     }
 
-    public abstract class MemDataRegionAcceptor : IMemDataRegionAcceptor
+    public abstract class MemDataRegionAcceptorBase : IMemDataRegionAcceptor
     {
 
         #region IMemDataRegionAcceptor interface
@@ -3770,7 +3770,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust byte address pointing in data memory spaces.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataByteAdjustPoint : MemDataSymbolAcceptor
+    public sealed class DataByteAdjustPoint : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -3852,7 +3852,7 @@ namespace Reko.Libraries.Microchip
     /// Adjust bit address pointing in data memory slots.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DataBitAdjustPoint : MemDataSymbolAcceptor
+    public sealed class DataBitAdjustPoint : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -3934,16 +3934,14 @@ namespace Reko.Libraries.Microchip
     /// SFR Field semantic.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRFieldSemantic : MemDataSymbolAcceptor
+    public sealed class SFRFieldSemantic : MemDataSymbolAcceptorBase
     {
-        #region Constructors
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         public SFRFieldSemantic() { }
 
-        #endregion
 
         #region IMemDataSymbolAcceptor interface
 
@@ -4009,16 +4007,13 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("SFRField = {CName}")]
-    public sealed class SFRFieldDef : MemDataSymbolAcceptor
+    public sealed class SFRFieldDef : MemDataSymbolAcceptorBase
     {
-        #region Constructors
-
         /// <summary>
         /// Default constructor.
         /// </summary>
         public SFRFieldDef() { }
 
-        #endregion
 
         #region IMemDataSymbolAcceptor interface
 
@@ -4055,7 +4050,7 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
-        #region Properties
+        #region Serialized Properties
 
         /// <summary>
         /// Gets the various semantics of this SFR field.
@@ -4067,24 +4062,6 @@ namespace Reko.Libraries.Microchip
         public List<SFRFieldSemantic> SFRFieldSemantics { get; set; }
 
         /// <summary>
-        /// Gets the name of this SFR Field.
-        /// </summary>
-        /// <value>
-        /// The name as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
-        public string CName { get; set; }
-
-        /// <summary>
-        /// Gets the description of this SFR Field.
-        /// </summary>
-        /// <value>
-        /// The description as a string.
-        /// </value>
-        [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
-        public string Desc { get; set; }
-
-        /// <summary>
         /// Used to serialize <see cref="NzWidth" /> property from/to hexadecimal string.
         /// </summary>
         /// <value>
@@ -4092,7 +4069,7 @@ namespace Reko.Libraries.Microchip
         /// </value>
         [XmlAttribute(AttributeName = "nzwidth", Form = XmlSchemaForm.None, Namespace = "")]
         [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
-        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); } 
+        public string NzWidthFormatted { get => $"{NzWidth}"; set => NzWidth = value.ToUInt32Ex(); }
 
         /// <summary>
         /// Gets the bit width of this SFR field.
@@ -4101,7 +4078,26 @@ namespace Reko.Libraries.Microchip
         /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
-        public uint NzWidth { get; private set; }
+        public uint NzWidth { get; set; }
+
+        /// <summary>
+        /// Used to serialize <see cref="BitPos" /> property from/to hexadecimal string.
+        /// </summary>
+        /// <value>
+        /// The bit position as an hexadecimal string.
+        /// </value>
+        [XmlAttribute(AttributeName = "bitpos", Form = XmlSchemaForm.None, Namespace = "")]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never), EditorBrowsable(EditorBrowsableState.Advanced), Browsable(false)]
+        public string BitPosFormatted { get => $"{BitPos}"; set => BitPos = value.ToByteEx(); }
+
+        /// <summary>
+        /// Gets the bit position/address of this SFR field.
+        /// </summary>
+        /// <value>
+        /// The bit position (zero-based) as an unsigned integer.
+        /// </value>
+        [XmlIgnore]
+        public byte BitPos { get; set; }
 
         /// <summary>
         /// Used to serialize <see cref="Mask" /> property from/to hexadecimal string.
@@ -4120,7 +4116,25 @@ namespace Reko.Libraries.Microchip
         /// The bit mask as an integer.
         /// </value>
         [XmlIgnore]
-        public uint Mask { get; private set; }
+        public uint Mask { get; set; }
+
+        /// <summary>
+        /// Gets the name of this SFR Field.
+        /// </summary>
+        /// <value>
+        /// The name as a string.
+        /// </value>
+        [XmlAttribute(AttributeName = "cname", Form = XmlSchemaForm.None, Namespace = "")]
+        public string CName { get; set; }
+
+        /// <summary>
+        /// Gets the description of this SFR Field.
+        /// </summary>
+        /// <value>
+        /// The description as a string.
+        /// </value>
+        [XmlAttribute(AttributeName = "desc", Form = XmlSchemaForm.None, Namespace = "")]
+        public string Desc { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this SFR Field is hidden to language tools.
@@ -4167,7 +4181,7 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("SFRMode = {ID}")]
-    public sealed class SFRMode : MemDataSymbolAcceptor
+    public sealed class SFRMode : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4248,7 +4262,7 @@ namespace Reko.Libraries.Microchip
     /// List of SFR modes.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SFRModeList : MemDataSymbolAcceptor
+    public sealed class SFRModeList : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4314,7 +4328,7 @@ namespace Reko.Libraries.Microchip
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
     [DebuggerDisplay("SFR = {CName}")]
-    public sealed class SFRDef : MemDataSymbolAcceptor
+    public sealed class SFRDef : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4577,7 +4591,7 @@ namespace Reko.Libraries.Microchip
     /// Mirrored registers area.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class Mirror : MemDataSymbolAcceptor
+    public sealed class Mirror : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4680,7 +4694,7 @@ namespace Reko.Libraries.Microchip
     /// Joined SFR (e.g. FSR2 register composed of FSR2H:FSR2L registers).
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class JoinedSFRDef : MemDataSymbolAcceptor
+    public sealed class JoinedSFRDef : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4793,7 +4807,7 @@ namespace Reko.Libraries.Microchip
         /// The bit width as an integer.
         /// </value>
         [XmlIgnore]
-        public uint NzWidth { get; private set; }
+        public uint NzWidth { get; set; }
 
         #endregion
 
@@ -4803,7 +4817,7 @@ namespace Reko.Libraries.Microchip
     /// Selection of a SFR.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class SelectSFR : MemDataSymbolAcceptor
+    public sealed class SelectSFR : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4877,7 +4891,7 @@ namespace Reko.Libraries.Microchip
     /// Multiplexed SFRs definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class MuxedSFRDef : MemDataSymbolAcceptor
+    public sealed class MuxedSFRDef : MemDataSymbolAcceptorBase
     {
         #region Constructors
 
@@ -4989,7 +5003,7 @@ namespace Reko.Libraries.Microchip
     /// DMA Register mirror.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class DMARegisterMirror : MemDataSymbolAcceptor
+    public sealed class DMARegisterMirror : MemDataSymbolAcceptorBase
     {
 
         #region Constructors
@@ -5376,7 +5390,7 @@ namespace Reko.Libraries.Microchip
     /// Non-Memory-Mapped-Register (NMMR) definitions.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    public sealed class NMMRPlace : MemDataRegionAcceptor
+    public sealed class NMMRPlace : MemDataRegionAcceptorBase
     {
         #region Constructors
 

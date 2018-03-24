@@ -150,6 +150,7 @@
     <Compile Include="Arch\Microchip\PIC16\PIC16ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Disassembler_Full_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Disassembler_Enhd_Tests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Registers_All_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Registers_Basic_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Registers_Enh_Tests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Registers_Full_Tests.cs" />

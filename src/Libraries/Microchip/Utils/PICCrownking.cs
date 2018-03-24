@@ -177,7 +177,7 @@ namespace Reko.Libraries.Microchip
         /// <value>
         /// The full pathname of the current database file.
         /// </value>
-        public string CurrentDBPath { get; private set; } = null;
+        public static string CurrentDBPath { get; private set; } = null;
 
         /// <summary>
         /// Gets access to the Microchip Crownking PIC XML definition database.
@@ -265,13 +265,8 @@ namespace Reko.Libraries.Microchip
         /// </returns>
         public XElement GetPICAsXML(int procID)
         {
-            if (PartsInfo != null)
-            {
-                var picName = PartsInfo.Parts.Where(p => p.ProcID == procID).Select(p => p.Name).FirstOrDefault();
-                if (picName != null)
-                    return GetPICAsXML(picName);
-            }
-            return null;
+            var inf = GetPICInfo(procID);
+            return (inf.HasValue ? GetPICAsXML(inf.Value.Name) : null);
         }
 
         /// <summary>

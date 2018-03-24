@@ -43,7 +43,7 @@ namespace Reko.Arch.Microchip.Common
         internal static PrimitiveType Size2PrimitiveType(this uint bitSize)
         {
             if (bitSize == 0)
-                throw new ArgumentOutOfRangeException(nameof(bitSize));
+                throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
             if (bitSize == 1)
                 return PrimitiveType.Bool;
             if (bitSize <= 8)
@@ -58,7 +58,7 @@ namespace Reko.Arch.Microchip.Common
                 return PrimitiveType.Word128;
             if (bitSize <= 256)
                 return PrimitiveType.Word256;
-            throw new ArgumentOutOfRangeException(nameof(bitSize));
+            throw new ArgumentOutOfRangeException(nameof(bitSize), $"Value = {bitSize}");
         }
 
     }

@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
@@ -65,8 +66,6 @@ namespace Reko.Arch.Microchip.Common
         }
 
 
-        #region Methods
-
         /// <summary>
         /// Loads the PIC registers, as found in the PIC definition, into the registers symbol table.
         /// </summary>
@@ -77,26 +76,14 @@ namespace Reko.Arch.Microchip.Common
             symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
             pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
 
-            foreach (var e in pic.DataSpace.RegardlessOfMode.Regions)
-            {
-                if (e is SFRDataSector sfrsect)
-                {
-                    sfrsect.Accept(this);
-                    continue;
-                }
-                if (e is NMMRPlace nmmrs)
-                {
-                    nmmrs.Accept(this);
-                    continue;
-                }
-            }
+            pic.DataSpace.RegardlessOfMode.Regions.
+                OfType<IMemDataRegionAcceptor>().
+                ToList().
+                ForEach(r => r.Accept(this));
         }
 
-        #endregion
 
         #region Visit the PIC definition and create registers
-
-        #region IMemDataRegionVisitor interface implementation
 
         public void Visit(SFRDataSector xmlRegion)
         {
@@ -147,13 +134,9 @@ namespace Reko.Arch.Microchip.Common
             // Do nothing        
         }
 
-        #endregion
-
-        #region IMemDataSymbolVisitor interface implementation
 
         public void Visit(DataBitAdjustPoint xmlSymb)
         {
-            bitFieldAddr += xmlSymb.Offset;
         }
 
         public void Visit(DataByteAdjustPoint xmlSymb)
@@ -217,7 +200,6 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(SFRMode xmlSymb)
         {
-            bitFieldAddr = 0;
             foreach (var e in xmlSymb.Fields)
             {
                 switch (e)
@@ -239,10 +221,9 @@ namespace Reko.Arch.Microchip.Common
             // We do not add SFR Fields which are duplicating the parent SFR register definition (same name or same bit width)
             if ((xmlSymb.CName != currSFRDef.CName) && (xmlSymb.NzWidth != currSFRDef.NzWidth))
             {
-                var fld = new PICBitFieldStorage(currSFRReg, xmlSymb, (byte)bitFieldAddr, xmlSymb.Mask);
+                var fld = new PICBitFieldStorage(currSFRReg, xmlSymb, xmlSymb.BitPos, xmlSymb.Mask);
                 symTable.AddRegisterField(currSFRReg, fld);
             }
-            bitFieldAddr += (int)xmlSymb.NzWidth;
         }
 
         public void Visit(SFRFieldSemantic xmlSymb)
@@ -259,8 +240,6 @@ namespace Reko.Arch.Microchip.Common
         {
             // Do nothing
         }
-
-        #endregion
 
         #endregion
 

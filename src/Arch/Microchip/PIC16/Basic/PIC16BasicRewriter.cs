@@ -47,11 +47,11 @@ namespace Reko.Arch.Microchip.PIC16
         }
 
         /// <summary>
-        /// Actual instruction rewriter method for Basic PIC16.
+        /// Instruction rewriter method for Basic PIC16.
         /// </summary>
         protected override void RewriteInstr()
         {
-            base.RewriteInstr();
+            base.RewriteInstr(); // All is done with the base rewriter.
         }
 
 

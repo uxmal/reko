@@ -228,7 +228,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.AreSame(PIC16Registers.STATUS, PICRegisters.GetRegister("STATUS"));
             Assert.AreSame(PIC16Registers.PCL, PICRegisters.GetRegister("PCL"));
             Assert.AreSame(PIC16BasicRegisters.INDF, PICRegisters.GetRegister("INDF"));
-            Assert.AreSame(PIC16BasicRegisters.RP, PICRegisters.GetBitField("RP"));
+            Assert.AreSame(PIC16BasicRegisters.RP0, PICRegisters.GetBitField("RP0"));
+            Assert.AreSame(PIC16BasicRegisters.RP1, PICRegisters.GetBitField("RP1"));
         }
 
         [Test]
