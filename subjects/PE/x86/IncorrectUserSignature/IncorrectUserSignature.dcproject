@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <filename>../VCExeSample/VCExeSample.exe</filename>
+    <disassembly>IncorrectUserSignature.asm</disassembly>
+    <intermediate-code>IncorrectUserSignature.dis</intermediate-code>
+    <output>IncorrectUserSignature.c</output>
+    <types-file>IncorrectUserSignature.h</types-file>
+    <global-vars>IncorrectUserSignature.globals.c</global-vars>
+    <user>
+      <procedure name="test2">
+        <characteristics />
+        <address>00401060</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="test3">
+        <characteristics />
+        <address>004010B0</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="test4">
+        <characteristics />
+        <address>004010D0</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="test5">
+        <characteristics />
+        <address>004010F0</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="test6">
+        <characteristics />
+        <address>00401120</address>
+        <CSignature>void test6(cdecl_class *c, int a, int b)</CSignature>
+      </procedure>
+      <procedure name="test7">
+        <characteristics />
+        <address>00401160</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="nested_if_blocks_test8">
+        <characteristics />
+        <address>004011B0</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="loop_test9">
+        <characteristics />
+        <address>00401230</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="const_div_test10">
+        <characteristics />
+        <address>004012A0</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="loop_test11">
+        <characteristics />
+        <address>004012D0</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="nested_structs_test12">
+        <characteristics />
+        <address>00401330</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="nested_structs_test13">
+        <characteristics />
+        <address>00401360</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="Win32CrtStartup">
+        <characteristics />
+        <address>00401623</address>
+        <decompile>false</decompile>
+      </procedure>
+    </user>
+  </input>
+  <metadata>
+    <filename>incorrectDecl.xml</filename>
+  </metadata>
+</project>
