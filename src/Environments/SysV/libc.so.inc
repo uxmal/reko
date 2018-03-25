@@ -28,9 +28,19 @@ struct stat
 {
 };
 typedef int pid_t;
+typedef int socklen_t;
+typedef int acl_entry_t;
+typedef void * DIR;
+typedef void * jmp_buf;
+typedef int acl_t;
+typedef int acl_tag_t;
 
 int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));
-int scanf(char * format, ...);
+void _exit(int );
+int _obstack_begin(struct obstack *, int, int, void *(*) (long), void (*) (void *));
+void _obstack_newchunk(struct obstack *, int);
+int _setjmp(jmp_buf env); 
+
 int __isoc99_scanf(char * format, ...);
 int printf(char * format, ...);
 int sprintf(char * buffer, char * format, ...);
@@ -40,10 +50,31 @@ void __assert_fail(const char * assertion, const char * file, unsigned int line,
 
 int atoi(const char *);
 long atol(const char *);
+int accept(int socket, struct sockaddr * address, socklen_t * address_len);
+int access(const char *pathname, int mode);
+int acl_extended_file(const char *path_p);
+int acl_get_entry(acl_t acl, int entry_id, struct acl_entry_t *entry_p);
+int acl_get_tag_type(acl_entry_t entry_d, acl_tag_t *tag_type_p);
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+char * bindtextdomain (const char * domainname, const char * dirname);
+void bzero(void *s, size_t n);
+int closedir(DIR *dirp);
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+int creat(const char *pathname, mode_t mode);
+char * dcgettext(char *, char *, int);
+int dirfd(DIR *dirp);
+int dup(int oldfd);
+void exit(int);
 
+int fputc(int char, FILE * stream);
+int fputs(const char * s, FILE * stream);
+
+char * getenv(char *);
 int getpagesize(void);
 
 
+void * malloc(size_t size);
+void * memcpy(void *, void *, size_t);
 void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
 void *mmap2(void *addr, size_t length, int prot, int flags, int fd, off_t pgoffset);
 int munmap(void *addr, size_t length);
@@ -58,17 +89,11 @@ int munlockall(void);
 
 
 
-void * malloc(size_t size);
 size_t strlen(char *);
+int scanf(char * format, ...);
 char * strchr(char *, char);
-char * strrchr(char *, char);
-void * memcpy(void *, void *, size_t);
 int strcmp(char *,char *);
-char * dcgettext(char *, char *, int);
-void exit(int);
-char * getenv(char *);
-int fputc(int char, FILE * stream);
-int fputs(const char * s, FILE * stream);
+char * strrchr(char *, char);
 int putc(int c, FILE * stream);
 int putchar(int c);
 int puts(const char * s);
@@ -102,16 +127,16 @@ ssize_t write(int fd, const void* buf, size_t count);
 int strtol(char * s);
 int socket(int dom, int type, int proto);
 int feof(FILE * fp);
-int fprintf(FILE * fp, char * format,...);
-int setvbuf(FILE * fp, char * buf, int mode, size_t size);
-int _IO_getc(FILE * fp);
-int fileno(FILE*);
 int ferror(FILE *);
-
-char * strerror ( int errnum );
-int mkdir(char *path,int);
+int fileno(FILE*);
+FILE * fopen(const char * file, const char * mode);
+int fprintf(FILE * fp, char * format,...);
 size_t fread ( void * ptr, size_t size, size_t count, FILE * stream );
 size_t fwrite (  void * ptr, size_t size, size_t count, FILE * stream );
+int _IO_getc(FILE * fp);
+int mkdir(char *path,int);
+int setvbuf(FILE * fp, char * buf, int mode, size_t size);
+char * strerror ( int errnum );
 int __printf_chk(int flag, const char * format);
 int __fprintf_chk(FILE *, int flag, const char * format);
 int __sprintf_chk(char * str, int flag, size_t strlen, const char * format);
@@ -122,21 +147,20 @@ char * strpbrk(char *, char *);
 void * __rawmemchr(const void * s, int c);
 void __stack_chk_fail(void);
 int _IO_putc(int __c, _IO_FILE * __fp);
-void *mmap64(void *addr, size_t len, int prot, int flags, int fildes, off64_t off);
-int memcmp(void *, void *, size_t);
-char * strstr(char *, char *);
 struct tm  * localtime(time_t t);
 int mbtowc (wchar_t* pwc, const char* pmb, size_t max);
-void * memmovve(void *, void *src, size_t cb);
-int tcsetattr(int fd, int optional_actions, struct termios *termios_p);
+int memcmp(void *, void *, size_t);
+void * memmove(void *, void *src, size_t cb);
+void *mmap64(void *addr, size_t len, int prot, int flags, int fildes, off64_t off);
 int munmap(void *addr, size_t length);
-int utime(const char *filename,  struct utimbuf *times);
+char * strstr(char *, char *);
+int tcsetattr(int fd, int optional_actions, struct termios *termios_p);
 time_t time (time_t *result);
-int __vfprintf_chk(FILE * fp, int flag, const char * format, va_list ap);
 int unlink(char * path);
+int utime(const char *filename,  struct utimbuf *times);
+int __vfprintf_chk(FILE * fp, int flag, const char * format, va_list ap);
 int chmod(const char *pathname, mode_t mode);
 int fnmatch(const char *pattern, const char *string, int flags);
-FILE * fopen(const char * file, const char * mode);
 void perror(const char *msg);
 void atexit(void(*func)(void));
 int _xstat(int version, const char * path, struct stat * statbuf);

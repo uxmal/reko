@@ -38,16 +38,16 @@ namespace Reko.Gui
     public class AddressSearchResult : ISearchResult
     {
         protected readonly IServiceProvider services;
-        private List<ProgramAddress> addresses;
+        private List<AddressSearchHit> hits;
         private AddressSearchDetails details;
 
         public AddressSearchResult(
             IServiceProvider services,
-            IEnumerable<ProgramAddress> addresses,
+            IEnumerable<AddressSearchHit> addresses,
             AddressSearchDetails details)
         {
             this.services = services;
-            this.addresses = addresses.ToList();
+            this.hits = addresses.ToList();
             this.details = details;
         }
 
@@ -55,7 +55,7 @@ namespace Reko.Gui
 
         public int Count
         {
-            get { return addresses.Count; }
+            get { return hits.Count; }
         }
 
         public int ContextMenuID
@@ -90,11 +90,10 @@ namespace Reko.Gui
 
         public SearchResultItem GetItem(int i)
         {
-            var hit = addresses[i];
+            var hit = hits[i];
             var program = hit.Program;
-            var addr = addresses[i].Address;
-            ImageMapItem item;
-            program.ImageMap.TryFindItem(addr, out item);
+            var addr = hits[i].Address;
+            program.ImageMap.TryFindItem(addr, out var item);
             if (program.Architecture == null)
             {
                 return new SearchResultItem
@@ -110,13 +109,7 @@ namespace Reko.Gui
             }
             int bgColor = SelectBgColor(item);
 
-            string sData = "";
-            switch (details)
-            {
-            case AddressSearchDetails.Code: sData = RenderCode(hit); break;
-            case AddressSearchDetails.Strings: sData = RenderString(hit); break;
-            case AddressSearchDetails.Data: sData = RenderData(hit); break;
-            }
+            string sData = details.RenderHit(hit);
 
             return new SearchResultItem
             {
@@ -131,50 +124,6 @@ namespace Reko.Gui
             };
         }
 
-        public string RenderCode(ProgramAddress hit)
-        {
-            try
-            {
-                var dasm = hit.Program.CreateDisassembler(hit.Address);
-                return string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
-            }
-            catch
-            {
-                return "<invalid>";
-            }
-        }
-
-        public string RenderString(ProgramAddress hit)
-        {
-            var rdr = hit.Program.CreateImageReader(hit.Address);
-            var sb = new StringBuilder();
-            while (rdr.IsValid)
-            {
-                var ch = rdr.ReadByte();
-                if (ch == 0 || sb.Length > 80)
-                    break;
-                sb.Append(0x20 <= ch && ch < 0x7F
-                    ? (char)ch
-                    : '.');
-            }
-            return sb.ToString();
-        }
-
-        public string RenderData(ProgramAddress hit)
-        {
-            var rdr = hit.Program.CreateImageReader(hit.Address);
-            var sb = new StringBuilder();
-            int cb = 0;
-            while (rdr.IsValid)
-            {
-                var ch = rdr.ReadByte();
-                if (ch == 0 || cb >= 16)
-                    break;
-                sb.AppendFormat("{0:X2} ", (uint)ch);
-                ++cb;
-            }
-            return sb.ToString();
-        }
 
         private int SelectBgColor(ImageMapItem item)
         {
@@ -193,7 +142,7 @@ namespace Reko.Gui
         public void NavigateTo(int i)
         {
             var memSvc = services.RequireService<ILowLevelViewService>();
-            var hit = addresses[i];
+            var hit = hits[i];
             memSvc.ShowMemoryAtAddress(hit.Program, hit.Address);
         }
 
@@ -207,29 +156,29 @@ namespace Reko.Gui
                     status.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.ViewAsCode:
-                    status.Status = details == AddressSearchDetails.Code
+                    status.Status = details is CodeSearchDetails
                         ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
                         : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.ViewAsStrings:
-                    status.Status = details == AddressSearchDetails.Strings
+                    status.Status = details is StringSearchDetails
                         ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
                         : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.ViewAsData:
-                    status.Status = details == AddressSearchDetails.Data
+                    status.Status = details is DataSearchDetails
                         ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
                         : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.ActionMarkProcedure:
-                    status.Status = details == AddressSearchDetails.Code
+                    status.Status = details is CodeSearchDetails
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
                 case CmdIds.ActionMarkType:
-                    status.Status = details != AddressSearchDetails.Code
-                        ? MenuStatus.Enabled | MenuStatus.Visible
-                        : MenuStatus.Visible;
+                    status.Status = details is CodeSearchDetails
+                        ? MenuStatus.Visible
+                        : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 }
             }
@@ -243,9 +192,9 @@ namespace Reko.Gui
             switch (cmdID.ID)
             {
             case CmdIds.ViewFindWhatPointsHere: ViewFindWhatPointsHere(); return true;
-            case CmdIds.ViewAsCode: details = AddressSearchDetails.Code; View.Invalidate(); return true;
-            case CmdIds.ViewAsStrings: details = AddressSearchDetails.Strings; View.Invalidate(); return true;
-            case CmdIds.ViewAsData: details = AddressSearchDetails.Data; View.Invalidate(); return true;
+            case CmdIds.ViewAsCode: details = new CodeSearchDetails(); View.Invalidate(); return true;
+            case CmdIds.ViewAsStrings: details = new StringSearchDetails(Encoding.ASCII); View.Invalidate(); return true;
+            case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); return true;
             case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
             case CmdIds.ActionMarkType: MarkType(); return true;
             }
@@ -254,7 +203,8 @@ namespace Reko.Gui
 
         public void MarkProcedures()
         {
-            services.RequireService<ICommandFactory>().MarkProcedures(SelectedHits()).Do();
+            var procAddrs = SelectedHits().Select(hit => new ProgramAddress(hit.Program, hit.Address));
+            services.RequireService<ICommandFactory>().MarkProcedures(procAddrs).Do();
         }
 
         public void MarkType()
@@ -277,9 +227,9 @@ namespace Reko.Gui
         /// Returns the addresses the user has selected.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<ProgramAddress> SelectedHits()
+        public IEnumerable<AddressSearchHit> SelectedHits()
         {
-            return View.SelectedIndices.Select(i => addresses[i]);
+            return View.SelectedIndices.Select(i => hits[i]);
         }
 
         public void ViewFindWhatPointsHere()
@@ -296,11 +246,62 @@ namespace Reko.Gui
         }
     }
 
-    public enum AddressSearchDetails
+
+    public abstract class AddressSearchDetails
     {
-        Code,
-        Strings,
-        Data,
+        public abstract string RenderHit(AddressSearchHit hit);
+    }
+
+    public class CodeSearchDetails : AddressSearchDetails
+    {
+        public override string RenderHit(AddressSearchHit hit)
+        {
+            try
+            {
+                var dasm = hit.Program.CreateDisassembler(hit.Address);
+                return string.Join("; ", dasm.Take(4).Select(inst => inst.ToString().Replace('\t', ' ')));
+            }
+            catch
+            {
+                return "<invalid>";
+            }
+        }
+    }
+
+    public class DataSearchDetails : AddressSearchDetails
+    {
+        public override string RenderHit(AddressSearchHit hit)
+        {
+            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var sb = new StringBuilder();
+            int cb = 0;
+            while (rdr.IsValid)
+            {
+                var ch = rdr.ReadByte();
+                if (ch == 0 || cb >= 16)
+                    break;
+                sb.AppendFormat("{0:X2} ", (uint)ch);
+                ++cb;
+            }
+            return sb.ToString();
+        }
+    }
+
+    public class StringSearchDetails : AddressSearchDetails
+    {
+        private Encoding encoding;
+
+        public StringSearchDetails(Encoding enc)
+        {
+            this.encoding = enc;
+        }
+
+        public override string RenderHit(AddressSearchHit hit)
+        {
+            var rdr = hit.Program.CreateImageReader(hit.Address);
+            var bytes = rdr.ReadBytes(hit.Length);
+            return encoding.GetString(bytes.ToArray());
+        }
     }
 }
 

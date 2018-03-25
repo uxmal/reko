@@ -35,7 +35,7 @@ namespace Reko.Gui
     /// </summary>
     public interface ISearchResultService 
     {
-        void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails code);
+        void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails code);
         void ShowSearchResults(ISearchResult result);
     }
 }
