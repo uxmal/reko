@@ -119,33 +119,33 @@ namespace Reko.Analysis
             RegisterStorage register,
             int delta)
         {
-            // Locate the post-call definition of the stack pointer, if any
-            var defSpBinding = call.Definitions.Where(
+            // Locate the post-call definition of the register, if any
+            var defRegBinding = call.Definitions.Where(
                 d => d.Identifier is Identifier).Where(
                 d => ((Identifier)d.Identifier).Storage ==
                     register)
                 .FirstOrDefault();
-            if (defSpBinding == null)
+            if (defRegBinding == null)
                 return;
-            var defSpId = defSpBinding.Identifier as Identifier;
-            if (defSpId == null)
+            var defRegId = defRegBinding.Identifier as Identifier;
+            if (defRegId == null)
                 return;
-            var usedSpExp = call.Uses.Select(u => u.Expression).
+            var usedRegExp = call.Uses.Select(u => u.Expression).
                 OfType<Identifier>().Where(
                 u => u.Storage == register)
                 .FirstOrDefault();
-            if (usedSpExp == null)
+            if (usedRegExp == null)
                 return;
-            var src = AddConstant(usedSpExp, register.DataType.Size, delta);
-            // Generate a statement that adjusts the stack pointer according to
-            // the calling convention.
-            var ass = new Assignment(defSpId, src);
-            var defSid = ssa.Identifiers[defSpId];
-            var stackStm = InsertStatement(stm, ass);
+            var src = AddConstant(usedRegExp, register.DataType.Size, delta);
+            // Generate a statement that adjusts the register according to
+            // the specified delta.
+            var ass = new Assignment(defRegId, src);
+            var defSid = ssa.Identifiers[defRegId];
+            var adjustRegStm = InsertStatement(stm, ass);
             defSid.DefExpression = src;
-            defSid.DefStatement = stackStm;
-            call.Definitions.Remove(defSpBinding);
-            Use(stackStm, src);
+            defSid.DefStatement = adjustRegStm;
+            call.Definitions.Remove(defRegBinding);
+            Use(adjustRegStm, src);
         }
 
         private Expression AddConstant(Expression e, int cSize, int cValue)
