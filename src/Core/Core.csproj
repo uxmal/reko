@@ -418,7 +418,6 @@
     <Compile Include="Operators\FMulOperator.cs" />
     <Compile Include="Operators\FSubOperator.cs" />
     <Compile Include="Output\ProcedureFormatter.cs" />
-    <Compile Include="PrintfApplicationBuilder.cs" />
     <Compile Include="ProgramAddress.cs" />
     <Compile Include="ProgramResource.cs" />
     <Compile Include="ProjectFile.cs" />
