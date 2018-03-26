@@ -860,22 +860,7 @@ l00400D6C:
 	call r25_319 (retsize: 0; depth: 416)
 		uses: dwLoc0138_112,dwLoc014C_252,dwLoc0150_316,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_311,r16_307,r2_310,r25_319,r28_315,r3_313,r30_306,r4_317,r5_318,r6_312,r7_314,ra_305,sp_302
 		defs: r1_329,r16_325,r2_328,r25_322,r28_321,r3_331,r30_324,r4_326,r5_327,r6_330,r7_332,ra_323,sp_320
-	word32 sp_338
-	word32 r28_339
-	word32 r25_340
-	word32 ra_341
-	word32 r30_342
-	word32 r16_343
-	word32 r4_344
-	word32 r5_345
-	word32 r2_346
-	word32 r1_347
-	word32 r6_348
-	word32 r3_349
-	word32 r7_350
-	call bzero (retsize: 0; depth: 416)
-		uses: dwLoc0138_112,dwLoc014C_252,dwLoc0150_316,dwLoc0154_235,dwLoc0160_20,dwLoc0168_7,dwLoc0170_198,dwLoc0174_195,dwLoc0178_187,dwLoc017C_184,dwLoc0180_181,dwLoc0184_178,dwLoc0188_175,dwLoc018C_172,dwLoc0190_169,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_192,dwLoc24_166,dwLoc2C_114,r1_329,r16_325,r2_334,r25_337,r28_333,r3_331,r30_324,r4_335,r5_336,r6_330,r7_332,ra_323,sp_320
-		defs: r1_347,r16_343,r2_346,r25_340,r28_339,r3_349,r30_342,r4_344,r5_345,r6_348,r7_350,ra_341,sp_338
+	bzero(r4_335, r5_336)
 	word32 sp_360
 	word32 r28_361
 	word32 r25_362
@@ -2499,37 +2484,11 @@ l00401B70_ds_t:
 // LocalsOut: fp(32) Local -001C(32) Stack +0000(32) Stack +0004(32) Stack +000C(32)
 
 l00401BFC:
-	word32 sp_87
-	word32 r28_88
-	word32 r25_89
-	word32 ra_90
-	word32 r30_91
-	word32 r4_92
-	word32 r5_93
-	word32 r6_94
-	word32 r7_95
-	word32 r2_96
-	word32 r3_97
-	call bzero (retsize: 0; depth: 72)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_81,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38,r2_83,r25_86,r28_34,r3_33,r30_27,r4_84,r5_85,r6_30,r7_31,ra_26,sp_23
-		defs: r2_96,r25_89,r28_88,r3_97,r30_91,r4_92,r5_93,r6_94,r7_95,ra_90,sp_87
+	bzero(r4_84, r5_85)
 	Mem101[r2_32 + 0x00001798:word16] = 0x0002
 	Mem105[r2_32 + 0x0000179A:word16] = (word16) (word32) Mem101[r4 + 0x00000002:uint16]
 	Mem109[r2_32 + 0x0000179C:word32] = Mem105[r4 + 0x00000004:word32]
-	word32 sp_116
-	word32 r28_117
-	word32 r25_118
-	word32 ra_119
-	word32 r30_120
-	word32 r4_121
-	word32 r5_122
-	word32 r6_123
-	word32 r7_124
-	word32 r2_125
-	word32 r3_126
-	call accept (retsize: 0; depth: 72)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18,dwLoc1C_79,dwLoc20_81,dwLoc28_7,dwLoc30,dwLoc34,dwLoc38,r2_111,r25_115,r28_98,r3_106,r30_91,r4_112,r5_113,r6_114,r7_95,ra_90,sp_87
-		defs: r2_125,r25_118,r28_117,r3_126,r30_120,r4_121,r5_122,r6_123,r7_124,ra_119,sp_116
+	accept(r4_112, r5_113, r6_114)
 	Mem130[r2_32:word32] = r2_125
 	Mem135[r2_32 + 0x000017A8:word16] = 0x0002
 	Mem139[r2_32 + 0x000017AA:word16] = (word16) (word32) Mem135[r5 + 0x00000002:uint16]
@@ -5581,7 +5540,7 @@ open_destination_entry:
 // LocalsOut: fp(32)
 
 l00403A1C:
-	word32 r3_31 = socket(r4_17, r5_18, r6_19)
+	socket(r4_17, r5_18, r6_19)
 	branch r2_30 >= 0x00000000 l00403A1C_ds_t
 // DataOut: r2
 // DataOut (flags): 
@@ -5595,21 +5554,7 @@ l00403A1C_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00403B10:
-	word32 sp_128
-	word32 r28_129
-	word32 r25_130
-	word32 ra_131
-	word32 r30_132
-	word32 r16_133
-	word32 r4_134
-	word32 r5_135
-	word32 r6_136
-	word32 r2_137
-	word32 r3_138
-	word32 r7_139
-	call connect (retsize: 0; depth: 56)
-		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24,dwLoc28,r16_26,r2_123,r25_127,r28_33,r3_31,r30_25,r4_124,r5_125,r6_126,r7_32,ra_24,sp_21
-		defs: r16_133,r2_137,r25_130,r28_129,r3_138,r30_132,r4_134,r5_135,r6_136,r7_139,ra_131,sp_128
+	connect(r4_124, r5_125, r6_126)
 	branch r2_137 >= 0x00000000 l00403B10_ds_t
 // DataOut: r2
 // DataOut (flags): 
@@ -9984,20 +9929,7 @@ l00406C7C:
 	Mem77[r2_32 + 0x00000018:word32] = 0x00000000
 	Mem79[r2_32 + 0x0000001C:word32] = 0x00000000
 	Mem82[r2_32 + 0x00000004:word32] = r6
-	word32 sp_88
-	word32 r28_89
-	word32 r25_90
-	word32 ra_91
-	word32 r30_92
-	word32 r4_93
-	word32 r5_94
-	word32 r6_95
-	word32 r7_96
-	word32 r2_97
-	word32 r3_98
-	call bzero (retsize: 0; depth: 48)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc18_69,dwLoc20_7,r2_84,r25_87,r28_34,r3_80,r30_27,r4_85,r5_86,r6_30,r7_31,ra_26,sp_23
-		defs: r2_97,r25_90,r28_89,r3_98,r30_92,r4_93,r5_94,r6_95,r7_96,ra_91,sp_88
+	bzero(r4_85, r5_86)
 	Mem102[r2_32 + 0x00000008:word16] = 0x0002
 	word32 r2_105 = (word32) wArg06
 	Mem106[r2_32 + 0x0000000A:word16] = (word16) r2_105
@@ -10075,7 +10007,7 @@ server_open_entry:
 // LocalsOut: fp(32)
 
 l00406D4C:
-	word32 r3_31 = socket(r4_17, r5_18, r6_19)
+	socket(r4_17, r5_18, r6_19)
 	branch r2_30 >= 0x00000000 l00406D4C_ds_t
 // DataOut: r2
 // DataOut (flags): 
@@ -10089,21 +10021,7 @@ l00406D4C_ds_t:
 // LocalsOut: fp(32) Local -0018(32) Stack +0000(32)
 
 l00406E40:
-	word32 sp_129
-	word32 r28_130
-	word32 r25_131
-	word32 ra_132
-	word32 r30_133
-	word32 r16_134
-	word32 r4_135
-	word32 r5_136
-	word32 r6_137
-	word32 r2_138
-	word32 r3_139
-	word32 r7_140
-	call bind (retsize: 0; depth: 56)
-		uses: dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc18_34,dwLoc20_7,dwLoc24,dwLoc28,r16_26,r2_124,r25_128,r28_33,r3_31,r30_25,r4_125,r5_126,r6_127,r7_32,ra_24,sp_21
-		defs: r16_134,r2_138,r25_131,r28_130,r3_139,r30_133,r4_135,r5_136,r6_137,r7_140,ra_132,sp_129
+	word32 r3_139 = bind(r4_125, r5_126, r6_127)
 	branch r2_138 >= 0x00000000 l00406E40_ds_t
 // DataOut: r2
 // DataOut (flags): 
