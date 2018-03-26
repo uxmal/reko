@@ -45,6 +45,7 @@ namespace Reko.Environments.MacOS
         uint rsrcMapOff;
         uint dataSize;
         uint mapSize;
+        private object a5dr;
 
         public ResourceFork(MacOSClassic platform, byte[] bytes)
         {
@@ -342,7 +343,115 @@ namespace Reko.Environments.MacOS
                 platform.A5World = a5world;
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
+
+                // Check for %A5Init CODE Segment and unpack global data to A5World
+                foreach ( var a5dataseg  in segmentMap.Segments.Values)
+                {
+                    if (a5dataseg.Name.Length >= 12 )
+                    {
+                        if (a5dataseg.Name.Substring(5,7) == "%A5Init")
+                        {
+                            var a5data = a5dataseg.MemoryArea;
+                            var a5dr = a5data.CreateBeReader(0);
+                            var a5d0 = a5dr.ReadBeUInt32();
+                            var a5d1 = a5dr.ReadBeUInt16();
+                            var a5dhdroffset = a5dr.ReadBeUInt16();
+                            if (a5d0 == 0x48e77ff8 && a5d1 == 0x49fa && a5dhdroffset < a5dataseg.MemoryArea.Length)
+                            {
+                                a5dr.Seek(a5dhdroffset - 2);
+                                var a5dbelow = a5dr.ReadBeUInt32();
+                                var a5dbanksize = a5dr.ReadBeUInt32();
+                                var a5doffset = a5dr.ReadBeUInt32();
+                                var a5dreloc = a5dr.ReadBeUInt32();
+                                var a5dhdrend = a5dr.ReadBeUInt32();
+                                if (a5dbanksize == 0x00010000)
+                                {
+                                    var a5worldbaseoffset = a5world.MemoryArea.BaseAddress + jt.BelowA5Size;
+                                    var a5beloww = new BeImageWriter(a5world.MemoryArea, jt.BelowA5Size - a5dbelow);
+                                    int a5rl1 = 0;
+                                    int a5rl2 = 0;
+                                    int a5rpt = 0;
+                                    var a5copylength = 0;
+                                    bool a5dend = false;
+
+                                    do
+                                    {
+                                        a5rpt = 1;
+                                        a5rl1 = a5dr.ReadByte();
+                                        a5rl2 = a5rl1;
+                                        a5rl1 = a5rl1 & 0x0F;
+                                        if (a5rl1 == 0)
+                                        {
+                                            a5rl1 = GetRL(a5dr, ref a5rpt);
+                                            if (a5rl1 == 0)
+                                            {
+                                                a5dend = true;
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            a5rl1 = a5rl1 * 2;
+                                        }
+                                        if (!a5dend)
+                                        {
+                                            a5rl2 = a5rl2 & 0xF0;
+                                            if (a5rl2 == 0)
+                                            {
+                                                a5rl2 = GetRL(a5dr, ref a5rpt);
+                                            }
+                                            else
+                                            {
+                                                a5rl2 = a5rl2 >> 3;
+                                            }
+                                            do
+                                            {
+                                                a5beloww.Position = a5beloww.Position + a5rl2;
+                                                a5copylength = a5rl1;
+                                                do
+                                                {
+                                                    a5beloww.WriteByte(a5dr.ReadByte());
+                                                    a5copylength -= 1;
+                                                } while (a5copylength > 0);
+                                                a5rpt -= 1;
+                                            } while (a5rpt > 0);
+                                        }
+                                    } while (!a5dend);
+                                }
+                            }
+                        }
+                    }
+                }
+                    
             }
+        }
+
+        private int GetRL(BeImageReader a5dr, ref int a5rpt)
+        {
+            int RL = a5dr.ReadByte();
+            if ((RL & 0x80) == 0)
+            {
+                return RL;
+            }
+            if ((RL & 0x40) == 0)
+            {
+                RL = RL & 0x3F;
+                RL = (RL << 8) + a5dr.ReadByte();
+                return RL;
+            }
+            if ((RL & 0x20) == 0)
+            {
+                RL = RL & 0x1F;
+                RL = (RL << 16) + a5dr.ReadBeInt16();
+                return RL;
+            }
+            if ((RL & 0x10) == 0)
+            {
+                return a5dr.ReadBeInt32();
+            }
+            RL = GetRL(a5dr, ref a5rpt);
+            a5rpt = GetRL(a5dr, ref a5rpt);
+            return RL;
         }
 
         /// <summary>
