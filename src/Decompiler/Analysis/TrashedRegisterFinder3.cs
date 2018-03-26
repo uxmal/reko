@@ -101,6 +101,13 @@ namespace Reko.Analysis
                 return;
             }
 
+            // We make a big, but very reasonable assumption here: if a procedure
+            // has a recursive branch and a non-recursive branch, the stack pointer
+            // will have the same value at the point where the branches join.
+            // It certainly possible for an assembly language programmer to construct
+            // a program where procedures deliberately put the stack in imbalance
+            // after calling a procedure, so it seems a safe assumption to make.
+            
             var savedSps = CollectStackPointers(flow, arch.StackRegister);
             //$REVIEW: Ew. This hardwires a dependency on x87 in common code.
             // We need a general mechanism for dealing with "stack pointers"
@@ -390,19 +397,20 @@ namespace Reko.Analysis
             for (int i = 0; i < phi.Src.Arguments.Length; ++i)
             {
                 var p = block.Pred[i];
-                if (blockCtx.ContainsKey(p))
+                var phiarg = (Identifier)phi.Src.Arguments[i];
+                // If phiarg hasn't been evaluated yet, it will have
+                // the value null after ctx.GetValue below. If not, we 
+                // use that value and hope all of the phi args have
+                // the same value.
+                var value = ctx.GetValue(phiarg);
+                if (total == null)
                 {
-                    // We've visited p.
-                    var value = ctx.GetValue((Identifier)phi.Src.Arguments[i]);
-                    if (total == null)
-                    {
-                        total = value;
-                    }
-                    else if (value != null && !cmp.Equals(value, total))
-                    {
-                        total = Constant.Invalid;
-                        break;
-                    }
+                    total = value;
+                }
+                else if (value != null && !cmp.Equals(value, total))
+                {
+                    total = Constant.Invalid;
+                    break;
                 }
             }
             if (total != null)
@@ -479,6 +487,10 @@ namespace Reko.Analysis
                     {
                         if (idV == ctx.FramePointer)
                         {
+                            // Special case: if we deduce that the CPU stack
+                            // register is equal to the pseudo-register FP
+                            // (frame pointer), we make note that the stack
+                            // register is preserved.
                             ctx.ProcFlow.Preserved.Add(arch.StackRegister);
                             return true;
                         }

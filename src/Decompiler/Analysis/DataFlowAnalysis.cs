@@ -166,6 +166,16 @@ namespace Reko.Analysis
             // At this point, the computation of ProcedureFlow is possible.
             var trf = new TrashedRegisterFinder3(program, flow, ssts, this.eventListener);
             trf.Compute();
+
+            // New stack based variables may be available now.
+            foreach (var sst in ssts)
+            {
+                var vp = new ValuePropagator(program.Architecture, sst.SsaState, this.eventListener);
+                vp.Transform();
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
+            }
+
             var uid = new UsedRegisterFinder(program.Architecture, flow, this.eventListener);
             foreach (var sst in ssts)
             {
