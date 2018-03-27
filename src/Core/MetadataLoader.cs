@@ -45,6 +45,11 @@ namespace Reko.Core
         /// <param name="dstLib"></param>
         /// <returns></returns>
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
+
+        public virtual TypeLibrary Load(IPlatform platform, string moduleName, TypeLibrary dstLib)
+        {
+            return Load(platform, dstLib);
+        }
     }
 
     public class NullMetadataLoader : MetadataLoader
