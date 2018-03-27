@@ -27,6 +27,7 @@ esp_7: orig: esp
 eax_8: orig: eax
     def:  eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 ecx_9: orig: ecx
+    def:  ecx_9 = <invalid>
 Mem10: orig: Mem0
     uses: eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 // test
@@ -43,6 +44,7 @@ l0C00_0000:
 	eax_4 = a_1
 	ecx_6 = Mem0[a:word32]
 	eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
+	ecx_9 = <invalid>
 	esp_7 = esp_3 + 0x00000004
 	return
 	// succ:  fn0C00_0000_exit
