@@ -120,6 +120,33 @@ namespace Reko.Arch.M68k
             m.Assign(binder.EnsureRegister(Registers.fpsr), m.Cond(dst));
         }
 
+        private void RewriteFasin()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("asin", s.DataType, s));
+        }
+
+        private void RewriteFintrz()
+        {
+            // C's trunc() is supposed to round
+            // to zero.
+            // http://en.cppreference.com/w/c/numeric/math/trunc
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("trunc", s.DataType, s));
+        }
+
+        private void RewriteFsqrt()
+        {
+            //$TODO: #include <math.h>
+            var src = orw.RewriteSrc(di.op1, di.Address);
+            var dst = orw.RewriteDst(di.op2, di.Address, src, (s, d) =>
+                host.PseudoProcedure("sqrt", s.DataType, s));
+        }
+
         private void RewriteFtan()
         {
             //$TODO: #include <math.h>
