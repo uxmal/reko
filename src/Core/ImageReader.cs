@@ -432,13 +432,16 @@ namespace Reko.Core
         {
             var ab = new byte[this.offEnd - Offset];
             Array.Copy(Bytes, (int)Offset, ab, 0, ab.Length);
+            off += ab.Length;
             return ab;
         }
 
         public int Read(byte[] buffer, int offset, int count)
         {
-            int bytesRead = (int)Math.Min(count, offEnd - offset);
-            Array.Copy(bytes, offset, buffer, 0, bytesRead);
+            int bytesRead = (int)Math.Min(buffer.Length - offset, count);
+            bytesRead =  (int)Math.Min(bytesRead, offEnd - offset);
+            Array.Copy(bytes, this.off, buffer, offset, bytesRead);
+            off += bytesRead;
             return bytesRead;
         }
     }
