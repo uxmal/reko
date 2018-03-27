@@ -53,12 +53,13 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sm_Creation()
         {
+            var mem = new MemoryArea(addrBase, img);
             SegmentMap sm = new SegmentMap(addrBase,
-                new ImageSegment("", new MemoryArea(addrBase, img), AccessMode.ReadWriteExecute));
+                new ImageSegment("", mem, AccessMode.ReadWriteExecute));
 
-            sm.AddSegment(Address.SegPtr(0x8000, 2), "", AccessMode.ReadWrite, 10);
-            sm.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 10);
-            sm.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite, 10);
+            sm.AddOverlappingSegment("", mem, Address.SegPtr(0x8000, 2), AccessMode.ReadWrite);
+            sm.AddOverlappingSegment("", mem, Address.SegPtr(0x8000, 3), AccessMode.ReadWrite);
+            sm.AddOverlappingSegment("", mem, Address.SegPtr(0x8000, 0), AccessMode.ReadWrite);
 
             // Verify
             var sExp = 
@@ -93,9 +94,8 @@ namespace Reko.UnitTests.Core
             var mem = new MemoryArea(Address.SegPtr(0x0B00, 0), new byte[0x2000]);
             SegmentMap segmentMap = new SegmentMap(mem.BaseAddress,
                 new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
-            segmentMap.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 6000);
-            ImageSegment s = segmentMap.Segments.Values.ElementAt(1);
-            Assert.AreEqual("0C00", s.Name);
+            segmentMap.AddOverlappingSegment("0C00", mem, Address.SegPtr(0xC00, 0), AccessMode.ReadWrite);
+            ImageSegment s = segmentMap.Segments.Values[1];
             Assert.AreEqual(0x1000, s.Size);
         }
     }

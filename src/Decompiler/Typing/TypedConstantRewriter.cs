@@ -255,9 +255,10 @@ namespace Reko.Typing
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should use a reinterpret_cast here.
-                    var ce = new Cast(c.DataType, c);
-                    ce.TypeVariable = c.TypeVariable;
-                    ce.DataType = ptr;
+                    var ce = new Cast(ptr, c)
+                    {
+                        TypeVariable = c.TypeVariable
+                    };
                     return ce;
                 }
                 
