@@ -334,8 +334,7 @@ namespace Reko.Arch.PowerPC
 
 #if DEBUG
         private static HashSet<Opcode> seen = new HashSet<Opcode>();
-#endif
-        [Conditional("DEBUG")]
+        
         private void EmitUnitTest()
         {
             if (rdr == null || seen.Contains(dasm.Current.Opcode))
@@ -354,6 +353,9 @@ namespace Reko.Arch.PowerPC
             Debug.WriteLine("        }");
             Debug.WriteLine("");
         }
+#else
+        private void EmitUnitTest() { }
+#endif
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
         {
