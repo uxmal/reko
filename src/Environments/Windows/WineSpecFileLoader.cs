@@ -116,7 +116,7 @@ namespace Reko.Environments.Windows
                 };
                 return Tuple.Create(ordinal, svc);
             }
-            catch
+            catch (Exception ex)
             {
                 Services.RequireService<DecompilerEventListener>().Warn(
                     new NullCodeLocation(moduleName),
