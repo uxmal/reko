@@ -51,6 +51,15 @@ namespace Reko.Core
             get { return segments; }
         }
 
+        /// <summary>
+        /// Adds a segment to the segment map. The segment is assumed to be disjoint
+        /// from other segments already present, so the <paramref name="mem"/> memory
+        /// area is not shared with other segments.
+        /// </summary>
+        /// <param name="mem">The memory area corresponding to the segment.</param>
+        /// <param name="segmentName">The name of the segment.</param>
+        /// <param name="mode">The access mode of the segment.</param>
+        /// <returns>The resulting image segment.</returns>
         public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
         {
             var segment = new ImageSegment(
@@ -61,9 +70,25 @@ namespace Reko.Core
             return segment;
         }
 
-        public ImageSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
+        /// <summary>
+        /// Adds a potentially overlapping segment to the segment map. The segment
+        /// extends over the shared memory area <paramref name="mem"/>, and starts at
+        /// address <paramref name="addr" />.
+        /// </summary>
+        /// <param name="segmentName">The name of the segment.</param>
+        /// <param name="mem">The shared memory area the segment overlaps.</param>
+        /// <param name="addr">The address at which the segment starts.</param>
+        /// <param name="mode">The access mode of the segment.</param>
+        /// <returns>The resulting image segment.</returns>
+        public ImageSegment AddOverlappingSegment(string segmentName, MemoryArea mem, Address addr, AccessMode mode)
         {
-            return AddSegment(new ImageSegment(segmentName, addr, contentSize, access));
+            var segment = new ImageSegment(
+                    segmentName,
+                    addr,
+                    mem,
+                    mode);
+            AddSegment(segment);
+            return segment;
         }
 
         public ImageSegment AddSegment(ImageSegment segNew)
@@ -100,10 +125,9 @@ namespace Reko.Core
 
         private void EnsureSegmentSize(ImageSegment seg)
         {
-            Address addrAbove;
             if (seg.Size == 0)
             {
-                if (!Segments.TryGetUpperBoundKey(seg.Address, out addrAbove))
+                if (!Segments.TryGetUpperBoundKey(seg.Address, out var addrAbove))
                 {
                     // No segment above this one, consume all remaining space.
                     seg.Size = (uint)((seg.MemoryArea.BaseAddress - seg.Address) + seg.MemoryArea.Length);
@@ -125,14 +149,12 @@ namespace Reko.Core
 
         public bool IsValidAddress(Address address)
         {
-            ImageSegment seg;
-            return TryFindSegment(address, out seg);
+            return TryFindSegment(address, out var seg);
         }
 
         public bool IsReadOnlyAddress(Address addr)
         {
-            ImageSegment seg;
-            return (TryFindSegment(addr, out seg) && (seg.Access & AccessMode.Write) == 0);
+            return (TryFindSegment(addr, out var seg) && (seg.Access & AccessMode.Write) == 0);
         }
 
         public bool IsExecutableAddress(Address addr)

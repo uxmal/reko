@@ -59,13 +59,13 @@ namespace Reko.Arch.X86
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
-            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
         }
 
         private void RewriteCvtToReal(PrimitiveType size)
         {
-            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
             var dst = SrcOp(instrCur.op1);
             var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(size, src));
@@ -76,7 +76,7 @@ namespace Reko.Arch.X86
         {
             var dtSrc = PrimitiveType.Real32;
             var dtDst = PrimitiveType.Int32;
-            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
 
             var tmp1 = binder.CreateTemporary(dtDst);
             m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));

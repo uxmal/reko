@@ -49,7 +49,7 @@ namespace Reko.Core
                 throw new ArgumentNullException("addr");
             long o = addr - img.BaseAddress;
             if (o >= img.Length)
-                throw new ArgumentOutOfRangeException("addr", "Address is outside of image.");
+                throw new ArgumentOutOfRangeException("addr", $"Address {addr} is outside of image.");
             this.offStart = o;
             this.offEnd = img.Bytes.Length;
             this.off = offStart;
