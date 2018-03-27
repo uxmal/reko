@@ -138,10 +138,11 @@ namespace Reko.Analysis
             var defRegId = defRegBinding.Expression as Identifier;
             if (defRegId == null)
                 return;
-            var usedRegExp = call.Uses.Select(u => u.Expression).
-                OfType<Identifier>().Where(
-                u => u.Storage == register)
+            var usedRegExp = call.Uses
+                .Where(u => u.Storage == register)
+                .Select(u => u.Expression)
                 .FirstOrDefault();
+
             if (usedRegExp == null)
                 return;
             var src = AddConstant(usedRegExp, register.DataType.Size, delta);
