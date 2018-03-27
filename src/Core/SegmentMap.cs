@@ -61,6 +61,18 @@ namespace Reko.Core
             return segment;
         }
 
+        public ImageSegment AddOverlappingSegment(string segmentName, MemoryArea mem, Address addr, AccessMode mode)
+        {
+            var segment = new ImageSegment(
+                    segmentName,
+                    addr,
+                    mem,
+                    mode);
+            AddSegment(segment);
+            return segment;
+        }
+
+        [Obsolete("This method doesn't have any memory area associated with it. Use one of the other overloads.")]
         public ImageSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
         {
             return AddSegment(new ImageSegment(segmentName, addr, contentSize, access));
