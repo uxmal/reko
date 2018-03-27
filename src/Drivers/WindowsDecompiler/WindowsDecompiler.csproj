@@ -202,6 +202,10 @@
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
+      <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
+      <Name>Dol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
       <Name>NativeProxy</Name>
