@@ -358,8 +358,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var xOp = (wInstr >> 1) & 0x3FF;
-                OpRec opRec;
-                if (xOpRecs.TryGetValue(xOp, out opRec))
+                if (xOpRecs.TryGetValue(xOp, out var opRec))
                 {
                     return opRec.Decode(dasm, wInstr);
                 }
@@ -723,20 +722,19 @@ namespace Reko.Arch.PowerPC
 
         private class XX3OpRec : OpRec
         {
-            private Dictionary<uint, OpRec> xoprecs;
+            private Dictionary<uint, OpRec> decoders;
 
             public XX3OpRec(Dictionary<uint, OpRec> xoprecs)
             {
-                this.xoprecs = xoprecs;
+                this.decoders = xoprecs;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var subOp = (wInstr & 0xFFFF) >> 3;
-                OpRec oprec;
-                if (xoprecs.TryGetValue(subOp, out oprec))
+                if (decoders.TryGetValue(subOp, out var decoder))
                 {
-                    return oprec.Decode(dasm, wInstr);
+                    return decoder.Decode(dasm, wInstr);
                 }
                 else
                 {
@@ -846,6 +844,8 @@ namespace Reko.Arch.PowerPC
                     { 0x020, new CmpOpRec(Opcode.cmpl, "C1,r2,r3") },
                     { 0x014, new DOpRec(Opcode.lwarx, "r1,r2,r3") },
                     { 0x028, new DOpRec(Opcode.subf, ".r1,r2,r3")},
+                    { 0x035, new DOpRec(Opcode.ldux, "r1,r2,r3")},
+                    { 0x036, new DOpRec(Opcode.dcbst, "r2,r3")},
                     { 0x037, new DOpRec(Opcode.lwzux, "r1,r2,r3")},
                     { 0x03A, new DOpRec(Opcode.cntlzd, "r2,r1")},
                     { 0x03C, new DOpRec(Opcode.andc, ".r2,r1,r3")},
