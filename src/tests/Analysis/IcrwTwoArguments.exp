@@ -35,7 +35,9 @@ dwLoc08_10: orig: dwLoc08
 esp_11: orig: esp
     def:  esp_11 = esp_9 + 0x00000008
 eax_12: orig: eax
+    def:  eax_12 = <invalid>
 ecx_13: orig: ecx
+    def:  ecx_13 = <invalid>
 Mem14: orig: Mem0
     uses: Mem0[ecx_6 + 0x00000008:word32](Mem14[esp_9:int32], Mem15[esp_9 + 4:int32])
 Mem15: orig: Mem0
@@ -58,6 +60,8 @@ l0C00_0000:
 	esp_9 = fp - 0x00000008
 	dwLoc08_10 = 0x0000000A
 	Mem0[ecx_6 + 0x00000008:word32](Mem14[esp_9:int32], Mem15[esp_9 + 4:int32])
+	ecx_13 = <invalid>
+	eax_12 = <invalid>
 	esp_11 = esp_9 + 0x00000008
 	return
 	// succ:  fn0C00_0000_exit

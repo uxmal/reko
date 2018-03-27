@@ -20,7 +20,7 @@ Eq_11: (fn void ((ptr cdecl_class), int32, int32))
 	T_11 (in Mem0[Mem0[c + 0x00000000:word32] + 0x00000008:word32] : word32)
 Eq_17: (struct "Eq_17" (4 (ptr Eq_20) ptr0004))
 	T_17 (in Mem48[c + 0x00000000:word32] : word32)
-Eq_20: (fn void ((ptr Eq_5), word32))
+Eq_20: (fn void ((ptr Eq_5), Eq_21))
 	T_20 (in Mem48[Mem48[c + 0x00000000:word32] + 0x00000004:word32] : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
@@ -103,11 +103,11 @@ T_20: (in Mem48[Mem48[c + 0x00000000:word32] + 0x00000004:word32] : word32)
   Class: Eq_20
   DataType: (ptr Eq_20)
   OrigDataType: (ptr (fn T_22 (T_5, T_21)))
-T_21: (in eax_37 : word32)
+T_21: (in <invalid> : void)
   Class: Eq_21
-  DataType: word32
-  OrigDataType: word32
-T_22: (in c->vtbl->method04(c, eax_37) : void)
+  DataType: Eq_21
+  OrigDataType: T_21
+T_22: (in c->vtbl->method04(c, <invalid>) : void)
   Class: Eq_22
   DataType: void
   OrigDataType: void
@@ -128,8 +128,8 @@ typedef void (Eq_10)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 typedef void (Eq_11)(cdecl_class *, int32, int32);
 
 typedef struct Eq_17 {
-	void (* ptr0004)(cdecl_class *, word32);	// 4
+	void (* ptr0004)(cdecl_class *, Eq_21);	// 4
 } Eq_17;
 
-typedef void (Eq_20)(cdecl_class *, word32);
+typedef void (Eq_20)(cdecl_class *, ERROR: EQ_21.DataType is Null);
 
