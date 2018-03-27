@@ -53,6 +53,19 @@ void ArmRewriter::RewriteDmb()
 	m.SideEffect(m.Fn(host->EnsurePseudoProcedure(name, BaseType::Void, 1)));
 }
 
+void ArmRewriter::RewriteLdc(const char * fnName)
+{
+	auto src2 = Operand(Src2());
+	auto tmp = host->CreateTemporary(BaseType::Word32);
+	m.Assign(tmp, src2);
+	auto intrinsic = host->EnsurePseudoProcedure(fnName, BaseType::Word32, 2);
+	m.AddArg(Operand(Src1()));
+	m.AddArg(tmp);
+	auto fn = m.Fn(intrinsic);
+	auto dst = Operand(Dst());
+	m.Assign(dst, fn);
+}
+
 void ArmRewriter::RewriteMcr()
 {
 	auto begin = &instr->detail->arm.operands[0];
@@ -105,9 +118,9 @@ void ArmRewriter::RewriteMsr()
 	m.SideEffect(m.Fn(ppp));
 }
 
-void ArmRewriter::RewriteStcl()
+void ArmRewriter::RewriteStc(const char * name)
 {
-	auto intrinsic = host->EnsurePseudoProcedure("__stcl", BaseType::Word32, 2);
+	auto intrinsic = host->EnsurePseudoProcedure("__stc", BaseType::Word32, 3);
 	m.AddArg(Operand(Dst()));
 	m.AddArg(Operand(Src1()));
 	m.AddArg(Operand(Src2()));

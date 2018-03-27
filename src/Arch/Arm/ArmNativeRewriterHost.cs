@@ -37,6 +37,7 @@ namespace Reko.Arch.Arm
     public class ArmNativeRewriterHost : MarshalByRefObject, INativeRewriterHost
     {
         private Dictionary<int, RegisterStorage> regs;
+        private Dictionary<int, RegisterStorage> coprocregs;
         private IStorageBinder frame;
         private IRewriterHost host;
         private NativeTypeFactory ntf;
@@ -46,6 +47,7 @@ namespace Reko.Arch.Arm
         {
             Debug.Assert(regs != null);
             this.regs = regs;
+            this.coprocregs = new Dictionary<int, RegisterStorage>();
             this.frame = frame;
             this.host = host;
             this.ntf = ntf;
@@ -60,6 +62,16 @@ namespace Reko.Arch.Arm
         public virtual RegisterStorage GetSysRegister(int sysreg)
         {
             return regs[sysreg];
+        }
+
+        public virtual RegisterStorage GetCoprocRegister(int coprocreg)
+        {
+            if (!coprocregs.TryGetValue(coprocreg, out var reg))
+            {
+                reg = new RegisterStorage($"p{coprocreg}", (int)StorageDomain.Register + 0x800, 0, PrimitiveType.Word32);
+                coprocregs.Add(coprocreg, reg);
+            }
+            return reg;
         }
 
         public HExpr CreateTemporary(BaseType size)
@@ -78,10 +90,20 @@ namespace Reko.Arch.Arm
         public HExpr EnsureRegister(int regKind, int reg)
         {
             RegisterStorage r;
-            if (regKind == 0)   // standard register
+            switch (regKind)
+            {
+            case 0:   // standard register
                 r = GetRegister(reg);
-            else 
+                break;
+            case 1:
                 r = GetSysRegister(reg);
+                break;
+            case 2:
+                r = GetCoprocRegister(reg);
+                break;
+            default:
+                throw new NotImplementedException($"Unknown register kind {regKind}.");
+            }
             var id = frame.EnsureRegister(r);
             return m.MapToHandle(id);
         }

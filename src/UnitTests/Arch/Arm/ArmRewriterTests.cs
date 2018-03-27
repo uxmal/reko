@@ -651,7 +651,7 @@ means
             BuildTest(0xEE123F10);  // mrc p15,#0,r3,c2
             AssertCode(
              "0|L--|00100000(4): 1 instructions",
-             "1|L--|r3 = __mrc(0x0F, 0x00000000, 0x02, 0x00, 0x00000000)");
+             "1|L--|r3 = __mrc(p15, 0x00000000, 0x02, 0x00, 0x00000000)");
         }
 
         [Test]
@@ -660,7 +660,7 @@ means
             BuildTest(0xEE070F58);  // mcr p15,#0,r0,c7
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__mcr(0x0F, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
+                "1|L--|__mcr(p15, 0x00000000, r0, 0x07, 0x08, 0x00000002)");
         }
 
         [Test]
@@ -1123,7 +1123,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|__cdp(0x00, 0x00000002, 0x00, 0x00, 0x00, 0x00000000)");
+                "2|L--|__cdp(p0, 0x00000002, 0x00, 0x00, 0x00, 0x00000000)");
         }
 
         [Test]
@@ -1146,12 +1146,12 @@ means
         }
 
         [Test]
-        public void ArmRw_stcl()
+        public void ArmRw_stc()
         {
-            BuildTest(0xECCCCCCD);  // stcl p12, c12, [ip], {0xcd}
+            BuildTest(0xECCCCCCD);  // stc p12, c12, [ip], {0xcd}
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stcl(0x0C, 0x0C, Mem0[ip:void])");
+                "1|L--|__stc(p12, 0x0C, Mem0[ip:word32])");
         }
 
         [Test]
@@ -1368,6 +1368,17 @@ means
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|L--|__syscall(0x00001234)");
-    }
+        }
+
+        [Test]
+        public void ArmRw_ldc()
+        {
+            BuildTest(0xEC344444); // svc 0x1234
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r4 = r4",
+                "2|L--|v3 = Mem0[r4:word32]",
+                "3|L--|p4 = __ldc(0x04, v3)");
+        }
     }
 }
