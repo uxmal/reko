@@ -27,12 +27,50 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CoalescerTests : AnalysisTestBase
 	{
+        private SsaProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
+
+        public void RunCoalescer()
+        {
+            var co = new Coalescer(m.Ssa.Procedure, m.Ssa);
+            co.Transform();
+            m.Ssa.CheckUses(s => Assert.Fail(s));
+        }
+
+        //$REFACTOR: move common code to Reko.UnitTests.Mocks
+        private void AssertProcedureCode(string expected)
+        {
+            var writer = new StringWriter();
+            var textFormatter = new TextFormatter(writer)
+            {
+                Indentation = 0,
+            };
+            textFormatter.WriteLine();
+            var codeFormatter = new CodeFormatter(textFormatter);
+            foreach (var stm in m.Ssa.Procedure.Statements)
+                stm.Instruction.Accept(codeFormatter);
+            var actual = writer.ToString();
+            if (expected != actual)
+            {
+                Debug.Print(actual);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
 		protected override void RunTest(Program program, TextWriter fut)
 		{
             IImportResolver importResolver = null;
@@ -168,6 +206,24 @@ namespace Reko.UnitTests.Analysis
             m.Call(r3, 4);
             m.Return();
             RunFileTest(m, "Analysis/CoaCallCallee.txt");
+        }
+
+        [Test(Description="Avoid coalescing of invalid constant")]
+        public void CoaDoNotCoalesceInvalidConstant()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            m.Assign(a, Constant.Invalid);
+            m.Assign(b, m.IAdd(a, 4));
+
+            RunCoalescer();
+
+            var expected =
+@"
+a = <invalid>
+b = a + 0x00000004
+";
+            AssertProcedureCode(expected);
         }
     }
 }
