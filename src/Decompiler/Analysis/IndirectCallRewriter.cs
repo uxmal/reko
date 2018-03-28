@@ -114,6 +114,32 @@ namespace Reko.Analysis
             changed = true;
         }
 
+        /// <summary>
+        /// Generates a "by-pass" of a register around a Call instruction.
+        /// </summary>
+        /// <remarks>
+        /// If we know that a particular register is incremented/decremented
+        /// by a specific constant amount after calling a procedure, we can remove
+        /// any definitions of that register from the signature of the procedure.
+        /// 
+        /// Example: suppose we know that the SP register is incremented by 2 
+        /// after the Call instruction:
+        /// 
+        /// call [something]
+        ///     uses: SP_42, [other registers]
+        ///     defs: SP_94, [other registers]
+        ///     
+        /// this function modifies it to look like this:
+        /// 
+        /// call [something]
+        ///     uses: SP_42, [other registers]
+        ///     defs: [other registers]
+        /// SP_94 = SP_42 + 2
+        /// </remarks>
+        /// <param name="stm"></param>
+        /// <param name="call"></param>
+        /// <param name="register"></param>
+        /// <param name="delta"></param>
         private void AdjustRegisterAfterCall(
             Statement stm,
             CallInstruction call,
@@ -121,27 +147,30 @@ namespace Reko.Analysis
             int delta)
         {
             // Locate the post-call definition of the register, if any
-            var defRegBinding = call.Definitions.Where(
-                d => d.Identifier is Identifier).Where(
-                d => ((Identifier)d.Identifier).Storage ==
-                    register)
+            var defRegBinding = call.Definitions
+                .Where(d => d.Identifier is Identifier idDef &&
+                            idDef.Storage == register)
                 .FirstOrDefault();
             if (defRegBinding == null)
                 return;
             var defRegId = defRegBinding.Identifier as Identifier;
             if (defRegId == null)
                 return;
-            var usedRegExp = call.Uses.Select(u => u.Expression).
-                OfType<Identifier>().Where(
-                u => u.Storage == register)
+            var usedRegExp = call.Uses
+                .Select(u => u.Expression)
+                .OfType<Identifier>()
+                .Where(u => u.Storage == register)
                 .FirstOrDefault();
             if (usedRegExp == null)
                 return;
-            var src = AddConstant(usedRegExp, register.DataType.Size, delta);
-            // Generate a statement that adjusts the register according to
+
+            // Generate an instruction that adjusts the register according to
             // the specified delta.
+            var src = AddConstant(usedRegExp, register.DataType.Size, delta);
             var ass = new Assignment(defRegId, src);
             var defSid = ssa.Identifiers[defRegId];
+
+            // Insert the instruction after the call statement.
             var adjustRegStm = InsertStatement(stm, ass);
             defSid.DefExpression = src;
             defSid.DefStatement = adjustRegStm;
