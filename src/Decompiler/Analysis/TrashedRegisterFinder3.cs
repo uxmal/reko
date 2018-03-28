@@ -39,6 +39,7 @@ namespace Reko.Analysis
         private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation");
 
         private IProcessorArchitecture arch;
+        private SegmentMap segmentMap;
         private ProgramDataFlow flow;
         private HashSet<SsaTransform> sccGroup;
         private CallGraph callGraph;
@@ -61,6 +62,7 @@ namespace Reko.Analysis
             DecompilerEventListener listener)
         {
             this.arch = program.Architecture;
+            this.segmentMap = program.SegmentMap;
             this.flow = flow;
             this.sccGroup = sccGroup.ToHashSet();
             this.callGraph = program.CallGraph;
@@ -113,9 +115,8 @@ namespace Reko.Analysis
             // We need a general mechanism for dealing with "stack pointers"
             // that abstracts over platform integer stack pointers and the
             // x87 FPU stack pointer.
-            RegisterStorage top;
             var savedTops = new Dictionary<Procedure, int?>();
-            if (arch.TryGetRegister("Top", out top))
+            if (arch.TryGetRegister("Top", out var top))
             {
                 savedTops = CollectStackPointers(flow, arch.GetRegister("Top"));
             }
@@ -216,7 +217,7 @@ namespace Reko.Analysis
         private void ProcessBlock(Block block)
         {
             this.ctx = blockCtx[block];
-            this.eval = new ExpressionSimplifier(ctx, listener);
+            this.eval = new ExpressionSimplifier(segmentMap, ctx, listener);
 
             this.block = block;
 
@@ -248,8 +249,7 @@ namespace Reko.Analysis
                 .Where(b => ssas.ContainsKey(b.Procedure));
             foreach (var caller in callingBlocks)
             {
-                Context succCtx;
-                if (!blockCtx.TryGetValue(caller, out succCtx))
+                if (!blockCtx.TryGetValue(caller, out var succCtx))
                 {
                     var ssa = ssas[caller.Procedure];
                     var fp = ssa.Identifiers[caller.Procedure.Frame.FramePointer].Identifier;
@@ -274,8 +274,7 @@ namespace Reko.Analysis
             var bf = blockCtx[block];
             foreach (var s in block.Succ)
             {
-                Context succCtx;
-                if (!blockCtx.TryGetValue(s, out succCtx))
+                if (!blockCtx.TryGetValue(s, out var succCtx))
                 {
                     blockCtx.Add(s, ctx.Clone());
                     worklist.Add(s);
@@ -293,9 +292,8 @@ namespace Reko.Analysis
             var value = ass.Src.Accept(eval);
             DebugEx.PrintIf(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
 
-            DepositBits dpb;
-            Identifier idDpb;
-            if (ass.Src.As(out dpb) && dpb.Source.As(out idDpb) &&
+            if (ass.Src is DepositBits dpb && 
+                dpb.Source is Identifier idDpb &&
                 ass.Dst.Storage == idDpb.Storage)
             {
                 var oldRange = ctx.GetBitRange(idDpb);
@@ -472,16 +470,14 @@ namespace Reko.Analysis
                     ctx.ProcFlow.Constants.Remove(stg);
                     return true;
                 }
-                var c = value as Constant;
-                if (c != null)
+                if (value is Constant c)
                 {
                     ctx.ProcFlow.Constants[stg] = c;
                     ctx.ProcFlow.Preserved.Remove(stg);
                     ctx.ProcFlow.Trashed.Add(stg);
                     return true;
                 }
-                var idV = value as Identifier;
-                if (idV != null)
+                if (value is Identifier idV)
                 {
                     if (id.Storage == arch.StackRegister)
                     {
@@ -507,12 +503,10 @@ namespace Reko.Analysis
                 }
                 ctx.ProcFlow.Trashed.Add(stg);
             }
-            else if (id.Storage is FlagGroupStorage)
+            else if (id.Storage is FlagGroupStorage grfStorage)
             {
-                var grfStorage = (FlagGroupStorage)id.Storage;
                 var value = ctx.GetValue(id);
-                var idV = value as Identifier;
-                if (idV != null && idV == sid.OriginalIdentifier)
+                if (value is Identifier idV && idV == sid.OriginalIdentifier)
                 {
                     ctx.ProcFlow.grfPreserved |= grfStorage.FlagGroupBits;
                     ctx.ProcFlow.grfTrashed &= ~grfStorage.FlagGroupBits;
@@ -524,12 +518,10 @@ namespace Reko.Analysis
                 }
                 return true;
             }
-            else if (id.Storage is FpuStackStorage)
+            else if (id.Storage is FpuStackStorage fpuStg)
             {
-                var fpuStg = (FpuStackStorage)id.Storage;
                 var value = ctx.GetValue(id);
-                var idV = value as Identifier;
-                if (idV != null && idV == sid.OriginalIdentifier)
+                if (value is Identifier idV && idV == sid.OriginalIdentifier)
                 {
                     ctx.ProcFlow.Preserved.Add(fpuStg);
                 }
@@ -631,11 +623,10 @@ namespace Reko.Analysis
                 return null;
             }
 
-            public Expression GetValue(SegmentedAccess access)
+            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
-                Expression value;
-                if (offset.HasValue && StackState.TryGetValue(offset.Value, out value))
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression value))
                 {
                     return value;
                 }
@@ -650,18 +641,18 @@ namespace Reko.Analysis
                     var outArg = args[i] as OutArgument;
                     if (outArg == null)
                         continue;
-                    var outId = outArg.Expression as Identifier;
-                    if (outId != null)
+                    if (outArg.Expression is Identifier outId)
+                    {
                         SetValue(outId, Constant.Invalid);
+                    }
                 }
                 return Constant.Invalid;
             }
 
-            public Expression GetValue(MemoryAccess access)
+            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
-                Expression value;
-                if (offset.HasValue && StackState.TryGetValue(offset.Value, out value))
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression value))
                 {
                     return value;
                 }
@@ -670,8 +661,7 @@ namespace Reko.Analysis
 
             public Expression GetValue(Identifier id)
             {
-                Tuple<Expression,BitRange> value;
-                if (!IdState.TryGetValue(id, out value))
+                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
                     return null;
                 else
                     return value.Item1;
@@ -679,8 +669,7 @@ namespace Reko.Analysis
 
             public BitRange GetBitRange(Identifier id)
             {
-                Tuple<Expression, BitRange> value;
-                if (!IdState.TryGetValue(id, out value))
+                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
                     return BitRange.Empty;
                 else
                     return value.Item2;
@@ -723,9 +712,8 @@ namespace Reko.Analysis
             }
 
             public void SetValue(Identifier id, Expression value, BitRange range)
-            { 
-                Tuple<Expression,BitRange> oldValue;
-                if (!IdState.TryGetValue(id, out oldValue))
+            {
+                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
                 {
                     IsDirty = true;
                     IdState.Add(id, Tuple.Create(value, range));
@@ -743,8 +731,7 @@ namespace Reko.Analysis
                 if (!offset.HasValue)
                     return;
 
-                Expression oldValue;
-                if (!StackState.TryGetValue(offset.Value, out oldValue))
+                if (!StackState.TryGetValue(offset.Value, out Expression oldValue))
                 {
                     IsDirty = true;
                     StackState.Add(offset.Value, value);

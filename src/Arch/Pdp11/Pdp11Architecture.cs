@@ -171,8 +171,7 @@ namespace Reko.Arch.Pdp11
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -272,6 +271,10 @@ namespace Reko.Arch.Pdp11
             return Address.TryParse16(txtAddress, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
         #endregion
     }
 }

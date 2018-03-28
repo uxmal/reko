@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-		public FakeArchitecture()
+        public FakeArchitecture() 
 		{
             this.rewriters = new RtlTraceBuilder();
             this.StackRegister = GetRegister(FakeArchitecture.iStackRegister);
@@ -361,6 +361,10 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
         public Func<
             IProcessorArchitecture, IStorageBinder, CallSite, Expression,
             FrameApplicationBuilder>

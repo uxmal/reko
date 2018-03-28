@@ -42,7 +42,7 @@ namespace Reko.Arch.PowerPC
             this.valid = new ulong[0x80];
         }
 
-        public PowerPcState(PowerPcState other)
+        public PowerPcState(PowerPcState other) : base(other)
         {
             this.arch = other.arch;
             this.regs = new ulong[other.regs.Length];

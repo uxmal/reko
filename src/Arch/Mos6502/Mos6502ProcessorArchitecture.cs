@@ -166,6 +166,11 @@ namespace Reko.Arch.Mos6502
         {
             return Address.TryParse16(txtAddress, out addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
     }
 
     public  static class Registers

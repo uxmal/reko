@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Analysis
             m = new ProcedureBuilder(arch);
             program = new Program();
             program.Architecture = arch;
+            program.SegmentMap = new SegmentMap(Address.Ptr32(0));
             exit = new Procedure("exit", new Frame(PrimitiveType.Word32));
             flow = new ProgramDataFlow();
             p = new ProgramBuilder();

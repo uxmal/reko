@@ -49,6 +49,7 @@ namespace Reko.Core
         /// Creates an instance of a ProcessorState appropriate for this
         /// processor.
         /// </summary>
+        /// <param name="map">Segment map with descriptions of segments</param>
         /// <returns></returns>
 		ProcessorState CreateProcessorState();
 
@@ -192,6 +193,14 @@ namespace Reko.Core
         bool TryParseAddress(string txtAddr, out Address addr);
 
         Address MakeAddressFromConstant(Constant c);
+
+        /// <summary>
+        /// Reads a value from memory, respecting the processor's endianness.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
 
         /// <summary>
         /// The dictionary contains options that were loaded from the config file or the executable image. These can be used
@@ -358,5 +367,6 @@ namespace Reko.Core
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
+        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
     }
 }

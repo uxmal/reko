@@ -275,6 +275,12 @@ namespace Reko.Arch.Arm
             return Address.TryParse32(txtAddress, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
+
+
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
         public static extern IntPtr CreateNativeArchitecture(
             [MarshalAs(UnmanagedType.LPStr)] string archName);

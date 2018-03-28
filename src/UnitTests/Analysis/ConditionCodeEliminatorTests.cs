@@ -45,6 +45,7 @@ namespace Reko.UnitTests.Analysis
         private SsaState ssaState;
         private ProcedureBuilder m;
         private ConditionCodeEliminator cce;
+        private SegmentMap segmentMap;
 
         [SetUp]
 		public void Setup()
@@ -53,6 +54,7 @@ namespace Reko.UnitTests.Analysis
             ssaState = new SsaState(m.Procedure, null);
             ssaIds = ssaState.Identifiers;
             freg = new RegisterStorage("flags", 32, 0, PrimitiveType.Word32);
+            segmentMap = new SegmentMap(Address.Ptr32(0));
 		}
 
         private void Given_ConditionCodeEliminator()
@@ -110,7 +112,7 @@ namespace Reko.UnitTests.Analysis
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, ssa, listener);
+                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;
@@ -559,7 +561,7 @@ ProcedureBuilder_exit:
 
             var ssa = new SsaTransform(new Program { Architecture = m.Architecture }, m.Procedure, new HashSet<Procedure> { m.Procedure }, null, new ProgramDataFlow());
             this.ssaState = ssa.Transform();
-            var vp = new ValuePropagator(m.Architecture, ssaState, new FakeDecompilerEventListener());
+            var vp = new ValuePropagator(m.Architecture, segmentMap, ssaState, new FakeDecompilerEventListener());
             vp.Transform();
             Given_ConditionCodeEliminator();
             cce.Transform();

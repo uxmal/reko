@@ -56,6 +56,7 @@ namespace Reko.Scanning
             this.arch = program.Architecture;
             this.frame = frame;
             this.eval = new ExpressionSimplifier(
+                program.SegmentMap,
                 ctx,
                 services.RequireService<DecompilerEventListener>());
             this.services = services;

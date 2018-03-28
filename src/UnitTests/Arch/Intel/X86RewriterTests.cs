@@ -256,12 +256,13 @@ namespace Reko.UnitTests.Arch.Intel
 
         private X86Rewriter CreateRewriter32(X86Assembler m)
         {
+            var program = m.GetImage();
             state = new X86State(arch32);
             return new X86Rewriter(
                 arch32,
                 host,
                 state,
-                m.GetImage().SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
+                program.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
                 new Frame(arch32.WordWidth));
         }
 
@@ -1769,6 +1770,15 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(     // f2xm1
                 "0|L--|0C00:0000(2): 1 instructions",
                 "1|L--|ST[Top:real64] = pow(2.0, ST[Top:real64]) - 1.0");
+        }
+
+        [Test]
+        public void X86rw_fpu_load()
+        {
+            Run64bitTest(0xD8, 0x0D, 0x89, 0x9F, 0x00, 0x00);
+            AssertCode(     // fmul
+              "0|L--|0000000140000000(6): 1 instructions",
+              "1|L--|ST[Top:real64] = ST[Top:real64] * Mem0[0x0000000140009F8F:real32]");
         }
 
         [Test]

@@ -196,12 +196,12 @@ namespace Reko.UnitTests.Scanning
         {
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
-            this.state = arch.CreateProcessorState();
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
             scanner = mr.StrictMock<IScanner>();
             scanner.Stub(s => s.Services).Return(sc);
             m(asm);
             lr = asm.GetImage();
+            this.state = arch.CreateProcessorState();
             host = new RewriterHost(
                 asm.ImportReferences,
                 new Dictionary<string, FunctionType>

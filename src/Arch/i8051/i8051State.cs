@@ -41,11 +41,17 @@ namespace Reko.Arch.i8051
             this.regValues = new Dictionary<RegisterStorage, Constant>();
         }
 
+        public i8051State(i8051State that) : base(that)
+        {
+            this.arch = that.arch;
+            this.regValues = new Dictionary<RegisterStorage, Constant>(that.regValues);
+        }
+
         public override IProcessorArchitecture Architecture {  get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            return new i8051State(arch);
+            return new i8051State(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

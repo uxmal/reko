@@ -9721,24 +9721,7 @@ log_string_entry:
 // LocalsOut: fp(32) Local -0024(32)
 
 l0040697C:
-	word32 sp_27
-	word32 r28_28
-	word32 r25_29
-	word32 ra_30
-	word32 r30_31
-	word32 r17_32
-	word32 r16_33
-	word32 r4_34
-	word32 r5_35
-	word32 r6_36
-	word32 r2_37
-	word32 r7_38
-	word32 r3_39
-	word32 hi_40
-	word32 r1_41
-	call gettimeofday (retsize: 0; depth: 104)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc50_7,r16_20,r17_22,r2_23,r25_26,r28_5,r30_16,r4_24,r5_25,r7,ra,sp_6
-		defs: hi_40,r1_41,r16_33,r17_32,r2_37,r25_29,r28_28,r3_39,r30_31,r4_34,r5_35,r6_36,r7_38,ra_30,sp_27
+	word32 r3_39 = gettimeofday(r4_24, r5_25)
 	word32 sp_46
 	word32 r28_47
 	word32 r25_48
@@ -9757,24 +9740,7 @@ l0040697C:
 	call gmtime (retsize: 0; depth: 104)
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc50_7,hi_40,r1_41,r16_33,r17_32,r2_43,r25_45,r28_42,r3_39,r30_31,r4_44,r5_35,r6_36,r7_38,ra_30,sp_27
 		defs: hi_59,r1_60,r16_52,r17_51,r2_56,r25_48,r28_47,r3_58,r30_50,r4_53,r5_54,r6_55,r7_57,ra_49,sp_46
-	word32 sp_69
-	word32 r28_70
-	word32 r25_71
-	word32 ra_72
-	word32 r30_73
-	word32 r17_74
-	word32 r16_75
-	word32 r4_76
-	word32 r5_77
-	word32 r6_78
-	word32 r2_79
-	word32 r7_80
-	word32 r3_81
-	word32 hi_82
-	word32 r1_83
-	call strftime (retsize: 0; depth: 104)
-		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc50_7,hi_59,r1_60,r16_52,r17_51,r2_56,r25_68,r28_61,r3_58,r30_50,r4_62,r5_63,r6_66,r7_67,ra_49,sp_46
-		defs: hi_82,r1_83,r16_75,r17_74,r2_79,r25_71,r28_70,r3_81,r30_73,r4_76,r5_77,r6_78,r7_80,ra_72,sp_69
+	strftime(r4_62, r5_63, r6_66, r7_67)
 	fprintf(r4_101, r5_103, Mem228[sp_69:<unknown>])
 	fflush(r4_123)
 	Mem147[Mem0[0x10000878:word32] + 2084:word32] = Mem0[Mem0[0x10000878:word32] + 2084:word32] + 1

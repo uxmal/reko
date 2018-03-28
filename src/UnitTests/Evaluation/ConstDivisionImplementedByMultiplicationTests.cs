@@ -88,7 +88,8 @@ namespace Reko.UnitTests.Evaluation
                 null,
                 null,
                 null).Transform();
-            var vp = new ValuePropagator(m.Architecture, ssa, null);
+            var segmentMap = new SegmentMap(Address.Ptr32(0));
+            var vp = new ValuePropagator(m.Architecture, segmentMap, ssa, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

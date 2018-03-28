@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Analysis
         private MockRepository mr;
         private ProgramDataFlow pf;
         private ProgramBuilder progBuilder;
+        private SegmentMap segmentMap;
 
         [SetUp]
         public void Setup()
@@ -46,6 +47,7 @@ namespace Reko.UnitTests.Analysis
             this.mr = new MockRepository();
             this.pf = new ProgramDataFlow();
             this.progBuilder = new ProgramBuilder();
+            this.segmentMap = new SegmentMap(Address.Ptr32(0));
         }
 
         private static string Expect(string preserved, string trashed, string consts)
@@ -97,7 +99,7 @@ namespace Reko.UnitTests.Analysis
                 importResolver, 
                 new ProgramDataFlow());
             sst.Transform();
-            var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
+            var vp = new ValuePropagator(arch, segmentMap, sst.SsaState, NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;

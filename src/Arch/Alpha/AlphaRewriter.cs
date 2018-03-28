@@ -39,16 +39,14 @@ namespace Reko.Arch.Alpha
         private EndianImageReader rdr;
         private IEnumerator<AlphaInstruction> dasm;
         private IRewriterHost host;
-        private ProcessorState state;
         private AlphaInstruction instr;
         private RtlClass rtlc;
         private RtlEmitter m;
 
-        public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.state = state;
             this.binder = binder;
             this.host = host;
             this.dasm = new AlphaDisassembler(this.arch, rdr).GetEnumerator();

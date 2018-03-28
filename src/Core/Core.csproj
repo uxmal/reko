@@ -331,6 +331,7 @@
     <Compile Include="Lib\LTDominatorGraph.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
+    <Compile Include="Lib\Float80.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
     <Compile Include="Lib\UbjsonReader.cs" />
     <Compile Include="Lib\UbjsonMarker.cs" />

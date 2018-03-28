@@ -347,6 +347,11 @@ namespace Reko.Core
                 Architecture.CreateImageReader(segment.MemoryArea, addr));
         }
 
+        public ProcessorState CreateProcessorState()
+        {
+            return Architecture.CreateProcessorState();
+        }
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         /// <summary>

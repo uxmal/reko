@@ -44,6 +44,7 @@ namespace Reko.Analysis
     {
         private HashSet<Procedure> recursiveGroup;
         private SsaIdentifierCollection ssaIds;
+        private SegmentMap segmentMap;
         private Dictionary<Expression, Expression> optimistic;	// maps <valnum> -> <node>
         private Dictionary<Expression, Expression> valid;
         private Stack<Node> stack;
@@ -59,9 +60,10 @@ namespace Reko.Analysis
             new UnknownType(),
             new TemporaryStorage("any", -1, new UnknownType()));
 
-        public ValueNumbering(HashSet<Procedure> recursiveGroup, DecompilerEventListener listener)
+        public ValueNumbering(HashSet<Procedure> recursiveGroup, SegmentMap segmentMap, DecompilerEventListener listener)
         {
             this.recursiveGroup = recursiveGroup;
+            this.segmentMap = segmentMap;
             this.listener = listener;
         }
 
@@ -141,12 +143,12 @@ namespace Reko.Analysis
                 return id;
             }
 
-            public Expression GetValue(MemoryAccess access)
+            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
             {
                 return access;
             }
 
-            public Expression GetValue(SegmentedAccess access)
+            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
                 return access;
             }
@@ -357,6 +359,7 @@ namespace Reko.Analysis
         {
             var ctx = new ValueNumberingContext(this);
             var simp = new Simplifier(
+                segmentMap,
                 ctx,
                 nodes,
                 AnyValueNumber,
@@ -560,7 +563,8 @@ namespace Reko.Analysis
             private Dictionary<Identifier, Node> nodes;
             private Expression any;
 
-            public Simplifier(EvaluationContext ctx, Dictionary<Identifier, Node> nodes, Expression any, DecompilerEventListener listener) : base(ctx, listener)
+            public Simplifier(SegmentMap segmentMap, EvaluationContext ctx, Dictionary<Identifier, Node> nodes, Expression any, DecompilerEventListener listener)
+                : base(segmentMap, ctx, listener)
             {
                 this.nodes = nodes;
                 this.any = any;

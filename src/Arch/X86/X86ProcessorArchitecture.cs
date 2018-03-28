@@ -135,8 +135,7 @@ namespace Reko.Arch.X86
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -303,6 +302,7 @@ namespace Reko.Arch.X86
             }
             return reg;
         }
+
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();
@@ -349,7 +349,6 @@ namespace Reko.Arch.X86
             return (reg != RegisterStorage.None);
         }
 
-
 		public override string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();
@@ -371,6 +370,11 @@ namespace Reko.Arch.X86
         {
             return mode.TryParseAddress(txtAddress, out addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+    }
     }
 
     public class X86ArchitectureReal : IntelArchitecture

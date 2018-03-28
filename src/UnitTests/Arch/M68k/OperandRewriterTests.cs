@@ -42,8 +42,8 @@ namespace Reko.UnitTests.Arch.M68k
         public void Setup()
         {
             this.arch = new M68kArchitecture("m68k");
-            this.rw = new Rewriter(this.arch, null, new M68kState(arch), new Frame(arch.FramePointerType), null);
             this.addrInstr = Address.Ptr32(0x0012340C);
+            this.rw = new Rewriter(this.arch, null, new M68kState(arch), new Frame(arch.FramePointerType), null);
         }
 
         [Test]

@@ -40,12 +40,14 @@ namespace Reko.UnitTests.Analysis
         private ProgramDataFlow progFlow;
         private List<ValueNumbering> vns;
         private FakeDecompilerEventListener listener;
+        private SegmentMap segmentMap;
 
         [SetUp]
         public void Setup()
         {
             this.listener = new FakeDecompilerEventListener();
             vns = new List<ValueNumbering>();
+            segmentMap = new SegmentMap(Address.Ptr32(0));
         }
 
         protected override void RunTest(Program program, TextWriter writer)
@@ -109,7 +111,7 @@ namespace Reko.UnitTests.Analysis
                 //sst.Transform();
                 sst.AddUsesToExitBlock();
                 //vp.Transform();
-			    var vn = new ValueNumbering(group, listener);
+			    var vn = new ValueNumbering(group, segmentMap, listener);
                 vn.Compute(ssa);
                 vns.Add(vn);
 			}
@@ -141,7 +143,7 @@ namespace Reko.UnitTests.Analysis
                     null,
                     new ProgramDataFlow(prog));
 				SsaState ssa = sst.Transform();
-				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, segmentMap, listener);
 				DumpProc(ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -172,7 +174,7 @@ namespace Reko.UnitTests.Analysis
                 SsaTransform sst = new SsaTransform(program, proc, new HashSet<Procedure>(),
                     null, new ProgramDataFlow(program));
                 SsaState ssa = sst.Transform();
-				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, program.SegmentMap, listener);
                 vn.Compute(ssa);
 				DumpProc(ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
@@ -215,7 +217,7 @@ done:
 
 				DumpProc(ssa, fut.TextWriter);
 
-				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, segmentMap, listener);
                 vn.Compute(ssa);
 				vn.Write(fut.TextWriter);
 
@@ -250,7 +252,7 @@ done:
                     new ProgramDataFlow(program));
                 SsaState ssa = sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, segmentMap, listener);
                 vn.Compute(ssa);
 				vn.Write(fut.TextWriter);
 
@@ -289,7 +291,7 @@ looptest:
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, segmentMap, listener);
                 vn.Compute(ssa);
 				vn.Write(fut.TextWriter);
 

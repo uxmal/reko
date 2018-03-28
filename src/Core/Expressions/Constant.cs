@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.IO;
@@ -244,7 +245,7 @@ namespace Reko.Core.Expressions
 			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
 		}
 
-		public virtual Constant Negate()
+        public virtual Constant Negate()
 		{
 			PrimitiveType p = (PrimitiveType) DataType;
             var c = GetValue();
@@ -360,6 +361,12 @@ namespace Reko.Core.Expressions
         {
             return new ConstantReal64(PrimitiveType.Real64, d);
         }
+
+        public static Constant Real80(Float80 f80)
+        {
+            return new ConstantReal80(PrimitiveType.Real80, f80);
+        }
+
 
         public static Constant UInt16(ushort u)
         {
@@ -1303,6 +1310,67 @@ namespace Reko.Core.Expressions
         }
     }
 
+    internal class ConstantReal80 : ConstantReal
+    {
+        private Float80 value;
+
+        public ConstantReal80(DataType dt, Float80 value)
+            : base(dt)
+        {
+            this.value = value;
+        }
+
+        public override Expression CloneExpression()
+        {
+            return new ConstantReal80(DataType, value);
+        }
+
+        public override object GetValue()
+        {
+            return value;
+        }
+
+        public override Constant Negate()
+        {
+            return new ConstantReal80(DataType, -value);
+        }
+
+        public override byte ToByte()
+        {
+            return Convert.ToByte(value);
+        }
+
+        public override ushort ToUInt16()
+        {
+            return Convert.ToUInt16(value);
+        }
+
+        public override uint ToUInt32()
+        {
+            return Convert.ToUInt32(value);
+        }
+
+        public override ulong ToUInt64()
+        {
+            return Convert.ToUInt64(value);
+        }
+
+        public override short ToInt16()
+        {
+            return Convert.ToInt16(value);
+        }
+
+        public override int ToInt32()
+        {
+            return Convert.ToInt32(value);
+        }
+
+        public override long ToInt64()
+        {
+            return Convert.ToInt64(value);
+        }
+    }
+
     internal class ConstantReal64 : ConstantReal
     {
         private double value;
@@ -1363,7 +1431,6 @@ namespace Reko.Core.Expressions
             return Convert.ToInt64(value);
         }
     }
-
     public class StringConstant : Constant
     {
         private string str;

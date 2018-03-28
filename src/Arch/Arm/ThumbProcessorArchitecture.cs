@@ -80,7 +80,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
-                }
+        }
                 aRegs += cb;
                 --cRegs;
             }
@@ -162,7 +162,6 @@ namespace Reko.Arch.Arm
         {
             return new ArmProcessorState(this);
         }
-
  
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -172,7 +171,7 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-            return null;
+                return null;
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -236,6 +235,11 @@ namespace Reko.Arch.Arm
         public override Address MakeAddressFromConstant(Constant c)
         {
             throw new NotImplementedException();
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

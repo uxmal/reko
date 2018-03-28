@@ -33,6 +33,8 @@ namespace Reko.UnitTests.Arch.Intel
     [TestFixture]
     public class X86StateTests
     {
+        private SegmentMap map;
+
         public X86StateTests()
         {
         }
@@ -46,6 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void X86St_OnBeforeCall_DecrementStackRegister()
         {
             var arch = new X86ArchitectureFlat32("x86-protected-32");
+            this.map = new SegmentMap(Address.Ptr32(0x00123400)); 
             var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));

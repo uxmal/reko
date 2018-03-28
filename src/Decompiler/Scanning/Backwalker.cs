@@ -195,7 +195,7 @@ namespace Reko.Scanning
                         (binCmp.Operator is ISubOperator ||
                          binCmp.Operator is USubOperator))
                     {
-                        var idLeft = RegisterOf(binCmp.Left as Identifier);
+                        var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != null &&
                             (idLeft == Index || idLeft == host.GetSubregister(Index, 0, 8)) ||
                            (IndexExpression != null && IndexExpression.ToString() == idLeft.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
@@ -306,7 +306,7 @@ namespace Reko.Scanning
                 case ConditionCode.UGT:
                 case ConditionCode.GT:
                     break;
-                //$TODO: verify the branch direction here.
+                    //$TODO: verify the branch direction here.
                 case ConditionCode.ULE:
                     fallthrough = !fallthrough;
                     cc = ConditionCode.UGT;
@@ -347,7 +347,7 @@ namespace Reko.Scanning
                 e = c.Expression;
             if (e is Identifier id && id.Storage is RegisterStorage reg)
                 return reg;
-            return RegisterStorage.None;
+                return RegisterStorage.None;
         }
 
         public bool BackwalkInstructions(

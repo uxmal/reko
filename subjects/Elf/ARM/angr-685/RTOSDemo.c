@@ -77,7 +77,7 @@ void prvCopyDataToQueue(word32 lr, word32 pc, word32 r0, word32 r2, word32 r3, w
 		byte NZCV_191;
 		byte N_192;
 		byte NZ_193;
-		fnFFC02AB1();
+		0xFFC02AB1();
 	}
 	if (!C)
 	{
@@ -100,7 +100,7 @@ void prvCopyDataToQueue(word32 lr, word32 pc, word32 r0, word32 r2, word32 r3, w
 		byte NZCV_168;
 		byte N_169;
 		byte NZ_170;
-		fn01A18AC9();
+		0x01A18AC9();
 	}
 	if (!C)
 	{
@@ -135,7 +135,7 @@ void prvCopyDataToQueue(word32 lr, word32 pc, word32 r0, word32 r2, word32 r3, w
 		byte NZCV_135;
 		byte N_136;
 		byte NZ_137;
-		fnFFC02AD1();
+		0xFFC02AD1();
 	}
 }
 
@@ -146,7 +146,7 @@ void prvCopyDataFromQueue()
 	{
 		word32 sp_5;
 		byte Z_6;
-		fnFEC5AB25();
+		0xFEC5AB25();
 	}
 }
 
@@ -403,7 +403,7 @@ void xQueueGiveMutexRecursive(word32 lr, word32 r0, word32 r2, word32 r4, word32
 		word32 r6_61;
 		word32 lr_63;
 		word32 r9_65;
-		fn0183930D();
+		0x0183930D();
 	}
 	if (!C)
 	{
@@ -759,7 +759,7 @@ void xTaskGenericNotifyFromISR(word32 lr, word32 r0, word32 r3, word32 r4, word3
 		word32 r8_54;
 		word32 r6_55;
 		word32 r7_56;
-		fnFE3D4AF5();
+		0xFE3D4AF5();
 	}
 	if (!Z)
 		__stc(p4, 0x00, Mem0[lr + 0x00:word32]);
@@ -845,7 +845,7 @@ void xTaskResumeAll(word32 lr, word32 pc, word32 r0, word32 r1, word32 r6, word3
 		word32 r3_111;
 		word32 r10_112;
 		word32 p7_113;
-		fn00AC1031();
+		0x00AC1031();
 	}
 	if (!Z)
 		Mem89[r6 + 0x00:word32] = r0;
@@ -1026,7 +1026,7 @@ void xTaskCheckForTimeOut(word32 r0, word32 r1, word32 r2, word32 r8, word32 fp,
 		byte NZCV_48;
 		word32 r1_49;
 		word32 r2_50;
-		fnFFC02E7D();
+		0xFFC02E7D();
 	}
 	if (!C)
 		Mem39[fp + -0x001A:word64] = r2_r1;
@@ -1540,7 +1540,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 	if (!Z)
 	{
 		word32 sp_241;
-		fn002CAD55();
+		0x002CAD55();
 	}
 	if (!Z)
 		fn0000895D(pc, r0, r3, r6, r7, fp, ip);
@@ -1554,7 +1554,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_238;
 		word32 fp_239;
 		word32 ip_240;
-		fn00048D61();
+		0x00048D61();
 	}
 	if (!Z)
 	{
@@ -1566,7 +1566,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_228;
 		word32 fp_229;
 		word32 ip_230;
-		fn00089165();
+		0x00089165();
 	}
 	if (!Z)
 	{
@@ -1578,7 +1578,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_218;
 		word32 fp_219;
 		word32 ip_220;
-		fn000C9569();
+		0x000C9569();
 	}
 	if (!Z)
 	{
@@ -1590,7 +1590,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_208;
 		word32 fp_209;
 		word32 ip_210;
-		fn0010996D();
+		0x0010996D();
 	}
 	if (!Z)
 	{
@@ -1602,7 +1602,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_198;
 		word32 fp_199;
 		word32 ip_200;
-		fn00149D71();
+		0x00149D71();
 	}
 	if (!Z)
 	{
@@ -1614,7 +1614,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_188;
 		word32 fp_189;
 		word32 ip_190;
-		fn0018A175();
+		0x0018A175();
 	}
 	if (!Z)
 	{
@@ -1626,7 +1626,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_178;
 		word32 fp_179;
 		word32 ip_180;
-		fn001CA579();
+		0x001CA579();
 	}
 	if (!Z)
 	{
@@ -1638,7 +1638,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_168;
 		word32 fp_169;
 		word32 ip_170;
-		fn0020A97D();
+		0x0020A97D();
 	}
 	if (!Z)
 	{
@@ -1650,7 +1650,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_158;
 		word32 fp_159;
 		word32 ip_160;
-		fn0024AD81();
+		0x0024AD81();
 	}
 	if (!Z)
 	{
@@ -1663,7 +1663,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_148;
 		word32 fp_149;
 		word32 ip_150;
-		fn0028B185();
+		0x0028B185();
 	}
 	if (!NZV)
 	{
@@ -1677,7 +1677,7 @@ void prvSetAndCheckRegisters(word32 pc, word32 r0, word32 r3, word32 r6, word32 
 		word32 r7_138;
 		word32 fp_139;
 		word32 ip_140;
-		fn0030B589();
+		0x0030B589();
 	}
 }
 
@@ -1695,7 +1695,7 @@ void vApplicationIdleHook(word32 pc, word32 r0, word32 r1, word32 r2, word32 r7,
 		word32 r10_86;
 		word32 fp_87;
 		word32 lr_89;
-		fnFFC084ED();
+		0xFFC084ED();
 	}
 	if (!NZV)
 		return;
@@ -1807,7 +1807,7 @@ void vListInsert(word32 r0, word32 r1, word32 r2, word32 r8, word32 ip)
 		byte V_69;
 		byte NZCV_75;
 		word32 pc_80;
-		fn01A0B9E5();
+		0x01A0B9E5();
 	}
 	if (!Z)
 	{
@@ -2027,7 +2027,7 @@ void prvFlashCoRoutine(word32 lr, word32 r5)
 		word32 r5_22;
 		word32 fp_23;
 		byte Z_24;
-		fn0118987D();
+		0x0118987D();
 	}
 }
 
@@ -2160,7 +2160,7 @@ void MPU_uxTaskGetNumberOfTasks()
 	{
 		word32 sp_5;
 		byte Z_6;
-		fnFFE08805();
+		0xFFE08805();
 	}
 }
 
@@ -2290,7 +2290,7 @@ void MPU_xQueuePeekFromISR(word32 r0, word32 r3, word32 r6, word32 p5)
 		word32 p5_20;
 		word32 r0_21;
 		byte NZV_22;
-		fnFFE088C9();
+		0xFFE088C9();
 	}
 	if (!Z)
 		Mem16[r6 + 0x00:byte] = (byte) r3;
@@ -2358,7 +2358,7 @@ void MPU_xEventGroupCreate()
 	{
 		word32 sp_5;
 		byte Z_6;
-		fnFFE08C05();
+		0xFFE08C05();
 	}
 }
 
@@ -2475,7 +2475,7 @@ void vCoRoutineAddToDelayedList(word32 lr, word32 pc, word32 r0, word32 r1, word
 		word64 d17_39;
 		word64 d31_40;
 		word32 r3_25;
-		fnFFE08BDF();
+		0xFFE08BDF();
 		if (!C_29)
 			r3_25 = Mem0[r1_24 + 0x00:int16];
 		if (!NZV_35)
@@ -2505,7 +2505,7 @@ void vCoRoutineSchedule(word32 pc, word32 r0, word32 r1, word32 r7, word32 r8)
 		word32 pc_63;
 		word32 r1_64;
 		word32 fp_71;
-		fn01B63C6D();
+		0x01B63C6D();
 	}
 	if (!Z)
 		Mem60[r7 + -0x00B3:word32] = r0;
@@ -2528,7 +2528,7 @@ void vCoRoutineSchedule(word32 pc, word32 r0, word32 r1, word32 r7, word32 r8)
 		byte ZC_54;
 		word32 fp_55;
 		byte NZV_56;
-		fnFE3DCF1D();
+		0xFE3DCF1D();
 	}
 	if (!Z)
 		Mem43[r8 + 0x00:byte] = (byte) fp;
@@ -2582,7 +2582,7 @@ void GPIODirModeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		word32 pc_48;
 		byte ZC_49;
 		word32 ip_50;
-		fn010CC019();
+		0x010CC019();
 	}
 	if (!Z)
 		C = cond((r3 >> 0x0020) - r8 - C);
@@ -2621,7 +2621,7 @@ void GPIOIntTypeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		word32 r2_164;
 		word32 r10_165;
 		word32 fp_166;
-		fn010CC069();
+		0x010CC069();
 	}
 	if (!Z)
 		return;
@@ -2649,7 +2649,7 @@ void GPIOIntTypeSet(word32 pc, word32 r0, word32 r3, word32 r4, word32 r8)
 		word32 r2_135;
 		word32 r10_136;
 		word32 fp_137;
-		fnFEFCE1B9();
+		0xFEFCE1B9();
 	}
 	if (!NZV)
 		r8 = r3 - (r3 >> 22);
@@ -2947,7 +2947,7 @@ void GPIOPinTypeI2C(word32 r0, word32 r6)
 		word32 r0_14;
 		word32 r6_15;
 		byte Z_16;
-		fn0090986D();
+		0x0090986D();
 	}
 }
 
@@ -3044,7 +3044,7 @@ void IntRegister(word32 r0, word32 r1, word32 r8, word32 fp)
 		byte NZCV_70;
 		word32 r8_71;
 		word32 r4_72;
-		fnFED15639();
+		0xFED15639();
 	}
 	if (!Z)
 		Z = cond(fp & 0x5000);
@@ -3100,7 +3100,7 @@ void IntPriorityGroupingGet(word32 r0, word32 r2, word32 r3, word32 r5, word32 r
 			byte NZCV_46;
 			byte ZC_47;
 			word32 r2_48;
-			fn00ECA961();
+			0x00ECA961();
 		}
 	}
 }
@@ -3177,7 +3177,7 @@ void IntPriorityGet(word32 pc, word32 r0, word32 r2, word32 r8, word32 r10)
 		word32 r1_84;
 		word32 ip_89;
 		word32 pc_91;
-		fn0110E1D1();
+		0x0110E1D1();
 	}
 	if (!Z)
 	{
@@ -3434,7 +3434,7 @@ void SSIConfig(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4,
 	word32 r5_16;
 	word32 r7_17;
 	word32 pc_18;
-	fnFFC09C73();
+	0xFFC09C73();
 	if (!Z_5)
 	{
 		Mem24[pc_18 + 0x00:word32] = r0_13;
@@ -3542,7 +3542,7 @@ void SysCtlSRAMSizeGet()
 	{
 		word32 sp_5;
 		byte Z_6;
-		fn0120AC11();
+		0x0120AC11();
 	}
 }
 
@@ -3553,7 +3553,7 @@ void SysCtlFlashSizeGet()
 	{
 		word32 sp_5;
 		byte Z_6;
-		fn0120AC29();
+		0x0120AC29();
 	}
 }
 
@@ -3574,7 +3574,7 @@ void SysCtlPeripheralPresent(word32 r1, word32 r2, word32 r8)
 		word32 r0_25;
 		byte C_26;
 		word32 r8_28;
-		fn01025EF1();
+		0x01025EF1();
 	}
 	if (!Z)
 		Mem21[r2 + 0x00:byte] = (byte) r1;
@@ -3600,7 +3600,7 @@ void SysCtlPeripheralEnable(word32 pc, word32 r0, word32 r3, word32 r8, word32 r
 		word32 r8_64;
 		word32 r3_65;
 		word32 pc_67;
-		fn000EA735();
+		0x000EA735();
 	}
 	if (!V)
 	{
@@ -3640,7 +3640,7 @@ void SysCtlPeripheralSleepEnable(word32 pc, word32 r0, word32 r3, word32 r8, wor
 		word32 r8_64;
 		word32 r3_65;
 		word32 pc_67;
-		fn000EA76D();
+		0x000EA76D();
 	}
 	if (!V)
 	{
@@ -3679,7 +3679,7 @@ void SysCtlPeripheralDeepSleepEnable(word32 pc, word32 r0, word32 r3, word32 r8,
 		word32 r8_60;
 		word32 r3_61;
 		word32 pc_62;
-		fn000EA7A5();
+		0x000EA7A5();
 	}
 	if (!V)
 	{
@@ -4736,7 +4736,7 @@ void I2CSlaveDataGet(word32 lr, word32 r1, word32 r2, word32 r3, word32 r4, word
 		word32 ip_78;
 		word32 r0_81;
 		word32 p15_83;
-		fn018E3801();
+		0x018E3801();
 	}
 	if (!V)
 	{
@@ -4786,7 +4786,7 @@ void memcpy(word32 lr, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, wo
 		word32 r10_220;
 		byte NZCV_223;
 		word32 pc_224;
-		fnFF656279();
+		0xFF656279();
 	}
 	if (!ZC)
 	{
@@ -4796,7 +4796,7 @@ void memcpy(word32 lr, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, wo
 		word32 r10_196;
 		byte NZCV_199;
 		word32 pc_200;
-		fn010CB1D5();
+		0x010CB1D5();
 	}
 	if (!Z)
 	{

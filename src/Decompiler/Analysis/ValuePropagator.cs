@@ -54,6 +54,7 @@ namespace Reko.Analysis
 
         public ValuePropagator(
             IProcessorArchitecture arch,
+            SegmentMap segmentMap,
             SsaState ssa,
             DecompilerEventListener eventListener)
         {
@@ -62,7 +63,7 @@ namespace Reko.Analysis
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
-            this.eval = new ExpressionSimplifier(evalCtx, eventListener);
+            this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -105,8 +106,9 @@ namespace Reko.Analysis
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             ci.Callee = ci.Callee.Accept(eval);
-            var pc = ci.Callee as ProcedureConstant;
-            if (pc != null && pc.Procedure.Signature.ParametersValid)
+            if (ci.Callee is ProcedureConstant pc &&
+                pc.Procedure.Signature != null &&
+                pc.Procedure.Signature.ParametersValid)
             {
                 var ab = new CallApplicationBuilder(arch, ci, ci.Callee);
                 evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
@@ -146,8 +148,7 @@ namespace Reko.Analysis
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
             var src = phi.Src.Accept(eval);
-            PhiFunction f = src as PhiFunction;
-            if (f != null)
+            if (src is PhiFunction f)
                 return new PhiAssignment(phi.Dst, f);
             else
                 return new Assignment(phi.Dst, src);

@@ -74,6 +74,7 @@ namespace Reko.Scanning
             this.arch = program.Architecture;   // cached since it's used heavily.
             this.state = state;
             this.eval = new ExpressionSimplifier(
+                program.SegmentMap,
                 state,
                 scanner.Services.RequireService<DecompilerEventListener>());
             this.addrStart = addr;
@@ -126,8 +127,6 @@ namespace Reko.Scanning
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
-            if (ric.Address.ToLinear() == 0x30C)        //$DEBUG
-                ric.Address.ToString();
             state.SetInstructionPointer(ric.Address);
             SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)
@@ -226,7 +225,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitAssignment(RtlAssignment a)
         {
-            SetValue(a.Dst, GetValue(a.Src));
+            var val = GetValue(a.Src);
+            SetValue(a.Dst, val);
             var idDst = a.Dst as Identifier;
             var inst = (idDst != null)
                 ? new Assignment(idDst, a.Src)
@@ -516,7 +516,7 @@ namespace Reko.Scanning
             FunctionType sig;
             ProcedureCharacteristics chr = null;
             Address addr = CallTargetAsAddress(call);
-            if (addr != null)
+            if (addr != null && program.SegmentMap.IsValidAddress(addr))
             {
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)
@@ -597,10 +597,23 @@ namespace Reko.Scanning
 
         private Address CallTargetAsAddress(RtlCall call)
         {
+            var callTarget = call.Target.Accept(eval);
+            if (callTarget is Constant c)
+            {
+                if (c.IsValid)
+                {
+                    return arch.MakeAddressFromConstant(c);
+                }
+                else
+                {
+                    return null;
+                }
+            }
             var addr = call.Target as Address;
-            if (addr != null)
-                return addr;
-            addr = program.Platform.ResolveIndirectCall(call);
+            if (addr == null)
+            {
+                addr = program.Platform.ResolveIndirectCall(call);
+            }
             return addr;
         }
 
@@ -777,13 +790,13 @@ namespace Reko.Scanning
                 if (side.Expression is Application appl &&
                     appl.Procedure is ProcedureConstant fn)
                 {
-                    if (fn.Procedure.Characteristics.Terminates)
-                    {
-                        scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                        return false;
+                        if (fn.Procedure.Characteristics.Terminates)
+                        {
+                            scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+                            return false;
+                        }
                     }
                 }
-            }
             return true;
         }
 
@@ -957,26 +970,26 @@ namespace Reko.Scanning
             foreach (Address addr in vector)
             {
                 var st = state.Clone();
-                var pbase = scanner.ScanProcedure(addr, null, st);
+                    var pbase = scanner.ScanProcedure(addr, null, st);
                 if (pbase is Procedure pcallee)
-                {
-                    program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
+                    {
+                        program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
+                    }
                 }
-            }
         }
 
         private List<Block> ScanJumpVectorTargets(List<Address> vector)
-        {
+                {
             var blocks = new List<Block>();
             foreach (Address addr in vector)
             {
                 var st = state.Clone();
-                if (!program.SegmentMap.IsValidAddress(addr))
-                    break;
+                    if (!program.SegmentMap.IsValidAddress(addr))
+                        break;
                 blocks.Add(BlockFromAddress(ric.Address, addr, blockCur.Procedure, state));
-            }
+                }
             return blocks;
-        }
+            }
 
         private void Emit(Instruction instruction)
         {

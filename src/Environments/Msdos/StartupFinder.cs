@@ -52,7 +52,7 @@ namespace Reko.Environments.Msdos
         public StartupFinder(IServiceProvider services, Program program, Address addrStart)
         {
             this.services = services;
-            this.program= program;
+            this.program = program;
             this.start = addrStart;
             this.state = program.Architecture.CreateProcessorState();
         }

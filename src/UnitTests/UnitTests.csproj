@@ -172,6 +172,7 @@
     <Compile Include="Core\BitRangeTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
     <Compile Include="Core\IRFormat\IRParserTests.cs" />
+    <Compile Include="Core\Lib\Float80Tests.cs" />
     <Compile Include="Core\NativeInterface\NativeTypeFactoryTests.cs" />
     <Compile Include="Core\NativeInterface\RtlNativeEmitterTests.cs" />
     <Compile Include="Core\Output\IRFormatterTests.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Evaluation\MkSeqFromSlices_RuleTest.cs" />
     <Compile Include="Fragments\DpbFragment.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
+    <Compile Include="Environments\SysV\ArchSpecific\SuperHCallingConventionTests.cs" />
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />

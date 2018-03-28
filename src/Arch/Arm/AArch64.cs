@@ -79,7 +79,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg);
-                }
+        }
                 aRegs += cb;
                 --cRegs;
             }
@@ -171,7 +171,7 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-            return null;
+                return null;
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -231,6 +231,11 @@ namespace Reko.Arch.Arm
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            throw new NotImplementedException("Endianness is BE or LE");
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

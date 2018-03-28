@@ -502,8 +502,7 @@ namespace Reko.Scanning
             foreach (var edge in icb.Edges)
             {
                 var from = edge.Item1;
-                RtlBlock to;
-                if (!icb.AddrToBlock.TryGetValue(edge.Item2, out to))
+                if (!icb.AddrToBlock.TryGetValue(edge.Item2, out var to))
                 {
                     continue;
                 }

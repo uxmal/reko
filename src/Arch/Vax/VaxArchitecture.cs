@@ -134,8 +134,7 @@ namespace Reko.Arch.Vax
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, out result))
+            if (!Enum.TryParse(name, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -194,8 +193,7 @@ namespace Reko.Arch.Vax
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            uint uAddr;
-            if (!uint.TryParse(txtAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uAddr))
+            if (!uint.TryParse(txtAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint uAddr))
             {
                 addr = null;
                 return false;
@@ -205,6 +203,11 @@ namespace Reko.Arch.Vax
                 addr = Address.Ptr32(uAddr);
                 return true;
             }
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

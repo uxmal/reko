@@ -40,6 +40,7 @@ namespace Reko.UnitTests.Evaluation
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
         private IProcessorArchitecture arch;
+        private SegmentMap segmentMap;
         private Frame frame;
         private FakeDecompilerEventListener listener;
 
@@ -47,6 +48,7 @@ namespace Reko.UnitTests.Evaluation
         public void Setup()
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
+            segmentMap = new SegmentMap(Address.Ptr32(0));
             frame = new Frame(arch.FramePointerType);
             listener = new FakeDecompilerEventListener();
         }
@@ -70,7 +72,7 @@ namespace Reko.UnitTests.Evaluation
         {
             ctx = new SymbolicEvaluationContext(arch, frame);
             se = new SymbolicEvaluator(
-                new ExpressionSimplifier(ctx, listener),
+                new ExpressionSimplifier(segmentMap, ctx, listener),
                 ctx);
             if (esp == null)
                 esp = Tmp32("esp");

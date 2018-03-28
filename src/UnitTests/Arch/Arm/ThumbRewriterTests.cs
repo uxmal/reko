@@ -37,7 +37,6 @@ namespace Reko.UnitTests.Arch.Arm
     public class ThumbRewriterTests : RewriterTestBase
     {
         private ThumbArchitecture arch;
-        private ArmProcessorState state;
         private MemoryArea image;
         private Address baseAddress = Address.Ptr32(0x00100000);
 
@@ -53,6 +52,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
+            ArmProcessorState state = new ArmProcessorState(arch);
             return arch.CreateRewriter(new LeImageReader(image, 0), state, binder, host);
         }
 
@@ -5742,7 +5742,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void Setup()
         {
             arch = new ThumbArchitecture("arm-thumb");
-            state = new ArmProcessorState(arch);
         }
 
         //[Test]

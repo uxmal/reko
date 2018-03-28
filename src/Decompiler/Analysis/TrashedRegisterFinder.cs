@@ -269,7 +269,7 @@ namespace Reko.Analysis
         public void EnsureEvaluationContext(BlockFlow bf)
         {
             this.ctx = bf.SymbolicIn.Clone();
-            var tes = new TrashedExpressionSimplifier(this, ctx);
+            var tes = new TrashedExpressionSimplifier(this.program.SegmentMap, this, ctx);
             this.se = new SymbolicEvaluator(tes, ctx);
         }
 
@@ -493,8 +493,8 @@ namespace Reko.Analysis
             private TrashedRegisterFinder trf;
             private SymbolicEvaluationContext ctx;
 
-            public TrashedExpressionSimplifier(TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
-                : base(ctx, trf.eventListener)
+            public TrashedExpressionSimplifier(SegmentMap segmentMap, TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
+                : base(segmentMap, ctx, trf.eventListener)
             {
                 this.trf = trf;
                 this.ctx = ctx;

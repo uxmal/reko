@@ -132,6 +132,12 @@ namespace Reko.Core
         public bool IsExecutable { get { return (this.Access & AccessMode.Execute) != 0; } }
 
         /// <summary>
+        /// If true, the segment's contents may change over the execution of
+        /// program.
+        /// </summary>
+        public bool IsWriteable => (this.Access & AccessMode.Write) != 0;
+
+        /// <summary>
         /// The identifier used in the program to refer to the segment.
         /// </summary>
         /// <remarks>

@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Analysis
             {
                 Architecture = arch,
                 Platform = platform,
+                SegmentMap = new SegmentMap(Address.Ptr32(0))
             };
         }
 
@@ -107,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                     null, 
                     new ProgramDataFlow());
                 sst.Transform();
-                var vp = new ValuePropagator(arch, sst.SsaState, eventListener);
+                var vp = new ValuePropagator(arch, program.SegmentMap, sst.SsaState, eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();

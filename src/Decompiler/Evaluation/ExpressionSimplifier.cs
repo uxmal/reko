@@ -37,6 +37,7 @@ namespace Reko.Evaluation
     /// </summary>
     public class ExpressionSimplifier : ExpressionVisitor<Expression>
     {
+        private SegmentMap segmentMap;
         private EvaluationContext ctx;
 
         private AddTwoIdsRule add2ids;
@@ -64,8 +65,9 @@ namespace Reko.Evaluation
         private CastCastRule castCastRule;
         private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
 
-        public ExpressionSimplifier(EvaluationContext ctx, DecompilerEventListener listener)
+        public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
+            this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
             this.ctx = ctx;
 
             this.add2ids = new AddTwoIdsRule(ctx);
@@ -518,7 +520,7 @@ namespace Reko.Evaluation
                 access.MemoryId,
                 access.EffectiveAddress.Accept(this),
                 access.DataType);
-            return ctx.GetValue(value);
+            return ctx.GetValue(value, segmentMap);
         }
 
         public virtual Expression VisitMkSequence(MkSequence seq)
@@ -660,7 +662,7 @@ namespace Reko.Evaluation
                 Changed = true;
                 return sliceSegPtr.Transform();
             }
-            return ctx.GetValue(segMem);
+            return ctx.GetValue(segMem, segmentMap);
         }
 
         public virtual Expression VisitSlice(Slice slice)

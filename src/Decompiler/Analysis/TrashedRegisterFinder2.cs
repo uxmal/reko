@@ -42,6 +42,7 @@ namespace Reko.Analysis
     public class TrashedRegisterFinder2 
     {
         private IProcessorArchitecture arch;
+        private SegmentMap segmentMap;
         private ProgramDataFlow progFlow;
         private SsaState ssa;
         private DecompilerEventListener listener;
@@ -63,11 +64,13 @@ namespace Reko.Analysis
 
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
+            SegmentMap segmentMap,
             ProgramDataFlow flow,
             IEnumerable<SsaTransform> sccGroup,
             DecompilerEventListener listener)
         {
             this.arch = arch;
+            this.segmentMap = segmentMap;
             this.progFlow = flow;
             this.sccGroup = sccGroup.ToHashSet();
             this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
@@ -89,6 +92,7 @@ namespace Reko.Analysis
         {
             this.ssa = ssa;
             this.simpl = new ExpressionSimplifier(
+                segmentMap,
                 new SsaEvaluationContext(arch, ssa.Identifiers),
                 listener);
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];

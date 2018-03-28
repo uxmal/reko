@@ -114,7 +114,8 @@ namespace Reko.UnitTests.Loading
             this.x86arch = mr.Stub<IProcessorArchitecture>();
             var env = mr.Stub<OperatingEnvironment>();
             this.msdosPlatform = mr.Stub<IPlatform>();
-            var state = mr.Stub<ProcessorState>();
+            var map = new SegmentMap(Address.SegPtr(0x0C00, 0));
+            var state = new FakeProcessorState(x86arch);
             var rawFile = new RawFileElementImpl
             {
                 BaseAddress = "0C00:0100",

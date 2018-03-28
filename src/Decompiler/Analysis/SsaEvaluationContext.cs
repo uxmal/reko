@@ -65,12 +65,12 @@ namespace Reko.Analysis
             return appl;
         }
 
-        public Expression GetValue(MemoryAccess access)
+        public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
         {
             return access;
         }
 
-        public Expression GetValue(SegmentedAccess access)
+        public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
         {
             return access;
         }

@@ -384,11 +384,15 @@ namespace Reko
         /// an linked procedure the user has decreed not decompileable.</returns>
         public ProcedureBase ScanProcedure(ProgramAddress paddr)
         {
+            var program = paddr.Program;
             if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-                scanner = CreateScanner(paddr.Program);
-            var procName = paddr.Program.User.Procedures.TryGetValue(
+                scanner = CreateScanner(program);
+            var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;
-            return scanner.ScanProcedure(paddr.Address, procName, paddr.Program.Architecture.CreateProcessorState());
+            return scanner.ScanProcedure(
+                paddr.Address,
+                procName, 
+                program.Architecture.CreateProcessorState());
         }
 
 		/// <summary>

@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Analysis
                     dataFlow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
-                var vp = new ValuePropagator(program.Architecture, sst.SsaState, NullDecompilerEventListener.Instance);
+                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, sst.SsaState, NullDecompilerEventListener.Instance);
                 vp.Transform();
             }
         }
@@ -194,7 +194,8 @@ namespace Reko.UnitTests.Analysis
                 importResolver,
                 dataFlow);
             sst.Transform();
-            var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
+            var segmentMap = new SegmentMap(Address.Ptr32(0));
+            var vp = new ValuePropagator(arch, segmentMap, sst.SsaState, NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;
@@ -205,6 +206,7 @@ namespace Reko.UnitTests.Analysis
 
             var trf = new TrashedRegisterFinder2(
                 arch,
+                segmentMap,
                 dataFlow,
                 new[] { sst },
                 NullDecompilerEventListener.Instance);

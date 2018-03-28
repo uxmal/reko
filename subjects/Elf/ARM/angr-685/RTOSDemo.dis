@@ -217,7 +217,7 @@ l00000109_1:
 	byte NZCV_191
 	byte N_192
 	byte NZ_193
-	call fnFFC02AB1 (retsize: 0;)
+	call 0xFFC02AB1 (retsize: 0;)
 		uses: C_31,fp_9,lr,N_26,NV_29,NZ_25,NZCV_27,pc,r0,r1_19,r10_17,r2,r3_13,r5,r6_4,r7_28,r8_11,r9,sp_1,V_30,Z_32
 		defs: C_177,fp_178,lr_185,N_192,NV_188,NZ_193,NZCV_191,pc_184,r0_175,r1_187,r10_183,r2_179,r3_180,r5_181,r6_176,r7_189,r8_182,r9_190,sp_173,V_186,Z_174
 // DataOut: fp r0 r10 r3 r5 r8 r9
@@ -262,7 +262,7 @@ l00000111_1:
 	byte NZCV_168
 	byte N_169
 	byte NZ_170
-	call fn01A18AC9 (retsize: 0;)
+	call 0x01A18AC9 (retsize: 0;)
 		uses: C_55,fp_54,lr_47,N_40,NV_44,NZ_39,NZCV_41,pc_48,r0_57,r1_45,r10_49,r2_53,r3_52,r5_51,r6_56,r7_43,r8_60,r9_42,sp_59,V_46,Z_58
 		defs: C_154,fp_155,lr_162,N_169,NV_165,NZ_170,NZCV_168,pc_161,r0_152,r1_164,r10_160,r2_156,r3_157,r5_158,r6_153,r7_166,r8_159,r9_167,sp_150,V_163,Z_151
 // DataOut: r0 r10 r3 r5 r8 r9
@@ -356,7 +356,7 @@ l00000129_1:
 	byte NZCV_135
 	byte N_136
 	byte NZ_137
-	call fnFFC02AD1 (retsize: 0;)
+	call 0xFFC02AD1 (retsize: 0;)
 		uses: C_89,fp_76,lr_69,N_85,NV_87,NZ_95,NZCV_94,pc_70,r0_92,r1_83,r10_71,r2_75,r3_74,r5_73,r6_78,r7_93,r8_72,r9_82,sp_81,V_88,Z_91
 		defs: C_121,fp_122,lr_129,N_136,NV_132,NZ_137,NZCV_135,pc_128,r0_119,r1_131,r10_127,r2_123,r3_124,r5_125,r6_120,r7_133,r8_126,r9_134,sp_117,V_130,Z_118
 // DataOut:
@@ -397,7 +397,7 @@ l0000016D:
 l0000016D_1:
 	word32 sp_5
 	byte Z_6
-	call fnFEC5AB25 (retsize: 0;)
+	call 0xFEC5AB25 (retsize: 0;)
 		uses: sp_1,Z
 		defs: sp_5,Z_6
 // DataOut:
@@ -1404,7 +1404,7 @@ l00000619_1:
 	word32 r6_61
 	word32 lr_63
 	word32 r9_65
-	call fn0183930D (retsize: 0;)
+	call 0x0183930D (retsize: 0;)
 		uses: C,lr,r0_11,r2,r4,r5,r6,r7,r8_13,r9,sp_1,Z,ZC
 		defs: C_60,lr_63,r0_58,r2_59,r4_55,r5_64,r6_61,r7_62,r8_56,r9_65,sp_53,Z_54,ZC_57
 // DataOut: r0 r4 r5 r7 r8
@@ -2912,7 +2912,7 @@ l00000B21_1:
 	word32 r8_54
 	word32 r6_55
 	word32 r7_56
-	call fnFE3D4AF5 (retsize: 0;)
+	call 0xFE3D4AF5 (retsize: 0;)
 		uses: fp,lr,NZ,NZV,p4,r0,r3,r4_5,r6,r7,r8,sp_1,V,Z,ZC
 		defs: fp_45,lr_50,NZ_43,NZV_47,p4_49,r0_51,r3_52,r4_46,r6_55,r7_56,r8_54,sp_42,V_53,Z_48,ZC_44
 // DataOut: lr p4 r0 r3 r6 r7 r8
@@ -3494,7 +3494,7 @@ l00000E89_1:
 	word32 r3_111
 	word32 r10_112
 	word32 p7_113
-	call fn00AC1031 (retsize: 0;)
+	call 0x00AC1031 (retsize: 0;)
 		uses: C_18,fp_31,ip,lr,NZ_12,NZCV_16,NZV_14,NZV_15,p3_25,p4_27,p7_29,p8_26,pc_4,r0_36,r1,r10,r3,r4_38,r6,r8_35,sp_1,Z_13,ZC_17
 		defs: C_92,fp_101,ip_96,lr_110,NZ_106,NZCV_97,NZV_100,NZV_102,p3_109,p4_99,p7_113,p8_108,pc_93,r0_95,r1_105,r10_112,r3_111,r4_104,r6_107,r8_98,sp_91,Z_103,ZC_94
 // DataOut: lr p8 r0 r1 r6
@@ -4326,7 +4326,7 @@ l0000115D_1:
 	byte NZCV_48
 	word32 r1_49
 	word32 r2_50
-	call fnFFC02E7D (retsize: 0;)
+	call 0xFFC02E7D (retsize: 0;)
 		uses: C,fp,NZCV,p4,r0,r1,r2,r8,sp_1,Z,ZC
 		defs: C_44,fp_45,NZCV_48,p4_42,r0_43,r1_49,r2_50,r8_47,sp_40,Z_41,ZC_46
 // DataOut: fp r1 r2 r8
@@ -6415,7 +6415,7 @@ l00008021:
 	word32 pc_44
 	byte V_43
 	byte ZC_33
-	call fn010ACC97 (retsize: 0;)
+	call 0x010ACC97 (retsize: 0;)
 		uses: C_29,NZCV_26,NZV_22,pc_31,r0_21,r1_24,r2_25,r4_28,r8_27,sp_19,V_30,Z_23,ZC_20
 		defs: C_42,NZCV_39,NZV_35,pc_44,r0_34,r1_37,r2_38,r4_41,r8_40,sp_32,V_43,Z_36,ZC_33
 	branch C_42 l00008029
@@ -6435,7 +6435,7 @@ l00008025_1:
 	word32 r4_74
 	byte C_75
 	word32 pc_77
-	call fnFFC08371 (retsize: 0;)
+	call 0xFFC08371 (retsize: 0;)
 		uses: C_42,NZCV_39,NZV_35,pc_44,r0_34,r1_37,r2_38,r4_41,r8_40,sp_32,V_43,Z_36,ZC_33
 		defs: C_75,NZCV_72,NZV_68,pc_77,r0_67,r1_70,r2_71,r4_74,r8_73,sp_65,V_76,Z_69,ZC_66
 // DataOut: pc r0 r1 r8
@@ -6866,7 +6866,7 @@ l0000818D:
 
 l0000818D_1:
 	word32 sp_241
-	call fn002CAD55 (retsize: 0;)
+	call 0x002CAD55 (retsize: 0;)
 		uses: fp,ip,NZV,pc,r0,r3,r6,r7,sp_1,Z
 		defs: fp_249,ip_250,NZV_243,pc_244,r0_245,r3_246,r6_247,r7_248,sp_241,Z_242
 // DataOut: fp ip pc r0 r3 r6 r7
@@ -6900,7 +6900,7 @@ l00008195_1:
 	word32 r7_238
 	word32 fp_239
 	word32 ip_240
-	call fn00048D61 (retsize: 0;)
+	call 0x00048D61 (retsize: 0;)
 		uses: fp_12,ip_11,NZV_18,pc_17,r0_16,r3_15,r6_14,r7_13,sp_20,Z_19
 		defs: fp_239,ip_240,NZV_233,pc_234,r0_235,r3_236,r6_237,r7_238,sp_231,Z_232
 // DataOut:
@@ -6922,7 +6922,7 @@ l00008199_1:
 	word32 r7_228
 	word32 fp_229
 	word32 ip_230
-	call fn00089165 (retsize: 0;)
+	call 0x00089165 (retsize: 0;)
 		uses: fp_22,ip_21,NZV_28,pc_27,r0_26,r3_25,r6_24,r7_23,sp_30,Z_29
 		defs: fp_229,ip_230,NZV_223,pc_224,r0_225,r3_226,r6_227,r7_228,sp_221,Z_222
 // DataOut:
@@ -6944,7 +6944,7 @@ l0000819D_1:
 	word32 r7_218
 	word32 fp_219
 	word32 ip_220
-	call fn000C9569 (retsize: 0;)
+	call 0x000C9569 (retsize: 0;)
 		uses: fp_32,ip_31,NZV_38,pc_37,r0_36,r3_35,r6_34,r7_33,sp_40,Z_39
 		defs: fp_219,ip_220,NZV_213,pc_214,r0_215,r3_216,r6_217,r7_218,sp_211,Z_212
 // DataOut:
@@ -6966,7 +6966,7 @@ l000081A1_1:
 	word32 r7_208
 	word32 fp_209
 	word32 ip_210
-	call fn0010996D (retsize: 0;)
+	call 0x0010996D (retsize: 0;)
 		uses: fp_42,ip_41,NZV_48,pc_47,r0_46,r3_45,r6_44,r7_43,sp_50,Z_49
 		defs: fp_209,ip_210,NZV_203,pc_204,r0_205,r3_206,r6_207,r7_208,sp_201,Z_202
 // DataOut:
@@ -6988,7 +6988,7 @@ l000081A5_1:
 	word32 r7_198
 	word32 fp_199
 	word32 ip_200
-	call fn00149D71 (retsize: 0;)
+	call 0x00149D71 (retsize: 0;)
 		uses: fp_52,ip_51,NZV_58,pc_57,r0_56,r3_55,r6_54,r7_53,sp_60,Z_59
 		defs: fp_199,ip_200,NZV_193,pc_194,r0_195,r3_196,r6_197,r7_198,sp_191,Z_192
 // DataOut:
@@ -7010,7 +7010,7 @@ l000081A9_1:
 	word32 r7_188
 	word32 fp_189
 	word32 ip_190
-	call fn0018A175 (retsize: 0;)
+	call 0x0018A175 (retsize: 0;)
 		uses: fp_62,ip_61,NZV_68,pc_67,r0_66,r3_65,r6_64,r7_63,sp_70,Z_69
 		defs: fp_189,ip_190,NZV_183,pc_184,r0_185,r3_186,r6_187,r7_188,sp_181,Z_182
 // DataOut:
@@ -7032,7 +7032,7 @@ l000081AD_1:
 	word32 r7_178
 	word32 fp_179
 	word32 ip_180
-	call fn001CA579 (retsize: 0;)
+	call 0x001CA579 (retsize: 0;)
 		uses: fp_72,ip_71,NZV_78,pc_77,r0_76,r3_75,r6_74,r7_73,sp_80,Z_79
 		defs: fp_179,ip_180,NZV_173,pc_174,r0_175,r3_176,r6_177,r7_178,sp_171,Z_172
 // DataOut:
@@ -7054,7 +7054,7 @@ l000081B1_1:
 	word32 r7_168
 	word32 fp_169
 	word32 ip_170
-	call fn0020A97D (retsize: 0;)
+	call 0x0020A97D (retsize: 0;)
 		uses: fp_82,ip_81,NZV_88,pc_87,r0_86,r3_85,r6_84,r7_83,sp_90,Z_89
 		defs: fp_169,ip_170,NZV_163,pc_164,r0_165,r3_166,r6_167,r7_168,sp_161,Z_162
 // DataOut:
@@ -7076,7 +7076,7 @@ l000081B5_1:
 	word32 r7_158
 	word32 fp_159
 	word32 ip_160
-	call fn0024AD81 (retsize: 0;)
+	call 0x0024AD81 (retsize: 0;)
 		uses: fp_92,ip_91,NZV_98,pc_97,r0_96,r3_95,r6_94,r7_93,sp_100,Z_99
 		defs: fp_159,ip_160,NZV_153,pc_154,r0_155,r3_156,r6_157,r7_158,sp_151,Z_152
 // DataOut:
@@ -7099,7 +7099,7 @@ l000081B9_1:
 	word32 r7_148
 	word32 fp_149
 	word32 ip_150
-	call fn0028B185 (retsize: 0;)
+	call 0x0028B185 (retsize: 0;)
 		uses: fp_102,ip_101,NZV_108,pc_107,r0_106,r3_105,r6_104,r7_103,sp_110,Z_109
 		defs: fp_149,ip_150,NZV_143,pc_144,r0_145,r3_146,r6_147,r7_148,sp_141,Z_142
 // DataOut:
@@ -7123,7 +7123,7 @@ l000081BD_1:
 	word32 r7_138
 	word32 fp_139
 	word32 ip_140
-	call fn0030B589 (retsize: 0;)
+	call 0x0030B589 (retsize: 0;)
 		uses: fp_112,ip_111,NZV_118,pc_117,r0_116,r3_115,r6_114,r7_113,sp_120,Z_119
 		defs: fp_139,ip_140,NZV_133,pc_134,r0_135,r3_136,r6_137,r7_138,sp_131,Z_132
 // DataOut:
@@ -7165,7 +7165,7 @@ l00008211_1:
 	word32 r10_86
 	word32 fp_87
 	word32 lr_89
-	call fnFFC084ED (retsize: 0;)
+	call 0xFFC084ED (retsize: 0;)
 		uses: C,fp,ip,lr,NZV,pc,r0,r1,r10,r2,r3,r4,r5,r6,r7,r8,r9,sp_1,ZC
 		defs: C_91,fp_87,ip_88,lr_89,NZV_76,pc_90,r0_92,r1_78,r10_86,r2_79,r3_80,r4_81,r5_82,r6_83,r7_77,r8_84,r9_85,sp_74,ZC_75
 // DataOut: ip pc r0 r1 r2 r7 r8
@@ -7657,7 +7657,7 @@ l0000830D_1:
 	byte V_69
 	byte NZCV_75
 	word32 pc_80
-	call fn01A0B9E5 (retsize: 0;)
+	call 0x01A0B9E5 (retsize: 0;)
 		uses: C,ip,N,NV,NZCV,pc,r0,r1,r2,r8,sp_1,V,Z
 		defs: C_74,ip_73,N_77,NV_78,NZCV_75,pc_80,r0_72,r1_71,r2_76,r8_79,sp_68,V_69,Z_70
 // DataOut: ip r0 r1 r2 r8
@@ -8683,7 +8683,7 @@ l00008679_1:
 	word32 r5_22
 	word32 fp_23
 	byte Z_24
-	call fn0118987D (retsize: 0;)
+	call 0x0118987D (retsize: 0;)
 		uses: fp_8,lr,r5_6,r8_4,sp_1,Z,ZC
 		defs: fp_23,lr_21,r5_22,r8_20,sp_18,Z_24,ZC_19
 // DataOut:
@@ -9098,7 +9098,7 @@ l00008815_1:
 	word32 r8_32
 	word32 r10_33
 	byte Z_34
-	call fnFE7CB135 (retsize: 0;)
+	call 0xFE7CB135 (retsize: 0;)
 		uses: pc_7,r10_13,r4_10,r5_11,r6_9,r7_8,r8_12,sp_5,Z_14,ZC_6
 		defs: pc_27,r10_33,r4_30,r5_31,r6_29,r7_28,r8_32,sp_25,Z_34,ZC_26
 // DataOut:
@@ -9390,7 +9390,7 @@ l00008929:
 l00008929_1:
 	word32 sp_5
 	byte Z_6
-	call fnFFE08805 (retsize: 0;)
+	call 0xFFE08805 (retsize: 0;)
 		uses: sp_1,Z
 		defs: sp_5,Z_6
 // DataOut:
@@ -10025,7 +10025,7 @@ l00008BA9_1:
 	word32 p5_20
 	word32 r0_21
 	byte NZV_22
-	call fnFFE088C9 (retsize: 0;)
+	call 0xFFE088C9 (retsize: 0;)
 		uses: NZV,p5,r0,r3,r6,sp_1,Z
 		defs: NZV_22,p5_20,r0_21,r3_23,r6_24,sp_18,Z_19
 // DataOut: r3 r6
@@ -10363,7 +10363,7 @@ l00008D29:
 l00008D29_1:
 	word32 sp_5
 	byte Z_6
-	call fnFFE08C05 (retsize: 0;)
+	call 0xFFE08C05 (retsize: 0;)
 		uses: sp_1,Z
 		defs: sp_5,Z_6
 // DataOut:
@@ -10791,7 +10791,7 @@ l00008F11:
 	word64 d17_39
 	word64 d31_40
 	word32 r3_25
-	call fnFFE08BDF (retsize: 0;)
+	call 0xFFE08BDF (retsize: 0;)
 		uses: C_12,NZ_13,NZCV_11,NZV_16,pc,r0,r3_10,r8_5,sp_1,V_15,Z_14
 		defs: C_29,d17_39,d31_40,ip_38,lr_34,NZ_31,NZCV_33,NZV_35,p0_36,p13_32,pc_30,r0_23,r1_24,r10_28,r2_20,r3_25,r4_22,r5_26,r6_27,r7_37,r8_21,sp_17,V_19,Z_18
 	branch C_29 l00008F19
@@ -10898,7 +10898,7 @@ l00008F31_1:
 	word32 pc_63
 	word32 r1_64
 	word32 fp_71
-	call fn01B63C6D (retsize: 0;)
+	call 0x01B63C6D (retsize: 0;)
 		uses: C,fp,N,NZ,NZV,pc,r0,r1,r7,r8,sp_1,Z,ZC
 		defs: C_65,fp_71,N_62,NZ_69,NZV_72,pc_63,r0_67,r1_64,r7_68,r8_73,sp_61,Z_66,ZC_70
 // DataOut: r0 r7 r8
@@ -10994,7 +10994,7 @@ l00008F49_1:
 	byte ZC_54
 	word32 fp_55
 	byte NZV_56
-	call fnFE3DCF1D (retsize: 0;)
+	call 0xFE3DCF1D (retsize: 0;)
 		uses: C_21,fp_28,N_24,NZ_17,NZV_14,pc_23,r0_19,r1_22,r7_27,r8_26,sp_25,Z_20,ZC_16
 		defs: C_49,fp_55,N_46,NZ_53,NZV_56,pc_47,r0_51,r1_48,r7_52,r8_57,sp_45,Z_50,ZC_54
 // DataOut: r8
@@ -11223,7 +11223,7 @@ l00009115_1:
 	word32 pc_48
 	byte ZC_49
 	word32 ip_50
-	call fn010CC019 (retsize: 0;)
+	call 0x010CC019 (retsize: 0;)
 		uses: C_10,ip,NZCV_11,pc_13,r0_7,r3,r4,r8,sp_1,Z_8,ZC_9
 		defs: C_53,ip_50,NZCV_47,pc_48,r0_45,r3_52,r4_46,r8_51,sp_43,Z_44,ZC_49
 // DataOut: r0 r3 r4 r8
@@ -11345,7 +11345,7 @@ l00009165_1:
 	word32 r2_164
 	word32 r10_165
 	word32 fp_166
-	call fn010CC069 (retsize: 0;)
+	call 0x010CC069 (retsize: 0;)
 		uses: C_15,fp,lr,N_16,NZCV_10,NZV_13,NZV_14,pc_19,r0_17,r1,r10,r2,r3,r4,r6,r8,sp_1,Z_11,ZC_12
 		defs: C_159,fp_166,lr_158,N_163,NZCV_152,NZV_160,NZV_162,pc_153,r0_150,r1_156,r10_165,r2_164,r3_161,r4_151,r6_157,r8_155,sp_148,Z_149,ZC_154
 // DataOut: pc r0 r3 r4 r8
@@ -11405,7 +11405,7 @@ l00009175_1:
 	word32 r2_135
 	word32 r10_136
 	word32 fp_137
-	call fnFEFCE1B9 (retsize: 0;)
+	call 0xFEFCE1B9 (retsize: 0;)
 		uses: C_61,fp_41,lr_46,N_62,NZCV_56,NZV_59,NZV_60,pc_42,r0_43,r1_63,r10_40,r2_39,r3_29,r4_31,r6_45,r8_55,sp_54,Z_57,ZC_58
 		defs: C_130,fp_137,lr_129,N_134,NZCV_123,NZV_131,NZV_133,pc_124,r0_121,r1_127,r10_136,r2_135,r3_132,r4_122,r6_128,r8_126,sp_119,Z_120,ZC_125
 // DataOut: pc r3 r4 r8
@@ -12755,7 +12755,7 @@ l00009485_1:
 	word32 r0_14
 	word32 r6_15
 	byte Z_16
-	call fn0090986D (retsize: 0;)
+	call 0x0090986D (retsize: 0;)
 		uses: NZV,r0,r6_4,sp_1,Z
 		defs: NZV_13,r0_14,r6_15,sp_12,Z_16
 // DataOut:
@@ -13127,7 +13127,7 @@ l00009505_1:
 	byte NZCV_70
 	word32 r8_71
 	word32 r4_72
-	call fnFED15639 (retsize: 0;)
+	call 0xFED15639 (retsize: 0;)
 		uses: C,fp,NV,NZCV,NZV,r0,r1,r10,r2,r4,r6,r8,sp_1,Z
 		defs: C_63,fp_69,NV_61,NZCV_70,NZV_64,r0_62,r1_65,r10_68,r2_66,r4_72,r6_67,r8_71,sp_59,Z_60
 // DataOut: fp r0 r1 r8
@@ -13368,7 +13368,7 @@ l00009579_1:
 	byte NZCV_46
 	byte ZC_47
 	word32 r2_48
-	call fn00ECA961 (retsize: 0;)
+	call 0x00ECA961 (retsize: 0;)
 		uses: C_11,N_12,NZCV_10,r0_14,r10,r2,r3,r5,r6,r9,sp_1,Z_13,ZC_9
 		defs: C_45,N_44,NZCV_46,r0_38,r10_41,r2_48,r3_39,r5_42,r6_40,r9_43,sp_36,Z_37,ZC_47
 // DataOut: r0 r2
@@ -13621,7 +13621,7 @@ l000095C1_1:
 	word32 r1_84
 	word32 ip_89
 	word32 pc_91
-	call fn0110E1D1 (retsize: 0;)
+	call 0x0110E1D1 (retsize: 0;)
 		uses: C_13,ip,NV_14,NZCV_9,NZV_11,pc,r0,r1,r10,r2_15,r8,sp_1,V_12,Z_10
 		defs: C_87,ip_89,NV_90,NZCV_81,NZV_83,pc_91,r0_82,r1_84,r10_86,r2_80,r8_85,sp_78,V_88,Z_79
 // DataOut: pc r0 r10 r2 r8
@@ -14744,7 +14744,7 @@ l000099F5:
 	word32 r5_16
 	word32 r7_17
 	word32 pc_18
-	call fnFFC09C73 (retsize: 0;)
+	call 0xFFC09C73 (retsize: 0;)
 		uses: sp_1,Z,ZC
 		defs: pc_6,r0_13,r1_7,r10_12,r2_10,r3_14,r4_15,r5_16,r6_9,r7_17,r9_11,sp_4,Z_5,ZC_8
 	branch Z_5 l000099FD
@@ -15273,7 +15273,7 @@ l00009ADD:
 l00009ADD_1:
 	word32 sp_5
 	byte Z_6
-	call fn0120AC11 (retsize: 0;)
+	call 0x0120AC11 (retsize: 0;)
 		uses: sp_1,Z
 		defs: sp_5,Z_6
 // DataOut:
@@ -15314,7 +15314,7 @@ l00009AF5:
 l00009AF5_1:
 	word32 sp_5
 	byte Z_6
-	call fn0120AC29 (retsize: 0;)
+	call 0x0120AC29 (retsize: 0;)
 		uses: sp_1,Z
 		defs: sp_5,Z_6
 // DataOut:
@@ -15406,7 +15406,7 @@ l00009B29_1:
 	word32 r0_25
 	byte C_26
 	word32 r8_28
-	call fn01025EF1 (retsize: 0;)
+	call 0x01025EF1 (retsize: 0;)
 		uses: C,N,r0_7,r1,r2_8,r8,sp_1,Z
 		defs: C_26,N_24,r0_25,r1_30,r2_27,r8_28,sp_23,Z_29
 // DataOut: r1 r2
@@ -15507,7 +15507,7 @@ l00009B81_1:
 	word32 r8_64
 	word32 r3_65
 	word32 pc_67
-	call fn000EA735 (retsize: 0;)
+	call 0x000EA735 (retsize: 0;)
 		uses: C,N,NZCV,NZV,pc,r0_4,r1,r2,r3,r8,r9,sp_1,V,Z
 		defs: C_61,N_66,NZCV_62,NZV_57,pc_67,r0_56,r1_63,r2_59,r3_65,r8_64,r9_60,sp_54,V_58,Z_55
 // DataOut: pc r0 r3 r8 r9
@@ -15706,7 +15706,7 @@ l00009BB9_1:
 	word32 r8_64
 	word32 r3_65
 	word32 pc_67
-	call fn000EA76D (retsize: 0;)
+	call 0x000EA76D (retsize: 0;)
 		uses: C,N,NZCV,pc,r0_4,r1,r10,r2,r3,r8,sp_1,V,Z,ZC
 		defs: C_61,N_66,NZCV_62,pc_67,r0_56,r1_63,r10_60,r2_59,r3_65,r8_64,sp_54,V_58,Z_55,ZC_57
 // DataOut: pc r0 r10 r3 r8
@@ -15904,7 +15904,7 @@ l00009BF1_1:
 	word32 r8_60
 	word32 r3_61
 	word32 pc_62
-	call fn000EA7A5 (retsize: 0;)
+	call 0x000EA7A5 (retsize: 0;)
 		uses: C,fp,N,NZCV,pc,r0_4,r1,r2,r3,r8,sp_1,V,Z
 		defs: C_57,fp_56,N_53,NZCV_58,pc_62,r0_52,r1_59,r2_55,r3_61,r8_60,sp_50,V_54,Z_51
 // DataOut: fp pc r0 r3 r8
@@ -17443,7 +17443,7 @@ l00009EA5_1:
 	byte NZCV_49
 	word32 r0_50
 	word32 r8_51
-	call fn010CAC39 (retsize: 0;)
+	call 0x010CAC39 (retsize: 0;)
 		uses: C_24,NZCV_23,r0_29,r10_18,r2_31,r4_30,r8_22,sp_13,V_26,Z_27
 		defs: C_48,NZCV_49,r0_50,r10_47,r2_45,r4_46,r8_51,sp_42,V_44,Z_43
 // DataOut:
@@ -20332,7 +20332,7 @@ l0000A259_1:
 	word32 ip_78
 	word32 r0_81
 	word32 p15_83
-	call fn018E3801 (retsize: 0;)
+	call 0x018E3801 (retsize: 0;)
 		uses: ip,lr,N,NZ,p15,r0_5,r1,r10,r2,r3,r4,r5,r6,r7,r8,sp_1,V,Z,ZC
 		defs: ip_78,lr_79,N_82,NZ_73,p15_83,r0_81,r1_86,r10_88,r2_84,r3_75,r4_87,r5_76,r6_77,r7_74,r8_85,sp_72,V_80,Z_89,ZC_90
 // DataOut: lr r1 r10 r2 r4 r5 r6 r7 r8
@@ -20528,7 +20528,7 @@ l0000A5C9_1:
 	word32 r10_220
 	byte NZCV_223
 	word32 pc_224
-	call fnFF656279 (retsize: 0;)
+	call 0xFF656279 (retsize: 0;)
 		uses: C,lr,NV,NZCV,NZV,NZV,p0,p1,p12,pc,r0,r1,r10,r2,r3,r4,r5,r7,r8,r9,sp_1,V,Z,ZC
 		defs: C_209,lr_210,NV_216,NZCV_223,NZV_222,NZV_225,p0_218,p1_212,p12_221,pc_224,r0_208,r1_205,r10_220,r2_219,r3_206,r4_214,r5_211,r7_207,r8_217,r9_213,sp_202,V_215,Z_203,ZC_204
 // DataOut: lr p12 r1 r10 r2 r3 r4 r5 r7 r8 r9 sp
@@ -20548,7 +20548,7 @@ l0000A5CD_1:
 	word32 r10_196
 	byte NZCV_199
 	word32 pc_200
-	call fn010CB1D5 (retsize: 0;)
+	call 0x010CB1D5 (retsize: 0;)
 		uses: C_34,lr_33,NV_35,NZCV_42,NZV_39,NZV_40,p0_27,p1_28,p12_29,pc_32,r0_41,r1_43,r10_48,r2_44,r3_31,r4_45,r5_46,r7_25,r8_47,r9_30,sp_26,V_38,Z_36,ZC_37
 		defs: C_185,lr_186,NV_192,NZCV_199,NZV_198,NZV_201,p0_194,p1_188,p12_197,pc_200,r0_184,r1_181,r10_196,r2_195,r3_182,r4_190,r5_187,r7_183,r8_193,r9_189,sp_178,V_191,Z_179,ZC_180
 // DataOut: lr p12 r1 r10 r2 r3 r4 r5 r7 r8 r9 sp

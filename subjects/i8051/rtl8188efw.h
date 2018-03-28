@@ -59,94 +59,86 @@ T_13: (in CAOP_19 : byte)
   Class: Eq_13
   DataType: byte
   OrigDataType: byte
-T_14: (in fn4EF3 : ptr16)
+T_14: (in 4EF3 : ptr16)
   Class: Eq_14
   DataType: (ptr code)
   OrigDataType: (ptr code)
-T_15: (in signature of fn4EF3 : void)
-  Class: Eq_14
-  DataType: (ptr code)
-  OrigDataType: 
-T_16: (in 0x05 : byte)
-  Class: Eq_16
+T_15: (in 0x05 : byte)
+  Class: Eq_15
   DataType: byte
   OrigDataType: byte
-T_17: (in 0x0157 : word16)
-  Class: Eq_17
+T_16: (in 0x0157 : word16)
+  Class: Eq_16
   DataType: (ptr byte)
-  OrigDataType: (ptr (struct (0 T_18 t0000)))
-T_18: (in Mem22[0x0157:byte] : byte)
-  Class: Eq_16
+  OrigDataType: (ptr (struct (0 T_17 t0000)))
+T_17: (in Mem22[0x0157:byte] : byte)
+  Class: Eq_15
   DataType: byte
   OrigDataType: byte
-T_19: (in A_24 : bcu8)
-  Class: Eq_19
+T_18: (in A_24 : bcu8)
+  Class: Eq_18
   DataType: bcu8
   OrigDataType: bcu8
-T_20: (in 0x80EA : word16)
-  Class: Eq_20
-  DataType: (ptr bcu8)
-  OrigDataType: (ptr (struct (0 T_21 t0000)))
-T_21: (in Mem22[0x80EA:byte] : byte)
+T_19: (in 0x80EA : word16)
   Class: Eq_19
+  DataType: (ptr bcu8)
+  OrigDataType: (ptr (struct (0 T_20 t0000)))
+T_20: (in Mem22[0x80EA:byte] : byte)
+  Class: Eq_18
   DataType: bcu8
   OrigDataType: byte
-T_22: (in 0x02 : byte)
-  Class: Eq_22
+T_21: (in 0x02 : byte)
+  Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_23: (in A_24 >> 0x02 : byte)
-  Class: Eq_23
+T_22: (in A_24 >> 0x02 : byte)
+  Class: Eq_22
   DataType: uint8
   OrigDataType: uint8
-T_24: (in 0x01 : byte)
+T_23: (in 0x01 : byte)
+  Class: Eq_23
+  DataType: byte
+  OrigDataType: byte
+T_24: (in A_24 >> 0x02 & 0x01 : byte)
   Class: Eq_24
   DataType: byte
   OrigDataType: byte
-T_25: (in A_24 >> 0x02 & 0x01 : byte)
-  Class: Eq_25
+T_25: (in 0x00 : byte)
+  Class: Eq_24
   DataType: byte
   OrigDataType: byte
-T_26: (in 0x00 : byte)
-  Class: Eq_25
-  DataType: byte
-  OrigDataType: byte
-T_27: (in (A_24 >> 0x02 & 0x01) != 0x00 : bool)
-  Class: Eq_27
+T_26: (in (A_24 >> 0x02 & 0x01) != 0x00 : bool)
+  Class: Eq_26
   DataType: bool
   OrigDataType: bool
-T_28: (in SP_31 : byte)
+T_27: (in SP_31 : byte)
+  Class: Eq_27
+  DataType: byte
+  OrigDataType: byte
+T_28: (in R1_32 : byte)
   Class: Eq_28
   DataType: byte
   OrigDataType: byte
-T_29: (in R1_32 : byte)
+T_29: (in P_33 : bool)
   Class: Eq_29
-  DataType: byte
-  OrigDataType: byte
-T_30: (in P_33 : bool)
-  Class: Eq_30
   DataType: bool
   OrigDataType: bool
-T_31: (in A_34 : byte)
+T_30: (in A_34 : byte)
+  Class: Eq_30
+  DataType: byte
+  OrigDataType: byte
+T_31: (in R7_35 : byte)
   Class: Eq_31
   DataType: byte
   OrigDataType: byte
-T_32: (in R7_35 : byte)
+T_32: (in CAOP_36 : byte)
   Class: Eq_32
   DataType: byte
   OrigDataType: byte
-T_33: (in CAOP_36 : byte)
+T_33: (in 4AC0 : ptr16)
   Class: Eq_33
-  DataType: byte
-  OrigDataType: byte
-T_34: (in fn4AC0 : ptr16)
-  Class: Eq_34
   DataType: (ptr code)
   OrigDataType: (ptr code)
-T_35: (in signature of fn4AC0 : void)
-  Class: Eq_34
-  DataType: (ptr code)
-  OrigDataType: 
 */
 typedef struct Globals {
 	byte b001D;	// 1D

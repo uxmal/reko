@@ -36,11 +36,16 @@ namespace Reko.Arch.Avr
             this.arch = arch;
         }
 
+        public Avr8State(Avr8State that) : base(that)
+        {
+            this.arch = that.arch;
+        }
+
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            return new Avr8State(arch);
+            return new Avr8State(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

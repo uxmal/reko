@@ -40358,24 +40358,24 @@ fn1483_0ADC_entry:
 // SymbolicIn: sp:fp
 
 l1483_0ADC:
-	word16 cx_18
-	word16 dx_19
-	word16 bx_20
-	word16 bp_21
-	word16 si_22
-	word16 di_23
-	selector es_24
-	word16 ax_25 = fn1483_0D3F(al, ah, cx, dx, bl, bp, si, di, es, ds, fs, wLoc02, wArg00, wArg02, wArg04, wArg06, out cx_18, out dx_19, out bx_20, out bp_21, out si_22, out di_23, out es_24)
-	real64 rArg0_28 = Mem0[es_24:di_23 + 0xE086:real32] - rArg0
-	Mem31[ss:fp - 0x0002:word16] = ax_25
-	Mem34[ss:fp - 0x0004:word16] = cx_18
-	Mem36[ss:fp - 0x0006:word16] = dx_19
-	Mem38[ss:fp - 0x0008:word16] = bx_20
-	Mem40[ss:fp - 0x000A:word16] = fp
-	Mem42[ss:fp - 0x000C:word16] = bp_21
-	Mem44[ss:fp - 0x000E:word16] = si_22
-	Mem46[ss:fp - 0x0010:word16] = di_23
-	return rArg0_28
+	word16 cx_14
+	word16 dx_15
+	word16 bx_16
+	word16 bp_17
+	word16 si_18
+	word16 di_19
+	selector es_20
+	word16 ax_21 = fn1483_0D3F(al, ah, cx, dx, bl, bp, si, di, es, ds, fs, wArg06, out cx_14, out dx_15, out bx_16, out bp_17, out si_18, out di_19, out es_20)
+	real64 rArg0_24 = Mem0[es_20:di_19 + 0xE086:real32] - rArg0
+	Mem27[ss:fp - 0x0002:word16] = ax_21
+	Mem30[ss:fp - 0x0004:word16] = cx_14
+	Mem32[ss:fp - 0x0006:word16] = dx_15
+	Mem34[ss:fp - 0x0008:word16] = bx_16
+	Mem36[ss:fp - 0x000A:word16] = fp
+	Mem38[ss:fp - 0x000C:word16] = bp_17
+	Mem40[ss:fp - 0x000E:word16] = si_18
+	Mem42[ss:fp - 0x0010:word16] = di_19
+	return rArg0_24
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -40629,93 +40629,96 @@ l1483_0C91:
 	*esOut = es_3
 	word16 ax_12 = DPB(ax, al_11, 0)
 	branch !OVERFLOW(al_11) l1483_0C96_thunk_fn1483_0C55
-// DataOut: ah al ax bl bp bx cx di ds es si ss
+// DataOut: ah al ax bl bp bx cx di ds es si sp ss
 // DataOut (flags): Z
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v13(8) v19(8) v21(8) v23(16) v25(16) v26(16) v27(16)
+// LocalsOut: v13(8) v19(8) v21(8) v23(16) v25(16) v26(16) v27(16)
 
 l1483_0C96_thunk_fn1483_0C55:
-	word16 cx_164
-	word16 dx_165
-	word16 bx_166
-	word16 bp_167
-	word16 si_168
-	word16 di_169
-	selector es_170
-	return fn1483_0C55(ax_12, cx, bx, bp, si, di, psegArg00, ds, psegArg00, wArg02, wArg04, out cx_164, out dx_165, out bx_166, out bp_167, out si_168, out di_169, out es_170)
+	word16 cx_159
+	word16 dx_160
+	word16 bx_161
+	word16 bp_162
+	word16 si_163
+	word16 di_164
+	selector es_165
+	return fn1483_0C55(ax_12, cx, bx, bp, si, di, psegArg00, ds, psegArg00, wArg02, wArg04, out cx_159, out dx_160, out bx_161, out bp_162, out si_163, out di_164, out es_165)
 // DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002 es:<invalid> dx:<invalid> al:al + ch
 
 l1483_0C98:
-	word16 dx_54 = Mem0[ds:bx + si:word16] *s 0x0018
-	byte dl_55 = (byte) dx_54
-	branch dx_54 == 0x0000 && cx != 0x0001 l1483_0CA9_in_fn1483_0C91
-// DataOut: ah al ax bl bp bx cx di dl ds es si ss
+	word16 dx_51 = Mem0[ds:bx + si:word16] *s 0x0018
+	byte dl_52 = (byte) dx_51
+	branch dx_51 == 0x0000 && cx != 0x0001 l1483_0CA9_in_fn1483_0C91
+// DataOut: ah al ax bl bp bx cx di dl ds es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002 es:<invalid> dx:<invalid> al:al + ch
-// LocalsOut: fp(16) v13(8) v19(8) v21(8) v23(16) v25(16) v26(16) v27(16)
+// LocalsOut: v13(8) v19(8) v21(8) v23(16) v25(16) v26(16) v27(16)
 
 l1483_0CA9_in_fn1483_0C91:
-	Mem85[ds:bx:byte] = v13
-	byte bl_87 = bl + ah
-	word16 bx_88 = DPB(bx, bl_87, 0)
-	Mem92[ds:bx_88 - 0x0056 + di:byte] = __rol(Mem85[ds:bx_88 - 0x0056 + di:byte], 0xE2)
-	Mem94[ss:bp + 0x007B:word16] = __ror(Mem92[ss:bp + 0x007B:word16], 0x01)
-	Mem99[ds:bx_88:byte] = v21
-	byte bl_100 = bl_87 & Mem99[ds:bx_88:byte]
-	byte al_90 = (byte) (ax_12 - 0x32AC)
-	Mem103[psegArg00:di:byte] = al_90
-	word16 bx_101 = DPB(bx, bl_100, 0)
-	Mem108[ds:bx_101:word16] = v23
-	Mem115[ds:di + 0x0015:word16] = ax_12 - 0xBDCB
-	word16 sp_118
-	selector es_119
-	selector ss_120
-	byte C_121
-	word16 dx_122
-	word16 ax_123
-	byte SCZO_124
-	byte al_125
-	byte ch_126
-	byte O_127
-	word16 bx_128
-	word16 si_129
-	selector ds_130
-	word16 cx_131
-	byte Z_132
-	byte dl_133
-	word16 bp_134
-	byte SZO_135
-	byte bl_136
-	byte ah_137
-	word16 di_138
-	byte cl_139
-	call fn1483_4FE0 (retsize: 2;)
-		uses: ah,al_90,ax_117,bl_100,bp_86,bx_101,C_102,ch_111,cl_112,cx_110,di_104,dl_82,ds,dx_81,es_3,O_17,SCZO_113,si,sp_4,ss,SZO_16,wLoc02,wLoc04,Z_57
-		defs: ah_137,al_125,ax_123,bl_136,bp_134,bx_128,C_121,ch_126,cl_139,cx_131,di_138,dl_133,ds_130,dx_122,es_119,O_127,SCZO_124,si_129,sp_118,ss_120,SZO_135,Z_132
-	Mem142[ds_130:0xF7E3:word16] = v26
-	Mem146[ds_130:bx_128 + di_138:word16] = v27
-	word16 cx_155
-	*cxOut = DPB(cx_131, cl_139 - Mem146[ss_120:(bp_134 + 0x027E) + di_138:byte] - (v27 <u 0x0000), 0)
+	Mem80[ds:bx:byte] = v13
+	byte bl_82 = bl + ah
+	word16 bx_83 = DPB(bx, bl_82, 0)
+	Mem87[ds:bx_83 - 0x0056 + di:byte] = __rol(Mem80[ds:bx_83 - 0x0056 + di:byte], 0xE2)
+	Mem89[ss:bp + 0x007B:word16] = __ror(Mem87[ss:bp + 0x007B:word16], 0x01)
+	Mem94[ds:bx_83:byte] = v21
+	byte bl_95 = bl_82 & Mem94[ds:bx_83:byte]
+	byte al_85 = (byte) (ax_12 - 0x32AC)
+	Mem98[psegArg00:di:byte] = al_85
+	word16 bx_96 = DPB(bx, bl_95, 0)
+	Mem103[ds:bx_96:word16] = v23
+	Mem110[ds:di + 0x0015:word16] = ax_12 - 0xBDCB
+	word16 sp_113
+	selector es_114
+	selector ss_115
+	byte C_116
+	word16 dx_117
+	word16 ax_118
+	byte SCZO_119
+	byte al_120
+	byte ch_121
+	byte O_122
+	word16 bx_123
+	word16 si_124
+	selector ds_125
+	word16 cx_126
+	byte Z_127
+	byte dl_128
+	word16 bp_129
+	byte SZO_130
+	byte bl_131
+	byte ah_132
+	word16 di_133
+	byte cl_134
+	call 1483:4FE0 (retsize: 2;)
+		uses: ah,al_85,ax_112,bl_95,bp_81,bx_96,C_97,ch_106,cl_107,cx_105,di_99,dl_77,ds,dx_76,es_3,O_17,SCZO_108,si,sp_4,ss,SZO_16,Z_54
+		defs: ah_132,al_120,ax_118,bl_131,bp_129,bx_123,C_116,ch_121,cl_134,cx_126,di_133,dl_128,ds_125,dx_117,es_114,O_122,SCZO_119,si_124,sp_113,ss_115,SZO_130,Z_127
+	Mem137[ds_125:0xF7E3:word16] = v26
+	Mem141[ds_125:bx_123 + di_133:word16] = v27
+	Mem146[ss_115:sp_113 - 0x0002:word16] = si_124
+	Mem148[ss_115:sp_113 - 0x0004:word16] = cx_126
+	word16 cx_150
+	*cxOut = DPB(cx_126, cl_134 - Mem148[ss_115:(bp_129 + 0x027E) + di_133:byte] - (v27 <u 0x0000), 0)
+	Mem153[ss_115:sp_113 - 0x0006:word16] = si_124
 	return __inw(0x8B)
 // DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002 es:<invalid> dx:<invalid> al:al + ch cx:cx - 0x0001
 
 l1483_0C9D:
-	Mem63[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx - 0x0001)
+	Mem60[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx - 0x0001)
 // DataOut: ah al bl bp bx di dl ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002 es:<invalid> dx:<invalid> al:al + ch cx:cx - 0x0001
 
 l1483_0C9D_thunk_fn1483_0CA1:
-	word16 cx_68
-	word16 dx_69
-	word16 bx_70
-	word16 bp_71
-	word16 di_72
-	return fn1483_0CA1(ah, al_11, dl_55, bx, bp, si, di, psegArg00, ds, out cx_68, out dx_69, out bx_70, out bp_71, out di_72)
+	word16 cx_65
+	word16 dx_66
+	word16 bx_67
+	word16 bp_68
+	word16 di_69
+	return fn1483_0CA1(ah, al_11, dl_52, bx, bp, si, di, psegArg00, ds, out cx_65, out dx_66, out bx_67, out bp_68, out di_69)
 // DataOut: ax bp bx cx di dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002 es:<invalid> dx:<invalid> al:al + ch cx:cx - 0x0001
@@ -40779,7 +40782,7 @@ l1483_0CA1:
 	ah = ah + Mem0[ds:bx + si:byte]
 	ax = DPB(ax, ah, 8) (alias)
 	SCZO = cond(ah)
-	call fn1483_FD4E (retsize: 2;)
+	call 1483:FD4E (retsize: 2;)
 		defs: ah,al,ax,bl,bp,bx,C,cl,cx,di,dl,ds,dx,es,SCZO,si,sp,ss,SZO
 // DataOut: ah ax bl bp bx di dl ds es si sp ss
 // DataOut (flags): 
@@ -40818,7 +40821,7 @@ l1483_0CA9:
 	v48 = Mem0[ds:di + 0x0014:word16]
 	Mem0[ds:di + 0x0014:word16] = ax
 	ax = v48
-	call fn1483_4FE0 (retsize: 2;)
+	call 1483:4FE0 (retsize: 2;)
 		defs: ah,al,ax,bl,bp,bx,C,cl,cx,di,dl,ds,dx,es,SCZO,si,sp,ss,SZO
 	v49 = Mem0[ds:0xF7E3:word16] - dx
 	Mem0[ds:0xF7E3:word16] = v49
@@ -40886,7 +40889,7 @@ l1483_0CA1:
 	ah_13 = ah + Mem11[ds:bx + si:byte]
 	ax_15 = DPB(ax, ah_13, 8) (alias)
 	SCZO_16 = cond(ah_13)
-	call fn1483_FD4E (retsize: 2; depth: 4)
+	call 1483:FD4E (retsize: 2; depth: 4)
 		uses: ah_13,ax_15,bx,di,ds,es,SCZO_16,si,sp_2,wLoc02_4
 		defs: ah_25,al_33,ax_31,bl_30,bp_28,bx_20,C_32,cl_35,cx_34,di_21,dl_26,ds_22,dx_27,es_18,SCZO_24,si_23,sp_17,ss_19,SZO_29
 // DataOut: ah ax bl bp bx di dl ds es si sp ss
@@ -40927,7 +40930,7 @@ l1483_0CA9_in_fn1483_0CA1:
 	v25_69 = Mem64[ds_22:di_60 + 0x0014:word16]
 	Mem70[ds_22:di_60 + 0x0014:word16] = ax_61
 	ax_72 = v25
-	call fn1483_4FE0 (retsize: 2; depth: 2)
+	call 1483:4FE0 (retsize: 2; depth: 2)
 		uses: ah_25,al_46,ax_72,bl_56,bp_42,bx_57,C_58,cl_67,cx_66,di_60,dl_38,ds_22,dx_37,es_18,SCZO_68,si_23,sp_17,ss_19,SZO_29,wLoc02_4
 		defs: ah_81,al_89,ax_87,bl_86,bp_84,bx_76,C_88,cl_91,cx_90,di_77,dl_82,ds_78,dx_83,es_74,SCZO_80,si_79,sp_73,ss_75,SZO_85
 	v26_92 = Mem70[ds_78:0xF7E3:word16] - dx_83
@@ -41189,7 +41192,7 @@ fn1483_0D06_exit:
 
 
 
-word16 fn1483_0D3F(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector es, selector ds, selector fs, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0D3F(byte al, byte ah, word16 cx, word16 dx, byte bl, word16 bp, word16 si, word16 di, selector es, selector ds, selector fs, word16 wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  P ah al bl bp ch cl cs cx dh di dl ds dx es fs si ss
@@ -41212,28 +41215,28 @@ l1483_0D3F:
 // LocalsOut: fp(16)
 
 l1483_0D40_thunk_fn1483_0CFA:
-	word16 cx_368
-	word16 dx_369
-	word16 bx_370
-	word16 bp_371
-	word16 si_372
-	word16 di_373
-	selector es_374
-	return fn1483_0CFA(al, ah, cx, dx, bl, bp, si, di, ds, fs, out cx_368, out dx_369, out bx_370, out bp_371, out si_372, out di_373, out es_374)
+	word16 cx_357
+	word16 dx_358
+	word16 bx_359
+	word16 bp_360
+	word16 si_361
+	word16 di_362
+	selector es_363
+	return fn1483_0CFA(al, ah, cx, dx, bl, bp, si, di, ds, fs, out cx_357, out dx_358, out bx_359, out bp_360, out si_361, out di_362, out es_363)
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 -2(fp):ax
 
 l1483_0D42:
-	word16 bx_61 = DPB(bx, 0xB4, 0)
-	byte ch_65 = ch - Mem0[ds:(bx_61 + 0x0002) + si:byte]
-	word16 ax_70 = DPB(ax, al + ch, 0) + 0xFC68 + (ch_65 <u 0x00)
-	word16 cx_67 = DPB(cx, ch_65, 8)
-	*cxOut = cx_67
-	byte al_72 = (byte) ax_70
-	byte ah_73 = SLICE(ax_70, byte, 8)
-	word16 dx_79 = DPB(dx, dh ^ 0x17, 8)
-	*dxOut = dx_79
+	word16 bx_55 = DPB(bx, 0xB4, 0)
+	byte ch_59 = ch - Mem0[ds:(bx_55 + 0x0002) + si:byte]
+	word16 ax_64 = DPB(ax, al + ch, 0) + 0xFC68 + (ch_59 <u 0x00)
+	word16 cx_61 = DPB(cx, ch_59, 8)
+	*cxOut = cx_61
+	byte al_66 = (byte) ax_64
+	byte ah_67 = SLICE(ax_64, byte, 8)
+	word16 dx_73 = DPB(dx, dh ^ 0x17, 8)
+	*dxOut = dx_73
 	branch (dh ^ 0x17) < 0x00 l1483_0CED
 // DataOut: ah al ax bp bx ch cs cx dh di dl ds dx es fs si sp ss
 // DataOut (flags): 
@@ -41241,16 +41244,16 @@ l1483_0D42:
 // LocalsOut: fp(16) Local -0004(16)
 
 l1483_0CED:
-	word16 si_323 = si + Mem0[ds:di:word16]
-	*siOut = si_323
-	word16 v37_324 = Mem0[ds:bx_61 + 0xF7E2 + si_323:word16] + (fp - 0x0004)
-	Mem325[ds:bx_61 + 0xF7E2 + si_323:word16] = v37_324
-	Mem328[es:di:word16] = ax_70
-	byte SCZO_326 = cond(v37_324)
-	word16 di_329
+	word16 si_316 = si + Mem0[ds:di:word16]
+	*siOut = si_316
+	word16 v37_317 = Mem0[ds:bx_55 + 0xF7E2 + si_316:word16] + (fp - 0x0004)
+	Mem318[ds:bx_55 + 0xF7E2 + si_316:word16] = v37_317
+	Mem321[es:di:word16] = ax_64
+	byte SCZO_319 = cond(v37_317)
+	word16 di_322
 	*diOut = di + 0x0002
-	word16 bx_331 = DPB(bx, 0xB5, 0)
-	*bxOut = bx_331
+	word16 bx_324 = DPB(bx, 0xB5, 0)
+	*bxOut = bx_324
 	branch true l1483_0CE5_in_fn1483_0D3F
 // DataOut: ah al ax bl bp bx cx di ds dx es fs si sp ss
 // DataOut (flags): C
@@ -41258,225 +41261,232 @@ l1483_0CED:
 // LocalsOut: fp(16) Local -0004(16)
 
 l1483_0CE5_in_fn1483_0D3F:
-	return ax_70
+	return ax_64
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 al:<invalid> bl:0xB5 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 si:<invalid> di:di + 0x0002 -4(fp):si -2(fp):ax
 
 l1483_0CF8:
-	Mem345[ds:bx_331 + si_323:byte] = __rcr(Mem328[ds:bx_331 + si_323:byte], 0xAC, SCZO_326)
+	Mem338[ds:bx_324 + si_316:byte] = __rcr(Mem321[ds:bx_324 + si_316:byte], 0xAC, SCZO_319)
 // DataOut: ah al bl bp ch cx di ds dx fs si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 al:<invalid> bl:0xB5 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 si:<invalid> di:di + 0x0002 -4(fp):si -2(fp):ax
 
 l1483_0CF9_thunk_fn1483_0CFC:
-	word16 cx_347
-	word16 dx_348
-	word16 bx_349
-	word16 bp_350
-	word16 si_351
-	word16 di_352
-	selector es_353
-	return fn1483_0CFC(al_72, ah_73, si, dx_79, 0xB5, bp, si_323, di + 0x0002, ds, fs, out cx_347, out dx_348, out bx_349, out bp_350, out si_351, out di_352, out es_353)
+	word16 cx_340
+	word16 dx_341
+	word16 bx_342
+	word16 bp_343
+	word16 si_344
+	word16 di_345
+	selector es_346
+	return fn1483_0CFC(al_66, ah_67, si, dx_73, 0xB5, bp, si_316, di + 0x0002, ds, fs, out cx_340, out dx_341, out bx_342, out bp_343, out si_344, out di_345, out es_346)
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 al:<invalid> bl:0xB5 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 si:<invalid> di:di + 0x0002 cx:si -4(fp):si -2(fp):ax
 
 l1483_0D52:
-	word16 v19_92 = Mem0[ds:bx_61 + 0x0043 + si:word16]
-	Mem94[ds:bx_61 + 0x0043 + si:word16] = bp
-	Mem97[ds:di:byte] = Mem94[ds:di:byte] << 0x68
-	word16 v22_100 = -Mem97[ss:v19_92 - 0x0006:word16]
-	Mem101[ss:v19_92 - 0x0006:word16] = v22_100
-	branch !OVERFLOW(v22_100) l1483_0D69
-// DataOut: al ax bp bx ch cs cx dh di dl ds dx es si ss
+	word16 v19_86 = Mem0[ds:bx_55 + 0x0043 + si:word16]
+	Mem88[ds:bx_55 + 0x0043 + si:word16] = bp
+	Mem91[ds:di:byte] = Mem88[ds:di:byte] << 0x68
+	word16 v22_94 = -Mem91[ss:v19_86 - 0x0006:word16]
+	Mem95[ss:v19_86 - 0x0006:word16] = v22_94
+	branch !OVERFLOW(v22_94) l1483_0D69
+// DataOut: al ax bp bx ch cs cx dh di dl ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 al:<invalid> bl:0xB4 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 -4(fp):si -2(fp):ax
-// LocalsOut: fp(16)
 
 l1483_0D68_1:
 	__syscall(0x04)
-// DataOut: al ax bp bx ch cs cx dh di dl ds dx es si ss
+// DataOut: al ax bp bx ch cs cx dh di dl ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0008 al:<invalid> bl:0xB4 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 ah:<invalid> bp:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
-// LocalsOut: fp(16)
 
 l1483_0D69:
-	Mem108[ds:si + 0x5C87:byte] = ch_65
-	word16 sp_120
-	word16 ax_121
-	selector ss_122
-	byte P_123
-	byte al_124
-	byte ch_125
-	byte SCZO_126
-	byte bl_127
-	word16 bx_128
-	word16 si_129
-	selector ds_130
-	byte C_131
-	byte dh_132
-	byte SZO_133
-	byte SO_134
-	byte ah_135
-	word16 di_136
-	word16 bp_137
-	selector es_138
-	byte O_139
-	word16 dx_140
-	word16 cx_141
-	byte bh_142
-	byte SCZDOP_143
-	byte Z_144
-	byte dl_145
-	byte S_146
-	byte cl_147
-	selector cs_148
-	selector fs_149
-	call fn1483_8A82 (retsize: 2; depth: -6)
-		uses: ah_85,al_72,ax_86,bh,bl_59,bp_95,bx_61,C_110,ch_65,cl,cs,cx_67,dh_77,di,dl,ds,dx_79,es,fs,O_103,P,S,SCZDOP,SCZO_102,si,SO_82,sp_105,ss,SZO_109,wLoc02_4,wLoc04_75,wLoc06_89,wLoc08_91,wLoc0A,Z
-		defs: ah_135,al_124,ax_121,bh_142,bl_127,bp_137,bx_128,C_131,ch_125,cl_147,cs_148,cx_141,dh_132,di_136,dl_145,ds_130,dx_140,es_138,fs_149,O_139,P_123,S_146,SCZDOP_143,SCZO_126,si_129,SO_134,sp_120,ss_122,SZO_133,Z_144
-	word16 bx_167 = bx_128 + Mem108[ds_130:(bx_128 - 0x0079) + di_136:word16] + C_131
-	Mem172[ss_122:bp_137 + 0xF512 + di_136:byte] = Mem108[ss_122:bp_137 + 0xF512 + di_136:byte] + dh_132 + (bx_167 <u 0x0000)
-	Mem174[ds_130:bx_167 + 0x007D:byte] = Mem172[ds_130:bx_167 + 0x007D:byte] & al_124
-	word16 ax_186 = __aad(si_129)
-	word16 ax_182 = DPB(ax_121 - 0x8747, (byte) (ax_121 - 0x8747) + ch_125 + (ax_121 <u 0x8747), 0)
-	word16 v31_189 = Mem174[ds_130:ax_182 + 0x995D:word16]
-	Mem190[ds_130:ax_182 + 0x995D:word16] = ax_182
-	word16 bx_199 = bx_167 + Mem190[ds_130:bx_167 + v31_189:word16]
-	*bxOut = bx_199
-	byte ah_188 = SLICE(ax_186, byte, 8)
-	word16 si_191
-	*siOut = v31_189
-	byte bl_200 = (byte) bx_199
-	byte bh_201 = SLICE(bx_199, byte, 8)
-	byte al_202 = (byte) ax_186 + 0x2A + ch_125
-	word16 sp_214 = fp - 0x0008
-	word16 cx_215
-	*cxOut = cx_141 - 0x0001
-	byte cl_217 = (byte) (cx_141 - 0x0001)
-	branch fp - 0x0008 && cx_141 != 0x0001 l1483_0D99
+	Mem102[ds:si + 0x5C87:byte] = ch_59
+	word16 sp_113
+	word16 ax_114
+	selector ss_115
+	byte P_116
+	byte al_117
+	byte ch_118
+	byte SCZO_119
+	byte bl_120
+	word16 bx_121
+	word16 si_122
+	selector ds_123
+	byte C_124
+	byte dh_125
+	byte SZO_126
+	byte SO_127
+	byte ah_128
+	word16 di_129
+	word16 bp_130
+	selector es_131
+	byte O_132
+	word16 dx_133
+	word16 cx_134
+	byte bh_135
+	byte SCZDOP_136
+	byte Z_137
+	byte dl_138
+	byte S_139
+	byte cl_140
+	selector cs_141
+	selector fs_142
+	call 1483:8A82 (retsize: 2; depth: -6)
+		uses: ah_79,al_66,ax_80,bh,bl_53,bp_89,bx_55,C_104,ch_59,cl,cs,cx_61,dh_71,di,dl,ds,dx_73,es,fs,O_97,P,S,SCZDOP,SCZO_96,si,SO_76,sp_99,ss,SZO_103,wLoc02_4,wLoc04_69,wLoc06_83,wLoc08_85,Z
+		defs: ah_128,al_117,ax_114,bh_135,bl_120,bp_130,bx_121,C_124,ch_118,cl_140,cs_141,cx_134,dh_125,di_129,dl_138,ds_123,dx_133,es_131,fs_142,O_132,P_116,S_139,SCZDOP_136,SCZO_119,si_122,SO_127,sp_113,ss_115,SZO_126,Z_137
+	Mem145[ss_115:sp_113 - 0x0002:word16] = ax_114
+	Mem147[ss_115:sp_113 - 0x0004:word16] = cx_134
+	Mem149[ss_115:sp_113 - 0x0006:word16] = dx_133
+	Mem151[ss_115:sp_113 - 0x0008:word16] = bx_121
+	Mem153[ss_115:sp_113 - 0x000A:word16] = sp_113
+	Mem155[ss_115:sp_113 - 0x000C:word16] = bp_130
+	Mem157[ss_115:sp_113 - 0x000E:word16] = si_122
+	Mem159[ss_115:sp_113 - 0x0010:word16] = di_129
+	word16 bx_160 = bx_121 + Mem159[ds_123:(bx_121 - 0x0079) + di_129:word16] + C_124
+	Mem165[ss_115:bp_130 + 0xF512 + di_129:byte] = Mem159[ss_115:bp_130 + 0xF512 + di_129:byte] + dh_125 + (bx_160 <u 0x0000)
+	Mem167[ds_123:bx_160 + 0x007D:byte] = Mem165[ds_123:bx_160 + 0x007D:byte] & al_117
+	word16 ax_179 = __aad(si_122)
+	word16 ax_175 = DPB(ax_114 - 0x8747, (byte) (ax_114 - 0x8747) + ch_118 + (ax_114 <u 0x8747), 0)
+	word16 v31_182 = Mem167[ds_123:ax_175 + 0x995D:word16]
+	Mem183[ds_123:ax_175 + 0x995D:word16] = ax_175
+	Mem187[ss_115:sp_113 - 0x0012:word16] = sp_113 - 0x0010
+	word16 bx_192 = bx_160 + Mem187[ds_123:bx_160 + v31_182:word16]
+	*bxOut = bx_192
+	byte ah_181 = SLICE(ax_179, byte, 8)
+	word16 si_184
+	*siOut = v31_182
+	byte bl_193 = (byte) bx_192
+	byte bh_194 = SLICE(bx_192, byte, 8)
+	byte al_195 = (byte) ax_179 + 0x2A + ch_118
+	word16 sp_207 = sp_113 - 0x0010
+	word16 cx_208
+	*cxOut = cx_134 - 0x0001
+	byte cl_210 = (byte) (cx_134 - 0x0001)
+	branch sp_113 - 0x0012 && cx_134 != 0x0001 l1483_0D99
 // DataOut: ah al bh bl bp bx cl cs cx di ds es si sp ss
 // DataOut (flags): C
 // SymbolicIn: sp:fp + 0x0008 al:<invalid> bl:0xB4 ch:<invalid> ax:<invalid> dh:dh ^ 0x17 ah:<invalid> bp:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0D99:
-	Mem321[ds_130:bx_199 + v31_189:byte] = Mem190[ds_130:bx_199 + v31_189:byte] - bl_200
+	Mem314[ds_123:bx_192 + v31_182:byte] = Mem187[ds_123:bx_192 + v31_182:byte] - bl_193
 // DataOut: al bp bx cl cs cx di ds es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0D97:
-	byte v36_307 = Mem190[ds_130:bx_199 + 0x0028 + di_136:byte] - ah_188 - (fp - 0x0008)
-	Mem308[ds_130:bx_199 + 0x0028 + di_136:byte] = v36_307
+	byte v36_300 = Mem187[ds_123:bx_192 + 0x0028 + di_129:byte] - ah_181 - (sp_113 - 0x0012)
+	Mem301[ds_123:bx_192 + 0x0028 + di_129:byte] = v36_300
 // DataOut: al bh bp bx cl cs cx di ds es si sp ss
 // DataOut (flags): C
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0D9A:
-	Mem318[ds_130:v31_189 + 0x005A:byte] = Mem308[ds_130:v31_189 + 0x005A:byte] - bh_201 - (v36_307 <u 0x00)
+	Mem311[ds_123:v31_182 + 0x005A:byte] = Mem301[ds_123:v31_182 + 0x005A:byte] - bh_194 - (v36_300 <u 0x00)
 // DataOut: al bp bx cl cs cx di ds es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0D9B:
-	byte v40_224 = Mem190[ds_130:di_136 + 0x002D:byte] - (al_202 | 0x3F)
-	Mem225[ds_130:di_136 + 0x002D:byte] = v40_224
-	Mem236[es_138:di_136:byte] = al_202 | 0x3F
-	word16 ax_220 = DPB(ax_186, al_202 | 0x3F, 0)
-	word16 dx_235
-	*dxOut = DPB(dx_140, 0x99, 0)
-	branch v40_224 >= 0x00 l1483_0DB9
+	byte v40_217 = Mem187[ds_123:di_129 + 0x002D:byte] - (al_195 | 0x3F)
+	Mem218[ds_123:di_129 + 0x002D:byte] = v40_217
+	Mem229[es_131:di_129:byte] = al_195 | 0x3F
+	word16 ax_213 = DPB(ax_179, al_195 | 0x3F, 0)
+	word16 dx_228
+	*dxOut = DPB(dx_133, 0x99, 0)
+	branch v40_217 >= 0x00 l1483_0DB9
 // DataOut: al ax bp bx cl cs cx di ds dx es si sp ss
 // DataOut (flags): S
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DA7:
-	Mem272[es_138:di_136 + 0x0001:byte] = al_202 | 0x3F
-	word16 di_273
-	*diOut = di_136 + 0x0002
-	branch v40_224 >= 0x00 l1483_0DBE
+	Mem265[es_131:di_129 + 0x0001:byte] = al_195 | 0x3F
+	word16 di_266
+	*diOut = di_129 + 0x0002
+	branch v40_217 >= 0x00 l1483_0DBE
 // DataOut: al bp bx cl cs cx di ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0001 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DBE:
-	word16 ax_292 = DPB(ax_186, (al_202 | 0x3F) + Mem272[ds_130:0x0047:byte], 0)
+	word16 ax_285 = DPB(ax_179, (al_195 | 0x3F) + Mem265[ds_123:0x0047:byte], 0)
 // DataOut: ax bp bx cl cs cx di ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0003 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DC2:
-	Mem297[ss_122:fp - 0x000A:word16] = cs_148
+	Mem290[ss_115:sp_113 - 0x0012:word16] = cs_141
 // DataOut: ax bp bx cl cx di ds dx es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0003 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DC6:
-	Mem300[ss_122:0x0B01:word16] = es_138
-	Mem302[ds_130:0x8C00:byte] = Mem300[ds_130:0x8C00:byte] + cl_217
+	Mem293[ss_115:0x0B01:word16] = es_131
+	Mem295[ds_123:0x8C00:byte] = Mem293[ds_123:0x8C00:byte] + cl_210
 // DataOut: ax bp bx cl cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:0x0B03 al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0003 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DCB:
-	Mem305[ss_122:bp_137 + 0x8CC3:word16] = __ror(Mem302[ss_122:bp_137 + 0x8CC3:word16], cl_217)
+	Mem298[ss_115:bp_130 + 0x8CC3:word16] = __ror(Mem295[ss_115:bp_130 + 0x8CC3:word16], cl_210)
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:0x0B01 al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0003 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DCF:
-	return ax_292
+	return ax_285
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:0x0B01 al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0003 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DAA:
-	Mem275[ss_122:bp_137 + v31_189:word16] = -Mem272[ss_122:bp_137 + v31_189:word16]
+	Mem268[ss_115:bp_130 + v31_182:word16] = -Mem265[ss_115:bp_130 + v31_182:word16]
 	__cli()
-	Mem277[ds_130:bx_199 + 0x0045 + (di_136 + 0x0001):word16] = Mem275[ss_122:fp - 0x0008:word16]
-	ax_220 = Mem277[ss_122:fp - 0x0006:word16]
-	Mem287[ds_130:bx_199 + 0xC079 + v31_189:word16] = Mem277[ds_130:bx_199 + 0xC079 + v31_189:word16] + (bp_137 + 0x0001)
-	sp_214 = fp - 0x0004
+	Mem270[ds_123:bx_192 + 0x0045 + (di_129 + 0x0001):word16] = Mem268[ss_115:sp_113 - 0x0010:word16]
+	ax_213 = Mem270[ss_115:sp_113 - 0x000E:word16]
+	Mem280[ds_123:bx_192 + 0xC079 + v31_182:word16] = Mem270[ds_123:bx_192 + 0xC079 + v31_182:word16] + (bp_130 + 0x0001)
+	sp_207 = sp_113 - 0x000C
 // DataOut: ax bp bx cl cx di ds es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:di + 0x0003 -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DB9:
-	word16 dx_246
-	*dxOut = Mem236[ss_122:sp_214:word16]
-	Mem252[ds_130:bx_199 + (di_136 + 0x0001):byte] = Mem236[ds_130:bx_199 + (di_136 + 0x0001):byte] >>u 0x01
-	Mem254[ds_130:bx_199 + 0x0002 + (di_136 + 0x0001):byte] = Mem252[ds_130:bx_199 + 0x0002 + (di_136 + 0x0001):byte] + cl_217
-	word16 bp_238
-	*bpOut = bp_137
-	word16 sp_250 = sp_214 + 0x0002
+	word16 dx_239
+	*dxOut = Mem229[ss_115:sp_207:word16]
+	Mem245[ds_123:bx_192 + (di_129 + 0x0001):byte] = Mem229[ds_123:bx_192 + (di_129 + 0x0001):byte] >>u 0x01
+	Mem247[ds_123:bx_192 + 0x0002 + (di_129 + 0x0001):byte] = Mem245[ds_123:bx_192 + 0x0002 + (di_129 + 0x0001):byte] + cl_210
+	word16 bp_231
+	*bpOut = bp_130
+	word16 sp_243 = sp_207 + 0x0002
 // DataOut: ax bp bx cl cx di ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:0x99 di:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DBF:
-	Mem257[ss_122:sp_250 - 0x0002:word16] = es_138
-	Mem260[ds_130:0x03BC:byte] = Mem257[ds_130:0x03BC:byte] + cl_217
-	word16 di_258
-	*diOut = di_136 + 0x0002
+	Mem250[ss_115:sp_243 - 0x0002:word16] = es_131
+	Mem253[ds_123:0x03BC:byte] = Mem250[ds_123:0x03BC:byte] + cl_210
+	word16 di_251
+	*diOut = di_129 + 0x0002
 // DataOut: ax bp bx cl cx di ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:<invalid> di:<invalid> dx:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DC5:
-	word16 ax_262 = ax_220 | Mem260[ds_130:0x0E00:word16]
+	word16 ax_255 = ax_213 | Mem253[ds_123:0x0E00:word16]
 // DataOut: ax bp bx cl cx di ds dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:<invalid> di:<invalid> dx:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DC9:
-	Mem270[ds_130:v31_189 + 0x8ED3:byte] = Mem260[ds_130:v31_189 + 0x8ED3:byte] + cl_217
+	Mem263[ds_123:v31_182 + 0x8ED3:byte] = Mem253[ds_123:v31_182 + 0x8ED3:byte] + cl_210
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:<invalid> di:<invalid> dx:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
 
 l1483_0DCD:
-	return ax_262
+	return ax_255
 // DataOut: ax bp bx cx di dx es si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> al:<invalid> bl:<invalid> ch:<invalid> ax:<invalid> dh:<invalid> ah:<invalid> bp:<invalid> bx:<invalid> si:<invalid> cx:cx - 0x0001 dl:<invalid> di:<invalid> dx:<invalid> -8(fp):0x0C58 -6(fp):0x0F5F -4(fp):si -2(fp):ax 8(fp):es
