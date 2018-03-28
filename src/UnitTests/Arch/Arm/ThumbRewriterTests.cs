@@ -6394,24 +6394,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_adc()
         {
             RewriteCode("49F1FF37");	// adc r7, sb, #-1
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r7 = r9 + -1 + C",
+                "1|L--|r7 = r9 + 0xFFFFFFFF + C",
                 "2|L--|NZCV = cond(r7)");
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_strd()
         {
             RewriteCode("CDE90067");	// strd r6, r7, [sp]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|Mem0[sp:word64] = r7_r6");
         }
 
         [Test]

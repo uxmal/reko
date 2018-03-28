@@ -12,6 +12,7 @@ enum class FlagM
 	CF = 2,
 	VF = 1
 };
+
 inline FlagM operator | (FlagM a, FlagM b) { return (FlagM)((int)a | (int)b); }
 
 class ThumbRewriter : public ComBase, public INativeRewriter
@@ -41,6 +42,7 @@ private:
 	void ConditionalSkip(arm_cc cc, bool force);
 	arm_cc Invert(arm_cc cc);
 	HExpr NZCV();
+	void MaybeUpdateFlags(HExpr opDst);
 	void NotImplementedYet();
 
 	const cs_arm_op & Dst() { return instr->detail->arm.operands[0]; }
@@ -48,6 +50,7 @@ private:
 	const cs_arm_op & Src2() { return instr->detail->arm.operands[2]; }
 	const cs_arm_op & Src3() { return instr->detail->arm.operands[3]; }
 
+	void RewriteAdcSbc(BinOpEmitter);
 	void RewriteAdr();
 	void RewriteAnd();
 	void RewriteAddw();
@@ -58,10 +61,13 @@ private:
 	void RewriteBx();
 	void RewriteBinop(HExpr(*ctor)(INativeRtlEmitter &m, HExpr, HExpr));
 	void RewriteCbnz(HExpr(*cons)(INativeRtlEmitter & m, HExpr e));
+	void RewriteCdp();
 	void RewriteCmp();
+	void RewriteCps();
 	void RewriteDmb();
 	void RewriteEor();
 	void RewriteIt();
+	void RewriteLdc(const char * fnName);
 	void RewriteLdm(int initialOffset, BinOpEmitter op);
 	void RewriteLdm(HExpr dst, int skip, int offset, BinOpEmitter op, bool writeback);
 	void RewriteLdr(BaseType dtDst, BaseType dtSrc);
@@ -70,16 +76,22 @@ private:
 	void RewriteMov();
 	void RewriteMovt();
 	void RewriteMovw();
+	void RewriteMcr();
 	void RewriteMrc();
+	void RewriteMrs();
+	void RewriteMsr();
 	void RewriteMvn();
 	void RewriteOrr();
 	void RewritePop();
 	void RewritePush();
 	void RewriteRsb();
+	void RewriteStc(const char *);
 	void RewriteStm(int, bool);
 	void RewriteStr(BaseType dt);
+	void RewriteStrd();
 	void RewriteStrex();
 	void RewriteSubw();
+	void RewriteSvc();
 	void RewriteTrap();
 	void RewriteTst();
 	void RewriteUdf();

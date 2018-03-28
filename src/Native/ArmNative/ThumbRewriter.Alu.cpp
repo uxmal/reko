@@ -6,6 +6,28 @@
 
 #include "ThumbRewriter.h"
 
+void ThumbRewriter::RewriteAdcSbc(BinOpEmitter opr)
+{
+	auto opDst = this->RewriteOp(Dst());
+	auto opSrc1 = this->RewriteOp(Src1());
+	auto opSrc2 = this->RewriteOp(Src2());
+	if (false) // reverse)
+	{
+		auto tmp = opSrc1;
+		opSrc1 = opSrc2;
+		opSrc2 = tmp;
+	}
+	// We do not take the trouble of widening the CF to the word size
+	// to simplify code analysis in later stages. 
+	auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
+	m.Assign(
+		opDst,
+		(m.*opr)(
+			(m.*opr)(opSrc1, opSrc2),
+			c));
+	MaybeUpdateFlags(opDst);	
+}
+
 void ThumbRewriter::RewriteAdr()
 {
 	auto dst = RewriteOp(Dst());
@@ -181,12 +203,6 @@ void ThumbRewriter::RewriteMovw()
 	m.Assign(dst, src);
 }
 
-void ThumbRewriter::RewriteMrc()
-{
-	auto ppp = host->EnsurePseudoProcedure("__mrc", BaseType::Void, 0);
-	m.SideEffect(m.Fn(ppp));
-}
-
 void ThumbRewriter::RewriteMvn()
 {
 	auto dst = RewriteOp(Dst());
@@ -295,6 +311,23 @@ void ThumbRewriter::RewriteStr(BaseType dtDst)
 	{
 		auto baseReg = GetReg(mem.base);
 		m.Assign(baseReg, m.IAdd(baseReg, RewriteOp(Src2())));
+	}
+}
+
+void ThumbRewriter::RewriteStrd()
+{
+	auto ops = instr->detail->arm.operands;
+	auto regLo = (int)ops[0].reg;
+	auto regHi = (int)ops[1].reg;
+	auto opSrc = host->EnsureSequence(regHi, regLo, BaseType::Word64);
+	const auto & mem = ops[2].mem;
+	auto ea = EffectiveAddress(mem);
+	auto opDst = m.Mem(BaseType::Word64, ea);
+	m.Assign(opDst, opSrc);
+	if (instr->detail->arm.op_count == 4)
+	{
+		auto baseReg = GetReg(mem.base);
+		m.Assign(baseReg, m.IAdd(baseReg, RewriteOp(Src3())));
 	}
 }
 

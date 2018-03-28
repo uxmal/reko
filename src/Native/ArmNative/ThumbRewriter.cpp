@@ -101,6 +101,7 @@ start:
 	}
 	switch (instr->id)
 	{
+	case ARM_INS_ADC: RewriteAdcSbc(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_ADD: RewriteBinop([](auto & m, HExpr a, HExpr b) { return m.IAdd(a, b); }); break;
 	case ARM_INS_ADDW: RewriteAddw(); break;
 	case ARM_INS_ADR: RewriteAdr(); break;
@@ -136,8 +137,9 @@ start:
 	case ARM_INS_RSB: RewriteRsb(); break;
 	case ARM_INS_STM: RewriteStm(0, true); break;
 	case ARM_INS_STR: RewriteStr(BaseType::Word32); break;
-	case ARM_INS_STRH: RewriteStr(BaseType::Word16); break;
 	case ARM_INS_STRB: RewriteStr(BaseType::Byte); break;
+	case ARM_INS_STRD: RewriteStrd(); break;
+	case ARM_INS_STRH: RewriteStr(BaseType::Word16); break;
 	case ARM_INS_STREX: RewriteStrex(); break;
 	case ARM_INS_SUB: RewriteBinop([](auto & m, auto a, auto b) { return m.ISub(a, b); }); break;
 	case ARM_INS_SUBW: RewriteSubw(); break;
@@ -277,6 +279,13 @@ HExpr ThumbRewriter::FlagGroup(FlagM bits, const char * name, BaseType type)
 		return host->EnsureFlagGroup(ARM_REG_CPSR, (int)bits, name, type);
 }
 
+void ThumbRewriter::MaybeUpdateFlags(HExpr opDst)
+{
+	if (instr->detail->arm.update_flags)
+	{
+		m.Assign(NZCV(), m.Cond(opDst));
+	}
+}
 
 HExpr ThumbRewriter::NZCV()
 {
