@@ -79,9 +79,9 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new Mos6502ProcessorState(this, map);
+            return new Mos6502ProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

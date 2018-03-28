@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureReal("x86-real-16");
             var rdr = CreateImageReader(0x78, 0x56);
-            var state = arch.CreateProcessorState(new SegmentMap(Address.SegPtr(0x800,0)));
+            var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
             Address addr = arch.ReadCodeAddress(2, rdr, state);
 
@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureReal("x86-real-16");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
-            var state = arch.CreateProcessorState(new SegmentMap(Address.SegPtr(0x800, 0)));
+            var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
             Address addr = arch.ReadCodeAddress(4, rdr, state);
 
@@ -227,7 +227,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureProtected16("x86-protected-16");
             var rdr = CreateImageReader(0x78, 0x56);
-            var state = arch.CreateProcessorState(new SegmentMap(Address.SegPtr(0x800, 0)));
+            var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
             Address addr = arch.ReadCodeAddress(2, rdr, state);
 
@@ -239,7 +239,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureProtected16("x86-protected-16");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
-            var state = arch.CreateProcessorState(new SegmentMap(Address.SegPtr(0x0800, 0x0000)));
+            var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
             Address addr = arch.ReadCodeAddress(4, rdr, state);
 
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
-            var state = arch.CreateProcessorState(new SegmentMap(Address.Ptr32(0x00123400)));
+            var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
             Address addr = arch.ReadCodeAddress(4, rdr, state);
 

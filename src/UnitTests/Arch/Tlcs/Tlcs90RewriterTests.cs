@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            Tlcs90State state = (Tlcs90State)arch.CreateProcessorState(new SegmentMap(baseAddr));
+            Tlcs90State state = (Tlcs90State)arch.CreateProcessorState();
             return new Tlcs90Rewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 

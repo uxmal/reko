@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.Mos6502
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            var state = new Mos6502ProcessorState(arch, new SegmentMap(addrBase));
+            var state = new Mos6502ProcessorState(arch);
             return new Rewriter(arch, image.CreateLeReader(0), state, new Frame(arch.FramePointerType), host);
         }
 

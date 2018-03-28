@@ -155,9 +155,9 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this, map);
+            return new ArmProcessorState(this);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)

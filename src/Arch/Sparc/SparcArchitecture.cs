@@ -83,9 +83,9 @@ namespace Reko.Arch.Sparc
             return new SparcInstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new SparcProcessorState(this, map);
+            return new SparcProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

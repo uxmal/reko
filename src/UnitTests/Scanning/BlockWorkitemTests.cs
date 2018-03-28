@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Scanning
 
         private BlockWorkitem CreateWorkItem(Address addr)
         {
-            return CreateWorkItem(addr, new FakeProcessorState(arch, program.SegmentMap));
+            return CreateWorkItem(addr, new FakeProcessorState(arch));
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -275,10 +275,12 @@ namespace Reko.UnitTests.Scanning
             program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
-            var alloca = new ExternalProcedure("alloca", sig);
-            alloca.Characteristics = new ProcedureCharacteristics
+            var alloca = new ExternalProcedure("alloca", sig)
             {
-                IsAlloca = true
+                Characteristics = new ProcedureCharacteristics
+                {
+                    IsAlloca = true
+                }
             };
 
             using (mr.Record())
@@ -291,7 +293,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 4));
-            var state = new FakeProcessorState(program.Architecture, program.SegmentMap);
+            var state = new FakeProcessorState(program.Architecture);
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
             var wi = CreateWorkItem(Address.Ptr32(0x1000), state);
             wi.Process();

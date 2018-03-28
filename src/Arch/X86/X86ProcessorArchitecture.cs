@@ -129,8 +129,7 @@ namespace Reko.Arch.X86
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -138,11 +137,10 @@ namespace Reko.Arch.X86
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
             ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            Dictionary<uint, RegisterStorage> subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
                 RegisterStorage rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            if (Registers.SubRegisters.TryGetValue(reg, out var subregs))
             {
                 foreach (var subreg in subregs.Values)
                 {
@@ -161,9 +159,9 @@ namespace Reko.Arch.X86
             return CreateDisassemblerImpl(imageReader);
 		}
 
-		public override ProcessorState CreateProcessorState(SegmentMap map)
+		public override ProcessorState CreateProcessorState()
 		{
-			return new X86State(this, map);
+			return new X86State(this);
 		}
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -251,11 +249,9 @@ namespace Reko.Arch.X86
         {
             if (offset == 0 && reg.BitSize == (ulong) width)
                 return reg;
-            Dictionary<uint, RegisterStorage> dict;
-            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+            if (!Registers.SubRegisters.TryGetValue(reg, out var dict))
                 return null;
-            RegisterStorage subReg;
-            if (!dict.TryGetValue((uint)(offset * 256 + width), out subReg))
+            if (!dict.TryGetValue((uint)(offset * 256 + width), out var subReg))
                 return null;
             return subReg;
         }

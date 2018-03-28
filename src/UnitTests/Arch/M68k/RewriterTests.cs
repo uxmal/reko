@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            var state = arch.CreateProcessorState(new SegmentMap(mem.BaseAddress));
+            var state = arch.CreateProcessorState();
             return arch.CreateRewriter(mem.CreateLeReader(0), state, arch.CreateFrame(), host);
         }
 

@@ -136,9 +136,9 @@ namespace Reko.Arch.Pdp11
             return new Pdp11InstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new Pdp11ProcessorState(this, map);
+            return new Pdp11ProcessorState(this);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -171,8 +171,7 @@ namespace Reko.Arch.Pdp11
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }

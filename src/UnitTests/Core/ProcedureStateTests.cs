@@ -64,9 +64,9 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void SetValue()
+        public void ProcState_SetValue()
         {
-            var sce = new TestProcessorState(arch, map);
+            var sce = new TestProcessorState(arch);
 
             sce.SetValue(idSp, m.ISub(idSp, 4));
 
@@ -74,14 +74,14 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void PushValueOnstack()
+        public void ProcState_PushValueOnstack()
         {
-            var sce = new TestProcessorState(arch, map);
+            var sce = new TestProcessorState(arch);
 
             sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp)).ToString());
+            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp), map).ToString());
         }
 
         [Test]
@@ -91,8 +91,9 @@ namespace Reko.UnitTests.Core
             var text = map.Segments.Values.Single(s => s.Name == ".text").MemoryArea;
             text.WriteLeUInt32(0, 0x01234567);
 
-            var sce = new TestProcessorState(arch, map);
-            var c = sce.GetValue(new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32));
+            var sce = new TestProcessorState(arch);
+            var access = new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32);
+            var c = sce.GetValue(access, map);
 
             Assert.AreEqual("0x01234567", c.ToString());
         }
@@ -114,7 +115,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public ProcessorState CreateProcessorState(SegmentMap map)
+            public ProcessorState CreateProcessorState()
             {
                 throw new NotImplementedException();
             }
@@ -313,7 +314,7 @@ namespace Reko.UnitTests.Core
             private Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
             private SortedList<int, Constant> stack = new SortedList<int, Constant>();
 
-            public TestProcessorState(IProcessorArchitecture arch, SegmentMap map) : base(map)
+            public TestProcessorState(IProcessorArchitecture arch)
             {
                 this.arch = arch;
             }

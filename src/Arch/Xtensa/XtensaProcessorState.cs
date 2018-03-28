@@ -31,7 +31,7 @@ namespace Reko.Arch.Xtensa
         private XtensaArchitecture arch;
         private Address ip;
 
-        public XtensaProcessorState(XtensaArchitecture arch, SegmentMap map) : base(map)
+        public XtensaProcessorState(XtensaArchitecture arch)
         {
             this.arch = arch;
         }

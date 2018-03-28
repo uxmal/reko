@@ -264,7 +264,7 @@ l01C8:
 			pklCs = (ushort) (bitStm.GetWord() + segCode);
 			pklIp = bitStm.GetWord();
 
-			var state = arch.CreateProcessorState(segmentMap);
+			var state = arch.CreateProcessorState();
 			state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector.Value));
 			state.SetRegister(Registers.es, Constant.Word16(addrLoad.Selector.Value));
 			state.SetRegister(Registers.cs, Constant.Word16(pklCs));

@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.Arm
             var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
 
             var rdr = mem.CreateLeReader(0);
-            var rw = arch.CreateRewriter(rdr, new ArmProcessorState(arch, new SegmentMap(mem.BaseAddress)), new StorageBinder(), null);
+            var rw = arch.CreateRewriter(rdr, new ArmProcessorState(arch), new StorageBinder(), null);
             var rtl = rw.First().Instructions[0];
             Assert.AreEqual("r1 = r2 & r3", rtl.ToString());
         }

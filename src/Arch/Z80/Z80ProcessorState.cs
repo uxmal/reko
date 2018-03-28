@@ -37,7 +37,7 @@ namespace Reko.Arch.Z80
         private ushort[] registerFile;
         private bool[] isValid;
 
-        public Z80ProcessorState(Z80ProcessorArchitecture arch, SegmentMap map) : base(map)
+        public Z80ProcessorState(Z80ProcessorArchitecture arch)
         {
             this.arch = arch;
             this.registerFile = new ushort[RegisterFileItems];

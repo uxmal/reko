@@ -392,7 +392,7 @@ namespace Reko
             return scanner.ScanProcedure(
                 paddr.Address,
                 procName, 
-                program.Architecture.CreateProcessorState(program.SegmentMap));
+                program.Architecture.CreateProcessorState());
         }
 
 		/// <summary>

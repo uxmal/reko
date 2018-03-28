@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.Intel
             return new X86Rewriter(
                 arch,
                 host, 
-                new X86State(arch, asmResult.SegmentMap),
+                new X86State(arch),
                 asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), binder);
         }
 

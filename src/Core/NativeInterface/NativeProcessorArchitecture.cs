@@ -79,7 +79,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override ProcessorState CreateProcessorState(SegmentMap segmentMap)
+		public override ProcessorState CreateProcessorState()
 		{
 			throw new NotImplementedException();
 		}

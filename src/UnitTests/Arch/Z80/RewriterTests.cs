@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Z80
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            var state = (Z80ProcessorState)arch.CreateProcessorState(new SegmentMap(baseAddr));
+            var state = (Z80ProcessorState)arch.CreateProcessorState();
             return new Z80Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 

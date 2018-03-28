@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             return arch.CreateRewriter(
                 new LeImageReader(image, 0),
-                arch.CreateProcessorState(new SegmentMap(image.BaseAddress)),
+                arch.CreateProcessorState(),
                 binder,
                 this.host);
         }
@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Arch.Intel
         private X86Rewriter CreateRewriter32(X86Assembler m)
         {
             var program = m.GetImage();
-            state = new X86State(arch32, program.SegmentMap);
+            state = new X86State(arch32);
             return new X86Rewriter(
                 arch32,
                 host,
@@ -268,13 +268,13 @@ namespace Reko.UnitTests.Arch.Intel
 
         private X86Rewriter CreateRewriter32(byte[] bytes)
         {
-            state = new X86State(arch32, null);
+            state = new X86State(arch32);
             return new X86Rewriter(arch32, host, state, new LeImageReader(image, 0), new Frame(arch32.WordWidth));
         }
 
         private X86Rewriter CreateRewriter64(byte[] bytes)
         {
-            state = new X86State(arch64, null);
+            state = new X86State(arch64);
             return new X86Rewriter(arch64, host, state, new LeImageReader(image, 0), new Frame(arch64.WordWidth));
         }
 

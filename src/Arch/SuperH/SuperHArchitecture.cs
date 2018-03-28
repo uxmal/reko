@@ -59,9 +59,9 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new SuperHState(this, map);
+            return new SuperHState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

@@ -30,7 +30,7 @@ namespace Reko.Arch.Alpha
     {
         private AlphaArchitecture arch;
 
-        public AlphaProcessorState(AlphaArchitecture arch, SegmentMap map) : base(map)
+        public AlphaProcessorState(AlphaArchitecture arch)
         {
             this.arch = arch;
         }

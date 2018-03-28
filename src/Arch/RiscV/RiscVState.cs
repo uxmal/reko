@@ -31,7 +31,7 @@ namespace Reko.Arch.RiscV
         private RiscVArchitecture arch;
         private Address pc;
 
-        public RiscVState(RiscVArchitecture arch, SegmentMap map) : base(map)
+        public RiscVState(RiscVArchitecture arch)
         {
             this.arch = arch;
         }

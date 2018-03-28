@@ -30,7 +30,7 @@ namespace Reko.Arch.Tlcs
     {
         private Tlcs90Architecture arch;
 
-        public Tlcs90State(Tlcs90Architecture arch, SegmentMap map) : base(map)
+        public Tlcs90State(Tlcs90Architecture arch)
         {
             this.arch = arch;
         }

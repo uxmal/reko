@@ -114,9 +114,9 @@ namespace Reko.Arch.RiscV
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new RiscVState(this, map);
+            return new RiscVState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

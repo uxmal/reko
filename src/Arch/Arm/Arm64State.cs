@@ -30,7 +30,7 @@ namespace Reko.Arch.Arm
     {
         private Arm64Architecture arch;
 
-        public Arm64State(Arm64Architecture arch, SegmentMap map) : base(map)
+        public Arm64State(Arm64Architecture arch)
         {
             this.arch = arch;
         }

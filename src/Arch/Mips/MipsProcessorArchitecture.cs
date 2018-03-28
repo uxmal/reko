@@ -99,9 +99,9 @@ namespace Reko.Arch.Mips
             return new MipsInstructionComparer(norm);
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new MipsProcessorState(this, map);
+            return new MipsProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

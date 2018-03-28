@@ -91,9 +91,9 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new C64BasicState(this, map);
+            return new C64BasicState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -192,7 +192,7 @@ namespace Reko.Environments.C64
         {
             private C64Basic arch;
 
-            public C64BasicState(C64Basic arch, SegmentMap map) : base(map)
+            public C64BasicState(C64Basic arch)
             {
                 this.arch = arch;
             }

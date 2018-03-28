@@ -281,7 +281,7 @@ namespace Reko.UnitTests.Scanning
                     m.Assign(m.Mem32(m.Word32(0x3000)), m.Word32(42));
                 }
             });
-            scan.EnqueueJumpTarget(addr, addr, proc, arch.CreateProcessorState(program.SegmentMap));
+            scan.EnqueueJumpTarget(addr, addr, proc, arch.CreateProcessorState());
         }
 
         [Test]
@@ -426,7 +426,7 @@ fn0C00_0000_exit:
             mr.ReplayAll();
 
             var scan = CreateScanner(program, 0x1000, 0x2000);
-            var proc = scan.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState(program.SegmentMap));
+            var proc = scan.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("grox", proc.Name);
             Assert.AreEqual("ax", proc.Signature.ReturnValue.Name);
             Assert.AreEqual("bx", proc.Signature.Parameters[0].Name);
@@ -485,8 +485,8 @@ fn0C00_0000_exit:
             });
             fakeArch.Test_IgnoreAllUnkownTraces();
 
-            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(program.SegmentMap), }, true);
-            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(program.SegmentMap), }, true);
+            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(), }, true);
+            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(), }, true);
             scan.ScanImage();
 
             var sExp =
@@ -543,7 +543,7 @@ fn00001100_exit:
             scan.EnqueueImageSymbol(
                 new ImageSymbol(Address.Ptr32(0x1000))
                 {
-                    ProcessorState = arch.CreateProcessorState(this.program.SegmentMap),
+                    ProcessorState = arch.CreateProcessorState(),
                 },
                 true);
             scan.ScanImage();
@@ -590,7 +590,7 @@ fn00001000_exit:
                 new NamedImportReference(Address.Ptr32(0x2000), "foo.dll", "bar"));
             mr.ReplayAll();
 
-            var proc = scan.ScanProcedure(Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState(program.SegmentMap));
+            var proc = scan.ScanProcedure(Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState());
 
             Assert.AreEqual("bar", proc.Name);
         }
@@ -610,7 +610,7 @@ fn00001000_exit:
             );
 
             var sc = CreateScanner(program);
-            var proc = sc.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState(program.SegmentMap));
+            var proc = sc.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
             Assert.AreEqual("ndProc", proc.Name);
             Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
             Assert.AreEqual("eax", proc.Signature.ReturnValue.Storage.Name);
@@ -731,7 +731,7 @@ fn00001000_exit:
             scan.ScanProcedure(
                 Address.Ptr32(0x1000),
                 "fn1000",
-                arch.CreateProcessorState(program.SegmentMap));
+                arch.CreateProcessorState());
             var sExp = @"// fn1000
 // Return size: 4
 void fn1000()
@@ -828,7 +828,7 @@ fn00001200_exit:
             var proc = (Procedure) scanner.ScanProcedure(
                 Address.Ptr32(0x1000), 
                 "fnFoo",
-                arch.CreateProcessorState(program.SegmentMap));
+                arch.CreateProcessorState());
 
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
             Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
@@ -848,7 +848,7 @@ fn00001200_exit:
                 new ImageSymbol(Address.Ptr32(0x1000))
                 {
                     Name = "test",
-                    ProcessorState = arch.CreateProcessorState(program.SegmentMap)
+                    ProcessorState = arch.CreateProcessorState()
                 },
                 true);
 
@@ -1025,7 +1025,7 @@ fn00001200_exit:
             var proc = scanner.ScanProcedure(
                 Address.Ptr32(0x00100010),
                 null,
-                fakeArch.CreateProcessorState(program.SegmentMap));
+                fakeArch.CreateProcessorState());
 
             Assert.AreEqual("foo", proc.Name);
             Assert.AreEqual("Register int32 foo(Stack (ptr char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));

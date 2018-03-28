@@ -85,7 +85,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override ProcessorState CreateProcessorState(SegmentMap map)
+            public override ProcessorState CreateProcessorState()
             {
                 throw new NotImplementedException();
             }

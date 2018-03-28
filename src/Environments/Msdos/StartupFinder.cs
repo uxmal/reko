@@ -54,7 +54,7 @@ namespace Reko.Environments.Msdos
             this.services = services;
             this.program = program;
             this.start = addrStart;
-            this.state = program.Architecture.CreateProcessorState(program.SegmentMap);
+            this.state = program.Architecture.CreateProcessorState();
         }
 
         /// <summary>

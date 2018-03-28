@@ -36,7 +36,7 @@ namespace Reko.Arch.Mips
         private Constant[] iregs;       // integer register values.
         private bool[] valid;       // whether the regs are valid or not.
 
-        public MipsProcessorState(MipsProcessorArchitecture arch, SegmentMap map) : base(map)
+        public MipsProcessorState(MipsProcessorArchitecture arch)
         {
             this.arch = arch;
             this.iregs = new Constant[32];

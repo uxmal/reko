@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            var state = (Avr8State)arch.CreateProcessorState(new SegmentMap(image.BaseAddress));
+            var state = (Avr8State)arch.CreateProcessorState();
             return new Avr8Rewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.FramePointerType), host);
         }
 

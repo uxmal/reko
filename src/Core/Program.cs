@@ -349,7 +349,7 @@ namespace Reko.Core
 
         public ProcessorState CreateProcessorState()
         {
-            return Architecture.CreateProcessorState(this.SegmentMap);
+            return Architecture.CreateProcessorState();
         }
 
         // Mutators /////////////////////////////////////////////////////////////////

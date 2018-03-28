@@ -30,7 +30,7 @@ namespace Reko.Arch.SuperH
     {
         private SuperHArchitecture arch;
 
-        public SuperHState(SuperHArchitecture arch, SegmentMap map) : base(map)
+        public SuperHState(SuperHArchitecture arch)
         {
             this.arch = arch;
         }

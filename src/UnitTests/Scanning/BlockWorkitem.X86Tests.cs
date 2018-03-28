@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Scanning
             scanner.Stub(s => s.Services).Return(sc);
             m(asm);
             lr = asm.GetImage();
-            this.state = arch.CreateProcessorState(lr.SegmentMap);
+            this.state = arch.CreateProcessorState();
             host = new RewriterHost(
                 asm.ImportReferences,
                 new Dictionary<string, FunctionType>

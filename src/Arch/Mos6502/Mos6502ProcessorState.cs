@@ -36,7 +36,7 @@ namespace Reko.Arch.Mos6502
         private bool[] valid;
         private Address ip;
 
-        public Mos6502ProcessorState(Mos6502ProcessorArchitecture arch, SegmentMap map) : base(map)
+        public Mos6502ProcessorState(Mos6502ProcessorArchitecture arch)
         {
             this.arch = arch;
             this.regs = new byte[4];

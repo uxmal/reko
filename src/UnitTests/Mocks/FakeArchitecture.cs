@@ -265,9 +265,9 @@ namespace Reko.UnitTests.Mocks
             return new Frame(FramePointerType);
         }
 
-		public ProcessorState CreateProcessorState(SegmentMap map)
+		public ProcessorState CreateProcessorState()
 		{
-			return new FakeProcessorState(this, map);
+			return new FakeProcessorState(this);
 		}
 
 		public string GrfToString(uint grf)
@@ -375,7 +375,7 @@ namespace Reko.UnitTests.Mocks
         private Dictionary<RegisterStorage, Constant> regValues;
         private SortedList<int, Constant> stackValues;
 
-        public FakeProcessorState(IProcessorArchitecture arch, SegmentMap map) : base(map)
+        public FakeProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.regValues = new Dictionary<RegisterStorage, Constant>();

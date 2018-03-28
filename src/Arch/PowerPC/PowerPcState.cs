@@ -35,7 +35,7 @@ namespace Reko.Arch.PowerPC
         private ulong[] regs;
         private ulong[] valid;
 
-        public PowerPcState(PowerPcArchitecture arch, SegmentMap map) : base(map)
+        public PowerPcState(PowerPcArchitecture arch)
         {
             this.arch = arch;
             this.regs = new ulong[0x80];

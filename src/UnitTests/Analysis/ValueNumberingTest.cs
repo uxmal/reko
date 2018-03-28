@@ -31,6 +31,8 @@ namespace Reko.UnitTests.Analysis
 	//[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
 	public class ValueNumberingTests : AnalysisTestBase
 	{
+        private SegmentMap segmentMap = new SegmentMap(Address.Ptr32(0));
+
 		//[Test]
 		public void VnSumTest()
 		{
@@ -60,7 +62,7 @@ namespace Reko.UnitTests.Analysis
                     gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				DumpProc(proc, ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -94,7 +96,7 @@ namespace Reko.UnitTests.Analysis
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				DumpProc(proc, ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -135,7 +137,7 @@ done:
 
 				DumpProc(proc, ssa, fut.TextWriter);
 
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -168,7 +170,7 @@ done:
                     new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -202,7 +204,7 @@ looptest:
                     new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -239,7 +241,7 @@ looptest:
                     new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, writer);
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(writer);
 				writer.WriteLine();
 			}

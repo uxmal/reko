@@ -35,7 +35,7 @@ namespace Reko.Arch.i8051
         private i8051Architecture arch;
         private Dictionary<RegisterStorage, Constant> regValues;
 
-        public i8051State(i8051Architecture arch, SegmentMap map) : base(map)
+        public i8051State(i8051Architecture arch)
         {
             this.arch = arch;
             this.regValues = new Dictionary<RegisterStorage, Constant>();

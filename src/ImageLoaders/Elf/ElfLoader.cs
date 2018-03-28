@@ -240,7 +240,7 @@ namespace Reko.ImageLoaders.Elf
                 Name = sym.Name,
                 Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
                 DataType = dt,
-                ProcessorState = Architecture.CreateProcessorState(segmentMap)
+                ProcessorState = Architecture.CreateProcessorState()
             };
         }
 
@@ -464,7 +464,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 ep = new ImageSymbol(addr)
                 {
-                    ProcessorState = Architecture.CreateProcessorState(segmentMap)
+                    ProcessorState = Architecture.CreateProcessorState()
                 };
             }
             entryPoints.Add(ep);

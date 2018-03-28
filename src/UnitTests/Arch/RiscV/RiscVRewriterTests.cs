@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.RiscV
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             var segMap = new SegmentMap(baseAddr, new ImageSegment("code", image, AccessMode.ReadExecute));
-            var state = (RiscVState)arch.CreateProcessorState(segMap);
+            var state = (RiscVState)arch.CreateProcessorState();
             return new RiscVRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 

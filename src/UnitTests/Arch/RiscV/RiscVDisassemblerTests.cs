@@ -53,7 +53,6 @@ namespace Reko.UnitTests.Arch.RiscV
 
         private void AssertCode(string sExp, uint uInstr)
         {
-            DumpWord(uInstr);
             var i = DisassembleWord(uInstr);
             Assert.AreEqual(sExp, i.ToString());
         }

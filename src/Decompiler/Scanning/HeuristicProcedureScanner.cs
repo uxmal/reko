@@ -401,7 +401,7 @@ namespace Reko.Scanning
         {
             var rw = program.Architecture.CreateRewriter(
                 program.CreateImageReader(addr),
-                program.Architecture.CreateProcessorState(program.SegmentMap),
+                program.Architecture.CreateProcessorState(),
                 program.Architecture.CreateFrame(),
                 host);
             return new RobustRewriter(rw, program.Architecture.InstructionBitSize / 8);

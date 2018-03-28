@@ -223,7 +223,7 @@ namespace Reko.CmdLine
 
         private ProcessorState CreateInitialState(IProcessorArchitecture arch, SegmentMap map, Dictionary<string, object> args)
         {
-            var state = arch.CreateProcessorState(map);
+            var state = arch.CreateProcessorState();
             if (!args.ContainsKey("--reg"))
                 return state;
             var regs = (List<string>)args["--reg"];

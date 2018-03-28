@@ -49,7 +49,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="map">Segment map with descriptions of segments</param>
         /// <returns></returns>
-		ProcessorState CreateProcessorState(SegmentMap map);
+		ProcessorState CreateProcessorState();
 
         /// <summary>
         /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
@@ -248,7 +248,7 @@ namespace Reko.Core
         public abstract ImageWriter CreateImageWriter();
         public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
-        public abstract ProcessorState CreateProcessorState(SegmentMap map);
+        public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
         public abstract Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);

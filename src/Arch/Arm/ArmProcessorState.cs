@@ -36,7 +36,7 @@ namespace Reko.Arch.Arm
         private Dictionary<int, ulong> regData;
         private RegisterStorage pc;
 
-        public ArmProcessorState(IProcessorArchitecture arch, SegmentMap map) : base(map)
+        public ArmProcessorState(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.regData = new Dictionary<int, ulong>();

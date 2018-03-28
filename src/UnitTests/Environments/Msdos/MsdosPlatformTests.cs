@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Environments.Msdos
             mr.ReplayAll();
             Given_MsdosPlatform();
 
-            var state = arch.CreateProcessorState(new SegmentMap(Address.SegPtr(0x800,0)));
+            var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ah, Constant.Byte(0x3E));
             SystemService svc = platform.FindService(0x21, state);
             Assert.AreEqual("msdos_close_file", svc.Name);

@@ -74,6 +74,7 @@ namespace Reko.Scanning
             this.arch = program.Architecture;   // cached since it's used heavily.
             this.state = state;
             this.eval = new ExpressionSimplifier(
+                program.SegmentMap,
                 state,
                 scanner.Services.RequireService<DecompilerEventListener>());
             this.addrStart = addr;
@@ -126,8 +127,6 @@ namespace Reko.Scanning
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
-            if (ric.Address.ToLinear() == 0x30C)        //$DEBUG
-                ric.Address.ToString();
             state.SetInstructionPointer(ric.Address);
             SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)

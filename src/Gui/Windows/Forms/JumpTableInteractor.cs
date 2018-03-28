@@ -63,7 +63,7 @@ namespace Reko.Gui.Windows.Forms
             if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addrTable))
             {
                 var stride = TableStride();
-                var state = dlg.Program.Architecture.CreateProcessorState(dlg.Program.SegmentMap);
+                var state = dlg.Program.Architecture.CreateProcessorState();
                 state.SetInstructionPointer(dlg.Instruction.Address);
                 addresses = vectorBuilder.BuildTable(addrTable, stride * (int)dlg.EntryCount.Value, null, stride, state);
             }

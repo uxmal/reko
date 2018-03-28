@@ -111,7 +111,7 @@ namespace Reko.ImageLoaders.MzExe
             var sym = new ImageSymbol(Address.SegPtr((ushort)(lzCs + addrLoad.Selector), lzIp))
             {
                 Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState(program.SegmentMap)
+                ProcessorState = arch.CreateProcessorState()
             };
             var imageSymbols = new SortedList<Address, ImageSymbol> { { sym.Address, sym } };
             List<ImageSymbol> entryPoints = new List<ImageSymbol>() { sym };

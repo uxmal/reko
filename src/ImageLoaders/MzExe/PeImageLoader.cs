@@ -169,7 +169,7 @@ namespace Reko.ImageLoaders.MzExe
             return new ImageSymbol(addrLoad + rvaAddr)
             {
                 Name = name,
-                ProcessorState = arch.CreateProcessorState(SegmentMap),
+                ProcessorState = arch.CreateProcessorState(),
                 Type = SymbolType.Procedure,
             };
         }
@@ -578,7 +578,7 @@ namespace Reko.ImageLoaders.MzExe
             return new ImageSymbol(addrEp)
             {
                 Name = name,
-                ProcessorState = arch.CreateProcessorState(SegmentMap),
+                ProcessorState = arch.CreateProcessorState(),
                 Signature = ssig,
                 Type = SymbolType.Procedure
             };
@@ -1088,13 +1088,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
         {
-            ImageSymbol symOld;
             ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
             {
                 Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState(SegmentMap)
+                ProcessorState = arch.CreateProcessorState()
             };
-            if (!symbols.TryGetValue(addr, out symOld))
+            if (!symbols.TryGetValue(addr, out var symOld))
             {
                 symbols.Add(addr, symNew);
             }

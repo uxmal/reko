@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             this.map = new SegmentMap(Address.Ptr32(0x00123400)); 
-            var state = new X86State(arch, map);
+            var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
             state.OnProcedureEntered();
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var arch = new X86ArchitectureReal("x86-real-16");
 
-            X86State st = new X86State(arch, new SegmentMap(Address.SegPtr(0x0800, 0x0000)));
+            X86State st = new X86State(arch);
             st.SetRegister(Registers.cs, Constant.Word16(0xC00));
             st.SetRegister(Registers.ax, Constant.Word16(0x1234));
             Assert.IsTrue(!st.GetRegister(Registers.bx).IsValid);
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_SetAhRegisterFileValue()
         {
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.ah, Constant.Byte(0x3A));
             Assert.IsFalse(state.IsValid(Registers.ax));
             Assert.IsTrue(state.IsValid(Registers.ah));
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_SetAhThenAl()
         {
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.ah, Constant.Byte(0x12));
             state.SetRegister(Registers.al, Constant.Byte(0x34));
             Assert.IsTrue(state.IsValid(Registers.ax));
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_SetBp()
         {
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.bp, Constant.Word16(0x1234));
             Assert.IsFalse(state.IsValid(Registers.ebp));
             Assert.IsTrue(state.IsValid(Registers.bp));
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_SetCx()
         {
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.cx, Constant.Word16(0x1234));
             Assert.AreEqual(0x1234, (int)state.GetRegister(Registers.cx).ToUInt16());
             Assert.AreEqual(0x34, (int)state.GetRegister(Registers.cl).ToByte());
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_SetEsi()
         {
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.esi, Constant.Word32(0x12345678));
             Assert.AreEqual(0x12345678, (long)state.GetRegister(Registers.esi).ToUInt64());
             Assert.AreEqual(0x5678, (int)state.GetRegister(Registers.si).ToUInt32());
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_SetEdx()
         {
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.edx, Constant.Word32(0x12345678));
             Assert.AreEqual(0x12345678, (long)state.GetRegister(Registers.edx).ToUInt64());
             Assert.AreEqual(0x5678, (int)state.GetRegister(Registers.dx).ToUInt32());
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Arch.Intel
             var ctx = new Dictionary<Storage, Expression> {
                 { Registers.cl, Constant.Byte(0) }
             };
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.cx, Constant.Invalid);
             Assert.IsFalse(state.IsValid(Registers.cx));
             Assert.IsFalse(state.IsValid(Registers.cl));
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Arch.Intel
             var ctx = new Dictionary<Storage, Expression> {
                 { Registers.dl, Constant.Byte(3) }
             };
-            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"), new SegmentMap(Address.Ptr64(0x4000000)));
+            var state = new X86State(new X86ArchitectureFlat64("x86-protected-64"));
             state.SetRegister(Registers.dh, Constant.Invalid);
             Assert.IsFalse(state.IsValid(Registers.dh));
             Assert.IsFalse(state.IsValid(Registers.dx));

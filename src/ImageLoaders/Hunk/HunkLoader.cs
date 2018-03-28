@@ -631,7 +631,7 @@ print arg_mem
             var sym = new ImageSymbol(addrLoad)
             {
                 Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState(program.SegmentMap)
+                ProcessorState = arch.CreateProcessorState()
             };
 
             var entries = new List<ImageSymbol>

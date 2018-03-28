@@ -353,7 +353,8 @@ namespace Reko.UnitTests.Analysis
 
 			DeadCode.Eliminate(proc, ssa);
 
-			var vp = new ValuePropagator(arch, ssa, listener);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
+			var vp = new ValuePropagator(arch, segmentMap, ssa, listener);
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

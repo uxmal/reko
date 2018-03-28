@@ -158,11 +158,10 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this, map);
+            return new ArmProcessorState(this);
         }
-
  
 
         public override SortedList<string, int> GetOpcodeNames()

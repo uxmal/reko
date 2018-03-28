@@ -46,7 +46,7 @@ namespace Reko.Arch.X86
 
         private const int StackItemSize = 2;
 
-		public X86State(IntelArchitecture arch, SegmentMap map) : base(map)
+		public X86State(IntelArchitecture arch)
 		{
             this.arch = arch;
 			this.regs = new ulong[(int)Registers.Max];

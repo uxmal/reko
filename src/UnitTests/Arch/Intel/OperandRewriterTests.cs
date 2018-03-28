@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Arch.Intel
                 Address = procAddress,
             };
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			state = (X86State) arch.CreateProcessorState(program.SegmentMap);
+			state = (X86State) arch.CreateProcessorState();
 			orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
 		}
 

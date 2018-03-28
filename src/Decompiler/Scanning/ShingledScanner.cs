@@ -365,7 +365,7 @@ namespace Reko.Scanning
             var arch = program.Architecture;
             var rw = arch.CreateRewriter(
                 program.CreateImageReader(addr), 
-                arch.CreateProcessorState(program.SegmentMap),
+                arch.CreateProcessorState(),
                 storageBinder,
                 this.host);
             return rw.GetEnumerator();
@@ -502,8 +502,7 @@ namespace Reko.Scanning
             foreach (var edge in icb.Edges)
             {
                 var from = edge.Item1;
-                RtlBlock to;
-                if (!icb.AddrToBlock.TryGetValue(edge.Item2, out to))
+                if (!icb.AddrToBlock.TryGetValue(edge.Item2, out var to))
                 {
                     continue;
                 }

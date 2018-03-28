@@ -106,9 +106,9 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new VaxProcessorState(this, map);
+            return new VaxProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -140,8 +140,7 @@ namespace Reko.Arch.Vax
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, out result))
+            if (!Enum.TryParse(name, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -200,8 +199,7 @@ namespace Reko.Arch.Vax
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            uint uAddr;
-            if (!uint.TryParse(txtAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uAddr))
+            if (!uint.TryParse(txtAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint uAddr))
             {
                 addr = null;
                 return false;

@@ -31,7 +31,7 @@ namespace Reko.Arch.Avr
         private Avr8Architecture arch;
         private Address ip;
 
-        public Avr8State(Avr8Architecture arch, SegmentMap map) : base(map)
+        public Avr8State(Avr8Architecture arch)
         {
             this.arch = arch;
         }

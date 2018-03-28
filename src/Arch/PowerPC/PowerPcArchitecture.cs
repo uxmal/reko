@@ -204,9 +204,9 @@ namespace Reko.Arch.PowerPC
             return host.GetInterceptedCall(addr);
         }
 
-        public override ProcessorState CreateProcessorState(SegmentMap map)
+        public override ProcessorState CreateProcessorState()
         {
-            return new PowerPcState(this, map);
+            return new PowerPcState(this);
         }
 
         public override SortedList<string, int> GetOpcodeNames()

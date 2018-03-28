@@ -55,8 +55,7 @@ namespace Reko.UnitTests.Arch.Vax
         [SetUp]
         public void Setup()
         {
-            var map = new SegmentMap(baseAddr);
-            state = (VaxProcessorState)arch.CreateProcessorState(map);
+            state = (VaxProcessorState)arch.CreateProcessorState();
         }
 
         private void BuildTest(params byte[] bytes)
