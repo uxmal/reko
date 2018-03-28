@@ -657,6 +657,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\WebAssembly\WebAssembly.csproj">
+      <Name>WebAssembly</Name>
+      <Project>{5b8c1889-5de4-43c0-9bd6-34ddcf0e2136}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\XexLoader\Xex.csproj">
       <Name>Xex</Name>
       <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>

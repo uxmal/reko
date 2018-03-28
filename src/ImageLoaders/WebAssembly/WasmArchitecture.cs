@@ -38,11 +38,12 @@ namespace Reko.ImageLoaders.WebAssembly
             this.PointerType = PrimitiveType.Ptr32;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.StackRegister = new RegisterStorage("sp", 0, 0, PointerType);
+            this.InstructionBitSize = 8;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            throw new NotImplementedException();
+            return new WasmDisassembler(imageReader);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
@@ -151,6 +152,11 @@ namespace Reko.ImageLoaders.WebAssembly
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
             throw new NotImplementedException();
         }

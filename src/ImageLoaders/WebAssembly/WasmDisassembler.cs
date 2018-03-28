@@ -35,20 +35,19 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public WasmDisassembler(EndianImageReader rdr)
         {
-            this.rdr = new WasmImageReader(rdr.Bytes);
+            this.rdr = new WasmImageReader(rdr.Image);
             this.rdr.Offset = rdr.Offset;
         }
 
         public override WasmInstruction DisassembleInstruction()
         {
-            byte b;
-            if (!rdr.TryReadByte(out b))
+            var addr = rdr.Address;
+            if (!rdr.TryReadByte(out byte b))
             {
                 return null;
             }
-            string fmt;
             var opcode = (Opcode)b;
-            if (!opRecs.TryGetValue(opcode, out fmt))
+            if (!opRecs.TryGetValue(opcode, out string fmt))
             {
                 opcode = Opcode.unreachable;
                 fmt = "";
@@ -83,7 +82,9 @@ namespace Reko.ImageLoaders.WebAssembly
             }
 
             var instr = new WasmInstruction(opcode);
+            instr.Address = addr;
             instr.Operands = ops.ToArray();
+            instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 

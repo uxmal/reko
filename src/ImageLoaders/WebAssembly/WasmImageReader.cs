@@ -37,6 +37,10 @@ namespace Reko.ImageLoaders.WebAssembly
         {
         }
 
+        public WasmImageReader(MemoryArea mem) : base(mem, 0)
+        {
+        }
+
         public bool TryReadVarUInt32(out uint u)
         {
             u = 0;
@@ -64,9 +68,8 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public bool TryReadVarInt7(out sbyte sb)
         {
-            byte b;
             sb = 0;
-            if (!TryReadByte(out b))
+            if (!TryReadByte(out byte b))
                 return false;
             if ((b & 0x80) != 0)
                 return false;

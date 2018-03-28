@@ -67,9 +67,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         {
             BuildTest(0x41, 0x04);
             base.AssertCode(
-                "0|L--|(0): 3 instructions",
+                "0|L--|00123400(2): 3 instructions",
                 "1|L--|v2 = 0x00000004",
-                "2|L--|sp = sp - 0x00000008",
+                "2|L--|sp = sp - 8",
                 "3|L--|Mem0[sp:word32] = v2");
         }
 
@@ -78,9 +78,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         {
             BuildTest(0x43, 0xC3, 0xF5, 0x48, 0xC0);
             base.AssertCode(
-                "0|L--|(0): 3 instructions",
+                "0|L--|00123400(5): 3 instructions",
                 "1|L--|v2 = -3.14F",
-                "2|L--|sp = sp - 0x00000008",
+                "2|L--|sp = sp - 8",
                 "3|L--|Mem0[sp:real32] = v2");
         }
     }

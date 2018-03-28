@@ -420,6 +420,10 @@
       <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
       <Name>Xex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\WebAssembly\WebAssembly.csproj">
+      <Project>{5b8c1889-5de4-43c0-9bd6-34ddcf0e2136}</Project>
+      <Name>WebAssembly</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj">
       <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
       <Name>Libc</Name>
