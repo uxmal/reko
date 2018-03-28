@@ -193,6 +193,16 @@ void ThumbRewriter::RewriteMvn()
 	m.Assign(dst, m.Comp(RewriteOp(Src1(), BaseType::UInt32)));
 }
 
+void ThumbRewriter::RewriteOrr()
+{
+	auto dst = RewriteOp(Dst());
+	auto src = RewriteOp(Src1());
+	m.Assign(dst, m.Or(dst, src));
+	if (this->instr->detail->arm.update_flags)
+		m.Assign(FlagGroup(FlagM::NF | FlagM::ZF | FlagM::CF, "NZC", BaseType::Byte),
+			m.Cond(dst));
+}
+
 void ThumbRewriter::RewritePop()
 {
 	auto sp = GetReg(ARM_REG_SP);

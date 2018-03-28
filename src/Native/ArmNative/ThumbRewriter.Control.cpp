@@ -51,8 +51,18 @@ void ThumbRewriter::RewriteCbnz(HExpr (*ctor)(INativeRtlEmitter & m, HExpr e))
 
 void ThumbRewriter::RewriteIt()
 {
-	itState = instr->bytes[0] & 0xF;
+	int i;
+	itState = 0;
+	for (i = 1; instr->mnemonic[i]; ++i)
+	{
+		itState = (itState << 1) | (instr->mnemonic[i] == 't');
+	}
+	int sh = 5 - i;
+	itState = ((itState << 1) | 1) << sh;
+
 	itStateCondition = instr->detail->arm.cc;
+	m.Nop();
+	m.FinishCluster(RtlClass::Linear, instr->address, instr->size);
 }
 
 void ThumbRewriter::RewriteTrap()

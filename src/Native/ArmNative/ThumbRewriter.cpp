@@ -87,6 +87,18 @@ start:
 
 	// Most instructions are linear.
 	rtlClass = RtlClass::Linear;
+	if (this->itStateCondition != ARM_CC_AL)
+	{
+		auto rtlc = static_cast<int>(rtlClass) | static_cast<int>(RtlClass::Conditional);
+		rtlClass = static_cast<RtlClass>(rtlc);
+		auto cc = itStateCondition;
+		if (itState & 0x10)
+			cc = Invert(cc);
+		m.BranchInMiddleOfInstruction(
+			TestCond(cc),
+			m.Ptr32(static_cast<uint32_t>(instr->address) + instr->size),
+			RtlClass::ConditionalTransfer);
+	}
 	switch (instr->id)
 	{
 	case ARM_INS_ADD: RewriteBinop([](auto & m, HExpr a, HExpr b) { return m.IAdd(a, b); }); break;
@@ -104,7 +116,7 @@ start:
 	case ARM_INS_CMP: RewriteCmp(); break;
 	case ARM_INS_DMB: RewriteDmb(); break;
 	case ARM_INS_EOR: RewriteEor(); break;
-	case ARM_INS_IT: RewriteIt(); goto start;  // Don't emit anything yet.
+	case ARM_INS_IT: RewriteIt(); return S_OK;
 	case ARM_INS_LDR: RewriteLdr(BaseType::Word32, BaseType::Word32); break;
 	case ARM_INS_LDRB: RewriteLdr(BaseType::UInt32, BaseType::Byte); break;
 	case ARM_INS_LDRSB: RewriteLdr(BaseType::Int32, BaseType::SByte); break;
@@ -117,6 +129,8 @@ start:
 	case ARM_INS_MOVW: RewriteMovw(); break;
 	case ARM_INS_MRC: RewriteMrc(); break;
 	case ARM_INS_MVN: RewriteMvn(); break;
+	case ARM_INS_NOP: m.Nop(); break;
+	case ARM_INS_ORR: RewriteOrr(); break;
 	case ARM_INS_POP: RewritePop(); break;
 	case ARM_INS_PUSH: RewritePush(); break;
 	case ARM_INS_RSB: RewriteRsb(); break;
@@ -132,8 +146,8 @@ start:
 	case ARM_INS_UDF: RewriteUdf(); break;
 	case ARM_INS_UXTH: RewriteUxth(); break;
 	}
-	itState = (itState << 1) & 0x0F;
-	if (itState == 0)
+	itState = (itState << 1);
+	if ((itState & 0x0F) == 0)
 	{
 		itStateCondition = ARM_CC_AL;
 	}
@@ -250,7 +264,7 @@ HExpr ThumbRewriter::TestCond(arm_cc cond)
 	case ARM_CC_MI:
 		return m.Test(ConditionCode::LT, FlagGroup(FlagM::NF, "N", BaseType::Byte));
 	case ARM_CC_PL:
-		return m.Test(ConditionCode::GT, FlagGroup(FlagM::NF | FlagM::ZF, "NZ", BaseType::Byte));
+		return m.Test(ConditionCode::GE, FlagGroup(FlagM::NF, "N", BaseType::Byte));
 	case ARM_CC_NE:
 		return m.Test(ConditionCode::NE, FlagGroup(FlagM::ZF, "Z", BaseType::Byte));
 	case ARM_CC_VS:
@@ -273,23 +287,23 @@ HExpr ThumbRewriter::NZCV()
 // instruction to skip the remainder of the instruction cluster.
 void ThumbRewriter::ConditionalSkip(arm_cc cc, bool force)
 {
-	if (!force)
-	{
-		if (cc == ARM_CC_AL)
-			return; // never skip!
-		if (instr->id == ARM_INS_B ||
-			instr->id == ARM_INS_BL ||
-			instr->id == ARM_INS_BLX ||
-			instr->id == ARM_INS_BX)
-		{
-			// These instructions handle the branching themselves.
-			return;
-		}
-	}
-	m.BranchInMiddleOfInstruction(
-		TestCond(Invert(cc)),
-		m.Ptr32(static_cast<uint32_t>(instr->address) + instr->size),
-		RtlClass::ConditionalTransfer);
+	//if (!force)
+	//{
+	//	if (cc == ARM_CC_AL)
+	//		return; // never skip!
+	//	if (instr->id == ARM_INS_B ||
+	//		instr->id == ARM_INS_BL ||
+	//		instr->id == ARM_INS_BLX ||
+	//		instr->id == ARM_INS_BX)
+	//	{
+	//		// These instructions handle the branching themselves.
+	//		return;
+	//	}
+	//}
+	//m.BranchInMiddleOfInstruction(
+	//	TestCond(Invert(cc)),
+	//	m.Ptr32(static_cast<uint32_t>(instr->address) + instr->size),
+	//	RtlClass::ConditionalTransfer);
 }
 
 arm_cc ThumbRewriter::Invert(arm_cc cc)

@@ -72,6 +72,7 @@ private:
 	void RewriteMovw();
 	void RewriteMrc();
 	void RewriteMvn();
+	void RewriteOrr();
 	void RewritePop();
 	void RewritePush();
 	void RewriteRsb();
