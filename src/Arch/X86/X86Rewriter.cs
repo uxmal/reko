@@ -101,6 +101,7 @@ namespace Reko.Arch.X86
                 case Opcode.addsd:
                 case Opcode.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64); break;
                 case Opcode.addps: RewritePackedBinop("__addps", PrimitiveType.Real32); break;
+                case Opcode.addpd: RewritePackedBinop("__addpd", PrimitiveType.Real64); break;
                 case Opcode.aesimc: RewriteAesimc(); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
@@ -197,6 +198,7 @@ namespace Reko.Arch.X86
                 case Opcode.fmul: EmitCommonFpuInstruction(m.FMul, false, false); break;
                 case Opcode.fmulp: EmitCommonFpuInstruction(m.FMul, false, true); break;
 				case Opcode.fninit: RewriteFninit(); break;
+                case Opcode.fnop: m.Nop(); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.fptan: RewriteFptan(); break;
@@ -344,6 +346,7 @@ namespace Reko.Arch.X86
                 case Opcode.seto: RewriteSet(ConditionCode.OV); break;
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;
                 case Opcode.setz: RewriteSet(ConditionCode.EQ); break;
+                case Opcode.sfence: RewriteSfence(); break;
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
                 case Opcode.shld: RewriteShxd("__shld"); break;
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
@@ -356,6 +359,7 @@ namespace Reko.Arch.X86
                 case Opcode.sub: RewriteAddSub(BinaryOperator.ISub); break;
                 case Opcode.subsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64); break;
                 case Opcode.subss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32); break;
+                case Opcode.subpd: RewritePackedBinop("__subpd", PrimitiveType.Real64); break;
                 case Opcode.subps: RewritePackedBinop("__subps", PrimitiveType.Real32); break;
                 case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;

@@ -23,6 +23,7 @@ r63_7: orig: r63
 eax_8: orig: eax
     def:  eax_8 = Mem3[ecx_6:word32](ecx_6, Mem11[fp:int32])
 ecx_9: orig: ecx
+    def:  ecx_9 = <invalid>
 a_10: orig: a
     def:  a_10 = a
     uses: eax_5 = a_10
@@ -41,6 +42,7 @@ l1:
 	eax_5 = a_10
 	ecx_6 = Mem3[eax_5:word32]
 	eax_8 = Mem3[ecx_6:word32](ecx_6, Mem11[fp:int32])
+	ecx_9 = <invalid>
 	r63_7 = fp + 0x00000004
 	return
 	// succ:  ProcedureBuilder_exit

@@ -1380,5 +1380,86 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = (int32) Mem0[r4 + r29:int16]");
         }
+
+        [Test]
+        public void PPCRw_lq()
+        {
+            AssertCode(0xE0030000,   // lq	r0,0(r3)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0_r1 = Mem0[r3 + 0:word128]");
+        }
+
+        [Test]
+        public void PPCRw_dcbf()
+        {
+            AssertCode(0x7C0018AC,   // dcbf	r0,r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__dcbf(r3)");
+        }
+
+        [Test]
+        public void PPCRw_icbi()
+        {
+            AssertCode(0x7C001FAC,   // icbi	r0,r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__icbi(r3)");
+        }
+
+        [Test]
+        public void PPCRw_dcbi()
+        {
+            AssertCode(0x7C001BAC,   // dcbi	r0,r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__dcbi(r3)");
+        }
+
+        [Test]
+        public void PPCRw_dcbst()
+        {
+            AssertCode(0x7C00186C,   // dcbst\tr0,r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__dcbst(r3)");
+        }
+
+        [Test]
+        public void PPCRw_fabs()
+        {
+            AssertCode(0xFFE0FA10,   // fabs	f31,f31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f31 = fabs(f31)");
+        }
+
+        [Test]
+        public void PPCRw_fmsub()
+        {
+            AssertCode(0xFC016038,   // fmsub	f0,f1,f0,f12
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f1 * f0 - f12");
+        }
+
+        [Test]
+        public void PPCRw_lfdx()
+        {
+            AssertCode(0x7C0904AE,   // lfdx	f0,r9,r0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = Mem0[r9 + r0:real64]");
+        }
+
+        [Test]
+        public void PPCRw_lhbrx()
+        {
+            AssertCode(0x7C0B4E2C,   // lhbrx	r0,r11,r9
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v5 = Mem0[r11 + r9:word16]",
+                "2|L--|r0 = (word32) __swap16(v5)");
+        }
+
+        [Test]
+        public void PPCRw_stfsx()
+        {
+            AssertCode(0x7DABF52E,   // stfsx	f13,r11,r30
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r11 + r30:real32] = (real32) f13");
+        }
     }
 }

@@ -74,9 +74,12 @@ namespace Reko.Environments.Windows
             {
             case "":
             case "__cdecl":
+            case "cdecl":
                 return new X86CallingConvention(4, 2, 4, true, false);
             case "pascal":
                 return new X86CallingConvention(4, 2, 4, false, true);
+            case "stdcall":
+                return new X86CallingConvention(4, 4, 4, false, false);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }

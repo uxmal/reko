@@ -69,7 +69,6 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        [Ignore("Please make this pass")]
         public void ImrReadOffTheEnd()
         {
             var rdr = new ImageReader(new byte[] { 1, 2, 3, 4 });
@@ -80,7 +79,6 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void ImrReadIntoMiddleOfBuffer()
         {
             var rdr = new ImageReader(new byte[] { 1, 2, 3, 4 });

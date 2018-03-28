@@ -161,7 +161,10 @@ namespace Reko.UnitTests.Mocks
 			BuildCallgraph();
             if (Program.SegmentMap == null)
                 Program.SegmentMap = new SegmentMap(Address.Ptr16(0x1000));
-            Program.SegmentMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, (uint) Program.Procedures.Count * 0x1000);
+            Program.SegmentMap.AddSegment(
+                new MemoryArea(Address.Ptr32(0x1000), new byte[Program.Procedures.Count * 0x1000]),
+                ".text", AccessMode.Execute);
+                
             Program.Platform = new DefaultPlatform(null, arch);
 			return Program;
 		}

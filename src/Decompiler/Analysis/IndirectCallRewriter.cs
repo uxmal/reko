@@ -120,6 +120,7 @@ namespace Reko.Analysis
                  proc.Frame, call.CallSite, call.Callee);
             stm.Instruction = ab.CreateInstruction(ft, null);
             ssaIdTransformer.Transform(stm, call);
+            DefineUninitializedIdentifiers(stm, call);
             changed = true;
         }
 
@@ -155,6 +156,30 @@ namespace Reko.Analysis
             defSid.DefStatement = adjustRegStm;
             call.Definitions.Remove(defRegBinding);
             Use(adjustRegStm, src);
+        }
+
+        private void DefineUninitializedIdentifiers(
+            Statement stm,
+            CallInstruction call)
+        {
+            var trashedSids = call.Definitions.Select(d => (Identifier) d.Expression)
+                .Select(id => ssa.Identifiers[id])
+                .Where(sid => sid.DefStatement == null);
+            foreach (var sid in trashedSids)
+            {
+                DefineUninitializedIdentifier(stm, sid);
+            }
+        }
+
+        private void DefineUninitializedIdentifier(
+            Statement stm,
+            SsaIdentifier sid)
+        {
+            var value = Constant.Invalid;
+            var ass = new Assignment(sid.Identifier, value);
+            var newStm = InsertStatement(stm, ass);
+            sid.DefExpression = value;
+            sid.DefStatement = newStm;
         }
 
         private Expression AddConstant(Expression e, int cSize, int cValue)

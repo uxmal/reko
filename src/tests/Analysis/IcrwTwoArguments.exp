@@ -29,7 +29,9 @@ Mem10: orig: Mem0
 r63_11: orig: r63
     def:  r63_11 = fp - 0x00000008 + 0x00000008
 eax_12: orig: eax
+    def:  eax_12 = <invalid>
 ecx_13: orig: ecx
+    def:  ecx_13 = <invalid>
 a_14: orig: a
     def:  a_14 = a
     uses: eax_5 = a_14
@@ -58,6 +60,8 @@ l1:
 	r63_9 = fp - 0x00000008
 	dwLoc08_16 = 0x0000000A
 	Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
+	ecx_13 = <invalid>
+	eax_12 = <invalid>
 	r63_11 = fp - 0x00000008 + 0x00000008
 	return
 	// succ:  ProcedureBuilder_exit

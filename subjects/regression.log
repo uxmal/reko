@@ -134,29 +134,18 @@ fn092A: error: An error occurred during data flow analysis.
 00008025: warning: Call target address FFC08371 is invalid.
 00008031: error: Rewriting ARM opcode 'cdp2' is not supported yet.
 0000016D: warning: Call target address FEC5AB25 is invalid.
-00000431: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
 00000455: error: Rewriting ARM opcode 'rfeia' is not supported yet.
 0000A5C9: warning: Call target address FF656279 is invalid.
 0000A5CD: warning: Call target address 010CB1D5 is invalid.
-0000A5DD: error: Rewriting ARM opcode 'ldchs' is not supported yet.
-0000A5F5: error: Rewriting ARM opcode 'ldcls' is not supported yet.
 0000A631: error: Rewriting ARM opcode 'mrrc' is not supported yet.
 0000A259: warning: Call target address 018E3801 is invalid.
-0000A269: error: Rewriting ARM opcode 'ldclvs' is not supported yet.
-0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A16D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A14D: error: Rewriting ARM opcode 'ldc2l' is not supported yet.
-0000A085: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
 0000A045: warning: Call target address 001B0DF1 is invalid.
 00009E8D: warning: Call target address 0130C965 is invalid.
 00009E91: warning: Call target address 01A12BBD is invalid.
 00009EA5: warning: Call target address 010CAC39 is invalid.
-00009D09: error: Rewriting ARM opcode 'ldcpl' is not supported yet.
 00009CD1: warning: Call target address 0128A605 is invalid.
 00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
 00009C41: error: Rewriting ARM opcode 'mcrrhs' is not supported yet.
-00009C45: error: Rewriting ARM opcode 'ldclpl' is not supported yet.
 00009C0D: warning: Call target address 000EA7C1 is invalid.
 00009BF1: warning: Call target address 000EA7A5 is invalid.
 00009BD5: warning: Call target address 000EA789 is invalid.
@@ -167,7 +156,6 @@ fn092A: error: An error occurred during data flow analysis.
 00009AF5: warning: Call target address 0120AC29 is invalid.
 00009ADD: warning: Call target address 0120AC11 is invalid.
 000099F5: warning: Call target address FFC09C73 is invalid.
-00009901: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
 00009891: error: Rewriting ARM opcode 'ssub8ne' is not supported yet.
 000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 000097CD: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
@@ -183,42 +171,25 @@ fn092A: error: An error occurred during data flow analysis.
 000094F5: error: Rewriting ARM opcode 'mrc2' is not supported yet.
 000094A9: warning: Call target address 00909891 is invalid.
 00009485: warning: Call target address 0090986D is invalid.
-000091D1: error: Rewriting ARM opcode 'ldceq' is not supported yet.
 000091E5: error: Rewriting ARM opcode 'mcrrhi' is not supported yet.
-000091F5: error: Rewriting ARM opcode 'ldceq' is not supported yet.
 00009209: warning: Call target address 010CBD0D is invalid.
-00009211: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
 00009165: warning: Call target address 010CC069 is invalid.
 00009175: warning: Call target address FEFCE1B9 is invalid.
 00009115: warning: Call target address 010CC019 is invalid.
-00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
-00009095: error: Rewriting ARM opcode 'ldcle' is not supported yet.
-000090A1: error: Rewriting ARM opcode 'ldclmi' is not supported yet.
 00008F31: warning: Call target address 01B63C6D is invalid.
 00008F49: warning: Call target address FE3DCF1D is invalid.
 00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00008EF1: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00008F11: warning: Call target address FFE08BDF is invalid.
 00008F21: error: Rewriting ARM opcode 'vcvt.u32.f32' is not supported yet.
-00008E45: error: Rewriting ARM opcode 'stceq' is not supported yet.
 00008D29: warning: Call target address FFE08C05 is invalid.
-00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
-00008D05: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
-00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
-00008CE5: error: Rewriting ARM opcode 'ldcllo' is not supported yet.
-00008C25: error: Rewriting ARM opcode 'ldclls' is not supported yet.
 00008BA9: warning: Call target address FFE088C9 is invalid.
 00008929: warning: Call target address FFE08805 is invalid.
-00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
-00008905: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
 00008811: warning: Call target address 011ACD31 is invalid.
 00008815: warning: Call target address FE7CB135 is invalid.
 00008795: warning: Call target address FFE66B5D is invalid.
 00008679: warning: Call target address 0118987D is invalid.
-000085FD: error: Rewriting ARM opcode 'stceq' is not supported yet.
-000085E5: error: Rewriting ARM opcode 'ldcllt' is not supported yet.
 00008569: warning: Call target address 003C8D31 is invalid.
-00008539: error: Rewriting ARM opcode 'ldclne' is not supported yet.
 0000837D: warning: Call target address FFE47745 is invalid.
 00008381: warning: Call target address 01B03135 is invalid.
 0000830D: warning: Call target address 01A0B9E5 is invalid.
@@ -238,40 +209,25 @@ fn092A: error: An error occurred during data flow analysis.
 000081BD: warning: Call target address 0030B589 is invalid.
 00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
 00008001: error: Rewriting ARM opcode 'cdp2' is not supported yet.
-000019D9: error: Rewriting ARM opcode 'ldclgt' is not supported yet.
 00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00001891: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-0000189D: error: Rewriting ARM opcode 'ldcleq' is not supported yet.
-000018A9: error: Rewriting ARM opcode 'stceq' is not supported yet.
 00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00001875: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
-00001879: error: Rewriting ARM opcode 'ldclvc' is not supported yet.
 0000188D: error: Rewriting ARM opcode 'rfeia' is not supported yet.
-0000155D: error: Rewriting ARM opcode 'stc2l' is not supported yet.
 000013B1: warning: Call target address FED1D4E5 is invalid.
 000013B9: warning: Call target address 000A1391 is invalid.
 000013C1: warning: Call target address 010A1389 is invalid.
-000012F9: error: Rewriting ARM opcode 'stceq' is not supported yet.
 000012D5: warning: Call target address 01A17C09 is invalid.
 000012D9: warning: Call target address 01A179A5 is invalid.
 000012DD: warning: Call target address 00C81899 is invalid.
 0000115D: warning: Call target address FFC02E7D is invalid.
 00001121: warning: Call target address 01A17655 is invalid.
-000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-000010D9: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-00000F65: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-00000E75: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 00000E89: warning: Call target address 00AC1031 is invalid.
-00000EA1: error: Rewriting ARM opcode 'ldclmi' is not supported yet.
 00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
 00000D6D: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
-00000D71: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 00000BF1: warning: Call target address 01A19079 is invalid.
 00000B21: warning: Call target address FE3D4AF5 is invalid.
-00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
-00000A0D: error: Rewriting ARM opcode 'ldclhi' is not supported yet.
 000009FD: warning: Call target address 012C128D is invalid.
-000008CD: error: Rewriting ARM opcode 'ldclhs' is not supported yet.
 00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00000701: error: Rewriting ARM opcode 'mcrreq' is not supported yet.
 00000619: warning: Call target address 0183930D is invalid.
@@ -282,7 +238,6 @@ fn092A: error: An error occurred during data flow analysis.
 00000129: warning: Call target address FFC02AD1 is invalid.
 0000A4B8: error: Rewriting ARM opcode 'mcrrlo' is not supported yet.
 0000A4EC: error: Rewriting ARM opcode 'usateq' is not supported yet.
-0000A544: error: Rewriting ARM opcode 'stcge' is not supported yet.
 000094FD: error: An error occurred while processing instruction at address 000094FD.
     Expected stack depth to be known.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 159
@@ -334,13 +289,7 @@ MPU_xTaskCreate: error: An error occurred while rewriting procedure to high-leve
    at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
    at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
    at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 479
-GPIOPadConfigSet: error: An error occurred while rewriting procedure to high-level language.
-    Index was outside the bounds of the array.
-       at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 353
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
-   at Reko.Structure.StructureAnalysis.Execute() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 148
-   at Reko.Structure.StructureAnalysis.Structure() in C:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 479
+GPIOPadConfigSet: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 GPIOPinTypeQEI: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 IntMasterDisable: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 SysCtlPeripheralDisable: error: An error occurred while rewriting procedure to high-level language.
@@ -836,7 +785,7 @@ Parameter name: bitOffset
 : error: Error when reconstructing types.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 162
+       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 184
    at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
@@ -1706,6 +1655,7 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in C:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 === PE\x86\ExeDll\Executable.exe
+=== PE\x86\IncorrectUserSignature\IncorrectUserSignature.dcproject
 === PE\x86\RussianText\RussianText.exe
 === PE\x86\VCExeSample\VCExeSample.dcproject
 === PE\x86\demo_upx\Demo.exe
@@ -2658,7 +2608,7 @@ fn1483_1BB9: error: An error occurred during data flow analysis.
 : error: Error when reconstructing types.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 162
+       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in C:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 184
    at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 81
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
@@ -2675,4 +2625,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 50 binaries in 53.75 seconds ---
+Decompiled 51 binaries in 38.40 seconds ---

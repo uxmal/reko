@@ -397,6 +397,27 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        public void Icrw_TrashedIdentifier()
+        {
+            var fn = m.Reg32("fn");
+            var ret = m.Reg32("ret");
+            var trash = m.Reg32("trash");
+            fn.DataType = FnPtr32(ret);
+            var uses = new Identifier[] { };
+            var defines = new Identifier[] { ret, trash };
+            m.Call(fn, 4, uses, defines);
+
+            RunIndirectCallRewriter();
+
+            var expected =
+@"
+ret = fn()
+trash = <invalid>
+";
+            AssertProcedureCode(expected);
+        }
+
+        [Test]
         public void Icrw_TypeReferenceToFunc()
         {
             var a = m.Reg32("a");

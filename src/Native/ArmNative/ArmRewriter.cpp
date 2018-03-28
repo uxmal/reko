@@ -115,10 +115,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_LDAEXD:
 	case ARM_INS_LDAEXH:
 	case ARM_INS_LDAH:
-	case ARM_INS_LDC2L:
-	case ARM_INS_LDC2:
-	case ARM_INS_LDCL:
-	case ARM_INS_LDC:
 	case ARM_INS_LDREX:
 	case ARM_INS_LDREXB:
 	case ARM_INS_LDREXD:
@@ -197,9 +193,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SSAX:
 	case ARM_INS_SSUB16:
 	case ARM_INS_SSUB8:
-	case ARM_INS_STC2L:
-	case ARM_INS_STC2:
-	case ARM_INS_STC:
 	case ARM_INS_STL:
 	case ARM_INS_STLB:
 	case ARM_INS_STLEX:
@@ -398,6 +391,10 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_CMP: RewriteCmp(); break;
 	case ARM_INS_CPS: RewriteCps(); break;
 	case ARM_INS_DMB: RewriteDmb(); break;
+	case ARM_INS_LDC2L: RewriteLdc("__ldc2l"); break;
+	case ARM_INS_LDC2: RewriteLdc("__ldc2"); break;
+	case ARM_INS_LDCL: RewriteLdc("__ldcl"); break;
+	case ARM_INS_LDC: RewriteLdc("__ldc"); break;
 	case ARM_INS_LDR: RewriteLdr(BaseType::Word32); break;
 	case ARM_INS_LDRT: RewriteLdr(BaseType::Word32); break;
 	case ARM_INS_LDRB: RewriteLdr(BaseType::Byte); break;
@@ -455,7 +452,10 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &INativeRtlEmitter::SMul); break;
-	case ARM_INS_STCL: RewriteStcl(); break;
+	case ARM_INS_STC2L: RewriteStc("__stc2l"); break;
+	case ARM_INS_STC2: RewriteStc("__stc2"); break;
+	case ARM_INS_STC: RewriteStc("__stc"); break;
+	case ARM_INS_STCL: RewriteStc("__stcl"); break;
 	case ARM_INS_STM: RewriteStm(0, true); break;
 	case ARM_INS_STMDB: RewriteStm(-4, false); break;
 	case ARM_INS_STMDA: RewriteStm(0, false); break;
@@ -692,8 +692,9 @@ HExpr ArmRewriter::Operand(const cs_arm_op & op)
 	case ARM_OP_IMM:
 		return m.Word32(op.imm);
 	case ARM_OP_CIMM:
-	case ARM_OP_PIMM:
 		return m.Byte((uint8_t)op.imm);
+	case ARM_OP_PIMM:
+		return host->EnsureRegister(2, op.imm);
 	case ARM_OP_MEM:
 	{
 		auto baseReg = Reg(op.mem.base);
@@ -741,6 +742,10 @@ BaseType ArmRewriter::SizeFromLoadStore()
 {
 	switch (instr->id)
 	{
+	case ARM_INS_LDC: return BaseType::Word32;
+	case ARM_INS_LDC2: return BaseType::Word32;
+	case ARM_INS_LDC2L: return BaseType::Word32;
+	case ARM_INS_LDCL: return BaseType::Word32;
 	case ARM_INS_LDR: return BaseType::Word32;
 	case ARM_INS_LDRT: return BaseType::Word32;
 	case ARM_INS_LDRB: return BaseType::Byte;
@@ -752,6 +757,10 @@ BaseType ArmRewriter::SizeFromLoadStore()
 	case ARM_INS_LDRSBT: return BaseType::SByte;
 	case ARM_INS_LDRSH: return BaseType::Int16;
 	case ARM_INS_LDRSHT: return BaseType::Int16;
+	case ARM_INS_STC: return BaseType::Word32;
+	case ARM_INS_STC2: return BaseType::Word32;
+	case ARM_INS_STC2L: return BaseType::Word32;
+	case ARM_INS_STCL: return BaseType::Word32;
 	case ARM_INS_STR: return BaseType::Word32;
 	case ARM_INS_STRT: return BaseType::Word32;
 	case ARM_INS_STRB: return BaseType::Byte;

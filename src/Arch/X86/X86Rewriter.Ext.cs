@@ -78,5 +78,10 @@ namespace Reko.Arch.X86
         {
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(instrCur.op1)));
         }
+
+        public void RewriteSfence()
+        {
+            m.SideEffect(host.PseudoProcedure("__sfence", VoidType.Instance));
+        }
     }
 }

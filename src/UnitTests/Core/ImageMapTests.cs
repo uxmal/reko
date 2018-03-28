@@ -195,12 +195,12 @@ namespace Reko.UnitTests.Core
             var mem = new MemoryArea(addrBase, new byte[0x0100]);
             var segmentMap = new SegmentMap(addrBase,
                 new ImageSegment("", mem, AccessMode.ReadWriteExecute));
-            var codeAddr = addrBase;
-            var dataAddr = addrBase + 0x1000;
-            var textAddr = addrBase + 0x2000;
-            segmentMap.AddSegment(codeAddr, "code", AccessMode.ReadWrite, 0x100);
-            segmentMap.AddSegment(dataAddr, "data", AccessMode.ReadWrite, 0x4);
-            segmentMap.AddSegment(textAddr, "text", AccessMode.ReadWrite, 0x100);
+            var codeMem = mem;
+            var dataMem = new MemoryArea(addrBase + 0x1000, new byte[0x0004]);
+            var textMem = new MemoryArea(addrBase + 0x2000, new byte[0x0100]);
+            segmentMap.AddSegment(codeMem, "code", AccessMode.ReadWrite);
+            segmentMap.AddSegment(dataMem, "data", AccessMode.ReadWrite);
+            segmentMap.AddSegment(textMem, "text", AccessMode.ReadWrite);
 
             var map = segmentMap.CreateImageMap();
 
@@ -212,17 +212,17 @@ namespace Reko.UnitTests.Core
             CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
             CheckImageMapSizes(map, 0x100, 0x4, 0x100);
 
-            map.RemoveItem(codeAddr);
+            map.RemoveItem(codeMem.BaseAddress);
             CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>");
             CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
             CheckImageMapSizes(map, 0x100, 0x4, 0x100);
 
-            map.RemoveItem(dataAddr);
+            map.RemoveItem(dataMem.BaseAddress);
             CheckImageMapTypes(map, "<unknown>", "<unknown>", "<unknown>");
             CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
             CheckImageMapSizes(map, 0x100, 0x4, 0x100);
 
-            map.RemoveItem(textAddr);
+            map.RemoveItem(textMem.BaseAddress);
             CheckImageMapTypes(map, "<unknown>", "<unknown>", "<unknown>");
             CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
             CheckImageMapSizes(map, 0x100, 0x4, 0x100);
