@@ -90,6 +90,7 @@ private:
 	void RewriteCmp();
 	void RewriteCps();
 	void RewriteDmb();
+	void RewriteLdc(const char * intrinsic);
 	void RewriteLdm(int offset, BinOpEmitter);
 	void RewriteLdm(HExpr dst, int skip_ops, int offset, BinOpEmitter, bool writeback);
 	void RewriteLdr(BaseType);
@@ -115,7 +116,7 @@ private:
 	void RewriteSbfx();
 	void RewriteSmlal();
 	void RewriteSmlaw(bool highPart);
-	void RewriteStcl();
+	void RewriteStc(const char * name);
 	void RewriteStm(int offset, bool incr);
 	void RewriteStmib();
 	void RewriteStr(BaseType);

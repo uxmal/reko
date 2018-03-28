@@ -29,6 +29,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace Reko.Arch.PowerPC
 {
@@ -42,6 +43,7 @@ namespace Reko.Arch.PowerPC
         private IEnumerator<PowerPcInstruction> dasm;
         private IRewriterHost host;
         private PowerPcInstruction instr;
+        private EndianImageReader rdr;
 
         public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
@@ -57,6 +59,7 @@ namespace Reko.Arch.PowerPC
             //this.state = ppcState;
             this.binder = binder;
             this.host = host;
+            this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
         }
 
@@ -75,6 +78,7 @@ namespace Reko.Arch.PowerPC
                     host.Error(
                         instr.Address, 
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                    EmitUnitTest();
                     goto case Opcode.illegal;
                 case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
                 case Opcode.addi: RewriteAddi(); break;
@@ -137,12 +141,16 @@ namespace Reko.Arch.PowerPC
                 case Opcode.cror: RewriteCror(); break;
                 case Opcode.crnor: RewriteCrnor(); break;
                 case Opcode.crxor: RewriteCrxor(); break;
+                case Opcode.dcbf: RewriteDcbf(); break;
+                case Opcode.dcbi: RewriteDcbi(); break;
+                case Opcode.dcbst: RewriteDcbst(); break;
                 case Opcode.dcbt: RewriteDcbt(); break;
                 case Opcode.divw: RewriteDivw(); break;
                 case Opcode.divwu: RewriteDivwu(); break;
                 case Opcode.extsb: RewriteExts(PrimitiveType.SByte); break;
                 case Opcode.extsh: RewriteExts(PrimitiveType.Int16); break;
                 case Opcode.extsw: RewriteExts(PrimitiveType.Int32); break;
+                case Opcode.fabs: RewriteFabs(); break;
                 case Opcode.fadd: RewriteFadd(); break;
                 case Opcode.fadds: RewriteFadd(); break;
                 case Opcode.fcfid: RewriteFcfid(); break;
@@ -153,6 +161,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.fmr: RewriteFmr(); break;
                 case Opcode.fmadd: RewriteFmadd(); break;
                 case Opcode.fmadds: RewriteFmadd(); break;
+                case Opcode.fmsub: RewriteFmsub(); break;
                 case Opcode.fmsubs: RewriteFmsub(); break;
                 case Opcode.fmul: RewriteFmul(); break;
                 case Opcode.fmuls: RewriteFmul(); break;
@@ -160,6 +169,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.frsp: RewriteFrsp(); break;
                 case Opcode.fsub: RewriteFsub(); break;
                 case Opcode.fsubs: RewriteFsub(); break;
+                case Opcode.icbi: RewriteIcbi(); break;
                 case Opcode.isync: RewriteIsync(); break;
                 case Opcode.lbz: RewriteLz(PrimitiveType.Byte); break;
                 case Opcode.lbzx: RewriteLzx(PrimitiveType.Byte); break;
@@ -169,15 +179,18 @@ namespace Reko.Arch.PowerPC
                 case Opcode.ldu: RewriteLzu(PrimitiveType.Word64); break;
                 case Opcode.lfd: RewriteLfd(); break;
                 case Opcode.lfs: RewriteLfs(); break;
+                case Opcode.lfdx: RewriteLzx(PrimitiveType.Real64); break;
                 case Opcode.lfsx: RewriteLzx(PrimitiveType.Real32); break;
                 case Opcode.lha: RewriteLha(); break;
                 case Opcode.lhax: RewriteLhax(); break;
                 case Opcode.lhau: RewriteLhau(); break;
                 case Opcode.lhaux: RewriteLhaux(); break;
+                case Opcode.lhbrx: RewriteLhbrx(); break;
                 case Opcode.lhz: RewriteLz(PrimitiveType.Word16); break;
                 case Opcode.lhzu: RewriteLzu(PrimitiveType.Word16); break;
                 case Opcode.lhzx: RewriteLzx(PrimitiveType.Word16); break;
                 case Opcode.lmw: RewriteLmw(); break;
+                case Opcode.lq: RewriteLq(); break;
                 case Opcode.lvewx: RewriteLvewx(); break;
                 case Opcode.lvlx: RewriteLvlx(); break;
                 case Opcode.lvsl: RewriteLvsl(); break;
@@ -235,6 +248,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.stfiwx: RewriteStx(PrimitiveType.Int32); break;
                 case Opcode.stfs: RewriteSt(PrimitiveType.Real32); break;
                 case Opcode.sth: RewriteSt(PrimitiveType.Word16); break;
+                case Opcode.stfsx: RewriteStx(PrimitiveType.Real32); break;
                 case Opcode.sthu: RewriteStu(PrimitiveType.Word16); break;
                 case Opcode.sthx: RewriteStx(PrimitiveType.Word16); break;
                 case Opcode.stmw: RewriteStmw(); break;
@@ -295,21 +309,18 @@ namespace Reko.Arch.PowerPC
 
         private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
         {
-            var rOp = op as RegisterOperand;
-            if (rOp != null)
+            if (op is RegisterOperand rOp)
             {
                 if (maybe0 && rOp.Register.Number == 0)
                     return Constant.Zero(rOp.Register.DataType);
                 return binder.EnsureRegister(rOp.Register);
             }
-            var iOp = op as ImmediateOperand;
-            if (iOp != null)
+            if (op is ImmediateOperand iOp)
             {
                 // Sign-extend the bastard.
                 return SignExtend(iOp.Value);
             }
-            var aOp = op as AddressOperand;
-            if (aOp != null)
+            if (op is AddressOperand aOp)
                 return aOp.Address;
 
             throw new NotImplementedException(
@@ -320,6 +331,31 @@ namespace Reko.Arch.PowerPC
         {
             return GetEnumerator();
         }
+
+#if DEBUG
+        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+        
+        private void EmitUnitTest()
+        {
+            if (rdr == null || seen.Contains(dasm.Current.Opcode))
+                return;
+            seen.Add(dasm.Current.Opcode);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var uInstr = r2.ReadUInt32();
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void PPCRw_{0}()", dasm.Current.Opcode);
+            Debug.WriteLine("        {");
+            Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
+            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
+        }
+#else
+        private void EmitUnitTest() { }
+#endif
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
         {
@@ -342,6 +378,16 @@ namespace Reko.Arch.PowerPC
                 var offset = mop.Offset;
                 return emitter.IAdd(reg, offset);
             }
+        }
+
+        private Expression EffectiveAddress_r0(MachineOperand op1, MachineOperand op2)
+        {
+            var e1 = RewriteOperand(op1, true);
+            var e2 = RewriteOperand(op2);
+            if (e1.IsZero)
+                return e2;
+            else
+                return m.IAdd(e1, e2);
         }
 
         private Expression SignExtend(Constant value)

@@ -843,6 +843,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7D6525AE, "stfdx\tf11,r5,r4");
             AssertCode(0x7C3DF52E, "stfsx\tf1,r29,r30");
             AssertCode(0x7DAB4D6E, "stfsux\tf13,r11,r9");
+            AssertCode(0x7C00186C, "dcbst\tr0,r3");
         }
     }
 }

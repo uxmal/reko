@@ -83,7 +83,8 @@ namespace Reko.ImageLoaders.Dol
 	/// <summary>
 	/// Image loader for Nintendo DOL file format.
 	/// </summary>
-	public class DolLoader : ImageLoader {
+	public class DolLoader : ImageLoader
+    {
 		private DolHeader hdr;
 
 		public DolLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw) {
@@ -100,7 +101,7 @@ namespace Reko.ImageLoaders.Dol
 
 		public override Program Load(Address addrLoad) {
 			var cfgSvc = Services.RequireService<IConfigurationService>();
-			var arch = cfgSvc.GetArchitecture("ppc");
+			var arch = cfgSvc.GetArchitecture("ppc-32-be");
 			var platform = new WiiPlatform(Services, arch);
 			return Load(addrLoad, arch, platform);
 		}
@@ -113,36 +114,43 @@ namespace Reko.ImageLoaders.Dol
             this.hdr = new DolHeader(str.Value);
             var segments = new List<ImageSegment>();
 
-			// Create code segments
-			for (uint i = 0, snum = 1; i < 7; i++, snum++) {
-				if (hdr.addressText[i] == Address32.NULL)
-					continue;
+            // Create code segments
+            for (uint i = 0, snum = 1; i < 7; i++, snum++)
+            {
+                if (hdr.addressText[i] == Address32.NULL)
+                    continue;
+                var bytes = new byte[hdr.sizeText[i]];
+                Array.Copy(RawImage, hdr.offsetText[i], bytes, 0, bytes.Length);
+                var mem = new MemoryArea(hdr.addressText[i], bytes); 
+                segments.Add(new ImageSegment(
+                    string.Format("Text{0}", snum),
+                    mem,
+                    AccessMode.ReadExecute));
+            }
 
-				segments.Add(new ImageSegment(
-					string.Format("Text{0}", snum),
-					hdr.addressText[i], hdr.sizeText[i],
-					AccessMode.ReadExecute
-				));
-			}
+            // Create all data segments
+            for (uint i = 0, snum = 1; i < 11; i++, snum++)
+            {
+                if (hdr.addressData[i] == Address32.NULL ||
+                    hdr.sizeData[i] == 0)
+                    continue;
+                var bytes = new byte[hdr.sizeData[i]];
+                Array.Copy(RawImage, hdr.offsetData[i], bytes, 0, bytes.Length);
+                var mem = new MemoryArea(hdr.addressText[i], bytes);
 
-			// Create all data segments
-			for (uint i = 0, snum = 1; i < 11; i++, snum++) {
-				if (hdr.addressData[i] == Address32.NULL)
-					continue;
-				segments.Add(new ImageSegment(
-					string.Format("Data{0}", snum),
-					hdr.addressData[i], hdr.sizeData[i],
-					AccessMode.ReadWrite
-				));
-			}
+                segments.Add(new ImageSegment(
+                    string.Format("Data{0}", snum),
+                    mem,
+                    AccessMode.ReadWrite));
+            }
 
-			if (hdr.addressBSS != Address32.NULL) {
-				segments.Add(new ImageSegment(
-					".bss",
-					hdr.addressBSS, hdr.sizeBSS,
-					AccessMode.ReadWrite
-				));
-			}
+            if (hdr.addressBSS != Address32.NULL)
+            {
+                segments.Add(new ImageSegment(
+                    ".bss",
+                    new MemoryArea(hdr.addressBSS, new byte[hdr.sizeBSS]),
+                    AccessMode.ReadWrite));
+            }
 
 			var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
 

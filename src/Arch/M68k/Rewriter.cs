@@ -180,6 +180,8 @@ VS Overflow Set 1001 V
                 case Opcode.fbugt: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fbult: RewriteFbcc(ConditionCode.LT); break;
                 case Opcode.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
+                case Opcode.fasin: RewriteFasin(); break;
+                case Opcode.fintrz: RewriteFintrz(); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
                 case Opcode.fdiv: RewriteFBinOp((s, d) => m.FDiv(d, s)); break;
                 case Opcode.fmove: RewriteFmove(); break;
@@ -187,6 +189,7 @@ VS Overflow Set 1001 V
                 case Opcode.fmovem: RewriteMovem(i => arch.GetRegister(i+Registers.fp0.Number)); break;
                 case Opcode.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Opcode.fneg: RewriteFUnaryOp(m.Neg); break;
+                case Opcode.fsqrt: RewriteFsqrt(); break;
                 case Opcode.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
                 case Opcode.ftan: RewriteFtan(); break;
                 case Opcode.jmp: RewriteJmp(); break;

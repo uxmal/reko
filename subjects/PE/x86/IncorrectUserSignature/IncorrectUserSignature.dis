@@ -14,7 +14,7 @@ test6_entry:
 
 l00401120:
 	Mem0[Mem0[c:word32] + 0x00000008:word32](c, a, b)
-	Mem48[Mem48[c:word32] + 0x00000004:word32](c, eax_37)
+	Mem48[Mem48[c:word32] + 0x00000004:word32](c, <invalid>)
 	return
 // DataOut:
 // DataOut (flags): 
