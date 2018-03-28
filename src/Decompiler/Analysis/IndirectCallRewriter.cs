@@ -136,10 +136,10 @@ namespace Reko.Analysis
         ///     defs: [other registers]
         /// SP_94 = SP_42 + 2
         /// </remarks>
-        /// <param name="stm"></param>
-        /// <param name="call"></param>
-        /// <param name="register"></param>
-        /// <param name="delta"></param>
+        /// <param name="stm">The Statement containing the CallInstruction.</param>
+        /// <param name="call">The CallInstruction.</param>
+        /// <param name="register">The register whose post-call value is incremented.</param>
+        /// <param name="delta">The amount by which to increment the register.</param>
         private void AdjustRegisterAfterCall(
             Statement stm,
             CallInstruction call,
@@ -172,10 +172,13 @@ namespace Reko.Analysis
 
             // Insert the instruction after the call statement.
             var adjustRegStm = InsertStatement(stm, ass);
+
+            // Remove the bypassed register definition from
+            // the call instructions.
+            call.Definitions.Remove(defRegBinding);
             defSid.DefExpression = src;
             defSid.DefStatement = adjustRegStm;
-            call.Definitions.Remove(defRegBinding);
-            Use(adjustRegStm, src);
+            ssa.AddUses(adjustRegStm);
         }
 
         private void DefineUninitializedIdentifiers(
@@ -216,11 +219,6 @@ namespace Reko.Analysis
             {
                 return m.ISub(e, Constant.Word(cSize, -cValue));
             }
-        }
-
-        private void Use(Statement stm, Expression e)
-        {
-            e.Accept(new InstructionUseAdder(stm, ssa.Identifiers));
         }
 
         private Statement InsertStatement(Statement stm, Instruction instr)
