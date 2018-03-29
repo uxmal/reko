@@ -88,12 +88,13 @@ protected:
 	void RewriteBfc();
 	void RewriteBfi();
 	void RewriteBic();
-	virtual void RewriteBinOp(BinOpEmitter fn, bool updateFlags);
+	void RewriteBinOp(BinOpEmitter fn);
 	void RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b));
 	void RewriteCdp();
 	void RewriteClz();
 	void RewriteCmp(BinOpEmitter);
 	void RewriteCps();
+	void RewriteDiv(BinOpEmitter);
 	void RewriteDmb();
 	void RewriteLdc(const char * intrinsic);
 	void RewriteLdm(int offset, BinOpEmitter);

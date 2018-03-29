@@ -87,13 +87,22 @@ void ArmRewriter::RewriteBfi()
 	m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
 }
 
-void ArmRewriter::RewriteBinOp(BinOpEmitter op, bool setflags)
+void ArmRewriter::RewriteBinOp(BinOpEmitter op)
 {
 	auto opDst = this->Operand(Dst());
-	auto opSrc1 = this->Operand(Src1());
-	auto opSrc2 = this->Operand(Src2());
-	m.Assign(opDst, (m.*op)(opSrc1, opSrc2));
-	if (setflags)
+	if (instr->detail->arm.op_count == 3)
+	{
+		auto src1 = this->Operand(Src1());
+		auto src2 = this->Operand(Src2());
+		m.Assign(opDst, (m.*op)(src1, src2));
+	}
+	else
+	{
+		auto dst = Operand(Dst());
+		auto src = Operand(Src1());
+		m.Assign(dst, (m.*op)(dst, src));
+	}
+	if (instr->detail->arm.update_flags)
 	{
 		m.Assign(NZCV(), m.Cond(opDst));
 	}
@@ -175,6 +184,14 @@ void ArmRewriter::RewriteCmp(BinOpEmitter op)
 	auto flags = FlagGroup(static_cast<FlagM>(0x0F), "NZCV", BaseType::Byte);
 	m.Assign(flags, m.Cond(
 		(m.*op)(dst, src)));
+}
+
+void ArmRewriter::RewriteDiv(BinOpEmitter op)
+{
+	auto dst = Operand(Dst());
+	auto src1 = Operand(Src1());
+	auto src2 = Operand(Src2());
+	m.Assign(dst, (m.*op)(src1, src2));
 }
 
 void ArmRewriter::RewriteTeq()

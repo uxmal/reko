@@ -8,36 +8,10 @@
 #include "ThumbRewriter.h"
 
 
-void ThumbRewriter::RewriteBinOp(BinOpEmitter fn, bool setFlags)
-{
-	auto dst = Operand(Dst());
-	auto src = Operand(Src1());
-	m.Assign(dst, (m.*fn)(dst, src));
-	if (setFlags)
-	{
-		m.Assign(NZCV(), m.Cond(dst));
-	}
-}
+
 
 
 /*
-
-
-
-
-
-
-
-
-
-void ThumbRewriter::RewriteMov()
-{
-	ConditionalSkip(itStateCondition, false);
-	auto dst = GetReg(Dst().reg);
-	auto src = RewriteOp(Src1());
-	m.Assign(dst, src);
-}
-
 void ThumbRewriter::RewriteMovt()
 {
 	auto dst = GetReg(Dst().reg);

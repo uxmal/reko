@@ -72,11 +72,13 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Ror(HExpr a, HExpr b);
         [PreserveSig] HExpr Rrc(HExpr a, HExpr b);
         [PreserveSig] HExpr Sar(HExpr a, HExpr b);
-        [PreserveSig] HExpr Slice(HExpr a, int pos, int bits);
+        [PreserveSig] HExpr SDiv(HExpr a, HExpr b);
         [PreserveSig] HExpr Shl(HExpr a, HExpr b);
         [PreserveSig] HExpr Shr(HExpr a, HExpr b);
-        [PreserveSig] HExpr Test(Core.Expressions.ConditionCode cc, HExpr exp);
+        [PreserveSig] HExpr Slice(HExpr a, int pos, int bits);
         [PreserveSig] HExpr SMul(HExpr a, HExpr b);
+        [PreserveSig] HExpr Test(Core.Expressions.ConditionCode cc, HExpr exp);
+        [PreserveSig] HExpr UDiv(HExpr a, HExpr b);
         [PreserveSig] HExpr UMul(HExpr a, HExpr b);
         [PreserveSig] HExpr Xor(HExpr a, HExpr b);
 

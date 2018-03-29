@@ -145,7 +145,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SADD16:
 	case ARM_INS_SADD8:
 	case ARM_INS_SASX:
-	case ARM_INS_SDIV:
 	case ARM_INS_SEL:
 	case ARM_INS_SETEND:
 	case ARM_INS_SHA1C:
@@ -207,7 +206,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_UADD16:
 	case ARM_INS_UADD8:
 	case ARM_INS_UASX:
-	case ARM_INS_UDIV:
 	case ARM_INS_UHADD16:
 	case ARM_INS_UHADD8:
 	case ARM_INS_UHASX:
@@ -361,7 +359,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 		NotImplementedYet();
 		break;
 	case ARM_INS_ADC: RewriteAdcSbc(&INativeRtlEmitter::IAdd, false); break;
-	case ARM_INS_ADD: RewriteBinOp(&INativeRtlEmitter::IAdd, instr->detail->arm.update_flags); break;
+	case ARM_INS_ADD: RewriteBinOp(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_ADDW: RewriteAddw(); break;
 	case ARM_INS_ADR: RewriteAdr(); break;
 	case ARM_INS_AND: RewriteLogical([](auto & m, auto a, auto b) { return m.And(a, b); }); break;
@@ -416,10 +414,10 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_MRC: RewriteMrc(); break;
 	case ARM_INS_MRS: RewriteMrs(); break;
 	case ARM_INS_MSR: RewriteMsr(); break;
-	case ARM_INS_MUL: RewriteBinOp(&INativeRtlEmitter::IMul, instr->detail->arm.update_flags); break;
+	case ARM_INS_MUL: RewriteBinOp(&INativeRtlEmitter::IMul); break;
 	case ARM_INS_MVN: RewriteUnaryOp(&INativeRtlEmitter::Comp); break;
 	case ARM_INS_ORN: RewriteLogical([](auto & m, auto a, auto b) { return m.Or(a, m.Comp(b)); }); break;
-	case ARM_INS_ORR: RewriteBinOp(&INativeRtlEmitter::Or, false); break;
+	case ARM_INS_ORR: RewriteLogical([](auto & m, auto a, auto b) { return m.Or(a, b); }); break;
 	case ARM_INS_QADD: RewriteQAddSub(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_QDADD: RewriteQDAddSub(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_QDSUB: RewriteQDAddSub(&INativeRtlEmitter::ISub); break;
@@ -431,6 +429,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_RSC: RewriteAdcSbc(&INativeRtlEmitter::ISub, true); break;
 	case ARM_INS_SBC: RewriteAdcSbc(&INativeRtlEmitter::ISub, false); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
+	case ARM_INS_SDIV: RewriteDiv(&INativeRtlEmitter::SDiv); break;
 	case ARM_INS_SMLABB: RewriteMla(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
@@ -465,7 +464,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_STRH: RewriteStr(BaseType::UInt16); break;
 	case ARM_INS_STRHT: RewriteStr(BaseType::UInt16); break;
 	case ARM_INS_STRT: RewriteStr(BaseType::Word32); break;
-	case ARM_INS_SUB: RewriteBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
+	case ARM_INS_SUB: RewriteBinOp(&INativeRtlEmitter::ISub); break;
 	case ARM_INS_SUBW: RewriteSubw(); break;
 	case ARM_INS_SVC: RewriteSvc(); break;
 	case ARM_INS_SWP: RewriteSwp(BaseType::Word32); break;
@@ -479,6 +478,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_TST: RewriteTst(); break;
 	case ARM_INS_UBFX: RewriteUbfx(); break;
 	case ARM_INS_UDF: RewriteUdf(); break;
+	case ARM_INS_UDIV: RewriteDiv(&INativeRtlEmitter::UDiv); break;
 	case ARM_INS_UMAAL: RewriteUmaal(); break;
 	case ARM_INS_UMLAL: RewriteUmlal(); break;
 	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;

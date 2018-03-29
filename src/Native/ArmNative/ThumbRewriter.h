@@ -17,7 +17,6 @@ public:
 protected: 
 	virtual void ConditionalSkip(bool force) override;
 	virtual void PostRewrite() override;
-	virtual void RewriteBinOp(BinOpEmitter fn, bool updateFlags) override;
 
 	virtual void RewriteIt() override;
 
