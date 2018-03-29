@@ -696,3 +696,11 @@ void ArmRewriter::RewriteXtb(BaseType dt)
 	m.Assign(dst, src);
 }
 
+void ArmRewriter::RewriteYield()
+{
+	auto opDst = this->Operand(Dst());
+	auto ppp = host->EnsurePseudoProcedure("__yield", BaseType::Word32, 0);
+	m.Assign(opDst, m.Fn(ppp));
+
+}
+

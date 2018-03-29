@@ -129,11 +129,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_PLDW:
 	case ARM_INS_PLD:
 	case ARM_INS_PLI:
-	case ARM_INS_QADD16:
-	case ARM_INS_QADD8:
 	case ARM_INS_QASX:
 	case ARM_INS_QSAX:
-	case ARM_INS_QSUB16:
 	case ARM_INS_QSUB8:
 	case ARM_INS_RBIT:
 	case ARM_INS_REV16:
@@ -351,7 +348,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_TBB:
 	case ARM_INS_TBH:
 	case ARM_INS_MOVS:
-	case ARM_INS_YIELD:
 	case ARM_INS_WFE:
 	case ARM_INS_WFI:
 	case ARM_INS_SEV:
@@ -419,9 +415,12 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_ORN: RewriteLogical([](auto & m, auto a, auto b) { return m.Or(a, m.Comp(b)); }); break;
 	case ARM_INS_ORR: RewriteLogical([](auto & m, auto a, auto b) { return m.Or(a, b); }); break;
 	case ARM_INS_QADD: RewriteQAddSub(&INativeRtlEmitter::IAdd); break;
+	case ARM_INS_QADD16: RewriteVectorBinOp("__qadd_%s", ARM_VECTORDATA_S16); break;
+	case ARM_INS_QADD8: RewriteVectorBinOp("__qadd_%s", ARM_VECTORDATA_S8); break;
 	case ARM_INS_QDADD: RewriteQDAddSub(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_QDSUB: RewriteQDAddSub(&INativeRtlEmitter::ISub); break;
 	case ARM_INS_QSUB: RewriteQAddSub(&INativeRtlEmitter::ISub); break;
+	case ARM_INS_QSUB16: RewriteVectorBinOp("__qsub_%s", ARM_VECTORDATA_S16); break;
 	case ARM_INS_POP: RewritePop(); break;
 	case ARM_INS_PUSH: RewritePush(); break;
 	case ARM_INS_REV: RewriteRev(); break;
@@ -486,6 +485,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
 	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;
 	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
+	case ARM_INS_YIELD: RewriteYield(); break;
 
 
 
