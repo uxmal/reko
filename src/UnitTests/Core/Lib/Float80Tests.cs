@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,46 +32,52 @@ namespace Reko.UnitTests.Core.Lib
     [TestFixture]
     public class Float80Tests
     {
+        private string F80(ushort expSign, ulong significand)
+        {
+            var f80 = new Float80(expSign, significand);
+            return f80.ToString("G", CultureInfo.InvariantCulture);
+        }
+
         [Test]
         public void F80_Zero()
         {
-            Assert.AreEqual("0", new Float80(0, 0).ToString());
+            Assert.AreEqual("0", F80(0, 0));
         }
 
         [Test]
         public void F80_One()
         {
-            Assert.AreEqual("1", new Float80(0x3FFF, 0x8000000000000000UL).ToString());
+            Assert.AreEqual("1", F80(0x3FFF, 0x8000000000000000UL));
         }
 
         [Test]
         public void F80_1_5()
         {
-            Assert.AreEqual("1.5", new Float80(0x3FFF, 0xC000000000000000UL).ToString());
+            Assert.AreEqual("1.5", F80(0x3FFF, 0xC000000000000000UL));
         }
 
         [Test]
         public void F80_1_75()
         {
-            Assert.AreEqual("1.75", new Float80(0x3FFF, 0xE000000000000000UL).ToString());
+            Assert.AreEqual("1.75", F80(0x3FFF, 0xE000000000000000UL));
         }
 
         [Test]
         public void F80_1_875()
         {
-            Assert.AreEqual("1.875", new Float80(0x3FFF, 0xF000000000000000UL).ToString());
+            Assert.AreEqual("1.875", F80(0x3FFF, 0xF000000000000000UL));
         }
 
         [Test]
         public void F80_NegInfinity()
         {
-            Assert.AreEqual("-∞", new Float80(0xFFFF, 0x0000000000000000UL).ToString());
+            Assert.AreEqual("-Infinity", F80(0xFFFF, 0x0000000000000000UL));
         }
 
         [Test]
         public void F80_NaN()
         {
-            Assert.AreEqual("NaN", new Float80(0xFFFF, 0x4E614E4E614E4E61UL).ToString());
+            Assert.AreEqual("NaN", F80(0xFFFF, 0x4E614E4E614E4E61UL));
         }
     }
 }

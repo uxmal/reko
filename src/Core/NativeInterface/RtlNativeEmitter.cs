@@ -283,7 +283,12 @@ namespace Reko.Core.NativeInterface
         {
             return MapToHandle(m.Sar(GetExpression(a), GetExpression(b)));
         }
- 
+
+        public HExpr SDiv(HExpr a, HExpr b)
+        {
+            return MapToHandle(m.SDiv(GetExpression(a), GetExpression(b)));
+        }
+
         public HExpr Shl(HExpr a, HExpr b)
         {
             return MapToHandle(m.Shl(GetExpression(a), GetExpression(b)));
@@ -307,6 +312,11 @@ namespace Reko.Core.NativeInterface
         public HExpr Test(ConditionCode cc, HExpr exp)
         {
             return MapToHandle(m.Test(cc, GetExpression(exp)));
+        }
+
+        public HExpr UDiv(HExpr a, HExpr b)
+        {
+            return MapToHandle(m.UDiv(GetExpression(a), GetExpression(b)));
         }
 
         public HExpr UMul(HExpr a, HExpr b)

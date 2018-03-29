@@ -75,6 +75,13 @@ namespace Reko.Analysis
             sids.Add(sid);
         }
 
+        private bool IsAssignmentToInvalidConstant(Statement stm)
+        {
+            if (!(stm.Instruction is Assignment ass))
+                return false;
+            return ass.Src == Constant.Invalid;
+        }
+
         /// <summary>
         /// Returns true if the identifer <paramref name="sid"/>, which is defined in <paramref name="def"/>, can safely
         /// be coalesced into <paramref name="use"/>.
@@ -92,6 +99,13 @@ namespace Reko.Analysis
 				return false;
 			if (use.Instruction is UseInstruction)
 				return false;
+            // A correctly decompiled program shouldn't contain any 
+            // `Constant.Invalid`, but Reko uses `Constant.Invalid` to mark
+            // places where it has noticed something is wrong. In such cases
+            // we avoid coalescing to make it easier to troubleshoot what the
+            // problem is in the generated code
+            if (IsAssignmentToInvalidConstant(def))
+                return false;
 
             //$PERFORMANCE: this loop might be slow and should be improved if possible.
             if (defsByStatement.TryGetValue(def, out var sids))

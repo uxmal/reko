@@ -70,6 +70,30 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Creates an offset sum of <paramref name="e"/> and the
+        /// signed integer <paramref name="c"/> interpreted as a word.
+        /// </summary>
+        /// <param name="e">Expression forming the base of offset sum.</param>
+        /// <param name="size">Used only to determine the size of the constant to add.</param>
+        /// <param name="c">Signed offset</param>
+        /// <returns></returns>
+        public Expression AddConstantWord(Expression e, DataType size, long c)
+        {
+            if (c == 0)
+            {
+                return e;
+            }
+            else if (c > 0)
+            {
+                return IAdd(e, Constant.Word(size.Size, c));
+            }
+            else
+            {
+                return ISub(e, Constant.Word(size.Size, -c));
+            }
+        }
+
+        /// <summary>
         /// Takes the address of the expression (which must be an l-value).
         /// </summary>
         /// <param name="e">L-value </param>

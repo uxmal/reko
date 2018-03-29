@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -62,6 +63,15 @@ namespace Reko.UnitTests.Arch.Arm
                 .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), })
                 .ToArray();
             image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
+        }
+
+
+        protected override MemoryArea RewriteCode(string hexBytes)
+        {
+            var bytes = OperatingEnvironmentElement.LoadHexBytes(hexBytes)
+                .ToArray();
+            this.image = new MemoryArea(LoadAddress, bytes);
+            return image;
         }
 
         private class FakeRewriterHost : IRewriterHost
@@ -5868,6 +5878,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_addw()
+        {
+            BuildTest(0xF60D, 0x2348);  // add         r3,sp,#0xA48
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = sp + 0x00000A48");
+        }
+
+        [Test]
         public void ThumbRw_movw()
         {
             BuildTest(0xF24C, 0x1C00); // movw        r12,#0xC100
@@ -5904,6 +5923,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_clz()
+        {
+            RewriteCode("B2FA82F2");	// clz r2, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __clz(r2)");
+        }
+
+        [Test]
+        public void ThumbRw_cmn()
+        {
+            RewriteCode("EA42");	// cmn r2, r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|NZCV = cond(r2 + r5)");
+        }
+
+        [Test]
         public void ThumbRw_bne()
         {
             BuildTest(0xD101);  // bne         00401056
@@ -5933,11 +5970,11 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_lsls()
         {
-            BuildTest(0x0040);  // lsls        r0,r0,#1
+            BuildTest(0x0040);  // lsls        r0,#1
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r0 << 0x00000001",
-                "2|L--|NZCV = cond(r0)");
+                "2|L--|NZC = cond(r0)");
         }
 
         [Test]
@@ -5974,7 +6011,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0x7858);  // ldrb        r0,[r3,#1]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = (uint32) Mem0[r3 + 1:byte]");
+                "1|L--|r0 = (word32) Mem0[r3 + 1:byte]");
         }
 
         [Test]
@@ -6004,18 +6041,9 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = ~0x00000000");
         }
 
-        [Test]
-        [Ignore("Can't be bothered with this yet - later!")]
-        public void ThumbRw_mrc()
-        {
-            BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|mrc(p15, 0x00, r3, c13, c0, 0x02);");
-        }
 
         [Test]
-        [Ignore("Can't be bothered with this yet - later!")]
+        [Ignore(Categories.FailedTests)]
         public void ThumbRw_dmbc()
         {
             BuildTest(0xF3BF, 0x8F5B);  // dmb         ish
@@ -6069,7 +6097,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r1 >> 0x0000000E",
-                "2|L--|NZCV = cond(r0)");
+                "2|L--|NZC = cond(r0)");
         }
 
         [Test]
@@ -6081,29 +6109,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r1 = 0x000000F4 - r4");
         }
 
-        [Test]
-        public void ThumbRw_ldrsb()
-        {
-            BuildTest(0xF991, 0x3000);  // ldrsb       r3,[r1]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (int32) Mem0[r1:int8]");
-        }
-
-        [Test]
-        public void ThumbRw_it()
-        {
-            BuildTest(
-                0xBF38,     //it          cc
-                0x4632,     // movcc       r2,r6
-                0x4632);   // mov       r2,r6
-            AssertCode(
-                "0|L--|00100002(2): 2 instructions",
-                "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|r2 = r6",
-                "3|L--|00100004(2): 1 instructions",
-                "4|L--|r2 = r6");
-        }
 
         [Test]
         public void ThumbRw_subw()
@@ -6115,12 +6120,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_addw()
+        public void ThumbRw_svc()
         {
-            BuildTest(0xF60D, 0x2348);  // add         r3,sp,#0xA48
+            RewriteCode("4EDF");	// svc #0x4e
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = sp + 0x00000A48");
+                "0|T--|00100000(2): 1 instructions",
+                "1|L--|__syscall(0x0000004E)");
         }
 
         [Test]
@@ -6129,7 +6134,17 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0x800B);  // strh        r3,[r1]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r1:word16] = (word16) r3");
+                "1|L--|Mem0[r1:word16] = (uint16) r3");
+        }
+
+
+        [Test]
+        public void ThumbRw_uxtb()
+        {
+            RewriteCode("E8B2");	// uxtb r0, r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = (uint32) (byte) r5");
         }
 
         [Test]
@@ -6158,7 +6173,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r2 = r2 + 1",
                 "2|L--|r3 = (uint32) Mem0[r2:byte]");
         }
-        
+
         [Test]
         public void ThumbRw_ldr_postIndex()
         {
@@ -6169,7 +6184,36 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|sp = sp + 0x0000000C",
                 "3|T--|goto v4");
         }
-          [Test]
+
+        [Test]
+        public void ThumbRw_ldrd()
+        {
+            RewriteCode("DDE90C23");	// ldrd r2, r3, [sp, #0x30]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3_r2 = Mem0[sp + 48:word64]");
+        }
+
+        [Test]
+        public void ThumbRw_ldrsb()
+        {
+            BuildTest(0xF991, 0x3000);  // ldrsb       r3,[r1]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = (word32) Mem0[r1:int8]");
+        }
+
+
+        [Test]
+        public void ThumbRw_ldrsh()
+        {
+            RewriteCode("B6F94946");	// ldrsh.w r4, [r6, #0x649]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = (word32) Mem0[r6 + 1609:int16]");
+        }
+
+        [Test]
         public void ThumbRw_strb_preIndex()
         {
             BuildTest(0xF801, 0x0F01);  // strb.w r0, [r1, #1]!
@@ -6196,6 +6240,2031 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto Mem0[ip:word32]");
+        }
+
+        [Test]
+        public void ThumbRw_it_mi()
+        {
+            BuildTest(
+                0xBF48,    // it    mi
+                0x4632);   // mov   r2,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop",        // placeholder.
+                "2|L--|00100002(2): 2 instructions",
+                "3|T--|if (Test(GE,N)) branch 00100004",
+                "4|L--|r2 = r6");
+        }
+
+        [Test]
+        public void ThumbRw_itt_mi()
+        {
+            BuildTest(
+                0xBF44,     // itt  mi
+                0x4632,     // mov  r2,r6
+                0x4633);    // mov  r3,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop",
+                "2|L--|00100002(2): 2 instructions",
+                "3|T--|if (Test(GE,N)) branch 00100004",
+                "4|L--|r2 = r6",
+                "5|L--|00100004(2): 2 instructions",
+                "6|T--|if (Test(GE,N)) branch 00100006",
+                "7|L--|r3 = r6");
+        }
+
+        [Test]
+        public void ThumbRw_ite_eq()
+        {
+            BuildTest(
+                0xBF0C,     // ite  eq
+                0x4632,     // mov  r2,r6
+                0x4633);    // mov  r3,r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop",
+                "2|L--|00100002(2): 2 instructions",
+                "3|T--|if (Test(NE,Z)) branch 00100004",
+                "4|L--|r2 = r6",
+                "5|L--|00100004(2): 2 instructions",
+                "6|T--|if (Test(EQ,Z)) branch 00100006",
+                "7|L--|r3 = r6");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_cdp()
+        {
+            RewriteCode("11EE4000");	// cdp p0, #1, c0, c1, c0, #2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_mcr()
+        {
+            RewriteCode("01EE100F");	// mcr p15, #0, r0, c1, c0, #0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__mcr(p15, 0x00000000, r0, 0x01, 0x00, 0x00000000)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vnmls()
+        {
+            RewriteCode("11EE0B0A");	// vnmls.f32 s0, s2, s22
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrhadd()
+        {
+            RewriteCode("10FF2FE1");	// vrhadd.u16 d14, d0, d31
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ror()
+        {
+            RewriteCode("E041");	// rors r0, r4
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_revsh()
+        {
+            RewriteCode("FFBA");	// revsh r7, r7
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_umull()
+        {
+            RewriteCode("A2FB0030");	// umull r3, r0, r2, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0_r3 = r0 *u r2");
+        }
+
+        [Test]
+        public void ThumbRw_mul()
+        {
+            RewriteCode("03FB00F3");	// mul r3, r3, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = r3 * r0");
+        }
+
+        [Test]
+        public void ThumbRw_nop()
+        {
+            RewriteCode("00BF");	// nop 
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
+        public void ThumbRw_ldc()
+        {
+            RewriteCode("3AED2046");	// ldc p6, c4, [sl, #-0x80]!
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r10 = r10 + -128",
+                "2|L--|v3 = Mem0[r10:word32]",
+                "3|L--|p6 = __ldc(0x04, v3)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_cdp2()
+        {
+            RewriteCode("7BFE0DF0");	// cdp2 p0, #7, c15, c11, c13, #0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_stc2l()
+        {
+            RewriteCode("44FD0128");	// stc2l p8, c2, [r4, #-4]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ldc2()
+        {
+            RewriteCode("31FC0128");	// ldc2 p8, c2, [r1], #-4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_ldcl()
+        {
+            RewriteCode("D8EC3846");	// ldcl p6, c4, [r8], {0x38}
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = Mem0[r8:word32]",
+                "2|L--|p6 = __ldcl(0x04, v3)");
+        }
+
+        [Test]
+        public void ThumbRw_adc()
+        {
+            RewriteCode("49F1FF37");	// adc r7, sb, #-1
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r7 = r9 + 0xFFFFFFFF + C",
+                "2|L--|NZCV = cond(r7)");
+        }
+
+        [Test]
+        public void ThumbRw_strd()
+        {
+            RewriteCode("CDE90067");	// strd r6, r7, [sp]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp:word64] = r7_r6");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sxth()
+        {
+            RewriteCode("08B2");	// sxth r0, r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vaddw()
+        {
+            RewriteCode("E2FF0021");	// vaddw.u32 q9, q1, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_sbc()
+        {
+            RewriteCode("7CEB3846");	// sbcs.w r6, ip, r8, ror #16
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = ip - __ror(r8, 16) - C",
+                "2|L--|NZCV = cond(r6)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vtbl()
+        {
+            RewriteCode("BBFF0CAB");	// vtbl.8 d10, {d11, d12, d13, d14}, d12
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+ 
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vsubw()
+        {
+            RewriteCode("88FF0023");	// vsubw.u8 q1, q4, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smmla()
+        {
+            RewriteCode("57FB0021");	// smmla r1, r7, r0, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vld1()
+        {
+            RewriteCode("A8F93148");	// vld1.32 {d4[0]}, [r8:0x20], r1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmax()
+        {
+            RewriteCode("29FF2046");	// vmax.u32 d4, d9, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vst3()
+        {
+            RewriteCode("C3F90446");	// vst3.16 {d20[0], d21[0], d22[0]}, [r3], r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mcr2()
+        {
+            RewriteCode("62FE3B46");	// mcr2 p6, #3, r4, c2, c11, #1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_pld()
+        {
+            RewriteCode("91F8D4F8");	// pld [r1, #0x8d4]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ldc2l()
+        {
+            RewriteCode("F4FD04F0");	// ldc2l p0, c15, [r4, #0x10]!
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_stc2()
+        {
+            RewriteCode("AFFD1199");	// stc2 p9, c9, [pc, #0x44]!
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sxtb()
+        {
+            RewriteCode("59B2");	// sxtb r1, r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ssat()
+        {
+            RewriteCode("03F31343");	// ssat r3, #0x14, r3, lsl #0x10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vhadd()
+        {
+            RewriteCode("41FF02B0");	// vhadd.u8 d27, d1, d2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mls()
+        {
+            RewriteCode("04FB10B5");	// mls r5, r4, r0, fp
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_bkpt()
+        {
+            RewriteCode("22BE");	// bkpt #0x22
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vshr()
+        {
+            RewriteCode("F3FF14F0");	// vshr.u32 d31, d4, #0xd
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqadd()
+        {
+            RewriteCode("0CFF14F0");	// vqadd.u8 d15, d12, d4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smladx()
+        {
+            RewriteCode("20FB1FB0");	// smladx r0, r0, pc, fp
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vsub()
+        {
+            RewriteCode("52FF2068");	// vsub.i16 d22, d2, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_mla()
+        {
+            RewriteCode("00FB0210");	// mla r0, r0, r2, r1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r1 + r0 * r2");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vldr()
+        {
+            RewriteCode("5AED114B");	// vldr d20, [sl, #-0x44]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_uadd8()
+        {
+            RewriteCode("84FA4FF0");	// uadd8 r0, r4, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vld3()
+        {
+            RewriteCode("66F98245");	// vld3.32 {d20, d22, d24}, [r6], r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_dsb()
+        {
+            RewriteCode("BFF34F8F");	// dsb sy
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ubfx()
+        {
+            RewriteCode("C2F30745");	// ubfx r5, r2, #0x10, #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_uxtab()
+        {
+            RewriteCode("5BFA94F8");	// uxtab r8, fp, r4, ror #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = fp + (byte) (r4 >>u 8)");
+        }
+
+        [Test]
+        public void ThumbRw_uxtah()
+        {
+            RewriteCode("11FAFEF7");	// uxtah r7, r1, lr, ror #24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = r1 + (uint16) (lr >>u 24)");
+        }
+
+        [Test]
+        public void ThumbRw_smulbb()
+        {
+            RewriteCode("15FB02F6");	// smulbb r6, r5, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = (int16) r5 *s (int16) r2");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_tbb()
+        {
+            RewriteCode("DFE802F0");	// tbb [pc, r2]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_usat()
+        {
+            RewriteCode("83F35B09");	// usat sb, #0x1b, r3, lsl #1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vld4()
+        {
+            RewriteCode("ACF9BAE7");	// vld4.16 {d14[2], d16[2], d18[2], d20[2]}, [ip:0x40], sl
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrsubhn()
+        {
+            RewriteCode("94FF2046");	// vrsubhn.i32 d4, q2, q8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vselge()
+        {
+            RewriteCode("6FFEA26A");	// vselge.f32 s13, s31, s5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vcge()
+        {
+            RewriteCode("44FF051E");	// vcge.f32 d17, d4, d5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vselgt()
+        {
+            RewriteCode("38FEA26A");	// vselgt.f32 s12, s17, s5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vst4()
+        {
+            RewriteCode("44F94FF0");	// vst4.16 {d31, d0, d1, d2}, [r4]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_tbh()
+        {
+            RewriteCode("DFE813F0");	// tbh [pc, r3, lsl #1]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_stcl()
+        {
+            RewriteCode("E8ED2368");	// stcl p8, c6, [r8, #0x8c]!
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_stc()
+        {
+            RewriteCode("88ED3D68");	// stc p8, c6, [r8, #0xf4]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__stc(p8, 0x06, Mem0[r8 + 244:word32])");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vsra()
+        {
+            RewriteCode("D9FF10F1");	// vsra.u16 d31, d0, #7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlawb()
+        {
+            RewriteCode("32FB0020");	// smlawb r0, r2, r0, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlabb()
+        {
+            RewriteCode("13FB0746");	// smlabb r6, r3, r7, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_smlatt()
+        {
+            RewriteCode("12FB3A46");	// smlatt r6, r2, sl, r4
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = (int16) (r2 >> 16) *s (int16) (r10 >> 16) + r4",
+                "2|L--|Q = cond(r6)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmov()
+        {
+            RewriteCode("83FF13F0");	// vmov.i32 d15, #0xb3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vaddl()
+        {
+            RewriteCode("E5FF0020");	// vaddl.u32 q9, d5, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vst1()
+        {
+            RewriteCode("84F90020");	// vst1.8 {d2[0]}, [r4], r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smmls()
+        {
+            RewriteCode("62FB0646");	// smmls r6, r2, r6, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mcrr2()
+        {
+            RewriteCode("4FFC3AF0");	// mcrr2 p0, #3, pc, pc, c10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_umlal()
+        {
+            RewriteCode("E3FB0FE7");	// umlal lr, r7, r3, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7_lr = r3 *u pc + r7_lr");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmlal()
+        {
+            RewriteCode("C8FF0128");	// vmlal.u8 q9, d8, d1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_hint()
+        {
+            RewriteCode("70BF");	// hint #7
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmvn()
+        {
+            RewriteCode("82FF3146");	// vmvn.i32 d4, #0xa1000000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vceq()
+        {
+            RewriteCode("21FF1048");	// vceq.i32 d4, d1, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqshl()
+        {
+            RewriteCode("80EFFEE7");	// vqshl.s64 q7, q15, #0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_smulbt()
+        {
+            RewriteCode("17FB16F0");	// smulbt r0, r7, r6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = (int16) r7 *s (int16) (r6 >> 16)");
+        }
+
+        [Test]
+        public void ThumbRw_smull()
+        {
+            RewriteCode("8FFB0028");	// smull r2, r8, pc, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8_r2 = r0 *s pc");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_rev()
+        {
+            RewriteCode("19BA");	// rev r1, r3
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlsd()
+        {
+            RewriteCode("41FB0446");	// smlsd r6, r1, r4, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_mrc()
+        {
+            BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __mrc(p15, 0x00000000, 0x0D, 0x00, 0x00000002)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mrc2()
+        {
+            RewriteCode("3CFE714D");	// mrc2 p13, #1, r4, c12, c1, #3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mrrc2()
+        {
+            RewriteCode("54FC1348");	// mrrc2 p8, #1, r4, r4, c3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmin()
+        {
+            RewriteCode("62FF3846");	// vmin.u32 d20, d2, d24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmls()
+        {
+            RewriteCode("1CFF2469");	// vmls.i16 d6, d12, d20
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        public void ThumbRw_ldm()
+        {
+            RewriteCode("1ECC");	// ldm r4, {r1, r2, r3, r4}
+            AssertCode(
+                "0|L--|00100000(2): 4 instructions",
+                "1|L--|r1 = Mem0[r4:word32]",
+                "2|L--|r2 = Mem0[r4 + 4:word32]",
+                "3|L--|r3 = Mem0[r4 + 8:word32]",
+                "4|L--|r4 = Mem0[r4 + 12:word32]");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ldmdb()
+        {
+            RewriteCode("36E97D4B");	// ldmdb r6!, {r0, r2, r3, r4, r5, r6, r8, sb, fp, lr}
+            AssertCode(
+                "0|L--|00100000(4): 11 instructions",
+                "1|L--|r0 = Mem0[r6 - 4:word32]",
+                "2|L--|r2 = Mem0[r6 - 8:word32]",
+                "3|L--|r3 = Mem0[r6 - 12:word32]",
+                "4|L--|r4 = Mem0[r6 - 16:word32]",
+                "5|L--|r5 = Mem0[r6 - 20:word32]",
+                "6|L--|r6 = Mem0[r6 - 24:word32]",
+                "7|L--|r8 = Mem0[r6 - 28:word32]",
+                "8|L--|r8 = Mem0[r6 - 32:word32]",
+                "9|L--|r9 = Mem0[r6 - 36:word32]",
+                "10|L--|r10 = Mem0[r4 + 36:word32]",
+                "11|L--|r11 = Mem0[r4 + 40:word32]");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrev64()
+        {
+            RewriteCode("B0FF0300");	// vrev64.8 d0, d3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vst2()
+        {
+            RewriteCode("46F94748");	// vst2.16 {d20, d21}, [r6], r7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlad()
+        {
+            RewriteCode("2AFB049A");	// smlad sl, sl, r4, sb
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_uhsub16()
+        {
+            RewriteCode("DCFA6FF0");	// uhsub16 r0, ip, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sxtab16()
+        {
+            RewriteCode("2BFADBF8");	// sxtab16 r8, fp, fp, ror #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_shsub8()
+        {
+            RewriteCode("C7FA26F4");	// shsub8 r4, r7, r6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_orrs()
+        {
+            RewriteCode("0443");	// orrs r4, r0
+            AssertCode(
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r4 = r4 | r0",
+                "2|L--|NZC = cond(r4)");
+        }
+
+        [Test]
+        public void ThumbRw_orn()
+        {
+            RewriteCode("64F40300");	// orn r0, r4, #0x830000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = r4 | ~0x00830000");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vswp()
+        {
+            RewriteCode("B2FF0300");	// vswp d0, d3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqrshrun()
+        {
+            RewriteCode("E2FF7E48");	// vqrshrun.s64 d20, q15, #0x1e
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_ssat16()
+        {
+            RewriteCode("22F30300");	// ssat16 r0, #4, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_fstmiax()
+        {
+            RewriteCode("88EC179B");	// fstmiax r8, {d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19}
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smmlsr()
+        {
+            RewriteCode("6BFB1E4B");	// smmlsr fp, fp, lr, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vcvt()
+        {
+            RewriteCode("FBFF2046");	// vcvt.f32.s32 d20, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mcrr()
+        {
+            RewriteCode("40EC0600");	// mcrr p0, #0, r0, r0, c6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vsubl()
+        {
+            RewriteCode("E1FFA042");	// vsubl.u32 q10, d17, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqshrn()
+        {
+            RewriteCode("B8FF1249");	// vqshrn.u64 d4, q1, #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vhsub()
+        {
+            RewriteCode("4AFF8642");	// vhsub.u8 d20, d26, d6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vext()
+        {
+            RewriteCode("F4EF0300");	// vext.32 d16, d4, d3, #0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vaba()
+        {
+            RewriteCode("1EFF9BE7");	// vaba.u16 d14, d30, d11
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vorr()
+        {
+            RewriteCode("C4FF104B");	// vorr.i16 d20, #0xc000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smulwb()
+        {
+            RewriteCode("32FB0FF0");	// smulwb r0, r2, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_usada8()
+        {
+            RewriteCode("77FB0030");	// usada8 r0, r7, r0, r3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vselvs()
+        {
+            RewriteCode("1AFE224B");	// vselvs.f64 d4, d10, d18
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vseleq()
+        {
+            RewriteCode("0FFE204B");	// vseleq.f64 d4, d15, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vld2()
+        {
+            RewriteCode("AAF909F5");	// vld2.16 {d15[0], d16[0]}, [sl], sb
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vshl()
+        {
+            RewriteCode("FCEF3335");	// vshl.i32 d19, d19, #0x1c
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqrdmulh()
+        {
+            RewriteCode("1DFF099B");	// vqrdmulh.s16 d9, d13, d9
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqshlu()
+        {
+            RewriteCode("BCFF3846");	// vqshlu.s32 d4, d24, #0x1c
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vbit()
+        {
+            RewriteCode("69FFB8F1");	// vbit d31, d25, d24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlal()
+        {
+            RewriteCode("CCFB0BB0");	// smlal fp, r0, ip, fp
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vtbx()
+        {
+            RewriteCode("BDFFC5F8");	// vtbx.8 d15, {d29}, d5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_veor()
+        {
+            RewriteCode("46FF5421");	// veor q9, q3, q2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vabd()
+        {
+            RewriteCode("28FFC6E7");	// vabd.u32 q7, q12, q3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmull()
+        {
+            RewriteCode("E3FF2B8C");	// vmull.u32 q12, d3, d27
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqshrun()
+        {
+            RewriteCode("D8FF3E48");	// vqshrun.s32 d20, q15, #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vbic()
+        {
+            RewriteCode("C1FF7DE5");	// vbic.i32 q15, #0x9d0000
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmaxnm()
+        {
+            RewriteCode("CBFE029B");	// vmaxnm.f64 d25, d11, d2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smusd()
+        {
+            RewriteCode("48FB00F1");	// smusd r1, r8, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_sxtab()
+        {
+            RewriteCode("47FA9BF8");	// sxtab r8, r7, fp, ror #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = r7 + (int8) (fp >>u 8)");
+        }
+
+        [Test]
+        public void ThumbRw_sxtah()
+        {
+            RewriteCode("00FAFEFF");	// sxtah pc, r0, lr, ror #24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|pc = r0 + (int16) (lr >>u 24)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_rev16()
+        {
+            RewriteCode("70BA");	// rev16 r0, r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vpmax()
+        {
+            RewriteCode("56FF289A");	// vpmax.u16 d25, d6, d24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_stmdb()
+        {
+            RewriteCode("06E90F00");	// stmdb r6, {r0, r1, r2, r3}
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_pli()
+        {
+            RewriteCode("9DF9BAF1");	// pli [sp, #0x1ba]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_smlatb()
+        {
+            RewriteCode("17FB2046");	// smlatb r6, r7, r0, r4
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = (int16) (r7 >> 16) *s (int16) r0 + r4",
+                "2|L--|Q = cond(r6)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vsri()
+        {
+            RewriteCode("ECFF3104");	// vsri.32 d16, d17, #0x14
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        //[Ignore(Categories.FailedTests)]
+        public void ThumbRw_bfc()
+        {
+            RewriteCode("6FF30001");	// bfc r1, #0, #1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r1 & 0xFFFFFFFE");
+        }
+
+        [Test]
+        public void ThumbRw_bfi()
+        {
+            RewriteCode("63F31F43");	// bfi r3, r3, #0x10, #0x10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r3, ui16, 0)",
+                "2|L--|r3 = DPB(r3, v3, 16)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqrshl()
+        {
+            RewriteCode("18FFB945");	// vqrshl.u16 d4, d25, d24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_sdiv()
+        {
+            RewriteCode("95FBFFF7");	// sdiv r7, r5, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = r5 / pc");
+        }
+
+
+        [Test]
+        public void ThumbRw_smlaltb()
+        {
+            RewriteCode("C9FBA0E6");	// smlaltb lr, r6, sb, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|lr_r6 = (int16) (r9 >> 16) *s (int16) r0 + lr_r6");
+        }
+
+        [Test]
+        public void ThumbRw_smlaltt()
+        {
+            RewriteCode("CFFBB168");	// smlaltt r6, r8, pc, r1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6_r8 = (int16) (pc >> 16) *s (int16) (r1 >> 16) + r6_r8");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vabdl()
+        {
+            RewriteCode("DDFFA7E7");	// vabdl.u16 q15, d29, d23
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_qadd8()
+        {
+            RewriteCode("8AFA1AF0");	// qadd8 r0, sl, sl
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_pkhbt()
+        {
+            RewriteCode("C6EA002E");	// pkhbt lr, r6, r0, lsl #8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrshr()
+        {
+            RewriteCode("A1FFB442");	// vrshr.u64 d4, d20, #0x1f
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlawt()
+        {
+            RewriteCode("34FB1020");	// smlawt r0, r4, r0, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmlsl()
+        {
+            RewriteCode("EAFFE346");	// vmlsl.u32 q10, d26, d3[1]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmul()
+        {
+            RewriteCode("46FF114D");	// vmul.f32 d20, d6, d1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlalbb()
+        {
+            RewriteCode("C4FB8A4C");	// smlalbb r4, ip, r4, sl
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vminnm()
+        {
+            RewriteCode("86FE4A4B");	// vminnm.f64 d4, d6, d10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vpadal()
+        {
+            RewriteCode("F0FF0546");	// vpadal.s8 d20, d5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vcgt()
+        {
+            RewriteCode("26FFA18E");	// vcgt.f32 d8, d22, d17
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vpmin()
+        {
+            RewriteCode("2BFF00BF");	// vpmin.f32 d11, d11, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vsli()
+        {
+            RewriteCode("BDFFB4F5");	// vsli.64 d15, d20, #0x3d
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_pldw()
+        {
+            RewriteCode("B9F800F0");	// pldw [sb]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_pkhtb()
+        {
+            RewriteCode("C0EA2046");	// pkhtb r6, r0, r0, asr #0x10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_uxtab16()
+        {
+            RewriteCode("33FAFFF7");	// uxtab16 r7, r3, pc, ror #24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vadd()
+        {
+            RewriteCode("4EEF01A8");	// vadd.i8 d26, d14, d1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrsra()
+        {
+            RewriteCode("BFFF18B3");	// vrsra.u32 d11, d8, #1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_umaal()
+        {
+            RewriteCode("E0FB6FF0");	// umaal pc, r0, r0, pc
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v2 = r0 *u pc",
+                "2|L--|v2 = v2 + (uint64) r0",
+                "3|L--|r0_pc = v2 + (uint64) pc");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sbfx()
+        {
+            RewriteCode("48F70400");	// sbfx r0, r8, #0, #5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqrshrn()
+        {
+            RewriteCode("BBFF58B9");	// vqrshrn.u64 d11, q4, #5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlaldx()
+        {
+            RewriteCode("C6FBDE4B");	// smlaldx r4, fp, r6, lr
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_qsax()
+        {
+            RewriteCode("E0FA19F0");	// qsax r0, r0, sb
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sasx()
+        {
+            RewriteCode("AEFA0EF0");	// sasx r0, lr, lr
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrshl()
+        {
+            RewriteCode("03FF0DE5");	// vrshl.u8 d14, d13, d3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlsld()
+        {
+            RewriteCode("DFFBC9E7");	// smlsld lr, r7, pc, sb
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vstr()
+        {
+            RewriteCode("44ED204A");	// vstr s9, [r4, #-0x80]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_usax()
+        {
+            RewriteCode("EEFA40F6");	// usax r6, lr, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_usub16()
+        {
+            RewriteCode("D7FA40F6");	// usub16 r6, r7, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vpadd()
+        {
+            RewriteCode("04FF002D");	// vpadd.f32 d2, d4, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_uqadd16()
+        {
+            RewriteCode("92FA55F8");	// uqadd16 r8, r2, r5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vrev16()
+        {
+            RewriteCode("F0FF08B1");	// vrev16.8 d27, d8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_qsub16()
+        {
+            RewriteCode("D5FA18F4");	// qsub16 r4, r5, r8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vshll()
+        {
+            RewriteCode("FAFF1E4A");	// vshll.u32 q10, d14, #0x1a
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vqdmulh()
+        {
+            RewriteCode("5AEF029B");	// vqdmulh.s16 d25, d10, d2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_usat16()
+        {
+            RewriteCode("ACF30200");	// usat16 r0, #2, ip
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+
+        public void ThumbRw_smlabt()
+        {
+            RewriteCode("1EFB1A68");	// smlabt r8, lr, sl, r6
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+
+        public void ThumbRw_vsubhn()
+        {
+            RewriteCode("ECEF2046");	// vsubhn.i64 d20, q6, q8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_uasx()
+        {
+            RewriteCode("A4FA4FF0");	// uasx r0, r4, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vbif()
+        {
+            RewriteCode("3FFFBBF1");	// vbif d15, d31, d27
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vbsl()
+        {
+            RewriteCode("14FFBBF1");	// vbsl d15, d20, d27
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_strht()
+        {
+            RewriteCode("23F8236E");	// strht r6, [r3, #0x23]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r3 + 35:word16] = (uint16) r6");
+        }
+
+        [Test]
+        public void ThumbRw_strbt()
+        {
+            RewriteCode("08F8031E");	// strbt r1, [r8, #3]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r8 + 3:byte] = (byte) r1");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlsdx()
+        {
+            RewriteCode("4CFB143D");	// smlsdx sp, ip, r4, r3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vdup()
+        {
+            RewriteCode("FFFF2BFC");	// vdup.8 d31, d27[7]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vabal()
+        {
+            RewriteCode("A1FF8045");	// vabal.u32 q2, d17, d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlsldx()
+        {
+            RewriteCode("D2FBDDF8");	// smlsldx pc, r8, r2, sp
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smmul()
+        {
+            RewriteCode("5FFB04F1");	// smmul r1, pc, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smuad()
+        {
+            RewriteCode("22FB04F1");	// smuad r1, r2, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vraddhn()
+        {
+            RewriteCode("C4FF2044");	// vraddhn.i16 d20, q2, q8
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_smlald()
+        {
+            RewriteCode("CFFBC0B5");	// smlald fp, r5, pc, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sadd8()
+        {
+            RewriteCode("8FFA00F0");	// sadd8 r0, pc, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vclt()
+        {
+            RewriteCode("F9FF0646");	// vclt.f32 d20, d6, #0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_usub8()
+        {
+            RewriteCode("CFFA4FF0");	// usub8 r0, pc, pc
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vabs()
+        {
+            RewriteCode("B9FF2043");	// vabs.s32 d4, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vtst()
+        {
+            RewriteCode("0EEFB088");	// vtst.8 d8, d30, d16
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_cps()
+        {
+            RewriteCode("66B6");	// cpsie ai
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_yield()
+        {
+            RewriteCode("10BF");	// yield 
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_sev()
+        {
+            RewriteCode("40BF");	// sev 
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vmla()
+        {
+            RewriteCode("A0EFE541");	// vmla.f32 d4, d16, d5[1]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
         }
     }
 }

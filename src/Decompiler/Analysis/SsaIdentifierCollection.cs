@@ -96,23 +96,22 @@ namespace Reko.Analysis
 		private string FormatSsaName(Expression e, int v)
 		{
             string prefix = null;
-            var id = e as Identifier;
-            if (id != null)
+            switch (e)
             {
+            case Identifier id:
                 prefix = id.Name;
-            }
-            var bin = e as BinaryExpression;
-            if (bin != null)
-            {
+                break;
+            case BinaryExpression bin:
+                ;
                 int offset = ((Constant)bin.Right).ToInt32();
                 if (offset < 0)
                     prefix = "loc";
                 else
                     prefix = "arg";
-
-            }
-            if (prefix == null)
+                break;
+            default:
                 throw new NotImplementedException(e.ToString());
+            }
             return string.Format("{0}_{1}", prefix, v);
 		}
 
@@ -133,8 +132,7 @@ namespace Reko.Analysis
 
         private Storage StorageOf(Expression e)
         {
-            var id = e as Identifier;
-            if (id != null)
+            if (e is Identifier id)
                 return id.Storage;
             var bin = (BinaryExpression) e;
             int offset = ((Constant)bin.Right).ToInt32();

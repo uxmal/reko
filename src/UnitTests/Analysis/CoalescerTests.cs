@@ -27,128 +27,166 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Reko.Core.Expressions;
+using Reko.Core.Output;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
-	public class CoalescerTests : AnalysisTestBase
-	{
-		protected override void RunTest(Program program, TextWriter fut)
-		{
+    [TestFixture]
+    public class CoalescerTests : AnalysisTestBase
+    {
+        private SsaProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
+
+        public void RunCoalescer()
+        {
+            var co = new Coalescer(m.Ssa);
+            co.Transform();
+            m.Ssa.CheckUses(s => Assert.Fail(s));
+        }
+
+        //$REFACTOR: move common code to Reko.UnitTests.Mocks
+        private void AssertProcedureCode(string expected)
+        {
+            var writer = new StringWriter();
+            var textFormatter = new TextFormatter(writer)
+            {
+                Indentation = 0,
+            };
+            textFormatter.WriteLine();
+            var codeFormatter = new CodeFormatter(textFormatter);
+            foreach (var stm in m.Ssa.Procedure.Statements)
+                stm.Instruction.Accept(codeFormatter);
+            var actual = writer.ToString();
+            if (expected != actual)
+            {
+                Debug.Print(actual);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        protected override void RunTest(Program program, TextWriter fut)
+        {
             IImportResolver importResolver = null;
             var listener = new FakeDecompilerEventListener();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
-			var ssts = dfa.UntangleProcedures();
-			
-			foreach (Procedure proc in program.Procedures.Values)
-			{
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+            var ssts = dfa.UntangleProcedures();
+
+            foreach (Procedure proc in program.Procedures.Values)
+            {
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
-				SsaState ssa = sst.SsaState;
-				
+                SsaState ssa = sst.SsaState;
+
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-				DeadCode.Eliminate(ssa);
+                cce.Transform();
+                DeadCode.Eliminate(ssa);
 
                 ValuePropagator vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
-				vp.Transform();
-				DeadCode.Eliminate(ssa);
-				Coalescer co = new Coalescer(ssa);
-				co.Transform();
+                vp.Transform();
+                DeadCode.Eliminate(ssa);
+                Coalescer co = new Coalescer(ssa);
+                co.Transform();
 
-				ssa.Write(fut);
-				proc.Write(false, fut);
-				fut.WriteLine();
+                ssa.Write(fut);
+                proc.Write(false, fut);
+                fut.WriteLine();
 
                 ssa.CheckUses(s => Assert.Fail(s));
             }
         }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void Coa3Converge()
-		{
-			RunFileTest_x86_real("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
-		}
+        public void Coa3Converge()
+        {
+            RunFileTest_x86_real("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
         public void CoaAsciiHex()
-		{
-			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
-		}
-
-		[Test]
-        [Category(Categories.IntegrationTests)]
-		public void CoaDataConstraint()
         {
-			RunFileTest_x86_real("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
-		}
+            RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void CoaMoveChain()
+        public void CoaDataConstraint()
         {
-			RunFileTest_x86_real("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
-		}
+            RunFileTest_x86_real("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
+        }
 
-		[Test]
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void CoaMoveChain()
+        {
+            RunFileTest_x86_real("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
+        }
+
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CoaFactorialReg()
-		{
-			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
-		}
-
-		[Test]
-        [Category(Categories.IntegrationTests)]
-		public void CoaMemoryTest()
-		{
-			RunFileTest_x86_real("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
-		}
-
-		[Test]
-        [Category(Categories.IntegrationTests)]
-		public void CoaSmallLoop()
         {
-			RunFileTest_x86_real("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
-		}
+            RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
+        }
 
-		[Test]
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void CoaMemoryTest()
+        {
+            RunFileTest_x86_real("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
+        }
+
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void CoaSmallLoop()
+        {
+            RunFileTest_x86_real("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
+        }
+
+        [Test]
         [Category(Categories.IntegrationTests)]
         [Ignore(Categories.AnalysisDevelopment)]
         public void CoaAddSubCarries()
         {
-			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
-		}
+            RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void CoaConditionals()
-		{
-			RunFileTest_x86_real("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
-		}
+        public void CoaConditionals()
+        {
+            RunFileTest_x86_real("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void CoaSliceReturn()
-		{
-			RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
-		}
+        public void CoaSliceReturn()
+        {
+            RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void CoaReg00002()
-		{
-			RunFileTest_x86_real("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
-		}
+        public void CoaReg00002()
+        {
+            RunFileTest_x86_real("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void CoaWhileGoto()
-		{
-			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
-		}
+        public void CoaWhileGoto()
+        {
+            RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
+        }
 
         [Test]
         [Category(Categories.IntegrationTests)]
@@ -185,6 +223,24 @@ namespace Reko.UnitTests.Analysis
             m.Call(r3, 4);
             m.Return();
             RunFileTest(m, "Analysis/CoaCallCallee.txt");
+        }
+
+        [Test(Description = "Avoid coalescing of invalid constant")]
+        public void CoaDoNotCoalesceInvalidConstant()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            m.Assign(a, Constant.Invalid);
+            m.Assign(b, m.IAdd(a, 4));
+
+            RunCoalescer();
+
+            var expected =
+@"
+a = <invalid>
+b = a + 0x00000004
+";
+            AssertProcedureCode(expected);
         }
     }
 }
