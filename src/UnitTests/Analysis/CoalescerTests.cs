@@ -33,6 +33,38 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class CoalescerTests : AnalysisTestBase
 	{
+		protected override void RunTest(Program program, TextWriter fut)
+		{
+            IImportResolver importResolver = null;
+            var listener = new FakeDecompilerEventListener();
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+			dfa.UntangleProcedures();
+			
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+                Aliases alias = new Aliases(proc, program.Architecture);
+                alias.Transform();
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
+				SsaState ssa = sst.SsaState;
+				
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				cce.Transform();
+				DeadCode.Eliminate(proc, ssa);
+
+                ValuePropagator vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
+				vp.Transform();
+				DeadCode.Eliminate(proc, ssa);
+				Coalescer co = new Coalescer(proc, ssa);
+				co.Transform();
+
+				ssa.Write(fut);
+				proc.Write(false, fut);
+				fut.WriteLine();
+
+                ssa.CheckUses(s => Assert.Fail(s));
+            }
+        }
+
 		[Test]
 		public void Coa3Converge()
 		{
@@ -137,37 +169,5 @@ namespace Reko.UnitTests.Analysis
             m.Return();
             RunFileTest(m, "Analysis/CoaCallCallee.txt");
         }
-
-        protected override void RunTest(Program program, TextWriter fut)
-		{
-            IImportResolver importResolver = null;
-            var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
-			dfa.UntangleProcedures();
-			
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-				Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
-				SsaState ssa = sst.SsaState;
-				
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
-
-				ValuePropagator vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
-				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
-				Coalescer co = new Coalescer(proc, ssa);
-				co.Transform();
-
-				ssa.Write(fut);
-				proc.Write(false, fut);
-				fut.WriteLine();
-
-                ssa.CheckUses(s => Assert.Fail(s));
-            }
-		}
-	}
+    }
 }
