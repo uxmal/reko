@@ -8,6 +8,7 @@
 void test6(cdecl_class * c, int32 a, int32 b)
 {
 	c->vtbl->sum(c, a, b);
-	c->vtbl->method04(c, <invalid>);
+	word32 eax_37 = <invalid>;
+	c->vtbl->method04(c, eax_37);
 }
 
