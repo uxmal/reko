@@ -524,36 +524,36 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 	word32 sp_1 = fp;
 	if (!ZC)
 	{
-		word32 pc_139 = r7 - __ror(r9, 0x01);
+		word32 pc_159 = r7 - __ror(r9, 0x01);
 	}
 	if (!ZC)
 	{
 		r8 = r0 + (r6 >> 0x08) + C;
-		byte NZCV_132 = cond(r8);
-		C = NZCV_132;
-		ZC = NZCV_132;
-		Z = NZCV_132;
-		V = NZCV_132;
-		NZV = NZCV_132;
-		N = NZCV_132;
+		byte NZCV_151 = cond(r8);
+		C = NZCV_151;
+		ZC = NZCV_151;
+		Z = NZCV_151;
+		V = NZCV_151;
+		NZV = NZCV_151;
+		N = NZCV_151;
 	}
 	if (!ZC)
 	{
-		Mem128[r6 - 0x04 + 0x00:word32] = r9;
-		Mem129[r6 - 0x08 + 0x00:word32] = r10;
-		Mem130[r6 - 0x0C + 0x00:word32] = ip;
+		Mem147[r6 - 0x04 + 0x00:word32] = r9;
+		Mem148[r6 - 0x08 + 0x00:word32] = r10;
+		Mem149[r6 - 0x0C + 0x00:word32] = ip;
 	}
 	if (!Z)
 		r9 = r6 - (r6 >> 0x0014);
-	word32 v16_23 = (word32) Mem0[0x000008CD + 0x00:int16];
+	word32 v16_25 = (word32) Mem0[0x000008CD + 0x00:int16];
 	if (!V)
 	{
-		Mem121[r6 + 0x00:word32] = r0;
-		Mem122[r6 - 0x04 + 0x00:word32] = r4;
-		Mem123[r6 - 0x08 + 0x00:word32] = r5;
-		Mem124[r6 - 0x0C + 0x00:word32] = r7;
-		Mem125[r6 - 0x0010 + 0x00:word32] = r8;
-		Mem126[r6 - 0x0014 + 0x00:word32] = r10;
+		Mem140[r6 + 0x00:word32] = r0;
+		Mem141[r6 - 0x04 + 0x00:word32] = r4;
+		Mem142[r6 - 0x08 + 0x00:word32] = r5;
+		Mem143[r6 - 0x0C + 0x00:word32] = r7;
+		Mem144[r6 - 0x0010 + 0x00:word32] = r8;
+		Mem145[r6 - 0x0014 + 0x00:word32] = r10;
 	}
 	if (!C)
 	{
@@ -562,19 +562,19 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 	}
 	if (!NZV)
 	{
-		Mem106[r6 + 0x00:word32] = r0;
-		Mem107[r6 - 0x04 + 0x00:word32] = r1;
-		Mem108[r6 - 0x08 + 0x00:word32] = r2;
-		Mem109[r6 - 0x0C + 0x00:word32] = v16_23;
-		Mem110[r6 - 0x0010 + 0x00:word32] = r4;
-		Mem112[r6 - 0x0014 + 0x00:word32] = r5;
-		Mem113[r6 - 0x0018 + 0x00:word32] = r6;
-		Mem114[r6 - 0x001C + 0x00:word32] = r7;
-		Mem116[r6 - 0x0020 + 0x00:word32] = r10;
+		Mem125[r6 + 0x00:word32] = r0;
+		Mem126[r6 - 0x04 + 0x00:word32] = r1;
+		Mem127[r6 - 0x08 + 0x00:word32] = r2;
+		Mem128[r6 - 0x0C + 0x00:word32] = v16_25;
+		Mem129[r6 - 0x0010 + 0x00:word32] = r4;
+		Mem131[r6 - 0x0014 + 0x00:word32] = r5;
+		Mem132[r6 - 0x0018 + 0x00:word32] = r6;
+		Mem133[r6 - 0x001C + 0x00:word32] = r7;
+		Mem135[r6 - 0x0020 + 0x00:word32] = r10;
 	}
 	if (!Z)
 	{
-		Mem105[r7 + -177:word32] = r0;
+		Mem124[r7 + -177:word32] = r0;
 		r7 = r7 + -177;
 	}
 	if (!ZC)
@@ -586,41 +586,48 @@ void xTaskCreate(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r
 		r6 = (word32) Mem0[r0 - 88 + 0x00:int16];
 	if (!N)
 	{
-		Mem87[r6 - 0x04 + 0x00:word32] = r1;
-		Mem88[r6 - 0x08 + 0x00:word32] = r2;
-		Mem89[r6 - 0x0C + 0x00:word32] = r6;
-		Mem90[r6 - 0x0010 + 0x00:word32] = r9;
-		Mem92[r6 - 0x0014 + 0x00:word32] = ip;
-		Mem93[r6 - 0x0018 + 0x00:word32] = sp_1;
+		byte NZC_108 = cond(sp_1 | 0x9500);
+		N = NZC_108;
+		Z = NZC_108;
+	}
+	if (!N)
+	{
+		Mem99[r6 - 0x04 + 0x00:word32] = r1;
+		Mem100[r6 - 0x08 + 0x00:word32] = r2;
+		Mem101[r6 - 0x0C + 0x00:word32] = r6;
+		Mem102[r6 - 0x0010 + 0x00:word32] = r9;
+		Mem104[r6 - 0x0014 + 0x00:word32] = ip;
+		Mem105[r6 - 0x0018 + 0x00:word32] = sp_1;
 	}
 	if (!Z)
 		Z = cond(r2 *u r7);
 	if (!Z)
 	{
-		word32 r7_53 = r7 + 3989;
-		word32 sp_54;
-		byte ZC_55;
-		word32 pc_56;
-		word32 r7_57;
-		word32 r9_58;
-		word32 r8_59;
-		word32 r0_60;
-		word32 r6_61;
-		bool C_62;
-		byte NZCV_63;
-		word32 r10_64;
-		word32 ip_65;
-		byte Z_66;
-		word32 r3_67;
-		byte V_68;
-		word32 r4_69;
-		word32 r5_70;
-		word32 p0_71;
-		byte NZV_72;
-		word32 r1_73;
-		word32 r2_74;
-		byte N_75;
-		((word32) Mem0[r7_53 + 0x00:byte])();
+		word32 r7_63 = r7 + 3989;
+		word32 sp_64;
+		byte ZC_65;
+		word32 pc_66;
+		word32 r7_67;
+		word32 r9_68;
+		word32 r8_69;
+		word32 r0_70;
+		word32 r6_71;
+		bool C_72;
+		byte NZCV_73;
+		word32 r10_74;
+		word32 ip_75;
+		byte Z_76;
+		word32 r3_77;
+		byte V_78;
+		word32 r4_79;
+		word32 r5_80;
+		word32 p0_81;
+		byte NZV_82;
+		word32 r1_83;
+		word32 r2_84;
+		byte N_85;
+		byte NZC_86;
+		((word32) Mem0[r7_63 + 0x00:byte])();
 	}
 }
 
