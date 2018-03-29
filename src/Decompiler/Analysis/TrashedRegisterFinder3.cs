@@ -126,6 +126,8 @@ namespace Reko.Analysis
             ApplyStackPointers(savedSps, flow);
             ApplyStackPointers(savedTops, flow);
 
+            BypassRegisterOffsets(savedSps, arch.StackRegister);
+
             this.propagateToCallers = true;
             while (worklist.GetWorkItem(out block))
             {
@@ -166,6 +168,30 @@ namespace Reko.Analysis
                 }
             }
         }
+
+        private void BypassRegisterOffsets(Dictionary<Procedure, int?> savedSps, RegisterStorage register)
+        {
+            foreach (var ssa in this.ssas.Values)
+            {
+                var callStms = ssa.Procedure.Statements
+                    .Where(stm => stm.Instruction is CallInstruction)
+                    .ToList();
+                var ssam = new SsaMutator(ssa);
+                foreach (var stm in callStms)
+                {
+                    var call = (CallInstruction)stm.Instruction;
+                    var proc = (call.Callee as ProcedureConstant)?.Procedure as Procedure;
+                    if (proc == null)
+                        continue;
+                    if (savedSps.TryGetValue(proc, out var delta) ||
+                        delta.HasValue)
+                    {
+                        ssam.AdjustRegisterAfterCall(stm, call, register, delta.Value);
+                    }
+                }
+            }
+        }
+
 
         private void CreateState()
         {
