@@ -151,6 +151,7 @@
     <Compile Include="Analysis\ProcedureFlow2.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
+    <Compile Include="Analysis\SsaMutator.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder2.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UsedIdentifierFinder.cs" />

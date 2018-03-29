@@ -5878,6 +5878,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_addw()
+        {
+            BuildTest(0xF60D, 0x2348);  // add         r3,sp,#0xA48
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = sp + 0x00000A48");
+        }
+
+        [Test]
         public void ThumbRw_movw()
         {
             BuildTest(0xF24C, 0x1C00); // movw        r12,#0xC100
@@ -5914,6 +5923,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_clz()
+        {
+            RewriteCode("B2FA82F2");	// clz r2, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __clz(r2)");
+        }
+
+        [Test]
+        public void ThumbRw_cmn()
+        {
+            RewriteCode("EA42");	// cmn r2, r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|NZCV = cond(r2 + r5)");
+        }
+
+        [Test]
         public void ThumbRw_bne()
         {
             BuildTest(0xD101);  // bne         00401056
@@ -5947,7 +5974,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r0 << 0x00000001",
-                "2|L--|NZCV = cond(r0)");
+                "2|L--|NZC = cond(r0)");
         }
 
         [Test]
@@ -5984,7 +6011,7 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0x7858);  // ldrb        r0,[r3,#1]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = (uint32) Mem0[r3 + 1:byte]");
+                "1|L--|r0 = (word32) Mem0[r3 + 1:byte]");
         }
 
         [Test]
@@ -6014,15 +6041,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = ~0x00000000");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_mrc()
-        {
-            BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|mrc(p15, 0x00, r3, c13, c0, 0x02);");
-        }
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6079,7 +6097,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
                 "1|L--|r0 = r1 >> 0x0000000E",
-                "2|L--|NZCV = cond(r0)");
+                "2|L--|NZC = cond(r0)");
         }
 
         [Test]
@@ -6091,14 +6109,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r1 = 0x000000F4 - r4");
         }
 
-        [Test]
-        public void ThumbRw_ldrsb()
-        {
-            BuildTest(0xF991, 0x3000);  // ldrsb       r3,[r1]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (int32) Mem0[r1:int8]");
-        }
 
         [Test]
         public void ThumbRw_subw()
@@ -6110,12 +6120,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_addw()
+        public void ThumbRw_svc()
         {
-            BuildTest(0xF60D, 0x2348);  // add         r3,sp,#0xA48
+            RewriteCode("4EDF");	// svc #0x4e
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = sp + 0x00000A48");
+                "0|T--|00100000(2): 1 instructions",
+                "1|L--|__syscall(0x0000004E)");
         }
 
         [Test]
@@ -6124,7 +6134,17 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0x800B);  // strh        r3,[r1]
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r1:word16] = (word16) r3");
+                "1|L--|Mem0[r1:word16] = (uint16) r3");
+        }
+
+
+        [Test]
+        public void ThumbRw_uxtb()
+        {
+            RewriteCode("E8B2");	// uxtb r0, r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = (uint32) (byte) r5");
         }
 
         [Test]
@@ -6163,6 +6183,34 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v4 = Mem0[sp:word32]",
                 "2|L--|sp = sp + 0x0000000C",
                 "3|T--|goto v4");
+        }
+
+        [Test]
+        public void ThumbRw_ldrd()
+        {
+            RewriteCode("DDE90C23");	// ldrd r2, r3, [sp, #0x30]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3_r2 = Mem0[sp + 48:word64]");
+        }
+
+        [Test]
+        public void ThumbRw_ldrsb()
+        {
+            BuildTest(0xF991, 0x3000);  // ldrsb       r3,[r1]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = (word32) Mem0[r1:int8]");
+        }
+
+
+        [Test]
+        public void ThumbRw_ldrsh()
+        {
+            RewriteCode("B6F94946");	// ldrsh.w r4, [r6, #0x649]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = (word32) Mem0[r6 + 1609:int16]");
         }
 
         [Test]
@@ -6245,16 +6293,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_orr()
-        {
-            RewriteCode("0443");	// orrs r4, r0
-            AssertCode(
-                "0|L--|00100000(2): 2 instructions",
-                "1|L--|r4 = r4 | r0",
-                "2|L--|NZC = cond(r4)");
-        }
-
-        [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_cdp()
         {
@@ -6265,13 +6303,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_mcr()
         {
             RewriteCode("01EE100F");	// mcr p15, #0, r0, c1, c0, #0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__mcr(p15, 0x00000000, r0, 0x01, 0x00, 0x00000000)");
         }
 
         [Test]
@@ -6315,23 +6352,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_sxtah()
-        {
-            RewriteCode("00FAFEFF");	// sxtah pc, r0, lr, ror #24
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_umull()
         {
             RewriteCode("A2FB0030");	// umull r3, r0, r2, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0_r3 = r0 *u r2");
+        }
+
+        [Test]
+        public void ThumbRw_mul()
+        {
+            RewriteCode("03FB00F3");	// mul r3, r3, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = r3 * r0");
         }
 
         [Test]
@@ -6344,13 +6379,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_ldc()
         {
             RewriteCode("3AED2046");	// ldc p6, c4, [sl, #-0x80]!
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r10 = r10 + -128",
+                "2|L--|v3 = Mem0[r10:word32]",
+                "3|L--|p6 = __ldc(0x04, v3)");
         }
 
         [Test]
@@ -6384,13 +6420,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_ldcl()
         {
             RewriteCode("D8EC3846");	// ldcl p6, c4, [r8], {0x38}
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = Mem0[r8:word32]",
+                "2|L--|p6 = __ldcl(0x04, v3)");
         }
 
         [Test]
@@ -6433,13 +6469,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_sbc()
         {
             RewriteCode("7CEB3846");	// sbcs.w r6, ip, r8, ror #16
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = ip - __ror(r8, 16) - C",
+                "2|L--|NZCV = cond(r6)");
         }
 
         [Test]
@@ -6452,15 +6488,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_ldrd()
-        {
-            RewriteCode("DDE90C23");	// ldrd r2, r3, [sp, #0x30]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+ 
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6472,15 +6500,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_ldrsh()
-        {
-            RewriteCode("B6F94946");	// ldrsh.w r4, [r6, #0x649]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6542,15 +6561,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_mrc2()
-        {
-            RewriteCode("3CFE714D");	// mrc2 p13, #1, r4, c12, c1, #3
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6634,16 +6645,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         [Test]
         [Ignore(Categories.FailedTests)]
-        public void ThumbRw_mul()
-        {
-            RewriteCode("03FB00F3");	// mul r3, r3, r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vqadd()
         {
             RewriteCode("0CFF14F0");	// vqadd.u8 d15, d12, d4
@@ -6673,23 +6674,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_mla()
         {
             RewriteCode("00FB0210");	// mla r0, r0, r2, r1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_ldm()
-        {
-            RewriteCode("1ECC");	// ldm r4, {r1, r2, r3, r4}
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = r1 + r0 * r2");
         }
 
         [Test]
@@ -6743,23 +6733,30 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_smulbb()
-        {
-            RewriteCode("15FB02F6");	// smulbb r6, r5, r2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_uxtab()
         {
             RewriteCode("5BFA94F8");	// uxtab r8, fp, r4, ror #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r8 = fp + (byte) (r4 >>u 8)");
+        }
+
+        [Test]
+        public void ThumbRw_uxtah()
+        {
+            RewriteCode("11FAFEF7");	// uxtah r7, r1, lr, ror #24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = r1 + (uint16) (lr >>u 24)");
+        }
+
+        [Test]
+        public void ThumbRw_smulbb()
+        {
+            RewriteCode("15FB02F6");	// smulbb r6, r5, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = (int16) r5 *s (int16) r2");
         }
 
         [Test]
@@ -6767,16 +6764,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbRw_tbb()
         {
             RewriteCode("DFE802F0");	// tbb [pc, r2]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_clz()
-        {
-            RewriteCode("B2FA82F2");	// clz r2, r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
@@ -6854,16 +6841,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         [Test]
         [Ignore(Categories.FailedTests)]
-        public void ThumbRw_bfi()
-        {
-            RewriteCode("63F31F43");	// bfi r3, r3, #0x10, #0x10
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_tbh()
         {
             RewriteCode("DFE813F0");	// tbh [pc, r3, lsl #1]
@@ -6883,13 +6860,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_stc()
         {
             RewriteCode("88ED3D68");	// stc p8, c6, [r8, #0xf4]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__stc(p8, 0x06, Mem0[r8 + 244:word32])");
         }
 
         [Test]
@@ -6912,15 +6888,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_uxtah()
-        {
-            RewriteCode("11FAFEF7");	// uxtah r7, r1, lr, ror #24
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6933,13 +6900,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smlatt()
         {
             RewriteCode("12FB3A46");	// smlatt r6, r2, sl, r4
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = (int16) (r2 >> 16) *s (int16) (r10 >> 16) + r4",
+                "2|L--|Q = cond(r6)");
         }
 
         [Test]
@@ -6972,15 +6939,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_smull()
-        {
-            RewriteCode("8FFB0028");	// smull r2, r8, pc, r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -7003,13 +6961,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_umlal()
         {
             RewriteCode("E3FB0FE7");	// umlal lr, r7, r3, pc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r7_lr = r3 *u pc + r7_lr");
         }
 
         [Test]
@@ -7027,16 +6984,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbRw_hint()
         {
             RewriteCode("70BF");	// hint #7
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_uxtb()
-        {
-            RewriteCode("E8B2");	// uxtb r0, r5
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
@@ -7073,13 +7020,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smulbt()
         {
             RewriteCode("17FB16F0");	// smulbt r0, r7, r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = (int16) r7 *s (int16) (r6 >> 16)");
+        }
+
+        [Test]
+        public void ThumbRw_smull()
+        {
+            RewriteCode("8FFB0028");	// smull r2, r8, pc, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8_r2 = r0 *s pc");
         }
 
         [Test]
@@ -7097,6 +7052,25 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbRw_smlsd()
         {
             RewriteCode("41FB0446");	// smlsd r6, r1, r4, r4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_mrc()
+        {
+            BuildTest(0xEE1D, 0x3F50);  // mrc         p15,#0,r3,c13,c0,#2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __mrc(p15, 0x00000000, 0x0D, 0x00, 0x00000002)");
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_mrc2()
+        {
+            RewriteCode("3CFE714D");	// mrc2 p13, #1, r4, c12, c1, #3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
@@ -7132,14 +7106,37 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
+
+        [Test]
+        public void ThumbRw_ldm()
+        {
+            RewriteCode("1ECC");	// ldm r4, {r1, r2, r3, r4}
+            AssertCode(
+                "0|L--|00100000(2): 4 instructions",
+                "1|L--|r1 = Mem0[r4:word32]",
+                "2|L--|r2 = Mem0[r4 + 4:word32]",
+                "3|L--|r3 = Mem0[r4 + 8:word32]",
+                "4|L--|r4 = Mem0[r4 + 12:word32]");
+        }
+
         [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_ldmdb()
         {
             RewriteCode("36E97D4B");	// ldmdb r6!, {r0, r2, r3, r4, r5, r6, r8, sb, fp, lr}
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 11 instructions",
+                "1|L--|r0 = Mem0[r6 - 4:word32]",
+                "2|L--|r2 = Mem0[r6 - 8:word32]",
+                "3|L--|r3 = Mem0[r6 - 12:word32]",
+                "4|L--|r4 = Mem0[r6 - 16:word32]",
+                "5|L--|r5 = Mem0[r6 - 20:word32]",
+                "6|L--|r6 = Mem0[r6 - 24:word32]",
+                "7|L--|r8 = Mem0[r6 - 28:word32]",
+                "8|L--|r8 = Mem0[r6 - 32:word32]",
+                "9|L--|r9 = Mem0[r6 - 36:word32]",
+                "10|L--|r10 = Mem0[r4 + 36:word32]",
+                "11|L--|r11 = Mem0[r4 + 40:word32]");
         }
 
         [Test]
@@ -7203,13 +7200,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_orrs()
+        {
+            RewriteCode("0443");	// orrs r4, r0
+            AssertCode(
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r4 = r4 | r0",
+                "2|L--|NZC = cond(r4)");
+        }
+
+        [Test]
         public void ThumbRw_orn()
         {
             RewriteCode("64F40300");	// orn r0, r4, #0x830000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r0 = r4 | ~0x00830000");
         }
 
         [Test]
@@ -7249,16 +7255,6 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("88EC179B");	// fstmiax r8, {d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19}
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_svc()
-        {
-            RewriteCode("4EDF");	// svc #0x4e
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
 
@@ -7444,16 +7440,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         [Test]
         [Ignore(Categories.FailedTests)]
-        public void ThumbRw_cmn()
-        {
-            RewriteCode("EA42");	// cmn r2, r5
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smlal()
         {
             RewriteCode("CCFB0BB0");	// smlal fp, r0, ip, fp
@@ -7472,15 +7458,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_smlaltb()
-        {
-            RewriteCode("C9FBA0E6");	// smlaltb lr, r6, sb, r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -7553,13 +7531,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_sxtab()
         {
             RewriteCode("47FA9BF8");	// sxtab r8, r7, fp, ror #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r8 = r7 + (int8) (fp >>u 8)");
+        }
+
+        [Test]
+        public void ThumbRw_sxtah()
+        {
+            RewriteCode("00FAFEFF");	// sxtah pc, r0, lr, ror #24
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|pc = r0 + (int16) (lr >>u 24)");
         }
 
         [Test]
@@ -7603,13 +7589,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smlatb()
         {
             RewriteCode("17FB2046");	// smlatb r6, r7, r0, r4
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r6 = (int16) (r7 >> 16) *s (int16) r0 + r4",
+                "2|L--|Q = cond(r6)");
         }
 
         [Test]
@@ -7623,13 +7609,23 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
+        //[Ignore(Categories.FailedTests)]
         public void ThumbRw_bfc()
         {
             RewriteCode("6FF30001");	// bfc r1, #0, #1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r1 = r1 & 0xFFFFFFFE");
+        }
+
+        [Test]
+        public void ThumbRw_bfi()
+        {
+            RewriteCode("63F31F43");	// bfi r3, r3, #0x10, #0x10
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r3, ui16, 0)",
+                "2|L--|r3 = DPB(r3, v3, 16)");
         }
 
         [Test]
@@ -7643,23 +7639,31 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_smlaltt()
-        {
-            RewriteCode("CFFBB168");	// smlaltt r6, r8, pc, r1
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_sdiv()
         {
             RewriteCode("95FBFFF7");	// sdiv r7, r5, pc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r7 = r5 / pc");
+        }
+
+
+        [Test]
+        public void ThumbRw_smlaltb()
+        {
+            RewriteCode("C9FBA0E6");	// smlaltb lr, r6, sb, r0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|lr_r6 = (int16) (r9 >> 16) *s (int16) r0 + lr_r6");
+        }
+
+        [Test]
+        public void ThumbRw_smlaltt()
+        {
+            RewriteCode("CFFBB168");	// smlaltt r6, r8, pc, r1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6_r8 = (int16) (pc >> 16) *s (int16) (r1 >> 16) + r6_r8");
         }
 
         [Test]
@@ -7717,16 +7721,6 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbRw_vmlsl()
         {
             RewriteCode("EAFFE346");	// vmlsl.u32 q10, d26, d3[1]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_strht()
-        {
-            RewriteCode("23F8236E");	// strht r6, [r3, #0x23]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
@@ -7853,13 +7847,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_umaal()
         {
             RewriteCode("E0FB6FF0");	// umaal pc, r0, r0, pc
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v2 = r0 *u pc",
+                "2|L--|v2 = v2 + (uint64) r0",
+                "3|L--|r0_pc = v2 + (uint64) pc");
         }
 
         [Test]
@@ -8085,13 +8080,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_strht()
+        {
+            RewriteCode("23F8236E");	// strht r6, [r3, #0x23]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r3 + 35:word16] = (uint16) r6");
+        }
+
+        [Test]
         public void ThumbRw_strbt()
         {
             RewriteCode("08F8031E");	// strbt r1, [r8, #3]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|Mem0[r8 + 3:byte] = (byte) r1");
         }
 
         [Test]
