@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r1 = r1 + 1",
-                "2|L--|r2 = Mem0[r1:int8]");
+                "2|L--|r2 = (word32) Mem0[r1:int8]");
         }
 
         [Test]
@@ -245,9 +245,10 @@ namespace Reko.UnitTests.Arch.Arm
         {
             BuildTest(0xE4D43001);// ldrb r3,[r4],#1
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r3 = Mem0[r4:byte]",
-                "2|L--|r4 = r4 + 0x00000001");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = (word32) Mem0[r4:byte]",
+                "2|L--|r4 = r4 + 0x00000001",
+                "3|L--|r3 = v4");
         }
 
         [Test]
@@ -256,9 +257,9 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE92D4010);
             AssertCode(
                "0|L--|00100000(4): 3 instructions",
-               "1|L--|Mem0[sp:word32] = r4",
-               "2|L--|Mem0[sp - 4:word32] = lr",
-               "3|L--|sp = sp - 8");
+               "1|L--|sp = sp - 8",
+               "2|L--|Mem0[sp:word32] = r4",
+               "3|L--|Mem0[sp + 4:word32] = lr");
         }
 
         [Test]
@@ -276,11 +277,11 @@ namespace Reko.UnitTests.Arch.Arm
             BuildTest(0xE6EF2071);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (byte) r1");
+                "1|L--|r2 = (uint32) (byte) r1");
             BuildTest(0xE6EF2471);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = (byte) (r1 >>u 8)");
+                "1|L--|r2 = (uint32) (byte) (r1 >>u 8)");
         }
 
         [Test]
@@ -425,7 +426,7 @@ means
             BuildTest(0xE6AF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (int8) (r2 >>u 8)");
+                "1|L--|r1 = (uint32) (int8) (r2 >>u 8)");
         }
 
         [Test]
@@ -434,7 +435,7 @@ means
             BuildTest(0xE6FF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (uint16) (r2 >>u 8)");
+                "1|L--|r1 = (uint32) (uint16) (r2 >>u 8)");
         }
 
         [Test]
@@ -759,8 +760,10 @@ means
         {
             BuildTest(0xE0fe50fc);	// ldrsht r5, [lr], #0xc
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r5 = Mem0[lr:int16]");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = (word32) Mem0[lr:int16]",
+                "2|L--|lr = lr + 0x0000000C",
+                "3|L--|r5 = v4");
         }
 
         [Test]
@@ -807,9 +810,10 @@ means
         {
             BuildTest(0xE0fd52b4);	// ldrht r5, [sp], #0x24
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r5 = Mem0[sp:word16]",
-                "2|L--|sp = sp + 0x00000024");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = (word32) Mem0[sp:word16]",
+                "2|L--|sp = sp + 0x00000024",
+                "3|L--|r5 = v4");
         }
 
         [Test]
@@ -834,10 +838,11 @@ means
         {
             BuildTest(0x00f707d0);	// ldrsbteq r0, [r7], #0x70
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
+                "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|r0 = Mem0[r7:int8]",
-                "3|L--|r7 = r7 + 0x00000070");
+                "2|L--|v5 = (word32) Mem0[r7:int8]",
+                "3|L--|r7 = r7 + 0x00000070",
+                "4|L--|r0 = v5");
         }
 
         [Test]
@@ -1003,10 +1008,11 @@ means
         {
             BuildTest(0xc47a0000);  // ldrbtgt r0, [sl], #-0
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
+                "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(LE,NZV)) branch 00100004",
-                "2|L--|r0 = Mem0[r10:byte]",
-                "3|L--|r10 = r10 - 0x00000000");
+                "2|L--|v5 = (word32) Mem0[r10:byte]",
+                "3|L--|r10 = r10 + 0x00000000",
+                "4|L--|r0 = v5");
         }
 
         [Test]
@@ -1327,10 +1333,11 @@ means
         {
             BuildTest(0x44340000);  // ldrtmi r0, [r4], #-0
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
-                "1|T--|if (Test(GT,NZ)) branch 00100004",
-                "2|L--|r0 = Mem0[r4:word32]",
-                "3|L--|r4 = r4 - 0x00000000");
+                "0|L--|00100000(4): 4 instructions",
+                "1|T--|if (Test(GE,N)) branch 00100004",
+                "2|L--|v5 = Mem0[r4:word32]",
+                "3|L--|r4 = r4 + 0x00000000",
+                "4|L--|r0 = v5");
         }
 
         [Test]

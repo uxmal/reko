@@ -42,7 +42,7 @@ namespace Reko.Analysis
         private IndirectCallExpander expander;
         private SsaIdentifierTransformer ssaIdTransformer;
         private DecompilerEventListener eventListener;
-        private ExpressionEmitter m;
+        private SsaMutator ssam;
         private bool changed;
 
 
@@ -58,7 +58,7 @@ namespace Reko.Analysis
             this.expander = new IndirectCallExpander(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.eventListener = eventListener;
-            this.m = new ExpressionEmitter();
+            this.ssam = new SsaMutator(ssa);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Reko.Analysis
             var ft = pt.Pointee as FunctionType;
             if (ft == null)
                 return;
-            AdjustRegisterAfterCall(
+            ssam.AdjustRegisterAfterCall(
                 stm,
                 call,
                 program.Architecture.StackRegister,
@@ -112,73 +112,6 @@ namespace Reko.Analysis
             ssaIdTransformer.Transform(stm, call);
             DefineUninitializedIdentifiers(stm, call);
             changed = true;
-        }
-
-        /// <summary>
-        /// Generates a "by-pass" of a register around a Call instruction.
-        /// </summary>
-        /// <remarks>
-        /// If we know that a particular register is incremented/decremented
-        /// by a specific constant amount after calling a procedure, we can remove
-        /// any definitions of that register from the signature of the procedure.
-        /// 
-        /// Example: suppose we know that the SP register is incremented by 2 
-        /// after the Call instruction:
-        /// 
-        /// call [something]
-        ///     uses: SP_42, [other registers]
-        ///     defs: SP_94, [other registers]
-        ///     
-        /// this function modifies it to look like this:
-        /// 
-        /// call [something]
-        ///     uses: SP_42, [other registers]
-        ///     defs: [other registers]
-        /// SP_94 = SP_42 + 2
-        /// </remarks>
-        /// <param name="stm">The Statement containing the CallInstruction.</param>
-        /// <param name="call">The CallInstruction.</param>
-        /// <param name="register">The register whose post-call value is incremented.</param>
-        /// <param name="delta">The amount by which to increment the register.</param>
-        private void AdjustRegisterAfterCall(
-            Statement stm,
-            CallInstruction call,
-            RegisterStorage register,
-            int delta)
-        {
-            // Locate the post-call definition of the register, if any
-            var defRegBinding = call.Definitions
-                .Where(d => d.Identifier is Identifier idDef &&
-                            idDef.Storage == register)
-                .FirstOrDefault();
-            if (defRegBinding == null)
-                return;
-            var defRegId = defRegBinding.Identifier as Identifier;
-            if (defRegId == null)
-                return;
-            var usedRegExp = call.Uses
-                .Select(u => u.Expression)
-                .OfType<Identifier>()
-                .Where(u => u.Storage == register)
-                .FirstOrDefault();
-            if (usedRegExp == null)
-                return;
-
-            // Generate an instruction that adjusts the register according to
-            // the specified delta.
-            var src = AddConstant(usedRegExp, register.DataType.Size, delta);
-            var ass = new Assignment(defRegId, src);
-            var defSid = ssa.Identifiers[defRegId];
-
-            // Insert the instruction after the call statement.
-            var adjustRegStm = InsertStatement(stm, ass);
-
-            // Remove the bypassed register definition from
-            // the call instructions.
-            call.Definitions.Remove(defRegBinding);
-            defSid.DefExpression = src;
-            defSid.DefStatement = adjustRegStm;
-            ssa.AddUses(adjustRegStm);
         }
 
         private void DefineUninitializedIdentifiers(
@@ -200,33 +133,9 @@ namespace Reko.Analysis
         {
             var value = Constant.Invalid;
             var ass = new Assignment(sid.Identifier, value);
-            var newStm = InsertStatement(stm, ass);
+            var newStm = ssam.InsertStatementAfter(ass, stm);
             sid.DefExpression = value;
             sid.DefStatement = newStm;
-        }
-
-        private Expression AddConstant(Expression e, int cSize, int cValue)
-        {
-            if (cValue == 0)
-            {
-                return e;
-            }
-            else if (cValue > 0)
-            {
-                return m.IAdd(e, Constant.Word(cSize, cValue));
-            }
-            else
-            {
-                return m.ISub(e, Constant.Word(cSize, -cValue));
-            }
-        }
-
-        private Statement InsertStatement(Statement stm, Instruction instr)
-        {
-            var block = stm.Block;
-            var iPos = block.Statements.IndexOf(stm);
-            var linAddr = stm.LinearAddress;
-            return block.Statements.Insert(iPos + 1, linAddr, instr);
         }
     }
 
@@ -366,8 +275,7 @@ namespace Reko.Analysis
 
         private void DefId(Identifier id, Expression defExp)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
                 sid.DefExpression = defExp;
                 sid.DefStatement = stm;
@@ -376,8 +284,7 @@ namespace Reko.Analysis
 
         private void UseId(Identifier id)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
                 sid.Uses.Add(stm);
             }

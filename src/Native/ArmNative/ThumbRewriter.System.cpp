@@ -22,9 +22,10 @@
 
 #include "functions.h"
 #include "ComBase.h"
+#include "ArmRewriter.h"
 #include "ThumbRewriter.h"
 
-
+/*
 void ThumbRewriter::RewriteDmb()
 {
 	auto memBarrier = MemBarrierName(instr->detail->arm.mem_barrier);
@@ -162,3 +163,4 @@ void ThumbRewriter::RewriteSvc()
 	m.AddArg(RewriteOp(Dst()));
 	m.SideEffect(m.Fn(intrinsic));
 }
+*/

@@ -135,6 +135,22 @@ void ArmRewriter::RewriteSvc()
 	m.SideEffect(m.Fn(intrinsic));
 }
 
+void ArmRewriter::RewriteTrap()
+{
+	auto trapNo = m.UInt32(instr->bytes[0]);
+	auto ppp = host->EnsurePseudoProcedure("__syscall", BaseType::Word32, 1);
+	m.AddArg(trapNo);
+	m.SideEffect(m.Fn(ppp));
+}
+
+void ArmRewriter::RewriteUdf()
+{
+	auto trapNo = m.UInt32(instr->bytes[0]);
+	auto ppp = host->EnsurePseudoProcedure("__syscall", BaseType::Word32, 1);
+	m.AddArg(trapNo);
+	m.SideEffect(m.Fn(ppp));
+}
+
 const char * ArmRewriter::MemBarrierName(arm_mem_barrier barrier)
 {
 	switch (barrier)
