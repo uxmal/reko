@@ -18,7 +18,6 @@ protected:
 	virtual void ConditionalSkip(bool force) override;
 	virtual void PostRewrite() override;
 	virtual void RewriteBinOp(BinOpEmitter fn, bool updateFlags) override;
-	virtual void RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b)) override;
 
 	virtual void RewriteIt() override;
 

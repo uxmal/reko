@@ -101,15 +101,23 @@ void ArmRewriter::RewriteBinOp(BinOpEmitter op, bool setflags)
 
 void ArmRewriter::RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b))
 {
-	auto opDst = this->Operand(Dst());
-	auto opSrc1 = this->Operand(Src1());
-	auto opSrc2 = this->Operand(Src2());
-	m.Assign(opDst, cons(m, opSrc1, opSrc2));
+	auto dst = this->Operand(Dst());
+	if (instr->detail->arm.op_count == 3)
+	{
+		auto opSrc1 = this->Operand(Src1());
+		auto opSrc2 = this->Operand(Src2());
+		m.Assign(dst, cons(m, opSrc1, opSrc2));
+	}
+	else
+	{
+		auto dst = Operand(Dst());
+		auto src = Operand(Src1());
+		m.Assign(dst, cons(m, dst, src));
+	}
 	if (instr->detail->arm.update_flags)
 	{
-		m.Assign(NZC(), m.Cond(opDst));
+		m.Assign(NZC(), m.Cond(dst));
 	}
-
 }
 
 void ArmRewriter::RewriteRev()

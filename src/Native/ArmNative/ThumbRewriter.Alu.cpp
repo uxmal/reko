@@ -19,16 +19,6 @@ void ThumbRewriter::RewriteBinOp(BinOpEmitter fn, bool setFlags)
 	}
 }
 
-void ThumbRewriter::RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b))
-{
-	auto dst = Operand(Dst());
-	auto src = Operand(Src1());
-	m.Assign(dst, cons(m, dst, src));
-	if (this->instr->detail->arm.update_flags)
-	{
-		m.Assign(NZC(), m.Cond(dst));
-	}
-}
 
 /*
 

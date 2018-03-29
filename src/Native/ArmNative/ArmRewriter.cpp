@@ -347,7 +347,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_DCPS2:
 	case ARM_INS_DCPS3:
 	case ARM_INS_LSRS:
-	case ARM_INS_ORN:
 	case ARM_INS_ROR:
 	case ARM_INS_RRX:
 	case ARM_INS_SUBS:
@@ -419,6 +418,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_MSR: RewriteMsr(); break;
 	case ARM_INS_MUL: RewriteBinOp(&INativeRtlEmitter::IMul, instr->detail->arm.update_flags); break;
 	case ARM_INS_MVN: RewriteUnaryOp(&INativeRtlEmitter::Comp); break;
+	case ARM_INS_ORN: RewriteLogical([](auto & m, auto a, auto b) { return m.Or(a, m.Comp(b)); }); break;
 	case ARM_INS_ORR: RewriteBinOp(&INativeRtlEmitter::Or, false); break;
 	case ARM_INS_QADD: RewriteQAddSub(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_QDADD: RewriteQDAddSub(&INativeRtlEmitter::IAdd); break;
