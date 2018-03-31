@@ -25,12 +25,10 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System.Linq;
-using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -253,21 +251,7 @@ namespace Reko.UnitTests.Analysis
 
         private void AssertProcedureCode(string expected)
         {
-            var writer = new StringWriter();
-            var textFormatter = new TextFormatter(writer)
-            {
-                Indentation = 0,
-            };
-            textFormatter.WriteLine();
-            var codeFormatter = new CodeFormatter(textFormatter);
-            foreach (var stm in m.Ssa.Procedure.Statements)
-                stm.Instruction.Accept(codeFormatter);
-            var actual = writer.ToString();
-            if (expected != actual)
-            {
-                Debug.Print(actual);
-                Assert.AreEqual(expected, actual);
-            }
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
         [Test]
