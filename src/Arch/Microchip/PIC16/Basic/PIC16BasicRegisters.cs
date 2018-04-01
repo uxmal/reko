@@ -33,9 +33,6 @@ namespace Reko.Arch.Microchip.PIC16
     public class PIC16BasicRegisters : PIC16Registers
     {
 
-        /// <summary>
-        /// Private constructor.
-        /// </summary>
         private PIC16BasicRegisters()
         {
         }
@@ -47,15 +44,15 @@ namespace Reko.Arch.Microchip.PIC16
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static void Create(PIC pic)
         {
-            PICRegisters.LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
+            LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             new PIC16BasicRegisters().SetCoreRegisters();
         }
 
         /// <summary> Register Page in STATUS register. </summary>
-        public static PICBitFieldStorage RP0 { get; protected set; }
+        public static PICRegisterBitFieldStorage RP0 { get; protected set; }
 
         /// <summary> Register Page in STATUS register. </summary>
-        public static PICBitFieldStorage RP1 { get; protected set; }
+        public static PICRegisterBitFieldStorage RP1 { get; protected set; }
 
         /// <summary> INDF special function register. </summary>
         public static PICRegisterStorage INDF { get; private set; }
@@ -65,32 +62,19 @@ namespace Reko.Arch.Microchip.PIC16
 
         public override void SetCoreRegisters()
         {
+            base.SetCoreRegisters();
 
-            INDF = PICRegisters.GetRegister("INDF");
-            PCL = PICRegisters.GetRegister("PCL");
+            RP0 = GetBitField("RP0");
+            RP1 = GetBitField("RP1");
 
-            STATUS = PICRegisters.GetRegister("STATUS");
-            C = PICRegisters.GetBitField("C");
-            DC = PICRegisters.GetBitField("DC");
-            Z = PICRegisters.GetBitField("Z");
-            if (!PICRegisters.TryGetBitField("nPD", out var pd))
-            {
-                PICRegisters.TryGetBitField("PD", out pd);
-            }
-            PD = pd;
-            if (!PICRegisters.TryGetBitField("nTO", out var to))
-            {
-                PICRegisters.TryGetBitField("TO", out to);
-            }
-            TO = to;
-            RP0 = PICRegisters.GetBitField("RP0");
-            RP1 = PICRegisters.GetBitField("RP1");
-            FSR = PICRegisters.GetRegister("FSR");
+            INDF = GetRegister("INDF");
+            FSR = GetRegister("FSR");
 
-            WREG = PICRegisters.GetRegister("WREG");
-            STKPTR = PICRegisters.GetRegister("STKPTR");
-            PCLATH = PICRegisters.GetRegister("PCLATH");
-            INTCON = PICRegisters.GetRegister("INTCON");
+            AddIndirectParents(true,
+                (INDF, (FSRIndexedMode.INDF, FSR))
+                );
+
+            AddAlwaysAccessibleRegisters(true, INDF, PCL, STATUS, FSR, PCLATH, INTCON);
         }
 
     }

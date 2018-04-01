@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         private string _fmtBinary(string mesg, params ushort[] words)
         {
-            string sPIC = $"{arch.PICDescriptor.Name}/{arch.ExecMode}";
+            string sPIC = $"{arch.PICDescriptor.Name}/{PICMemoryDescriptor.ExecMode}";
             if (words.Length < 1) return $"{sPIC} {mesg}";
             return sPIC + "[" + string.Join("-", words.Select(w => w.ToString("X4"))) + "] " + mesg;
         }
@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         {
             picMode = PICProcessorMode.GetMode(picName);
             arch = picMode.CreateArchitecture();
-            arch.ExecMode = mode;
+            PICMemoryDescriptor.ExecMode = mode;
         }
 
     }

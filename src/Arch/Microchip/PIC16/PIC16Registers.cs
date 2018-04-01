@@ -20,9 +20,6 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-
 namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
@@ -30,51 +27,29 @@ namespace Reko.Arch.Microchip.PIC16
     /// <summary>
     /// This class supports the PIC16 registers pool.
     /// </summary>
-    public abstract class PIC16Registers
+    public abstract class PIC16Registers : PICRegisters
     {
 
-        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
-        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte);
-        public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
+        protected PIC16Registers() { }
 
-        public abstract void SetCoreRegisters();
-
-        // Below properties are definitions common to all PIC16 core registers and bit fields. 
-
-        /// <summary>
-        /// PCL special function register.
-        /// </summary>
-        public static PICRegisterStorage PCL { get; protected set; }
-
-        /// <summary> STATUS register. </summary>
-        public static PICRegisterStorage STATUS { get; protected set; }
-
-        /// <summary> Carry bit in STATUS register. </summary>
-        public static PICBitFieldStorage C { get; protected set; }
-
-        /// <summary> Digit-Carry bit in STATUS register. </summary>
-        public static PICBitFieldStorage DC { get; protected set; }
-
-        /// <summary> Zero bit in STATUS register. </summary>
-        public static PICBitFieldStorage Z { get; protected set; }
-
-        /// <summary> Power-Down bit in STATUS or PCON register. </summary>
-        public static PICBitFieldStorage PD { get; protected set; }
-
-        /// <summary> Timed-Out bit in STATUS or PCON register. </summary>
-        public static PICBitFieldStorage TO { get; protected set; }
-
-        /// <summary> WREG special function register. </summary>
-        public static PICRegisterStorage WREG { get; protected set; }
-
-        /// <summary> PCLATH special function register. </summary>
-        public static PICRegisterStorage PCLATH { get; protected set; }
 
         /// <summary> INTCON special function register. </summary>
         public static PICRegisterStorage INTCON { get; protected set; }
 
-        /// <summary> STKPTR pseudo-register. </summary>
-        public static PICRegisterStorage STKPTR { get; protected set; }
+        /// <summary> Global Interrupt Enable in INTCON register. </summary>
+        public static PICRegisterBitFieldStorage GIE { get; protected set; }
+
+
+        /// <summary>
+        /// Sets core registers common to all PIC16.
+        /// </summary>
+        public override void SetCoreRegisters()
+        {
+            base.SetCoreRegisters();
+
+            INTCON = GetRegister("INTCON");
+            GIE = GetBitField("GIE");
+        }
 
     }
 

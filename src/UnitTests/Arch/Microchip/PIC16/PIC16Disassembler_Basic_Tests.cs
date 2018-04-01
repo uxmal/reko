@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
     // This series of tests permits to most instructions common to all PIC16 as well as Basic PIC16.
     // 
     [TestFixture]
-    public class PIC16Disassembler_Basic_Tests : DisassemblerTestsBase
+    public class PIC16Basic_DisassemblerTests : DisassemblerTestsBase
     {
 
         [TestFixtureSetUp]
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         {
             VerifyDisasm("BTFSC\tSTATUS,C", "", 0x1803);
             VerifyDisasm("BTFSC\tINDF,7", "", 0x1B80);
-            VerifyDisasm("BTFSC\tTMR0,1", "", 0x1881);
+            VerifyDisasm("BTFSC\tSTATUS,DC", "", 0x1883);
             VerifyDisasm("BTFSC\tINDF,2", "", 0x1900);
             VerifyDisasm("BTFSC\t0x5A,6", "", 0x1B5A);
             VerifyDisasm("BTFSC\tPCLATH,7", "", 0x1B8A);
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         {
             VerifyDisasm("BTFSS\tSTATUS,C", "", 0x1C03);
             VerifyDisasm("BTFSS\tINDF,5", "", 0x1E80);
-            VerifyDisasm("BTFSS\tTMR0,1", "", 0x1C81);
+            VerifyDisasm("BTFSS\tSTATUS,DC", "", 0x1C83);
             VerifyDisasm("BTFSS\tINDF,0", "", 0x1C00);
             VerifyDisasm("BTFSS\t0x5A,6", "", 0x1F5A);
             VerifyDisasm("BTFSS\tPCLATH,7", "", 0x1F8A);
@@ -117,8 +117,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Basic_Disasm_CALL()
         {
-            VerifyDisasm("CALL\t0x000006", "", 0x2003);
-            VerifyDisasm("CALL\t0x000EAC", "", 0x2756);
+            VerifyDisasm("CALL\t0x00000006", "", 0x2003);
+            VerifyDisasm("CALL\t0x00000EAC", "", 0x2756);
         }
 
         [Test]
@@ -189,8 +189,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Basic_Disasm_GOTO()
         {
-            VerifyDisasm("GOTO\t0x000006", "", 0x2803);
-            VerifyDisasm("GOTO\t0x000EAC", "", 0x2F56);
+            VerifyDisasm("GOTO\t0x00000006", "", 0x2803);
+            VerifyDisasm("GOTO\t0x00000EAC", "", 0x2F56);
         }
 
         [Test]
@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         }
 
         [Test]
-        public void PIC16_Disasm_Invalids_All()
+        public void PIC16All_Disasm_Invalids()
         {
             VerifyDisasm("invalid", "unknown opcode", 0x0002);
             VerifyDisasm("invalid", "unknown opcode", 0x0003);

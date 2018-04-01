@@ -22,10 +22,7 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Reko.Libraries.Microchip;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Reko.Arch.Microchip.PIC18
 {
@@ -33,60 +30,16 @@ namespace Reko.Arch.Microchip.PIC18
     using Common;
 
     /// <summary>
-    /// Values that represent indirect addressing using FSR indirect pseudo-registers.
-    /// </summary>
-    public enum IndirectRegOp : byte
-    {
-        /// <summary> No indirect read/write access. </summary>
-        None,
-        /// <summary> Indirect read/write using FSRx register (INDFx). </summary>
-        INDF,
-        /// <summary> Indirect read/write using post-incremented FSRx register (POSTINCx). </summary>
-        POSTINC,
-        /// <summary> Indirect read/write using post-decremented FSRx register (POSTDECx). </summary>
-        POSTDEC,
-        /// <summary> Indirect read/write using pre-incremented FSRx register (PREINCx). </summary>
-        PREINC,
-        /// <summary> Indirect read/write using FSRx register + WREG offset (PLUSWx). </summary>
-        PLUSW
-    }
-
-    /// <summary>
     /// This class supports the PIC18 registers pool.
     /// </summary>
-    public class PIC18Registers 
+    public class PIC18Registers : PICRegisters
     {
 
-        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
-        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte);
-        public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
-
-        protected static Dictionary<PICRegisterStorage, (IndirectRegOp iop, PICRegisterStorage fsr)> indirectParents
-            = new Dictionary<PICRegisterStorage, (IndirectRegOp, PICRegisterStorage)>();
-
-        /// <summary> STATUS register. </summary>
-        public static PICRegisterStorage STATUS { get; protected set; }
-
-        /// <summary> Carry bit in STATUS register. </summary>
-        public static PICBitFieldStorage C { get; protected set; }
-
-        /// <summary> Digit-Carry bit in STATUS register. </summary>
-        public static PICBitFieldStorage DC { get; protected set; }
-
-        /// <summary> Zero bit in STATUS register. </summary>
-        public static PICBitFieldStorage Z { get; protected set; }
-
         /// <summary> Overflow bit in STATUS register. </summary>
-        public static PICBitFieldStorage OV { get; protected set; }
+        public static PICRegisterBitFieldStorage OV { get; protected set; }
 
         /// <summary> Negative bit in STATUS register. </summary>
-        public static PICBitFieldStorage N { get; protected set; }
-
-        /// <summary> Power-Down bit in STATUS or PCON register. </summary>
-        public static PICBitFieldStorage PD { get; protected set; }
-
-        /// <summary> Timed-Out bit in STATUS or PCON register. </summary>
-        public static PICBitFieldStorage TO { get; protected set; }
+        public static PICRegisterBitFieldStorage N { get; protected set; }
 
         /// <summary> FSR2L special function register. </summary>
         public static PICRegisterStorage FSR2L { get; protected set; }
@@ -133,9 +86,6 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary> INDF1 special function register. </summary>
         public static PICRegisterStorage INDF1 { get; protected set; }
 
-        /// <summary> WREG special function register. </summary>
-        public static PICRegisterStorage WREG { get; protected set; }
-
         /// <summary> FSR0L special function register. </summary>
         public static PICRegisterStorage FSR0L { get; protected set; }
 
@@ -175,17 +125,8 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary> TBLPTRU special function register. </summary>
         public static PICRegisterStorage TBLPTRU { get; protected set; }
 
-        /// <summary> PCL special function register. </summary>
-        public static PICRegisterStorage PCL { get; protected set; }
-
-        /// <summary> PCLH special function register. </summary>
-        public static PICRegisterStorage PCLATH { get; protected set; }
-
         /// <summary> PCLU special function register. </summary>
         public static PICRegisterStorage PCLATU { get; protected set; }
-
-        /// <summary> STKPTR special function register. </summary>
-        public static PICRegisterStorage STKPTR { get; protected set; }
 
         /// <summary> TOSL special function register. </summary>
         public static PICRegisterStorage TOSL { get; protected set; }
@@ -216,7 +157,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary> PCLAT pseudo-register (alias to PCLATU:PCLATH:PCL). </summary>
         public static PICRegisterStorage PCLAT { get; protected set; }
 
-        /// <summary> TBLPTR pseudo-register (alias to TBLPTRL:TBLPTRH:TBLPTRL). </summary>
+        /// <summary> TBLPTR pseudo-register (alias to TBLPTRU:TBLPTRH:TBLPTRL). </summary>
         public static PICRegisterStorage TBLPTR { get; protected set; }
 
         #region Shadow registers for some PIC18
@@ -240,131 +181,89 @@ namespace Reko.Arch.Microchip.PIC18
         /// This permits to still get a direct reference to standard registers and keeps having some flexibility on definitions.
         /// </remarks>
         /// <exception cref="InvalidOperationException">Thrown if a register cannot be found in the symbol table.</exception>
-        public virtual void SetCoreRegisters()
+        public override void SetCoreRegisters()
         {
 
-            // *True* PIC registers
+            base.SetCoreRegisters();
 
-            STATUS = PICRegisters.GetRegister("STATUS");
-            C = PICRegisters.GetBitField("C");
-            DC = PICRegisters.GetBitField("DC");
-            Z = PICRegisters.GetBitField("Z");
-            OV = PICRegisters.GetBitField("OV");
-            N = PICRegisters.GetBitField("Z");
+            OV = GetBitField("OV");
+            N = GetBitField("N");
 
-            if (!PICRegisters.TryGetBitField("nPD", out var pd))
-            {
-                PICRegisters.TryGetBitField("PD", out pd);
-            }
-            PD = pd;
-            if (!PICRegisters.TryGetBitField("nTO", out var to))
-            {
-                PICRegisters.TryGetBitField("TO", out to);
-            }
-            TO = to;
+            FSR2L = GetRegister("FSR2L");
+            FSR2H = GetRegister("FSR2H");
+            PLUSW2 = GetRegister("PLUSW2");
+            PREINC2 = GetRegister("PREINC2");
+            POSTDEC2 = GetRegister("POSTDEC2");
+            POSTINC2 = GetRegister("POSTINC2");
+            INDF2 = GetRegister("INDF2");
 
-            FSR2L = PICRegisters.GetRegister("FSR2L");
-            FSR2H = PICRegisters.GetRegister("FSR2H");
-            PLUSW2 = PICRegisters.GetRegister("PLUSW2");
-            PREINC2 = PICRegisters.GetRegister("PREINC2");
-            POSTDEC2 = PICRegisters.GetRegister("POSTDEC2");
-            POSTINC2 = PICRegisters.GetRegister("POSTINC2");
-            INDF2 = PICRegisters.GetRegister("INDF2");
+            BSR = GetRegister("BSR");
+            FSR1L = GetRegister("FSR1L");
+            FSR1H = GetRegister("FSR1H");
+            PLUSW1 = GetRegister("PLUSW1");
+            PREINC1 = GetRegister("PREINC1");
+            POSTDEC1 = GetRegister("POSTDEC1");
+            POSTINC1 = GetRegister("POSTINC1");
+            INDF1 = GetRegister("INDF1");
 
-            BSR = PICRegisters.GetRegister("BSR");
-            FSR1L = PICRegisters.GetRegister("FSR1L");
-            FSR1H = PICRegisters.GetRegister("FSR1H");
-            PLUSW1 = PICRegisters.GetRegister("PLUSW1");
-            PREINC1 = PICRegisters.GetRegister("PREINC1");
-            POSTDEC1 = PICRegisters.GetRegister("POSTDEC1");
-            POSTINC1 = PICRegisters.GetRegister("POSTINC1");
-            INDF1 = PICRegisters.GetRegister("INDF1");
+            FSR0L = GetRegister("FSR0L");
+            FSR0H = GetRegister("FSR0H");
+            PLUSW0 = GetRegister("PLUSW0");
+            PREINC0 = GetRegister("PREINC0");
+            POSTDEC0 = GetRegister("POSTDEC0");
+            POSTINC0 = GetRegister("POSTINC0");
+            INDF0 = GetRegister("INDF0");
 
-            WREG = PICRegisters.GetRegister("WREG");
-            FSR0L = PICRegisters.GetRegister("FSR0L");
-            FSR0H = PICRegisters.GetRegister("FSR0H");
-            PLUSW0 = PICRegisters.GetRegister("PLUSW0");
-            PREINC0 = PICRegisters.GetRegister("PREINC0");
-            POSTDEC0 = PICRegisters.GetRegister("POSTDEC0");
-            POSTINC0 = PICRegisters.GetRegister("POSTINC0");
-            INDF0 = PICRegisters.GetRegister("INDF0");
-
-            PRODL = PICRegisters.GetRegister("PRODL");
-            PRODH = PICRegisters.GetRegister("PRODH");
-            TABLAT = PICRegisters.GetRegister("TABLAT");
-            TBLPTRL = PICRegisters.GetRegister("TBLPTRL");
-            TBLPTRH = PICRegisters.GetRegister("TBLPTRH");
-            TBLPTRU = PICRegisters.GetRegister("TBLPTRU");
-            PCL = PICRegisters.GetRegister("PCL");
-            PCLATH = PICRegisters.GetRegister("PCLATH");
-            PCLATU = PICRegisters.GetRegister("PCLATU");
-            STKPTR = PICRegisters.GetRegister("STKPTR");
-            TOSL = PICRegisters.GetRegister("TOSL");
-            TOSH = PICRegisters.GetRegister("TOSH");
-            TOSU = PICRegisters.GetRegister("TOSU");
+            PRODL = GetRegister("PRODL");
+            PRODH = GetRegister("PRODH");
+            TABLAT = GetRegister("TABLAT");
+            TBLPTRL = GetRegister("TBLPTRL");
+            TBLPTRH = GetRegister("TBLPTRH");
+            TBLPTRU = GetRegister("TBLPTRU");
+            PCLATU = GetRegister("PCLATU");
+            TOSL = GetRegister("TOSL");
+            TOSH = GetRegister("TOSH");
+            TOSU = GetRegister("TOSU");
 
             // *Pseudo* (joined) registers
 
-            PROD = PICRegisters.GetRegister("PROD");
-            FSR0 = PICRegisters.GetRegister("FSR0");
-            FSR1 = PICRegisters.GetRegister("FSR1");
-            FSR2 = PICRegisters.GetRegister("FSR2");
-            TOS = PICRegisters.GetRegister("TOS");
-            PCLAT = PICRegisters.GetRegister("PCLAT");
-            TBLPTR = PICRegisters.GetRegister("TBLPTR");
+            PROD = GetRegister("PROD");
+            FSR0 = GetRegister("FSR0");
+            FSR1 = GetRegister("FSR1");
+            FSR2 = GetRegister("FSR2");
+            TOS = GetRegister("TOS");
+            PCLAT = GetRegister("PCLAT");
+            TBLPTR = GetRegister("TBLPTR");
 
             // Registers used for indirect memory adressing modes. An other ugly aspect of Microchip PICs.
 
-            indirectParents.Clear();
-            indirectParents.Add(PLUSW0, (IndirectRegOp.PLUSW, FSR0));
-            indirectParents.Add(PREINC0, (IndirectRegOp.PREINC, FSR0));
-            indirectParents.Add(POSTDEC0, (IndirectRegOp.POSTDEC, FSR0));
-            indirectParents.Add(POSTINC0, (IndirectRegOp.POSTINC, FSR0));
-            indirectParents.Add(INDF0, (IndirectRegOp.INDF, FSR0));
-            indirectParents.Add(PLUSW1, (IndirectRegOp.PLUSW, FSR1));
-            indirectParents.Add(PREINC1, (IndirectRegOp.PREINC, FSR1));
-            indirectParents.Add(POSTDEC1, (IndirectRegOp.POSTDEC, FSR1));
-            indirectParents.Add(POSTINC1, (IndirectRegOp.POSTINC, FSR1));
-            indirectParents.Add(INDF1, (IndirectRegOp.INDF, FSR1));
-            indirectParents.Add(PLUSW2, (IndirectRegOp.PLUSW, FSR2));
-            indirectParents.Add(PREINC2, (IndirectRegOp.PREINC, FSR2));
-            indirectParents.Add(POSTDEC2, (IndirectRegOp.POSTDEC, FSR2));
-            indirectParents.Add(POSTINC2, (IndirectRegOp.POSTINC, FSR2));
-            indirectParents.Add(INDF2, (IndirectRegOp.INDF, FSR2));
+            AddIndirectParents(true,
+                    (PLUSW0, (FSRIndexedMode.PLUSW, FSR0)),
+                    (PREINC0, (FSRIndexedMode.PREINC, FSR0)),
+                    (POSTDEC0, (FSRIndexedMode.POSTDEC, FSR0)),
+                    (POSTINC0, (FSRIndexedMode.POSTINC, FSR0)),
+                    (INDF0, (FSRIndexedMode.INDF, FSR0)),
+                    (PLUSW1, (FSRIndexedMode.PLUSW, FSR1)),
+                    (PREINC1, (FSRIndexedMode.PREINC, FSR1)),
+                    (POSTDEC1, (FSRIndexedMode.POSTDEC, FSR1)),
+                    (POSTINC1, (FSRIndexedMode.POSTINC, FSR1)),
+                    (INDF1, (FSRIndexedMode.INDF, FSR1)),
+                    (PLUSW2, (FSRIndexedMode.PLUSW, FSR2)),
+                    (PREINC2, (FSRIndexedMode.PREINC, FSR2)),
+                    (POSTDEC2, (FSRIndexedMode.POSTDEC, FSR2)),
+                    (POSTINC2, (FSRIndexedMode.POSTINC, FSR2)),
+                    (INDF2, (FSRIndexedMode.INDF, FSR2)));
 
-            PICRegisters.TryGetRegister("STATUS_CSHAD", out var sta);
+            TryGetRegister("STATUS_CSHAD", out var sta);
             STATUS_CSHAD = sta;
-            PICRegisters.TryGetRegister("WREG_CSHAD", out var wre);
+            TryGetRegister("WREG_CSHAD", out var wre);
             WREG_CSHAD = wre;
-            PICRegisters.TryGetRegister("BSR_CSHAD", out var bsr);
+            TryGetRegister("BSR_CSHAD", out var bsr);
             BSR_CSHAD = bsr;
 
         }
 
         #endregion
-
-
-        /// <summary>
-        /// Query if '<paramref name="sfr"/>' register is an indirect register (INDFx, PLUSWx, POSTINCx,... ) and get the associated FSR register.
-        /// Returns the indirect addressing mode if applicable, else return None if <paramref name="sfr"/> is not an indirect register.
-        /// </summary>
-        /// <param name="sfr">The register used in instruction's operand.</param>
-        /// <param name="parentFSR">[out] The actual FSR index register if <paramref name="sfr"/> is an indirect register.</param>
-        /// <returns>
-        /// The indirect addressing mode, or None.
-        /// </returns>
-        public static IndirectRegOp IndirectOpMode(PICRegisterStorage sfr, out PICRegisterStorage parentFSR)
-        {
-            parentFSR = PICRegisterStorage.None;
-            if (sfr is null)
-                return IndirectRegOp.None;
-            if (indirectParents.TryGetValue(sfr, out (IndirectRegOp indMode, PICRegisterStorage fsr) ent))
-            {
-                parentFSR = ent.fsr;
-                return ent.indMode;
-            }
-            return IndirectRegOp.None;
-        }
 
     }
 

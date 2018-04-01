@@ -4006,7 +4006,7 @@ namespace Reko.Libraries.Microchip
     /// SFR bits-field definition.
     /// </summary>
     [Serializable(), XmlType(AnonymousType = true, Namespace = "")]
-    [DebuggerDisplay("SFRField = {CName}")]
+    [DebuggerDisplay("SFRBitField = {CName}")]
     public sealed class SFRFieldDef : MemDataSymbolAcceptorBase
     {
         /// <summary>

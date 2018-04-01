@@ -60,39 +60,6 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         public PIC PICDescriptor { get; }
 
-        /// <summary>
-        /// Gets or sets the PIC execution mode.
-        /// </summary>
-        /// <value>
-        /// The PIC execution mode.
-        /// </value>
-        public virtual PICExecMode ExecMode
-        {
-            get => MemoryDescriptor.ExecMode;
-            set => MemoryDescriptor.ExecMode = value;
-        }
-
-        /// <summary>
-        /// Gets the PIC memory mapper.
-        /// </summary>
-        public abstract IPICMemoryDescriptor MemoryDescriptor { get; }
-
-        /// <summary>
-        /// Gets the device configuration definitions.
-        /// </summary>
-        public IPICDeviceConfigDefs DeviceConfigDefinitions
-        {
-            get
-            {
-                if (deviceConfigDefinitions is null)
-                {
-                    deviceConfigDefinitions = PICDeviceConfigDefs.Create(PICDescriptor);
-                }
-                return deviceConfigDefinitions;
-            }
-        }
-        private IPICDeviceConfigDefs deviceConfigDefinitions;
-
         protected IPICProcessorMode ProcessorMode { get; }
 
         /// <summary>

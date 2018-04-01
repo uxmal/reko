@@ -68,11 +68,19 @@ namespace Reko.Arch.Microchip.PIC16
         ///                                              condition occurs.</exception>
         protected override PICInstruction DecodePICInstruction(ushort uInstr, PICProgAddress addr)
         {
+            var offset = rdr.Offset;
             try
             {
-                instrCur = opcodesTable[uInstr.Extract(12, 2)].Decode(uInstr, this);
+                var bits = uInstr.Extract(12, 2);
+                instrCur = opcodesTable[bits].Decode(uInstr, this);
                 if (instrCur is null)
-                    instrCur = base.DecodePICInstruction(uInstr, addr); // Fall to common PIC16 instruction decoder
+                    return base.DecodePICInstruction(uInstr, addr); // Fall to common PIC16 instruction decoder
+                if (!instrCur.IsValid)
+                {
+                    rdr.Offset = offset;
+                }
+                instrCur.Address = addrCur;
+                instrCur.Length = (int)(rdr.Address - addrCur);
             }
             catch (AddressCorrelatedException)
             {
@@ -83,12 +91,6 @@ namespace Reko.Arch.Microchip.PIC16
                 throw new AddressCorrelatedException(addrCur, ex, $"An exception occurred when disassembling {InstructionSetID.ToString()} binary code 0x{uInstr:X4}.");
             }
 
-            if (instrCur is null)
-            {
-                instrCur = new PICInstruction(Opcode.invalid);
-            }
-            instrCur.Address = addrCur;
-            instrCur.Length = 2;
             return instrCur;
         }
 
@@ -150,25 +152,25 @@ namespace Reko.Arch.Microchip.PIC16
                 switch (uInstr)
                 {
                     case 0b00_0000_0000_1000:
-                        return new PICInstruction(Opcode.RETURN);
+                        return new PICInstructionNoOpnd(Opcode.RETURN);
 
                     case 0b00_0000_0000_1001:
-                        return new PICInstruction(Opcode.RETFIE);
+                        return new PICInstructionNoOpnd(Opcode.RETFIE);
 
                     case 0b00_0000_0000_0000:
                     case 0b00_0000_0010_0000:
                     case 0b00_0000_0100_0000:
                     case 0b00_0000_0110_0000:
-                        return new PICInstruction(Opcode.NOP);
+                        return new PICInstructionNoOpnd(Opcode.NOP);
 
                     case 0b00_0000_0110_0011:
-                        return new PICInstruction(Opcode.SLEEP);
+                        return new PICInstructionNoOpnd(Opcode.SLEEP);
 
                     case 0b00_0000_0110_0100:
-                        return new PICInstruction(Opcode.CLRWDT);
+                        return new PICInstructionNoOpnd(Opcode.CLRWDT);
 
                     default:
-                        return new PICInstruction(Opcode.invalid);
+                        return new PICInstructionNoOpnd(Opcode.invalid);
                 }
             }
         }

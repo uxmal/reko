@@ -103,15 +103,15 @@ namespace Reko.Core.Expressions
         }
     }
 
-	/// <summary>
-	/// Segmented memory access that models x86 segmented memory addressing.
-	/// </summary>
-	public class SegmentedAccess : MemoryAccess
-	{
-		public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
-		{
-			this.BasePointer = basePtr;
-		}
+    /// <summary>
+    /// Segmented memory access that models x86 segmented memory addressing.
+    /// </summary>
+    public class SegmentedAccess : MemoryAccess
+    {
+        public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
+        {
+            this.BasePointer = basePtr;
+        }
 
         public Expression BasePointer { get; set; }         // Segment selector
 
@@ -125,19 +125,54 @@ namespace Reko.Core.Expressions
             return visit.VisitSegmentedAccess(this);
         }
 
-		public override void Accept(IExpressionVisitor visit)
-		{
-			visit.VisitSegmentedAccess(this);
-		}
+        public override void Accept(IExpressionVisitor visit)
+        {
+            visit.VisitSegmentedAccess(this);
+        }
 
-		public override Expression CloneExpression()
-		{
-			return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
-		}
+        public override Expression CloneExpression()
+        {
+            return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
+        }
 
         public static SegmentedAccess Create(Expression segRegister, Expression baseRegister, int offset, DataType dt)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, segRegister, CreateEffectiveAddress(baseRegister, offset), dt);
         }
-	}
+    }
+
+#if false
+
+    /// <summary>
+    /// Models an access to data memory bank for 8-bit PIC.
+    /// </summary>
+    public class BankMemoryAccess : MemoryAccess
+    {
+        public BankMemoryAccess(MemoryIdentifier id, Expression bankPtr, Expression ea, DataType dt) : base(id, ea, dt)
+        {
+            BankSelector = bankPtr;
+        }
+
+        public Expression BankSelector { get; set; }         // Data Memory Bank selector
+
+        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
+            => v.VisitBankMemoryAccess(this, context);
+
+        public override T Accept<T>(ExpressionVisitor<T> visit)
+            => visit.VisitBankMemoryAccess(this);
+
+        public override void Accept(IExpressionVisitor visit)
+            => visit.VisitBankMemoryAccess(this);
+
+        public override Expression CloneExpression()
+            => new BankMemoryAccess(MemoryId, BankSelector.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
+
+        public new static BankMemoryAccess Create(Expression bsrRegister, int offset, DataType dt)
+            => new BankMemoryAccess(MemoryIdentifier.GlobalMemory, bsrRegister, Constant.Create(dt, offset), dt);
+
+    }
+
+#endif
+
+
 }

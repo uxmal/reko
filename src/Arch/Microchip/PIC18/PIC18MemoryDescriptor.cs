@@ -31,20 +31,11 @@ namespace Reko.Arch.Microchip.PIC18
     /// <summary>
     /// A factory class which implements the PIC18 memory descriptor based on the PIC XML definition.
     /// </summary>
-    public class PIC18MemoryDescriptor : IPICMemoryDescriptor
+    internal class PIC18MemoryDescriptor : PICMemoryDescriptor
     {
-
-        #region Locals
-
-        private static PIC18MemoryDescriptor memDescr;
-
-        #endregion
-
-        #region Inner classes
 
         public class PIC18MemoryMap : MemoryMap
         {
-            #region Locals
 
             private const string accessRAMRegionID = "accessram";
             private const string extendRAMRegionID = "gpre";
@@ -54,16 +45,11 @@ namespace Reko.Arch.Microchip.PIC18
             internal IMemoryRegion AccessRAMHigh;
             internal static Address topAccessRAM = Address.Ptr32(0x100);
 
-            #endregion
-
-            #region Constructors
 
             /// <summary>
             /// Constructor that prevents a default instance of this class from being created.
             /// </summary>
-            private PIC18MemoryMap() : base()
-            {
-            }
+            private PIC18MemoryMap() : base() { }
 
             /// <summary>
             /// Private constructor creating an instance of memory map for specified PIC.
@@ -84,17 +70,17 @@ namespace Reko.Arch.Microchip.PIC18
             }
 
             /// <summary>
-            /// Creates a new <see cref="PIC18MemoryMap"/> instance.
+            /// Creates a new <see cref="IMemoryMap"/> interface for PIC18.
             /// </summary>
             /// <param name="thePIC">the PIC descriptor.</param>
             /// <returns>
-            /// A <see cref="PIC18MemoryMap"/> instance.
+            /// A <see cref="IMemoryMap"/> interface instance.
             /// </returns>
             /// <exception cref="ArgumentNullException">Thrown if <paramref name="thePIC"/> is null.</exception>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid
             ///                                               data memory size (less than 12 bytes).</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC definition does not permit to construct the memory map.</exception>
-            public static PIC18MemoryMap Create(PIC thePIC)
+            public static IMemoryMap Create(PIC thePIC)
             {
                 if (thePIC is null)
                     throw new ArgumentNullException(nameof(thePIC));
@@ -117,7 +103,6 @@ namespace Reko.Arch.Microchip.PIC18
                 }
             }
 
-            #endregion
 
             #region MemoryMap implementation
 
@@ -130,8 +115,7 @@ namespace Reko.Arch.Microchip.PIC18
             /// </returns>
             public override PICDataAddress RemapDataAddress(PICDataAddress lAddr)
             {
-                var addr = Address.Ptr32(lAddr.ToUInt32());
-                if ((addr < AccessRAMLow.LogicalByteAddrRange.End || addr > topAccessRAM))
+                if (!IsAccessRAMHigh(lAddr))
                     return lAddr;
                 ulong uaddr = lAddr.ToLinear();
                 uaddr -= AccessRAMLow.LogicalByteAddrRange.End.ToLinear();
@@ -173,10 +157,6 @@ namespace Reko.Arch.Microchip.PIC18
             }
             private PICExecMode execMode = PICExecMode.Traditional;
 
-            #endregion
-
-            #region Helpers
-
             /// <summary>
             /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
             /// </summary>
@@ -184,7 +164,7 @@ namespace Reko.Arch.Microchip.PIC18
             /// <returns>
             /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
             /// </returns>
-            internal bool IsAccessRAMLow(Address cAddr) => AccessRAMLow.Contains(cAddr);
+            public override bool IsAccessRAMLow(PICDataAddress cAddr) => AccessRAMLow.Contains(cAddr);
 
             /// <summary>
             /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
@@ -193,121 +173,39 @@ namespace Reko.Arch.Microchip.PIC18
             /// <returns>
             /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
             /// </returns>
-            public bool IsAccessRAMHigh(Address uAddr)
+            public override bool IsAccessRAMHigh(PICDataAddress uAddr)
             {
                 var addr = Address.Ptr32(uAddr.ToUInt32());
                 return (addr >= AccessRAMLow.LogicalByteAddrRange.End && addr < topAccessRAM);
             }
 
+            /// <summary>
+            /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
+            /// </summary>
+            /// <param name="uAddr">The memory address to check.</param>
+            public override bool CanBeFSR2IndexAddress(ushort uAddr) => IsAccessRAMLow(PICDataAddress.Ptr(uAddr));
+
             #endregion
 
         }
 
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        private PIC18MemoryDescriptor()
+        private PIC18MemoryDescriptor(PIC pic) : base(pic)
         {
         }
 
-        /// <summary>
-        /// Private constructor creating an instance of memory descriptor for specified PIC.
-        /// </summary>
-        /// <param name="pic">The target PIC.</param>
-        private PIC18MemoryDescriptor(PIC pic)
+        public static void Create(PIC pic)
         {
-            memoryMap = PIC18MemoryMap.Create(pic);
-            DeviceConfigDefinitions = PICDeviceConfigDefs.Create(pic);
+            var memdesc = new PIC18MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
+            memdesc.Reset();
+            memdesc.LoadMemDescr();
         }
 
-        /// <summary>
-        /// Creates a new PICMemoryDefinitions.
-        /// </summary>
-        /// <param name="pic">The target PIC.</param>
-        /// <returns>
-        /// A <see cref="IPICMemoryDescriptor"/> instance.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
-        public static PIC18MemoryDescriptor Create(PIC pic)
-        {
-            memDescr = new PIC18MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
-            return memDescr;
-        }
-
-        #endregion
-
-        #region IPICMemoryDescriptor interface
-
-        /// <summary>
-        /// The memory description associated with this memory descriptor.
-        /// </summary>
-        public IMemoryMap MemoryMap => memoryMap;
-        private PIC18MemoryMap memoryMap;
-
-        public IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
-
-        /// <summary>
-        /// Gets or sets the PIC execution mode.
-        /// </summary>
-        public PICExecMode ExecMode
-        {
-            get => MemoryMap.ExecMode;
-            set => MemoryMap.ExecMode = value;
-        }
-
-        /// <summary>
-        /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
-        /// </summary>
-        /// <param name="cAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
-        /// </returns>
-        public bool IsAccessRAMLow(PICDataAddress cAddr) => memoryMap.IsAccessRAMLow(cAddr);
-
-        /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
-        /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        /// <returns>
-        /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
-        /// </returns>
-        public bool IsAccessRAMHigh(PICDataAddress uAddr) => memoryMap.IsAccessRAMHigh(uAddr);
-
-        #endregion
-
-        #region Internal API
-
-        /// <summary>
-        /// Translates an Access Bank address to actual data memory address.
-        /// If the address does not belong to Access RAM it is returned as-is.
-        /// </summary>
-        /// <param name="addr">The offset in the Access Bank.</param>
-        /// <returns>
-        /// The actual data memory Address.
-        /// </returns>
-        internal static PICDataAddress RemapDataAddress(PICDataAddress addr) => memDescr?.MemoryMap.RemapDataAddress(addr);
-
-        /// <summary>
-        /// Translates an Access Bank address to actual data memory address.
-        /// If the address does not belong to Access RAM it is returned as-is.
-        /// </summary>
-        /// <param name="uAddr">The offset in the Access Bank.</param>
-        /// <returns>
-        /// The actual data memory Address.
-        /// </returns>
-        internal static PICDataAddress RemapDataAddress(uint uAddr) => memDescr?.MemoryMap.RemapDataAddress(PICDataAddress.Ptr(uAddr));
-
-        /// <summary>
-        /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
-        /// </summary>
-        /// <param name="uAddr">The memory address to check.</param>
-        internal static bool CanBeFSR2IndexAddress(ushort uAddr) => memDescr?.memoryMap.IsAccessRAMLow(PICDataAddress.Ptr(uAddr)) ?? false;
-
-        #endregion
+        protected override IMemoryMap CreateMemoryMap()
+            => PIC18MemoryMap.Create(pic);
 
     }
 

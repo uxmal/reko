@@ -979,6 +979,315 @@ namespace Reko.Libraries.Microchip
 
         #endregion
 
+        #region Range checking
+
+        #region IsInRange
+
+        /// <summary>
+        /// Checks whether the specified signed byte is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed byte to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this sbyte val, sbyte low, sbyte high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified signed short integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed short integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this short val, int low, int high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified signed integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this int val, int low, int high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified signed long integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed long integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this long val, long low, long high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified (unsigned) byte is within a specified value range.
+        /// </summary>
+        /// <param name="val">The (unsigned) byte to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this byte val, byte low, byte high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified unsigned short integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The unsigned short integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this ushort val, ushort low, ushort high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified unsigned integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The unsigned integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this uint val, uint low, uint high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified unsigned long integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The unsigned long integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this ulong val, ulong low, ulong high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified float is within a specified value range.
+        /// </summary>
+        /// <param name="val">The float to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this float val, float low, float high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified double is within a specified value range.
+        /// </summary>
+        /// <param name="val">The double to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this double val, double low, double high)
+            => !(val < low || val > high);
+
+        /// <summary>
+        /// Checks whether the specified decimal is within a specified value range.
+        /// </summary>
+        /// <param name="val">The decimal to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>Boolean true if value is in range; false otherwise.</returns>
+        /// 
+        public static bool IsInRange(this decimal val, decimal low, decimal high)
+            => !(val < low || val > high);
+
+        #endregion
+
+        #region InRange
+
+        /// <summary>
+        /// Check whether the specified signed byte is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed byte to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The signed byte value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static sbyte InRange(this sbyte val, sbyte low, sbyte high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Signed byte value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified signed short integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed short integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The signed short integer value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static short InRange(this short val, int low, int high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Short value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified signed integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The signed integer value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static int InRange(this int val, int low, int high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Integer value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified signed long integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The signed long integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The signed long integer value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static long InRange(this long val, long low, long high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Long integer value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified (unsigned) byte is within a specified value range.
+        /// </summary>
+        /// <param name="val">The (unsigned) byte to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The (unsigned) byte value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static byte InRange(this byte val, byte low, byte high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Byte value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified unsigned short integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The unsigned short integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The unsigned short integer value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static ushort InRange(this ushort val, ushort low, ushort high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Unsigned short integer value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified unsigned integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The unsigned integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The unsigned integer value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static uint InRange(this uint val, uint low, uint high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Unsigned integer value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified unsigned long integer is within a specified value range.
+        /// </summary>
+        /// <param name="val">The unsigned long integer to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The unsigned long integer value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static ulong InRange(this ulong val, ulong low, ulong high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Unsigned long integer value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified float is within a specified value range.
+        /// </summary>
+        /// <param name="val">The float to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The float value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static float InRange(this float val, float low, float high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Float value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified double is within a specified value range.
+        /// </summary>
+        /// <param name="val">The double to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The double value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static double InRange(this double val, double low, double high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Double value not between {low} and {high}");
+        }
+
+        /// <summary>
+        /// Check whether the specified decimal is within a specified value range.
+        /// </summary>
+        /// <param name="val">The decimal to check.</param>
+        /// <param name="low">The lowest value of the range.</param>
+        /// <param name="high">The highest value of the range.</param>
+        /// <returns>The decimal value, if valid.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"> in case the check fails.</exception>
+        /// 
+        public static decimal InRange(this decimal val, decimal low, decimal high)
+        {
+            if (val.IsInRange(low, high))
+                return val;
+            throw new ArgumentOutOfRangeException(nameof(val), val, $"Decimal value not between {low} and {high}");
+        }
+
+        #endregion
+
+        #endregion
+
     }
 
 }

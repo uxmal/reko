@@ -22,14 +22,17 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using Reko.Core.Rtl;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {
     /// <summary>
-    /// A PIC IL rewriter abstract class.
+    /// A PIC IL rewriter abstract/helper class.
     /// </summary>
     public abstract class PICRewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -57,6 +60,11 @@ namespace Reko.Arch.Microchip.Common
             Wreg = GetWReg;
         }
 
+        /// <summary>
+        /// Gets the working register (WREG) which is often used implicitly by PIC instructions.
+        /// </summary>
+        protected Identifier GetWReg => binder.EnsureRegister(PICRegisters.WREG);
+
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
@@ -83,10 +91,221 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         protected abstract void RewriteInstr();
 
-        /// <summary>
-        /// Gets the working register (WREG) which is often used implicitly by PIC instructions.
-        /// </summary>
-        protected abstract Identifier GetWReg { get; }
+        protected abstract void SetStatusFlags(Expression dst);
+
+        protected Identifier FlagGroup(FlagM flags)
+            => binder.EnsureFlagGroup(PICRegisters.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+
+        protected static MemoryAccess DataMem8(Expression ea)
+            => new MemoryAccess(PICRegisters.GlobalData, ea, PrimitiveType.Byte);
+
+        protected ArrayAccess PushToHWStackAccess()
+        {
+            var stkptr = binder.EnsureRegister(arch.StackRegister);
+            var slot = m.ARef(PrimitiveType.Ptr32, PICRegisters.GlobalStack, stkptr);
+            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
+            return slot;
+        }
+
+        protected ArrayAccess PopFromHWStackAccess()
+        {
+            var stkptr = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
+            var slot = m.ARef(PrimitiveType.Ptr32, PICRegisters.GlobalStack, stkptr);
+            return slot;
+        }
+
+        protected Expression GetImmediateValue(MachineOperand op)
+        {
+            switch (op)
+            {
+                case PICOperandImmediate imm:
+                    return imm.ImmediateValue;
+
+                default:
+                    throw new InvalidOperationException($"Invalid immediate operand: op={op}.");
+            }
+        }
+
+        protected Expression GetProgramAddress(MachineOperand op)
+        {
+            switch (op)
+            {
+                case PICOperandProgMemoryAddress paddr:
+                    return paddr.CodeTarget;
+
+                default:
+                    throw new InvalidOperationException($"Invalid program address operand: op={op}.");
+            }
+        }
+
+        protected Expression GetFSRRegister(MachineOperand op)
+        {
+            switch (op)
+            {
+                case PICOperandRegister fsrreg:
+                    return binder.EnsureRegister(fsrreg.Register);
+
+                default:
+                    throw new InvalidOperationException($"Invalid FSR operand: op={op}.");
+            }
+        }
+
+        protected Expression GetTBLRWMode(MachineOperand op)
+        {
+            switch (op)
+            {
+                case PICOperandTBLRW tblincrmod:
+                    return tblincrmod.TBLIncrMode;
+
+                default:
+                    throw new InvalidOperationException($"Invalid table read/write operand: op={op}.");
+            }
+        }
+
+        protected Constant GetBitMask(MachineOperand op, bool revert)
+        {
+            switch (op)
+            {
+                case PICOperandImmediate bitaddr:
+                    int mask = (1 << bitaddr.ImmediateValue.ToByte());
+                    if (revert)
+                        mask = ~mask;
+                    return Constant.Byte((byte)mask);
+
+                default:
+                    throw new InvalidOperationException($"Invalid bit number operand: op={op}.");
+            }
+        }
+
+        protected Constant GetFastIndicator(MachineOperand op)
+        {
+            switch (op)
+            {
+                case PICOperandImmediate shadow:
+                    return shadow.ImmediateValue;
+
+                case PICOperandFast fast:
+                    return fast.IsFast;
+
+                default:
+                    throw new InvalidOperationException($"Invalid fast/shadow operand: op={op}.");
+            }
+        }
+
+        protected void ArithAssign(Expression dst, Expression src)
+        {
+            m.Assign(dst, src);
+            SetStatusFlags(dst);
+        }
+
+        protected void ArithAssignIndirect(Expression dst, Expression src, FSRIndexedMode indMode, Expression memPtr)
+        {
+            switch (indMode)
+            {
+                case FSRIndexedMode.None:
+                    ArithAssign(dst, src);
+                    break;
+
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
+                    ArithAssign(dst, src);
+                    break;
+
+                case FSRIndexedMode.POSTDEC:
+                    ArithAssign(dst, src);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
+                    break;
+
+                case FSRIndexedMode.POSTINC:
+                    ArithAssign(dst, src);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    break;
+
+                case FSRIndexedMode.PREINC:
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    ArithAssign(dst, src);
+                    break;
+            }
+        }
+
+        protected void ArithCondSkip(Expression dst, Expression src, Expression cond, FSRIndexedMode indMode, Expression memPtr)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            switch (indMode)
+            {
+                case FSRIndexedMode.None:
+                    m.Assign(dst, src);
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
+                    m.Assign(dst, src);
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+
+                case FSRIndexedMode.POSTDEC:
+                    m.Assign(dst, src);
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
+                    break;
+
+                case FSRIndexedMode.POSTINC:
+                    m.Assign(dst, src);
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    break;
+
+                case FSRIndexedMode.PREINC:
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    m.Assign(dst, src);
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+            }
+        }
+
+        protected PICProgAddress SkipToAddr()
+            => PICProgAddress.Ptr(instrCurr.Address + instrCurr.Length + 2);
+
+        protected void CondBranch(TestCondition test)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            if (instrCurr.op1 is PICOperandProgMemoryAddress brop)
+            {
+                m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget.ToUInt32()), rtlc);
+                return;
+            }
+            throw new InvalidOperationException($"Wrong PIC program relative address: op1={instrCurr.op1}.");
+        }
+
+        protected void CondSkipIndirect(Expression cond, FSRIndexedMode indMode, Expression memPtr)
+        {
+            rtlc = RtlClass.ConditionalTransfer;
+            switch (indMode)
+            {
+                case FSRIndexedMode.None:
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+
+                case FSRIndexedMode.POSTINC:
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    break;
+
+                case FSRIndexedMode.POSTDEC:
+                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
+                    m.Assign(memPtr, m.ISub(memPtr, 1));
+                    break;
+
+                case FSRIndexedMode.PREINC:
+                    m.Assign(memPtr, m.IAdd(memPtr, 1));
+                    m.Branch(cond, SkipToAddr(), rtlc);
+                    break;
+            }
+        }
 
     }
 

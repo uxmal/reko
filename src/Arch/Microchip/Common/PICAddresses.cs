@@ -34,35 +34,28 @@ namespace Reko.Arch.Microchip.Common
     public class PICProgAddress : Address
     {
 
-        #region Static and Constant fields
-
         public const uint MAXPROGBYTADDR = 0x1FFFFFU;
 
-        #endregion
+        private Constant Value;
 
-        #region Members fields
+        public static readonly PICProgAddress Invalid = new PICProgAddress(Constant.Invalid);
 
-        private uint uValue;
 
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="addr">The program byte address.</param>
         public PICProgAddress(uint addr) : base(PrimitiveType.Ptr32)
         {
-            uValue = addr & MAXPROGBYTADDR;
+            Value = Constant.Create(DataType, addr & MAXPROGBYTADDR);
         }
 
-        #endregion
+        public PICProgAddress(Constant addr) : base(addr.DataType)
+        {
+            Value = addr;
+        }
+
 
         #region Properties
 
         public override bool IsNull => false;
-        public override ulong Offset => uValue; 
+        public override ulong Offset => Value.ToUInt32(); 
         public override ushort? Selector => null;
 
         #endregion
@@ -70,34 +63,34 @@ namespace Reko.Arch.Microchip.Common
         #region Methods
 
         public override Address Add(long offset)
-            => new PICProgAddress((uint)(uValue + offset));
+            => new PICProgAddress((uint)(Value.ToUInt32() + offset));
 
         public override Address Align(int alignment)
-            => new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
+            => new PICProgAddress((uint)(alignment * ((Value.ToUInt32() + alignment - 1) / alignment)));
 
         public override Expression CloneExpression()
-            => new PICProgAddress(uValue);
+            => new PICProgAddress(Value);
 
         public override string GenerateName(string prefix, string suffix)
-            => $"{prefix}{uValue:X6}{suffix}";
+            => $"{prefix}{Value:X6}{suffix}";
 
         public override Address NewOffset(ulong offset)
             => new PICProgAddress((uint)offset);
 
         public override Constant ToConstant()
-            => Constant.UInt32(uValue);
+            => Value;
 
         public override ushort ToUInt16()
             => throw new InvalidOperationException("Returning UInt16 would lose precision.");
 
         public override uint ToUInt32()
-            => uValue;
+            => Value.ToUInt32();
 
         public override ulong ToLinear()
-            => uValue;
+            => Value.ToUInt32();
 
         public override string ToString()
-            => $"{uValue:X6}";
+            => $"{Value:X6}";
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.
@@ -128,66 +121,65 @@ namespace Reko.Arch.Microchip.Common
     public class PICDataAddress : Address
     {
 
-        #region Static and Constant fields
-
         public const uint MAXDATABYTADDR = 0x3FFF;
 
-        #endregion
+        private Constant Value;
 
-        #region Members fields
-
-        private ushort uValue;
-
-        #endregion
-
-        #region Constructors
+        public static readonly PICDataAddress Invalid = new PICDataAddress(Constant.Invalid);
 
         public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)
         {
-            uValue = (ushort)(addr & MAXDATABYTADDR);
+            var uValue = (ushort)(addr & MAXDATABYTADDR);
+            Value = Constant.Create(DataType, uValue);
         }
 
-        #endregion
+        public PICDataAddress(Constant addr) : base(addr.DataType)
+        {
+            Value = addr;
+        }
 
         #region Properties
 
+
         public override bool IsNull => false;
-        public override ulong Offset => uValue; 
+        public override ulong Offset => ToLinear(); 
         public override ushort? Selector => null;
+
+        public bool IsValid => Value.IsValid;
 
         #endregion
 
         #region Methods
 
         public override Address Add(long offset)
-            => new PICProgAddress((uint)(uValue + offset));
+            => new PICDataAddress((uint)(Value.ToUInt16() + offset));
 
         public override Address Align(int alignment)
-            => new PICProgAddress((uint)(alignment * ((uValue + alignment - 1) / alignment)));
+            => new PICDataAddress((uint)(alignment * ((Value.ToUInt16() + alignment - 1) / alignment)));
 
         public override Expression CloneExpression()
-            => new PICProgAddress(uValue);
+            => new PICDataAddress(Value);
 
         public override string GenerateName(string prefix, string suffix)
-            => $"{prefix}{uValue:X4}{suffix}";
+            => $"{prefix}{Value:X4}{suffix}";
 
         public override Address NewOffset(ulong offset)
-            => new PICProgAddress((uint)offset);
+            => new PICDataAddress((uint)offset);
 
         public override Constant ToConstant()
-            => Constant.UInt16(uValue);
+            => Value;
 
         public override ushort ToUInt16()
-            => uValue;
+            => Value.ToUInt16();
 
         public override uint ToUInt32()
-            => uValue;
+            => Value.ToUInt32();
 
         public override ulong ToLinear()
-            => uValue;
+            => Value.ToUInt32();
 
         public override string ToString()
-            => $"{uValue:X4}";
+            => $"0x{Value.ToUInt16():X4}";
 
         public static PICDataAddress Ptr(uint addr)
             => new PICDataAddress(addr);
@@ -205,39 +197,22 @@ namespace Reko.Arch.Microchip.Common
     public abstract class PICBankedAddress : Address
     {
 
-        #region Constructors
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
         public PICBankedAddress() : base(PrimitiveType.Ptr16)
         {
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets the data memory bank selector value or null..
+        /// Gets the data memory bank selector value.
         /// </summary>
-        public byte? BankSelect { get; protected set; }
+        public byte BankSelect { get; protected set; }
 
         /// <summary>
         /// Gets the offset in the data memory bank..
         /// </summary>
-        public ushort BankOffset
-        {
-            get => bankOff; 
-            protected set => bankOff = (ushort)(value & (BankSize - 1)); 
-        }
-        private ushort bankOff;
+        public ushort BankOffset { get; protected set; }
 
-        #endregion
 
-        #region Overridden 'Address' properties/methods
-
-        #region Properties
+        // Overridden 'Address' properties/methods
 
         public override bool IsNull => false;
 
@@ -247,52 +222,16 @@ namespace Reko.Arch.Microchip.Common
 
         public override bool IsZero => false;
 
-        #endregion
-
-        #region Methods
-
-        public override Constant ToConstant()
-            => throw new NotImplementedException();
-
-        public override ushort ToUInt16()
-            => throw new NotImplementedException();
-
-        public override uint ToUInt32()
-            => throw new NotImplementedException();
-
-        public override ulong ToLinear()
-            => throw new NotImplementedException();
-
-        public override Address Add(long offset)
-            => throw new NotImplementedException();
-
-        public override Address Align(int alignment)
-            => throw new NotImplementedException();
-
-        public override string GenerateName(string prefix, string suffix)
-            => throw new NotImplementedException();
-
-        public override Expression CloneExpression()
-            => throw new NotImplementedException();
-
-        public override Address NewOffset(ulong offset)
-            => throw new NotImplementedException();
-
-        public override Expression Invert()
-            => base.Invert();
-
-        #endregion
-
-        #endregion
-
-        #region Abstract methods/properties
-
-        /// <summary>
-        /// Gets the size of the data memory bank. Must be a power of 2.
-        /// </summary>
-        public abstract ushort BankSize { get; }
-
-        #endregion
+        public override Constant ToConstant() => throw new NotImplementedException();
+        public override ushort ToUInt16() => throw new NotImplementedException();
+        public override uint ToUInt32() => throw new NotImplementedException();
+        public override ulong ToLinear() => throw new NotImplementedException();
+        public override Address Add(long offset) => throw new NotImplementedException();
+        public override Address Align(int alignment) => throw new NotImplementedException();
+        public override string GenerateName(string prefix, string suffix) => throw new NotImplementedException();
+        public override Expression CloneExpression() => throw new NotImplementedException();
+        public override Address NewOffset(ulong offset) => throw new NotImplementedException();
+        public override Expression Invert() => base.Invert();
 
     }
 

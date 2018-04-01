@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -224,9 +224,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         {
             var picMode = PICProcessorMode.GetMode(PIC16BasicName);
             picMode.CreateRegisters();
-            Assert.AreSame(PIC16Registers.WREG, PICRegisters.GetRegister("WREG"));
-            Assert.AreSame(PIC16Registers.STATUS, PICRegisters.GetRegister("STATUS"));
-            Assert.AreSame(PIC16Registers.PCL, PICRegisters.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
+            Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
+            Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
             Assert.AreSame(PIC16BasicRegisters.INDF, PICRegisters.GetRegister("INDF"));
             Assert.AreSame(PIC16BasicRegisters.RP0, PICRegisters.GetBitField("RP0"));
             Assert.AreSame(PIC16BasicRegisters.RP1, PICRegisters.GetBitField("RP1"));
@@ -237,9 +237,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         {
             var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
             picMode.CreateRegisters();
-            Assert.AreSame(PIC16Registers.WREG, PICRegisters.GetRegister("WREG"));
-            Assert.AreSame(PIC16Registers.STATUS, PICRegisters.GetRegister("STATUS"));
-            Assert.AreSame(PIC16Registers.PCL, PICRegisters.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
+            Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
+            Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
             Assert.AreSame(PIC16EnhancedRegisters.INDF0, PICRegisters.GetRegister("INDF0"));
             Assert.AreSame(PIC16EnhancedRegisters.BSR, PICRegisters.GetRegister("BSR"));
         }
@@ -249,9 +249,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         {
             var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
             picMode.CreateRegisters();
-            Assert.AreSame(PIC16Registers.WREG, PICRegisters.GetRegister("WREG"));
-            Assert.AreSame(PIC16Registers.STATUS, PICRegisters.GetRegister("STATUS"));
-            Assert.AreSame(PIC16Registers.PCL, PICRegisters.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
+            Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
+            Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
             Assert.AreSame(PIC16FullRegisters.INDF0, PICRegisters.GetRegister("INDF0"));
             Assert.AreSame(PIC16FullRegisters.INDF1, PICRegisters.GetRegister("INDF1"));
             Assert.AreSame(PIC16FullRegisters.BSR, PICRegisters.GetRegister("BSR"));

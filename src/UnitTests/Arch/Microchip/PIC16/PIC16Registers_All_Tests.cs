@@ -54,13 +54,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
                 try
                 {
                     PICProcessorMode.GetMode(pic.Name).CreateRegisters();
-                    Assert.IsNotNull(PIC16Registers.STATUS, $"Null status register for '{pic.Name}'");
+                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
                     Assert.IsNotNull(PIC16BasicRegisters.RP0, $"Null RP0 register for '{pic.Name}'");
                     Assert.IsNotNull(PIC16BasicRegisters.RP1, $"Null RP1 register for '{pic.Name}'");
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"'{pic.Name}': wrong registers creation.", ex);
+                    throw new InvalidOperationException($"'{pic.Name}': Wrong registers creation.", ex);
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
                 try
                 {
                     PICProcessorMode.GetMode(pic.Name).CreateRegisters();
-                    Assert.IsNotNull(PIC16EnhancedRegisters.STATUS, $"Null status register for '{pic.Name}'");
+                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
                     Assert.IsNotNull(PIC16EnhancedRegisters.BSR, $"Null status register for '{pic.Name}'");
                 }
                 catch (Exception ex)
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
                 try
                 {
                     PICProcessorMode.GetMode(pic.Name).CreateRegisters();
-                    Assert.IsNotNull(PIC16FullRegisters.STATUS, $"Null status register for '{pic.Name}'");
+                    Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
                     Assert.IsNotNull(PIC16FullRegisters.BSR, $"Null status register for '{pic.Name}'");
                 }
                 catch (Exception ex)

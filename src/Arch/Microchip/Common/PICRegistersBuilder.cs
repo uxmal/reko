@@ -20,12 +20,10 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -36,34 +34,12 @@ namespace Reko.Arch.Microchip.Common
     public abstract class PICRegistersBuilder : IMemDataRegionVisitor, IMemDataSymbolVisitor
     {
         private int byteAddr = 0;
-        private int bitFieldAddr = 0;
         private ulong bitRegAddr = 0;
-        private int regNumber = 0;
+        private static int regNumber = 0;
         private SFRDef currSFRDef = null;
         private PICRegisterStorage currSFRReg = null;
         private IPICRegisterSymTable symTable;
         private PIC pic;
-
-        private static PrimitiveType Size2Type(uint nzsize)
-        {
-            if (nzsize == 0)
-                throw new ArgumentOutOfRangeException(nameof(nzsize));
-            if (nzsize == 1)
-                return PrimitiveType.Bool;
-            if (nzsize <= 8)
-                return PrimitiveType.Byte;
-            if (nzsize <= 16)
-                return PrimitiveType.UInt16;
-            if (nzsize <= 32)
-                return PrimitiveType.UInt32;
-            if (nzsize <= 64)
-                return PrimitiveType.UInt64;
-            if (nzsize <= 128)
-                return PrimitiveType.UInt128;
-            if (nzsize <= 256)
-                return PrimitiveType.Word256;
-            throw new ArgumentOutOfRangeException(nameof(nzsize));
-        }
 
 
         /// <summary>
@@ -75,6 +51,7 @@ namespace Reko.Arch.Microchip.Common
         {
             symTable = registersSymTable ?? throw new ArgumentNullException(nameof(registersSymTable));
             pic = thePIC ?? throw new ArgumentNullException(nameof(thePIC));
+            regNumber = 0;
 
             pic.DataSpace.RegardlessOfMode.Regions.
                 OfType<IMemDataRegionAcceptor>().
@@ -94,7 +71,6 @@ namespace Reko.Arch.Microchip.Common
                 {
                     case SFRDef sfr:
                         sfr.Accept(this);
-                        regNumber++;
                         continue;
 
                     case JoinedSFRDef join:
@@ -126,7 +102,9 @@ namespace Reko.Arch.Microchip.Common
         public void Visit(NMMRPlace xmlRegion)
         {
             if (xmlRegion.RegionID != "peripheralnmmrs")  // Do not consider internal peripherals (for hardware debuggers only).
+            {
                 xmlRegion.SFRDefs.ForEach(e => e.Accept(this));
+            }
         }
 
         public void Visit(LinearDataSector xmlRegion)
@@ -146,21 +124,22 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(JoinedSFRDef xmlSymb)
         {
-            var subregs = new SortedList<PICDataAddress, PICRegisterStorage>();
+            var subregs = new List<PICRegisterStorage>();
             bitRegAddr = 0;
             xmlSymb.SFRs.ForEach(e =>
             {
                 e.Accept(this);
                 currSFRReg.BitAddress = bitRegAddr;
                 bitRegAddr += currSFRDef.NzWidth;
-                subregs.Add(currSFRReg.Address, currSFRReg);
+                subregs.Add(currSFRReg);
+                regNumber--;
             });
             if (subregs.Count > 0)
             {
-                var sfr = new PICRegisterStorage(xmlSymb, regNumber, subregs.Values);
-                symTable.AddRegister(sfr);
+                var sfr = new PICRegisterStorage(xmlSymb, regNumber, subregs);
+                if (symTable.AddRegister(sfr))
+                    regNumber++;
             }
-            regNumber++;
         }
 
         public void Visit(MuxedSFRDef xmlSymb)
@@ -171,7 +150,6 @@ namespace Reko.Arch.Microchip.Common
                 {
                     var sfr = selsfr.SFR;
                     sfr.Accept(this);
-                    regNumber++;
                     return;
                 }
                 selsfr.Accept(this);
@@ -187,10 +165,10 @@ namespace Reko.Arch.Microchip.Common
         public void Visit(SFRDef xmlSymb)
         {
             currSFRReg = new PICRegisterStorage(xmlSymb, regNumber) { BitAddress = 0UL };
-            symTable.AddRegister(currSFRReg);
             currSFRDef = xmlSymb;
-
             xmlSymb.SFRModes.ForEach(e => e.Accept(this));
+            regNumber++;
+            symTable.AddRegister(currSFRReg);
         }
 
         public void Visit(SFRModeList xmlSymb)
@@ -218,11 +196,23 @@ namespace Reko.Arch.Microchip.Common
 
         public void Visit(SFRFieldDef xmlSymb)
         {
-            // We do not add SFR Fields which are duplicating the parent SFR register definition (same name or same bit width)
+            if (xmlSymb is null)
+                throw new ArgumentNullException(nameof(xmlSymb));
+            if (currSFRDef is null)
+                throw new ArgumentException();
+            // We do not add SFR Fields which are duplicating the parent SFR register definition (same name or same bit width or same position)
             if ((xmlSymb.CName != currSFRDef.CName) && (xmlSymb.NzWidth != currSFRDef.NzWidth))
             {
-                var fld = new PICBitFieldStorage(currSFRReg, xmlSymb, xmlSymb.BitPos, xmlSymb.Mask);
-                symTable.AddRegisterField(currSFRReg, fld);
+                var fld = new PICRegisterBitFieldStorage(currSFRReg, xmlSymb);
+                if (!currSFRReg.BitFields.ContainsKey(fld.BitFieldSortKey))
+                {
+                    if (symTable.AddRegisterBitField(fld))
+                    {
+                        currSFRReg.BitFields.Add(fld.BitFieldSortKey, fld);
+                        return;
+                    }
+                }
+                fld = null;
             }
         }
 

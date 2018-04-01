@@ -20,8 +20,6 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
-using Reko.Core;
 using Reko.Libraries.Microchip;
 
 namespace Reko.Arch.Microchip.Common
@@ -43,11 +41,8 @@ namespace Reko.Arch.Microchip.Common
         IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
 
         /// <summary>
-        /// Gets or sets the PIC execution mode.
+        /// Gets or sets the PIC execution mode. Effective for PIC18 only.
         /// </summary>
-        /// <value>
-        /// The PIC execution mode.
-        /// </value>
         PICExecMode ExecMode { get; set; }
 
     }

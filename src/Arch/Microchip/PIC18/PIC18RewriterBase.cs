@@ -46,8 +46,6 @@ namespace Reko.Arch.Microchip.PIC18
             Fsr2 = binder.EnsureRegister(PIC18Registers.FSR2);
         }
 
-        protected override Identifier GetWReg => binder.EnsureRegister(PIC18Registers.WREG);
-
         protected override void RewriteInstr()
         {
             var addr = instrCurr.Address;
@@ -285,123 +283,15 @@ namespace Reko.Arch.Microchip.PIC18
 
         #region Helpers
 
-        protected Identifier FlagGroup(FlagM flags)
-        {
-            return binder.EnsureFlagGroup(PIC18Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
-        }
-
-        protected ArrayAccess PushToHWStackAccess()
-        {
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            var slot = m.ARef(PrimitiveType.Ptr32, PIC18Registers.GlobalStack, stkptr);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
-            return slot;
-        }
-
-        protected ArrayAccess PopFromHWStackAccess()
-        {
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
-            var slot = m.ARef(PrimitiveType.Ptr32, PIC18Registers.GlobalStack, stkptr);
-            return slot;
-        }
-
-        protected static MemoryAccess DataMem8(Expression ea)
-            => new MemoryAccess(PIC18Registers.GlobalData, ea, PrimitiveType.Byte);
-
-        protected Expression GetFSRRegister(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PIC18FSROperand fsrnum:
-                    switch (fsrnum.FSRNum.ToByte())
-                    {
-                        case 0:
-                            return binder.EnsureRegister(PIC18Registers.FSR0);
-                        case 1:
-                            return binder.EnsureRegister(PIC18Registers.FSR1);
-                        case 2:
-                            return binder.EnsureRegister(PIC18Registers.FSR2);
-                        default:
-                            throw new InvalidOperationException($"Invalid FSR number: {fsrnum.FSRNum.ToByte()}");
-                    }
-
-                default:
-                    throw new InvalidOperationException($"Invalid FSR operand.");
-            }
-        }
-
-        protected Expression GetImmediateValue(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PIC18ImmediateOperand imm:
-                    return imm.ImmediateValue;
-
-                default:
-                    throw new InvalidOperationException($"Invalid immediate operand.");
-            }
-        }
-
-        protected Expression GetProgramAddress(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PIC18ProgAddrOperand paddr:
-                    return PICProgAddress.Ptr(paddr.CodeTarget);
-
-                default:
-                    throw new InvalidOperationException($"Invalid program address operand.");
-            }
-        }
-
-        protected Expression GetTBLRWMode(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PIC18TableReadWriteOperand tblincrmod:
-                    return tblincrmod.TBLIncrMode;
-
-                default:
-                    throw new InvalidOperationException($"Invalid table read/write operand.");
-            }
-        }
-
-        protected Constant GetShadow(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PIC18ShadowOperand shadow:
-                    return shadow.IsShadow;
-
-                default:
-                    throw new InvalidOperationException($"Invalid shadow operand.");
-            }
-        }
-
         private Expression GetFSR2IdxAddress(MachineOperand op)
         {
             switch (op)
             {
-                case PIC18FSR2IdxOperand fsr2idx:
-                    return DataMem8(m.IAdd(Fsr2, fsr2idx.Offset));
+                case PICOperandImmediate fsr2idx:
+                    return DataMem8(m.IAdd(Fsr2, fsr2idx.ImmediateValue));
 
                 default:
                     throw new InvalidOperationException($"Invalid FSR2 indexed address operand.");
-            }
-        }
-
-        protected Constant GetBitMask(MachineOperand op, bool revert)
-        {
-            switch (op)
-            {
-                case PIC18DataBitAccessOperand bitaddr:
-                    int mask = (1 << bitaddr.BitNumber.ToByte());
-                    if (revert) mask = ~mask;
-                    return Constant.Byte((byte)mask);
-
-                default:
-                    throw new InvalidOperationException("Invalid bit number operand.");
             }
         }
 
@@ -420,68 +310,70 @@ namespace Reko.Arch.Microchip.PIC18
         /// Addressing mode and source memory/register.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        protected (IndirectRegOp indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
+        protected (FSRIndexedMode indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
         {
-            (IndirectRegOp indMode, Expression memPtr) GetMemoryBankAccess()
+            (FSRIndexedMode indMode, Expression memPtr) GetMemoryBankAccess()
             {
 
                 switch (opernd)
                 {
-                    case PIC18BankedAccessOperand bmem:
-                        var offset = bmem.BankAddr;
+                    case PICOperandOffsetBankedMemory bmem:
+                        if (bmem.IsAbsolute)
+                            throw new InvalidOperationException($"Invalid direct addressing operand: opernd={opernd}.");
 
+                        var offset = bmem.Offset;
                         // Check if access is a Direct Addressing one (bank designated by BSR).
                         // 
-                        if (!bmem.IsAccessRAM.ToBoolean()) // Address is BSR direct addressing.
-                            return (IndirectRegOp.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(PIC18Registers.BSR), 8), offset)));
+                        if (!bmem.IsBanked) // Address is BSR direct addressing.
+                            return (FSRIndexedMode.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(bmem.BankSelector), 8), offset)));
 
-                        // We have some sort of Access Bank RAM type of access; either Lower or Upper area.
+                        // We have some sort of ACCESS RAM type of access; either Lower or Upper area.
                         //
-                        if (PIC18MemoryDescriptor.CanBeFSR2IndexAddress(offset.ToUInt16()))
+                        if (PICMemoryDescriptor.CanBeFSR2IndexAddress(offset.ToUInt16()))
                         {
-                            if (bmem.ExecMode == PICExecMode.Traditional)
-                                return (IndirectRegOp.None, DataMem8(offset));
+                            if (PICMemoryDescriptor.ExecMode == PICExecMode.Traditional)
+                                return (FSRIndexedMode.None, DataMem8(offset));
                             
-                            return (IndirectRegOp.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
+                            return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
                         }
 
-                        // Address is Upper ACCESS Bank addressing. Try to get any "known" SFR for this PIC.
+                        // Address is Upper ACCESS RAM addressing. Try to get any "known" SFR for this PIC.
                         // 
                         var accAddr = PIC18MemoryDescriptor.RemapDataAddress(offset.ToUInt16());
-                        if (PICRegisters.TryGetRegister(accAddr, 8, out var sfr))
+                        if (PICRegisters.TryGetRegister(accAddr, out var sfr))
                         {
-                            var iop = PIC18Registers.IndirectOpMode(sfr, out PICRegisterStorage fsr);
-                            if (iop != IndirectRegOp.None)
-                                return (iop, binder.EnsureRegister(fsr));
+                            var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
+                            if (iop != FSRIndexedMode.None)
+                                return (iop, binder.EnsureRegister(fsrreg));
                             return (iop, binder.EnsureRegister(sfr));
                         }
-                        return (IndirectRegOp.None, DataMem8(accAddr));
+                        return (FSRIndexedMode.None, DataMem8(accAddr));
 
                     default:
-                        throw new InvalidOperationException("Invalid direct addressing operand.");
+                        throw new InvalidOperationException($"Invalid direct addressing operand: opernd={opernd}.");
                 }
             }
 
             var (indMode, memPtr) = GetMemoryBankAccess();
             switch (indMode)
             {
-                case IndirectRegOp.None:    // Direct mode
+                case FSRIndexedMode.None:    // Direct mode
                     memExpr = memPtr;
                     break;
 
-                case IndirectRegOp.INDF:    // Indirect modes
-                case IndirectRegOp.POSTDEC:
-                case IndirectRegOp.POSTINC:
-                case IndirectRegOp.PREINC:
+                case FSRIndexedMode.INDF:    // Indirect modes
+                case FSRIndexedMode.POSTDEC:
+                case FSRIndexedMode.POSTINC:
+                case FSRIndexedMode.PREINC:
                     memExpr = DataMem8(memPtr);
                     break;
 
-                case IndirectRegOp.PLUSW:   // Indirect-indexed mode
+                case FSRIndexedMode.PLUSW:   // Indirect-indexed mode
                     memExpr = DataMem8(m.IAdd(memPtr, Wreg));
                     break;
 
                 default:
-                    throw new InvalidOperationException("Unable to adjust indirect pointer.");
+                    throw new InvalidOperationException("Unable to create indirect pointer expression.");
             }
 
             return (indMode, memPtr);
@@ -497,11 +389,11 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// Addressing mode and source memory/register.
         /// </returns>
-        protected (IndirectRegOp indMode, Expression memPtr) GetBinaryPtrs(MachineOperand opernd, out Expression memExpr, out Expression dst)
+        protected (FSRIndexedMode indMode, Expression memPtr) GetBinaryPtrs(MachineOperand opernd, out Expression memExpr, out Expression dst)
         {
             bool DestIsWreg()
             {
-                if (opernd is PIC18DataByteAccessWithDestOperand bytedst)
+                if (opernd is PICOperandWregDest bytedst)
                     return bytedst.WregIsDest.ToBoolean();
                 return false;
             }
@@ -521,24 +413,27 @@ namespace Reko.Arch.Microchip.PIC18
         /// Addressing mode and source memory/register.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the instruction operand is invalid.</exception>
-        protected (IndirectRegOp indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
+        protected (FSRIndexedMode indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
         {
-            (IndirectRegOp indMode, Expression memPtr) GetDataAbsAddress()
+            (FSRIndexedMode indMode, Expression memPtr) GetDataAbsAddress()
             {
                 switch (opernd)
                 {
-                    case PIC18DataAbsAddrOperand memabsaddr:
-                        if (PICRegisters.TryGetRegister(memabsaddr.DataTarget, 8, out var sfrReg))
+                    case PICOperandOffsetBankedMemory mem:
+                        if (mem.DataTarget == PICDataAddress.Invalid)
+                            throw new InvalidOperationException($"Invalid data absolute address operand.");
+
+                        if (PICRegisters.TryGetRegister(mem.DataTarget, out var sfrReg))
                         {
                             if (sfrReg != PICRegisterStorage.None)
                             {
-                                var imode = PIC18Registers.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
-                                if (imode != IndirectRegOp.None)
+                                var imode = PICRegisters.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
+                                if (imode != FSRIndexedMode.None)
                                     return (imode, binder.EnsureRegister(fsr));
                                 return (imode, binder.EnsureRegister(sfrReg));
                             }
                         }
-                        return (IndirectRegOp.None, DataMem8(PICDataAddress.Ptr(memabsaddr.DataTarget)));
+                        return (FSRIndexedMode.None, DataMem8(PICDataAddress.Ptr(mem.DataTarget)));
 
                     default:
                         throw new InvalidOperationException($"Invalid data absolute address operand.");
@@ -548,18 +443,18 @@ namespace Reko.Arch.Microchip.PIC18
             var (indMode, memPtr) = GetDataAbsAddress();
             switch (indMode)
             {
-                case IndirectRegOp.None:    // Direct mode
+                case FSRIndexedMode.None:    // Direct mode
                     memExpr = memPtr;
                     break;
 
-                case IndirectRegOp.INDF:    // Indirect modes
-                case IndirectRegOp.POSTDEC:
-                case IndirectRegOp.POSTINC:
-                case IndirectRegOp.PREINC:
+                case FSRIndexedMode.INDF:    // Indirect modes
+                case FSRIndexedMode.POSTDEC:
+                case FSRIndexedMode.POSTINC:
+                case FSRIndexedMode.PREINC:
                     memExpr = DataMem8(memPtr);
                     break;
 
-                case IndirectRegOp.PLUSW:   // Indirect-indexed mode
+                case FSRIndexedMode.PLUSW:   // Indirect-indexed mode
                     memExpr = DataMem8(m.IAdd(memPtr, Wreg));
                     break;
 
@@ -570,120 +465,12 @@ namespace Reko.Arch.Microchip.PIC18
             return (indMode, memPtr);
         }
 
-        protected void CondBranch(TestCondition test)
-        {
-            rtlc = RtlClass.ConditionalTransfer;
-            if (instrCurr.op1 is PIC18ProgRel8AddrOperand brop)
-            {
-                m.Branch(test, PICProgAddress.Ptr(brop.CodeTarget), rtlc);
-                return;
-            }
-            throw new InvalidOperationException("Wrong 8-bit relative PIC address");
-        }
-
-        protected void CondSkipIndirect(Expression cond, IndirectRegOp indMode, Expression memPtr)
-        {
-            rtlc = RtlClass.ConditionalTransfer;
-            switch (indMode)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Branch(cond, SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
-                    m.Assign(memPtr, m.ISub(memPtr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    m.Branch(cond, SkipToAddr(), rtlc);
-                    break;
-            }
-        }
-
-        protected PICProgAddress SkipToAddr()
-            => PICProgAddress.Ptr(instrCurr.Address + instrCurr.Length + 2);
-
-        protected void SetStatusFlags(Expression dst)
+        protected override void SetStatusFlags(Expression dst)
         {
             FlagM flags = PIC18CC.Defined(instrCurr.Opcode);
             if (flags != 0)
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
-
-        protected void ArithAssign(Expression dst, Expression src)
-        {
-            m.Assign(dst, src);
-            SetStatusFlags(dst);
-        }
-
-        protected void ArithAssignIndirect(Expression dst, Expression src, IndirectRegOp indMode, Expression memPtr)
-        {
-            switch (indMode)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    ArithAssign(dst, src);
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    ArithAssign(dst, src);
-                    m.Assign(memPtr, m.ISub(memPtr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    ArithAssign(dst, src);
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    ArithAssign(dst, src);
-                    break;
-            }
-        }
-
-        protected void ArithCondSkip(Expression dst, Expression src, Expression cond, IndirectRegOp indMode, Expression memPtr)
-        {
-            rtlc = RtlClass.ConditionalTransfer;
-            switch (indMode)
-            {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
-                    m.Assign(dst, src);
-                    m.Branch(cond, SkipToAddr(), rtlc);
-                    break;
-
-                case IndirectRegOp.POSTDEC:
-                    m.Assign(dst, src);
-                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
-                    m.Assign(memPtr, m.ISub(memPtr, 1));
-                    break;
-
-                case IndirectRegOp.POSTINC:
-                    m.Assign(dst, src);
-                    m.BranchInMiddleOfInstruction(cond, SkipToAddr(), rtlc);
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    break;
-
-                case IndirectRegOp.PREINC:
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    m.Assign(dst, src);
-                    m.Branch(cond, SkipToAddr(), rtlc);
-                    break;
-            }
-        }
-
 
         private void RewriteADDFSR()
         {
@@ -785,12 +572,12 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteBRA()
         {
             rtlc = RtlClass.Transfer;
-            if (instrCurr.op1 is PIC18ProgRel11AddrOperand brop)
+            if (instrCurr.op1 is PICOperandProgMemoryAddress brop)
             {
-                m.Goto(PICProgAddress.Ptr(brop.CodeTarget));
+                m.Goto(brop.CodeTarget);
                 return;
             }
-            throw new InvalidOperationException("Wrong 11-bit relative PIC address");
+            throw new InvalidOperationException("Wrong program relative PIC address");
         }
 
         private void RewriteBSF()
@@ -809,23 +596,23 @@ namespace Reko.Arch.Microchip.PIC18
 
             switch (indMode)
             {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
+                case FSRIndexedMode.None:
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
                     res = m.And(memExpr, mask);
                     break;
 
-                case IndirectRegOp.POSTDEC:
+                case FSRIndexedMode.POSTDEC:
                     res = m.And(memExpr, mask);
                     m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
-                case IndirectRegOp.POSTINC:
+                case FSRIndexedMode.POSTINC:
                     res = m.And(memExpr, mask);
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
-                case IndirectRegOp.PREINC:
+                case FSRIndexedMode.PREINC:
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     res = m.And(memExpr, mask);
                     break;
@@ -842,23 +629,23 @@ namespace Reko.Arch.Microchip.PIC18
 
             switch (indMode)
             {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
+                case FSRIndexedMode.None:
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
                     res = m.And(memExpr, mask);
                     break;
 
-                case IndirectRegOp.POSTDEC:
+                case FSRIndexedMode.POSTDEC:
                     res = m.And(memExpr, mask);
                     m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
-                case IndirectRegOp.POSTINC:
+                case FSRIndexedMode.POSTINC:
                     res = m.And(memExpr, mask);
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
-                case IndirectRegOp.PREINC:
+                case FSRIndexedMode.PREINC:
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     res = m.And(memExpr, mask);
                     break;
@@ -885,7 +672,7 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
             var target = GetProgramAddress(instrCurr.op1);
-            Constant shad = GetShadow(instrCurr.op2);
+            Constant fast = GetFastIndicator(instrCurr.op2);
             Address retaddr = instrCurr.Address + instrCurr.Length;
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
             Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
@@ -893,7 +680,7 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
             m.Assign(tos, retaddr);
-            if (shad.ToBoolean() && !(statuss is null))
+            if (fast.ToBoolean() && !(statuss is null))
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
@@ -926,23 +713,23 @@ namespace Reko.Arch.Microchip.PIC18
 
             switch (indMode)
             {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
+                case FSRIndexedMode.None:
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
                     m.Assign(memExpr, 0);
                     break;
 
-                case IndirectRegOp.POSTDEC:
+                case FSRIndexedMode.POSTDEC:
                     m.Assign(memExpr, 0);
                     m.Assign(memPtr, m.ISub(memPtr, 1));
                     break;
 
-                case IndirectRegOp.POSTINC:
+                case FSRIndexedMode.POSTINC:
                     m.Assign(memExpr, 0);
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     break;
 
-                case IndirectRegOp.PREINC:
+                case FSRIndexedMode.PREINC:
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     m.Assign(memExpr, 0);
                     break;
@@ -954,8 +741,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             byte mask;
 
-            PICBitFieldStorage pd = PIC18Registers.PD;
-            PICBitFieldStorage to = PIC18Registers.TO;
+            PICRegisterBitFieldStorage pd = PIC18Registers.PD;
+            PICRegisterBitFieldStorage to = PIC18Registers.TO;
             Identifier pdreg = binder.EnsureRegister(pd.FlagRegister);
             Identifier toreg = binder.EnsureRegister(to.FlagRegister);
 
@@ -1093,54 +880,54 @@ namespace Reko.Arch.Microchip.PIC18
 
              switch (indops)
              {
-                case IndirectRegOp.None:
-                case IndirectRegOp.INDF:
-                case IndirectRegOp.PLUSW:
+                case FSRIndexedMode.None:
+                case FSRIndexedMode.INDF:
+                case FSRIndexedMode.PLUSW:
                     switch (indopd)
                     {
-                        case IndirectRegOp.None:
-                        case IndirectRegOp.INDF:
-                        case IndirectRegOp.PLUSW:
+                        case FSRIndexedMode.None:
+                        case FSRIndexedMode.INDF:
+                        case FSRIndexedMode.PLUSW:
                             m.Assign(derefptrd, derefptrs);
                             break;
 
-                        case IndirectRegOp.POSTDEC:
+                        case FSRIndexedMode.POSTDEC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.ISub(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.POSTINC:
+                        case FSRIndexedMode.POSTINC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.PREINC:
+                        case FSRIndexedMode.PREINC:
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             m.Assign(derefptrd, derefptrs);
                             break;
                     }
                     break;
 
-                case IndirectRegOp.POSTDEC:
+                case FSRIndexedMode.POSTDEC:
                     switch (indopd)
                     {
-                        case IndirectRegOp.None:
-                        case IndirectRegOp.INDF:
-                        case IndirectRegOp.PLUSW:
+                        case FSRIndexedMode.None:
+                        case FSRIndexedMode.INDF:
+                        case FSRIndexedMode.PLUSW:
                             m.Assign(derefptrd, derefptrs);
                             break;
 
-                        case IndirectRegOp.POSTDEC:
+                        case FSRIndexedMode.POSTDEC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.ISub(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.POSTINC:
+                        case FSRIndexedMode.POSTINC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.PREINC:
+                        case FSRIndexedMode.PREINC:
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             m.Assign(derefptrd, derefptrs);
                             break;
@@ -1148,26 +935,26 @@ namespace Reko.Arch.Microchip.PIC18
                     m.Assign(adrfs, m.ISub(adrfs, 1));
                     break;
 
-                case IndirectRegOp.POSTINC:
+                case FSRIndexedMode.POSTINC:
                     switch (indopd)
                     {
-                        case IndirectRegOp.None:
-                        case IndirectRegOp.INDF:
-                        case IndirectRegOp.PLUSW:
+                        case FSRIndexedMode.None:
+                        case FSRIndexedMode.INDF:
+                        case FSRIndexedMode.PLUSW:
                             m.Assign(derefptrd, derefptrs);
                             break;
 
-                        case IndirectRegOp.POSTDEC:
+                        case FSRIndexedMode.POSTDEC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.ISub(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.POSTINC:
+                        case FSRIndexedMode.POSTINC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.PREINC:
+                        case FSRIndexedMode.PREINC:
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             m.Assign(derefptrd, derefptrs);
                             break;
@@ -1175,27 +962,27 @@ namespace Reko.Arch.Microchip.PIC18
                     m.Assign(adrfs, m.IAdd(adrfs, 1));
                     break;
 
-                case IndirectRegOp.PREINC:
+                case FSRIndexedMode.PREINC:
                     m.Assign(adrfs, m.IAdd(adrfs, 1));
                     switch (indopd)
                     {
-                        case IndirectRegOp.None:
-                        case IndirectRegOp.INDF:
-                        case IndirectRegOp.PLUSW:
+                        case FSRIndexedMode.None:
+                        case FSRIndexedMode.INDF:
+                        case FSRIndexedMode.PLUSW:
                             m.Assign(derefptrd, derefptrs);
                             break;
 
-                        case IndirectRegOp.POSTDEC:
+                        case FSRIndexedMode.POSTDEC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.ISub(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.POSTINC:
+                        case FSRIndexedMode.POSTINC:
                             m.Assign(derefptrd, derefptrs);
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             break;
 
-                        case IndirectRegOp.PREINC:
+                        case FSRIndexedMode.PREINC:
                             m.Assign(adrfd, m.IAdd(adrfd, 1));
                             m.Assign(derefptrd, derefptrs);
                             break;
@@ -1335,12 +1122,12 @@ namespace Reko.Arch.Microchip.PIC18
             rtlc = RtlClass.Transfer;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Constant shad = GetShadow(instrCurr.op1);
+            Constant fast = GetFastIndicator(instrCurr.op1);
             Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
 
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            if (shad.ToBoolean() && !(statuss is null))
+            if (fast.ToBoolean() && !(statuss is null))
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
@@ -1395,8 +1182,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             byte mask;
 
-            PICBitFieldStorage pd = PIC18Registers.PD;
-            PICBitFieldStorage to = PIC18Registers.TO;
+            PICRegisterBitFieldStorage pd = PIC18Registers.PD;
+            PICRegisterBitFieldStorage to = PIC18Registers.TO;
             Identifier pdreg = binder.EnsureRegister(pd.FlagRegister);
             Identifier toreg = binder.EnsureRegister(to.FlagRegister);
 

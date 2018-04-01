@@ -67,7 +67,7 @@ namespace Reko.Arch.Microchip.Common
         bool HasSubDomain(MemorySubDomain subdom);
 
         /// <summary>
-        /// Memory sub-domain sizes.
+        /// Memory sub-domain location and word sizes.
         /// </summary>
         /// <param name="subdom">The sub-domain of interest. A value from <see cref="MemorySubDomain"/>
         ///                      enumeration.</param>
@@ -167,6 +167,31 @@ namespace Reko.Arch.Microchip.Common
         /// The physical memory address.
         /// </returns>
         PICProgAddress RemapProgramAddress(PICProgAddress lAddr);
+
+        /// <summary>
+        /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+        /// </summary>
+        /// <param name="cAddr">The memory address to check.</param>
+        /// <returns>
+        /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
+        /// </returns>
+        bool IsAccessRAMLow(PICDataAddress cAddr);
+
+        /// <summary>
+        /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
+        /// </summary>
+        /// <param name="uAddr">The memory address to check.</param>
+        /// <returns>
+        /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
+        /// </returns>
+        bool IsAccessRAMHigh(PICDataAddress uAddr);
+
+        /// <summary>
+        /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
+        /// </summary>
+        /// <param name="uAddr">The memory address to check.</param>
+        bool CanBeFSR2IndexAddress(ushort uAddr);
+
     }
 
 }

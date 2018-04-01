@@ -22,17 +22,11 @@
 
 using Reko.Libraries.Microchip;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.PIC18
 {
-    using Common;
-
     public class PIC18EnhancedRegisters : PIC18Registers
     {
-        private static HashSet<PICRegisterStorage> invalidMovfflDests
-            = new HashSet<PICRegisterStorage>();
-
         private PIC18EnhancedRegisters()
         {
         }
@@ -44,7 +38,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static void Create(PIC pic)
         {
-            PICRegisters.LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
+            LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             new PIC18EnhancedRegisters().SetCoreRegisters();
         }
 
@@ -60,28 +54,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             base.SetCoreRegisters();
 
-            // Some registers are invalid memory destination for some instructions.
-
-            invalidMovfflDests.Clear();
-            invalidMovfflDests.Add(PCL);
-            invalidMovfflDests.Add(TOSL);
-            invalidMovfflDests.Add(TOSH);
-            invalidMovfflDests.Add(TOSU);
-
-        }
-
-        /// <summary>
-        /// Query if data memory absolute address corresponds to one of the MOVFFL forbidden destinations (per PIC data sheet)..
-        /// </summary>
-        /// <param name="dstaddr">The data memory absolute address.</param>
-        /// <returns>
-        /// True if forbidden, false allowed.
-        /// </returns>
-        public static bool NotAllowedMovlDest(ushort dstaddr)
-        {
-            if (PICRegisters.TryGetRegister(dstaddr, 8, out var fsr))
-                return invalidMovfflDests.Contains(fsr);
-            return false;
+            // Some registers are invalid memory destination for some move instructions.
+            AddForbiddenDests(true, PCL, TOSL, TOSH, TOSU);
         }
 
     }

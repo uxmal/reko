@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Rtl;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -180,67 +181,33 @@ namespace Reko.Arch.Microchip.PIC16
 
         }
 
-        /// <summary>
-        /// Gets the working register (WREG) which is often used implicitly by PIC instructions.
-        /// </summary>
-        /// <value>
-        /// The WREG register.
-        /// </value>
-        protected override Identifier GetWReg => binder.EnsureRegister(PIC16Registers.WREG);
-
-        protected Identifier FlagGroup(FlagM flags)
-        {
-            return binder.EnsureFlagGroup(PIC16Registers.STATUS, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
-        }
-
-        protected void SetStatusFlags(Expression dst)
+        protected override void SetStatusFlags(Expression dst)
         {
             FlagM flags = PIC16CC.Defined(instrCurr.Opcode);
             if (flags != 0)
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
-        protected ArrayAccess PushToHWStackAccess()
-        {
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            var slot = m.ARef(PrimitiveType.Ptr32, PIC16Registers.GlobalStack, stkptr);
-            m.Assign(stkptr, m.IAdd(stkptr, Constant.Byte(1)));
-            return slot;
-        }
-
-        protected ArrayAccess PopFromHWStackAccess()
-        {
-            var stkptr = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(stkptr, m.ISub(stkptr, Constant.Byte(1)));
-            var slot = m.ARef(PrimitiveType.Ptr32, PIC16Registers.GlobalStack, stkptr);
-            return slot;
-        }
-
-        protected static MemoryAccess DataMem8(Expression ea)
-            => new MemoryAccess(PIC16Registers.GlobalData, ea, PrimitiveType.Byte);
-
-        protected Expression GetImmediateValue(MachineOperand op)
+        protected virtual Expression GetMemDataAddress(MachineOperand op)
         {
             switch (op)
             {
-                case PIC16ImmediateOperand imm:
-                    return imm.ImmediateValue;
+                case PIC16BankedOperand bank:
+                    return PICDataAddress.Ptr(bank.BankAddr);
 
                 default:
-                    throw new InvalidOperationException($"Invalid immediate operand.");
+                    throw new InvalidOperationException($"Invalid bank memory address operand.");
             }
         }
 
-        protected Expression GetProgramAddress(MachineOperand op)
+        protected Expression GetDstMemDataAddress(MachineOperand op)
         {
-            switch (op)
+            if (op is PIC16DataByteWithDestOperand wbank)
             {
-                case PIC16ProgAddrOperand paddr:
-                    return PICProgAddress.Ptr(paddr.CodeTarget);
-
-                default:
-                    throw new InvalidOperationException($"Invalid program address operand.");
+                if (wbank.WregIsDest.ToBoolean())
+                    return Wreg;
             }
+            return GetMemDataAddress(op);
         }
 
         protected Constant GetBitMask(MachineOperand op, bool revert)
@@ -267,7 +234,10 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ADDWF()
         {
-
+            var src = GetMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op1);
+            m.Assign(dst, m.IAdd(Wreg, src));
+            SetStatusFlags(dst);
         }
 
         private void Rewrite_ANDLW()
@@ -279,27 +249,35 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ANDWF()
         {
-
+            var src = GetMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op1);
+            m.Assign(dst, m.And(Wreg, src));
+            SetStatusFlags(dst);
         }
 
         void Rewrite_BCF()
         {
+            var mask = GetBitMask(instrCurr.op1, true);
         }
 
         void Rewrite_BSF()
         {
+            var mask = GetBitMask(instrCurr.op1, false);
         }
 
         void Rewrite_BTFSC()
         {
+            var mask = GetBitMask(instrCurr.op1, true);
         }
 
         void Rewrite_BTFSS()
         {
+            var mask = GetBitMask(instrCurr.op1, false);
         }
 
         void Rewrite_CALL()
         {
+            PushToHWStackAccess();
         }
 
         void Rewrite_CLRF()
@@ -308,10 +286,19 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_CLRW()
         {
+            m.Assign(Wreg, Constant.Byte(0));
+            SetStatusFlags(Wreg);
         }
 
         void Rewrite_CLRWDT()
         {
+            byte mask;
+
+            PICRegisterBitFieldStorage pd = PIC16Registers.PD;
+            PICRegisterBitFieldStorage to = PIC16Registers.TO;
+            var status = binder.EnsureRegister(PIC16Registers.STATUS);
+            mask = (byte)((1 << pd.BitPos) | (1 << to.BitPos));
+            m.Assign(status, m.Or(status, Constant.Byte(mask)));
         }
 
         void Rewrite_COMF()
@@ -347,6 +334,10 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_IORWF()
         {
+            var src = GetMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op1);
+            m.Assign(dst, m.Or(Wreg, src));
+            SetStatusFlags(dst);
         }
 
         void Rewrite_MOVF()
@@ -366,14 +357,29 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_RETFIE()
         {
+            PICRegisterBitFieldStorage gie = PIC16Registers.GIE;
+            byte mask = (byte)(1 << gie.BitPos);
+            var intcon = binder.EnsureRegister(PIC16Registers.INTCON);
+            m.Assign(intcon, m.Or(intcon, Constant.Byte(mask)));
+            PopFromHWStackAccess();
+            rtlc = RtlClass.Transfer;
+            m.Return(0, 0);
         }
 
         void Rewrite_RETLW()
         {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, k);
+            PopFromHWStackAccess();
+            rtlc = RtlClass.Transfer;
+            m.Return(0, 0);
         }
 
         void Rewrite_RETURN()
         {
+            PopFromHWStackAccess();
+            rtlc = RtlClass.Transfer;
+            m.Return(0, 0);
         }
 
         void Rewrite_RLF()
@@ -386,10 +392,14 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_SLEEP()
         {
+            m.Nop();
         }
 
         void Rewrite_SUBLW()
         {
+            var k = GetImmediateValue(instrCurr.op1);
+            m.Assign(Wreg, m.ISub(k, Wreg));
+            SetStatusFlags(Wreg);
         }
 
         void Rewrite_SUBWF()
@@ -409,6 +419,10 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_XORWF()
         {
+            var src = GetMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op1);
+            m.Assign(dst, m.Xor(Wreg, src));
+            SetStatusFlags(dst);
         }
 
     }

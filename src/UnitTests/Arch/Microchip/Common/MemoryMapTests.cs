@@ -22,8 +22,6 @@
 
 using NUnit.Framework;
 using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC16;
-using Reko.Arch.Microchip.PIC18;
 using Reko.Core;
 using Reko.Libraries.Microchip;
 
@@ -35,31 +33,31 @@ namespace Reko.UnitTests.Arch.Microchip.Common
     public class MemoryMapTests
     {
 
-        private void CheckProgMap(IMemoryMap map)
+        private void CheckProgMap()
         {
-            foreach (var rgn in map.ProgramRegions)
+            foreach (var rgn in PICMemoryDescriptor.ProgramRegions)
             {
                 Assert.AreEqual(MemoryDomain.Prog, rgn.TypeOfMemory);
-                Assert.IsNotNull(map.GetProgramRegion(rgn.RegionName));
+                Assert.IsNotNull(PICMemoryDescriptor.GetProgramRegion(rgn.RegionName));
                 Assert.IsTrue(rgn.Size > 0, $"Invalid size for '{rgn.RegionName}' = {rgn.Size}");
                 AddressRange virtualrange = rgn.LogicalByteAddrRange;
-                Assert.AreEqual(rgn, map.GetProgramRegion(virtualrange.Begin), $"Mismatch begin address for program region '{rgn.RegionName}'");
-                Assert.AreEqual(rgn, map.GetProgramRegion(virtualrange.End - 1), $"Mismatch end address for program region '{rgn.RegionName}'");
+                Assert.AreEqual(rgn, PICMemoryDescriptor.GetProgramRegion(virtualrange.Begin), $"Mismatch begin address for program region '{rgn.RegionName}'");
+                Assert.AreEqual(rgn, PICMemoryDescriptor.GetProgramRegion(virtualrange.End - 1), $"Mismatch end address for program region '{rgn.RegionName}'");
             }
         }
 
-        private void CheckDataMap(IMemoryMap map)
+        private void CheckDataMap()
         {
-            foreach (var rgn in map.DataRegions)
+            foreach (var rgn in PICMemoryDescriptor.DataRegions)
             {
                 Assert.AreEqual(MemoryDomain.Data, rgn.TypeOfMemory);
-                Assert.IsNotNull(map.GetDataRegion(rgn.RegionName));
+                Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion(rgn.RegionName));
                 if (rgn.SubtypeOfMemory != MemorySubDomain.NNMR)
                 {
                     Assert.IsTrue(rgn.Size > 0, $"Invalid size for '{rgn.RegionName}' = {rgn.Size}");
                     AddressRange virtualrange = rgn.LogicalByteAddrRange;
-                    Assert.AreEqual(rgn, map.GetDataRegion(virtualrange.Begin), $"Mismatch begin address for data region '{rgn.RegionName}'");
-                    Assert.AreEqual(rgn, map.GetDataRegion(virtualrange.End - 1), $"Mismatch end address for data region '{rgn.RegionName}'");
+                    Assert.AreEqual(rgn, PICMemoryDescriptor.GetDataRegion(virtualrange.Begin), $"Mismatch begin address for data region '{rgn.RegionName}'");
+                    Assert.AreEqual(rgn, PICMemoryDescriptor.GetDataRegion(virtualrange.End - 1), $"Mismatch end address for data region '{rgn.RegionName}'");
                 }
             }
         }
@@ -68,139 +66,130 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC16MemoryMapper_TraditionalTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC16, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC16, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
+            CheckProgMap();
+            CheckDataMap();
         }
 
         [Test]
         public void PIC16MemoryMapper_EnhancedTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
+            CheckProgMap();
+            CheckDataMap();
         }
 
         [Test]
         public void PIC16MemoryMapper_EnhancedV1Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
+            CheckProgMap();
+            CheckDataMap();
         }
 
         [Test]
         public void PIC18MemoryMapper_TraditionalTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC18, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC18, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
+            CheckProgMap();
+            CheckDataMap();
 
-            Assert.IsNotNull(map.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(map.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(map.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
         public void PIC18MemoryMapper_ExtendedTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            map.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC18, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC18, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
-            Assert.IsNotNull(map.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(map.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(map.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            CheckProgMap();
+            CheckDataMap();
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
         public void PIC18ExtdMemoryMapper_TraditionalTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18EggName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
-            Assert.IsNotNull(map.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(map.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(map.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            CheckProgMap();
+            CheckDataMap();
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
         public void PIC18ExtdMemoryMapper_ExtendedTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18EggName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            map.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Extended, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC18_EXTENDED, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
-            Assert.IsNull(map.GetDataRegion("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
-            Assert.IsNotNull(map.GetDataRegion("gpre"), "Missing 'gpre' data memory region for PIC18.");
-            Assert.IsNotNull(map.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            CheckProgMap();
+            CheckDataMap();
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Missing 'gpre' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
         }
 
         [Test]
         public void PIC18EnhdMemoryMapper_TraditionalTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            Assert.AreEqual(PICExecMode.Traditional, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
-            Assert.IsNotNull(map.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
-            Assert.IsNotNull(map.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
-            Assert.IsNull(map.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
+            CheckProgMap();
+            CheckDataMap();
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Missing 'accessram' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Unexpected 'gpre' data memory region for PIC18 traditional.");
         }
 
         [Test]
         public void PIC18EnhdMemoryMapper_ExtendedTests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
-            var arch = picMode.CreateArchitecture();
-            IMemoryMap map = arch.MemoryDescriptor.MemoryMap;
-            map.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Extended, map.ExecMode);
-            Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, map.InstructionSetID);
+            picMode.CreateMemoryDescriptor();
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, PICMemoryDescriptor.ExecMode);
+            Assert.AreEqual(InstructionSetID.PIC18_ENHANCED, PICMemoryDescriptor.InstructionSetID);
 
-            CheckProgMap(map);
-            CheckDataMap(map);
-            Assert.IsNull(map.GetDataRegion("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
-            Assert.IsNotNull(map.GetDataRegion("gpre"), "Missing 'gpre' data memory region for PIC18.");
-            Assert.IsNotNull(map.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
+            CheckProgMap();
+            CheckDataMap();
+            Assert.IsNull(PICMemoryDescriptor.GetDataRegion("accessram"), "Unexpected 'accessram' data memory region for PIC18 extended.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("gpre"), "Missing 'gpre' data memory region for PIC18.");
+            Assert.IsNotNull(PICMemoryDescriptor.GetDataRegion("accesssfr"), "Missing 'accesssfr' data memory region for PIC18.");
         }
 
     }

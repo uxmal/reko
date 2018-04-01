@@ -20,14 +20,16 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Libraries.Microchip;
+using Reko.Core.Types;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Microchip.Common
 {
-    public class PICInstruction : MachineInstruction 
+    public abstract class PICInstruction : MachineInstruction
     {
 
         public const InstructionClass CondLinear = InstructionClass.Conditional | InstructionClass.Linear;
@@ -37,6 +39,7 @@ namespace Reko.Arch.Microchip.Common
 
         public readonly MachineOperand op1;
         public readonly MachineOperand op2;
+        public readonly MachineOperand op3;
 
         private static Dictionary<Opcode, InstructionClass> classOf = new Dictionary<Opcode, InstructionClass>()
         {
@@ -86,11 +89,11 @@ namespace Reko.Arch.Microchip.Common
 
         /// <summary>
         /// Instantiates a new <see cref="PICInstruction"/> with given <see cref="Opcode"/> and operands.
-        /// Throws an <see cref="ArgumentException"/> in more than 2 operands are provided.
+        /// Throws an <see cref="ArgumentException"/> in more than 3 operands are provided.
         /// </summary>
         /// <param name="opc">The PIC opcode.</param>
-        /// <param name="ops">Zero, one or two instruction's operands ops.</param>
-        /// <exception cref="ArgumentException">Thrown if more than 2 operands provided.</exception>
+        /// <param name="ops">Zero, one, two or three instruction's operands ops.</param>
+        /// <exception cref="ArgumentException">Thrown if more than 3 operands provided.</exception>
         public PICInstruction(Opcode opc, params MachineOperand[] ops)
         {
             Opcode = opc;
@@ -101,7 +104,11 @@ namespace Reko.Arch.Microchip.Common
                 {
                     op2 = ops[1];
                     if (ops.Length >= 3)
-                        throw new ArgumentException("Too many PIC instruction's operands.", nameof(ops));
+                    {
+                        op3 = ops[2];
+                        if (ops.Length >= 4)
+                            throw new ArgumentException("Too many PIC instruction's operands.", nameof(ops));
+                    }
                 }
             }
         }
@@ -141,7 +148,9 @@ namespace Reko.Arch.Microchip.Common
                     return 0;
                 if (op2 is null)
                     return 1;
-                return 2;
+                if (op3 is null)
+                    return 2;
+                return 3;
             }
         }
 
@@ -160,18 +169,12 @@ namespace Reko.Arch.Microchip.Common
                     return op1;
                 case 1:
                     return op2;
+                case 2:
+                    return op3;
                 default:
                     return null;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether this PIC instruction is used in extended-mode instruction set only.
-        /// </summary>
-        /// <value>
-        /// True if this PIC is in extended-mode, false if not.
-        /// </value>
-        public PICExecMode ExecMode { get; set; } = PICExecMode.Traditional;
 
         /// <summary>
         /// The control-flow kind of the instruction.
@@ -186,36 +189,638 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
+        /*
+    public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+    {
+        writer.WriteOpcode(Opcode.ToString());
+        if (op1 is null)
+            return;
+        if (op1 is IOperandShadow opshad1)
+        {
+            if (opshad1.IsPresent)
+            {
+                writer.WriteString(",");
+                writer.Tab();
+                op1.Write(writer, options);
+            }
+            return;
+        }
+        if (op1 is PICFastOperand)
+        {
+            op1.Write(writer, options);
+            return;
+        }
+        writer.Tab();
+        op1.Write(writer, options);
+        if (op2 is null)
+            return;
+        if (op2 is IOperandShadow opshad2)
+        {
+            if (opshad2.IsPresent)
+            {
+                writer.WriteString(",");
+                op2.Write(writer, options);
+            }
+            return;
+        }
+        if (op2 is PICFastOperand)
+        {
+            op2.Write(writer, options);
+            return;
+        }
+        writer.WriteString(",");
+        op2.Write(writer, options);
+    }
+*/
+    }
+
+    public class PICInstructionNoOpnd : PICInstruction
+    {
+        public PICInstructionNoOpnd(Opcode opcode) : base(opcode)
+        {
+        }
+
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             writer.WriteOpcode(Opcode.ToString());
-            if (op1 is null)
-                return;
-            if (op1 is IOperandShadow opshad1)
-            {
-                if (opshad1.IsPresent)
-                {
-                    writer.WriteString(",");
-                    writer.Tab();
-                    op1.Write(writer, options);
-                }
-                return;
-            }
+        }
+
+    }
+
+    public class PICInstructionImmedByte : PICInstruction
+    {
+        public PICInstructionImmedByte(Opcode opcode, ushort imm)
+            : base(opcode,
+                   new PICOperandImmediate(imm, PrimitiveType.Byte))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
             op1.Write(writer, options);
-            if (op2 is null)
-                return;
-            if (op2 is IOperandShadow opshad2)
+        }
+
+    }
+
+    public class PICInstructionImmedSByte : PICInstruction
+    {
+        public PICInstructionImmedSByte(Opcode opcode, short imm)
+            : base(opcode,
+                   new PICOperandImmediate(imm, PrimitiveType.SByte))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionImmedUShort : PICInstruction
+    {
+        public PICInstructionImmedUShort(Opcode opcode, ushort imm)
+            : base(opcode,
+                   new PICOperandImmediate(imm, PrimitiveType.UInt16))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionImmedShort : PICInstruction
+    {
+        public PICInstructionImmedShort(Opcode opcode, short imm)
+            : base(opcode,
+                   new PICOperandImmediate(imm, PrimitiveType.Int16))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionMem : PICInstruction
+    {
+        public PICInstructionMem(Opcode opcode, ushort memaddr)
+            : base(opcode,
+                   new PICOperandOffsetBankedMemory(Constant.Byte((byte)memaddr)))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var bankmem = op1 as PICOperandOffsetBankedMemory ?? throw new InvalidOperationException($"Invalid banked memory operand: {op1}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset.ToUInt16(), out var reg))
             {
-                if (opshad2.IsPresent)
+                writer.WriteString($"{reg.Name}");
+            }
+            else
+            {
+                op1.Write(writer, options);
+            }
+        }
+
+    }
+
+    public class PICInstructionMem2Mem : PICInstruction
+    {
+        public PICInstructionMem2Mem(Opcode opcode, uint srcaddr, uint dstaddr)
+            : base(opcode,
+                   new PICOperandDataMemoryAddress(srcaddr),
+                   new PICOperandDataMemoryAddress(dstaddr))
+        {
+        }
+
+        public PICInstructionMem2Mem(Opcode opcode, byte srcidx, uint dstaddr)
+            : base(opcode,
+                   new PICOperandFSRIndexation(Constant.Byte(srcidx), FSRIndexedMode.FSR2INDEXED),
+                   new PICOperandDataMemoryAddress(dstaddr))
+        {
+        }
+
+        public PICInstructionMem2Mem(Opcode opcode, byte srcidx, byte dstidx)
+            : base(opcode,
+                   new PICOperandFSRIndexation(Constant.Byte(srcidx), FSRIndexedMode.FSR2INDEXED),
+                   new PICOperandFSRIndexation(Constant.Byte(dstidx), FSRIndexedMode.FSR2INDEXED))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            switch (op1)
+            {
+                case PICOperandDataMemoryAddress srcmem:
+                    var asrcmem = PICMemoryDescriptor.RemapDataAddress(srcmem.DataTarget);
+                    if (PICRegisters.TryGetRegister(asrcmem, out var srcreg))
+                    {
+                        writer.WriteString($"{srcreg.Name}");
+                    }
+                    else
+                    {
+                        srcmem.Write(writer, options);
+                    }
+                    break;
+
+                case PICOperandFSRIndexation srcidx:
+                    if (srcidx.Mode != FSRIndexedMode.FSR2INDEXED)
+                        throw new InvalidOperationException($"Invalid FSR2 indexing mode: {srcidx.Mode}.");
+                    writer.WriteString($"[{srcidx.Offset}]");
+                    break;
+            }
+
+            writer.WriteString(",");
+
+            switch (op2)
+            {
+                case PICOperandDataMemoryAddress dstmem:
+                    var adstmem = PICMemoryDescriptor.RemapDataAddress(dstmem.DataTarget);
+                    if (PICRegisters.TryGetRegister(adstmem, out var dstreg))
+                    {
+                        writer.WriteString($"{dstreg.Name}");
+                    }
+                    else
+                    {
+                        dstmem.Write(writer, options);
+                    }
+                    break;
+
+                case PICOperandFSRIndexation dstidx:
+                    if (dstidx.Mode != FSRIndexedMode.FSR2INDEXED)
+                        throw new InvalidOperationException($"Invalid FSR2 indexing mode: {dstidx.Mode}.");
+                    writer.WriteString($"[{dstidx.Offset}]");
+                    break;
+            }
+
+        }
+
+    }
+
+    public class PICInstructionMemAccess : PICInstruction
+    {
+        public PICInstructionMemAccess(Opcode opcode, ushort memaddr, ushort acc)
+            : base(opcode,
+                   new PICOperandOffsetBankedMemory(Constant.Byte((byte)memaddr)),
+                   new PICOperandIsAccessBank(acc))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var bankmem = op1 as PICOperandOffsetBankedMemory ?? throw new InvalidOperationException($"Invalid banked memory operand: {op1}");
+            var acc = op2 as PICOperandIsAccessBank ?? throw new InvalidOperationException($"Invalid access flag operand: {op2}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            if (acc.IsAccessBank.ToBoolean())
+            {
+                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmem.Offset.ToUInt16());
+                if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
                 {
-                    writer.WriteString(",");
-                    op2.Write(writer, options);
+                    writer.WriteString($"{areg.Name},");
                 }
-                return;
+                else
+                {
+                    bankmem.Write(writer, options);
+                }
+            }
+            else if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset.ToUInt16(), out var reg))
+            {
+                writer.WriteString($"{reg.Name}");
+            }
+            else
+            {
+                bankmem.Write(writer, options);
+            }
+            acc.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionMemWregDest : PICInstruction
+    {
+        public PICInstructionMemWregDest(Opcode opcode, ushort memaddr, ushort dest)
+            : base(opcode,
+                   new PICOperandOffsetBankedMemory(Constant.Byte((byte)memaddr)),
+                   new PICOperandWregDest(dest))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var bankmem = op1 as PICOperandOffsetBankedMemory ?? throw new InvalidOperationException($"Invalid banked memory operand: {op1}");
+            var dest = op2 as PICOperandWregDest ?? throw new InvalidOperationException($"Invalid W/F destination operand: {op1}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset.ToUInt16(), out var reg))
+            {
+                writer.WriteString($"{reg.Name}");
+            }
+            else
+            {
+                op1.Write(writer, options);
+            }
+            op2.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionMemWregDestAccess : PICInstruction
+    {
+        public PICInstructionMemWregDestAccess(Opcode opcode, ushort memaddr, ushort dest, ushort acc)
+            : base(opcode,
+                   new PICOperandOffsetBankedMemory(Constant.Byte((byte)memaddr)),
+                   new PICOperandWregDest(dest),
+                   new PICOperandIsAccessBank(acc))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var bankmem = op1 as PICOperandOffsetBankedMemory ?? throw new InvalidOperationException($"Invalid banked memory operand: {op1}");
+            var dest = op2 as PICOperandWregDest ?? throw new InvalidOperationException($"Invalid W/F destination operand: {op1}");
+            var acc = op3 as PICOperandIsAccessBank ?? throw new InvalidOperationException($"Invalid access flag operand: {op3}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            if (acc.IsAccessBank.ToBoolean())
+            {
+                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmem.Offset.ToUInt16());
+                if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
+                {
+                    writer.WriteString($"{areg.Name},");
+                }
+                else
+                {
+                    bankmem.Write(writer, options);
+                }
+            }
+            else if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset.ToUInt16(), out var reg))
+            {
+                writer.WriteString($"{reg.Name}");
+            }
+            else
+            {
+                bankmem.Write(writer, options);
+            }
+            dest.Write(writer, options);
+            acc.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionMemBit : PICInstruction
+    {
+        public PICInstructionMemBit(Opcode opcode, ushort memaddr, byte bitno)
+            : base(opcode,
+                   new PICOperandOffsetBankedMemory(Constant.Byte((byte)memaddr)),
+                   new PICOperandImmediate(bitno, PrimitiveType.Byte))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var bankmem = op1 as PICOperandOffsetBankedMemory ?? throw new InvalidOperationException($"Invalid banked memory operand: {op1}");
+            var bitno = op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid bit number operand: {op2}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset.ToUInt16(), out var reg))
+            {
+                if (PICRegisters.TryGetBitField(reg, out var fld, bitno.ImmediateValue.ToByte(), 1))
+                {
+                    writer.WriteString($"{reg.Name},{fld.Name}");
+                    return;
+                }
+                writer.WriteString($"{reg.Name}");
+            }
+            else
+            {
+                bankmem.Write(writer, options);
             }
             writer.WriteString(",");
+            bitno.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionMemBitAccess : PICInstruction
+    {
+        public PICInstructionMemBitAccess(Opcode opcode, ushort memaddr, ushort bitno, ushort acc)
+            : base(opcode,
+                   new PICOperandOffsetBankedMemory(Constant.Byte((byte)memaddr)),
+                   new PICOperandImmediate(bitno, PrimitiveType.Byte),
+                   new PICOperandIsAccessBank(acc))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var bankmem = op1 as PICOperandOffsetBankedMemory ?? throw new InvalidOperationException($"Invalid banked memory operand: {op1}");
+            var bitno = op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid bit number operand: {op2}");
+            var acc = op3 as PICOperandIsAccessBank ?? throw new InvalidOperationException($"Invalid access flag operand: {op3}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            if (acc.IsAccessBank.ToBoolean())
+            {
+                var remapAdr = PICMemoryDescriptor.RemapDataAddress(bankmem.Offset.ToUInt16());
+                if (PICRegisters.TryGetRegister(remapAdr, out var areg, 8))
+                {
+                    writer.WriteString($"{areg.Name},");
+                    if (PICRegisters.TryGetBitField(areg, out var fld, bitno.ImmediateValue.ToByte(), 1))
+                    {
+                        writer.WriteString($"{fld.Name}");
+                    }
+                    else
+                    {
+                        bitno.Write(writer, options);
+                    }
+                }
+                else
+                {
+                    bankmem.Write(writer, options);
+                    writer.WriteString(",");
+                    bitno.Write(writer, options);
+
+                }
+            }
+            else if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem.Offset.ToUInt16(), out var reg))
+            {
+                writer.WriteString($"{reg.Name},");
+                if (PICRegisters.TryGetBitField(reg, out var fld, bitno.ImmediateValue.ToByte(), 1))
+                {
+                    writer.WriteString($"{fld.Name}");
+                }
+                else
+                {
+                    bitno.Write(writer, options);
+                }
+            }
+            else
+            {
+                bankmem.Write(writer, options);
+                writer.WriteString(",");
+                bitno.Write(writer, options);
+            }
+            acc.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionProgTarget : PICInstruction
+    {
+        public PICInstructionProgTarget(Opcode opcode, uint progAdr)
+            : base(opcode,
+                   new PICOperandProgMemoryAddress(progAdr))
+        {
+        }
+
+        public PICInstructionProgTarget(Opcode opcode, short progOff, Address instrAdr)
+            : base(opcode,
+                   new PICOperandProgMemoryAddress(progOff, instrAdr))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionFast : PICInstruction
+    {
+        public PICInstructionFast(Opcode opcode, ushort fast, bool wTab)
+            : base(opcode,
+                   new PICOperandFast(fast, wTab))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionProgTargetFast : PICInstruction
+    {
+        public PICInstructionProgTargetFast(Opcode opcode, uint progAdr, ushort fast, bool wTab)
+            : base(opcode,
+                   new PICOperandProgMemoryAddress(progAdr),
+                   new PICOperandFast(fast, wTab))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
             op2.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionWithFSR : PICInstruction
+    {
+        public PICInstructionWithFSR(Opcode opcode, PICRegisterStorage fsr, ushort value)
+            : base(opcode,
+                   new PICOperandRegister(fsr),
+                   new PICOperandImmediate(value, PrimitiveType.UInt16))
+        {
+        }
+
+        public PICInstructionWithFSR(Opcode opcode, PICRegisterStorage fsr, short value)
+            : base(opcode,
+                   new PICOperandRegister(fsr),
+                   new PICOperandImmediate(value, PrimitiveType.Int16))
+        {
+        }
+
+        public PICInstructionWithFSR(Opcode opcode, PICRegisterStorage fsr, short value, FSRIndexedMode mode)
+            : base(opcode,
+                   new PICOperandRegister(fsr),
+                   new PICOperandFSRIndexation(Constant.Create(PrimitiveType.SByte, value), mode))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            var fsrreg = op1 as PICOperandRegister ?? throw new InvalidOperationException($"Invalid FSR operand: {op1}");
+
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+
+            switch (Opcode)
+            {
+                case Opcode.ADDFSR:
+                case Opcode.LFSR:
+                case Opcode.SUBFSR:
+                    var imm = op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {op2}");
+                    fsrreg.Write(writer, options);
+                    writer.WriteString(",");
+                    imm.Write(writer, options);
+                    return;
+
+                case Opcode.ADDULNK:
+                case Opcode.SUBULNK:
+                    var immu = op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {op2}");
+                    immu.Write(writer, options);
+                    return;
+
+                case Opcode.MOVIW:
+                case Opcode.MOVWI:
+                    var idx = op2 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid indexation operand: {op2}");
+                    var fsrname = fsrreg.Register.Name;
+                    switch (idx.Mode)
+                    {
+                        case FSRIndexedMode.INDEXED:
+                            writer.WriteString($"{idx.Offset}[{fsrname}]");
+                            return;
+                        case FSRIndexedMode.POSTDEC:
+                            writer.WriteString($"{fsrname}--");
+                            return;
+                        case FSRIndexedMode.POSTINC:
+                            writer.WriteString($"{fsrname}++");
+                            return;
+                        case FSRIndexedMode.PREDEC:
+                            writer.WriteString($"--{fsrname}");
+                            return;
+                        case FSRIndexedMode.PREINC:
+                            writer.WriteString($"++{fsrname}");
+                            return;
+                    }
+                    throw new InvalidOperationException($"Invalid indexation '{idx}' for MOVI instruction.");
+            }
+
+            throw new InvalidOperationException($"Invalid opcode '{Opcode}' for FSR-related instruction.");
+        }
+
+    }
+
+    public class PICInstructionTbl : PICInstruction
+    {
+
+        public PICInstructionTbl(Opcode opcode, ushort mode)
+            : base(opcode,
+                   new PICOperandTBLRW(mode))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionTris : PICInstruction
+    {
+
+        public PICInstructionTris(Opcode opcode, byte trisnum)
+            : base(opcode,
+                   new PICOperandTris(trisnum))
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
+        }
+
+    }
+
+    public class PICInstructionPseudo : PICInstruction
+    {
+
+        public PICInstructionPseudo(Opcode opcode, PICOperandPseudo pseudoOperand)
+            : base(opcode, pseudoOperand)
+        {
+        }
+
+        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            writer.Tab();
+            op1.Write(writer, options);
         }
 
     }

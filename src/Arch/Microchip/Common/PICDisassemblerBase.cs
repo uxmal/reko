@@ -34,7 +34,6 @@ namespace Reko.Arch.Microchip.Common
     {
         public readonly PICArchitecture arch;
         public readonly EndianImageReader rdr;
-        public readonly IMemoryMap memorymap;
 
         protected PICInstruction instrCur;
         public Address addrCur;
@@ -50,18 +49,12 @@ namespace Reko.Arch.Microchip.Common
         {
             this.arch = arch;
             this.rdr = rdr;
-            memorymap = arch.MemoryDescriptor.MemoryMap;
         }
 
         /// <summary>
         /// Gets the PIC instruction-set identifier. Must be overriden.
         /// </summary>
         public virtual InstructionSetID InstructionSetID => InstructionSetID.UNDEFINED;
-
-        /// <summary>
-        /// Gets the PIC execution mode this disassembler is configured to.
-        /// </summary>
-        public abstract PICExecMode ExecMode { get; }
 
         /// <summary>
         /// Disassemble a single instruction. Return null if the end of the reader has been reached.
@@ -77,7 +70,7 @@ namespace Reko.Arch.Microchip.Common
             {
                 if (lastusedregion != null && lastusedregion.Contains(addrCur))
                     return lastusedregion;
-                return lastusedregion = memorymap.GetProgramRegion(addrCur);
+                return lastusedregion = PICMemoryDescriptor.GetProgramRegion(addrCur);
             }
 
             if (!rdr.IsValid)
@@ -88,11 +81,10 @@ namespace Reko.Arch.Microchip.Common
                 throw new InvalidOperationException($"Unable to retrieve program memory region for address {addrCur.ToString()}.");
             if ((addrCur.Offset % (regn.Trait?.LocSize ?? 1)) != 0)
             {
-                instrCur = new PICInstruction(Opcode.unaligned)
+                instrCur = new PICInstructionNoOpnd(Opcode.unaligned)
                 {
                     Address = addrCur,
-                    Length = 1,
-                    ExecMode = ExecMode
+                    Length = 1
                 };
                 rdr.Offset += 1; // Consume only the first byte of the binary instruction.
                 return instrCur;
@@ -136,7 +128,7 @@ namespace Reko.Arch.Microchip.Common
 
         }
 
-        #region Clases/Methods defined for derived classes
+        #region Classes/Methods defined for derived classes
 
         protected abstract class Decoder
         {
@@ -160,7 +152,8 @@ namespace Reko.Arch.Microchip.Common
 
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                return decoders[uInstr.Extract(bitpos, width)].Decode(uInstr, dasm);
+                var bits = uInstr.Extract(bitpos, width);
+                return decoders[bits].Decode(uInstr, dasm);
             }
         }
 
@@ -182,7 +175,7 @@ namespace Reko.Arch.Microchip.Common
         {
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                return new PICInstruction(Opcode.invalid);
+                return new PICInstructionNoOpnd(Opcode.invalid);
             }
         }
 

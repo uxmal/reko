@@ -36,17 +36,16 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// A <seealso cref="RegisterStorage"/> or null if tentative of duplication.
         /// </returns>
-        PICRegisterStorage AddRegister(PICRegisterStorage reg);
+        bool AddRegister(PICRegisterStorage reg);
 
         /// <summary>
         /// Adds a register's named bit field. Returns null if no addition done.
         /// </summary>
-        /// <param name="reg">The parent register.</param>
         /// <param name="field">The bit field.</param>
         /// <returns>
-        /// A <seealso cref="PICBitFieldStorage"/> or null if tentative of duplication.
+        /// A <seealso cref="PICRegisterBitFieldStorage"/> or null if tentative of duplication.
         /// </returns>
-        PICBitFieldStorage AddRegisterField(PICRegisterStorage reg, PICBitFieldStorage field);
+        bool AddRegisterBitField(PICRegisterBitFieldStorage field);
 
     }
 

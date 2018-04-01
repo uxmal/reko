@@ -25,8 +25,6 @@ using System;
 
 namespace Reko.Arch.Microchip.PIC18
 {
-    using Common;
-
     public class PIC18LegacyRegisters : PIC18Registers
     {
 
@@ -41,7 +39,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static void Create(PIC pic)
         {
-            PICRegisters.LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
+            LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             new PIC18LegacyRegisters().SetCoreRegisters();
         }
 
@@ -57,7 +55,6 @@ namespace Reko.Arch.Microchip.PIC18
         {
             base.SetCoreRegisters();
         }
-
 
     }
 

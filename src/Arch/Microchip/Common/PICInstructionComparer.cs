@@ -61,8 +61,8 @@ namespace Reko.Arch.Microchip.Common
                     var addrOpB = (AddressOperand)opB;
                     return NormalizeConstants || addrOpA.Address == addrOpB.Address;
 
-                case PseudoDataOperand pseudoA:
-                    var pseudoB = (PseudoDataOperand)opB;
+                case PICOperandPseudo pseudoA:
+                    var pseudoB = (PICOperandPseudo)opB;
                     if (pseudoA.Width != pseudoB.Width)
                         return false;
                     if (pseudoA.Values.Length != pseudoB.Values.Length)
@@ -132,7 +132,7 @@ namespace Reko.Arch.Microchip.Common
                         ? 1
                         : addrOp.Address.GetHashCode();
 
-                case PseudoDataOperand pseudoOp:
+                case PICOperandPseudo pseudoOp:
                     return base.NormalizeConstants
                         ? 1
                         : pseudoOp.Values.GetHashCode();

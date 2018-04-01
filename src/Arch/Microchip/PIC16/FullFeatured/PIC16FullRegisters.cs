@@ -33,9 +33,6 @@ namespace Reko.Arch.Microchip.PIC16
     public class PIC16FullRegisters : PIC16Registers
     {
 
-        /// <summary>
-        /// Private constructor.
-        /// </summary>
         private PIC16FullRegisters()
         {
         }
@@ -47,7 +44,7 @@ namespace Reko.Arch.Microchip.PIC16
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static void Create(PIC pic)
         {
-            PICRegisters.LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
+            LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             new PIC16FullRegisters().SetCoreRegisters();
         }
 
@@ -99,43 +96,28 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         public static PICRegisterStorage BSR { get; protected set; }
 
-
         public override void SetCoreRegisters()
         {
+            base.SetCoreRegisters();
 
-            // *True* PIC registers
+            INDF0 = GetRegister("INDF0");
+            INDF1 = GetRegister("INDF1");
 
-            INDF0 = PICRegisters.GetRegister("INDF0");
-            INDF1 = PICRegisters.GetRegister("INDF1");
-            PCL = PICRegisters.GetRegister("PCL");
+            FSR0L = GetRegister("FSR0L");
+            FSR0H = GetRegister("FSR0H");
+            FSR1L = GetRegister("FSR1L");
+            FSR1H = GetRegister("FSR1H");
+            FSR0 = GetRegister("FSR0");
+            FSR1 = GetRegister("FSR1");
 
-            STATUS = PICRegisters.GetRegister("STATUS");
-            C = PICRegisters.GetBitField("C");
-            DC = PICRegisters.GetBitField("DC");
-            Z = PICRegisters.GetBitField("Z");
-            if (!PICRegisters.TryGetBitField("nPD", out var pd))
-            {
-                PICRegisters.TryGetBitField("PD", out pd);
-            }
-            PD = pd;
-            if (!PICRegisters.TryGetBitField("nTO", out var to))
-            {
-                PICRegisters.TryGetBitField("TO", out to);
-            }
-            TO = to;
+            BSR = GetRegister("BSR");
 
-            FSR0L = PICRegisters.GetRegister("FSR0L");
-            FSR0H = PICRegisters.GetRegister("FSR0H");
-            FSR1L = PICRegisters.GetRegister("FSR1L");
-            FSR1H = PICRegisters.GetRegister("FSR1H");
-            FSR0 = PICRegisters.GetRegister("FSR0");
-            FSR1 = PICRegisters.GetRegister("FSR1");
+            AddIndirectParents(true,
+                (INDF0, (FSRIndexedMode.INDF, FSR0)),
+                (INDF1, (FSRIndexedMode.INDF, FSR1))
+                );
 
-            BSR = PICRegisters.GetRegister("BSR");
-            WREG = PICRegisters.GetRegister("WREG");
-            STKPTR = PICRegisters.GetRegister("STKPTR");
-            PCLATH = PICRegisters.GetRegister("PCLATH");
-            INTCON = PICRegisters.GetRegister("INTCON");
+            AddAlwaysAccessibleRegisters(true, INDF0, INDF1, PCL, STATUS, FSR0L, FSR0H, FSR1L, FSR1H, BSR, WREG, PCLATH, INTCON);
         }
 
         #endregion

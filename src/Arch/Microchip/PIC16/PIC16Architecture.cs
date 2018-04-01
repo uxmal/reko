@@ -54,25 +54,12 @@ namespace Reko.Arch.Microchip.PIC16
         protected override void LoadConfiguration()
         {
             Description = PICDescriptor.Desc;
+            ProcessorMode.CreateMemoryDescriptor();
             ProcessorMode.CreateRegisters();
-            StackRegister = PIC16Registers.STKPTR;
+            StackRegister = PICRegisters.STKPTR;
         }
 
         #region Public Methods/Properties
-
-        /// <summary>
-        /// Gets the PIC16 memory mapper.
-        /// </summary>
-        public override IPICMemoryDescriptor MemoryDescriptor
-        {
-            get
-            {
-                if (memDescr is null)
-                    memDescr = PIC16MemoryDescriptor.Create(PICDescriptor);
-                return memDescr;
-            }
-        }
-        private PIC16MemoryDescriptor memDescr;
 
         public PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
             => ProcessorMode.CreateDisassembler(this, imageReader);
@@ -86,7 +73,7 @@ namespace Reko.Arch.Microchip.PIC16
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grpFlags) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(PIC16Registers.STATUS, grpFlags, GrfToString(grpFlags), dt);
+            var fl = new FlagGroupStorage(PICRegisters.STATUS, grpFlags, GrfToString(grpFlags), dt);
             flagGroups.Add(fl);
             return fl;
         }
@@ -152,7 +139,7 @@ namespace Reko.Arch.Microchip.PIC16
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
             if (reg is PICRegisterStorage preg)
-                return preg.SubRegs.FirstOrDefault(r => ((r.BitAddress == (ulong)offset) && (r.BitSize == (ulong)width)));
+                return preg.AttachedRegs.FirstOrDefault(r => ((r.BitAddress == (ulong)offset) && (r.BitSize == (ulong)width)));
             return null;
         }
 
@@ -179,14 +166,15 @@ namespace Reko.Arch.Microchip.PIC16
         public override string GrfToString(uint grpFlags)
         {
             var sb = new StringBuilder();
-            uint bitPos = 0;
+            byte bitPos = 0;
             while (grpFlags != 0)
             {
                 if ((grpFlags & 1) != 0)
                 {
-                    var f = PICRegisters.PeekBitFieldFromRegister(PIC16Registers.STATUS, bitPos, 1);
-                    if (f != null)
-                        sb.Append(f.Name);
+                    if (PICRegisters.TryGetBitField(PICRegisters.STATUS, out var fld, bitPos, 1))
+                    {
+                        sb.Append(fld.Name);
+                    }
                 }
                 grpFlags >>= 1;
                 bitPos++;

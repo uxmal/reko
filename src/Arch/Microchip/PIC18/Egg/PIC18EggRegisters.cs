@@ -41,7 +41,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="ArgumentNullException">Parameter <paramref name="pic"/> is null.</exception>
         public static void Create(PIC pic)
         {
-            PICRegisters.LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
+            LoadRegisters(pic ?? throw new ArgumentNullException(nameof(pic)));
             new PIC18EggRegisters().SetCoreRegisters();
         }
 
@@ -60,11 +60,14 @@ namespace Reko.Arch.Microchip.PIC18
 
             // Shadow registers (if they exist).
 
-            if (PICRegisters.TryGetRegister("STATUS_CSHAD", out var sta, PICRegisterStorage.None))
+            STATUS_CSHAD = PICRegisterStorage.None;
+            WREG_CSHAD = PICRegisterStorage.None;
+            BSR_CSHAD = PICRegisterStorage.None;
+            if (TryGetRegister("STATUS_CSHAD", out var sta))
                 STATUS_CSHAD = sta;
-            if (PICRegisters.TryGetRegister("WREG_CSHAD", out var wre, PICRegisterStorage.None))
+            if (TryGetRegister("WREG_CSHAD", out var wre))
                 WREG_CSHAD = wre;
-            if (PICRegisters.TryGetRegister("BSR_CSHAD", out var bsr, PICRegisterStorage.None))
+            if (TryGetRegister("BSR_CSHAD", out var bsr))
                 BSR_CSHAD = bsr;
 
         }

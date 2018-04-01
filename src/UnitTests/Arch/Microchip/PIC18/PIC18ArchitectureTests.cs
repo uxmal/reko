@@ -67,13 +67,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
 
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -90,13 +90,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
 
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, PICMemoryDescriptor.ExecMode);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -114,13 +114,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
 
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, PICMemoryDescriptor.ExecMode);
             Assert.NotNull(arch.PICDescriptor);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -129,15 +129,15 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             var arch = PICProcessorMode.GetMode(PIC18LegacyName).CreateArchitecture();
             Assert.NotNull(arch);
 
-            arch.ExecMode = PICExecMode.Traditional;
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
 
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -146,16 +146,15 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
             Assert.NotNull(arch);
 
-            arch.ExecMode = PICExecMode.Traditional;
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
 
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, PICMemoryDescriptor.ExecMode);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryDescriptor);
-
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
@@ -164,26 +163,26 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             var arch = PICProcessorMode.GetMode(PIC18EnhancedName).CreateArchitecture();
             Assert.NotNull(arch);
 
-            arch.ExecMode = PICExecMode.Traditional;
-            Assert.AreEqual(PICExecMode.Traditional, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
+            Assert.AreEqual(PICExecMode.Traditional, PICMemoryDescriptor.ExecMode);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
 
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreEqual(PICExecMode.Extended, arch.ExecMode);
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreEqual(PICExecMode.Extended, PICMemoryDescriptor.ExecMode);
             Assert.AreEqual(PrimitiveType.Byte, arch.WordWidth);
-            Assert.NotNull(arch.MemoryDescriptor);
+            Assert.IsTrue(PICMemoryDescriptor.IsValid);
         }
 
         [Test]
         public void PIC18arch_GetOpcodeNamesTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
@@ -193,10 +192,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_GetOpcodeNumberTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
             Assert.AreEqual(Opcode.LFSR, (Opcode)arch.GetOpcodeNumber("LFSR"));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
             Assert.AreEqual(Opcode.LFSR, (Opcode)arch.GetOpcodeNumber("LFSR"));
         }
@@ -205,21 +204,21 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_FailGetRegisterFromNameTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18LegacyName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 
             arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 
             arch = PICProcessorMode.GetMode(PIC18EnhancedName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
 
         }
@@ -228,7 +227,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_GetRegisterFromNameTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.AreEqual("STATUS", arch.GetRegister("STATUS").Name);
             Assert.AreEqual("FSR2L", arch.GetRegister("FSR2L").Name);
             Assert.AreEqual("FSR2H", arch.GetRegister("FSR2H").Name);
@@ -241,7 +240,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.AreEqual("TOSH", arch.GetRegister("TOSH").Name);
             Assert.AreEqual("TOSL", arch.GetRegister("TOSL").Name);
             Assert.AreEqual("WREG", arch.GetRegister("WREG").Name);
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.AreEqual("STATUS", arch.GetRegister("STATUS").Name);
             Assert.AreEqual("FSR2L", arch.GetRegister("FSR2L").Name);
             Assert.AreEqual("FSR2H", arch.GetRegister("FSR2H").Name);
@@ -260,18 +259,18 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_GetCoreRegisterTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
-            Assert.AreSame(PIC18Registers.WREG, arch.GetRegister("WREG"));
-            Assert.AreSame(PIC18Registers.STATUS, arch.GetRegister("STATUS"));
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
+            Assert.AreSame(PICRegisters.WREG, arch.GetRegister("WREG"));
+            Assert.AreSame(PICRegisters.STATUS, arch.GetRegister("STATUS"));
             Assert.AreSame(PIC18Registers.BSR, arch.GetRegister("BSR"));
-            Assert.AreSame(PIC18Registers.PCL, arch.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.PCL, arch.GetRegister("PCL"));
             Assert.AreSame(PIC18Registers.INDF0, arch.GetRegister("INDF0"));
             Assert.AreSame(PIC18Registers.INDF2, arch.GetRegister("INDF2"));
-            arch.ExecMode = PICExecMode.Extended;
-            Assert.AreSame(PIC18Registers.WREG, arch.GetRegister("WREG"));
-            Assert.AreSame(PIC18Registers.STATUS, arch.GetRegister("STATUS"));
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
+            Assert.AreSame(PICRegisters.WREG, arch.GetRegister("WREG"));
+            Assert.AreSame(PICRegisters.STATUS, arch.GetRegister("STATUS"));
             Assert.AreSame(PIC18Registers.BSR, arch.GetRegister("BSR"));
-            Assert.AreSame(PIC18Registers.PCL, arch.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.PCL, arch.GetRegister("PCL"));
             Assert.AreSame(PIC18Registers.INDF0, arch.GetRegister("INDF0"));
             Assert.AreSame(PIC18Registers.FSR1, arch.GetRegister("FSR1"));
         }
@@ -280,11 +279,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_GetSubregisterTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.AreSame(PIC18Registers.FSR0L, arch.GetSubregister(PIC18Registers.FSR0, 0, 8));
             Assert.AreSame(PIC18Registers.FSR0H, arch.GetSubregister(PIC18Registers.FSR0, 8, 8));
             Assert.AreSame(PIC18Registers.FSR0, arch.GetSubregister(PIC18Registers.FSR0, 0, 16));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.AreSame(PIC18Registers.FSR1L, arch.GetSubregister(PIC18Registers.FSR1, 0, 8));
             Assert.AreSame(PIC18Registers.FSR1H, arch.GetSubregister(PIC18Registers.FSR1, 8, 8));
             Assert.AreSame(PIC18Registers.FSR2L, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 0, 8));
@@ -296,11 +295,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_GetParentRegisterTests()
         {
             var arch = PICProcessorMode.GetMode(PIC18EggName).CreateArchitecture();
-            arch.ExecMode = PICExecMode.Traditional;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.IsNull(arch.GetParentRegister(PIC18Registers.TOS));
             Assert.AreSame(PIC18Registers.TOS, arch.GetParentRegister(PIC18Registers.TOSL));
             Assert.AreSame(PIC18Registers.TOS, arch.GetParentRegister(PIC18Registers.TOSU));
-            arch.ExecMode = PICExecMode.Extended;
+            PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.AreSame(PIC18Registers.TOS, arch.GetParentRegister(PIC18Registers.TOSH));
             Assert.IsNull(arch.GetParentRegister(PIC18Registers.WREG));
         }

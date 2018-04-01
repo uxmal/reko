@@ -24,82 +24,83 @@ using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Reko.Arch.Microchip.Common
 {
 
+    [DebuggerDisplay("RegTrait={_debugDisplay()}")]
     /// <summary>
     /// PIC register traits.
     /// </summary>
-    public class PICRegisterTraits
+    public class PICRegisterTraits :
+        IComparable<PICRegisterTraits>, IComparer<PICRegisterTraits>,
+        IEquatable<PICRegisterTraits>, IEqualityComparer<PICRegisterTraits>,
+        IComparable
     {
 
-        #region Constructors
+        public readonly PICRegisterSizedUniqueAddress RegAddress;
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
         public PICRegisterTraits()
         {
+            RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Invalid, 8);
             Name = "None";
             Desc = "";
-            BitWidth = 8;
             Impl = 0xFF;
             Access = "nnnnnnnn";
             MCLR = "uuuuuuuu";
             POR = "uuuuuuuu";
             IsVolatile = false;
             IsIndirect = false;
-            NMMRID = String.Empty;
-            Address = null;
 
         }
 
+        /// <summary>
+        /// Construct the PIC register's traits based on the given <see cref="SFRDef"/> descriptor.
+        /// </summary>
+        /// <param name="sfr">The PIC register descriptor.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sfr"/> is null.</exception>
         public PICRegisterTraits(SFRDef sfr)
         {
             if (sfr is null)
                 throw new ArgumentNullException(nameof(sfr));
+            if (string.IsNullOrEmpty(sfr.NMMRID))
+                RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(sfr.Addr), (int)sfr.NzWidth);
+            else
+                RegAddress = new PICRegisterSizedUniqueAddress(sfr.NMMRID, (int)sfr.NzWidth);
             Name = sfr.CName;
             Desc = sfr.Desc;
-            BitWidth = (int)sfr.NzWidth;
             Impl = sfr.Impl;
             Access = sfr.Access;
             MCLR = sfr.MCLR;
             POR = sfr.POR;
             IsVolatile = sfr.IsVolatile;
             IsIndirect = sfr.IsIndirect;
-            NMMRID = sfr.NMMRID;
-            Address = null;
-            if (string.IsNullOrEmpty(NMMRID) || sfr.Addr != 0)
-            {
-                Address = PICDataAddress.Ptr(sfr.Addr);
-                NMMRID = String.Empty;
-            }
-
         }
 
-        public PICRegisterTraits(JoinedSFRDef joinedsfr, ICollection<PICRegisterStorage> subregs)
+        /// <summary>
+        /// Construct the PIC register's traits based on the given <see cref="JoinedSFRDef"/> descriptor.
+        /// </summary>
+        /// <param name="joinedSFR">The joined PIC register descriptor.</param>
+        /// <param name="joinedRegs">The attached registers.</param>
+        /// <exception cref="ArgumentNullException">Thrown if either of the arguments are null.</exception>
+        public PICRegisterTraits(JoinedSFRDef joinedSFR, ICollection<PICRegisterStorage> joinedRegs)
         {
-            if (joinedsfr is null)
-                throw new ArgumentNullException(nameof(joinedsfr));
-            if (subregs is null)
-                throw new ArgumentNullException(nameof(subregs));
-            Name = joinedsfr.CName;
-            Desc = joinedsfr.Desc;
-            BitWidth = (int)joinedsfr.NzWidth;
-            Address = PICDataAddress.Ptr(joinedsfr.Addr);
-            NMMRID = String.Empty;
-            Access = String.Join("", subregs.Reverse().Select(e => e.Access));
-            MCLR = String.Join("", subregs.Reverse().Select(e => e.MCLR));
-            POR = String.Join("", subregs.Reverse().Select(e => e.POR));
-            Impl = subregs.Reverse().Aggregate(0UL, (total, reg) => total = total * 256 + reg.Impl);
-            IsVolatile = subregs.Any(e => e.IsVolatile == true);
-            IsIndirect = subregs.Any(e => e.IsIndirect == true);
+            if (joinedSFR is null)
+                throw new ArgumentNullException(nameof(joinedSFR));
+            if (joinedRegs is null)
+                throw new ArgumentNullException(nameof(joinedRegs));
+            Name = joinedSFR.CName;
+            Desc = joinedSFR.Desc;
+            RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Ptr(joinedSFR.Addr), (int)joinedSFR.NzWidth);
+            Access = String.Join("", joinedRegs.Reverse().Select(e => e.Access));
+            MCLR = String.Join("", joinedRegs.Reverse().Select(e => e.MCLR));
+            POR = String.Join("", joinedRegs.Reverse().Select(e => e.POR));
+            Impl = joinedRegs.Reverse().Aggregate(0UL, (total, reg) => total = total * 256 + reg.Impl);
+            IsVolatile = joinedRegs.Any(e => e.IsVolatile == true);
+            IsIndirect = joinedRegs.Any(e => e.IsIndirect == true);
         }
 
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the PIC register name.
@@ -112,19 +113,19 @@ namespace Reko.Arch.Microchip.Common
         public string Desc {get;}
 
         /// <summary>
-        /// Gets the PIC register bit width.
-        /// </summary>
-        public int BitWidth { get; }
-
-        /// <summary>
         /// Gets the register memory address or null if not memory-mapped.
         /// </summary>
-        public PICDataAddress Address { get; }
+        public PICDataAddress Address => RegAddress.Addr;
 
         /// <summary>
         /// Gets the Non-Memory-Mapped ID of the register or null if memory mapped.
         /// </summary>
-        public string NMMRID { get; }
+        public string NMMRID => RegAddress.NMMRID;
+
+        /// <summary>
+        /// Gets the PIC register bit width.
+        /// </summary>
+        public int BitWidth => RegAddress.BitWidth;
 
         /// <summary>
         /// Gets the individual bits access modes.
@@ -161,7 +162,37 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         public bool IsMemoryMapped => !(Address is null);
 
-        #endregion
+        public int CompareTo(PICRegisterTraits other)
+        {
+            if (other is null)
+                return 1;
+            if (ReferenceEquals(this, other))
+                return 0;
+            return RegAddress.CompareTo(other.RegAddress);
+        }
+
+        public int CompareTo(object obj) => CompareTo(obj as PICRegisterTraits);
+
+        public int Compare(PICRegisterTraits x, PICRegisterTraits y)
+        {
+            if (ReferenceEquals(x, y))
+                return 0;
+            if (x is null)
+                return -1;
+            return x.CompareTo(y);
+        }
+
+        public bool Equals(PICRegisterTraits obj) => CompareTo(obj) == 0;
+
+        public bool Equals(PICRegisterTraits x, PICRegisterTraits y) => Compare(x, y) == 0;
+
+        public override bool Equals(object obj) => CompareTo(obj as PICRegisterTraits) == 0;
+
+        public int GetHashCode(PICRegisterTraits obj) => obj?.GetHashCode() ?? 0;
+
+        public override int GetHashCode() => (RegAddress.GetHashCode() * 1234417) ^ base.GetHashCode();
+
+        private string _debugDisplay() => (RegAddress.Addr is null ? $"'{RegAddress.NMMRID}'" : $"{RegAddress.Addr}") + $"[b{BitWidth}]";
 
     }
 

@@ -249,15 +249,15 @@ namespace Reko.Core.Code
 			return pc;
 		}
 
-		public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.BasePointer = access.BasePointer.Accept(this);
-			access.EffectiveAddress = access.EffectiveAddress.Accept(this);
-			access.MemoryId = (MemoryIdentifier) access.MemoryId.Accept(this);
-			return access;
-		}
+        public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.BasePointer = access.BasePointer.Accept(this);
+            access.EffectiveAddress = access.EffectiveAddress.Accept(this);
+            access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
+            return access;
+        }
 
-		public virtual Expression VisitScopeResolution(ScopeResolution scope)
+        public virtual Expression VisitScopeResolution(ScopeResolution scope)
 		{
 			return scope;
 		}

@@ -32,80 +32,10 @@ namespace Reko.Arch.Microchip.Common
 {
 
     /// <summary>
-    /// An abstract class which constructs the PIC memory map using the individual PIC definition.
+    /// An abstract class which permits to construct the PIC memory map using the individual PIC definition.
     /// </summary>
     public abstract class MemoryMap : IMemoryMap
     {
-
-        #region Static and Constant fields
-
-        /// <summary>
-        /// Minimum size in bytes of the PIC data memory space.
-        /// </summary>
-        public const int MinDataMemorySize = 12;
-
-        #endregion
-
-        #region Members fields
-
-        protected readonly MemTraits traits;
-        protected readonly ProgMemoryMap progMap;
-        protected DataMemoryMap dataMap;
-        private HashSet<MemorySubDomain> subdomains = new HashSet<MemorySubDomain>();
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor that prevents a default instance of this class from being created.
-        /// </summary>
-        protected MemoryMap()
-        {
-        }
-
-        /// <summary>
-        /// Private constructor creating an instance of memory map for specified PIC.
-        /// </summary>
-        /// <param name="thePIC">the PIC descriptor.</param>
-        protected MemoryMap(PIC thePIC)
-        {
-            PIC = thePIC;
-            traits = new MemTraits(thePIC);
-            progMap = new ProgMemoryMap(thePIC, this, traits);
-            dataMap = new DataMemoryMap(thePIC, this, traits, PICExecMode.Traditional);
-        }
-
-        #endregion
-
-        #region Methods
-
-        protected void AddSubDomain(MemorySubDomain subdom) => subdomains.Add(subdom);
-
-        public bool HasSubDomain(MemorySubDomain subdom) => subdomains.Contains(subdom);
-
-        protected static bool IsValidMap(MemoryMap map)
-        {
-            if (map.traits == null)
-                return false;
-            if (map.progMap == null)
-                return false;
-            if (!map.HasSubDomain(MemorySubDomain.DeviceConfig))
-                return false;
-            if (!map.HasSubDomain(MemorySubDomain.Code) && !map.HasSubDomain(MemorySubDomain.ExtCode))
-                return false;
-            if (map.dataMap == null)
-                return false;
-            if (!map.HasSubDomain(MemorySubDomain.GPR))
-                return false;
-            if (!map.HasSubDomain(MemorySubDomain.SFR))
-                return false;
-            return true;
-        }
-
-        public virtual bool IsValid => IsValidMap(this);
-
-        #endregion
 
         #region Inner classes
 
@@ -609,21 +539,17 @@ namespace Reko.Arch.Microchip.Common
 
         protected abstract class MemoryMapBase<T> where T : MemoryRegionBase
         {
-            #region Members fields
-
             protected readonly PIC pic;
             protected readonly MemoryMap map;
             protected readonly MemTraits traits;
             protected List<T> memRegions;
 
-            #endregion
-
-            #region Constructors
-
             /// <summary>
             /// Constructor.
             /// </summary>
             /// <param name="pic">The PIC definition.</param>
+            /// <param name="map">The memory map.</param>
+            /// <param name="traits">The PIC memory traits.</param>
             protected MemoryMapBase(PIC pic, MemoryMap map, MemTraits traits)
             {
                 this.pic = pic;
@@ -632,9 +558,6 @@ namespace Reko.Arch.Microchip.Common
                 memRegions = new List<T>();
             }
 
-            #endregion
-
-            #region Properties
 
             /// <summary>
             /// Gets the memory regions contained in this memory map.
@@ -649,9 +572,6 @@ namespace Reko.Arch.Microchip.Common
             /// </summary>
             public IEnumerable<IMemoryRegion> Regions => memRegions.Select(p => p);
 
-            #endregion
-
-            #region Methods
 
             /// <summary>
             /// Creates memory range given begin/end addresses.
@@ -689,7 +609,6 @@ namespace Reko.Arch.Microchip.Common
                 map.AddSubDomain(regn.SubtypeOfMemory);
             }
 
-            #endregion
 
         }
 
@@ -698,13 +617,11 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         protected class ProgMemoryMap : MemoryMapBase<ProgMemRegion>, IMemProgramRegionVisitor
         {
-
-            #region Constructors
-
             /// <summary>
             /// Constructor.
             /// </summary>
             /// <param name="thePIC">The PIC definition.</param>
+            /// <param name="map">The memory map.</param>
             /// <param name="traits">The PIC memory traits.</param>
             public ProgMemoryMap(PIC thePIC, MemoryMap map, MemTraits traits) : base(thePIC, map, traits)
             {
@@ -714,7 +631,6 @@ namespace Reko.Arch.Microchip.Common
                 }
             }
 
-            #endregion
 
             #region IMemProgramRegionVisitor interface implementation
 
@@ -831,7 +747,7 @@ namespace Reko.Arch.Microchip.Common
             /// </summary>
             /// <param name="thePIC">The PIC definition.</param>
             /// <param name="traits">The PIC memory traits.</param>
-            /// <param name="mode">ThePIC execution  mode.</param>
+            /// <param name="mode">The PIC execution  mode.</param>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC data memory size is invalid.</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC execution mode is invalid.</exception>
             public DataMemoryMap(PIC thePIC, MemoryMap map, MemTraits traits, PICExecMode mode) : base(thePIC, map, traits)
@@ -1049,6 +965,58 @@ namespace Reko.Arch.Microchip.Common
 
         #endregion
 
+        /// <summary>
+        /// Minimum size in bytes of the PIC data memory space.
+        /// </summary>
+        public const int MinDataMemorySize = 12;
+
+        protected readonly MemTraits traits;
+        protected readonly ProgMemoryMap progMap;
+        protected DataMemoryMap dataMap;
+        private HashSet<MemorySubDomain> subdomains = new HashSet<MemorySubDomain>();
+
+
+        protected MemoryMap()
+        {
+        }
+
+        protected MemoryMap(PIC thePIC)
+        {
+            PIC = thePIC;
+            traits = new MemTraits(thePIC);
+            progMap = new ProgMemoryMap(thePIC, this, traits);
+            dataMap = new DataMemoryMap(thePIC, this, traits, PICExecMode.Traditional);
+        }
+
+        #region Methods
+
+        protected void AddSubDomain(MemorySubDomain subdom) => subdomains.Add(subdom);
+
+        public bool HasSubDomain(MemorySubDomain subdom) => subdomains.Contains(subdom);
+
+        protected static bool IsValidMap(MemoryMap map)
+        {
+            if (map.traits == null)
+                return false;
+            if (map.progMap == null)
+                return false;
+            if (!map.HasSubDomain(MemorySubDomain.DeviceConfig))
+                return false;
+            if (!map.HasSubDomain(MemorySubDomain.Code) && !map.HasSubDomain(MemorySubDomain.ExtCode))
+                return false;
+            if (map.dataMap == null)
+                return false;
+            if (!map.HasSubDomain(MemorySubDomain.GPR))
+                return false;
+            if (!map.HasSubDomain(MemorySubDomain.SFR))
+                return false;
+            return true;
+        }
+
+        public virtual bool IsValid => IsValidMap(this);
+
+        #endregion
+
         #region IMemoryMap interface implementation
 
         /// <summary>
@@ -1186,6 +1154,30 @@ namespace Reko.Arch.Microchip.Common
                 return (t.LocSize, t.WordSize);
             return (0, 0);
         }
+
+        /// <summary>
+        /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+        /// </summary>
+        /// <param name="cAddr">The memory address to check.</param>
+        /// <returns>
+        /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
+        /// </returns>
+        public abstract bool IsAccessRAMLow(PICDataAddress cAddr);
+
+        /// <summary>
+        /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
+        /// </summary>
+        /// <param name="uAddr">The memory address to check.</param>
+        /// <returns>
+        /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
+        /// </returns>
+        public abstract bool IsAccessRAMHigh(PICDataAddress uAddr);
+
+        /// <summary>
+        /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
+        /// </summary>
+        /// <param name="uAddr">The memory address to check.</param>
+        public abstract bool CanBeFSR2IndexAddress(ushort uAddr);
 
         #endregion
 

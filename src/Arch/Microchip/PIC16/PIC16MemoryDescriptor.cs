@@ -27,22 +27,11 @@ namespace Reko.Arch.Microchip.PIC16
 {
     using Common;
 
-    public class PIC16MemoryDescriptor : IPICMemoryDescriptor
+    internal class PIC16MemoryDescriptor : PICMemoryDescriptor
     {
-
-        private static PIC16MemoryDescriptor memDescr;
-        private PIC16MemoryMap memoryMap;
-
-
-        #region Inner classes
 
         public class PIC16MemoryMap : MemoryMap
         {
-            #region Locals
-
-            #endregion
-
-            #region Constructors
 
             /// <summary>
             /// Constructor that prevents a default instance of this class from being created.
@@ -52,7 +41,7 @@ namespace Reko.Arch.Microchip.PIC16
             }
 
             /// <summary>
-            /// Private constructor creating an instance of memory map for specified PIC.
+            /// Creates a new instance of PIC16 memory map for specified PIC.
             /// </summary>
             /// <param name="thePIC">the PIC descriptor.</param>
             protected PIC16MemoryMap(PIC thePIC) : base(thePIC)
@@ -60,17 +49,17 @@ namespace Reko.Arch.Microchip.PIC16
             }
 
             /// <summary>
-            /// Creates a new <see cref="PIC16MemoryMap"/> instance.
+            /// Creates a new <see cref="IMemoryMap"/> interface for PIC16.
             /// </summary>
             /// <param name="thePIC">the PIC descriptor.</param>
             /// <returns>
-            /// A <see cref="PIC16MemoryMap"/> instance.
+            /// A <see cref="IMemoryMap"/> interface instance.
             /// </returns>
             /// <exception cref="ArgumentNullException">Thrown if <paramref name="thePIC"/> is null.</exception>
             /// <exception cref="ArgumentOutOfRangeException">Thrown if the PIC definition contains an invalid
             ///                                               data memory size (less than 12 bytes).</exception>
             /// <exception cref="InvalidOperationException">Thrown if the PIC definition does not permit to construct the memory map.</exception>
-            public static PIC16MemoryMap Create(PIC thePIC)
+            public static IMemoryMap Create(PIC thePIC)
             {
                 if (thePIC is null)
                     throw new ArgumentNullException(nameof(thePIC));
@@ -92,8 +81,6 @@ namespace Reko.Arch.Microchip.PIC16
                         throw new InvalidOperationException($"Invalid PIC16 family: '{thePIC.Name}'.");
                 }
             }
-
-            #endregion
 
             #region MemoryMap implementation
 
@@ -120,91 +107,51 @@ namespace Reko.Arch.Microchip.PIC16
                 return (mAddr == null ? lAddr : PICDataAddress.Ptr(mAddr));
             }
 
+            /// <summary>
+            /// Query if memory address <paramref name="cAddr"/> belongs to Access RAM Low range.
+            /// </summary>
+            /// <param name="cAddr">The memory address to check.</param>
+            /// <returns>
+            /// True if <paramref name="cAddr"/> belongs to Access RAM Low, false if not.
+            /// </returns>
+            public override bool IsAccessRAMLow(PICDataAddress cAddr) => false;
+
+            /// <summary>
+            /// Query if memory address <paramref name="uAddr"/> belongs to Access RAM High range.
+            /// </summary>
+            /// <param name="uAddr">The memory address to check.</param>
+            /// <returns>
+            /// True if <paramref name="uAddr"/> belongs to Access RAM High, false if not.
+            /// </returns>
+            public override bool IsAccessRAMHigh(PICDataAddress uAddr) => false;
+
+            /// <summary>
+            /// Query if memory address <paramref name="uAddr"/> can be a FSR2 index
+            /// </summary>
+            /// <param name="uAddr">The memory address to check.</param>
+            public override bool CanBeFSR2IndexAddress(ushort uAddr) => false;
+
             #endregion
 
         }
-
-        #endregion
 
 
         /// <summary>
         /// Constructor that prevents a default instance of this class from being created.
         /// </summary>
-        private PIC16MemoryDescriptor()
+        private PIC16MemoryDescriptor(PIC pic) : base(pic)
         {
         }
 
-        /// <summary>
-        /// Private constructor creating an instance of memory descriptor for specified PIC.
-        /// </summary>
-        /// <param name="pic">The target PIC.</param>
-        private PIC16MemoryDescriptor(PIC pic)
+        public static void Create(PIC pic)
         {
-            memoryMap = PIC16MemoryMap.Create(pic);
-            DeviceConfigDefinitions = PICDeviceConfigDefs.Create(pic);
+            var memdesc = new PIC16MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
+            memdesc.Reset();
+            memdesc.LoadMemDescr();
         }
 
-        /// <summary>
-        /// Creates a new PICMemoryDefinitions.
-        /// </summary>
-        /// <param name="pic">The target PIC.</param>
-        /// <returns>
-        /// A <see cref="IPICMemoryDescriptor"/> instance.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="pic"/> is null.</exception>
-        public static PIC16MemoryDescriptor Create(PIC pic)
-        {
-            memDescr = new PIC16MemoryDescriptor(pic ?? throw new ArgumentNullException(nameof(pic)));
-            return memDescr;
-        }
-
-
-        #region IPICMemoryDescriptor interface
-
-        /// <summary>
-        /// The memory description associated with this memory descriptor.
-        /// </summary>
-        public IMemoryMap MemoryMap => memoryMap;
-
-        public IPICDeviceConfigDefs DeviceConfigDefinitions { get; }
-
-        /// <summary>
-        /// Gets or sets the PIC execution mode.
-        /// </summary>
-        /// <value>
-        /// The PIC execution mode.
-        /// </value>
-        public PICExecMode ExecMode
-        {
-            get => PICExecMode.Traditional;
-            set => MemoryMap.ExecMode = PICExecMode.Traditional;
-        }
-
-        #endregion
-
-        #region Internal API
-
-        /// <summary>
-        /// Translates a Mirrored Bank address to actual data memory address. If the address does not
-        /// belong to Mirrored RAM it is returned as-is.
-        /// </summary>
-        /// <param name="addr">The address in the Memory Bank.</param>
-        /// <returns>
-        /// The actual data memory Address.
-        /// </returns>
-        internal static PICDataAddress TranslateDataAddress(PICDataAddress addr) => memDescr?.MemoryMap.RemapDataAddress(addr);
-
-        /// <summary>
-        /// Translates a Mirrored Bank address to actual data memory address.
-        /// If the address does not belong to a Mirrored RAM it is returned as-is.
-        /// </summary>
-        /// <param name="uAddr">The address in the Memory Bank.</param>
-        /// <returns>
-        /// The actual data memory Address.
-        /// </returns>
-        internal static PICDataAddress TranslateDataAddress(uint uAddr) => TranslateDataAddress(PICDataAddress.Ptr(uAddr));
-
-        #endregion
+        protected override IMemoryMap CreateMemoryMap()
+            => PIC16MemoryMap.Create(pic);
 
     }
 

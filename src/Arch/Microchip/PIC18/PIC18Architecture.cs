@@ -58,26 +58,13 @@ namespace Reko.Arch.Microchip.PIC18
         protected override void LoadConfiguration()
         {
             Description = PICDescriptor.Desc;
+            ProcessorMode.CreateMemoryDescriptor();
             ProcessorMode.CreateRegisters();
-            StackRegister = PIC18Registers.STKPTR;
+            StackRegister = PICRegisters.STKPTR;
         }
 
 
         #region Public Methods/Properties
-
-        /// <summary>
-        /// Gets the PIC18 memory mapper.
-        /// </summary>
-        public override IPICMemoryDescriptor MemoryDescriptor
-        {
-            get
-            {
-                if (memDescr is null)
-                    memDescr = PIC18MemoryDescriptor.Create(PICDescriptor);
-                return memDescr;
-            }
-        }
-        private PIC18MemoryDescriptor memDescr;
 
         public PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
             => ProcessorMode.CreateDisassembler(this, imageReader);
@@ -142,14 +129,15 @@ namespace Reko.Arch.Microchip.PIC18
         public override string GrfToString(uint grpFlags)
         {
             var sb = new StringBuilder();
-            uint bitPos = 0;
+            byte bitPos = 0;
             while (grpFlags != 0)
             {
                 if ((grpFlags & 1) != 0)
                 {
-                    var f = PICRegisters.PeekBitFieldFromRegister(PIC18Registers.STATUS, bitPos, 1);
-                    if (f != null)
-                        sb.Append(f.Name);
+                    if (PICRegisters.TryGetBitField(PICRegisters.STATUS, out var fld, bitPos, 1))
+                    {
+                        sb.Append(fld.Name);
+                    }
                 }
                 grpFlags >>= 1;
                 bitPos++;

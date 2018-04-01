@@ -21,123 +21,27 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Reko.Arch.Microchip.Common
 {
+
     /// <summary>
     /// This class provides support for the PIC registers table implementations.
     /// </summary>
-    public sealed class PICRegisters : PICRegistersBuilder, IPICRegisterSymTable
+    public class PICRegisters : PICRegistersBuilder, IPICRegisterSymTable
     {
 
-        #region Helper classes
-
         /// <summary>
-        /// A sized-register address key.
+        /// A key based on bit-field's position and register's address.
         /// </summary>
-        private class RegSizedAddrKey : IEquatable<RegSizedAddrKey>
-        {
-
-            /// <summary>
-            /// The register address if memory-mapped.
-            /// </summary>
-            public readonly PICDataAddress Addr;
-
-            /// <summary>
-            /// The register ID is non-memory-mapped.
-            /// </summary>
-            public readonly string NMMRID;
-
-            /// <summary>
-            /// The bit width of the register.
-            /// </summary>
-            public readonly int BitWidth;
-
-            /// <summary>
-            /// Instantiates a new sized-register address with given PIC data memory address.
-            /// </summary>
-            /// <param name="regAddr">The register PIC data memory address.</param>
-            /// <param name="width">The bit width of the register.</param>
-            public RegSizedAddrKey(PICDataAddress regAddr, int width = -1)
-            {
-                Addr = regAddr;
-                BitWidth = width;
-                NMMRID = String.Empty;
-            }
-
-            /// <summary>
-            /// Instantiates a new sized-register address with given absolute address.
-            /// </summary>
-            /// <param name="regAddr">The register absolute 16-bit address.</param>
-            /// <param name="width">The bit width of the register.</param>
-            public RegSizedAddrKey(ushort regAddr, int width = -1)
-                : this(PICDataAddress.Ptr(regAddr), width)
-            {
-            }
-
-            /// <summary>
-            /// Instantiates a new sized-register pseudo-address with given non-memory-mapped ID.
-            /// </summary>
-            /// <param name="nmmrID">The register ID if non-memory-mapped.</param>
-            /// <param name="width">The bit width of the register.</param>
-            public RegSizedAddrKey(string nmmrID, int width = -1)
-            {
-                Addr = null;
-                NMMRID = nmmrID;
-                BitWidth = width;
-            }
-
-            #region IEquatable implementation
-
-            public bool Equals(RegSizedAddrKey other)
-            {
-                if (other is null)
-                    return false;
-                if (ReferenceEquals(this, other))
-                    return true;
-                if (Addr is null)
-                {
-                    if (NMMRID != other.NMMRID)
-                        return false;
-                }
-                else
-                {
-                    if (Addr != other.Addr)
-                        return false;
-                }
-
-                return (BitWidth == -1) || (other.BitWidth == -1) || (BitWidth == other.BitWidth);
-            }
-
-            public override bool Equals(object obj)
-            {
-                return Equals(obj as RegSizedAddrKey);
-            }
-
-            public override int GetHashCode()
-            {
-                return (Addr?.GetHashCode() ?? 0 * 17) ^ NMMRID.GetHashCode() ^ (BitWidth.GetHashCode() * 29);
-            }
-
-            #endregion
-
-            public override string ToString()
-            {
-                if (Addr != null)
-                    return $"{Addr}[{BitWidth}]";
-                return $"NMMRID({NMMRID}[{BitWidth}])";
-            }
-
-        }
-
-        /// <summary>
-        /// A bit field address composed of the containing register's address and bit field position.
-        /// </summary>
-        private class BitFieldAddrKey : IEquatable<BitFieldAddrKey>
+        private class BitFieldPosAndAddrKey : IEquatable<BitFieldPosAndAddrKey>, IComparable<BitFieldPosAndAddrKey>, IComparable
         {
             public readonly PICDataAddress RegAddr;
             public readonly ulong BitPos;
@@ -145,25 +49,32 @@ namespace Reko.Arch.Microchip.Common
             /// <summary>
             /// Instantiates a new bit-field address with given holding register address and bit-field position.
             /// </summary>
-            /// <param name="regaddr">The register PIC data memory address.</param>
-            /// <param name="bitpos">The bit position of the bit-field.</param>
-            public BitFieldAddrKey(PICDataAddress regaddr, ulong bitpos)
+            /// <param name="regAddr">The register PIC data memory address.</param>
+            /// <param name="bitPos">The bit position of the bit-field.</param>
+            public BitFieldPosAndAddrKey(PICDataAddress regAddr, ulong bitPos)
             {
-                RegAddr = regaddr;
-                BitPos = bitpos;
+                RegAddr = regAddr;
+                BitPos = bitPos;
             }
 
-            public bool Equals(BitFieldAddrKey other)
+            public int CompareTo(BitFieldPosAndAddrKey other)
             {
                 if (other is null)
-                    return false;
-                return RegAddr.Equals(other.RegAddr) && BitPos.Equals(other.BitPos);
+                    return 1;
+                if (ReferenceEquals(this, other))
+                    return 0;
+                int res;
+                res = RegAddr.CompareTo(other.RegAddr);
+                if ((res = RegAddr.CompareTo(other.RegAddr)) != 0)
+                    return res;
+                return BitPos.CompareTo(other.BitPos);
             }
 
-            public override bool Equals(object obj)
-            {
-                return Equals(obj as BitFieldAddrKey);
-            }
+            public int CompareTo(object obj) => CompareTo(obj as BitFieldPosAndAddrKey);
+
+            public bool Equals(BitFieldPosAndAddrKey other) => CompareTo(other) == 0;
+
+            public override bool Equals(object obj) => Equals(obj as BitFieldPosAndAddrKey);
 
             public override int GetHashCode()
             {
@@ -177,37 +88,64 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
-        /// <summary>
-        /// List of bit fields. Permits to get bit fields with different widths at same register's bit position.
-        /// </summary>
-        private class BitFieldList : SortedList<uint, PICBitFieldStorage>
-        {
-        }
-
-        #endregion
-
         private static object symTabLock = new object(); // lock to allow concurrent access.
 
-        private static Dictionary<string, PICRegisterStorage> UniqueRegNames
-            = new Dictionary<string, PICRegisterStorage>();
-        private static Dictionary<string, PICBitFieldStorage> UniqueFieldNames
-            = new Dictionary<string, PICBitFieldStorage>();
-        private static Dictionary<RegSizedAddrKey, PICRegisterStorage> UniqueRegsAddr
-            = new Dictionary<RegSizedAddrKey, PICRegisterStorage>();
-        private static Dictionary<BitFieldAddrKey, BitFieldList> UniqueBitFieldsAddr
-            = new Dictionary<BitFieldAddrKey, BitFieldList>();
-        private static Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> JoineeRegisters
-            = new Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>>();
-        private static Dictionary<RegisterStorage, RegisterStorage> JoinedRegisters
-            = new Dictionary<RegisterStorage, RegisterStorage>();
+        private static SortedList<string, PICRegisterStorage> registersByName
+            = new SortedList<string, PICRegisterStorage>();
+        private static SortedList<string, PICRegisterBitFieldStorage> bitFieldsByName
+            = new SortedList<string, PICRegisterBitFieldStorage>();
+        private static SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage> registersByAddressAndWidth
+            = new SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage>();
+        private static SortedList<PICDataAddress, PICRegisterStorage> accessibleRegisters
+            = new SortedList<PICDataAddress, PICRegisterStorage>();
+
+        private static HashSet<PICRegisterStorage> invalidDestRegisters
+            = new HashSet<PICRegisterStorage>();
+        private static Dictionary<PICRegisterStorage, (FSRIndexedMode iop, PICRegisterStorage fsr)> indirectParentRegisters
+            = new Dictionary<PICRegisterStorage, (FSRIndexedMode, PICRegisterStorage)>();
+
+        public static MemoryIdentifier GlobalStack = new MemoryIdentifier("Stack", PrimitiveType.Ptr32);
+        public static MemoryIdentifier GlobalData = new MemoryIdentifier("Data", PrimitiveType.Byte);
+        public static MemoryIdentifier GlobalCode = new MemoryIdentifier("Code", PrimitiveType.Ptr32);
+
 
         /// <summary>
         /// Instantiates a new empty registers pool.
         /// </summary>
-        private PICRegisters() : base()
+        protected PICRegisters() : base()
         {
-            Reset();
         }
+
+        /// <summary> PCL register. </summary>
+        public static PICRegisterStorage PCL { get; protected set; }
+
+        /// <summary> STATUS register. </summary>
+        public static PICRegisterStorage STATUS { get; protected set; }
+
+        /// <summary> Carry bit in STATUS register. </summary>
+        public static PICRegisterBitFieldStorage C { get; protected set; }
+
+        /// <summary> Digit-Carry bit in STATUS register. </summary>
+        public static PICRegisterBitFieldStorage DC { get; protected set; }
+
+        /// <summary> Zero bit in STATUS register. </summary>
+        public static PICRegisterBitFieldStorage Z { get; protected set; }
+
+        /// <summary> Power-Down bit in STATUS or PCON register. </summary>
+        public static PICRegisterBitFieldStorage PD { get; protected set; }
+
+        /// <summary> Timed-Out bit in STATUS or PCON register. </summary>
+        public static PICRegisterBitFieldStorage TO { get; protected set; }
+
+        /// <summary> WREG special function register. </summary>
+        public static PICRegisterStorage WREG { get; protected set; }
+
+        /// <summary> PCLATH special function register. </summary>
+        public static PICRegisterStorage PCLATH { get; protected set; }
+
+        /// <summary> STKPTR pseudo-register. </summary>
+        public static PICRegisterStorage STKPTR { get; protected set; }
+
 
         /// <summary>
         /// Loads the PIC registers into the registers symbol table.
@@ -219,6 +157,7 @@ namespace Reko.Arch.Microchip.Common
             if (pic is null)
                 throw new ArgumentNullException(nameof(pic));
             var regs = new PICRegisters();
+            regs.Reset();
             regs.LoadRegistersInTable(regs, pic);
             HWStackDepth = pic.ArchDef.MemTraits.HWStackDepth;
         }
@@ -227,15 +166,39 @@ namespace Reko.Arch.Microchip.Common
         {
             lock (symTabLock)
             {
-                UniqueRegNames.Clear();
-                UniqueFieldNames.Clear();
-                UniqueRegsAddr.Clear();
-                UniqueBitFieldsAddr.Clear();
-                JoineeRegisters.Clear();
-                JoinedRegisters.Clear();
+                registersByName.Clear();
+                bitFieldsByName.Clear();
+                registersByAddressAndWidth.Clear();
+                accessibleRegisters.Clear();
+                invalidDestRegisters.Clear();
+                indirectParentRegisters.Clear();
             }
         }
 
+        /// <summary>
+        /// Sets core registers common to all 8-bit PIC.
+        /// </summary>
+        public virtual void SetCoreRegisters()
+        {
+            STATUS = GetRegister("STATUS");
+            C = GetBitField("C");
+            DC = GetBitField("DC");
+            Z = GetBitField("Z");
+            if (!TryGetBitField("nPD", out var pd))
+            {
+                TryGetBitField("PD", out pd);
+            }
+            PD = pd;
+            if (!TryGetBitField("nTO", out var to))
+            {
+                TryGetBitField("TO", out to);
+            }
+            TO = to;
+            PCL = GetRegister("PCL");
+            PCLATH = GetRegister("PCLATH");
+            WREG = GetRegister("WREG");
+            STKPTR = GetRegister("STKPTR");
+        }
 
         #region IPICRegisterSymTable interface
 
@@ -246,71 +209,45 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// A <seealso cref="PICRegisterStorage"/> or null if tentative of duplication.
         /// </returns>
-        PICRegisterStorage IPICRegisterSymTable.AddRegister(PICRegisterStorage reg)
+        bool IPICRegisterSymTable.AddRegister(PICRegisterStorage reg)
         {
             if (reg is null)
-                return null;
+                return false;
 
-            RegSizedAddrKey addr =
+            PICRegisterSizedUniqueAddress addr =
                 (reg.IsMemoryMapped
-                    ? new RegSizedAddrKey(reg.Address, reg.BitWidth)
-                    : new RegSizedAddrKey(reg.NMMRID, reg.BitWidth)
+                    ? new PICRegisterSizedUniqueAddress(reg.Address, reg.BitWidth)
+                    : new PICRegisterSizedUniqueAddress(reg.NMMRID, reg.BitWidth)
                 );
-
-            var subdic = new Dictionary<uint, RegisterStorage>();
-            reg.SubRegs?.ToList().ForEach(r => subdic.Add(((uint)(r.BitWidth << 8) | (uint)r.BitAddress), r));
 
             lock (symTabLock)
             {
-                if (UniqueRegNames.ContainsKey(reg.Name))
-                    return null;      // Do not duplicate name
-                if (UniqueRegsAddr.ContainsKey(addr))
-                    return null;   // Do not duplicate register with same address and bit width
-                UniqueRegNames[reg.Name] = reg;
-                UniqueRegsAddr[addr] = reg;
-                if (reg.SubRegs != null)
-                {
-                    JoineeRegisters.Add(reg, subdic);
-                    reg.SubRegs?.ToList().ForEach(sr => JoinedRegisters.Add(sr, reg));
-                }
+                if (registersByName.ContainsKey(reg.Name))
+                    return false;      // Do not duplicate name
+                if (registersByAddressAndWidth.ContainsKey(addr))
+                    return false;   // Do not duplicate register with same address and bit width
+                registersByName[reg.Name] = reg;
+                registersByAddressAndWidth[addr] = reg;
             }
-            return reg;
+            return true;
         }
 
         /// <summary>
         /// Adds a register's named bit field. Returns null if no addition done.
         /// </summary>
-        /// <param name="reg">The parent register.</param>
         /// <param name="field">The bit field.</param>
         /// <returns>
-        /// A <seealso cref="PICBitFieldStorage"/> or null if tentative of duplication.
+        /// A <seealso cref="PICRegisterBitFieldStorage"/> or null if tentative of duplication.
         /// </returns>
-        PICBitFieldStorage IPICRegisterSymTable.AddRegisterField(PICRegisterStorage reg, PICBitFieldStorage field)
+        bool IPICRegisterSymTable.AddRegisterBitField(PICRegisterBitFieldStorage field)
         {
             lock (symTabLock)
             {
-                if (UniqueRegNames.ContainsKey(field.Name))
-                    return null;      // Do not duplicate name
-                var key = new BitFieldAddrKey(reg.Address, field.BitPos);
-                if (!UniqueBitFieldsAddr.ContainsKey(key))
-                {
-                    var newfieldlist = new BitFieldList
-                    {
-                        { field.BitWidth, field }
-                    };
-                    UniqueFieldNames[field.Name] = field;
-                    UniqueBitFieldsAddr[key] = newfieldlist;
-                    return field;
-                }
-                var fieldlist = UniqueBitFieldsAddr[key];
-                if (!fieldlist.ContainsKey(field.BitWidth))
-                {
-                    UniqueFieldNames[field.Name] = field;
-                    fieldlist.Add(field.BitWidth, field);
-                    return field;
-                }
+                if (registersByName.ContainsKey(field.Name))
+                    return false;      // Do not duplicate bit-field name
+                bitFieldsByName[field.Name] = field;
             }
-            return null;
+            return true;
         }
 
         #endregion
@@ -328,7 +265,62 @@ namespace Reko.Arch.Microchip.Common
         /// <value>
         /// An array of PIC registers.
         /// </value>
-        public static PICRegisterStorage[] GetRegisters => UniqueRegsAddr.Values.ToArray();
+        public static PICRegisterStorage[] GetRegisters => registersByName.Values.ToArray();
+
+        /// <summary>
+        /// Attempts to get a PIC register from its name.
+        /// </summary>
+        /// <param name="regName">The name of the register as a string.</param>
+        /// <param name="reg">[out] The PIC register if it exists.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="regName"/> is null or empty string.</exception>
+        public static bool TryGetRegister(string regName, out PICRegisterStorage reg)
+        {
+            if (string.IsNullOrWhiteSpace(regName))
+                throw new ArgumentNullException(nameof(regName));
+
+            reg = default(PICRegisterStorage);
+            lock (symTabLock)
+                return registersByName.TryGetValue(regName, out reg);
+        }
+
+        /// <summary>
+        /// Attempts to get a register by its data memory address/bit-width.
+        /// </summary>
+        /// <param name="regDataAddr">The data memory address of the register.</param>
+        /// <param name="reg">[out] The PIC register if it exists.</param>
+        /// <param name="bitWidth">(Optional) The bit width of the register. If ommitted, look for the
+        ///                        narrowest register.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="regDataAddr"/> is null.</exception>
+        public static bool TryGetRegister(PICDataAddress regDataAddr, out PICRegisterStorage reg, int bitWidth = 0)
+        {
+            if (regDataAddr is null)
+                throw new ArgumentNullException(nameof(regDataAddr));
+
+            var key = new PICRegisterSizedUniqueAddress(regDataAddr, (bitWidth <= 0 ? 0 : bitWidth));
+            lock (symTabLock)
+            {
+                reg = registersByAddressAndWidth.FirstOrDefault(r => r.Key.Equals(key)).Value;
+                return (reg != null);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to get a register by its absolute address/bit-width.
+        /// </summary>
+        /// <param name="regAbsAddr">The absolute address of the register.</param>
+        /// <param name="bitWidth">(Optional) The bit width of the register. If ommitted, look for the
+        ///                        narrowest register.</param>
+        /// <returns>
+        /// The PIC register instance.
+        /// </returns>
+        public static bool TryGetRegister(ushort regAbsAddr, out PICRegisterStorage reg, int bitWidth = 0)
+            => TryGetRegister(PICDataAddress.Ptr(regAbsAddr), out reg, bitWidth);
 
         /// <summary>
         /// Gets a PIC register from its name.
@@ -340,109 +332,40 @@ namespace Reko.Arch.Microchip.Common
         /// <exception cref="InvalidOperationException">Thrown if this register does not exist.</exception>
         public static PICRegisterStorage GetRegister(string regName)
         {
-            lock (symTabLock)
-            {
-                if (!UniqueRegNames.TryGetValue(regName, out PICRegisterStorage reg))
-                    throw new ArgumentException("Unknown PIC register.", regName);
+            if (TryGetRegister(regName, out var reg))
                 return reg;
-            }
-        }
-
-        /// <summary>
-        /// Attempts to get a PIC register from its name.
-        /// </summary>
-        /// <param name="regName">The name of the register as a string.</param>
-        /// <param name="reg">[out] The PIC register if it exists.</param>
-        /// <returns>
-        /// True if it succeeds, false if it fails.
-        /// </returns>
-        public static bool TryGetRegister(string regName, out PICRegisterStorage reg, PICRegisterStorage defltReg = null)
-        {
-            reg = defltReg;
-            lock (symTabLock)
-                return UniqueRegNames.TryGetValue(regName, out reg);
+            throw new ArgumentException("Unknown PIC register.", regName);
         }
 
         /// <summary>
         /// Gets a register by its data memory address/bit-width.
         /// </summary>
         /// <param name="regDataAddr">The data memory address of the register.</param>
-        /// <param name="bitWidth">The bit width of the register.</param>
+        /// <param name="bitWidth">(Optional) The bit width of the register. If ommitted, look for the
+        ///                        narrowest register.</param>
         /// <returns>
         /// The PIC register instance.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown if this register with given width does not exist.</exception>
-        public static PICRegisterStorage GetRegister(PICDataAddress regDataAddr, int bitWidth)
+        public static PICRegisterStorage GetRegister(PICDataAddress regDataAddr, int bitWidth = 0)
         {
-            lock (symTabLock)
-            {
-                if (!UniqueRegsAddr.TryGetValue(new RegSizedAddrKey(regDataAddr, bitWidth), out var reg))
-                    throw new InvalidOperationException($"No special register at address 0x{regDataAddr:X} / {bitWidth} bit-wide.");
+            if (TryGetRegister(regDataAddr, out var reg, bitWidth))
                 return reg;
-            }
-
-        }
-
-        /// <summary>
-        /// Attempts to get a register by its data memory address/bit-width.
-        /// </summary>
-        /// <param name="regDataAddr">The data memory address of the register.</param>
-        /// <param name="bitWidth">The bit width of the register.</param>
-        /// <param name="reg">[out] The PIC register if it exists.</param>
-        /// <returns>
-        /// True if it succeeds, false if it fails.
-        /// </returns>
-        public static bool TryGetRegister(PICDataAddress regDataAddr, int bitWidth, out PICRegisterStorage reg)
-        {
-            lock (symTabLock)
-            {
-                return UniqueRegsAddr.TryGetValue(new RegSizedAddrKey(regDataAddr, bitWidth), out reg);
-            }
-
+            throw new InvalidOperationException($"No special register at address 0x{regDataAddr:X} / {bitWidth} bit-wide.");
         }
 
         /// <summary>
         /// Gets a register by its absolute address/bit-width.
         /// </summary>
         /// <param name="regAbsAddr">The absolute address of the register.</param>
-        /// <param name="bitWidth">The bit width of the register.</param>
+        /// <param name="bitWidth">(Optional) The bit width of the register. If ommitted, look for the
+        ///                        narrowest register.</param>
         /// <returns>
         /// The PIC register instance.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown if this register with given width does not exist.</exception>
-        public static PICRegisterStorage GetRegister(ushort regAbsAddr, int bitWidth)
+        public static PICRegisterStorage GetRegister(ushort regAbsAddr, int bitWidth = 0)
             => GetRegister(PICDataAddress.Ptr(regAbsAddr), bitWidth);
-
-        /// <summary>
-        /// Attempts to get a register by its absolute address/bit-width.
-        /// </summary>
-        /// <param name="regAbsAddr">The absolute address of the register.</param>
-        /// <param name="bitWidth">The bit width of the register.</param>
-        /// <returns>
-        /// The PIC register instance.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">Thrown if this register with given width does not exist.</exception>
-        public static bool TryGetRegister(ushort regAbsAddr, int bitWidth, out PICRegisterStorage reg)
-            => TryGetRegister(PICDataAddress.Ptr(regAbsAddr), bitWidth, out reg);
-
-        /// <summary>
-        /// Gets a register by its index number.
-        /// </summary>
-        /// <param name="number">Index number of the register.</param>
-        /// <returns>
-        /// The register instance or null.
-        /// </returns>
-        public static PICRegisterStorage PeekRegisterByNum(int number)
-        {
-            lock (symTabLock)
-            {
-                var reg = UniqueRegsAddr.Where(l => l.Value.Number == number)
-                    .Select(e => (KeyValuePair<RegSizedAddrKey, PICRegisterStorage>?)e)
-                    .FirstOrDefault()?.Value;
-                return reg;
-            }
-
-        }
 
         /// <summary>
         /// Gets a standard (core) register by its index.
@@ -455,8 +378,28 @@ namespace Reko.Arch.Microchip.Common
         {
             lock (symTabLock)
             {
-                var entry = UniqueRegsAddr.Where(p => p.Value.Number == i).Select(e => e.Value).FirstOrDefault();
+                var entry = registersByAddressAndWidth.Where(p => p.Value.Number == i).Select(e => e.Value).FirstOrDefault();
                 return entry;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to get PIC register's bit field from its name.
+        /// </summary>
+        /// <param name="fieldName">Name of the bit field.</param>
+        /// <param name="field">[out] The bit field if it exists, otherwise null.</param>
+        /// <param name="defltFld">(Optional) The default bit-field value if not found.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        public static bool TryGetBitField(string fieldName, out PICRegisterBitFieldStorage field)
+        {
+            if (string.IsNullOrWhiteSpace(fieldName))
+                throw new ArgumentNullException(nameof(fieldName));
+            field = default(PICRegisterBitFieldStorage);
+            lock (symTabLock)
+            {
+                return bitFieldsByName.TryGetValue(fieldName, out field);
             }
         }
 
@@ -467,86 +410,92 @@ namespace Reko.Arch.Microchip.Common
         /// <returns>
         /// The bit-field instance or null.
         /// </returns>
-        public static PICBitFieldStorage GetBitField(string fieldName)
+        public static PICRegisterBitFieldStorage GetBitField(string fieldName)
         {
+            if (TryGetBitField(fieldName, out var fld))
+                return fld;
+            throw new InvalidOperationException($"Missing definition of bit field '{fieldName}' in symbol table.");
+        }
+
+        /// <summary>
+        /// Gets a register bit field by its parent register and bit position/width. If
+        /// <paramref name="bitWidth"/> is 0, then the widest bit-field is retrieved.
+        /// </summary>
+        /// <param name="parentReg">The parent register.</param>
+        /// <param name="field">[out] The bit field if it exists, otherwise null.</param>
+        /// <param name="bitPos">The bit position of the bit-field.</param>
+        /// <param name="bitWidth">(Optional) The bit-field width.</param>
+        /// <returns>
+        /// True if bit-field found, false otherwise.
+        /// </returns>
+        public static bool TryGetBitField(PICRegisterStorage parentReg, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
+        {
+            field = null;
+            if (parentReg is null)
+                return false;
+
+            var fldkey = new PICRegisterBitFieldSortKey(bitPos, bitWidth);
+
             lock (symTabLock)
             {
-                if (!UniqueFieldNames.TryGetValue(fieldName, out PICBitFieldStorage fld))
-                    throw new InvalidOperationException($"Missing definition of bit field '{fieldName}' in symbol table.");
-                return fld;
+                if (bitPos > parentReg.BitWidth || (bitPos + bitWidth) > parentReg.BitWidth)
+                    return false;
+                if (parentReg.BitFields.Count <= 0)
+                    return false;
+                field = parentReg.BitFields.FirstOrDefault(f => f.Key.Equals(fldkey)).Value;
+                return field != null;
             }
         }
 
         /// <summary>
-        /// Attempts to get PIC register's bit field from its name.
-        /// </summary>
-        /// <param name="fieldName">Name of the bit field.</param>
-        /// <param name="field">[out] The bit field if it exists, otherwise null.</param>
-        /// <returns>
-        /// True if it succeeds, false if it fails.
-        /// </returns>
-        public static bool TryGetBitField(string fieldName, out PICBitFieldStorage field, PICBitFieldStorage defltFld = null)
-        {
-            field = defltFld;
-            lock (symTabLock)
-                return UniqueFieldNames.TryGetValue(fieldName, out field);
-        }
-
-        /// <summary>
-        /// Gets a register bit-field by its parent register address and bit position/width or null.
-        /// If <paramref name="bitwidth"/> is 0, then the widest bit-field is retrieved.
+        /// Gets a register bit-field by its parent register address and bit position/width or null. If
+        /// <paramref name="bitwidth"/> is 0, then the widest bit-field is retrieved.
         /// </summary>
         /// <param name="regAddress">The parent register address.</param>
+        /// <param name="field">[out] The bit field if it exists, otherwise null.</param>
         /// <param name="bitPos">The bit position of the bit-field.</param>
         /// <param name="bitWidth">(Optional) The bit-field width.</param>
         /// <returns>
-        /// The bit-field instance or null.
+        /// True if bit-field found, false otherwise.
         /// </returns>
-        public static PICBitFieldStorage PeekBitFieldFromRegister(PICDataAddress regAddress, uint bitPos, uint bitWidth = 0)
+        /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
+        public static bool TryGetBitField(PICDataAddress regAddress, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
+            field = null;
+            if (regAddress is null)
+                throw new ArgumentNullException(nameof(regAddress));
+
             lock (symTabLock)
             {
-                if (UniqueBitFieldsAddr.TryGetValue(new BitFieldAddrKey(regAddress, bitPos), out BitFieldList flist))
-                {
-                    if (bitWidth == 0)
-                        return flist.LastOrDefault().Value;
-                    return flist.FirstOrDefault(f => f.Value.BitWidth == bitWidth).Value;
-                }
+                if (!TryGetRegister(regAddress, out var reg))
+                    return false;
+                return TryGetBitField(reg, out field, bitPos, bitWidth);
             }
-            return null;
-
         }
 
         /// <summary>
-        /// Gets a register bit field by its parent register and bit position/width.
-        /// If <paramref name="bitWidth"/> is 0, then the widest bit-field is retrieved.
-        /// </summary>
-        /// <param name="reg">The parent register.</param>
-        /// <param name="bitPos">The bit position of the bit-field.</param>
-        /// <param name="bitWidth">(Optional) The bit-field width.</param>
-        /// <returns>
-        /// The bit-field instance or null.
-        /// </returns>
-        public static PICBitFieldStorage PeekBitFieldFromRegister(PICRegisterStorage reg, uint bitPos, uint bitWidth = 0)
-            => (reg is null ? null : PeekBitFieldFromRegister(reg.Address, bitPos, bitWidth));
-
-        /// <summary>
-        /// Gets a register bit-field by its parent register name and bit position/width or null.
-        /// If <paramref name="fldBitWidth"/> is 0, then the widest bit field is retrieved.
+        /// Gets a register bit-field by its parent register name and bit position/width or null. If
+        /// <paramref name="bitWidth"/> is 0, then the widest bit field is retrieved.
         /// </summary>
         /// <param name="regName">The parent register name.</param>
-        /// <param name="fldBitPos">The bit position of the bit-field.</param>
-        /// <param name="fldBitWidth">(Optional) The bit field width.</param>
+        /// <param name="field">[out] The bit field if it exists, otherwise null.</param>
+        /// <param name="bitPos">The bit position of the bit-field.</param>
+        /// <param name="bitWidth">(Optional) The bit field width.</param>
         /// <returns>
-        /// The bit-field instance or null.
+        /// True if bit-field found, false otherwise.
         /// </returns>
-        public static PICBitFieldStorage PeekBitFieldFromRegister(string regName, uint fldBitPos, uint fldBitWidth = 0)
-            => PeekBitFieldFromRegister(GetRegister(regName), fldBitPos, fldBitWidth);
+        public static bool TryGetBitField(string regName, out PICRegisterBitFieldStorage field,  byte bitPos, byte bitWidth = 0)
+        {
+            field = null;
+            if (TryGetRegister(regName, out var reg))
+                return TryGetBitField(reg, out field, bitPos, bitWidth);
+            return false;
+        }
 
         /// <summary>
         /// Gets the maximum number of PIC18 registers.
         /// </summary>
-        public static int Max => UniqueRegsAddr.Count;
+        public static int Max => registersByName.Count;
 
         /// <summary>
         /// Get the proper sub-register of <paramref name="reg" /> that starts at offset
@@ -566,13 +515,16 @@ namespace Reko.Arch.Microchip.Common
         /// </remarks>
         public static RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
+            if (reg is null)
+                throw new ArgumentNullException(nameof(reg));
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
-            if (!JoineeRegisters.TryGetValue(reg, out var dict))
-                return null;
-            if (!dict.TryGetValue((uint)(offset + (width << 8)), out var subReg))
-                return null;
-            return subReg;
+            if (reg is PICRegisterStorage preg)
+            {
+                if (preg.HasAttachedRegs)
+                    return preg.AttachedRegs.Find(r => r.BitAddress == (ulong)offset && r.BitWidth == width);
+            }
+            return null;
         }
 
         /// <summary>
@@ -586,13 +538,115 @@ namespace Reko.Arch.Microchip.Common
         public static RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
             => throw new NotImplementedException("PIC has no wider-register.");
 
-        public static RegisterStorage GetParentRegister(RegisterStorage subreg)
+        /// <summary>
+        /// Gets the parent register of a PIC register
+        /// </summary>
+        /// <param name="subReg">The child PIC register.</param>
+        /// <returns>
+        /// The parent register or null if orphan.
+        /// </returns>
+        public static RegisterStorage GetParentRegister(RegisterStorage subReg)
         {
-            if (subreg is null)
-                return null;
-            if (!JoinedRegisters.TryGetValue(subreg, out var par))
-                return null;
-            return par;
+            if (subReg is PICRegisterStorage preg)
+                return preg.ParentRegister;
+            return null;
+        }
+
+        /// <summary>
+        /// Query if data memory absolute address corresponds to one of the move forbidden destination registers (per PIC data sheet)..
+        /// </summary>
+        /// <param name="dstAddr">The data memory absolute address.</param>
+        /// <returns>
+        /// True if forbidden, false allowed.
+        /// </returns>
+        public static bool NotAllowedDest(ushort dstAddr)
+        {
+            if (TryGetRegister(dstAddr, out var fsr))
+                return invalidDestRegisters.Contains(fsr);
+            return false;
+        }
+
+        /// <summary>
+        /// Query if '<paramref name="sfr"/>' register is an indirect register (INDFx, PLUSWx, POSTINCx,... ) and get the associated FSR register.
+        /// Returns the indirect addressing mode if applicable, else return None if <paramref name="sfr"/> is not an indirect register.
+        /// </summary>
+        /// <param name="sfr">The register used in instruction's operand.</param>
+        /// <param name="parentFSR">[out] The actual FSR index register if <paramref name="sfr"/> is an indirect register or <see cref="PICRegisterStorage.None"/>.</param>
+        /// <returns>
+        /// The indirect addressing mode, or None.
+        /// </returns>
+        public static FSRIndexedMode IndirectOpMode(PICRegisterStorage sfr, out PICRegisterStorage parentFSR)
+        {
+            parentFSR = PICRegisterStorage.None;
+            if (sfr is null)
+                return FSRIndexedMode.None;
+            if (indirectParentRegisters.TryGetValue(sfr, out (FSRIndexedMode indMode, PICRegisterStorage fsr) ent))
+            {
+                parentFSR = ent.fsr;
+                return ent.indMode;
+            }
+            return FSRIndexedMode.None;
+        }
+
+        public static bool IsAlwaysAccessible(PICRegisterStorage reg)
+            => accessibleRegisters.ContainsValue(reg);
+
+        public static bool TryGetAlwaysAccessibleRegister(PICDataAddress regAddr, out PICRegisterStorage reg)
+        {
+            if (regAddr is null)
+                throw new ArgumentNullException(nameof(regAddr));
+            var aAddr = PICMemoryDescriptor.RemapDataAddress(regAddr);
+            return accessibleRegisters.TryGetValue(aAddr, out reg);
+        }
+
+        public static bool TryGetAlwaysAccessibleRegister(ushort regAbsAddr, out PICRegisterStorage reg)
+            => TryGetAlwaysAccessibleRegister(PICDataAddress.Ptr(regAbsAddr), out reg);
+
+        #endregion
+
+        #region Helpers
+
+        protected static void AddForbiddenDests(bool clean, params PICRegisterStorage[] regs)
+        {
+            if (clean)
+            {
+                invalidDestRegisters.Clear();
+            }
+            if (regs != null && regs.Count() > 0)
+            {
+                foreach (var r in regs)
+                {
+                    invalidDestRegisters.Add(r);
+                }
+            }
+        }
+
+        protected static void AddIndirectParents(bool clean, params (PICRegisterStorage child, (FSRIndexedMode op, PICRegisterStorage reg) parent)[] pairs)
+        {
+            if (clean)
+            {
+                indirectParentRegisters.Clear();
+            }
+            if (pairs != null && pairs.Count() > 0)
+            {
+                foreach (var (child, parent) in pairs)
+                    indirectParentRegisters.Add(child, parent);
+            }
+        }
+
+        protected static void AddAlwaysAccessibleRegisters(bool clean, params PICRegisterStorage[] regs)
+        {
+            if (clean)
+            {
+                accessibleRegisters.Clear();
+            }
+            if (regs != null && regs.Count() > 0)
+            {
+                foreach (var reg in regs)
+                {
+                    accessibleRegisters.Add(reg.Address, reg);
+                }
+            }
         }
 
         #endregion

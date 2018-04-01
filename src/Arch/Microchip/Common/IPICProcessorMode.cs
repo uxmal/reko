@@ -72,6 +72,11 @@ namespace Reko.Arch.Microchip.Common
         void CreateRegisters();
 
         /// <summary>
+        /// Creates the memory descriptor for the PIC memory.
+        /// </summary>
+        void CreateMemoryDescriptor();
+
+        /// <summary>
         /// Creates the instructions IL rewriter for the target processor.
         /// </summary>
         /// <param name="arch">The architecture of the processor.</param>

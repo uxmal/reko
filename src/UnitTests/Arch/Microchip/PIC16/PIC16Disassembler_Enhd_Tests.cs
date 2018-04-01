@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
     // This series of tests permits to check the instructions of the Enhanced PIC16.
     // 
     [TestFixture]
-    public class PIC16Disassembler_Enhd_Tests : DisassemblerTestsBase
+    public class PIC16Enhd_DisassemblerTests : DisassemblerTestsBase
     {
 
         [TestFixtureSetUp]
@@ -55,14 +55,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("BSF\tSTATUS,DC", "", 0x1483);
             VerifyDisasm("BTFSC\tINDF0,7", "", 0x1B80);
             VerifyDisasm("BTFSS\tINDF0,0", "", 0x1C00);
-            VerifyDisasm("CALL\t0x000006", "", 0x2003);
+            VerifyDisasm("CALL\t0x00000006", "", 0x2003);
             VerifyDisasm("CLRF\tFSR0L", "", 0x0184);
             VerifyDisasm("CLRF\tFSR0H", "", 0x0185);
             VerifyDisasm("CLRWDT", "", 0x0064);
             VerifyDisasm("COMF\t0x23,W", "", 0x0923);
             VerifyDisasm("DECF\tINDF1,F", "", 0x0381);
             VerifyDisasm("DECFSZ\tINDF0,W", "", 0x0B00);
-            VerifyDisasm("GOTO\t0x000EAC", "", 0x2F56);
+            VerifyDisasm("GOTO\t0x00000EAC", "", 0x2F56);
             VerifyDisasm("INCF\tINDF1,F", "", 0x0A81);
             VerifyDisasm("INCFSZ\tPCLATH,F", "", 0x0F8A);
             VerifyDisasm("IORWF\tWREG,F", "", 0x0489);
@@ -113,9 +113,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Enhd_Disasm_BRA()
         {
-            VerifyDisasm("BRA\t0x000202", "", 0x3200);
-            VerifyDisasm("BRA\t0x000302", "", 0x3280);
-            VerifyDisasm("BRA\t0x000106", "", 0x3382);
+            VerifyDisasm("BRA\t0x00000202", "", 0x3200);
+            VerifyDisasm("BRA\t0x00000302", "", 0x3280);
+            VerifyDisasm("BRA\t0x00000106", "", 0x3382);
         }
 
         [Test]

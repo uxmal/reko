@@ -174,8 +174,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             switch (op)
             {
-                case PIC18FSR2IdxOperand fsr2idx:
-                    return DataMem8(m.IAdd(Fsr2, fsr2idx.Offset));
+                case PICOperandImmediate fsr2idx:
+                    return DataMem8(m.IAdd(Fsr2, fsr2idx.ImmediateValue));
 
                 default:
                     throw new InvalidOperationException($"Invalid FSR2 indexed address operand.");

@@ -297,7 +297,7 @@ namespace Reko.Core.Expressions
             else if (smp.DataType.Size != access.DataType.Size)
                 return false;
 
-            return 
+            return
                 Match(smp.BasePointer, access.BasePointer) &&
                 Match(smp.EffectiveAddress, access.EffectiveAddress);
         }

@@ -36,16 +36,15 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC16DevConf_Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            var arch = picMode.CreateArchitecture();
-            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
-            var dcr = defs.GetDCR("CONFIG");
+            picMode.CreateMemoryDescriptor();
+            var dcr = PICMemoryDescriptor.GetDCR("CONFIG");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x2007), dcr.Address);
 
-            var s = defs.Render(dcr, 0xFFFF);
+            var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
             Assert.AreEqual("FOSC=EXTRC, WDTE=ON, PWRTE=OFF, CP=OFF", s);
 
-            var dcf = defs.GetDCRField("WDTE");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.AreEqual("WDTE", dcf.Name);
             Assert.IsNotNull(dcf);
             Assert.AreSame(dcr.Address, dcf.RegAddress);
@@ -55,16 +54,15 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC16EnhDevConf_Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            var arch = picMode.CreateArchitecture();
-            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
-            var dcr = defs.GetDCR("CONFIG1");
+            picMode.CreateMemoryDescriptor();
+            var dcr = PICMemoryDescriptor.GetDCR("CONFIG1");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x8007), dcr.Address);
 
-            var s = defs.Render(dcr, 0xFFFF);
+            var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
             Assert.AreEqual("FOSC=ECH, WDTE=ON, PWRTE=OFF, MCLRE=ON, CP=OFF, BOREN=ON, CLKOUTEN=OFF, IESO=ON, FCMEN=ON", s);
 
-            var dcf = defs.GetDCRField("WDTE");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.AreEqual("WDTE", dcf.Name);
             Assert.IsNotNull(dcf);
             Assert.AreSame(dcr.Address, dcf.RegAddress);
@@ -74,16 +72,15 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC16FullDevConf_Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            var arch = picMode.CreateArchitecture();
-            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
-            var dcr = defs.GetDCR("CONFIG4");
+            picMode.CreateMemoryDescriptor();
+            var dcr = PICMemoryDescriptor.GetDCR("CONFIG4");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x800A), dcr.Address);
 
-            var s = defs.Render(dcr, 0xFFFF);
+            var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFFFF);
             Assert.AreEqual("BBSIZE=BB512, BBEN=OFF, SAFEN=OFF, WRTAPP=OFF, WRTB=OFF, WRTC=OFF, WRTSAF=OFF, LVP=ON", s);
 
-            var dcf = defs.GetDCRField("WDTE");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.IsNotNull(dcf);
             Assert.AreEqual("WDTE", dcf.Name);
             Assert.AreEqual(Address.Ptr32(0x8009), dcf.RegAddress);
@@ -95,23 +92,22 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC18DevConf_Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18LegacyName);
-            var arch = picMode.CreateArchitecture();
-            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
-            var dcr = defs.GetDCR("CONFIG1H");
+            picMode.CreateMemoryDescriptor();
+            var dcr = PICMemoryDescriptor.GetDCR("CONFIG1H");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300001), dcr.Address);
 
-            var s = defs.Render(dcr, 0xFF);
+            var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFF);
             Assert.AreEqual("OSC=RC, FSCM=ON, IESO=ON", s);
 
-            var dcf = defs.GetDCRField("WDT");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDT");
             Assert.IsNotNull(dcf);
             Assert.AreEqual("WDT", dcf.Name);
             Assert.AreEqual(Address.Ptr32(0x300003), dcf.RegAddress);
             Assert.AreEqual(0, dcf.BitPos);
             Assert.AreEqual(1, dcf.BitWidth);
 
-            dcf = defs.GetDCRField("XINST");
+            dcf = PICMemoryDescriptor.GetDCRField("XINST");
             Assert.IsNull(dcf);
         }
 
@@ -119,23 +115,22 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC18EggDevConf_Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18EggName);
-            var arch = picMode.CreateArchitecture();
-            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
-            var dcr = defs.GetDCR("CONFIG2L");
+            picMode.CreateMemoryDescriptor();
+            var dcr = PICMemoryDescriptor.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
 
-            var s = defs.Render(dcr, 0xFF);
+            var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFF);
             Assert.AreEqual("nPWRTEN=OFF, BOREN=SBORDIS, BORV=190, nLPBOR=OFF", s);
 
-            var dcf = defs.GetDCRField("WDTEN");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDTEN");
             Assert.IsNotNull(dcf);
             Assert.AreEqual("WDTEN", dcf.Name);
             Assert.AreEqual(Address.Ptr32(0x300003), dcf.RegAddress);
             Assert.AreEqual(0, dcf.BitPos);
             Assert.AreEqual(2, dcf.BitWidth);
 
-            dcf = defs.GetDCRField("XINST");
+            dcf = PICMemoryDescriptor.GetDCRField("XINST");
             Assert.IsNotNull(dcf);
         }
 
@@ -143,23 +138,22 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         public void PIC18EnhdDevConf_Tests()
         {
             var picMode = PICProcessorMode.GetMode(PIC18EnhancedName);
-            var arch = picMode.CreateArchitecture();
-            IPICDeviceConfigDefs defs = arch.DeviceConfigDefinitions;
-            var dcr = defs.GetDCR("CONFIG2L");
+            picMode.CreateMemoryDescriptor();
+            var dcr = PICMemoryDescriptor.GetDCR("CONFIG2L");
             Assert.IsNotNull(dcr);
             Assert.AreEqual(Address.Ptr32(0x300002), dcr.Address);
 
-            var s = defs.Render(dcr, 0xFF);
+            var s = PICMemoryDescriptor.RenderDeviceConfigRegister(dcr, 0xFF);
             Assert.AreEqual("MCLRE=EXTMCLR, PWRTS=PWRT_OFF, MVECEN=ON, IVT1WAY=ON, LPBOREN=OFF, BOREN=SBORDIS", s);
 
-            var dcf = defs.GetDCRField("WDTE");
+            var dcf = PICMemoryDescriptor.GetDCRField("WDTE");
             Assert.IsNotNull(dcf);
             Assert.AreEqual("WDTE", dcf.Name);
             Assert.AreEqual(Address.Ptr32(0x300004), dcf.RegAddress);
             Assert.AreEqual(5, dcf.BitPos);
             Assert.AreEqual(2, dcf.BitWidth);
 
-            dcf = defs.GetDCRField("XINST");
+            dcf = PICMemoryDescriptor.GetDCRField("XINST");
             Assert.IsNotNull(dcf);
         }
 

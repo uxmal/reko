@@ -33,7 +33,7 @@ namespace Reko.Arch.Microchip.Common
 
     public abstract class PICProcessorMode : IPICProcessorMode
     {
-        private static Dictionary<InstructionSetID, PICProcessorMode> modes = new Dictionary<InstructionSetID, PICProcessorMode>()
+        private static SortedList<InstructionSetID, PICProcessorMode> modes = new SortedList<InstructionSetID, PICProcessorMode>()
             {
                 { InstructionSetID.PIC16, new PIC16BasicMode() },
                 { InstructionSetID.PIC16_ENHANCED, new PIC16EnhancedMode() },
@@ -116,6 +116,11 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         /// <param name="pic">The PIC descriptor.</param>
         public abstract void CreateRegisters();
+
+        /// <summary>
+        /// Creates the memory descriptor for the PIC memory.
+        /// </summary>
+        public abstract void CreateMemoryDescriptor();
 
         /// <summary>
         /// Creates the instructions IL rewriter for the target processor.
