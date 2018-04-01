@@ -111,6 +111,12 @@ namespace Reko.Analysis
 			}
 		}
 
+        public void Check(Action<string> error)
+        {
+            CheckUses(error);
+            CheckDefinitions(error);
+        }
+
         [Conditional("DEBUG")]
         public void CheckUses()
         {
