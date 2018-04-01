@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
                 m.Ssa,
                 eventListener);
             icrw.Rewrite();
-            m.Ssa.CheckUses(s => Assert.Fail(s));
+            m.Ssa.Check(s => Assert.Fail(s));
         }
 
         private void AssertProcedureCode(string expected)
