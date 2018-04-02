@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Analysis
         {
             var vp = new ValuePropagator(arch, segmentMap, m.Ssa, listener);
             vp.Transform();
-            m.Ssa.CheckUses(s => Assert.Fail(s));
+            m.Ssa.ValidateUses(s => Assert.Fail(s));
         }
 
 		[Test]

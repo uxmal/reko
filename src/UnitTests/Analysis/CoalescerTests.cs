@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
         {
             var co = new Coalescer(m.Ssa.Procedure, m.Ssa);
             co.Transform();
-            m.Ssa.Check(s => Assert.Fail(s));
+            m.Ssa.Validate(s => Assert.Fail(s));
         }
 
         private void AssertProcedureCode(string expected)
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, fut);
 				fut.WriteLine();
 
-                ssa.Check(s => Assert.Fail(s));
+                ssa.Validate(s => Assert.Fail(s));
             }
         }
 

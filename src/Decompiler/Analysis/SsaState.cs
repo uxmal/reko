@@ -111,22 +111,22 @@ namespace Reko.Analysis
 			}
 		}
 
-        public void Check(Action<string> error)
+        public void Validate(Action<string> error)
         {
-            CheckUses(error);
-            CheckDefinitions(error);
+            ValidateUses(error);
+            ValidateDefinitions(error);
         }
 
         [Conditional("DEBUG")]
-        public void CheckUses()
+        public void ValidateUses()
         {
-            CheckUses(s => Debug.WriteLine(s));
+            ValidateUses(s => Debug.WriteLine(s));
         }
 
         /// <summary>
         /// Compare uses stored in SsaState with actual ones
         /// </summary>
-        public void CheckUses(Action<string> error)
+        public void ValidateUses(Action<string> error)
         {
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
@@ -177,7 +177,7 @@ namespace Reko.Analysis
         /// <summary>
         /// Compare definitions stored in SsaState with actual ones
         /// </summary>
-        public void CheckDefinitions(Action<string> error)
+        public void ValidateDefinitions(Action<string> error)
         {
             var dc = new SsaDefinitionsCollector();
             var actualDefs = new Dictionary<Identifier, Statement>();
