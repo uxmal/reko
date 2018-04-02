@@ -683,14 +683,14 @@ namespace Reko.Typing
         {
             if (seq.Expressions.Length == 2 && IsPointer(tv.DataType))
             {
-                if (IsSelector(seq.Expressions[0]) || DataTypeOf(seq.Expressions[1]) is Pointer)
+                if (IsSelector(seq.Expressions[0]) || DataTypeOf(seq.Expressions[0]) is Pointer)
                 {
                     var seg = seq.Expressions[0];
                     var off = seq.Expressions[1];
                     MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).Size));
                     if (DataTypeOf(seq) is Pointer ptr)
                     {
-                        MeetDataType(off, MemberPointerTo(off.TypeVariable, ptr.Pointee, DataTypeOf(off).Size));
+                        MeetDataType(off, MemberPointerTo(seg.TypeVariable, ptr.Pointee, DataTypeOf(off).Size));
                     }
                     seg.Accept(this, seg.TypeVariable);
                     off.Accept(this, off.TypeVariable);

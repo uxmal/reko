@@ -31,29 +31,12 @@ namespace Reko.Core.Expressions
     /// <remarks>The elements of the sequence form a whole. The DataType indicates what kind of whole it is.
 	public class MkSequence : Expression
 	{
-        [Obsolete("",true)]
-		private MkSequence(DataType dt, Expression head, Expression tail) : base(dt)
-		{
-            if (head == null || tail == null)
-                throw new ArgumentNullException();
-            if (head == Constant.Invalid || tail == Constant.Invalid)
-                throw new ArgumentException();
-			Head = head;
-			Tail = tail;
-		}
-
         public MkSequence(DataType dt, params Expression [] exprs) : base(dt)
         {
             this.Expressions = exprs;
         }
 
         public Expression[] Expressions { get; }
-
-        [Obsolete("", true)]
-
-        public Expression Head { get; private set; }
-        [Obsolete("", true)]
-        public Expression Tail { get; private set; }
 
         public override IEnumerable<Expression> Children
         {

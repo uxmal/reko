@@ -103,10 +103,9 @@ namespace Reko.Typing
 		{
             var tv = store.EnsureExpressionTypeVariable(factory, e);
             var typeref = e.DataType.ResolveAs<TypeReference>();
-            EquivalenceClass eq;
             if (typeref != null)
             {
-                if (this.typeReferenceClasses.TryGetValue(typeref.Name, out eq))
+                if (this.typeReferenceClasses.TryGetValue(typeref.Name, out var eq))
                 {
                     store.MergeClasses(tv, eq.Representative);
                 }
@@ -191,8 +190,7 @@ namespace Reko.Typing
 		{
             if (c.DataType == PrimitiveType.SegmentSelector)
             {
-                TypeVariable tv;
-                if (segTypevars.TryGetValue(c.ToUInt16(), out tv))
+                if (segTypevars.TryGetValue(c.ToUInt16(), out var tv))
                 {
                     c.TypeVariable = tv;
                 }

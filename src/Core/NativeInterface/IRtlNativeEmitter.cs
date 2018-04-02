@@ -106,6 +106,6 @@ namespace Reko.Core.NativeInterface
     	[PreserveSig] HExpr Fn(HExpr fn);
         // Collect all expressions in the "expression buffer"
         // and create a sequence.
-        [PreserveSig] HExpr Seq();
+        [PreserveSig] HExpr Seq(HExpr dt);
     }
 }

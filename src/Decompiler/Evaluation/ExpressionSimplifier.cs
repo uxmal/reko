@@ -524,7 +524,7 @@ namespace Reko.Evaluation
                 var eNew = e.Accept(this);
                 if (eNew == Constant.Invalid)
                     eNew = e;
-                return e;
+                return eNew;
             }).ToArray();
             if (newSeq.Length == 2)
             {

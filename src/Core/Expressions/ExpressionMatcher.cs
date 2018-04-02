@@ -252,7 +252,14 @@ namespace Reko.Core.Expressions
             var m = p as MkSequence;
             if (m == null)
                 return false;
-            return m.Expressions.All(e => e.Accept(this));
+            if (seq.Expressions.Length != m.Expressions.Length)
+                return false;
+            for (int i =0; i < seq.Expressions.Length; ++i)
+            {
+                if (!Match(m.Expressions[i], seq.Expressions[i]))
+                    return false;
+            }
+            return true;
         }
 
         bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)
