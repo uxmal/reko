@@ -6891,16 +6891,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vmov()
+        public void ThumbRw_vmov_imm()
         {
             RewriteCode("83FF13F0");	// vmov.i32 d15, #0xb3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d15 = SEQ(0x000000B3, 0x000000B3)");
         }
-
-
 
         [Test]
         [Ignore(Categories.FailedTests)]

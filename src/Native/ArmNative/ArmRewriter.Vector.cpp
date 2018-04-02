@@ -102,6 +102,24 @@ void ArmRewriter::RewriteVmov()
 	if (instr->detail->arm.vector_data != ARM_VECTORDATA_INVALID)
 	{
 		auto dt = VectorElementDataType(instr->detail->arm.vector_data);
+		auto dstType = register_types[Dst().reg];
+		auto srcType = register_types[Src1().reg];
+		auto srcElemSize = type_sizes[(int)VectorElementDataType(instr->detail->arm.vector_data)];
+		auto celemSrc = type_sizes[(int)dstType] / srcElemSize;
+		auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
+
+		if (Src1().type == ARM_OP_IMM)
+		{
+			auto arrSrc = ntf.ArrayOf((HExpr)dt, celemSrc);
+			for (int i = 0; i < celemSrc; ++i)
+			{
+				auto arg = Operand(Src1());
+				m.AddArg(arg);
+			}
+			m.Assign(dst, m.Seq(arrSrc));
+			return;
+		}
+
 		char fname[200];
 		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType(instr->detail->arm.vector_data));
 		auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
