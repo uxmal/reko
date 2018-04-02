@@ -90,7 +90,7 @@ protected:
 	void RewriteBic();
 	void RewriteBinOp(BinOpEmitter fn);
 	void RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b));
-	void RewriteCdp();
+	void RewriteCdp(const char * intrinsic);
 	void RewriteClz();
 	void RewriteCmp(BinOpEmitter);
 	void RewriteCps();

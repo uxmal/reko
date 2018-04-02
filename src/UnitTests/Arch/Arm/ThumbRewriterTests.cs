@@ -6293,16 +6293,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_cdp()
-        {
-            RewriteCode("11EE4000");	// cdp p0, #1, c0, c1, c0, #2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ThumbRw_mcr()
         {
             RewriteCode("01EE100F");	// mcr p15, #0, r0, c1, c0, #0
@@ -6390,13 +6380,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_cdp()
+        {
+	        RewriteCode("11EE4000");    // cdp p0, #1, c0, c1, c0, #2
+	        AssertCode(
+		        "0|L--|00100000(4): 1 instructions",
+		        "1|L--|__cdp(p0, 0x00000001, 0x00, 0x01, 0x00, 0x00000002)");
+        }
+
+        [Test]
         public void ThumbRw_cdp2()
         {
-            RewriteCode("7BFE0DF0");	// cdp2 p0, #7, c15, c11, c13, #0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+            RewriteCode("7BFE0DF0");    // cdp2 p0, #7, c15, c11, c13, #0
+	        AssertCode(
+		        "0|L--|00100000(4): 1 instructions",
+		        "1|L--|__cdp2(p0, 0x00000007, 0x0F, 0x0B, 0x0D, 0x00000000)");
+
         }
 
         [Test]

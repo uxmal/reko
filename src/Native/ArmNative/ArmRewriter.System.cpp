@@ -22,9 +22,9 @@
 #include "ComBase.h"
 #include "ArmRewriter.h"
 
-void ArmRewriter::RewriteCdp()
+void ArmRewriter::RewriteCdp(const char *name)
 {
-	auto cdp = host->EnsurePseudoProcedure("__cdp", BaseType::Void, instr->detail->arm.op_count);
+	auto cdp = host->EnsurePseudoProcedure(name, BaseType::Void, instr->detail->arm.op_count);
 	auto begin = &instr->detail->arm.operands[0];
 	auto end = begin + instr->detail->arm.op_count;
 	for (auto op = begin; op != end; ++op)
@@ -32,7 +32,6 @@ void ArmRewriter::RewriteCdp()
 		m.AddArg(Operand(*op));
 	}
 	m.SideEffect(m.Fn(cdp));
-	
 }
 
 void ArmRewriter::RewriteCps()

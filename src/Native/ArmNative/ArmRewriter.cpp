@@ -91,7 +91,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_AESMC:
 	case ARM_INS_BKPT:
 	case ARM_INS_BXJ:
-	case ARM_INS_CDP2:
 	case ARM_INS_CLREX:
 	case ARM_INS_CRC32B:
 	case ARM_INS_CRC32CB:
@@ -362,7 +361,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_BX: RewriteB(false); break;
 	case ARM_INS_CBZ: RewriteCbnz([](auto & m, auto a) { return m.Eq0(a); }); break;
 	case ARM_INS_CBNZ: RewriteCbnz([](auto & m, auto a) { return m.Ne0(a); }); break;
-	case ARM_INS_CDP: RewriteCdp(); break;
+	case ARM_INS_CDP: RewriteCdp("__cdp"); break;
+	case ARM_INS_CDP2: RewriteCdp("__cdp2"); break;
 	case ARM_INS_CLZ: RewriteClz(); break;
 	case ARM_INS_CMN: RewriteCmp(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_CMP: RewriteCmp(&INativeRtlEmitter::ISub); break;
