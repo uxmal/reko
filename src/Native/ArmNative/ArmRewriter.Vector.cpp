@@ -46,6 +46,7 @@ void ArmRewriter::RewriteVcvt()
 	switch (instr->detail->arm.vector_data)
 	{
 	case ARM_VECTORDATA_F64S32: dstType = BaseType::Real64; break;
+	case ARM_VECTORDATA_F32S32: dstType = BaseType::Real32; break;
 	default: NotImplementedYet(); return;
 	}
 	m.Assign(dst, m.Cast(dstType, src));
@@ -301,6 +302,7 @@ const char * ArmRewriter::VectorElementType(arm_vectordata_type elemType)
 	{
 	case ARM_VECTORDATA_I8: return "i8";
 	case ARM_VECTORDATA_S8: return "s8";
+	case ARM_VECTORDATA_U8: return "u8";
 	case ARM_VECTORDATA_I16: return "i16";
 	case ARM_VECTORDATA_S16: return "s16";
 	case ARM_VECTORDATA_U16: return "u16";
@@ -309,6 +311,7 @@ const char * ArmRewriter::VectorElementType(arm_vectordata_type elemType)
 	case ARM_VECTORDATA_S32: return "s32";
 	case ARM_VECTORDATA_U32: return "u32";
 	case ARM_VECTORDATA_F64: return "f64";
+	case ARM_VECTORDATA_S64: return "s64";
 	default: NotImplementedYet(); return "(NYI)";
 	}
 }
@@ -319,6 +322,7 @@ BaseType ArmRewriter::VectorElementDataType(arm_vectordata_type elemType)
 	{
 	case ARM_VECTORDATA_I8: return BaseType::SByte;
 	case ARM_VECTORDATA_S8: return BaseType::SByte;
+	case ARM_VECTORDATA_U8: return BaseType::Byte;
 	case ARM_VECTORDATA_I16: return BaseType::Int16;
 	case ARM_VECTORDATA_S16: return BaseType::Int16;
 	case ARM_VECTORDATA_U16: return BaseType::UInt16;
@@ -327,6 +331,7 @@ BaseType ArmRewriter::VectorElementDataType(arm_vectordata_type elemType)
 	case ARM_VECTORDATA_S32: return BaseType::Int32;
 	case ARM_VECTORDATA_U32: return BaseType::UInt32;
 	case ARM_VECTORDATA_F64: return BaseType::Real64;
+	case ARM_VECTORDATA_S64: return BaseType::Int64;
 	default: NotImplementedYet(); return BaseType::Void;
 	}
 }

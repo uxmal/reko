@@ -96,6 +96,7 @@ protected:
 	void RewriteCps();
 	void RewriteDiv(BinOpEmitter);
 	void RewriteDmb();
+	void RewriteHint();
 	void RewriteLdc(const char * intrinsic);
 	void RewriteLdm(int offset, BinOpEmitter);
 	void RewriteLdm(HExpr dst, int skip_ops, int offset, BinOpEmitter, bool writeback);
