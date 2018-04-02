@@ -276,8 +276,10 @@ namespace Reko.Typing
 
 		public override void VisitMkSequence(MkSequence seq)
 		{
-			seq.Head.Accept(this);
-			seq.Tail.Accept(this);
+            foreach (var e in seq.Expressions)
+            {
+                e.Accept(this);
+            }
 			EnsureTypeVariable(seq);
 		}
 

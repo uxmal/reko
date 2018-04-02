@@ -422,6 +422,13 @@ namespace Reko.Core.NativeInterface
             return MapToHandle(appl);
         }
 
+        public HExpr Seq()
+        {
+            var seq = m.Seq(this.args.ToArray());
+            this.args.Clear();
+            return MapToHandle(seq);
+        }
+
         #endregion
     }
 }

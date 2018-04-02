@@ -262,9 +262,8 @@ namespace Reko.Scanning
 
         public Expression VisitMkSequence(MkSequence seq)
         {
-            var h = seq.Head.Accept(this);
-            var t = seq.Tail.Accept(this);
-            return new MkSequence(seq.DataType, h, t);
+            var newSeq = seq.Expressions.Select(e => e.Accept(this)).ToArray();
+            return new MkSequence(seq.DataType, newSeq);
         }
 
         public Expression VisitPhiFunction(PhiFunction phi)

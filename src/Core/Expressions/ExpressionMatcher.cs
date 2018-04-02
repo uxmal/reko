@@ -24,6 +24,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Expressions
@@ -251,9 +252,7 @@ namespace Reko.Core.Expressions
             var m = p as MkSequence;
             if (m == null)
                 return false;
-            return 
-                Match(m.Head, seq.Head) &&
-                Match(m.Tail, seq.Tail);
+            return m.Expressions.All(e => e.Accept(this));
         }
 
         bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)

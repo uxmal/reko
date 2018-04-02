@@ -319,9 +319,13 @@ namespace Reko.Core.Output
 		public void VisitMkSequence(MkSequence seq)
 		{
 			writer.Write("SEQ(");
-			WriteExpression(seq.Head);
-			writer.Write(", ");
-			WriteExpression(seq.Tail);
+            var sep = "";
+            foreach (var e in seq.Expressions)
+            {
+                writer.Write(sep);
+                sep = ", ";
+                WriteExpression(seq);
+            }
 			writer.Write(")");
 		}
 

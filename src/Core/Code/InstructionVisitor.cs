@@ -209,8 +209,10 @@ namespace Reko.Core.Code
 
 		public virtual void VisitMkSequence(MkSequence seq)
 		{
-			seq.Head.Accept(this);
-			seq.Tail.Accept(this);
+            foreach (var e in seq.Expressions)
+            {
+                e.Accept(this);
+            }
 		}
 
 		public virtual void VisitIdentifier(Identifier id)

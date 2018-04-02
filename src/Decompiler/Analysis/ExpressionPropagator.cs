@@ -414,10 +414,10 @@ namespace Reko.Analysis
 
         public Result VisitMkSequence(MkSequence seq)
         {
-            var h = SimplifyExpression(seq.Head).PropagatedExpression;
-            var t = SimplifyExpression(seq.Tail).PropagatedExpression;
-            return SimplifyExpression(new MkSequence(
-                seq.DataType, h, t));
+            var newSeq = seq.Expressions
+                .Select(e => SimplifyExpression(e).PropagatedExpression)
+                .ToArray();
+            return SimplifyExpression(new MkSequence(seq.DataType, newSeq));
         }
 
         public Result VisitOutArgument(OutArgument outArg)
