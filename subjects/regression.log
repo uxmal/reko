@@ -446,45 +446,7 @@ Parameter name: index
 000000000040D43E: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004114B8: warning: Unable to determine index variable for indirect jump.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
-0000000000404BA7: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000405292: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000405A73: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000405D34: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000405D56: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000405E0D: warning: Rewriting x86 opcode 'paddd' is not supported yet.
-0000000000405FE8: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000406022: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-00000000004060CC: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040610F: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000406701: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040699D: warning: Rewriting x86 opcode 'paddw' is not supported yet.
-0000000000406FDA: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407194: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-00000000004074B3: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407623: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407693: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407842: warning: Rewriting x86 opcode 'fcmovbe' is not supported yet.
-0000000000407B94: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407C02: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407C76: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407D38: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000407D5F: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
 0000000000407E02: warning: Rewriting x86 opcode 'vaddpd' is not supported yet.
-00000000004091E7: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000409256: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-00000000004095E9: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000409659: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040A080: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040A0CA: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040A2A7: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040B07A: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040ED93: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-000000000040F170: warning: Rewriting x86 opcode 'fucomp' is not supported yet.
-000000000040F8D5: warning: Rewriting x86 opcode 'fcomip' is not supported yet.
-000000000041152E: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000411661: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-00000000004118EE: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0000000000411E85: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
 0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00000000004061A2: error: An error occurred while processing instruction at address 00000000004061A2.
     The given key was not present in the dictionary.
@@ -675,8 +637,6 @@ fn0000000000411360: warning: Structure analysis stopped making progress, quittin
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400DAB: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400DC1: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000400E91: warning: Rewriting x86 opcode 'por' is not supported yet.
-00000000004011B3: warning: Rewriting x86 opcode 'paddb' is not supported yet.
 0000000000400B80: warning: Unable to resolve imported reference png_get_tRNS.
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 00401828: warning: Expected sizes of arrays to have been determined by now
@@ -798,15 +758,6 @@ fn0000000000411360: warning: Structure analysis stopped making progress, quittin
 0800:1ADD: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE3: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:0001: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0800:03F8: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0800:0C10: warning: Rewriting x86 opcode 'movmskps' is not supported yet.
-0800:0EAF: warning: Rewriting x86 opcode 'orps' is not supported yet.
-09DB:021C: warning: Rewriting x86 opcode 'lar' is not supported yet.
-09DB:051E: warning: Rewriting x86 opcode 'movhps' is not supported yet.
-09DB:0520: warning: Rewriting x86 opcode 'invd' is not supported yet.
-09DB:0540: warning: Rewriting x86 opcode 'invd' is not supported yet.
-09DB:05CD: warning: Rewriting x86 opcode 'lar' is not supported yet.
 0800:036F: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0385: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:03FF: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2314,36 +2265,6 @@ Borland C v3 runtime detected
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:112A: warning: Rewriting x86 opcode 'paddsw' is not supported yet.
-0800:112C: warning: Rewriting x86 opcode 'orps' is not supported yet.
-0800:8AE4: warning: Rewriting x86 opcode 'rdpmc' is not supported yet.
-0800:935D: warning: Rewriting x86 opcode 'psadbw' is not supported yet.
-0800:A3A8: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-0800:BF15: warning: Rewriting x86 opcode 'minps' is not supported yet.
-0800:C316: warning: Rewriting x86 opcode 'pinsrw' is not supported yet.
-1483:0C30: warning: Rewriting x86 opcode 'fcmovnbe' is not supported yet.
-1483:0C70: warning: Rewriting x86 opcode 'lsl' is not supported yet.
-1483:0D56: warning: Rewriting x86 opcode 'punpckhbw' is not supported yet.
-1483:0EBB: warning: Rewriting x86 opcode 'punpckldq' is not supported yet.
-1483:1185: warning: Rewriting x86 opcode 'invd' is not supported yet.
-1483:126D: warning: Rewriting x86 opcode 'pmaxub' is not supported yet.
-1483:13F5: warning: Rewriting x86 opcode 'rcpps' is not supported yet.
-1483:1527: warning: Rewriting x86 opcode 'lsl' is not supported yet.
-1483:1545: warning: Rewriting x86 opcode 'fcmovne' is not supported yet.
-1483:16CC: warning: Rewriting x86 opcode 'pcmpeqd' is not supported yet.
-1483:1721: warning: Rewriting x86 opcode 'paddb' is not supported yet.
-1483:18B1: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-1483:1AC1: warning: Rewriting x86 opcode 'psubusb' is not supported yet.
-1483:1C34: warning: Rewriting x86 opcode 'invd' is not supported yet.
-1483:1DEF: warning: Rewriting x86 opcode 'fisttp' is not supported yet.
-1483:1F00: warning: Rewriting x86 opcode 'rcpps' is not supported yet.
-1483:2016: warning: Rewriting x86 opcode 'pslld' is not supported yet.
-1483:20BB: warning: Rewriting x86 opcode 'fucomp' is not supported yet.
-1483:255A: warning: Rewriting x86 opcode 'lar' is not supported yet.
-1483:25EF: warning: Rewriting x86 opcode 'lar' is not supported yet.
-1483:262A: warning: Rewriting x86 opcode 'movhps' is not supported yet.
-1483:262C: warning: Rewriting x86 opcode 'invd' is not supported yet.
-1483:264C: warning: Rewriting x86 opcode 'invd' is not supported yet.
 1483:1BF1: warning: Procedure fn1483_1B38 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0C8F: warning: Procedure fn1483_0C6C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1483:0C53: warning: Procedure fn1483_0C11 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2530,4 +2451,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 42.15 seconds ---
+Decompiled 51 binaries in 45.49 seconds ---
