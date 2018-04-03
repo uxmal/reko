@@ -129,6 +129,18 @@ namespace Reko.Arch.X86
             m.SideEffect(host.PseudoProcedure("__fclex", VoidType.Instance));
         }
 
+        private void RewriteFcmov(FlagM flag, ConditionCode cc)
+        {
+            m.BranchInMiddleOfInstruction(
+                m.Test(cc, orw.FlagGroup(flag)),
+                instrCur.Address + instrCur.Length,
+                RtlClass.ConditionalTransfer);
+
+            var dst = SrcOp(instrCur.op1);
+            var src = SrcOp(instrCur.op2);
+            m.Assign(dst, src);
+        }
+
         private void RewriteFcom(int pops)
         {
             Identifier op1 = FpuRegister(0);
@@ -195,6 +207,16 @@ namespace Reko.Arch.X86
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)));
+            if (pop)
+                state.ShrinkFpuStack(1);
+        }
+
+        private void RewriteFistt(bool pop)
+        {
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            var fpuReg = orw.FpuRegister(0, state);
+            var trunc = host.PseudoProcedure("trunc", fpuReg.DataType, fpuReg);
+            m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, trunc));
             if (pop)
                 state.ShrinkFpuStack(1);
         }
@@ -465,7 +487,7 @@ namespace Reko.Arch.X86
                 m.ISub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
-        private void RewrteFucomi(bool pop)
+        private void RewrteFcomi(bool pop)
         {
             var op1 = SrcOp(instrCur.op1);
             var op2 = SrcOp(instrCur.op2);
@@ -473,6 +495,8 @@ namespace Reko.Arch.X86
                 orw.FlagGroup(FlagM.ZF|FlagM.PF|FlagM.CF),
                 m.Cond(
                     m.FSub(op1, op2)));
+            m.Assign(orw.FlagGroup(FlagM.OF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.SF), Constant.False());
             if (pop)
             {
                 state.ShrinkFpuStack(1);

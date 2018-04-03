@@ -1037,7 +1037,6 @@ movzx	ax,byte ptr [bp+04]
             AssertCode64("vxorpd\tymm1,ymm0,[rcx]", 0xC5, 0xFD, 0x57, 0x09);
         }
 
-        // New instructions
         [Test]
         public void X86dis_lar()
         {

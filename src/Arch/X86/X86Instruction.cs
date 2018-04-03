@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
 		public MachineOperand op2;
 		public MachineOperand op3;
 
-		public X86Instruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+        public X86Instruction(Opcode code, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.code = code;
 			this.dataWidth = dataWidth;

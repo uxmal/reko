@@ -180,6 +180,36 @@ namespace Reko.Arch.X86
                     edx_eax));
         }
 
+        private void RewriteRdmsr()
+        {
+            rtlc = RtlClass.System;
+            Identifier edx_eax = binder.EnsureSequence(
+                Registers.edx,
+                Registers.eax,
+                PrimitiveType.Word64);
+            var ecx = binder.EnsureRegister(Registers.ecx);
+            m.Assign(
+                edx_eax,
+                host.PseudoProcedure(
+                    "__rdmsr",
+                    edx_eax.DataType,
+                    ecx));
+        }
+
+        private void RewriteRdpmc()
+        {
+            rtlc = RtlClass.System;
+            Identifier edx_eax = binder.EnsureSequence(
+                Registers.edx,
+                Registers.eax,
+                PrimitiveType.Word64);
+            var ecx = binder.EnsureRegister(Registers.ecx);
+            m.Assign(edx_eax,
+                host.PseudoProcedure("__rdpmc",
+                edx_eax.DataType,
+                ecx));
+        }
+
         private void RewriteRdtsc()
         {
             Identifier edx_eax = binder.EnsureSequence(
@@ -196,6 +226,13 @@ namespace Reko.Arch.X86
             EmitBinOp(opr, instrCur.op1, instrCur.dataWidth, SrcOp(instrCur.op1), SrcOp(instrCur.op2), CopyFlags.EmitCc);
         }
 
+        private void RewriteBsf()
+        {
+            Expression src = SrcOp(instrCur.op2);
+            m.Assign(orw.FlagGroup(FlagM.ZF), m.Eq0(src));
+            m.Assign(SrcOp(instrCur.op1), host.PseudoProcedure("__bsf", instrCur.op1.Width, src));
+        }
+
         private void RewriteBsr()
         {
             Expression src = SrcOp(instrCur.op2);
@@ -208,6 +245,18 @@ namespace Reko.Arch.X86
 		    m.Assign(
                 orw.FlagGroup(FlagM.CF),
                 host.PseudoProcedure("__bt", PrimitiveType.Bool, SrcOp(instrCur.op1), SrcOp(instrCur.op2)));
+        }
+
+        private void RewriteBtc()
+        {
+            m.Assign(
+                orw.FlagGroup(FlagM.CF),
+                host.PseudoProcedure(
+                    "__btc",
+                    PrimitiveType.Bool,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2),
+                    m.Out(instrCur.op1.Width, SrcOp(instrCur.op1))));
         }
 
         private void RewriteBtr()

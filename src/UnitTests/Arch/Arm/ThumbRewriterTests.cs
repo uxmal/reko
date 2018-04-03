@@ -6395,7 +6395,6 @@ namespace Reko.UnitTests.Arch.Arm
 	        AssertCode(
 		        "0|L--|00100000(4): 1 instructions",
 		        "1|L--|__cdp2(p0, 0x00000007, 0x0F, 0x0B, 0x0D, 0x00000000)");
-
         }
 
         [Test]

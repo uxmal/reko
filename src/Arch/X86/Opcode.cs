@@ -132,6 +132,7 @@ namespace Reko.Arch.X86
         fcmovnu,
         fcmovu,
         fcom,
+        fcomi,
         fcomip,
         fcomp,
         fcompp,
