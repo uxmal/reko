@@ -184,6 +184,9 @@ namespace Reko.Arch.X86
 
         internal static readonly RegisterStorage[] Gp64BitRegisters;
 
+        public const int ControlRegisterMin = 76;
+        public const int DebugRegisterMin = 85;
+
         static Registers()
         {
             eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
@@ -324,8 +327,11 @@ namespace Reko.Arch.X86
             ymm14 = new RegisterStorage("ymm14", 74, 0, PrimitiveType.Word256);
             ymm15 = new RegisterStorage("ymm15", 75, 0, PrimitiveType.Word256);
 
+            // Control registers: 76 - 84
+            // Debug registers: 85 - 92
 
             rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Ptr64);
+
 
             All = new RegisterStorage[] {
 				eax,
