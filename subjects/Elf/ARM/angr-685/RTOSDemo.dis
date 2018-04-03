@@ -6219,51 +6219,58 @@ l000019DD:
 
 
 
-void NmiSR()
+void NmiSR(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 p0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-NmiSR_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
+// Trashed: NZCV pc r0 r1 r2 r4 r5 r6 r7 r8
+// Preserved: sp
 NmiSR_entry:
-// DataOut:
-// DataOut (flags): 
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
+// DataOut (flags): Z
 // SymbolicIn: sp:fp
 
 l00008001:
+	__cdp2(p0, 0x0000000B, 0x00, 0x0F, 0x07, 0x00000007)
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
+// DataOut (flags): Z
+// SymbolicIn: sp:fp
+
+l00008001_thunk_FaultISR:
+	FaultISR(pc, r0, r1, r2, r4, r5, r7, r8, r9, p0)
+	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
+NmiSR_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r0:<invalid> r1:<invalid> r2:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> pc:<invalid> r8:<invalid> r4:<invalid>
 
 
-void FaultISR(word32 pc, word32 r0, word32 r1, word32 r8)
+
+void FaultISR(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 p0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Z pc r0 r1 r8
+// MayUse:  Z p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // LiveOut:
 // Trashed: NZCV pc r0 r1 r2 r4 r5 r6 r7 r8
 // Preserved: sp
 FaultISR_entry:
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00008005:
 	branch Z l00008005_thunk_ResetISR
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00008005_thunk_ResetISR:
-	ResetISR(pc, r0, r1, r8)
+	ResetISR(pc, r0, r1, r2, r4, r5, r7, r8, r9, p0)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -6272,12 +6279,15 @@ l00008005_thunk_ResetISR:
 l00008005_1:
 	word32 r0_12 = Mem0[pc:word32]
 	word32 r1_13 = Mem0[pc + 4:word32]
-// DataOut: pc r0 r1 r8
+	word32 r2_14 = Mem0[pc + 8:word32]
+	word32 r5_15 = Mem0[pc + 12:word32]
+	word32 r7_17 = Mem0[pc + 20:word32]
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00008005_thunk_ResetISR:
-	ResetISR(pc + 24, r0_12, r1_13, r8)
+	ResetISR(pc + 24, r0_12, r1_13, r2_14, r4, r5_15, r7_17, r8, r9, p0)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -6290,26 +6300,26 @@ FaultISR_exit:
 
 
 
-void ResetISR(word32 pc, word32 r0, word32 r1, word32 r8)
+void ResetISR(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 p0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV pc r0 r1 r8
+// MayUse:  ZCV p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // LiveOut:
 // Trashed: NZCV pc r0 r2 r4 r8
 // Preserved: sp
 ResetISR_entry:
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00008009:
 	branch ZC l0000800D
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00008009_1:
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
@@ -6327,12 +6337,16 @@ l0000800D:
 	byte C_14
 	byte V_15
 	word32 pc_16
-	byte Z_18
+	word32 p0_17
+	word32 r5_18
+	word32 r7_19
+	word32 r9_20
+	byte Z_106
 	call fnFF48A91D (retsize: 0;)
 		uses: NZV,sp_1,ZC
-		defs: C_14,NZCV_11,NZV_7,pc_16,r0_6,r1_9,r2_10,r4_12,r8_13,sp_4,V_15,Z_8,ZC_5
+		defs: C_14,NZCV_11,NZV_7,p0_17,pc_16,r0_6,r1_9,r2_10,r4_12,r5_18,r7_19,r8_13,r9_20,sp_4,V_15,Z_8,ZC_5
 	return
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:DPB(r0, 0x894B, 16)
 
@@ -6342,48 +6356,52 @@ l0000800D_then:
 // SymbolicIn: sp:fp r0:DPB(r0, 0x894B, 16)
 
 l00008011:
-	branch Z_18 l00008015
-// DataOut: pc r0 r1 r8
+	branch Z_106 l00008015
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:DPB(r0, 0x894B, 16)
 
 l00008011_1:
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:DPB(r0, 0x894B, 16)
 
 l00008015:
-	branch Z_18 l00008019
-// DataOut: pc r0 r1 r8
+	branch Z_106 l00008019
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid>
 
 l00008015_1:
-	Z_18 = cond(~0x40000004) (alias)
-// DataOut: pc r0 r1 r8
+	Z_106 = cond(~0x40000004) (alias)
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid>
 
 l00008019:
-	branch Z_18 l00008019_then
-	word32 sp_19
-	byte ZC_20
-	word32 r0_21
-	byte NZV_22
-	byte Z_23
-	word32 r1_24
-	word32 r2_25
-	byte NZCV_26
-	word32 r4_27
-	word32 r8_28
-	byte C_29
-	byte V_30
-	word32 pc_31
+	branch Z_106 l00008019_then
+	word32 sp_23
+	byte ZC_24
+	word32 r0_25
+	byte NZV_26
+	byte Z_27
+	word32 r1_28
+	word32 r2_29
+	byte NZCV_30
+	word32 r4_31
+	word32 r8_32
+	byte C_33
+	byte V_34
+	word32 pc_35
+	word32 p0_36
+	word32 r5_37
+	word32 r7_38
+	word32 r9_39
 	call fn00C89029 (retsize: 0;)
-		uses: C_14,NZCV_11,NZV_7,pc_16,r0_17,r1_9,r2_10,r4_12,r8_13,sp_4,V_15,Z_18,ZC_5
-		defs: C_29,NZCV_26,NZV_22,pc_31,r0_21,r1_24,r2_25,r4_27,r8_28,sp_19,V_30,Z_23,ZC_20
+		uses: C_14,NZCV_11,NZV_7,p0_17,pc_16,r0_21,r1_9,r2_10,r4_12,r5_18,r7_19,r8_13,r9_20,sp_4,V_15,Z_22,ZC_5
+		defs: C_33,NZCV_30,NZV_26,p0_36,pc_35,r0_25,r1_28,r2_29,r4_31,r5_37,r7_38,r8_32,r9_39,sp_23,V_34,Z_27,ZC_24
 	return
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004
 
@@ -6393,83 +6411,93 @@ l00008019_then:
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004
 
 l0000801D:
-	branch Z_23 l00008021
-// DataOut: pc r0 r1 r8
+	branch Z_27 l00008021
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004
 
 l0000801D_1:
-// DataOut: pc r0 r1 r8
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004
 
 l00008021:
-	word32 sp_32
-	word32 r0_34
-	byte NZV_35
-	byte Z_36
-	word32 r1_37
-	word32 r2_38
-	byte NZCV_39
-	word32 r4_40
-	word32 r8_41
-	byte C_42
-	word32 pc_44
-	byte V_43
-	byte ZC_33
+	word32 sp_40
+	byte NZV_43
+	byte Z_44
+	byte NZCV_47
+	byte C_50
+	word32 r9_56
+	word32 r7_55
+	word32 r5_54
+	word32 p0_53
+	byte V_51
+	word32 r8_49
+	word32 r4_48
+	word32 r2_46
+	word32 r1_45
+	byte ZC_41
+	word32 pc_52
+	word32 r0_42
 	call 0x010ACC97 (retsize: 0;)
-		uses: C_29,NZCV_26,NZV_22,pc_31,r0_21,r1_24,r2_25,r4_27,r8_28,sp_19,V_30,Z_23,ZC_20
-		defs: C_42,NZCV_39,NZV_35,pc_44,r0_34,r1_37,r2_38,r4_40,r8_41,sp_32,V_43,Z_36,ZC_33
-	branch C_42 l00008029
-// DataOut: pc r0 r1 r8
+		uses: C_33,NZCV_30,NZV_26,p0_36,pc_35,r0_25,r1_28,r2_29,r4_31,r5_37,r7_38,r8_32,r9_39,sp_23,V_34,Z_27,ZC_24
+		defs: C_50,NZCV_47,NZV_43,p0_53,pc_52,r0_42,r1_45,r2_46,r4_48,r5_54,r7_55,r8_49,r9_56,sp_40,V_51,Z_44,ZC_41
+	branch C_50 l00008029
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid>
 
 l00008025_1:
-	word32 sp_66
-	word32 r0_68
-	byte NZV_69
-	byte Z_70
-	word32 r1_71
-	word32 r2_72
-	byte NZCV_73
-	word32 r4_74
-	word32 r8_75
-	byte C_76
-	word32 pc_78
+	word32 sp_82
+	byte NZV_85
+	byte Z_86
+	byte NZCV_89
+	byte C_92
 	call 0xFFC08371 (retsize: 0;)
-		uses: C_42,NZCV_39,NZV_35,pc_44,r0_34,r1_37,r2_38,r4_40,r8_41,sp_32,V_43,Z_36,ZC_33
-		defs: C_76,NZCV_73,NZV_69,pc_78,r0_68,r1_71,r2_72,r4_74,r8_75,sp_66,V_77,Z_70,ZC_67
-// DataOut: pc r0 r1 r8
+		uses: C_50,NZCV_47,NZV_43,p0_53,pc_52,r0_42,r1_45,r2_46,r4_48,r5_54,r7_55,r8_49,r9_56,sp_40,V_51,Z_44,ZC_41
+		defs: C_92,NZCV_89,NZV_85,p0_95,pc_94,r0_84,r1_87,r2_88,r4_90,r5_96,r7_97,r8_91,r9_98,sp_82,V_93,Z_86,ZC_83
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid>
 
 l00008029:
-	branch V_43 l0000802D
-// DataOut: pc r0 r1 r8
+	branch V_51 l0000802D
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid>
 
 l00008029_1:
-// DataOut: r0 r1
+	pc_52 = pc_52 + r8_49
+	r0_42 = (word32) Mem0[0x00008031:uint16]
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid>
 
 l0000802D:
-	branch ZC_33 l00008031
-// DataOut: r0 r1
-// DataOut (flags): 
+	branch ZC_41 l00008031
+// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r9
+// DataOut (flags): C
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
 
 l0000802D_1:
-// DataOut:
-// DataOut (flags): 
+	r0_42 = r0_42 ^ r1_45
+// DataOut: p0 pc r0 r2 r4 r5 r7 r9
+// DataOut (flags): C
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
 
 l00008031:
+	__cdp2(p0_53, 0x00000002, 0x00, 0x00, 0x08, 0x00000000)
+// DataOut: pc r0 r2 r4 r5 r7 r9
+// DataOut (flags): C
+// SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
+
+l00008031_thunk_raise:
+	raise(pc_52, r0_42, r2_46, r4_48, r5_54, r7_55, r9_56)
+	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
+// Terminates process
 
 ResetISR_exit:
 // DataOut:

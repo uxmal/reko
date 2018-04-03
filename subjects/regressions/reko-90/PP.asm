@@ -26721,7 +26721,7 @@ l1483_0C24:
 	push	si
 	imul	dx,[bx+si],D7
 	xchg	cl,dl
-	illegal
+	fcmovnbe	st(0),st(1)
 	shl	dl,01
 	cli
 	stosw
@@ -27201,8 +27201,8 @@ fn1483_118B proc
 	cwd
 	adc	[si],ax
 	mov	al,11
-	illegal
-	add	si,bp
+	pmaxub	mm0,[bx+di]
+	out	dx,al
 	add	[bp+4648],bp
 	pop	ax
 	dec	bx
@@ -27545,8 +27545,8 @@ fn1483_118B proc
 	dec	bp
 	inc	word ptr [bx+di]
 	sbb	[bp+di-5C],ch
-	illegal
-	jmp	2A0C
+	lsl	bp,cx
+	loopne	1540
 	cmpsb
 	dec	ax
 	jpe	156A
@@ -27559,7 +27559,7 @@ fn1483_118B proc
 	add	sp,[ecx]
 	bound	bp,[bp+si]
 	push	bp
-	illegal
+	fcmovne	st(0),st(5)
 	add	[bx+di],ax
 	lea	bx,cs:[bx+si+4D]
 	inc	cx
@@ -27751,8 +27751,8 @@ fn1483_118B proc
 	jbe	170D
 	illegal
 	mov	di,055E
-	illegal
-	add	ax,fs:[bx+5876]
+	pcmpeqd	mm4,[si+03]
+	xchg	[bp+58],si
 	ret
 	add	si,[bp+4C]
 	jcxz	1707
