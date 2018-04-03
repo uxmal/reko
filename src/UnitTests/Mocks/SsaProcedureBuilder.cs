@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Mocks
@@ -131,6 +132,16 @@ namespace Reko.UnitTests.Mocks
             var access = base.SegMem(dt, basePtr, ptr);
             AddMemIdToSsa(access);
             return access;
+        }
+
+        public new Statement Store(Expression dst, Expression src)
+        {
+            throw new NotSupportedException("Store");
+        }
+
+        public new Statement Store(MemoryAccess mem, Expression src)
+        {
+            return base.Store(mem, src);
         }
     }
 }
