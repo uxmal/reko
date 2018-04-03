@@ -114,7 +114,7 @@ namespace Reko.Core
             return Emit(s);
         }
 
-        public Statement Store(SegmentedAccess s, Expression exp)
+        public Statement Store(MemoryAccess s, Expression exp)
         {
             return Emit(new Store(s, exp));
         }
