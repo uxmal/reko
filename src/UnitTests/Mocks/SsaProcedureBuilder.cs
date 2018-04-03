@@ -88,22 +88,23 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
-            var ass = instr as Assignment;
-            if (ass != null)
+            switch (instr)
             {
+            case Assignment ass:
                 Ssa.Identifiers[ass.Dst].DefStatement = stm;
                 Ssa.Identifiers[ass.Dst].DefExpression = ass.Src;
-            }
-            var phiAss = instr as PhiAssignment;
-            if (phiAss != null)
-            {
+                break;
+            case PhiAssignment phiAss:
                 Ssa.Identifiers[phiAss.Dst].DefStatement = stm;
                 Ssa.Identifiers[phiAss.Dst].DefExpression = phiAss.Src;
-            }
-            if (instr is Store store && store.Dst is MemoryAccess access)
-            {
-                Ssa.Identifiers[access.MemoryId].DefStatement = stm;
-                Ssa.Identifiers[access.MemoryId].DefExpression = null;
+                break;
+            case Store store:
+                if (store.Dst is MemoryAccess access)
+                {
+                    Ssa.Identifiers[access.MemoryId].DefStatement = stm;
+                    Ssa.Identifiers[access.MemoryId].DefExpression = null;
+                }
+                break;
             }
             Ssa.AddUses(stm);
             return stm;
