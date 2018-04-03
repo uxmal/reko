@@ -100,6 +100,11 @@ namespace Reko.UnitTests.Mocks
                 Ssa.Identifiers[phiAss.Dst].DefStatement = stm;
                 Ssa.Identifiers[phiAss.Dst].DefExpression = phiAss.Src;
             }
+            if (instr is Store store && store.Dst is MemoryAccess access)
+            {
+                Ssa.Identifiers[access.MemoryId].DefStatement = stm;
+                Ssa.Identifiers[access.MemoryId].DefExpression = null;
+            }
             Ssa.AddUses(stm);
             return stm;
         }
