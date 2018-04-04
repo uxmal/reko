@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Mocks
 			Assign(cf, Flags("SZC"));
 			Assign(r0, IAdd(r0,r0));
 			Assign(r0, IAdd(r0,cf));
-			Store(Word32(0x01001004), r0);
+			MStore(Word32(0x01001004), r0);
 			Return();
 		}
 	}

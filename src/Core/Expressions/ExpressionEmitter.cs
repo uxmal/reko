@@ -632,7 +632,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess Mem32(Expression ea)
+        public virtual MemoryAccess Mem32(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word32);
         }
@@ -881,7 +881,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
+        public virtual SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, offset, dt);
         }

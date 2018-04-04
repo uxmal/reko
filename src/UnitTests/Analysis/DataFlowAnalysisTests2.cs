@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Analysis
                     var r2 = m.Reg32("r2", 2);
                     m.Assign(r1, m.Mem32(m.Word32(0x010000)));
                     m.Assign(r2, m.Mem32(m.Word32(0x010004)));
-                    m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
+                    m.MStore(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
@@ -101,7 +101,7 @@ test_exit:
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Assign(r2, m.Mem32(m.IAdd(sp, 8)));
                 m.Assign(r1, m.IAdd(r1, r2));
-                m.Store(m.Word32(0x010008), r1);
+                m.MStore(m.Word32(0x010008), r1);
                 m.Return();
             });
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
@@ -152,9 +152,9 @@ test_exit:
 
                 var fooProc = GivenFunction("foo", m.Architecture.GetRegister(1), 4, 8);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, m.Word32(2));
+                m.MStore(sp, m.Word32(2));
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, m.Word32(1));
+                m.MStore(sp, m.Word32(1));
                 m.Call(fooProc, 4);
                 m.Assign(sp, m.IAdd(sp, 8));
                 m.Return();
@@ -207,7 +207,7 @@ test_exit:
                     m.Assign(r1, m.Mem32(m.IAdd(fp, 4)));
                     m.Assign(r2, m.Mem32(m.IAdd(fp, 8)));
                     m.Assign(r1, m.IAdd(r1, r2));
-                    m.Store(m.Word32(0x010008), r1);
+                    m.MStore(m.Word32(0x010008), r1);
                     m.Return();
                 });
             var program = pb.BuildProgram();

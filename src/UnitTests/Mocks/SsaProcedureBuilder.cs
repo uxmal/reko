@@ -33,7 +33,8 @@ namespace Reko.UnitTests.Mocks
     /// </summary>
     /// <remarks>
     /// Some unit tests require procedure to be in Static Single Assignment
-    /// form. This class gives possibility to build it without ssa transforming
+    /// form. This class gives possibility to build it without the overhead of
+    /// using the SSATransform class.
     /// </remarks>
     public class SsaProcedureBuilder : ProcedureBuilder
     {
@@ -120,28 +121,18 @@ namespace Reko.UnitTests.Mocks
             Ssa.Identifiers.Add(idNew, sid);
         }
 
-        public new MemoryAccess Mem32(Expression ea)
+        public override MemoryAccess Mem32(Expression ea)
         {
             var access = base.Mem32(ea);
             AddMemIdToSsa(access);
             return access;
         }
 
-        public new SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
+        public override SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
             AddMemIdToSsa(access);
             return access;
-        }
-
-        public new Statement Store(Expression dst, Expression src)
-        {
-            throw new NotSupportedException("Store");
-        }
-
-        public new Statement Store(MemoryAccess mem, Expression src)
-        {
-            return base.Store(mem, src);
         }
     }
 }

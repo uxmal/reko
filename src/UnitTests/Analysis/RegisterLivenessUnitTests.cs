@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier ecx = f.EnsureRegister(Registers.ecx);
 
-			m.Store(m.Int32(0x01F3004), ax).Instruction.Accept(rl);
+			m.MStore(m.Int32(0x01F3004), ax).Instruction.Accept(rl);
 			Assert.AreEqual(" ax", Dump(rl.IdentifierLiveness));
 			m.Assign(eax, ecx).Accept(rl);
 			Assert.AreEqual(16, rl.IdentifierLiveness.DefBitSize);
@@ -99,9 +99,9 @@ namespace Reko.UnitTests.Analysis
 			Identifier eax = f.EnsureRegister(Registers.eax);
 			Identifier ecx = f.EnsureRegister(Registers.ecx);
 
-			m.Store(m.Int32(0x01F3004), al).Instruction.Accept(rl);
+			m.MStore(m.Int32(0x01F3004), al).Instruction.Accept(rl);
 			Assert.AreEqual(" al", Dump(rl.IdentifierLiveness));
-			m.Store(m.Int32(0x01F3008), ah).Instruction.Accept(rl);	
+			m.MStore(m.Int32(0x01F3008), ah).Instruction.Accept(rl);	
 			Assert.AreEqual(" ah al", Dump(rl.IdentifierLiveness));
 			m.Assign(eax, ecx).Accept(rl);		
 			Assert.AreEqual(" cx", Dump(rl.IdentifierLiveness));
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier ah = f.EnsureRegister(Registers.ah);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
-			m.Store(m.Int32(0x01F3004), ax).Instruction.Accept(rl);	// use al and ah
+			m.MStore(m.Int32(0x01F3004), ax).Instruction.Accept(rl);	// use al and ah
 			Assert.AreEqual(" ax", Dump(rl.IdentifierLiveness));
 			m.Assign(ah, m.IAdd(ah, 3)).Accept(rl);
 			Assert.AreEqual(" ah al", Dump(rl.IdentifierLiveness));
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier eax = f.EnsureRegister(Registers.eax);
 
-			m.Store(m.Int32(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
+			m.MStore(m.Int32(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
 			m.Assign(ax, m.Mem(ax.DataType, eax)).Accept(rl);	// eax should be live in here.
 			Assert.AreEqual(" eax", Dump(rl.IdentifierLiveness));
 		}
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier cl = f.EnsureRegister(Registers.cl);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
-			m.Store(m.Int16(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
+			m.MStore(m.Int16(0x01F0300), ax).Instruction.Accept(rl);			// force ax to be live.
 			m.Assign(ax, m.Shl(ax, cl)).Accept(rl);				// ax, cl should be live in.
 			Assert.AreEqual(" ax cl", Dump(rl.IdentifierLiveness));
 		}
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier bx = f.EnsureRegister(Registers.bx);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
-			m.Store(m.Int32(0x12341234), ax).Instruction.Accept(rl);
+			m.MStore(m.Int32(0x12341234), ax).Instruction.Accept(rl);
 			m.Assign(ax, bx).Accept(rl);
 			Assert.AreEqual(" bx", Dump(rl.IdentifierLiveness), "bx should be live since ax was stored");
 		}
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier ecx = f.EnsureRegister(Registers.ecx);
 			Identifier loc = f.EnsureStackLocal(-8, PrimitiveType.Word32);
 
-			m.Store(m.Int32(0x01DFDF), ax).Instruction.Accept(rl);
+			m.MStore(m.Int32(0x01DFDF), ax).Instruction.Accept(rl);
 			m.Assign(ax, loc).Accept(rl);
 			Assert.AreEqual(" Local -0008", Dump(rl.IdentifierLiveness));
 			m.Assign(loc, ecx).Accept(rl);
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier eax = f.EnsureRegister(Registers.eax);
 			Identifier arg = f.EnsureStackArgument(4, PrimitiveType.Word32);
 
-			m.Store(m.Int32(0x102343), ax).Instruction.Accept(rl);
+			m.MStore(m.Int32(0x102343), ax).Instruction.Accept(rl);
 			m.Assign(eax, arg).Accept(rl);
 			Assert.AreEqual(16, rl.IdentifierLiveness.LiveStorages[arg.Storage]);
 		}
@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier loc = f.EnsureStackLocal(-4, PrimitiveType.Word16);
 
 			m.Assign(bp, loc).Accept(rl);
-			m.Store(m.Int32(0x12345678), bp).Instruction.Accept(rl);
+			m.MStore(m.Int32(0x12345678), bp).Instruction.Accept(rl);
 			m.Assign(loc, bp).Accept(rl);
 			Assert.AreEqual(" bp", Dump(rl.IdentifierLiveness));
 		}

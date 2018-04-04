@@ -155,8 +155,8 @@ namespace Reko.UnitTests.Analysis
 				Identifier c  = Local32("c");
 
 				Assign(c, IAdd(a, b));
-				Store(Word32(0x10000000), c);
-				Store(Word32(0x10000004), a);
+				MStore(Word32(0x10000000), c);
+				MStore(Word32(0x10000004), a);
 			}
 		}
 

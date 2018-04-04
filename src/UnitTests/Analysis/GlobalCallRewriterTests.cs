@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Analysis
 				protected override void BuildBody()
 				{
 					base.Call("Leaf", 4);
-					Store(Int32(0x320123), base.Register(0));
+					MStore(Int32(0x320123), base.Register(0));
 				}
 			}
 

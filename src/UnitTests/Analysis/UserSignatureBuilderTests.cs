@@ -224,8 +224,8 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder(arch, "test");
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
-            m.Store(m.Word32(0x123400), m.Cast(PrimitiveType.Byte, r1));
-            m.Store(m.Word32(0x123404), m.Cast(PrimitiveType.Real32, r2));
+            m.MStore(m.Word32(0x123400), m.Cast(PrimitiveType.Byte, r1));
+            m.MStore(m.Word32(0x123404), m.Cast(PrimitiveType.Real32, r2));
             m.Return();
 
             var usb = new UserSignatureBuilder(program);

@@ -202,13 +202,13 @@ ProcedureBuilder_exit:
                 var r2 = m.Reg32("r2", 2);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r1);
+                m.MStore(sp, r1);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r2);
+                m.MStore(sp, r2);
                 m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
                 m.Assign(r2, m.Mem32(sp));
                 m.Assign(r1, m.IAdd(r1, r2));
-                m.Store(m.Word32(0x010008), r1);
+                m.MStore(m.Word32(0x010008), r1);
                 m.Return();
             });
         }
@@ -264,7 +264,7 @@ ProcedureBuilder_exit:
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, bp);
+                m.MStore(sp, bp);
                 m.Assign(bp, sp);
                 m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
@@ -336,16 +336,16 @@ ProcedureBuilder_exit:
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, bp);
+                m.MStore(sp, bp);
                 m.Assign(bp, sp);
                 m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
-                m.Store(m.IAdd(bp, 8), m.Word16(3));
+                m.MStore(m.IAdd(bp, 8), m.Word16(3));
                 m.Goto("done");
 
                 m.Label("ge3");
-                m.Store(m.IAdd(bp, 8), Constant.Int16(-3));
+                m.MStore(m.IAdd(bp, 8), Constant.Int16(-3));
                 m.Assign(r1, 1);
 
                 m.Label("done");
@@ -393,7 +393,7 @@ ProcedureBuilder_exit:
                 m.Assign(r1, 3);
                 m.Assign(r2, 4);
                 m.Call(procSub, 4);
-                m.Store(m.Word32(0x012300), r1);
+                m.MStore(m.Word32(0x012300), r1);
                 m.Return();
             });
         }
@@ -453,17 +453,17 @@ ProcedureBuilder_exit:
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, bp);
+                m.MStore(sp, bp);
                 m.Assign(bp, sp);
-                m.Store(m.IAdd(bp, -8), m.Word32(0));
+                m.MStore(m.IAdd(bp, -8), m.Word32(0));
                 m.Assign(cr, m.ISub(m.Mem16(m.IAdd(bp, 8)), 0x3));
                 m.BranchIf(m.Test(ConditionCode.GE, cr), "ge3");
 
-                m.Store(m.IAdd(bp, -8), r1);
+                m.MStore(m.IAdd(bp, -8), r1);
                 m.Goto("done");
 
                 m.Label("ge3");
-                m.Store(m.IAdd(bp, -8), r1);
+                m.MStore(m.IAdd(bp, -8), r1);
 
                 m.Label("done");
                 m.Assign(r1, m.Mem32(m.IAdd(bp,-8)));
@@ -599,7 +599,7 @@ ProcedureBuilder_exit:
             RunTest2(sExp, m =>
             {
                 var a = m.Reg32("a", 0);
-                m.Store(m.Word32(0x123400), a);
+                m.MStore(m.Word32(0x123400), a);
                 m.Return();
             });
         }
@@ -666,7 +666,7 @@ ProcedureBuilder_exit:
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
                 m.Assign(eax, m.Mem32(eax));
-                m.Store(m.Word32(0x1234), ah);
+                m.MStore(m.Word32(0x1234), ah);
                 m.Return();
             });
         }

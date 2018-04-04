@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Scanning
                 // Fall through should be promoted to call/return pair.
 
                 m.Label("Real_entry"); // Cross jump target: should become a new function entry point.
-                m.Store(r2, r1);
+                m.MStore(r2, r1);
                 m.BranchIf(r2, "Real_entry");
                 m.Return();
             });
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Scanning
                 m.Label("bob_1");
                 m.Assign(r1, 0);
                 m.Label("Real_entry");
-                m.Store(r2, r1);
+                m.MStore(r2, r1);
                 m.Return();
             });
 

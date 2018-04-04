@@ -104,13 +104,13 @@ namespace Reko.UnitTests.Analysis
             var app = m.Fn(
                     new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
                     mem, reg);
-            if (mem is Identifier)
+            if (mem is Identifier id)
             {
-                m.Assign((Identifier)mem, app);
+                m.Assign(id, app);
             }
             else
             {
-                m.Store(((MemoryAccess)mem), app);
+                m.Store(mem, app);
             }
         }
 
@@ -119,13 +119,13 @@ namespace Reko.UnitTests.Analysis
             var app = m.Fn(
                     new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
                     mem, reg);
-            if (mem is Identifier)
+            if (mem is Identifier id)
             {
-                m.Assign((Identifier)mem, app);
+                m.Assign(id, app);
             }
             else
             {
-                m.Store(((MemoryAccess)mem), app);
+                m.Store(mem, app);
             }
         }
 

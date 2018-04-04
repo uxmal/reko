@@ -104,8 +104,8 @@ namespace Reko.UnitTests.Analysis
 			{
 				var id = Local32("id");
 				Assign(id, this.Fn("bar", Int32(3)));
-				Store(Word32(0x10000300), Int32(0));
-				Store(Word32(0x10000304), id);
+				MStore(Word32(0x10000300), Int32(0));
+				MStore(Word32(0x10000304), id);
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Analysis
 				var ix = Local32("ix");
 				LoadId(id, Word32(0x1000000));
 				LoadId(ix, Word32(0x1000004));
-				Store(Word32(0x10000008), id);
+				MStore(Word32(0x10000008), id);
 			}
 		}
 	}
