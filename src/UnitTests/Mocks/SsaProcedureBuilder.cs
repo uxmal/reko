@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Mocks
@@ -88,17 +89,23 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
-            var ass = instr as Assignment;
-            if (ass != null)
+            switch (instr)
             {
+            case Assignment ass:
                 Ssa.Identifiers[ass.Dst].DefStatement = stm;
                 Ssa.Identifiers[ass.Dst].DefExpression = ass.Src;
-            }
-            var phiAss = instr as PhiAssignment;
-            if (phiAss != null)
-            {
+                break;
+            case PhiAssignment phiAss:
                 Ssa.Identifiers[phiAss.Dst].DefStatement = stm;
                 Ssa.Identifiers[phiAss.Dst].DefExpression = phiAss.Src;
+                break;
+            case Store store:
+                if (store.Dst is MemoryAccess access)
+                {
+                    Ssa.Identifiers[access.MemoryId].DefStatement = stm;
+                    Ssa.Identifiers[access.MemoryId].DefExpression = null;
+                }
+                break;
             }
             Ssa.AddUses(stm);
             return stm;
@@ -125,6 +132,16 @@ namespace Reko.UnitTests.Mocks
             var access = base.SegMem(dt, basePtr, ptr);
             AddMemIdToSsa(access);
             return access;
+        }
+
+        public new Statement Store(Expression dst, Expression src)
+        {
+            throw new NotSupportedException("Store");
+        }
+
+        public new Statement Store(MemoryAccess mem, Expression src)
+        {
+            return base.Store(mem, src);
         }
     }
 }
