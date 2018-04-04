@@ -523,7 +523,8 @@ namespace Reko.Core.Output
         public void VisitComment(CodeComment comment)
         {
             writer.Indent();
-            writer.WriteComment(comment.Text);
+            writer.WriteComment($"// {comment.Text}");
+            writer.Terminate();
         }
 
 		public void VisitDeclaration(Declaration decl)

@@ -31,6 +31,9 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// A Reko decompiler project.
+    /// </summary>
     public class Project 
     {
         public Project()
