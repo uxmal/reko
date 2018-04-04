@@ -167,6 +167,11 @@ namespace Reko.Analysis
             throw new NotImplementedException();
         }
 
+        public Instruction VisitComment(CodeComment comment)
+        {
+            return comment;
+        }
+
         public Instruction VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
@@ -201,18 +206,14 @@ namespace Reko.Analysis
             var dst = store.Dst.Accept(this);
             this.storing = false;
 
-            var m = dst.PropagatedExpression as MemoryAccess;
-            if (m != null)
+            switch (dst.PropagatedExpression)
             {
+            case SegmentedAccess sm:
+                ctx.SetValueEa(sm.BasePointer, sm.EffectiveAddress, src.Value);
+                break;
+            case MemoryAccess m:
                 ctx.SetValueEa(m.EffectiveAddress, src.Value);
-            }
-            else
-            {
-                var sm = dst.PropagatedExpression as SegmentedAccess;
-                if (sm != null)
-                {
-                    ctx.SetValueEa(sm.BasePointer, sm.EffectiveAddress, src.Value);
-                }
+                break;
             }
 
             var idDst = dst.PropagatedExpression as Identifier;

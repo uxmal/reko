@@ -210,6 +210,11 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
+        public DataType VisitComment(CodeComment comment)
+        {
+            return VoidType.Instance;
+        }
+
 		public DataType VisitDefInstruction(DefInstruction def)
 		{
 			return def.Identifier.Accept(this);
