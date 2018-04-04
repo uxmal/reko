@@ -256,6 +256,7 @@
     <Compile Include="CLanguage\SerializedTypeComparer.cs" />
     <Compile Include="CLanguage\SymbolTable.cs" />
     <Compile Include="CLanguage\TypeSizer.cs" />
+    <Compile Include="Code\CodeComment.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />

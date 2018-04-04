@@ -80,6 +80,11 @@ namespace Reko.Evaluation
             return true;
         }
 
+        public bool VisitComment(CodeComment comment)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitDeclaration(Declaration decl)
         {
             return false;

@@ -6448,15 +6448,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|Mem0[sp:word64] = r7_r6");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_sxth()
-        {
-            RewriteCode("08B2");	// sxth r0, r1
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
  
 
@@ -6567,13 +6558,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_sxtb()
         {
             RewriteCode("59B2");	// sxtb r1, r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r1 = (int32) (int8) r3");
+        }
+
+
+        [Test]
+        public void ThumbRw_sxth()
+        {
+            RewriteCode("08B2");	// sxth r0, r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = (int32) (int16) r1");
         }
 
         [Test]

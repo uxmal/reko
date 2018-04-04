@@ -122,6 +122,11 @@ namespace Reko.Scanning
             return ciNew;  
         }
 
+        public Instruction VisitComment(CodeComment comment)
+        {
+            return new CodeComment(comment.Text);
+        }
+
         public Instruction VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();

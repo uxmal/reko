@@ -164,7 +164,7 @@ protected:
 	void RewriteVsqrt();
 	void RewriteVstr();
 	void RewriteXtab(BaseType);
-	void RewriteXtb(BaseType);
+	void RewriteXtb(BaseType, BaseType);
 	void RewriteYield();
 
 protected:

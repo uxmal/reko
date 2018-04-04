@@ -520,6 +520,12 @@ namespace Reko.Core.Output
             }
 		}
 
+        public void VisitComment(CodeComment comment)
+        {
+            writer.Indent();
+            writer.WriteComment(comment.Text);
+        }
+
 		public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();

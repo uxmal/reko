@@ -63,6 +63,11 @@ namespace Reko.Core
             return Assign(dst, f ? Constant.True() : Constant.False());
         }
 
+        public void Comment(string comment)
+        {
+            Emit(new CodeComment(comment));
+        }
+
         public GotoInstruction Goto(Expression dest)
         {
             var gi = new GotoInstruction(dest);
