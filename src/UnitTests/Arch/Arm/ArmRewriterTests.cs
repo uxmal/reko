@@ -426,7 +426,7 @@ means
             BuildTest(0xE6AF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (uint32) (int8) (r2 >>u 8)");
+                "1|L--|r1 = (int32) (int8) (r2 >>u 8)");
         }
 
         [Test]

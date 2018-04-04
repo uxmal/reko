@@ -463,8 +463,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SWPB: RewriteSwp(BaseType::Byte); break;
 	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
 	case ARM_INS_SXTAH: RewriteXtab(BaseType::Int16); break;
-	case ARM_INS_SXTB: RewriteXtb(BaseType::SByte); break;
-	case ARM_INS_SXTH: RewriteXtb(BaseType::Int16); break;
+	case ARM_INS_SXTB: RewriteXtb(BaseType::SByte, BaseType::Int32); break;
+	case ARM_INS_SXTH: RewriteXtb(BaseType::Int16, BaseType::Int32); break;
 	case ARM_INS_TEQ: RewriteTeq(); break;
 	case ARM_INS_TRAP: RewriteTrap(); break;
 	case ARM_INS_TST: RewriteTst(); break;
@@ -476,8 +476,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;
 	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
 	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
-	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;
-	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
+	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte, BaseType::UInt32); break;
+	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16, BaseType::UInt32); break;
 	case ARM_INS_YIELD: RewriteYield(); break;
 
 

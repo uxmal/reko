@@ -690,7 +690,7 @@ void ArmRewriter::RewriteXtab(BaseType dt)
 	m.Assign(dst, m.IAdd(this->Operand(Src1()), src));
 }
 
-void ArmRewriter::RewriteXtb(BaseType dt)
+void ArmRewriter::RewriteXtb(BaseType dtSrc, BaseType dtDst)
 {
 	auto dst = this->Operand(Dst());
 	auto src = Reg((int)Src1().reg);
@@ -698,8 +698,8 @@ void ArmRewriter::RewriteXtb(BaseType dt)
 	{
 		src = m.Shr(src, m.Int32(Src1().shift.value));
 	}
-	src = m.Cast(dt, src);
-	src = m.Cast(BaseType::UInt32, src);
+	src = m.Cast(dtSrc, src);
+	src = m.Cast(dtDst, src);
 	m.Assign(dst, src);
 }
 
