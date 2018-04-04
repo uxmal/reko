@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Analysis
             var sExp = @"
 sp_1 = fp
 call a (retsize: 4;)
-	uses: a,sp_1
+	uses: a:a,r63:sp_1
 sp_5 = sp_1
 ";
             AssertProcedureCode(sExp);

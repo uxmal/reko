@@ -1496,7 +1496,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run16bitTest(0xD9, 0xF9);
             AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
+                "0|L--|0C00:0000(2): 3 instructions",
                 "1|L--|ST[Top + 1:real64] = ST[Top + 1:real64] * lg2(ST[Top:real64] + 1.0)",
                 "2|L--|FPUF = cond(ST[Top + 1:real64])");
         }
@@ -1517,7 +1517,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0xDF, 0xE9);   // fucomip\tst(0),st(1)
             AssertCode(
-               "0|L--|10000000(2): 3 instructions",
+               "0|L--|10000000(2): 4 instructions",
                "1|L--|CZP = cond(ST[Top:real64] - ST[Top + 1:real64])",
                "2|L--|O = false",
                "3|L--|S = false");
@@ -2176,7 +2176,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Run32bitTest(0xDF, 0xF2);    // fcomip\tst(0),st(2)
             AssertCode(
-                "0|L--|10000000(2): 3 instructions",
+                "0|L--|10000000(2): 4 instructions",
                 "1|L--|CZP = cond(ST[Top:real64] - ST[Top + 2:real64])",
                 "2|L--|O = false",
                 "3|L--|S = false");
@@ -2237,7 +2237,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
                 "1|L--|Top = Top - 0x01",
-                "2|L--|St[Top:real64] = (real64) Mem0[eax:real80]");
+                "2|L--|ST[Top:real64] = (real64) Mem0[eax:real80]");
         }
 
         [Test]
