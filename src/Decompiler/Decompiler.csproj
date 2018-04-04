@@ -152,6 +152,7 @@
     <Compile Include="Analysis\InstructionUseVisitorBase.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
+    <Compile Include="Analysis\SsaDefinitionsCollector.cs" />
     <Compile Include="Analysis\SequenceIdentifierGenerator.cs" />
     <Compile Include="Analysis\SsaMutator.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder2.cs" />

@@ -201,7 +201,12 @@ namespace Reko.Arch.X86
             return mode.ReadCodeAddress(byteSize, rdr, state);
         }
 
-		public override FlagGroupStorage GetFlagGroup(uint grf)
+        public RegisterStorage GetControlRegister(int v)
+        {
+            return mode.GetControlRegister(v);
+        }
+
+        public override FlagGroupStorage GetFlagGroup(uint grf)
 		{
             FlagGroupStorage f;
             if (flagGroupCache.TryGetValue(grf, out f))

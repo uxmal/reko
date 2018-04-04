@@ -73,8 +73,8 @@ protected:
 
 	BaseType SizeFromLoadStore();
 	HExpr TestCond(arm_cc cond);
-	const char * VectorElementType();
-	BaseType VectorElementDataType();
+	const char * VectorElementType(arm_vectordata_type elemType);
+	BaseType VectorElementDataType(arm_vectordata_type elemType);
 	const cs_arm_op & Dst() { return instr->detail->arm.operands[0]; }
 	const cs_arm_op & Src1() { return instr->detail->arm.operands[1]; }
 	const cs_arm_op & Src2() { return instr->detail->arm.operands[2]; }
@@ -90,12 +90,13 @@ protected:
 	void RewriteBic();
 	void RewriteBinOp(BinOpEmitter fn);
 	void RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b));
-	void RewriteCdp();
+	void RewriteCdp(const char * intrinsic);
 	void RewriteClz();
 	void RewriteCmp(BinOpEmitter);
 	void RewriteCps();
 	void RewriteDiv(BinOpEmitter);
 	void RewriteDmb();
+	void RewriteHint();
 	void RewriteLdc(const char * intrinsic);
 	void RewriteLdm(int offset, BinOpEmitter);
 	void RewriteLdm(HExpr dst, int skip_ops, int offset, BinOpEmitter, bool writeback);
@@ -130,18 +131,23 @@ protected:
 	void RewriteStmib();
 	void RewriteStr(BaseType);
 	void RewriteStrd();
+	void RewriteStrex();
+	void RewriteSubw();
 	void RewriteSvc();
 	void RewriteSwp(BaseType);
 	void RewriteTeq();
+	void RewriteTrap();
 	void RewriteTst();
 	void RewriteUmlal();
 	void RewriteUnaryOp(UnaryOpEmitter);
 	void RewriteUbfx();
+	void RewriteUdf();
 	void RewriteUmaal();
-	void RewriteVabs(); 
 	void RewriteVecBinOp(BinOpEmitter);
 	void RewriteVectorBinOp(const char * fnNameFormat);
+	void RewriteVectorBinOp(const char * fnNameFormat, arm_vectordata_type elemType);
 	void RewriteVectorUnaryOp(const char * fnNameFormat);
+	void RewriteVectorUnaryOp(const char * fnNameFormat, arm_vectordata_type elemType);
 	void RewriteVcmp();
 	void RewriteVcvt();
 	void RewriteVdup();
@@ -159,15 +165,7 @@ protected:
 	void RewriteVstr();
 	void RewriteXtab(BaseType);
 	void RewriteXtb(BaseType);
-	void RewriteMvn();
-	void RewriteOrr();
-	void RewriteRsb();
-	void RewriteStrex();
-	void RewriteSubw();
-	void RewriteTrap();
-	void RewriteUdf();
-	void RewriteUxth();
-
+	void RewriteYield();
 
 protected:
 	csh hcapstone;

@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Analysis
                 sst.SsaState.Write(writer);
                 proc.Write(false, writer);
                 writer.WriteLine("======");
-                ssa.CheckUses(s => { ssa.Dump(true); Assert.Fail(s); });
+                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
             }
             var sActual = writer.ToString();
             if (sActual != sExp)

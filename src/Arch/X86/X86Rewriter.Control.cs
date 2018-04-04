@@ -231,6 +231,31 @@ namespace Reko.Arch.X86
             rtlc = RtlClass.Transfer;
         }
 
+        private void RewriteSyscall()
+        {
+            m.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance));
+        }
+
+        private void RewriteSysenter()
+        {
+            m.SideEffect(host.PseudoProcedure("__sysenter", VoidType.Instance));
+        }
+
+        private void RewriteSysexit()
+        {
+            rtlc = RtlClass.Transfer;
+            m.SideEffect(host.PseudoProcedure("__sysexit", VoidType.Instance));
+            m.Return(0,0);
+        }
+
+        private void RewriteSysret()
+        {
+            rtlc = RtlClass.Transfer;
+            m.SideEffect(host.PseudoProcedure("__sysret", VoidType.Instance));
+            m.Return(0,0);
+        }
+
+
         /// <summary>
         /// A jump to 0xFFFF:0x0000 in real mode is a reboot.
         /// </summary>
@@ -245,11 +270,9 @@ namespace Reko.Arch.X86
 
         public Address OperandAsCodeAddress(MachineOperand op)
         {
-            AddressOperand ado = op as AddressOperand;
-            if (ado != null)
+            if (op is AddressOperand ado)
                 return ado.Address;
-            ImmediateOperand imm = op as ImmediateOperand;
-            if (imm != null)
+            if (op is ImmediateOperand imm)
             {
                 return orw.ImmediateAsAddress(instrCur.Address, imm);
             }

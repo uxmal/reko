@@ -286,7 +286,14 @@ namespace Reko.Typing
 
 		public void VisitMkSequence(MkSequence seq)
 		{
-            VisitBinaryExpression(Operator.IAdd, seq.DataType, seq.Head, seq.Tail);
+            if (seq.Expressions.Length == 2)
+            {
+                VisitBinaryExpression(Operator.IAdd, seq.DataType, seq.Expressions[0], seq.Expressions[1]);
+            }
+            else
+            {
+                throw new NotImplementedException("Does it even make sense to have a long sequence as an address?");
+            }
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)

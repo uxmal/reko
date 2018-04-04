@@ -179,8 +179,10 @@ namespace Reko.Analysis
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
-            var idHead = seq.Head as Identifier;
-            var idTail = seq.Tail as Identifier;
+            if (seq.Expressions.Length != 2)
+                return seq; //$TODO: do this for longer sequences?
+            var idHead = seq.Expressions[0] as Identifier;
+            var idTail = seq.Expressions[1] as Identifier;
             if (idHead != null && idTail != null)
             {
                 var sidHead = ssa.Identifiers[idHead];

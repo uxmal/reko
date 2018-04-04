@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
@@ -37,122 +38,52 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class SsaMutatorTests
     {
-        private MockRepository mr;
-        private Program program;
-        private IPlatform platform;
-        private FakeArchitecture arch;
-        private ProgramDataFlow flow;
-        private HashSet<RegisterStorage> implicitRegs;
-        private IImportResolver imp;
+        private SsaProcedureBuilder m;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            this.flow = new ProgramDataFlow();
-            this.implicitRegs = new HashSet<RegisterStorage>();
-            this.imp = mr.Stub<IImportResolver>();
-            this.arch = new FakeArchitecture();
-            this.platform = mr.Stub<IPlatform>();
-            this.platform.Stub(p => p.CreateTrashedRegisters()).Return(new HashSet<RegisterStorage>());
-            this.program = new Program
-            {
-                Architecture = arch,
-                Platform = platform,
-            };
-            imp.Replay();
-            platform.Replay();
+            m = new SsaProcedureBuilder();
         }
 
-        private SsaTransform BuildSsa(Action<ProcedureBuilder>builder)
+        public void RunSsaMutator(Action<SsaMutator> action)
         {
-            var m = new ProcedureBuilder(arch);
-            builder(m);
-            var gr = m.Procedure.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(program, m.Procedure, new HashSet<Procedure> { m.Procedure }, imp, flow);
-            sst.Transform();
-            return sst;
+            var ssam = new SsaMutator(m.Ssa);
+            action(ssam);
+            m.Ssa.Validate(s => Assert.Fail(s));
         }
 
-        private void AssertEqual(string sExpected, SsaState ssa)
+        private void AssertProcedureCode(string expected)
         {
-            var sw = new StringWriter();
-            ssa.Write(sw);
-            ssa.Procedure.Write(false, sw);
-            var sActual = sw.ToString();
-            if (sExpected != sActual)
-            {
-                Debug.WriteLine(sActual);
-                Assert.AreEqual(sExpected, sActual);
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
             }
-        }
 
         [Test]
         public void SsamCallBypass()
         {
-            var sst = BuildSsa(m =>
-            {
-                var a7 = m.Frame.EnsureRegister(m.Architecture.StackRegister);
-                var a1 = m.Reg32("a1", 0x09);
-                var a3 = m.Reg32("a3", 0x0B);
-                m.Assign(a7, m.Frame.FramePointer);
-                m.Assign(a1, m.Mem32(m.IAdd(a3, 8)));
-                m.Call(a1, 4);
-                m.Return();
-            });
-            var ssam = new SsaMutator(sst.SsaState);
-            var block = sst.SsaState.Procedure.EntryBlock.Succ[0];
-            var stmCall = block.Statements[2];
-            var call = (CallInstruction)stmCall.Instruction;
+            var sp = m.Architecture.StackRegister;
+            var sp_1 = m.Reg("sp_1", sp);
+            var sp_5 = m.Reg("sp_5", sp);
+            var a = m.Reg32("a");
+            var fp = m.Reg32("fp");
+            m.Assign(sp_1, fp);
+            var uses = new Identifier[] { a, sp_1 };
+            var defines = new Identifier[] { sp_5 };
+            var stmCall = m.Call(a, 4, uses, defines);
 
-            ssam.AdjustRegisterAfterCall(stmCall, call, arch.StackRegister, 0);
-            var sExp =
-            #region Expected
-@"fp:fp
-    def:  def fp
-    uses: r63_2 = fp
-r63_2: orig: r63
-    def:  r63_2 = fp
-    uses: call a1_5 (retsize: 4;)	uses: a1:a1_5,a3:a3,r63:r63_2	defs: a1:a1_7,a3:a3_8
-          r63_6 = r63_2
-a3:a3
-    def:  def a3
-    uses: a1_5 = Mem0[a3 + 0x00000008:word32]
-          call a1_5 (retsize: 4;)	uses: a1:a1_5,a3:a3,r63:r63_2	defs: a1:a1_7,a3:a3_8
-Mem0:Global
-    def:  def Mem0
-    uses: a1_5 = Mem0[a3 + 0x00000008:word32]
-a1_5: orig: a1
-    def:  a1_5 = Mem0[a3 + 0x00000008:word32]
-    uses: call a1_5 (retsize: 4;)	uses: a1:a1_5,a3:a3,r63:r63_2	defs: a1:a1_7,a3:a3_8
-          call a1_5 (retsize: 4;)	uses: a1:a1_5,a3:a3,r63:r63_2	defs: a1:a1_7,a3:a3_8
-r63_6: orig: r63
-    def:  r63_6 = r63_2
-a1_7: orig: a1
-    def:  call a1_5 (retsize: 4;)	uses: a1:a1_5,a3:a3,r63:r63_2	defs: a1:a1_7,a3:a3_8
-a3_8: orig: a3
-    def:  call a1_5 (retsize: 4;)	uses: a1:a1_5,a3:a3,r63:r63_2	defs: a1:a1_7,a3:a3_8
-// ProcedureBuilder
-// Return size: 0
-define ProcedureBuilder
-ProcedureBuilder_entry:
-	def fp
-	def a3
-	def Mem0
-	// succ:  l1
-l1:
-	r63_2 = fp
-	a1_5 = Mem0[a3 + 0x00000008:word32]
-	call a1_5 (retsize: 4;)
-		uses: a1:a1_5,a3:a3,r63:r63_2
-		defs: a1:a1_7,a3:a3_8
-	r63_6 = r63_2
-	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+            RunSsaMutator(ssam =>
+            {
+                var call = (CallInstruction)stmCall.Instruction;
+                ssam.AdjustRegisterAfterCall(stmCall, call, sp, 0);
+            });
+
+            var sExp = @"
+sp_1 = fp
+call a (retsize: 4;)
+	uses: a,sp_1
+sp_5 = sp_1
 ";
-            #endregion
-            AssertEqual(sExp, sst.SsaState);
+            AssertProcedureCode(sExp);
         }
     }
 }

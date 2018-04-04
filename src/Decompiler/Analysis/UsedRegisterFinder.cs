@@ -81,8 +81,7 @@ namespace Reko.Analysis
             this.useLiveness = ignoreUse;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
-                DefInstruction def;
-                if (!stm.Instruction.As(out def))
+                if (!stm.Instruction.As(out DefInstruction def))
                     continue;
                 var sid = ssa.Identifiers[def.Identifier];
                 if ((sid.Identifier.Storage is RegisterStorage ||
@@ -149,8 +148,7 @@ namespace Reko.Analysis
                 idCur = idOld;
                 return n;
             }
-            var dpb = ass.Src as DepositBits;
-            if (dpb != null)
+            if (ass.Src is DepositBits dpb)
             {
                 // a = DPB(a', b) is also a copy, so we must chase the uses of a.
                 var idOld = idCur;
@@ -197,8 +195,7 @@ namespace Reko.Analysis
             // One of the phi arguments was used, but that's a trivial copy. 
             // Classify the dst of the phi statement, but avoid cycles
             // by memoizing the value we obtained.
-            BitRange value;
-            if (!visited.TryGetValue(phi, out value))
+            if (!visited.TryGetValue(phi, out BitRange value))
             {
                 visited[phi] = BitRange.Empty;
                 value = Classify(ssa.Identifiers[phi.Dst]);
@@ -232,8 +229,7 @@ namespace Reko.Analysis
             if (useLiveness)
             {
                 var stg = ((Identifier)use.Expression).Storage;
-                BitRange br;
-                if (!procFlow.LiveOut.TryGetValue(stg, out br))
+                if (!procFlow.LiveOut.TryGetValue(stg, out BitRange br))
                     return BitRange.Empty;
                 return br;
             }
@@ -327,7 +323,8 @@ namespace Reko.Analysis
 
         public BitRange VisitMkSequence(MkSequence seq)
         {
-            return seq.Head.Accept(this) | seq.Tail.Accept(this);
+            return seq.Expressions.Aggregate(
+                BitRange.Empty, (range, e) => range | e.Accept(this));
         }
 
         public BitRange VisitOutArgument(OutArgument outArgument)

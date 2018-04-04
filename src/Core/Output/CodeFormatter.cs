@@ -71,50 +71,52 @@ namespace Reko.Core.Output
 
 		static CodeFormatter()
 		{
-            precedences = new Dictionary<Operator, int>();
-			precedences[Operator.Not] = 2;			//$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
-			precedences[Operator.Neg] = 2;			
-			precedences[Operator.FNeg] = 2;
-            precedences[Operator.Comp] = 2;
-			precedences[Operator.AddrOf] = 2;
-			precedences[Operator.SMul] = 4;
-			precedences[Operator.UMul] = 4;
-			precedences[Operator.IMul] = 4;
-			precedences[Operator.SDiv] = 4;
-			precedences[Operator.UDiv] = 4;
-			precedences[Operator.IMod] = 4;
-            precedences[Operator.FMul] = 4;
-            precedences[Operator.FDiv] = 4;
-            precedences[Operator.IAdd] = 5;
-            precedences[Operator.ISub] = 5;
-            precedences[Operator.USub] = 5;
-            precedences[Operator.FAdd] = 5;
-            precedences[Operator.FSub] = 5;
-            precedences[Operator.Sar] = 6;
-			precedences[Operator.Shr] = 6;
-			precedences[Operator.Shl] = 6;
-			precedences[Operator.Lt] = 7;
-			precedences[Operator.Le] = 7;
-			precedences[Operator.Gt] = 7;
-			precedences[Operator.Ge] = 7;
-			precedences[Operator.Feq] = 7;
-			precedences[Operator.Fne] = 7;
-			precedences[Operator.Flt] = 7;
-            precedences[Operator.Fle] = 7;
-			precedences[Operator.Fgt] = 7;
-			precedences[Operator.Fge] = 7;
-			precedences[Operator.Fne] = 7;
-            precedences[Operator.Ult] = 7;
-			precedences[Operator.Ule] = 7;
-			precedences[Operator.Ugt] = 7;
-			precedences[Operator.Uge] = 7;
-			precedences[Operator.Eq] = 8;
-			precedences[Operator.Ne] = 8;
-			precedences[Operator.And] = 9;
-			precedences[Operator.Xor] = 10;
-			precedences[Operator.Or] = 11;
-			precedences[Operator.Cand] = 12;
-			precedences[Operator.Cor] = 13;
+            precedences = new Dictionary<Operator, int>
+            {
+                [Operator.Not] = 2,         //$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
+                [Operator.Neg] = 2,
+                [Operator.FNeg] = 2,
+                [Operator.Comp] = 2,
+                [Operator.AddrOf] = 2,
+                [Operator.SMul] = 4,
+                [Operator.UMul] = 4,
+                [Operator.IMul] = 4,
+                [Operator.SDiv] = 4,
+                [Operator.UDiv] = 4,
+                [Operator.IMod] = 4,
+                [Operator.FMul] = 4,
+                [Operator.FDiv] = 4,
+                [Operator.IAdd] = 5,
+                [Operator.ISub] = 5,
+                [Operator.USub] = 5,
+                [Operator.FAdd] = 5,
+                [Operator.FSub] = 5,
+                [Operator.Sar] = 6,
+                [Operator.Shr] = 6,
+                [Operator.Shl] = 6,
+                [Operator.Lt] = 7,
+                [Operator.Le] = 7,
+                [Operator.Gt] = 7,
+                [Operator.Ge] = 7,
+                [Operator.Feq] = 7,
+                [Operator.Fne] = 7,
+                [Operator.Flt] = 7,
+                [Operator.Fle] = 7,
+                [Operator.Fgt] = 7,
+                [Operator.Fge] = 7,
+                [Operator.Fne] = 7,
+                [Operator.Ult] = 7,
+                [Operator.Ule] = 7,
+                [Operator.Ugt] = 7,
+                [Operator.Uge] = 7,
+                [Operator.Eq] = 8,
+                [Operator.Ne] = 8,
+                [Operator.And] = 9,
+                [Operator.Xor] = 10,
+                [Operator.Or] = 11,
+                [Operator.Cand] = 12,
+                [Operator.Cor] = 13
+            };
 
             singleStatements = new HashSet<Type>
             {
@@ -269,8 +271,7 @@ namespace Reko.Core.Output
                 }
                 return;
             }
-            StringConstant s = c as StringConstant;
-            if (s != null)
+            if (c is StringConstant s)
             {
                 writer.Write('"');
                 foreach (var ch in (string)s.GetValue())
@@ -298,7 +299,7 @@ namespace Reko.Core.Output
                             writer.Write("\\x{0:X2}", (ch - 0xE000));
                         else if (0 <= ch && ch < ' ' || ch >= 0x7F)
                             writer.Write("\\x{0:X2}", (int)ch);
-                        else 
+                        else
                             writer.Write(ch);
                         break;
                     }
@@ -319,9 +320,13 @@ namespace Reko.Core.Output
 		public void VisitMkSequence(MkSequence seq)
 		{
 			writer.Write("SEQ(");
-			WriteExpression(seq.Head);
-			writer.Write(", ");
-			WriteExpression(seq.Tail);
+            var sep = "";
+            foreach (var e in seq.Expressions)
+            {
+                writer.Write(sep);
+                sep = ", ";
+                WriteExpression(e);
+            }
 			writer.Write(")");
 		}
 
@@ -336,16 +341,14 @@ namespace Reko.Core.Output
 		public void VisitFieldAccess(FieldAccess acc)
 		{
 			int prec = SetPrecedence(PrecedenceFieldAccess);
-			Dereference d = acc.Structure as Dereference;
-            if (d != null)
+            if (acc.Structure is Dereference d)
             {
                 d.Expression.Accept(this);
                 writer.Write("->{0}", acc.Field.Name);
             }
             else
             {
-                var scope = acc.Structure as ScopeResolution;
-                if (scope != null)
+                if (acc.Structure is ScopeResolution scope)
                 {
                     scope.Accept(this);
                     writer.Write("::{0}", acc.Field.Name);
@@ -356,23 +359,22 @@ namespace Reko.Core.Output
                     writer.Write(".{0}", acc.Field.Name);
                 }
             }
-			ResetPresedence(prec);
+            ResetPresedence(prec);
 		}
 
 		public void VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
 			int prec = SetPrecedence(PrecedenceMemberPointerSelector);
-			Dereference d = mps.BasePointer as Dereference;
-			if (d != null)
-			{
-				d.Expression.Accept(this);
-				writer.Write("->*");
-			}
-			else
-			{
-				mps.BasePointer.Accept(this);
-				writer.Write(".*");
-			}
+            if (mps.BasePointer is Dereference d)
+            {
+                d.Expression.Accept(this);
+                writer.Write("->*");
+            }
+            else
+            {
+                mps.BasePointer.Accept(this);
+                writer.Write(".*");
+            }
             var old = forceParensIfSamePrecedence;
             forceParensIfSamePrecedence = true;
 			mps.MemberPointer.Accept(this);
@@ -753,18 +755,17 @@ namespace Reko.Core.Output
 			{
 				writer.Indent();
 				writer.WriteKeyword("else");
-                AbsynIf elseIf;
-                if (IsSingleIfStatement(ifs.Else, out elseIf))
-				{
-					writer.Write(" ");
-					WriteIf(elseIf);
-				}
-				else
-				{
-					writer.Terminate();
-					WriteIndentedStatements(ifs.Else, false);
-				}
-			}
+                if (IsSingleIfStatement(ifs.Else, out AbsynIf elseIf))
+                {
+                    writer.Write(" ");
+                    WriteIf(elseIf);
+                }
+                else
+                {
+                    writer.Terminate();
+                    WriteIndentedStatements(ifs.Else, false);
+                }
+            }
 		}
 
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
@@ -946,8 +947,7 @@ namespace Reko.Core.Output
         {
             if (writeStorage)
             {
-                OutArgumentStorage os = arg.Storage as OutArgumentStorage;
-                if (os != null)
+                if (arg.Storage is OutArgumentStorage os)
                 {
                     writer.Write(os.OriginalIdentifier.Storage.Kind);
                     writer.Write(" out ");

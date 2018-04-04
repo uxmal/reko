@@ -525,12 +525,17 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitMkSequence(MkSequence seq)
         {
-            var head = seq.Head.Accept(this);
-            var tail = seq.Tail.Accept(this);
-            Constant c1 = seq.Head as Constant;
-            Constant c2 = seq.Tail as Constant;
-            if (c1 != null && c2 != null)
+            var newSeq = seq.Expressions.Select(e =>
             {
+                var eNew = e.Accept(this);
+                if (eNew == Constant.Invalid)
+                    eNew = e;
+                return eNew;
+            }).ToArray();
+            if (newSeq.Length == 2)
+            {
+                if (newSeq[0] is Constant c1 && newSeq[1] is Constant c2)
+                {
                 PrimitiveType tHead = (PrimitiveType)c1.DataType;
                 PrimitiveType tTail = (PrimitiveType)c2.DataType;
                 PrimitiveType t;
@@ -546,12 +551,10 @@ namespace Reko.Evaluation
                     return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
                 }
             }
-            if (head == Constant.Invalid)
-                head = seq.Head;
-            if (tail == Constant.Invalid)
-                tail = seq.Tail;
-            if (c1 != null && c1.IsZero)
+            }
+            if (newSeq.Take(newSeq.Length-1).All(e => e.IsZero))
             {
+                var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
                 return new Cast(
                     PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.Size),
@@ -563,7 +566,7 @@ namespace Reko.Evaluation
             {
                 return mkSeqFromSlicesRule.Transform();
             }
-            return new MkSequence(seq.DataType, head, tail);
+            return new MkSequence(seq.DataType, newSeq);
         }
 
         public virtual Expression VisitOutArgument(OutArgument outArg)

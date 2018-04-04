@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(fut.TextWriter);
                 proc.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
-                ssa.CheckUses(s => Assert.Fail(s));
+                ssa.Validate(s => Assert.Fail(s));
             }
         }
 

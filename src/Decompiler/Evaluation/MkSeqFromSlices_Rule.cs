@@ -43,8 +43,10 @@ namespace Reko.Evaluation
 
         public bool Match(MkSequence seq)
         {
-            this.idHi = seq.Head as Identifier;
-            this.idLo = seq.Tail as Identifier;
+            if (seq.Expressions.Length != 2)
+                return false;   //$TODO: handle sequences of any length?
+            this.idHi = seq.Expressions[0] as Identifier;
+            this.idLo = seq.Expressions[1] as Identifier;
             if (idHi == null || idLo == null)
                 return false;
             var defHi = ctx.GetDefiningExpression(idHi) as Slice;

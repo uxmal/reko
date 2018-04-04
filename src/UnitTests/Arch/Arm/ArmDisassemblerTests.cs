@@ -126,6 +126,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_cdp()
+        {
+            var instr = Disassemble32(0xfeced300);
+            Assert.AreEqual("cdp2\tp3,#&C,c13,c14", instr.ToString());
+
+            instr = Disassemble32(0x4ec4ec4f);
+            Assert.AreEqual("cdpmi\tp12,#&C,c14,c4", instr.ToString());
+        }
+
+        [Test]
         public void ArmDasm_Andne_rr()
         {
             var instr = Disassemble32(0x10021003);

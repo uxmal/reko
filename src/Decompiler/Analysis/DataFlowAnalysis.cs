@@ -167,25 +167,13 @@ namespace Reko.Analysis
             var trf = new TrashedRegisterFinder3(program, flow, ssts, this.eventListener);
             trf.Compute();
 
+            // New stack based variables may be available now.
             foreach (var sst in ssts)
             {
-                // Now compute SSA for the stack-based variables as well. That is:
-                // mem[fp - 30] becomes wLoc30, while 
-                // mem[fp + 30] becomes wArg30.
-                // This allows us to compute the dataflow of this procedure.
-                sst.RenameFrameAccesses = true;
-                sst.Transform();
-
                 var vp = new ValuePropagator(program.Architecture, program.SegmentMap, sst.SsaState, this.eventListener);
                 vp.Transform();
-
-                var icrw = new IndirectCallRewriter(program, sst.SsaState, eventListener);
-                while (!eventListener.IsCanceled() && icrw.Rewrite())
-                {
-                    vp.Transform();
-                    sst.RenameFrameAccesses = true;
-                    sst.Transform();
-                }
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
             }
 
             var uid = new UsedRegisterFinder(program.Architecture, flow, this.eventListener);
@@ -344,6 +332,21 @@ namespace Reko.Analysis
                 cce.Transform();
 
                 vp.Transform();
+
+                // Now compute SSA for the stack-based variables as well. That is:
+                // mem[fp - 30] becomes wLoc30, while 
+                // mem[fp + 30] becomes wArg30.
+                // This allows us to compute the dataflow of this procedure.
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
+
+                var icrw = new IndirectCallRewriter(program, ssa, eventListener);
+                while (!eventListener.IsCanceled() && icrw.Rewrite())
+                {
+                    vp.Transform();
+                    sst.RenameFrameAccesses = true;
+                    sst.Transform();
+                }
 
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.

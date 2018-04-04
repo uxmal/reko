@@ -188,6 +188,9 @@ namespace Reko.Arch.X86
 
         internal static readonly RegisterStorage[] Gp64BitRegisters;
 
+        public const int ControlRegisterMin = 80;
+        public const int DebugRegisterMin = 89;
+
         internal static readonly FlagGroupStorage[] EflagsBits;
 
         static Registers()
@@ -272,6 +275,8 @@ namespace Reko.Arch.X86
             sil = new RegisterStorage("sil", 6, 0, PrimitiveType.Byte);
             dil = new RegisterStorage("dil", 7, 0, PrimitiveType.Byte);
 
+            rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Ptr64);
+
             r8b = new RegisterStorage("r8b",    8, 0, PrimitiveType.Byte);
             r9b = new RegisterStorage("r9b",    9, 0, PrimitiveType.Byte);
             r10b = new RegisterStorage("r10b", 10, 0, PrimitiveType.Byte);
@@ -332,13 +337,15 @@ namespace Reko.Arch.X86
             ymm14 = new RegisterStorage("ymm14", 74, 0, PrimitiveType.Word256);
             ymm15 = new RegisterStorage("ymm15", 75, 0, PrimitiveType.Word256);
 
-            rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Ptr64);
 
             // Pseudo registers used to reify the x87 FPU stack. Top is the 
             // index into the FPU stack, while ST is the memory identifier that
             // identifies the address space that the FPU stack constitutes.
             Top = new RegisterStorage("Top", 76, 0, PrimitiveType.SByte);
             ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+            
+            // Control registers: 80 - 88
+            // Debug registers: 89 - 96
 
             All = new RegisterStorage[] {
 				eax,

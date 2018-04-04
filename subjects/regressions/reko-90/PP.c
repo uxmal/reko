@@ -18063,3 +18063,27 @@ void fn1483_1C50(word16 dx)
 	ax_5();
 }
 
+// 1483:261E: void fn1483_261E(Register word16 ax, Register byte cl, Register word16 bp, Register word16 si, Stack selector psegArg00)
+void fn1483_261E(word16 ax, byte cl, word16 bp, word16 si, selector psegArg00)
+{
+	ui32 al_ax_5 = SEQ(al, ax + 0x1414);
+	byte al_11 = (byte) (al_ax_5 + 0x00141414) + 0x14 + (al_ax_5 <u 0x00141414);
+	byte al_14 = al_11 + 0x14 + (al_11 <u 0x00);
+	__invd();
+	byte al_17 = al_14 + 0x14 + (al_14 <u 0x00);
+	byte al_20 = al_17 + 0x0F + (al_17 <u 0x00);
+	byte al_26 = al_20 + 0x14 + (al_20 <u 0x00);
+	byte al_29 = al_26 + 0x07 + (al_26 <u 0x00);
+	byte al_32 = al_29 + 22 + (al_29 <u 0x00);
+	byte al_35 = al_32 + 0x14 + (al_32 <u 0x00);
+	byte al_38 = al_35 + 0x14 + (al_35 <u 0x00);
+	byte al_41 = al_38 + 0x14 + (al_38 <u 0x00);
+	byte al_44 = al_41 + 0x14 + (al_41 <u 0x00);
+	byte al_47 = al_44 + 0x0D + (al_44 <u 0x00);
+	byte al_50 = al_47 + 0x14 + (al_47 <u 0x00);
+	byte al_53 = al_50 + 0x14 + (al_50 <u 0x00);
+	byte al_56 = al_53 + 0x14 + (al_53 <u 0x00);
+	byte al_59 = al_56 + 0x14 + (al_56 <u 0x00);
+	Mem70[psegArg00:bp + si:byte] = Mem0[psegArg00:bp + si:byte] + cl + ((al_59 + 0x14) + (al_59 <u 0x00) <u 0x00);
+}
+

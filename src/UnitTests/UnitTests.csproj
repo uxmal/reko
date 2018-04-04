@@ -215,6 +215,8 @@
     <Compile Include="Mocks\FakeFrameApplicationBuilder.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
+    <Compile Include="Mocks\ProcedureCodeVerifier.cs" />
+    <Compile Include="Mocks\ProcedureStatementsWriter.cs" />
     <Compile Include="Mocks\SsaProcedureBuilder.cs" />
     <Compile Include="Mocks\XmlnsHidingWriter.cs" />
     <Compile Include="OsPath.cs" />

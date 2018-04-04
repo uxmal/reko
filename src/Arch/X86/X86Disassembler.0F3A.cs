@@ -32,7 +32,9 @@ namespace Reko.Arch.X86
             return new OpRec[] {
 
                 // 00
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.illegal, "",
+                    Opcode.vpermq, "Vqq,Wqq,Ib"),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
