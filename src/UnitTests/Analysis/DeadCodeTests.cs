@@ -76,7 +76,9 @@ namespace Reko.UnitTests.Analysis
 				DeadCode.Eliminate(proc, ssa);
 				ssa.Write(writer);
 				proc.Write(false, writer);
-			}
+
+                ssa.Validate(s => Assert.Fail(s));
+            }
 		}
 
         [Test]

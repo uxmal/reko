@@ -116,6 +116,8 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(writer);
                 proc.Write(false, writer);
                 writer.WriteLine();
+
+                ssa.Validate(s => Assert.Fail(s));
             }
         }
 
