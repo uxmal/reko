@@ -159,14 +159,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SHSUB16:
 	case ARM_INS_SHSUB8:
 	case ARM_INS_SMC:
-	case ARM_INS_SMLAD:
-	case ARM_INS_SMLADX:
-	case ARM_INS_SMLALD:
-	case ARM_INS_SMLALDX:
 	case ARM_INS_SMLSD:
 	case ARM_INS_SMLSDX:
-	case ARM_INS_SMLSLD:
-	case ARM_INS_SMLSLDX:
 	case ARM_INS_SMMLA:
 	case ARM_INS_SMMLAR:
 	case ARM_INS_SMMLS:
@@ -426,6 +420,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBT: RewriteMlal(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLALD: RewriteMlxd(false, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::IAdd); break;
+	case ARM_INS_SMLALDX: RewriteMlxd(true, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::IAdd); break;
 	case ARM_INS_SMLALTB: RewriteMlal(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALTT: RewriteMlal(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAL: RewriteSmlal(); break;
@@ -433,6 +429,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMLATT: RewriteMla(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAWB: RewriteSmlaw(false); break;
 	case ARM_INS_SMLAWT: RewriteSmlaw(true); break;
+	case ARM_INS_SMLSLD: RewriteMlxd(false, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::ISub); break;
+	case ARM_INS_SMLSLDX: RewriteMlxd(true, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::ISub); break;
 	case ARM_INS_SMULBB: RewriteMulbb(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULBT: RewriteMulbb(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULWB: RewriteMulw(false); break;
