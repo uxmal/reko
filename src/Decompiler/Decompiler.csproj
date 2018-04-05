@@ -278,6 +278,7 @@
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
     <Compile Include="Scanning\Backwalker.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
+    <Compile Include="Scanning\CommentInjector.cs" />
     <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\DataScanner.cs" />
     <Compile Include="Scanning\GlobalDataWorkItem.cs" />
