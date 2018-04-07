@@ -531,5 +531,36 @@ Second line");
 00041004:link-last(00041004 )b-last(00 00 )op-last(add )
 ");
         }
+
+        [Test]
+        public void Mcdm_GetLineSpans_TwoComments()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            this.segmentMap = new SegmentMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute)
+                {
+                    Size = 4
+                });
+            Given_Program();
+            Given_CodeBlock(memText.BaseAddress, 4);
+            Given_Comment(0x41000, "First comment");
+            Given_Comment(0x41002, "Second comment");
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+            GetLineSpans(mcdm, 1);
+            GetLineSpans(mcdm, 1);
+            GetLineSpans(mcdm, 1);
+            GetLineSpans(mcdm, 1);
+
+            AssertOutput(
+@"00041000:mem(; First comment)
+00041000:link(00041000 )b(00 00 )op(add )
+00041002:mem(; Second comment)
+00041002:link-last(00041002 )b-last(00 00 )op-last(add )
+");
+        }
     }
 }
