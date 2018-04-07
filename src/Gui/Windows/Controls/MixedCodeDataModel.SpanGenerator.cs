@@ -67,6 +67,7 @@ namespace Reko.Gui.Windows.Controls
                     --count;
                     continue;
                 }
+                this.commentOffset = 0;
                 bool memValid = true;
                 if (!item.IsInRange(addrCur))
                 {
