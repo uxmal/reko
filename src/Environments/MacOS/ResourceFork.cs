@@ -343,28 +343,29 @@ namespace Reko.Environments.MacOS
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
 
-                // Search segmentMaps for %A5Init CODE Segment and unpack global data to A5World
+                // Search the segmentMap, check each Segment to see if the Segment is the %A5Init CODE Segment
+                // If CODE segment found, unpack global data to A5World
                 foreach ( var a5dataSegment  in segmentMap.Segments.Values)
                 {
                     if (a5dataSegment.Name.Length >= 12 )
                     {
                         if (a5dataSegment.Name.Substring(5,7) == "%A5Init")
                         {
-                            // %A5Init CODE segment Found
+                            // Found %A5Init CODE segment
                             var a5data = a5dataSegment.MemoryArea;
                             var a5dr = a5data.CreateBeReader(0);
                             var a5d0 = a5dr.ReadBeUInt32();
                             var a5d1 = a5dr.ReadBeUInt16();
-                            var a5dhdroffset = a5dr.ReadBeUInt16();
-                            if (a5d0 == 0x48e77ff8 && a5d1 == 0x49fa && a5dhdroffset < a5dataSegment.MemoryArea.Length)
+                            var a5dheaderOffset = a5dr.ReadBeUInt16();
+                            if (a5d0 == 0x48e77ff8 && a5d1 == 0x49fa && a5dheaderOffset < a5dataSegment.MemoryArea.Length)
                             {
-                                a5dr.Seek(a5dhdroffset - 2);
+                                a5dr.Seek(a5dheaderOffset - 2);
                                 var a5dbelow = a5dr.ReadBeUInt32();
                                 var a5dbankSize = a5dr.ReadBeUInt32();
                                 var a5doffset = a5dr.ReadBeUInt32();
                                 var a5dreloc = a5dr.ReadBeUInt32();
                                 var a5dhdrend = a5dr.ReadBeUInt32();
-                                if (a5dbankSize == 0x00010001)
+                                if (a5dbankSize == 0x00010000)
                                 {
                                     a5Expand(a5dr, a5dbelow);
                                 }
