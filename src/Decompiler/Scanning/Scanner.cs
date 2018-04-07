@@ -66,6 +66,7 @@ namespace Reko.Scanning
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
+        private CommentInjector cinj;
 
         public ScannerOld(
             Program program,
@@ -90,6 +91,7 @@ namespace Reko.Scanning
             this.blockStarts = new Dictionary<Block, Address>();
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
+            this.cinj = new CommentInjector(program.User.Annotations);
         }
 
         public IServiceProvider Services { get; private set; }
@@ -542,6 +544,7 @@ namespace Reko.Scanning
             InjectProcedureEntryInstructions(addr, proc);
             var usb = new UserSignatureBuilder(Program);
             usb.BuildSignature(addr, proc);
+            cinj.InjectComments(proc);
             return proc;
         }
 

@@ -31,6 +31,23 @@ namespace Reko.Gui.Windows.Controls
 {
    public partial class MixedCodeDataModel
    {
+        private bool TryReadComment(Address addrCur, out LineSpan line)
+        {
+            if (comments.TryGetValue(addrCur, out var commentLines) &&
+                commentOffset < commentLines.Length)
+            {
+                line = new LineSpan(
+                    addrCur,
+                    new MemoryTextSpan(
+                        $"; {commentLines[commentOffset]}",
+                        UiStyles.MemoryWindow));
+                this.commentOffset++;
+                return true;
+            }
+            line = default(LineSpan);
+            return false;
+        }
+
         public LineSpan[] GetLineSpans(int count)
         {
             addrCur = SanitizeAddress(addrCur);
@@ -44,6 +61,13 @@ namespace Reko.Gui.Windows.Controls
             SpanGenerator sp = CreateSpanifier(item, addrCur);
             while (count != 0 && seg != null && item != null)
             {
+                if (TryReadComment(addrCur, out var commentLine))
+                {
+                    spans.Add(commentLine);
+                    --count;
+                    continue;
+                }
+                this.commentOffset = 0;
                 bool memValid = true;
                 if (!item.IsInRange(addrCur))
                 {

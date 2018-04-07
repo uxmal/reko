@@ -39,8 +39,10 @@ namespace Reko.Gui.Windows.Controls
 
         private Program program;
         private Address addrCur;
+        private int commentOffset;
         private Address addrEnd;
         private Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
+        private IDictionary<Address, string[]> comments;
 
         public MixedCodeDataModel(Program program)
         {
@@ -62,6 +64,12 @@ namespace Reko.Gui.Windows.Controls
                 this.CollectInstructions();
                 this.LineCount = CountLines();
             }
+            this.comments = program.User.Annotations.ToSortedList(
+                a => a.Address,
+                a => a.Text.Split(
+                    new string[] { Environment.NewLine },
+                    StringSplitOptions.None));
+            this.commentOffset = 0;
         }
 
         public MixedCodeDataModel(MixedCodeDataModel that)
@@ -237,6 +245,7 @@ namespace Reko.Gui.Windows.Controls
             if (position == null)
                 throw new ArgumentNullException("position");
             addrCur = SanitizeAddress((Address) position);
+            this.commentOffset = 0;
             if (offset == 0)
                 return 0;
             int moved = 0;
