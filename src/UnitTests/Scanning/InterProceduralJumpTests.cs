@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Scanning
             {
                 var reg = m.Frame.EnsureRegister(regS);
                 m.Assign(reg, 0);
-                m.Store(m.Word32(0x1234), reg);
+                m.MStore(m.Word32(0x1234), reg);
                 m.Return();
             });
         }

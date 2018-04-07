@@ -90,12 +90,13 @@ protected:
 	void RewriteBic();
 	void RewriteBinOp(BinOpEmitter fn);
 	void RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b));
-	void RewriteCdp();
+	void RewriteCdp(const char * intrinsic);
 	void RewriteClz();
 	void RewriteCmp(BinOpEmitter);
 	void RewriteCps();
 	void RewriteDiv(BinOpEmitter);
 	void RewriteDmb();
+	void RewriteHint();
 	void RewriteLdc(const char * intrinsic);
 	void RewriteLdm(int offset, BinOpEmitter);
 	void RewriteLdm(HExpr dst, int skip_ops, int offset, BinOpEmitter, bool writeback);
@@ -104,6 +105,7 @@ protected:
 	void RewriteLdrex();
 	void RewriteMcr();
 	void RewriteMla(bool hiLeft, bool hiRight, BaseType, BinOpEmitter);
+	void RewriteMlxd(bool swap, BaseType, BinOpEmitter mul, BinOpEmitter addSub);
 	void RewriteMlal(bool hiLeft, bool hiRight, BaseType, BinOpEmitter);
 	void RewriteMov();
 	void RewriteMovt();
@@ -163,7 +165,7 @@ protected:
 	void RewriteVsqrt();
 	void RewriteVstr();
 	void RewriteXtab(BaseType);
-	void RewriteXtb(BaseType);
+	void RewriteXtb(BaseType, BaseType);
 	void RewriteYield();
 
 protected:

@@ -23,6 +23,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Expressions
@@ -631,7 +632,7 @@ namespace Reko.Core.Expressions
         /// </summary>
         /// <param name="ea">The address of the memory being accessed.</param>
         /// <returns>A memory access expression.</returns>
-        public MemoryAccess Mem32(Expression ea)
+        public virtual MemoryAccess Mem32(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Word32);
         }
@@ -830,6 +831,10 @@ namespace Reko.Core.Expressions
         /// values that are too long to fit in a machine register, or to model
         /// segmented pointers on architectures like the x86.
         /// </summary>
+        /// <remarks>
+        /// This method is ised for the very common case of a two-element
+        /// sequence, especially in contexts where x86-style segment:offset
+        /// pairs exist.</remarks>
         /// <param name="head">Most significant part of value.</param>
         /// <param name="tail">Least significant part of value.</param>
         /// <returns>A value sequence.</returns>
@@ -839,7 +844,33 @@ namespace Reko.Core.Expressions
             Domain dom = (head.DataType == PrimitiveType.SegmentSelector)
                 ? Domain.Pointer
                 : ((PrimitiveType)head.DataType).Domain;
-            return new MkSequence(PrimitiveType.Create(dom, totalSize), head, tail);
+            return new MkSequence(PrimitiveType.Create(dom, totalSize), new[] { head, tail });
+        }
+
+        /// <summary>
+        /// Generate an ordered sequence of values. Use this when expressing
+        /// values that are too long to fit in a machine registers.
+        /// </summary>
+        /// <param name="exprs"></param>
+        /// <returns>A sequence whose DataType is the weak "word" type of the 
+        /// combined sizes of the expressions.</returns>
+        public MkSequence Seq(params Expression [] exprs)
+        {
+            int totalSize = exprs.Sum(e => e.DataType.Size);
+            var dt = PrimitiveType.CreateWord(totalSize);
+            return new MkSequence(dt, exprs);
+        }
+
+        /// <summary>
+        /// Generate an ordered sequence of values of type <paramref name="dtSeq"/>.
+        /// Use this when expressing values that are too long to fit in a machine registers.
+        /// </summary>
+        /// <param name="exprs"></param>
+        /// <returns>A sequence whose DataType is the weak "word" type of the 
+        /// combined sizes of the expressions.</returns>
+        public MkSequence Seq(DataType dtSeq, params Expression [] exprs)
+        {
+            return new MkSequence(dtSeq, exprs);
         }
 
         /// <summary>
@@ -850,7 +881,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
+        public virtual SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, offset, dt);
         }

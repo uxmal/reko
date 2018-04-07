@@ -329,43 +329,45 @@ namespace Reko.Arch.X86
 				
 				// DA C0 
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"), 
+				new SingleByteOpRec(Opcode.fcmovb, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
+                new SingleByteOpRec(Opcode.fcmove, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                // DA D0
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovbe, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovu, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
+                // DA E0
+                new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
 				new SingleByteOpRec(Opcode.illegal), 
@@ -404,7 +406,7 @@ namespace Reko.Arch.X86
 				// DB ///////////////////////////
 				
 				new SingleByteOpRec(Opcode.fild, "Md"),
-				new SingleByteOpRec(Opcode.illegal, ""),
+				new SingleByteOpRec(Opcode.fisttp, "Md"),
 				new SingleByteOpRec(Opcode.fist, "Md"),
 				new SingleByteOpRec(Opcode.fistp, "Md"),
 				new SingleByteOpRec(Opcode.illegal),
@@ -414,41 +416,41 @@ namespace Reko.Arch.X86
 						
 				// DB C0, Conditional moves.
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnb, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovne, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnbe, "f,F"),
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
+                new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
 
                 // DB E0
 				new SingleByteOpRec(Opcode.illegal), 
@@ -576,7 +578,7 @@ namespace Reko.Arch.X86
 				// DD ////////////////
 
 				new SingleByteOpRec(Opcode.fld, "Mg"),
-				new SingleByteOpRec(Opcode.illegal, ""),
+				new SingleByteOpRec(Opcode.fisttp, "Mq"),
 				new SingleByteOpRec(Opcode.fst, "Mg"),
 				new SingleByteOpRec(Opcode.fstp, "Mg"),
 				new SingleByteOpRec(Opcode.frstor, "Mw"),
@@ -603,6 +605,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
+
 				// DD D0
 				new SingleByteOpRec(Opcode.fst, "F"),
 				new SingleByteOpRec(Opcode.fst, "F"),
@@ -622,26 +625,26 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fstp, "F"),
 				new SingleByteOpRec(Opcode.fstp, "F"),
 						
-				// E0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				// DD E0
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
+				new SingleByteOpRec(Opcode.fucom, "F,f"),
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
+				new SingleByteOpRec(Opcode.fucomp, "F"),
 						
-				// F0
+				// DD F0
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -672,7 +675,6 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fidivr, "Mw"),
 				
                 // DE C0
-				
                 new SingleByteOpRec(Opcode.faddp, "F,f"),
 				new SingleByteOpRec(Opcode.faddp, "F,f"),
 				new SingleByteOpRec(Opcode.faddp, "F,f"),
@@ -691,6 +693,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fmulp, "F,f"),
 				new SingleByteOpRec(Opcode.fmulp, "F,f"),
 						
+                // DE D0
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -708,6 +711,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
+
 				// DE E0	
 				new SingleByteOpRec(Opcode.fsubrp, "F,f"),
 				new SingleByteOpRec(Opcode.fsubrp, "F,f"),
@@ -726,6 +730,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fsubp, "F,f"),
 				new SingleByteOpRec(Opcode.fsubp, "F,f"),
 				new SingleByteOpRec(Opcode.fsubp, "F,f"),
+
 				// DE F0
 				new SingleByteOpRec(Opcode.fdivrp, "F,f"),
 				new SingleByteOpRec(Opcode.fdivrp, "F,f"),
@@ -748,7 +753,7 @@ namespace Reko.Arch.X86
 				// DF //////////////////////
 
 				new SingleByteOpRec(Opcode.fild, "Mw"),
-				new SingleByteOpRec(Opcode.illegal, ""),
+				new SingleByteOpRec(Opcode.fisttp, "Mw"),
 				new SingleByteOpRec(Opcode.fist, "Mw"),
 				new SingleByteOpRec(Opcode.fistp, "Mw"),
 				new SingleByteOpRec(Opcode.fbld, "MB"),
@@ -756,7 +761,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fbstp, "MB"),
 				new SingleByteOpRec(Opcode.fistp, "Mq"),
 
-				// C0
+				// DF C0
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -775,7 +780,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 						
-				// D0
+				// DF D0
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -794,7 +799,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 						
-				// E0
+				// DF E0
 				new SingleByteOpRec(Opcode.fstsw, "aw"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
@@ -803,35 +808,35 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
-						
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-				new SingleByteOpRec(Opcode.fucomip, "f,F"),
-						
-				// F0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-			};
+
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+                new SingleByteOpRec(Opcode.fucomip, "f,F"),
+
+				// DF F0
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+                new SingleByteOpRec(Opcode.fcomip, "f,F"),
+
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+                new SingleByteOpRec(Opcode.illegal),
+            };
         }
     }
 }

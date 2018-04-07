@@ -88,12 +88,12 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
 
 				// group 6
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new SingleByteOpRec(Opcode.sldt, "Ew"),
+				new SingleByteOpRec(Opcode.str, "Ew"),
+				new SingleByteOpRec(Opcode.lldt, "Ew"),
+				new SingleByteOpRec(Opcode.ltr, "Ew"),
+				new SingleByteOpRec(Opcode.verr, "Ew"),
+				new SingleByteOpRec(Opcode.verw, "Ew"),
 				new SingleByteOpRec(Opcode.illegal),
 				new SingleByteOpRec(Opcode.illegal),
 
@@ -189,8 +189,8 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.illegal),
 
 				// group 15
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				new Group7OpRec(new SingleByteOpRec(Opcode.fxsave)),
+				new Group7OpRec(new SingleByteOpRec(Opcode.fxrstor)),
 				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.illegal),

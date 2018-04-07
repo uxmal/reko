@@ -28,8 +28,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Reko.Core.Expressions;
-using Reko.Core.Output;
-using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -48,27 +46,12 @@ namespace Reko.UnitTests.Analysis
         {
             var co = new Coalescer(m.Ssa.Procedure, m.Ssa);
             co.Transform();
-            m.Ssa.CheckUses(s => Assert.Fail(s));
+            m.Ssa.Validate(s => Assert.Fail(s));
         }
 
-        //$REFACTOR: move common code to Reko.UnitTests.Mocks
         private void AssertProcedureCode(string expected)
         {
-            var writer = new StringWriter();
-            var textFormatter = new TextFormatter(writer)
-            {
-                Indentation = 0,
-            };
-            textFormatter.WriteLine();
-            var codeFormatter = new CodeFormatter(textFormatter);
-            foreach (var stm in m.Ssa.Procedure.Statements)
-                stm.Instruction.Accept(codeFormatter);
-            var actual = writer.ToString();
-            if (expected != actual)
-            {
-                Debug.Print(actual);
-                Assert.AreEqual(expected, actual);
-            }
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
 		protected override void RunTest(Program program, TextWriter fut)
@@ -99,7 +82,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, fut);
 				fut.WriteLine();
 
-                ssa.CheckUses(s => Assert.Fail(s));
+                ssa.Validate(s => Assert.Fail(s));
             }
         }
 
@@ -224,6 +207,25 @@ a = <invalid>
 b = a + 0x00000004
 ";
             AssertProcedureCode(expected);
+        }
+
+        [Test(Description = "Coalescense should work across a comment.")]
+        public void CoaAcrossComment()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            m.Assign(a, m.Mem32(m.Word32(0x00123400)));
+            m.Comment("This is a comment");
+            m.Assign(b, m.Mem32(a));
+
+            RunCoalescer();
+
+            var sExp =
+@"
+// This is a comment
+b = Mem3[Mem2[0x00123400:word32]:word32]
+";
+            AssertProcedureCode(sExp);
         }
     }
 }

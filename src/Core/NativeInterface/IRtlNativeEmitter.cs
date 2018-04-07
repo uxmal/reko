@@ -99,8 +99,13 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Word32(uint u);
         [PreserveSig] HExpr Word64(ulong ul);
 
-        // Add args to the "argument buffer".
+        // Add expressions to the "expression buffer".
         [PreserveSig] void AddArg(HExpr a);
+        // Collect all expressions in the "expression buffer"
+        // and create a function application.
     	[PreserveSig] HExpr Fn(HExpr fn);
+        // Collect all expressions in the "expression buffer"
+        // and create a sequence.
+        [PreserveSig] HExpr Seq(HExpr dt);
     }
 }

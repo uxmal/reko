@@ -396,6 +396,11 @@ namespace Reko.Analysis
             return ci;
         }
 
+        public Instruction VisitComment(CodeComment comment)
+        {
+            return comment;
+        }
+
         public Instruction VisitDeclaration(Declaration decl)
         {
             return se.VisitDeclaration(decl);

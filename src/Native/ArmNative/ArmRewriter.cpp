@@ -91,7 +91,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_AESMC:
 	case ARM_INS_BKPT:
 	case ARM_INS_BXJ:
-	case ARM_INS_CDP2:
 	case ARM_INS_CLREX:
 	case ARM_INS_CRC32B:
 	case ARM_INS_CRC32CB:
@@ -105,7 +104,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_FLDMIAX:
 	case ARM_INS_FSTMDBX:
 	case ARM_INS_FSTMIAX:
-	case ARM_INS_HINT:
 	case ARM_INS_HLT:
 	case ARM_INS_ISB:
 	case ARM_INS_LDA:
@@ -161,14 +159,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SHSUB16:
 	case ARM_INS_SHSUB8:
 	case ARM_INS_SMC:
-	case ARM_INS_SMLAD:
-	case ARM_INS_SMLADX:
-	case ARM_INS_SMLALD:
-	case ARM_INS_SMLALDX:
 	case ARM_INS_SMLSD:
 	case ARM_INS_SMLSDX:
-	case ARM_INS_SMLSLD:
-	case ARM_INS_SMLSLDX:
 	case ARM_INS_SMMLA:
 	case ARM_INS_SMMLAR:
 	case ARM_INS_SMMLS:
@@ -255,8 +247,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_VFMS:
 	case ARM_INS_VFNMA:
 	case ARM_INS_VFNMS:
-	case ARM_INS_VHADD:
-	case ARM_INS_VHSUB:
 	case ARM_INS_VLD1:
 	case ARM_INS_VLD2:
 	case ARM_INS_VLD3:
@@ -273,8 +263,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_VORN:
 	case ARM_INS_VPADAL:
 	case ARM_INS_VPADDL:
-	case ARM_INS_VQABS:
-	case ARM_INS_VQADD:
 	case ARM_INS_VQDMLAL:
 	case ARM_INS_VQDMLSL:
 	case ARM_INS_VQDMULH:
@@ -286,7 +274,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_VQRSHL:
 	case ARM_INS_VQRSHRN:
 	case ARM_INS_VQRSHRUN:
-	case ARM_INS_VQSHL:
 	case ARM_INS_VQSHLU:
 	case ARM_INS_VQSHRN:
 	case ARM_INS_VQSHRUN:
@@ -305,9 +292,7 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_VRINTR:
 	case ARM_INS_VRINTX:
 	case ARM_INS_VRINTZ:
-	case ARM_INS_VRSHL:
 	case ARM_INS_VRSHRN:
-	case ARM_INS_VRSHR:
 	case ARM_INS_VRSQRTE:
 	case ARM_INS_VRSQRTS:
 	case ARM_INS_VRSRA:
@@ -370,13 +355,15 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_BX: RewriteB(false); break;
 	case ARM_INS_CBZ: RewriteCbnz([](auto & m, auto a) { return m.Eq0(a); }); break;
 	case ARM_INS_CBNZ: RewriteCbnz([](auto & m, auto a) { return m.Ne0(a); }); break;
-	case ARM_INS_CDP: RewriteCdp(); break;
+	case ARM_INS_CDP: RewriteCdp("__cdp"); break;
+	case ARM_INS_CDP2: RewriteCdp("__cdp2"); break;
 	case ARM_INS_CLZ: RewriteClz(); break;
 	case ARM_INS_CMN: RewriteCmp(&INativeRtlEmitter::IAdd); break;
 	case ARM_INS_CMP: RewriteCmp(&INativeRtlEmitter::ISub); break;
 	case ARM_INS_CPS: RewriteCps(); break;
 	case ARM_INS_DMB: RewriteDmb(); break;
 	case ARM_INS_EOR: RewriteLogical([](auto & m, auto a, auto b) { return m.Xor(a, b); }); break;
+	case ARM_INS_HINT: RewriteHint(); break;
 	case ARM_INS_IT: RewriteIt(); return S_OK;
 	case ARM_INS_LDC2L: RewriteLdc("__ldc2l"); break;
 	case ARM_INS_LDC2: RewriteLdc("__ldc2"); break;
@@ -433,6 +420,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMLABT: RewriteMla(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBB: RewriteMlal(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALBT: RewriteMlal(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SMLALD: RewriteMlxd(false, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::IAdd); break;
+	case ARM_INS_SMLALDX: RewriteMlxd(true, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::IAdd); break;
 	case ARM_INS_SMLALTB: RewriteMlal(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLALTT: RewriteMlal(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAL: RewriteSmlal(); break;
@@ -440,6 +429,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMLATT: RewriteMla(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMLAWB: RewriteSmlaw(false); break;
 	case ARM_INS_SMLAWT: RewriteSmlaw(true); break;
+	case ARM_INS_SMLSLD: RewriteMlxd(false, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::ISub); break;
+	case ARM_INS_SMLSLDX: RewriteMlxd(true, BaseType::Int16, &INativeRtlEmitter::SMul, &INativeRtlEmitter::ISub); break;
 	case ARM_INS_SMULBB: RewriteMulbb(false, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULBT: RewriteMulbb(false, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULWB: RewriteMulw(false); break;
@@ -470,8 +461,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SWPB: RewriteSwp(BaseType::Byte); break;
 	case ARM_INS_SXTAB: RewriteXtab(BaseType::SByte); break;
 	case ARM_INS_SXTAH: RewriteXtab(BaseType::Int16); break;
-	case ARM_INS_SXTB: RewriteXtb(BaseType::SByte); break;
-	case ARM_INS_SXTH: RewriteXtb(BaseType::Int16); break;
+	case ARM_INS_SXTB: RewriteXtb(BaseType::SByte, BaseType::Int32); break;
+	case ARM_INS_SXTH: RewriteXtb(BaseType::Int16, BaseType::Int32); break;
 	case ARM_INS_TEQ: RewriteTeq(); break;
 	case ARM_INS_TRAP: RewriteTrap(); break;
 	case ARM_INS_TST: RewriteTst(); break;
@@ -483,8 +474,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;
 	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
 	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
-	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte); break;
-	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16); break;
+	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte, BaseType::UInt32); break;
+	case ARM_INS_UXTH: RewriteXtb(BaseType::UInt16, BaseType::UInt32); break;
 	case ARM_INS_YIELD: RewriteYield(); break;
 
 
@@ -499,6 +490,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_VDUP: RewriteVdup(); break;
 	case ARM_INS_VEOR: RewriteVecBinOp(&INativeRtlEmitter::Xor); break;
 	case ARM_INS_VEXT: RewriteVext(); break;
+	case ARM_INS_VHADD: RewriteVectorBinOp("__vhadd_%s"); break;
+	case ARM_INS_VHSUB: RewriteVectorBinOp("__vhsub_%s"); break;
 	case ARM_INS_VLDMIA: RewriteVldmia(); break;
 	case ARM_INS_VLDR: RewriteVldr(); break;
 	case ARM_INS_VMAX: RewriteVectorBinOp("__vmax_%s"); break;
@@ -519,6 +512,11 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_VPMIN: RewriteVectorBinOp("__vpmin_%s"); break;
 	case ARM_INS_VPOP: RewriteVpop(); break;
 	case ARM_INS_VPUSH: RewriteVpush(); break;
+	case ARM_INS_VQABS: RewriteVectorBinOp("__vqabs_%s"); break;
+	case ARM_INS_VQADD: RewriteVectorBinOp("__vqadd_%s"); break;
+	case ARM_INS_VQSHL: RewriteVectorBinOp("__vqshl_%s"); break;
+	case ARM_INS_VRSHL: RewriteVectorBinOp("__vrshl_%s"); break;
+	case ARM_INS_VRSHR: RewriteVectorBinOp("__vrshr_%s"); break;
 	case ARM_INS_VSTMIA: RewriteVstmia(); break;
 	case ARM_INS_VSQRT: RewriteVsqrt(); break;
 	case ARM_INS_VSHL: RewriteVectorBinOp("__vshl_%s"); break;

@@ -318,40 +318,11 @@ void ArmRewriter::RewriteMultiplyAccumulate(BinOpEmitter op)
 	}
 }
 
-void ArmRewriter::RewriteMov()
+void ArmRewriter::RewriteHint()
 {
-	if (Dst().type == ARM_OP_REG && Dst().reg == ARM_REG_PC)
-	{
-		rtlClass = RtlClass::Transfer;
-		if (Src1().type == ARM_OP_REG && Src1().reg == ARM_REG_LR)
-		{
-			m.Return(0, 0);
-		}
-		else
-		{
-			m.Goto(Operand(Src1()));
-		}
-		m.FinishCluster(RtlClass::Transfer, address, instr->size);
-		return;
-	}
-	auto opDst = Operand(Dst());
-	auto opSrc = Operand(Src1());
-	m.Assign(opDst, opSrc);
-}
-
-void ArmRewriter::RewriteMovt()
-{
-	auto opDst = Operand(Dst());
-	auto iSrc = Src1().imm;
-	auto opSrc = m.Dpb(opDst, m.Word16((uint16_t)iSrc), 16);
-	m.Assign(opDst, opSrc);
-}
-
-void ArmRewriter::RewriteMovw()
-{
-	auto dst = Operand(Dst());
-	auto src = m.Word32((uint16_t)Src1().imm);
-	m.Assign(dst, src);
+	auto ppp = host->EnsurePseudoProcedure("__ldrex", BaseType::Void, 1);
+	m.AddArg(Operand(Dst()));
+	m.SideEffect(m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteLdm(int initialOffset, BinOpEmitter op)
@@ -429,6 +400,42 @@ void ArmRewriter::RewriteMla(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitte
 
 	m.Assign(dst, m.IAdd((m.*op)(left, right), Operand(Src3())));
 	m.Assign(Q(), m.Cond(dst));
+}
+
+void ArmRewriter::RewriteMov()
+{
+	if (Dst().type == ARM_OP_REG && Dst().reg == ARM_REG_PC)
+	{
+		rtlClass = RtlClass::Transfer;
+		if (Src1().type == ARM_OP_REG && Src1().reg == ARM_REG_LR)
+		{
+			m.Return(0, 0);
+		}
+		else
+		{
+			m.Goto(Operand(Src1()));
+		}
+		m.FinishCluster(RtlClass::Transfer, address, instr->size);
+		return;
+	}
+	auto opDst = Operand(Dst());
+	auto opSrc = Operand(Src1());
+	m.Assign(opDst, opSrc);
+}
+
+void ArmRewriter::RewriteMovt()
+{
+	auto opDst = Operand(Dst());
+	auto iSrc = Src1().imm;
+	auto opSrc = m.Dpb(opDst, m.Word16((uint16_t)iSrc), 16);
+	m.Assign(opDst, opSrc);
+}
+
+void ArmRewriter::RewriteMovw()
+{
+	auto dst = Operand(Dst());
+	auto src = m.Word32((uint16_t)Src1().imm);
+	m.Assign(dst, src);
 }
 
 void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitter mul)
@@ -554,6 +561,23 @@ void ArmRewriter::RewriteMlal(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitt
 	m.Assign(dst, m.IAdd((m.*op)(left, right), dst));
 }
 
+void ArmRewriter::RewriteMlxd(bool swap, BaseType dt, BinOpEmitter mul, BinOpEmitter addSub)
+{
+	// The ARM manual states that the double return value is in [op2,op1]
+	auto dst = host->EnsureSequence(Src1().reg, Dst().reg, BaseType::Int64);
+
+	auto left = Operand(Src2());
+	auto right = Operand(Src3());
+
+	auto product1 = (m.*mul)(
+		m.Cast(dt, left),
+		swap ? m.Sar(right, m.Int32(16)) : m.Cast(dt, right));
+	auto product2 = (m.*mul)(
+		m.Sar(left, m.Int32(16)),
+		swap ? m.Cast(dt, right) : m.Sar(right, m.Int32(16)));
+
+	m.Assign(dst, m.IAdd(dst, (m.*addSub)(product1, product2)));
+}
 
 void ArmRewriter::RewriteSmlaw(bool highPart)
 {
@@ -683,7 +707,7 @@ void ArmRewriter::RewriteXtab(BaseType dt)
 	m.Assign(dst, m.IAdd(this->Operand(Src1()), src));
 }
 
-void ArmRewriter::RewriteXtb(BaseType dt)
+void ArmRewriter::RewriteXtb(BaseType dtSrc, BaseType dtDst)
 {
 	auto dst = this->Operand(Dst());
 	auto src = Reg((int)Src1().reg);
@@ -691,8 +715,8 @@ void ArmRewriter::RewriteXtb(BaseType dt)
 	{
 		src = m.Shr(src, m.Int32(Src1().shift.value));
 	}
-	src = m.Cast(dt, src);
-	src = m.Cast(BaseType::UInt32, src);
+	src = m.Cast(dtSrc, src);
+	src = m.Cast(dtDst, src);
 	m.Assign(dst, src);
 }
 

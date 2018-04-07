@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
             this.host = host;
         }
 
-        public Expression Transform(X86Instruction instr, MachineOperand op, PrimitiveType opWidth, X86State state)
+        public Expression Transform(X86Instruction instr, MachineOperand op, DataType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
@@ -57,7 +57,7 @@ namespace Reko.Arch.X86
                 return CreateMemoryAccess(instr, mem, opWidth, state);
             var imm = op as ImmediateOperand;
             if (imm != null)
-                return CreateConstant(imm, opWidth);
+                return CreateConstant(imm, (PrimitiveType) opWidth);
             var fpu = op as FpuOperand;
             if (fpu != null)
                 return FpuRegister(fpu.StNumber, state);

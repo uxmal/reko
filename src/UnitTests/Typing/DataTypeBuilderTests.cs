@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
-                Store(IAdd(IAdd(r, 20), SMul(i, 10)), Int32(0));
+                MStore(IAdd(IAdd(r, 20), SMul(i, 10)), Int32(0));
                 Return(Mem(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
             }
@@ -463,7 +463,7 @@ namespace Reko.UnitTests.Typing
             pp.Add("Fn1", m =>
             {
                 Identifier p = m.Local32("p");
-                m.Store(m.IAdd(p, 4), m.Word32(0x42));
+                m.MStore(m.IAdd(p, 4), m.Word32(0x42));
                 m.SideEffect(m.Fn("Fn2", p));
                 m.Return();
             });
@@ -472,7 +472,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 m.Procedure.Signature = FunctionType.Action(new Identifier[] { arg1 });
-                m.Store(m.IAdd(arg1, 8), m.Word32(0x23));
+                m.MStore(m.IAdd(arg1, 8), m.Word32(0x23));
                 m.Return();
             });
             RunTest(pp.BuildProgram(), "Typing/DtbStructurePointerPassedToFunction.txt");
@@ -504,7 +504,7 @@ namespace Reko.UnitTests.Typing
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
-            m.SegStore(ds, m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
+            m.SStore(ds, m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
 
             ProgramBuilder prog = new ProgramBuilder();
             prog.Add(m);

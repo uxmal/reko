@@ -73,6 +73,11 @@ namespace Reko.Structure
                 new Application(ci.Callee, VoidType.Instance));
         }
 
+        public AbsynStatement VisitComment(CodeComment comment)
+        {
+            return new AbsynLineComment(comment.Text);
+        }
+
         public AbsynStatement VisitDeclaration(Declaration decl)
         {
             return new AbsynDeclaration(decl.Identifier, decl.Expression);

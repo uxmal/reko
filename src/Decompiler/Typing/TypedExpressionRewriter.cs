@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -280,33 +281,37 @@ namespace Reko.Typing
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
-            var head = Rewrite(seq.Head, false);
-            var tail = Rewrite(seq.Tail, false);
-            var dtHead = DataTypeOf(head);
-            if (dtHead is Pointer || (dtHead is PrimitiveType ptHead && ptHead.Domain == Domain.Selector))
+            var newSeq = seq.Expressions.Select(e => Rewrite(e, false)).ToArray();
+            if (newSeq.Length == 2)
             {
-                if (seq.Tail is Constant c)
+                var head = newSeq[0];
+                var tail = newSeq[1];
+                var dtHead = DataTypeOf(head);
+                if (dtHead is Pointer || (dtHead is PrimitiveType ptHead && ptHead.Domain == Domain.Selector))
                 {
-                    // reg:CCCC => reg->fldCCCC
-                    return RewriteComplexExpression(head, null, c.ToInt32(), dereferenced);
+                    if (seq.Expressions[1] is Constant c)
+                    {
+                        // reg:CCCC => reg->fldCCCC
+                        return RewriteComplexExpression(head, null, c.ToInt32(), dereferenced);
+                    }
+                    else
+                    {
+                        var oldBase = this.basePtr;
+                        this.basePtr = head;
+                        Expression exp = RewriteComplexExpression(
+                            tail,
+                            null,
+                            0,
+                            dereferenced);
+                        this.basePtr = oldBase;
+                        return exp;
+                    }
                 }
                 else
                 {
-                    var oldBase = this.basePtr;
-                    this.basePtr = head;
-                    Expression exp = RewriteComplexExpression(
-                        tail,
-                        null,
-                        0,
-                        dereferenced);
-                    this.basePtr = oldBase;
-                    return exp;
                 }
             }
-            else
-            {
-            }
-            return new MkSequence(seq.DataType, head, tail)
+            return new MkSequence(seq.DataType, newSeq)
             {
                 TypeVariable = seq.TypeVariable,
             };

@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Analysis
         {
             var esp = m.Frame.EnsureRegister(Registers.esp);
             var r2 = m.Register(2);
-            var stm1 = m.Store(m.ISub(esp, 0x10), r2);
+            var stm1 = m.MStore(m.ISub(esp, 0x10), r2);
             var stm2 = m.Assign(r2, m.Int32(0));
             var stm3 = m.Assign(r2, m.Mem32(m.ISub(esp, 0x10)));
 
@@ -404,7 +404,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier esp = m.Frame.EnsureRegister(Registers.esp);
             Identifier ebp = m.Frame.EnsureRegister(Registers.ebp);
-            m.Store(esp, ebp);
+            m.MStore(esp, ebp);
             m.Assign(ebp, m.Mem32(m.Int32(0x12345678)));
             m.Assign(ebp, m.Mem32(esp));
             m.Return();
@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier eax = m.Procedure.Frame.EnsureRegister(Registers.eax);
             Identifier esp = m.Procedure.Frame.EnsureRegister(Registers.esp);
-            m.Store(m.ISub(esp, 4), eax);
+            m.MStore(m.ISub(esp, 4), eax);
             m.Assign(eax, m.Int32(3));
             m.Assign(eax, m.Mem32(m.ISub(esp, 4)));
 
@@ -498,7 +498,7 @@ const eax:<invalid> ebx:0x01231313
                 var ss = m.Frame.EnsureRegister(Registers.ss);
                 var ax = m.Frame.EnsureRegister(Registers.ax);
                 m.Assign(sp, m.ISub(sp, 2));
-                m.SegStore(ss, sp, ax);
+                m.SStore(ss, sp, ax);
                 m.Assign(ax, 1);
                 m.Assign(ax, m.SegMem16(ss, sp));
                 m.Assign(sp, m.IAdd(sp, 2));
@@ -540,10 +540,10 @@ const eax:<invalid>
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, eax);
+                m.MStore(esp, eax);
                 m.Assign(eax, 1);
                 m.Assign(m.Flags("SCZO"), m.Cond(eax));
-                m.Store(m.Word32(0x12340000), eax);
+                m.MStore(m.Word32(0x12340000), eax);
                 m.Assign(eax, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
@@ -566,7 +566,7 @@ const eax:<invalid>
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
                 m.Assign(eax, 1);
                 m.Label("Lupe");
-                m.Store(m.IAdd(ebx, eax), m.Word16(0));
+                m.MStore(m.IAdd(ebx, eax), m.Word16(0));
                 m.Assign(eax, m.IAdd(eax, 2));
                 m.BranchIf(m.Le(eax, 10), "Lupe");
                 m.Return();

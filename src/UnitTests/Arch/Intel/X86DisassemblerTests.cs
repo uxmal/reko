@@ -432,7 +432,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_Xlat32()
+        public void X86Dis_xlat32()
         {
             var instr = Disassemble32(0xD7);
             Assert.AreEqual("xlat", instr.ToString());
@@ -441,7 +441,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_Hlt()
+        public void X86dis_hlt()
         {
             var instr = Disassemble16(0xF4);
             Assert.AreEqual("hlt", instr.ToString());
@@ -842,7 +842,7 @@ movzx	ax,byte ptr [bp+04]
         }
 
         [Test]
-        public void X86Dis_regression()
+        public void X86dis_regression()
         {
             AssertCode64("movups\t[rsp+20],xmm0", 0x0F, 0x11, 0x44, 0x24, 0x20);
         }
@@ -1036,6 +1036,713 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode64("vxorpd\tymm1,ymm0,[rcx]", 0xC5, 0xFD, 0x57, 0x09);
         }
+
+        [Test]
+        public void X86dis_lar()
+        {
+            AssertCode32("lar\teax,word ptr [edx+42]", 0x0F, 0x02, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_lsl()
+        {
+            AssertCode32("lsl\teax,word ptr [edx+42]", 0x0F, 0x03, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_syscall()
+        {
+            AssertCode64("syscall", 0x0F, 0x05, 0x42, 0x42);
+            AssertCode32("illegal", 0x0F, 0x05, 0x42, 0x42);
+        }
+
+        // o64
+        [Test]
+        public void X86dis_clts()
+        {
+            AssertCode32("clts", 0x0F, 0x06);
+        }
+
+
+        [Test]
+        public void X86dis_sysret()
+        {
+            AssertCode64("sysret", 0x0F, 0x07);
+            AssertCode32("illegal", 0x0F, 0x07);
+        }
+
+        // o64
+        [Test]
+        public void X86dis_invd()
+        {
+            AssertCode32("invd", 0x0F, 0x08);
+        }
+
+        [Test]
+        public void X86dis_wbinvd()
+        {
+            AssertCode32("wbinvd", 0x0F, 0x09);
+        }
+
+
+        [Test]
+        public void X86dis_ud2()
+        {
+            AssertCode32("ud2", 0x0F, 0x0B);
+        }
+
+
+        [Test]
+        public void X86dis_prefetch()
+        {
+            AssertCode32("prefetchw\tdword ptr [edx+42]", 0x0F, 0x0D, 0x42, 0x42);
+        }
+
+        // /1
+        [Test]
+        public void X86dis_movlps()
+        {
+            AssertCode32("movlps\txmm0,qword ptr [edx+42]", 0x0F, 0x12, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_unpcklpd()
+        {
+            AssertCode32("unpcklps\txmm0,[edx+42]", 0x0F, 0x14, 0x42, 0x42);
+            AssertCode32("unpcklpd\txmm0,[edx+42]", 0x66, 0x0F, 0x14, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_movhpd()
+        {
+            AssertCode32("movhps\tqword ptr [edx+42],xmm0", 0x0F, 0x17, 0x42, 0x42);
+            AssertCode32("movhpd\tqword ptr [edx+42],xmm0", 0x66, 0x0F, 0x17, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_mov_from_control_Reg()
+        {
+            AssertCode32("mov\tedx,cr0", 0x0F, 0x20, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_mov_debug_reg()
+        {
+            AssertCode32("mov\tedx,dr0", 0x0F, 0x21, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_mov_control_reg()
+        {
+            AssertCode32("mov\tcr0,edx", 0x0F, 0x22, 0x42);
+        }
+
+        [Test]
+        public void X86dis_mov_to_debug_reg()
+        {
+            AssertCode32("mov\tdr0,edx", 0x0F, 0x23, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_movntps()
+        {
+            AssertCode32("movntps\t[edx+42],xmm0", 0x0F, 0x2B, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_cvttps2pi()
+        {
+            AssertCode32("cvtps2pi\tmm0,xmmword ptr [edx+42]", 0x0F, 0x2D, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_comiss()
+        {
+            AssertCode32("comiss\txmm0,dword ptr [edx+42]", 0x0F, 0x2F, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_wrmsr()
+        {
+            AssertCode32("wrmsr", 0x0F, 0x30, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_rdtsc()
+        {
+            AssertCode32("rdtsc", 0x0F, 0x31, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_rdmsr()
+        {
+            AssertCode32("rdmsr", 0x0F, 0x32, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_rdpmc()
+        {
+            AssertCode32("rdpmc", 0x0F, 0x33, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_sysenter()
+        {
+            AssertCode32("sysenter", 0x0F, 0x34, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_sysexit()
+        {
+            AssertCode32("sysexit", 0x0F, 0x35, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_getsec()
+        {
+            AssertCode32("getsec", 0x0F, 0x37, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_vpmovsxbw()
+        {
+            AssertCode32("illegal", 0x0F, 0x38, 0x30, 0x42, 0x42);
+            AssertCode32("vpmovsxbw\txmm0,qword ptr [edx+42]", 0x66, 0x0F, 0x38, 0x30, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_permq()
+        {
+            AssertCode32("illegal", 0x0F, 0x3A, 0x00, 0x42, 0x42);
+            AssertCode32("vpermq\tymm0,[edx+42],06", 0x66, 0x0F, 0x3A, 0x00, 0x42, 0x42, 0x6);
+        }
+
+        // v
+        [Test]
+        public void X86dis_movmskps()
+        {
+            AssertCode32("movmskps\teax,xmm2", 0x0F, 0x50, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_sqrtps()
+        {
+            AssertCode32("sqrtps\txmm0,[edx+42]", 0x0F, 0x51, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_rsqrtps()
+        {
+            AssertCode32("rsqrtps\txmm0,[edx+42]", 0x0F, 0x52, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_rcpps()
+        {
+            AssertCode32("rcpps\txmm0,[edx+42]", 0x0F, 0x53, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_andps()
+        {
+            AssertCode32("andps\txmm0,[edx+42]", 0x0F, 0x54, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_andnps()
+        {
+            AssertCode32("andnps\txmm0,[edx+42]", 0x0F, 0x55, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_orps()
+        {
+            AssertCode32("orps\txmm0,[edx+42]", 0x0F, 0x56, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_cvtps2pd()
+        {
+            AssertCode32("cvtps2pd\txmm0,[edx+42]", 0x0F, 0x5A, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_cvtdq2ps()
+        {
+            AssertCode32("cvtdq2ps\txmm0,[edx+42]", 0x0F, 0x5B, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_minps()
+        {
+            AssertCode32("minps\txmm0,[edx+42]", 0x0F, 0x5D, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_punpckldq()
+        {
+            AssertCode32("punpckldq\tmm0,dword ptr [edx+42]", 0x0F, 0x62, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pcmpgtb()
+        {
+            AssertCode32("pcmpgtb\tmm0,dword ptr [edx+42]", 0x0F, 0x64, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pcmpgtw()
+        {
+            AssertCode32("pcmpgtw\tmm0,dword ptr [edx+42]", 0x0F, 0x65, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pcmpgtd()
+        {
+            AssertCode32("pcmpgtd\tmm0,dword ptr [edx+42]", 0x0F, 0x66, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_packuswb()
+        {
+            AssertCode32("packuswb\tmm0,dword ptr [edx+42]", 0x0F, 0x67, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_punpckhbw()
+        {
+            AssertCode32("punpckhbw\tmm0,dword ptr [edx+42]", 0x0F, 0x68, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_punpckhwd()
+        {
+            AssertCode32("punpckhwd\tmm0,dword ptr [edx+42]", 0x0F, 0x69, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_punpckhdq()
+        {
+            AssertCode32("punpckhdq\tmm0,dword ptr [edx+42]", 0x0F, 0x6A, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_packssdw()
+        {
+            AssertCode32("packssdw\tmm0,dword ptr [edx+42]", 0x0F, 0x6B, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pcmpeqw()
+        {
+            AssertCode32("pcmpeqw\tmm0,[edx+42]", 0x0F, 0x75, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pcmpeqd()
+        {
+            AssertCode32("pcmpeqd\tmm0,[edx+42]", 0x0F, 0x76, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_emms()
+        {
+            AssertCode32("emms", 0x0F, 0x77);
+        }
+
+        // /v
+        [Test]
+        public void X86dis_vmread()
+        {
+            AssertCode32("vmread\t[edx+42],eax", 0x0F, 0x78, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_vmwrite()
+        {
+            AssertCode32("vmwrite\teax,[edx+42]", 0x0F, 0x79, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_btc()
+        {
+            AssertCode32("btc\teax,[edx+42]", 0x0F, 0xBB, 0x42, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_bsf()
+        {
+            AssertCode32("bsf\teax,[edx+42]", 0x0F, 0xBC, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_cmpps()
+        {
+            AssertCode32("cmpps\txmm0,[edx+42],08", 0x0F, 0xC2, 0x42, 0x42, 0x08);
+        }
+
+        [Test]
+        public void X86dis_movnti()
+        {
+            AssertCode32("movnti\t[edx+42],eax", 0x0F, 0xC3, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pinsrw()
+        {
+            //$TODO check encoding; look in the Intel spec.
+            AssertCode32("pinsrw\tmm0,edx", 0x0F, 0xC4, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pextrw()
+        {
+            AssertCode32("pextrw\teax,mm2,42", 0x0F, 0xC5, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_vshufps()
+        {
+            AssertCode32("vshufps\txmm0,[edx+42],07", 0x0F, 0xC6, 0x42, 0x42, 0x7);
+        }
+
+        [Test]
+        public void X86dis_psrlq()
+        {
+            AssertCode32("psrlq\tmm0,[edx+42]", 0x0F, 0xD3, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmullw()
+        {
+            AssertCode32("pmullw\tmm0,[edx+42]", 0x0F, 0xD5, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmovmskb()
+        {
+            AssertCode32("pmovmskb\teax,mm2", 0x0F, 0xD7, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubusb()
+        {
+            AssertCode32("psubusb\tmm0,[edx+42]", 0x0F, 0xD8, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pminub()
+        {
+            AssertCode32("pminub\tmm0,[edx+42]", 0x0F, 0xDA, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_paddusb()
+        {
+            AssertCode32("paddusb\tmm0,[edx+42]", 0x0F, 0xDC, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmaxub()
+        {
+            AssertCode32("pmaxub\tmm0,[edx+42]", 0x0F, 0xDE, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pavgb()
+        {
+            AssertCode32("pavgb\tmm0,[edx+42]", 0x0F, 0xE0, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psraw()
+        {
+            AssertCode32("psraw\tmm0,[edx+42]", 0x0F, 0xE1, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psrad()
+        {
+            AssertCode32("psrad\tmm0,[edx+42]", 0x0F, 0xE2, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmulhuw()
+        {
+            AssertCode32("pmulhuw\tmm0,[edx+42]", 0x0F, 0xE4, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmulhw()
+        {
+            AssertCode32("pmulhw\tmm0,[edx+42]", 0x0F, 0xE5, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_movntq()
+        {
+            AssertCode32("movntq\t[edx+42],mm0", 0x0F, 0xE7, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubsb()
+        {
+            AssertCode32("psubsb\tmm0,[edx+42]", 0x0F, 0xE8, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubsw()
+        {
+            AssertCode32("psubsw\tmm0,[edx+42]", 0x0F, 0xE9, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pminsw()
+        {
+            AssertCode32("pminsw\tmm0,[edx+42]", 0x0F, 0xEA, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_por()
+        {
+            AssertCode32("por\tmm0,[edx+42]", 0x0F, 0xEB, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_paddsb()
+        {
+            AssertCode32("paddsb\tmm0,[edx+42]", 0x0F, 0xEC, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_paddsw()
+        {
+            AssertCode32("paddsw\tmm0,[edx+42]", 0x0F, 0xED, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmaxsw()
+        {
+            AssertCode32("pmaxsw\tmm0,[edx+42]", 0x0F, 0xEE, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pxor()
+        {
+            AssertCode32("pxor\tmm0,[edx+42]", 0x0F, 0xEF, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psllw()
+        {
+            AssertCode32("psllw\tmm0,[edx+42]", 0x0F, 0xF1, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pslld()
+        {
+            AssertCode32("pslld\tmm0,[edx+42]", 0x0F, 0xF2, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psllq()
+        {
+            AssertCode32("psllq\tmm0,[edx+42]", 0x0F, 0xF3, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmuludq()
+        {
+            AssertCode32("pmuludq\tmm0,[edx+42]", 0x0F, 0xF4, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_pmaddwd()
+        {
+            AssertCode32("pmaddwd\tmm0,[edx+42]", 0x0F, 0xF5, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psadbw()
+        {
+            AssertCode32("psadbw\tmm0,[edx+42]", 0x0F, 0xF6, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_maskmovq()
+        {
+            AssertCode32("maskmovq\tmm0,[edx+42]", 0x0F, 0xF7, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubb()
+        {
+            AssertCode32("psubb\tmm0,[edx+42]", 0x0F, 0xF8, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubw()
+        {
+            AssertCode32("psubw\tmm0,[edx+42]", 0x0F, 0xF9, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubd()
+        {
+            AssertCode32("psubd\tmm0,[edx+42]", 0x0F, 0xFA, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_psubq()
+        {
+            AssertCode32("psubq\tmm0,[edx+42]", 0x0F, 0xFB, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_paddb()
+        {
+            AssertCode32("paddb\tmm0,[edx+42]", 0x0F, 0xFC, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_paddw()
+        {
+            AssertCode32("paddw\tmm0,[edx+42]", 0x0F, 0xFD, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_paddd()
+        {
+            AssertCode32("paddd\tmm0,[edx+42]", 0x0F, 0xFE, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_fcmovb()
+        {
+            AssertCode32("fcmovb\tst(0),st(1)", 0xDA, 0xC1);
+        }
+
+        [Test]
+        public void X86dis_fcmove()
+        {
+            AssertCode32("fcmove\tst(0),st(1)", 0xDA, 0xC9);
+        }
+
+        [Test]
+        public void X86dis_fcmovbe()
+        {
+            AssertCode32("fcmovbe\tst(0),st(1)", 0xDA, 0xD1);
+        }
+
+        [Test]
+        public void X86dis_fcmovu()
+        {
+            AssertCode32("fcmovu\tst(0),st(1)", 0xDA, 0xD9);
+        }
+
+        [Test]
+        public void X86dis_fucompp()
+        {
+            AssertCode32("fucompp", 0xDA, 0xE9);
+        }
+
+        [Test]
+        public void X86dis_fisttp()
+        {
+            AssertCode32("fisttp\tdword ptr [eax]", 0xDB, 0x08);
+        }
+
+        [Test]
+        public void X86dis_fld_real80()
+        {
+            AssertCode32("fld\ttword ptr [eax]", 0xDB, 0x28);
+        }
+
+        [Test]
+        public void X86dis_fcmovne()
+        {
+            AssertCode32("fcmovne\tst(0),st(1)", 0xDB, 0xC9);
+        }
+
+        [Test]
+        public void X86dis_fcmovnbe()
+        {
+            AssertCode32("fcmovnbe\tst(0),st(1)", 0xDB, 0xD1);
+        }
+
+        [Test]
+        public void X86dis_fcmovnu()
+        {
+            AssertCode32("fcmovnu\tst(0),st(1)", 0xDB, 0xD9);
+        }
+
+        [Test]
+        public void X86dis_fclex()
+        {
+            AssertCode32("fclex", 0xDB, 0xE2);
+        }
+
+        [Test]
+        public void X86dis_finit()
+        {
+            AssertCode32("fninit", 0xDB, 0xE3);
+        }
+
+
+        [Test]
+        public void X86dis_fisttp_i64()
+        {
+            AssertCode32("fisttp\tqword ptr [eax+42]", 0xDD, 0x48, 0x42);
+        }
+
+
+        [Test]
+        public void X86dis_ffree()
+        {
+            AssertCode32("ffree\tst(2)", 0xDD, 0xC2);
+        }
+
+
+        [Test]
+        public void X86dis_fucom()
+        {
+            AssertCode32("fucom\tst(5),st(0)", 0xDD, 0xE5);
+        }
+
+        [Test]
+        public void X86dis_fucomp()
+        {
+            AssertCode32("fucomp\tst(2)", 0xDD, 0xEA);
+        }
+
+        [Test]
+        public void X86dis_fisttp_int16()
+        {
+            AssertCode32("fisttp\tword ptr [eax+42]", 0xDF, 0x48, 0x42);
+        }
+
+        [Test]
+        public void X86dis_fild_i16()
+        {
+            AssertCode32("fild\tword ptr [eax+42]", 0xDF, 0x40, 0x42);
+        }
+
+        [Test]
+        public void X86dis_fcomip()
+        {
+            AssertCode32("fcomip\tst(0),st(2)", 0xDF, 0xF2);
+        }
+
+        //0x0F, 0xC7,       // grp9
+        //0x0F, 0xD0, 
     }
 }
 

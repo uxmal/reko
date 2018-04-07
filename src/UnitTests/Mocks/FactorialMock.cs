@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Mocks
 			Identifier sixBang = Local32("r1");
 			Identifier stg = Local32("stg");
 			Assign(sixBang, Fn("FactorialMock", Int32(6)));
-			Store(stg, sixBang);
+			MStore(stg, sixBang);
 		}
 	}
 }

@@ -37,11 +37,20 @@ namespace Reko.Arch.X86
         public static readonly ProcessorMode Protected32 = new FlatMode32();
         public static readonly ProcessorMode Protected64 = new FlatMode64();
 
+        protected RegisterStorage[] controlRegs;
+        protected RegisterStorage[] debugRegs;
+
         protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
         {
             this.WordWidth = wordSize;
             this.FramePointerType = framePointerType;
             this.PointerType = pointerType;
+            this.controlRegs = Enumerable.Range(0, 9)
+                .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word32))
+                .ToArray();
+            this.debugRegs = Enumerable.Range(0, 8)
+               .Select(n => new RegisterStorage($"dr{n}", Registers.DebugRegisterMin, 0, PrimitiveType.Word32))
+               .ToArray();
         }
 
         public virtual Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
@@ -73,6 +82,22 @@ namespace Reko.Arch.X86
             var sp = binder.EnsureRegister(Registers.sp);
             var ss = binder.EnsureRegister(Registers.ss);
             return SegmentedAccess.Create(ss, sp, offset, dataType);
+        }
+
+        public RegisterStorage GetControlRegister(int n)
+        {
+            if (0 <= n && n < controlRegs.Length)
+                return controlRegs[n];
+            else
+                return null;
+        }
+
+        public RegisterStorage GetDebugRegister(int n)
+        {
+            if (0 <= n && n < debugRegs.Length)
+                return debugRegs[n];
+            else
+                return null;
         }
 
         public abstract Address MakeAddressFromConstant(Constant c);
@@ -279,6 +304,13 @@ namespace Reko.Arch.X86
         internal FlatMode64()
             : base(PrimitiveType.Word64, PrimitiveType.Ptr64, PrimitiveType.Ptr64)
         {
+            this.controlRegs = Enumerable.Range(0, 9)
+                .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word64))
+                .ToArray();
+            this.debugRegs = Enumerable.Range(0, 8)
+               .Select(n => new RegisterStorage($"dr{n}", Registers.DebugRegisterMin, 0, PrimitiveType.Word64))
+               .ToArray();
+
         }
 
         public override RegisterStorage StackRegister

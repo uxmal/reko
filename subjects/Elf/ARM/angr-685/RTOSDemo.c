@@ -1418,26 +1418,31 @@ void vEventGroupClearBitsCallback(word32 r0, word32 r6, word32 p4)
 		__ldcl(0x00, Mem0[r0 + 0x0118:word32]);
 }
 
-// 00008001: void NmiSR()
-void NmiSR()
+// 00008001: void NmiSR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 p0)
+void NmiSR(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 p0)
 {
+	__cdp2(p0, 11, 0x00, 0x0F, 0x07, 0x07);
+	FaultISR(pc, r0, r1, r2, r4, r5, r7, r8, r9, p0);
 }
 
-// 00008005: void FaultISR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r8)
-void FaultISR(word32 pc, word32 r0, word32 r1, word32 r8)
+// 00008005: void FaultISR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 p0)
+void FaultISR(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 p0)
 {
 	if (Z)
-		ResetISR(pc, r0, r1, r8);
+		ResetISR(pc, r0, r1, r2, r4, r5, r7, r8, r9, p0);
 	else
 	{
 		word32 r0_12 = Mem0[pc + 0x00:word32];
 		word32 r1_13 = Mem0[pc + 0x04:word32];
-		ResetISR(pc + 0x0018, r0_12, r1_13, r8);
+		word32 r2_14 = Mem0[pc + 0x08:word32];
+		word32 r5_15 = Mem0[pc + 0x0C:word32];
+		word32 r7_17 = Mem0[pc + 0x0014:word32];
+		ResetISR(pc + 0x0018, r0_12, r1_13, r2_14, r4, r5_15, r7_17, r8, r9, p0);
 	}
 }
 
-// 00008009: void ResetISR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r8)
-void ResetISR(word32 pc, word32 r0, word32 r1, word32 r8)
+// 00008009: void ResetISR(Register word32 pc, Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r4, Register word32 r5, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 p0)
+void ResetISR(word32 pc, word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r7, word32 r8, word32 r9, word32 p0)
 {
 	word32 sp_4;
 	byte ZC_5;
@@ -1451,7 +1456,11 @@ void ResetISR(word32 pc, word32 r0, word32 r1, word32 r8)
 	byte C_14;
 	byte V_15;
 	word32 pc_16;
-	byte Z_18;
+	word32 p0_17;
+	word32 r5_18;
+	word32 r7_19;
+	word32 r9_20;
+	byte Z_106;
 	fnFF48A91D();
 }
 

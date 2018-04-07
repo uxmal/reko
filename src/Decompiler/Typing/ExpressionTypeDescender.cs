@@ -681,27 +681,34 @@ namespace Reko.Typing
 
         public bool VisitMkSequence(MkSequence seq, TypeVariable tv)
         {
-            if (IsPointer(tv.DataType))
+            if (seq.Expressions.Length == 2 && IsPointer(tv.DataType))
             {
-                if (IsSelector(seq.Head) || DataTypeOf(seq.Head) is Pointer)
+                if (IsSelector(seq.Expressions[0]) || DataTypeOf(seq.Expressions[0]) is Pointer)
                 {
-                    MeetDataType(seq.Head, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seq.Head).Size));
+                    var seg = seq.Expressions[0];
+                    var off = seq.Expressions[1];
+                    MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).Size));
                     if (DataTypeOf(seq) is Pointer ptr)
                     {
-                        MeetDataType(seq.Tail, MemberPointerTo(seq.Head.TypeVariable, ptr.Pointee, DataTypeOf(seq.Tail).Size));
+                        MeetDataType(off, MemberPointerTo(seg.TypeVariable, ptr.Pointee, DataTypeOf(off).Size));
                     }
-                    seq.Head.Accept(this, seq.Head.TypeVariable);
-                    seq.Tail.Accept(this, seq.Tail.TypeVariable);
+                    seg.Accept(this, seg.TypeVariable);
+                    off.Accept(this, off.TypeVariable);
                     return false;
                 }
             }
             if (tv.DataType is PrimitiveType pt && pt.IsIntegral)
             {
-                MeetDataType(seq.Head, PrimitiveType.Create(pt.Domain, seq.Head.DataType.Size));
-                MeetDataType(seq.Tail, PrimitiveType.Create(Domain.UnsignedInt, seq.Head.DataType.Size));
+                MeetDataType(seq.Expressions[0], PrimitiveType.Create(pt.Domain, seq.Expressions[0].DataType.Size));
+                foreach (var e in seq.Expressions.Skip(1))
+                {
+                    MeetDataType(e, PrimitiveType.Create(Domain.UnsignedInt, e.DataType.Size));
+                }
             }
-            seq.Head.Accept(this, seq.Head.TypeVariable);
-            seq.Tail.Accept(this, seq.Tail.TypeVariable);
+            foreach (var e in seq.Expressions)
+            {
+                e.Accept(this, e.TypeVariable);
+            }
             return false;
         }
 

@@ -426,7 +426,7 @@ means
             BuildTest(0xE6AF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = (uint32) (int8) (r2 >>u 8)");
+                "1|L--|r1 = (int32) (int8) (r2 >>u 8)");
         }
 
         [Test]
@@ -493,10 +493,10 @@ means
         public void ArmRw_vmov_i32()
         {
             //  51 00 C0 F2 
-            BuildTest(0xF2C00051); // vmov.i32 q8,#0
+            BuildTest(0xF2C00051); // vmov.i32 q8,#1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q8 = __vmov_i32(0x00000001)");
+                "1|L--|q8 = SEQ(0x00000001, 0x00000001, 0x00000001, 0x00000001)");
         }
 
         [Test]

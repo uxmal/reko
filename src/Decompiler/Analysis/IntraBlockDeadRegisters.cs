@@ -183,8 +183,7 @@ namespace Reko.Analysis
 
             public bool VisitMkSequence(MkSequence seq)
             {
-                var dead = seq.Head.Accept(this);
-                dead &= seq.Tail.Accept(this);
+                var dead = seq.Expressions.All(e => e.Accept(this));
                 return dead;
             }
 
@@ -289,6 +288,11 @@ namespace Reko.Analysis
             ci.Callee.Accept(expVisitor);
             deadRegs.Clear();
             deadFlags = 0;
+            return false;
+        }
+
+        public bool VisitComment(CodeComment comment)
+        {
             return false;
         }
 

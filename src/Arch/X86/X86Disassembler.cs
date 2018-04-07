@@ -673,9 +673,21 @@ namespace Reko.Arch.X86
                 if (!disasm.TryEnsureModRM(out byte modRm))
                     return null;
                 if ((modRm & 0xC0) == 0xC0)
-                    return regInstrs[modRm & 0x07].Decode(disasm, op, opFormat);
+                {
+                    var i = modRm & 0x07;
+                    if (i < regInstrs.Length)
+                    {
+                        return regInstrs[i].Decode(disasm, op, opFormat);
+                    }
+                    else
+                    {
+                        return disasm.Illegal();
+                    }
+                }
                 else
+                {
                     return memInstr.Decode(disasm, op, opFormat);
+                }
             }
         }
         
@@ -703,7 +715,8 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                op = disasm.rdr.ReadByte();
+                if (!disasm.rdr.TryReadByte(out op))
+                    return null;
                 return s_aOpRec0F[op].Decode(disasm, op, "");
             }
         }
@@ -1024,8 +1037,27 @@ namespace Reko.Arch.X86
                         return null;
                     pOperand = new X86AddressOperand(addr);
                     break;
+                case 'C':       // control register encoded in the reg field.
+                    ++i;
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    var creg = mode.GetControlRegister((modRm >> 3) & 7);
+                    if (creg == null)
+                        return null;
+                    pOperand = new RegisterOperand(creg);
+                    break;
+                case 'D':       // debug register encoded in the reg field.
+                    ++i;
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    var dreg = mode.GetDebugRegister((modRm >> 3) & 7);
+                    if (dreg == null)
+                        return null;
+                    pOperand = new RegisterOperand(dreg);
+                    break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
-                    width = OperandWidth(strFormat[i++]);
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
                     pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, GpRegFromBits);
                     if (pOperand == null)
                         return null;
@@ -1037,7 +1069,8 @@ namespace Reko.Arch.X86
                         return null;
                     break;
                 case 'G':		// register operand specified by the reg field of the modRM byte.
-                    width = OperandWidth(strFormat[i++]);
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
                     if (!TryEnsureModRM(out modRm))
                         return null;
                     pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
@@ -1053,6 +1086,12 @@ namespace Reko.Arch.X86
                         i = strFormat.IndexOf(',', i);
                     }
                     break;
+                case 'N':       // MMX register operand specified by the r/m field of the modRM byte.
+                    width = SseOperandWidth(strFormat, ref i);
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm, width, MmxRegFromBits));
+                    break;
                 case 'P':		// MMX register operand specified by the reg field of the modRM byte.
                     width = SseOperandWidth(strFormat, ref i);
                     if (!TryEnsureModRM(out modRm))
@@ -1066,7 +1105,7 @@ namespace Reko.Arch.X86
                     }
                     else
                     {
-                        width = OperandWidth(strFormat[i]); //  Don't use the width of the previous operand.
+                        width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
                     }
                     ++i;
                     pOperand = CreateImmediateOperand(width, dataWidth);
@@ -1074,7 +1113,8 @@ namespace Reko.Arch.X86
                         return null;
                     break;
                 case 'J':		// Relative ("near") jump.
-                    width = OperandWidth(strFormat[i++]);
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
                     Constant cOffset;
                     if (!rdr.TryRead(width, out cOffset))
                         return null;
@@ -1088,21 +1128,36 @@ namespace Reko.Arch.X86
                         pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, uAddr));
                     break;
                 case 'M':		// modRM may only refer to memory.
-                    width = OperandWidth(strFormat[i++]);
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
                     pOperand = DecodeModRM(dataWidth, this.currentDecodingContext.SegmentOverride, GpRegFromBits);
                     if (pOperand is RegisterOperand)
                         return null;
                     break;
                 case 'O':		// Offset of the operand is encoded directly after the opcode.
-                    width = OperandWidth(strFormat[i++]);
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
                     pOperand = memOp = new MemoryOperand(width, rdr.ReadLe(addressWidth));
                     memOp.SegOverride = this.currentDecodingContext.SegmentOverride;
+                    break;
+                case 'R':	// register operand specified by the mod field of the modRM byte.
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm, width, GpRegFromBits));
                     break;
                 case 'S':		// Segment register encoded by reg field of modRM byte.
                     ++i;        // Skip over the 'w'.
                     if (!TryEnsureModRM(out modRm))
                         return null;
                     pOperand = new RegisterOperand(SegFromBits(modRm >> 3));
+                    break;
+                case 'U':		// XMM operand specified by the modRm field of the modRM byte.
+                    width = SseOperandWidth(strFormat, ref i);
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm, width, XmmRegFromBits));
                     break;
                 case 'V':		// XMM operand specified by the reg field of the modRM byte.
                     width = SseOperandWidth(strFormat, ref i);
@@ -1115,7 +1170,8 @@ namespace Reko.Arch.X86
                     pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, XmmRegFromBits);
                     break;
                 case 'a':		// Implicit use of accumulator.
-                    pOperand = new RegisterOperand(RegFromBitsRexW(0, OperandWidth(strFormat[i++])));
+                    pOperand = new RegisterOperand(RegFromBitsRexW(0, OperandWidth(strFormat, ref i)));
+                    ++i;
                     break;
                 case 'b':
                     iWidth = PrimitiveType.Byte;
@@ -1125,11 +1181,13 @@ namespace Reko.Arch.X86
                     pOperand = new RegisterOperand(Registers.cl);
                     break;
                 case 'd':		// Implicit use of DX or EDX.
-                    width = OperandWidth(strFormat[i++]);
+                    width = OperandWidth(strFormat, ref i);
+                    ++i;
                     pOperand = new RegisterOperand(RegFromBitsRexW(2, width));
                     break;
                 case 'r':		// Register encoded as last 3 bits of instruction.
-                    iWidth = width = OperandWidth(strFormat[i++]);
+                    iWidth = width = OperandWidth(strFormat, ref i);
+                    ++i;
                     pOperand = new RegisterOperand(RegFromBitsRexB(op, width));
                     break;
                 case 's':		// Segment encoded as next byte of the format string.
@@ -1163,12 +1221,12 @@ namespace Reko.Arch.X86
 		/// </summary>
 		/// <param name="ch"></param>
 		/// <returns></returns>
-		private PrimitiveType OperandWidth(char ch)
+		private PrimitiveType OperandWidth(string fmt, ref int i)
 		{
-			switch (ch)
+			switch (fmt[i])
 			{
 			default:
-				throw new ArgumentOutOfRangeException(string.Format("Unknown operand width specifier '{0}'.", ch));
+				throw new ArgumentOutOfRangeException(string.Format("Unknown operand width specifier '{0}'.", fmt[i]));
 			case 'b':
 				dataWidth = PrimitiveType.Byte;
 				break;
@@ -1184,7 +1242,15 @@ namespace Reko.Arch.X86
 				dataWidth = PrimitiveType.Word32;
 				break;
 			case 'p':
-				dataWidth = PrimitiveType.Ptr32;		// Far pointer.
+                if (i < fmt.Length -1 && fmt[i+1] == 's')
+                {
+                    ++i;
+                    dataWidth =  this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
+                }
+                else
+                {
+                    dataWidth = PrimitiveType.Ptr32;        // Far pointer.
+                }
 				break;
 			case 'f':
 				dataWidth = PrimitiveType.Real32;
@@ -1227,6 +1293,10 @@ namespace Reko.Arch.X86
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
+                if (i < fmt.Length && fmt[i] == 'q')
+                {
+                    ++i; return PrimitiveType.Word256;
+                }
                 return PrimitiveType.Word64;
             case 's':
                 switch (fmt[i++])

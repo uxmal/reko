@@ -364,7 +364,7 @@ namespace Reko.UnitTests.Scanning
             var si = m.Frame.EnsureRegister(Registers.si);
 
             m.Assign(sp, m.ISub(sp, 2));
-            m.Store(sp, cs);
+            m.MStore(sp, cs);
             m.Assign(ds, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
             m.Assign(bl, m.Mem8(si));

@@ -56,9 +56,9 @@ namespace Reko.Scanning
             this.host = host;
             this.eval = eval;
             var target = xfer.Target;
-            if (xfer.Target is MkSequence seq)
+            if (xfer.Target is MkSequence seq && seq.Expressions.Length == 2)
             {
-                target = seq.Tail;
+                target = seq.Expressions[1];
             }
             var mem = target as MemoryAccess;
             if (mem == null)
