@@ -28,6 +28,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -42,6 +43,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Program program;
+        private StringWriter writer;
 
         [SetUp]
         public void Setup()
@@ -58,8 +60,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 .Do(new Func<EndianImageReader, IEnumerable<MachineInstruction>>((rdr) => new MachineInstruction[]
                 {
                     Instr(rdr.Address.ToUInt32()),
-                    Instr(rdr.Address.ToUInt32()+2)
+                    Instr(rdr.Address.ToUInt32()+2),
+                    Instr(rdr.Address.ToUInt32()+4)
                 }));
+            this.writer = new StringWriter();
         }
 
         private void Given_Program()
@@ -67,6 +71,15 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             this.imageMap = segmentMap.CreateImageMap();
             this.program = new Program(segmentMap, arch, platform);
             this.program.ImageMap = imageMap;
+        }
+
+        private void Given_Comment(uint addr, string comment)
+        {
+            program.User.Annotations.Add(new Annotation
+            {
+                Address = Address.Ptr32(addr),
+                Text = comment,
+            });
         }
 
         private FakeInstruction Instr(uint addr)
@@ -87,6 +100,52 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 DataType = new CodeType(),
                 Size = (uint)size,
             });
+        }
+
+        private string SpanStyle(string style)
+        {
+            if (style == "dasm-bytes")
+                return "b";
+            if (style == "dasm-bytes lastLine")
+                return "b-last";
+            if (style == "dasm-opcode")
+                return "op";
+            if (style == "dasm-opcode lastLine")
+                return "op-last";
+            if (style == "link")
+                return "link";
+            if (style == "link lastLine")
+                return "link-last";
+            return style;
+        }
+
+        private void WriteLine(LineSpan line, TextWriter writer)
+        {
+            writer.Write($"{line.Position}:");
+            foreach (var span in line.TextSpans)
+            {
+                writer.Write($@"{SpanStyle(span.Style)}({span.GetText()})");
+            }
+            writer.WriteLine();
+        }
+
+        private void GetLineSpans(TextViewModel model, int count)
+        {
+            var lines = model.GetLineSpans(count);
+            foreach (var line in lines)
+            {
+                WriteLine(line, writer);
+            }
+        }
+
+        private void MoveToLine(TextViewModel model, uint addr)
+        {
+            model.MoveToLine(Address.Ptr32(addr), 0);
+        }
+
+        private void AssertOutput(string expected)
+        {
+            Assert.AreEqual(expected, writer.ToString());
         }
 
         [Test]
@@ -334,7 +393,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             mcdm.MoveToLine(mcdm.CurrentPosition, 2);
             var curPos = (Address)mcdm.CurrentPosition;
 
-/*
+            /*
             ***************start position**************************
             0x40FD5                FF FF FF FF FF FF FF FF FF FF FF
             0x40FE0 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
@@ -342,7 +401,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             0x40FF0 FF FF FF FF FF FF FF FF FF
             0x40FF9 add r2,r2
             0x40FFA add r2,r2
-*/
+            */
 
             Assert.AreEqual("00040FF0", curPos.ToString());
         }
@@ -391,7 +450,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var mcdm = new MixedCodeDataModel(program);
             var num_lines = 4;
-            for(int i = 0; i <= num_lines; i++)
+            for (int i = 0; i <= num_lines; i++)
             {
                 mcdm.MoveToLine(mcdm.StartPosition, i);
                 var frac = mcdm.GetPositionAsFraction();
@@ -435,6 +494,42 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             int cLines = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
             Assert.AreEqual(1, cLines);
             Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+        }
+
+        [Test]
+        public void Mcdm_GetLineSpans_Comments()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            this.segmentMap = new SegmentMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute)
+                {
+                    Size = 6
+                });
+            Given_Program();
+            Given_CodeBlock(memText.BaseAddress, 6);
+            Given_Comment(0x41000,
+@"This is comment
+Second line");
+            Given_Comment(0x41004, "Single line comment");
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+            GetLineSpans(mcdm, 1);
+            GetLineSpans(mcdm, 1);
+            GetLineSpans(mcdm, 1);
+            MoveToLine(mcdm, 0x41004);
+            GetLineSpans(mcdm, 1);
+            GetLineSpans(mcdm, 1);
+
+            AssertOutput(
+@"00041000:mem(; This is comment)
+00041000:mem(; Second line)
+00041000:link(00041000 )b(00 00 )op(add )
+00041004:mem(; Single line comment)
+00041004:link-last(00041004 )b-last(00 00 )op-last(add )
+");
         }
     }
 }
