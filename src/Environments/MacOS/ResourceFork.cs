@@ -45,7 +45,7 @@ namespace Reko.Environments.MacOS
         uint rsrcMapOff;
         uint dataSize;
         uint mapSize;
-        
+
         public ResourceFork(MacOSClassic platform, byte[] bytes)
         {
             this.image = bytes;
@@ -347,50 +347,42 @@ namespace Reko.Environments.MacOS
                 // If CODE segment found, unpack global data to A5World
                 foreach ( var a5dataSegment  in segmentMap.Segments.Values)
                 {
-                    if (a5dataSegment.Name.Length >= 12 )
+                    if (a5dataSegment.Name.Length < 12)
+                        continue;
+                    if (a5dataSegment.Name.Substring(5, 7) != "%A5Init")
+                        continue;
+                    // Found %A5Init CODE segment
+                    var a5data = a5dataSegment.MemoryArea;
+                    var a5dr = a5data.CreateBeReader(0);
+                    var a5d0 = a5dr.ReadBeUInt32();
+                    var a5d1 = a5dr.ReadBeUInt16();
+                    var a5dheaderOffset = a5dr.ReadBeUInt16();
+                    if (a5d0 != 0x48e77ff8 || a5d1 != 0x49fa || a5dheaderOffset >= a5dataSegment.MemoryArea.Length)
                     {
-                        if (a5dataSegment.Name.Substring(5,7) == "%A5Init")
-                        {
-                            // Found %A5Init CODE segment
-                            var a5data = a5dataSegment.MemoryArea;
-                            var a5dr = a5data.CreateBeReader(0);
-                            var a5d0 = a5dr.ReadBeUInt32();
-                            var a5d1 = a5dr.ReadBeUInt16();
-                            var a5dheaderOffset = a5dr.ReadBeUInt16();
-                            if (a5d0 == 0x48e77ff8 && a5d1 == 0x49fa && a5dheaderOffset < a5dataSegment.MemoryArea.Length)
-                            {
-                                a5dr.Seek(a5dheaderOffset - 2);
-                                var a5dbelow = a5dr.ReadBeUInt32();
-                                var a5dbankSize = a5dr.ReadBeUInt32();
-                                var a5doffset = a5dr.ReadBeUInt32();
-                                var a5dreloc = a5dr.ReadBeUInt32();
-                                var a5dhdrend = a5dr.ReadBeUInt32();
-                                if (a5dbankSize == 0x00010000)
-                                {
-                                    a5Expand(a5dr, a5dbelow);
-                                }
-                                else
-                                {
-                                    // bank size not supported for compressed global data
-                                }
-
-                            }
-                            else
-                            {
-                                // starting code bytes incorrect or 
-                                // invalid offset to compressed global data - outside of memory segment.
-                                // no global compressed data 
-                            }
-                        }
+                        // Starting code bytes incorrect or 
+                        // Invalid offset to compressed global data - outside of A5World memory segment.
+                        // No global compressed data 
+                        break;
                     }
+                    a5dr.Seek(a5dheaderOffset - 2);
+                    var a5dbelow = a5dr.ReadBeUInt32();
+                    var a5dbankSize = a5dr.ReadBeUInt32();
+                    var a5doffset = a5dr.ReadBeUInt32();
+                    var a5dreloc = a5dr.ReadBeUInt32();
+                    var a5dhdrend = a5dr.ReadBeUInt32();
+                    if (a5dbankSize != 0x00010000)
+                    {
+                        // bank size not supported for compressed global data
+                        break;
+                    }
+                    A5Expand(a5dr, a5dbelow);
+                    // Expanded Global A5World data, no need to search for further Segments
+                    break;
                 }
-                    
             }
         }
-
-
-
-        private void a5Expand(BeImageReader a5dr, UInt32 a5dbelow)
+        
+        private void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
         {
             var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, platform.A5Offset - a5dbelow);
             int a5RunLengthToken = 0;
@@ -452,7 +444,6 @@ namespace Reko.Environments.MacOS
                 }
             } while (!a5dataEnd);
         }
-
 
         private int GetRunLengthValue(BeImageReader a5dr, ref int a5repeat)
         {
