@@ -13,6 +13,9 @@ test6_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00401120:
+	// Incorrect user-defined signature
+"void sum(int, int)" is set instead of "int sum(int, int)"
+Reko should emit code which gives chance for user to find this mistake
 	Mem0[Mem0[c:word32] + 0x00000008:word32](c, a, b)
 	word32 eax_37 = <invalid>
 	Mem48[Mem48[c:word32] + 0x00000004:word32](c, eax_37)
