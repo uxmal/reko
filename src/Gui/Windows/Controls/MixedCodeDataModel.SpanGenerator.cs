@@ -53,10 +53,8 @@ namespace Reko.Gui.Windows.Controls
             addrCur = SanitizeAddress(addrCur);
 
             var spans = new List<LineSpan>();
-            ImageSegment seg;
-            ImageMapItem item;
-            program.SegmentMap.TryFindSegment(addrCur, out seg);
-            program.ImageMap.TryFindItem(addrCur, out item);
+            program.SegmentMap.TryFindSegment(addrCur, out var seg);
+            program.ImageMap.TryFindItem(addrCur, out var item);
 
             SpanGenerator sp = CreateSpanifier(item, addrCur);
             while (count != 0 && seg != null && item != null)
@@ -97,8 +95,7 @@ namespace Reko.Gui.Windows.Controls
                     if (!memValid)
                     {
                         // Find next segment.
-                        Address addrSeg;
-                        if (program.SegmentMap.Segments.TryGetUpperBoundKey(addrCur, out addrSeg))
+                        if (program.SegmentMap.Segments.TryGetUpperBoundKey(addrCur, out Address addrSeg))
                         {
                             program.SegmentMap.TryFindSegment(addrSeg, out seg);
                             program.ImageMap.TryFindItem(addrSeg, out item);
@@ -123,8 +120,7 @@ namespace Reko.Gui.Windows.Controls
         private SpanGenerator CreateSpanifier(ImageMapItem item, Address addr)
         {
             SpanGenerator sp;
-            var b = item as ImageMapBlock;
-            if (b != null)
+            if (item is ImageMapBlock b)
             {
                 sp = new AsmSpanifyer(program, instructions[b], addr);
             }
@@ -195,8 +191,10 @@ namespace Reko.Gui.Windows.Controls
 
             public override Tuple<Address, LineSpan> GenerateSpan()
             {
-                var line = new List<TextSpan>();
-                line.Add(new AddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
+                var line = new List<TextSpan>
+                {
+                    new AddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow)
+                };
 
                 var addrStart = Align(addr, BytesPerLine);
                 var addrEnd = Address.Min(addrStart + BytesPerLine, item.Address + item.Size);

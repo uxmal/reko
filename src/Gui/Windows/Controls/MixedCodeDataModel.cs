@@ -104,8 +104,7 @@ namespace Reko.Gui.Windows.Controls
 
         private int CountBlockLines(ImageMapItem item)
         {
-            var bi = item as ImageMapBlock;
-            if (bi != null)
+            if (item is ImageMapBlock bi)
             {
                 return CountDisassembledLines(bi);
             }
@@ -119,7 +118,7 @@ namespace Reko.Gui.Windows.Controls
         /// Count the number of lines a memory area subtends.
         /// </summary>
         /// <remarks>
-        /// We align mempry spans on 16-byte boundaries (//$REVIEW for now,
+        /// We align memory spans on 16-byte boundaries (//$REVIEW for now,
         /// this should be user-adjustable) so if we have a memory span 
         /// straddling such a boundary, we have to account for it. E.g. the
         /// span [01FC-0201] should be rendered:
@@ -218,8 +217,7 @@ namespace Reko.Gui.Windows.Controls
 
         private int GetLineOffset(ImageMapItem item, Address addr)
         {
-            var bi = item as ImageMapBlock;
-            if (bi != null)
+            if (item is ImageMapBlock bi)
             {
                 int i = 0;
                 while (i < instructions[bi].Length)
@@ -251,16 +249,14 @@ namespace Reko.Gui.Windows.Controls
             int moved = 0;
             if (offset > 0)
             {
-                ImageMapItem item;
 
-                if (!program.ImageMap.TryFindItem(addrCur, out item))
+                if (!program.ImageMap.TryFindItem(addrCur, out ImageMapItem item))
                     return moved;
                 int iItem = program.ImageMap.Items.IndexOfKey(item.Address);
                 for (;;)
                 {
                     Debug.Assert(item != null);
-                    var bi = item as ImageMapBlock;
-                    if (bi != null)
+                    if (item is ImageMapBlock bi)
                     {
                         var instrs = instructions[bi];
                         int i = FindIndexOfInstructionAddress(instrs, addrCur);
@@ -340,8 +336,7 @@ namespace Reko.Gui.Windows.Controls
         /// <returns></returns>
         private Address SanitizeAddress(Address position)
         {
-            ImageMapItem item;
-            if (program.ImageMap.TryFindItem(position, out item))
+            if (program.ImageMap.TryFindItem(position, out ImageMapItem item))
             {
                 if (item.IsInRange(position))
                 {
@@ -420,8 +415,7 @@ namespace Reko.Gui.Windows.Controls
             foreach (var item in program.ImageMap.Items.Values)
             {
                 int size;
-                var bi = item as ImageMapBlock;
-                if (bi != null)
+                if (item is ImageMapBlock bi)
                 {
                     size = CountDisassembledLines(bi);
                     if (curLine + size > targetLine)
@@ -481,8 +475,7 @@ namespace Reko.Gui.Windows.Controls
                 int numLines;
                 var startAddr = item.Address;
                 var endAddr = item.Address + item.Size;
-                var bi = item as ImageMapBlock;
-                if (bi != null)
+                if (item is ImageMapBlock bi)
                 {
                     numLines = CountDisassembledLines(bi);
                     curProc = bi.Block.Procedure;
