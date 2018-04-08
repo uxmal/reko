@@ -28,7 +28,7 @@ namespace Reko.Arch.Microchip.Common
         None,
         /// <summary> Indexed read/write FSRx register + offset. </summary>
         INDEXED,
-        /// <summary> Indexed read/write FSR2 register with offset. </summary>
+        /// <summary> Indexed read/write FSR2 register with offset. MOVFS, MOVSS </summary>
         FSR2INDEXED,
         /// <summary> Indirect read/write using FSRx register (thru INDFx register). </summary>
         INDF,

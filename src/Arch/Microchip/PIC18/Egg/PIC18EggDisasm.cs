@@ -248,10 +248,8 @@ namespace Reko.Arch.Microchip.PIC18
                 byte fsrnum = (byte)uInstr.Extract(6, 2);
                 if (fsrnum >= 3)
                     return null;
-                var fsr = PICRegisters.GetRegister($"FSR{fsrnum}");
-                var fsropnd = new PICOperandRegister(fsr);
-                var imm6 = uInstr.Extract(0, 6);
-                return new PICInstructionWithFSR(opcode, fsr, imm6);
+                var imm6 = (byte)uInstr.Extract(0, 6);
+                return new PICInstructionFSRUArith(opcode, fsrnum, imm6);
             }
         }
 
@@ -272,8 +270,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (PICMemoryDescriptor.ExecMode != PICExecMode.Extended) // Only supported by PIC18 running in Extended Execution mode.
                     return new PICInstructionNoOpnd(Opcode.invalid);
 
-                var immvalue = uInstr.Extract(0, 6);
-                return new PICInstructionWithFSR(opcode, PIC18Registers.FSR2, immvalue);
+                var imm6 = uInstr.Extract(0, 6);
+                return new PICInstructionImmedByte(opcode, imm6);
             }
         }
 
@@ -373,7 +371,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 byte fsrnum = (byte)uInstr.Extract(4, 4);
                 if (fsrnum >= 3)
-                    return null;
+                    return new PICInstructionNoOpnd(Opcode.invalid);
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))
@@ -381,9 +379,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (word2 > 0xFF) // Second word must be 'xxxx-0000-kkkk-kkkk'
                     return new PICInstructionNoOpnd(Opcode.invalid);
 
-                var fsrreg = PICRegisters.GetRegister($"FSR{fsrnum}");
                 var imm12 = (ushort)(((uInstr.Extract(0, 4) << 8) | word2));
-                return new PICInstructionWithFSR(opcode, fsrreg, imm12);
+                return new PICInstructionLFSRLoad(opcode, fsrnum, imm12);
             }
         }
 

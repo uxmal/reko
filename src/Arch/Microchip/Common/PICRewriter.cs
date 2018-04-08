@@ -115,81 +115,18 @@ namespace Reko.Arch.Microchip.Common
             return slot;
         }
 
-        protected Expression GetImmediateValue(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PICOperandImmediate imm:
-                    return imm.ImmediateValue;
-
-                default:
-                    throw new InvalidOperationException($"Invalid immediate operand: op={op}.");
-            }
-        }
-
-        protected Expression GetProgramAddress(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PICOperandProgMemoryAddress paddr:
-                    return paddr.CodeTarget;
-
-                default:
-                    throw new InvalidOperationException($"Invalid program address operand: op={op}.");
-            }
-        }
-
-        protected Expression GetFSRRegister(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PICOperandRegister fsrreg:
-                    return binder.EnsureRegister(fsrreg.Register);
-
-                default:
-                    throw new InvalidOperationException($"Invalid FSR operand: op={op}.");
-            }
-        }
-
-        protected Expression GetTBLRWMode(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PICOperandTBLRW tblincrmod:
-                    return tblincrmod.TBLIncrMode;
-
-                default:
-                    throw new InvalidOperationException($"Invalid table read/write operand: op={op}.");
-            }
-        }
-
         protected Constant GetBitMask(MachineOperand op, bool revert)
         {
             switch (op)
             {
-                case PICOperandImmediate bitaddr:
-                    int mask = (1 << bitaddr.ImmediateValue.ToByte());
+                case PICOperandMemBitNo bitno:
+                    int mask = (1 << bitno.BitNo);
                     if (revert)
                         mask = ~mask;
                     return Constant.Byte((byte)mask);
 
                 default:
-                    throw new InvalidOperationException($"Invalid bit number operand: op={op}.");
-            }
-        }
-
-        protected Constant GetFastIndicator(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PICOperandImmediate shadow:
-                    return shadow.ImmediateValue;
-
-                case PICOperandFast fast:
-                    return fast.IsFast;
-
-                default:
-                    throw new InvalidOperationException($"Invalid fast/shadow operand: op={op}.");
+                    throw new InvalidOperationException($"Invalid bit number operand: {op}.");
             }
         }
 
@@ -307,6 +244,15 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
+        protected bool DestIsWreg(MachineOperand opernd)
+        {
+            switch (opernd)
+            {
+                case PICOperandMemWRegDest wreg:
+                    return wreg.WRegIsDest;
+            }
+            return false;
+        }
     }
 
 }

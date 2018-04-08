@@ -83,12 +83,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x2400),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR2 + 0x00:byte]",
+                    "1|L--|WREG = WREG + Data[FSR2 + 0x0000:byte]",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2401),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR2 + 0x01:byte]",
+                    "1|L--|WREG = WREG + Data[FSR2 + 0x0001:byte]",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x24C3),
@@ -113,8 +113,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x2601),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = WREG + Data[FSR2 + 0x01:byte]",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = WREG + Data[FSR2 + 0x0001:byte]",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x26C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -138,12 +138,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x2000),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR2 + 0x00:byte] + C",
+                    "1|L--|WREG = WREG + Data[FSR2 + 0x0000:byte] + C",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2001),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[FSR2 + 0x01:byte] + C",
+                    "1|L--|WREG = WREG + Data[FSR2 + 0x0001:byte] + C",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x20C3),
@@ -168,8 +168,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x2212),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x12:byte] = WREG + Data[FSR2 + 0x12:byte] + C",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x12:byte])"
+                    "1|L--|Data[FSR2 + 0x0012:byte] = WREG + Data[FSR2 + 0x0012:byte] + C",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0012:byte])"
                 );
             ExecTest(Words(0x22C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -204,12 +204,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x1400),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG & Data[FSR2 + 0x00:byte]",
+                    "1|L--|WREG = WREG & Data[FSR2 + 0x0000:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x1401),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG & Data[FSR2 + 0x01:byte]",
+                    "1|L--|WREG = WREG & Data[FSR2 + 0x0001:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x14C3),
@@ -234,8 +234,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x1614),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x14:byte] = WREG & Data[FSR2 + 0x14:byte]",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x14:byte])"
+                    "1|L--|Data[FSR2 + 0x0014:byte] = WREG & Data[FSR2 + 0x0014:byte]",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0014:byte])"
                 );
             ExecTest(Words(0x16C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -276,7 +276,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x9001),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] & 0xFE"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] & 0xFE"
                 );
             ExecTest(Words(0x94C4),
                 "0|L--|0x00000200(2): 1 instructions",
@@ -420,7 +420,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x8001),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] | 0x01"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] | 0x01"
                 );
             ExecTest(Words(0x84C3),
                 "0|L--|0x00000200(2): 1 instructions",
@@ -441,7 +441,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0xB000),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if ((Data[FSR2 + 0x00:byte] & 0x01) == 0x00) branch 0x00000204"
+                    "1|T--|if ((Data[FSR2 + 0x0000:byte] & 0x01) == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0xB102),
                 "0|T--|0x00000200(2): 1 instructions",
@@ -454,7 +454,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0xA002),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if ((Data[FSR2 + 0x02:byte] & 0x01) != 0x00) branch 0x00000204"
+                    "1|T--|if ((Data[FSR2 + 0x0002:byte] & 0x01) != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0xA105),
                 "0|T--|0x00000200(2): 1 instructions",
@@ -467,7 +467,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x7001),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] ^ 0x01"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] ^ 0x01"
                 );
             ExecTest(Words(0x74C3),
                 "0|L--|0x00000200(2): 1 instructions",
@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6A01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = 0x00",
+                    "1|L--|Data[FSR2 + 0x0001:byte] = 0x00",
                     "2|L--|Z = true"
                 );
 
@@ -594,12 +594,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x1C00),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = ~Data[FSR2 + 0x00:byte]",
+                    "1|L--|WREG = ~Data[FSR2 + 0x0000:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x1C01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = ~Data[FSR2 + 0x01:byte]",
+                    "1|L--|WREG = ~Data[FSR2 + 0x0001:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x1CC3),
@@ -624,8 +624,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x1E12),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x12:byte] = ~Data[FSR2 + 0x12:byte]",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x12:byte])"
+                    "1|L--|Data[FSR2 + 0x0012:byte] = ~Data[FSR2 + 0x0012:byte]",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0012:byte])"
                 );
             ExecTest(Words(0x1EC3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -649,11 +649,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6200),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x00:byte] == WREG) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0000:byte] == WREG) branch 0x00000204"
                 );
             ExecTest(Words(0x6201),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x01:byte] == WREG) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0001:byte] == WREG) branch 0x00000204"
                 );
             ExecTest(Words(0x62C3),
                 "0|T--|0x00000200(2): 1 instructions",
@@ -678,11 +678,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6400),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x00:byte] >u WREG) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0000:byte] >u WREG) branch 0x00000204"
                 );
             ExecTest(Words(0x6401),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x01:byte] >u WREG) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0001:byte] >u WREG) branch 0x00000204"
                 );
             ExecTest(Words(0x64C3),
                 "0|T--|0x00000200(2): 1 instructions",
@@ -707,11 +707,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6000),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x00:byte] <u WREG) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0000:byte] <u WREG) branch 0x00000204"
                 );
             ExecTest(Words(0x6001),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x01:byte] <u WREG) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0001:byte] <u WREG) branch 0x00000204"
                 );
             ExecTest(Words(0x60C3),
                 "0|T--|0x00000200(2): 1 instructions",
@@ -745,12 +745,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x4C00),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] - 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] - 0x01",
                     "2|T--|if (WREG != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x4C01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] - 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] - 0x01",
                     "2|T--|if (WREG != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x4CC4),
@@ -775,8 +775,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x4E01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] - 0x01",
-                    "2|T--|if (Data[FSR2 + 0x01:byte] != 0x00) branch 0x00000204"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] - 0x01",
+                    "2|T--|if (Data[FSR2 + 0x0001:byte] != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x4EC4),
                 "0|T--|0x00000200(2): 2 instructions",
@@ -801,12 +801,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x0400),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] - 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] - 0x01",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x0401),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] - 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] - 0x01",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x04C4),
@@ -831,8 +831,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x0601),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] - 0x01",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] - 0x01",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x06C4),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -857,12 +857,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x2C00),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] - 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] - 0x01",
                     "2|T--|if (WREG == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x2C01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] - 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] - 0x01",
                     "2|T--|if (WREG == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x2CC4),
@@ -887,8 +887,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x2E01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] - 0x01",
-                    "2|T--|if (Data[FSR2 + 0x01:byte] == 0x00) branch 0x00000204"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] - 0x01",
+                    "2|T--|if (Data[FSR2 + 0x0001:byte] == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x2EC4),
                 "0|T--|0x00000200(2): 2 instructions",
@@ -926,12 +926,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x2800),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] + 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] + 0x01",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x2801),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] + 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] + 0x01",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x28C3),
@@ -956,8 +956,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x2A01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] + 0x01",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] + 0x01",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x2AC3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -982,12 +982,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3C00),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] + 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] + 0x01",
                     "2|T--|if (WREG == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x3C01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] + 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] + 0x01",
                     "2|T--|if (WREG == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x3CC4),
@@ -1012,8 +1012,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x3E01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] + 0x01",
-                    "2|T--|if (Data[FSR2 + 0x01:byte] == 0x00) branch 0x00000204"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] + 0x01",
+                    "2|T--|if (Data[FSR2 + 0x0001:byte] == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x3EC4),
                 "0|T--|0x00000200(2): 2 instructions",
@@ -1038,12 +1038,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x4800),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] + 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] + 0x01",
                     "2|T--|if (WREG != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x4801),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] + 0x01",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] + 0x01",
                     "2|T--|if (WREG != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x48C4),
@@ -1068,8 +1068,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x4A01),
                 "0|T--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] + 0x01",
-                    "2|T--|if (Data[FSR2 + 0x01:byte] != 0x00) branch 0x00000204"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] + 0x01",
+                    "2|T--|if (Data[FSR2 + 0x0001:byte] != 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x4AC4),
                 "0|T--|0x00000200(2): 2 instructions",
@@ -1109,12 +1109,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x1000),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG | Data[FSR2 + 0x00:byte]",
+                    "1|L--|WREG = WREG | Data[FSR2 + 0x0000:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x1001),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG | Data[FSR2 + 0x01:byte]",
+                    "1|L--|WREG = WREG | Data[FSR2 + 0x0001:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x10C3),
@@ -1139,8 +1139,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x1201),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = WREG | Data[FSR2 + 0x01:byte]",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = WREG | Data[FSR2 + 0x0001:byte]",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x12C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1181,12 +1181,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x5000),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte]",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x5001),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte]",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x50C3),
@@ -1211,8 +1211,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x5201),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte]",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte]",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x52C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1275,7 +1275,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0xEB12, 0xF234),
                 "0|L--|0x00000200(4): 1 instructions",
-                    "1|L--|Data[0x0234:byte] = Data[FSR2 + 0x12:byte]"
+                    "1|L--|Data[0x0234:byte] = Data[FSR2 + 0x0012:byte]"
                 );
 
         }
@@ -1285,7 +1285,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0xEB84, 0xF067),
                 "0|L--|0x00000200(4): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x67:byte] = Data[FSR2 + 0x04:byte]"
+                    "1|L--|Data[FSR2 + 0x0067:byte] = Data[FSR2 + 0x0004:byte]"
                 );
 
         }
@@ -1295,7 +1295,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6E01),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = WREG"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = WREG"
                 );
 
             ExecTest(Words(0x6EC4),
@@ -1341,11 +1341,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x0200),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|PROD = Data[FSR2 + 0x00:byte] *u WREG"
+                    "1|L--|PROD = Data[FSR2 + 0x0000:byte] *u WREG"
                 );
             ExecTest(Words(0x025F),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|PROD = Data[FSR2 + 0x5F:byte] *u WREG"
+                    "1|L--|PROD = Data[FSR2 + 0x005F:byte] *u WREG"
                 );
             ExecTest(Words(0x02A8),
                 "0|L--|0x00000200(2): 1 instructions",
@@ -1358,8 +1358,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6C01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = -Data[FSR2 + 0x01:byte]",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = -Data[FSR2 + 0x0001:byte]",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
 
             ExecTest(Words(0x6CC4),
@@ -1426,8 +1426,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             ExecTest(Words(0x0005),
                 "0|L--|0x00000200(2): 3 instructions",
                     "1|L--|STKPTR = STKPTR + 0x01",
-                    "2|L--|Stack[STKPTR] = 000202",
-                    "3|L--|TOS = 000202"
+                    "2|L--|Stack[STKPTR] = 0x00000202",
+                    "3|L--|TOS = 0x00000202"
                 );
         }
 
@@ -1542,12 +1542,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3400),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[FSR2 + 0x00:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[FSR2 + 0x0000:byte], C)()",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3401),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[FSR2 + 0x01:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[FSR2 + 0x0001:byte], C)()",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x34C3),
@@ -1572,8 +1572,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x3601),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = __rlcf(Data[FSR2 + 0x01:byte], C)()",
-                    "2|L--|CZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = __rlcf(Data[FSR2 + 0x0001:byte], C)()",
+                    "2|L--|CZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x36C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1597,12 +1597,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x4400),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[FSR2 + 0x00:byte])()",
+                    "1|L--|WREG = __rlncf(Data[FSR2 + 0x0000:byte])()",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4401),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[FSR2 + 0x01:byte])()",
+                    "1|L--|WREG = __rlncf(Data[FSR2 + 0x0001:byte])()",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x44C3),
@@ -1627,8 +1627,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x4601),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = __rlncf(Data[FSR2 + 0x01:byte])()",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = __rlncf(Data[FSR2 + 0x0001:byte])()",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x46C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1652,12 +1652,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3000),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[FSR2 + 0x00:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[FSR2 + 0x0000:byte], C)()",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3001),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[FSR2 + 0x01:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[FSR2 + 0x0001:byte], C)()",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x30C3),
@@ -1682,8 +1682,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x3201),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = __rrcf(Data[FSR2 + 0x01:byte], C)()",
-                    "2|L--|CZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = __rrcf(Data[FSR2 + 0x0001:byte], C)()",
+                    "2|L--|CZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x32C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1707,12 +1707,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x4000),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[FSR2 + 0x00:byte])()",
+                    "1|L--|WREG = __rrncf(Data[FSR2 + 0x0000:byte])()",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4001),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[FSR2 + 0x01:byte])()",
+                    "1|L--|WREG = __rrncf(Data[FSR2 + 0x0001:byte])()",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x40C3),
@@ -1737,8 +1737,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x4201),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = __rrncf(Data[FSR2 + 0x01:byte])()",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = __rrncf(Data[FSR2 + 0x0001:byte])()",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x42C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1762,7 +1762,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6801),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = 0xFF"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = 0xFF"
                 );
 
             ExecTest(Words(0x68C4),
@@ -1807,12 +1807,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x5400),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[FSR2 + 0x00:byte] - !C",
+                    "1|L--|WREG = WREG - Data[FSR2 + 0x0000:byte] - !C",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5401),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG - Data[FSR2 + 0x01:byte] - !C",
+                    "1|L--|WREG = WREG - Data[FSR2 + 0x0001:byte] - !C",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x54C3),
@@ -1837,8 +1837,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x5601),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = WREG - Data[FSR2 + 0x01:byte] - !C",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = WREG - Data[FSR2 + 0x0001:byte] - !C",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x56C3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1890,12 +1890,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x5C00),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] - WREG",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] - WREG",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5C01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] - WREG",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] - WREG",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5CC3),
@@ -1920,8 +1920,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x5E01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] - WREG",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] - WREG",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x5EC3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -1945,12 +1945,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x5800),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x00:byte] - WREG - !C",
+                    "1|L--|WREG = Data[FSR2 + 0x0000:byte] - WREG - !C",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x5801),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[FSR2 + 0x01:byte] - WREG - !C",
+                    "1|L--|WREG = Data[FSR2 + 0x0001:byte] - WREG - !C",
                     "2|L--|CDCZOVN = cond(WREG)"
                 );
             ExecTest(Words(0x58C3),
@@ -1975,8 +1975,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x5A01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = Data[FSR2 + 0x01:byte] - WREG - !C",
-                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = Data[FSR2 + 0x0001:byte] - WREG - !C",
+                    "2|L--|CDCZOVN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x5AC3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -2000,11 +2000,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3800),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[FSR2 + 0x00:byte])()"
+                    "1|L--|WREG = __swapf(Data[FSR2 + 0x0000:byte])()"
                 );
             ExecTest(Words(0x3801),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[FSR2 + 0x01:byte])()"
+                    "1|L--|WREG = __swapf(Data[FSR2 + 0x0001:byte])()"
                 );
             ExecTest(Words(0x38C3),
                 "0|L--|0x00000200(2): 1 instructions",
@@ -2024,7 +2024,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x3A01),
                 "0|L--|0x00000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = __swapf(Data[FSR2 + 0x01:byte])()"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = __swapf(Data[FSR2 + 0x0001:byte])()"
                 );
             ExecTest(Words(0x3AC3),
                 "0|L--|0x00000200(2): 1 instructions",
@@ -2087,11 +2087,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x6600),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x00:byte] == 0x00) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0000:byte] == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x6601),
                 "0|T--|0x00000200(2): 1 instructions",
-                    "1|T--|if (Data[FSR2 + 0x01:byte] == 0x00) branch 0x00000204"
+                    "1|T--|if (Data[FSR2 + 0x0001:byte] == 0x00) branch 0x00000204"
                 );
             ExecTest(Words(0x66C3),
                 "0|T--|0x00000200(2): 1 instructions",
@@ -2131,12 +2131,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x1800),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG ^ Data[FSR2 + 0x00:byte]",
+                    "1|L--|WREG = WREG ^ Data[FSR2 + 0x0000:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x1801),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG ^ Data[FSR2 + 0x01:byte]",
+                    "1|L--|WREG = WREG ^ Data[FSR2 + 0x0001:byte]",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x18C3),
@@ -2161,8 +2161,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
             ExecTest(Words(0x1A01),
                 "0|L--|0x00000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 0x01:byte] = WREG ^ Data[FSR2 + 0x01:byte]",
-                    "2|L--|ZN = cond(Data[FSR2 + 0x01:byte])"
+                    "1|L--|Data[FSR2 + 0x0001:byte] = WREG ^ Data[FSR2 + 0x0001:byte]",
+                    "2|L--|ZN = cond(Data[FSR2 + 0x0001:byte])"
                 );
             ExecTest(Words(0x1AC3),
                 "0|L--|0x00000200(2): 2 instructions",
@@ -2262,13 +2262,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
             // MOVSF [0x38],POSTDEC0
             ExecTest(Words(0xEB38, 0xFFED),
                 "0|L--|0x00000200(4): 2 instructions",
-                    "1|L--|Data[FSR0:byte] = Data[FSR2 + 0x38:byte]",
+                    "1|L--|Data[FSR0:byte] = Data[FSR2 + 0x0038:byte]",
                     "2|L--|FSR0 = FSR0 - 0x0001"
                 );
             // MOVSS [0x38],[0x83]
             ExecTest(Words(0xEBB8, 0xFA75),
                 "0|L--|0x00000200(4): 1 instructions",
-                    "1|L--|Data[FSR2 + 0x75:byte] = Data[FSR2 + 0x38:byte]"
+                    "1|L--|Data[FSR2 + 0x0075:byte] = Data[FSR2 + 0x0038:byte]"
                 );
 
         }
@@ -2299,8 +2299,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "2|L--|0x00000202(2): 1 instructions",
                     "3|L--|nop",
                 "4|L--|0x00000204(2): 2 instructions",
-                    "5|L--|Data[FSR2 + 0x34:byte] = WREG | Data[FSR2 + 0x34:byte]",
-                    "6|L--|ZN = cond(Data[FSR2 + 0x34:byte])"
+                    "5|L--|Data[FSR2 + 0x0034:byte] = WREG | Data[FSR2 + 0x0034:byte]",
+                    "6|L--|ZN = cond(Data[FSR2 + 0x0034:byte])"
                 );
 
             ExecTest(Words(0x0002, 0xF123, 0xF456),
@@ -2386,8 +2386,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "0|L--|0x00000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|0x00000202(2): 2 instructions",
-                    "3|L--|Data[FSR2 + 0x34:byte] = WREG | Data[FSR2 + 0x34:byte]",
-                    "4|L--|ZN = cond(Data[FSR2 + 0x34:byte])"
+                    "3|L--|Data[FSR2 + 0x0034:byte] = WREG | Data[FSR2 + 0x0034:byte]",
+                    "4|L--|ZN = cond(Data[FSR2 + 0x0034:byte])"
                 );
 
             ExecTest(Words(0x006F, 0xF000),
@@ -2403,8 +2403,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "2|L--|0x00000202(2): 1 instructions",
                     "3|L--|nop",
                 "4|L--|0x00000204(2): 2 instructions",
-                    "5|L--|Data[FSR2 + 0x34:byte] = WREG | Data[FSR2 + 0x34:byte]",
-                    "6|L--|ZN = cond(Data[FSR2 + 0x34:byte])"
+                    "5|L--|Data[FSR2 + 0x0034:byte] = WREG | Data[FSR2 + 0x0034:byte]",
+                    "6|L--|ZN = cond(Data[FSR2 + 0x0034:byte])"
                 );
 
             ExecTest(Words(0x006F, 0xF123, 0xF456),
@@ -2462,8 +2462,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "0|L--|0x00000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|0x00000202(2): 2 instructions",
-                    "3|L--|Data[FSR2 + 0x34:byte] = WREG | Data[FSR2 + 0x34:byte]",
-                    "4|L--|ZN = cond(Data[FSR2 + 0x34:byte])"
+                    "3|L--|Data[FSR2 + 0x0034:byte] = WREG | Data[FSR2 + 0x0034:byte]",
+                    "4|L--|ZN = cond(Data[FSR2 + 0x0034:byte])"
                 );
 
             ExecTest(Words(0xEB80),
@@ -2475,8 +2475,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "0|L--|0x00000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|0x00000202(2): 2 instructions",
-                    "3|L--|Data[FSR2 + 0x34:byte] = WREG | Data[FSR2 + 0x34:byte]",
-                    "4|L--|ZN = cond(Data[FSR2 + 0x34:byte])"
+                    "3|L--|Data[FSR2 + 0x0034:byte] = WREG | Data[FSR2 + 0x0034:byte]",
+                    "4|L--|ZN = cond(Data[FSR2 + 0x0034:byte])"
                 );
 
             ExecTest(Words(0xEC00),
@@ -2488,8 +2488,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "0|L--|0x00000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|0x00000202(2): 2 instructions",
-                    "3|L--|Data[FSR2 + 0x34:byte] = WREG | Data[FSR2 + 0x34:byte]",
-                    "4|L--|ZN = cond(Data[FSR2 + 0x34:byte])"
+                    "3|L--|Data[FSR2 + 0x0034:byte] = WREG | Data[FSR2 + 0x0034:byte]",
+                    "4|L--|ZN = cond(Data[FSR2 + 0x0034:byte])"
                 );
 
             ExecTest(Words(0xED00),

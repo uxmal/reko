@@ -229,9 +229,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (word2 > 0xFF) // Second word must be 'xxxx-0000-kkkk-kkkk'
                     return new PICInstructionNoOpnd(Opcode.invalid);
 
-                var fsrreg = PICRegisters.GetRegister($"FSR{fsrnum}");
                 var imm12 = (ushort)((uInstr.Extract(0, 4) << 8) | word2);
-                return new PICInstructionWithFSR(opcode, fsrreg, imm12);
+                return new PICInstructionLFSRLoad(opcode, fsrnum, imm12);
 
             }
         }

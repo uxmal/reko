@@ -73,18 +73,21 @@ namespace Reko.Arch.Microchip.Common
     public class PICOperandFast : MachineOperand, IOperand
     {
 
-        private bool wTab;
-
         public PICOperandFast(ushort uFast, bool withTab = true) : base(PrimitiveType.Bool)
         {
-            IsFast = Constant.Bool(uFast != 0);
-            wTab = withTab;
+            IsFast = (uFast != 0);
+            WithTab = withTab;
         }
 
         /// <summary>
         /// The Fast flag.
         /// </summary>
-        public Constant IsFast { get; }
+        public bool IsFast { get; }
+
+        /// <summary>
+        /// The tabulation flag.
+        /// </summary>
+        public bool WithTab { get; }
 
         public virtual void Accept(IOperandVisitor visitor) => visitor.VisitFast(this);
         public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFast(this);
@@ -92,13 +95,7 @@ namespace Reko.Arch.Microchip.Common
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (IsFast.ToBoolean())
-            {
-                writer.WriteString(",");
-                if (wTab)
-                    writer.Tab();
-                writer.WriteString("FAST");
-            }
+            throw new NotImplementedException("Must be implemented by related instruction.");
         }
 
     }
@@ -194,13 +191,22 @@ namespace Reko.Arch.Microchip.Common
         }
 
         /// <summary>
+        /// Instantiates a Absolute Data Address operand. Used by MOVFF instructions.
+        /// </summary>
+        /// <param name="absAddr">The data byte address.</param>
+        public PICOperandDataMemoryAddress(PICDataAddress absAddr) : base((PrimitiveType)absAddr.DataType)
+        {
+            DataTarget = absAddr;
+        }
+
+        /// <summary>
         /// Gets the absolute data target byte address.
         /// </summary>
         public PICDataAddress DataTarget { get; }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString($"{DataTarget}");
+            writer.WriteString($"0x{DataTarget.Offset:X4}");
         }
 
         public void Accept(IOperandVisitor visitor) => visitor.VisitDataMemory(this);
@@ -210,34 +216,149 @@ namespace Reko.Arch.Microchip.Common
     }
 
     /// <summary>
-    /// A PIC data bank-relative memory operand.
+    /// Operand for "Instr f".
     /// </summary>
-    public class PICOperandOffsetBankedMemory : MachineOperand, IOperand
+    public class PICOperandMemF : MachineOperand, IOperand
     {
 
         /// <summary>
         /// Instantiates a banked data memory address operand.
         /// </summary>
-        /// <param name="bsr">The BSR register or none for Access-RAM.</param>
         /// <param name="off">The offset in the memory bank.</param>
-        /// <param name="accFlag">True to specify the Access-RAM bank.</param>
-        public PICOperandOffsetBankedMemory(Constant off) : base(PrimitiveType.UInt16)
+        public PICOperandMemF(ushort off) : base(PrimitiveType.Byte)
         {
-            Offset = off;
+            Offset =(byte)off;
         }
 
         /// <summary>
-        /// Gets the bank offset or absolute data address.
+        /// Gets the bank offset.
         /// </summary>
-        public Constant Offset { get; }
+        public byte Offset { get; }
 
-        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitOffsetBankedMem(this);
-        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitOffsetBankedMem(this);
-        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitOffsetBankedMem(this, context);
+        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitMemF(this);
+        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemF(this);
+        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemF(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString($"{Offset}");
+            writer.WriteString($"0x{Offset:X2}");
+        }
+
+    }
+
+    /// <summary>
+    /// Operand for "Instr f,a".
+    /// </summary>
+    public class PICOperandMemFA : PICOperandMemF
+    {
+
+        public PICOperandMemFA(ushort off, ushort access) : base(off)
+        {
+            IsAccess = (access == 0);
+        }
+
+        /// <summary>
+        /// Gets the Access-RAM indicator.
+        /// </summary>
+        public bool IsAccess { get; }
+
+        public override void Accept(IOperandVisitor visitor) => visitor.VisitMemFA(this);
+        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemFA(this);
+        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemFA(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            base.Write(writer, options);
+            writer.WriteString((IsAccess ? ",ACCESS" : ""));
+        }
+
+    }
+
+    /// <summary>
+    /// Operand for "Instr f,b".
+    /// </summary>
+    public class PICOperandMemBitNo : MachineOperand, IOperand
+    {
+
+        public PICOperandMemBitNo(ushort bitno) : base(PrimitiveType.Byte)
+        {
+            BitNo = (byte)bitno;
+        }
+
+        /// <summary>
+        /// Gets the bit number.
+        /// </summary>
+        public byte BitNo { get; }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitMemBitNo(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemBitNo(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemBitNo(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString($"{BitNo}");
+        }
+
+    }
+
+    /// <summary>
+    /// Operand for "Instr f,d".
+    /// </summary>
+    public class PICOperandMemWRegDest : MachineOperand, IOperand
+    {
+
+        public PICOperandMemWRegDest(ushort dest) : base(PrimitiveType.Bool)
+        {
+            WRegIsDest = (dest == 0);
+        }
+
+        /// <summary>
+        /// Gets the destination indicator.
+        /// </summary>
+        public bool WRegIsDest { get; }
+
+        public void Accept(IOperandVisitor visitor) => visitor.VisitMemWRegDest(this);
+        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemWRegDest(this);
+        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemWRegDest(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            writer.WriteString(WRegIsDest ? ",W" : ",F");
+        }
+
+    }
+
+    /// <summary>
+    /// A PIC FSR register number operand.
+    /// </summary>
+    public class PICOperandFSRNum : MachineOperand, IOperand
+    {
+        /// <summary>
+        /// Instantiates a FSR number operand.
+        /// </summary>
+        /// <param name="fsrnum">Gets the FSR register number.</param>
+        public PICOperandFSRNum(ushort fsrnum) : base(PrimitiveType.Byte)
+        {
+            FSRNum = (byte)fsrnum;
+        }
+
+        /// <summary>
+        /// Gets the FSR register number.
+        /// </summary>
+        public byte FSRNum { get; }
+
+        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitFSRNumber(this);
+        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitFSRNumber(this);
+        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitFSRNumber(this, context);
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            if (FSRNum == 255)
+            {
+                writer.WriteString("FSR");
+                return;
+            }
+            writer.WriteString($"FSR{FSRNum}");
         }
 
     }
@@ -250,18 +371,36 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Instantiates a FSR indexation mode operand.
         /// </summary>
+        /// <param name="fsr">The index register.</param>
         /// <param name="off">The offset relative to the FSR register content.</param>
         /// <param name="mode">The indexation mode with the FSR.</param>
-        public PICOperandFSRIndexation(Constant off, FSRIndexedMode mode) : base((PrimitiveType)off.DataType)
+        public PICOperandFSRIndexation(ushort fsrnum, ushort off, FSRIndexedMode mode) : base(PrimitiveType.Byte)
         {
+            FSRNum = (byte)fsrnum;
             Offset = off;
             Mode = mode;
         }
 
         /// <summary>
+        /// Instantiates an implicit FSR2 indexation mode operand.
+        /// </summary>
+        /// <param name="off">The offset relative to the FSR register content.</param>
+        public PICOperandFSRIndexation(ushort off) : base(PrimitiveType.Byte)
+        {
+            FSRNum = 255;
+            Offset = off;
+            Mode = FSRIndexedMode.FSR2INDEXED;
+        }
+
+        /// <summary>
+        /// Gets the the index register.
+        /// </summary>
+        public byte FSRNum { get; }
+
+        /// <summary>
         /// Gets the offset to the index register.
         /// </summary>
-        public Constant Offset { get; }
+        public ushort Offset { get; }
 
         /// <summary>
         /// Gets the indexation mode.
@@ -274,64 +413,45 @@ namespace Reko.Arch.Microchip.Common
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            switch (Mode)
+            {
+                case FSRIndexedMode.None:
+                    if (FSRNum == 255)
+                    {
+                        writer.WriteString($"[0x{Offset:X2}]");
+                        return;
+                    }
+                    writer.WriteString($"FSR{FSRNum},0x{Offset:X2}");
+                    return;
+
+                case FSRIndexedMode.FSR2INDEXED:
+                    writer.WriteString($"[0x{Offset:X2}]");
+                    return;
+                case FSRIndexedMode.INDEXED:
+                    writer.WriteString($"{Offset}[{FSRNum}]");
+                    return;
+
+                case FSRIndexedMode.POSTDEC:
+                    writer.WriteString($"FSR{FSRNum}--");
+                    return;
+                case FSRIndexedMode.POSTINC:
+                    writer.WriteString($"FSR{FSRNum}++");
+                    return;
+                case FSRIndexedMode.PREDEC:
+                    writer.WriteString($"--FSR{FSRNum}");
+                    return;
+                case FSRIndexedMode.PREINC:
+                    writer.WriteString($"++FSR{FSRNum}");
+                    return;
+                case FSRIndexedMode.INDF:
+                    writer.WriteString($"[{FSRNum}]");
+                    return;
+                case FSRIndexedMode.PLUSW:
+                    writer.WriteString($"[FSR{FSRNum}+WREG]");
+                    return;
+            }
+
             throw new NotImplementedException();
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC register with destination flag (like "f,d").
-    /// Used by Byte-oriented instructions (ADDWF, XORWF, ...)
-    /// </summary>
-    public class PICOperandWregDest : MachineOperand, IOperand
-    {
-
-        /// <summary>
-        /// Gets the indication if the Working Register is the destination of the operation.
-        /// If false, the Register is the destination.
-        /// </summary>
-        public readonly Constant WregIsDest;
-
-        public PICOperandWregDest(ushort dest) : base(PrimitiveType.Bool)
-        {
-            WregIsDest = Constant.Bool(dest == 0);
-        }
-
-        public void Accept(IOperandVisitor visitor) => visitor.VisitWregDest(this);
-        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitWregDest(this);
-        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitWregDest(this, context);
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.WriteString((WregIsDest.ToBoolean() ? ",W" : ",F"));
-        }
-
-    }
-
-    /// <summary>
-    /// A PIC memory address (like "f,d,a").
-    /// Used by Byte-oriented instructions (ADDWF, XORWF, ...)
-    /// </summary>
-    public class PICOperandIsAccessBank : MachineOperand, IOperand
-    {
-
-        public PICOperandIsAccessBank(ushort acc) : base(PrimitiveType.Bool)
-        {
-            IsAccessBank = Constant.Bool(acc == 0);
-        }
-
-        /// <summary>
-        /// Gets the indication if the bank offset referred to the Access-RAM. Applicable to PIC18 only.
-        /// </summary>
-        public Constant IsAccessBank { get; }
-
-        public void Accept(IOperandVisitor visitor) => visitor.VisitIsAccessBank(this);
-        public T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitIsAccessBank(this);
-        public T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitIsAccessBank(this, context);
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.WriteString((IsAccessBank.ToBoolean() ? ",ACCESS" : ""));
         }
 
     }

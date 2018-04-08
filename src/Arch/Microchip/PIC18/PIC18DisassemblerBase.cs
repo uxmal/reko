@@ -314,7 +314,7 @@ namespace Reko.Arch.Microchip.PIC18
                 var adr = uInstr.Extract(0, 8);
                 var acc = uInstr.Extract(8, 1);
                 var bitno = uInstr.Extract(9, 3);
-                return new PICInstructionMemBitAccess(opcode, adr, bitno, acc);
+                return new PICInstructionMemFBA(opcode, adr, bitno, acc);
             }
         }
 
@@ -334,7 +334,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 var adr = uInstr.Extract(0, 8);
                 var acc = uInstr.Extract(8, 1);
-                return new PICInstructionMemAccess(opcode, adr, acc);
+                return new PICInstructionMemFA(opcode, adr, acc);
             }
         }
 
@@ -356,7 +356,7 @@ namespace Reko.Arch.Microchip.PIC18
                 var adr = uInstr.Extract(0, 8);
                 var acc = uInstr.Extract(8, 1);
                 var dst = uInstr.Extract(9, 1);
-                return new PICInstructionMemWregDestAccess(opcode, adr, dst, acc);
+                return new PICInstructionMemFDA(opcode, adr, dst, acc);
             }
         }
 

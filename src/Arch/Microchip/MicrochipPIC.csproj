@@ -79,10 +79,8 @@
     <Compile Include="PIC16\FullFeatured\PIC16FullRewriter.cs" />
     <Compile Include="PIC16\FullFeatured\PIC16FullRegisters.cs" />
     <Compile Include="PIC16\FullFeatured\PIC16FullDisasm.cs" />
-    <Compile Include="PIC16\IPIC16OperandVisitor.cs" />
     <Compile Include="PIC16\PIC16BankedAddress.cs" />
     <Compile Include="PIC16\PIC16CondCodes.cs" />
-    <Compile Include="PIC16\PIC16Operands.cs" />
     <Compile Include="PIC16\PIC16Architecture.cs" />
     <Compile Include="PIC16\PIC16DisassemblerBase.cs" />
     <Compile Include="PIC16\PIC16MemoryDescriptor.cs" />

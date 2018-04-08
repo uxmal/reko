@@ -152,7 +152,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets a value indicating whether this PIC register has attached registers.
         /// </summary>
-        public bool HasAttachedRegs => (AttachedRegs.Count() > 0);
+        public bool HasAttachedRegs => ((AttachedRegs?.Count() ?? 0) > 0);
 
         /// <summary>
         /// Gets the bit-fields composing this register. Sorted by width then position.
@@ -162,7 +162,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets a value indicating whether this PIC register is composed of bit-fields.
         /// </summary>
-        public bool HasBitFields => (BitFields.Count() > 0);
+        public bool HasBitFields => ((BitFields?.Count() ??0) > 0);
 
         /// <summary>
         /// The "None" PIC register.

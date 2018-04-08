@@ -192,8 +192,8 @@ namespace Reko.Arch.Microchip.PIC16
         {
             switch (op)
             {
-                case PIC16BankedOperand bank:
-                    return PICDataAddress.Ptr(bank.BankAddr);
+                case PICOperandMemF bank:
+                    return PICDataAddress.Ptr(bank.Offset);
 
                 default:
                     throw new InvalidOperationException($"Invalid bank memory address operand.");
@@ -202,77 +202,62 @@ namespace Reko.Arch.Microchip.PIC16
 
         protected Expression GetDstMemDataAddress(MachineOperand op)
         {
-            if (op is PIC16DataByteWithDestOperand wbank)
+            if (op is PICOperandMemWRegDest wdest)
             {
-                if (wbank.WregIsDest.ToBoolean())
+                if (wdest.WRegIsDest)
                     return Wreg;
             }
             return GetMemDataAddress(op);
         }
 
-        protected Constant GetBitMask(MachineOperand op, bool revert)
-        {
-            switch (op)
-            {
-                case PIC16DataBitOperand bitaddr:
-                    int mask = (1 << bitaddr.BitNumber.ToByte());
-                    if (revert)
-                        mask = ~mask;
-                    return Constant.Byte((byte)mask);
-
-                default:
-                    throw new InvalidOperationException("Invalid bit number operand.");
-            }
-        }
-
         private void Rewrite_ADDLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.IAdd(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.IAdd(Wreg, k.ImmediateValue));
             SetStatusFlags(Wreg);
         }
 
         private void Rewrite_ADDWF()
         {
             var src = GetMemDataAddress(instrCurr.op1);
-            var dst = GetDstMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op2);
             m.Assign(dst, m.IAdd(Wreg, src));
             SetStatusFlags(dst);
         }
 
         private void Rewrite_ANDLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.And(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.And(Wreg, k.ImmediateValue));
             SetStatusFlags(Wreg);
         }
 
         private void Rewrite_ANDWF()
         {
             var src = GetMemDataAddress(instrCurr.op1);
-            var dst = GetDstMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op2);
             m.Assign(dst, m.And(Wreg, src));
             SetStatusFlags(dst);
         }
 
         void Rewrite_BCF()
         {
-            var mask = GetBitMask(instrCurr.op1, true);
+            var mask = GetBitMask(instrCurr.op2, true);
         }
 
         void Rewrite_BSF()
         {
-            var mask = GetBitMask(instrCurr.op1, false);
+            var mask = GetBitMask(instrCurr.op2, false);
         }
 
         void Rewrite_BTFSC()
         {
-            var mask = GetBitMask(instrCurr.op1, true);
+            var mask = GetBitMask(instrCurr.op2, true);
         }
 
         void Rewrite_BTFSS()
         {
-            var mask = GetBitMask(instrCurr.op1, false);
+            var mask = GetBitMask(instrCurr.op2, false);
         }
 
         void Rewrite_CALL()
@@ -294,9 +279,9 @@ namespace Reko.Arch.Microchip.PIC16
         {
             byte mask;
 
-            PICRegisterBitFieldStorage pd = PIC16Registers.PD;
-            PICRegisterBitFieldStorage to = PIC16Registers.TO;
-            var status = binder.EnsureRegister(PIC16Registers.STATUS);
+            PICRegisterBitFieldStorage pd = PICRegisters.PD;
+            PICRegisterBitFieldStorage to = PICRegisters.TO;
+            var status = binder.EnsureRegister(PICRegisters.STATUS);
             mask = (byte)((1 << pd.BitPos) | (1 << to.BitPos));
             m.Assign(status, m.Or(status, Constant.Byte(mask)));
         }
@@ -327,15 +312,15 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_IORLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.Or(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.Or(Wreg, k.ImmediateValue));
             SetStatusFlags(Wreg);
         }
 
         void Rewrite_IORWF()
         {
             var src = GetMemDataAddress(instrCurr.op1);
-            var dst = GetDstMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op2);
             m.Assign(dst, m.Or(Wreg, src));
             SetStatusFlags(dst);
         }
@@ -346,8 +331,8 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_MOVLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, k);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, k.ImmediateValue);
             SetStatusFlags(Wreg);
         }
 
@@ -368,8 +353,8 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_RETLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, k);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, k.ImmediateValue);
             PopFromHWStackAccess();
             rtlc = RtlClass.Transfer;
             m.Return(0, 0);
@@ -397,8 +382,8 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_SUBLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.ISub(k, Wreg));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.ISub(k.ImmediateValue, Wreg));
             SetStatusFlags(Wreg);
         }
 
@@ -412,15 +397,15 @@ namespace Reko.Arch.Microchip.PIC16
 
         void Rewrite_XORLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.Xor(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.Xor(Wreg, k.ImmediateValue));
             SetStatusFlags(Wreg);
         }
 
         void Rewrite_XORWF()
         {
             var src = GetMemDataAddress(instrCurr.op1);
-            var dst = GetDstMemDataAddress(instrCurr.op1);
+            var dst = GetDstMemDataAddress(instrCurr.op2);
             m.Assign(dst, m.Xor(Wreg, src));
             SetStatusFlags(dst);
         }

@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         {
             VerifyDisasm("ANDWF\t0x23,W", "", 0x0523);
             VerifyDisasm("ANDWF\t0x5A,W", "", 0x055A);
-            VerifyDisasm("ANDWF\tEEADR,F", "", 0x0589);
+            VerifyDisasm("ANDWF\t0x09,F", "", 0x0589);
             VerifyDisasm("ANDWF\t0x23,F", "", 0x05A3);
             VerifyDisasm("ANDWF\t0x5A,F", "", 0x05DA);
             VerifyDisasm("ANDWF\t0x1A,F", "", 0x059A);
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         {
             VerifyDisasm("COMF\t0x12,W", "", 0x0912);
             VerifyDisasm("COMF\t0x5A,W", "", 0x095A);
-            VerifyDisasm("COMF\tEEADR,F", "", 0x0989);
+            VerifyDisasm("COMF\t0x09,F", "", 0x0989);
             VerifyDisasm("COMF\t0x23,W", "", 0x0923);
             VerifyDisasm("COMF\t0x77,W", "", 0x0977);
             VerifyDisasm("COMF\tPCLATH,F", "", 0x098A);
@@ -163,10 +163,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Basic_Disasm_DECF()
         {
-            VerifyDisasm("DECF\tTMR0,W", "", 0x0301);
+            VerifyDisasm("DECF\t0x01,W", "", 0x0301);
             VerifyDisasm("DECF\t0x5F,W", "", 0x035F);
             VerifyDisasm("DECF\t0x44,W", "", 0x0344);
-            VerifyDisasm("DECF\tTMR0,F", "", 0x0381);
+            VerifyDisasm("DECF\t0x01,F", "", 0x0381);
             VerifyDisasm("DECF\t0x5F,F", "", 0x03DF);
             VerifyDisasm("DECF\t0x3B,F", "", 0x03BB);
             VerifyDisasm("DECF\t0x44,F", "", 0x03C4);
@@ -196,10 +196,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Basic_Disasm_INCF()
         {
-            VerifyDisasm("INCF\tTMR0,W", "", 0x0A01);
+            VerifyDisasm("INCF\t0x01,W", "", 0x0A01);
             VerifyDisasm("INCF\t0x5F,W", "", 0x0A5F);
             VerifyDisasm("INCF\t0x44,W", "", 0x0A44);
-            VerifyDisasm("INCF\tTMR0,F", "", 0x0A81);
+            VerifyDisasm("INCF\t0x01,F", "", 0x0A81);
             VerifyDisasm("INCF\t0x5F,W", "", 0x0A5F);
             VerifyDisasm("INCF\t0x3B,F", "", 0x0ABB);
             VerifyDisasm("INCF\t0x5B,F", "", 0x0ADB);
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         {
             VerifyDisasm("IORWF\t0x23,W", "", 0x0423);
             VerifyDisasm("IORWF\t0x5A,W", "", 0x045A);
-            VerifyDisasm("IORWF\tEEADR,F", "", 0x0489);
+            VerifyDisasm("IORWF\t0x09,F", "", 0x0489);
             VerifyDisasm("IORWF\t0x23,W", "", 0x0423);
             VerifyDisasm("IORWF\t0x5A,W", "", 0x045A);
             VerifyDisasm("IORWF\tPCLATH,F", "", 0x048A);

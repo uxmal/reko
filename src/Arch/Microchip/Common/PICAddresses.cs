@@ -52,13 +52,9 @@ namespace Reko.Arch.Microchip.Common
         }
 
 
-        #region Properties
-
         public override bool IsNull => false;
         public override ulong Offset => Value.ToUInt32(); 
         public override ushort? Selector => null;
-
-        #endregion
 
         #region Methods
 
@@ -72,7 +68,7 @@ namespace Reko.Arch.Microchip.Common
             => new PICProgAddress(Value);
 
         public override string GenerateName(string prefix, string suffix)
-            => $"{prefix}{Value:X6}{suffix}";
+            => $"{prefix}{Value.ToUInt32():X6}{suffix}";
 
         public override Address NewOffset(ulong offset)
             => new PICProgAddress((uint)offset);
@@ -88,9 +84,6 @@ namespace Reko.Arch.Microchip.Common
 
         public override ulong ToLinear()
             => Value.ToUInt32();
-
-        public override string ToString()
-            => $"{Value:X6}";
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.
@@ -111,6 +104,9 @@ namespace Reko.Arch.Microchip.Common
         /// </returns>
         public static PICProgAddress Ptr(Address aaddr)
             => new PICProgAddress(aaddr.ToUInt32());
+
+        public override string ToString()
+            => $"{Value}";
 
         #endregion
     }
@@ -161,7 +157,7 @@ namespace Reko.Arch.Microchip.Common
             => new PICDataAddress(Value);
 
         public override string GenerateName(string prefix, string suffix)
-            => $"{prefix}{Value:X4}{suffix}";
+            => $"{prefix}{Value.ToUInt16():X4}{suffix}";
 
         public override Address NewOffset(ulong offset)
             => new PICDataAddress((uint)offset);
@@ -178,14 +174,14 @@ namespace Reko.Arch.Microchip.Common
         public override ulong ToLinear()
             => Value.ToUInt32();
 
-        public override string ToString()
-            => $"0x{Value.ToUInt16():X4}";
-
         public static PICDataAddress Ptr(uint addr)
             => new PICDataAddress(addr);
 
         public static PICDataAddress Ptr(Address aaddr)
             => new PICDataAddress(aaddr.ToUInt32());
+
+        public override string ToString()
+            => $"{Value.ToUInt16():X4}";
 
         #endregion
 

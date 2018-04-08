@@ -57,7 +57,7 @@ namespace Reko.Arch.Microchip.Common
                 case PICOperandProgMemoryAddress prog:
                     return prog.CodeTarget;
 
-                case PICOperandOffsetBankedMemory data:
+                case PICOperandMemF data:
                     return CreateMemoryAccess(instr, data, opWidth, state);
 
 
@@ -73,7 +73,7 @@ namespace Reko.Arch.Microchip.Common
                 return Constant.Create(imm.Width, imm.ImmediateValue.ToUInt32());
         }
 
-        public Expression CreateMemoryAccess(PICInstruction instr, PICOperandOffsetBankedMemory mem, DataType dt, PICProcessorState state)
+        public Expression CreateMemoryAccess(PICInstruction instr, PICOperandMemF mem, DataType dt, PICProcessorState state)
         {
             //            Expression expr = EffectiveAddressExpression(instr, mem, state);
             //            if (IsSegmentedAccessRequired ||
@@ -91,9 +91,9 @@ namespace Reko.Arch.Microchip.Common
             return null; 
         }
 
-        private Expression ImportedGlobal(Address addrInstruction, PICOperandOffsetBankedMemory data)
+        private Expression ImportedGlobal(Address addrInstruction, PICOperandDataMemoryAddress data)
         {
-            if (data != null && data.IsAbsolute)
+            if (data != null)
                 return host.GetImport(Address.Ptr32(data.DataTarget.ToUInt32()), addrInstruction);
             return null;
         }

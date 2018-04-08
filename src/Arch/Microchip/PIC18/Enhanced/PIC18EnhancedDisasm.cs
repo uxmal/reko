@@ -258,9 +258,8 @@ namespace Reko.Arch.Microchip.PIC18
                 byte fsrnum = (byte)uInstr.Extract(6, 2);
                 if (fsrnum >= 3)
                     return null;
-                var fsrreg = PICRegisters.GetRegister($"FSR{fsrnum}");
-                var imm6 = uInstr.Extract(0, 6);
-                return new PICInstructionWithFSR(opcode, fsrreg, imm6);
+                var imm6 = (byte)uInstr.Extract(0, 6);
+                return new PICInstructionFSRUArith(opcode, fsrnum, imm6);
             }
         }
 
@@ -282,7 +281,7 @@ namespace Reko.Arch.Microchip.PIC18
                     return new PICInstructionNoOpnd(Opcode.invalid);
 
                 var imm6 = uInstr.Extract(0, 6);
-                return new PICInstructionWithFSR(opcode, PIC18Registers.FSR2, imm6);
+                return new PICInstructionImmedByte(opcode, imm6);
             }
         }
 
@@ -422,9 +421,8 @@ namespace Reko.Arch.Microchip.PIC18
                 if (word2 > 0x3FF) // Second word must be 'xxxx-00kk-kkkk-kkkk'
                     return new PICInstructionNoOpnd(Opcode.invalid);
 
-                var fsrreg = PICRegisters.GetRegister($"FSR{fsrnum}");
                 var imm14 = ((ushort)((uInstr.Extract(0, 4) << 10) | word2));
-                return new PICInstructionWithFSR(opcode, fsrreg, imm14);
+                return new PICInstructionLFSRLoad(opcode, fsrnum, imm14);
             }
         }
 

@@ -80,29 +80,6 @@ namespace Reko.Arch.Microchip.PIC16
         }
 
 
-        #region Helpers
-
-        private Expression GetFSRRegister(MachineOperand op)
-        {
-            if (op is PIC16FSROperand fsr)
-            {
-                switch (fsr.FSRNum.ToByte())
-                {
-                    case 0:
-                        return binder.EnsureRegister(PIC16FullRegisters.FSR0);
-                    case 1:
-                        return binder.EnsureRegister(PIC16FullRegisters.FSR1);
-                    default:
-                        throw new InvalidOperationException($"Invalid FSR number: {fsr.FSRNum.ToByte()}");
-                }
-            }
-            else
-                throw new InvalidOperationException($"Invalid FSR operand.");
-
-        }
-
-        #endregion
-
         #region Rewrite methods
 
         #endregion

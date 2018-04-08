@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Full_Disasm_basics()
         {
-            VerifyDisasm("ADDWF\tTRISA,W", "", 0x0712);
+            VerifyDisasm("ADDWF\t0x12,W", "", 0x0712);
             VerifyDisasm("ANDWF\t0x23,F", "", 0x05A3);
             VerifyDisasm("BCF\tSTATUS,C", "", 0x1003);
             VerifyDisasm("BSF\tSTATUS,DC", "", 0x1483);
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("INCF\tINDF1,F", "", 0x0A81);
             VerifyDisasm("INCFSZ\tPCLATH,F", "", 0x0F8A);
             VerifyDisasm("IORWF\tWREG,F", "", 0x0489);
-            VerifyDisasm("MOVF\tTRISA,W", "", 0x0812);
+            VerifyDisasm("MOVF\t0x12,W", "", 0x0812);
             VerifyDisasm("MOVWF\tFSR0L", "", 0x0084);
             VerifyDisasm("RETFIE", "", 0x0009);
             VerifyDisasm("RETURN", "", 0x0008);
@@ -83,14 +83,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         {
             VerifyDisasm("ADDFSR\tFSR0,0x12", "", 0x3112);
             VerifyDisasm("ADDFSR\tFSR1,0x1A", "", 0x315A);
-            VerifyDisasm("ADDFSR\tFSR1,-0xD", "", 0x3173);
-            VerifyDisasm("ADDFSR\tFSR0,0x0", "", 0x3100);
+            VerifyDisasm("ADDFSR\tFSR1,-0x0D", "", 0x3173);
+            VerifyDisasm("ADDFSR\tFSR0,0x00", "", 0x3100);
         }
 
         [Test]
         public void PIC16Full_Disasm_ADDWFC()
         {
-            VerifyDisasm("ADDWFC\tTRISA,W", "", 0x3D12);
+            VerifyDisasm("ADDWFC\t0x12,W", "", 0x3D12);
             VerifyDisasm("ADDWFC\t0x5A,W", "", 0x3D5A);
             VerifyDisasm("ADDWFC\t0x73,W", "", 0x3D73);
             VerifyDisasm("ADDWFC\tINDF0,W", "", 0x3D00);
@@ -176,12 +176,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("MOVIW\tFSR1++", "", 0x0016);
             VerifyDisasm("MOVIW\tFSR1--", "", 0x0017);
 
-            VerifyDisasm("MOVIW\t0x0[0]", "", 0x3F00);
-            VerifyDisasm("MOVIW\t0x0[1]", "", 0x3F40);
+            VerifyDisasm("MOVIW\t0x00[0]", "", 0x3F00);
+            VerifyDisasm("MOVIW\t0x00[1]", "", 0x3F40);
             VerifyDisasm("MOVIW\t0x1E[0]", "", 0x3F1E);
             VerifyDisasm("MOVIW\t0x16[1]", "", 0x3F56);
-            VerifyDisasm("MOVIW\t-0x2[0]", "", 0x3F3E);
-            VerifyDisasm("MOVIW\t-0xA[1]", "", 0x3F76);
+            VerifyDisasm("MOVIW\t-0x02[0]", "", 0x3F3E);
+            VerifyDisasm("MOVIW\t-0x0A[1]", "", 0x3F76);
         }
 
         [Test]
@@ -214,12 +214,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
             VerifyDisasm("MOVWI\tFSR1++", "", 0x001E);
             VerifyDisasm("MOVWI\tFSR1--", "", 0x001F);
 
-            VerifyDisasm("MOVWI\t0x0[0]", "", 0x3F80);
-            VerifyDisasm("MOVWI\t0x0[1]", "", 0x3FC0);
+            VerifyDisasm("MOVWI\t0x00[0]", "", 0x3F80);
+            VerifyDisasm("MOVWI\t0x00[1]", "", 0x3FC0);
             VerifyDisasm("MOVWI\t0x1E[0]", "", 0x3F9E);
             VerifyDisasm("MOVWI\t0x16[1]", "", 0x3FD6);
-            VerifyDisasm("MOVWI\t-0x2[0]", "", 0x3FBE);
-            VerifyDisasm("MOVWI\t-0xA[1]", "", 0x3FF6);
+            VerifyDisasm("MOVWI\t-0x02[0]", "", 0x3FBE);
+            VerifyDisasm("MOVWI\t-0x0A[1]", "", 0x3FF6);
         }
 
         [Test]
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
         [Test]
         public void PIC16Full_Disasm_SUBWFB()
         {
-            VerifyDisasm("SUBWFB\tTRISA,W", "", 0x3B12);
+            VerifyDisasm("SUBWFB\t0x12,W", "", 0x3B12);
             VerifyDisasm("SUBWFB\t0x5A,W", "", 0x3B5A);
             VerifyDisasm("SUBWFB\t0x69,F", "", 0x3BE9);
             VerifyDisasm("SUBWFB\t0x23,W", "", 0x3B23);

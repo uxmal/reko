@@ -782,19 +782,19 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
         [Test]
         public void PIC18EnhdExtd_Disasm_TBLRD()
         {
-            VerifyDisasm("TBLRD\t*", "", 0x0008);
-            VerifyDisasm("TBLRD\t*+", "", 0x0009);
-            VerifyDisasm("TBLRD\t*-", "", 0x000A);
-            VerifyDisasm("TBLRD\t+*", "", 0x000B);
+            VerifyDisasm("TBLRD*", "", 0x0008);
+            VerifyDisasm("TBLRD*+", "", 0x0009);
+            VerifyDisasm("TBLRD*-", "", 0x000A);
+            VerifyDisasm("TBLRD+*", "", 0x000B);
         }
 
         [Test]
         public void PIC18EnhdExtd_Disasm_TBLWT()
         {
-            VerifyDisasm("TBLWT\t*", "", 0x000C);
-            VerifyDisasm("TBLWT\t*+", "", 0x000D);
-            VerifyDisasm("TBLWT\t*-", "", 0x000E);
-            VerifyDisasm("TBLWT\t+*", "", 0x000F);
+            VerifyDisasm("TBLWT*", "", 0x000C);
+            VerifyDisasm("TBLWT*+", "", 0x000D);
+            VerifyDisasm("TBLWT*-", "", 0x000E);
+            VerifyDisasm("TBLWT+*", "", 0x000F);
         }
 
         [Test]

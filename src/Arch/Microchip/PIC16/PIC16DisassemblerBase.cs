@@ -173,7 +173,7 @@ namespace Reko.Arch.Microchip.PIC16
             {
                 var bitno = (byte)uInstr.Extract(7, 3);
                 var off = uInstr.Extract(0, 7);
-                return new PICInstructionMemBit(opcode, off, bitno);
+                return new PICInstructionMemFB(opcode, off, bitno);
             }
         }
 
@@ -192,7 +192,7 @@ namespace Reko.Arch.Microchip.PIC16
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 var fff = uInstr.Extract(0, 7);
-                return new PICInstructionMem(opcode, fff);
+                return new PICInstructionMemF(opcode, fff);
             }
         }
 
@@ -212,7 +212,7 @@ namespace Reko.Arch.Microchip.PIC16
             {
                 var fff = uInstr.Extract(0, 7);
                 var dest = uInstr.Extract(7, 1);
-                return new PICInstructionMemWregDest(opcode, fff, dest);
+                return new PICInstructionMemFD(opcode, fff, dest);
             }
         }
 
@@ -307,9 +307,8 @@ namespace Reko.Arch.Microchip.PIC16
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(6, 1);
-                var reg = PICRegisters.GetRegister($"FSR{fsrnum}");
                 sbyte lit = (sbyte)uInstr.ExtractSignExtend(0, 6);
-                return new PICInstructionWithFSR(opcode, reg, lit);
+                return new PICInstructionFSRIArith(opcode, fsrnum, lit);
             }
         }
 
@@ -328,9 +327,8 @@ namespace Reko.Arch.Microchip.PIC16
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(6, 1);
-                var reg = PICRegisters.GetRegister($"FSR{fsrnum}");
                 sbyte lit = (sbyte)uInstr.ExtractSignExtend(0, 6);
-                return new PICInstructionWithFSR(opcode, reg, lit);
+                return new PICInstructionWithFSR(opcode, fsrnum, lit, FSRIndexedMode.INDEXED);
             }
         }
 
@@ -352,9 +350,8 @@ namespace Reko.Arch.Microchip.PIC16
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
                 byte fsrnum = (byte)uInstr.Extract(2, 1);
-                var reg = PICRegisters.GetRegister($"FSR{fsrnum}");
                 byte modecode = (byte)uInstr.Extract(0, 2);
-                return new PICInstructionWithFSR(opcode, reg, 0, code2FSRIdx[modecode]);
+                return new PICInstructionWithFSR(opcode, fsrnum, 0, code2FSRIdx[modecode]);
             }
         }
 

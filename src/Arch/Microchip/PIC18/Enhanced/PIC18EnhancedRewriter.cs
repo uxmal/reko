@@ -98,19 +98,12 @@ namespace Reko.Arch.Microchip.PIC18
 
         }
 
-        private void RewriteADDFSR()
-        {
-            var fsr = GetFSRRegister(instrCurr.op1);
-            var k = GetImmediateValue(instrCurr.op2);
-            m.Assign(fsr, m.IAdd(fsr, k));
-        }
-
         private void RewriteADDULNK()
         {
-            var k = GetImmediateValue(instrCurr.op1);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            m.Assign(Fsr2, m.IAdd(Fsr2, k));
+            m.Assign(Fsr2, m.IAdd(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
             rtlc = RtlClass.Transfer;
@@ -149,26 +142,19 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewritePUSHL()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(DataMem8(Fsr2), k);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(DataMem8(Fsr2), k.ImmediateValue);
             m.Assign(Fsr2, m.IAdd(Fsr2, 1));
-        }
-
-        private void RewriteSUBFSR()
-        {
-            var fsr = GetFSRRegister(instrCurr.op1);
-            var k = GetImmediateValue(instrCurr.op2);
-            m.Assign(fsr, m.ISub(fsr, k));
         }
 
         private void RewriteSUBULNK()
         {
             rtlc = RtlClass.Transfer;
 
-            var k = GetImmediateValue(instrCurr.op1);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            m.Assign(Fsr2, m.ISub(Fsr2, k));
+            m.Assign(Fsr2, m.ISub(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
             rtlc = RtlClass.Transfer;
@@ -180,8 +166,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             switch (op)
             {
-                case PICOperandImmediate fsr2idx:
-                    return DataMem8(m.IAdd(Fsr2, fsr2idx.ImmediateValue));
+                case PICOperandFSRIndexation fsr2idx:
+                    return DataMem8(m.IAdd(Fsr2, fsr2idx.Offset));
 
                 default:
                     throw new InvalidOperationException($"Invalid FSR2 indexed address operand.");

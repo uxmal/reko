@@ -281,30 +281,15 @@ namespace Reko.Arch.Microchip.PIC18
 
         }
 
-        #region Helpers
-
-        private Expression GetFSR2IdxAddress(MachineOperand op)
-        {
-            switch (op)
-            {
-                case PICOperandImmediate fsr2idx:
-                    return DataMem8(m.IAdd(Fsr2, fsr2idx.ImmediateValue));
-
-                default:
-                    throw new InvalidOperationException($"Invalid FSR2 indexed address operand.");
-            }
-        }
-
-        #endregion
 
         #region Rewrite methods common to all PIC18 instruction-sets.
 
 
         /// <summary>
         /// Gets the source/destination direct address (SFR register or memory), addressing mode and actual source memory access
-        /// of a single operand instruction. (e.g. "SETF f,a").
+        /// of a single operand instruction. (e.g. "SETF f,a" or "CLRF f").
         /// </summary>
-        /// <param name="opernd">The instruction operand.</param>
+        /// <param name="opernd">The instruction memory operand.</param>
         /// <param name="memExpr">[out] The source/destination pointer expression to access memory.</param>
         /// <returns>
         /// Addressing mode and source memory/register.
@@ -312,49 +297,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         protected (FSRIndexedMode indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
         {
-            (FSRIndexedMode indMode, Expression memPtr) GetMemoryBankAccess()
-            {
-
-                switch (opernd)
-                {
-                    case PICOperandOffsetBankedMemory bmem:
-                        if (bmem.IsAbsolute)
-                            throw new InvalidOperationException($"Invalid direct addressing operand: opernd={opernd}.");
-
-                        var offset = bmem.Offset;
-                        // Check if access is a Direct Addressing one (bank designated by BSR).
-                        // 
-                        if (!bmem.IsBanked) // Address is BSR direct addressing.
-                            return (FSRIndexedMode.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(bmem.BankSelector), 8), offset)));
-
-                        // We have some sort of ACCESS RAM type of access; either Lower or Upper area.
-                        //
-                        if (PICMemoryDescriptor.CanBeFSR2IndexAddress(offset.ToUInt16()))
-                        {
-                            if (PICMemoryDescriptor.ExecMode == PICExecMode.Traditional)
-                                return (FSRIndexedMode.None, DataMem8(offset));
-                            
-                            return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
-                        }
-
-                        // Address is Upper ACCESS RAM addressing. Try to get any "known" SFR for this PIC.
-                        // 
-                        var accAddr = PIC18MemoryDescriptor.RemapDataAddress(offset.ToUInt16());
-                        if (PICRegisters.TryGetRegister(accAddr, out var sfr))
-                        {
-                            var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
-                            if (iop != FSRIndexedMode.None)
-                                return (iop, binder.EnsureRegister(fsrreg));
-                            return (iop, binder.EnsureRegister(sfr));
-                        }
-                        return (FSRIndexedMode.None, DataMem8(accAddr));
-
-                    default:
-                        throw new InvalidOperationException($"Invalid direct addressing operand: opernd={opernd}.");
-                }
-            }
-
-            var (indMode, memPtr) = GetMemoryBankAccess();
+            var (indMode, memPtr) = GetMemFileAccess(opernd);
             switch (indMode)
             {
                 case FSRIndexedMode.None:    // Direct mode
@@ -389,17 +332,10 @@ namespace Reko.Arch.Microchip.PIC18
         /// <returns>
         /// Addressing mode and source memory/register.
         /// </returns>
-        protected (FSRIndexedMode indMode, Expression memPtr) GetBinaryPtrs(MachineOperand opernd, out Expression memExpr, out Expression dst)
+        protected (FSRIndexedMode indMode, Expression memPtr) GetBinaryPtrs(out Expression memExpr, out Expression dst)
         {
-            bool DestIsWreg()
-            {
-                if (opernd is PICOperandWregDest bytedst)
-                    return bytedst.WregIsDest.ToBoolean();
-                return false;
-            }
-
-            var (indMode, memPtr) = GetUnaryPtrs(opernd, out memExpr);
-            dst = (DestIsWreg() ? Wreg : memExpr);
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out memExpr);
+            dst = (DestIsWreg(instrCurr.op2) ? Wreg : memExpr);
             return (indMode, memPtr);
         }
 
@@ -415,32 +351,7 @@ namespace Reko.Arch.Microchip.PIC18
         /// <exception cref="InvalidOperationException">Thrown when the instruction operand is invalid.</exception>
         protected (FSRIndexedMode indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
         {
-            (FSRIndexedMode indMode, Expression memPtr) GetDataAbsAddress()
-            {
-                switch (opernd)
-                {
-                    case PICOperandOffsetBankedMemory mem:
-                        if (mem.DataTarget == PICDataAddress.Invalid)
-                            throw new InvalidOperationException($"Invalid data absolute address operand.");
-
-                        if (PICRegisters.TryGetRegister(mem.DataTarget, out var sfrReg))
-                        {
-                            if (sfrReg != PICRegisterStorage.None)
-                            {
-                                var imode = PICRegisters.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
-                                if (imode != FSRIndexedMode.None)
-                                    return (imode, binder.EnsureRegister(fsr));
-                                return (imode, binder.EnsureRegister(sfrReg));
-                            }
-                        }
-                        return (FSRIndexedMode.None, DataMem8(PICDataAddress.Ptr(mem.DataTarget)));
-
-                    default:
-                        throw new InvalidOperationException($"Invalid data absolute address operand.");
-                }
-            }
-
-            var (indMode, memPtr) = GetDataAbsAddress();
+            var (indMode, memPtr) = GetDataAbsAddress(opernd);
             switch (indMode)
             {
                 case FSRIndexedMode.None:    // Direct mode
@@ -459,7 +370,7 @@ namespace Reko.Arch.Microchip.PIC18
                     break;
 
                 default:
-                    throw new InvalidOperationException("Unable to adjust indirect pointer.");
+                    throw new InvalidOperationException($"Unable to adjust indirect pointer. Indexation mode: {indMode}");
             }
 
             return (indMode, memPtr);
@@ -472,24 +383,99 @@ namespace Reko.Arch.Microchip.PIC18
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
-        private void RewriteADDFSR()
+        private Expression GetFSR2IdxAddress(MachineOperand op)
         {
-            var fsr = GetFSRRegister(instrCurr.op1);
-            var k = GetImmediateValue(instrCurr.op2);
-            m.Assign(fsr, m.IAdd(fsr, k));
+            switch (op)
+            {
+                case PICOperandImmediate fsr2idx:
+                    return DataMem8(m.IAdd(Fsr2, fsr2idx.ImmediateValue));
+
+                default:
+                    throw new InvalidOperationException($"Invalid FSR2 indexed address operand.");
+            }
+        }
+
+        private (FSRIndexedMode indMode, Expression memPtr) GetMemFileAccess(MachineOperand opernd)
+        {
+            switch (opernd)
+            {
+                case PICOperandMemFA memFA:
+                    var offset = memFA.Offset;
+                    var isaccess = memFA.IsAccess;
+                    if (isaccess)
+                    {
+                        if (PICMemoryDescriptor.ExecMode != PICExecMode.Traditional
+                            &&
+                            PICMemoryDescriptor.CanBeFSR2IndexAddress(offset))
+                            return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
+                        var remapAddr = PICMemoryDescriptor.RemapDataAddress(offset);
+                        if (PICRegisters.TryGetRegister(remapAddr, out var sfr))
+                        {
+                            var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
+                            if (iop != FSRIndexedMode.None)
+                                return (iop, binder.EnsureRegister(fsrreg));
+                            return (iop, binder.EnsureRegister(sfr));
+                        }
+                        return (FSRIndexedMode.None, DataMem8(remapAddr));
+                    }
+                    return (FSRIndexedMode.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(PIC18Registers.BSR), 8), offset)));
+
+                case PICOperandRegister reg:
+                    var iopr = PICRegisters.IndirectOpMode(reg.Register, out PICRegisterStorage regreg);
+                    if (iopr != FSRIndexedMode.None)
+                        return (iopr, binder.EnsureRegister(regreg));
+                    return (iopr, binder.EnsureRegister(reg.Register));
+
+                default:
+                    throw new InvalidOperationException($"Invalid PIC18 instruction's operand: {opernd}");
+
+            }
+        }
+
+        private (FSRIndexedMode indMode, Expression memPtr) GetDataAbsAddress(MachineOperand opernd)
+        {
+            switch (opernd)
+            {
+                case PICOperandDataMemoryAddress absmem:
+                    if (absmem.DataTarget == PICDataAddress.Invalid)
+                        throw new InvalidOperationException($"Invalid data absolute address operand.");
+
+                    if (PICRegisters.TryGetRegister(absmem.DataTarget, out var sfrReg))
+                    {
+                        if (sfrReg != PICRegisterStorage.None)
+                        {
+                            var imode = PICRegisters.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
+                            if (imode != FSRIndexedMode.None)
+                                return (imode, binder.EnsureRegister(fsr));
+                            return (imode, binder.EnsureRegister(sfrReg));
+                        }
+                    }
+                    return (FSRIndexedMode.None, DataMem8(PICDataAddress.Ptr(absmem.DataTarget)));
+
+                default:
+                    throw new InvalidOperationException($"Invalid data absolute address operand.");
+            }
+        }
+
+        protected void RewriteADDFSR()
+        {
+            var fsrnum = instrCurr.op1 as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {instrCurr.op1}");
+            var imm = instrCurr.op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op2}");
+            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}"));
+            m.Assign(fsrreg, m.IAdd(fsrreg, imm.ImmediateValue));
         }
 
         private void RewriteADDLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.IAdd(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.IAdd(Wreg, k.ImmediateValue));
             SetStatusFlags(Wreg);
         }
 
         private void RewriteADDULNK()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Fsr2, m.IAdd(Fsr2, k));
+            var fsridx = instrCurr.op1 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR indexation operand: {instrCurr.op1}");
+            m.Assign(Fsr2, m.IAdd(Fsr2, fsridx.Offset));
             SetStatusFlags(Fsr2);
             rtlc = RtlClass.Transfer;
             m.Return(0, 0);
@@ -497,26 +483,26 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteADDWF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
-            ArithAssignIndirect(dst, m.IAdd(Wreg, memExpr), indMode, memPtr);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression lDestValue);
+            ArithAssignIndirect(lDestValue, m.IAdd(Wreg, memExpr), indMode, memPtr);
         }
 
         private void RewriteADDWFC()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
             ArithAssignIndirect(dst, m.IAdd(m.IAdd(Wreg, memExpr), carry), indMode, memPtr);
         }
 
         private void RewriteANDLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            ArithAssign(Wreg, m.And(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            ArithAssign(Wreg, m.And(Wreg, k.ImmediateValue));
         }
 
         private void RewriteANDWF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.And(Wreg, memExpr), indMode, memPtr);
         }
 
@@ -529,7 +515,7 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteBCF()
         {
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
-            var mask = GetBitMask(instrCurr.op1, true);
+            var mask = GetBitMask(instrCurr.op2, true);
             ArithAssignIndirect(memExpr, m.And(memExpr, mask), indMode, memPtr);
         }
 
@@ -583,7 +569,7 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteBSF()
         {
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
-            var mask = GetBitMask(instrCurr.op1, false);
+            var mask = GetBitMask(instrCurr.op2, false);
             ArithAssignIndirect(memExpr, m.Or(memExpr, mask), indMode, memPtr);
         }
 
@@ -591,7 +577,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             rtlc = RtlClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
-            var mask = GetBitMask(instrCurr.op1, false);
+            var mask = GetBitMask(instrCurr.op2, false);
             Expression res = null;
 
             switch (indMode)
@@ -624,7 +610,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             rtlc = RtlClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
-            var mask = GetBitMask(instrCurr.op1, false);
+            var mask = GetBitMask(instrCurr.op2, false);
             Expression res = null;
 
             switch (indMode)
@@ -657,7 +643,7 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteBTG()
         {
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out Expression memExpr);
-            var mask = GetBitMask(instrCurr.op1, false);
+            var mask = GetBitMask(instrCurr.op2, false);
             ArithAssignIndirect(memExpr, m.Xor(memExpr, mask), indMode, memPtr);
         }
 
@@ -669,10 +655,10 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCALL()
         {
+            var target =  instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid CALL target operand: {instrCurr.op1}.");
+            var fast = instrCurr.op2 as PICOperandFast ?? throw new InvalidOperationException($"Invalid FAST indicator operand: {instrCurr.op2}.");
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
-            var target = GetProgramAddress(instrCurr.op1);
-            Constant fast = GetFastIndicator(instrCurr.op2);
             Address retaddr = instrCurr.Address + instrCurr.Length;
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
             Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
@@ -680,15 +666,15 @@ namespace Reko.Arch.Microchip.PIC18
             var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
             m.Assign(tos, retaddr);
-            if (fast.ToBoolean() && !(statuss is null))
+            if (fast.IsFast && (statuss != null) && (statuss.Storage.Domain != StorageDomain.None))
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
-                m.Assign(statuss, binder.EnsureRegister(PIC18Registers.STATUS));
+                m.Assign(statuss, binder.EnsureRegister(PICRegisters.STATUS));
                 m.Assign(wregs, Wreg);
                 m.Assign(bsrs, binder.EnsureRegister(PIC18Registers.BSR));
             }
-            m.Call(target, 0);
+            m.Call(target.CodeTarget, 0);
         }
 
         private void RewriteCALLW()
@@ -741,8 +727,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             byte mask;
 
-            PICRegisterBitFieldStorage pd = PIC18Registers.PD;
-            PICRegisterBitFieldStorage to = PIC18Registers.TO;
+            PICRegisterBitFieldStorage pd = PICRegisters.PD;
+            PICRegisterBitFieldStorage to = PICRegisters.TO;
             Identifier pdreg = binder.EnsureRegister(pd.FlagRegister);
             Identifier toreg = binder.EnsureRegister(to.FlagRegister);
 
@@ -766,7 +752,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteCOMF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.Comp(memExpr), indMode, memPtr);
         }
 
@@ -802,74 +788,76 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteDECF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.ISub(memExpr, 1), indMode, memPtr);
         }
 
         private void RewriteDECFSZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.ISub(memExpr, 1), m.Eq0(dst), indMode, memPtr);
         }
 
         private void RewriteDCFSNZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.ISub(memExpr, 1), m.Ne0(dst), indMode, memPtr);
         }
 
         private void RewriteGOTO()
         {
+            var target = instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid GOTO target operand: {instrCurr.op1}.");
 
             rtlc = RtlClass.Transfer;
-            m.Goto(GetProgramAddress(instrCurr.op1));
+            m.Goto(target.CodeTarget);
         }
 
         private void RewriteINCF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.IAdd(memExpr, 1), indMode, memPtr);
         }
 
         private void RewriteINCFSZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.IAdd(memExpr, 1), m.Eq0(dst), indMode, memPtr);
         }
 
         private void RewriteINFSNZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithCondSkip(dst, m.IAdd(memExpr, 1), m.Ne0(dst), indMode, memPtr);
         }
 
         private void RewriteIORLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, m.Or(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, m.Or(Wreg, k.ImmediateValue));
             SetStatusFlags(Wreg);
         }
 
         private void RewriteIORWF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.Or(Wreg, memExpr), indMode, memPtr);
         }
 
         private void RewriteLFSR()
         {
-            var sfrN = GetFSRRegister(instrCurr.op1);
-            var k = GetImmediateValue(instrCurr.op2);
-            m.Assign(sfrN, k);
+            var fsrnum = instrCurr.op1 as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.op1}");
+            var k = instrCurr.op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op2}");
+            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}"));
+            m.Assign(fsrreg, k.ImmediateValue);
         }
 
         private void RewriteMOVF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, memExpr, indMode, memPtr);
         }
 
@@ -995,14 +983,14 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteMOVLB()
         {
             var bsr = binder.EnsureRegister(PIC18Registers.BSR);
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(bsr, k);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(bsr, k.ImmediateValue);
         }
 
         private void RewriteMOVLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(Wreg, k);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(Wreg, k.ImmediateValue);
         }
 
         private void RewriteMOVSF()
@@ -1028,8 +1016,8 @@ namespace Reko.Arch.Microchip.PIC18
         private void RewriteMULLW()
         {
             var prod = binder.EnsureRegister(PIC18Registers.PROD);
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(prod, m.UMul(Wreg, k));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(prod, m.UMul(Wreg, k.ImmediateValue));
         }
 
         private void RewriteMULWF()
@@ -1065,23 +1053,23 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewritePUSHL()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            m.Assign(DataMem8(Fsr2), k);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            m.Assign(DataMem8(Fsr2), k.ImmediateValue);
             m.Assign(Fsr2, m.IAdd(Fsr2, 1));
         }
 
         private void RewriteRCALL()
         {
+            var target = instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid CALL target operand: {instrCurr.op1}.");
             rtlc = RtlClass.Transfer | RtlClass.Call;
 
-            var target = GetProgramAddress(instrCurr.op1);
             var retaddr = instrCurr.Address + instrCurr.Length;
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
             var dst = PushToHWStackAccess();
             m.Assign(dst, retaddr);
             m.Assign(tos, retaddr);
-            m.Call(target, 0);
+            m.Call(target.CodeTarget, 0);
         }
 
         private void RewriteRESET()
@@ -1108,10 +1096,10 @@ namespace Reko.Arch.Microchip.PIC18
         {
             rtlc = RtlClass.Transfer;
 
-            var k = GetImmediateValue(instrCurr.op1);
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            m.Assign(Wreg, k);
+            m.Assign(Wreg, k.ImmediateValue);
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
             m.Return(0, 0);
@@ -1119,21 +1107,21 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteRETURN()
         {
+            var fast = instrCurr.op1 as PICOperandFast ?? throw new InvalidOperationException($"Invalid FAST indicator operand: {instrCurr.op1}.");
             rtlc = RtlClass.Transfer;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Constant fast = GetFastIndicator(instrCurr.op1);
             Identifier statuss = binder.EnsureRegister(PIC18Registers.STATUS_CSHAD);
 
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            if (fast.ToBoolean() && !(statuss is null))
+            if (fast.IsFast && (statuss != null) && (statuss.Storage.Domain != StorageDomain.None))
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
                 m.Assign(binder.EnsureRegister(PIC18Registers.BSR), bsrs);
                 m.Assign(Wreg, wregs);
-                m.Assign(binder.EnsureRegister(PIC18Registers.STATUS), statuss);
+                m.Assign(binder.EnsureRegister(PICRegisters.STATUS), statuss);
             }
             m.Return(0, 0);
         }
@@ -1142,7 +1130,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             //TODO:  PseudoProcedure(__rlcf) ?
 
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
             ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rlcf", PrimitiveType.Byte, memExpr, carry)), indMode, memPtr);
         }
@@ -1151,7 +1139,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             //TODO:  PseudoProcedure(__rlncf) ?
 
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rlncf", PrimitiveType.Byte, memExpr)), indMode, memPtr);
         }
 
@@ -1159,7 +1147,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             //TODO:  PseudoProcedure(__rrcf) ?
 
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
             ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rrcf", PrimitiveType.Byte, memExpr, carry)), indMode, memPtr);
         }
@@ -1168,7 +1156,7 @@ namespace Reko.Arch.Microchip.PIC18
         {
             //TODO:  PseudoProcedure(__rrncf) ?
 
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__rrncf", PrimitiveType.Byte, memExpr)), indMode, memPtr);
         }
 
@@ -1182,8 +1170,8 @@ namespace Reko.Arch.Microchip.PIC18
         {
             byte mask;
 
-            PICRegisterBitFieldStorage pd = PIC18Registers.PD;
-            PICRegisterBitFieldStorage to = PIC18Registers.TO;
+            PICRegisterBitFieldStorage pd = PICRegisters.PD;
+            PICRegisterBitFieldStorage to = PICRegisters.TO;
             Identifier pdreg = binder.EnsureRegister(pd.FlagRegister);
             Identifier toreg = binder.EnsureRegister(to.FlagRegister);
 
@@ -1205,34 +1193,35 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private void RewriteSUBFSR()
+        protected void RewriteSUBFSR()
         {
-            var fsr = GetFSRRegister(instrCurr.op1);
-            var k = GetImmediateValue(instrCurr.op2);
-            m.Assign(fsr, m.ISub(fsr, k));
+            var fsrnum = instrCurr.op1 as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {instrCurr.op1}");
+            var imm = instrCurr.op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op2}");
+            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}"));
+            m.Assign(fsrreg, m.ISub(fsrreg, imm.ImmediateValue));
         }
 
         private void RewriteSUBFWB()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var borrow = m.Not(FlagGroup(FlagM.C));
             ArithAssignIndirect(dst, m.ISub(m.ISub(Wreg, memExpr), borrow), indMode, memPtr);
         }
 
         private void RewriteSUBLW()
         {
-            var k = GetImmediateValue(instrCurr.op1);
-            ArithAssign(Wreg, m.ISub(k, Wreg));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            ArithAssign(Wreg, m.ISub(k.ImmediateValue, Wreg));
         }
 
         private void RewriteSUBULNK()
         {
             rtlc = RtlClass.Transfer;
 
-            var k = GetImmediateValue(instrCurr.op1);
+            var k = instrCurr.op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op2}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
-            m.Assign(Fsr2, m.ISub(Fsr2, k));
+            m.Assign(Fsr2, m.ISub(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
             m.Return(0, 0);
@@ -1240,35 +1229,35 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteSUBWF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.ISub(memExpr, Wreg), indMode, memPtr);
         }
 
         private void RewriteSUBWFB()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var borrow = m.Not(FlagGroup(FlagM.C));
             ArithAssignIndirect(dst, m.ISub(m.ISub(memExpr, Wreg), borrow), indMode, memPtr);
         }
 
         private void RewriteSWAPF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, memExpr)), indMode, memPtr);
         }
 
         private void RewriteTBLRD()
         {
+            var tblmode = instrCurr.op1 as PICOperandTBLRW ?? throw new InvalidOperationException($"Invalid TBLRD mode operand: {instrCurr.op1}.");
             var tblptr = binder.EnsureRegister(PIC18Registers.TBLPTR);
-            var tblmode = GetTBLRWMode(instrCurr.op1);
-            m.SideEffect(host.PseudoProcedure("__tblrd", VoidType.Instance, tblptr, tblmode));
+            m.SideEffect(host.PseudoProcedure("__tblrd", VoidType.Instance, tblptr, tblmode.TBLIncrMode));
         }
 
         private void RewriteTBLWT()
         {
+            var tblmode = instrCurr.op1 as PICOperandTBLRW ?? throw new InvalidOperationException($"Invalid TBLRD mode operand: {instrCurr.op1}.");
             var tblptr = binder.EnsureRegister(PIC18Registers.TBLPTR);
-            var tblmode = GetTBLRWMode(instrCurr.op1);
-            m.SideEffect(host.PseudoProcedure("__tblwt", VoidType.Instance, tblptr, tblmode));
+            m.SideEffect(host.PseudoProcedure("__tblwt", VoidType.Instance, tblptr, tblmode.TBLIncrMode));
         }
 
         private void RewriteTSTFSZ()
@@ -1280,13 +1269,13 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteXORLW()
         {
-            var src = GetImmediateValue(instrCurr.op1);
-            ArithAssign(Wreg, m.Xor(Wreg, src));
+            var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            ArithAssign(Wreg, m.Xor(Wreg, k.ImmediateValue));
         }
 
         private void RewriteXORWF()
         {
-            var (indMode, memPtr) = GetBinaryPtrs(instrCurr.op1, out Expression memExpr, out Expression dst);
+            var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             ArithAssignIndirect(dst, m.Xor(Wreg, memExpr), indMode, memPtr);
         }
 
