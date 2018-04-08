@@ -43,7 +43,7 @@ namespace Reko.Core.Code
 
         public override Instruction Accept(InstructionTransformer xform)
         {
-            return xform.VisitComment(this);
+            return xform.TransformComment(this);
         }
 
         public override void Accept(InstructionVisitor v)
