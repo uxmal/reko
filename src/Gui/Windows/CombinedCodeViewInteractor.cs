@@ -302,6 +302,7 @@ namespace Reko.Gui.Windows
                     switch (cmdId.ID)
                     {
                     case CmdIds.EditDeclaration:
+                    case CmdIds.EditComment:
                     case CmdIds.ViewCfgGraph:
                         status.Status = MenuStatus.Visible;
                         return true;
@@ -328,6 +329,7 @@ namespace Reko.Gui.Windows
                         : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
                     return true;
                 case CmdIds.EditDeclaration:
+                case CmdIds.EditComment:
                     status.Status = GetAnchorAddress() == null 
                         ? MenuStatus.Visible
                         : MenuStatus.Enabled | MenuStatus.Visible;
@@ -356,6 +358,9 @@ namespace Reko.Gui.Windows
                     return ChooseTextEncoding();
                 case CmdIds.EditDeclaration:
                     EditDeclaration();
+                    return true;
+                case CmdIds.EditComment:
+                    EditComment();
                     return true;
                 }
             }
@@ -442,6 +447,10 @@ namespace Reko.Gui.Windows
             var anchorPt = FocusedTextView.GetAnchorTopPoint();
             var screenPoint = FocusedTextView.PointToScreen(anchorPt);
             declarationFormInteractor.Show(screenPoint, program, addr);
+        }
+
+        private void EditComment()
+        {
         }
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
