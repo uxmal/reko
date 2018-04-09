@@ -40,7 +40,7 @@ namespace Reko.Gui.Windows.Controls
                     addrCur,
                     new MemoryTextSpan(
                         $"; {commentLines[commentOffset]}",
-                        UiStyles.MemoryWindow));
+                        UiStyles.CodeComment));
                 this.commentOffset++;
                 return true;
             }
