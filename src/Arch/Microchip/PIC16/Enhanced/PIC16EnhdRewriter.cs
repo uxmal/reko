@@ -139,7 +139,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ADDWFC()
         {
-            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            GetSrcAndDest(out var srcmem, out var dstmem);
             var carry = FlagGroup(FlagM.C);
             m.Assign(dstmem, m.IAdd(m.IAdd(Wreg, srcmem), carry));
             SetStatusFlags(dstmem);
@@ -147,7 +147,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ASRF()
         {
-            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            GetSrcAndDest(out var srcmem, out var dstmem);
             m.Assign(dstmem, m.Fn(host.PseudoProcedure("__asrf", PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
@@ -179,13 +179,13 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_LSLF()
         {
-            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            GetSrcAndDest(out var srcmem, out var dstmem);
             m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lslf", PrimitiveType.Byte, srcmem)));
         }
 
         private void Rewrite_LSRF()
         {
-            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            GetSrcAndDest(out var srcmem, out var dstmem);
             m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lsrf", PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
@@ -296,7 +296,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_SUBWFB()
         {
-            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            GetSrcAndDest(out var srcmem, out var dstmem);
             var borrow = m.Not(FlagGroup(FlagM.C));
             m.Assign(dstmem, m.ISub(m.ISub(Wreg, srcmem), borrow));
             SetStatusFlags(dstmem);

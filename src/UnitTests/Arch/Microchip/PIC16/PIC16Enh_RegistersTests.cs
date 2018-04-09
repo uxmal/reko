@@ -29,42 +29,42 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
     using static Common.Sample;
 
     [TestFixture]
-    public class PIC16Registers_Full_Tests
+    public class PIC16Enh_RegistersTests
     {
+
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public PIC16Registers_Full_Tests()
+        public PIC16Enh_RegistersTests()
         {
-            PICProcessorMode.GetMode(PIC16FullFeaturedName).CreateRegisters();
+            PICProcessorMode.GetMode(PIC16EnhancedName).CreateRegisters();
         }
 
         [Test]
-        public void PIC16Full_BitOffsetOfRegisters()
+        public void PIC16Enhd_BitOffsetOfRegisters()
         {
             Assert.AreEqual(0, PIC16Registers.WREG.BitAddress);
             Assert.AreEqual(0, PIC16Registers.PCL.BitAddress);
             Assert.AreEqual(0, PIC16Registers.STATUS.BitAddress);
-            Assert.AreEqual(0, PIC16FullRegisters.BSR.BitAddress);
-            Assert.AreEqual(0, PIC16FullRegisters.FSR0L.BitAddress);
-            Assert.AreEqual(8, PIC16FullRegisters.FSR0H.BitAddress);
-            Assert.AreEqual(0, PIC16FullRegisters.INDF0.BitAddress);
+            Assert.AreEqual(0, PIC16EnhancedRegisters.BSR.BitAddress);
+            Assert.AreEqual(0, PIC16EnhancedRegisters.FSR0L.BitAddress);
+            Assert.AreEqual(8, PIC16EnhancedRegisters.FSR0H.BitAddress);
+            Assert.AreEqual(0, PIC16EnhancedRegisters.INDF0.BitAddress);
         }
 
         [Test]
-        public void PIC16Full_GetSubRegisterOfFSR0()
+        public void PIC16Enhd_GetSubRegisterOfFSR0()
         {
-            Assert.AreSame(PIC16FullRegisters.FSR0L, PICRegisters.GetSubregister(PIC16FullRegisters.FSR0, 0, 8));
-            Assert.AreSame(PIC16FullRegisters.FSR0H, PICRegisters.GetSubregister(PIC16FullRegisters.FSR0, 8, 8));
+            Assert.AreSame(PIC16EnhancedRegisters.FSR0L, PICRegisters.GetSubregister(PIC16EnhancedRegisters.FSR0, 0, 8));
+            Assert.AreSame(PIC16EnhancedRegisters.FSR0H, PICRegisters.GetSubregister(PIC16EnhancedRegisters.FSR0, 8, 8));
         }
 
         [Test]
-        public void PIC16Full_GetSubRegisterOfFSR1()
+        public void PIC16Enhd_GetSubRegisterOfFSR1()
         {
-            Assert.AreSame(PIC16FullRegisters.FSR1L, PICRegisters.GetSubregister(PIC16FullRegisters.FSR1, 0, 8));
-            Assert.AreSame(PIC16FullRegisters.FSR1H, PICRegisters.GetSubregister(PIC16FullRegisters.FSR1, 8, 8));
+            Assert.AreSame(PIC16EnhancedRegisters.FSR1L, PICRegisters.GetSubregister(PIC16EnhancedRegisters.FSR1, 0, 8));
+            Assert.AreSame(PIC16EnhancedRegisters.FSR1H, PICRegisters.GetSubregister(PIC16EnhancedRegisters.FSR1, 8, 8));
         }
 
     }
-
 }

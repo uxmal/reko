@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
     using static Common.Sample;
 
     [TestFixture]
-    public class PIC16Registers_All_Tests
+    public class PIC16All_RegistersTests
     {
         static PICCrownking db = PICCrownking.GetDB();
 
