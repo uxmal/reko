@@ -744,11 +744,6 @@ namespace Reko.Arch.Microchip.Common
 
     public class PICInstructionWithFSR : PICInstruction
     {
-        public PICInstructionWithFSR(Opcode opcode, ushort fsrnum, ushort value, FSRIndexedMode mode)
-            : base(opcode, new PICOperandFSRIndexation(fsrnum, value, FSRIndexedMode.None))
-        {
-        }
-
         public PICInstructionWithFSR(Opcode opcode, ushort fsrnum, short value, FSRIndexedMode mode)
             : base(opcode, new PICOperandFSRIndexation(fsrnum, (ushort)value, mode))
         {
@@ -762,45 +757,34 @@ namespace Reko.Arch.Microchip.Common
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
 
-            switch (Opcode)
+            switch (fsridx.Mode)
             {
-                case Opcode.ADDULNK:
-                case Opcode.SUBULNK:
-                    writer.WriteString($"0x{fsridx.Offset:X2}");
-                    return;
-
-                case Opcode.MOVIW:
-                case Opcode.MOVWI:
-                    switch (fsridx.Mode)
+                case FSRIndexedMode.INDEXED:
+                    var soff = fsridx.Offset.ExtractSignExtend(0, 6);
+                    if (soff >= 0)
                     {
-                        case FSRIndexedMode.INDEXED:
-                            var soff = fsridx.Offset.ExtractSignExtend(0, 6);
-                            if (soff >= 0)
-                            {
-                                writer.WriteString($"0x{soff:X2}[{fsrnum}]");
-                            }
-                            else
-                            {
-                                writer.WriteString($"-0x{-soff:X2}[{fsrnum}]");
-                            }
-                            return;
-                        case FSRIndexedMode.POSTDEC:
-                            writer.WriteString($"FSR{fsrnum}--");
-                            return;
-                        case FSRIndexedMode.POSTINC:
-                            writer.WriteString($"FSR{fsrnum}++");
-                            return;
-                        case FSRIndexedMode.PREDEC:
-                            writer.WriteString($"--FSR{fsrnum}");
-                            return;
-                        case FSRIndexedMode.PREINC:
-                            writer.WriteString($"++FSR{fsrnum}");
-                            return;
+                        writer.WriteString($"0x{soff:X2}[{fsrnum}]");
                     }
+                    else
+                    {
+                        writer.WriteString($"-0x{-soff:X2}[{fsrnum}]");
+                    }
+                    break;
+                case FSRIndexedMode.POSTDEC:
+                    writer.WriteString($"FSR{fsrnum}--");
+                    break;
+                case FSRIndexedMode.POSTINC:
+                    writer.WriteString($"FSR{fsrnum}++");
+                    break;
+                case FSRIndexedMode.PREDEC:
+                    writer.WriteString($"--FSR{fsrnum}");
+                    break;
+                case FSRIndexedMode.PREINC:
+                    writer.WriteString($"++FSR{fsrnum}");
+                    break;
+                default:
                     throw new InvalidOperationException($"Invalid indexation '{fsridx}' for MOVI instruction.");
             }
-
-            throw new InvalidOperationException($"Invalid opcode '{Opcode}' for FSR-related instruction.");
         }
 
     }

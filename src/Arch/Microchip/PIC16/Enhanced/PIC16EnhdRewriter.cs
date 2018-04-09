@@ -21,8 +21,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using System;
 
 namespace Reko.Arch.Microchip.PIC16
@@ -60,29 +62,251 @@ namespace Reko.Arch.Microchip.PIC16
                     break;
 
                 case Opcode.ADDFSR:
+                    Rewrite_ADDFSR();
+                    break;
                 case Opcode.ADDWFC:
+                    Rewrite_ADDWFC();
+                    break;
                 case Opcode.ASRF:
+                    Rewrite_ASRF();
+                    break;
                 case Opcode.BRA:
+                    Rewrite_BRA();
+                    break;
                 case Opcode.BRW:
+                    Rewrite_BRW();
+                    break;
                 case Opcode.CALLW:
+                    Rewrite_CALLW();
+                    break;
                 case Opcode.LSLF:
+                    Rewrite_LSLF();
+                    break;
                 case Opcode.LSRF:
+                    Rewrite_LSRF();
+                    break;
                 case Opcode.MOVIW:
+                    Rewrite_MOVIW();
+                    break;
                 case Opcode.MOVLB:
+                    Rewrite_MOVLB();
+                    break;
                 case Opcode.MOVLP:
+                    Rewrite_MOVLP();
+                    break;
                 case Opcode.MOVWI:
+                    Rewrite_MOVWI();
+                    break;
                 case Opcode.RESET:
+                    Rewrite_RESET();
+                    break;
                 case Opcode.SUBWFB:
+                    Rewrite_SUBWFB();
+                    break;
                 case Opcode.TRIS:
+                    Rewrite_TRIS();
                     break;
             }
 
         }
 
 
-        #region Rewrite methods
+        private void Rewrite_ADDFSR()
+        {
+            var fsrnum = instrCurr.op1 as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.op1}");
+            var imm = instrCurr.op2 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op2}");
+            Identifier fsrreg;
+            switch (fsrnum.FSRNum)
+            {
+                case 0:
+                    fsrreg = binder.EnsureRegister(PIC16EnhancedRegisters.FSR0);
+                    break;
+                case 1:
+                    fsrreg = binder.EnsureRegister(PIC16EnhancedRegisters.FSR1);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid FSR number: {fsrnum.FSRNum}.");
+            }
+            if (imm.ImmediateValue.IsNegative)
+            {
+                m.Assign(fsrreg, m.ISub(fsrreg, imm.ImmediateValue.Negate()));
+            }
+            else
+            {
+                m.Assign(fsrreg, m.IAdd(fsrreg, imm.ImmediateValue));
+            }
+        }
 
-        #endregion
+        private void Rewrite_ADDWFC()
+        {
+            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            var carry = FlagGroup(FlagM.C);
+            m.Assign(dstmem, m.IAdd(m.IAdd(Wreg, srcmem), carry));
+            SetStatusFlags(dstmem);
+        }
+
+        private void Rewrite_ASRF()
+        {
+            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__asrf", PrimitiveType.Byte, srcmem)));
+            SetStatusFlags(dstmem);
+        }
+
+        private void Rewrite_BRA()
+        {
+            rtlc = RtlClass.Transfer;
+            var target = instrCurr.op1 as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.op1}");
+            m.Goto(target.CodeTarget);
+        }
+
+        private void Rewrite_BRW()
+        {
+            rtlc = RtlClass.Transfer;
+            Address nextAddr = instrCurr.Address + instrCurr.Length;
+            m.Goto(m.IAdd(nextAddr, Wreg));
+        }
+
+        private void Rewrite_CALLW()
+        {
+            rtlc = RtlClass.Transfer | RtlClass.Call;
+            var pclath = binder.EnsureRegister(PICRegisters.PCLATH);
+            var target = m.IAdd(m.Shl(pclath, 8), Wreg);
+            Address retaddr = instrCurr.Address + instrCurr.Length;
+            var dst = PushToHWStackAccess();
+            m.Assign(dst, retaddr);
+            m.Call(target, 0);
+        }
+
+        private void Rewrite_LSLF()
+        {
+            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lslf", PrimitiveType.Byte, srcmem)));
+        }
+
+        private void Rewrite_LSRF()
+        {
+            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lsrf", PrimitiveType.Byte, srcmem)));
+            SetStatusFlags(dstmem);
+        }
+
+        private void Rewrite_MOVIW()
+        {
+            var fsridx = instrCurr.op1 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.op1}");
+            Identifier fsrreg;
+            switch (fsridx.FSRNum)
+            {
+                case 0:
+                    fsrreg = binder.EnsureRegister(PIC16EnhancedRegisters.FSR0);
+                    break;
+                case 1:
+                    fsrreg = binder.EnsureRegister(PIC16EnhancedRegisters.FSR1);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid FSR number: {fsridx.FSRNum}.");
+            }
+            switch (fsridx.Mode)
+            {
+                case FSRIndexedMode.POSTDEC:
+                    m.Assign(Wreg, DataMem8(fsrreg));
+                    m.Assign(fsrreg, m.ISub(fsrreg, 1));
+                    break;
+                case FSRIndexedMode.POSTINC:
+                    m.Assign(Wreg, DataMem8(fsrreg));
+                    m.Assign(fsrreg, m.IAdd(fsrreg, 1));
+                    break;
+                case FSRIndexedMode.PREDEC:
+                    m.Assign(fsrreg, m.ISub(fsrreg, 1));
+                    m.Assign(Wreg, DataMem8(fsrreg));
+                    break;
+                case FSRIndexedMode.PREINC:
+                    m.Assign(fsrreg, m.IAdd(fsrreg, 1));
+                    m.Assign(Wreg, DataMem8(fsrreg));
+                    break;
+                case FSRIndexedMode.INDEXED:
+                    m.Assign(Wreg, DataMem8(m.IAdd(fsrreg, fsridx.Offset)));
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid FSR-indexed mode: {fsridx.Mode}");
+            }
+
+            SetStatusFlags(Wreg);
+        }
+
+        private void Rewrite_MOVLB()
+        {
+            var imm = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var bsr = binder.EnsureRegister(PIC16EnhancedRegisters.BSR);
+            m.Assign(bsr, imm.ImmediateValue);
+        }
+
+        private void Rewrite_MOVLP()
+        {
+            var imm = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
+            var pclath = binder.EnsureRegister(PIC16Registers.PCLATH);
+            m.Assign(pclath, imm.ImmediateValue);
+        }
+
+        private void Rewrite_MOVWI()
+        {
+            var fsridx = instrCurr.op1 as PICOperandFSRIndexation ?? throw new InvalidOperationException($"Invalid FSR-indexed operand: {instrCurr.op1}");
+            Identifier fsrreg;
+            switch (fsridx.FSRNum)
+            {
+                case 0:
+                    fsrreg = binder.EnsureRegister(PIC16EnhancedRegisters.FSR0);
+                    break;
+                case 1:
+                    fsrreg = binder.EnsureRegister(PIC16EnhancedRegisters.FSR1);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid FSR number: {fsridx.FSRNum}.");
+            }
+            switch (fsridx.Mode)
+            {
+                case FSRIndexedMode.POSTDEC:
+                    m.Assign(DataMem8(fsrreg), Wreg);
+                    m.Assign(fsrreg, m.ISub(fsrreg, 1));
+                    break;
+                case FSRIndexedMode.POSTINC:
+                    m.Assign(DataMem8(fsrreg), Wreg);
+                    m.Assign(fsrreg, m.IAdd(fsrreg, 1));
+                    break;
+                case FSRIndexedMode.PREDEC:
+                    m.Assign(fsrreg, m.ISub(fsrreg, 1));
+                    m.Assign(DataMem8(fsrreg), Wreg);
+                    break;
+                case FSRIndexedMode.PREINC:
+                    m.Assign(fsrreg, m.IAdd(fsrreg, 1));
+                    m.Assign(DataMem8(fsrreg), Wreg);
+                    break;
+                case FSRIndexedMode.INDEXED:
+                    m.Assign(DataMem8(m.IAdd(fsrreg, fsridx.Offset)), Wreg);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Invalid FSR-indexed mode: {fsridx.Mode}");
+            }
+
+        }
+
+        private void Rewrite_RESET()
+        {
+            m.Nop();
+        }
+
+        private void Rewrite_SUBWFB()
+        {
+            GetSrcAndDestMem(out var srcmem, out var dstmem);
+            var borrow = m.Not(FlagGroup(FlagM.C));
+            m.Assign(dstmem, m.ISub(m.ISub(Wreg, srcmem), borrow));
+            SetStatusFlags(dstmem);
+        }
+
+        private void Rewrite_TRIS()
+        {
+            m.Nop();
+        }
+
 
     }
 

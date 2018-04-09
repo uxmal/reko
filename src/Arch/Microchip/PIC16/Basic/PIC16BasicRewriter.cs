@@ -54,7 +54,6 @@ namespace Reko.Arch.Microchip.PIC16
             base.RewriteInstr(); // All is done with the base rewriter.
         }
 
-
     }
 
 }

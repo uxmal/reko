@@ -244,15 +244,6 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
-        protected bool DestIsWreg(MachineOperand opernd)
-        {
-            switch (opernd)
-            {
-                case PICOperandMemWRegDest wreg:
-                    return wreg.WRegIsDest;
-            }
-            return false;
-        }
     }
 
 }

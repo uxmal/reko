@@ -334,6 +334,16 @@ namespace Reko.Arch.Microchip.PIC18
         /// </returns>
         protected (FSRIndexedMode indMode, Expression memPtr) GetBinaryPtrs(out Expression memExpr, out Expression dst)
         {
+            bool DestIsWreg(MachineOperand opernd)
+            {
+                switch (opernd)
+                {
+                    case PICOperandMemWRegDest wreg:
+                        return wreg.WRegIsDest;
+                }
+                return false;
+            }
+
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out memExpr);
             dst = (DestIsWreg(instrCurr.op2) ? Wreg : memExpr);
             return (indMode, memPtr);
