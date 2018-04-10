@@ -619,7 +619,7 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live[r1].BitRange);
             Assert.IsTrue(bwslc.Step());
             Assert.AreEqual(1, bwslc.Live.Count);
-            Assert.AreEqual("@@@", bwslc.Live.First().Key.ToString());
+            Assert.AreEqual("r2", bwslc.Live.First().Key.ToString());
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
         }
     }
