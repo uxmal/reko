@@ -297,6 +297,7 @@
     </Compile>
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\Controls\TextViewPainter.cs" />
+    <Compile Include="Windows\Forms\CommentFormInteractor.cs" />
     <Compile Include="Windows\Forms\DeclarationFormInteractor.cs" />
     <Compile Include="Windows\Forms\DeclarationForm.cs">
       <SubType>Form</SubType>

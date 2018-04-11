@@ -53,6 +53,7 @@ namespace Reko.Gui.Windows
         private GViewer gViewer;
 
         private DeclarationFormInteractor declarationFormInteractor;
+        private CommentFormInteractor commentFormInteractor;
 
         private ImageSegment segment;
         private bool showProcedures;
@@ -259,6 +260,7 @@ namespace Reko.Gui.Windows
             this.navInteractor.Attach(this.combinedCodeView);
 
             declarationFormInteractor = new DeclarationFormInteractor(services);
+            commentFormInteractor = new CommentFormInteractor(services);
             previewInteractor = new PreviewInteractor(
                 services, 
                 this.program,
@@ -449,8 +451,21 @@ namespace Reko.Gui.Windows
             declarationFormInteractor.Show(screenPoint, program, addr);
         }
 
+        private Address GetCommentAnchorAddress()
+        {
+            if (combinedCodeView.MixedCodeDataView.Focused)
+                return combinedCodeView.MixedCodeDataView.GetAnchorAddress();
+            return null;
+        }
+
         private void EditComment()
         {
+            var addr = GetCommentAnchorAddress();
+            if (addr == null)
+                return;
+            var anchorPt = FocusedTextView.GetAnchorTopPoint();
+            var screenPoint = FocusedTextView.PointToScreen(anchorPt);
+            commentFormInteractor.Show(screenPoint, program, addr);
         }
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
