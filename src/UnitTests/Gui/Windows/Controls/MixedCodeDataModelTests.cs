@@ -75,11 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         private void Given_Comment(uint addr, string comment)
         {
-            program.User.Annotations.Add(new Annotation
-            {
-                Address = Address.Ptr32(addr),
-                Text = comment,
-            });
+            program.User.Annotations[Address.Ptr32(addr)] = comment;
         }
 
         private FakeInstruction Instr(uint addr)

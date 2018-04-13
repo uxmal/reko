@@ -375,10 +375,10 @@ namespace Reko.Core.Serialization
           
             if (sUser.Annotations != null)
             {
-                user.Annotations = sUser.Annotations
+                user.Annotations = new AnnotationList(sUser.Annotations
                     .Select(LoadAnnotation)
                     .Where(a => a.Address != null)
-                    .ToList();
+                    .ToList());
             }
             if (sUser.Heuristics != null)
             {

@@ -40,7 +40,7 @@ namespace Reko.Core
             this.Heuristics = new SortedSet<string>();
             this.IndirectJumps = new SortedList<Address, UserIndirectJump>();
             this.JumpTables = new SortedList<Address, ImageMapVectorTable>();
-            this.Annotations = new List<Annotation>();
+            this.Annotations = new AnnotationList();
             this.TextEncoding = Encoding.ASCII;
             this.RegisterValues = new SortedList<Address, List<UserRegisterValue>>();
         }
@@ -55,7 +55,7 @@ namespace Reko.Core
         public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
         public SortedList<Address, UserIndirectJump> IndirectJumps { get; set; }
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
-        public List<Annotation> Annotations { get; set; }
+        public AnnotationList Annotations { get; set; }
 
         /// <summary>
         /// A script to run after the image is loaded.

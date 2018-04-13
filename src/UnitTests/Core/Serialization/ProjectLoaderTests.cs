@@ -36,6 +36,7 @@ using System.Text;
 using System.IO;
 using Reko.Core.Configuration;
 using Reko.Core.CLanguage;
+using System.Linq;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -544,8 +545,8 @@ namespace Reko.UnitTests.Core.Serialization
                 sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
-            Assert.AreEqual(1, project.Programs[0].User.Annotations.Count);
-            var annotation = project.Programs[0].User.Annotations[0];
+            Assert.AreEqual(1, project.Programs[0].User.Annotations.Count());
+            var annotation = project.Programs[0].User.Annotations.First();
             Assert.AreEqual("0000CADD", annotation.Address.ToString());
             Assert.AreEqual("User comment", annotation.Text);
         }

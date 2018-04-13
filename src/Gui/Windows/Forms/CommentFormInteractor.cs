@@ -90,14 +90,7 @@ namespace Reko.Gui.Windows.Forms
         {
             if (address == null)
                 return null;
-            var annotation = program.User.Annotations
-                .Where(a => a.Address == address)
-                .SingleOrDefault();
-            if (annotation != null)
-            {
-                return annotation.Text;
-            }
-            return null;
+            return program.User.Annotations[address];
         }
 
         public void HideControls()
@@ -126,13 +119,7 @@ namespace Reko.Gui.Windows.Forms
         private void ModifyComment()
         {
             var comment = commentForm.TextBox.Text.Trim();
-            var annotation = program.User.Annotations
-                .Where(a => a.Address == address)
-                .SingleOrDefault();
-            if (annotation != null)
-            {
-                annotation.Text = comment;
-            }
+            program.User.Annotations[address] = comment;
         }
     }
 }

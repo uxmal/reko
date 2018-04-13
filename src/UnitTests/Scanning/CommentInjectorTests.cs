@@ -54,12 +54,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Comment(uint linAddress, string text)
         {
-            var ann = new Annotation
-            {
-                Address = Address.Ptr32(linAddress),
-                Text = text
-            };
-            program.User.Annotations.Add(ann);
+            program.User.Annotations[Address.Ptr32(linAddress)] = text;
         }
 
         private void When_CreateInjector()
