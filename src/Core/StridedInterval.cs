@@ -29,18 +29,29 @@ namespace Reko.Core
 {
     /// <summary>
     /// Represents a strided interval. Strided intervals are sets 
-    /// of values starting at `low` and ending in `high`, spaced by the
-    /// `stride`.
+    /// of integers values starting at `low` and ending in `high` (inclusive),
+    /// spaced by the `stride`.
     /// </summary>
+    /// <remarks>
+    /// A stride of 0 implies a constant value or singleton.
+    /// A negative stride is interpreted as the empty set.
+    /// </remarks>
     public struct StridedInterval
     {
         public readonly long Low;
         public readonly long High;
         public readonly int Stride;
 
+        // The empty set.
         public readonly static StridedInterval Empty = new StridedInterval(-1, 0, 0);
+        // The universal set.
         public readonly static StridedInterval All = new StridedInterval(1, long.MinValue, long.MaxValue);
 
+        /// <summary>
+        /// Creates a strided interval containing a single value <paramref name="c"/>.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static StridedInterval Constant(Constant c)
         {
             long v = c.ToInt64();
@@ -66,7 +77,7 @@ namespace Reko.Core
         public override string ToString()
         {
             if (Stride < 0)
-                return "\x27D8";
+                return "\x27D8";    // U+27D8 LARGE UP TACK
             var low = Low < 0 ? $"-{-Low:X}" : Low.ToString("X");
             var high = High < 0 ? $"-{-High:X}" : High.ToString("X");
             return $"{Stride:X}[{low},{high}]";

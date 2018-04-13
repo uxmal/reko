@@ -868,90 +868,38 @@ namespace Reko.Scanning
             }
             else
             {
-                const bool useBackwardSlicer = true;
-                if (useBackwardSlicer)
+                var bwsHost = new BackwardSlicerHost();
+                var bws = new BackwardSlicer(bwsHost);
+                var rtlBlock = bwsHost.GetRtlBlock(blockCur);
+                if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
                 {
-                    var bwsHost = new BackwardSlicerHost();
-                    var bws = new BackwardSlicer(bwsHost);
-                    var rtlBlock = bwsHost.GetRtlBlock(blockCur);
-                    if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
-                    {
-                        listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to process indirect jump.");
-                        return false;
-                    }
-                    while (bws.Step())
-                        ;
-
-                    var jumpExpr = bws.JumpTableFormat;
-                    var interval = bws.JumpTableIndexInterval;
-                    if (bws.JumpTableIndexToUse == null)
-                    {
-                        return false;   //$REVIEW: warn?
-                    }
-                    var ctx = new Dictionary<Expression, ValueSet>
-                    {
-                        { bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval) }
-                    };
-                    var vse = new ValueSetEvaluator(program, ctx, state);
-                    var values = jumpExpr.Accept(vse).Values.ToList();
-                    vector = jumpExpr.Accept(vse).Values
-                        .Select(ForceToAddress)
-                        .TakeWhile(a => a != null)
-                        .ToList();
-                    imgVector = new ImageMapVectorTable(
-                        null, // bw.VectorAddress,
-                        vector.ToArray(),
-                        4); // builder.TableByteSize);
-                    switchExp = bws.JumpTableIndexToUse;
+                    listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to process indirect jump.");
+                    return false;
                 }
-                else
+                while (bws.Step())
+                    ;
+
+                var jumpExpr = bws.JumpTableFormat;
+                var interval = bws.JumpTableIndexSlice;
+                if (bws.JumpTableIndexToUse == null)
                 {
-                    var bw = new Backwalker<Block, Instruction>(new BackwalkerHost(this), xfer, eval);
-                    if (!bw.CanBackwalk())
-                        return false;
-                    var bwops = bw.BackWalk(blockCur);
-                    if (bwops == null || bwops.Count == 0)
-                        return false;     //$REVIEW: warn?
-                    Identifier idIndex = bw.Index != null
-                        ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
-                        : null;
-
-                var builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
-                    if (bw.VectorAddress == null)
-                        return false;
-
-                    vector = builder.BuildAux(bw, addrSwitch, state);
-                    if (vector.Count == 0)
-                    {
-                        // Can't determine the size of the table, but surely it has one entry?
-                        var rdr = program.CreateImageReader(bw.VectorAddress);
-                        if (!rdr.IsValid)
-                            return false;
-                        string msg;
-                        var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                        if (addrEntry != null && this.program.SegmentMap.IsValidAddress(addrEntry))
-                        {
-                            vector.Add(addrEntry);
-                            msg = "Can't determine size of jump vector; probing only one entry.";
-                        }
-                        else
-                        {
-                            // Nope, not even that.
-                            msg = "No valid entries could be found in jump vector.";
-                        }
-                        var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
-                        listener.Warn(nav, msg);
-                        if (vector.Count == 0)
-                            return false;
-                    }
-                    imgVector = new ImageMapVectorTable(
-                        bw.VectorAddress,
-                        vector.ToArray(),
-                        builder.TableByteSize);
-                    switchExp = idIndex;
-                    if (idIndex == null || idIndex.Name == "None")
-                        switchExp = bw.IndexExpression;
+                    return false;   //$REVIEW: warn?
                 }
+                var ctx = new Dictionary<Expression, ValueSet>
+                {
+                    { bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval) }
+                };
+                var vse = new ValueSetEvaluator(program, ctx, state);
+                var values = jumpExpr.Accept(vse).Values.ToList();
+                vector = values
+                    .Select(ForceToAddress)
+                    .TakeWhile(a => a != null)
+                    .ToList();
+                imgVector = new ImageMapVectorTable(
+                    null, // bw.VectorAddress,
+                    vector.ToArray(),
+                    4); // builder.TableByteSize);
+                switchExp = bws.JumpTableIndexToUse;
             }
 
             if (xfer is RtlCall)

@@ -48,6 +48,7 @@ namespace Reko.Scanning
         /// Extracts the list of values, possibly concretizing them on the fly.
         /// </summary>
         public abstract IEnumerable<Expression> Values { get; }
+        public abstract bool IsEmpty { get; }
 
         public abstract ValueSet Add(ValueSet right);
         public abstract ValueSet Add(Constant right);
@@ -97,6 +98,11 @@ namespace Reko.Scanning
             }
         }
 
+        public override bool IsEmpty
+        {
+            get { return SI.Stride < 0; }
+        }
+
         public override ValueSet Add(ValueSet right)
         {
             throw new NotImplementedException();
@@ -110,6 +116,12 @@ namespace Reko.Scanning
         /// <returns>A new value set.</returns>
         public override ValueSet Add(Constant right)
         {
+            if (SI.Stride < 0)
+            {
+                return new IntervalValueSet(
+                    this.DataType,
+                    StridedInterval.Empty);
+            }
             long v = right.ToInt64();
             return new IntervalValueSet(
                 this.DataType,
@@ -208,6 +220,11 @@ namespace Reko.Scanning
             get { return values; }
         }
 
+        public override bool IsEmpty
+        {
+            get { return values.Length == 0; }
+        }
+
         /// <summary>
         /// Perform the computation <paramref name="map"/> on each value
         /// in the value set, and wrap them in a new value set.
@@ -241,16 +258,14 @@ namespace Reko.Scanning
 
         private Expression AddValue(Expression eLeft, Constant cRight)
         {
-            var cLeft = eLeft as Constant;
-            if (cLeft != null)
+            if (eLeft is Constant cLeft)
                 return Operator.IAdd.ApplyConstants(cLeft, cRight);
             throw new NotImplementedException();
         }
 
         private Expression MulValue(Expression eLeft, Constant cRight)
         {
-            var cLeft = eLeft as Constant;
-            if (cLeft != null)
+            if (eLeft is Constant cLeft)
                 return Operator.IMul.ApplyConstants(cLeft, cRight);
             throw new NotImplementedException();
         }
@@ -267,8 +282,7 @@ namespace Reko.Scanning
 
         private Expression SignExtendValue(DataType dt, Expression arg)
         {
-            Constant v = arg as Constant;
-            if (v != null)
+            if (arg is Constant v)
             {
                 int bits = this.DataType.BitSize;
                 return Constant.Create(dt, Bits.SignExtend(v.ToUInt64(), bits));
@@ -283,8 +297,7 @@ namespace Reko.Scanning
 
         private Expression TruncateValue(DataType dt, Expression value)
         {
-            var c = value as Constant;
-            if (c != null)
+            if (value is Constant c)
             {
                 var mask = (1L << dt.BitSize) - 1;
                 return Constant.Create(dt, c.ToInt64() & mask);
@@ -299,8 +312,7 @@ namespace Reko.Scanning
 
         private Expression ZeroExtendValue(DataType dt, Expression arg)
         {
-            Constant v = arg as Constant;
-            if (v != null)
+            if (arg is Constant v)
             {
                 int bits = this.DataType.BitSize;
                 return Constant.Create(dt, Bits.ZeroExtend(v.ToUInt64(), bits));

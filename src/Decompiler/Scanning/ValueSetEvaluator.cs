@@ -192,7 +192,7 @@ namespace Reko.Scanning
         {
             var vs = access.EffectiveAddress.Accept(this);
             return new ConcreteValueSet(
-                vs.DataType,
+                access.DataType,
                 vs.Values
                     .Select(v => ReadValue(access.DataType, v))
                     .ToArray());

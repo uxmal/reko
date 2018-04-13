@@ -33,6 +33,21 @@ using System.Text;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Traces a backward slice in a (pontentially partial)
+    /// control flow graph, in order to discover the entries of an indirect
+    /// call or jump. 
+    /// </summary>
+    /// <remarks>
+    /// The strategy used is start at the indirect jump and discover what registers
+    /// are live, then proceed to the statements preceding the jump to see how
+    /// those registers are computed and to see whether the registers are either
+    /// compared with a constant or mask away the high bits. The first analysis
+    /// gradually builds up a jump table expression, stored in the
+    /// `JumpTableFormat` property, while the second one
+    /// determines how many entries there are in the jump table, stored in the
+    /// `JumpTableIndexInterval` property.
+    /// </remarks>
     public class BackwardSlicer
     {
         internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Verbose };
@@ -49,13 +64,25 @@ namespace Reko.Scanning
             this.visited = new HashSet<RtlBlock>();
         }
 
+        /// <summary>
+        /// Keeps track of what expressions are live during the analysis.
+        /// </summary>
         public Dictionary<Expression, BackwardSlicerContext> Live { get { return state.Live; } }
         public Expression JumpTableFormat { get { return state.JumpTableFormat; } }  // an expression that computes the destination addresses.
 
         public Expression JumpTableIndex { get { return state.JumpTableIndex; } }    // an expression that tests the index 
-        public StridedInterval JumpTableIndexInterval { get { return state.JumpTableIndexInterval; } }    // an expression that tests the index 
+        public StridedInterval JumpTableIndexSlice { get { return state.JumpTableIndexStride; } }    // an expression that tests the index 
         public Expression JumpTableIndexToUse { get { return state.JumpTableIndexToUse; } }
 
+        /// <summary>
+        /// Start a slice by examining any variables in the indirect jump
+        /// <paramref name="indirectJump"/>, then start tracing instructions
+        /// backwards beginning at instruction <paramref name="iInstr"/> in <paramref name="block"/>.
+        /// </summary>
+        /// <param name="block">Basic block of instructions.</param>
+        /// <param name="iInstr">Index into the instructions in <paramref name="block"/>.</param>
+        /// <param name="indirectJump">Expression containing the target of the indirect call or jump.</param>
+        /// <returns>If backward slicing should continue.</returns>
         public bool Start(RtlBlock block, int iInstr, Expression indirectJump)
         {
             this.state = new SliceState(this, block, iInstr);
@@ -72,14 +99,20 @@ namespace Reko.Scanning
         }
 
 
+        /// <summary>
+        /// Advance the backward slicer (paroxically by moving backwards in the 
+        /// RTL instruction stream).
+        /// </summary>
+        /// <returns>True if progress was made, false if there was no work left to do.</returns>
         public bool Step()
         {
+            // Try finding a state that isn't at the beginning of its basic block.
             SliceState state;
             for (; ; )
             {
                 if (!worklist.GetWorkItem(out state))
                     return false;
-                this.state = state;     //$TODO: get rid of this
+                this.state = state;
                 if (!state.IsInBeginningOfBlock())
                     break;
 
@@ -87,9 +120,8 @@ namespace Reko.Scanning
                 var preds = host.GetPredecessors(state.block);
                 if (preds.Count == 0)
                 {
-                    //$TODO: retire the state.
                     DebugEx.PrintIf(trace.TraceVerbose, "  No predecessors found for block {0}", state.block.Address);
-                    DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
+                    DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexSlice);
                     DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
                     return true;
                 }
@@ -111,7 +143,6 @@ namespace Reko.Scanning
             }
             else
             {
-                //$TODO: retire the state
                 return false;
             }
         }
@@ -127,7 +158,7 @@ namespace Reko.Scanning
     public class BackwardSlicerContext : IComparable<BackwardSlicerContext>
     {
         public ContextType Type;
-        public BitRange BitRange;
+        public BitRange BitRange;   // Indicates the range of bits which are live.
 
         public BackwardSlicerContext(ContextType type, BitRange range)
         {
@@ -185,12 +216,23 @@ namespace Reko.Scanning
             this.iInstr = iInstr;
         }
 
-        public Expression JumpTableFormat { get; private set; }  // an expression that computes the destination addresses.
+        // The RTL expression in the executable that computes the destination addresses.
+        public Expression JumpTableFormat { get; private set; }
 
-        public Expression JumpTableIndex { get; private set; }    // an expression that tests the index 
-        public Expression JumpTableIndexToUse { get; private set; }    // an expression that tests the index 
-        public StridedInterval JumpTableIndexInterval { get; private set; }    // an expression that tests the index 
+        // An expression that tests the index 
+        public Expression JumpTableIndex { get; private set; }
+        // An expression that tests the index that should be used in the resulting source code.
+        public Expression JumpTableIndexToUse { get; private set; }
+        // the 'stride' of the jump/call table.
+        public StridedInterval JumpTableIndexStride { get; private set; }
 
+        /// <summary>
+        /// Start the analysis with the expression in the indirect jump.
+        /// Detect any live expressions, and place them in the `Live`
+        /// collection.
+        /// </summary>
+        /// <param name="indirectJump"></param>
+        /// <returns></returns>
         public bool Start(Expression indirectJump)
         {
             var sr = indirectJump.Accept(this, BackwardSlicerContext.Jump(RangeOf(indirectJump)));
@@ -202,6 +244,7 @@ namespace Reko.Scanning
             this.Live = sr.LiveExprs;
             if (sr.LiveExprs.Count == 0)
             {
+                // Couldn't find any indirect registers, so there is no work to do.
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceWarning, "  No indirect registers?");
                 return false;
             }
@@ -226,14 +269,14 @@ namespace Reko.Scanning
             if (sr.Stop)
             {
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Was asked to stop, stopping.");
-                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
+                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexStride);
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
                 return false;
             }
             if (this.Live.Count == 0)
             {
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  No more live expressions, stopping.");
-                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
+                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexStride);
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
                 return false;
             }
@@ -277,6 +320,7 @@ namespace Reko.Scanning
             long n = right.ToInt64();
             if (Bits.IsEvenPowerOfTwo(n + 1))
             {
+                // n is a mask (0000...00111..111)
                 return StridedInterval.Create(1, 0, n);
             }
             else
@@ -325,10 +369,11 @@ namespace Reko.Scanning
             {
                 Live.Remove(deadReg.Key);
             }
-            assignLhs = deadRegs[0].Key;
+            this.assignLhs = deadRegs[0].Key;
             var se = ass.Src.Accept(this, deadRegs[0].Value);
-            this.JumpTableFormat = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
-            this.JumpTableFormat = this.JumpTableFormat.Accept(simp);
+            this.JumpTableFormat = 
+                ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat)
+                .Accept(simp);
             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
             this.assignLhs = null;
             return se;
@@ -340,7 +385,7 @@ namespace Reko.Scanning
                 cmp.Equals(binExp.Left, binExp.Right))
             {
                 // XOR r,r (or SUB r,r) clears a register. Is it part of a live register?
-                var regDst = assignLhs as Identifier;
+                var regDst = this.assignLhs as Identifier;
                 var regHi = binExp.Left as Identifier;
                 if (regHi != null && regDst != null &&
                     DomainOf(regDst) == regHi.Storage.Domain &&
@@ -376,8 +421,8 @@ namespace Reko.Scanning
                             //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
                             this.JumpTableIndex = live;
                             this.JumpTableIndexToUse = binExp.Left;
-                            this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
-                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
+                            this.JumpTableIndexStride = MakeInterval_ISub(live, binExp.Right as Constant);
+                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexStride);
                             return new SlicerResult
                             {
                                 SrcExpr = binExp,
@@ -391,7 +436,7 @@ namespace Reko.Scanning
             {
                 this.JumpTableIndex = binExp.Left;
                 this.JumpTableIndexToUse = binExp.Left;
-                this.JumpTableIndexInterval = MakeInterval_And(binExp.Left, binExp.Right as Constant);
+                this.JumpTableIndexStride = MakeInterval_And(binExp.Left, binExp.Right as Constant);
                 return new SlicerResult
                 {
                     SrcExpr = binExp,
@@ -439,7 +484,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitConditionOf(ConditionOf cof, BackwardSlicerContext ctx)
         {
-            var se = cof.Expression.Accept(this, BackwardSlicerContext.Cond( RangeOf(cof.Expression)));
+            var se = cof.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(cof.Expression)));
             if (se != null && !se.Stop)
             {
                 se.SrcExpr = cof;
@@ -654,7 +699,7 @@ namespace Reko.Scanning
             {
                 JumpTableFormat = this.JumpTableFormat,
                 JumpTableIndex = this.JumpTableIndex,
-                JumpTableIndexInterval = this.JumpTableIndexInterval,
+                JumpTableIndexStride = this.JumpTableIndexStride,
                 Live = new Dictionary<Expression, BackwardSlicerContext>(this.Live, this.Live.Comparer),
                 ccNext = this.ccNext,
                 invertCondition = this.invertCondition,
@@ -780,7 +825,6 @@ namespace Reko.Scanning
         // Live storages are involved in the computation of the jump destinations.
         public Dictionary<Expression, BackwardSlicerContext> LiveExprs = new Dictionary<Expression, BackwardSlicerContext>();
         public Expression SrcExpr;
-
-        public bool Stop { get; internal set; }
+        public bool Stop;       // Set to true if the analysis should stop.
     }
 }
