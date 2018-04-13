@@ -29,6 +29,8 @@ namespace Reko.Core
 {
     public class AnnotationList : IEnumerable<Annotation>
     {
+        public event EventHandler AnnotationChanged;
+
         private Dictionary<Address, string> annotations;
 
         public AnnotationList()
@@ -53,6 +55,7 @@ namespace Reko.Core
             set
             {
                 this.annotations[addr] = value;
+                AnnotationChanged.Fire(this);
             }
         }
 
