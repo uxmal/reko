@@ -80,8 +80,14 @@ namespace Reko.Core
 
     public class Annotation
     {
-        public Address Address;
-        public string Text;
+        public Annotation(Address address, string text)
+        {
+            this.Address = address;
+            this.Text = text;
+        }
+
+        public Address Address { get; private set; }
+        public string Text { get; private set; }
     }
 
     /// <summary>

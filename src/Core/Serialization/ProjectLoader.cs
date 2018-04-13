@@ -430,11 +430,7 @@ namespace Reko.Core.Serialization
         private Annotation LoadAnnotation(Annotation_v3 annotation)
         {
             arch.TryParseAddress(annotation.Address, out var address);
-            return new Annotation
-            {
-                Address = address,
-                Text = annotation.Text,
-            };
+            return new Annotation(address, annotation.Text);
         }
 
         private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(

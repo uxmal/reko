@@ -59,11 +59,7 @@ namespace Reko.Core
         public IEnumerator<Annotation> GetEnumerator()
         {
             return annotations
-                .Select(a => new Annotation
-                {
-                    Address = a.Key,
-                    Text = a.Value,
-                })
+                .Select(a => new Annotation(a.Key, a.Value))
                 .GetEnumerator();
         }
 
