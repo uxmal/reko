@@ -50,11 +50,21 @@ namespace Reko.Gui.Windows.Controls
             get { return program; }
             set
             {
-                if (program != null && program.ImageMap != null)
-                    program.ImageMap.MapChanged -= ImageMap_MapChanged;
+                if (program != null)
+                {
+                    if (program.ImageMap != null)
+                        program.ImageMap.MapChanged -= ImageMap_MapChanged;
+                    program.User.Annotations
+                        .AnnotationChanged -= AnnotationChanged;
+                }
                 program = value;
-                if (program != null && program.ImageMap != null) 
-                    program.ImageMap.MapChanged += ImageMap_MapChanged;
+                if (program != null)
+                {
+                    if (program.ImageMap != null)
+                        program.ImageMap.MapChanged += ImageMap_MapChanged;
+                    program.User.Annotations
+                        .AnnotationChanged += AnnotationChanged;
+                }
                 ProgramChanged.Fire(this);
             }
         }
@@ -113,6 +123,14 @@ namespace Reko.Gui.Windows.Controls
         }
 
         private void ImageMap_MapChanged(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+                BeginInvoke(new Action(RefreshModel));
+            else
+                RefreshModel();
+        }
+
+        private void AnnotationChanged(object sender, EventArgs e)
         {
             if (InvokeRequired)
                 BeginInvoke(new Action(RefreshModel));
