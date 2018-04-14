@@ -50,7 +50,7 @@ namespace Reko.Gui.Windows.Forms
         private void CreateCommentForm()
         {
             var dlgFactory = services.RequireService<IDialogFactory>();
-            this.commentForm = dlgFactory.CreateDeclarationForm();
+            this.commentForm = dlgFactory.CreateCommentForm();
 
             commentForm.TextBox.LostFocus += Text_LostFocus;
             commentForm.TextBox.KeyDown += Text_KeyDown;
