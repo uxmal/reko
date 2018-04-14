@@ -68,10 +68,15 @@ namespace Reko.Scanning
         /// Keeps track of what expressions are live during the analysis.
         /// </summary>
         public Dictionary<Expression, BackwardSlicerContext> Live { get { return state.Live; } }
-        public Expression JumpTableFormat { get { return state.JumpTableFormat; } }  // an expression that computes the destination addresses.
 
-        public Expression JumpTableIndex { get { return state.JumpTableIndex; } }    // an expression that tests the index 
-        public StridedInterval JumpTableIndexSlice { get { return state.JumpTableIndexStride; } }    // an expression that tests the index 
+        // The expression that computes the destination addresses.
+        public Expression JumpTableFormat { get { return state.JumpTableFormat; } } 
+
+        // The expression used as the index in a jump/call table
+        public Expression JumpTableIndex { get { return state.JumpTableIndex; } }
+
+        // The set of values the index expression may have, expressed as strided interval.
+        public StridedInterval JumpTableIndexInterval { get { return state.JumpTableIndexInterval; } }    
         public Expression JumpTableIndexToUse { get { return state.JumpTableIndexToUse; } }
 
         /// <summary>
@@ -121,7 +126,7 @@ namespace Reko.Scanning
                 if (preds.Count == 0)
                 {
                     DebugEx.PrintIf(trace.TraceVerbose, "  No predecessors found for block {0}", state.block.Address);
-                    DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexSlice);
+                    DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
                     DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
                     return true;
                 }
@@ -224,7 +229,7 @@ namespace Reko.Scanning
         // An expression that tests the index that should be used in the resulting source code.
         public Expression JumpTableIndexToUse { get; private set; }
         // the 'stride' of the jump/call table.
-        public StridedInterval JumpTableIndexStride { get; private set; }
+        public StridedInterval JumpTableIndexInterval { get; private set; }
 
         /// <summary>
         /// Start the analysis with the expression in the indirect jump.
@@ -269,14 +274,14 @@ namespace Reko.Scanning
             if (sr.Stop)
             {
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Was asked to stop, stopping.");
-                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexStride);
+                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
                 return false;
             }
             if (this.Live.Count == 0)
             {
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  No more live expressions, stopping.");
-                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexStride);
+                DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  index: {0} ({1})", this.JumpTableIndex, this.JumpTableIndexInterval);
                 DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
                 return false;
             }
@@ -421,14 +426,25 @@ namespace Reko.Scanning
                             //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
                             this.JumpTableIndex = live;
                             this.JumpTableIndexToUse = binExp.Left;
-                            this.JumpTableIndexStride = MakeInterval_ISub(live, binExp.Right as Constant);
-                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexStride);
+                            this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
+                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
                             return new SlicerResult
                             {
                                 SrcExpr = binExp,
-                                Stop = Live.Count == 1,
+                                Stop = true
                             };
                         }
+                    }
+                    if (cmp.Equals(live, binExp.Left))
+                    {
+                        this.JumpTableIndex = live;
+                        this.JumpTableIndexToUse = binExp.Left;
+                        this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
+                        return new SlicerResult
+                        {
+                            SrcExpr = binExp,
+                            Stop = true,
+                        };
                     }
                 }
             }
@@ -436,7 +452,7 @@ namespace Reko.Scanning
             {
                 this.JumpTableIndex = binExp.Left;
                 this.JumpTableIndexToUse = binExp.Left;
-                this.JumpTableIndexStride = MakeInterval_And(binExp.Left, binExp.Right as Constant);
+                this.JumpTableIndexInterval = MakeInterval_And(binExp.Left, binExp.Right as Constant);
                 return new SlicerResult
                 {
                     SrcExpr = binExp,
@@ -583,6 +599,7 @@ namespace Reko.Scanning
         {
             var rangeEa = new BitRange(0, (short)access.EffectiveAddress.DataType.BitSize);
             var srEa = access.EffectiveAddress.Accept(this, new BackwardSlicerContext(ctx.Type, rangeEa));
+            srEa.LiveExprs[access] = new BackwardSlicerContext(ctx.Type, ctx.BitRange);
             return new SlicerResult
             {
                 LiveExprs = srEa.LiveExprs,
@@ -699,7 +716,7 @@ namespace Reko.Scanning
             {
                 JumpTableFormat = this.JumpTableFormat,
                 JumpTableIndex = this.JumpTableIndex,
-                JumpTableIndexStride = this.JumpTableIndexStride,
+                JumpTableIndexInterval = this.JumpTableIndexInterval,
                 Live = new Dictionary<Expression, BackwardSlicerContext>(this.Live, this.Live.Comparer),
                 ccNext = this.ccNext,
                 invertCondition = this.invertCondition,

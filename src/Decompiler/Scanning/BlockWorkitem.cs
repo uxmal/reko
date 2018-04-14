@@ -880,7 +880,7 @@ namespace Reko.Scanning
                     ;
 
                 var jumpExpr = bws.JumpTableFormat;
-                var interval = bws.JumpTableIndexSlice;
+                var interval = bws.JumpTableIndexInterval;
                 if (bws.JumpTableIndexToUse == null)
                 {
                     return false;   //$REVIEW: warn?
