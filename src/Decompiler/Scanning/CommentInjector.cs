@@ -20,7 +20,7 @@ namespace Reko.Scanning
     {
         private SortedList<ulong, Annotation> annotations;
 
-        public CommentInjector(List<Annotation> annotations)
+        public CommentInjector(IEnumerable<Annotation> annotations)
         {
             this.annotations = annotations.ToSortedList(a => a.Address.ToLinear());
         }
