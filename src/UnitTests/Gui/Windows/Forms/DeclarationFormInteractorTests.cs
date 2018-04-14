@@ -20,7 +20,6 @@
  
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using Rhino.Mocks;
 using Reko.Arch.X86;
 using Reko.Environments.Windows;
@@ -28,12 +27,12 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Serialization;
 using Reko.Gui;
-using Reko.Gui.Controls;
 using Reko.Gui.Commands;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System.ComponentModel.Design;
 using NUnit.Framework;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -342,44 +341,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(0, program.User.Globals.Count);
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
-        }
-
-        private class FakeTextBox : ITextBox
-        {
-            private string text;
-
-            public bool Enabled { get; set; }
-            public string Text
-            {
-                get { return text == null ? "" : text; }
-                set { text = value; TextChanged.Fire(this); }
-            }
-            public Color BackColor { get; set; }
-            public Color ForeColor { get; set; }
-
-            public void SelectAll()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Focus()
-            {
-                throw new NotImplementedException();
-            }
-
-            public event KeyEventHandler KeyDown;
-            public event EventHandler TextChanged;
-            public event EventHandler LostFocus;
-
-            public void FireLostFocus()
-            {
-                LostFocus.Fire(this);
-            }
-
-            public void FireKeyDown(KeyEventArgs e)
-            {
-                KeyDown(this, e);
-            }
         }
     }
 }
