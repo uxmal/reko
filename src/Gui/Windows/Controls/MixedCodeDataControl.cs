@@ -82,7 +82,8 @@ namespace Reko.Gui.Windows.Controls
                 if (program != null)
                 {
                     Model = new MixedCodeDataModel(program);
-                    addrTop = Model.CurrentPosition as Address;
+                    var currentPos = Model.CurrentPosition;
+                    addrTop = MixedCodeDataModel.PositionAddress(currentPos);
                     return;
                 }
             }
@@ -98,7 +99,8 @@ namespace Reko.Gui.Windows.Controls
         {
             if (program != null)
             {
-                Model.MoveToLine(addrTop, 0);
+                var addrTopPos = MixedCodeDataModel.Position(addrTop, 0);
+                Model.MoveToLine(addrTopPos, 0);
                 RecomputeLayout();
                 UpdateScrollbar();
                 Invalidate();
@@ -109,16 +111,18 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnScroll()
         {
-            addrTop = Model.CurrentPosition as Address;
+            var currentPos = Model.CurrentPosition;
+            addrTop = MixedCodeDataModel.PositionAddress(currentPos);
             base.OnScroll();
         }
 
         private void RefreshModel()
         {
-            var currentAddress = Model.CurrentPosition;
+            var currentPos = Model.CurrentPosition;
             var model = new MixedCodeDataModel(program);
-            model.MoveToLine(currentAddress, 0);
-            this.addrTop = model.CurrentPosition as Address;
+            model.MoveToLine(currentPos, 0);
+            currentPos = Model.CurrentPosition;
+            this.addrTop = MixedCodeDataModel.PositionAddress(currentPos);
             this.Model = model;
         }
 
@@ -149,7 +153,7 @@ namespace Reko.Gui.Windows.Controls
             var pt = GetAnchorMiddlePoint();
             var memoryTextSpan = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpan;
             if (memoryTextSpan == null || memoryTextSpan.Address == null)
-                return anchorPos.Line as Address;
+                return MixedCodeDataModel.PositionAddress(anchorPos.Line);
             return memoryTextSpan.Address;
         }
     }

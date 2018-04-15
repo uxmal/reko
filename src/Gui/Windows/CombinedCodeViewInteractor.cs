@@ -519,7 +519,11 @@ namespace Reko.Gui.Windows
             if (topAddress < dataItemNode.EndAddress)
             {
                 var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
-                numer = mixedCodeDataModel.CountLines(dataItemNode.StartAddress, topAddress);
+                var startAddr = dataItemNode.StartAddress;
+                var endAddr = topAddress;
+                var startPos = MixedCodeDataModel.Position(startAddr, 0);
+                var endPos = MixedCodeDataModel.Position(endAddr, 0);
+                numer = mixedCodeDataModel.CountLines(startPos, endPos);
                 denom = dataItemNode.NumLines;
             }
             else
@@ -544,7 +548,9 @@ namespace Reko.Gui.Windows
 
             long numLines = dataItemNode.NumLines;
             var offset = (int)((numLines * numer) / denom);
-            combinedCodeView.MixedCodeDataView.Model.MoveToLine(dataItemNode.StartAddress, offset);
+            var startAddr = dataItemNode.StartAddress;
+            var startPos = MixedCodeDataModel.Position(startAddr, 0);
+            combinedCodeView.MixedCodeDataView.Model.MoveToLine(startPos, offset);
             combinedCodeView.MixedCodeDataView.InvalidateModel();
         }
 

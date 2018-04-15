@@ -138,7 +138,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         private void MoveToLine(TextViewModel model, uint addr)
         {
-            model.MoveToLine(Address.Ptr32(addr), 0);
+            var pos = MixedCodeDataModel.Position(Address.Ptr32(addr), 0);
+            model.MoveToLine(pos, 0);
         }
 
         private void AssertOutput(string expected)
@@ -232,20 +233,20 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // Read the first instruction
             var lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
-            Assert.AreEqual("00041000", lines[0].Position.ToString());
-            Assert.AreEqual("00041002", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00041000(0)", lines[0].Position.ToString());
+            Assert.AreEqual("00041002(0)", mcdm.CurrentPosition.ToString());
 
             // Read the second and last instruction.
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
-            Assert.AreEqual("00041002", lines[0].Position.ToString());
-            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00041002(0)", lines[0].Position.ToString());
+            Assert.AreEqual("00042000(0)", mcdm.CurrentPosition.ToString());
 
             // Read the 8 remaining bytes from .data
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
-            Assert.AreEqual("00042000", lines[0].Position.ToString());
-            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000(0)", lines[0].Position.ToString());
+            Assert.AreEqual("00042008(0)", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
@@ -270,12 +271,12 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // Read all lines
             var lines = mcdm.GetLineSpans(5);
             Assert.AreEqual(5, lines.Length);
-            Assert.AreEqual("00041000", lines[0].Position.ToString());
-            Assert.AreEqual("00041002", lines[1].Position.ToString());
-            Assert.AreEqual("00042000", lines[2].Position.ToString());
-            Assert.AreEqual("00042004", lines[3].Position.ToString());
-            Assert.AreEqual("00042006", lines[4].Position.ToString());
-            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00041000(0)", lines[0].Position.ToString());
+            Assert.AreEqual("00041002(0)", lines[1].Position.ToString());
+            Assert.AreEqual("00042000(0)", lines[2].Position.ToString());
+            Assert.AreEqual("00042004(0)", lines[3].Position.ToString());
+            Assert.AreEqual("00042006(0)", lines[4].Position.ToString());
+            Assert.AreEqual("00042008(0)", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
@@ -297,13 +298,14 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             // This places the curpos right after the last item in the .text
             // segment.
-            mcdm.MoveToLine(Address.Ptr32(0x41008), 0);
+            var pos = MixedCodeDataModel.Position(Address.Ptr32(0x41008), 0);
+            mcdm.MoveToLine(pos, 0);
 
             // This should return the first line of the .data segment.
             var lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
-            Assert.AreEqual("00042000", lines[0].Position.ToString());
-            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000(0)", lines[0].Position.ToString());
+            Assert.AreEqual("00042008(0)", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
@@ -355,18 +357,18 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // move another line of code and then into data.
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 2);
             Assert.AreEqual(2, delta);
-            Assert.AreEqual("00042010", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042010(0)", mcdm.CurrentPosition.ToString());
             // Another line of data
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
-            Assert.AreEqual("00042020", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042020(0)", mcdm.CurrentPosition.ToString());
             Assert.AreEqual(1, delta);
             // Pegged at end
             delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
-            Assert.AreEqual("00042020", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042020(0)", mcdm.CurrentPosition.ToString());
             Assert.AreEqual(0, delta);
 
             mcdm.MoveToLine(mcdm.StartPosition, 2);
-            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000(0)", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
@@ -389,7 +391,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var mcdm = new MixedCodeDataModel(program);
 
             mcdm.MoveToLine(mcdm.CurrentPosition, 2);
-            var curPos = (Address)mcdm.CurrentPosition;
+            var curPos = mcdm.CurrentPosition;
 
             /*
             ***************start position**************************
@@ -401,7 +403,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             0x40FFA add r2,r2
             */
 
-            Assert.AreEqual("00040FF0", curPos.ToString());
+            Assert.AreEqual("00040FF0(0)", curPos.ToString());
         }
 
         [Test]
@@ -428,7 +430,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             mcdm.SetPositionAsFraction(2, 1);
             Assert.AreSame(mcdm.EndPosition, mcdm.CurrentPosition);
             mcdm.SetPositionAsFraction(1, 2);
-            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000(0)", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
@@ -486,12 +488,12 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // the beginning of .data
             var lines = mcdm.GetLineSpans(2);
             Assert.AreEqual(2, lines.Length);
-            Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042000(0)", mcdm.CurrentPosition.ToString());
 
             // Advance a line. 
             int cLines = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
             Assert.AreEqual(1, cLines);
-            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+            Assert.AreEqual("00042008(0)", mcdm.CurrentPosition.ToString());
         }
 
         [Test]
@@ -522,11 +524,11 @@ Second line");
             GetLineSpans(mcdm, 1);
 
             AssertOutput(
-@"00041000:cmt(; This is comment)
-00041000:cmt(; Second line)
-00041000:link(00041000 )b(00 00 )op(add )
-00041004:cmt(; Single line comment)
-00041004:link-last(00041004 )b-last(00 00 )op-last(add )
+@"00041000(0):cmt(; This is comment)
+00041000(1):cmt(; Second line)
+00041000(2):link(00041000 )b(00 00 )op(add )
+00041004(0):cmt(; Single line comment)
+00041004(1):link-last(00041004 )b-last(00 00 )op-last(add )
 ");
         }
 
@@ -554,10 +556,10 @@ Second line");
             GetLineSpans(mcdm, 1);
 
             AssertOutput(
-@"00041000:cmt(; First comment)
-00041000:link(00041000 )b(00 00 )op(add )
-00041002:cmt(; Second comment)
-00041002:link-last(00041002 )b-last(00 00 )op-last(add )
+@"00041000(0):cmt(; First comment)
+00041000(1):link(00041000 )b(00 00 )op(add )
+00041002(0):cmt(; Second comment)
+00041002(1):link-last(00041002 )b-last(00 00 )op-last(add )
 ");
         }
     }
