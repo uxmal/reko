@@ -142,13 +142,12 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage fl;
-            if (!grfs.TryGetValue(grf, out fl))
+            if (!grfs.TryGetValue(grf, out FlagGroupStorage fl))
             {
                 PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-                fl = new FlagGroupStorage(this.sreg, grf, GrfToString(grf), dt);
+                fl = new FlagGroupStorage(this.sreg, grf, GrfToString(flagRegister, "", grf), dt);
                 grfs.Add(grf, fl);
             }
             return fl;
@@ -191,7 +190,7 @@ namespace Reko.Arch.Avr
             return reg;
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var s = new StringBuilder();
             foreach (var tpl in this.grfToString)

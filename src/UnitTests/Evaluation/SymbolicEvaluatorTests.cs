@@ -276,11 +276,10 @@ namespace Reko.UnitTests.Evaluation
             Identifier flag = null;
             RunBlockTest(m =>
             {
-                var flags = arch.GetFlagGroup(0x03).FlagRegister;
-                flag = m.Frame.EnsureFlagGroup(flags, 0x3, "SZ", PrimitiveType.Byte);
-                m.Assign(flag, 0x03);
+                flag = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("SZ"));
+                m.Assign(flag, 0x05);
             });
-            Assert.AreEqual(0x03, ctx.TrashedFlags);
+            Assert.AreEqual(0x05, ctx.TrashedFlags[Registers.eflags]);
         }
 
         [Test]

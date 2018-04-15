@@ -44,12 +44,16 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, IEnumerable<Storage> regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> grfFlags, IEnumerable<RegisterStorage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
-			if (grfFlags != 0)
+            var sGrf = string.Join(" ", grfFlags
+                .Where(f => f.Value != 0)
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .OrderBy(f => f.Name));
+            if (sGrf.Length > 0)
 			{
-				sb.Write(" {0}", arch.GrfToString(grfFlags));
+                sb.Write(" {0}", sGrf);
 			}
 			EmitRegistersCore(arch, regs, sb);
 		}
@@ -78,10 +82,15 @@ namespace Reko.Analysis
             }
 		}
 
-        public void EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags, TextWriter sb)
+        public void EmitFlagGroup(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> flagRegs, TextWriter sb)
         {
             sb.Write(caption);
-            sb.Write(" {0}", arch.GrfToString(grfFlags));
+            foreach (var freg in flagRegs
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .OrderBy(f => f.Name))
+            {
+                sb.Write(" {0}", freg.Name);
+        }
         }
 
 		public string EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs)
@@ -91,7 +100,7 @@ namespace Reko.Analysis
 			return sw.ToString();
 		}
 
-		public string EmitFlagGroup(IProcessorArchitecture arch, string caption, uint grfFlags)
+		public string EmitFlagGroup(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags)
 		{
 			StringWriter sw = new StringWriter();
 			EmitFlagGroup(arch, caption, grfFlags, sw);

@@ -275,10 +275,10 @@ namespace Reko.Analysis
     {
         private Identifier idCur;
         private HashSet<RegisterStorage> liveRegs;
-        private uint liveGrf;
+        private Dictionary<RegisterStorage, uint> liveGrf;
         private HashSet<Identifier> liveVars;
 
-        public AliasDeadVariableMarker(HashSet<RegisterStorage> regs, uint grfLive)
+        public AliasDeadVariableMarker(HashSet<RegisterStorage> regs, Dictionary<RegisterStorage, uint> grfLive)
         {
             this.liveRegs = regs;
             this.liveGrf = grfLive;
@@ -321,10 +321,15 @@ namespace Reko.Analysis
 
         public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            if ((grf.FlagGroupBits & liveGrf) != 0)
+            if (liveGrf.TryGetValue(grf.FlagRegister, out uint u) &&
+                (grf.FlagGroupBits & u) != 0)
+            {
                 liveVars.Add(idCur);
+            }
             else
+            {
                 liveVars.Remove(idCur);
+            }
             return null;
         }
 

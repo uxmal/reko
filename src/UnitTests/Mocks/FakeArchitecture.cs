@@ -98,8 +98,7 @@ namespace Reko.UnitTests.Mocks
         public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
-            RtlTrace trace;
-            if (!rewriters.Traces.TryGetValue(rdr.Address, out trace))
+            if (!rewriters.Traces.TryGetValue(rdr.Address, out RtlTrace trace))
             {
                 if (ignoreUnknownTraces)
                 {
@@ -154,7 +153,7 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             var sb = new StringBuilder();
             if (((uint)grf & 0x01) != 0) sb.Append('S');
@@ -164,7 +163,7 @@ namespace Reko.UnitTests.Mocks
             if (((uint)grf & 0x10) != 0) sb.Append('X');
             if (sb.Length == 0)
                 return null;
-            return new FlagGroupStorage(flags, grf, sb.ToString(), PrimitiveType.Byte);
+            return new FlagGroupStorage(flagRegister, grf, sb.ToString(), PrimitiveType.Byte);
         }
 
 		public FlagGroupStorage GetFlagGroup(string s)
@@ -272,7 +271,7 @@ namespace Reko.UnitTests.Mocks
 			return new FakeProcessorState(this);
 		}
 
-		public string GrfToString(uint grf)
+		public string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
 		{
             var sb = new StringBuilder();
             if ((grf & (uint) StatusFlags.S) != 0) sb.Append('S');

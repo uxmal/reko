@@ -37,7 +37,7 @@ namespace Reko.Arch.Sparc
             return binder.EnsureFlagGroup(
                 Registers.psr,
                 (uint) grf, 
-                arch.GrfToString((uint) grf),
+                arch.GrfToString(Registers.psr, "", (uint) grf),
                 (grf & (grf - 1)) != 0 ? PrimitiveType.Byte : PrimitiveType.Bool);
         }
 

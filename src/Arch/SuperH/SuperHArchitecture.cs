@@ -79,7 +79,7 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -110,7 +110,7 @@ namespace Reko.Arch.SuperH
             return Registers.gpregs;
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             return "T";
         }

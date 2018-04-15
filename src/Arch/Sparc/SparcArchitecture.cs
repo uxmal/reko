@@ -145,14 +145,14 @@ namespace Reko.Arch.Sparc
                 return null;
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             FlagGroupStorage fl;
             if (flagGroups.TryGetValue(grf, out fl))
                 return fl;
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(grf), dt);
+            fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -176,7 +176,7 @@ namespace Reko.Arch.Sparc
                 default: return null;
                 }
             }
-            return GetFlagGroup((uint)grf);
+            return GetFlagGroup(Registers.psr, (uint)grf);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -190,7 +190,7 @@ namespace Reko.Arch.Sparc
         }
 
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             StringBuilder s = new StringBuilder();
             if ((grf & Registers.N.FlagGroupBits) != 0) s.Append(Registers.N.Name);

@@ -102,7 +102,7 @@ namespace Reko.Arch.i8051
                     ops.Add(BitReg(b, true));
                     break;
                 case 'C':   // C flag of PSW
-                    ops.Add(new FlagGroupOperand(arch.GetFlagGroup((uint)FlagM.C)));
+                    ops.Add(new FlagGroupOperand(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C)));
                     break;
                 case 'D':   // @DPTR 
                     ops.Add(MemoryOperand.Indirect(Registers.DPTR));

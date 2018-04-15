@@ -264,12 +264,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     break;
                 case '0':
                     m.Assign(
-                        binder.EnsureFlagGroup(arch.GetFlagGroup(mask)),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f,  mask)),
                         Constant.False());
                     break;
                 case '1':
                     m.Assign(
-                        binder.EnsureFlagGroup(arch.GetFlagGroup(mask)),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f, mask)),
                         Constant.True());
                     break;
                 }
@@ -278,7 +278,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             if (grf != 0)
             {
                 m.Assign(
-                    binder.EnsureFlagGroup(arch.GetFlagGroup(grf)),
+                    binder.EnsureFlagGroup(arch.GetFlagGroup(Tlcs900Registers.f, grf)),
                     m.Cond(exp));
             }
         }

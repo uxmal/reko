@@ -101,7 +101,7 @@ namespace Reko.Arch.Alpha
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -133,7 +133,7 @@ namespace Reko.Arch.Alpha
             return Registers.AllRegisters.Values.ToArray();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             // Alpha has no traditional condition codes.
             return "";

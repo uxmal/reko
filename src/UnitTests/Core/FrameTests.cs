@@ -73,8 +73,7 @@ namespace Reko.UnitTests.Core
 		{
 			var arch = new X86ArchitectureReal("x86-real-16");
 			var f = new Frame(PrimitiveType.Word16);
-			uint iSz = (uint) (FlagM.ZF|FlagM.SF);
-			f.EnsureFlagGroup(Registers.eflags, iSz, arch.GrfToString(iSz), PrimitiveType.Byte);
+			f.EnsureFlagGroup(arch.GetFlagGroup("SZ"));
 			using (FileUnitTester fut = new FileUnitTester("Core/FrGrfTest.txt"))
 			{
 				f.Write(fut.TextWriter);

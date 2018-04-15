@@ -207,16 +207,15 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(regsByName["CPSRQQQQ"], grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(regsByName["CPSRQQQQ"], grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -231,7 +230,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             StringBuilder s = new StringBuilder();
             if ((grf & (uint)FlagM.NF) != 0) s.Append('N');

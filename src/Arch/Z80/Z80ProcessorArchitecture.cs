@@ -177,7 +177,7 @@ namespace Reko.Arch.Z80
             return rMax;
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             FlagGroupStorage f;
             if (flagGroups.TryGetValue(grf, out f))
@@ -186,7 +186,7 @@ namespace Reko.Arch.Z80
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -204,7 +204,7 @@ namespace Reko.Arch.Z80
             }
             if (flags == 0)
                 throw new ArgumentException("name");
-            return GetFlagGroup((uint)flags);
+            return GetFlagGroup(Registers.f, (uint)flags);
         }
 
         public override Core.Expressions.Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
@@ -222,7 +222,7 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
-		public override string GrfToString(uint grf)
+		public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
 		{
 			StringBuilder s = new StringBuilder();
 			for (int r = Registers.S.Number; grf != 0; ++r, grf >>= 1)

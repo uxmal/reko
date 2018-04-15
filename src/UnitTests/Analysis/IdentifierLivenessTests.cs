@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
 		private string Dump()
 		{
 			StringWriter w = new StringWriter();
-			DataFlow.EmitRegisters(arch, "", 0, vl.Identifiers.ToHashSet<Storage>(), w);
+			DataFlow.EmitRegisters(arch, "", new Dictionary<RegisterStorage, uint>(), vl.Identifiers.ToHashSet<Storage>(), w);
 			return w.ToString();
 		}
 	}

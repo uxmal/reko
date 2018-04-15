@@ -299,11 +299,22 @@ namespace Reko.Analysis
 			{
 				fChange = true;
 			}
-			if ((varLive.Grf & ~flow.grfSummary) != 0)
+            foreach (var de in varLive.Grf)
 			{
-				flow.grfSummary |= varLive.Grf;
+                if (flow.grfSummary.TryGetValue(de.Key, out uint u))
+                {
+                    if ((de.Value & ~u) != 0)
+                    {
+                        flow.grfSummary[de.Key] |= de.Value;
 				fChange = true;
 			}
+                }
+                else
+                {
+                    flow.grfSummary[de.Key] = de.Value;
+                    fChange = true;
+                }
+            }
 			foreach (KeyValuePair<Storage,int> de in varLive.LiveStorages)
 			{
 				StackArgumentStorage sa = de.Key as StackArgumentStorage;
@@ -338,7 +349,7 @@ namespace Reko.Analysis
 		private void PropagateToCalleeExitBlocks(Statement stm)
 		{
 			var liveOrig = new HashSet<Storage>(varLive.Identifiers);
-			uint grfOrig = varLive.Grf;
+			var grfOrig = new Dictionary<RegisterStorage, uint>(varLive.Grf);
             var stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
 			foreach (Procedure p in program.CallGraph.Callees(stm))
 			{
@@ -550,7 +561,20 @@ namespace Reko.Analysis
                 varLive.Identifiers.ExceptWith(ids);
                 varLive.Identifiers.UnionWith(pi.MayUse.OfType<RegisterStorage>());
 				// varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
-				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
+                //varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
+                var bitState = pi.grfMayUse.Keys.Concat(pi.grfByPass.Keys).Concat(pi.grfTrashed.Keys).Concat(varLive.Grf.Keys)
+                    .Distinct()
+                    .ToDictionary(d => d, d => 0u);
+                foreach (var reg in bitState.Keys.ToArray())
+                {
+                    uint val = pi.grfMayUse.Get(reg) |
+                        ((pi.grfByPass.Get(reg) | ~pi.grfTrashed.Get(reg)) & varLive.Grf.Get(reg));
+                    if (val != 0)
+                    {
+                        varLive.Grf[reg] = val;
+                    }
+                }
+
 				// Any stack parameters are also considered live.
 				MarkLiveStackParameters(ci);
 			}
@@ -657,11 +681,22 @@ namespace Reko.Analysis
 				{
 					ret = true;
 				}
-				if ((varLive.Grf & (~blockFlow.grfOut)) != 0)
+                foreach (var de in varLive.Grf)
 				{
-					blockFlow.grfOut |= varLive.Grf;
+                    if (blockFlow.grfOut.TryGetValue(de.Key, out uint u))
+                    {
+                        if ((de.Value & ~u) != 0)
+                        {
+                            blockFlow.grfOut[de.Key] = u | de.Value;
 					ret = true;
 				}
+                    }
+                    else
+                    {
+                        blockFlow.grfOut[de.Key] = u | de.Value;
+                        ret = true;
+                    }
+                }
 				IDictionary<Storage, int> dict = blockFlow.StackVarsOut;
 				foreach (KeyValuePair<Storage,int> de in varLive.LiveStorages)
 				{
@@ -754,11 +789,21 @@ namespace Reko.Analysis
 				{
 					changed = true;
 				}
-				if ((~varLive.Grf & blockFlow.grfOut) != 0)
+                foreach (var de in varLive.Grf)
 				{
-					blockFlow.grfOut |= varLive.Grf;
+                    if (blockFlow.grfOut.TryGetValue(de.Key, out uint u))
+                    {
+                        if ((~de.Value & u) != 0)
+                        {
+                            blockFlow.grfOut[de.Key] = u | de.Value;
 					changed = true;
 				}
+                    }
+                    else
+                    {
+                        blockFlow.grfOut[de.Key] = de.Value;
+                    }
+                }
 				return changed;
 			}
 		}
@@ -783,8 +828,8 @@ namespace Reko.Analysis
                 flow.ByPass = new HashSet<Storage>(flow.Summary);
                 flow.ByPass.ExceptWith(flow.Trashed);
                 flow.Summary.Clear();
-				flow.grfByPass = flow.grfSummary;
-				flow.grfSummary = 0;
+				flow.grfByPass = new Dictionary<RegisterStorage, uint>(flow.grfSummary);
+                flow.grfSummary.Clear();
 			}
 
 			public override void UpdateSummary(ProcedureFlow item)
@@ -808,8 +853,8 @@ namespace Reko.Analysis
 			{
 				flow.MayUse = new HashSet<Storage>(flow.Summary);
                 flow.Summary.Clear();
-				flow.grfMayUse = flow.grfSummary;
-				flow.grfSummary = 0;
+				flow.grfMayUse = new Dictionary<RegisterStorage, uint>(flow.grfSummary);
+				flow.grfSummary.Clear();
 			}
 
 			public override void ApplySavedRegisters(ProcedureFlow procFlow, IdentifierLiveness varLive)
@@ -880,7 +925,8 @@ namespace Reko.Analysis
 
 			public bool VisitFlagGroupStorage(FlagGroupStorage grf)
 			{
-				return (grf.FlagGroupBits & liveState.Grf) != 0;
+                return (liveState.Grf.TryGetValue(grf.FlagRegister, out uint u) &&
+                        (u & grf.FlagGroupBits) != 0);
 			}
 
             public bool VisitSequenceStorage(SequenceStorage seq)

@@ -572,8 +572,8 @@ proc1_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
-                var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
+                var flags = m.Architecture.GetFlagGroup("CZS");
+                var cr = m.Frame.EnsureFlagGroup(flags);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -784,8 +784,8 @@ proc1_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
-                var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "CZS", PrimitiveType.Byte);
+                var flags = m.Architecture.GetFlagGroup("CZS");
+                var cr = m.Frame.EnsureFlagGroup(flags);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -852,10 +852,9 @@ proc1_exit:
 
             RunTest(sExp, m =>
             {
-                var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var sz = m.Frame.EnsureFlagGroup(flags, 3, "SZ", PrimitiveType.Byte);
-                var cz = m.Frame.EnsureFlagGroup(flags, 6, "CZ", PrimitiveType.Byte);
-                var c = m.Frame.EnsureFlagGroup(flags, 4, "C", PrimitiveType.Bool);
+                var scz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
+                var cz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
+                var c = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("C"));
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
                 m.Assign(sz, m.Cond(m.And(esi, esi)));

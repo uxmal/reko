@@ -135,7 +135,7 @@ namespace Reko.Arch.X86
             // compilers and code libraries. If you know the DF flag is set on
             // procedure entry, you can manually set that flag using a user-
             // defined register value.
-            SetFlagGroup(arch.GetFlagGroup((uint) FlagM.DF), Constant.False());
+            SetFlagGroup(arch.GetFlagGroup(Registers.eflags, (uint) FlagM.DF), Constant.False());
         }
 
         public override void OnProcedureLeft(FunctionType sig)

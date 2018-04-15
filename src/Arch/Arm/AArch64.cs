@@ -198,7 +198,7 @@ namespace Reko.Arch.Arm
             throw new NotSupportedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -208,7 +208,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }

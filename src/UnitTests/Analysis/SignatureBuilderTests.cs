@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Analysis;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -36,7 +37,9 @@ namespace Reko.UnitTests.Analysis
 		{
 			IProcessorArchitecture arch = new X86ArchitectureReal("x86-real-16");
 			SignatureBuilder sb = new SignatureBuilder(null, arch);
-            sb.AddFlagGroupReturnValue((uint) FlagM.CF, arch.CreateFrame());
+            sb.AddFlagGroupReturnValue(
+                new KeyValuePair<RegisterStorage, uint>(Registers.eflags, (uint) FlagM.CF),
+                arch.CreateFrame());
 			FunctionType sig = sb.BuildSignature();
 			Assert.AreEqual("bool", sig.ReturnValue.DataType.ToString());
 		}

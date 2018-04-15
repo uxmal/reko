@@ -210,14 +210,14 @@ namespace Reko.Arch.Pdp11
             return reg;
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
             FlagGroupStorage f;
             if (flagGroups.TryGetValue(grf, out f))
                 return f;
 
 			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.psw, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
 			flagGroups.Add(grf, fl);
 			return fl;
 		}
@@ -239,7 +239,7 @@ namespace Reko.Arch.Pdp11
             return new FlagGroupStorage(Registers.psw, grf, name, dt);
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
 			var s = new StringBuilder();
 			foreach (var r in flagRegs)

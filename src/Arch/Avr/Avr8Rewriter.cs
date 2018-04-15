@@ -191,7 +191,7 @@ namespace Reko.Arch.Avr
         {
             if (mod != 0)
             {
-                var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)mod));
+                var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)mod));
                 m.Assign(grf, m.Cond(e));
             }
             if (clr != 0)
@@ -201,7 +201,7 @@ namespace Reko.Arch.Avr
                 {
                     if ((grfMask & (uint)clr) != 0)
                     {
-                        var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(grfMask));
+                        var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, grfMask));
                         m.Assign(grf, 0);
                     }
                     grfMask <<= 1;
@@ -214,7 +214,7 @@ namespace Reko.Arch.Avr
                 {
                     if ((grfMask & (uint)set) != 0)
                     {
-                        var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(grfMask));
+                        var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, grfMask));
                         m.Assign(grf, 1);
                     }
                     grfMask <<= 1;
@@ -353,7 +353,7 @@ namespace Reko.Arch.Avr
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));
             var dst = RewriteOp(0);
             var src = RewriteOp(1);
             m.Assign(
@@ -383,7 +383,7 @@ namespace Reko.Arch.Avr
         private void RewriteBranch(ConditionCode cc, FlagM grfM)
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)grfM));
             var target = (Address)RewriteOp(0);
             m.Branch(m.Test(cc, grf), target, RtlClass.ConditionalTransfer);
         }
@@ -391,7 +391,7 @@ namespace Reko.Arch.Avr
         private void RewriteBranch(FlagM grfM, bool set)
         {
             rtlc = RtlClass.ConditionalTransfer;
-            Expression test = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
+            Expression test = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)grfM));
             if (!set)
                 test = m.Not(test);
             var target = (Address)RewriteOp(0);
@@ -427,7 +427,7 @@ namespace Reko.Arch.Avr
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)CmpFlags));
+            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)CmpFlags));
             m.Assign(flags, m.ISub(left, right));
         }
 
@@ -435,8 +435,8 @@ namespace Reko.Arch.Avr
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
-            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)CmpFlags));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));
+            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)CmpFlags));
             m.Assign(flags, m.ISub(m.ISub(left, right), c));
         }
 
@@ -465,7 +465,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteDes()
         {
-            var h = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.HF));
+            var h = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.HF));
             m.SideEffect(host.PseudoProcedure("__des", VoidType.Instance, RewriteOp(0), h));
         }
 
@@ -550,8 +550,8 @@ namespace Reko.Arch.Avr
             var r1_r0 = binder.EnsureSequence(arch.ByteRegs[1], arch.ByteRegs[0], PrimitiveType.Word16);
             var op0 = RewriteOp(0);
             var op1 = RewriteOp(1);
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
-            var z = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.ZF));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));
+            var z = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.ZF));
             var smul = m.SMul(op0, op1);
             smul.DataType = PrimitiveType.Int16;
             m.Assign(r1_r0, smul);
@@ -586,7 +586,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteRor()
         {
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));
             var reg = RewriteOp(0);
             m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte, reg, m.Int32(1), c));
             EmitFlags(reg, CmpFlags);
@@ -620,7 +620,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteSetBit(FlagM grf, bool value)
         {
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grf)), Constant.Bool(value));
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)grf)), Constant.Bool(value));
         }
 
         private void RewriteSt()

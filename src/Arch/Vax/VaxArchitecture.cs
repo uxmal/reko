@@ -120,7 +120,7 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -165,7 +165,7 @@ namespace Reko.Arch.Vax
             new RegisterStorage("N", 0, 0, PrimitiveType.Bool),
         };
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             StringBuilder s = new StringBuilder();
             for (int r = 0; grf != 0; ++r, grf >>= 1)

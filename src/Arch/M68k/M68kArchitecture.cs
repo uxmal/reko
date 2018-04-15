@@ -141,16 +141,15 @@ namespace Reko.Arch.M68k
             return Registers.regsByName.TryGetValue(name, out reg);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.ccr, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.ccr, grf, GrfToString(Registers.ccr, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -192,7 +191,7 @@ namespace Reko.Arch.M68k
             new RegisterStorage("X", 0, 0, PrimitiveType.Bool),
         };
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             if ((grf & 0xF0000000u) == 0xF0000000u) //$HACK: grftostring needs a FlagRegister
                 return "FPUFLAGS";

@@ -118,10 +118,10 @@ namespace Reko.Arch.Tlcs
                 case 'C': grf |= Registers.C.FlagGroupBits; break;
                 }
             }
-            return GetFlagGroup(grf);
+            return GetFlagGroup(Registers.f, grf);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             foreach (FlagGroupStorage f in Registers.flagBits)
             {
@@ -130,7 +130,7 @@ namespace Reko.Arch.Tlcs
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(flagRegister, "", grf), dt);
             return fl;
         }
 
@@ -169,7 +169,7 @@ namespace Reko.Arch.Tlcs
             return subreg;
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             StringBuilder s = new StringBuilder();
             foreach (var freg in Registers.flagBits)

@@ -40,9 +40,9 @@ namespace Reko.Analysis
         public Procedure Procedure { get; private set; }
 
         public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
-		public uint grfPreserved;
+		public Dictionary<RegisterStorage, uint> grfPreserved;
 
-		public uint grfTrashed;
+		public Dictionary<RegisterStorage,uint> grfTrashed;
 		public HashSet<Storage> Trashed;        // Registers globally trashed by procedure and/or callees.
         
         /// <summary>
@@ -52,16 +52,16 @@ namespace Reko.Analysis
         public Dictionary<Storage, Constant> Constants; 
 
 		public HashSet<Storage> ByPass { get; set; }
-		public uint grfByPass;
+		public Dictionary<RegisterStorage, uint> grfByPass;
 		public HashSet<Storage> MayUse;
-		public uint grfMayUse;
+		public Dictionary<RegisterStorage, uint> grfMayUse;
 		public HashSet<Storage> Summary;
-		public uint grfSummary;
+		public Dictionary<RegisterStorage, uint> grfSummary;
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
 		public Dictionary<Storage, BitRange> LiveOut;       //$TODO: rename to BitsUsedOut.
-		public uint grfLiveOut;
+		public Dictionary<RegisterStorage, uint> grfLiveOut;
 
 		public FunctionType Signature;
         public Dictionary<Storage, BitRange> BitsUsed;  // the bits of each live-in storage
@@ -78,9 +78,16 @@ namespace Reko.Analysis
             Trashed = new HashSet<Storage>();
             Constants = new Dictionary<Storage, Constant>();
 
+            grfTrashed = new Dictionary<RegisterStorage, uint>();
+            grfSummary = new Dictionary<RegisterStorage, uint>();
+            grfByPass = new Dictionary<RegisterStorage, uint>();
+            grfMayUse = new Dictionary<RegisterStorage, uint>();
+            grfPreserved = new Dictionary<RegisterStorage, uint>();
+            grfLiveOut = new Dictionary<RegisterStorage, uint>();
+
             ByPass = new HashSet<Storage>();
             MayUse = new HashSet<Storage>();
-            LiveOut = new Dictionary<Storage, BitRange>();
+            LiveOut = new HashSet<Storage, BitRange>();
 
             StackArguments = new Hashtable();
             this.BitsUsed = new Dictionary<Storage, BitRange>();
@@ -131,10 +138,11 @@ namespace Reko.Analysis
 
 		public bool IsLiveOut(Identifier id)
 		{
-			if (id.Storage is FlagGroupStorage flags)
+            if (id.Storage is FlagGroupStorage flags)
 			{
-				uint grf = flags.FlagGroupBits;
-				return ((grf & grfLiveOut) != 0);
+                if (!this.grfLiveOut.TryGetValue(flags.FlagRegister, out uint grf))
+                    return false;
+                return ((grf & flags.FlagGroupBits) != 0);
 			}
 			if (id.Storage is RegisterStorage reg)
 			{

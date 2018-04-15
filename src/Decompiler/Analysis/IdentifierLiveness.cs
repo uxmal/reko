@@ -35,7 +35,7 @@ namespace Reko.Analysis
 	{
 		private Identifier id;
 		private HashSet<RegisterStorage> ids;
-		private uint grf;
+		private Dictionary<RegisterStorage, uint> grf;
 		private Dictionary<Storage,int> liveStackVars;
 		private IProcessorArchitecture arch;
 		private bool define;
@@ -48,6 +48,7 @@ namespace Reko.Analysis
 		{
 			this.arch = arch;
 			liveStackVars = new Dictionary<Storage,int>();
+            this.grf = new Dictionary<RegisterStorage, uint>();
 		}
 
 		public void Def(Identifier id)
@@ -165,10 +166,10 @@ namespace Reko.Analysis
             ids.ExceptWith(arch.GetAliases(reg));
 		}
 
-		public uint Grf
+		public Dictionary<RegisterStorage, uint> Grf
 		{
 			get { return grf; }
-			set { grf = value; }
+			set { grf = value; if (value == null) throw new NotImplementedException(); }
 		}
 
 		public Dictionary<Storage,int> LiveStorages
@@ -177,18 +178,19 @@ namespace Reko.Analysis
 			set { liveStackVars = value; }
 		}
 
-		public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
-		{
-			if (define)
-			{
-				this.grf &= ~grf.FlagGroupBits;
-			}
-			else
-			{
-				this.grf |= grf.FlagGroupBits;
-			}
+        public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
+        {
+            if (!this.grf.TryGetValue(grf.FlagRegister, out uint uGrf))
+            {
+                uGrf = 0;
+            }
+            if (define)
+                uGrf &= ~grf.FlagGroupBits;
+            else
+                uGrf |= grf.FlagGroupBits;
+            this.grf[grf.FlagRegister] = uGrf;
             return null;
-		}
+        }
 
 		public Storage VisitFpuStackStorage(FpuStackStorage fpu)
 		{
@@ -338,10 +340,12 @@ namespace Reko.Analysis
 
 		private void WriteFlagGroup(TextWriter writer)
 		{
-			if (grf != 0)
-			{
-				writer.Write(' ');
-				writer.Write(arch.GrfToString(grf));
+			foreach (var flag in grf
+                .Where(f => f.Value != 0)
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .OrderBy(f => f.Name))
+            {
+                writer.Write(" {0}", flag.Name);
 			}
 		}
 	}

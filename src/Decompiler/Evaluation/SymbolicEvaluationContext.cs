@@ -41,6 +41,7 @@ namespace Reko.Evaluation
             this.RegisterState = new Dictionary<Storage, Expression>();
             this.StackState = new SortedList<int, Expression>();
             this.TemporaryState = new Dictionary<Storage, Expression>();
+            this.TrashedFlags = new Dictionary<RegisterStorage, uint>();
             this.setter = new StorageValueSetter(this);
         }
 
@@ -51,7 +52,7 @@ namespace Reko.Evaluation
             this.RegisterState = new Dictionary<Storage, Expression>(old.RegisterState);
             this.StackState = new SortedList<int, Expression>(old.StackState);
             this.TemporaryState = new Dictionary<Storage, Expression>(old.TemporaryState);
-            this.TrashedFlags = old.TrashedFlags;
+            this.TrashedFlags = new Dictionary<RegisterStorage, uint>(old.TrashedFlags);
             this.setter = new StorageValueSetter(this);
         }
 
@@ -60,7 +61,7 @@ namespace Reko.Evaluation
         public Dictionary<Storage, Expression> RegisterState { get; private set; }
         public SortedList<int, Expression> StackState { get; private set; }
         public Dictionary<Storage, Expression> TemporaryState { get; private set; }
-        public uint TrashedFlags { get; set; }
+        public Dictionary<RegisterStorage, uint> TrashedFlags { get;  set; }
         public Frame Frame { get; private set; }
 
         public SymbolicEvaluationContext Clone()
@@ -259,7 +260,12 @@ namespace Reko.Evaluation
                 }
                 RegisterState[reg] = c;
             }
-            TrashedFlags |= pf.grfTrashed;
+            foreach (var deTrashed in pf.grfTrashed)
+            {
+                if (!TrashedFlags.TryGetValue(deTrashed.Key, out uint grf))
+                    grf = 0;
+                TrashedFlags[deTrashed.Key] = grf | deTrashed.Value;
+        }
         }
 
         #endregion
@@ -272,8 +278,7 @@ namespace Reko.Evaluation
         private bool GetStackAddressOffset(Expression effectiveAddress, out int offset)
         {
             offset = 0;
-            var ea = effectiveAddress as BinaryExpression;
-            if (ea != null)
+            if (effectiveAddress is BinaryExpression ea)
             {
                 if (!IsFramePointer(ea.Left))
                     return false;
@@ -315,7 +320,8 @@ namespace Reko.Evaluation
 
             public Storage VisitFlagGroupStorage(FlagGroupStorage grf)
             {
-                ctx.TrashedFlags |= grf.FlagGroupBits;
+                var u = ctx.TrashedFlags.Get(grf.FlagRegister);
+                ctx.TrashedFlags[grf.FlagRegister] = u | grf.FlagGroupBits;
                 return grf;
             }
 

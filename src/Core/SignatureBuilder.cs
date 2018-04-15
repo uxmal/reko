@@ -47,11 +47,11 @@ namespace Reko.Core
 			args = new List<Identifier>();
 		}
 
-		public void AddFlagGroupReturnValue(uint bitMask, IStorageBinder binder)
+		public void AddFlagGroupReturnValue(KeyValuePair<RegisterStorage, uint> bits, IStorageBinder binder)
 		{
-			PrimitiveType dt = Bits.IsSingleBitSet(bitMask) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var grf = arch.GetFlagGroup(bitMask);
-			ret = binder.EnsureFlagGroup(grf.FlagRegister, bitMask, grf.Name, dt);
+			PrimitiveType dt = Bits.IsSingleBitSet(bits.Value) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var grf = arch.GetFlagGroup(bits.Key, bits.Value);
+			ret = binder.EnsureFlagGroup(grf);
 		}
 
 		public void AddFpuStackArgument(int x, Identifier id)

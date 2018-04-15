@@ -163,7 +163,7 @@ namespace Reko.Arch.Pdp11
             uint uChanged = (uint)changed;
             if (uChanged != 0)
             {
-                var grfChanged = binder.EnsureFlagGroup(this.arch.GetFlagGroup(uChanged));
+                var grfChanged = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, uChanged));
                 m.Assign(grfChanged, m.Cond(e));
             }
             uint grfMask = 1;
@@ -171,7 +171,7 @@ namespace Reko.Arch.Pdp11
             {
                 if ((grfMask & (uint)zeroed) != 0)
                 {
-                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
+                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, grfMask));
                     m.Assign(grfZeroed, 0);
                 }
                 grfMask <<= 1;
@@ -181,7 +181,7 @@ namespace Reko.Arch.Pdp11
             {
                 if ((grfMask & (uint)set) != 0)
                 {
-                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
+                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, grfMask));
                     m.Assign(grfZeroed, 1);
                 }
                 grfMask <<= 1;

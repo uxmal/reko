@@ -163,15 +163,30 @@ namespace Reko.Core
 
         RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
-        FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
-		FlagGroupStorage GetFlagGroup(string name);
+        FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
+
+        /// <summary>
+        /// Given the name of a flag register bit group, returns the corresponding
+        /// FlagGroupStorage.
+        /// </summary>
+        /// <remarks>
+        /// This method is used principally in deserialization from text.
+        /// A critical assumption here is that all flag groups can be distinguished from each
+        /// other. The safest approach seems to be to use single-character flag names for the 
+        /// condition code bits which tend to be the most commonly used, and use a string prefix
+        /// if bits from other registers are needed.
+        /// </remarks>
+        /// <param name="flagRegister"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
-        string GrfToString(uint grf);                       // Converts a union of processor flag bits to its string representation
+        string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
 
         string Name { get; }                           // Short name used to refer to an architecture.
         string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
@@ -357,9 +372,9 @@ namespace Reko.Core
         public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
-        public abstract FlagGroupStorage GetFlagGroup(uint grf);
+        public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
-        public abstract string GrfToString(uint grf);
+        public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
         public virtual void LoadUserOptions(Dictionary<string, object> options) { }
         public abstract Address MakeAddressFromConstant(Constant c);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }

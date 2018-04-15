@@ -193,15 +193,15 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrashFlag()
         {
-            var flags = arch.GetFlagGroup(0x7).FlagRegister;
-            var scz = m.Frame.EnsureFlagGroup(flags, 0x7, arch.GrfToString(0x7), PrimitiveType.Byte);
+            var flags = arch.GetFlagGroup("CZS");
+            var scz = m.Frame.EnsureFlagGroup(flags);
             var stm = m.Assign(scz, m.Int32(3));
 
             trf = CreateTrashedRegisterFinder();
             CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
             stm.Accept(trf);
-            Assert.AreEqual(0x7, trf.TrashedFlags);
+            Assert.AreEqual(0x7, trf.TrashedFlags.First().Value);
         }
 
         [Test]

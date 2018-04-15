@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public FlagGroupStorage GetFlagGroup(uint grf)
+            public FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
             {
                 throw new NotImplementedException();
             }
@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Core
 
              public int InstructionBitSize { get { return 32; } }
 
-            public string GrfToString(uint grf)
+            public string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
             {
                 throw new NotImplementedException();
             }

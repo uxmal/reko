@@ -77,7 +77,7 @@ namespace Reko.Analysis
 
         public Dictionary<Storage, Expression> RegisterSymbolicValues { get { return ctx.RegisterState; } }
         public IDictionary<int, Expression> StackSymbolicValues { get { return ctx.StackState; } } 
-        public uint TrashedFlags {get { return ctx.TrashedFlags; } }
+        public Dictionary<RegisterStorage,uint> TrashedFlags {get { return ctx.TrashedFlags; } }
 
         public void CompleteWork()
         {
@@ -93,9 +93,8 @@ namespace Reko.Analysis
         public void ProcessWorkList()
         {
             int initial = worklist.Count;
-            Block block;
             var e = eventListener;
-            while (worklist.GetWorkItem(out block))
+            while (worklist.GetWorkItem(out var block))
             {
                 if (e.IsCanceled())
                     break;
@@ -180,8 +179,7 @@ namespace Reko.Analysis
             if (reg == null)
                 throw new NotImplementedException();
 
-            Expression regVal;
-            if (!ctx.RegisterState.TryGetValue(reg, out regVal))
+            if (!ctx.RegisterState.TryGetValue(reg, out Expression regVal))
                 return false;
             var id = regVal as Identifier;
             if (id == null)
@@ -263,7 +261,7 @@ namespace Reko.Analysis
                 var sp = block.Procedure.Frame.EnsureRegister(program.Architecture.StackRegister);
                 bf.SymbolicIn.RegisterState[sp.Storage] = block.Procedure.Frame.FramePointer;
             }
-            ctx.TrashedFlags = bf.grfTrashedIn;
+            ctx.TrashedFlags = new Dictionary<RegisterStorage, uint>(bf.grfTrashedIn);
         }
 
         public void EnsureEvaluationContext(BlockFlow bf)
@@ -302,8 +300,7 @@ namespace Reko.Analysis
 
         public bool MergeRegister(Storage reg, Expression value, SymbolicEvaluationContext ctx)
         {
-            Expression oldValue;
-            if (!ctx.RegisterState.TryGetValue(reg, out oldValue))
+            if (!ctx.RegisterState.TryGetValue(reg, out Expression oldValue))
             {
                 ctx.RegisterState[reg] = value;
                 return  true;
@@ -343,11 +340,15 @@ namespace Reko.Analysis
                 }
             }
 
-            uint grfNew = succFlow.grfTrashedIn | ctx.TrashedFlags;
-            if (grfNew != succFlow.grfTrashedIn)
+            foreach (var de in ctx.TrashedFlags)
             {
-                succFlow.grfTrashedIn = grfNew;
+                var old = succFlow.grfTrashedIn.Get(de.Key);
+                var gnu = old | de.Value;
+                if (gnu != old)
+                {
+                    succFlow.grfTrashedIn[de.Key] = gnu;
                 changed = true;
+            }
             }
             return changed;
         }
@@ -391,7 +392,7 @@ namespace Reko.Analysis
             {
                 // A terminating procedure has no trashed registers because caller will never see those effects!
                 ctx.RegisterState.Clear();
-                ctx.TrashedFlags = 0;
+                ctx.TrashedFlags.Clear();
                 Debug.Print("*** Terminated stm {0:X8} - {1}", stmCur.LinearAddress, ci);
                 return ci;
             }
@@ -505,7 +506,7 @@ namespace Reko.Analysis
                 var e = base.VisitApplication(appl);
                 if (appl.Procedure != null && trf.ProcedureTerminates(appl.Procedure))
                 {
-                    ctx.TrashedFlags = 0;
+                    ctx.TrashedFlags.Clear();
                     ctx.RegisterState.Clear();
                     return appl;
                 }
@@ -513,8 +514,7 @@ namespace Reko.Analysis
                 {
                     if (u.Operator == UnaryOperator.AddrOf)
                     {
-                        Identifier id = u.Expression as Identifier;
-                        if (id != null)
+                        if (u.Expression is Identifier id)
                         {
                             ctx.SetValue(id, Constant.Invalid);
                         }

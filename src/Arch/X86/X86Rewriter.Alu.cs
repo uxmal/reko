@@ -913,7 +913,7 @@ namespace Reko.Arch.X86
 
         private void RewriteSetFlag(FlagM flagM, Constant value)
         {
-            var reg = arch.GetFlagGroup((uint) flagM);
+            var reg = arch.GetFlagGroup(Registers.eflags, (uint) flagM);
             state.SetFlagGroup(reg, value);
             var id = orw.FlagGroup(flagM);
             m.Assign(id, value);

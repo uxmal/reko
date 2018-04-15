@@ -64,10 +64,10 @@ namespace Reko.Analysis
                     changed = true;
                     pf.Trashed.Clear();
                 }
-                if (pf.grfTrashed != 0)
+                if (pf.grfTrashed.Count > 0)
                 {
                     changed = true;
-                    pf.grfTrashed = 0;
+                    pf.grfTrashed.Clear();
                 }
                 if (pf.Constants.Count > 0)
                 {
@@ -131,11 +131,22 @@ namespace Reko.Analysis
             pf.Preserved.UnionWith(preserved);
             changed |= (pf.Preserved.Count != oldCount);
             
-            uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
-            if (grfNew != pf.grfTrashed)
+            foreach (var de in ctx.TrashedFlags)
             {
-                pf.grfTrashed = grfNew;
+                if (pf.grfTrashed.TryGetValue(de.Key, out uint grf))
+                {
+                    var grfNew = grf | de.Value;
+                    if (grfNew != grf)
+                    {
+                        pf.grfTrashed[de.Key] = grfNew;
                 changed = true;
+            }
+                }
+                else
+                {
+                    pf.grfTrashed[de.Key] = grf;
+                    changed = true;
+                }
             }
             return changed;
         }

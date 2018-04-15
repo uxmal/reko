@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteBpt()
         {
             this.rtlc = RtlClass.Call | RtlClass.Transfer;
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
             m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte)); 
         }
 
@@ -50,7 +50,7 @@ namespace Reko.Arch.Pdp11
         {
             this.rtlc = RtlClass.Transfer;
             m.Branch(
-                m.Test(cc, binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
+                m.Test(cc, binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)flags))),
                 ((AddressOperand)instr.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
@@ -76,7 +76,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteIot()
         {
             this.rtlc = RtlClass.Call | RtlClass.Transfer;
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
             m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte));
         }
 

@@ -246,7 +246,7 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -264,7 +264,7 @@ namespace Reko.Arch.PowerPC
                 return null;
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             //$BUG: this needs to be better conceved. There are 
             // 32 (!) condition codes in the PowerPC architecture

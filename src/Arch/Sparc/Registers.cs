@@ -41,7 +41,7 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage g6;
         public static RegisterStorage g7;
 
-        public static RegisterStorage o0;   // outgoing paramter 0 / return valie from callee
+        public static RegisterStorage o0;   // outgoing paramter 0 / return value from callee
         public static RegisterStorage o1;
         public static RegisterStorage o2;
         public static RegisterStorage o3;

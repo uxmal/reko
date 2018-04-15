@@ -126,6 +126,19 @@ namespace Reko.Core
             while (innerMoveNext());
         }
 
+        /// <summary>
+        /// Gets a value from a dictionary. If the value is not present,
+        /// returns a default value.
+        /// </summary>
+        public static TValue Get<TKey, TValue>(this IDictionary<TKey,TValue> d, TKey key, TValue def = default(TValue))
+        {
+            if (d.TryGetValue(key, out var value))
+                return value;
+            else
+                return def;
+        }
+    }
+
 
         public static IEnumerable<TResult> ZipMany<TSource, TResult>(
             IEnumerable<IEnumerable<TSource>> source,

@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
 			{
 				IntelArchitecture arch = new X86ArchitectureReal("x86-real-16");
 				uint f = (uint)(FlagM.CF|FlagM.ZF);
-				Identifier argF = new Identifier(arch.GrfToString(f), PrimitiveType.Bool, new FlagGroupStorage(Registers.eflags, f, "CZ", PrimitiveType.Byte));
+				Identifier argF = new Identifier(arch.GetFlagGroup("CZ").ToString(), PrimitiveType.Bool, new FlagGroupStorage(Registers.eflags, f, "CZ", PrimitiveType.Byte));
 				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
 				
 				argF.Write(true, fut.TextWriter);

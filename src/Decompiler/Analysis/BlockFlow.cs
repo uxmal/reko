@@ -24,6 +24,7 @@ using Expression = Reko.Core.Expressions.Expression;
 using IProcessorArchitecture = Reko.Core.IProcessorArchitecture;
 using Storage = Reko.Core.Storage;
 using RegisterStorage = Reko.Core.RegisterStorage;
+using FlagGroupStorage = Reko.Core.FlagGroupStorage;
 using StringWriter = System.IO.StringWriter;
 using SymbolicEvaluationContext = Reko.Evaluation.SymbolicEvaluationContext;
 using TextWriter = System.IO.TextWriter;
@@ -39,9 +40,9 @@ namespace Reko.Analysis
 	{
 		public Block Block;
 		public HashSet<Storage> DataOut;		        // each bit corresponds to a register that is live at the end of the
-		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
+		public Dictionary<RegisterStorage,uint> grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
-		public uint grfTrashedIn;					    // each bit corresponds to a condition code register that is trashed on entrance (fwd analysis)
+		public Dictionary<RegisterStorage,uint> grfTrashedIn;					    // each bit corresponds to a condition code register that is trashed on entrance (fwd analysis)
         public SymbolicEvaluationContext SymbolicIn { get; private set; }    // Symbolic context at block entry (fwd analysis)
         public bool TerminatesProcess;                  // True if entering this block means the process/thread will be terminated.
 
@@ -51,6 +52,8 @@ namespace Reko.Analysis
 			this.DataOut = dataOut;
 			this.StackVarsOut = new Dictionary<Storage,int>();
             this.SymbolicIn = ctx;
+            this.grfTrashedIn = new Dictionary<RegisterStorage, uint>();
+            this.grfOut = new Dictionary<RegisterStorage, uint>();
 		}
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)

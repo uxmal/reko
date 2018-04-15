@@ -548,7 +548,7 @@ namespace Reko.Arch.M68k
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup(Registers.ccr, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.ccr, (uint)flags, arch.GrfToString(Registers.ccr, "", (uint)flags), PrimitiveType.Byte);
         }
     }
 }

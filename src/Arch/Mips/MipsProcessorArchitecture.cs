@@ -158,7 +158,7 @@ namespace Reko.Arch.Mips
             return mpNameToReg.TryGetValue(name, out reg);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             throw new NotImplementedException();
         }
@@ -179,7 +179,7 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
             if (grf != 0)   // MIPS has no traditional status register.
                 throw new NotSupportedException();

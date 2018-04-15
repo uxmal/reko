@@ -102,13 +102,13 @@ namespace Reko.Arch.i8051
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagGroups.TryGetValue(grf, out var grfStg))
                 return grfStg;
 
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            grfStg = new FlagGroupStorage(Registers.PSW, grf, GrfToString(grf), dt);
+            grfStg = new FlagGroupStorage(Registers.PSW, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grfStg.FlagGroupBits, grfStg);
             return grfStg;
         }
@@ -143,7 +143,7 @@ namespace Reko.Arch.i8051
             return Registers.GetRegisters();
         }
 
-        public override string GrfToString(uint grf)
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var sb = new StringBuilder();
             if ((grf & (uint)FlagM.C) != 0)

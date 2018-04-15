@@ -34,7 +34,7 @@ namespace Reko.Arch.Pdp11
     {
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
         {
-            var src = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
+            var src = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, (uint)FlagM.CF));
             var dst = RewriteDst(instr.op1, src, fn);
             if (dst == null)
             {
@@ -145,7 +145,7 @@ namespace Reko.Arch.Pdp11
             if ((grf & (uint)flag) != 0)
             {
                 m.Assign(
-                    binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flag)),
+                    binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)flag)),
                     gen());
             }
         }
@@ -334,7 +334,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteSxt()
         {
-            var n  = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.NF));
+            var n  = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, (uint)FlagM.NF));
 
             var src = m.ISub(Constant.Int16(0), n);
             var dst = RewriteDst(instr.op1, src, s => s);

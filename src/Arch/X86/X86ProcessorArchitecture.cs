@@ -206,7 +206,7 @@ namespace Reko.Arch.X86
             return mode.GetControlRegister(v);
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
             FlagGroupStorage f;
             if (flagGroupCache.TryGetValue(grf, out f))
@@ -215,7 +215,7 @@ namespace Reko.Arch.X86
 			}
 
 			var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            f = new FlagGroupStorage(Registers.eflags, grf, GrfToString(grf), dt);
+            f = new FlagGroupStorage(Registers.eflags, grf, GrfToString(flagRegister, "", grf), dt);
 			flagGroupCache.Add(grf, f);
 			return f;
 		}
@@ -236,7 +236,7 @@ namespace Reko.Arch.X86
                 default: return null;
 				}
 			}
-			return GetFlagGroup((uint) grf);
+			return GetFlagGroup(Registers.eflags, (uint) grf);
 		}
 
 		public override RegisterStorage GetRegister(int i)
@@ -354,7 +354,7 @@ namespace Reko.Arch.X86
             return (reg != RegisterStorage.None);
         }
 
-		public override string GrfToString(uint grf)
+		public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
 		{
 			StringBuilder s = new StringBuilder();
             foreach (var fr in Registers.EflagsBits)

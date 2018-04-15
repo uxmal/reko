@@ -268,7 +268,7 @@ namespace Reko.Arch.Z80
 
         public Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup(Registers.f,(uint) flags, arch.GrfToString((uint) flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.f, (uint) flags, arch.GrfToString(Registers.f, "", (uint) flags), PrimitiveType.Byte);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -489,7 +489,7 @@ namespace Reko.Arch.Z80
                 m.Branch(
                     m.Test(
                         cc, 
-                        binder.EnsureFlagGroup(arch.GetFlagGroup((uint)cr))),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, (uint)cr))),
                     target.Address, 
                     RtlClass.ConditionalTransfer);
             }
