@@ -882,7 +882,7 @@ namespace Reko.Scanning
                 var jumpExpr = bws.JumpTableFormat;
                 var interval = bws.JumpTableIndexInterval;
                 var index = bws.JumpTableIndexToUse;
-                var ctx = new Dictionary<Expression, ValueSet>();
+                var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
                 if (index == null)
                 {
                     // Weren't able to find the index register,

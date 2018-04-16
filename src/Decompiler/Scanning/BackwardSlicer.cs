@@ -84,6 +84,10 @@ namespace Reko.Scanning
         /// <paramref name="indirectJump"/>, then start tracing instructions
         /// backwards beginning at instruction <paramref name="iInstr"/> in <paramref name="block"/>.
         /// </summary>
+        /// <remarks>
+        /// Any expressions discovered in this step become the "roots"
+        /// of the backward slice. These roots are kept in the `Live` collection.
+        /// </remarks>
         /// <param name="block">Basic block of instructions.</param>
         /// <param name="iInstr">Index into the instructions in <paramref name="block"/>.</param>
         /// <param name="indirectJump">Expression containing the target of the indirect call or jump.</param>
