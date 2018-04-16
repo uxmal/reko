@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(this.pb.Program.Architecture, this.pb.Program.SegmentMap, ssa.SsaState, listener);
+            var vp = new ValuePropagator(this.pb.Program.SegmentMap, ssa.SsaState, listener);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Analysis
             builder(pb);
             var proc = pb.Procedure;
 
-            var alias = new Aliases(proc, this.pb.Program.Architecture);
+            var alias = new Aliases(proc);
             alias.Transform();
             var ssa = new SsaTransform2();
             ssa.Transform(proc);

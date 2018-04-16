@@ -31,6 +31,7 @@ using System.Text;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
 using NUnit.Framework;
+using Reko.Core.Operators;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -119,7 +120,10 @@ namespace Reko.UnitTests.Mocks
 
         public Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            throw new NotImplementedException();
+            return MemoryAccess.Create(
+                    binder.EnsureRegister(this.StackRegister),
+                    offset,
+                    dataType);
         }
 
         public EndianImageReader CreateImageReader(MemoryArea image, Address addr)

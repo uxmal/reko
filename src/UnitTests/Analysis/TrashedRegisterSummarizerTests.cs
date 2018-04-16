@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Analysis
             proc = new Procedure(arch, "Test", new Frame(arch.FramePointerType));
             flow = new ProcedureFlow(proc, arch);
             ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            trs = new TrashedRegisterSummarizer(arch, proc, flow, ctx);
+            trs = new TrashedRegisterSummarizer(proc, flow, ctx);
         }
 
         [Test]

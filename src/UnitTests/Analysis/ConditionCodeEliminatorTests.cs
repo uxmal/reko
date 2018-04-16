@@ -97,10 +97,10 @@ namespace Reko.UnitTests.Analysis
             dfa.UntangleProcedures();
             foreach (Procedure proc in program.Procedures.Values)
             {
-                var larw = new LongAddRewriter(proc, program.Architecture);
+                var larw = new LongAddRewriter(proc);
                 larw.Transform();
 
-                Aliases alias = new Aliases(proc, program.Architecture, dfa.ProgramDataFlow);
+                Aliases alias = new Aliases(proc, dfa.ProgramDataFlow);
                 alias.Transform();
                 var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, listener);
                 vp.Transform();
 
                 DeadCode.Eliminate(proc, ssa);

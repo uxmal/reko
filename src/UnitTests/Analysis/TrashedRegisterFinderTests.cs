@@ -61,6 +61,7 @@ namespace Reko.UnitTests.Analysis
             exit = new Procedure(arch, "exit", new Frame(PrimitiveType.Word32));
             flow = new ProgramDataFlow();
             p = new ProgramBuilder();
+            p.Program.Architecture = this.arch;
         }
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
@@ -489,9 +490,10 @@ const eax:<invalid> ebx:0x01231313
 
 
         [Test]
-        public void PreservedValues()
+        public void TrfPreservedValues()
         {
             arch = new X86ArchitectureReal("x86-real-16");
+            p.Program.Architecture = arch;
             p.Add("main", m =>
             {
                 var sp = m.Frame.EnsureRegister(Registers.sp);

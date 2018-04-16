@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Analysis
             var scc = new Dictionary<Procedure, SsaState>();
             foreach (var proc in procs)
             {
-                Aliases alias = new Aliases(proc, program.Architecture, flow);
+                Aliases alias = new Aliases(proc, flow);
                 alias.Transform();
 
                 // Transform the procedure to SSA state. When encountering 'call' instructions,

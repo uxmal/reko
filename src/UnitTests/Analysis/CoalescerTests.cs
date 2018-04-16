@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
 			
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-                Aliases alias = new Aliases(proc, program.Architecture);
+                Aliases alias = new Aliases(proc);
                 alias.Transform();
                 SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Analysis
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-                ValuePropagator vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
 				vp.Transform();
 				DeadCode.Eliminate(proc, ssa);
 				Coalescer co = new Coalescer(proc, ssa);

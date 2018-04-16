@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Analysis
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             p = new ProgramBuilder();
+            p.Program.Architecture = arch;
         }
 
         private void RunTest(string sExp)

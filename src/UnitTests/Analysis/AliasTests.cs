@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Analysis
         {
             var arch = new X86ArchitectureReal("x86-real-16");
             proc = Procedure.Create(arch, "foo", Address.Ptr32(0x100), arch.CreateFrame());
-            alias = new Aliases(proc, arch);
+            alias = new Aliases(proc);
         }
 
         protected override void RunTest(Program program, TextWriter writer)
@@ -56,9 +56,9 @@ namespace Reko.UnitTests.Analysis
             RegisterLiveness.Compute(program, dfa.ProgramDataFlow, eventListener);
             foreach (Procedure proc in program.Procedures.Values)
             {
-                LongAddRewriter larw = new LongAddRewriter(proc, program.Architecture);
+                LongAddRewriter larw = new LongAddRewriter(proc);
                 larw.Transform();
-                Aliases alias = new Aliases(proc, program.Architecture, dfa.ProgramDataFlow);
+                Aliases alias = new Aliases(proc, dfa.ProgramDataFlow);
                 alias.Transform();
                 alias.Write(writer);
                 proc.Write(false, writer);

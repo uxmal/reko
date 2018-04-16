@@ -42,10 +42,10 @@ namespace Reko.Analysis
         private HashSet<RegisterStorage> preserved;
         private ExpressionValueComparer cmp;
 
-        public TrashedRegisterSummarizer(IProcessorArchitecture arch, Procedure proc, ProcedureFlow pf, SymbolicEvaluationContext ctx)
+        public TrashedRegisterSummarizer(Procedure proc, ProcedureFlow pf, SymbolicEvaluationContext ctx)
         {
-            this.arch = arch;
             this.proc = proc;
+            this.arch = proc.Architecture;
             this.pf = pf;
             trashed = new HashSet<RegisterStorage>();
             preserved = new HashSet<RegisterStorage>();
