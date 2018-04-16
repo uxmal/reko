@@ -87,7 +87,7 @@ namespace Reko.Analysis
 
             ByPass = new HashSet<Storage>();
             MayUse = new HashSet<Storage>();
-            LiveOut = new HashSet<Storage, BitRange>();
+            LiveOut = new Dictionary<Storage, BitRange>();
 
             StackArguments = new Hashtable();
             this.BitsUsed = new Dictionary<Storage, BitRange>();

@@ -137,8 +137,6 @@ namespace Reko.Core
             else
                 return def;
         }
-    }
-
 
         public static IEnumerable<TResult> ZipMany<TSource, TResult>(
             IEnumerable<IEnumerable<TSource>> source,

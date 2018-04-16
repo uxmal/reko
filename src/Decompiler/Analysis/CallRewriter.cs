@@ -69,25 +69,6 @@ namespace Reko.Analysis
 			sb.AddInParam(id);
 		}
 
-		/// <summary>
-		/// Adjusts LiveOut values for use as out registers.
-		/// </summary>
-		/// <remarks>
-		/// LiveOut sets contain registers that aren't modified by the procedure. When determining
-		/// the returned registers, those unmodified registers must be filtered away.
-		/// </remarks>
-		/// <param name="flow"></param>
-		private void AdjustLiveOut(ProcedureFlow flow)
-		{
-			flow.grfLiveOut &= flow.grfTrashed;
-            var newOut = flow.LiveOut.Keys.ToHashSet();
-            foreach (var stg in newOut)
-            {
-                if (!flow.Trashed.Contains(stg))
-                    flow.LiveOut.Remove(stg);
-            }
-        }
-
         private void AdjustLiveIn(Procedure proc, ProcedureFlow flow)
         {
             var liveDefStms = proc.EntryBlock.Statements
@@ -144,7 +125,8 @@ namespace Reko.Analysis
 			var sb = new SignatureBuilder(frame, platform.Architecture);
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
-            AddModifiedFlags(frame, flow.grfLiveOut, sb);
+            var liveOutFlagGroups = flow.grfLiveOut.Select(de => platform.Architecture.GetFlagGroup(de.Key, de.Value));
+            AddModifiedFlags(frame, liveOutFlagGroups, sb);
 
             var mayUse = flow.BitsUsed.Where(b =>
                 {
@@ -223,14 +205,6 @@ namespace Reko.Analysis
             {
                 sb.AddOutParam(frame.EnsureFlagGroup(grf));
             }
-        }
-
-        private void AddModifiedFlags(IStorageBinder frame, uint grf, SignatureBuilder sb)
-        {
-            if (grf == 0)
-                return;
-            var flags = platform.Architecture.GetFlagGroup(grf);
-            sb.AddOutParam(frame.EnsureFlagGroup(flags));
         }
 
 		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)

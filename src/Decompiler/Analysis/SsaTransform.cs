@@ -275,22 +275,26 @@ namespace Reko.Analysis
             IStorageBinder binder,
             IProcessorArchitecture arch)
         {
-            uint grfTotal = 0;
+            var grfs = new SortedList<RegisterStorage, uint>();
             foreach (var id in ids)
             {
                 if (id.Storage is FlagGroupStorage grf)
                 {
-                    grfTotal |= grf.FlagGroupBits;
+                    var grfTotal = grfs.Get(grf.FlagRegister);
+                    grfs[grf.FlagRegister] =  grfTotal | grf.FlagGroupBits;
                 }
                 else
                 {
                     yield return id;
                 }
             }
-            if (grfTotal != 0)
+            if (grfs.Count > 0)
             {
-                var grfNew = arch.GetFlagGroup(grfTotal);
-                yield return binder.EnsureFlagGroup(grfNew);
+                foreach (var de in grfs)
+                {
+                    var grfNew = arch.GetFlagGroup(de.Key, de.Value);
+                    yield return binder.EnsureFlagGroup(grfNew);
+                }
             }
         }
 
@@ -308,7 +312,7 @@ namespace Reko.Analysis
                 {
                     foreach (var bit in grf.GetFlagBitMasks())
                     {
-                        var singleFlag = arch.GetFlagGroup(bit);
+                        var singleFlag = arch.GetFlagGroup(grf.FlagRegister, bit);
                         yield return ssa.Procedure.Frame.EnsureFlagGroup(singleFlag);
                     }
                 }
@@ -464,12 +468,12 @@ namespace Reko.Analysis
                             def,
                             NewDef(d, ci.Callee, false)));
                 }
-                if (calleeFlow.grfTrashed != 0)
+                foreach (var de in calleeFlow.grfTrashed)
                 {
-                    var grfs = arch.GetFlagGroup(calleeFlow.grfTrashed);
+                    var grfs = arch.GetFlagGroup(de.Key, de.Value);
                     foreach (var bit in grfs.GetFlagBitMasks())
                     {
-                        var grf = arch.GetFlagGroup(bit);
+                        var grf = arch.GetFlagGroup(grfs.FlagRegister, bit);
                         var d = ssa.Procedure.Frame.EnsureFlagGroup(grf);
                         ci.Definitions.Add(
                             new CallBinding(
@@ -1473,7 +1477,7 @@ namespace Reko.Analysis
 
                     var oldGrf = this.flagGroup;
                     var oldId = this.id;
-                    this.flagGroup = outer.arch.GetFlagGroup(grf);
+                    this.flagGroup = outer.arch.GetFlagGroup(oldGrf.FlagRegister, grf);
                     this.id = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                     if (aliasFrom.PrevState != null && aliasFrom.PrevState.SsaId.DefStatement != null)
                     {

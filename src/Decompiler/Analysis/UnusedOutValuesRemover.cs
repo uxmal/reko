@@ -87,13 +87,11 @@ namespace Reko.Analysis
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
                 flow.LiveOut = SummarizeStorageBitranges(flow.LiveOut.Concat(liveOut));
-
-                flow.grfLiveOut |= liveOut.Keys
-                    .OfType<FlagGroupStorage>()
-                    .Select(stg => stg.FlagGroupBits)
-                    .Aggregate(0u, (grf, total) => total |= grf);
+                flow.grfLiveOut = SummarizeFlagGroups(liveOut);
             }
         }
+
+     
 
         private void CollectLiveOutStorages()
         {
@@ -156,6 +154,19 @@ namespace Reko.Analysis
             }
             return registerDomains.Select(r => r.Value).Concat(fpuStorages)
                 .ToDictionary(k => k.Key, v => v.Value);
+        }
+
+        private Dictionary<RegisterStorage, uint> SummarizeFlagGroups(Dictionary<Storage, BitRange> liveOut)
+        {
+            var results = new Dictionary<RegisterStorage, uint>();
+            foreach (var de in liveOut)
+            {
+                if (de.Key is FlagGroupStorage grf && grf.FlagGroupBits != 0)
+                {
+                    results[grf.FlagRegister] = results.Get(grf.FlagRegister) | grf.FlagGroupBits;
+                }
+            }
+            return results;
         }
 
         /// <summary>

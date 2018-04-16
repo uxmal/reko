@@ -44,7 +44,7 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> grfFlags, IEnumerable<RegisterStorage> regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage,uint> grfFlags, IEnumerable<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
             var sGrf = string.Join(" ", grfFlags
