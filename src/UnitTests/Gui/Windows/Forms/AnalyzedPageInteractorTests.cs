@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Show();
             program.Procedures.Add(
                 Address.Ptr32(0x12345), 
-                Procedure.Create("foo", Address.Ptr32(0x12345), program.Architecture.CreateFrame()));
+                Procedure.Create(program.Architecture, "foo", Address.Ptr32(0x12345), program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
             mr.VerifyAll();
@@ -145,14 +145,14 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Given_Interactor();
             form.Show();
-            Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
+            Procedure p = new Procedure(program.Architecture, "foo_proc", program.Architecture.CreateFrame());
             p.Signature = new FunctionType(
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
                 });
 
-            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
+            program.Procedures.Add(Address.Ptr32(0x12345), new Procedure(program.Architecture, "bar", program.Architecture.CreateFrame()));
             program.Procedures.Add(Address.Ptr32(0x12346), p);
             interactor.EnterPage();
 

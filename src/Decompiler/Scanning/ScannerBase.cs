@@ -58,7 +58,7 @@ namespace Reko.Scanning
                 return proc;
 
             ImageSymbol sym = null;
-            proc = Procedure.Create(procedureName, addr, Program.Architecture.CreateFrame());
+            proc = Procedure.Create(Program.Architecture, procedureName, addr, Program.Architecture.CreateFrame());
             if (procedureName == null && Program.ImageSymbols.TryGetValue(addr, out sym))
             {
                 procedureName = sym.Name;

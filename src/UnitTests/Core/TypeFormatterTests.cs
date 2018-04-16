@@ -25,6 +25,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using Reko.Core.Expressions;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Core
 {
@@ -34,7 +35,8 @@ namespace Reko.UnitTests.Core
 		private StringWriter sw;
         private TypeFormatter tyfo;
         private TypeReferenceFormatter tyreffo;
-		private string nl = Environment.NewLine;
+        private IProcessorArchitecture arch;
+        private string nl = Environment.NewLine;
 
         [SetUp]
         public void SetUp()
@@ -44,6 +46,8 @@ namespace Reko.UnitTests.Core
             tyfo = new TypeFormatter(tf);
             tf = new TextFormatter(sw) { Indentation = 0 };
             tyreffo = new TypeReferenceFormatter(tf);
+            arch = MockRepository.GenerateStub<IProcessorArchitecture>();
+            arch.Replay();
         }
         
         [Test]
@@ -319,7 +323,7 @@ struct a {
             {
                 Protection = ClassProtection.Public,
                 Attribute = ClassMemberAttribute.Virtual,
-                Procedure = new Procedure("do_something", null),
+                Procedure = new Procedure(arch, "do_something", null),
                 Name = "do_something",
             });
             tyfo.Write(ct, null);

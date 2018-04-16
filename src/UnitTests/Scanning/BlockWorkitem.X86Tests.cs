@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
-            proc = new Procedure("test", arch.CreateFrame());
+            proc = new Procedure(arch, "test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
             scanner = mr.StrictMock<IScanner>();

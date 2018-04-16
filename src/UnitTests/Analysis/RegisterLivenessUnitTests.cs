@@ -219,7 +219,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_CallToProcedureWithValidSignature()
 		{
-			Procedure callee = new Procedure("callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", null);
 			callee.Signature = new FunctionType(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Analysis
         [Ignore("Won't be needed when class obsoleted")]
 		public void Rl_CallToProcedureWithStackArgs()
 		{
-			Procedure callee = new Procedure("callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", null);
 			callee.Signature = new FunctionType(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_MarkLiveStackParameters()
 		{
-            var callee = new Procedure("callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(program.Architecture, "callee", program.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
             callee.Frame.ReturnAddressKnown = true;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_PredefinedSignature()
 		{
-			Procedure callee = new Procedure("callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", null);
 			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
@@ -314,7 +314,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
-            var proc = new Procedure("test", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
 			var pf = new ProcedureFlow(proc, program.Architecture);
 			mpprocflow[proc] = pf;
 			pf.TrashedRegisters.Add(Registers.eax);

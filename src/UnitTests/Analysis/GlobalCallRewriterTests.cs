@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 			program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
 			gcr = new GlobalCallRewriter(program, null, new FakeDecompilerEventListener());
-            proc = new Procedure("foo", program.Architecture.CreateFrame());
+            proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);
 		}
 
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
-            Procedure proc = new Procedure("foo", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
 			proc.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
