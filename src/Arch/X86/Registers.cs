@@ -178,6 +178,8 @@ namespace Reko.Arch.X86
 
         public static readonly RegisterStorage rip;
 
+        public static readonly RegisterStorage mxcsr;
+
         internal static readonly Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
 
         internal static readonly RegisterStorage[] All;
@@ -331,7 +333,7 @@ namespace Reko.Arch.X86
             // Debug registers: 85 - 92
 
             rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Ptr64);
-
+            mxcsr = new RegisterStorage("mxcsr", 93, 0, PrimitiveType.Word32);
 
             All = new RegisterStorage[] {
 				eax,

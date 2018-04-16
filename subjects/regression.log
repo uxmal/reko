@@ -289,10 +289,10 @@ client_read_reply: error: An error occurred during data flow analysis.
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
    at Reko.Evaluation.ExpressionSimplifier.VisitDepositBits(DepositBits d) in C:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 438
    at Reko.Core.Expressions.DepositBits.Accept[T](ExpressionVisitor`1 v) in C:\dev\uxmal\reko\master\src\Core\Expressions\DepositBits.cs:line 66
-   at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 93
+   at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 92
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in C:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
-   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 85
-   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 76
+   at Reko.Analysis.ValuePropagator.Transform(Statement stm) in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 84
+   at Reko.Analysis.ValuePropagator.Transform() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 75
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in C:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 102
 00403264: warning: Unable to resolve imported reference send.
 004047B8: warning: Unable to resolve imported reference snprintf.
@@ -2451,4 +2451,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 44.22 seconds ---
+Decompiled 51 binaries in 34.96 seconds ---

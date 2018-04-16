@@ -291,6 +291,14 @@ namespace Reko.Arch.X86
             WriteFpuStack(0);
         }
 
+        private void RewriteFprem1()
+        {
+            Expression op1 = SrcOp(instrCur.op1);
+            Expression op2 = SrcOp(instrCur.op2);
+            m.Assign(op1, host.PseudoProcedure("__fprem1", op1.DataType, op1, op2));
+            WriteFpuStack(0);
+        }
+
         private void RewriteFptan()
         {
             Expression op1 = FpuRegister(0);
@@ -506,6 +514,16 @@ namespace Reko.Arch.X86
         private void RewriteFxam()
         {
             m.Assign(orw.FlagGroup(FlagM.FPUF), m.Cond(FpuRegister(0)));
+        }
+
+        private void RewriteFxtract()
+        {
+            var fp = this.FpuRegister(0);
+            var tmp = binder.CreateTemporary(fp.DataType);
+            m.Assign(tmp, fp);
+            state.GrowFpuStack(instrCur.Address);
+            m.Assign(this.FpuRegister(1), host.PseudoProcedure("__exponent", fp.DataType, tmp));
+            m.Assign(this.FpuRegister(0), host.PseudoProcedure("__significand", fp.DataType, tmp));
         }
 
         private void RewriteFyl2x()

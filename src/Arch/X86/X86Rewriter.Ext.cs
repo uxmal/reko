@@ -58,6 +58,16 @@ namespace Reko.Arch.X86
             m.SideEffect(host.PseudoProcedure("__emms", VoidType.Instance));
         }
 
+        private void RewriteGetsec()
+        {
+            rtlc = RtlClass.System;
+            //$TODO: this is not correct; actual function
+            // depends on EAX.
+            var arg = binder.EnsureRegister(Registers.eax);
+            var result = binder.EnsureSequence(Registers.edx, Registers.ebx, PrimitiveType.Word64);
+            m.Assign(result, host.PseudoProcedure("__getsec", result.DataType, arg));
+        }
+
         private void RewriteInvd()
         {
             rtlc = RtlClass.System;
