@@ -40,6 +40,7 @@ namespace Reko.Scanning
         private Dictionary<Expression, ValueSet> context;
         private ProcessorState state;
         private ExpressionValueComparer cmp;
+        private Dictionary<Address, DataType> memAccesses;
 
         public ValueSetEvaluator(Program program, Dictionary<Expression, ValueSet> context, ProcessorState state = null)
         {
@@ -47,6 +48,13 @@ namespace Reko.Scanning
             this.context = context;
             this.state = state;
             this.cmp = new ExpressionValueComparer();
+            this.memAccesses = new Dictionary<Address, DataType>();
+        }
+
+        public (Expression[], Dictionary<Address,DataType>) Evaluate(Expression expr)
+        {
+            var values = expr.Accept(this).Values.ToArray();
+            return (values, this.memAccesses);
         }
 
         public ValueSet VisitAddress(Address addr)
@@ -209,8 +217,12 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                     return Constant.Invalid;
                 var rdr = program.Architecture.CreateImageReader(seg.MemoryArea, addr);
+                memAccesses[addr] = dt;
                 //$TODO: what if reader reads off the end of memory? Blow up or warn?
-                return rdr.Read((PrimitiveType)dt);
+                if (!rdr.TryRead((PrimitiveType)dt, out var c))
+                    return Constant.Invalid;
+                else
+                    return c;
             }
             throw new NotImplementedException();
         }
