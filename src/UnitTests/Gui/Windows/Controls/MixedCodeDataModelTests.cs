@@ -112,6 +112,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 return "link";
             if (style == "link lastLine")
                 return "link-last";
+            if (style == "code-cmt")
+                return "cmt";
             return style;
         }
 
@@ -520,10 +522,10 @@ Second line");
             GetLineSpans(mcdm, 1);
 
             AssertOutput(
-@"00041000:mem(; This is comment)
-00041000:mem(; Second line)
+@"00041000:cmt(; This is comment)
+00041000:cmt(; Second line)
 00041000:link(00041000 )b(00 00 )op(add )
-00041004:mem(; Single line comment)
+00041004:cmt(; Single line comment)
 00041004:link-last(00041004 )b-last(00 00 )op-last(add )
 ");
         }
@@ -552,9 +554,9 @@ Second line");
             GetLineSpans(mcdm, 1);
 
             AssertOutput(
-@"00041000:mem(; First comment)
+@"00041000:cmt(; First comment)
 00041000:link(00041000 )b(00 00 )op(add )
-00041002:mem(; Second comment)
+00041002:cmt(; Second comment)
 00041002:link-last(00041002 )b-last(00 00 )op-last(add )
 ");
         }
