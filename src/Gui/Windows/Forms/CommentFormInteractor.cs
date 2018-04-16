@@ -67,13 +67,23 @@ namespace Reko.Gui.Windows.Forms
             switch (e.KeyCode)
             {
             case Keys.Enter:
-            case Keys.Escape:
-                bool save = (e.KeyCode == Keys.Enter);
-                Close(save);
-                e.SuppressKeyPress = true;
-                e.Handled = true;
+                if (e.Shift)
+                {
+                    // Shift+Enter doesn't dismiss the comment form,
+                    // but is forwarded to the edit control which 
+                    // inserts a new line in the annotation.
+                    return;
+                }
+                Close(true);
                 break;
+            case Keys.Escape:
+                Close(false);
+                break;
+            default:
+                return;
             }
+            e.SuppressKeyPress = true;
+            e.Handled = true;
         }
 
         public void Show(Point location, Program program, Address address)
