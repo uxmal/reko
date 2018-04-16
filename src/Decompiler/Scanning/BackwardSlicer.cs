@@ -28,6 +28,7 @@ using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -268,6 +269,7 @@ namespace Reko.Scanning
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray();
             this.iInstr = iInstr;
+            DumpBlock(BackwardSlicer.trace.TraceVerbose);
         }
 
         // The RTL expression in the executable that computes the destination addresses.
@@ -363,7 +365,8 @@ namespace Reko.Scanning
             {
             case ConditionCode.ULE: return StridedInterval.Create(1, 0, right.ToInt64());
             case ConditionCode.UGE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
-            default: throw new NotImplementedException($"Unimplemented condition code {cc}.");
+            default:
+                throw new NotImplementedException($"Unimplemented condition code {cc}.");
             }
         }
 
@@ -450,10 +453,13 @@ namespace Reko.Scanning
                     var seXor = new SlicerResult
                     {
                         SrcExpr = new Cast(regDst.DataType, new Cast(PrimitiveType.Byte, this.assignLhs)),
-                        LiveExprs = new Dictionary<Expression, BackwardSlicerContext> {
+                        LiveExprs = new Dictionary<Expression, BackwardSlicerContext>
+                        {
                             {
-                                this.assignLhs, BackwardSlicerContext.Jump(new BitRange(0, 8))
-                            } }
+                                this.assignLhs,
+                                BackwardSlicerContext.Jump(new BitRange(0, 8))
+                            }
+                        }
                     };
                     return seXor;
                 }
@@ -758,6 +764,20 @@ namespace Reko.Scanning
                     live
                         .OrderBy(l => l.Key.ToString())
                         .Select(l => $"{{ {l.Key}, {l.Value.Type} {l.Value.BitRange} }}")));
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpBlock(bool dump)
+        {
+            var sw = new StringWriter();
+            sw.WriteLine($"** {block.Address} *************");
+            foreach (var i in instrs)
+            {
+                sw.Write("    ");
+                i.Write(sw);
+                sw.WriteLine();
+            }
+            Debug.Write(sw.ToString());
         }
 
         public SliceState CreateNew(RtlBlock block, Address addrSucc)
