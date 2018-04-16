@@ -881,14 +881,36 @@ namespace Reko.Scanning
 
                 var jumpExpr = bws.JumpTableFormat;
                 var interval = bws.JumpTableIndexInterval;
-                if (bws.JumpTableIndexToUse == null)
+                var index = bws.JumpTableIndexToUse;
+                var ctx = new Dictionary<Expression, ValueSet>();
+                if (index == null)
                 {
-                    return false;   //$REVIEW: warn?
+                    // Weren't able to find the index register,
+                    // try finding it by blind pattern matching.
+                    index = bws.FindIndexWithPatternMatch(bws.JumpTableFormat);
+                    if (index == null)
+                    {
+                        // This is likely an indirect call like a C++
+                        // vtable dispatch. Since these are common, we don't 
+                        // spam the user with warnings.
+                        return false;
+                    }
+
+                    // We have a jump table, and we've guess the index expression.
+                    // At this point we've given up on knowing the exact size 
+                    // of the table, but we do know that it must be at least
+                    // more than one entry. The safest assumption is that it
+                    // has two entries.
+                    listener.Warn(
+                        listener.CreateAddressNavigator(program, addrSwitch),
+                        "Unable to determine size of call or jump table; there may be more than 2 entries.");
+                    //$TODO: warn that we're only probing two values.
+                    ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
                 }
-                var ctx = new Dictionary<Expression, ValueSet>
+                else
                 {
-                    { bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval) }
-                };
+                    ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
+                }
                 var vse = new ValueSetEvaluator(program, ctx, state);
                 var values = jumpExpr.Accept(vse).Values.ToList();
                 vector = values
@@ -899,7 +921,7 @@ namespace Reko.Scanning
                     null, // bw.VectorAddress,
                     vector.ToArray(),
                     4); // builder.TableByteSize);
-                switchExp = bws.JumpTableIndexToUse;
+                switchExp = index;
             }
 
             if (xfer is RtlCall)

@@ -151,6 +151,49 @@ namespace Reko.Scanning
                 return false;
             }
         }
+
+        /// <summary>
+        /// Finds an index candidate by pattern matching an indirect 
+        /// jump expression from <paramref name="jumpTableFormat"/>. 
+        /// This is last resort measure, used to extract some form of index.
+        /// </summary>
+        /// <remarks>
+        /// If the jump table format expression is like:
+        /// Mem[{index} * scale + {table_base}]
+        /// or 
+        /// Mem[index << scale + table_base]
+        /// we assume `index` is an index into the jump table. 
+        /// </remarks>
+        /// <returns>The `index` expression if detected, otherwise null.</returns>
+        public Expression FindIndexWithPatternMatch(Expression jumpTableFormat)
+        {
+            if (!(jumpTableFormat is MemoryAccess mem))
+                return null;
+            if (!(mem.EffectiveAddress is BinaryExpression sum) ||
+                sum.Operator != Operator.IAdd)
+                return null;
+            if (!(sum.Right is Constant cTable))
+                return null;
+            if (!(sum.Left is BinaryExpression mul))
+                return null;
+            if (!(mul.Right is Constant cScale))
+                return null;
+            int scale = 0;
+            switch (mul.Operator)
+            {
+            case SMulOperator _:
+            case UMulOperator _:
+            case IMulOperator _:
+                scale = cScale.ToInt32();
+                break;
+            case ShlOperator _:
+                scale = 1 << cScale.ToInt32();
+                break;
+            default:
+                return null;
+            }
+            return mul.Left;
+        }
     }
 
     public enum ContextType

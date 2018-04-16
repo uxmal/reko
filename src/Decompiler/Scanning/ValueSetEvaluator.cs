@@ -169,8 +169,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitIdentifier(Identifier id)
         {
-            ValueSet vs;
-            if (context.TryGetValue(id, out vs))
+            if (context.TryGetValue(id, out ValueSet vs))
                 return vs;
             if (state != null && state.GetValue(id) is Constant c && c.IsValid)
                 return new ConcreteValueSet(c.DataType, c);
@@ -190,6 +189,10 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ValueSet VisitMemoryAccess(MemoryAccess access)
         {
+            if (context.TryGetValue(access, out ValueSet value))
+            {
+                return value;
+            }
             var vs = access.EffectiveAddress.Accept(this);
             return new ConcreteValueSet(
                 access.DataType,
@@ -200,12 +203,10 @@ namespace Reko.Scanning
 
         private Constant ReadValue(DataType dt, Expression eAddr)
         {
-            var cAddr = eAddr as Constant;
-            if (cAddr != null)
+            if (eAddr is Constant cAddr)
             {
                 var addr = program.SegmentMap.MapLinearAddressToAddress(cAddr.ToUInt64());
-                ImageSegment seg;
-                if (!program.SegmentMap.TryFindSegment(addr, out seg))
+                if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                     return Constant.Invalid;
                 var rdr = program.Architecture.CreateImageReader(seg.MemoryArea, addr);
                 //$TODO: what if reader reads off the end of memory? Blow up or warn?
@@ -220,8 +221,7 @@ namespace Reko.Scanning
             if (eOff != null)
             {
                 var addr = program.Architecture.MakeSegmentedAddress(seg, off);
-                ImageSegment segment;
-                if (!program.SegmentMap.TryFindSegment(addr, out segment))
+                if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment segment))
                     return Constant.Invalid;
                 var rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
                 if (dt == PrimitiveType.SegPtr32)
