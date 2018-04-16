@@ -94,7 +94,7 @@ namespace Reko.Scanning
         /// <returns>If backward slicing should continue.</returns>
         public bool Start(RtlBlock block, int iInstr, Expression indirectJump)
         {
-            this.state = new SliceState(this, block, iInstr);
+            this.state = new SliceState(this, host.SegmentMap, block, iInstr);
             visited.Add(block);
             if (state.Start(indirectJump))
             {
@@ -257,12 +257,14 @@ namespace Reko.Scanning
         public Dictionary<Expression, BackwardSlicerContext> Live;
         private ExpressionValueComparer cmp;
         private ExpressionSimplifier simp;
+        private SegmentMap segmentMap;
 
-        public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
+        public SliceState(BackwardSlicer slicer, SegmentMap map, RtlBlock block, int iInstr)
         {
             this.slicer = slicer;
+            this.segmentMap = map;
             this.cmp = new ExpressionValueComparer();
-            this.simp = new Evaluation.ExpressionSimplifier(new EvalCtx(), null);
+            this.simp = new Evaluation.ExpressionSimplifier(map, new EvalCtx(), null);
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray();
             this.iInstr = iInstr;
@@ -657,13 +659,14 @@ namespace Reko.Scanning
 
         public SlicerResult VisitMkSequence(MkSequence seq, BackwardSlicerContext ctx)
         {
-            var srHead = seq.Head.Accept(this, ctx);
-            var srTail = seq.Tail.Accept(this, ctx);
+            var srExprs = seq.Expressions
+                .Select(e => e.Accept(this, ctx))
+                .ToArray();
             return new SlicerResult
             {
-                LiveExprs = srTail.LiveExprs,
-                SrcExpr = new MkSequence(seq.DataType, srHead.SrcExpr, srTail.SrcExpr),
-                Stop = srHead.Stop | srTail.Stop,
+                LiveExprs = srExprs[0].LiveExprs,
+                SrcExpr = new MkSequence(seq.DataType, srExprs.Select(s => s.SrcExpr).ToArray()),
+                Stop = srExprs.Any(s => s.Stop)
             };
         }
 
@@ -759,7 +762,7 @@ namespace Reko.Scanning
 
         public SliceState CreateNew(RtlBlock block, Address addrSucc)
         {
-            var state = new SliceState(this.slicer, block, 0)
+            var state = new SliceState(this.slicer, this.segmentMap, block, 0)
             {
                 JumpTableFormat = this.JumpTableFormat,
                 JumpTableIndex = this.JumpTableIndex,
@@ -785,12 +788,12 @@ namespace Reko.Scanning
                 return id;
             }
 
-            public Expression GetValue(MemoryAccess access)
+            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
             {
                 return access;
             }
 
-            public Expression GetValue(SegmentedAccess access)
+            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
                 return access;
             }

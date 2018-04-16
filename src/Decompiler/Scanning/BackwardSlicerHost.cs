@@ -35,11 +35,14 @@ namespace Reko.Scanning
         private Dictionary<Block, RtlBlock> cache;
         private Dictionary<RtlBlock, Block> invCache;
 
-        public BackwardSlicerHost()
+        public BackwardSlicerHost(SegmentMap segmentMap)
         {
+            this.SegmentMap = segmentMap;
             this.cache = new Dictionary<Block, RtlBlock>();
             this.invCache = new Dictionary<RtlBlock, Block>();
         }
+
+        public SegmentMap SegmentMap { get; }
 
         public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
         {

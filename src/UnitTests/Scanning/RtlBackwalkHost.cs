@@ -42,6 +42,7 @@ namespace Reko.UnitTests.Scanning
             this.graph = graph;
         }
 
+        public SegmentMap SegmentMap => program.SegmentMap;
         public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
         {
             throw new NotImplementedException();

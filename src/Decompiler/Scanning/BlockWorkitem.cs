@@ -868,7 +868,7 @@ namespace Reko.Scanning
             }
             else
             {
-                var bwsHost = new BackwardSlicerHost();
+                var bwsHost = new BackwardSlicerHost(program.SegmentMap);
                 var bws = new BackwardSlicer(bwsHost);
                 var rtlBlock = bwsHost.GetRtlBlock(blockCur);
                 if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
@@ -980,7 +980,8 @@ namespace Reko.Scanning
             }
             if (arg is MkSequence seq)
             {
-                if (seq.Head is Constant hd && seq.Tail is Constant tl)
+                if (seq.Expressions.Length == 2 && 
+                    seq.Expressions[0] is Constant hd && seq.Expressions[1] is Constant tl)
                 {
                     return program.Architecture.MakeSegmentedAddress(hd, tl);
                 }
@@ -1212,6 +1213,8 @@ namespace Reko.Scanning
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
             }
+
+            public SegmentMap SegmentMap => segmentMap;
 
             public Tuple<Expression,Expression> AsAssignment(Instruction instr)
             {

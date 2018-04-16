@@ -247,31 +247,38 @@ namespace Reko.Scanning
 
         public ValueSet VisitMkSequence(MkSequence seq)
         {
-            var vaHead = seq.Head.Accept(this);
-            if (vaHead == ValueSet.Any)
-                return vaHead;
-            var segs = vaHead.Values.ToArray();
-            if (segs.Length != 1)
-                return ValueSet.Any;
-            var cSeg = segs[0] as Constant;
-            if (cSeg == null)
-                return ValueSet.Any;
+            var consts = new Expression[seq.Expressions.Length];
+            for (int i = 0; i < seq.Expressions.Length - 1; ++i)
+            {
+                var e = seq.Expressions[i];
+                var va = e.Accept(this);
+                if (va == ValueSet.Any)
+                    return va;
+                var aVa = va.Values.ToArray();
+                if (aVa.Length != 1)
+                    return ValueSet.Any;
+                if (aVa[0] is Constant c)
+                    consts[i] = c;
+                else
+                    return ValueSet.Any;
+            }
 
-            var vsTail = seq.Tail.Accept(this);
+            var vsTail = seq.Expressions.Last().Accept(this);
             return new ConcreteValueSet(
                 vsTail.DataType,
                 vsTail.Values
-                      .Select(v => MakeSequence(seq.DataType, cSeg, v))
+                      .Select(v => MakeSequence(seq.DataType, consts, v))
                       .ToArray());
         }
 
-        private Expression MakeSequence(DataType dataType, Constant cSeg, Expression off)
+        private Expression MakeSequence(DataType dataType, Expression [] exps, Expression off)
         {
             if (off is Constant cOff)
             {
 
             }
-            return new MkSequence(dataType, cSeg, off);
+            exps[exps.Length - 1] = (Constant) off;
+            return new MkSequence(dataType, exps);
         }
 
         public ValueSet VisitOutArgument(OutArgument outArgument)

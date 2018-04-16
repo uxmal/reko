@@ -147,9 +147,10 @@ namespace Reko.Core.Expressions
         {
             if (cmp.Equals(seq, original))
                 return replacement;
-            var head = seq.Head.Accept(this);
-            var tail = seq.Tail.Accept(this);
-            return new MkSequence(seq.DataType, head, tail);
+            var exprs = seq.Expressions
+                .Select(e => e.Accept(this))
+                .ToArray();
+            return new MkSequence(seq.DataType, exprs);
         }
 
         public Expression VisitOutArgument(OutArgument outArgument)

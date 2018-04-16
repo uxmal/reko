@@ -29,6 +29,8 @@ namespace Reko.Core
 	/// </summary>
 	public interface IBackWalkHost<TBlock, TInstr>
 	{
+        SegmentMap SegmentMap { get; }
+
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);

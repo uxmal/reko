@@ -61,6 +61,8 @@ namespace Reko.UnitTests.Scanning
                 this.arch = arch;
             }
 
+            public SegmentMap SegmentMap => throw new NotImplementedException();
+
             public Tuple<Expression, Expression> AsAssignment(Instruction instr)
             {
                 var ass = instr as Assignment;

@@ -50,6 +50,7 @@ namespace Reko.Scanning
             this.jumpGraph = jumpGraph;
         }
 
+        public SegmentMap SegmentMap => program.SegmentMap;
         public int TableByteSize { get; private set; }
 
         public Tuple<Expression,Expression> AsAssignment(Instruction instr)
