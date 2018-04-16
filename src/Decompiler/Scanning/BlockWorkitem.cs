@@ -447,7 +447,7 @@ namespace Reko.Scanning
                     // generated code to predecrement the stack pointer
                     // when encountering CALL instructions this would 
                     // not be necessary.
-                    if (sig.ReturnAddressOnStack != 0)
+                    if (sig != null && sig.ReturnAddressOnStack != 0)
                     {
                         Emit(new Assignment(stackReg, new BinaryExpression(
                             Operator.IAdd,
@@ -456,7 +456,7 @@ namespace Reko.Scanning
                             Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
                     }
                     EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
-                    if (sig.ReturnAddressOnStack != 0)
+                    if (sig != null && sig.ReturnAddressOnStack != 0)
                     {
                         //$TODO: make x86 calls' implicit storage explicit
                         // to avoid this hacky dance,
@@ -968,7 +968,7 @@ namespace Reko.Scanning
         }
 
         private List<Block> ScanJumpVectorTargets(List<Address> vector)
-                {
+        {
             var blocks = new List<Block>();
             foreach (Address addr in vector)
             {

@@ -229,8 +229,7 @@ namespace Reko.Scanning
                                 if ((i.Class & RtlClass.Call) != 0)
                                 {
                                     // Don't add edges to other procedures.
-                                    int callTally;
-                                    if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out callTally))
+                                    if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out int callTally))
                                         callTally = 0;
                                     this.sr.DirectlyCalledAddresses[addrDest] = callTally + 1;
                                 }
@@ -264,6 +263,7 @@ namespace Reko.Scanning
                     // If this is a delayed unconditional branch...
                     delaySlot = i.Class;
                 }
+
                 if (y[a] == MaybeCode)
                 {
                     AddInstruction(i);
