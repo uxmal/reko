@@ -39,12 +39,15 @@ namespace Reko.Scanning
     /// Scans the binary, locating and creating procedures and basic blocks by following calls, jumps,
     /// and branches. Simple data type analysis is done as well: for instance, pointers to
     /// code are located, as are global data pointers.
+    /// Regions of bytes that are not reachable by simple recursive disassembly of the binary 
+    /// are optionally scanned using the ShingledScanner pass, which then may discover more 
+    /// procedures.
     /// </summary>
     /// <remarks>
-    /// Callers feed the scanner by calling EnqueueXXX methods before calling ProcessQueue(). ProcessQueue() then
-    /// processes the queues.
+    /// Callers feed the scanner by calling EnqueueXXX methods before calling ProcessQueue().
+    /// ProcessQueue() then processes the queues.
     /// </remarks>
-    public class ScannerOld : ScannerBase, IScanner, IRewriterHost
+    public class Scanner : ScannerBase, IScanner, IRewriterHost
     {
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
@@ -66,8 +69,9 @@ namespace Reko.Scanning
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
-
-        public ScannerOld(
+        private ScanResults sr;
+        
+        public Scanner(
             Program program,
             IImportResolver importResolver,
             IServiceProvider services)
@@ -90,6 +94,12 @@ namespace Reko.Scanning
             this.blockStarts = new Dictionary<Block, Address>();
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
+            this.sr = new ScanResults
+            {
+                KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
+                KnownAddresses = program.ImageSymbols.ToDictionary(de => de.Key, de => de.Value),
+                ICFG = new DiGraph<RtlBlock>(),
+            };
         }
 
         public IServiceProvider Services { get; private set; }
@@ -147,6 +157,10 @@ namespace Reko.Scanning
             return b;
         }
 
+        /// <summary>
+        /// Verify that blockranges are not overlapping.
+        /// </summary>
+        /// <param name="blocks"></param>
         [Conditional("DEBUG")]
         private void SanityCheck(SortedList<Address, BlockRange> blocks)
         {
@@ -382,8 +396,6 @@ namespace Reko.Scanning
         {
             Debug.Print("Cloning {0} to {1}", block.Name, proc);
             var clonedBlock = new BlockCloner(block, proc, Program.CallGraph).Execute();
-            //ReplaceSuccessorsWith(pred, block, clonedBlock);
-            //pred.Procedure.ControlGraph.Blocks.Remove(block);
             return clonedBlock;
         }
 
@@ -393,7 +405,8 @@ namespace Reko.Scanning
         /// </summary>
         /// <remarks>
         /// This is done when encountering tail calls (i.e. jumps) from one 
-        /// procedure into another.</remarks>
+        /// procedure into another.
+        /// </remarks>
         /// <param name="addrFrom"></param>
         /// <param name="procOld"></param>
         /// <param name="procNew"></param>
@@ -734,40 +747,29 @@ namespace Reko.Scanning
             return blockNew;
         }
 
+
         /// <summary>
-        /// Performs the work of scanning the image and resolving any 
-        /// cross procedure jumps after the scan is done.
+        /// Scans the image, locating blobs of data and procedures.
+        /// After completion, the program.ImageMap is populated with
+        /// chunks of data, and the program.Procedures dictionary contains
+        /// all procedures to decompile.
         /// </summary>
         public virtual void ScanImage()
         {
-            var tlDeser = Program.CreateTypeLibraryDeserializer();
-            foreach (var global in Program.User.Globals)
-            {
-                var addr = global.Key;
-                var dt = global.Value.DataType.Accept(tlDeser);
-                EnqueueUserGlobalData(addr, dt, global.Value.Name);
-            }
-            foreach (ImageSymbol ep in Program.EntryPoints.Values)
-            {
-                EnqueueImageSymbol(ep, true);
-            }
-            foreach (Procedure_v1 up in Program.User.Procedures.Values)
-            {
-                EnqueueUserProcedure(up);
-            }
-            foreach (ImageSymbol sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
-            {
-                if (sym.NoDecompile)
-                    Program.EnsureUserProcedure(sym.Address, sym.Name, false);
-                else
-                    EnqueueImageSymbol(sym, false);
-            }
+            // Find all blobs of data, and potentially pointers to code.
+            ScanDataItems();
 
-            //var hsc = new HeuristicScanner(Services, program, this, eventListener);
-            //var sr = hsc.ScanImage();
+            // Find all reachable procedures.
+            ScanProceduresRecursively();
 
-            ProcessQueue();
+            if (Program.User.Heuristics.Contains("shingle"))
+            {
+                // Use has requested shingle scanning of unscanned areas.
+                ShingleScanProcedures();
+            }
+            RemoveRedundantGotos();
         }
+
 
         [Conditional("DEBUG")]
         private void Dump(string title, IEnumerable<Block> blocks)
@@ -901,48 +903,6 @@ namespace Reko.Scanning
                 throw new NotImplementedException();
             }
         }
-    }
-
-    /// <summary>
-    /// The new scanning algorithm, which incorporates the HeuristicScanner
-    /// to disassemble pockets of bytes that are not reachable by simple 
-    /// recursive disassembly of the binary.
-    /// </summary>
-    public class Scanner : ScannerOld
-    {
-        private ScanResults sr;
-
-        public Scanner(Program program, IImportResolver importResolver, IServiceProvider services) : base(program, importResolver, services)
-        {
-            this.sr = new ScanResults
-            {
-                KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
-                KnownAddresses = program.ImageSymbols.ToDictionary(de => de.Key, de=> de.Value),
-                ICFG = new DiGraph<RtlBlock>(),
-            };
-        }
-
-        /// <summary>
-        /// Scans the image, locating blobs of data and procedures.
-        /// End result is that the program.ImageMap is populated with
-        /// chunks of data, and the program.Procedures dictionary contains
-        /// all procedures to decompile.
-        /// </summary>
-        public override void ScanImage()
-        {
-            // Find all blobs of data, and potentially pointers to code.
-            ScanDataItems();
-
-            // Find all reachable procedures.
-            ScanProceduresRecursively();
-
-            if (Program.User.Heuristics.Contains("shingle"))
-            {
-                // Use has requested shingle scanning of remaining areas.
-                ShingleScanProcedures();
-            }
-            RemoveRedundantGotos();
-        }
 
         private void RemoveRedundantGotos()
         {
@@ -972,7 +932,7 @@ namespace Reko.Scanning
         public ScanResults ScanDataItems()
         {
             var tlDeser = Program.CreateTypeLibraryDeserializer();
-            var dataScanner = new DataScanner(Program, sr, eventListener);
+            var dataScanner = new DataScanner(Program, this.sr, this.eventListener);
 
             // Enqueue known data items, then process them. If we find code
             // pointers, they will be added to sr.KnownProcedures.
@@ -1035,6 +995,7 @@ namespace Reko.Scanning
             }
             this.ProcessQueue();
         }
+
 
         /// <summary>
         /// Performs a shingle scan to recover procedures that weren't found 
