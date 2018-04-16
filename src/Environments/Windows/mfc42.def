@@ -1,13 +1,13 @@
 LIBRARY	mfc42.dll
 EXPORTS
-?AfxFreeLibrary@@YAHPEAUHINSTANCE__@@@Z @ 1452 
-?AfxLoadLibrary@@YAPEAUHINSTANCE__@@PEBD@Z @ 1494 
-?AfxLockGlobals@@YAXH@Z @ 1497 
-?AfxUnlockGlobals@@YAXH@Z @ 1587 
-DllCanUnloadNow @ 7 
-DllGetClassObject @ 8 
-DllRegisterServer @ 9 
-DllUnregisterServer @ 10 
+?AfxFreeLibrary@@YAHPEAUHINSTANCE__@@@Z @ 1452
+?AfxLoadLibrary@@YAPEAUHINSTANCE__@@PEBD@Z @ 1494
+?AfxLockGlobals@@YAXH@Z @ 1497
+?AfxUnlockGlobals@@YAXH@Z @ 1587
+DllCanUnloadNow @ 7
+DllGetClassObject @ 8
+DllRegisterServer @ 9
+DllUnregisterServer @ 10
 ?classCCachedDataPathProperty@CCachedDataPathProperty@@2UCRuntimeClass@@B @ 5 NONAME
 ?classCDataPathProperty@CDataPathProperty@@2UCRuntimeClass@@B @ 6 NONAME
 ??_5CRect@@QEAAXAEBUtagRECT@@@Z @ 256 NONAME
