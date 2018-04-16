@@ -305,6 +305,7 @@ namespace Reko.Scanning
                     Block blockDsF = null;
                     blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
                     blockDsF.IsSynthesized = true;
+                    blockDsF.Address = ricDelayed.Address;
                     blockCur = blockDsF;
                     ProcessRtlCluster(ricDelayed);
                     EnsureEdge(proc, blockDsF, blockElse);
@@ -313,6 +314,7 @@ namespace Reko.Scanning
 
                 Block blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
                 blockDsT.IsSynthesized = true;
+                blockDsT.Address = ricDelayed.Address;
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsT, blockThen);
