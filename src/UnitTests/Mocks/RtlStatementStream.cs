@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Mocks
         {
             this.linAddress = address;
             this.arch = new FakeArchitecture();
-            this.binder = this.binder;
+            this.binder = binder;
             this.stms = new List<RtlInstructionCluster>();   
         }
 

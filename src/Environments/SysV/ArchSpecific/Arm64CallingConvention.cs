@@ -31,7 +31,6 @@ namespace Reko.Environments.SysV.ArchSpecific
     public class Arm64CallingConvention : CallingConvention
     {
         private RegisterStorage[] argRegs;
-        private IProcessorArchitecture arch;
 
         public Arm64CallingConvention(IProcessorArchitecture arch)
         {

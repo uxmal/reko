@@ -41,7 +41,6 @@ namespace Reko.Scanning
         private ExpressionSimplifier eval;
         private IBackWalkHost<TBlock, TInstr> host;
         private Expression jtt;
-        private Expression tableBase;
 
         public Backwalker2(IBackWalkHost<TBlock, TInstr> host, RtlTransfer xfer, ExpressionSimplifier eval)
         {
