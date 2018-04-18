@@ -107,12 +107,17 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
- 
-
         protected override void OnScroll()
         {
-            var currentPos = Model.CurrentPosition;
-            addrTop = MixedCodeDataModel.PositionAddress(currentPos);
+            if (Model is MixedCodeDataModel)
+            {
+                var currentPos = Model.CurrentPosition;
+                addrTop = MixedCodeDataModel.PositionAddress(currentPos);
+            }
+            else
+            {
+                addrTop = null;
+            }
             base.OnScroll();
         }
 
