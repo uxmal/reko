@@ -65,9 +65,7 @@ namespace Reko.Gui.Windows.Controls
             }
             this.comments = program.User.Annotations.ToSortedList(
                 a => a.Address,
-                a => a.Text.Split(
-                    new string[] { Environment.NewLine },
-                    StringSplitOptions.None));
+                a => Lines(a.Text));
         }
 
         public MixedCodeDataModel(MixedCodeDataModel that)
@@ -464,6 +462,13 @@ namespace Reko.Gui.Windows.Controls
         public static Address PositionAddress(object position)
         {
             return ((ModelPosition)position).Address;
+        }
+
+        private static string[] Lines(string s)
+        {
+            return s.Split(
+                new string[] { Environment.NewLine },
+                StringSplitOptions.None);
         }
 
         private class ModelPosition : IComparable<ModelPosition>
