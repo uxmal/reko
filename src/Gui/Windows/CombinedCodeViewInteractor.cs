@@ -277,6 +277,8 @@ namespace Reko.Gui.Windows
 
         public void Close()
         {
+            program = null;
+            ProgramChanged();
             if (combinedCodeView != null)
                 combinedCodeView.Dispose();
             combinedCodeView = null;
