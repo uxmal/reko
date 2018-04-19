@@ -57,12 +57,16 @@ namespace Reko.Scanning
         private SliceState state;
         private WorkList<SliceState> worklist;
         private HashSet<RtlBlock> visited;
+        private ExpressionValueComparer cmp;
+        private ExpressionSimplifier simp;
 
         public BackwardSlicer(IBackWalkHost<RtlBlock, RtlInstruction> host)
         {
             this.host = host;
             this.worklist = new WorkList<SliceState>();
             this.visited = new HashSet<RtlBlock>();
+            this.cmp = new ExpressionValueComparer();
+            this.simp = new ExpressionSimplifier(host.SegmentMap, new EvalCtx(), null);
         }
 
         /// <summary>
@@ -95,7 +99,7 @@ namespace Reko.Scanning
         /// <returns>If backward slicing should continue.</returns>
         public bool Start(RtlBlock block, int iInstr, Expression indirectJump)
         {
-            this.state = new SliceState(this, host.SegmentMap, block, iInstr);
+            this.state = new SliceState(this, block, iInstr);
             visited.Add(block);
             if (state.Start(indirectJump))
             {
@@ -157,6 +161,16 @@ namespace Reko.Scanning
             }
         }
 
+        internal bool AreEqual(Expression a, Expression b)
+        {
+            return cmp.Equals(a, b);
+        }
+
+        internal Expression Simplify(Expression e)
+        {
+            return e.Accept(simp);
+        }
+
         /// <summary>
         /// Finds an index candidate by pattern matching an indirect 
         /// jump expression from <paramref name="jumpTableFormat"/>. 
@@ -199,6 +213,69 @@ namespace Reko.Scanning
             }
             return mul.Left;
         }
+
+        class EvalCtx : EvaluationContext
+        {
+            public Expression GetDefiningExpression(Identifier id)
+            {
+                return id;
+            }
+
+            public Expression GetValue(Identifier id)
+            {
+                return id;
+            }
+
+            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+            {
+                return access;
+            }
+
+            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+            {
+                return access;
+            }
+
+            public Expression GetValue(Application appl)
+            {
+                return appl;
+            }
+
+            public bool IsUsedInPhi(Identifier id)
+            {
+                return false;
+            }
+
+            public Expression MakeSegmentedAddress(Constant c1, Constant c2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveExpressionUse(Expression expr)
+            {
+            }
+
+            public void RemoveIdentifierUse(Identifier id)
+            {
+            }
+
+            public void SetValue(Identifier id, Expression value)
+            {
+            }
+
+            public void SetValueEa(Expression ea, Expression value)
+            {
+            }
+
+            public void SetValueEa(Expression basePointer, Expression ea, Expression value)
+            {
+            }
+
+            public void UseExpression(Expression expr)
+            {
+            }
+        }
+
     }
 
     public enum ContextType
@@ -245,27 +322,34 @@ namespace Reko.Scanning
         }
     }
 
-    public class SliceState : RtlInstructionVisitor<SlicerResult>, ExpressionVisitor<SlicerResult, BackwardSlicerContext>
+    /// <summary>
+    /// An instance of the backwards-tracing "feelers" that tries to locate
+    /// instructions that modify or use registers that are relevant to 
+    /// the indirect jump whose table extent we're trying to discover.
+    /// </summary>
+    /// <remarks>
+    /// The visitor methods return a SlicerResult if they've discovered something
+    /// interesting. If the SlicerResult is null, it means the visited instruction
+    /// doesn't affect the outcome of the jump table and can be ignored.
+    /// </remarks>
+    public class SliceState :
+        RtlInstructionVisitor<SlicerResult>,
+        ExpressionVisitor<SlicerResult, BackwardSlicerContext>
     {
         private BackwardSlicer slicer;
         public RtlBlock block;
-        public int iInstr;
-        public RtlInstruction[] instrs;
+        public int iInstr;              // The current instruction
+        public RtlInstruction[] instrs; // The instructions of this block
         public Address addrSucc;    // the block from which we traced.
         public ConditionCode ccNext; // The condition code that is used in a branch.
         public Expression assignLhs; // current LHS
         public bool invertCondition;
         public Dictionary<Expression, BackwardSlicerContext> Live;
-        private ExpressionValueComparer cmp;
-        private ExpressionSimplifier simp;
         private SegmentMap segmentMap;
 
-        public SliceState(BackwardSlicer slicer, SegmentMap map, RtlBlock block, int iInstr)
+        public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
         {
             this.slicer = slicer;
-            this.segmentMap = map;
-            this.cmp = new ExpressionValueComparer();
-            this.simp = new Evaluation.ExpressionSimplifier(map, new EvalCtx(), null);
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray();
             this.iInstr = iInstr;
@@ -310,8 +394,9 @@ namespace Reko.Scanning
 
         public bool Step()
         {
-            DebugEx.PrintIf(BackwardSlicer.trace.TraceInfo, "Bwslc: Stepping to instruction {0}", this.instrs[this.iInstr]);
-            var sr = this.instrs[this.iInstr].Accept(this);
+            var instr = this.instrs[this.iInstr];
+            DebugEx.PrintIf(BackwardSlicer.trace.TraceInfo, "Bwslc: Stepping to instruction {0}", instr);
+            var sr = instr.Accept(this);
             --this.iInstr;
             if (sr == null)
             {
@@ -428,9 +513,8 @@ namespace Reko.Scanning
             }
             this.assignLhs = deadRegs[0].Key;
             var se = ass.Src.Accept(this, deadRegs[0].Value);
-            this.JumpTableFormat = 
-                ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat)
-                .Accept(simp);
+            var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat);
+            this.JumpTableFormat = slicer.Simplify(newJt);
             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  expr:  {0}", this.JumpTableFormat);
             this.assignLhs = null;
             return se;
@@ -439,7 +523,7 @@ namespace Reko.Scanning
         public SlicerResult VisitBinaryExpression(BinaryExpression binExp, BackwardSlicerContext ctx)
         {
             if ((binExp.Operator == Operator.Xor || binExp.Operator == Operator.ISub) &&
-                cmp.Equals(binExp.Left, binExp.Right))
+                this.slicer.AreEqual(binExp.Left, binExp.Right))
             {
                 // XOR r,r (or SUB r,r) clears a register. Is it part of a live register?
                 var regDst = this.assignLhs as Identifier;
@@ -476,7 +560,7 @@ namespace Reko.Scanning
                 {
                     if (DomainOf(live) == domLeft)
                     {
-                        if (cmp.Equals(this.assignLhs, this.JumpTableIndex))
+                        if (slicer.AreEqual(this.assignLhs, this.JumpTableIndex))
                         {
                             //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
                             this.JumpTableIndex = live;
@@ -490,7 +574,7 @@ namespace Reko.Scanning
                             };
                         }
                     }
-                    if (cmp.Equals(live, binExp.Left))
+                    if (this.slicer.AreEqual(live, binExp.Left))
                     {
                         this.JumpTableIndex = live;
                         this.JumpTableIndexToUse = binExp.Left;
@@ -782,7 +866,7 @@ namespace Reko.Scanning
 
         public SliceState CreateNew(RtlBlock block, Address addrSucc)
         {
-            var state = new SliceState(this.slicer, this.segmentMap, block, 0)
+            var state = new SliceState(this.slicer, block, 0)
             {
                 JumpTableFormat = this.JumpTableFormat,
                 JumpTableIndex = this.JumpTableIndex,
@@ -794,68 +878,6 @@ namespace Reko.Scanning
             };
             state.iInstr = state.instrs.Length - 1;
             return state;
-        }
-
-        class EvalCtx : EvaluationContext
-        {
-            public Expression GetDefiningExpression(Identifier id)
-            {
-                return id;
-            }
-
-            public Expression GetValue(Identifier id)
-            {
-                return id;
-            }
-
-            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
-            {
-                return access;
-            }
-
-            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
-            {
-                return access;
-            }
-
-            public Expression GetValue(Application appl)
-            {
-                return appl;
-            }
-
-            public bool IsUsedInPhi(Identifier id)
-            {
-                return false;
-            }
-
-            public Expression MakeSegmentedAddress(Constant c1, Constant c2)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void RemoveExpressionUse(Expression expr)
-            {
-            }
-
-            public void RemoveIdentifierUse(Identifier id)
-            {
-            }
-
-            public void SetValue(Identifier id, Expression value)
-            {
-            }
-
-            public void SetValueEa(Expression ea, Expression value)
-            {
-            }
-
-            public void SetValueEa(Expression basePointer, Expression ea, Expression value)
-            {
-            }
-
-            public void UseExpression(Expression expr)
-            {
-            }
         }
     }
 

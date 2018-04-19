@@ -401,20 +401,21 @@ namespace Reko.Scanning
         /// a variable destination computed at run-time.
         /// </summary>
         /// <param name="g"></param>
-        /// <returns></returns>
+        /// <returns>Always returns false, indicating linear control
+        /// flow stops here.</returns>
         public bool VisitGoto(RtlGoto g)
         {
             var blockFrom = blockCur;
             if ((g.Class & RtlClass.Delay) != 0)
             {
-                // Get next instruction cluster.
+                // Get next instruction cluster, which should be the delay slot.
+                //$TODO: some architectures, curse it, have more than one delay slot...
                 rtlStream.MoveNext();
                 ProcessRtlCluster(rtlStream.Current);
             }
             CallSite site;
             scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
-            var addrTarget = g.Target as Address;
-            if (addrTarget != null)
+            if (g.Target is Address addrTarget)
             {
                 var impProc = scanner.GetImportedProcedure(addrTarget, this.ric.Address);
                 if (impProc != null)
@@ -482,31 +483,34 @@ namespace Reko.Scanning
                     var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                     EnsureEdge(blockSource.Procedure, blockFrom, bt);
                 }
+
                 // Always emit goto statements to avoid error during block splitting
-                    //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
-                    // predicate. This should be done in a better way; perhaps by keeping track
+                //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
+                // predicate. This should be done in a better way; perhaps by keeping track
                 // of scanned blocks in the Scanner class?
-                    // The recursive scanning of basic blocks does need improvement;
-                    // consider using a similar technique to Shingle scanner, where reachable
-                    // statements are collected first, and basic blocks reconstructed afterwards.
-                    Emit(new GotoInstruction(addrTarget));
+                // The recursive scanning of basic blocks does need improvement;
+                // consider using a similar technique to Shingle scanner, where reachable
+                // statements are collected first, and basic blocks reconstructed afterwards.
+
+                Emit(new GotoInstruction(addrTarget));
                 return false;
             }
-            if (g.Target is MemoryAccess mem)
+            if (g.Target is MemoryAccess mem && mem.EffectiveAddress is Constant)
             {
-                if (mem.EffectiveAddress is Constant)
-                {
-                    // jmp [address]
-                    site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
-                    Emit(new CallInstruction(g.Target, site));
-                    Emit(new ReturnInstruction());
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                    return false;
-                }
+                // jmp [address]
+                site = state.OnBeforeCall(this.stackReg, mem.DataType.Size);
+                Emit(new CallInstruction(g.Target, site));
+                Emit(new ReturnInstruction());
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                return false;
             }
             if (ProcessIndirectControlTransfer(ric.Address, g))
                 return false;
-            site = state.OnBeforeCall(this.stackReg, 4);    //$BUGBUG: hard coded
+
+            // We've encountered JMP <exp> and we can't determine the limits of <exp>.
+            // We emit a call-return pair and call it a day.
+
+            site = state.OnBeforeCall(this.stackReg, g.Target.DataType.Size);
             Emit(new CallInstruction(g.Target, site));
             Emit(new ReturnInstruction());
             blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -626,7 +630,7 @@ namespace Reko.Scanning
             var addr = call.Target as Address;
             if (addr == null)
             {
-            addr = program.Platform.ResolveIndirectCall(call);
+               addr = program.Platform.ResolveIndirectCall(call);
             }
             return addr;
         }
@@ -854,13 +858,20 @@ namespace Reko.Scanning
 
 #endregion
 
+        /// <summary>
+        /// Attempts to trace an indirect control transfer. If successful, emits a 
+        /// switch RTL instruction (for jumps) or an indirect call instruction (for 
+        /// calls).
+        /// </summary>
+        /// <param name="addrSwitch"></param>
+        /// <param name="xfer"></param>
+        /// <returns>True if an instruction was emitted, false if not.</returns>
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
             List<Address> vector;
             ImageMapVectorTable imgVector;
             Expression switchExp;
 
-            var listener = scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
                 // Trust the user knows what they're doing.
@@ -870,60 +881,8 @@ namespace Reko.Scanning
             }
             else
             {
-                var bwsHost = new BackwardSlicerHost(program.SegmentMap);
-                var bws = new BackwardSlicer(bwsHost);
-                var rtlBlock = bwsHost.GetRtlBlock(blockCur);
-                if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
-                {
-                    listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to process indirect jump.");
+                if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
                     return false;
-                }
-                while (bws.Step())
-                    ;
-
-                var jumpExpr = bws.JumpTableFormat;
-                var interval = bws.JumpTableIndexInterval;
-                var index = bws.JumpTableIndexToUse;
-                var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
-                if (index == null)
-                {
-                    // Weren't able to find the index register,
-                    // try finding it by blind pattern matching.
-                    index = bws.FindIndexWithPatternMatch(bws.JumpTableFormat);
-                    if (index == null)
-                    {
-                        // This is likely an indirect call like a C++
-                        // vtable dispatch. Since these are common, we don't 
-                        // spam the user with warnings.
-                        return false;
-                    }
-
-                    // We have a jump table, and we've guess the index expression.
-                    // At this point we've given up on knowing the exact size 
-                    // of the table, but we do know that it must be at least
-                    // more than one entry. The safest assumption is that it
-                    // has two entries.
-                    listener.Warn(
-                        listener.CreateAddressNavigator(program, addrSwitch),
-                        "Unable to determine size of call or jump table; there may be more than 2 entries.");
-                    //$TODO: warn that we're only probing two values.
-                    ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
-                }
-                else
-                {
-                    ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
-                }
-                var vse = new ValueSetEvaluator(program, ctx, state);
-                var values = jumpExpr.Accept(vse).Values.ToList();
-                vector = values
-                    .Select(ForceToAddress)
-                    .TakeWhile(a => a != null)
-                    .ToList();
-                imgVector = new ImageMapVectorTable(
-                    null, // bw.VectorAddress,
-                    vector.ToArray(),
-                    4); // builder.TableByteSize);
-                switchExp = index;
             }
 
             if (xfer is RtlCall)
@@ -943,15 +902,10 @@ namespace Reko.Scanning
                 if (switchExp == null)
                 {
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
-                    Emit(new ReturnInstruction());
-                    blockSource.Procedure.ControlGraph.AddEdge(
-                        blockSource, 
-                        blockSource.Procedure.ExitBlock);
+                    return false;
                 }
-                else
-                {
-                    Emit(new SwitchInstruction(switchExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
-                }
+                var sw = new SwitchInstruction(switchExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray());
+                Emit(sw);
             }
             if (imgVector.Address != null)
             {
@@ -964,6 +918,88 @@ namespace Reko.Scanning
                     program.ImageMap.AddItem(imgVector.Address, imgVector);
                 }
             }
+            return true;
+        }
+
+        /// <summary>
+        /// Discovers the extent of a jump/call table by walking backwards from the 
+        /// jump/call until some gating condition (index < value, index & bitmask etc)
+        /// can be found.
+        /// </summary>
+        /// <param name="addrSwitch">Address of the indirect transfer instruction</param>
+        /// <param name="xfer">Expression that computes the transfer destination.
+        /// It is never a constant value</param>
+        /// <param name="vector">If successful, returns the list of addresses
+        /// jumped/called to</param>
+        /// <param name="imgVector"></param>
+        /// <param name="switchExp">The expression to use in the resulting switch / call.</param>
+        /// <returns></returns>
+        private bool DiscoverTableExtent(
+            Address addrSwitch,
+            RtlTransfer xfer,
+            out List<Address> vector,
+            out ImageMapVectorTable imgVector,
+            out Expression switchExp)
+        {
+            Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant));
+            var listener = scanner.Services.RequireService<DecompilerEventListener>();
+            vector = null;
+            imgVector = null;
+            switchExp = null;
+
+            var bwsHost = new BackwardSlicerHost(program.SegmentMap);
+            var bws = new BackwardSlicer(bwsHost);
+            var rtlBlock = bwsHost.GetRtlBlock(blockCur);
+            if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
+            {
+                listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to process indirect jump.");
+                return false;
+            }
+            while (bws.Step())
+                ;
+
+            var jumpExpr = bws.JumpTableFormat;
+            var interval = bws.JumpTableIndexInterval;
+            var index = bws.JumpTableIndexToUse;
+            var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
+            if (index == null)
+            {
+                // Weren't able to find the index register,
+                // try finding it by blind pattern matching.
+                index = bws.FindIndexWithPatternMatch(bws.JumpTableFormat);
+                if (index == null)
+                {
+                    // This is likely an indirect call like a C++
+                    // vtable dispatch. Since these are common, we don't 
+                    // spam the user with warnings.
+                    return false;
+                }
+
+                // We have a jump table, and we've guess the index expression.
+                // At this point we've given up on knowing the exact size 
+                // of the table, but we do know that it must be at least
+                // more than one entry. The safest assumption is that it
+                // has two entries.
+                listener.Warn(
+                    listener.CreateAddressNavigator(program, addrSwitch),
+                    "Unable to determine size of call or jump table; there may be more than 2 entries.");
+                ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
+            }
+            else
+            {
+                ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
+            }
+            var vse = new ValueSetEvaluator(program, ctx, state);
+            var values = jumpExpr.Accept(vse).Values.ToList();
+            vector = values
+                .Select(ForceToAddress)
+                .TakeWhile(a => a != null)
+                .ToList();
+            imgVector = new ImageMapVectorTable(
+                null, // bw.VectorAddress,
+                vector.ToArray(),
+                4); // builder.TableByteSize);
+            switchExp = index;
             return true;
         }
 
