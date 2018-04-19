@@ -330,5 +330,20 @@ Second line");
 ";
             Assert.AreEqual(expected, sw.ToString());
         }
+
+        [Test]
+        public void CfAbsynComment_Multiline()
+        {
+            formatter.Indentation = 1;
+            var cmt = new AbsynLineComment(
+@"First abstract syntax comment line
+Second abstract syntax comment line");
+            cmt.Accept(cf);
+            var expected =
+@" // First abstract syntax comment line
+ // Second abstract syntax comment line
+";
+            Assert.AreEqual(expected, sw.ToString());
+        }
     }
 }
