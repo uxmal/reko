@@ -19139,9 +19139,15 @@ l0800_9284:
 	pop	es
 	or	ax,ax
 	jl	92AE
+
+l0800_9298:
 	test	byte ptr [bp-01],01
 	jnz	929F
+
+l0800_929E:
 	stosb
+
+l0800_929F:
 	dec	si
 	jg	9284
 
@@ -19154,8 +19160,9 @@ l0800_92A8:
 
 l0800_92AB:
 	jmp	8FC8
-0800:92AE                                           E9 F5               ..
-0800:92B0 00                                              .              
+
+l0800_92AE:
+	jmp	93A6
 
 l0800_92B1:
 	push	es
@@ -25506,23 +25513,9 @@ fn0800_BF18 proc
 	add	sp,10
 	pop	bp
 	ret
-	push	bp
-	mov	bp,sp
-	push	word ptr [bp+0E]
-	push	word ptr [bp+0C]
-	push	word ptr [bp+0A]
-	push	word ptr [bp+08]
-	push	ss
-	lea	ax,[bp+04]
-	push	ax
-	mov	ax,BF0D
-	push	ax
-	mov	ax,BEE5
-	push	ax
-	call	8F97
-	add	sp,10
-	pop	bp
-	ret
+0800:BF3B                                  55 8B EC FF 76            U...v
+0800:BF40 0E FF 76 0C FF 76 0A FF 76 08 16 8D 46 04 50 B8 ..v..v..v...F.P.
+0800:BF50 0D BF 50 B8 E5 BE 50 E8 3D D0 83 C4 10 5D C3    ..P...P.=....].
 
 ;; fn0800_BF5F: 0800:BF5F
 fn0800_BF5F proc

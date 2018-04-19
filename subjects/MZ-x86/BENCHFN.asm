@@ -3948,8 +3948,6 @@ l0800_1B29:
 fn0800_1B2C proc
 	sub	dx,dx
 	mov	cx,0004
-
-l0800_1B31:
 	dec	word ptr [bp-22]
 	jl	1B7B
 
@@ -3964,40 +3962,22 @@ l0800_1B36:
 	pop	dx
 	or	ax,ax
 	jle	1B7D
-
-l0800_1B48:
 	dec	cl
 	jl	1B7D
-
-l0800_1B4C:
 	mov	ch,al
 	sub	ch,30
 	jc	1B7D
-
-l0800_1B53:
 	cmp	ch,0A
 	jc	1B6F
-
-l0800_1B58:
 	sub	ch,11
 	jc	1B7D
-
-l0800_1B5D:
 	cmp	ch,06
 	jc	1B6C
-
-l0800_1B62:
 	sub	ch,20
 	jc	1B7D
-
-l0800_1B67:
 	cmp	ch,06
 	jnc	1B7D
-
-l0800_1B6C:
 	add	ch,0A
-
-l0800_1B6F:
 	shl	dx,01
 	shl	dx,01
 	shl	dx,01
@@ -4007,8 +3987,6 @@ l0800_1B6F:
 
 l0800_1B7B:
 	sub	ax,ax
-
-l0800_1B7D:
 	cmp	cl,04
 	jz	1B88
 

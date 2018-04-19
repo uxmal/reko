@@ -784,13 +784,14 @@ l0000000000400E2D: warning: Non-integral switch expression
 0800:1895: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:196C: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:188F: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1A60: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1A03: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1892: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1A60: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1969: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:1905: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1ADD: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE3: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1969: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1905: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1B2C: error: Unimplemented condition code GE.
 0800:036F: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0385: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -1480,16 +1481,31 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
 === PE\m68k\hello_m68k.dcproject
 === PE\x86-64\varargs_test\varargs_test.exe
 *** PE\x86-64\varargs_test\varargs_test.exe
-0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+0000000140001898: warning: Call target address 0000000000002D96 is invalid.
+00000001400018A6: warning: Call target address 0000000000002D80 is invalid.
+00000001400018B2: warning: Call target address 0000000000002D6A is invalid.
+00000001400018C2: warning: Call target address 0000000000002D50 is invalid.
+00000001400019B9: warning: Call target address 0000000000002C90 is invalid.
+00000001400019D3: warning: Call target address 0000000000002CA4 is invalid.
+0000000140001A14: warning: Call target address 0000000000002CBE is invalid.
+0000000140001A68: warning: Call target address 0000000000002DC6 is invalid.
+0000000140001A89: warning: Call target address 0000000000002CEE is invalid.
+0000000140001A94: warning: Call target address 0000000000002CD2 is invalid.
 0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
 0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
 0000000140001E2E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
 0000000140001E0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
-0000000140001168: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
-0000000140001187: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfprintf.
-00000001400010F5: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
-0000000140001114: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfscanf.
-00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+0000000140001168: warning: Call target address 00000000000029F4 is invalid.
+0000000140001187: warning: Call target address 0000000000002A06 is invalid.
+00000001400010F5: warning: Call target address 00000000000029F4 is invalid.
+0000000140001114: warning: Call target address 0000000000002A20 is invalid.
+000000014000155B: warning: Call target address 0000000000002C90 is invalid.
+0000000140001575: warning: Call target address 0000000000002CA4 is invalid.
+00000001400015AC: warning: Call target address 0000000000002CBE is invalid.
+0000000140001453: warning: Call target address 0000000000002CEE is invalid.
+000000014000145C: warning: Call target address 0000000000002CD2 is invalid.
+0000000140001462: warning: Call target address 0000000000002D0C is invalid.
+0000000140001AC6: warning: Call target address 0000000000002DDA is invalid.
 0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
 0000000140001E52: warning: Unable to guess parameters of api-ms-win-crt-heap-l1-1-0.dll!_set_new_mode.
 0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
@@ -2310,6 +2326,7 @@ Borland C v3 runtime detected
 0800:9398: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:939E: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:93A3: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:92AE: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9208: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:919E: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:8BC8: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2514,4 +2531,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 41.12 seconds ---
+Decompiled 51 binaries in 36.06 seconds ---
