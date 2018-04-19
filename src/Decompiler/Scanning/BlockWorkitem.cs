@@ -998,11 +998,20 @@ namespace Reko.Scanning
                 ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
             }
             var vse = new ValueSetEvaluator(program, ctx, state);
-            var values = jumpExpr.Accept(vse).Values.ToList();
-            vector = values
+            var (values, accesses) = vse.Evaluate(jumpExpr);
+            vector = values.Values
                 .Select(ForceToAddress)
                 .TakeWhile(a => a != null)
                 .ToList();
+            foreach (var de in accesses)
+            {
+                var item = new ImageMapItem((uint)de.Value.Size)
+                {
+                    Address = de.Key,
+                    DataType = de.Value
+                };
+                program.ImageMap.AddItemWithSize(de.Key, item);
+            }
             imgVector = new ImageMapVectorTable(
                 null, // bw.VectorAddress,
                 vector.ToArray(),

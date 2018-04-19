@@ -765,7 +765,7 @@ namespace Reko.Scanning
                 .ToArray();
             return new SlicerResult
             {
-                LiveExprs = srExprs[0].LiveExprs,
+                LiveExprs = srExprs[1].LiveExprs,
                 SrcExpr = new MkSequence(seq.DataType, srExprs.Select(s => s.SrcExpr).ToArray()),
                 Stop = srExprs.Any(s => s.Stop)
             };

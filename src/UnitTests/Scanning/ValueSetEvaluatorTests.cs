@@ -112,6 +112,13 @@ namespace Reko.UnitTests.Scanning
                     .ToArray());
         }
 
+
+        private string DumpReads(Dictionary<Address, DataType> reads)
+        {
+            return string.Format("({0})",
+                string.Join(",", reads.OrderBy(d => d.Key)));
+        }
+
         [Test]
         public void Vse_Identifier()
         {
@@ -147,7 +154,6 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("[0x00003000,0x00003028,0x00003008]", vs.ToString());
         }
 
-  
 
         [Test]
         public void Vse_And()
@@ -159,7 +165,7 @@ namespace Reko.UnitTests.Scanning
             var vs = m.And(r1, 0x1F).Accept(vse);
             Assert.AreEqual("1[0,1F]", vs.ToString());
         }
-
+  
         [Test]
         public void Vse_Shl()
         {
@@ -272,10 +278,15 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Vse_GetType()
         {
+            Given_UInt32Array(0x2080, new uint[] { 0x1100, 0x1060, 0x1800 });
             var r0 = m.Reg32("r0", 0);
-            var exp = r0;
-
+            Given_ValueSet(r0, IVS(1, 0, 2));
             Given_Evaluator();
+
+            var exp = m.Mem32(m.IAdd(m.IMul(r0,4), 0x2080));
+            var (vs, reads) = vse.Evaluate(exp);
+            Assert.AreEqual("[0x00001100,0x00001060,0x00001800]", vs.ToString());
+            Assert.AreEqual("([00002080, word32],[00002084, word32],[00002088, word32])", DumpReads(reads));
         }
     }
 }

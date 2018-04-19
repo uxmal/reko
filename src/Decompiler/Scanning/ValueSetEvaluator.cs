@@ -34,6 +34,10 @@ namespace Reko.Scanning
     /// Evaluates IR expressions using value sets. The result of evaluating 
     /// an expression is another value set.
     /// </summary>
+    /// <remarks>
+    /// As a side effect, this evaluator tracks memory accesses and generates
+    /// type information about them.
+    /// </remarks>
     public class ValueSetEvaluator : ExpressionVisitor<ValueSet>
     {
         private Program program;
@@ -51,9 +55,9 @@ namespace Reko.Scanning
             this.memAccesses = new Dictionary<Address, DataType>();
         }
 
-        public (Expression[], Dictionary<Address,DataType>) Evaluate(Expression expr)
+        public (ValueSet, Dictionary<Address,DataType>) Evaluate(Expression expr)
         {
-            var values = expr.Accept(this).Values.ToArray();
+            var values = expr.Accept(this);
             return (values, this.memAccesses);
         }
 
@@ -245,6 +249,7 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment segment))
                     return Constant.Invalid;
                 var rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
+                memAccesses[addr] = dt;
                 if (dt == PrimitiveType.SegPtr32)
                 {
                     var addrRead = program.Architecture.ReadCodeAddress(dt.Size, rdr, null);
@@ -294,9 +299,13 @@ namespace Reko.Scanning
 
         private Expression MakeSequence(DataType dataType, Expression [] exps, Expression off)
         {
-            if (off is Constant cOff)
+            if (exps.Length == 2 &&
+                exps[0] is Constant cSeg &&
+                cSeg.DataType == PrimitiveType.SegmentSelector)
             {
-
+                // Special case for segmented pointers.
+                //$TODO: we really need a special MkSegmentedPointer expression type.
+                return program.Architecture.MakeSegmentedAddress(cSeg, (Constant) off); 
             }
             exps[exps.Length - 1] = (Constant) off;
             return new MkSequence(dataType, exps);
@@ -329,6 +338,12 @@ namespace Reko.Scanning
 
         public ValueSet VisitSegmentedAccess(SegmentedAccess access)
         {
+            if (context.TryGetValue(access, out ValueSet value))
+            {
+                return value;
+            }
+            var vs = access.EffectiveAddress.Accept(this);
+
             var vaSeg = access.BasePointer.Accept(this);
             if (vaSeg == ValueSet.Any)
                 return vaSeg;
