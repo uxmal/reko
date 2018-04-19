@@ -522,9 +522,12 @@ namespace Reko.Core.Output
 
         public void VisitComment(CodeComment comment)
         {
-            writer.Indent();
-            writer.WriteComment($"// {comment.Text}");
-            writer.Terminate();
+            foreach (var line in Lines(comment.Text))
+            {
+                writer.Indent();
+                writer.WriteComment($"// {line}");
+                writer.Terminate();
+            }
         }
 
 		public void VisitDeclaration(Declaration decl)
@@ -1025,6 +1028,13 @@ namespace Reko.Core.Output
         public void WriteNull()
         {
             writer.WriteKeyword("null");
+        }
+
+        private static string[] Lines(string s)
+        {
+            return s.Split(
+                new string[] { Environment.NewLine },
+                StringSplitOptions.None);
         }
     }
 }
