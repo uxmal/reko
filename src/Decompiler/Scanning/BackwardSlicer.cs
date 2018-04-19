@@ -522,6 +522,13 @@ namespace Reko.Scanning
 
         public SlicerResult VisitBinaryExpression(BinaryExpression binExp, BackwardSlicerContext ctx)
         {
+            if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne)
+            {
+                // Equality comparisons cannot contribute to determining the size
+                // of the jump table; stop processing this instruction.
+                return null;
+            }
+
             if ((binExp.Operator == Operator.Xor || binExp.Operator == Operator.ISub) &&
                 this.slicer.AreEqual(binExp.Left, binExp.Right))
             {
