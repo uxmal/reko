@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -314,6 +314,21 @@ namespace Reko.UnitTests.Core
             var s = Constant.String("\x00\x1F\x20\x21\x7E\x7F\x80", StringType.NullTerminated(PrimitiveType.Char));
             s.Accept(cf);
             Assert.AreEqual("\"\\0\\x1F !~\\x7F\\x80\"", sw.ToString());
+        }
+
+        [Test]
+        public void CfComment_Multiline()
+        {
+            formatter.Indentation = 1;
+            var cmt = new CodeComment(
+@"First line
+Second line");
+            cmt.Accept(cf);
+            var expected =
+@" // First line
+ // Second line
+";
+            Assert.AreEqual(expected, sw.ToString());
         }
     }
 }
