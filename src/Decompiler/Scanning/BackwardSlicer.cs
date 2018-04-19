@@ -51,7 +51,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Verbose };
+        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Error };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private SliceState state;
@@ -573,7 +573,7 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if (binExp.Operator == Operator.ISub)
+            if (binExp.Operator == Operator.ISub && Live != null)
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
                 foreach (var live in Live.Keys)

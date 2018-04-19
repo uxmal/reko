@@ -1001,6 +1001,7 @@ namespace Reko.Scanning
             var (values, accesses) = vse.Evaluate(jumpExpr);
             vector = values.Values
                 .TakeWhile(c => c != Constant.Invalid)
+                .Take(2000)             // Arbitrary limit
                 .Select(ForceToAddress)
                 .TakeWhile(a => a != null)
                 .ToList();

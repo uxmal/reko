@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using Reko.Core.Expressions;
 using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Core
 {
@@ -339,6 +340,30 @@ private:
 }";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void TyfoEnum()
+        {
+            var e = new EnumType("myEnum");
+            e.Members = new SortedList<string, long>
+            {
+                { "FALSE", 0 },
+                { "TRUE", 1 },
+                { "FILE_NOT_FOUND", 2 }
+            };
+
+            tyfo.Write(e, null);
+            var sExp =
+@"enum myEnum {
+	FALSE = 0x0,
+	TRUE = 0x1,
+	FILE_NOT_FOUND = 0x2,
+}";
+            #region
+            Assert.AreEqual(sExp, sw.ToString());
+
+            #endregion
         }
     }
 }
