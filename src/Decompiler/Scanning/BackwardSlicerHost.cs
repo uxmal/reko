@@ -69,6 +69,15 @@ namespace Reko.Scanning
         public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
+            var last = block.Statements.Last;
+            if (last != null && last.Instruction is SwitchInstruction)
+            {
+                //$TODO: this a workaround; when we run this class on 
+                // "raw" RTL, we won't need to special case the SwitchInstruction
+                // as it won't exist.
+                yield return null;
+                yield break;
+            }
             foreach (var stm in block.Statements)
             {
                 switch (stm.Instruction)
@@ -80,6 +89,11 @@ namespace Reko.Scanning
                     yield return new RtlAssignment(store.Dst, store.Src);
                     break;
                 case Branch branch:
+                    //$TODO: this is also a workaround; some blocks have
+                    // no addresses because they are synthesized from thin air
+                    // after conversion from "raw" RTL.
+                    if (branch.Target.Address == null)
+                        yield break;
                     yield return new RtlBranch(branch.Condition, branch.Target.Address, RtlClass.ConditionalTransfer);
                     break;
                 case CallInstruction call:

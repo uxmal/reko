@@ -4444,10 +4444,41 @@ l18C6:
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
 
 l18CC_thunk_fn1932:
-	word16 r3_48
-	word16 r4_49
-	fn1932(r3, r4, out r3_48, out r4_49)
-	return r3_48
+	word16 r3_71
+	word16 r4_72
+	fn1932(r3, r4, out r3_71, out r4_72)
+	return r3_71
+// DataOut: r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 -2(fp):r0
+
+l18CE:
+	word16 r3_29
+	word16 r4_30
+	word16 r2_31 = fn1900(r3, r4, out r3_29, out r4_30)
+	Mem34[fp + 0xFFFA:word16] = 0x099E
+	Mem36[fp + 0xFFF8:word16] = 0x8880
+	Mem38[fp + 0xFFF8:word16] = Mem36[fp + 0xFFF8:word16] | Mem36[r4_30 + 0x0011:word16]
+	Mem40[fp + 0xFFF6:word16] = 0x18F4
+	Mem42[fp + 0xFFF4:word16] = 0x0000
+	Mem45[fp + 0xFFF2:word16] = 0x0100
+	Mem47[fp + 0xFFF0:word16] = Mem45[r4_30 + 0x0002:word16]
+	word16 sp_52
+	word16 r0_53
+	byte NZ_54
+	bool V_55
+	word16 r4_56
+	bool C_57
+	bool Z_58
+	byte NZVC_59
+	word16 pc_60
+	bool N_61
+	word16 r3_62
+	word16 r2_63
+	call Mem47[fp + 0xFFF8:word16] (retsize: 2; depth: 2 FPU: 2;)
+		uses: C_43,N_11,NZ_49,NZVC_14,pc,r0_48,r2_31,r3_29,r4_30,sp_46,V_50,wLoc02_4,Z_10
+		defs: C_57,N_61,NZ_54,NZVC_59,pc_60,r0_53,r2_63,r3_62,r4_56,sp_52,V_55,Z_58
+	return r3_62
 // DataOut: r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
@@ -4455,22 +4486,7 @@ l18CC_thunk_fn1932:
 fn18BE_exit:
 // DataOut: r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r2:0x0000 r0:<invalid> r4:<invalid> r3:<invalid> -2(fp):r0
-
-l18CE:
-	word16 r3_19
-	word16 r4_20
-	fn1900(r3, r4, out r3_19, out r4_20)
-	Mem24[fp + 0xFFFA:word16] = 0x099E
-	Mem26[fp + 0xFFF8:word16] = 0x8880
-	Mem28[fp + 0xFFF8:word16] = Mem26[fp + 0xFFF8:word16] | Mem26[r4_20 + 0x0011:word16]
-	Mem30[fp + 0xFFF6:word16] = 0x18F4
-	Mem32[fp + 0xFFF4:word16] = 0x0000
-	Mem35[fp + 0xFFF2:word16] = 0x0100
-	Mem37[fp + 0xFFF0:word16] = Mem35[r4_20 + 0x0002:word16]
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp - 0x0002 -2(fp):r0
+// SymbolicIn: sp:<invalid> r0:<invalid> r2:0x0000 r4:<invalid> r3:<invalid> -16(fp):<invalid> -14(fp):0x0100 -12(fp):0x0000 -10(fp):0x18F4 -8(fp):<invalid> -6(fp):0x099E -2(fp):r0
 
 
 

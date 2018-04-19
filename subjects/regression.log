@@ -2346,7 +2346,7 @@ Borland C v3 runtime detected
 1483:0D02: warning: Procedure fn1483_0CFA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0DCF: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was 2 previously.
-0800:9127: warning: Procedure fn0800_8F97 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+0800:93EF: error: Unimplemented condition code GE.
 0800:906C: error: An error occurred while processing instruction at address 0800:906C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -2531,4 +2531,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 36.06 seconds ---
+Decompiled 51 binaries in 34.89 seconds ---

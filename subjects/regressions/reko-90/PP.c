@@ -497,7 +497,7 @@ byte fn0800_0541(word16 bp, word16 di, selector ds, ptr16 & dsOut)
 		if (si_137 <=u 0x0A)
 		{
 			word16 bx_190 = si_137 << 0x01;
-			switch (si_137)
+			switch (bx_190)
 			{
 			case 0x00:
 				if (Mem130[ds:10777:word16] == 0x00)

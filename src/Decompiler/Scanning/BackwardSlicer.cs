@@ -144,7 +144,14 @@ namespace Reko.Scanning
                     if (!visited.Contains(pred))
                     {
                         visited.Add(pred);
-                        SliceState pstate = state.CreateNew(pred, state.block.Address);
+                        var stms = host.GetBlockInstructions(pred).ToArray();
+                        //$TODO: the hack below works around the fact that some
+                        // Code instructions don't exist in "raw" RTL. We are 
+                        // checking for a magic 1-length array of nulls as a 
+                        // sentinel.
+                        if (stms.Length == 1 && stms[0] == null)
+                            break;
+                        SliceState pstate = state.CreateNew(pred,  state.block.Address);
                         worklist.Add(pstate);
                         DebugEx.PrintIf(trace.TraceVerbose, "  Added block {0} to worklist", pred.Address);
                     }
@@ -345,6 +352,7 @@ namespace Reko.Scanning
         public Expression assignLhs;    // current LHS
         public bool invertCondition;
         public Dictionary<Expression, BackwardSlicerContext> Live;
+        private int blockCount;
 
         public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
         {
@@ -886,7 +894,8 @@ namespace Reko.Scanning
                 Live = new Dictionary<Expression, BackwardSlicerContext>(this.Live, this.Live.Comparer),
                 ccNext = this.ccNext,
                 invertCondition = this.invertCondition,
-                addrSucc = addrSucc
+                addrSucc = addrSucc,
+                blockCount = blockCount + 1
             };
             state.iInstr = state.instrs.Length - 1;
             return state;
