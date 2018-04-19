@@ -108,7 +108,9 @@ namespace Reko.Arch.X86
             }
             Expression expr = EffectiveAddressExpression(instr, mem, state);
             if (IsSegmentedAccessRequired ||
-                (mem.DefaultSegment != Registers.ds && mem.DefaultSegment != Registers.ss))
+                (mem.DefaultSegment != Registers.cs &&
+                 mem.DefaultSegment != Registers.ds && 
+                 mem.DefaultSegment != Registers.ss))
             {
                 Expression seg;
                 if (mem.DefaultSegment == Registers.cs)

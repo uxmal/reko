@@ -796,11 +796,11 @@ namespace Reko.Scanning
                 }
                 catch (AddressCorrelatedException aex)
                 {
-                    Error(aex.Address, aex.Message);
+                    Error(aex.Address, "{0}", aex.Message);
                 }
                 catch (Exception ex)
                 {
-                    Error(workitem.Address, ex.Message);
+                    Error(workitem.Address, "{0}", ex.Message);
                 }
                 if (cancelSvc != null && cancelSvc.IsCancellationRequested)
                     break;

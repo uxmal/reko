@@ -956,7 +956,7 @@ namespace Reko.Scanning
             var rtlBlock = bwsHost.GetRtlBlock(blockCur);
             if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
             {
-                listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to start processing indirect jump.");
+                // No registers were found, so we can't trace back. 
                 return false;
             }
             while (bws.Step())
@@ -1000,6 +1000,7 @@ namespace Reko.Scanning
             var vse = new ValueSetEvaluator(program, ctx, state);
             var (values, accesses) = vse.Evaluate(jumpExpr);
             vector = values.Values
+                .TakeWhile(c => c != Constant.Invalid)
                 .Select(ForceToAddress)
                 .TakeWhile(a => a != null)
                 .ToList();

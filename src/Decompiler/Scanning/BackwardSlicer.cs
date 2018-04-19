@@ -453,6 +453,7 @@ namespace Reko.Scanning
             case ConditionCode.UGT: return StridedInterval.Create(1, right.ToInt64() + 1, long.MaxValue);
             case ConditionCode.EQ:
             case ConditionCode.NE:
+            case ConditionCode.None:
                 return StridedInterval.Empty;
             default:
                 throw new NotImplementedException($"Unimplemented condition code {cc}.");

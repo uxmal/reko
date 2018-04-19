@@ -226,12 +226,11 @@ namespace Reko.Scanning
         {
             if (eAddr is Constant cAddr)
             {
-                var addr = program.SegmentMap.MapLinearAddressToAddress(cAddr.ToUInt64());
+                var addr = program.Architecture.MakeAddressFromConstant(cAddr);
                 if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                     return Constant.Invalid;
                 var rdr = program.Architecture.CreateImageReader(seg.MemoryArea, addr);
                 memAccesses[addr] = dt;
-                //$TODO: what if reader reads off the end of memory? Blow up or warn?
                 if (!rdr.TryRead((PrimitiveType)dt, out var c))
                     return Constant.Invalid;
                 else
