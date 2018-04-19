@@ -1811,31 +1811,46 @@ void vListInsert(word32 r0, word32 r1, word32 r2, word32 r8, word32 ip)
 {
 	if (!V)
 	{
-		word32 sp_57;
-		byte V_58;
-		byte NZCV_64;
-		word32 pc_69;
+		word32 sp_70;
+		byte V_71;
+		byte NZCV_77;
+		word32 pc_82;
 		fn01A0B9E5();
 	}
 	if (!Z)
 	{
 		r1 = r0 - (ip << r1) - C;
-		byte NZCV_51 = cond(r1);
+		byte NZCV_64 = cond(r1);
 		r1_r0 = SEQ(r1, r0);
-		Z = NZCV_51;
-		N = NZCV_51;
-		NV = NZCV_51;
+		Z = NZCV_64;
+		N = NZCV_64;
+		NV = NZCV_64;
 	}
 	if (!Z)
-		Mem47[r2 + 0x00:word64] = r1_r0;
+	{
+		Mem60[r2 + 0x00:word64] = r1_r0;
+		r2 = r2 - r1;
+	}
 	if (!N)
 		r1 = DPB(r1, 0x6AE0, 16);
 	if (!NV)
-		Mem44[r8 + -0x0C68:byte] = (byte) r1;
-	switch (r0 - (ip << r1))
+		Mem57[r8 + -0x0C68:byte] = (byte) r1;
+	if (!Z)
 	{
-	case 0x00:
-	case 0x01:
+		word32 sp_43;
+		byte V_44;
+		byte Z_45;
+		word32 r1_46;
+		word32 r0_47;
+		word32 ip_48;
+		bool C_49;
+		byte NZCV_50;
+		word32 r2_51;
+		byte N_52;
+		byte NV_53;
+		word32 r8_54;
+		word32 pc_55;
+		((word32) Mem0[r2 + 0x00:byte])();
 	}
 }
 
@@ -4265,10 +4280,10 @@ void UARTCharsAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word3
 {
 	if (!Z)
 	{
-		byte NZCV_41 = cond(__ror(r9, 0x00) - r0 - C);
-		C = NZCV_41;
-		Z = NZCV_41;
-		ZC = NZCV_41;
+		byte NZCV_40 = cond(__ror(r9, 0x00) - r0 - C);
+		C = NZCV_40;
+		Z = NZCV_40;
+		ZC = NZCV_40;
 	}
 	if (!Z)
 		ZC = cond(r0 - r3 - C);
@@ -4294,35 +4309,41 @@ void UARTSpaceAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word3
 	if (!N)
 		ZC = cond(r0 - r3 - C);
 	if (ZC)
-		UARTCharNonBlockingGet(pc, r0, r6, r7, r9);
+		UARTCharNonBlockingGet(pc, r0, r6, r7);
 	else
 	{
 		word32 r7_20 = DPB(r7, 0x7010, 16);
-		UARTCharNonBlockingGet(pc, r0, r6, r7_20, r9);
+		UARTCharNonBlockingGet(pc, r0, r6, r7_20);
 	}
 }
 
-// 0000A025: void UARTCharNonBlockingGet(Register word32 pc, Register word32 r0, Register word32 r6, Register word32 r7, Register word32 r9)
-void UARTCharNonBlockingGet(word32 pc, word32 r0, word32 r6, word32 r7, word32 r9)
+// 0000A025: void UARTCharNonBlockingGet(Register word32 pc, Register word32 r0, Register word32 r6, Register word32 r7)
+void UARTCharNonBlockingGet(word32 pc, word32 r0, word32 r6, word32 r7)
 {
 	if (!N)
-		Mem28[r6 + 0x00:word32] = fp;
+		Mem41[r6 + 0x00:word32] = fp;
 	if (!N)
 		__syscall(0x006800BF);
-	switch (__ror(r9, 0x00))
+	if (V)
 	{
-	case 0x00:
-	case 0x01:
 		if (Z)
-		{
 			UARTCharGet();
-			return;
-		}
 		else
-		{
 			UARTCharGet();
-			return;
-		}
+	}
+	else
+	{
+		word32 sp_25;
+		byte N_26;
+		word32 r6_27;
+		byte V_28;
+		word32 r0_29;
+		byte Z_30;
+		word32 pc_31;
+		word32 r7_32;
+		bool C_33;
+		byte NZCV_34;
+		((word32) Mem0[r0 + 0x00:int16])();
 	}
 }
 

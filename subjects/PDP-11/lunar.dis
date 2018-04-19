@@ -1406,7 +1406,7 @@ l0888:
 	word16 r2_36
 	word16 r3_37
 	word16 pc_38
-	call Mem0[(r0_12 << 1) + 0x0FEC:ptr16] (retsize: 4; depth: 4 FPU: 2;)
+	call Mem0[(r0_12 << 1) + 0x0FEC:ptr16] (retsize: 2; depth: 2 FPU: 2;)
 		uses: N_9,NZ_16,NZVC_22,pc,r0_12,r1_21,r4_11,r5_7,sp_19,V_17,wLoc02_14
 		defs: C_33,N_27,NV_31,NZ_25,NZV_29,NZVC_28,pc_38,r0_34,r1_35,r2_36,r3_37,r4_30,r5_24,sp_23,V_26,Z_32
 	return
@@ -2268,7 +2268,7 @@ l0D3C:
 	bool N_44
 	bool Z_45
 	word16 r5_46
-	call ptrArg00 (retsize: 4; depth: 14 FPU: 2;)
+	call ptrArg00 (retsize: 2; depth: 12 FPU: 2;)
 		uses: C_30,N_32,r0,r1,r2,r3,r4,r5_29,sp_14,V_31,wLoc02_4,wLoc04_7,wLoc06_10,wLoc08_13,wLoc0A_16,Z_33
 		defs: C_43,N_44,NZ_37,r0_40,r1_41,r2_36,r3_39,r4_42,r5_46,sp_35,V_38,Z_45
 	return

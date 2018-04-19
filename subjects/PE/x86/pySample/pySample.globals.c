@@ -9,7 +9,7 @@ Eq_283 g_t10002098 = null;
 Eq_284 g_t1000209C = null;
 Eq_228 g_t100020A0 = null;
 Eq_229 g_t100020A8 = null;
-<anonymous> * g_ptr100020CC = null;
+word32 g_dw100020CC = 0x00000000;
 char g_str100020E0[] = "fdiv(a, b) = a / b";
 char g_str100020F4[] = "fdiv";
 char g_str100020FC[] = "div(a, b) = a / b";

@@ -7669,14 +7669,8 @@ void vListInsert(word32 r0, word32 r1, word32 r2, word32 r8, word32 ip)
 
 // MayUse:  NZCV ip r0 r1 r2 r8
 // LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-vListInsert_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
+// Trashed: NZCV r1 r2 r8
+// Preserved: sp
 vListInsert_entry:
 // DataOut: ip r0 r1 r2 r8
 // DataOut (flags): NZCV
@@ -7689,13 +7683,13 @@ l0000830D:
 // SymbolicIn: sp:fp
 
 l0000830D_1:
-	word32 sp_57
-	byte V_58
-	byte NZCV_64
-	word32 pc_69
+	word32 sp_70
+	byte V_71
+	byte NZCV_77
+	word32 pc_82
 	call fn01A0B9E5 (retsize: 0;)
 		uses: C,ip,N,NV,NZCV,pc,r0,r1,r2,r8,sp_1,V,Z
-		defs: C_63,ip_62,N_66,NV_67,NZCV_64,pc_69,r0_61,r1_60,r2_65,r8_68,sp_57,V_58,Z_59
+		defs: C_76,ip_75,N_79,NV_80,NZCV_77,pc_82,r0_74,r1_73,r2_78,r8_81,sp_70,V_71,Z_72
 // DataOut: ip r0 r1 r2 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
@@ -7708,54 +7702,54 @@ l00008311:
 
 l00008311_1:
 	r1 = r0 - (ip << r1) - C
-	byte NZCV_51 = cond(r1)
+	byte NZCV_64 = cond(r1)
 	r1_r0 = SEQ(r1, r0) (alias)
-	Z = NZCV_51 (alias)
-	N = NZCV_51 (alias)
-	NV = NZCV_51 (alias)
-// DataOut: ip r0 r1 r2 r8
+	Z = NZCV_64 (alias)
+	N = NZCV_64 (alias)
+	NV = NZCV_64 (alias)
+// DataOut: r0 r1 r2 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp
 
 l00008315:
 	branch Z l00008319
-// DataOut: ip r0 r1 r2 r8
+// DataOut: r0 r1 r2 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r1:<invalid>
 
 l00008315_1:
-	Mem47[r2:word64] = r1_r0
-// DataOut: ip r0 r1 r2 r8
+	Mem60[r2:word64] = r1_r0
+	r2 = r2 - r1
+// DataOut: r1 r2 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r1:<invalid>
 
 l00008319:
 	branch N l0000831D
-// DataOut: ip r0 r1 r2 r8
+// DataOut: r1 r2 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid>
 
 l00008319_1:
 	r1 = DPB(r1, 0x6AE0, 16)
-// DataOut: ip r0 r1 r2 r8
+// DataOut: r1 r2 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid>
 
 l0000831D:
 	branch NV l00008321
-// DataOut: ip r0 r1 r2 r8
+// DataOut: r1 r2 r8
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid>
 
 l0000831D_1:
-	Mem44[r8 + -3176:byte] = (byte) r1
-// DataOut: ip r0 r1 r2
+	Mem57[r8 + -3176:byte] = (byte) r1
+// DataOut: r2
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid>
 
 l00008321:
 	branch Z l00008325
-	switch (r0 - (ip << r1)) { }
 // DataOut: r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid> r8:r8 + -3176
@@ -7766,6 +7760,28 @@ l00008325:
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid> r8:r8 + -3176
 
 l00008321_1:
+	word32 sp_43
+	byte V_44
+	byte Z_45
+	word32 r1_46
+	word32 r0_47
+	word32 ip_48
+	bool C_49
+	byte NZCV_50
+	word32 r2_51
+	byte N_52
+	byte NV_53
+	word32 r8_54
+	word32 pc_55
+	call (word32) Mem0[r2:byte] (retsize: 0;)
+		uses: C_32,ip_21,N_30,NV_29,NZCV_31,pc_14,r0_22,r1_38,r2_42,r8_39,sp_26,V_35,Z_34
+		defs: C_49,ip_48,N_52,NV_53,NZCV_50,pc_55,r0_47,r1_46,r2_51,r8_54,sp_43,V_44,Z_45
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r1:<invalid> r2:<invalid> r8:r8 + -3176
+
+vListInsert_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r2:<invalid> r8:r8 + -3176
@@ -18216,7 +18232,7 @@ void UARTCharsAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word3
 
 // MayUse:  ZC pc r0 r3 r6 r7 r9
 // LiveOut:
-// Trashed: NZCV ip r7 r8
+// Trashed: NZCV ip r0 r6 r7 r8
 // Preserved: sp
 UARTCharsAvail_entry:
 // DataOut: pc r0 r3 r6 r7 r9
@@ -18230,10 +18246,10 @@ l0000A00D:
 // SymbolicIn: sp:fp
 
 l0000A00D_1:
-	byte NZCV_41 = cond(__ror(r9, 0) - r0 - C)
-	C = NZCV_41 (alias)
-	Z = NZCV_41 (alias)
-	ZC = NZCV_41 (alias)
+	byte NZCV_40 = cond(__ror(r9, 0) - r0 - C)
+	C = NZCV_40 (alias)
+	Z = NZCV_40 (alias)
+	ZC = NZCV_40 (alias)
 // DataOut: pc r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
@@ -18279,7 +18295,7 @@ l0000A015_thunk_UARTSpaceAvail:
 UARTCharsAvail_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r8:<invalid> ip:<invalid> r7:<invalid>
+// SymbolicIn: sp:fp r8:<invalid> ip:<invalid> r7:<invalid> r6:<invalid> r0:<invalid>
 
 
 
@@ -18288,7 +18304,7 @@ void UARTSpaceAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word3
 
 // MayUse:  NZC pc r0 r3 r6 r7 r9
 // LiveOut:
-// Trashed: NZCV ip r7 r8
+// Trashed: NZCV ip r0 r6 r7 r8
 // Preserved: sp
 UARTSpaceAvail_entry:
 // DataOut: pc r0 r3 r6 r7 r9
@@ -18306,30 +18322,30 @@ l0000A019_1:
 	C = NZCV_32 (alias)
 	ZC = NZCV_32 (alias)
 	N = NZCV_32 (alias)
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: pc r0 r3 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A01D:
 	branch N l0000A021
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: pc r0 r3 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid>
 
 l0000A01D_1:
 	ZC = cond(r0 - r3 - C) (alias)
-// DataOut: pc r0 r6 r7 r9
+// DataOut: pc r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid>
 
 l0000A021:
 	branch ZC l0000A025
-// DataOut: pc r0 r6 r7 r9
+// DataOut: pc r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid> ip:<invalid>
 
 l0000A021_thunk_UARTCharNonBlockingGet:
-	UARTCharNonBlockingGet(pc, r0, r6, r7, r9)
+	UARTCharNonBlockingGet(pc, r0, r6, r7)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18337,12 +18353,12 @@ l0000A021_thunk_UARTCharNonBlockingGet:
 
 l0000A021_1:
 	word32 r7_20 = DPB(r7, 0x7010, 16)
-// DataOut: pc r0 r6 r7 r9
+// DataOut: pc r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid> ip:<invalid>
 
 l0000A021_thunk_UARTCharNonBlockingGet:
-	UARTCharNonBlockingGet(pc, r0, r6, r7_20, r9)
+	UARTCharNonBlockingGet(pc, r0, r6, r7_20)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18351,51 +18367,50 @@ l0000A021_thunk_UARTCharNonBlockingGet:
 UARTSpaceAvail_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r8:<invalid> ip:<invalid> r7:DPB(r7, 0x7010, 16)
+// SymbolicIn: sp:fp r8:<invalid> ip:<invalid> r7:DPB(r7, 0x7010, 16) r6:<invalid> r0:<invalid>
 
 
 
-void UARTCharNonBlockingGet(word32 pc, word32 r0, word32 r6, word32 r7, word32 r9)
+void UARTCharNonBlockingGet(word32 pc, word32 r0, word32 r6, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV pc r0 r6 r7 r9
+// MayUse:  NZCV pc r0 r6 r7
 // LiveOut:
-// Trashed:
-// Preserved:
+// Trashed: r0 r6
+// Preserved: sp
 UARTCharNonBlockingGet_entry:
-// DataOut: pc r0 r6 r7 r9
+// DataOut: pc r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l0000A025:
 	branch N l0000A029
-// DataOut: pc r0 r6 r7 r9
+// DataOut: pc r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l0000A025_1:
-	Mem28[r6:word32] = fp
-// DataOut: pc r0 r7 r9
+	Mem41[r6:word32] = fp
+// DataOut: pc r0 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A029:
 	branch N l0000A02D
-// DataOut: pc r0 r7 r9
+// DataOut: pc r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
 
 l0000A029_1:
 	__syscall(0x006800BF)
-// DataOut: pc r0 r7 r9
+// DataOut: pc r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
 
 l0000A02D:
 	branch V l0000A031
-	switch (__ror(r9, 0)) { }
 // DataOut: pc r0 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
@@ -18425,15 +18440,29 @@ l0000A031_thunk_UARTCharGet:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69 r0:<invalid>
 
-UARTCharNonBlockingGet_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 l0000A02D_1:
+	word32 sp_25
+	byte N_26
+	word32 r6_27
+	byte V_28
+	word32 r0_29
+	byte Z_30
+	word32 pc_31
+	word32 r7_32
+	bool C_33
+	byte NZCV_34
+	call (word32) Mem0[r0:int16] (retsize: 0;)
+		uses: C,N,NZCV,pc,r0_19,r6_4,r7,sp_1,V,Z
+		defs: C_33,N_26,NZCV_34,pc_31,r0_29,r6_27,r7_32,sp_25,V_28,Z_30
+	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
+
+UARTCharNonBlockingGet_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r6:r6 - 0x00000B69 r0:r0 * 0x00000002
 
 
 
