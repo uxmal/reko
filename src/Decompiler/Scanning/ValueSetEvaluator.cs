@@ -76,6 +76,14 @@ namespace Reko.Scanning
         {
             var cLeft = binExp.Left as Constant;
             var cRight = binExp.Right as Constant;
+            //$TODO: it would be great if Address were simply a Constant.
+            // but we have segmented addresses which need special treatment
+            // everywhere.
+            if (binExp.Left is Address aLeft)
+                cLeft = aLeft.ToConstant();
+            if (binExp.Right is Address aRight)
+                cRight = aRight.ToConstant();
+
             if (cLeft != null && cRight != null)
             {
                 return new IntervalValueSet(
@@ -83,6 +91,7 @@ namespace Reko.Scanning
                     StridedInterval.Constant(
                         binExp.Operator.ApplyConstants(cLeft, cRight)));
             }
+
             if (cLeft == null && cRight != null)
             {
                 var left = binExp.Left.Accept(this);

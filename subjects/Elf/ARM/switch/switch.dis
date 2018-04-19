@@ -1,31 +1,30 @@
-word32 _init(word32 pc, ptr32 & r10Out)
+word32 _init(word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc
-// LiveOut: r10 r4
-// Trashed: NZCV lr r0 r10 r2 r3 r4 sp
+// LiveOut: r4
+// Trashed: NZCV lr r0 r2 r3 r4 sp
 // Preserved: sp
 _init_entry:
-// DataOut: pc
+// DataOut: pc r10
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l000082F0:
-	word32 r10_6
-	*r10Out = call_gmon_start(pc)
+	call_gmon_start(pc)
 	frame_dummy()
-	word32 r4_7
-	__do_global_ctors_aux(out r4_7)
-	return r4_7
+	word32 r4_6
+	__do_global_ctors_aux(out r4_6)
+	return r4_6
 // DataOut: r10 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 _init_exit:
-// DataOut: r10 r4
+// DataOut: r4
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r10:<invalid> r3:<invalid> lr:<invalid> r0:<invalid> r2:<invalid> r4:<invalid> -4(fp):lr
+// SymbolicIn: sp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r4:<invalid> lr:<invalid> -4(fp):lr
 
 
 
@@ -98,7 +97,7 @@ void _start(word32 pc, word32 r4, word32 r5, word32 r6, word32 r8, word32 dwArg0
 
 // MayUse:  Z pc r4 r5 r6 r8
 // LiveOut:
-// Trashed: NZCV fp ip lr r0 r1 r10 r2 r3 r8 sp
+// Trashed: NZCV fp ip r0 r1 r2 r3 r8 sp
 // Preserved:
 _start_entry:
 // DataOut: pc r4 r5 r6 r8
@@ -116,7 +115,7 @@ l00008334:
 // SymbolicIn: sp:fp
 
 l00008360_1:
-	Mem33[r0_14:word16] = (uint16) r8
+	Mem30[r0_14:word16] = (uint16) r8
 // DataOut: ip pc r0 r4 r5 r6
 // DataOut (flags): Z
 // SymbolicIn: sp:fp + -8 ip:<invalid> fp:0x00000000 r1:<invalid> r2:fp + 4 r0:<invalid> r3:<invalid> -8(fp):<invalid> -4(fp):r0 0(fp):fp + 4
@@ -160,58 +159,46 @@ l00008368_thunk_call_gmon_start:
 _start_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:0x00000000 r1:<invalid> r2:fp + 4 r0:<invalid> r3:<invalid> r8:<invalid> r10:<invalid> lr:<invalid> -8(fp):<invalid> -4(fp):r0 0(fp):fp + 4
+// SymbolicIn: sp:fp + -8 ip:<invalid> fp:0x00000000 r1:<invalid> r2:fp + 4 r0:<invalid> r3:<invalid> r8:<invalid> -8(fp):<invalid> -4(fp):r0 0(fp):fp + 4
 
 
 
-word32 call_gmon_start(word32 pc)
+void call_gmon_start(word32 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc
-// LiveOut: r10
-// Trashed: NZCV lr r10 r3 sp
-// Preserved:
+// LiveOut:
+// Trashed: NZCV r3
+// Preserved: r10 sp
 call_gmon_start_entry:
-// DataOut: pc r10
+// DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l0000836C:
-	word32 r10_11 = pc + Mem0[0x00008394:word32]
-	word32 r3_12 = Mem0[r10_11:word32]
+	word32 r3_12 = Mem0[pc + Mem0[0x00008394:word32]:word32]
 	branch r3_12 != 0x00000000 l00008388
-// DataOut: r10
+// DataOut: r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: Local -0008(32)
 
 l00008388:
-	word32 sp_25
-	word32 r10_26
-	word32 lr_27
-	word32 r3_28
-	word32 pc_29
-	byte NZCV_30
-	byte Z_31
-	call r3_12 (retsize: 0; depth: 8)
-		uses: dwLoc04_6,dwLoc08_4,lr_24,NZCV_13,pc,r10_11,r3_12,sp_2,Z_14
-		defs: lr_27,NZCV_30,pc_29,r10_26,r3_28,sp_25,Z_31
-	return r10_26
-// DataOut: r10
+	switch (r3_12) { }
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 r10:<invalid> r3:<invalid> -8(fp):r10 -4(fp):lr
 
 l00008384_1:
-	return r10
-// DataOut: r10
+	return
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 8 r10:<invalid> r3:<invalid> -8(fp):r10 -4(fp):lr
 
 call_gmon_start_exit:
-// DataOut: r10
+// DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r10:<invalid> r3:<invalid> lr:pc -8(fp):r10 -4(fp):lr
+// SymbolicIn: sp:fp r10:r10 r3:<invalid> -8(fp):r10 -4(fp):lr
 
 
 
@@ -220,7 +207,7 @@ void __do_global_dtors_aux()
 
 // MayUse: 
 // LiveOut:
-// Trashed: NZCV lr r2 r3 r4 r5 sp
+// Trashed: NZCV r2 r3
 // Preserved: r4 r5 sp
 __do_global_dtors_aux_entry:
 // DataOut:
@@ -236,35 +223,23 @@ l0000839C:
 // SymbolicIn: sp:fp
 
 l000083B0:
-	word32 r4_28 = Mem0[0x000083F8:word32]
-	word32 r2_30 = Mem0[Mem0[r4_28:word32]:word32]
-	branch r2_30 == 0x00000000 l000083E8
-// DataOut: r4 r5
+	word32 r4_25 = Mem0[0x000083F8:word32]
+	word32 r2_27 = Mem0[Mem0[r4_25:word32]:word32]
+	branch r2_27 == 0x00000000 l000083E8
+// DataOut: r2 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 12 r5:<invalid> r3:<invalid> -12(fp):r4 -8(fp):r5 -4(fp):lr
 
 l000083E8:
-	Mem47[r5_10:byte] = 0x01
+	Mem36[r5_10:byte] = 0x01
 	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 12 r5:<invalid> r3:<invalid> r4:<invalid> r2:<invalid> -12(fp):r4 -8(fp):r5 -4(fp):lr
 
 l000083C4:
-	Mem35[r4_28:word32] = Mem0[r4_28:word32] + 0x00000004
-	word32 sp_37
-	word32 r4_38
-	word32 r5_39
-	word32 lr_40
-	word32 pc_41
-	word32 r3_42
-	byte NZCV_43
-	byte Z_44
-	word32 r2_45
-	call r2_30 (retsize: 0; depth: 12)
-		uses: dwLoc04_8,dwLoc08_6,dwLoc0C_4,lr_36,NZCV_31,pc,r2_30,r3_34,r4_28,r5_10,sp_2,Z_32
-		defs: lr_40,NZCV_43,pc_41,r2_45,r3_42,r4_38,r5_39,sp_37,Z_44
-	return
+	Mem32[r4_25:word32] = Mem0[r4_25:word32] + 0x00000004
+	switch (r2_27) { }
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 12 r5:<invalid> r3:<invalid> r4:<invalid> r2:<invalid> -12(fp):r4 -8(fp):r5 -4(fp):lr
@@ -278,7 +253,7 @@ l000083AC_1:
 __do_global_dtors_aux_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r5:<invalid> r3:<invalid> r4:<invalid> r2:<invalid> lr:pc -12(fp):r4 -8(fp):r5 -4(fp):lr
+// SymbolicIn: sp:fp r5:r5 r3:<invalid> r4:r4 r2:<invalid> -12(fp):r4 -8(fp):r5 -4(fp):lr
 
 
 
@@ -467,10 +442,31 @@ switcheroo_entry:
 // LocalsOut: fp(32)
 
 l000084D4:
+	word32 fp_19
 	branch r0 >u 0x00000006 l000084F4
-// DataOut: fp
+	switch (r0) { l00008514 l00008514 l00008514 l00008540 l00008520 l00008540 l00008534 }
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+// LocalsOut: Local -0014(32)
+
+l00008534:
+	bazulate(r0, r0)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+
+l00008520:
+	frobulate(r0 - 0x00000003, r0, out fp_19)
+// DataOut: fp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+
+l00008514:
+	frobulate(r0, r0, out fp_19)
+// DataOut: fp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 l000084F4:
 // DataOut:
@@ -478,34 +474,26 @@ l000084F4:
 // SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 l00008540:
-	return Mem0[bazulate(0x00000000, 0x00000000) - -4:word32]
+	fp_19 = bazulate(0x00000000, 0x00000000)
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
-l000084F0_1:
-	word32 sp_30
-	word32 ip_31
-	word32 fp_32
-	word32 lr_33
-	word32 pc_34
-	word32 r0_35
-	word32 r3_36
-	byte NZCV_37
-	byte ZC_38
-	word32 r1_39
-	call Mem0[0x000084F8 + r0 * 4:word32] (retsize: 0; depth: 20)
-		uses: dwLoc04_10,dwLoc08_8,dwLoc0C_6,dwLoc10_5,dwLoc14_14,fp_11,ip_2,lr,NZCV_16,pc,r0,r1,r3_15,sp_12,ZC_17
-		defs: fp_32,ip_31,lr_33,NZCV_37,pc_34,r0_35,r1_39,r3_36,sp_30,ZC_38
-	return fp_32
+l0000854C:
+	return Mem0[fp_19 - -4:word32]
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 switcheroo_exit:
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+
+l000084F0_1:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 
@@ -532,7 +520,7 @@ l0000855C:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r0:0x00000000 r3:0x00000000 r1:<invalid> r2:<invalid> r4:<invalid> -24(fp):r1 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r0:0x00000000 r3:0x00000000 r2:<invalid> r1:<invalid> r4:<invalid> -24(fp):r1 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 
@@ -899,42 +887,41 @@ __libc_csu_init_entry:
 // LocalsOut: fp(32)
 
 l00008654:
-	word32 r10_18
-	word32 r4_19 = _init(pc, out r10_18)
-	word32 r1_22 = Mem0[r10_18:word32]
-	word32 r3_24 = Mem0[r10_18:word32] - r1_22
-	branch r4_19 <u r3_24 >> 2 l00008684
+	word32 r10_17 = pc + Mem0[0x000086A4:word32]
+	word32 r4_18 = _init(pc)
+	word32 r1_21 = Mem0[r10_17:word32]
+	word32 r3_23 = Mem0[r10_17:word32] - r1_21
+	branch r4_18 <u r3_23 >> 2 l00008684
 // DataOut: sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00008684:
-	word32 sp_49
-	word32 r4_50
-	word32 r5_51
-	word32 r6_52
-	word32 r10_53
-	word32 lr_54
-	word32 pc_55
-	word32 r3_56
-	word32 r2_57
-	word32 r1_58
-	byte NZCV_59
-	byte C_60
-	bcuisposr0 None_61
-	call Mem0[r1_22:word32] (retsize: 0;)
-		uses: C_26,dwLoc04_12,dwLoc08_10,dwLoc0C_8,dwLoc10_6,dwLoc14_4,lr_48,None,NZCV_25,pc,r1_22,r10_18,r2_21,r3_24,r4_19,r5_47,r6_46,sp_2
-		defs: C_60,lr_54,None_61,NZCV_59,pc_55,r1_58,r10_53,r2_57,r3_56,r4_50,r5_51,r6_52,sp_49
+	word32 sp_46
+	word32 r4_47
+	word32 r5_48
+	word32 r6_49
+	word32 r10_50
+	word32 lr_51
+	word32 pc_52
+	word32 r3_53
+	word32 r2_54
+	word32 r1_55
+	byte NZCV_56
+	byte C_57
+	call Mem0[r1_21:word32] (retsize: 0;)
+		uses: C_25,dwLoc04_12,dwLoc08_10,dwLoc0C_8,dwLoc10_6,dwLoc14_4,lr_45,NZCV_24,pc,r1_21,r10_17,r2_20,r3_23,r4_18,r5_44,r6_43,sp_2
+		defs: C_57,lr_51,NZCV_56,pc_52,r1_55,r10_50,r2_54,r3_53,r4_47,r5_48,r6_49,sp_46
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r4:<invalid> r10:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> lr:<invalid> r0:<invalid> -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r10 -4(fp):lr
+// SymbolicIn: sp:<invalid> r4:<invalid> r10:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r10 -4(fp):lr
 
 l00008680_1:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r4:<invalid> r10:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> lr:<invalid> r0:<invalid> -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r10 -4(fp):lr
+// SymbolicIn: sp:<invalid> r4:<invalid> r10:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid> lr:<invalid> -20(fp):r4 -16(fp):r5 -12(fp):r6 -8(fp):r10 -4(fp):lr
 
 __libc_csu_init_exit:
 // DataOut:
@@ -1088,7 +1075,7 @@ void _fini()
 
 // MayUse: 
 // LiveOut:
-// Trashed: NZCV lr r2 r3 r4 r5 sp
+// Trashed: NZCV r2 r3
 // Preserved: sp
 _fini_entry:
 // DataOut:
@@ -1106,7 +1093,7 @@ l0000874C:
 _fini_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r3:<invalid> r5:<invalid> r4:<invalid> r2:<invalid> lr:<invalid> -4(fp):lr
+// SymbolicIn: sp:fp r3:<invalid> r2:<invalid> -4(fp):lr
 
 
 

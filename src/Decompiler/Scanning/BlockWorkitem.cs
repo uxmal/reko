@@ -104,8 +104,6 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
-                if (ric.Address.ToLinear() == 0x12CE)   //$DEBUG
-                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
@@ -910,7 +908,7 @@ namespace Reko.Scanning
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
                     return false;
                 }
-                var sw = new SwitchInstruction(switchExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray());
+                var sw = new SwitchInstruction(switchExp, jumpDests.ToArray());
                 Emit(sw);
             }
             if (imgVector.Address != null)
@@ -981,7 +979,7 @@ namespace Reko.Scanning
                     return false;
                 }
 
-                // We have a jump table, and we've guess the index expression.
+                // We have a jump table, and we've guessed the index expression.
                 // At this point we've given up on knowing the exact size 
                 // of the table, but we do know that it must be at least
                 // more than one entry. The safest assumption is that it

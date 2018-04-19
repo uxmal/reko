@@ -9,22 +9,20 @@
 word32 g_dw8320 = 0x00008534;
 word32 g_dw8330 = 0x00008528;
 uint16 * g_ptr8364 = main;
-word32 g_dw8394 = 0x000084C8;
+int32 g_dw8394 = 33992;
 byte * g_ptr83F4 = &g_b10870;
-<anonymous> *** g_ptr83F8 = &g_ptr10764;
+word32 ** g_ptr83F8 = &g_ptr10764;
 word32 * g_ptr8424 = &g_dw10844;
 word32 g_dw8428 = 0x00000000;
-<anonymous> * g_a84F8[] = 
-	{
-	};
+word32 g_dw86A4 = 0x000081E0;
 word32 g_dw8700 = 0x00008180;
-struct Eq_417 * g_ptr8740 = &g_t10838;
-<anonymous> ** g_ptr10764 = &g_ptr10840;
-Eq_417 g_t10838 = 
+struct Eq_394 * g_ptr8740 = &g_t10838;
+word32 * g_ptr10764 = &g_dw10840;
+Eq_394 g_t10838 = 
 	{
 		&g_tFFFFFFFF,
 	};
-<anonymous> * g_ptr10840 = null;
+word32 g_dw10840 = 0x00000000;
 word32 g_dw10844 = 0x00000000;
 byte g_b10870 = 0x00;
 

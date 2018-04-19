@@ -340,9 +340,9 @@ namespace Reko.Scanning
         public RtlBlock block;
         public int iInstr;              // The current instruction
         public RtlInstruction[] instrs; // The instructions of this block
-        public Address addrSucc;    // the block from which we traced.
-        public ConditionCode ccNext; // The condition code that is used in a branch.
-        public Expression assignLhs; // current LHS
+        public Address addrSucc;        // the block from which we traced.
+        public ConditionCode ccNext;    // The condition code that is used in a branch.
+        public Expression assignLhs;    // current LHS
         public bool invertCondition;
         public Dictionary<Expression, BackwardSlicerContext> Live;
 
