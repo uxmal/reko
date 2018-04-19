@@ -448,7 +448,9 @@ namespace Reko.Scanning
             switch (cc)
             {
             case ConditionCode.ULE: return StridedInterval.Create(1, 0, right.ToInt64());
+            case ConditionCode.ULT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
             case ConditionCode.UGE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
+            case ConditionCode.UGT: return StridedInterval.Create(1, right.ToInt64() + 1, long.MaxValue);
             case ConditionCode.EQ:
             case ConditionCode.NE:
                 return StridedInterval.Empty;
@@ -830,7 +832,8 @@ namespace Reko.Scanning
 
         public SlicerResult VisitUnaryExpression(UnaryExpression unary, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            var sr = unary.Expression.Accept(this, ctx);
+            return sr;
         }
 
         public override string ToString()

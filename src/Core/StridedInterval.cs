@@ -74,6 +74,11 @@ namespace Reko.Core
             this.Stride = stride;
         }
 
+        public bool IsEmpty
+        {
+            get { return Stride < 0; }
+        }
+
         public override string ToString()
         {
             if (Stride < 0)

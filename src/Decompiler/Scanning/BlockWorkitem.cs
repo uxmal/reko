@@ -989,6 +989,10 @@ namespace Reko.Scanning
                     "Unable to determine size of call or jump table; there may be more than 2 entries.");
                 ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
             }
+            else if (interval.IsEmpty)
+            {
+                return false;
+            }
             else
             {
                 ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
