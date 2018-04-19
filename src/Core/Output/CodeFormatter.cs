@@ -821,8 +821,12 @@ namespace Reko.Core.Output
 
         public void VisitLineComment(AbsynLineComment comment)
         {
-            writer.WriteComment("// " + comment.Comment);
-            writer.Terminate();
+            foreach (var line in Lines(comment.Comment))
+            {
+                writer.Indent();
+                writer.WriteComment($"// {line}");
+                writer.Terminate();
+            }
         }
 
 		public void VisitReturn(AbsynReturn ret)
