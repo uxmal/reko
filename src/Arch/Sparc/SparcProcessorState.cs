@@ -73,7 +73,7 @@ namespace Reko.Arch.Sparc
 
         public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            if (v.IsValid)
+            if (!v.IsValid)
             {
                 valid[reg.Number] = false;
             }

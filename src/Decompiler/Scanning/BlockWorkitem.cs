@@ -956,7 +956,7 @@ namespace Reko.Scanning
             var rtlBlock = bwsHost.GetRtlBlock(blockCur);
             if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
             {
-                listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to process indirect jump.");
+                listener.Warn(listener.CreateAddressNavigator(program, addrSwitch), "Unable to start processing indirect jump.");
                 return false;
             }
             while (bws.Step())

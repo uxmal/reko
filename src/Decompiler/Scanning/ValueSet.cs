@@ -272,6 +272,13 @@ namespace Reko.Scanning
 
         public override ValueSet Shl(Constant cRight)
         {
+            return Map(DataType, v => ShlValue(v, cRight));
+        }
+
+        private Expression ShlValue(Expression eLeft, Constant cRight)
+        {
+            if (eLeft is Constant cLeft)
+                return Operator.Shl.ApplyConstants(cLeft, cRight);
             throw new NotImplementedException();
         }
 
