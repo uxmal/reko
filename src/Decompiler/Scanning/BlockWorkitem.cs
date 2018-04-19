@@ -104,6 +104,8 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
+                if (ric.Address.ToLinear() == 0x12CE)   //$DEBUG
+                    ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))
@@ -505,7 +507,9 @@ namespace Reko.Scanning
                 return false;
             }
             if (ProcessIndirectControlTransfer(ric.Address, g))
+            {
                 return false;
+            }
 
             // We've encountered JMP <exp> and we can't determine the limits of <exp>.
             // We emit a call-return pair and call it a day.
@@ -534,22 +538,26 @@ namespace Reko.Scanning
             FunctionType sig;
             ProcedureCharacteristics chr = null;
             Address addr = CallTargetAsAddress(call);
-            if (addr != null && program.SegmentMap.IsValidAddress(addr))
+            if (addr != null)
             {
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    return GenerateCallToOutsideProcedure(site, addr);
+                }
+
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)
                 {
                     sig = impProc.Signature;
                     chr = impProc.Characteristics;
                     if (chr != null && chr.IsAlloca)
+                    {
                         return ProcessAlloca(site, impProc);
+                    }
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
-                if (!program.SegmentMap.IsValidAddress(addr))
-                {
-                    return GenerateCallToOutsideProcedure(site, addr);
-                }
+
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
@@ -604,9 +612,7 @@ namespace Reko.Scanning
                 return !EmitSystemServiceCall(syscall);
             }
 
-
             ProcessIndirectControlTransfer(ric.Address, call);
-
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
@@ -941,7 +947,7 @@ namespace Reko.Scanning
             out ImageMapVectorTable imgVector,
             out Expression switchExp)
         {
-            Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant));
+            Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
             var listener = scanner.Services.RequireService<DecompilerEventListener>();
             vector = null;
             imgVector = null;

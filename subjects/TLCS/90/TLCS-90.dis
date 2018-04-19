@@ -983,7 +983,7 @@ l03BD:
 
 l0434:
 	v35_125 = Mem114[0x0350:ptr16]
-	call v35_125 (retsize: 4; depth: 4)
+	call v35_125 (retsize: 2; depth: 2)
 		uses: a_118,b_100,C_122,c_94,h_110,H_119,ix,l_106,N_121,sp_11,SZHXV_25,SZHXVC_104,SZV_123,SZXC_22,X_120,Z_124
 		defs: a_135,b_133,C_132,c_134,h_127,H_128,ix_138,l_131,N_129,sp_126,SZHXV_136,SZHXVC_139,SZV_141,SZXC_130,X_140,Z_137
 	return c_134
@@ -1053,7 +1053,7 @@ l0434_in_fn03CD:
 	byte b_129
 	byte l_130
 	bool Z_131
-	call v35 (retsize: 4; depth: 4)
+	call v35 (retsize: 2; depth: 2)
 		uses: a_79,b_61,c_55,C_83,h_71,H_80,ix,l_67,N_82,sp_1,SZHXVC_65,SZV_84,X_81,Z_85
 		defs: a_120,b_129,C_121,c_125,h_124,H_126,ix_119,l_130,N_122,sp_118,SZHXVC_123,SZV_128,X_127,Z_131
 	return
@@ -1076,7 +1076,7 @@ l0434_in_fn03CD:
 	byte b_114
 	byte l_115
 	bool Z_116
-	call v35 (retsize: 4; depth: 4)
+	call v35 (retsize: 2; depth: 2)
 		uses: a_79,b_61,c_55,C_83,h_71,H_80,ix,l_67,N_82,sp_1,SZHXVC_65,SZV_84,X_81,Z_85
 		defs: a_105,b_114,C_106,c_110,h_109,H_111,ix_104,l_115,N_107,sp_103,SZHXVC_108,SZV_113,X_112,Z_116
 	return
@@ -1678,7 +1678,7 @@ l065B:
 
 l06F2:
 	v54_206 = Mem195[0x060E:ptr16]
-	call v54_206 (retsize: 4; depth: 4)
+	call v54_206 (retsize: 2; depth: 2)
 		uses: a_199,af_84,b_181,c_175,C_203,h_191,H_200,ix,l_187,N_202,sp_63,SZHXV_86,SZHXVC_185,SZV_204,SZXC_82,wLoc02_53,X_201,Z_205
 		defs: a_209,af_220,b_214,c_212,C_213,h_216,H_217,ix_208,l_215,N_210,sp_207,SZHXV_222,SZHXVC_211,SZV_219,SZXC_221,X_218,Z_223
 	return
@@ -2478,7 +2478,7 @@ l0ADE:
 
 l0B55:
 	v110_588 = Mem577[0x0350:ptr16]
-	call v110_588 (retsize: 4;)
+	call v110_588 (retsize: 2; depth: -2)
 		uses: a_581,af_488,b_563,bc_485,c_557,C_585,de_90,h_573,H_582,hl_478,ix,l_569,N_584,sp_463,SZHXV_490,SZHXVC_567,SZV_586,SZXC_486,X_583,Z_587
 		defs: a_598,af_602,b_604,bc_592,C_600,c_603,de_591,H_593,h_606,hl_590,ix_597,l_605,N_595,sp_589,SZHXV_608,SZHXVC_596,SZV_601,SZXC_607,V_594,X_599,Z_609
 	return
@@ -3427,7 +3427,7 @@ l0D7C:
 
 l0E13:
 	v61_256 = Mem245[0x060E:ptr16]
-	call v61_256 (retsize: 4; depth: 4)
+	call v61_256 (retsize: 2; depth: 2)
 		uses: a_249,af_134,b_231,c_225,C_253,h_241,H_250,hl_125,ix,l_237,N_252,sp_111,SZHXV_136,SZHXVC_235,SZV_254,SZXC_132,X_251,Z_255
 		defs: a_266,af_274,b_262,c_258,C_263,H_259,h_271,hl_264,ix_269,l_270,N_260,sp_257,SZHXV_267,SZHXVC_265,SZV_273,SZXC_261,X_272,Z_268
 	return
@@ -3474,7 +3474,7 @@ l0E13_in_fn0DFC:
 	bool C_61
 	byte SZV_62
 	bool Z_63
-	call v97 (retsize: 4; depth: 4)
+	call v97 (retsize: 2; depth: 2)
 		uses: a_14,b,c,C_18,h,H_15,ix,l,N_17,sp_1,SZV_19,X_16,Z_20
 		defs: a_57,b_54,c_52,C_61,h_56,H_58,ix_53,l_55,N_60,sp_51,SZV_62,X_59,Z_63
 	return
@@ -3496,7 +3496,7 @@ l0E13_in_fn0DFC:
 	bool C_47
 	byte SZV_48
 	bool Z_49
-	call v97 (retsize: 4; depth: 4)
+	call v97 (retsize: 2; depth: 2)
 		uses: a_14,b,c,C_18,h,H_15,ix,l,N_17,sp_1,SZV_19,X_16,Z_20
 		defs: a_43,b_40,c_38,C_47,h_42,H_44,ix_39,l_41,N_46,sp_37,SZV_48,X_45,Z_49
 	return
@@ -3628,7 +3628,7 @@ l13CA:
 	bool C_58
 	byte SZV_59
 	bool Z_60
-	call Mem30[0x0738:ptr16] (retsize: 4; depth: 4)
+	call Mem30[0x0738:ptr16] (retsize: 2; depth: 2)
 		uses: a_38,bc_33,C_42,de_31,h_19,H_39,hl_17,ix,l_18,N_41,sp_34,SZV_43,wLoc02_6,wLoc04_9,wLoc06_14,wLoc08_21,wLoc0A,X_40,Z_44
 		defs: a_47,bc_48,C_58,de_49,h_53,H_56,hl_50,ix_54,l_55,N_51,sp_46,SZHXVC_52,SZV_59,X_57,Z_60
 	return
@@ -4035,12 +4035,12 @@ l1BCD_thunk_fn1BF9:
 	return
 // DataOut: h ix l
 // DataOut (flags): 
-// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0004 + hl * 0x0004 + (hl * 0x0004 + hl * 0x0004) + de + bc 0(fp):<invalid>
 
 l1BCF:
 // DataOut: de h ix l
 // DataOut (flags): 
-// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0004 + hl * 0x0004 + (hl * 0x0004 + hl * 0x0004) + de + bc 0(fp):<invalid>
 
 l1BD4_in_fn1BA4:
 	word16 sp_81
@@ -4058,18 +4058,18 @@ l1BD4_in_fn1BA4:
 	bool C_93
 	word16 ix_94
 	byte SZHXV_95
-	call v10 (retsize: 4; depth: 4)
+	call v10 (retsize: 2; depth: 2)
 		uses: a_46,bc,C_49,d_65,de_66,e_43,h_72,hl_71,ix,iy_20,l_73,N_74,sp_42,SZHXV,SZHXVC_75,wLoc02_26,wLoc04_28,wLoc06_33,wLoc08_40
 		defs: a_92,bc_88,C_93,d_83,de_87,e_91,h_82,hl_84,ix_94,iy_89,l_90,N_85,sp_81,SZHXV_95,SZHXVC_86
 	return
 // DataOut: h ix l
 // DataOut (flags): 
-// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l d:0x00 hl:0x0EAB -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+// SymbolicIn: sp:sp + 0x000A e:l a:0x03 - l d:0x00 hl:0x0EAB -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0004 + hl * 0x0004 + (hl * 0x0004 + hl * 0x0004) + de + bc 0(fp):<invalid>
 
 fn1BA4_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:sp + 0x000A e:l a:<invalid> d:0x00 hl:<invalid> b:<invalid> de:<invalid> bc:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0002 * 0x0002 + (hl * 0x0002) * 0x0002 + ((hl * 0x0002) * 0x0002 + (hl * 0x0002) * 0x0002) + de + bc 0(fp):<invalid>
+// SymbolicIn: sp:sp + 0x000A e:l a:<invalid> d:0x00 hl:<invalid> b:<invalid> de:<invalid> bc:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):hl * 0x0004 + hl * 0x0004 + (hl * 0x0004 + hl * 0x0004) + de + bc 0(fp):<invalid>
 
 
 
@@ -4099,7 +4099,7 @@ l1BD4:
 	word16 de_18
 	word16 hl_19
 	byte SZHXVC_20
-	call Mem0[hl_10:ptr16] (retsize: 4; depth: 4)
+	call Mem0[hl_10:ptr16] (retsize: 2; depth: 2)
 		uses: de,hl_10,N_11,SHXV_6,sp_1,SZHXVC_12,Z_4
 		defs: de_18,hl_19,N_16,SHXV_17,sp_14,SZHXVC_20,Z_15
 	return
@@ -4295,7 +4295,7 @@ l2090:
 	byte SZHXVC_54
 	word16 hl_55
 	byte l_56
-	call Mem32[0x14A1:ptr16] (retsize: 4; depth: 4)
+	call Mem32[0x14A1:ptr16] (retsize: 2; depth: 2)
 		uses: a_44,C_47,hl_40,ix,l_35,N_45,sp_1,SZHXVC_46
 		defs: a_50,C_52,hl_55,ix_51,l_56,N_53,sp_49,SZHXVC_54
 	return
@@ -4348,7 +4348,7 @@ l20B4:
 	bool C_42
 	bool Z_43
 	byte SHXV_44
-	call Mem20[0x147B:ptr16] (retsize: 4; depth: 4)
+	call Mem20[0x147B:ptr16] (retsize: 2; depth: 2)
 		uses: a_18,b_28,C_14,c_25,hl_26,ix,N_30,SHXV_31,sp_1,SZHXVC_19,Z_29
 		defs: a_38,b_37,c_35,C_42,hl_34,ix_39,N_40,SHXV_44,sp_33,SZHXVC_41,X_36,Z_43
 	return
@@ -4381,10 +4381,10 @@ fn22A6_entry:
 l22A6:
 	Mem6[ix + -4:byte] = Mem0[ix + -9:byte]
 	Mem7[ix + -3:byte] = 0x00
-	word16 hl_34 = DPB(wArg10 + (wArg05 + 1), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 1, 0x00, 8) + bc
+	word16 hl_34 = DPB(wArg10 + (wArg05 + 1), 0x00, 8) * 0x0008 + DPB(wArg05 + 1, 0x00, 8) + bc
 	Mem42[ix + -8:byte] = Mem7[hl_34 + 2:byte]
 	Mem46[ix + -7:byte] = Mem42[hl_34 + 3:byte]
-	word16 hl_105 = DPB(wArg10 + (wArg05 + 3), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 3, 0x00, 8) + DPB(bc, Mem46[(wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8)) + 1:byte], 8)
+	word16 hl_105 = DPB(wArg10 + (wArg05 + 3), 0x00, 8) * 0x0008 + DPB(wArg05 + 3, 0x00, 8) + DPB(bc, Mem46[(wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8)) + 1:byte], 8)
 	byte v49_136 = Mem46[hl_105:byte]
 	byte v50_139 = Mem46[hl_105 + 1:byte]
 	fn03AA()
@@ -4567,7 +4567,7 @@ l354C:
 	bool N_16
 	byte SZHXVC_17
 	bool C_18
-	call Mem0[0x0CEE:ptr16] (retsize: 4; depth: 4)
+	call Mem0[0x0CEE:ptr16] (retsize: 2; depth: 2)
 		uses: a_7,c,C_10,ix,N_8,sp_1,SZHXVC_9
 		defs: a_13,c_15,C_18,ix_14,N_16,sp_12,SZHXVC_17
 	return
@@ -4645,7 +4645,7 @@ l3C17:
 	byte SZHXVC_54
 	word16 hl_55
 	byte l_56
-	call Mem32[0x14A1:ptr16] (retsize: 4; depth: 4)
+	call Mem32[0x14A1:ptr16] (retsize: 2; depth: 2)
 		uses: a_44,C_47,hl_40,ix,l_35,N_45,sp_1,SZHXVC_46
 		defs: a_50,C_52,hl_55,ix_51,l_56,N_53,sp_49,SZHXVC_54
 	return
@@ -4698,7 +4698,7 @@ l3C3B:
 	bool C_42
 	bool Z_43
 	byte SHXV_44
-	call Mem20[0x147B:ptr16] (retsize: 4; depth: 4)
+	call Mem20[0x147B:ptr16] (retsize: 2; depth: 2)
 		uses: a_18,b_28,C_14,c_25,hl_26,ix,N_30,SHXV_31,sp_1,SZHXVC_19,Z_29
 		defs: a_38,b_37,c_35,C_42,hl_34,ix_39,N_40,SHXV_44,sp_33,SZHXVC_41,X_36,Z_43
 	return
@@ -4731,10 +4731,10 @@ fn3E2D_entry:
 l3E2D:
 	Mem6[ix + -4:byte] = Mem0[ix + -9:byte]
 	Mem7[ix + -3:byte] = 0x00
-	word16 hl_34 = DPB(wArg10 + (wArg05 + 1), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 1, 0x00, 8) + bc
+	word16 hl_34 = DPB(wArg10 + (wArg05 + 1), 0x00, 8) * 0x0008 + DPB(wArg05 + 1, 0x00, 8) + bc
 	Mem42[ix + -8:byte] = Mem7[hl_34 + 2:byte]
 	Mem46[ix + -7:byte] = Mem42[hl_34 + 3:byte]
-	word16 hl_105 = DPB(wArg10 + (wArg05 + 3), 0x00, 8) * 0x0002 * 0x0002 * 0x0002 + DPB(wArg05 + 3, 0x00, 8) + DPB(bc, Mem46[(wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8)) + 1:byte], 8)
+	word16 hl_105 = DPB(wArg10 + (wArg05 + 3), 0x00, 8) * 0x0008 + DPB(wArg05 + 3, 0x00, 8) + DPB(bc, Mem46[(wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8)) + 1:byte], 8)
 	byte v49_136 = Mem46[hl_105:byte]
 	byte v50_139 = Mem46[hl_105 + 1:byte]
 	fn03AA()
@@ -4842,7 +4842,7 @@ l5A25:
 	byte a_50
 	bool C_51
 	bool V_52
-	call Mem0[0x0A35:ptr16] (retsize: 4; depth: 4)
+	call Mem0[0x0A35:ptr16] (retsize: 2; depth: 2)
 		uses: a_38,bc_24,C_34,de_22,hl_18,ix,N_39,sp_25,SZHXVC_40,V_41,wLoc02_10,wLoc04_13,wLoc06_15,wLoc08_20
 		defs: a_50,bc_45,C_51,de_48,hl_44,ix_49,N_46,sp_43,SZHXVC_47,V_52
 	return
@@ -4895,7 +4895,7 @@ l5A66:
 	bool H_51
 	byte SZV_52
 	bool Z_53
-	call Mem0[0x0B1B:ptr16] (retsize: 4; depth: 4)
+	call Mem0[0x0B1B:ptr16] (retsize: 2; depth: 2)
 		uses: a_30,C_34,d_16,de_14,e_15,h_25,H_31,hl_27,ix,l_26,N_33,sp_1,SZV_35,X_32,Z_36
 		defs: a_39,C_41,d_49,de_45,e_47,h_44,H_51,hl_46,ix_40,l_48,N_42,sp_38,SZHXVC_43,SZV_52,X_50,Z_53
 	return

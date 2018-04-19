@@ -345,7 +345,6 @@ namespace Reko.Scanning
         public Expression assignLhs; // current LHS
         public bool invertCondition;
         public Dictionary<Expression, BackwardSlicerContext> Live;
-        private SegmentMap segmentMap;
 
         public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
         {
@@ -450,6 +449,9 @@ namespace Reko.Scanning
             {
             case ConditionCode.ULE: return StridedInterval.Create(1, 0, right.ToInt64());
             case ConditionCode.UGE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
+            case ConditionCode.EQ:
+            case ConditionCode.NE:
+                return StridedInterval.Empty;
             default:
                 throw new NotImplementedException($"Unimplemented condition code {cc}.");
             }
@@ -861,7 +863,6 @@ namespace Reko.Scanning
         private void DumpBlock(bool dump)
         {
             var sw = new StringWriter();
-            sw.WriteLine($"** {block.Address} *************");
             foreach (var i in instrs)
             {
                 sw.Write("    ");

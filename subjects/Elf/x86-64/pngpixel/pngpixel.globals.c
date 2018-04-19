@@ -4,6 +4,7 @@
 
 #include "pngpixel.h"
 
+Eq_1482 g_a0001[];
 Eq_27 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
 ;
 Eq_30 g_t401780 = Unexpected function type (fn void ())
@@ -11,10 +12,14 @@ Eq_30 g_t401780 = Unexpected function type (fn void ())
 Eq_31 g_t4017F0 = Unexpected function type (fn void ())
 ;
 char g_str401808[] = "pngpixel: invalid bit depth %u\n";
-<anonymous> * g_a401828[] = 
-	{
-	};
-<anonymous> * g_a401958[] = 
+char g_str4018B0[] = "GRAY %u\n";
+char g_str4018B9[] = "INDEXED %u = %d %d %d %d\n";
+char g_str4018D3[] = "INDEXED %u = %d %d %d\n";
+char g_str4018EA[] = "INDEXED %u = invalid index\n";
+char g_str401906[] = "RGB %u %u %u\n";
+char g_str401914[] = "GRAY+ALPHA %u %u\n";
+char g_str401926[] = "RGBA %u %u %u %u\n";
+word64 g_a401958[] = 
 	{
 	};
 char g_str401990[] = "rb";

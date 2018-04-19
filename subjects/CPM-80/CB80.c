@@ -1757,7 +1757,7 @@ bui8 fn1279(word16 af, Eq_3210 b, Eq_3210 c, Eq_358 e, byte d, Eq_428 l, byte h,
 		if (0x09 < a_22 - 0x30)
 			break;
 		struct Eq_3780 * sp_36 = sp_1 - 0x02;
-		sp_36->w0000 = DPB(af_21, globals->b16AA * 0x02 * 0x02 * 0x02, 0);
+		sp_36->w0000 = DPB(af_21, globals->b16AA * 0x08, 0);
 		sp_36->w0000 = DPB(af_21, (word16) sp_36->t0001 + globals->b16AA * 0x02, 0);
 		b = sp_36->t0001;
 		*bOut = b;
@@ -1798,7 +1798,7 @@ byte fn12D8(word16 af, Eq_3210 b, Eq_3210 c, Eq_358 e, byte d, Eq_428 l, byte h,
 		byte h_74;
 		fn1229(c, b, e, d, l, h, out l_73, out h_74, out sp_1);
 	}
-	struct Eq_3884 * sp_18 = sp_1 - 0x02;
+	struct Eq_3880 * sp_18 = sp_1 - 0x02;
 	sp_18->w0000 = DPB(af_10, 0x00 - (fn045B() < 0x2A), 0);
 	Eq_3210 b_30 = sp_18->t0001;
 	if (__ror(0x00 - (0x10 - globals->b16AB < 0x00) | b_30, false) >= 0x00)
@@ -1831,8 +1831,8 @@ void fn130B(Eq_3210 c, Eq_3210 b, Eq_358 e, byte d, Eq_428 l, byte h)
 	fn130E(c, b, e, d, l, h, out b_14, out l_15, out h_16, out sp_17);
 }
 
-// 130E: Register cu8 fn130E(Register Eq_3210 c, Register Eq_3210 b, Register Eq_358 e, Register byte d, Register Eq_428 l, Register byte h, Register out Eq_3927 bOut, Register out Eq_3928 lOut, Register out Eq_3929 hOut, Register out ptr16 spOut)
-cu8 fn130E(Eq_3210 c, Eq_3210 b, Eq_358 e, byte d, Eq_428 l, byte h, Eq_3927 & bOut, Eq_3928 & lOut, Eq_3929 & hOut, ptr16 & spOut)
+// 130E: Register cu8 fn130E(Register Eq_3210 c, Register Eq_3210 b, Register Eq_358 e, Register byte d, Register Eq_428 l, Register byte h, Register out Eq_3923 bOut, Register out Eq_3924 lOut, Register out Eq_3925 hOut, Register out ptr16 spOut)
+cu8 fn130E(Eq_3210 c, Eq_3210 b, Eq_358 e, byte d, Eq_428 l, byte h, Eq_3923 & bOut, Eq_3924 & lOut, Eq_3925 & hOut, ptr16 & spOut)
 {
 	byte l_8;
 	byte h_9;
