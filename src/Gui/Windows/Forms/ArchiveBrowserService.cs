@@ -39,10 +39,13 @@ namespace Reko.Gui.Windows.Forms
 
         public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
+            var dlgFactory = services.GetService<IDialogFactory>();
+            if (dlgFactory == null)
+                return null;
             var uiSvc = services.GetService<IDecompilerShellUiService>();
             if (uiSvc == null)
                 return null;
-            using (var dlg = new ArchiveBrowserDialog())
+            using (var dlg = dlgFactory.CreateArchiveBrowserDialog())
             {
                 dlg.ArchiveEntries = archiveEntries;
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)

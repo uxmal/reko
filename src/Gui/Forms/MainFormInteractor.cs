@@ -534,7 +534,7 @@ namespace Reko.Gui.Forms
 
         public void ShowAboutBox()
         {
-            using (AboutDialog dlg = new AboutDialog())
+            using (IAboutDialog dlg = dlgFactory.CreateAboutDialog())
             {
                 uiSvc.ShowModalDialog(dlg);
             }

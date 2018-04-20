@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Archives;
+using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
 {
-    public partial class ArchiveBrowserDialog : Form, IDialog
+    public partial class ArchiveBrowserDialog : Form, IArchiveBrowserDialog
     {
         public ArchiveBrowserDialog()
         {

@@ -131,6 +131,8 @@
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
+    <Compile Include="Forms\IAboutDialog.cs" />
+    <Compile Include="Forms\IArchiveBrowserDialog.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
@@ -415,13 +417,6 @@
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\FinalPageInteractor.cs" />
-    <Compile Include="Windows\Forms\FindDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\FindDialog.Designer.cs">
-      <DependentUpon>FindDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\FindDialogInteractor.cs" />
     <Compile Include="Windows\Forms\FindStringsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -651,9 +646,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\EnvironmentSelectorDialog.resx">
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\FindDialog.resx">
-      <DependentUpon>FindDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>

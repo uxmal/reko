@@ -541,9 +541,6 @@
     <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>

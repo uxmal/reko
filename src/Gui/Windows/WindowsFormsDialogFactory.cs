@@ -47,10 +47,20 @@ namespace Reko.Gui.Windows
             this.syncForm.CreateControl();
         }
 
+        public IAboutDialog CreateAboutDialog()
+        {
+            return new AboutDialog();
+        }
+
         public IAddressPromptDialog CreateAddressPromptDialog()
 		{
 			return new AddressPromptDialog();
 		}
+
+        public IArchiveBrowserDialog CreateArchiveBrowserDialog()
+        {
+            return new ArchiveBrowserDialog();
+        }
 
         public IAssembleFileDialog CreateAssembleFileDialog()
         {
