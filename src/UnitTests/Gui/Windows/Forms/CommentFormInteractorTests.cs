@@ -27,6 +27,7 @@ using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Linq;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -80,6 +81,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             return program.User.Annotations[Address.Ptr32(addr)];
         }
 
+        private int NumberOfComments()
+        {
+            return program.User.Annotations.Count();
+        }
+
         [Test]
         public void Cfi_HintText()
         {
@@ -130,6 +136,19 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             LostFocus();
 
             Assert.AreEqual("New comment", CommentAt(0x16));
+        }
+
+        [Test(Description ="Remove comment if user sets emptry string")]
+        public void Cfi_RemoveComment()
+        {
+            Given_Comment(0x17, "This is a comment");
+
+            ShowCommentForm(0x17);
+            commentForm.TextBox.Text = "";
+            LostFocus();
+
+            Assert.AreEqual(null, CommentAt(0x17));
+            Assert.AreEqual(0, NumberOfComments());
         }
     }
 }
