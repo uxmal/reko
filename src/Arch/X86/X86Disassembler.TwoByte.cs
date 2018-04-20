@@ -220,7 +220,7 @@ namespace Reko.Arch.X86
                     Opcode.cvtsd2ss, "Vss,Hx,Wsd"),
                 new PrefixedOpRec(
                     Opcode.cvtdq2ps, "Vps,Wdq",
-                    Opcode.cvtps2dqs, "Vdq,Wps",
+                    Opcode.cvtps2dq, "Vdq,Wps",
                     Opcode.cvttps2dq, "Vdq,Wps",
                     Opcode.illegal, ""),
                 new PrefixedOpRec(
