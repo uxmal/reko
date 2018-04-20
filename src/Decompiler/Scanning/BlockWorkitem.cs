@@ -1005,6 +1005,9 @@ namespace Reko.Scanning
                 .Select(ForceToAddress)
                 .TakeWhile(a => a != null)
                 .ToList();
+            if (vector.Count == 0)
+                return false;
+
             foreach (var de in accesses)
             {
                 var item = new ImageMapItem((uint)de.Value.Size)
