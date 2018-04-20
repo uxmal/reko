@@ -45,7 +45,7 @@ Eq_2: (segment (300 Eq_6 t0300) (320 Eq_7 t0320) (400 real64 r0400) (408 int32 d
 	T_5 (in ds : selector)
 	T_13 (in ds : selector)
 Eq_3: (fn void ((ptr Eq_2), (memptr (ptr Eq_2) Eq_6), (memptr (ptr Eq_2) Eq_7)))
-	T_3 (in fn0C00_0010 : ptr32)
+	T_3 (in fn0C00_0010 : segptr32)
 	T_4 (in signature of fn0C00_0010 : void)
 Eq_6: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
 	T_6 (in wArg02 : word16)
@@ -54,7 +54,7 @@ Eq_7: (struct (0 real64 r0000) (20 int16 w0020) (28 real64 r0028))
 	T_7 (in wArg04 : word16)
 	T_9 (in 0x0320 : word16)
 Eq_11: (fn void ((ptr Eq_2)))
-	T_11 (in fn0C00_0037 : ptr32)
+	T_11 (in fn0C00_0037 : segptr32)
 	T_12 (in signature of fn0C00_0037 : void)
 Eq_25: (struct (0 real64 r0000) (8 real64 r0008))
 	T_25 (in wArg02 + 0x0010 : word16)
@@ -69,7 +69,7 @@ T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr (segment))
-T_3: (in fn0C00_0010 : ptr32)
+T_3: (in fn0C00_0010 : segptr32)
   Class: Eq_3
   DataType: (ptr Eq_3)
   OrigDataType: (ptr (fn T_10 (T_2, T_8, T_9)))
@@ -101,7 +101,7 @@ T_10: (in fn0C00_0010(ds, 0x0300, 0x0320) : void)
   Class: Eq_10
   DataType: void
   OrigDataType: void
-T_11: (in fn0C00_0037 : ptr32)
+T_11: (in fn0C00_0037 : segptr32)
   Class: Eq_11
   DataType: (ptr Eq_11)
   OrigDataType: (ptr (fn T_14 (T_2)))
