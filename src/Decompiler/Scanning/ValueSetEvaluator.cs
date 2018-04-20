@@ -40,15 +40,17 @@ namespace Reko.Scanning
     /// </remarks>
     public class ValueSetEvaluator : ExpressionVisitor<ValueSet>
     {
-        private Program program;
+        private IProcessorArchitecture arch;
+        private SegmentMap segmentMap;
         private Dictionary<Expression, ValueSet> context;
         private ProcessorState state;
         private ExpressionValueComparer cmp;
         private Dictionary<Address, DataType> memAccesses;
 
-        public ValueSetEvaluator(Program program, Dictionary<Expression, ValueSet> context, ProcessorState state = null)
+        public ValueSetEvaluator(IProcessorArchitecture arch, SegmentMap segmentMap, Dictionary<Expression, ValueSet> context, ProcessorState state = null)
         {
-            this.program = program;
+            this.arch = arch;
+            this.segmentMap = segmentMap;
             this.context = context;
             this.state = state;
             this.cmp = new ExpressionValueComparer();
@@ -63,7 +65,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitAddress(Address addr)
         {
-            throw new NotImplementedException();
+            return new ConcreteValueSet(addr.DataType, addr.ToConstant());
         }
 
         public ValueSet VisitApplication(Application appl)
@@ -226,10 +228,10 @@ namespace Reko.Scanning
         {
             if (eAddr is Constant cAddr)
             {
-                var addr = program.Architecture.MakeAddressFromConstant(cAddr);
-                if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
+                var addr = arch.MakeAddressFromConstant(cAddr);
+                if (!segmentMap.TryFindSegment(addr, out ImageSegment seg))
                     return Constant.Invalid;
-                var rdr = program.Architecture.CreateImageReader(seg.MemoryArea, addr);
+                var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
                 memAccesses[addr] = dt;
                 if (!rdr.TryRead((PrimitiveType)dt, out var c))
                     return Constant.Invalid;
@@ -244,14 +246,14 @@ namespace Reko.Scanning
             var off = eOff as Constant;
             if (eOff != null)
             {
-                var addr = program.Architecture.MakeSegmentedAddress(seg, off);
-                if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment segment))
+                var addr = arch.MakeSegmentedAddress(seg, off);
+                if (!segmentMap.TryFindSegment(addr, out ImageSegment segment))
                     return Constant.Invalid;
-                var rdr = program.Architecture.CreateImageReader(segment.MemoryArea, addr);
+                var rdr = arch.CreateImageReader(segment.MemoryArea, addr);
                 memAccesses[addr] = dt;
                 if (dt == PrimitiveType.SegPtr32)
                 {
-                    var addrRead = program.Architecture.ReadCodeAddress(dt.Size, rdr, null);
+                    var addrRead = arch.ReadCodeAddress(dt.Size, rdr, null);
                     if (addrRead != null)
                     {
                         return addrRead;
@@ -304,7 +306,7 @@ namespace Reko.Scanning
             {
                 // Special case for segmented pointers.
                 //$TODO: we really need a special MkSegmentedPointer expression type.
-                return program.Architecture.MakeSegmentedAddress(cSeg, (Constant) off); 
+                return arch.MakeSegmentedAddress(cSeg, (Constant) off); 
             }
             exps[exps.Length - 1] = (Constant) off;
             return new MkSequence(dataType, exps);

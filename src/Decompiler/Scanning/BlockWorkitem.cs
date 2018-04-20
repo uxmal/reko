@@ -997,7 +997,7 @@ namespace Reko.Scanning
             {
                 ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
             }
-            var vse = new ValueSetEvaluator(program, ctx, state);
+            var vse = new ValueSetEvaluator(arch, program.SegmentMap, ctx, state);
             var (values, accesses) = vse.Evaluate(jumpExpr);
             vector = values.Values
                 .TakeWhile(c => c != Constant.Invalid)
@@ -1028,7 +1028,8 @@ namespace Reko.Scanning
                 return addr;
             if (arg is Constant c)
             {
-                if (c.DataType.Size < program.Platform.PointerType.Size)
+                if (c.DataType.Size < arch.PointerType.Size &&
+                    arch.PointerType == PrimitiveType.SegPtr32) 
                 {
                     var sel = blockCur.Address.Selector.Value;
                     return program.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
