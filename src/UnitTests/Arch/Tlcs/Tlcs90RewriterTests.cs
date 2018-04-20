@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("A1");  // rrc
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __ror(a)",
+                "1|L--|a = __ror(a, 0x01)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -524,7 +524,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("F8A2");	// rl	b
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|b = __rcl(b, C)",
+                "1|L--|b = __rcl(b, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(b)");
@@ -536,7 +536,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("A2");	// rl
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcl(a, C)",
+                "1|L--|a = __rcl(a, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -572,7 +572,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FDA3");	// rr	l
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|l = __rcr(l, C)",
+                "1|L--|l = __rcr(l, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(l)");
@@ -584,7 +584,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("A3");	// rr
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcr(a, C)",
+                "1|L--|a = __rcr(a, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");

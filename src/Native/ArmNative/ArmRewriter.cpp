@@ -573,7 +573,7 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	else
 	{
-		dst = Operand(Dst());
+		dst = Operand(Dst(), BaseType::Word32, true);
 		dstIsAddress = false;
 	}
 	if (link)
@@ -616,7 +616,7 @@ void ArmRewriter::RewriteB(bool link)
 void ArmRewriter::RewriteCbnz(HExpr(*ctor)(INativeRtlEmitter & m, HExpr e))
 {
 	rtlClass = RtlClass::ConditionalTransfer;
-	auto cond = Operand(Dst());
+	auto cond = Operand(Dst(), BaseType::Word32, true);
 	m.Branch(ctor(m, Operand(Dst())),
 		m.Ptr32((uint32_t)Src1().imm),
 		RtlClass::ConditionalTransfer);
@@ -693,12 +693,19 @@ bool ArmRewriter::IsLastOperand(const cs_arm_op & op)
 	return &op == &instr->detail->arm.operands[instr->detail->arm.op_count - 1];
 }
 
-HExpr ArmRewriter::Operand(const cs_arm_op & op, BaseType dt)
+HExpr ArmRewriter::Operand(const cs_arm_op & op, BaseType dt, bool write)
 {
 	switch (op.type)
 	{
 	case ARM_OP_REG:
 	{
+		if (!write && op.reg == ARM_REG_PC)
+		{
+			//$TODO: look at Thumb manual to see if the + 8 also applies.
+			auto dst = (uint32_t)((int32_t)instr->address + op.mem.disp) + 8u;
+			auto ea = m.Ptr32(dst);
+			return ea;
+		}
 		auto reg = Reg(op.reg);
 		return MaybeShiftOperand(reg, op);
 	}
@@ -913,7 +920,7 @@ void ArmRewriter::RewriteSwp(BaseType type)
 		fnName = "std::atomic_exchange<int32_t>";
 	}
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, type, 2);
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	m.AddArg(Operand(Src1()));
 	m.AddArg(Operand(Src2()));
 	m.Assign(dst, m.Fn(intrinsic));

@@ -61,7 +61,7 @@ void ArmRewriter::RewriteLdc(const char * fnName)
 	m.AddArg(Operand(Src1()));
 	m.AddArg(tmp);
 	auto fn = m.Fn(intrinsic);
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	m.Assign(dst, fn);
 }
 
