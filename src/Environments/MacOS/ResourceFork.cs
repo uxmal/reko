@@ -343,45 +343,58 @@ namespace Reko.Environments.MacOS
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
 
-                // Search the segmentMap, check each Segment to see if the Segment is the %A5Init CODE Segment
-                // If CODE segment found, unpack global data to A5World
-                foreach ( var a5dataSegment  in segmentMap.Segments.Values)
+
+                // Find first (and only!) segment containing the name %A5Init.
+                var a5dataSegment = segmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
+                if (a5dataSegment == null)
+                    return;
+
+                // Get an image reader to the start of the data.
+                var a5dr = GetA5InitImageReader(a5dataSegment);
+                if (a5dr == null)
+                    return;
+
+                var a5dbelow = a5dr.ReadBeUInt32();
+                var a5dbankSize = a5dr.ReadBeUInt32();
+                var a5doffset = a5dr.ReadBeUInt32();
+                var a5dreloc = a5dr.ReadBeUInt32();
+                var a5dhdrend = a5dr.ReadBeUInt32();
+                if (a5dbankSize != 0x00010000)
                 {
-                    if (a5dataSegment.Name.Length < 12)
-                        continue;
-                    if (a5dataSegment.Name.Substring(5, 7) != "%A5Init")
-                        continue;
-                    // Found %A5Init CODE segment
-                    var a5data = a5dataSegment.MemoryArea;
-                    var a5dr = a5data.CreateBeReader(0);
-                    var a5d0 = a5dr.ReadBeUInt32();
-                    var a5d1 = a5dr.ReadBeUInt16();
-                    var a5dheaderOffset = a5dr.ReadBeUInt16();
-                    if (a5d0 != 0x48e77ff8 || a5d1 != 0x49fa || a5dheaderOffset >= a5dataSegment.MemoryArea.Length)
-                    {
-                        // Starting code bytes incorrect or 
-                        // Invalid offset to compressed global data - outside of A5World memory segment.
-                        // No global compressed data 
-                        break;
-                    }
-                    a5dr.Seek(a5dheaderOffset - 2);
-                    var a5dbelow = a5dr.ReadBeUInt32();
-                    var a5dbankSize = a5dr.ReadBeUInt32();
-                    var a5doffset = a5dr.ReadBeUInt32();
-                    var a5dreloc = a5dr.ReadBeUInt32();
-                    var a5dhdrend = a5dr.ReadBeUInt32();
-                    if (a5dbankSize != 0x00010000)
-                    {
-                        // bank size not supported for compressed global data
-                        break;
-                    }
-                    A5Expand(a5dr, a5dbelow);
-                    // Expanded Global A5World data, no need to search for further Segments
-                    break;
+                    // bank size not supported for compressed global data
+                    return;
                 }
+                A5Expand(a5dr, a5dbelow);
             }
         }
-        
+
+        private static BeImageReader GetA5InitImageReader(ImageSegment a5dataSegment)
+        {
+            var a5data = a5dataSegment.MemoryArea;
+            var a5dr = a5data.CreateBeReader(0);
+            if (!a5dr.TryReadBeUInt32(out uint a5d0))
+                return null;
+            if (!a5dr.TryReadBeUInt16(out ushort a5d1))
+                return null;
+            var a5dheaderOffset = a5dr.ReadBeUInt16();
+            const uint A5Init_Sig_Movem_l = 0x48E77FF8;     // movem.l\td1-d7/a0-a4,-(a7)
+            const ushort A5Init_Sig_Lea = 0x49FA;           // First word of lea\t$????(pc),a4 instruction
+            if (a5d0 != A5Init_Sig_Movem_l || a5d1 != A5Init_Sig_Lea || a5dheaderOffset >= a5dataSegment.MemoryArea.Length)
+            {
+                // Starting code bytes incorrect or 
+                // Invalid offset to compressed global data - outside of A5World memory segment.
+                // No global compressed data 
+                return null;
+            }
+            a5dr.Seek(a5dheaderOffset - 2);
+            return a5dr;
+        }
+
+        private static bool SegmentNamedA5Init(ImageSegment segment)
+        {
+            return segment.Name.Length >= 12 && segment.Name.Substring(5, 7) == "%A5Init";
+        }
+
         private void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
         {
             var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, platform.A5Offset - a5dbelow);

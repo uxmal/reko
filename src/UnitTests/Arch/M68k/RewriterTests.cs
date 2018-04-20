@@ -368,7 +368,7 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68k_clrw_reg()
+        public void M68krw_clrw_reg()
         {
             Rewrite(0x4240);        // clr.w\td0
             AssertCode(
