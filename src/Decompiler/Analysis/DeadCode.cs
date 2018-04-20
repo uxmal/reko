@@ -133,8 +133,7 @@ namespace Reko.Analysis
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
 					Statement stm = b.Statements[iStm];
-                    CallInstruction call;
-                    if (stm.Instruction.As(out call))
+                    if (stm.Instruction is CallInstruction call)
                     {
                         AdjustCallWithDeadDefinitions(call);
                     }

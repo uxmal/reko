@@ -684,10 +684,10 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             pushing and popping of registers is implemented.
             Also sets program.offMain and program.segMain if possible */
 
-            uint startoff; 
             uint init;
             uint i;
-            ushort rel, para;
+            //uint startoff; 
+            //ushort rel, para;
             char chModel = 'x';
             char chVendor = 'x';
             char chVersion = 'x';

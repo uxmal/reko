@@ -393,6 +393,11 @@ namespace Reko.Analysis
             return true;
         }
 
+        public bool VisitComment(CodeComment comment)
+        {
+            return true;
+        }
+
         public bool VisitDeclaration(Declaration decl)
         {
             var value = decl.Expression.Accept(eval);

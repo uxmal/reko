@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Scanning
 		[Test]
 		public void EarInsertFrameReference()
 		{
-			Procedure proc = new Procedure("foo", new Frame(PrimitiveType.Word32));
+			Procedure proc = new Procedure(null,"foo", new Frame(PrimitiveType.Word32));
 			Block b = new Block(proc, "foo_1");
 			proc.ControlGraph.AddEdge(proc.EntryBlock, b);
             proc.ControlGraph.AddEdge(b, proc.ExitBlock);

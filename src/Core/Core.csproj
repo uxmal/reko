@@ -257,6 +257,7 @@
     <Compile Include="CLanguage\SerializedTypeComparer.cs" />
     <Compile Include="CLanguage\SymbolTable.cs" />
     <Compile Include="CLanguage\TypeSizer.cs" />
+    <Compile Include="Code\CodeComment.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\ExpressionEmitter.cs" />
     <Compile Include="Expressions\ExpressionMatcher.cs" />
+    <Compile Include="Expressions\ExpressionReplacer.cs" />
     <Compile Include="Expressions\ExpressionTree.cs" />
     <Compile Include="Expressions\ExpressionValueComparer.cs" />
     <Compile Include="Expressions\ExpressionVisitor.cs" />
@@ -728,18 +730,15 @@
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
+    <Compile Include="Statement.cs" />
     <Compile Include="StatementCorrelatedException.cs" />
+    <Compile Include="StatementList.cs" />
     <Compile Include="StorageBinder.cs" />
+    <Compile Include="StridedInterval.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
     <Compile Include="TypeInferenceException.cs" />
     <Compile Include="TypeLibrary.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Statement.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StatementList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Storage.cs" />

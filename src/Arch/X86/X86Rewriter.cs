@@ -31,6 +31,7 @@ using System.Text;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Arch.X86
 {
@@ -42,6 +43,7 @@ namespace Reko.Arch.X86
         private IRewriterHost host;
         private IntelArchitecture arch;
         private IStorageBinder binder;
+        private EndianImageReader rdr;
         private LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
@@ -64,6 +66,7 @@ namespace Reko.Arch.X86
             this.host = host;
             this.binder = binder;
             this.state = state;
+            this.rdr = rdr;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
 
@@ -85,6 +88,7 @@ namespace Reko.Arch.X86
                 switch (instrCur.code)
                 {
                 default:
+                    EmitUnitTest();
                     host.Warn(
                         dasm.Current.Address,
                         "Rewriting x86 opcode '{0}' is not supported yet.",
@@ -105,7 +109,8 @@ namespace Reko.Arch.X86
                 case Opcode.aesimc: RewriteAesimc(); break;
                 case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.andnps: RewriteAndnps(); break;
-                case Opcode.andps: RewriteAndps(); break;
+                case Opcode.andpd: RewritePackedBinop("__andpd", PrimitiveType.Real64); break;
+                case Opcode.andps: RewritePackedBinop("__andps", PrimitiveType.Real32); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
                 case Opcode.bsf: RewriteBsf(); break;
@@ -151,6 +156,7 @@ namespace Reko.Arch.X86
                 case Opcode.cvtps2pi: RewriteCvtps2pi("__cvtps2pi", PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Opcode.cvtps2pd: RewriteCvtps2pi("__cvtps2pd", PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Opcode.cvtdq2ps: RewriteCvtps2pi("__cvtdq2ps", PrimitiveType.Int64, PrimitiveType.Real32); break;
+                case Opcode.cvtsd2si: RewriteCvts2si(PrimitiveType.Real64); break;
                 case Opcode.cvtsi2ss:
                 case Opcode.vcvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvtsi2sd:
@@ -182,6 +188,8 @@ namespace Reko.Arch.X86
                 case Opcode.fcmovnb: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.GE); break;
                 case Opcode.fcmovnbe: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.LE); break;
                 case Opcode.fcmovne: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
+                case Opcode.fcmovnu: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
+                case Opcode.fcmovu: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
                 case Opcode.fcom: RewriteFcom(0); break;
                 case Opcode.fcomi: RewriteFcomi(false); break;
                 case Opcode.fcomip: RewriteFcomi(true); break;
@@ -223,6 +231,7 @@ namespace Reko.Arch.X86
                 case Opcode.fnop: m.Nop(); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
+                case Opcode.fprem1: RewriteFprem1(); break;
                 case Opcode.fptan: RewriteFptan(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
                 case Opcode.frstor: RewriteFrstor(); break;
@@ -248,8 +257,10 @@ namespace Reko.Arch.X86
                 case Opcode.fucomip: RewriteFcomi(true); break;
                 case Opcode.fxam: RewriteFxam(); break;
                 case Opcode.fxch: RewriteExchange(); break;
+                case Opcode.fxtract: RewriteFxtract(); break;
                 case Opcode.fyl2x: RewriteFyl2x(); break;
                 case Opcode.fyl2xp1: RewriteFyl2xp1(); break;
+                case Opcode.getsec: RewriteGetsec(); break;
                 case Opcode.hlt: RewriteHlt(); break;
                 case Opcode.idiv: RewriteDivide(m.SDiv, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
@@ -282,6 +293,8 @@ namespace Reko.Arch.X86
                 case Opcode.lahf: RewriteLahf(); break;
                 case Opcode.lar: RewriteLar(); break;
                 case Opcode.lds: RewriteLxs(Registers.ds); break;
+                case Opcode.ldmxcsr: RewriteLdmxcsr(); break;
+                case Opcode.stmxcsr: RewriteStmxcsr(); break;
                 case Opcode.lea: RewriteLea(); break;
                 case Opcode.leave: RewriteLeave(); break;
                 case Opcode.les: RewriteLxs(Registers.es); break;
@@ -308,6 +321,7 @@ namespace Reko.Arch.X86
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movhpd: RewritePackedUnaryop("__movhpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Opcode.movhps: RewritePackedUnaryop("__movhps", PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Opcode.movlpd: RewritePackedUnaryop("__movlpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Opcode.movlps: RewritePackedUnaryop("__movlps", PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Opcode.movlhps: RewriteMovlhps(); break;
                 case Opcode.movmskpd: RewriteMovmsk("__movmskpd", PrimitiveType.Real64); break;
@@ -336,7 +350,8 @@ namespace Reko.Arch.X86
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.not: RewriteNot(); break;
                 case Opcode.or: RewriteLogical(BinaryOperator.Or); break;
-                case Opcode.orps: RewriteOrps(); break;
+                case Opcode.orpd: RewritePackedBinop("__orpd", PrimitiveType.Real64); break;
+                case Opcode.orps: RewritePackedBinop("__orps", PrimitiveType.Real32); break;
                 case Opcode.@out: RewriteOut(); break;
                 case Opcode.@outs: RewriteStringInstruction(); break;
                 case Opcode.@outsb: RewriteStringInstruction(); break;
@@ -344,10 +359,14 @@ namespace Reko.Arch.X86
                 case Opcode.packuswb: RewritePackedBinop("__packuswb", PrimitiveType.UInt16, new ArrayType(PrimitiveType.UInt8, 0)); break;
                 case Opcode.paddb: RewritePackedBinop("__paddb", PrimitiveType.Byte); break;
                 case Opcode.paddd: RewritePackedBinop("__paddd", PrimitiveType.Word32); break;
+                case Opcode.paddq: case Opcode.vpaddq: RewritePackedBinop("__paddq", PrimitiveType.Word64); break;
                 case Opcode.paddsw: RewritePackedBinop("__paddsw", PrimitiveType.Word16); break;
+                case Opcode.paddsb: RewritePackedBinop("__paddsb", PrimitiveType.SByte); break;
                 case Opcode.paddusb: RewritePackedBinop("__paddusb", PrimitiveType.Byte); break;
                 case Opcode.paddusw: RewritePackedBinop("__paddsw", PrimitiveType.Word16); break;
                 case Opcode.paddw: RewritePackedBinop("__paddw", PrimitiveType.Word16); break;
+                case Opcode.pand: case Opcode.vpand: RewritePackedLogical("__pand"); break;
+                case Opcode.pandn: case Opcode.vpandn: RewritePackedLogical("__pandn"); break;
                 case Opcode.pause: RewritePause(); break;
                 case Opcode.palignr: RewritePalignr(); break;
                 case Opcode.pavgb: RewritePavg("__pavgb", PrimitiveType.Byte); break;
@@ -358,8 +377,8 @@ namespace Reko.Arch.X86
                 case Opcode.pcmpgtb: RewritePcmp("__pcmpgtb", PrimitiveType.Byte); break;
                 case Opcode.pcmpgtd: RewritePcmp("__pcmpgtd", PrimitiveType.Word32); break;
                 case Opcode.pcmpgtw: RewritePcmp("__pcmpgtw", PrimitiveType.Word16); break;
-                case Opcode.pextrw: RewritePextrw(); break;
-                case Opcode.pinsrw: RewritePinsrw(); break;
+                case Opcode.pextrw: case Opcode.vextrw:  RewritePextrw(); break;
+                case Opcode.pinsrw: case Opcode.vpinsrw: RewritePinsrw(); break;
                 case Opcode.pmaddwd: RewritePackedBinop("__pmaddwd", PrimitiveType.Word16, new ArrayType(PrimitiveType.Word32, 0)); break;
                 case Opcode.pmaxsw: RewritePackedBinop("__pmaxsw", PrimitiveType.Int16); break;
                 case Opcode.pmaxub: RewritePackedBinop("__pmaxub", PrimitiveType.UInt8); break;
@@ -368,12 +387,12 @@ namespace Reko.Arch.X86
                 case Opcode.pmovmskb: RewriteMovmsk("__pmovmskb", PrimitiveType.Byte); break;
                 case Opcode.pmulhuw: RewritePackedBinop("__pmulhuw", PrimitiveType.UInt16, new ArrayType(PrimitiveType.UInt16, 8)); break;
                 case Opcode.pmulhw: RewritePackedBinop("__pmulhw", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int16, 8)); break;
-                case Opcode.pmullw: RewritePackedBinop("__pmullw", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int16, 8)); break;
+                case Opcode.pmullw: case Opcode.vpmullw: RewritePackedBinop("__pmullw", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int16, 8)); break;
                 case Opcode.pmuludq: RewritePackedBinop("__pmuludq", PrimitiveType.UInt32, new ArrayType(PrimitiveType.UInt64, 0)); break;
                 case Opcode.prefetchw: RewritePrefetch("__prefetchw"); break;
                 case Opcode.psadbw: RewritePackedBinop("__psadbw", PrimitiveType.Byte, PrimitiveType.Word16); break;
                 case Opcode.pslld: RewritePackedBinop("__pslld", PrimitiveType.Word32); break;
-                case Opcode.psllq: RewritePackedBinop("__psllq", PrimitiveType.Word64); break;
+                case Opcode.psllq: case Opcode.vpsllq: RewritePackedBinop("__psllq", PrimitiveType.Word64); break;
                 case Opcode.psllw: RewritePackedBinop("__psllw", PrimitiveType.Word16); break;
                 case Opcode.psrad: RewritePackedBinop("__psrad", PrimitiveType.Int32); break;
                 case Opcode.psraw: RewritePackedBinop("__psraw", PrimitiveType.Int16); break;
@@ -381,18 +400,22 @@ namespace Reko.Arch.X86
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.popa: RewritePopa(); break;
                 case Opcode.popf: RewritePopf(); break;
-                case Opcode.por: RewritePor(); break;
+                case Opcode.por: RewritePackedLogical("__por"); break;
                 case Opcode.prefetchnta: RewritePrefetch("__prefetchnta"); break;
                 case Opcode.prefetcht0: RewritePrefetch("__prefetcht0"); break;
                 case Opcode.prefetcht1: RewritePrefetch("__prefetcht1"); break;
                 case Opcode.prefetcht2: RewritePrefetch("__prefetcht2"); break;
-                case Opcode.pshufd: RewritePshufd(); break;
+                case Opcode.pshufd: RewritePshuf("__pshufd", PrimitiveType.Word32); break;
+                case Opcode.pshufw: RewritePshuf("__pshufw", PrimitiveType.Word16); break;
+                case Opcode.psrld: RewritePackedShift("__psrld", PrimitiveType.Word32); break;
+                case Opcode.psrlw: RewritePackedShift("__psrlw", PrimitiveType.Word16); break;
                 case Opcode.psubb: RewritePackedBinop("__psubb", PrimitiveType.Byte); break;
-                case Opcode.psubd: RewritePackedBinop("__psubd", PrimitiveType.Word32); break;
+                case Opcode.psubd: case Opcode.vpsubd: RewritePackedBinop("__psubd", PrimitiveType.Word32); break;
                 case Opcode.psubq: RewritePackedBinop("__psubq", PrimitiveType.Word64); break;
                 case Opcode.psubsb: RewritePackedBinop("__psubsb", PrimitiveType.SByte); break;
                 case Opcode.psubsw: RewritePackedBinop("__psubsw", PrimitiveType.Word16); break;
                 case Opcode.psubusb: RewritePackedBinop("__psubusb", PrimitiveType.UInt8); break;
+                case Opcode.psubusw: RewritePackedBinop("__psubusw", PrimitiveType.UInt16); break;
                 case Opcode.psubw: RewritePackedBinop("__psubw", PrimitiveType.Word16); break;
                 case Opcode.punpckhbw: RewritePunpckhbw(); break;
                 case Opcode.punpckhdq: RewritePunpckhdq(); break;
@@ -403,7 +426,7 @@ namespace Reko.Arch.X86
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pusha: RewritePusha(); break;
                 case Opcode.pushf: RewritePushf(); break;
-                case Opcode.pxor: RewritePxor(); break;
+                case Opcode.pxor: case Opcode.vpxor: RewritePxor(); break;
                 case Opcode.rcl: RewriteRotation(PseudoProcedure.RolC, true, true); break;
                 case Opcode.rcpps: RewritePackedUnaryop("__rcpps", PrimitiveType.Real32); break;
                 case Opcode.rcr: RewriteRotation(PseudoProcedure.RorC, true, false); break;
@@ -580,5 +603,32 @@ namespace Reko.Arch.X86
         {
             return orw.Transform(instrCur, opSrc, dstWidth, state);
         }
+
+        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest()
+        {
+            if (seen.Contains(dasm.Current.code))
+                return;
+            seen.Add(dasm.Current.code);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var bytes = r2.ReadBytes(dasm.Current.Length);
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void X86Rw_" + dasm.Current.code + "()");
+            Debug.WriteLine("        {");
+            Debug.Write("            BuildTest(");
+            Debug.Write(string.Join(
+                ", ",
+                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
+            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine("            AssertCode(");
+            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, dasm.Current.Length);
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
+    }
     }
 }

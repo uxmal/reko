@@ -170,7 +170,7 @@ namespace Reko.Analysis
             // New stack based variables may be available now.
             foreach (var sst in ssts)
             {
-                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, sst.SsaState, this.eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, this.eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -266,7 +266,7 @@ namespace Reko.Analysis
                 coa.Transform();
                 DeadCode.Eliminate(ssa);
 
-                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
                 vp.Transform();
 
                 var liv = new LinearInductionVariableFinder(
@@ -320,11 +320,11 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
                 vp.Transform();
 
                 // Fuse additions and subtractions that are linked by the carry flag.
-                var larw = new LongAddRewriter(program.Architecture, ssa);
+                var larw = new LongAddRewriter(ssa);
                 larw.Transform();
 
                 // Propagate condition codes and registers. 

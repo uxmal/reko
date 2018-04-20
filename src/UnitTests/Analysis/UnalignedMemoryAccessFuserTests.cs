@@ -113,13 +113,13 @@ namespace Reko.UnitTests.Analysis
             var app = m.Fn(
                     new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
                     mem, reg);
-            if (mem is Identifier)
+            if (mem is Identifier id)
             {
-                m.Assign((Identifier)mem, app);
+                m.Assign(id, app);
             }
             else
             {
-                m.Store(((MemoryAccess)mem).EffectiveAddress, app);
+                m.Store(mem, app);
             }
         }
 
@@ -128,13 +128,13 @@ namespace Reko.UnitTests.Analysis
             var app = m.Fn(
                     new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
                     mem, reg);
-            if (mem is Identifier)
+            if (mem is Identifier id)
             {
-                m.Assign((Identifier)mem, app);
+                m.Assign(id, app);
             }
             else
             {
-                m.Store(((MemoryAccess)mem).EffectiveAddress, app);
+                m.Store(mem, app);
             }
         }
 
@@ -324,7 +324,7 @@ r8:r8
     def:  def r8
     uses: Mem5[r4 + 0x00000028:word32] = r8
 Mem4: orig: Mem0
-Mem5: orig: Mem0
+Mem5: orig: Mem3
     def:  Mem5[r4 + 0x00000028:word32] = r8
 // ProcedureBuilder
 // Return size: 0
@@ -390,9 +390,9 @@ Mem4: orig: Mem0
 r13:r13
     def:  def r13
     uses: Mem15[r8 + 0x00000014:word32] = r13
-Mem6: orig: Mem0
+Mem6: orig: Mem6
 Mem7: orig: Mem0
-Mem8: orig: Mem0
+Mem8: orig: Mem7
 Mem9: orig: Mem0
 r9:r9
     def:  def r9
@@ -403,17 +403,17 @@ r4_13: orig: r4
     def:  r4_13 = r8 + 0x00000010
 Mem14: orig: Mem0
     def:  Mem14[r8 + 0x00000010:word32] = r14
-Mem15: orig: Mem0
+Mem15: orig: Mem10
     def:  Mem15[r8 + 0x00000014:word32] = r13
 Mem16: orig: Mem0
     def:  Mem16[r8 + 0x00000018:word32] = 0x00000000
-Mem17: orig: Mem0
+Mem17: orig: Mem11
     def:  Mem17[r8 + 0x0000001C:word32] = 0x00000000
 Mem18: orig: Mem0
     def:  Mem18[r8 + 0x00000028:word32] = 0x00000000
 Mem19: orig: Mem0
     def:  Mem19[r8 + 0x0000002C:word32] = r9
-Mem20: orig: Mem0
+Mem20: orig: Mem12
     def:  Mem20[r8 + 0x00000030:word32] = 0x00000000
 // ProcedureBuilder
 // Return size: 0
@@ -462,10 +462,10 @@ ProcedureBuilder_exit:
 Mem0:Global
     def:  def Mem0
 Mem3: orig: Mem0
-Mem4: orig: Mem0
+Mem4: orig: Mem2
 Mem5: orig: Mem0
     def:  Mem5[r8 + 0x00000010:word32] = 0x12345678
-Mem6: orig: Mem0
+Mem6: orig: Mem3
     def:  Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
 // ProcedureBuilder
 // Return size: 0
@@ -505,7 +505,7 @@ r8:r8
     def:  def r8
     uses: Mem5[r4:word32] = r8
 Mem4: orig: Mem0
-Mem5: orig: Mem0
+Mem5: orig: Mem3
     def:  Mem5[r4:word32] = r8
 // ProcedureBuilder
 // Return size: 0

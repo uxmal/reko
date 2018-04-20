@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Analysis
             program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
-            proc = new Procedure("foo", program.Architecture.CreateFrame());
+            proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
         }
 
@@ -507,14 +507,14 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
                 m.Assign(Top, m.ISub(Top, 1));
-                m.Store(ST, Top, Constant.Real64(3.0));
+                m.MStore(ST, Top, Constant.Real64(3.0));
                 m.Assign(Top, m.ISub(Top, 1));
-                m.Store(ST, Top, Constant.Real64(4.0));
+                m.MStore(ST, Top, Constant.Real64(4.0));
                 m.Assign(Top, m.ISub(Top, 1));
-                m.Store(ST, Top, Constant.Real64(5.0));
+                m.MStore(ST, Top, Constant.Real64(5.0));
                 // At this point there are 3 values on the FPU stack
                 m.Call("FpuMultiplyAdd", 0);
-                m.Store(m.Word32(0x00123400), m.Mem(ST, dt, Top));
+                m.MStore(m.Word32(0x00123400), m.Mem(ST, dt, Top));
                 m.Assign(Top, m.IAdd(Top, 1));
                 m.Return();
             });
@@ -524,11 +524,11 @@ CrwManyPredecessorsToExitBlock_exit:
 
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
-                m.Store(ST, m.IAdd(Top, 1), m.FMul(
+                m.MStore(ST, m.IAdd(Top, 1), m.FMul(
                     m.Mem(ST, dt, m.IAdd(Top, 1)),
                     m.Mem(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
-                m.Store(ST, m.IAdd(Top, 1), m.FAdd(
+                m.MStore(ST, m.IAdd(Top, 1), m.FAdd(
                     m.Mem(ST, dt, m.IAdd(Top, 1)),
                     m.Mem(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
@@ -606,8 +606,8 @@ FpuMultiplyAdd_exit:
                 var r2 = m.Reg32("r2");
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("fnOutParam", 0);
-                m.Store(m.Word32(0x00123400), r1);
-                m.Store(m.Word32(0x00123404), r2);
+                m.MStore(m.Word32(0x00123400), r1);
+                m.MStore(m.Word32(0x00123404), r2);
                 m.Return();
             });
             pb.Add("fnOutParam", m =>

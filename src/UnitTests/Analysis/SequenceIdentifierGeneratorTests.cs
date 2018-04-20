@@ -101,7 +101,7 @@ ProcedureBuilder_exit:
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
 
-                m.Store(m.Word32(0x2000), m.Seq(r2, r1));
+                m.MStore(m.Word32(0x2000), m.Seq(r2, r1));
             });
         }
 
@@ -138,8 +138,8 @@ ProcedureBuilder_exit:
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
 
-                m.Store(m.Word32(0x2000), m.Seq(r2, r1));
-                m.Store(m.Word32(0x2008), m.Seq(r2, r1));
+                m.MStore(m.Word32(0x2000), m.Seq(r2, r1));
+                m.MStore(m.Word32(0x2008), m.Seq(r2, r1));
             });
         }
 
@@ -186,8 +186,8 @@ ProcedureBuilder_exit:
                 var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
 
                 m.Assign(r2_r1, m.Mem(r2_r1.DataType, m.Word16(0x2000)));
-                m.Store(m.IAdd(r3, 0x2000), m.Cast(r1.DataType, r2_r1));
-                m.Store(m.IAdd(r3, 0x2004), m.Slice(PrimitiveType.Word32, r2_r1, 32));
+                m.MStore(m.IAdd(r3, 0x2000), m.Cast(r1.DataType, r2_r1));
+                m.MStore(m.IAdd(r3, 0x2004), m.Slice(PrimitiveType.Word32, r2_r1, 32));
                 m.Return();
             });
         }

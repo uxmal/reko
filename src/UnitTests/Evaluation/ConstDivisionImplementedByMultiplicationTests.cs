@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Evaluation
             m.Alias(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32));
             if (shift != 0)
                 m.Assign(r2, m.Sar(r2, shift));
-            m.Store(m.Word32(0x0402000), r2);       // Force use of r2
+            m.MStore(m.Word32(0x0402000), r2);       // Force use of r2
             m.Return();
 
             var proc = m.Procedure;
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Evaluation
                 null,
                 null).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(m.Architecture, segmentMap, ssa, null);
+            var vp = new ValuePropagator(segmentMap, ssa, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

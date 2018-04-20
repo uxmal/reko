@@ -96,6 +96,11 @@ namespace Reko.Structure
             stms.Add(new AbsynSideEffect(new Application(ci.Callee, VoidType.Instance)));
         }
 
+        void InstructionVisitor.VisitComment(CodeComment comment)
+        {
+            stms.Add(new AbsynLineComment(comment.Text));
+        }
+
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
             if (StripDeclarations)

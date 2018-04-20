@@ -176,7 +176,14 @@ namespace Reko.Arch.Mips
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            if (rdr.TryReadUInt32(out var uaddr))
+            {
+                return Address.Ptr32(uaddr);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)

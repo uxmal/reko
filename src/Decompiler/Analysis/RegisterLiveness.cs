@@ -390,7 +390,7 @@ namespace Reko.Analysis
 			var change = MergeIntoProcedureFlow(varLive, flow);
 			if (change)
 			{
-				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(program.Architecture, p.Name + " summary:", flow.Summary));
+				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(p.Architecture, p.Name + " summary:", flow.Summary));
 				state.UpdateSummary(flow);
                 foreach (Statement stmCaller in program.CallGraph.CallerStatements(p))
 				{

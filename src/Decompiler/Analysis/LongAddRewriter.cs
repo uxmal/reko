@@ -66,10 +66,10 @@ namespace Reko.Analysis
         private static ExpressionMatcher segMemOffset;
         private static InstructionMatcher condm;
 
-        public LongAddRewriter(IProcessorArchitecture arch, SsaState ssa)
+        public LongAddRewriter(SsaState ssa)
         {
             this.ssa = ssa;
-            this.arch = arch;
+            this.arch = ssa.Procedure.Architecture;
         }
 
         static LongAddRewriter()

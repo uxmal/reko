@@ -114,15 +114,6 @@ namespace Reko.Core
         public abstract void Write(TextWriter writer);
     }
 
-    public static class StorageEx
-    {
-        [Obsolete("Use new C# 7 features to avoid this")]
-        public static bool As<T>(this Storage self, out T t) where T : Storage
-        {
-            t = self as T;
-            return t != null;
-        }
-    }
 
     public enum StorageDomain
     {
@@ -146,6 +137,7 @@ namespace Reko.Core
             this.Domain = freg.Domain;
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
+            this.Domain = freg.Domain;
             this.Name = name;
             this.DataType = dataType;
             this.BitSize = (uint)dataType.BitSize;

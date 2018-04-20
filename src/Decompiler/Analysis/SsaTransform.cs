@@ -1676,21 +1676,16 @@ namespace Reko.Analysis
 
             public SsaIdentifier Fuse(SsaIdentifier head, SsaIdentifier tail)
             {
-                AliasAssignment aassHead, aassTail;
-                if (head.DefStatement.Instruction.As(out aassHead) &&
-                    tail.DefStatement.Instruction.As(out aassTail))
+                if (head.DefStatement.Instruction is AliasAssignment aassHead &&
+                    tail.DefStatement.Instruction is AliasAssignment aassTail)
                 {
-                    // 
-                    Slice eHead;
-                    Cast eTail;
-                    if (aassHead.Src.As(out eHead) && aassTail.Src.As(out eTail))
+                    if (aassHead.Src is Slice eHead && aassTail.Src is Cast eTail)
                     {
                         return ssaIds[(Identifier)eHead.Expression];
                     }
                 }
-                DefInstruction defHead, defTail;
-                if (head.DefStatement.Instruction.As(out defHead) &&
-                    tail.DefStatement.Instruction.As(out defTail))
+                if (head.DefStatement.Instruction is DefInstruction defHead &&
+                    tail.DefStatement.Instruction is DefInstruction defTail)
                 {
                     // All subregisters came in from caller, so create an
                     // alias statement.

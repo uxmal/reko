@@ -81,7 +81,7 @@ namespace Reko.Analysis
             this.useLiveness = ignoreUse;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
-                if (!stm.Instruction.As(out DefInstruction def))
+                if (!(stm.Instruction is DefInstruction def))
                     continue;
                 var sid = ssa.Identifiers[def.Identifier];
                 if ((sid.Identifier.Storage is RegisterStorage ||
@@ -269,6 +269,11 @@ namespace Reko.Analysis
         {
             var n = cast.Expression.Accept(this);
             return new BitRange(n.Lsb, Math.Min(n.Msb, cast.DataType.BitSize));
+        }
+
+        public BitRange VisitComment(CodeComment comment)
+        {
+            return BitRange.Empty;
         }
 
         public BitRange VisitConditionalExpression(ConditionalExpression c)

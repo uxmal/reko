@@ -49,10 +49,10 @@ namespace Reko.UnitTests.Scanning
         private IProcessorArchitecture arch;
         private ProcessorState state;
         private ExpressionSimplifier expSimp;
-        private IBackWalkHost<Block,Instruction> host;
+        private IBackWalkHost<Block, Instruction> host;
         private FakeDecompilerEventListener listener;
 
-        private class BackwalkerHost : IBackWalkHost<Block,Instruction>
+        private class BackwalkerHost : IBackWalkHost<Block, Instruction>
         {
             private IProcessorArchitecture arch;
 
@@ -62,6 +62,8 @@ namespace Reko.UnitTests.Scanning
             {
                 this.arch = arch;
             }
+
+            public SegmentMap SegmentMap => throw new NotImplementedException();
 
             public Tuple<Expression, Expression> AsAssignment(Instruction instr)
             {
@@ -102,6 +104,11 @@ namespace Reko.UnitTests.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
             }
 
+            public List<Block> GetPredecessors(Block block)
+            {
+                return block.Pred.ToList();
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
             {
                 return arch.GetSubregister(reg, off, width);
@@ -127,10 +134,11 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            public IEnumerable<Instruction> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction).Reverse();
+                return block.Statements.Select(s => s.Instruction);
             }
+
             #endregion
         }
 
@@ -208,7 +216,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(a5, m.Mem32(m.IAdd(Address.Ptr32(0x0000C046), d0)));
             var xfer = new RtlCall(a5, 4, RtlClass.Transfer);
 
-            var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             Assert.AreEqual("a5", bw.Index.Name);
             bw.BackWalk(m.Block);
@@ -270,6 +278,46 @@ namespace Reko.UnitTests.Scanning
             m.Assign(eax, 0);
             var block = m.CurrentBlock;
             var xfer = new RtlGoto(m.Mem32(m.IAdd(Constant.Word32(0x00123400), m.IMul(ebx, 4))), RtlClass.Transfer);
+
+            m.Label("default_case");
+            m.Return();
+
+            var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
+            Assert.IsTrue(bw.CanBackwalk());
+            var ops = bw.BackWalk(block);
+            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual("cmp 48", ops[0].ToString());
+            Assert.AreEqual("branch UGT", ops[1].ToString());
+            Assert.AreEqual("* 4", ops[2].ToString());
+        }
+
+        [Test(Description = "Handle m68k-style sign extensions.")]
+        [Category(Categories.UnitTests)]
+        [Ignore(Categories.FailedTests)]
+        public void BwSignExtension()
+        {
+            var CVZNX = m.Flags("CVZNS");
+            var CVZN = m.Flags("CVZN");
+            var VZN = m.Flags("VZN");
+            var d1 = m.Reg32("d1", 1);
+            var v80 = m.Temp(PrimitiveType.Word32, "v80");
+            var v82 = m.Temp(PrimitiveType.Word16, "v82");
+
+            m.Assign(v80, m.ISub(d1, 0x28));
+            m.Assign(CVZN, m.Cond(v80));
+            m.BranchIf(m.Test(ConditionCode.GT, VZN), "default_label");
+
+            m.Assign(d1, m.IAdd(d1, d1));
+            m.Assign(CVZNX, m.Cond(d1));
+            m.Assign(v82, m.Mem16(m.IAdd(m.Word32(0x001066A4), d1)));
+            m.Assign(d1, m.Dpb(d1, v82, 0));
+            m.Assign(CVZN, m.Cond(v82));
+            var block = m.CurrentBlock;
+            var xfer = new RtlGoto(
+                m.IAdd(
+                    m.Word32(0x001066A2),
+                    m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
+                RtlClass.Transfer);
 
             m.Label("default_case");
             m.Return();

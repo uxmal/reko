@@ -413,7 +413,7 @@ namespace Reko.UnitTests.Structure
                 m.BranchIf(m.Ne(tmp, 0), "branch_c");
 
                 m.Label("Branch_a");
-                    m.Store(m.Word16(0x8414), m.Word16(0));
+                    m.MStore(m.Word16(0x8414), m.Word16(0));
                     m.BranchIf(m.Eq(m.Word16(0x8414), 0x0000), "branch_c");
 
                 m.Label("Branch_b");

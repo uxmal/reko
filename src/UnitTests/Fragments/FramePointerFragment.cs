@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Fragments
             Identifier framep = Local32("framep");
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
             Assign(framep, AddrOf(frame));
-            Store(IAdd(framep, 4), Mem(PrimitiveType.Word32, IAdd(framep, 8)));
+            MStore(IAdd(framep, 4), Mem(PrimitiveType.Word32, IAdd(framep, 8)));
         }
     }
 }

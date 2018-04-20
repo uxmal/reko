@@ -102,20 +102,28 @@ namespace Reko.Arch.X86
 
         public abstract Address MakeAddressFromConstant(Constant c);
 
-        public abstract Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state);
+        public abstract bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr);
 
-        protected Address ReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        protected bool TryReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
-                return CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
+                if (rdr.TryReadLeUInt16(out ushort uOffset))
+                {
+                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset);
+                    return true;
+                }
             }
             else
             {
-                ushort off = rdr.ReadLeUInt16();
-                ushort seg = rdr.ReadLeUInt16();
-                return CreateSegmentedAddress(seg, off);
+                if (rdr.TryReadLeUInt16(out var off) && rdr.TryReadLeUInt16(out var seg))
+                {
+                    addr = CreateSegmentedAddress(seg, off);
+                    return true;
+                }
             }
+            addr = null;
+            return false;
         }
 
         public abstract bool TryParseAddress(string txtAddress, out Address addr);
@@ -180,9 +188,9 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return ReadSegmentedCodeAddress(byteSize, rdr, state);
+            return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -224,9 +232,9 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return ReadSegmentedCodeAddress(byteSize, rdr, state);
+            return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -288,9 +296,18 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return Address.Ptr32(rdr.ReadLeUInt32());
+            if (rdr.TryReadLeUInt32(out uint uAddr))
+            {
+                addr = Address.Ptr32(uAddr);
+                return true;
+            }
+            else
+            {
+                addr = null;
+                return false;
+            }
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -355,9 +372,18 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return Address.Ptr64(rdr.ReadLeUInt64());
+            if (rdr.TryReadLeUInt64(out ulong uAddr))
+            {
+                addr = Address.Ptr64(uAddr);
+                return true;
+            }
+            else
+            {
+                addr = null;
+                return false;
+            }
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

@@ -437,7 +437,7 @@ l02BC:
 	word16 r4_385
 	byte ZC_386
 	word16 r5_387
-	call Mem359[r1_370 + 0x02CC:ptr16] (retsize: 4; FPU: 2;)
+	call Mem359[r1_370 + 0x02CC:ptr16] (retsize: 2; FPU: 2;)
 		uses: C_357,N_84,NZ_361,NZV_80,NZVC_371,pc_79,r0_90,r1_370,r2_88,r3_85,r4_78,r5_76,sp_89,V_362,wLoc02,Z_368,ZC_77
 		defs: C_377,N_378,NZ_374,NZV_383,NZVC_382,pc_384,r0_380,r1_381,r2_373,r3_376,r4_385,r5_387,sp_372,V_375,Z_379,ZC_386
 	return

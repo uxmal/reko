@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Analysis
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
 				vp.Transform();
 
 				DeadCode.Eliminate(ssa);

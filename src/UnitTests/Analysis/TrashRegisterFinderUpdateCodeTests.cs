@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Analysis
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             p = new ProgramBuilder();
+            p.Program.Architecture = arch;
         }
 
         private void RunTest(string sExp)
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Analysis
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 var ebp = m.Frame.EnsureRegister(Registers.ebp);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.Assign(ebp, m.Mem32(esp));
@@ -132,7 +133,7 @@ main_exit:
                 m.Assign(eax, 0x1234);
                 m.Assign(ebx, 0x1234);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, eax);
+                m.MStore(esp, eax);
                 m.Call("foo", 4);
                 m.Assign(ebx, eax);
                 m.Return();
@@ -196,7 +197,7 @@ foo_exit:
                 var ecx = m.Frame.EnsureRegister(Registers.ecx);
 
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, esi);
+                m.MStore(esp, esi);
                 m.Assign(ecx, m.ISub(ecx, 1));
                 m.Assign(esi, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
@@ -243,7 +244,7 @@ foo_exit:
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 var ebp = m.Frame.EnsureRegister(Registers.ebp);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.SideEffect(m.Fn(
                     new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("strcpy", null)),
@@ -284,11 +285,11 @@ main_exit:
                 var ebp = m.Frame.EnsureRegister(Registers.ebp);
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, m.Word32(55));
+                m.MStore(esp, m.Word32(55));
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, m.Word32(45));
+                m.MStore(esp, m.Word32(45));
                 m.Assign(
                     eax,
                     m.Fn(

@@ -40,8 +40,8 @@ namespace Reko.UnitTests.Typing
 
 			Assign(x, i);
 			Assign(x, r);
-			Store(ptr, i);
-			Store(IAdd(ptr, Int32(4)), r);
+			MStore(ptr, i);
+			MStore(IAdd(ptr, Int32(4)), r);
 			Return();
 		}
 	}

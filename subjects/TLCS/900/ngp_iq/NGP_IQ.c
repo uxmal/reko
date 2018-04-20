@@ -292,8 +292,7 @@ void fn002005B8()
 void fn002005F5(word32 xwa)
 {
 	__ldf(0x03);
-	ui8 w_10 = w * 0x02 * 0x02;
-	<anonymous> *** xwa_12 = DPB(xwa, w_10, 8);
+	<anonymous> *** xwa_12 = DPB(xwa, w * 0x04, 8);
 	<anonymous> ** v9_16 = *xwa_12;
 	if (true)
 	{

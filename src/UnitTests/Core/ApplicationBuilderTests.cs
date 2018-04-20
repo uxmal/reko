@@ -84,11 +84,11 @@ namespace Reko.UnitTests.Core
         [Test]
         public void AppBld_BindToCallingFrame()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Word16));
+            var caller = new Procedure(arch, "caller", new Frame(PrimitiveType.Word16));
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
             caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
 
-            var callee = new Procedure("callee", new Frame(PrimitiveType.Word16));
+            var callee = new Procedure(arch,"callee", new Frame(PrimitiveType.Word16));
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
             callee.Signature = FunctionType.Action(wArg, dwArg);
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Core
         [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
         public void AppBld_BindByteToRegister()
         {
-            var callee = new Procedure("callee", new Frame(PrimitiveType.Ptr32));
+            var callee = new Procedure(arch, "callee", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 callee.Frame,
                 new CallSite(4, 0),
@@ -117,8 +117,8 @@ namespace Reko.UnitTests.Core
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
         public void AppBld_NoVariadic_Characteristics()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Ptr32));
-            var callee = new Procedure("callee", new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", new Frame(PrimitiveType.Ptr32));
+            var callee = new Procedure(arch, "callee", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
@@ -132,8 +132,8 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Ptr32));
-            var rand = new Procedure("rand", new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", new Frame(PrimitiveType.Ptr32));
+            var rand = new Procedure(arch, "rand", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
@@ -147,8 +147,8 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue_WithArgs()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Ptr32));
-            var fputs = new Procedure("fputs", new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", new Frame(PrimitiveType.Ptr32));
+            var fputs = new Procedure(arch, "fputs", new Frame(PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),

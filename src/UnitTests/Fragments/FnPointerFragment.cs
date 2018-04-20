@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Fragments
             Identifier pfn = Local32("pfn");
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
             Assign(pfn, Word32(0x1213130));
-            Store(Word32(0x10000000), pfn);
+            MStore(Word32(0x10000000), pfn);
             Call(Mem32(Word32(0x10000000)), 4);
             Return();
         }

@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Analysis
 
             m.Label("loop");
             m.BranchIf(m.Eq(p, 0x4000), "done");
-            m.Store(m.IAdd(p, 0x3000), m.Int32(0));
+            m.MStore(m.IAdd(p, 0x3000), m.Int32(0));
             m.Assign(p, m.IAdd(p, 4));
             m.Goto("loop");
 

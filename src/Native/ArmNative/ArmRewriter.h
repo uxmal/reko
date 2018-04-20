@@ -105,6 +105,7 @@ protected:
 	void RewriteLdrex();
 	void RewriteMcr();
 	void RewriteMla(bool hiLeft, bool hiRight, BaseType, BinOpEmitter);
+	void RewriteMlxd(bool swap, BaseType, BinOpEmitter mul, BinOpEmitter addSub);
 	void RewriteMlal(bool hiLeft, bool hiRight, BaseType, BinOpEmitter);
 	void RewriteMov();
 	void RewriteMovt();
@@ -164,7 +165,7 @@ protected:
 	void RewriteVsqrt();
 	void RewriteVstr();
 	void RewriteXtab(BaseType);
-	void RewriteXtb(BaseType);
+	void RewriteXtb(BaseType, BaseType);
 	void RewriteYield();
 
 protected:

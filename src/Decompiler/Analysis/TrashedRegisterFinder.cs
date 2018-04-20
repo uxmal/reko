@@ -169,7 +169,7 @@ namespace Reko.Analysis
             // SP = fp
             // assignment in a platform-independent way.
             flow[proc.EntryBlock].SymbolicIn.SetValue(
-                proc.Frame.EnsureRegister(program.Architecture.StackRegister),
+                proc.Frame.EnsureRegister(proc.Architecture.StackRegister),
                 proc.Frame.FramePointer);
         }
 
@@ -256,10 +256,11 @@ namespace Reko.Analysis
         {
             bf = flow[block];
             EnsureEvaluationContext(bf);
-            if (block.Procedure.EntryBlock == block)
+            var proc = block.Procedure;
+            if (proc.EntryBlock == block)
             {
-                var sp = block.Procedure.Frame.EnsureRegister(program.Architecture.StackRegister);
-                bf.SymbolicIn.RegisterState[sp.Storage] = block.Procedure.Frame.FramePointer;
+                var sp = proc.Frame.EnsureRegister(proc.Architecture.StackRegister);
+                bf.SymbolicIn.RegisterState[sp.Storage] = proc.Frame.FramePointer;
             }
             ctx.TrashedFlags = new Dictionary<RegisterStorage, uint>(bf.grfTrashedIn);
         }
@@ -273,7 +274,7 @@ namespace Reko.Analysis
 
         public void PropagateToProcedureSummary(Procedure proc)
         {
-            var prop = new TrashedRegisterSummarizer(program.Architecture, proc, flow[proc], ctx);
+            var prop = new TrashedRegisterSummarizer(proc, flow[proc], ctx);
             bool changed = prop.PropagateToProcedureSummary();
             if (changed)
             {
@@ -424,6 +425,11 @@ namespace Reko.Analysis
             }
             //$TODO: get trash information from signature?
             return ci;
+        }
+
+        public Instruction VisitComment(CodeComment comment)
+        {
+            return comment;
         }
 
         public Instruction VisitDeclaration(Declaration decl)

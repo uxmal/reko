@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                 m.Assign(r1, m.Neg(r1));
 
                 m.Label("l_nonneg");
-                m.Store(m.IAdd(r9, 8), m.FMul(f3,Constant.Real64(2.5)));
+                m.MStore(m.IAdd(r9, 8), m.FMul(f3,Constant.Real64(2.5)));
                 m.Return();
             });
         }

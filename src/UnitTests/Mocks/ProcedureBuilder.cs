@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Mocks
             if (arch == null)
                 throw new ArgumentNullException("arch");
             this.Architecture = arch;
-            this.Procedure = new Procedure(name, arch.CreateFrame());
+            this.Procedure = new Procedure(arch, name, arch.CreateFrame());
             this.blocks = blocks ?? new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();

@@ -115,7 +115,10 @@ namespace Reko.Arch.X86
             {
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
-                    target = m.Seq(orw.AluRegister(Registers.cs), target);
+                {
+                    var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector.Value);
+                    target = m.Seq(seg, target);
+                }
                 m.Call(target, (byte) opsize.Size);
             }
             rtlc = RtlClass.Transfer | RtlClass.Call;

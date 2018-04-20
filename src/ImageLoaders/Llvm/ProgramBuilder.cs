@@ -173,7 +173,7 @@ namespace Reko.ImageLoaders.LLVM
         
         public Procedure RegisterFunction(FunctionDefinition fn)
         {
-            var proc = new Procedure(fn.FunctionName, new Frame(program.Platform.PointerType));
+            var proc = new Procedure(program.Architecture, fn.FunctionName, new Frame(program.Platform.PointerType));
             var builder = new ProcedureBuilder(proc);
             Functions.Add(fn, builder);
             return proc;

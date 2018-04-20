@@ -47,14 +47,14 @@ namespace Reko.Analysis
 		private IProcessorArchitecture arch;
         private Statement stm;
 
-        public Aliases(Procedure proc, IProcessorArchitecture arch) : this(proc, arch, null)
+        public Aliases(Procedure proc) : this(proc, null)
         {
 		}
 
-		public Aliases(Procedure proc, IProcessorArchitecture arch, ProgramDataFlow pdf)
+		public Aliases(Procedure proc, ProgramDataFlow pdf)
 		{
 			this.proc = proc; 
-			this.arch = arch;
+			this.arch = proc.Architecture;
 			this.pdf = pdf;
 
 			BuildAliases();

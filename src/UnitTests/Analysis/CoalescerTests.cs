@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Analysis
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 
-                ValuePropagator vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
                 vp.Transform();
                 DeadCode.Eliminate(ssa);
                 Coalescer co = new Coalescer(ssa);
@@ -225,5 +225,24 @@ b = a + 0x00000004
 ";
             AssertProcedureCode(expected);
         }
+
+        [Test(Description = "Coalescense should work across a comment.")]
+        public void CoaAcrossComment()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            m.Assign(a, m.Mem32(m.Word32(0x00123400)));
+            m.Comment("This is a comment");
+            m.Assign(b, m.Mem32(a));
+
+            RunCoalescer();
+
+            var sExp =
+@"
+// This is a comment
+b = Mem3[Mem2[0x00123400:word32]:word32]
+";
+            AssertProcedureCode(sExp);
+    }
     }
 }

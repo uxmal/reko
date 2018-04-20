@@ -53,6 +53,9 @@ namespace Reko.Core.Lib
         /// Visit graph nodes in pre-order depth first order,
         /// starting at <paramref name="item"/>.
         /// </summary>
+        /// <remarks>
+        /// Note that this pre order visit consumes O(1) call stack space,
+        /// although it  </remarks>
         /// <param name="item"></param>
         /// <returns></returns>
         public IEnumerable<T> PreOrder(T item)

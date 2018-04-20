@@ -327,9 +327,9 @@ looptest:
                 var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
                 m.Assign(r1, 10);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r1);
+                m.MStore(sp, r1);
                 m.Call("foo", 4);
-                m.Store(m.Word32(0x00123400), r1);
+                m.MStore(m.Word32(0x00123400), r1);
                 m.Return();
             });
             pb.Add("foo", m =>
@@ -344,7 +344,7 @@ looptest:
 
                 m.Label("m00001");
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, m.ISub(r1, 1));
+                m.MStore(sp, m.ISub(r1, 1));
                 m.Call("foo", 0);
                 m.Assign(r1, m.IMul(r1, m.Mem32(m.ISub(sp, 8))));
                 m.Goto("m00003");
@@ -483,8 +483,8 @@ Identifiers:
                 m.BranchIf(m.Ne0(m.Mem32(m.Word32(0x00123404))), "m2");
 
                 m.Label("m3");
-                m.Store(m.Word32(0x00123408), i);
-                m.Store(m.Word32(0x0012340C), j);
+                m.MStore(m.Word32(0x00123408), i);
+                m.MStore(m.Word32(0x0012340C), j);
                 m.Return();
             });
             var sExp =
@@ -513,8 +513,8 @@ Identifiers:
                 m.BranchIf(m.Ne0(m.Mem32(m.Word32(0x00123404))), "m2");
 
                 m.Label("m3");
-                m.Store(m.Word32(0x00123408), i);
-                m.Store(m.Word32(0x0012340C), j);
+                m.MStore(m.Word32(0x00123408), i);
+                m.MStore(m.Word32(0x0012340C), j);
                 m.Return();
             });
             var sExp =

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Mocks
 			BranchIf(Lt(i,10), "body");
 			Return();
 			Label("body");
-			Store(IAdd(a, i), Int8(0));
+			MStore(IAdd(a, i), Int8(0));
 			Assign(i, IAdd(i, 1));
 			Goto("loop");
 		}

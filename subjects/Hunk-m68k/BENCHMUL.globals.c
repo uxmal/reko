@@ -5,10 +5,10 @@
 #include "BENCHMUL.h"
 
 struct Eq_126 * g_ptr0000;
-Eq_1634 g_t0001;
+Eq_1608 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_5263 g_a2B15[] = 
+Eq_5227 g_a2B15[] = 
 	{
 	};
 Eq_5 g_t4000 = 
@@ -26,12 +26,12 @@ ui32 g_dw4114 = 0x05050505;
 word32 g_dw4120 = 0x05050505;
 ptr32 g_ptr4124 = 0x06060606;
 word32 g_dw4128 = 0x06060606;
-struct Eq_3812 * g_ptr412C = &g_t6060606;
+struct Eq_3777 * g_ptr412C = &g_t6060606;
 word32 g_dw4130 = 0x06060606;
-Eq_4360 g_a4134[] = 
+Eq_4325 g_a4134[] = 
 	{
 	};
 Eq_68 g_t10202;
 Eq_68 g_t3030303;
-Eq_3812 g_t6060606;
+Eq_3777 g_t6060606;
 

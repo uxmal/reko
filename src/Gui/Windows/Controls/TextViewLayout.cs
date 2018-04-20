@@ -28,7 +28,7 @@ using System.Windows.Forms;
 namespace Reko.Gui.Windows.Controls
 {
     /// <summary>
-    /// 
+    /// Maintains the layout of the client area of a TextView.
     /// </summary>
     public class TextViewLayout
     {

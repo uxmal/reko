@@ -467,10 +467,31 @@ switcheroo_entry:
 // LocalsOut: fp(32)
 
 l000084D4:
+	word32 fp_19
 	branch r0 >u 0x00000006 l000084F4
-// DataOut: fp
+	switch (r0) { l00008514 l00008514 l00008514 l00008540 l00008520 l00008540 l00008534 }
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+// LocalsOut: Local -0014(32)
+
+l00008534:
+	bazulate(r0, r0)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+
+l00008520:
+	frobulate(r0 - 0x00000003, r0, out fp_19)
+// DataOut: fp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+
+l00008514:
+	frobulate(r0, r0, out fp_19)
+// DataOut: fp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 l000084F4:
 // DataOut:
@@ -478,34 +499,26 @@ l000084F4:
 // SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 l00008540:
-	return Mem0[bazulate(0x00000000, 0x00000000) - -4:word32]
+	fp_19 = bazulate(0x00000000, 0x00000000)
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
-l000084F0_1:
-	word32 sp_30
-	word32 ip_31
-	word32 fp_32
-	word32 lr_33
-	word32 pc_34
-	word32 r0_35
-	word32 r3_36
-	byte NZCV_37
-	byte ZC_38
-	word32 r1_39
-	call Mem0[0x000084F8 + r0 * 4:word32] (retsize: 0; depth: 20)
-		uses: dwLoc04_10,dwLoc08_8,dwLoc0C_6,dwLoc10_5,dwLoc14_14,fp_11,ip_2,lr,NZCV_16,pc,r0,r1,r3_15,sp_12,ZC_17
-		defs: fp_32,ip_31,lr_33,NZCV_37,pc_34,r0_35,r1_39,r3_36,sp_30,ZC_38
-	return fp_32
+l0000854C:
+	return Mem0[fp_19 - -4:word32]
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 switcheroo_exit:
 // DataOut: fp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid> -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+
+l000084F0_1:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x00000014 ip:fp fp:fp - 0x00000004 r3:r0 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 
@@ -532,7 +545,7 @@ l0000855C:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r0:0x00000000 r3:0x00000000 r1:<invalid> r2:<invalid> r4:<invalid> -24(fp):r1 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
+// SymbolicIn: sp:<invalid> ip:<invalid> fp:<invalid> r0:0x00000000 r3:0x00000000 r2:<invalid> r1:<invalid> r4:<invalid> -24(fp):r1 -20(fp):r0 -16(fp):fp -12(fp):fp -8(fp):lr -4(fp):pc
 
 
 
@@ -909,22 +922,21 @@ l00008654:
 // SymbolicIn: sp:fp
 
 l00008684:
-	word32 sp_49
-	word32 r4_50
-	word32 r5_51
-	word32 r6_52
-	word32 r10_53
-	word32 lr_54
-	word32 pc_55
-	word32 r3_56
-	word32 r2_57
-	word32 r1_58
-	byte NZCV_59
-	byte C_60
-	bcuisposr0 None_61
+	word32 sp_47
+	word32 r4_48
+	word32 r5_49
+	word32 r6_50
+	word32 r10_51
+	word32 lr_52
+	word32 pc_53
+	word32 r3_54
+	word32 r2_55
+	word32 r1_56
+	byte NZCV_57
+	byte C_58
 	call Mem0[r1_22:word32] (retsize: 0;)
-		uses: C_26,dwLoc04_12,dwLoc08_10,dwLoc0C_8,dwLoc10_6,dwLoc14_4,lr_48,None,NZCV_25,pc,r1_22,r10_18,r2_21,r3_24,r4_19,r5_47,r6_46,sp_2
-		defs: C_60,lr_54,None_61,NZCV_59,pc_55,r1_58,r10_53,r2_57,r3_56,r4_50,r5_51,r6_52,sp_49
+		uses: C_26,dwLoc04_12,dwLoc08_10,dwLoc0C_8,dwLoc10_6,dwLoc14_4,lr_46,NZCV_25,pc,r1_22,r10_18,r2_21,r3_24,r4_19,r5_45,r6_44,sp_2
+		defs: C_58,lr_52,NZCV_57,pc_53,r1_56,r10_51,r2_55,r3_54,r4_48,r5_49,r6_50,sp_47
 	return
 // DataOut:
 // DataOut (flags): 

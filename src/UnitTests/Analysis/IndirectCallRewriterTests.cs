@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
             m.Assign(ecx, m.Mem32(eax));
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, m.Word32(0x000A));
+            m.MStore(esp, m.Word32(0x000A));
             var c = m.Call(m.Mem32(m.IAdd(ecx, 4)), 4);
             c.CallSite.StackDepthOnEntry = 8;
             m.Return();
@@ -100,9 +100,9 @@ namespace Reko.UnitTests.Analysis
             m.Assign(eax, m.Mem32(m.IAdd(esp, 4)));
             m.Assign(ecx, m.Mem32(eax));
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, m.Word32(0x000B));
+            m.MStore(esp, m.Word32(0x000B));
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, m.Word32(0x000A));
+            m.MStore(esp, m.Word32(0x000A));
             var c = m.Call(m.Mem32(m.IAdd(ecx, 8)), 4);
             c.CallSite.StackDepthOnEntry = 12;
             m.Return();
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Analysis
                 importResolver,
                 programFlow);
             var ssa = sst.Transform();
-            var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, eventListener);
+            var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
             vp.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();

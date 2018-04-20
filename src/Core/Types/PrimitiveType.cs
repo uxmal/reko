@@ -140,7 +140,6 @@ namespace Reko.Core.Types
 
         public static PrimitiveType CreateWord(int byteSize)
         {
-            Domain w;
             string name;
             if (byteSize == 1)
             {

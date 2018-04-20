@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Analysis
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			ValuePropagator vp = new ValuePropagator(arch, segmentMap, ssa, new FakeDecompilerEventListener());
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new FakeDecompilerEventListener());
 			vp.Transform();
 			DeadCode.Eliminate(ssa);
 			Coalescer coa = new Coalescer(ssa);
@@ -159,8 +159,8 @@ namespace Reko.UnitTests.Analysis
 				Identifier c  = Local32("c");
 
 				Assign(c, IAdd(a, b));
-				Store(Word32(0x10000000), c);
-				Store(Word32(0x10000004), a);
+				MStore(Word32(0x10000000), c);
+				MStore(Word32(0x10000004), a);
 			}
 		}
 	}

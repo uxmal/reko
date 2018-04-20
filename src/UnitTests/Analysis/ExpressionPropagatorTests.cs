@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Analysis
                 var v4 = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
                 m.Assign(v4, m.IAdd(m.Mem16(ebx), 1));
-                m.Store(ebx, v4);
+                m.MStore(ebx, v4);
                 m.Assign(szo, m.Cond(v4));
                 m.Return();
             });
@@ -221,8 +221,8 @@ namespace Reko.UnitTests.Analysis
             {
                 r2 = m.Register("r2");
                 sp = m.Frame.EnsureRegister(arch.StackRegister);
-                m.Store(m.ISub(sp, 12), m.ISub(sp, 16));
-                m.Store(m.ISub(sp, 12), m.Word32(2));
+                m.MStore(m.ISub(sp, 12), m.ISub(sp, 16));
+                m.MStore(m.ISub(sp, 12), m.Word32(2));
             });
 
             var ctx = new SymbolicEvaluationContext (arch, proc.Frame);

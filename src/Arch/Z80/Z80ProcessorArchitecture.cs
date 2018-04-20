@@ -219,7 +219,14 @@ namespace Reko.Arch.Z80
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            if (rdr.TryReadUInt16(out var uaddr))
+            {
+                return Address.Ptr16(uaddr);
+            }
+            else
+            {
+                return null;
+            }
         }
 
 		public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)

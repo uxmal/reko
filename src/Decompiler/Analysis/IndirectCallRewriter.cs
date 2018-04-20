@@ -109,7 +109,7 @@ namespace Reko.Analysis
             ssam.AdjustRegisterAfterCall(
                 stm,
                 call,
-                program.Architecture.StackRegister,
+                ssa.Procedure.Architecture.StackRegister,
                 ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
             ssam.AdjustRegisterAfterCall(
                 stm,

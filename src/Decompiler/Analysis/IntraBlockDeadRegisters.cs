@@ -291,6 +291,11 @@ namespace Reko.Analysis
             return false;
         }
 
+        public bool VisitComment(CodeComment comment)
+        {
+            return false;
+        }
+
         public bool VisitDeclaration(Declaration decl)
         {
             return false;

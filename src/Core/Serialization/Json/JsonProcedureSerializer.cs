@@ -233,6 +233,13 @@ namespace Reko.Core.Serialization.Json
             throw new NotImplementedException();
         }
 
+        public void VisitComment(CodeComment comment)
+        {
+            js.Write("cmt");
+            w.Write(",");
+            w.Write(comment.Text);
+        }
+
         public void VisitConditionalExpression(ConditionalExpression cond)
         {
             throw new NotImplementedException();

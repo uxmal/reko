@@ -106,13 +106,13 @@ namespace Reko.UnitTests.Analysis
                     importResolver, 
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
-                var larw = new LongAddRewriter(program.Architecture, ssa);
+                var larw = new LongAddRewriter(ssa);
                 larw.Transform();
 
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, listener);
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;
@@ -419,8 +419,8 @@ done:
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(r1));
                 m.Assign(r3, m.IAdd(m.IAdd(r3, r4), C));
-                m.Store(m.Word32(0x0444400), r1);
-                m.Store(m.Word32(0x0444404), r3);
+                m.MStore(m.Word32(0x0444400), r1);
+                m.MStore(m.Word32(0x0444404), r3);
                 m.Return();
             });
             RunTest(p, "Analysis/CceAddAdcPattern.txt");
@@ -442,8 +442,8 @@ done:
                     new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
-                m.Store(m.Word32(0x3000), r2);
-                m.Store(m.Word32(0x3004), r1);
+                m.MStore(m.Word32(0x3000), r2);
+                m.MStore(m.Word32(0x3004), r1);
                 m.Return();
             });
             RunTest(p, "Analysis/CceShrRcrPattern.txt");
@@ -465,8 +465,8 @@ done:
                     new PseudoProcedure(PseudoProcedure.RolC, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
-                m.Store(m.Word32(0x3000), r1);
-                m.Store(m.Word32(0x3004), r2);
+                m.MStore(m.Word32(0x3000), r1);
+                m.MStore(m.Word32(0x3004), r2);
                 m.Return();
             });
             RunTest(p, "Analysis/CceShlRclPattern.txt");
@@ -535,7 +535,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.Store(m.Word32(0x00123400), r2);
+                m.MStore(m.Word32(0x00123400), r2);
 
                 m.Label("mElse");
                 m.Return();
@@ -561,7 +561,7 @@ ProcedureBuilder_exit:
 
             var ssa = new SsaTransform(new Program { Architecture = m.Architecture }, m.Procedure, new HashSet<Procedure> { m.Procedure }, null, new ProgramDataFlow());
             this.ssaState = ssa.Transform();
-            var vp = new ValuePropagator(m.Architecture, segmentMap, ssaState, new FakeDecompilerEventListener());
+            var vp = new ValuePropagator(segmentMap, ssaState, new FakeDecompilerEventListener());
             vp.Transform();
             Given_ConditionCodeEliminator();
             cce.Transform();
@@ -615,7 +615,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.Store(m.Word32(0x00123400), rax);
+                m.MStore(m.Word32(0x00123400), rax);
 
                 m.Label("mElse");
                 m.Return();

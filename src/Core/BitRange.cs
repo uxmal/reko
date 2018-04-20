@@ -28,7 +28,7 @@ namespace Reko.Core
     /// <summary>
     /// Represents a bit range within a register as two shorts.
     /// </summary>
-    public struct BitRange
+    public struct BitRange : IComparable<BitRange>
     {
         public static readonly BitRange Empty = new BitRange(0, 0);
 
@@ -57,6 +57,27 @@ namespace Reko.Core
         public bool IsEmpty
         {
             get { return Lsb >= Msb; }
+        }
+
+        public int CompareTo(BitRange that)
+        {
+            return (this.Msb - this.Lsb) - (that.Msb - that.Lsb);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null && obj is BitRange that)
+            {
+                return this.Lsb == that.Lsb && this.Msb == that.Msb;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            if (IsEmpty)
+                return 0;
+            return Lsb.GetHashCode() ^ Msb.GetHashCode() * 5;
         }
 
         public static BitRange operator | (BitRange a, BitRange b)
@@ -102,25 +123,6 @@ namespace Reko.Core
         public static bool operator !=(BitRange a, BitRange b)
         {
             return a.Lsb != b.Lsb || a.Msb != b.Msb;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is BitRange)
-            {
-                var that = (BitRange)obj;
-                if (this.IsEmpty)
-                    return that.IsEmpty;
-                return this.Msb == that.Msb && this.Lsb == that.Lsb;
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            if (this.IsEmpty)
-                return 0;
-            return Lsb.GetHashCode() ^ 17 * Msb.GetHashCode();
         }
 
         public override string ToString()

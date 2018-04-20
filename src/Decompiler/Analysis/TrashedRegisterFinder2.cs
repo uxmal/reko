@@ -152,9 +152,7 @@ namespace Reko.Analysis
         private void CategorizeIdentifier(SsaIdentifier sid)
         {
             var e = GetReachingExpression(sid, activePhis);
-            Identifier id;
-            Constant c;
-            if (e.Item1.As(out id))
+            if (e.Item1 is Identifier id)
             {
                 if (id == sid.OriginalIdentifier ||
                     id == ssa.Procedure.Frame.FramePointer)
@@ -164,7 +162,7 @@ namespace Reko.Analysis
                 }
                 // Fall through to trash case.
             }
-            else if (e.Item1.As(out c) && c.IsValid)
+            else if (e.Item1 is Constant c && c.IsValid)
             {
                 flow.Constants.Add(sid.OriginalIdentifier.Storage, c);
                 // Fall through to trash case.
@@ -192,20 +190,17 @@ namespace Reko.Analysis
                 // Reaching definition was a DefInstruction;
                 return new Tuple<Expression, SsaIdentifier>(sid.Identifier, sid);
             }
-            Assignment ass;
-            if (defInstr.As(out ass))
+            if (defInstr is Assignment ass)
             {
                 var src = VisitAssignment(ass, sid);
                 return src;
             }
-            CallInstruction call;
-            if (defInstr.As(out call))
+            if (defInstr is CallInstruction call)
             {
                 return VisitCall(call, sid);
             }
 
-            PhiAssignment phi;
-            if (defInstr.As(out phi))
+            if (defInstr is PhiAssignment phi)
             {
                 return VisitPhi(activePhis, phi, sid);
             }
@@ -253,25 +248,22 @@ namespace Reko.Analysis
 
         public Tuple<Expression,SsaIdentifier> VisitAssignment(Assignment ass, SsaIdentifier sid)
         {
-            Constant c;
-            if (ass.Src.As(out c))
+            if (ass.Src is Constant c)
             {
                 return new Tuple<Expression,SsaIdentifier>(c, sid);
             }
-            Identifier idCopy;
-            if (ass.Src.As(out idCopy))
+            if (ass.Src is Identifier idCopy)
             {
                 sid = ssa.Identifiers[idCopy];
                 return GetReachingExpression(sid, activePhis);
             }
-            BinaryExpression bin;
-            if (ass.Src.As(out bin) && 
-                bin.Left.As(out idCopy) &&
-                bin.Right.As(out c))
+            if (ass.Src is BinaryExpression bin &&
+                bin.Left is Identifier idLeft &&
+                bin.Right is Constant cRight)
             {
                 if (bin.Operator == Operator.IAdd)
                 {
-                    var sidCopy = ssa.Identifiers[idCopy];
+                    var sidCopy = ssa.Identifiers[idLeft];
                     var next = GetReachingExpression(sidCopy, activePhis);
                     if (next.Item1 != Constant.Invalid && next.Item2 != sidCopy)
                     {
@@ -302,9 +294,8 @@ namespace Reko.Analysis
             }
 
             // Are we already assuming that sid is preserved? If so, continue.
-            HashSet<Storage> preserved;
             var stg = sid.Identifier.Storage;
-            if (this.assumedPreserved.TryGetValue(ssa.Procedure, out preserved) &&
+            if (this.assumedPreserved.TryGetValue(ssa.Procedure, out HashSet<Storage> preserved) &&
                 preserved.Contains(sid.Identifier.Storage))
             {
                 var sidBeforeCall = GetIdentifierFor(stg, call.Uses);

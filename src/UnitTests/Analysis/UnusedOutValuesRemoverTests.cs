@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.Store(m.Word16(0x123408), r1);
+                m.MStore(m.Word16(0x123408), r1);
                 m.Return();
             });
 
@@ -142,7 +142,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
-                m.Store(m.Word32(0x123420), r1);
+                m.MStore(m.Word32(0x123420), r1);
             });
             pb.Add("foo", m =>
             {
@@ -150,9 +150,9 @@ foo_exit:
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.Store(m.Word32(0x123408), r1);
+                m.MStore(m.Word32(0x123408), r1);
                 m.Assign(r2, m.Mem32(m.Word32(0x123410)));
-                m.Store(m.Word32(0x123418), r2);
+                m.MStore(m.Word32(0x123418), r2);
                 m.Return();
             });
 
@@ -206,7 +206,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
-                m.Store(m.Word32(0x123420), r1);
+                m.MStore(m.Word32(0x123420), r1);
             });
             pb.Add("foo", m =>
             {
@@ -214,9 +214,9 @@ foo_exit:
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.Store(m.Word32(0x123408), r1);
+                m.MStore(m.Word32(0x123408), r1);
                 m.Assign(r2, m.Mem32(m.Word32(0x123410)));
-                m.Store(m.Word32(0x123418), r2);
+                m.MStore(m.Word32(0x123418), r2);
                 m.Return();
 
                 m.Procedure.Signature = FunctionType.Func(
@@ -277,7 +277,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("level1", 0);
-                m.Store(m.Word32(0x00123400), m.Cast(PrimitiveType.Byte, r1)); // forces r1 to be liveout on level1
+                m.MStore(m.Word32(0x00123400), m.Cast(PrimitiveType.Byte, r1)); // forces r1 to be liveout on level1
                 m.Return();
             });
             pb.Add("level1", m =>

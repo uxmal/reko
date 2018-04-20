@@ -181,6 +181,7 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage Top;     // The x87 stack pointer is modelled explicitly.
         public static readonly MemoryIdentifier ST;
 
+        public static readonly RegisterStorage mxcsr;
 
         internal static readonly Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
 
@@ -346,6 +347,7 @@ namespace Reko.Arch.X86
             
             // Control registers: 80 - 88
             // Debug registers: 89 - 96
+            mxcsr = new RegisterStorage("mxcsr", 93, 0, PrimitiveType.Word32);
 
             All = new RegisterStorage[] {
 				eax,

@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void AddProcedure(Address addr, string procName)
         {
             program.Procedures.Add(addr,
-                new Procedure(procName, program.Architecture.CreateFrame()));
+                new Procedure(null, procName, program.Architecture.CreateFrame()));
         }
 
         [Test]

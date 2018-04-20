@@ -260,7 +260,12 @@ namespace Reko.Loading
                     if (rawFile.EntryPoint.Follow)
                     {
                         var rdr = arch.CreateImageReader(new MemoryArea(baseAddr, image), entryAddr);
-                        return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
+                        var addr = arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
+                        return addr;
+                    }
+                    else
+                    {
+                        return entryAddr;
                     }
                 }
                 else

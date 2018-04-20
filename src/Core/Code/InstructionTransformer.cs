@@ -38,7 +38,12 @@ namespace Reko.Core.Code
 		{
 		}
 
-		public Instruction Transform(Instruction instr)
+        internal Instruction VisitComment(CodeComment codeComment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instruction Transform(Instruction instr)
 		{
 			return instr.Accept(this);
 		}

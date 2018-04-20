@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Fragments
 
             Assign(edx, Word32(0x0AAA00AA));
             Assign(edx, Dpb(edx, Byte(0x55), 8));
-            Store(Word32(0x1000000), edx);
+            MStore(Word32(0x1000000), edx);
 
             Assign(edx, Word32(0));
             Assign(edx, Dpb(edx, dl, 0));

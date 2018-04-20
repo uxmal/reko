@@ -25,6 +25,8 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using Reko.Core.Expressions;
+using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Core
 {
@@ -34,7 +36,8 @@ namespace Reko.UnitTests.Core
 		private StringWriter sw;
         private TypeFormatter tyfo;
         private TypeReferenceFormatter tyreffo;
-		private string nl = Environment.NewLine;
+        private IProcessorArchitecture arch;
+        private string nl = Environment.NewLine;
 
         [SetUp]
         public void SetUp()
@@ -44,6 +47,8 @@ namespace Reko.UnitTests.Core
             tyfo = new TypeFormatter(tf);
             tf = new TextFormatter(sw) { Indentation = 0 };
             tyreffo = new TypeReferenceFormatter(tf);
+            arch = MockRepository.GenerateStub<IProcessorArchitecture>();
+            arch.Replay();
         }
         
         [Test]
@@ -318,7 +323,7 @@ struct a {
             {
                 Protection = ClassProtection.Public,
                 Attribute = ClassMemberAttribute.Virtual,
-                Procedure = new Procedure("do_something", null),
+                Procedure = new Procedure(arch, "do_something", null),
                 Name = "do_something",
             });
             tyfo.Write(ct, null);
@@ -334,6 +339,30 @@ private:
 }";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());
+        }
+
+        [Test]
+        public void TyfoEnum()
+        {
+            var e = new EnumType("myEnum");
+            e.Members = new SortedList<string, long>
+            {
+                { "FALSE", 0 },
+                { "TRUE", 1 },
+                { "FILE_NOT_FOUND", 2 }
+            };
+
+            tyfo.Write(e, null);
+            var sExp =
+@"enum myEnum {
+	FALSE = 0x0,
+	TRUE = 0x1,
+	FILE_NOT_FOUND = 0x2,
+}";
+            #region
+            Assert.AreEqual(sExp, sw.ToString());
+
+            #endregion
         }
     }
 }

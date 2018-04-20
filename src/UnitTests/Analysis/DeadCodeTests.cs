@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Analysis
         private Procedure Given_Procedure_With_Flow(ProcedureBuilder m, string name, Storage[] uses, Storage[] defs)
         {
             var sig = new FunctionType();
-            var proc = new Procedure(name, m.Architecture.CreateFrame());
+            var proc = new Procedure(m.Architecture, name, m.Architecture.CreateFrame());
             var flow = new ProcedureFlow(proc);
             flow.BitsUsed = uses.ToDictionary(u => u, u => new BitRange(0, (int)u.BitSize / 8));
             flow.Trashed = defs.ToHashSet();
@@ -180,7 +180,7 @@ ProcedureBuilder_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 var call = m.Call(foo, 4);
-                m.Store(m.Word32(0x123400), r1);
+                m.MStore(m.Word32(0x123400), r1);
                 m.Return();
             });
         }

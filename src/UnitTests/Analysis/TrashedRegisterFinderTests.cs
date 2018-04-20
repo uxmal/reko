@@ -58,9 +58,10 @@ namespace Reko.UnitTests.Analysis
             program = new Program();
             program.Architecture = arch;
             program.SegmentMap = new SegmentMap(Address.Ptr32(0));
-            exit = new Procedure("exit", new Frame(PrimitiveType.Word32));
+            exit = new Procedure(arch, "exit", new Frame(PrimitiveType.Word32));
             flow = new ProgramDataFlow();
             p = new ProgramBuilder();
+            p.Program.Architecture = this.arch;
         }
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
@@ -129,7 +130,7 @@ namespace Reko.UnitTests.Analysis
             }
             catch
             {
-                Console.WriteLine(summary);
+                Debug.Print("{0}", summary);
                 throw;
             }
         }
@@ -238,7 +239,7 @@ namespace Reko.UnitTests.Analysis
         {
             var esp = m.Frame.EnsureRegister(Registers.esp);
             var r2 = m.Register(2);
-            var stm1 = m.Store(m.ISub(esp, 0x10), r2);
+            var stm1 = m.MStore(m.ISub(esp, 0x10), r2);
             var stm2 = m.Assign(r2, m.Int32(0));
             var stm3 = m.Assign(r2, m.Mem32(m.ISub(esp, 0x10)));
 
@@ -270,7 +271,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfCallInstruction()
         {
-            var callee = new Procedure("Callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(arch, "Callee", program.Architecture.CreateFrame());
             m.Call(callee, 4);
             var stm = m.Block.Statements.Last;
             var pf = new ProcedureFlow(callee);
@@ -288,7 +289,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToSuccessorBlocks()
         {
-            Procedure proc = new Procedure("test", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
             var frame = proc.Frame;
             Identifier ecx = m.Register(1);
             Identifier edx = m.Register(2);
@@ -362,7 +363,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToProcedureSummary()
         {
-            Procedure proc = new Procedure("proc", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
@@ -386,7 +387,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateFlagsToProcedureSummary()
         {
-            var proc = new Procedure("proc", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             var flags = program.Architecture.GetFlagGroup("SZ");
             var sz = m.Frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
@@ -405,7 +406,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier esp = m.Frame.EnsureRegister(Registers.esp);
             Identifier ebp = m.Frame.EnsureRegister(Registers.ebp);
-            m.Store(esp, ebp);
+            m.MStore(esp, ebp);
             m.Assign(ebp, m.Mem32(m.Int32(0x12345678)));
             m.Assign(ebp, m.Mem32(esp));
             m.Return();
@@ -426,7 +427,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier eax = m.Frame.EnsureRegister(Registers.eax);
             Identifier esp = m.Frame.EnsureRegister(Registers.esp);
-            m.Store(m.ISub(esp, 4), eax);
+            m.MStore(m.ISub(esp, 4), eax);
             m.Assign(eax, m.Int32(3));
             m.Assign(eax, m.Mem32(m.ISub(esp, 4)));
 
@@ -490,16 +491,17 @@ const eax:<invalid> ebx:0x01231313
 
 
         [Test]
-        public void PreservedValues()
+        public void TrfPreservedValues()
         {
             arch = new X86ArchitectureReal("x86-real-16");
+            p.Program.Architecture = arch;
             p.Add("main", m =>
             {
                 var sp = m.Frame.EnsureRegister(Registers.sp);
                 var ss = m.Frame.EnsureRegister(Registers.ss);
                 var ax = m.Frame.EnsureRegister(Registers.ax);
                 m.Assign(sp, m.ISub(sp, 2));
-                m.SegStore(ss, sp, ax);
+                m.SStore(ss, sp, ax);
                 m.Assign(ax, 1);
                 m.Assign(ax, m.SegMem16(ss, sp));
                 m.Assign(sp, m.IAdd(sp, 2));
@@ -541,10 +543,10 @@ const eax:<invalid>
                 var eax = m.Frame.EnsureRegister(Registers.eax);
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, eax);
+                m.MStore(esp, eax);
                 m.Assign(eax, 1);
                 m.Assign(m.Flags("SCZO"), m.Cond(eax));
-                m.Store(m.Word32(0x12340000), eax);
+                m.MStore(m.Word32(0x12340000), eax);
                 m.Assign(eax, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
                 m.Return();
@@ -567,7 +569,7 @@ const eax:<invalid>
                 var ebx = m.Frame.EnsureRegister(Registers.ebx);
                 m.Assign(eax, 1);
                 m.Label("Lupe");
-                m.Store(m.IAdd(ebx, eax), m.Word16(0));
+                m.MStore(m.IAdd(ebx, eax), m.Word16(0));
                 m.Assign(eax, m.IAdd(eax, 2));
                 m.BranchIf(m.Le(eax, 10), "Lupe");
                 m.Return();
@@ -704,7 +706,7 @@ const ax:0x0000 cx:<invalid>
                 var esp = m.Frame.EnsureRegister(Registers.esp);
                 m.Assign(esp, m.Frame.FramePointer);
                 m.Assign(esp, m.ISub(esp, 4)); 
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.BranchIf(m.Mem8(m.Word32(0x123400)), "m2base_case");
 

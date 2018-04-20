@@ -35,7 +35,7 @@ namespace Reko.Core.Lib
             return w != 0 && (w & (w - 1)) == 0;
         }
 
-        public static bool IsEvenPowerOfTwo(int n)
+        public static bool IsEvenPowerOfTwo(long n)
         {
             return n != 0 && (n & (n - 1)) == 0;
         }
@@ -51,11 +51,16 @@ namespace Reko.Core.Lib
         {
             ulong r;      // resulting sign-extended number
             ulong m = 1LU << (b - 1); // mask can be pre-computed if b is fixed
-            w = w & ((1U << b) - 1);  // (Skip this if bits in x above position b are already zero.)
+            w = w & ((1LU << b) - 1);  // (Skip this if bits in x above position b are already zero.)
             r = (w ^ m) - m;
             return r;
         }
 
+        public static ulong ZeroExtend(ulong w, int b)
+        {
+            ulong m = (1Lu << b) - 1;
+            return w & m;
+        }
         public static ulong Mask(int lsb, int bitsize)
         {
             return ((1ul << bitsize) - 1) << lsb;

@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Structure
             Assign(i, IAdd(i, 1));
             BranchIf(Eq(v, 0x20), "exit_loop");
 
-            Store(Word32(0x00300000), v);
+            MStore(Word32(0x00300000), v);
             Goto("loopHeader");
             Label("exit_loop");
             Return();

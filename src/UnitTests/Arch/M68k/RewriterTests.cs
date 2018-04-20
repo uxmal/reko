@@ -1642,5 +1642,15 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|nop");
         }
+
+        [Test]
+        public void M68krw_cmpi_b()
+        {
+            Rewrite(0x0C03, 0x0016);    // cmpi.b
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|v3 = (byte) d3 - 0x16",
+                "2|L--|CVZN = cond(v3)");
+        }
     }
 }

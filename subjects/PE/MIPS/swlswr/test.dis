@@ -619,14 +619,13 @@ l000114A0_ds_f:
 // LocalsOut: Stack +0000(32)
 
 l000114B0:
-	word32 r8_17 = Mem0[dwArg00_26:word32]
 	word32 sp_18
 	word32 ra_19
 	word32 r5_20
 	word32 r4_21
 	word32 r9_22
 	word32 r8_23
-	call r8_17 (retsize: 0; depth: 24)
+	call fn00000000 (retsize: 0; depth: 24)
 		uses: dwLoc08_4,r4,r5,r8_17,r9_10,ra,sp_2
 		defs: r4_21,r5_20,r8_23,r9_22,ra_19,sp_18
 // DataOut:

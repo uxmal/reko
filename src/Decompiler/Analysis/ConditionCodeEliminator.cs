@@ -467,8 +467,24 @@ namespace Reko.Analysis
             }
             else
             {
-                var pt = bin.Left.DataType.ResolveAs<PrimitiveType>();
-                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, Constant.Zero(pt));
+                var dt = bin.Left.DataType;
+                if (dt is QualifiedType qt)
+                {
+                    dt = qt.DataType;
+                }
+                var ptr = dt.ResolveAs<Pointer>();
+                Expression zero;
+                if (ptr != null)
+                {
+                    //$REVIEW: assumes a null pointer has bit pattern 0000...00.
+                    zero = Address.Create(ptr, 0);
+                }
+                else
+                {
+                    var pt = bin.Left.DataType.ResolveAs<PrimitiveType>();
+                    zero = Constant.Zero(pt);
+                }
+                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, zero);
             }
 			return e;
 		}

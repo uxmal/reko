@@ -54,9 +54,12 @@ namespace Reko.UnitTests.Scanning
         private void Given_Program(byte [] bytes)
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.ReadCodeAddress(0, null, null)).IgnoreArguments()
-                .Do(new Func<int, EndianImageReader, ProcessorState, Address>(
-                    (s, r, st) => Address.Ptr32(r.ReadLeUInt32())));
+            arch.Stub(a => a.ReadCodeAddress(
+                Arg<int>.Is.Anything,
+                Arg<EndianImageReader>.Is.NotNull,
+                Arg<ProcessorState>.Is.Anything))
+                .Do(new Func<int, EndianImageReader, ProcessorState, Address>((s, r, st) =>
+                     Address.Ptr32(r.ReadLeUInt32())));
             mem = new MemoryArea(Address.Ptr32(0x00010000), bytes);
             this.program = new Program(
                 new SegmentMap(mem.BaseAddress,

@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new ProcedureBuilder("foo");
             Identifier r4 = m.Register(4);
-            m.Store(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Ptr32, r4)));
+            m.MStore(m.Word32(0x400), m.Fn("foo", m.Out(PrimitiveType.Ptr32, r4)));
             m.Return();
 
             RunFileTest(m, "Analysis/SsaOutParameters.txt");
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Analysis
             var ebp = EnsureRegister32(m, "ebp");
             var eax = EnsureRegister32(m, "eax");
             m.Assign(esp, m.ISub(esp, 4));
-            m.Store(esp, ebp);
+            m.MStore(esp, ebp);
             m.Assign(ebp, esp);
             m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));  // dwArg04
             m.Assign(ebp, m.Mem32(esp));
@@ -271,19 +271,19 @@ namespace Reko.UnitTests.Analysis
                 "m2", "m2", "m3", "m3", "m2", "m3");
             m.Label("m2");
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Word32(0x42));
+            m.MStore(sp, m.Word32(0x42));
             m.Call(foo, 4);
             m.Assign(sp, m.IAdd(sp, 4));
             // fall through
             m.Label("m3");
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Word32(42));
+            m.MStore(sp, m.Word32(42));
             m.Call(foo, 4);
             m.Assign(sp, m.IAdd(sp, 4));
             // fall through
             m.Label("m4_default");
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Word32(0));
+            m.MStore(sp, m.Word32(0));
             m.Call(foo, 4);
             m.Assign(sp, m.IAdd(sp, 4));
 

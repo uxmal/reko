@@ -55,15 +55,12 @@ namespace Reko.Analysis
             store.Src.Accept(this);
 
             // Do not count assignments to out identifiers as uses.
-            Identifier idOut;
-            if (store.Dst.As(out idOut) && idOut.Storage is OutArgumentStorage)
+            if (store.Dst is Identifier idOut && idOut.Storage is OutArgumentStorage)
                 return;
             // Do not add memory identifier to uses
-            var access = store.Dst as MemoryAccess;
-            if (access != null)
+            if (store.Dst is MemoryAccess access)
             {
-                var sa = access as SegmentedAccess;
-                if (sa != null)
+                if (access is SegmentedAccess sa)
                     sa.BasePointer.Accept(this);
                 access.EffectiveAddress.Accept(this);
                 return;

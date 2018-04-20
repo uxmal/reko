@@ -146,7 +146,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-                ValuePropagator vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, listener);
+				ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
 				vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Analysis
             var ssa = sst.SsaState;
             sst.Transform();
 
-            var vp = new ValuePropagator(arch, segmentMap, ssa, listener);
+            var vp = new ValuePropagator(segmentMap, ssa, listener);
             vp.Transform();
             return ssa;
         }
@@ -188,9 +188,9 @@ namespace Reko.UnitTests.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(arch, segmentMap, m.Ssa, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, listener);
             vp.Transform();
-            m.Ssa.ValidateUses(s => Assert.Fail(s));
+            m.Ssa.Validate(s => Assert.Fail(s));
         }
 
 		[Test]
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Analysis
                 var r = m.Reg32("r0", 0);
                 var zf = m.Flags("Z");
                 m.Label("l0000");
-                m.Store(r, m.Word32(0));
+                m.MStore(r, m.Word32(0));
                 m.Assign(r, m.ISub(r, 4));
                 m.Assign(zf, m.Cond(r));
                 m.BranchIf(m.Test(ConditionCode.NE, zf), "l0000");
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r, 42);
 
                 m.Label("l0002");
-                m.Store(r, m.Word32(12));
+                m.MStore(r, m.Word32(12));
                 m.Assign(r, m.ISub(r, 4));
                 m.BranchIf(m.Eq0(r), "l0002");
 
@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
             SsaState ssa = sst.SsaState;
 
-			ValuePropagator vp = new ValuePropagator(arch, segmentMap, ssa, listener);
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -373,7 +373,7 @@ namespace Reko.UnitTests.Analysis
                 new ProgramDataFlow());
             sst.Transform();
 
-            var vp = new ValuePropagator(arch, segmentMap, sst.SsaState, listener);
+            var vp = new ValuePropagator(segmentMap, sst.SsaState, listener);
             var stm = m.Procedure.EntryBlock.Succ[0].Statements.Last;
 			vp.Transform(stm);
 			Assert.AreEqual("branch x_2 == 0x00000002 test", stm.Instruction.ToString());
@@ -604,7 +604,7 @@ namespace Reko.UnitTests.Analysis
             var bx_4 = m.Reg16("bx_4");
             var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.Store(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.MStore(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
@@ -624,7 +624,7 @@ namespace Reko.UnitTests.Analysis
 
 				Assign(edx, Word32(0x0AAA00AA));
 				Assign(edx, Dpb(edx, Byte(0x55), 8));
-				Store(Word32(0x1000000), edx);
+				MStore(Word32(0x1000000), edx);
 
 				Assign(edx, Word32(0));
                 Assign(edx, Dpb(edx, dl, 0));
@@ -656,7 +656,7 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(arch, segmentMap, ssa, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -678,7 +678,7 @@ namespace Reko.UnitTests.Analysis
 
             m.Assign(tmp, m.Mem8(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
 
             SsaState ssa = RunTest(m);
 
@@ -732,7 +732,7 @@ ProcedureBuilder_exit:
 
             m.Assign(tmp, m.Mem16(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
 
             SsaState ssa = RunTest(m);
 
@@ -815,7 +815,7 @@ ProcedureBuilder_exit:
             m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));
             m.Assign(bx, m.Cast(PrimitiveType.Word16, es_bx));
-            m.SegStore(es, m.IAdd(bx, 4), m.Byte(3));
+            m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
 
             var ssa = RunTest(m);
 
@@ -930,9 +930,9 @@ ProcedureBuilder_exit:
             m.Assign(sp, m.Frame.FramePointer);
             m.Assign(r1, pc);
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Word32(3));
+            m.MStore(sp, m.Word32(3));
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Mem16(m.Word32(0x1231230)));
+            m.MStore(sp, m.Mem16(m.Word32(0x1231230)));
             m.Call(r1, 4);
             m.Return();
 
@@ -1001,7 +1001,7 @@ ProcedureBuilder_exit:
         public void VpCastCast()
         {
             var m = new ProcedureBuilder();
-            m.Store(
+            m.MStore(
                 m.Word32(0x1234000),
                 m.Cast(
                     PrimitiveType.Real32,
@@ -1049,7 +1049,7 @@ ProcedureBuilder_exit:
             var bx_4 = m.Reg16("bx_4");
             var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.Store(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.MStore(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));

@@ -108,14 +108,14 @@ namespace Reko.UnitTests.Analysis
                     null, 
                     new ProgramDataFlow());
                 sst.Transform();
-                var vp = new ValuePropagator(arch, program.SegmentMap, sst.SsaState, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
 
-                var larw = new LongAddRewriter(program.Architecture, sst.SsaState);
+                var larw = new LongAddRewriter(sst.SsaState);
                 larw.Transform();
 
                 proc.Write(false, writer);
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Analysis
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            rw = new LongAddRewriter(arch, sst.SsaState);
+            rw = new LongAddRewriter(sst.SsaState);
             this.ssa = sst.SsaState;
         }
 

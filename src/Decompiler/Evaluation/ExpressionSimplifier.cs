@@ -63,6 +63,8 @@ namespace Reko.Evaluation
         private SelfDpbRule selfdpbRule;
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
+        private DistributedCastRule distributedCast;
+        
         private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
@@ -93,6 +95,7 @@ namespace Reko.Evaluation
             this.selfdpbRule = new SelfDpbRule(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.castCastRule = new CastCastRule(ctx);
+            this.distributedCast = new DistributedCastRule();
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
         }
 
@@ -170,6 +173,11 @@ namespace Reko.Evaluation
                 Changed = true;
                 return binopWithSelf.Transform(ctx).Accept(this);
             }
+            if (distributedCast.Match(binExp))
+            {
+                Changed = true;
+                return distributedCast.Transform(ctx).Accept(this);
+            }
 
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
@@ -231,8 +239,9 @@ namespace Reko.Evaluation
             // (- (+ e c1) c2) ==> (- e (- c2 c1))
             // (- (- e c1) c2) ==> (- e (+ c1 c2))
 
-            if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
+            if (binLeft != null && cLeftRight != null && cRight != null)
+            {
+                if (IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 Changed = true;
@@ -250,9 +259,9 @@ namespace Reko.Evaluation
                     }
                     else
                     {
-                        binOperator = 
-                            binOperator == Operator.IAdd 
-                                ? Operator.ISub 
+                            binOperator =
+                                binOperator == Operator.IAdd
+                                    ? Operator.ISub
                                 : Operator.IAdd;
                         c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
                     }
@@ -260,6 +269,16 @@ namespace Reko.Evaluation
                 if (c.IsIntegerZero)
                     return binLeft.Left;
                 return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
+            }
+                if (binExp.Operator == Operator.IMul && binLeft.Operator == Operator.IMul)
+                {
+                    Changed = true;
+                    var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
+                    if (c.IsIntegerZero)
+                        return c;
+                    else
+                        return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
+                }
             }
 
             // (rel (- e c1) c2) => (rel e c1+c2)

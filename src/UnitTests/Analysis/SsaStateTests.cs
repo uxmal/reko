@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r0, 1);
 
                 m.Label("mbloq");
-                m.Store(m.Word32(0x123400), r0);
+                m.MStore(m.Word32(0x123400), r0);
                 m.Return();
             });
             var block = FindBlock("mbloq");
@@ -152,7 +152,7 @@ m2: [r0:r0_2]
                 m.Assign(r0, 3);
 
                 m.Label("mbloq");
-                m.Store(m.Word32(0x123400), r0);
+                m.MStore(m.Word32(0x123400), r0);
                 m.Return();
             });
             var block = FindBlock("mbloq");
@@ -189,9 +189,9 @@ m5: [r0:r0_2]
                 m.Assign(r2, 99);
 
                 m.Label("mbloq");
-                m.Store(m.Word32(0x123400), r0);
-                m.Store(m.Word32(0x123404), r1);
-                m.Store(m.Word32(0x123408), r2);
+                m.MStore(m.Word32(0x123400), r0);
+                m.MStore(m.Word32(0x123404), r1);
+                m.MStore(m.Word32(0x123408), r2);
                 m.Return();
             });
             var block = FindBlock("mbloq");

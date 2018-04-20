@@ -262,8 +262,14 @@ namespace Reko.Arch.Pdp11
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
-            ushort uAddr = rdr.ReadLeUInt16();
-            return Address.Ptr16(uAddr);
+            if (rdr.TryReadUInt16(out var uaddr))
+            {
+                return Address.Ptr16(uaddr);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

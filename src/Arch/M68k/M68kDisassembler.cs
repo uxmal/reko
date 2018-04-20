@@ -1187,8 +1187,6 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             uint extension = dasm.read_imm_16();
-            if (BIT_B(extension))       //$DEBUG
-                extension.ToString();
 
             return CreateInstruction(
                 BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -1201,8 +1199,6 @@ namespace Reko.Arch.M68k
         {
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             uint extension = dasm.read_imm_16();
-            if (BIT_B(extension))       //$DEBUG
-                extension.ToString();
             return new M68kInstruction
             {
                 code = BIT_B(extension) ? Opcode.chk2 : Opcode.cmp2,
@@ -1217,8 +1213,6 @@ namespace Reko.Arch.M68k
             uint extension;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             extension = dasm.read_imm_16();
-            if (BIT_B(extension))       //$DEBUG
-                extension.ToString();
 
             return new M68kInstruction
             {

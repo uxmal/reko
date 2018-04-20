@@ -198,7 +198,9 @@ namespace Reko.Arch.X86
 
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
-            return mode.ReadCodeAddress(byteSize, rdr, state);
+            if (!mode.TryReadCodeAddress(byteSize, rdr, state, out var addr))
+                addr = null;
+            return addr;
         }
 
         public RegisterStorage GetControlRegister(int v)

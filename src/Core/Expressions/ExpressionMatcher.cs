@@ -353,12 +353,7 @@ namespace Reko.Core.Expressions
             return new WildExpression(label);
         }
 
-        public static Expression AnyId()
-        {
-            return new WildId(null);
-        }
-
-        public static Identifier AnyId(string label)
+        public static Identifier AnyId(string label = null)
         {
             return new WildId(label);
         }

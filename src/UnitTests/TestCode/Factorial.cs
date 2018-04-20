@@ -47,7 +47,7 @@ namespace Reko.UnitTests.TestCode
                 m.BranchIf(m.Test(ConditionCode.LE, cc), "m_done");
 
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r2);
+                m.MStore(sp, r2);
                 m.Assign(r1, m.ISub(r2, r1));
                 m.Call("fact", 0);
                 m.Assign(r2, m.Mem32(sp));
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.TestCode
                 var r1 = m.Register(1);
                 m.Assign(r1, 10);
                 m.Call("fact", 0);
-                m.Store(m.Word32(0x400000), r1);
+                m.MStore(m.Word32(0x400000), r1);
             });
             return pb.BuildProgram();
         }

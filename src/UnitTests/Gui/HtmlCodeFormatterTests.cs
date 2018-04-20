@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Gui
 {
@@ -37,6 +38,7 @@ namespace Reko.UnitTests.Gui
     {
         private StringWriter sb;
         private HtmlCodeFormatter hcf;
+        private IProcessorArchitecture arch;
         private Dictionary<Address, Procedure> map;
 
         [SetUp]
@@ -45,12 +47,14 @@ namespace Reko.UnitTests.Gui
             sb = new StringWriter();
             map = new Dictionary<Address,Procedure>();
             hcf = new HtmlCodeFormatter(sb, map);
+            arch = MockRepository.GenerateStub<IProcessorArchitecture>();
+            arch.Replay();
         }
 
         [Test]
         public void WriteProcedureConstant()
         {
-            var proc = new Procedure("proc", new Frame(PrimitiveType.Word32));
+            var proc = new Procedure(arch, "proc", new Frame(PrimitiveType.Word32));
             var pc = new ProcedureConstant(PrimitiveType.Word32, proc);
             map.Add(Address.Ptr32(0x42), proc);
 

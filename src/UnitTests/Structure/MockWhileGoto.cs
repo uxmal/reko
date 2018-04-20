@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Structure
             Goto("LoopTest");
 
             Label("LoopBody");
-            Store(di, al);
+            MStore(di, al);
             BranchIf(Ne(al, 0), "ok");
 
             Assign(ax, -1);
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Structure
 
             Label("ok");
             BranchIf(Ne(al,0x0D), "LoopTest");
-            Store(Word16(0x302), IAdd(Mem16(Word16(0x0302)), 1));
+            MStore(Word16(0x302), IAdd(Mem16(Word16(0x0302)), 1));
 
             Label("LoopTest");
             Assign(al, Mem8(si));
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Structure
             Assign(ax, ISub(si,bx)); 
 
             Label("Done");
-            Store(Word16(0x300), ax);
+            MStore(Word16(0x300), ax);
             Return(ax);
         }
 

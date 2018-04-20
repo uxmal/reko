@@ -77,7 +77,7 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    var vp = new ValuePropagator(program.Architecture, program.SegmentMap, ssa, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                 }
@@ -126,12 +126,9 @@ namespace Reko.Analysis
             var fpuStorages = new Dictionary<Storage, BitRange>();
             foreach (var item in items)
             {
-                RegisterStorage reg;
-                FpuStackStorage fpu;
-                if (item.Key.As(out reg))
+                if (item.Key is RegisterStorage reg)
                 {
-                    KeyValuePair<Storage, BitRange> widestRange;
-                    if (!registerDomains.TryGetValue(reg.Domain, out widestRange))
+                    if (!registerDomains.TryGetValue(reg.Domain, out var  widestRange))
                     {
                         widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
                         registerDomains.Add(reg.Domain, widestRange);
@@ -147,7 +144,7 @@ namespace Reko.Analysis
                         }
                     }
                 }
-                else if (item.Key.As(out fpu))
+                else if (item.Key is FpuStackStorage fpu)
                 {
                     fpuStorages[fpu] = new BitRange(0, (int)fpu.BitSize);
                 }
