@@ -1249,6 +1249,7 @@ namespace Reko.Scanning
             if (vector == null)
                 return null;
             var svc = program.Platform.FindService(vector.ToInt32(), state);
+            //$TODO if SVC uis null (and not-speculating) report the error.
             if (svc != null && svc.Signature == null)
             {
                 scanner.Error(ric.Address, string.Format("System service '{0}' didn't specify a signature.", svc.Name));

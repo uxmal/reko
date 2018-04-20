@@ -3375,5 +3375,14 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|S--|10000000(2): 1 instructions",
                 "1|L--|edx_ebx = __getsec(eax)");
         }
+
+        [Test(Description = "We cannot make 16-bit calls in 32- or 64-bit mode")]
+        public void X86Rw_invalid_call()
+        {
+            Run32bitTest(0x66, 0xFF, 0x51, 0xCC); // call word ptr[ecx - 34]
+            AssertCode(
+                "0|---|10000000(4): 1 instructions",
+                "1|---|<invalid>");
+        }
     }
 }
