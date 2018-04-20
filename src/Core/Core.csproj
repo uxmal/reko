@@ -654,9 +654,6 @@
     <Compile Include="ProcedureBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProcessorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ProcessorState.cs">
       <SubType>Code</SubType>
     </Compile>

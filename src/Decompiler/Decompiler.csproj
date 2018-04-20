@@ -278,7 +278,6 @@
     </Compile>
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
     <Compile Include="Scanning\Backwalker.cs" />
-    <Compile Include="Scanning\Backwalker2.cs" />
     <Compile Include="Scanning\BackwardSlicer.cs" />
     <Compile Include="Scanning\BackwardSlicerHost.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
@@ -310,7 +309,6 @@
     <Compile Include="Scanning\ValueSet.cs" />
     <Compile Include="Scanning\ValueSetEvaluator.cs" />
     <Compile Include="Scanning\VarargsFormatScanner.cs" />
-    <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Loading\Loader.cs" />
     <Compile Include="Scanning\EscapedAccessRewriter.cs">
       <SubType>Code</SubType>
