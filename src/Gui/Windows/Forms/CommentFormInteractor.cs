@@ -129,7 +129,14 @@ namespace Reko.Gui.Windows.Forms
         private void ModifyComment()
         {
             var comment = commentForm.TextBox.Text.Trim();
-            program.User.Annotations[address] = comment;
+            if (!string.IsNullOrEmpty(comment))
+            {
+                program.User.Annotations[address] = comment;
+            }
+            else
+            {
+                program.User.Annotations.Remove(address);
+            }
         }
     }
 }

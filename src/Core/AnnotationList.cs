@@ -59,6 +59,12 @@ namespace Reko.Core
             }
         }
 
+        public void Remove(Address addr)
+        {
+            this.annotations.Remove(addr);
+            AnnotationChanged.Fire(this);
+        }
+
         public IEnumerator<Annotation> GetEnumerator()
         {
             return annotations
