@@ -130,6 +130,7 @@
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
+    <Compile Include="EventBus.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\IAboutDialog.cs" />
     <Compile Include="Forms\IArchiveBrowserDialog.cs" />
