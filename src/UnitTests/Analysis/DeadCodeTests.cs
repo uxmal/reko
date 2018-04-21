@@ -55,6 +55,32 @@ namespace Reko.UnitTests.Analysis
             ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
+        protected override void RunTest(Program program, TextWriter writer)
+		{
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
+			dfa.UntangleProcedures();
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+				Aliases alias = new Aliases(proc);
+				alias.Transform();
+				SsaTransform sst = new SsaTransform(
+                    dfa.ProgramDataFlow,
+                    proc,
+                    null,
+                    proc.CreateBlockDominatorGraph(),
+                    program.Platform.CreateImplicitArgumentRegisters());
+				SsaState ssa = sst.SsaState;
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				cce.Transform();
+
+				DeadCode.Eliminate(proc, ssa);
+				ssa.Write(writer);
+				proc.Write(false, writer);
+
+                ssa.Validate(s => Assert.Fail(s));
+            }
+		}
+
         [Test]
 		public void DeadPushPop()
 		{
@@ -110,29 +136,5 @@ namespace Reko.UnitTests.Analysis
 ";
             AssertProcedureCode(sExp);
         }
-
-        protected override void RunTest(Program program, TextWriter writer)
-		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-				Aliases alias = new Aliases(proc);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(
-                    dfa.ProgramDataFlow,
-                    proc,
-                    null,
-                    proc.CreateBlockDominatorGraph(),
-                    program.Platform.CreateImplicitArgumentRegisters());
-				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-
-				DeadCode.Eliminate(proc, ssa);
-				ssa.Write(writer);
-				proc.Write(false, writer);
-			}
-		}
  	}
 }
