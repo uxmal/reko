@@ -20,13 +20,12 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Core;
+using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
-using Reko.Libraries.Microchip;
 
 namespace Reko.Arch.Microchip.Common
 {
@@ -685,7 +684,14 @@ namespace Reko.Arch.Microchip.Common
         {
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
-            op1.Write(writer, options);
+            if (op1 is PICOperandProgMemoryAddress target)
+            {
+                writer.WriteString($"0x{target}");
+            }
+            else
+            {
+                op1.Write(writer, options);
+            }
         }
 
     }
@@ -730,13 +736,17 @@ namespace Reko.Arch.Microchip.Common
         {
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
-            op1.Write(writer, options);
+            if (op1 is PICOperandProgMemoryAddress target)
+            {
+                writer.WriteString($"0x{target}");
+            }
+            else
+            {
+                op1.Write(writer, options);
+            }
             if (op2 is PICOperandFast fast)
             {
-                if (fast.IsFast)
-                {
-                    writer.WriteString(",FAST");
-                }
+                writer.WriteString(fast.IsFast ? ",FAST" : "");
             }
         }
 
