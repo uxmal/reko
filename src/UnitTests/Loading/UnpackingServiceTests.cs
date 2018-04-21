@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Loading
             upsvc.FindUnpackerBySignature("foo.exe", new byte[0x1000], 0x0100);
         }
 
-
+        [Ignore("Disabled until new suffix array generation algorithm")]
         [Test(Description = "Verifies that the suffix array for the raw image is loaded if it exists on disk.")]
         public void Upsvc_LoadSuffixArray_CreateSuffixArrayIfpresent()
         {
