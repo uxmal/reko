@@ -83,6 +83,14 @@ namespace Reko.Arch.X86
             m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
         }
 
+
+        private void RewriteCvts2si(PrimitiveType floatType)
+        {
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
+            m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
+        }
+
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
@@ -141,6 +149,13 @@ namespace Reko.Arch.X86
             m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
 
             m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
+        }
+
+        private void RewriteLdmxcsr()
+        {
+            var src = SrcOp(instrCur.op1);
+            var dst = binder.EnsureRegister(Registers.mxcsr);
+            m.Assign(dst, src);
         }
 
         private void RewriteMaskmovq()
@@ -249,19 +264,19 @@ namespace Reko.Arch.X86
                 host.PseudoProcedure("__pinsrw", dst.DataType, dst, src1, src2));
         }
 
-        private void RewritePor()
+        private void RewritePackedLogical(string intrinsicName)
         {
             var dst = this.SrcOp(instrCur.op1);
             var src = this.SrcOp(instrCur.op2);
-            m.Assign(dst, host.PseudoProcedure("__por", dst.DataType, dst, src));
+            m.Assign(dst, host.PseudoProcedure(intrinsicName, dst.DataType, dst, src));
         }
 
-        private void RewritePshufd()
+        private void RewritePshuf(string intrinsicName, PrimitiveType dt)
         {
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
-                    "__pshufd",
+                    intrinsicName,
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
                     SrcOp(instrCur.op2),
@@ -367,6 +382,13 @@ namespace Reko.Arch.X86
             }
         }
 
+        private void RewriteStmxcsr()
+        {
+            var src = binder.EnsureRegister(Registers.mxcsr);
+            var dst = SrcOp(instrCur.op1);
+            m.Assign(dst, src);
+        }
+
         private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType dstType = null)
         {
             var dst = SrcOp(instrCur.op1);
@@ -390,6 +412,29 @@ namespace Reko.Arch.X86
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
+        }
+
+        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType dstType = null)
+        {
+            var dst = SrcOp(instrCur.op1);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            if (dstType == null)
+                dstType = arrayType;
+            Expression src1;
+            Expression src2;
+            if (instrCur.op3 != null)
+            {
+                src1 = SrcOp(instrCur.op2);
+                src2 = SrcOp(instrCur.op3);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.op1);
+                src2 = SrcOp(instrCur.op2);
+            }
+            var tmp1 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, src1);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, src2));
         }
 
         private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType dstType = null)

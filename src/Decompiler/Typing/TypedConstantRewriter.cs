@@ -88,11 +88,10 @@ namespace Reko.Typing
         {
             if (addr.Selector.HasValue)
             {
-                Identifier segId;
-                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out segId))
+                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out Identifier segId))
                 {
                     eventListener.Warn(
-                        new NullCodeLocation(""), 
+                        new NullCodeLocation(""),
                         "Selector {0:X4} has no known segment.",
                         addr.Selector.Value);
                     return addr;

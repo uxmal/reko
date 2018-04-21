@@ -33,7 +33,7 @@ l0791:
 	byte A_17
 	byte R7_18
 	byte CAOP_19
-	call 0x4EF3 (retsize: 2; depth: 2)
+	call fn4EF3 (retsize: 2; depth: 2)
 		uses: A_12,CAOP_13,P_5,R1_3,R7_9,SP_1
 		defs: A_17,CAOP_19,P_16,R1_15,R7_18,SP_14
 	Mem22[0x0157:byte] = 0x05
@@ -50,7 +50,7 @@ l07A7:
 	byte A_34
 	byte R7_35
 	byte CAOP_36
-	call 0x4AC0 (retsize: 2; depth: 2)
+	call fn4AC0 (retsize: 2; depth: 2)
 		uses: A_24,CAOP_19,P_16,R1_15,R7_18,SP_14
 		defs: A_34,CAOP_36,P_33,R1_32,R7_35,SP_31
 // DataOut:

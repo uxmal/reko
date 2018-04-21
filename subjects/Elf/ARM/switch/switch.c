@@ -122,45 +122,55 @@ void call_frame_dummy()
 {
 }
 
-// 00008434: Register Eq_164 frobulate(Register Eq_164 r0, Stack word32 dwArg00, Register out ptr32 fpOut)
-Eq_164 frobulate(Eq_164 r0, word32 dwArg00, ptr32 & fpOut)
+// 00008434: Register Eq_164 frobulate(Register Eq_164 r0, Stack Eq_164 dwArg00, Register out ptr32 fpOut)
+Eq_164 frobulate(Eq_164 r0, Eq_164 dwArg00, ptr32 & fpOut)
 {
 	word32 fp_25;
 	*fpOut = dwArg00;
 	return __divsi3(r0 * r0, 1337);
 }
 
-// 00008470: Register word32 bazulate(Register Eq_164 r0, Register word32 r1)
-word32 bazulate(Eq_164 r0, word32 r1)
+// 00008470: Register word32 bazulate(Register Eq_164 r0, Register Eq_164 r1)
+word32 bazulate(Eq_164 r0, Eq_164 r1)
 {
 	struct Eq_179 * fp_23;
-	Eq_164 r0_28 = __divsi3((word32) r0 + r1, frobulate(r0, r1, out fp_23));
+	word32 r0_28 = __divsi3(r0 + r1, frobulate(r0, r1, out fp_23));
 	word32 * fp_33;
 	__divsi3(r0_28, frobulate(fp_23->tFFFFFFE8, dwArg00, out fp_33));
 	return *fp_33;
 }
 
-// 000084D4: Register word32 switcheroo(Register uint32 r0)
-word32 switcheroo(uint32 r0)
+// 000084D4: Register word32 switcheroo(Register Eq_164 r0)
+word32 switcheroo(Eq_164 r0)
 {
-	if (r0 > 0x06)
-		return *(bazulate(0x00, 0x00) - -0x04);
-	word32 sp_30;
-	word32 ip_31;
-	word32 fp_32;
-	word32 lr_33;
-	word32 pc_34;
-	word32 r0_35;
-	word32 r3_36;
-	byte NZCV_37;
-	byte ZC_38;
-	word32 r1_39;
-	(*((char *) globals->a84F8 + r0 * 0x04))();
-	return fp_32;
+	ptr32 fp_19;
+	switch (r0)
+	{
+	case 0x00:
+	case 0x01:
+		goto l00008540;
+	case 0x02:
+	case 0x03:
+	case 0x04:
+		frobulate(r0, r0, out fp_19);
+		break;
+	case 0x05:
+	case 0x07:
+l00008540:
+		fp_19 = bazulate(0x00, 0x00);
+		break;
+	case 0x06:
+		frobulate(r0 - 0x03, r0, out fp_19);
+		break;
+	case 0x08:
+		bazulate(r0, r0);
+		goto l00008540;
+	}
+	return *(fp_19 - -0x04);
 }
 
-// 0000855C: void main(Register uint32 r0)
-void main(uint32 r0)
+// 0000855C: void main(Register Eq_164 r0)
+void main(Eq_164 r0)
 {
 	switcheroo(r0);
 }
@@ -257,24 +267,23 @@ void __div0(Eq_164 r0)
 void __libc_csu_init(word32 pc)
 {
 	<anonymous> *** r10_18;
-	Eq_342 r4_19 = _init(pc, out r10_18);
+	Eq_339 r4_19 = _init(pc, out r10_18);
 	<anonymous> ** r1_22 = *r10_18;
 	int32 r3_24 = *r10_18 - r1_22;
 	if (r4_19 >= r3_24 >> 0x02)
 		return;
-	word32 sp_49;
-	word32 r4_50;
-	word32 r5_51;
-	word32 r6_52;
-	word32 r10_53;
-	word32 lr_54;
-	word32 pc_55;
-	word32 r3_56;
-	word32 r2_57;
-	word32 r1_58;
-	byte NZCV_59;
-	byte C_60;
-	bcuisposr0 None_61;
+	word32 sp_47;
+	word32 r4_48;
+	word32 r5_49;
+	word32 r6_50;
+	word32 r10_51;
+	word32 lr_52;
+	word32 pc_53;
+	word32 r3_54;
+	word32 r2_55;
+	word32 r1_56;
+	byte NZCV_57;
+	byte C_58;
 	(*r1_22)();
 }
 

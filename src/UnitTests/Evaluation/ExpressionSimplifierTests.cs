@@ -166,11 +166,38 @@ namespace Reko.UnitTests.Evaluation
         }
        
         [Test]
-        public void Ecs_UnsignedRangeComparison()
+        public void Exs_UnsignedRangeComparison()
         {
             Given_ExpressionSimplifier();
             var expr = m.Ugt(m.ISub(foo, 2), m.Word32(5));
             Assert.AreEqual("foo_0 >u 0x00000007 || foo_0 <u 0x00000002", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_MulMul()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.IMul(m.IMul(foo, 2), 2);
+            Assert.AreEqual("foo_0 * 0x00000004", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_DistributedCast()
+        {
+            Given_ExpressionSimplifier();
+            var w16 = PrimitiveType.Word16;
+            var expr = m.IAdd(m.Cast(w16, foo), m.Cast(w16, foo));
+            Assert.AreEqual("(word16) (foo_0 * 0x00000002)", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_RedundantCast()
+        {
+            Given_ExpressionSimplifier();
+            var w16 = PrimitiveType.Word16;
+            var w32 = PrimitiveType.Word32;
+            var expr = m.Cast(w16, (m.Cast(w16, foo)));
+            Assert.AreEqual("(word16) foo_0", expr.Accept(simplifier).ToString());
         }
     }
 }

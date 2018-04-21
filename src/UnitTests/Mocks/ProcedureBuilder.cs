@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Mocks
                 throw new ArgumentNullException("arch");
             this.InstructionSize = 1;
             this.Architecture = arch;
-            this.Procedure = new Procedure(name, arch.CreateFrame());
+            this.Procedure = new Procedure(arch, name, arch.CreateFrame());
             this.blocks = blocks ?? new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();

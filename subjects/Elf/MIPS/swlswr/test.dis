@@ -40,15 +40,14 @@ l000005B8_ds_f:
 // SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
 
 l000005C0:
-	word32 sp_25
-	word32 r28_26
-	word32 r25_27
-	word32 ra_28
-	word32 r2_29
-	bcuisposr0 None_30
+	word32 sp_23
+	word32 r28_24
+	word32 r25_25
+	word32 ra_26
+	word32 r2_27
 	call Mem0[ra + 0x000104F4:word32] + 2004 (retsize: 0; depth: 32)
-		uses: dwLoc04_9,dwLoc10_7,None,r2_11,r25_23,r28_21,ra,sp_6
-		defs: None_30,r2_29,r25_27,r28_26,ra_28,sp_25
+		uses: dwLoc04_9,dwLoc10_7,r2_11,r25_22,r28_20,ra,sp_6
+		defs: r2_27,r25_25,r28_24,ra_26,sp_23
 	branch true l000005C0_ds_t
 // DataOut: ra
 // DataOut (flags): 
@@ -65,15 +64,14 @@ l000005C0_ds_f:
 // SymbolicIn: sp:fp + -32 r25:<invalid> r28:ra + 0x000184C0 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
 
 l000005E4:
-	word32 sp_36
-	word32 r28_37
-	word32 r25_38
-	word32 ra_39
-	word32 r2_40
-	bcuisposr0 None_41
-	call Mem0[ra_28 + 0x000104D0:word32] + 2416 (retsize: 0; depth: 32)
-		uses: dwLoc04_9,dwLoc10_7,None_30,r2_29,r25_35,r28_33,ra_28,sp_25
-		defs: None_41,r2_40,r25_38,r28_37,ra_39,sp_36
+	word32 sp_33
+	word32 r28_34
+	word32 r25_35
+	word32 ra_36
+	word32 r2_37
+	call Mem0[ra_26 + 0x000104D0:word32] + 2416 (retsize: 0; depth: 32)
+		uses: dwLoc04_9,dwLoc10_7,r2_27,r25_32,r28_30,ra_26,sp_23
+		defs: r2_37,r25_35,r28_34,ra_36,sp_33
 	return
 // DataOut:
 // DataOut (flags): 
@@ -96,10 +94,9 @@ l000005AC:
 	word32 r25_15
 	word32 ra_16
 	word32 r2_17
-	bcuisposr0 None_18
 	call r25_12 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc10_7,r2_11,r25_12,r28_5,ra,sp_6
-		defs: None_18,r2_17,r25_15,r28_14,ra_16,sp_13
+		defs: r2_17,r25_15,r28_14,ra_16,sp_13
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -32 r25:0x00000588 r28:0x00018A80 r2:<invalid> -16(fp):0x00018A80 -4(fp):ra
@@ -788,10 +785,9 @@ l00000A30:
 	word32 r28_17
 	word32 r25_18
 	word32 ra_19
-	bcuisposr0 None_20
 	call Mem0[ra + 0x00010084:word32] + 1780 (retsize: 0; depth: 32)
 		uses: dwLoc04_9,dwLoc10_7,r25_15,r28_12,ra,sp_6
-		defs: None_20,r25_18,r28_17,ra_19,sp_16
+		defs: r25_18,r28_17,ra_19,sp_16
 	return
 // DataOut:
 // DataOut (flags): 

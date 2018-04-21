@@ -52,8 +52,8 @@ namespace Reko.UnitTests.Gui
         {
             var psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
 
-            procs.Add(new ProcedureSearchHit(program,  Address.Ptr32(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program,  Address.Ptr32(0x00001), new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure(program.Architecture, "bar", new Frame(PrimitiveType.Word32))));
 
             var view = mr.StrictMock<ISearchResultView>();
             view.Expect(s => view.AddColumn(
@@ -78,8 +78,8 @@ namespace Reko.UnitTests.Gui
         public void GetItemData()
         {
             ISearchResult psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00001), new Procedure("foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure("bar", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00001), new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure(program.Architecture, "bar", new Frame(PrimitiveType.Word32))));
 
             Assert.AreEqual(-1, psr.GetItem(0).ImageIndex);
             string [] str = psr.GetItem(0).Items;
@@ -114,7 +114,9 @@ namespace Reko.UnitTests.Gui
             mr.ReplayAll();
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x4234), new Procedure("foo", new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(
+                program, Address.Ptr32(0x4234),
+                new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Word32))));
             psr.NavigateTo(0);
             mr.VerifyAll();
         }

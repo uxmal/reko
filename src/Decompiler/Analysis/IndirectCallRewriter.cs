@@ -103,10 +103,10 @@ namespace Reko.Analysis
             ssam.AdjustRegisterAfterCall(
                 stm,
                 call,
-                program.Architecture.StackRegister,
+                ssa.Procedure.Architecture.StackRegister,
                 ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
             var ab = new ApplicationBuilder(
-                program.Architecture, proc.Frame, call.CallSite,
+                ssa.Procedure.Architecture, proc.Frame, call.CallSite,
                 call.Callee, ft, false);
             stm.Instruction = ab.CreateInstruction();
             ssaIdTransformer.Transform(stm, call);

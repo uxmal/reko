@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Analysis
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(
                     dfa.ProgramDataFlow,

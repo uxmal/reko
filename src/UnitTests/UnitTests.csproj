@@ -175,6 +175,7 @@
     <Compile Include="Core\Lib\LinqAlgorithmTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProcedureSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
+    <Compile Include="Core\StridedIntervalTests.cs" />
     <Compile Include="Core\Types\DataTypeComparerTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\MacOSClassicTests.cs" />
@@ -602,6 +603,7 @@
     <Compile Include="Mocks\WhileLoopFragment.cs" />
     <Compile Include="Mocks\MockFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanning\BackwardSlicerTests.cs" />
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
     <Compile Include="Scanning\CommentInjectorTests.cs" />
@@ -613,6 +615,7 @@
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ProcedureDetectorTests.cs" />
+    <Compile Include="Scanning\RtlBackwalkHost.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerInLinqTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
@@ -620,6 +623,7 @@
     <Compile Include="Scanning\ShingledScannerTests.cs" />
     <Compile Include="Scanning\StorageBinderTests.cs" />
     <Compile Include="Scanning\StringFinderTests.cs" />
+    <Compile Include="Scanning\ValueSetEvaluatorTests.cs" />
     <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
     <Compile Include="Structure\AbsynCodeEmitter.cs" />

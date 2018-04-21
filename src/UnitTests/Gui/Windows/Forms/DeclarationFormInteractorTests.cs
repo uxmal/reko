@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_ProcedureName(uint addr, string name)
         {
             var address = Address32.Ptr32(addr);
-            var proc = new Procedure(name, null);
+            var proc = new Procedure(program.Architecture, name, null);
             program.Procedures[address] = proc;
         }
 
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             {
                 var program = pa.Program;
                 var addr = pa.Address;
-                program.Procedures[addr] = new Procedure("<unnamed>", null);
+                program.Procedures[addr] = new Procedure(program.Architecture, "<unnamed>", null);
                 return markProcedureCmd;
             })); 
 

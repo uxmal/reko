@@ -155,37 +155,36 @@ l800000E4:
 // LocalsOut: fp(32) Local -000C(32)
 
 l800000F4:
-	word32 d0_105 = Mem0[0x80002726:word32]
-	word32 a2_106 = 0x80002714
-	branch 0x00000000 - d0_105 <=u 0x00000000 l8000012C
+	word32 d0_100 = Mem0[0x80002726:word32]
+	word32 a2_101 = 0x80002714
+	branch 0x00000000 - d0_100 <=u 0x00000000 l8000012C
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 -12(fp):d2 -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32) Local -000C(32)
 
 l80000114:
-	word32 d0_107 = d0_105 + 0x00000001
-	Mem110[0x80002726:word32] = d0_107
-	word32 a0_112 = Mem110[a2_106 + d0_107 * 4:word32]
-	word32 a7_113
-	word32 a6_114
-	byte CVZN_116
-	word32 d2_117
-	byte ZN_118
-	byte C_119
-	byte V_120
-	byte Z_121
-	word32 d0_122
-	byte CVZNX_123
-	byte VZ_124
-	word32 a0_125
-	bcuisposr0 None_126
-	byte CZ_127
-	call a0_112 (retsize: 4; depth: 16)
-		uses: a0_112,a2_106,a6_5,a7_11,C_18,CVZN_111,CVZNX_108,CZ,d0_107,d2_49,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10,None,V_19,VZ_53,Z_17,ZN_16
-		defs: a0_125,a2_115,a6_114,a7_113,C_119,CVZN_116,CVZNX_123,CZ_127,d0_122,d2_117,None_126,V_120,VZ_124,Z_121,ZN_118
-	d0_105 = Mem110[0x80002726:word32]
-	branch 0x00000000 - d0_105 >u 0x00000000 l80000114
+	word32 d0_102 = d0_100 + 0x00000001
+	Mem105[0x80002726:word32] = d0_102
+	word32 a0_107 = Mem105[a2_101 + d0_102 * 4:word32]
+	word32 a7_108
+	word32 a6_109
+	byte CVZN_111
+	word32 d2_112
+	byte ZN_113
+	byte C_114
+	byte V_115
+	byte Z_116
+	word32 d0_117
+	byte CVZNX_118
+	byte VZ_119
+	word32 a0_120
+	byte CZ_121
+	call a0_107 (retsize: 4; depth: 16)
+		uses: a0_107,a2_101,a6_5,a7_11,C_18,CVZN_106,CVZNX_103,CZ,d0_102,d2_47,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10,V_19,VZ_51,Z_17,ZN_16
+		defs: a0_120,a2_110,a6_109,a7_108,C_114,CVZN_111,CVZNX_118,CZ_121,d0_117,d2_112,V_115,VZ_119,Z_116,ZN_113
+	d0_100 = Mem105[0x80002726:word32]
+	branch 0x00000000 - d0_100 >u 0x00000000 l80000114
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
@@ -200,31 +199,30 @@ l8000012C:
 // LocalsOut: fp(32) Local -000C(32)
 
 l8000013A:
-	word32 a7_89
-	word32 a6_90
-	word32 a2_91
-	byte CVZN_92
-	word32 d2_93
-	byte ZN_94
-	byte C_95
-	byte V_96
-	byte Z_97
-	word32 d0_98
-	byte CVZNX_99
-	byte VZ_100
-	word32 a0_101
-	bcuisposr0 None_102
-	byte CZ_103
+	word32 a7_85
+	word32 a6_86
+	word32 a2_87
+	byte CVZN_88
+	word32 d2_89
+	byte ZN_90
+	byte C_91
+	byte V_92
+	byte Z_93
+	word32 d0_94
+	byte CVZNX_95
+	byte VZ_96
+	word32 a0_97
+	byte CZ_98
 	call null (retsize: 4; depth: 20)
-		uses: a0_64,a2_61,a6_62,a7_87,C_67,CVZN_60,CVZNX_57,CZ_54,d0_58,d2_59,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10_88,None_55,V_68,VZ_56,Z_66,ZN_65
-		defs: a0_101,a2_91,a6_90,a7_89,C_95,CVZN_92,CVZNX_99,CZ_103,d0_98,d2_93,None_102,V_96,VZ_100,Z_97,ZN_94
+		uses: a0_61,a2_58,a6_59,a7_83,C_64,CVZN_57,CVZNX_54,CZ_52,d0_55,d2_56,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10_84,V_65,VZ_53,Z_63,ZN_62
+		defs: a0_97,a2_87,a6_86,a7_85,C_91,CVZN_88,CVZNX_95,CZ_98,d0_94,d2_89,V_92,VZ_96,Z_93,ZN_90
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -12(fp):d2 -8(fp):a2 -4(fp):a6
 // LocalsOut: fp(32) Local -000C(32)
 
 l80000144:
-	Mem85[0x80002724:byte] = 0x01
+	Mem81[0x80002724:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -16(fp):8000065C -12(fp):d2 -8(fp):a2 -4(fp):a6

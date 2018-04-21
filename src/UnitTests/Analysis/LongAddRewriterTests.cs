@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Analysis
             RegisterLiveness rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
             foreach (Procedure proc in prog.Procedures.Values)
             {
-                LongAddRewriter larw = new LongAddRewriter(proc, prog.Architecture);
+                LongAddRewriter larw = new LongAddRewriter(proc);
                 larw.Transform();
                 proc.Write(false, writer);
                 writer.WriteLine();
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
             flags = new RegisterStorage("flags", 4, 0, PrimitiveType.Word16);
             SCZ = binder.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
             CF = binder.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
-            rw = new LongAddRewriter(m.Procedure, arch);
+            rw = new LongAddRewriter(m.Procedure);
         }
 
         [Test]

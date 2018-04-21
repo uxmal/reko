@@ -51,13 +51,12 @@ namespace Reko.Analysis
         private DecompilerEventListener eventListener;
 
         public ValuePropagator(
-            IProcessorArchitecture arch,
             SegmentMap segmentMap,
             SsaState ssa,
             DecompilerEventListener eventListener)
         {
-            this.arch = arch;
             this.ssa = ssa;
+            this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);

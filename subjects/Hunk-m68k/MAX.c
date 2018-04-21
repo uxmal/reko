@@ -466,7 +466,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 							union Eq_655 * a7_2878 = a7_149 - 0x04;
 							*a7_2878 = (union Eq_655 *) d2_139;
 							uint32 d1_2885 = __swap(0x0A) * (word16) d6_184;
-							uint32 d0_2892 = (word16) d6_184 * 0x0A + DPB(__swap(DPB(d1_2885, (word16) d1_2885 + (word16) (__swap(d6_184) * 0x0A), 0)), 0x00, 0);
+							uint32 d0_2892 = (word16) d6_184 * 0x0A + DPB(__swap(DPB(d1_2885, (word16) (d1_2885 + __swap(d6_184) * 0x0A), 0)), 0x00, 0);
 							a3_188 = a3_188 + 0x01;
 							int32 d1_2899 = (int32) *a3_188;
 							int32 d0_2911 = (int32) globals->a2BED[(int32) *a3_188];
@@ -577,7 +577,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 										{
 											a1 = (word32) a2_1010 + 0x04;
 											byte * a0_1586 = *a1;
-											struct Eq_1990 * a7_1587 = a7_149 - 0x04;
+											struct Eq_1988 * a7_1587 = a7_149 - 0x04;
 											a7_1587->t0000 = a2_1010;
 											*a1 = (byte **) (a0_1586 + 0x01);
 											byte v190_1597 = *a0_1586;
@@ -589,7 +589,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 										}
 										else
 										{
-											struct Eq_1970 * a7_1611 = a7_149 - 0x04;
+											struct Eq_1968 * a7_1611 = a7_149 - 0x04;
 											a7_1611->t0000 = a2_1010;
 											d0 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 											a7_1611->t0038 = d0;
@@ -612,7 +612,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 											{
 												a1 = (word32) a2_1010 + 0x04;
 												byte * a0_1522 = *a1;
-												struct Eq_2111 * a7_1523 = a7_149 - 0x04;
+												struct Eq_2109 * a7_1523 = a7_149 - 0x04;
 												a7_1523->t0000 = a2_1010;
 												*a1 = (byte **) (a0_1522 + 0x01);
 												byte v206_1533 = *a0_1522;
@@ -624,14 +624,14 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 											}
 											else
 											{
-												struct Eq_2091 * a7_1547 = a7_149 - 0x04;
+												struct Eq_2089 * a7_1547 = a7_149 - 0x04;
 												a7_1547->t0000 = a2_1010;
 												d0_1354 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 												a7_1547->t0038 = d0_1354;
 											}
 											a7_149->dw0040 = (word32) a7_149[0x01];
 											union Eq_889 ** d0_1365 = DPB(d0_1354, a7_149->dw0037, 0);
-											Eq_2151 d3_1361 = (word32) d3_150 + 0x01;
+											Eq_2149 d3_1361 = (word32) d3_150 + 0x01;
 											d0 = d0_1365 & 0xFF;
 											if (!__btst(globals->a2BED[(int32) (int16) (d0_1365 & 0xFF)], 0x00))
 												d0 = DPB(d0_1365 & 0xFF, (byte) (d0_1365 & 0xFF) | 0x20, 0);
@@ -647,7 +647,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 												{
 													a1 = (word32) a2_1010 + 0x04;
 													byte * a0_1479 = *a1;
-													struct Eq_2271 * a7_1480 = a7_149 - 0x04;
+													struct Eq_2269 * a7_1480 = a7_149 - 0x04;
 													a7_1480->t0000 = a2_1010;
 													*a1 = (byte **) (a0_1479 + 0x01);
 													byte v224_1490 = *a0_1479;
@@ -659,7 +659,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 												}
 												else
 												{
-													struct Eq_2251 * a7_1504 = a7_149 - 0x04;
+													struct Eq_2249 * a7_1504 = a7_149 - 0x04;
 													a7_1504->t0000 = a2_1010;
 													d0_1429 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 													a7_1504->t0038 = d0_1429;
@@ -671,7 +671,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 													d7 = 0x0078;
 												if (a7_149->dw004A != ~0x00)
 												{
-													struct Eq_2460 * a7_1463 = a7_149 - 0x04;
+													struct Eq_2458 * a7_1463 = a7_149 - 0x04;
 													a7_1463->t0000 = a2_1010;
 													*(a7_1463 - 0x04) = a7_1463->dw004E;
 													d0 = fn00001438(bArg03, dwArg04);
@@ -681,7 +681,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 												d7 = 111;
 											if (a7_149->dw0040 != ~0x00)
 											{
-												struct Eq_2554 * a7_1403 = a7_149 - 0x04;
+												struct Eq_2552 * a7_1403 = a7_149 - 0x04;
 												a7_1403->t0000 = a2_1010;
 												*(a7_1403 - 0x04) = a7_1403->dw0044;
 												d0 = fn00001438(bArg03, dwArg04);
@@ -714,7 +714,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 										{
 											a1 = (word32) a2_1010 + 0x04;
 											byte * a0_1269 = *a1;
-											struct Eq_2652 * a7_1270 = a7_149 - 0x04;
+											struct Eq_2650 * a7_1270 = a7_149 - 0x04;
 											a7_1270->t0000 = a2_1010;
 											*a1 = (byte **) (a0_1269 + 0x01);
 											byte v291_1280 = *a0_1269;
@@ -726,14 +726,14 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 										}
 										else
 										{
-											struct Eq_2632 * a7_1294 = a7_149 - 0x04;
+											struct Eq_2630 * a7_1294 = a7_149 - 0x04;
 											a7_1294->t0000 = a2_1010;
 											d0_1106 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 											a7_1294->t0038 = d0_1106;
 										}
 										a7_149->dw0040 = (word32) a7_149[0x01];
 										union Eq_889 ** d0_1117 = DPB(d0_1106, a7_149->dw0037, 0);
-										Eq_2692 d3_1113 = (word32) d3_150 + 0x01;
+										Eq_2690 d3_1113 = (word32) d3_150 + 0x01;
 										int32 d4_1114 = (word32) d4_140 + 0x01;
 										d0 = d0_1117 & 0xFF;
 										if (!__btst(globals->a2BED[(int32) (int16) (d0_1117 & 0xFF)], 0x00))
@@ -750,7 +750,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 											{
 												a1 = (word32) a2_1010 + 0x04;
 												byte * a0_1226 = *a1;
-												struct Eq_2771 * a7_1227 = a7_149 - 0x04;
+												struct Eq_2769 * a7_1227 = a7_149 - 0x04;
 												a7_1227->t0000 = a2_1010;
 												*a1 = (byte **) (a0_1226 + 0x01);
 												byte v308_1237 = *a0_1226;
@@ -762,7 +762,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 											}
 											else
 											{
-												struct Eq_2751 * a7_1251 = a7_149 - 0x04;
+												struct Eq_2749 * a7_1251 = a7_149 - 0x04;
 												a7_1251->t0000 = a2_1010;
 												d0_1177 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 												a7_1251->t0038 = d0_1177;
@@ -779,7 +779,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 											}
 											if (a7_149->dw004A != ~0x00)
 											{
-												struct Eq_3274 * a7_1210 = a7_149 - 0x04;
+												struct Eq_3272 * a7_1210 = a7_149 - 0x04;
 												a7_1210->t0000 = a2_1010;
 												*(a7_1210 - 0x04) = a7_1210->dw004E;
 												d0 = fn00001438(bArg03, dwArg04);
@@ -787,7 +787,7 @@ void fn00001468(Eq_655 d0, Eq_655 d1, int32 d7, byte * * a1, byte * a5, byte * a
 										}
 										if (a7_149->dw0040 != ~0x00)
 										{
-											struct Eq_2870 * a7_1154 = a7_149 - 0x04;
+											struct Eq_2868 * a7_1154 = a7_149 - 0x04;
 											a7_1154->t0000 = a2_1010;
 											*(a7_1154 - 0x04) = a7_1154->dw0044;
 											d0 = fn00001438(bArg03, dwArg04);
@@ -847,7 +847,7 @@ l00001F8E:
 												up32 a4_727 = a7_149->dw0040;
 												do
 												{
-													struct Eq_3315 * a7_742 = a7_149 - 0x04;
+													struct Eq_3313 * a7_742 = a7_149 - 0x04;
 													a7_742->t0000 = d2_139;
 													Eq_655 v347_748 = a7_742->t0000;
 													a7_742->t0000 = d7 >> 0x001F;
@@ -864,7 +864,7 @@ l00001F8E:
 														d4_1039 = d5_1223 - 0x30;
 													else
 														d4_1039.u0 = 0x00;
-													Eq_2988 d6_1034;
+													Eq_2986 d6_1034;
 													*(a7_149 - 0x04) = (union Eq_655 *) v347_748;
 													*(a7_149 - 0x04) = *(a7_149 - 0x04);
 													word32 d2_817 = d4_1039 + Mem815[a7_149 + 0x0044:word32];
@@ -878,7 +878,7 @@ l00001F8E:
 														d6_1034 = d5_1223 - 55;
 													else
 														d6_1034.u0 = 0x00;
-													Eq_3055 d2_1029;
+													Eq_3053 d2_1029;
 													*(a7_149 - 0x04) = v368_834;
 													*(a7_149 - 0x04) = *(a7_149 - 0x04);
 													word32 d2_866 = d6_1034 + Mem864[a7_149 + 0x0030:word32];
@@ -892,7 +892,7 @@ l00001F8E:
 													else
 														d2_1029.u0 = 0x00;
 													Eq_655 d0_1012;
-													*(a7_149 - 0x04) = (union Eq_3055 *) d2_1029;
+													*(a7_149 - 0x04) = (union Eq_3053 *) d2_1029;
 													*(a7_149 - 0x04) = *(a7_149 - 0x04);
 													word32 d2_915 = d2_1029 + Mem913[a7_149 + 0x0044:word32];
 													a7_149->t0030.u3 = d2_915;
@@ -942,7 +942,7 @@ l00001F8E:
 										}
 									}
 l0000216E:
-									Eq_2898 v396_402 = a7_149->dw004A;
+									Eq_2896 v396_402 = a7_149->dw004A;
 									d7 = DPB(d7, v396_402, 0);
 									word32 d4_404 = a7_149[0x01];
 									d2_139 = a7_149->dw0084;
@@ -972,7 +972,7 @@ l0000216E:
 									{
 										if (v396_402 == 117)
 										{
-											struct Eq_3442 * a7_451 = a7_149 - 0x04;
+											struct Eq_3440 * a7_451 = a7_149 - 0x04;
 											a7_451->t0000 = d0;
 											a7_451->b0038 = a7_451->b004C - 0x01;
 											a7_149 = (struct Eq_882 *) ((char *) &a7_451->t0000 + 0x04);
@@ -1019,7 +1019,7 @@ l0000216E:
 											{
 												word32 d0_534 = d2_139 + 0x03 >>u 0x02;
 												d2_139 = (d0_534 << 0x02) + 0x04;
-												struct Eq_3472 * a0_540 = *((word32) d2_139 - 0x04);
+												struct Eq_3470 * a0_540 = *((word32) d2_139 - 0x04);
 												a0_540->t0004 = a7_451->t0034;
 												a0_540->dw0000 = a7_451->dw0030;
 												d0 = d0_534 << 0x02;
@@ -1029,9 +1029,9 @@ l0000216E:
 										{
 											if (a7_149->dw006E == 0x2D)
 											{
-												struct Eq_3611 * v441_650 = &a7_149->dw002C;
+												struct Eq_3609 * v441_650 = &a7_149->dw002C;
 												d1 = -v441_650->dw0004;
-												struct Eq_3618 * v442_660 = a7_149 + 0x01;
+												struct Eq_3616 * v442_660 = a7_149 + 0x01;
 												d0 = -v441_650->dw0000 - (d1 < 0x00);
 												a6 = v442_660->dw0000;
 												a7_149 = v442_660->ptr0004;
@@ -1041,7 +1041,7 @@ l0000216E:
 												a7_149->dw0038 = (word32) a7_149->t0030;
 												a7_149[0x01] = (struct Eq_882) a7_149->dw002C;
 											}
-											struct Eq_3634 * a7_555 = a7_149 - 0x04;
+											struct Eq_3632 * a7_555 = a7_149 - 0x04;
 											a7_555->t0000 = d0;
 											a7_555->b0030 = a7_555->b004C - 0x01;
 											a7_149 = (struct Eq_882 *) ((char *) &a7_555->t0000 + 0x04);
@@ -1088,7 +1088,7 @@ l0000216E:
 											{
 												word32 d0_638 = d2_139 + 0x03 >>u 0x02;
 												d2_139 = (d0_638 << 0x02) + 0x04;
-												struct Eq_3683 * a0_644 = *((word32) d2_139 - 0x04);
+												struct Eq_3681 * a0_644 = *((word32) d2_139 - 0x04);
 												a0_644->t0004 = a7_555->t003C;
 												a0_644->dw0000 = a7_555->dw0038;
 												d0 = d0_638 << 0x02;
@@ -1181,7 +1181,7 @@ l0000216E:
 									if (a7_149->b0048 == 0x01)
 									{
 										d0 = d2_139 + 0x03 >>u 0x02 << 0x02;
-										struct Eq_1708 * a0_1849 = *d0;
+										struct Eq_1706 * a0_1849 = *d0;
 										a0_1849->t0004 = d4_140;
 										a0_1849->dw0000 = 0x00;
 										d2_139 = (word32) d0 + 0x04;
@@ -1237,7 +1237,7 @@ l0000216E:
 							{
 								byte ** a1_2090 = (word32) a2_1010 + 0x04;
 								byte * a0_2091 = *a1_2090;
-								struct Eq_2355 * a7_2092 = a7_149 - 0x04;
+								struct Eq_2353 * a7_2092 = a7_149 - 0x04;
 								a7_2092->t0000 = a2_1010;
 								*a1_2090 = (byte **) (a0_2091 + 0x01);
 								byte v235_2102 = *a0_2091;
@@ -1250,7 +1250,7 @@ l0000216E:
 							else
 							{
 								int32 a1_2116 = a7_149->dw002C;
-								struct Eq_2324 * a7_2117 = a7_149 - 0x04;
+								struct Eq_2322 * a7_2117 = a7_149 - 0x04;
 								a7_2117->t0000 = a2_1010;
 								a7_2117->dw0030 = a1_2116;
 								word32 a1_2124;
@@ -1260,7 +1260,7 @@ l0000216E:
 							}
 							a1 = a7_149->dw002C;
 							d5_1223 = a7_149[0x01];
-							Eq_2390 d3_1947 = (word32) d3_150 + 0x01;
+							Eq_2388 d3_1947 = (word32) d3_150 + 0x01;
 							int32 d4_1948 = (word32) d4_140 + 0x01;
 							if (a7_149[0x01] != ~0x00)
 							{
@@ -1330,7 +1330,7 @@ l0000216E:
 							a3_1633 = (word32) a3_1633 + 0x01;
 						}
 						a7_149[0x01] = (struct Eq_882) 0x00;
-						Eq_3659 v455_2153 = a7_149->dw002C;
+						Eq_3657 v455_2153 = a7_149->dw002C;
 						d7 = DPB(d7, v455_2153, 0);
 						Eq_655 d1_2155 = a7_149[0x01];
 						do
@@ -1345,7 +1345,7 @@ l0000216E:
 						} while (d1_2155 < 0x20);
 						a7_149->dw0084 = (word32) d2_139;
 						a7_149->dw002C = (int32) v455_2153;
-						Eq_3821 v464_2179 = a7_149->dw002C;
+						Eq_3819 v464_2179 = a7_149->dw002C;
 						while (*a3_1633 != 0x00)
 						{
 							cu8 v465_2499 = *a3_1633;
@@ -1358,7 +1358,7 @@ l0000216E:
 							}
 							else
 								d7 = DPB(d7, v465_2499, 0);
-							Eq_3860 d5_2509 = (int32) v465_2499;
+							Eq_3858 d5_2509 = (int32) v465_2499;
 							d0 = (int32) (byte) d7;
 							if (d0 - d5_2509 >= 0x00)
 							{
@@ -1403,7 +1403,7 @@ l0000216E:
 						{
 							a1 = (word32) a2_1010 + 0x04;
 							byte * a0_2451 = *a1;
-							struct Eq_3984 * a7_2452 = a7_149 - 0x04;
+							struct Eq_3982 * a7_2452 = a7_149 - 0x04;
 							a7_2452->t0000 = a2_1010;
 							*a1 = (byte **) (a0_2451 + 0x01);
 							byte v486_2462 = *a0_2451;
@@ -1415,17 +1415,17 @@ l0000216E:
 						}
 						else
 						{
-							struct Eq_3964 * a7_2476 = a7_149 - 0x04;
+							struct Eq_3962 * a7_2476 = a7_149 - 0x04;
 							a7_2476->t0000 = a2_1010;
 							d0 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 							a7_2476->t0030 = d0;
 						}
 						d5_1223 = a7_149->dw002C;
-						Eq_4016 d3_2227 = (word32) d3_150 + 0x01;
+						Eq_4014 d3_2227 = (word32) d3_150 + 0x01;
 						int32 d4_2228 = (word32) d4_140 + 0x01;
 						if (a7_149->dw002C != ~0x00)
 						{
-							struct Eq_4029 * a7_2282 = a7_149 - 0x04;
+							struct Eq_4027 * a7_2282 = a7_149 - 0x04;
 							a7_2282->ptr0000 = &a7_149->dw004A + 0x01;
 							*(a7_2282 - 0x04) = (byte ***) a1;
 							*(a7_2282 - 0x08) = 0x08;
@@ -1513,7 +1513,7 @@ l0000216E:
 					{
 						a1 = (word32) a2_1010 + 0x04;
 						byte * a0_2643 = *a1;
-						struct Eq_1597 * a7_2644 = a7_149 - 0x04;
+						struct Eq_1595 * a7_2644 = a7_149 - 0x04;
 						a7_2644->t0000 = a2_1010;
 						*a1 = (byte **) (a0_2643 + 0x01);
 						byte v131_2654 = *a0_2643;
@@ -1525,7 +1525,7 @@ l0000216E:
 					}
 					else
 					{
-						struct Eq_1577 * a7_2668 = a7_149 - 0x04;
+						struct Eq_1575 * a7_2668 = a7_149 - 0x04;
 						a7_2668->t0000 = a2_1010;
 						d0 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 						a7_2668->t0030 = d0;
@@ -1607,7 +1607,7 @@ l0000216E:
 					{
 						a1 = (word32) a2_1010 + 0x04;
 						byte * a0_3086 = *a1;
-						struct Eq_1430 * a7_3087 = a7_149 - 0x04;
+						struct Eq_1429 * a7_3087 = a7_149 - 0x04;
 						a7_3087->t0000 = a2_1010;
 						*a1 = (byte **) (a0_3086 + 0x01);
 						a2_1010 = a7_3087->t0000;
@@ -1618,11 +1618,11 @@ l0000216E:
 					}
 					else
 					{
-						struct Eq_1410 * a7_3111 = a7_149 - 0x04;
+						struct Eq_1409 * a7_3111 = a7_149 - 0x04;
 						a7_3111->t0000 = a2_1010;
 						a7_3111->t0030 = fn00002604(a6, dwArg00, out d1, out a1, out a5);
 					}
-					d0 = (int32) (int16) (int16) *a4_146;
+					d0 = (int32) (int16) *a4_146;
 					d5_1223 = a7_149->dw002C;
 					d3_165.u0 = 0x01;
 					d4_140 = (word32) d4_140 + 0x01;
@@ -1659,9 +1659,9 @@ uint32 fn0000248C(Eq_889 d4, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 dwArg0C, Eq_
 		d1_32 = d1_32 + 0x00010000;
 	Eq_655 d2_42 = __swap(d2_38);
 	uint32 d3_56 = __swap(dwArg0C) * (word16) dwArg08;
-	Eq_655 d3_61 = __swap(DPB(d3_56, (word16) d3_56 + (word16) (__swap(dwArg08) * (word16) dwArg0C), 0));
+	Eq_655 d3_61 = __swap(DPB(d3_56, (word16) (d3_56 + __swap(dwArg08) * (word16) dwArg0C), 0));
 	uint32 d3_72 = __swap(dwArg04) * (word16) dwArg10;
-	Eq_655 d3_77 = __swap(DPB(d3_72, (word16) d3_72 + (word16) (__swap(dwArg10) * (word16) dwArg04), 0));
+	Eq_655 d3_77 = __swap(DPB(d3_72, (word16) (d3_72 + __swap(dwArg10) * (word16) dwArg04), 0));
 	word32 d1_49;
 	*d1Out = (word32) DPB(d2_42, (word16) d4_29, 0);
 	return (int32) (word16) d2_42 + d1_32 + ((word32) DPB(d3_61, (word16) d3_61 ^ (word16) d3_61, 0) + dwArg0C * (word16) dwArg08) + ((word32) DPB(d3_77, (word16) d3_77 ^ (word16) d3_77, 0) + dwArg04 * (word16) dwArg10);
@@ -1773,7 +1773,7 @@ int32 fn00002604(byte * a6, Eq_655 dwArg04, Eq_889 * * & d1Out, byte * * & a1Out
 {
 	int32 d0_140;
 	word32 a1_28;
-	struct Eq_4523 * a2_29;
+	struct Eq_4519 * a2_29;
 	word32 a5_30;
 	word32 d1_31;
 	*d1Out = fn00002BBC(out a1_28, out a2_29, out a5_30);
@@ -1861,20 +1861,20 @@ int32 fn00002604(byte * a6, Eq_655 dwArg04, Eq_889 * * & d1Out, byte * * & a1Out
 	}
 }
 
-// 00002718: Register Eq_4714 fn00002718(Stack word32 dwArg04, Register out ptr32 d1Out, Register out ptr32 a0Out, Register out ptr32 a1Out)
-Eq_4714 fn00002718(word32 dwArg04, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
+// 00002718: Register Eq_4710 fn00002718(Stack word32 dwArg04, Register out ptr32 d1Out, Register out ptr32 a0Out, Register out ptr32 a1Out)
+Eq_4710 fn00002718(word32 dwArg04, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
 {
 	*d1Out = d1;
 	*a1Out = a1;
 	*a0Out = a0;
-	Eq_4714 d0_20;
+	Eq_4710 d0_20;
 	if (dwArg04 == 0x00)
 		d0_20.u0 = 0x00;
 	else
 	{
 		if (globals->dw3DC8 == 0x00)
 		{
-			struct Eq_4737 * a0_86 = globals->ptr3DC4;
+			struct Eq_4733 * a0_86 = globals->ptr3DC4;
 			null = null;
 			word32 d1_100;
 			word32 a0_101;
@@ -1911,17 +1911,17 @@ void fn00002784(ptr32 dwArg04)
 		fn0000284C(globals->dw3DC8, dwArg04 - 0x04, *(dwArg04 - 0x04) + 0x04);
 }
 
-// 0000284C: void fn0000284C(Stack (ptr Eq_4807) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
-void fn0000284C(Eq_4807 * dwArg04, up32 dwArg08, up32 dwArg0C)
+// 0000284C: void fn0000284C(Stack (ptr Eq_4803) dwArg04, Stack up32 dwArg08, Stack up32 dwArg0C)
+void fn0000284C(Eq_4803 * dwArg04, up32 dwArg08, up32 dwArg0C)
 {
 	if (globals->ptr3D94->w0014 < 0x27)
 	{
 		if (dwArg04 == null || dwArg08 == 0x00)
 			return;
-		struct Eq_4807 * a3_113 = dwArg08 + -0x0C;
+		struct Eq_4803 * a3_113 = dwArg08 + -0x0C;
 		if (dwArg0C - dwArg04->dw0014 < 0x00)
 		{
-			struct Eq_4807 * a2_87 = dwArg04;
+			struct Eq_4803 * a2_87 = dwArg04;
 			do
 			{
 				a2_87 = a2_87->ptr0000;
@@ -1941,12 +1941,12 @@ void fn0000284C(Eq_4807 * dwArg04, up32 dwArg08, up32 dwArg0C)
 		FreePooled(dwArg08, dwArg04);
 }
 
-// 000028E8: Register (ptr Eq_31) fn000028E8(Stack (ptr Eq_4769) dwArg04, Stack up32 dwArg08, Register out ptr32 d1Out, Register out ptr32 a0Out)
-Eq_31 * fn000028E8(Eq_4769 * dwArg04, up32 dwArg08, ptr32 & d1Out, ptr32 & a0Out)
+// 000028E8: Register (ptr Eq_31) fn000028E8(Stack (ptr Eq_4765) dwArg04, Stack up32 dwArg08, Register out ptr32 d1Out, Register out ptr32 a0Out)
+Eq_31 * fn000028E8(Eq_4765 * dwArg04, up32 dwArg08, ptr32 & d1Out, ptr32 & a0Out)
 {
 	*d1Out = d1;
 	struct Eq_31 * d0_45;
-	struct Eq_4907 * a0_31 = globals->ptr3D94;
+	struct Eq_4903 * a0_31 = globals->ptr3D94;
 	*a0Out = a0_31;
 	if (a0_31->w0014 >= 0x27)
 	{
@@ -1961,7 +1961,7 @@ Eq_31 * fn000028E8(Eq_4769 * dwArg04, up32 dwArg08, ptr32 & d1Out, ptr32 & a0Out
 		{
 			if (dwArg08 - dwArg04->dw0014 < 0x00)
 			{
-				struct Eq_4949 * a5_105 = dwArg04->ptr0000;
+				struct Eq_4945 * a5_105 = dwArg04->ptr0000;
 				while (a5_105->ptr0000 != null)
 				{
 					if (a5_105->b0008 != 0x00)
@@ -1987,7 +1987,7 @@ Eq_31 * fn000028E8(Eq_4769 * dwArg04, up32 dwArg08, ptr32 & d1Out, ptr32 & a0Out
 					d0_170[0x05] = (struct Eq_31) (d0_170 + 0x0A);
 					d0_170[0x06] = (struct Eq_31) (d0_170 + 0x0A);
 					*d0_170[0x05].dw0000 = (struct Eq_31) 0x00;
-					struct Eq_4737 * a2_188 = d0_170[0x05];
+					struct Eq_4733 * a2_188 = d0_170[0x05];
 					a2_188->dw0004 = dwArg04->dw0010;
 					d0_170[0x08] = (struct Eq_31) a2_188->dw0004;
 					Mem198[d0_170 + 0x001C:word32] = Mem194[d0_170 + 0x0020:word32] + Mem194[d0_170 + 0x0014:word32];
@@ -2033,13 +2033,13 @@ l000029BA:
 	return d0_45;
 }
 
-// 00002A0C: Register word32 fn00002A0C(Stack Eq_115 dwArg04, Stack (ptr Eq_4737) dwArg08, Stack (ptr Eq_4737) dwArg0C, Register out ptr32 d1Out, Register out ptr32 a0Out, Register out ptr32 a1Out)
-word32 fn00002A0C(Eq_115 dwArg04, Eq_4737 * dwArg08, Eq_4737 * dwArg0C, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
+// 00002A0C: Register word32 fn00002A0C(Stack Eq_115 dwArg04, Stack (ptr Eq_4733) dwArg08, Stack (ptr Eq_4733) dwArg0C, Register out ptr32 d1Out, Register out ptr32 a0Out, Register out ptr32 a1Out)
+word32 fn00002A0C(Eq_115 dwArg04, Eq_4733 * dwArg08, Eq_4733 * dwArg0C, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
 {
 	*a1Out = a1;
 	*d1Out = d1;
 	word32 d0_30;
-	struct Eq_5104 * a0_19 = globals->ptr3D94;
+	struct Eq_5100 * a0_19 = globals->ptr3D94;
 	*a0Out = a0_19;
 	if (a0_19->w0014 >= 0x27)
 	{
@@ -2098,20 +2098,20 @@ void fn00002A7C(int32 d0, Eq_496 * dwArg04)
 	}
 }
 
-// 00002AEC: Register (ptr Eq_5207) fn00002AEC(Register (ptr Eq_4523) a2, Register out ptr32 a1Out, Register out ptr32 a5Out)
-Eq_5207 * fn00002AEC(Eq_4523 * a2, ptr32 & a1Out, ptr32 & a5Out)
+// 00002AEC: Register (ptr Eq_5203) fn00002AEC(Register (ptr Eq_4519) a2, Register out ptr32 a1Out, Register out ptr32 a5Out)
+Eq_5203 * fn00002AEC(Eq_4519 * a2, ptr32 & a1Out, ptr32 & a5Out)
 {
 	*a1Out = a1;
 	*a5Out = a5;
-	struct Eq_5207 * a2_38 = *(struct Eq_5207 **) 0x3EEC;
-	struct Eq_5207 * d0_22 = a2_38;
+	struct Eq_5203 * a2_38 = *(struct Eq_5203 **) 0x3EEC;
+	struct Eq_5203 * d0_22 = a2_38;
 	if (a2_38 != null)
 	{
 		do
 		{
 			if ((a2_38->dw0018 & 0x0202) == 0x0202 && a2_38->dw0000 != 0x00)
 			{
-				*(fp - 0x08) = (struct Eq_5207 **) a2_38;
+				*(fp - 0x08) = (struct Eq_5203 **) a2_38;
 				word32 a0_64;
 				word32 a1_65;
 				word32 a5_66;
@@ -2130,7 +2130,7 @@ int32 fn00002B28(word32 dwArg04, ptr32 & a0Out, ptr32 & a1Out, ptr32 & a5Out)
 	*a0Out = a0;
 	int32 d0_109;
 	word32 a1_19;
-	struct Eq_5262 * a2_20;
+	struct Eq_5258 * a2_20;
 	word32 a5_21;
 	fn00002BBC(out a1_19, out a2_20, out a5_21);
 	if (a2_20 != null)
@@ -2213,14 +2213,14 @@ void fn00002ED4(word32 a2, word32 dwArg04)
 	}
 	else
 	{
-		struct Eq_5390 * a2_37 = *(struct Eq_5390 **) 0x3EEC;
+		struct Eq_5386 * a2_37 = *(struct Eq_5386 **) 0x3EEC;
 		if (a2_37 != null)
 		{
 			do
 			{
 				if ((a2_37->dw0018 & 0x02) != 0x00)
 				{
-					*(fp - 0x08) = (struct Eq_5390 **) a2_37;
+					*(fp - 0x08) = (struct Eq_5386 **) a2_37;
 					word32 a0_70;
 					word32 a1_71;
 					word32 a5_72;
@@ -2249,7 +2249,7 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 	*d1Out = d1;
 	*a1Out = a1;
 	Eq_655 d0_124;
-	struct Eq_5463 * a7_150 = fp + -112;
+	struct Eq_5459 * a7_150 = fp + -112;
 	Eq_655 d3_140 = dwArg0C;
 	Eq_655 a5_148 = dwArg04;
 	Eq_655 a4_147 = dwArg08;
@@ -2260,13 +2260,13 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 		{
 			if (*a4_147 == 0x25)
 			{
-				a7_150[0x0010] = (struct Eq_5463) 0x00;
-				a7_150[0x0012] = (struct Eq_5463) 0x00;
+				a7_150[0x0010] = (struct Eq_5459) 0x00;
+				a7_150[0x0012] = (struct Eq_5459) 0x00;
 				a7_150->t0066 = 0x00;
 				Eq_655 d5_1711 = -0x01;
 				int32 d4_1406 = 0x0069;
 				Eq_655 a3_1451 = a7_150 + 0x0013;
-				struct Eq_5555 * d7_1013 = null;
+				struct Eq_5550 * d7_1013 = null;
 				byte * a2_1664 = (word32) a4_147 + 0x01;
 				Eq_655 d2_1238 = a7_150[0x0012];
 				do
@@ -2290,22 +2290,22 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 						d1_1755 = (word32) d1_1755 + 0x01;
 					} while (d1_1755 < 0x05);
 				} while (d1_1755 < 0x05);
-				struct Eq_5585 * a0_1471;
+				struct Eq_5580 * a0_1471;
 				word32 * d0_1702;
-				a7_150[0x0012] = (struct Eq_5463) d2_1238;
+				a7_150[0x0012] = (struct Eq_5459) d2_1238;
 				if (*a2_1664 == 0x2A)
 				{
 					d0_1702 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
 					int32 v36_1781 = *d0_1702;
-					a7_150[0x0B] = (struct Eq_5463) v36_1781;
+					a7_150[0x0B] = (struct Eq_5459) v36_1781;
 					a2_1664 = a2_1664 + 0x01;
 					d3_140 = d0_1702 + 0x01;
-					a0_1471 = (struct Eq_5585 *) (d0_1702 + 0x01);
+					a0_1471 = (struct Eq_5580 *) (d0_1702 + 0x01);
 					if (v36_1781 < 0x00)
 					{
-						a7_150[0x0012] = (struct Eq_5463) (a7_150[0x0012] | 0x04);
+						a7_150[0x0012] = (struct Eq_5459) (a7_150[0x0012] | 0x04);
 						d0_1702 = -a7_150[0x0B];
-						a7_150[0x0010] = (struct Eq_5463) d0_1702;
+						a7_150[0x0010] = (struct Eq_5459) d0_1702;
 					}
 					else
 						a7_150[0x0010] = a7_150[0x0B];
@@ -2322,17 +2322,17 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 						{
 							*(a7_150 - 0x04) = (union Eq_655 *) d3_140;
 							uint32 d1_1823 = __swap(0x0A) * (word16) d2_1238;
-							uint32 d0_1830 = (word16) d2_1238 * 0x0A + DPB(__swap(DPB(d1_1823, (word16) d1_1823 + (word16) (__swap(d2_1238) * 0x0A), 0)), 0x00, 0);
+							uint32 d0_1830 = (word16) d2_1238 * 0x0A + DPB(__swap(DPB(d1_1823, (word16) (d1_1823 + __swap(d2_1238) * 0x0A), 0)), 0x00, 0);
 							a2_1664 = a2_1664 + 0x01;
 							a0_1471 = 11245 + (DPB(d0_1830, *a2_1664, 0) & 0xFF);
-							int32 d1_1838 = (int32) (int16) (int16) *a2_1664;
+							int32 d1_1838 = (int32) (int16) *a2_1664;
 							int32 d0_1850 = (int32) a0_1471->t0000;
 							d3_140 = *(a7_150 - 0x04);
 							d1_1755 = d1_1838 - 0x30;
 							d2_1238 = d1_1838 - 0x30 + d0_1830;
 							d0_1702 = d0_1850 & 0x04;
 						} while ((d0_1850 & 0x04) != 0x00);
-						a7_150[0x0010] = (struct Eq_5463) d2_1238;
+						a7_150[0x0010] = (struct Eq_5459) d2_1238;
 					}
 				}
 				if (*a2_1664 == 0x2E)
@@ -2342,10 +2342,10 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 					{
 						d0_1702 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
 						int32 v44_1707 = *d0_1702;
-						a7_150[0x0B] = (struct Eq_5463) v44_1707;
+						a7_150[0x0B] = (struct Eq_5459) v44_1707;
 						a2_1664 = a2_1664 + 0x01;
 						d3_140 = d0_1702 + 0x01;
-						a0_1471 = (struct Eq_5585 *) (d0_1702 + 0x01);
+						a0_1471 = (struct Eq_5580 *) (d0_1702 + 0x01);
 						if (v44_1707 >= 0x00)
 							d5_1711 = a7_150[0x0B];
 					}
@@ -2362,10 +2362,10 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 								union Eq_655 * a7_1732 = a7_150 - 0x04;
 								*a7_1732 = (union Eq_655 *) d2_1238;
 								uint32 d1_1739 = __swap(0x0A) * (word16) d5_1711;
-								uint32 d0_1746 = (word16) d5_1711 * 0x0A + DPB(__swap(DPB(d1_1739, (word16) d1_1739 + (word16) (__swap(d5_1711) * 0x0A), 0)), 0x00, 0);
+								uint32 d0_1746 = (word16) d5_1711 * 0x0A + DPB(__swap(DPB(d1_1739, (word16) (d1_1739 + __swap(d5_1711) * 0x0A), 0)), 0x00, 0);
 								a2_1664 = a2_1664;
 								a0_1471 = 11245 + (DPB(d0_1746, *a2_1664, 0) & 0xFF);
-								int32 d1_1754 = (int32) (int16) (int16) *a2_1664;
+								int32 d1_1754 = (int32) (int16) *a2_1664;
 								int32 d0_1766 = (int32) a0_1471->t0000;
 								d2_1238 = *a7_1732;
 								d1_1755 = d1_1754 - 0x30;
@@ -2375,11 +2375,11 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 						}
 					}
 				}
-				struct Eq_5463 * a7_262 = a7_150;
+				struct Eq_5459 * a7_262 = a7_150;
 				if (*a2_1664 == 0x68 || (*a2_1664 == 0x6C || (*a2_1664 == 0x4C || (*a2_1664 == 0x6A || (*a2_1664 == 122 || *a2_1664 == 116)))))
 				{
 					a2_1664 = a2_1664 + 0x01;
-					d4_1406 = (int32) (int16) (int16) *a2_1664;
+					d4_1406 = (int32) (int16) *a2_1664;
 				}
 				if (d4_1406 == 0x68 && *a2_1664 == 0x68)
 				{
@@ -2397,12 +2397,12 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 					d4_1406 = 0x006C;
 				if (d4_1406 == 116)
 					d4_1406 = 0x0069;
-				Eq_5927 d5_1457;
-				Eq_5928 v84_291 = *a2_1664;
+				Eq_5917 d5_1457;
+				Eq_5918 v84_291 = *a2_1664;
 				Eq_655 a2_1450 = a2_1664 + 0x01;
-				struct Eq_5935 * d1_1110 = DPB(d1_1755, v84_291, 0);
+				struct Eq_5925 * d1_1110 = DPB(d1_1755, v84_291, 0);
 				*d1Out = d1_1110;
-				Eq_5938 d0_1453 = DPB(d0_1702, v84_291, 0);
+				Eq_5928 d0_1453 = DPB(d0_1702, v84_291, 0);
 				if (v84_291 != 0x25)
 				{
 					if (v84_291 != 88)
@@ -2411,12 +2411,12 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 						{
 							if (v84_291 == 100 || v84_291 == 0x69)
 								goto l000031B2;
-							a7_150[0x0B] = (struct Eq_5463) v84_291;
+							a7_150[0x0B] = (struct Eq_5459) v84_291;
 							if (v84_291 != 110)
 							{
 								if (a7_150[0x0B] <= 0x70)
 									goto l000031B2;
-								Eq_5973 v97_1435 = a7_150[0x0B];
+								Eq_5963 v97_1435 = a7_150[0x0B];
 								if (v97_1435 != 115)
 								{
 									if (v97_1435 == 117 || v97_1435 == 0x78)
@@ -2425,7 +2425,7 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 										a2_1450 = a2_1450 - (byte *) 0x01;
 									d0_1453 = a2_1450 - a4_147;
 									a7_150->t0066.u3 = d0_1453;
-									a7_150[0x0010] = (struct Eq_5463) 0x00;
+									a7_150[0x0010] = (struct Eq_5459) 0x00;
 									a3_1451 = a4_147;
 									d5_1457.u0 = 0x00;
 								}
@@ -2457,36 +2457,36 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 								if (d4_1406 == 0x01)
 								{
 									d0_1453 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-									a0_1471 = (struct Eq_5585 *) *d0_1453;
+									a0_1471 = (struct Eq_5580 *) *d0_1453;
 									a0_1471->t0004 = d6_116;
 									a0_1471->t0000.u0 = 0x00;
 								}
 								else if (d4_1406 == 0x6C)
 								{
 									d0_1453 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-									a0_1471 = (struct Eq_5585 *) *d0_1453;
+									a0_1471 = (struct Eq_5580 *) *d0_1453;
 									a0_1471->t0000 = d6_116;
 								}
 								else if (d4_1406 == 0x68)
 								{
 									d0_1453 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-									a0_1471 = (struct Eq_5585 *) *d0_1453;
+									a0_1471 = (struct Eq_5580 *) *d0_1453;
 									a0_1471->t0000 = (word16) d6_116;
 								}
 								else if (d4_1406 == 0x02)
 								{
 									d0_1453 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-									a0_1471 = (struct Eq_5585 *) *d0_1453;
+									a0_1471 = (struct Eq_5580 *) *d0_1453;
 									a0_1471->t0000 = (byte) d6_116;
 								}
 								else
 								{
 									d0_1453 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-									a0_1471 = (struct Eq_5585 *) *d0_1453;
+									a0_1471 = (struct Eq_5580 *) *d0_1453;
 									a0_1471->t0000 = d6_116;
 								}
 								d3_140 = ((word32) d3_140 + 0x03 >> 0x02 << 0x02) + 0x04;
-								a7_150[0x0010] = (struct Eq_5463) 0x00;
+								a7_150[0x0010] = (struct Eq_5459) 0x00;
 								d5_1457.u0 = 0x00;
 							}
 						}
@@ -2512,39 +2512,39 @@ Eq_655 fn00002F34(Eq_655 d0, Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 d
 l000031B2:
 					if (v84_291 == 0x70)
 					{
-						a7_150[0x0012] = (struct Eq_5463) (a7_150[0x0012] | 0x01);
+						a7_150[0x0012] = (struct Eq_5459) (a7_150[0x0012] | 0x01);
 						d4_1406 = 0x006C;
-						d1_1110 = (struct Eq_5935 *) 0x0078;
+						d1_1110 = (struct Eq_5925 *) 0x0078;
 					}
 					ptr32 d3_1079;
-					struct Eq_5463 * a7_1010;
+					struct Eq_5459 * a7_1010;
 					if ((byte) d1_1110 != 100 && (byte) d1_1110 != 0x69)
 					{
 						if (d4_1406 == 0x01)
 						{
-							struct Eq_6964 * d0_1363 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-							a7_150[0x0F] = (struct Eq_5463) d0_1363->dw0004;
-							a7_150[0x0E] = (struct Eq_5463) d0_1363->dw0000;
+							struct Eq_6950 * d0_1363 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
+							a7_150[0x0F] = (struct Eq_5459) d0_1363->dw0004;
+							a7_150[0x0E] = (struct Eq_5459) d0_1363->dw0000;
 							d3_1079 = &d0_1363->dw0004 + 0x01;
 						}
 						else if (d4_1406 == 0x6C)
 						{
 							word32 * d0_1379 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-							a7_150[0x0F] = (struct Eq_5463) *d0_1379;
-							a7_150[0x0E] = (struct Eq_5463) 0x00;
+							a7_150[0x0F] = (struct Eq_5459) *d0_1379;
+							a7_150[0x0E] = (struct Eq_5459) 0x00;
 							d3_1079 = d0_1379 + 0x01;
 						}
 						else
 						{
 							word32 * d0_1394 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-							a7_150[0x0F] = (struct Eq_5463) *d0_1394;
-							a7_150[0x0E] = (struct Eq_5463) 0x00;
+							a7_150[0x0F] = (struct Eq_5459) *d0_1394;
+							a7_150[0x0E] = (struct Eq_5459) 0x00;
 							d3_1079 = d0_1394 + 0x01;
 						}
 						if (d4_1406 == 0x68)
 						{
-							Eq_6989 v230_1345 = a7_150->dw003E;
-							struct Eq_6993 * a7_1347 = a7_150 - 0x04;
+							Eq_6975 v230_1345 = a7_150->dw003E;
+							struct Eq_6979 * a7_1347 = a7_150 - 0x04;
 							a7_1347->ptr0000 = d1_1110;
 							a7_1347->dw0040 = (int32) v230_1345;
 							a7_1347->dw003C = 0x00;
@@ -2552,15 +2552,15 @@ l000031B2:
 						}
 						if (d4_1406 == 0x02)
 						{
-							Eq_7088 v243_1330 = a7_150->dw003F;
-							struct Eq_7092 * a7_1332 = a7_150 - 0x04;
+							Eq_7074 v243_1330 = a7_150->dw003F;
+							struct Eq_7078 * a7_1332 = a7_150 - 0x04;
 							a7_1332->ptr0000 = d1_1110;
 							a7_1332->dw0040 = (int32) v243_1330;
 							a7_1332->dw003C = 0x00;
 							d1_1110 = a7_1332->ptr0000;
 						}
-						Eq_7076 d0_1220 = a7_150[0x0012] & 0x01;
-						a7_150[0x0B] = (struct Eq_5463) (byte) d1_1110;
+						Eq_7062 d0_1220 = a7_150[0x0012] & 0x01;
+						a7_150[0x0B] = (struct Eq_5459) (byte) d1_1110;
 						a7_1010 = a7_150;
 						if (d0_1220 == 0x00)
 							goto l00003450;
@@ -2568,14 +2568,14 @@ l000031B2:
 						{
 							if (d5_1711 == 0x00)
 							{
-								struct Eq_7136 * a7_1306 = a7_150 - 0x04;
+								struct Eq_7122 * a7_1306 = a7_150 - 0x04;
 								a7_1306->t0000 = d0_1220;
-								*(a7_1306 - 0x04) = (struct Eq_5935 **) d1_1110;
+								*(a7_1306 - 0x04) = (struct Eq_5925 **) d1_1110;
 								up32 d0_1312 = a7_1306->dw0040;
 								word32 d1_1313 = a7_1306->dw003C;
 								*(a7_1306 - 0x08) = (union Eq_655 *) d2_1238;
 								d2_1238 = *(a7_1306 - 0x08);
-								d1_1110 = (struct Eq_5935 *) *(a7_1306 - 0x04);
+								d1_1110 = (struct Eq_5925 *) *(a7_1306 - 0x04);
 								d0_1220 = a7_1306->t0000;
 								if (d1_1313 - (d0_1312 < 0x00) != 0x00)
 									goto l000033F2;
@@ -2584,32 +2584,32 @@ l000031B2:
 							{
 l000033F2:
 								a7_150->b006A = 0x30;
-								d7_1013 = (struct Eq_5555 *) 0x01;
+								d7_1013 = (struct Eq_5550 *) 0x01;
 							}
 						}
 						a7_1010 = a7_150;
 						if ((byte) d1_1110 != 0x78)
 						{
-							a7_150[0x0B] = (struct Eq_5463) (byte) d1_1110;
+							a7_150[0x0B] = (struct Eq_5459) (byte) d1_1110;
 							if ((byte) d1_1110 == 88)
 								goto l0000340E;
 						}
 						else
 						{
 l0000340E:
-							a7_150[0x0B] = (struct Eq_5463) (byte) d1_1110;
-							struct Eq_7196 * a7_1247 = a7_150 - 0x04;
+							a7_150[0x0B] = (struct Eq_5459) (byte) d1_1110;
+							struct Eq_7182 * a7_1247 = a7_150 - 0x04;
 							a7_1247->t0000 = d0_1220;
-							*(a7_1247 - 0x04) = (struct Eq_5935 **) d1_1110;
+							*(a7_1247 - 0x04) = (struct Eq_5925 **) d1_1110;
 							up32 d0_1253 = a7_1247->dw0040;
 							word32 d1_1254 = a7_1247->dw003C;
 							*(a7_1247 - 0x08) = (union Eq_655 *) d2_1238;
 							word32 d1_1267 = *(a7_1247 - 0x04);
-							a7_1010 = (struct Eq_5463 *) ((char *) &a7_1247->t0000 + 0x04);
+							a7_1010 = (struct Eq_5459 *) ((char *) &a7_1247->t0000 + 0x04);
 							if (d1_1254 - (d0_1253 < 0x00) != 0x00)
 							{
 								Mem1275[a7_1247 + 110 + d7_1013:byte] = 0x30;
-								struct Eq_7245 * d7_1273 = (char *) &d7_1013->t0000 + 0x01;
+								struct Eq_7231 * d7_1273 = (char *) &d7_1013->t0000 + 0x01;
 								Mem1280[a7_1247 + 110 + d7_1273:byte] = (byte) d1_1267;
 								a7_1247->b0030 = (byte) d1_1267;
 								d7_1013 = d7_1273 + 0x01;
@@ -2618,20 +2618,20 @@ l0000340E:
 					}
 					else
 					{
-						struct Eq_5935 * d0_1077;
+						struct Eq_5925 * d0_1077;
 						if (d4_1406 == 0x01)
 						{
 							d0_1077 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
-							a7_150[0x0D] = (struct Eq_5463) d0_1077->ptr0004;
-							a7_150[0x0C] = (struct Eq_5463) d0_1077->dw0000;
+							a7_150[0x0D] = (struct Eq_5459) d0_1077->ptr0004;
+							a7_150[0x0C] = (struct Eq_5459) d0_1077->dw0000;
 							d3_1079 = (char *) &d0_1077->ptr0004 + 0x04;
 						}
 						else if (d4_1406 == 0x6C)
 						{
 							int32 * d0_1093 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
 							int32 d0_1097 = *d0_1093;
-							a7_150[0x0D] = (struct Eq_5463) d0_1097;
-							struct Eq_6175 * a7_1100 = a7_150 - 0x04;
+							a7_150[0x0D] = (struct Eq_5459) d0_1097;
+							struct Eq_6165 * a7_1100 = a7_150 - 0x04;
 							a7_1100->ptr0000 = d1_1110;
 							a7_1100->dw0034 = d0_1097 >> 0x001F;
 							d3_1079 = d0_1093 + 0x01;
@@ -2642,11 +2642,11 @@ l0000340E:
 						{
 							int32 * d0_1115 = (word32) d3_140 + 0x03 >> 0x02 << 0x02;
 							int32 d0_1119 = *d0_1115;
-							a7_150[0x0D] = (struct Eq_5463) d0_1119;
-							struct Eq_6141 * a7_1122 = a7_150 - 0x04;
+							a7_150[0x0D] = (struct Eq_5459) d0_1119;
+							struct Eq_6131 * a7_1122 = a7_150 - 0x04;
 							a7_1122->ptr0000 = d1_1110;
 							a7_1122->dw0034 = d0_1119 >> 0x001F;
-							struct Eq_5935 * v207_1130 = a7_1122->ptr0000;
+							struct Eq_5925 * v207_1130 = a7_1122->ptr0000;
 							d3_1079 = d0_1115 + 0x01;
 							d0_1077 = d0_1119 >> 0x001F;
 							d1_1110 = v207_1130;
@@ -2658,34 +2658,34 @@ l0000340E:
 								a7_1122->dw0038 = d1_1176;
 								*(a7_1122 - 0x04) = DPB(d0_1119 >> 0x001F, v209_1169, 0);
 								a7_1122->dw0034 = d1_1176 >> 0x001F;
-								d1_1110 = (struct Eq_5935 *) *(a7_1122 - 0x04);
+								d1_1110 = (struct Eq_5925 *) *(a7_1122 - 0x04);
 								d0_1077 = a7_1122->ptr0000;
 							}
 							if (d4_1406 == 0x02)
 							{
-								Eq_6927 v218_1143 = a7_150->dw0037;
-								struct Eq_6931 * a7_1145 = a7_150 - 0x04;
+								Eq_6914 v218_1143 = a7_150->dw0037;
+								struct Eq_6918 * a7_1145 = a7_150 - 0x04;
 								a7_1145->ptr0000 = d1_1110;
-								int32 d1_1151 = (int32) (int16) (int16) v218_1143;
+								int32 d1_1151 = (int32) (int16) v218_1143;
 								a7_1145->dw0038 = d1_1151;
-								*(a7_1145 - 0x04) = (struct Eq_6944 **) DPB(d0_1077, v218_1143, 0);
+								*(a7_1145 - 0x04) = (struct Eq_6930 **) DPB(d0_1077, v218_1143, 0);
 								a7_1145->dw0034 = d1_1151 >> 0x001F;
-								d1_1110 = (struct Eq_5935 *) *(a7_1145 - 0x04);
+								d1_1110 = (struct Eq_5925 *) *(a7_1145 - 0x04);
 								d0_1077 = a7_1145->ptr0000;
 							}
 						}
-						a7_150[0x0B] = (struct Eq_5463) (byte) d1_1110;
-						struct Eq_6053 * a7_987 = a7_150 - 0x04;
+						a7_150[0x0B] = (struct Eq_5459) (byte) d1_1110;
+						struct Eq_6043 * a7_987 = a7_150 - 0x04;
 						a7_987->ptr0000 = d0_1077;
-						*(a7_987 - 0x04) = (struct Eq_5935 **) d1_1110;
-						struct Eq_5463 * d0_993 = a7_987->ptr0038;
+						*(a7_987 - 0x04) = (struct Eq_5925 **) d1_1110;
+						struct Eq_5459 * d0_993 = a7_987->ptr0038;
 						int32 d1_994 = a7_987->dw0034;
 						*(a7_987 - 0x08) = (union Eq_655 *) d2_1238;
-						a7_1010 = (struct Eq_5463 *) ((char *) &a7_987->ptr0000 + 0x04);
+						a7_1010 = (struct Eq_5459 *) ((char *) &a7_987->ptr0000 + 0x04);
 						if (d1_994 - (d0_993 < null) < 0x00)
 						{
 							a7_987->b006E = 0x2D;
-							d7_1013 = (struct Eq_5555 *) 0x01;
+							d7_1013 = (struct Eq_5550 *) 0x01;
 							a7_1010 = a7_987->ptr0040;
 						}
 						else
@@ -2694,12 +2694,12 @@ l0000340E:
 							if ((a7_987->dw004C & 0x0010) != 0x00)
 							{
 								a7_987->b006E = 0x2B;
-								d7_1013 = (struct Eq_5555 *) 0x01;
+								d7_1013 = (struct Eq_5550 *) 0x01;
 							}
 							else if ((a7_987->dw004C & 0x08) != 0x00)
 							{
 								a7_987->b006E = 0x20;
-								d7_1013 = (struct Eq_5555 *) 0x01;
+								d7_1013 = (struct Eq_5550 *) 0x01;
 							}
 							a7_987->ptr0040 = a7_987->ptr0038;
 							a7_987->dw003C = a7_987->dw0034;
@@ -2712,38 +2712,38 @@ l00003450:
 					if (v130_822 != 0x78 && v130_822 != 88)
 					{
 						if (v130_822 == 111)
-							a7_1010[0x0C] = (struct Eq_5463) 0x08;
+							a7_1010[0x0C] = (struct Eq_5459) 0x08;
 						else
-							a7_1010[0x0C] = (struct Eq_5463) 0x0A;
+							a7_1010[0x0C] = (struct Eq_5459) 0x0A;
 						a7_1010[0x0B] = a7_1010[0x0C];
 					}
 					else
-						a7_1010[0x0B] = (struct Eq_5463) 0x10;
+						a7_1010[0x0B] = (struct Eq_5459) 0x10;
 					a7_1010[0x001B] = a7_1010[0x0B];
 					if (v130_822 != 88)
 						a6.u0 = 14484;
 					else
 						a6.u0 = 14500;
-					a7_1010[0x0B] = (struct Eq_5463) a6;
-					a7_1010[0x001F] = (struct Eq_5463) d3_1079;
-					a7_1010[0x0011] = (struct Eq_5463) d5_1711;
-					a7_1010[0x0C] = (struct Eq_5463) d6_116;
+					a7_1010[0x0B] = (struct Eq_5459) a6;
+					a7_1010[0x001F] = (struct Eq_5459) d3_1079;
+					a7_1010[0x0011] = (struct Eq_5459) d5_1711;
+					a7_1010[0x0C] = (struct Eq_5459) d6_116;
 					a7_1010->dw0062 = d7_1013;
-					struct Eq_6350 * v163_844 = a7_1010 + 0x0E;
+					struct Eq_6340 * v163_844 = a7_1010 + 0x0E;
 					word32 d6_845 = v163_844->dw0000;
-					Eq_5938 d7_847 = v163_844->t0004;
+					Eq_5928 d7_847 = v163_844->t0004;
 					word32 d3_849 = a7_1010->t0066;
-					Eq_6365 a1_851 = a7_1010[0x0B];
+					Eq_6355 a1_851 = a7_1010[0x0B];
 					do
 					{
 						int32 d1_858 = a7_1010[0x001B];
-						struct Eq_6442 * a7_863 = a7_1010 - 0x04;
+						struct Eq_6431 * a7_863 = a7_1010 - 0x04;
 						a7_863->dw0000 = d1_858 >> 0x001F;
 						*(a7_863 - 0x04) = d1_858;
-						*(a7_863 - 0x08) = (union Eq_6365 *) a1_851;
+						*(a7_863 - 0x08) = (union Eq_6355 *) a1_851;
 						*(a7_863 - 0x0C) = d1_858;
 						*(a7_863 - 0x0010) = d1_858 >> 0x001F;
-						*(a7_863 - 0x0014) = (union Eq_5938 *) d7_847;
+						*(a7_863 - 0x0014) = (union Eq_5928 *) d7_847;
 						*(a7_863 - 0x0018) = d6_845;
 						int32 d1_881 = fn00003C74(dwArg00, dwArg04, dwArg08, dwArg0C);
 						ptr32 v167_883 = *(a7_863 - 0x08);
@@ -2756,15 +2756,15 @@ l00003450:
 						*(a7_863 - 0x08) = v167_883;
 						*(a7_863 - 0x0C) = d1_888;
 						*(a7_863 - 0x0010) = d0_890;
-						*(a7_863 - 0x0014) = (union Eq_5938 *) d7_847;
+						*(a7_863 - 0x0014) = (union Eq_5928 *) d7_847;
 						*(a7_863 - 0x0018) = d6_845;
-						Eq_5938 d1_915;
+						Eq_5928 d1_915;
 						word32 d0_917 = fn00003A24(dwArg00, dwArg04, dwArg08, dwArg0C, out d1_915, out a0_1471);
 						a1_851 = *(a7_863 - 0x08);
 						*a1Out = a1_851;
 						d6_845 = d0_917;
 						d7_847 = d1_915;
-						a7_262 = (struct Eq_5463 *) (&a7_863->dw0000 + 0x01);
+						a7_262 = (struct Eq_5459 *) (&a7_863->dw0000 + 0x01);
 						d3_849 = d3_849 + 0x01;
 						d0_1453 = d1_915;
 						word32 d1_935 = d0_917 - (d1_915 < 0x00);
@@ -2788,14 +2788,14 @@ l00003450:
 				}
 l000036A0:
 				if (d5_1457 - a7_262->t0066 <= 0x00)
-					a7_262[0x0B] = (struct Eq_5463) a7_262->t0066;
+					a7_262[0x0B] = (struct Eq_5459) a7_262->t0066;
 				else
-					a7_262[0x0B] = (struct Eq_5463) d5_1457;
-				struct Eq_6228 * a7_325 = a7_262 - 0x04;
+					a7_262[0x0B] = (struct Eq_5459) d5_1457;
+				struct Eq_6218 * a7_325 = a7_262 - 0x04;
 				a7_325->t0000 = d0_1453;
 				a7_325->dw0034 = d7_1013 + a7_325->dw0030 / 0x0044;
 				a7_325->t0000 = a7_325->t0000;
-				Eq_5938 d0_343 = a7_325->t0000;
+				Eq_5928 d0_343 = a7_325->t0000;
 				if (a7_325->dw0034 - a7_325->dw0044 >= 0x00)
 					a7_325->dw0030 = 0x00;
 				else
@@ -2806,14 +2806,14 @@ l000036A0:
 				a7_262[0x0C] = a7_262[0x0B];
 				if ((a7_262[0x0012] & 0x02) != 0x00)
 				{
-					Eq_6390 d2_718 = 0x00;
+					Eq_6380 d2_718 = 0x00;
 					if (d7_1013 != null)
 					{
 						do
 						{
-							struct Eq_6394 * a7_730 = a7_262 - 0x04;
+							struct Eq_6384 * a7_730 = a7_262 - 0x04;
 							a7_730->t0000 = a5_148;
-							Mem741[a7_730 - 0x04 + 0x00:word32] = (int32) (int16) (int16) Mem732[a7_730 + 110 + d2_718:byte];
+							Mem741[a7_730 - 0x04 + 0x00:word32] = (int32) (int16) Mem732[a7_730 + 110 + d2_718:byte];
 							word32 d1_743;
 							word32 d4_745;
 							Eq_655 d6_747;
@@ -2831,14 +2831,14 @@ l000036A0:
 				}
 				if ((a7_262[0x0012] & 0x04) == 0x00)
 				{
-					Eq_6614 d2_651 = 0x00;
+					Eq_6603 d2_651 = 0x00;
 					if (a7_262[0x0C] != 0x00)
 					{
 						ui32 d4_656 = a7_262[0x0012];
 						do
 						{
 							union Eq_655 * a0_683;
-							struct Eq_6719 * a7_674 = a7_262 - 0x04;
+							struct Eq_6707 * a7_674 = a7_262 - 0x04;
 							a7_674->t0000 = a5_148;
 							if ((d4_656 & 0x02) != 0x00)
 								a0_683 = (union Eq_655 *) DPB(a0_1471, 0x30, 0);
@@ -2863,14 +2863,14 @@ l000036A0:
 				}
 				if ((a7_262[0x0012] & 0x02) == 0x00)
 				{
-					Eq_6670 d2_603 = 0x00;
+					Eq_6659 d2_603 = 0x00;
 					if (d7_1013 != null)
 					{
 						do
 						{
-							struct Eq_6674 * a7_615 = a7_262 - 0x04;
+							struct Eq_6663 * a7_615 = a7_262 - 0x04;
 							a7_615->t0000 = a5_148;
-							Mem626[a7_615 - 0x04 + 0x00:word32] = (int32) (int16) (int16) Mem617[a7_615 + 110 + d2_603:byte];
+							Mem626[a7_615 - 0x04 + 0x00:word32] = (int32) (int16) Mem617[a7_615 + 110 + d2_603:byte];
 							word32 d1_628;
 							word32 d4_630;
 							Eq_655 d6_632;
@@ -2887,7 +2887,7 @@ l000036A0:
 						} while (d7_1013 - d2_603 > 0x00);
 					}
 				}
-				Eq_6660 d2_417 = a7_262->t0066;
+				Eq_6649 d2_417 = a7_262->t0066;
 				if (d5_1457 - a7_262->t0066 > 0x00)
 				{
 					do
@@ -2918,7 +2918,7 @@ l000036A0:
 					{
 						union Eq_655 * a7_533 = a7_262 - 0x04;
 						*a7_533 = (union Eq_655 *) a5_148;
-						Mem543[a7_533 - 0x04 + 0x00:word32] = (int32) (int16) (int16) Mem535[a3_1451 + d2_436:byte];
+						Mem543[a7_533 - 0x04 + 0x00:word32] = (int32) (int16) Mem535[a3_1451 + d2_436:byte];
 						word32 d1_545;
 						word32 d4_547;
 						word32 d5_548;
@@ -2938,7 +2938,7 @@ l000036A0:
 				d0 = a7_262[0x0012] & 0x04;
 				if (d0 != 0x00)
 				{
-					Eq_6833 d2_483 = 0x00;
+					Eq_6820 d2_483 = 0x00;
 					if (a7_262[0x0C] != 0x00)
 					{
 						up32 a3_488 = a7_262[0x0C];
@@ -2972,7 +2972,7 @@ l000036A0:
 			{
 				union Eq_655 * a7_1880 = a7_150 - 0x04;
 				*a7_1880 = (union Eq_655 *) a5_148;
-				*(a7_1880 - 0x04) = (int32) (int16) (int16) *a4_147;
+				*(a7_1880 - 0x04) = (int32) (int16) *a4_147;
 				word32 d1_1892;
 				word32 d4_1894;
 				word32 d5_1895;
@@ -2980,7 +2980,7 @@ l000036A0:
 				word32 a0_1897;
 				word32 a1_1898;
 				d0 = fn000038B4(a6, dwArg00, dwArg04, out d1_1892, out d3_140, out d4_1894, out d5_1895, out d6_1896, out a0_1897, out a1_1898, out a4_147, out a5_148, out a6);
-				a7_150 = (struct Eq_5463 *) ((char *) a7_1880 + 0x04);
+				a7_150 = (struct Eq_5459 *) ((char *) a7_1880 + 0x04);
 				if (d0 == ~0x00)
 				{
 					d0_124 = d6_1896;
@@ -2994,8 +2994,8 @@ l000036A0:
 	return d0_124;
 }
 
-// 000038B4: Register word32 fn000038B4(Register Eq_107 a6, Stack Eq_655 dwArg04, Stack Eq_655 dwArg08, Register out ptr32 d1Out, Register out Eq_5511 d3Out, Register out Eq_5512 d4Out, Register out Eq_5513 d5Out, Register out ptr32 d6Out, Register out (ptr Eq_655) a0Out, Register out ptr32 a1Out, Register out (ptr byte) a4Out, Register out ptr32 a5Out, Register out ptr32 a6Out)
-word32 fn000038B4(Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, ptr32 & d1Out, Eq_5511 & d3Out, Eq_5512 & d4Out, Eq_5513 & d5Out, ptr32 & d6Out, Eq_655 * & a0Out, ptr32 & a1Out, byte * & a4Out, ptr32 & a5Out, ptr32 & a6Out)
+// 000038B4: Register word32 fn000038B4(Register Eq_107 a6, Stack Eq_655 dwArg04, Stack Eq_655 dwArg08, Register out ptr32 d1Out, Register out Eq_5506 d3Out, Register out Eq_5507 d4Out, Register out Eq_5508 d5Out, Register out ptr32 d6Out, Register out (ptr Eq_655) a0Out, Register out ptr32 a1Out, Register out (ptr byte) a4Out, Register out ptr32 a5Out, Register out ptr32 a6Out)
+word32 fn000038B4(Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, ptr32 & d1Out, Eq_5506 & d3Out, Eq_5507 & d4Out, Eq_5508 & d5Out, ptr32 & d6Out, Eq_655 * & a0Out, ptr32 & a1Out, byte * & a4Out, ptr32 & a5Out, ptr32 & a6Out)
 {
 	*d3Out = d3;
 	*d4Out = d4;
@@ -3034,7 +3034,7 @@ int32 fn00003910(Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, ptr32 & a0Out, ptr32
 	*a0Out = a0;
 	int32 d0_128;
 	word32 a1_34;
-	struct Eq_7406 * a2_35;
+	struct Eq_7392 * a2_35;
 	word32 a5_36;
 	fn00002BBC(out a1_34, out a2_35, out a5_36);
 	if (a2_35 != null)
@@ -3083,7 +3083,7 @@ int32 fn00003910(Eq_107 a6, Eq_655 dwArg04, Eq_655 dwArg08, ptr32 & a0Out, ptr32
 						byte * a0_198 = a2_35->ptr0004;
 						a2_35->ptr0004 = a0_198 + 0x01;
 						*a0_198 = (byte) dwArg04;
-						*(fp - 0x0028) = (struct Eq_7406 **) a2_35;
+						*(fp - 0x0028) = (struct Eq_7392 **) a2_35;
 						word32 a0_209;
 						word32 a1_210;
 						word32 a5_211;
@@ -3169,9 +3169,9 @@ Eq_655 fn00003A24(Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 dwArg0C, Eq_655 dwArg10
 				Eq_655 d6_200 = __swap(d3_176);
 				uint32 d3_199 = d3_176 * (word16) d5_198;
 				Eq_655 d2_204 = __swap(d0_189 * (word16) d3_176);
-				cup16 v31_205 = (word16) d2_204 + (word16) d3_199;
+				cup16 v31_205 = (word16) ((word32) d2_204 + d3_199);
 				uint32 d4_201 = d0_189 * (word16) d6_200;
-				cup16 v34_211 = v31_205 + (word16) d4_201;
+				cup16 v34_211 = (word16) ((word32) DPB(d2_204, v31_205, 0) + d4_201);
 				uint32 d6_184 = dwArg08 << d5_160;
 				Eq_655 d2_217 = __swap(DPB(d2_204, v34_211, 0));
 				uint32 d5_202 = d5_198 * (word16) d6_200;
@@ -3218,8 +3218,8 @@ l00003B20:
 	}
 }
 
-// 00003B28: Register Eq_655 fn00003B28(Register Eq_655 d0, Register Eq_655 d1, Register Eq_655 d2, Register out Eq_7618 d1Out, Register out ptr32 d2Out)
-Eq_655 fn00003B28(Eq_655 d0, Eq_655 d1, Eq_655 d2, Eq_7618 & d1Out, ptr32 & d2Out)
+// 00003B28: Register Eq_655 fn00003B28(Register Eq_655 d0, Register Eq_655 d1, Register Eq_655 d2, Register out Eq_7604 d1Out, Register out ptr32 d2Out)
+Eq_655 fn00003B28(Eq_655 d0, Eq_655 d1, Eq_655 d2, Eq_7604 & d1Out, ptr32 & d2Out)
 {
 	*d2Out = d2;
 	*d1Out = d1;
@@ -3263,7 +3263,7 @@ Eq_655 fn00003B28(Eq_655 d0, Eq_655 d1, Eq_655 d2, Eq_7618 & d1Out, ptr32 & d2Ou
 					Eq_655 d1_178;
 					Eq_655 d2_172 = __swap(d5_148);
 					Eq_655 d3_173 = __swap(d7_12);
-					if ((word16) d2_172 - (word16) d3_173 == 0x00)
+					if ((word16) (d2_172 - d3_173) == 0x00)
 						d1_178.u0 = 0x0000FFFF;
 					else
 						d1_178 = __swap(DPB(__swap(DPB(DPB(d5_148, (uint16) (d5_148 % (uint16) d3_173), 16), (uint16) (d5_148 /u (uint16) d3_173), 0)), 0x00, 0));
@@ -3282,9 +3282,9 @@ Eq_655 fn00003B28(Eq_655 d0, Eq_655 d1, Eq_655 d2, Eq_7618 & d1Out, ptr32 & d2Ou
 					Eq_655 d4_218 = __swap(d7_12);
 					uint32 d5_217 = d7_12 * (word16) d3_216;
 					Eq_655 d6_222 = __swap(d6_210 * (word16) d7_12);
-					cup16 v45_223 = (word16) d6_222 + (word16) d5_217;
+					cup16 v45_223 = (word16) ((word32) d6_222 + d5_217);
 					uint32 d2_219 = d6_210 * (word16) d4_218;
-					cup16 v47_229 = v45_223 + (word16) d2_219;
+					cup16 v47_229 = (word16) ((word32) DPB(d6_222, v45_223, 0) + d2_219);
 					uint32 d3_220 = d3_216 * (word16) d4_218;
 					Eq_655 d6_246 = d6_149 - __swap(DPB(d6_222, v47_229, 0));
 					word32 d5_249 = d5_148 - ((__swap(DPB(d5_217, 0x00, 0)) + __swap(DPB(d2_219, 0x00, 0))) + DPB(d3_220, ((word16) d3_220 + (v45_223 <u 0x00)) + (v47_229 <u 0x00), 0)) - (d6_246 <u 0x00);
@@ -3307,7 +3307,7 @@ Eq_655 fn00003B28(Eq_655 d0, Eq_655 d1, Eq_655 d2, Eq_7618 & d1Out, ptr32 & d2Ou
 				Eq_655 d5_283 = __swap(d5_249);
 				if (v35_151 != 0x00)
 				{
-					Eq_8024 d7_309 = DPB(d7_12, v35_151 - 0x01, 0);
+					Eq_8009 d7_309 = DPB(d7_12, v35_151 - 0x01, 0);
 					do
 					{
 						d5_283 = d5_283 >> 0x01;
@@ -3389,9 +3389,9 @@ Eq_655 fn00003C74(Eq_655 dwArg04, Eq_655 dwArg08, Eq_655 dwArg0C, Eq_655 dwArg10
 			Eq_655 d6_173 = __swap(d3_149);
 			uint32 d3_172 = d3_149 * (word16) d7_171;
 			Eq_655 d2_177 = __swap(d0_162 * (word16) d3_149);
-			cup16 v33_178 = (word16) d2_177 + (word16) d3_172;
+			cup16 v33_178 = (word16) ((word32) d2_177 + d3_172);
 			uint32 d4_174 = d0_162 * (word16) d6_173;
-			cup16 v35_184 = v33_178 + (word16) d4_174;
+			cup16 v35_184 = (word16) ((word32) DPB(d2_177, v33_178, 0) + d4_174);
 			Eq_655 d2_190 = __swap(DPB(d2_177, v35_184, 0));
 			uint32 d7_175 = d7_171 * (word16) d6_173;
 			uint32 d6_157 = dwArg08 << d5_129;

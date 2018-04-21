@@ -140,8 +140,7 @@ namespace Reko.Core.Output
             var n = this.name;
             if (mode == Mode.Writing)
             {
-                object v;
-                if (visited.TryGetValue(ct, out v) && (v == Defined || v == Declared))
+                if (visited.TryGetValue(ct, out object v) && (v == Defined || v == Declared))
                 {
                     writer.WriteHyperlink(ct.Name, ct);
                 }
@@ -158,7 +157,7 @@ namespace Reko.Core.Output
                     WriteClassMembers(ct, ClassProtection.Public, "public");
                     WriteClassMembers(ct, ClassProtection.Protected, "protected");
                     WriteClassMembers(ct, ClassProtection.Private, "private");
-                    
+
                     CloseBrace();
                     visited[ct] = Defined;
                 }
@@ -231,7 +230,40 @@ namespace Reko.Core.Output
 
         public Formatter VisitEnum(EnumType e)
         {
-            throw new NotImplementedException();
+            if (mode == Mode.Writing)
+            {
+                if (!visited.ContainsKey(e))
+                {
+                    writer.WriteKeyword("enum");
+                    writer.Write(" ");
+                    writer.WriteHyperlink(e.Name, e);
+                    OpenBrace();
+
+                    foreach (var member in e.Members.OrderBy(de => de.Value))
+                    {
+                        BeginLine();
+                        writer.Write(member.Key);
+                        writer.Write(" = ");
+                        writer.Write("0x{0}", member.Value);
+                        EndLine(",");
+                    }
+
+                    CloseBrace();
+                    visited[e] = Defined;
+                }
+            }
+            else
+            {
+                if (!visited.ContainsKey(e))
+                {
+                    visited[e] = Declared;
+                    writer.WriteKeyword("enum");
+                    writer.Write(" ");
+                    writer.WriteHyperlink(e.Name, e);
+                    EndLine(";");
+                }
+            }
+            return writer;
         }
 
 		public Formatter VisitEquivalenceClass(EquivalenceClass eq)
@@ -301,36 +333,35 @@ namespace Reko.Core.Output
 			string n = name;
 			if (mode == Mode.Writing)
 			{
-                object v;
-                if (visited.TryGetValue(str, out v) && (v == Defined))
-				{
+                if (visited.TryGetValue(str, out object v) && (v == Defined))
+                {
                     writer.WriteKeyword("struct");
                     writer.Write(" ");
                     writer.Write(str.Name);
-				}
-				else
-				{
-					visited[str] = Declared;
-					ScanFields(str);
+                }
+                else
+                {
+                    visited[str] = Declared;
+                    ScanFields(str);
                     writer.WriteKeyword("struct");
                     writer.Write(" ");
                     writer.WriteHyperlink(str.Name, str);
-					OpenBrace(str.Size > 0 ? string.Format("size: {0} {0:X}", str.Size) : null);
-					if (str.Fields != null)
-					{
-						foreach (StructureField f in str.Fields)
-						{
-							BeginLine();
+                    OpenBrace(str.Size > 0 ? string.Format("size: {0} {0:X}", str.Size) : null);
+                    if (str.Fields != null)
+                    {
+                        foreach (StructureField f in str.Fields)
+                        {
+                            BeginLine();
                             var trf = new TypeReferenceFormatter(writer);
                             trf.WriteDeclaration(f.DataType, f.Name);
-							EndLine(";", string.Format("{0:X}", f.Offset));
-						}
-					}
-					CloseBrace();
-					visited[str] = Defined;
-				}
+                            EndLine(";", string.Format("{0:X}", f.Offset));
+                        }
+                    }
+                    CloseBrace();
+                    visited[str] = Defined;
+                }
 
-				name = n;
+                name = n;
 				WriteName(true);
 			}
 			else
@@ -384,18 +415,17 @@ namespace Reko.Core.Output
 
 		public Formatter VisitMemberPointer(MemberPointer memptr)
 		{
-			Pointer p = memptr.BasePointer as Pointer;
-			DataType baseType;
-			if (p != null)
-			{
-				baseType = p.Pointee;
-			}
-			else
-			{
-				baseType = memptr.BasePointer;
-			}
+            DataType baseType;
+            if (memptr.BasePointer is Pointer p)
+            {
+                baseType = p.Pointee;
+            }
+            else
+            {
+                baseType = memptr.BasePointer;
+            }
 
-			string oldName = name;
+            string oldName = name;
 			name = null;
 			memptr.Pointee.Accept(this);
             if (mode == Mode.Writing)

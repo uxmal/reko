@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Arch.Intel
             {
                 Address = procAddress,
             };
-            proc = Procedure.Create(procAddress, arch.CreateFrame());
+            proc = Procedure.Create(arch, procAddress, arch.CreateFrame());
 			state = (X86State) arch.CreateProcessorState();
 			orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
 		}
@@ -241,12 +241,6 @@ namespace Reko.UnitTests.Arch.Intel
 		public SystemService SystemCallAt(Address addr)
 		{
 			// TODO:  Add FakeRewriterHost.SystemCallAt implementation
-			return null;
-		}
-
-		public VectorUse VectorUseAt(Address addr)
-		{
-			// TODO:  Add FakeRewriterHost.VectorUseAt implementation
 			return null;
 		}
 

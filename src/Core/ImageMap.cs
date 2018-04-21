@@ -181,8 +181,7 @@ namespace Reko.Core
 
         public void TerminateItem(Address addr)
         {
-            ImageMapItem item;
-            if (!TryFindItem(addr, out item))
+            if (!TryFindItem(addr, out ImageMapItem item))
                 return;
             long delta = addr - item.Address;
             if (delta == 0)

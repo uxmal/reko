@@ -1,7 +1,7 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
- *
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -18,40 +18,35 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Core.Expressions;
 using System;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Summarizes information about a particular processor.
-	/// </summary>
-	[XmlRoot("processorinfo")]
-	public class ProcessorInfo
-	{
-		public ProcessorInfo()
-		{
-		}
+    [TestFixture]
+    public class StridedIntervalTests
+    {
+        [Test]
+        public void SI_Empty()
+        {
+            Assert.AreEqual("\x27D8", StridedInterval.Empty.ToString());
+        }
 
-		[XmlElement("name")]
-		public string Name;
+        [Test]
+        public void SI_Constant()
+        {
+            Assert.AreEqual("0[9,9]", StridedInterval.Constant(Constant.Int32(9)).ToString());
+        }
 
-		[XmlElement("heuristics")]
-		public Heuristics heuristics;
-	}
-
-	public class Heuristics
-	{
-		[XmlElement("pattern-rules")]
-		public PatternRule [] PatternRules;
-	}
-
-	public class PatternRule
-	{
-		[XmlElement("pattern")]
-		public string Pattern;
-		[XmlElement("action")]
-		public string Action;
-	}
+        [Test]
+        public void SI_Range()
+        {
+            Assert.AreEqual("10[-28,28]", StridedInterval.Create(16, -40, 40).ToString());
+        }
+    }
 }

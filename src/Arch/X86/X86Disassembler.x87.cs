@@ -302,7 +302,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fyl2x, "F,f"),
 				new SingleByteOpRec(Opcode.fptan, "F,f"),
 				new SingleByteOpRec(Opcode.fpatan, "F,f"),
-				new SingleByteOpRec(Opcode.fxtract, "F,f"),
+				new SingleByteOpRec(Opcode.fxtract, "f"),
 				new SingleByteOpRec(Opcode.fprem1, "F,f"),
 				new SingleByteOpRec(Opcode.fdecstp, "F,f"),
 				new SingleByteOpRec(Opcode.fincstp, "F,f"),

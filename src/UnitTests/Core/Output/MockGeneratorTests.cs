@@ -25,6 +25,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -356,7 +357,7 @@ namespace Reko.UnitTests.Core.Output
             }
             catch
             {
-                Console.WriteLine(s);
+                Debug.Print("{0}", s);
                 throw;
             }
         }

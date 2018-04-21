@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Analysis
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnSumTest.txt"))
 			{
 				Procedure proc = prog.Procedures.Values[0];
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
                 SsaTransform sst = new SsaTransform(
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
                     new HashSet<RegisterStorage>());
@@ -126,7 +126,7 @@ done:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
                     new HashSet<RegisterStorage>());
@@ -164,7 +164,7 @@ done:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
                     new HashSet<RegisterStorage>());
@@ -198,7 +198,7 @@ looptest:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
                     new HashSet<RegisterStorage>());
@@ -235,7 +235,7 @@ looptest:
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(progFlow, proc, null, gr,
                     new HashSet<RegisterStorage>());

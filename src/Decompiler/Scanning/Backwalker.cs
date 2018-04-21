@@ -366,7 +366,7 @@ namespace Reko.Scanning
             RegisterStorage regIdx,
             TBlock block)
         {
-            return BackwalkInstructions(regIdx, host.GetReversedBlockInstructions(block));
+            return BackwalkInstructions(regIdx, host.GetBlockInstructions(block).Reverse());
         }
 
         [Conditional("DEBUG")]

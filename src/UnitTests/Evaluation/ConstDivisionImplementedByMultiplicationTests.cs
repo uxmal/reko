@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Evaluation
             var m = new ProcedureBuilder();
             bld(m);
             var proc = m.Procedure;
-            var alias = new Aliases(proc, m.Architecture);
+            var alias = new Aliases(proc);
             alias.Transform();
             var ssa = new SsaTransform(
                 null,
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Evaluation
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>()).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(m.Architecture, segmentMap, ssa, null);
+            var vp = new ValuePropagator(segmentMap, ssa, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

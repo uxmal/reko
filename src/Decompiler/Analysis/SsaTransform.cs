@@ -645,12 +645,10 @@ namespace Reko.Analysis
             {
                 ci.Callee = ci.Callee.Accept(this);
 
-                ProcedureConstant pc;
-                if (ci.Callee.As(out pc))
+                if (ci.Callee is ProcedureConstant pc)
                 {
-                    var procCallee = pc.Procedure as Procedure;
-                    ProcedureFlow2 procFlow;
-                    if (procCallee != null && programFlow.ProcedureFlows2.TryGetValue(procCallee, out procFlow))
+                    if (pc.Procedure is Procedure procCallee &&
+                        programFlow.ProcedureFlows2.TryGetValue(procCallee, out ProcedureFlow2 procFlow))
                     {
                         AddDefInstructions(ci, procFlow);
                         return ci;
@@ -749,15 +747,14 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
-                var ea = access.EffectiveAddress.Accept(this);
-                BinaryExpression bin;
-                Identifier id;
                 Constant c = null;
-                if (ea.As(out bin) &&
-                    bin.Left.As(out id) &&
-                    bin.Right.As(out c) &&
+                var ea = access.EffectiveAddress.Accept(this);
+                if (ea is BinaryExpression bin &&
+                    bin.Left is Identifier id && 
+                    bin.Right is Constant cRight && 
                     rename.ContainsKey(id))
                 {
+                    c = cRight;
                     var sid = ssa.Identifiers[rename[id]];
                     var cOther = sid.DefExpression as Constant;
                     if (cOther != null)

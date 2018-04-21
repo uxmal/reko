@@ -58,9 +58,10 @@ namespace Reko.UnitTests.Analysis
             program = new Program();
             program.Architecture = arch;
             program.SegmentMap = new SegmentMap(Address.Ptr32(0));
-            exit = new Procedure("exit", new Frame(PrimitiveType.Word32));
+            exit = new Procedure(arch, "exit", new Frame(PrimitiveType.Word32));
             flow = new ProgramDataFlow();
             p = new ProgramBuilder();
+            p.Program.Architecture = this.arch;
         }
 
         private BlockFlow CreateBlockFlow(Block block, Frame frame)
@@ -129,7 +130,7 @@ namespace Reko.UnitTests.Analysis
             }
             catch
             {
-                Console.WriteLine(summary);
+                Debug.Print("{0}", summary);
                 throw;
             }
         }
@@ -270,7 +271,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfCallInstruction()
         {
-            var callee = new Procedure("Callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(arch, "Callee", program.Architecture.CreateFrame());
             var stm = m.Call(callee, 4);
             var pf = new ProcedureFlow(callee, program.Architecture);
             pf.TrashedRegisters.Add(Registers.ebx);
@@ -287,7 +288,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToSuccessorBlocks()
         {
-            Procedure proc = new Procedure("test", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
             var frame = proc.Frame;
             Identifier ecx = m.Register(1);
             Identifier edx = m.Register(2);
@@ -361,7 +362,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToProcedureSummary()
         {
-            Procedure proc = new Procedure("proc", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
@@ -385,7 +386,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateFlagsToProcedureSummary()
         {
-            var proc = new Procedure("proc", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             var flags = program.Architecture.GetFlagGroup("SZ");
             var sz = m.Frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
@@ -489,9 +490,10 @@ const eax:<invalid> ebx:0x01231313
 
 
         [Test]
-        public void PreservedValues()
+        public void TrfPreservedValues()
         {
             arch = new X86ArchitectureReal("x86-real-16");
+            p.Program.Architecture = arch;
             p.Add("main", m =>
             {
                 var sp = m.Frame.EnsureRegister(Registers.sp);

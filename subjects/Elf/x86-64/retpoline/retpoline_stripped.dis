@@ -120,7 +120,7 @@ l00000000004004CB:
 	byte C_47
 	word32 edi_48
 	word64 rdi_49
-	call 0x0000000000000000 (retsize: 4; depth: 4)
+	call 0x0000000000000000 (retsize: 8; depth: 8)
 		uses: C_35,eax,edi,qwLoc08_4,r8,rax_32,rbp_36,rdi_38,rsp_37,SCZO_7,SZO_33,Z_34
 		defs: C_47,eax_41,edi_48,r8_43,rax_42,rbp_40,rdi_49,rsp_39,SCZO_44,SZO_46,Z_45
 	return

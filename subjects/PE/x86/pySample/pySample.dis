@@ -614,7 +614,7 @@ l100013D5:
 	byte C_209
 	byte SCZO_210
 	byte Z_211
-	call eax_165 (retsize: 4; depth: 4)
+	call fn00000000 (retsize: 4; depth: 4)
 		uses: C,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_165,ebp_10,ebx_16,ecx_20,edi_12,edx,esi_14,esp_198,SCZO_166,SZO,Z_167
 		defs: C_209,eax_207,ebp_206,ebx_205,ecx_202,edi_201,edx_204,esi_203,esp_200,SCZO_210,SZO_208,Z_211
 	Mem212[ebp_10 - 0x0000001C:word32] = eax_207
@@ -693,7 +693,7 @@ l10001428:
 	byte C_162
 	byte SCZO_163
 	byte Z_164
-	call eax_143 (retsize: 4; depth: 4)
+	call fn00000000 (retsize: 4; depth: 4)
 		uses: C_146,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_143,ebp_47,ebx_48,ecx_51,edi_55,edx_49,esi_50,esp_151,SCZO_65,SZO_144,Z_145
 		defs: C_162,eax_160,ebp_159,ebx_158,ecx_155,edi_154,edx_157,esi_156,esp_153,SCZO_163,SZO_161,Z_164
 // DataOut: ebp ebx edi esi esp fs
@@ -764,7 +764,7 @@ l10001455:
 	byte C_114
 	byte SCZO_115
 	byte Z_116
-	call eax_95 (retsize: 4; depth: 4)
+	call fn00000000 (retsize: 4; depth: 4)
 		uses: C_98,dwLoc04_3,dwLoc08_5,dwLoc0C,eax_95,ebp_68,ebx_69,ecx_72,edi_75,edx_70,esi_71,esp_103,SCZO_93,SZO_96,Z_97
 		defs: C_114,eax_112,ebp_111,ebx_110,ecx_107,edi_106,edx_109,esi_108,esp_105,SCZO_115,SZO_113,Z_116
 	Mem117[ebp_10 - 0x0000001C:word32] = eax_112
@@ -1070,7 +1070,7 @@ l10001698:
 	byte C_48
 	byte SZO_49
 	byte Z_50
-	call eax_30 (retsize: 4; depth: 4)
+	call fn00000000 (retsize: 4; depth: 4)
 		uses: C_33,dwLoc04_4,dwLoc08_7,eax_30,edi_27,esi_28,esp_29,SCZO_26,SZO_31,Z_32
 		defs: C_48,eax_46,edi_45,esi_44,esp_43,SCZO_47,SZO_49,Z_50
 // DataOut: esi esp

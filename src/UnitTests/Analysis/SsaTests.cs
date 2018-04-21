@@ -189,22 +189,22 @@ namespace Reko.UnitTests.Analysis
             return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
-            var flow = new ProgramDataFlow(prog);
+            var flow = new ProgramDataFlow(program);
             var eventListener = new FakeDecompilerEventListener();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
+            var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
-            Dump(prog.CallGraph);
-            RegisterLiveness.Compute(prog, flow, eventListener);
-            GlobalCallRewriter.Rewrite(prog, flow, eventListener);
+            Dump(program.CallGraph);
+            RegisterLiveness.Compute(program, flow, eventListener);
+            GlobalCallRewriter.Rewrite(program, flow, eventListener);
 
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(

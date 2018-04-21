@@ -34,7 +34,6 @@ namespace Reko.Environments.SysV.ArchSpecific
     // implement it.
     public class AlphaCallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
         private readonly RegisterStorage[] iRegs;
         private readonly RegisterStorage[] fRegs;
         private RegisterStorage iRet;

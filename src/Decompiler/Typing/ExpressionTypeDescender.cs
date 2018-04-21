@@ -390,13 +390,13 @@ namespace Reko.Typing
             {
                 if (dtMin is Pointer || ptMin != null && ptMin.Domain == Domain.Pointer)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
-                throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
+                throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
             {
                 if (dtMin is MemberPointer || ptMin != null && ptMin.Domain == Domain.Offset)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
-                throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
+                throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             return dtMin;
         }

@@ -561,6 +561,23 @@ void ArmRewriter::RewriteMlal(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitt
 	m.Assign(dst, m.IAdd((m.*op)(left, right), dst));
 }
 
+void ArmRewriter::RewriteMlxd(bool swap, BaseType dt, BinOpEmitter mul, BinOpEmitter addSub)
+{
+	// The ARM manual states that the double return value is in [op2,op1]
+	auto dst = host->EnsureSequence(Src1().reg, Dst().reg, BaseType::Int64);
+
+	auto left = Operand(Src2());
+	auto right = Operand(Src3());
+
+	auto product1 = (m.*mul)(
+		m.Cast(dt, left),
+		swap ? m.Sar(right, m.Int32(16)) : m.Cast(dt, right));
+	auto product2 = (m.*mul)(
+		m.Sar(left, m.Int32(16)),
+		swap ? m.Cast(dt, right) : m.Sar(right, m.Int32(16)));
+
+	m.Assign(dst, m.IAdd(dst, (m.*addSub)(product1, product2)));
+}
 
 void ArmRewriter::RewriteSmlaw(bool highPart)
 {

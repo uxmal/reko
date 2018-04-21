@@ -24,11 +24,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Scanning;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Core.Machine
 {

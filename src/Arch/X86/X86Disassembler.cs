@@ -297,7 +297,8 @@ namespace Reko.Arch.X86
             }
             catch (Exception ex)
             {
-                throw new AddressCorrelatedException(addr, ex, "An exception occurred when disassembling x86 code.");
+                instrCur = Illegal();
+                //throw new AddressCorrelatedException(addr, ex, "An exception occurred when disassembling x86 code.");
             }
             if (instrCur == null)
             {
@@ -1130,6 +1131,10 @@ namespace Reko.Arch.X86
                 case 'M':		// modRM may only refer to memory.
                     width = OperandWidth(strFormat, ref i);
                     ++i;
+                    if (!TryEnsureModRM(out modRm))
+                        return null;
+                    if ((modRm & 0xC0) == 0xC0)
+                        return null;
                     pOperand = DecodeModRM(dataWidth, this.currentDecodingContext.SegmentOverride, GpRegFromBits);
                     if (pOperand is RegisterOperand)
                         return null;

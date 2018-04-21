@@ -57,9 +57,9 @@ namespace Reko.Analysis
         private static ExpressionMatcher segMemOffset;
         private static InstructionMatcher condm;
 
-        public LongAddRewriter(Procedure proc, IProcessorArchitecture arch)
+        public LongAddRewriter(Procedure proc)
         {
-            this.arch = arch;
+            this.arch = proc.Architecture;
             this.proc = proc;
         }
 

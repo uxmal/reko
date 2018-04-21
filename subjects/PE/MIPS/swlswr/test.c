@@ -151,14 +151,13 @@ void fn0001147C(word32 * r4, word32 * r5, UINT dwArg00, int32 dwArg04)
 	{
 		if (*dwArg00_26 != 0x00)
 		{
-			<anonymous> * r8_17 = *dwArg00_26;
 			word32 sp_18;
 			word32 ra_19;
 			word32 r5_20;
 			word32 r4_21;
 			word32 r9_22;
 			word32 r8_23;
-			r8_17();
+			fn00000000();
 		}
 		dwArg00_26 = dwArg00_26 + 0x01;
 	}
@@ -175,9 +174,9 @@ void fn000114E4()
 code * fn0001152C(code * r2, word32 dwArg00)
 {
 	Eq_183 r8_10 = globals->t13040;
-	struct Eq_310 * sp_111 = fp + -0x0038;
+	struct Eq_308 * sp_111 = fp + -0x0038;
 	Eq_10 dwLoc20_138 = 0x00;
-	Eq_316 r8_19 = globals->t1303C - r8_10;
+	Eq_314 r8_19 = globals->t1303C - r8_10;
 	if (r8_19 < 0x00)
 		return sp_111->ptr002C;
 	if (r8_10 != 0x00)
@@ -210,7 +209,7 @@ code * fn0001152C(code * r2, word32 dwArg00)
 			}
 			if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
 			{
-				sp_111 = (struct Eq_310 *) ((char *) sp_111 - 0x04);
+				sp_111 = (struct Eq_308 *) ((char *) sp_111 - 0x04);
 				sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
 			}
 		}
