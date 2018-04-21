@@ -281,6 +281,7 @@
     <Compile Include="Scanning\BackwardSlicer.cs" />
     <Compile Include="Scanning\BackwardSlicerHost.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
+    <Compile Include="Scanning\CommentInjector.cs" />
     <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\DataScanner.cs" />
     <Compile Include="Scanning\GlobalDataWorkItem.cs" />

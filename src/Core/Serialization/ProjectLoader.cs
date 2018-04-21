@@ -365,6 +365,13 @@ namespace Reko.Core.Serialization
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
           
+            if (sUser.Annotations != null)
+            {
+                user.Annotations = new AnnotationList(sUser.Annotations
+                    .Select(LoadAnnotation)
+                    .Where(a => a.Address != null)
+                    .ToList());
+            }
             if (sUser.Heuristics != null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
@@ -410,6 +417,12 @@ namespace Reko.Core.Serialization
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
             }
+        }
+
+        private Annotation LoadAnnotation(Annotation_v3 annotation)
+        {
+            arch.TryParseAddress(annotation.Address, out var address);
+            return new Annotation(address, annotation.Text);
         }
 
         private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(

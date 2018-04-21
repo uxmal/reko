@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,42 +18,48 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Reko.Core.Code
+namespace Reko.Gui.Windows.Forms
 {
-    /// <summary>
-    /// Represents a comment introduced by the user.
-    /// </summary>
-    /// <remarks>
-    public class CodeComment : Instruction
+    public partial class CommentForm : Form, IDeclarationForm
     {
-        public CodeComment(string comment)
+        private ITextBox textWrapped;
+
+        public CommentForm()
         {
-            this.Text = comment;
+            InitializeComponent();
+            textWrapped = new TextBoxWrapper(text);
         }
 
-        public override bool IsControlFlow => false;
-
-        public string Text { get; set; }
-
-        public override Instruction Accept(InstructionTransformer xform)
+        public string HintText
         {
-            return xform.TransformComment(this);
+            get
+            {
+                return label.Text;
+            }
+            set
+            {
+                label.Text = value;
+            }
         }
 
-        public override void Accept(InstructionVisitor v)
-        {
-            v.VisitComment(this);
-        }
+        public virtual ITextBox TextBox { get { return textWrapped; } }
 
-        public override T Accept<T>(InstructionVisitor<T> visitor)
+        public void ShowAt(Point location)
         {
-            return visitor.VisitComment(this);
+            this.Show();
+            this.Location = new Point(location.X, location.Y - this.Height);
         }
     }
 }

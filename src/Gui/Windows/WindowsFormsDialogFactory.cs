@@ -156,6 +156,11 @@ namespace Reko.Gui.Windows
             return new DeclarationForm();
         }
 
+        public IDeclarationForm CreateCommentForm()
+        {
+            return new CommentForm();
+        }
+
         public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride)
         {
             return new JumpTableDialog()

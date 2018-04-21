@@ -36,7 +36,26 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class DeadCodeTests : AnalysisTestBase
 	{
-		[Test]
+        private SsaProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
+
+        public void EliminateDeadCode()
+        {
+            DeadCode.Eliminate(m.Ssa.Procedure, m.Ssa);
+            m.Ssa.Validate(s => Assert.Fail(s));
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
+        }
+
+        [Test]
 		public void DeadPushPop()
 		{
 			RunFileTest("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");
@@ -76,7 +95,23 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest(m, "Analysis/DeadFnReturn.txt");
 		}
 
-		protected override void RunTest(Program program, TextWriter writer)
+        [Test(Description = "Comment should not be removed as dead code")]
+        public void DeadComment()
+        {
+            var dead = m.Reg16("dead");
+            m.Comment("This is a comment");
+            m.Assign(dead, m.Word16(0xDEAD));
+
+            EliminateDeadCode();
+
+            var sExp =
+@"
+// This is a comment
+";
+            AssertProcedureCode(sExp);
+        }
+
+        protected override void RunTest(Program program, TextWriter writer)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();

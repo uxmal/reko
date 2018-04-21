@@ -71,7 +71,13 @@ namespace Reko.UnitTests.Analysis
 			Assert.IsTrue(ci.IsCritical(new Reko.Core.Expressions.Dereference(PrimitiveType.Ptr32, Id32("foo"))));
 		}
 
-		[Test]
+        [Test]
+        public void CommentTest()
+        {
+            Assert.IsTrue(ci.IsCritical(new CodeComment("Comment")));
+        }
+
+        [Test]
 		public void BinOpTestTrue()
 		{
 			Assert.IsTrue(ci.IsCritical(new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 

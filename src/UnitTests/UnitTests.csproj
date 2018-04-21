@@ -195,6 +195,7 @@
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\SuperHCallingConventionTests.cs" />
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
+    <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
     <Compile Include="ImageLoaders\Llvm\ProgramBuilderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\Borland\SymbolLoaderTests.cs" />
+    <Compile Include="Mocks\FakeTextBox.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
     <Compile Include="Mocks\ProcedureCodeVerifier.cs" />
@@ -604,6 +606,7 @@
     <Compile Include="Scanning\BackwardSlicerTests.cs" />
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
+    <Compile Include="Scanning\CommentInjectorTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />

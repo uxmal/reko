@@ -227,6 +227,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AddressSearchHit.cs" />
+    <Compile Include="AnnotationList.cs" />
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />

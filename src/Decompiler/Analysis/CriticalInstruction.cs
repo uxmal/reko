@@ -58,7 +58,12 @@ namespace Reko.Analysis
 			isCritical = true;
 		}
 
-		public override void VisitReturnInstruction(ReturnInstruction ret)
+        public override void VisitComment(CodeComment comment)
+        {
+            isCritical = true;
+        }
+
+        public override void VisitReturnInstruction(ReturnInstruction ret)
 		{
 			isCritical = true;
 		}

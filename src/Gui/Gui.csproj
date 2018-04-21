@@ -297,6 +297,13 @@
     </Compile>
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\Controls\TextViewPainter.cs" />
+    <Compile Include="Windows\Forms\CommentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\CommentForm.Designer.cs">
+      <DependentUpon>CommentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Forms\CommentFormInteractor.cs" />
     <Compile Include="Windows\Forms\DeclarationFormInteractor.cs" />
     <Compile Include="Windows\Forms\DeclarationForm.cs">
       <SubType>Form</SubType>
@@ -624,6 +631,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\CallSiteDialog.resx">
       <DependentUpon>CallSiteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\CommentForm.resx">
+      <DependentUpon>CommentForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\DeclarationForm.resx">
       <DependentUpon>DeclarationForm.cs</DependentUpon>

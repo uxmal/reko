@@ -70,6 +70,7 @@ namespace Reko.UnitTests.Mocks
         {
             if (arch == null)
                 throw new ArgumentNullException("arch");
+            this.InstructionSize = 1;
             this.Architecture = arch;
             this.Procedure = new Procedure(arch, name, arch.CreateFrame());
             this.blocks = blocks ?? new Dictionary<string, Block>();
@@ -84,6 +85,7 @@ namespace Reko.UnitTests.Mocks
         public Procedure Procedure { get; private set; }
         public ProgramBuilder ProgramMock { get; set; }
         public IProcessorArchitecture Architecture { get; private set; }
+        public int InstructionSize { get; set; }
 
         private Block BlockOf(string label)
         {
@@ -200,7 +202,8 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            Block.Statements.Add(LinearAddress++, instr);
+            Block.Statements.Add(LinearAddress , instr);
+            LinearAddress += (uint)InstructionSize;
             return Block.Statements.Last;
         }
 

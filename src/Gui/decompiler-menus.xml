@@ -115,6 +115,7 @@
   <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
   <cmd id="ViewPcRelative" cmdSet="Reko" container="GrpLowLevel">Show _PC relative addresses</cmd>
   <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
+  <cmd id="EditComment" cmdSet="Reko" container="GrpCodeView" priority="2">Edit comment</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />
