@@ -39,15 +39,16 @@ namespace Reko.Gui.Windows.Controls
 	public abstract class MenuSystem
 	{
 		private ICommandTarget target;
-        private Dictionary<string, Dictionary<Keys, CommandID>> bindingLists;
 
 		public MenuSystem(ICommandTarget target)
 		{
 			this.target = target;
-            this.bindingLists = new Dictionary<string, Dictionary<Keys, CommandID>>();
+            this.KeyBindings = new Dictionary<string, Dictionary<int, CommandID>>();
 		}
 
-		public void BuildMenu(SortedList menu, IList m)
+        public Dictionary<string, Dictionary<int, CommandID>> KeyBindings { get; set; }
+
+        public void BuildMenu(SortedList menu, IList m)
 		{
 			bool separator = false;
 			foreach (SortedList group in menu.Values)
@@ -70,18 +71,18 @@ namespace Reko.Gui.Windows.Controls
 			}
 		}
 
-        public void AddBinding(string windowKey, Guid cmdSet, int id, Keys key, Keys modifiers)
+        public void AddBinding(string windowKey, Guid cmdSet, int id, int key, int modifiers)
         {
             AddBinding(windowKey, cmdSet, id, key | modifiers);
         }
 
-        public void AddBinding(string windowKey, Guid cmdSet, int id, Keys key)
+        public void AddBinding(string windowKey, Guid cmdSet, int id, int key)
         {
-            Dictionary<Keys, CommandID> bindingList;
-            if (!bindingLists.TryGetValue(windowKey, out bindingList))
+            Dictionary<int, CommandID> bindingList;
+            if (!KeyBindings.TryGetValue(windowKey, out bindingList))
             {
-                bindingList = new Dictionary<Keys,CommandID>();
-                bindingLists.Add(windowKey, bindingList);
+                bindingList = new Dictionary<int,CommandID>();
+                KeyBindings.Add(windowKey, bindingList);
             }
             bindingList[key] = new CommandID(cmdSet, id);
         }
@@ -171,17 +172,17 @@ namespace Reko.Gui.Windows.Controls
 
         public void ProcessKey(IDecompilerShellUiService uiSvc, KeyEventArgs e)
         {
-            Dictionary<Keys, CommandID> bindings;
+            Dictionary<int, CommandID> bindings;
             var frame = uiSvc.ActiveFrame;
             if (frame != null)
             {
                 var ct = frame.Pane as ICommandTarget;
                 if (ct != null)
                 {
-                    if (bindingLists.TryGetValue(ct.GetType().FullName, out bindings))
+                    if (KeyBindings.TryGetValue(ct.GetType().FullName, out bindings))
                     {
                         CommandID cmdID;
-                        if (bindings.TryGetValue(e.KeyData, out cmdID))
+                        if (bindings.TryGetValue((int)e.KeyData, out cmdID))
                         {
                             if (ct.Execute(cmdID))
                             {
@@ -192,10 +193,10 @@ namespace Reko.Gui.Windows.Controls
                     }
                 }
             }
-            if (bindingLists.TryGetValue("", out bindings))
+            if (KeyBindings.TryGetValue("", out bindings))
             {
                 CommandID cmdID;
-                if (bindings.TryGetValue(e.KeyData, out cmdID))
+                if (bindings.TryGetValue((int)e.KeyData, out cmdID))
                 {
                     if (this.target.Execute(cmdID))
                     {

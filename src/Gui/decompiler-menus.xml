@@ -131,7 +131,8 @@
   <cmd id="ActionMarkType" cmdSet="Reko" container="ActionMarkType">Mark _Type</cmd>
   <cmd id="ActionAssumeRegisterValues" cmdSet="Reko" container="ActionAssumeRegisterValues">_Register values...</cmd>
 
-  <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options</cmd>
+  <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options...</cmd>
+  <cmd id="ToolsKeyBindings" cmdSet="Reko" container="GrpTools">_Key bindings...</cmd>
   
   <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cacade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Reko" container="GrpWindows">Tile _Vertically</cmd>

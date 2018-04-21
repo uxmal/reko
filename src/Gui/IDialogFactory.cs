@@ -19,10 +19,10 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui.Forms;
-using System;
-using Reko.Gui.Windows.Forms;
 using Reko.Core.Machine;
+using Reko.Gui.Forms;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.Gui
 {
@@ -33,6 +33,7 @@ namespace Reko.Gui
         IAddressPromptDialog CreateAddressPromptDialog();
         ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
         IFindStringsDialog CreateFindStringDialog();
+        IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
         IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc);

@@ -23,6 +23,8 @@ using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -79,6 +81,13 @@ namespace Reko.Gui.Windows
         public IFindStringsDialog CreateFindStringDialog()
         {
             return new FindStringsDialog();
+        }
+
+        public IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings)
+        {
+            var dlg = new KeyBindingsDialog();
+            dlg.KeyBindings = keyBindings;
+            return dlg;
         }
 
         public IMainForm CreateMainForm()

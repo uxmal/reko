@@ -54,6 +54,7 @@ namespace Reko.UnitTests.Mocks
         }
 
         public event KeyEventHandler KeyDown;
+        public event KeyEventHandler KeyUp;
         public event EventHandler TextChanged;
         public event EventHandler LostFocus;
 
@@ -65,6 +66,11 @@ namespace Reko.UnitTests.Mocks
         public void FireKeyDown(KeyEventArgs e)
         {
             KeyDown(this, e);
+        }
+
+        public void FireKeUp(KeyEventArgs e)
+        {
+            KeyUp(this, e);
         }
     }
 }

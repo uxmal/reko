@@ -30,6 +30,7 @@ namespace Reko.Gui.Controls
     {
         event EventHandler TextChanged;
         event KeyEventHandler KeyDown;
+        event KeyEventHandler KeyUp;
         event EventHandler LostFocus;
 
         string Text { get; set; }

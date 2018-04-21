@@ -134,9 +134,11 @@
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
+    <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
+    <Compile Include="Forms\KeyBindingsInteractor.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
@@ -318,6 +320,12 @@
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Forms\JumpTableInteractor.cs" />
+    <Compile Include="Windows\Forms\KeyBindingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\KeyBindingsDialog.Designer.cs">
+      <DependentUpon>KeyBindingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\SymbolSourceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -652,6 +660,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\JumpTableDialog.resx">
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\KeyBindingsDialog.resx">
+      <DependentUpon>KeyBindingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
