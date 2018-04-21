@@ -34,10 +34,9 @@ namespace Reko.Arch.Microchip.Common
     public class PICProgAddress : Address
     {
 
-        public const uint MAXPROGBYTADDR = 0x1FFFFFU;
-
         private Constant Value;
 
+        public const uint MAXPROGBYTADDR = 0x1FFFFFU;
         public static readonly PICProgAddress Invalid = new PICProgAddress(Constant.Invalid);
 
 
@@ -56,7 +55,6 @@ namespace Reko.Arch.Microchip.Common
         public override ulong Offset => Value.ToUInt32(); 
         public override ushort? Selector => null;
 
-        #region Methods
 
         public override Address Add(long offset)
             => new PICProgAddress((uint)(Value.ToUInt32() + offset));
@@ -106,9 +104,8 @@ namespace Reko.Arch.Microchip.Common
             => new PICProgAddress(aaddr.ToUInt32());
 
         public override string ToString()
-            => $"{Value}";
+            => $"{ToLinear():X8}";
 
-        #endregion
     }
 
     /// <summary>
@@ -134,8 +131,6 @@ namespace Reko.Arch.Microchip.Common
             Value = addr;
         }
 
-        #region Properties
-
 
         public override bool IsNull => false;
         public override ulong Offset => ToLinear(); 
@@ -143,9 +138,6 @@ namespace Reko.Arch.Microchip.Common
 
         public bool IsValid => Value.IsValid;
 
-        #endregion
-
-        #region Methods
 
         public override Address Add(long offset)
             => new PICDataAddress((uint)(Value.ToUInt16() + offset));
@@ -183,7 +175,6 @@ namespace Reko.Arch.Microchip.Common
         public override string ToString()
             => $"{Value.ToUInt16():X4}";
 
-        #endregion
 
     }
 

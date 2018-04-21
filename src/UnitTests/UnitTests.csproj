@@ -150,6 +150,7 @@
     <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Basic_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_RewriterTests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Full_DisassemblerTests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Enh_DisassemblerTests.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16All_RegistersTests.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Arch\Microchip\PIC16\PIC16Full_RegistersTests.cs" />
     <Compile Include="Arch\Microchip\Common\DisassemblerTestsBase.cs" />
     <Compile Include="Arch\Microchip\PIC16\PIC16Basic_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_RewriterTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_DisassemblerTests.cs" />
     <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_DisassemblerTests.cs" />

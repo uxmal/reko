@@ -298,7 +298,7 @@ namespace Reko.Arch.Microchip.PIC16
         {
             GetSrcAndDest(out var srcmem, out var dstmem);
             var borrow = m.Not(FlagGroup(FlagM.C));
-            m.Assign(dstmem, m.ISub(m.ISub(Wreg, srcmem), borrow));
+            m.Assign(dstmem, m.ISub(m.ISub(srcmem, Wreg), borrow));
             SetStatusFlags(dstmem);
         }
 

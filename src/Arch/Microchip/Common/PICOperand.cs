@@ -166,7 +166,7 @@ namespace Reko.Arch.Microchip.Common
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteString($"{CodeTarget}");
+            writer.WriteString($"{CodeTarget.ToLinear():X8}");
         }
 
         public void Accept(IOperandVisitor visitor) => visitor.VisitProgMemory(this);

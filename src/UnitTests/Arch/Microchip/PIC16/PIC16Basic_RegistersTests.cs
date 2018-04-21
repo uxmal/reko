@@ -42,9 +42,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16Basic_BitOffsetOfRegisters()
         {
-            Assert.AreEqual(0, PIC16Registers.WREG.BitAddress);
-            Assert.AreEqual(0, PIC16Registers.PCL.BitAddress);
-            Assert.AreEqual(0, PIC16Registers.STATUS.BitAddress);
+            Assert.AreEqual(0, PICRegisters.WREG.BitAddress);
+            Assert.AreEqual(0, PICRegisters.PCL.BitAddress);
+            Assert.AreEqual(0, PICRegisters.STATUS.BitAddress);
             Assert.AreEqual(0, PIC16Registers.INTCON.BitAddress);
             Assert.AreEqual(0, PIC16BasicRegisters.INDF.BitAddress);
         }

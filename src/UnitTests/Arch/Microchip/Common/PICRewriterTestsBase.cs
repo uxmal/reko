@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             return $"{sPIC}";
         }
 
-        protected void SetPICMode(string picName, PICExecMode mode)
+        protected void SetPICMode(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
             picMode = PICProcessorMode.GetMode(picName);
             arch = picMode.CreateArchitecture();
