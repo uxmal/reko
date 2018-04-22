@@ -129,7 +129,7 @@ Eq_2827 g_t151E =
 word16 g_w15FF = 0x8190;
 <anonymous> * g_ptr1DAA = fn14A8;
 word16 g_w47E0 = 0x0087;
-Eq_18744 g_a47E4[] = 
+Eq_18695 g_a47E4[] = 
 	{
 	};
 word16 g_a487E[] = 

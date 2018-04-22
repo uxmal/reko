@@ -29,14 +29,36 @@
       </arg>
     </signature>
   </service>
+
+  <service name="DSTAT"><syscallinfo><vector>88E2</vector></syscallinfo>              <!-- Read status of device -->
+    <signature  stackDelta="2">
+      <return><prim domain="Boolean" size="1" /><flag>C</flag></return>
+      <arg name="retspc"><prim domain="Pointer" size="2" /><stack /></arg>
+      <arg name="dnam"><prim domain="Pointer" size="2" /><reg>r0</reg></arg>
+    </signature>
+  </service>
+
+  <service name="FETCH"><syscallinfo><vector>88E3</vector></syscallinfo>              <!-- Load device handler -->
+    <signature stackDelta="2">
+      <return><prim domain="Boolean" size="1" /><flag>C</flag></return>
+      <arg name="retspc"><prim domain="Pointer" size="2" /><stack /></arg>
+      <arg name="dnam"><prim domain="Pointer" size="2" /><reg>r0</reg></arg>
+      <arg name="addrOut" out="true"><prim domain="Pointer" size="2" /><reg>r0</reg></arg>
+    </signature>
+  </service>   
   
-  <service name="DSTAT"><syscallinfo><vector>88E2</vector></syscallinfo></service>    <!-- Read status of device -->
-  <service name="FETCH"><syscallinfo><vector>88E3</vector></syscallinfo></service>    <!-- Load device handler -->
+  
   <service name="CSIGEN"><syscallinfo><vector>88E4</vector></syscallinfo></service>   <!-- Call Command String Interpreter in general mode -->
   <!-- <service name="CSISPC "><syscallinfo><vector>345</vector></syscallinfo></service> Call Command String Interpreter in special mode -->
   <service name="GTLIN"><syscallinfo><vector>88E5</vector></syscallinfo></service>    <!-- Read input line -->
-  <service name="LOCK"><syscallinfo><vector>88E6</vector></syscallinfo></service>     <!-- Make USR resident -->
-  <service name="UNLOCK"><syscallinfo><vector>88E7</vector></syscallinfo></service>   <!-- Release USR -->
+  <service name="LOCK">  <!-- Make USR resident -->
+    <syscallinfo><vector>88E6</vector></syscallinfo>
+    <signature></signature>
+  </service> 
+  <service name="UNLOCK">                                                               <!-- Release USR -->
+    <syscallinfo><vector>88E7</vector></syscallinfo>
+    <signature></signature>
+  </service> 
   
   <service name="EXIT">  <!-- Exit -->
     <syscallinfo><vector>88E8</vector></syscallinfo>
@@ -62,7 +84,13 @@
   </service>
 
   <service name="SRESET "><syscallinfo><vector>88EA</vector></syscallinfo></service>  <!-- Reset all channels -->
-  <service name="QSET   "><syscallinfo><vector>88EB</vector></syscallinfo></service>  <!-- Increase size of monitor I/O queue -->
+  <service name="QSET"><syscallinfo><vector>88EB</vector></syscallinfo> <!-- Increase size of monitor I/O queue -->
+    <signature stackDelta="2">
+      <return><prim domain="Pointer" size="2" /><reg>r0</reg></return>
+      <arg name="addr"><prim domain="Pointer" size="2"/><stack /></arg>
+      <arg name="addr"><prim domain="SignedInt" size="2"/><reg>r0</reg></arg>
+    </signature>
+  </service> 
   
   <service name="SETTOP">    <!-- Set top of memory for user program -->
     <syscallinfo><vector>88EC</vector></syscallinfo>
