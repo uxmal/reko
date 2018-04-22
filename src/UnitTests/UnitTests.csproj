@@ -237,7 +237,6 @@
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
-    <Compile Include="ImageLoaders\IntelHex32\IntelHex32LoaderTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
@@ -942,10 +941,6 @@
     <ProjectReference Include="..\ImageLoaders\Hunk\Hunk.csproj">
       <Project>{F1B0C3C9-1C64-4744-9217-C25FBC5D0DCC}</Project>
       <Name>Hunk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ImageLoaders\IHex32\IntelHex32.csproj">
-      <Project>{a66cf7a5-a033-4eef-b2ef-cbfae7d2b711}</Project>
-      <Name>IntelHex32</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\IntelHex\IntelHex.csproj">
       <Project>{72641087-68D2-41E7-9B29-BC9D4213940A}</Project>
