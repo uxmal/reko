@@ -428,7 +428,7 @@ namespace Reko.Arch.Microchip.PIC18
                         }
                         return (FSRIndexedMode.None, DataMem8(remapAddr));
                     }
-                    return (FSRIndexedMode.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(PIC18Registers.BSR), 8), offset)));
+                    return (FSRIndexedMode.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(PICRegisters.BSR), 8), offset)));
 
                 case PICOperandRegister reg:
                     var iopr = PICRegisters.IndirectOpMode(reg.Register, out PICRegisterStorage regreg);
@@ -682,7 +682,7 @@ namespace Reko.Arch.Microchip.PIC18
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
                 m.Assign(statuss, binder.EnsureRegister(PICRegisters.STATUS));
                 m.Assign(wregs, Wreg);
-                m.Assign(bsrs, binder.EnsureRegister(PIC18Registers.BSR));
+                m.Assign(bsrs, binder.EnsureRegister(PICRegisters.BSR));
             }
             m.Call(target.CodeTarget, 0);
         }
@@ -992,7 +992,7 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteMOVLB()
         {
-            var bsr = binder.EnsureRegister(PIC18Registers.BSR);
+            var bsr = binder.EnsureRegister(PICRegisters.BSR);
             var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
             m.Assign(bsr, k.ImmediateValue);
         }
@@ -1129,7 +1129,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
-                m.Assign(binder.EnsureRegister(PIC18Registers.BSR), bsrs);
+                m.Assign(binder.EnsureRegister(PICRegisters.BSR), bsrs);
                 m.Assign(Wreg, wregs);
                 m.Assign(binder.EnsureRegister(PICRegisters.STATUS), statuss);
             }

@@ -70,11 +70,36 @@ namespace Reko.Arch.Microchip.PIC16
             INDF = GetRegister("INDF");
             FSR = GetRegister("FSR");
 
+            AddPseudoBSR();
+
+            BSR = GetRegister("BSR");
+            
             AddIndirectParents(true,
                 (INDF, (FSRIndexedMode.INDF, FSR))
                 );
 
             AddAlwaysAccessibleRegisters(true, INDF, PCL, STATUS, FSR, PCLATH, INTCON);
+        }
+
+        private void AddPseudoBSR()
+        {
+            var sfr = new SFRDef()
+            {
+                CName = "BSR",
+                Desc = $"Pseudo-register BSR",
+                NMMRID = "0xb",
+                AddrFormatted = "0",
+                MCLR = "------00",
+                POR = "------00",
+                Access = "------nn",
+                NzWidthFormatted = "8"
+            };
+
+            var reg = new PICRegisterStorage(sfr, 0);
+            reg.BitFields.Add(new PICRegisterBitFieldSortKey(0, 8), RP0);
+            reg.BitFields.Add(new PICRegisterBitFieldSortKey(1, 8), RP1);
+
+            AddRegister(reg);
         }
 
     }

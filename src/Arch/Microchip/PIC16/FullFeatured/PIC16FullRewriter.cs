@@ -236,7 +236,7 @@ namespace Reko.Arch.Microchip.PIC16
         private void Rewrite_MOVLB()
         {
             var imm = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
-            var bsr = binder.EnsureRegister(PIC16FullRegisters.BSR);
+            var bsr = binder.EnsureRegister(PICRegisters.BSR);
             m.Assign(bsr, imm.ImmediateValue);
         }
 

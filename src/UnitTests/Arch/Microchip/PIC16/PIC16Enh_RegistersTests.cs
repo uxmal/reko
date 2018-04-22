@@ -43,10 +43,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16Enhd_BitOffsetOfRegisters()
         {
-            Assert.AreEqual(0, PIC16Registers.WREG.BitAddress);
-            Assert.AreEqual(0, PIC16Registers.PCL.BitAddress);
-            Assert.AreEqual(0, PIC16Registers.STATUS.BitAddress);
-            Assert.AreEqual(0, PIC16EnhancedRegisters.BSR.BitAddress);
+            Assert.AreEqual(0, PICRegisters.WREG.BitAddress);
+            Assert.AreEqual(0, PICRegisters.PCL.BitAddress);
+            Assert.AreEqual(0, PICRegisters.STATUS.BitAddress);
+            Assert.AreEqual(0, PICRegisters.BSR.BitAddress);
             Assert.AreEqual(0, PIC16EnhancedRegisters.FSR0L.BitAddress);
             Assert.AreEqual(8, PIC16EnhancedRegisters.FSR0H.BitAddress);
             Assert.AreEqual(0, PIC16EnhancedRegisters.INDF0.BitAddress);

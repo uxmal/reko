@@ -52,14 +52,28 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Constructor of a named PIC register.
         /// </summary>
+        /// <param name="regName">Name of the PIC register.</param>
+        /// <param name="regNumber">The Reko index number of this register.</param>
+        /// <param name="bitAddress">The lowest bit address of this register.</param>
+        /// <param name="dt">The register word type.</param>
+        /// <param name="traits">The traits of the PIC register.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="traits"/> is null.</exception>
+        public PICRegisterStorage(string regName, int regNumber, uint bitAddress, PrimitiveType dt, PICRegisterTraits traits)
+            : base(regName, regNumber, bitAddress, dt)
+        {
+            Traits = traits ?? throw new ArgumentNullException(nameof(traits));
+            AttachedRegs = new List<PICRegisterStorage>();
+            BitFields = new SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage>();
+        }
+
+        /// <summary>
+        /// Constructor of a named PIC register.
+        /// </summary>
         /// <param name="sfr">The SFR definition.</param>
         /// <param name="number">The Reko index number of this register.</param>
         public PICRegisterStorage(SFRDef sfr, int number)
-            : base(sfr.CName, number, 0, sfr.NzWidth.Size2PrimitiveType())
+            : this(sfr.CName, number, 0, sfr.NzWidth.Size2PrimitiveType(), new PICRegisterTraits(sfr))
         {
-            Traits = new PICRegisterTraits(sfr);
-            AttachedRegs = new List<PICRegisterStorage>();
-            BitFields = new SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage>();
         }
 
         /// <summary>

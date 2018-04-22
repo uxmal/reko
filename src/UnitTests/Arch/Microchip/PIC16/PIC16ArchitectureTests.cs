@@ -240,8 +240,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
             Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.BSR, PICRegisters.GetRegister("BSR"));
             Assert.AreSame(PIC16EnhancedRegisters.INDF0, PICRegisters.GetRegister("INDF0"));
-            Assert.AreSame(PIC16EnhancedRegisters.BSR, PICRegisters.GetRegister("BSR"));
         }
 
         [Test]
@@ -252,9 +252,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             Assert.AreSame(PICRegisters.WREG, PICRegisters.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, PICRegisters.GetRegister("STATUS"));
             Assert.AreSame(PICRegisters.PCL, PICRegisters.GetRegister("PCL"));
+            Assert.AreSame(PICRegisters.BSR, PICRegisters.GetRegister("BSR"));
             Assert.AreSame(PIC16FullRegisters.INDF0, PICRegisters.GetRegister("INDF0"));
             Assert.AreSame(PIC16FullRegisters.INDF1, PICRegisters.GetRegister("INDF1"));
-            Assert.AreSame(PIC16FullRegisters.BSR, PICRegisters.GetRegister("BSR"));
         }
 
     }

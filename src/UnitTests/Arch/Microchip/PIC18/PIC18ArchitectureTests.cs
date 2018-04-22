@@ -262,14 +262,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.AreSame(PICRegisters.WREG, arch.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, arch.GetRegister("STATUS"));
-            Assert.AreSame(PIC18Registers.BSR, arch.GetRegister("BSR"));
+            Assert.AreSame(PICRegisters.BSR, arch.GetRegister("BSR"));
             Assert.AreSame(PICRegisters.PCL, arch.GetRegister("PCL"));
             Assert.AreSame(PIC18Registers.INDF0, arch.GetRegister("INDF0"));
             Assert.AreSame(PIC18Registers.INDF2, arch.GetRegister("INDF2"));
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.AreSame(PICRegisters.WREG, arch.GetRegister("WREG"));
             Assert.AreSame(PICRegisters.STATUS, arch.GetRegister("STATUS"));
-            Assert.AreSame(PIC18Registers.BSR, arch.GetRegister("BSR"));
+            Assert.AreSame(PICRegisters.BSR, arch.GetRegister("BSR"));
             Assert.AreSame(PICRegisters.PCL, arch.GetRegister("PCL"));
             Assert.AreSame(PIC18Registers.INDF0, arch.GetRegister("INDF0"));
             Assert.AreSame(PIC18Registers.FSR1, arch.GetRegister("FSR1"));

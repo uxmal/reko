@@ -91,11 +91,6 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         public static PICRegisterStorage FSR1 { get; private set; }
 
-        /// <summary>
-        /// BSR special function register.
-        /// </summary>
-        public static PICRegisterStorage BSR { get; protected set; }
-
         public override void SetCoreRegisters()
         {
             base.SetCoreRegisters();

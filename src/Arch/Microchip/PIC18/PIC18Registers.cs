@@ -62,9 +62,6 @@ namespace Reko.Arch.Microchip.PIC18
         /// <summary> INDF2 special function register. </summary>
         public static PICRegisterStorage INDF2 { get; protected set; }
 
-        /// <summary> BSR special function register. </summary>
-        public static PICRegisterStorage BSR { get; protected set; }
-
         /// <summary> FSR1L special function register. </summary>
         public static PICRegisterStorage FSR1L { get; protected set; }
 

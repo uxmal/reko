@@ -146,6 +146,9 @@ namespace Reko.Arch.Microchip.Common
         /// <summary> STKPTR pseudo-register. </summary>
         public static PICRegisterStorage STKPTR { get; protected set; }
 
+        /// <summary> BSR special function register. </summary>
+        public static PICRegisterStorage BSR { get; protected set; }
+
 
         /// <summary>
         /// Loads the PIC registers into the registers symbol table.
@@ -210,27 +213,7 @@ namespace Reko.Arch.Microchip.Common
         /// A <seealso cref="PICRegisterStorage"/> or null if tentative of duplication.
         /// </returns>
         bool IPICRegisterSymTable.AddRegister(PICRegisterStorage reg)
-        {
-            if (reg is null)
-                return false;
-
-            PICRegisterSizedUniqueAddress addr =
-                (reg.IsMemoryMapped
-                    ? new PICRegisterSizedUniqueAddress(reg.Address, reg.BitWidth)
-                    : new PICRegisterSizedUniqueAddress(reg.NMMRID, reg.BitWidth)
-                );
-
-            lock (symTabLock)
-            {
-                if (registersByName.ContainsKey(reg.Name))
-                    return false;      // Do not duplicate name
-                if (registersByAddressAndWidth.ContainsKey(addr))
-                    return false;   // Do not duplicate register with same address and bit width
-                registersByName[reg.Name] = reg;
-                registersByAddressAndWidth[addr] = reg;
-            }
-            return true;
-        }
+            => AddRegister(reg);
 
         /// <summary>
         /// Adds a register's named bit field. Returns null if no addition done.
@@ -240,15 +223,7 @@ namespace Reko.Arch.Microchip.Common
         /// A <seealso cref="PICRegisterBitFieldStorage"/> or null if tentative of duplication.
         /// </returns>
         bool IPICRegisterSymTable.AddRegisterBitField(PICRegisterBitFieldStorage field)
-        {
-            lock (symTabLock)
-            {
-                if (registersByName.ContainsKey(field.Name))
-                    return false;      // Do not duplicate bit-field name
-                bitFieldsByName[field.Name] = field;
-            }
-            return true;
-        }
+            => AddRegisterBitField(field);
 
         #endregion
 
@@ -628,6 +603,40 @@ namespace Reko.Arch.Microchip.Common
 
         #endregion
 
+
+        protected bool AddRegister(PICRegisterStorage reg)
+        {
+            if (reg is null)
+                return false;
+
+            PICRegisterSizedUniqueAddress addr =
+                (reg.IsMemoryMapped
+                    ? new PICRegisterSizedUniqueAddress(reg.Address, reg.BitWidth)
+                    : new PICRegisterSizedUniqueAddress(reg.NMMRID, reg.BitWidth)
+                );
+
+            lock (symTabLock)
+            {
+                if (registersByName.ContainsKey(reg.Name))
+                    return false;      // Do not duplicate name
+                if (registersByAddressAndWidth.ContainsKey(addr))
+                    return false;   // Do not duplicate register with same address and bit width
+                registersByName[reg.Name] = reg;
+                registersByAddressAndWidth[addr] = reg;
+            }
+            return true;
+        }
+
+        protected bool AddRegisterBitField(PICRegisterBitFieldStorage field)
+        {
+            lock (symTabLock)
+            {
+                if (registersByName.ContainsKey(field.Name))
+                    return false;      // Do not duplicate bit-field name
+                bitFieldsByName[field.Name] = field;
+            }
+            return true;
+        }
 
         protected static void AddForbiddenDests(bool clean, params PICRegisterStorage[] regs)
         {

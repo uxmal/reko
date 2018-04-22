@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
                 {
                     PICProcessorMode.GetMode(pic.Name).CreateRegisters();
                     Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
-                    Assert.IsNotNull(PIC16EnhancedRegisters.BSR, $"Null status register for '{pic.Name}'");
+                    Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.Name}'");
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
                 {
                     PICProcessorMode.GetMode(pic.Name).CreateRegisters();
                     Assert.IsNotNull(PICRegisters.STATUS, $"Null status register for '{pic.Name}'");
-                    Assert.IsNotNull(PIC16FullRegisters.BSR, $"Null status register for '{pic.Name}'");
+                    Assert.IsNotNull(PICRegisters.BSR, $"Null status register for '{pic.Name}'");
                 }
                 catch (Exception ex)
                 {

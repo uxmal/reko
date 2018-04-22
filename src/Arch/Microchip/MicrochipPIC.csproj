@@ -63,7 +63,6 @@
     <Compile Include="Common\PICDeviceConfigDefs.cs" />
     <Compile Include="Common\PICArchitecture.cs" />
     <Compile Include="Common\PICInstruction.cs" />
-    <Compile Include="Common\PICPseudoRegister.cs" />
     <Compile Include="Common\PICRegisterEx.cs" />
     <Compile Include="Common\PICRegisters.cs" />
     <Compile Include="Common\PICRegisterSizedUniqueAddress.cs" />
