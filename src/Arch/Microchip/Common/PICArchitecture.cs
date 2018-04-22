@@ -53,8 +53,6 @@ namespace Reko.Arch.Microchip.Common
         }
 
 
-        #region Public Methods/Properties
-
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
@@ -196,7 +194,9 @@ namespace Reko.Arch.Microchip.Common
         public override bool TryParseAddress(string txtAddress, out Address addr)
             => Address.TryParse32(txtAddress, out addr);
 
-        #endregion
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+            => mem.TryReadLe(addr, dt, out value);
 
     }
 

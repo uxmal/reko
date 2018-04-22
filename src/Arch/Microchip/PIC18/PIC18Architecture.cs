@@ -64,8 +64,6 @@ namespace Reko.Arch.Microchip.PIC18
         }
 
 
-        #region Public Methods/Properties
-
         public PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
             => ProcessorMode.CreateDisassembler(this, imageReader);
 
@@ -145,7 +143,6 @@ namespace Reko.Arch.Microchip.PIC18
             return sb.ToString();
         }
 
-        #endregion
 
     }
 

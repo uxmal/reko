@@ -59,8 +59,6 @@ namespace Reko.Arch.Microchip.PIC16
             StackRegister = PICRegisters.STKPTR;
         }
 
-        #region Public Methods/Properties
-
         public PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
             => ProcessorMode.CreateDisassembler(this, imageReader);
 
@@ -181,8 +179,6 @@ namespace Reko.Arch.Microchip.PIC16
             }
             return sb.ToString();
         }
-
-        #endregion
 
     }
 
