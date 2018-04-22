@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x0700),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[0x0000:byte]",
+                    "1|L--|WREG = WREG + INDF",
                     "2|L--|CDCZ = cond(WREG)"
                 );
             ExecTest(Words(0x0755),
@@ -71,8 +71,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
                 );
             ExecTest(Words(0x0780),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|Data[0x0000:byte] = WREG + Data[0x0000:byte]",
-                    "2|L--|CDCZ = cond(Data[0x0000:byte])"
+                    "1|L--|INDF = WREG + INDF",
+                    "2|L--|CDCZ = cond(INDF)"
                 );
             ExecTest(Words(0x07D5),
                 "0|L--|00000200(2): 2 instructions",
@@ -460,7 +460,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x0200),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|WREG = Data[0x0000:byte] - WREG",
+                    "1|L--|WREG = INDF - WREG",
                     "2|L--|CDCZ = cond(WREG)"
                 );
             ExecTest(Words(0x0255),
@@ -470,8 +470,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
                 );
             ExecTest(Words(0x0280),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|Data[0x0000:byte] = Data[0x0000:byte] - WREG",
-                    "2|L--|CDCZ = cond(Data[0x0000:byte])"
+                    "1|L--|INDF = INDF - WREG",
+                    "2|L--|CDCZ = cond(INDF)"
                 );
             ExecTest(Words(0x02D5),
                 "0|L--|00000200(2): 2 instructions",
@@ -512,7 +512,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x0600),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG ^ Data[0x0000:byte]",
+                    "1|L--|WREG = WREG ^ INDF",
                     "2|L--|Z = cond(WREG)"
                 );
             ExecTest(Words(0x0655),
@@ -522,8 +522,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
                 );
             ExecTest(Words(0x0680),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|Data[0x0000:byte] = WREG ^ Data[0x0000:byte]",
-                    "2|L--|Z = cond(Data[0x0000:byte])"
+                    "1|L--|INDF = WREG ^ INDF",
+                    "2|L--|Z = cond(INDF)"
                 );
             ExecTest(Words(0x06D5),
                 "0|L--|00000200(2): 2 instructions",

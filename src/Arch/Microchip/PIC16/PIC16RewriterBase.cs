@@ -191,7 +191,14 @@ namespace Reko.Arch.Microchip.PIC16
         {
             var src = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
             var dst = instrCurr.op2 as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {instrCurr.op2}");
-            srcMem = DataMem8(PICDataAddress.Ptr(src.Offset));
+            if (PICRegisters.TryGetAlwaysAccessibleRegister(src.Offset, out var regsrc))
+            {
+                srcMem = binder.EnsureRegister(regsrc);
+            }
+            else
+            {
+                srcMem = DataMem8(PICDataAddress.Ptr(src.Offset));
+            }
             dstMem = dst.WRegIsDest ? Wreg : srcMem;
         }
 

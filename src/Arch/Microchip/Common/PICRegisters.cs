@@ -588,9 +588,25 @@ namespace Reko.Arch.Microchip.Common
             return FSRIndexedMode.None;
         }
 
+        /// <summary>
+        /// Query if given PIC register is always accessible (from any data memory bank).
+        /// </summary>
+        /// <param name="reg">The PIC register of interest.</param>
+        /// <returns>
+        /// True if always accessible from any data memory bank, false if not.
+        /// </returns>
         public static bool IsAlwaysAccessible(PICRegisterStorage reg)
             => accessibleRegisters.ContainsValue(reg);
 
+        /// <summary>
+        /// Attempts to get an always-accessible (any bank) register given a PIC data memory address.
+        /// </summary>
+        /// <param name="regAddr">The PIC data memory address of the target PIC register.</param>
+        /// <param name="reg">[out] The register, if any.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="regAddr"/> is null.</exception>
         public static bool TryGetAlwaysAccessibleRegister(PICDataAddress regAddr, out PICRegisterStorage reg)
         {
             if (regAddr is null)
@@ -599,12 +615,19 @@ namespace Reko.Arch.Microchip.Common
             return accessibleRegisters.TryGetValue(aAddr, out reg);
         }
 
+        /// <summary>
+        /// Attempts to get an always-accessible (any bank) register given a memory address.
+        /// </summary>
+        /// <param name="regAbsAddr">The absolute address of the register.</param>
+        /// <param name="reg">[out] The register, if any.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
         public static bool TryGetAlwaysAccessibleRegister(ushort regAbsAddr, out PICRegisterStorage reg)
             => TryGetAlwaysAccessibleRegister(PICDataAddress.Ptr(regAbsAddr), out reg);
 
         #endregion
 
-        #region Helpers
 
         protected static void AddForbiddenDests(bool clean, params PICRegisterStorage[] regs)
         {
@@ -649,7 +672,6 @@ namespace Reko.Arch.Microchip.Common
             }
         }
 
-        #endregion
 
     }
 
