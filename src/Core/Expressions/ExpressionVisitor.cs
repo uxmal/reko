@@ -192,9 +192,11 @@ namespace Reko.Core.Expressions
 
 		public void VisitMkSequence(MkSequence seq)
 		{
-			seq.Head.Accept(this);
-			seq.Tail.Accept(this);
-		}
+            for (int i = 0; i < seq.Expressions.Length; ++i)
+            {
+                seq.Expressions[i].Accept(this);
+            }
+        }
 
 		public virtual void VisitIdentifier(Identifier id)
 		{

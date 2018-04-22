@@ -80,7 +80,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
-                }
+        }
                 aRegs += cb;
                 --cRegs;
             }
@@ -162,7 +162,6 @@ namespace Reko.Arch.Arm
         {
             return new ArmProcessorState(this);
         }
-
  
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -172,7 +171,7 @@ namespace Reko.Arch.Arm
 
         public override int? GetOpcodeNumber(string name)
         {
-            return null;
+                return null;
         }
 
         public override RegisterStorage GetRegister(int i)
@@ -210,7 +209,16 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
+
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(regsByName["CPSRQQQQ"], grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -230,17 +238,27 @@ namespace Reko.Arch.Arm
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if ((grf & (uint)FlagM.NF) != 0) s.Append('N');
+            if ((grf & (uint)FlagM.ZF) != 0) s.Append('Z');
+            if ((grf & (uint)FlagM.CF) != 0) s.Append('C');
+            if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
+            return s.ToString();
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
             throw new NotImplementedException();
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

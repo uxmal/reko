@@ -21,6 +21,7 @@
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Linq;
 
 namespace Reko.Core.Expressions
 {
@@ -363,16 +364,15 @@ namespace Reko.Core.Expressions
 
         public DataType VisitMkSequence(MkSequence seq)
         {
-            var dtHead = seq.Head.Accept(this);
-            var dtTail = seq.Tail.Accept(this);
+            var dtElems = seq.Expressions.Select(e => e.Accept(this)).ToArray();
             DataType dtSeq;
-            if (IsSelector(dtHead))
+            if (dtElems.Length == 2 && IsSelector(dtElems[0]))
             {
-                dtSeq = PrimitiveType.Create(Domain.Pointer, dtHead.Size + dtTail.Size);
+                dtSeq = PrimitiveType.Create(Domain.Pointer, seq.DataType.Size);
             }
             else 
             {
-                if (dtHead is PrimitiveType ptHead && ptHead.IsIntegral)
+                if (dtElems[0] is PrimitiveType ptHead && ptHead.IsIntegral)
                 {
                     dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.Size);
                 }

@@ -42,7 +42,7 @@ namespace Reko.Arch.Tlcs
             this.valid = new bool[32];
         }
 
-        public Tlcs900ProcessorState(Tlcs900ProcessorState that)
+        public Tlcs900ProcessorState(Tlcs900ProcessorState that) : base(that)
         {
             this.arch = that.arch;
             this.regs = (uint[])that.regs.Clone();

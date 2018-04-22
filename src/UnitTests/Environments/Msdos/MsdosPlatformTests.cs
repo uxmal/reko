@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Environments.Msdos
 
         private void Given_Procedure()
         {
-            this.proc = Procedure.Create(Address.Ptr32(0x1000), arch.CreateFrame());
+            this.proc = Procedure.Create(arch, Address.Ptr32(0x1000), arch.CreateFrame());
         }
 
         [Test]

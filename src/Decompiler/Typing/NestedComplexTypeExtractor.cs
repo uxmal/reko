@@ -35,6 +35,7 @@ namespace Reko.Typing
 		private bool insideComplexType;
 		private bool changed;
         private HashSet<DataType> visitedTypes;
+        private int stackDepth; //$HACK until overly deep recursion is fixed.
  
 		public NestedComplexTypeExtractor(TypeFactory factory, TypeStore store)
 		{
@@ -96,18 +97,28 @@ namespace Reko.Typing
             if (visitedTypes.Contains(str))
                 return str;
             visitedTypes.Add(str);
+            if (++this.stackDepth > 50)
+            {
+                --this.stackDepth;
+                return str;
+            }
 			if (insideComplexType)
 			{
 				changed = true;
 				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+                nctr.stackDepth = this.stackDepth;
 				str.Accept(nctr);
-				return CreateEquivalenceClass(str);
-			}
+                var dt = CreateEquivalenceClass(str);
+                --this.stackDepth;
+                return dt;
+            }
 			else
 			{
 				insideComplexType = true;
-				return base.VisitStructure(str);
-			}
+                var dt = base.VisitStructure(str);
+                --this.stackDepth;
+                return dt;
+            }
 		}
 
 		public override DataType VisitUnion(UnionType ut)
@@ -115,17 +126,28 @@ namespace Reko.Typing
             // Do not transform user-defined types
             if (ut.UserDefined)
                 return ut;
+            if (++this.stackDepth > 50)
+            {
+                --this.stackDepth;
+                return ut;
+            }
             if (insideComplexType)
 			{
-				changed = true;
+
+                changed = true;
 				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+                nctr.stackDepth = this.stackDepth;
 				ut.Accept(nctr);
-				return CreateEquivalenceClass(ut);
+				var eq = CreateEquivalenceClass(ut);
+                --this.stackDepth;
+                return eq;
 			}
 			else
 			{
 				insideComplexType = true;
-				return base.VisitUnion(ut);
+				var dt = base.VisitUnion(ut);
+                --this.stackDepth;
+                return dt;
 			}
 		}
 	}

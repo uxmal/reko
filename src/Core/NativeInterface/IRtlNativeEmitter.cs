@@ -72,11 +72,13 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Ror(HExpr a, HExpr b);
         [PreserveSig] HExpr Rrc(HExpr a, HExpr b);
         [PreserveSig] HExpr Sar(HExpr a, HExpr b);
-        [PreserveSig] HExpr Slice(HExpr a, int pos, int bits);
+        [PreserveSig] HExpr SDiv(HExpr a, HExpr b);
         [PreserveSig] HExpr Shl(HExpr a, HExpr b);
         [PreserveSig] HExpr Shr(HExpr a, HExpr b);
-        [PreserveSig] HExpr Test(Core.Expressions.ConditionCode cc, HExpr exp);
+        [PreserveSig] HExpr Slice(HExpr a, int pos, int bits);
         [PreserveSig] HExpr SMul(HExpr a, HExpr b);
+        [PreserveSig] HExpr Test(Core.Expressions.ConditionCode cc, HExpr exp);
+        [PreserveSig] HExpr UDiv(HExpr a, HExpr b);
         [PreserveSig] HExpr UMul(HExpr a, HExpr b);
         [PreserveSig] HExpr Xor(HExpr a, HExpr b);
 
@@ -97,8 +99,13 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Word32(uint u);
         [PreserveSig] HExpr Word64(ulong ul);
 
-        // Add args to the "argument buffer".
+        // Add expressions to the "expression buffer".
         [PreserveSig] void AddArg(HExpr a);
+        // Collect all expressions in the "expression buffer"
+        // and create a function application.
     	[PreserveSig] HExpr Fn(HExpr fn);
+        // Collect all expressions in the "expression buffer"
+        // and create a sequence.
+        [PreserveSig] HExpr Seq(HExpr dt);
     }
 }

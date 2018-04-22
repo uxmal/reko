@@ -42,8 +42,7 @@ namespace Reko.Arch.Vax
             this.arch = arch;
         }
 
-        public VaxProcessorState(VaxProcessorState that)
-            : base(that)
+        public VaxProcessorState(VaxProcessorState that) : base(that)
         {
             this.arch = that.arch;
             this.regs = (uint[])that.regs.Clone();

@@ -18,15 +18,11 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Intel
 {

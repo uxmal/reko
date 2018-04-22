@@ -40,10 +40,11 @@ namespace Reko.Core
 	{
         private List<Block> blocks;
 
-		public Procedure(string name, Frame frame) : base(name)
+		public Procedure(IProcessorArchitecture arch, string name, Frame frame) : base(name)
 		{
             //$REVIEW consider removing Body completely and use
             // AbsynProcedure instead.
+            this.Architecture = arch;
             this.Body = null;
             this.blocks = new List<Block>();
             this.ControlGraph = new BlockGraph(blocks);
@@ -53,6 +54,7 @@ namespace Reko.Core
 			this.ExitBlock = AddBlock(Name + "_exit");
 		}
 
+        public IProcessorArchitecture Architecture { get; }
         public List<AbsynStatement> Body { get; set; }
         public BlockGraph ControlGraph { get; private set; }
         public Block EntryBlock { get; private set; }
@@ -75,18 +77,18 @@ namespace Reko.Core
 		/// <param name="addr"></param>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public static Procedure Create(string name, Address addr, Frame f)
+		public static Procedure Create(IProcessorArchitecture arch, string name, Address addr, Frame f)
 		{
 			if (name == null)
 			{
 				name = GenerateName(addr);     //$TODO: should be a user option, move out of here.
 			}
-			return new Procedure(name, f);
+			return new Procedure(arch, name, f);
 		}
 
-		public static Procedure Create(Address addr, Frame f)
+		public static Procedure Create(IProcessorArchitecture arch, Address addr, Frame f)
 		{
-			return new Procedure(GenerateName(addr), f);
+			return new Procedure(arch, GenerateName(addr), f);
 		}
 
         [Conditional("DEBUG")]
@@ -161,15 +163,20 @@ namespace Reko.Core
 
 		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
         {
-			writer.WriteLine("// {0}", QualifiedName());
+            writer.WriteLine("// {0}", QualifiedName());
             writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
-			if (emitFrame)
-				Frame.Write(writer);
+            if (emitFrame)
+                Frame.Write(writer);
             Signature.Emit(QualifiedName(), FunctionType.EmitFlags.None, new TextFormatter(writer));
-			writer.WriteLine();
+            writer.WriteLine();
+            WriteBody(showEdges, writer);
+        }
+
+        public void WriteBody(bool showEdges, TextWriter writer)
+        {
             var formatter = new CodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
-		}
+        }
 
         public void Write(bool emitFrame, BlockDecorator decorator, TextWriter writer)
         {

@@ -31,6 +31,8 @@ namespace Reko.UnitTests.Analysis
 	//[Ignore("Value number doesn't seem to be used anymore; this test and its associated class should probably die")]
 	public class ValueNumberingTests : AnalysisTestBase
 	{
+        private SegmentMap segmentMap = new SegmentMap(Address.Ptr32(0));
+
 		//[Test]
 		public void VnSumTest()
 		{
@@ -50,7 +52,7 @@ namespace Reko.UnitTests.Analysis
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnSumTest.txt"))
 			{
 				Procedure proc = prog.Procedures.Values[0];
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
                 SsaTransform sst = new SsaTransform(
@@ -60,7 +62,7 @@ namespace Reko.UnitTests.Analysis
                     gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				DumpProc(proc, ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -89,12 +91,12 @@ namespace Reko.UnitTests.Analysis
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				DumpProc(proc, ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -124,7 +126,7 @@ done:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
                     new HashSet<RegisterStorage>());
@@ -135,7 +137,7 @@ done:
 
 				DumpProc(proc, ssa, fut.TextWriter);
 
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -162,13 +164,13 @@ done:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
                     new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -196,13 +198,13 @@ looptest:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
                     new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -233,13 +235,13 @@ looptest:
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(progFlow, proc, null, gr,
                     new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, writer);
-				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, null);
+				ValueNumbering vn = new ValueNumbering(ssa.Identifiers, segmentMap, null);
 				vn.Write(writer);
 				writer.WriteLine();
 			}

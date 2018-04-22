@@ -7,7 +7,7 @@ foo proc
 	mov	eax, [ebp+08]
 	add	eax, 0x7FF8FFFA
 	mov	[ebp-04], eax
-	cmp	[ebp-04],0000003
+	cmp	dword ptr [ebp-04],0000003
 	ja	default
 
 	mov	edx,[ebp-04]

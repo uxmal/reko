@@ -97,10 +97,10 @@ namespace Reko.UnitTests.Analysis
             dfa.UntangleProcedures();
             foreach (Procedure proc in program.Procedures.Values)
             {
-                var larw = new LongAddRewriter(proc, program.Architecture);
+                var larw = new LongAddRewriter(proc);
                 larw.Transform();
 
-                Aliases alias = new Aliases(proc, program.Architecture, dfa.ProgramDataFlow);
+                Aliases alias = new Aliases(proc, dfa.ProgramDataFlow);
                 alias.Transform();
                 var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, ssa, listener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, listener);
                 vp.Transform();
 
                 DeadCode.Eliminate(proc, ssa);
@@ -116,6 +116,8 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(writer);
                 proc.Write(false, writer);
                 writer.WriteLine();
+
+                ssa.Validate(s => Assert.Fail(s));
             }
         }
 
@@ -417,8 +419,8 @@ done:
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Assign(SCZ, m.Cond(r1));
                 m.Assign(r3, m.IAdd(m.IAdd(r3, r4), C));
-                m.Store(m.Word32(0x0444400), r1);
-                m.Store(m.Word32(0x0444404), r3);
+                m.MStore(m.Word32(0x0444400), r1);
+                m.MStore(m.Word32(0x0444404), r3);
                 m.Return();
             });
             RunTest(p, "Analysis/CceAddAdcPattern.txt");
@@ -440,8 +442,8 @@ done:
                     new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
-                m.Store(m.Word32(0x3000), r2);
-                m.Store(m.Word32(0x3004), r1);
+                m.MStore(m.Word32(0x3000), r2);
+                m.MStore(m.Word32(0x3004), r1);
             });
             RunTest(p, "Analysis/CceShrRcrPattern.txt");
         }
@@ -462,8 +464,8 @@ done:
                     new PseudoProcedure(PseudoProcedure.RolC, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
-                m.Store(m.Word32(0x3000), r1);
-                m.Store(m.Word32(0x3004), r2);
+                m.MStore(m.Word32(0x3000), r1);
+                m.MStore(m.Word32(0x3004), r2);
             });
             RunTest(p, "Analysis/CceShlRclPattern.txt");
         }
@@ -530,7 +532,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.Store(m.Word32(0x00123400), r2);
+                m.MStore(m.Word32(0x00123400), r2);
 
                 m.Label("mElse");
                 m.Return();
@@ -583,7 +585,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.Store(m.Word32(0x00123400), rax);
+                m.MStore(m.Word32(0x00123400), rax);
 
                 m.Label("mElse");
                 m.Return();

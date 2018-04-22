@@ -43,11 +43,18 @@ namespace Reko.Arch.Mips
             this.valid = new bool[32];
         }
 
+        public MipsProcessorState(MipsProcessorState that) :base(that)
+        {
+            this.arch = that.arch;
+            this.iregs = (Constant[])that.iregs.Clone();
+            this.valid = (bool[])that.valid.Clone();
+        }
+
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            return new MipsProcessorState(arch);
+            return new MipsProcessorState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

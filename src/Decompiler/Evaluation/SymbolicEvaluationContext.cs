@@ -110,12 +110,12 @@ namespace Reko.Evaluation
             return id;
         }
 
-        public Expression GetValue(MemoryAccess access)
+        public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
         {
             return GetValueEa(access);
         }
 
-        public Expression GetValue(SegmentedAccess access)
+        public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
         {
             return GetValueEa(access);
         }

@@ -204,7 +204,7 @@ namespace Reko.Environments.C64
                 new C64Platform(Services, null));
             var sym = new ImageSymbol(image.BaseAddress)
             {
-                ProcessorState = arch.CreateProcessorState()
+                ProcessorState = program.CreateProcessorState(),
             };
             program.EntryPoints.Add(sym.Address, sym);
             return program;

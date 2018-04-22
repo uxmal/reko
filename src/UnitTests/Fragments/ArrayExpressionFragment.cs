@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Fragments
             var pa = this.Temp(PrimitiveType.Word32, "pa");
 
             Assign(pa, Word32(0xA0000));
-            Store(IAdd(IAdd(pa, 0x140), i), Byte(0xF8));
+            MStore(IAdd(IAdd(pa, 0x140), i), Byte(0xF8));
         }
     }
 }

@@ -85,6 +85,7 @@ namespace Reko.ImageLoaders.Elf
         protected Address m_uPltMax;
         protected IPlatform platform;
         protected byte[] rawImage;
+        protected SegmentMap segmentMap;
 
         protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
         {
@@ -290,7 +291,7 @@ namespace Reko.ImageLoaders.Elf
             GetPltLimits();
             var addrPreferred = ComputeBaseAddress(platform);
             Dump();
-            var segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
+            this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
             var program = new Program(segmentMap, platform.Architecture, platform);
             return program;
         }

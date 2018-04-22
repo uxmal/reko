@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Analysis
 		{
             var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
-			Aliases alias = new Aliases(proc, arch);
+			Aliases alias = new Aliases(proc);
 			alias.Transform();
 			SsaTransform sst = new SsaTransform(
                 new ProgramDataFlow(),
@@ -133,7 +133,8 @@ namespace Reko.UnitTests.Analysis
 			ssa = sst.SsaState;
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
-			ValuePropagator vp = new ValuePropagator(arch, ssa, new FakeDecompilerEventListener());
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new FakeDecompilerEventListener());
 			vp.Transform();
 			DeadCode.Eliminate(proc, ssa);
 			Coalescer coa = new Coalescer(proc, ssa);
@@ -154,8 +155,8 @@ namespace Reko.UnitTests.Analysis
 				Identifier c  = Local32("c");
 
 				Assign(c, IAdd(a, b));
-				Store(Word32(0x10000000), c);
-				Store(Word32(0x10000004), a);
+				MStore(Word32(0x10000000), c);
+				MStore(Word32(0x10000004), a);
 			}
 		}
 

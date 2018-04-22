@@ -29,6 +29,37 @@ namespace Reko.Arch.PowerPC
 {
     partial class PowerPcRewriter
     {
+        private void RewriteDcbf()
+        {
+            m.SideEffect(host.PseudoProcedure("__dcbf", VoidType.Instance,
+                EffectiveAddress_r0(instr.op1, instr.op2)));
+        }
+
+        private void RewriteDcbi()
+        {
+            m.SideEffect(host.PseudoProcedure("__dcbi", VoidType.Instance,
+                EffectiveAddress_r0(instr.op1, instr.op2)));
+        }
+
+        private void RewriteDcbt()
+        {
+            // This is just a hint to the cache; makes no sense to have it in
+            // high-level language. Consider adding option to have cache
+            // hint instructions decompiled into intrinsics
+        }
+
+        private void RewriteDcbst()
+        {
+            m.SideEffect(host.PseudoProcedure("__dcbst", VoidType.Instance,
+                EffectiveAddress_r0(instr.op1, instr.op2)));
+        }
+
+        private void RewriteIcbi()
+        {
+            m.SideEffect(host.PseudoProcedure("__icbi", VoidType.Instance,
+                EffectiveAddress_r0(instr.op1, instr.op2)));
+        }
+
         private void RewriteIsync()
         {
             m.SideEffect(host.PseudoProcedure("__isync", VoidType.Instance));

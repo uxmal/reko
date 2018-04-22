@@ -35,6 +35,11 @@ namespace Reko.Arch.Alpha
             this.arch = arch;
         }
 
+        public AlphaProcessorState(AlphaProcessorState that) : base(that)
+        {
+            this.arch = that.arch;
+        }
+
         public override IProcessorArchitecture Architecture
         {
             get { return arch; }
@@ -42,7 +47,7 @@ namespace Reko.Arch.Alpha
 
         public override ProcessorState Clone()
         {
-            return new AlphaProcessorState(this.arch);
+            return new AlphaProcessorState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

@@ -35,6 +35,11 @@ namespace Reko.Arch.Tlcs
             this.arch = arch;
         }
 
+        public Tlcs90State(Tlcs90State that) : base(that)
+        {
+            this.arch = that.arch;
+        }
+
         public override IProcessorArchitecture Architecture
         {
             get { return arch; }
@@ -42,7 +47,7 @@ namespace Reko.Arch.Tlcs
 
         public override ProcessorState Clone()
         {
-            return new Tlcs90State(arch);
+            return new Tlcs90State(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

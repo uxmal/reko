@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Core
 			var r_dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
 			var ax = new Identifier(r_ax.Name, r_ax.DataType, r_ax);
 			var dx = new Identifier(r_dx.Name, r_dx.DataType, r_dx);
-			var seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(dx.Storage, ax.Storage));
+			var seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(dx.Storage, ax.Storage, PrimitiveType.Word32));
 			var type = seq.Storage.Accept(this);
 			Assert.AreEqual("seq", type);
 		}

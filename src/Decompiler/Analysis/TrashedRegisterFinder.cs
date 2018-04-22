@@ -85,7 +85,7 @@ namespace Reko.Analysis
                 var pf = flow[proc];
                 foreach (var reg in pf.TrashedRegisters.ToList())
                 {
-                    pf.TrashedRegisters.UnionWith(program.Architecture.GetAliases(reg));
+                    pf.TrashedRegisters.UnionWith(pf.Procedure.Architecture.GetAliases(reg));
                 }
             }
         }
@@ -154,7 +154,7 @@ namespace Reko.Analysis
         private void SetInitialValueOfStackPointer(Procedure proc)
         {
             flow[proc.EntryBlock].SymbolicIn.SetValue(
-                proc.Frame.EnsureRegister(program.Architecture.StackRegister),
+                proc.Frame.EnsureRegister(proc.Architecture.StackRegister),
                 proc.Frame.FramePointer);
         }
 
@@ -241,10 +241,11 @@ namespace Reko.Analysis
         {
             bf = flow[block];
             EnsureEvaluationContext(bf);
-            if (block.Procedure.EntryBlock == block)
+            var proc = block.Procedure;
+            if (proc.EntryBlock == block)
             {
-                var sp = block.Procedure.Frame.EnsureRegister(program.Architecture.StackRegister);
-                bf.SymbolicIn.RegisterState[sp.Storage] = block.Procedure.Frame.FramePointer;
+                var sp = proc.Frame.EnsureRegister(proc.Architecture.StackRegister);
+                bf.SymbolicIn.RegisterState[sp.Storage] = proc.Frame.FramePointer;
             }
             ctx.TrashedFlags = bf.grfTrashedIn;
         }
@@ -252,13 +253,13 @@ namespace Reko.Analysis
         public void EnsureEvaluationContext(BlockFlow bf)
         {
             this.ctx = bf.SymbolicIn.Clone();
-            var tes = new TrashedExpressionSimplifier(this, ctx);
+            var tes = new TrashedExpressionSimplifier(this.program.SegmentMap, this, ctx);
             this.se = new SymbolicEvaluator(tes, ctx);
         }
 
         public void PropagateToProcedureSummary(Procedure proc)
         {
-            var prop = new TrashedRegisterSummarizer(program.Architecture, proc, flow[proc], ctx);
+            var prop = new TrashedRegisterSummarizer(proc, flow[proc], ctx);
             bool changed = prop.PropagateToProcedureSummary();
             if (changed)
             {
@@ -396,6 +397,11 @@ namespace Reko.Analysis
             return ci;
         }
 
+        public Instruction VisitComment(CodeComment comment)
+        {
+            return comment;
+        }
+
         public Instruction VisitDeclaration(Declaration decl)
         {
             return se.VisitDeclaration(decl);
@@ -458,8 +464,8 @@ namespace Reko.Analysis
             private TrashedRegisterFinder trf;
             private SymbolicEvaluationContext ctx;
 
-            public TrashedExpressionSimplifier(TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
-                : base(ctx, trf.eventListener)
+            public TrashedExpressionSimplifier(SegmentMap segmentMap, TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
+                : base(segmentMap, ctx, trf.eventListener)
             {
                 this.trf = trf;
                 this.ctx = ctx;

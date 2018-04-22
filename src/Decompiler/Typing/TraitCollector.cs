@@ -210,6 +210,11 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
+        public DataType VisitComment(CodeComment comment)
+        {
+            return VoidType.Instance;
+        }
+
 		public DataType VisitDefInstruction(DefInstruction def)
 		{
 			return def.Identifier.Accept(this);
@@ -520,8 +525,10 @@ namespace Reko.Typing
 
         public DataType VisitMkSequence(MkSequence seq)
         {
-            var dtHead = seq.Head.Accept(this);
-            var dtTail = seq.Tail.Accept(this);
+            foreach (var e in seq.Expressions)
+            {
+                var dt = e.Accept(this);
+            }
             return handler.DataTypeTrait(seq, seq.DataType);
         }
 

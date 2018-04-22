@@ -87,7 +87,7 @@ namespace Reko.Arch.Arm
                     var reg = new RegisterStorage(n, i, a, PrimitiveType.CreateWord(b / 8));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
-                }
+        }
                 aRegs += cb;
                 --cRegs;
             }
@@ -110,7 +110,7 @@ namespace Reko.Arch.Arm
                         yield break;
                     else 
                         yield return new Arm32Instruction(nInstr);
-                }
+        }
             }
             finally
             {
@@ -167,7 +167,7 @@ namespace Reko.Arch.Arm
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)
             {
-                uint linAddrCall = rdr.Address.ToUInt32();
+                uint linAddrCall =  rdr.Address.ToUInt32();
                 var opcode = rdr.ReadLeUInt32();
                 if ((opcode & 0x0F000000) == 0x0B000000)         // BL
                 {
@@ -203,7 +203,7 @@ namespace Reko.Arch.Arm
         public override RegisterStorage GetRegister(string name)
         {
             if (regsByName.TryGetValue(name, out var reg))
-                return reg;
+            return reg;
             else
                 return null;
         }
@@ -274,6 +274,12 @@ namespace Reko.Arch.Arm
         {
             return Address.TryParse32(txtAddress, out addr);
         }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
+
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
         public static extern IntPtr CreateNativeArchitecture(

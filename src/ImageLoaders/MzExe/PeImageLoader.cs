@@ -268,9 +268,9 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
+            SegmentMap = new SegmentMap(addrLoad);
             if (sections > 0)
             {
-                SegmentMap = new SegmentMap(addrLoad);
                 sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToImageMap(addrLoad, SegmentMap);
@@ -1088,13 +1088,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
         {
-            ImageSymbol symOld;
             ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = arch.CreateProcessorState()
             };
-            if (!symbols.TryGetValue(addr, out symOld))
+            if (!symbols.TryGetValue(addr, out var symOld))
             {
                 symbols.Add(addr, symNew);
             }

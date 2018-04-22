@@ -145,8 +145,6 @@ namespace Reko.Core.Expressions
     /// </remarks>
     public class MemoryIdentifier : Identifier
 	{
-		private static MemoryIdentifier g;
-
 		public MemoryIdentifier(int i, DataType dt) : base("Mem" + i, dt, new MemoryStorage())
 		{
 		}

@@ -30,8 +30,8 @@ namespace Reko.UnitTests.Typing
     {
         public static void MemStore(ProcedureBuilder m)
         {
-            m.Store(m.Word32(0x3120), m.Word32(0));
-            m.Store(m.Word32(0x3120), m.IAdd(m.Mem32(m.Word32(0x3120)), 1));
+            m.MStore(m.Word32(0x3120), m.Word32(0));
+            m.MStore(m.Word32(0x3120), m.IAdd(m.Mem32(m.Word32(0x3120)), 1));
             m.Return();
         }
     }

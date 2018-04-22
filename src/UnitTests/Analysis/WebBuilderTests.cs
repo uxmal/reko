@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Analysis
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, program.Architecture);
+                Aliases alias = new Aliases(proc);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr, new HashSet<RegisterStorage>());
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(proc, ssa);
 
-				var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
+				var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

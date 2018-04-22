@@ -43,19 +43,24 @@ namespace Reko.Arch.Arm
             this.pc = arch.GetRegister("pc");
         }
 
+        public ArmProcessorState(ArmProcessorState that): base(that)
+        {
+            this.arch = that.arch;
+            this.regData = new Dictionary<int, ulong>(that.regData);
+            this.pc = that.pc;
+        }
+
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
         public override ProcessorState Clone()
         {
-            var state = new ArmProcessorState(arch);
-            state.regData = new Dictionary<int, ulong>(regData);
+            var state = new ArmProcessorState(this);
             return state;
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            ulong uVal;
-            if (regData.TryGetValue(r.Number, out uVal))
+            if (regData.TryGetValue(r.Number, out ulong uVal))
                 return Constant.Create(r.DataType, uVal);
             else
                 return Constant.Invalid;

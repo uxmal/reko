@@ -379,7 +379,7 @@ namespace Reko.Analysis
 			var change = MergeIntoProcedureFlow(varLive, flow);
 			if (change)
 			{
-				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(program.Architecture, p.Name + " summary:", flow.Summary));
+				Debug.WriteLineIf(trace.TraceInfo, flow.EmitRegisters(p.Architecture, p.Name + " summary:", flow.Summary));
 				state.UpdateSummary(flow);
                 foreach (Statement stmCaller in program.CallGraph.CallerStatements(p))
 				{
@@ -499,7 +499,7 @@ namespace Reko.Analysis
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
                 var ab = new ApplicationBuilder(
-                    program.Architecture, 
+                    Procedure.Architecture, 
                     Procedure.Frame, 
                     ci.CallSite,
                     new ProcedureConstant(program.Platform.PointerType, procCallee), 

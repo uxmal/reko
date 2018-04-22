@@ -55,6 +55,13 @@ namespace Reko.Gui.Windows
             remove { text.KeyDown -= value; }
         }
 
+
+        public event KeyEventHandler KeyUp
+        {
+            add { text.KeyUp += value; }
+            remove { text.KeyUp -= value; }
+        }
+
         public event EventHandler TextChanged
         {
             add { text.TextChanged += value; }

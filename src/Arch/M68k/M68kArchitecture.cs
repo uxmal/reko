@@ -157,7 +157,20 @@ namespace Reko.Arch.M68k
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            FlagM grf = 0;
+            for (int i = 0; i < name.Length; ++i)
+            {
+                switch (name[i])
+                {
+                case 'C': grf |= FlagM.CF; break;
+                case 'V': grf |= FlagM.VF; break;
+                case 'Z': grf |= FlagM.ZF; break;
+                case 'N': grf |= FlagM.NF; break;
+                case 'X': grf |= FlagM.XF; break;
+                default: return null;
+                }
+            }
+            return GetFlagGroup((uint)grf);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -180,7 +193,14 @@ namespace Reko.Arch.M68k
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
-            return Address.Ptr32(rdr.ReadBeUInt32());
+            if (rdr.TryReadBeUInt32(out var uaddr))
+            {
+                return Address.Ptr32(uaddr);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         //$REVIEW: shouldn't this be flaggroup?
@@ -208,6 +228,11 @@ namespace Reko.Arch.M68k
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadBe(addr, dt, out value);
         }
     }
 }

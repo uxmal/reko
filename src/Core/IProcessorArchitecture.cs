@@ -25,7 +25,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace Reko.Core
 {
@@ -38,8 +37,8 @@ namespace Reko.Core
         /// Creates an IEnumerable of disassembled MachineInstructions which consumes 
         /// its input from the provided <paramref name="imageReader"/>.
         /// </summary>
-        /// <remarks>This was previously an IEnumerator, but making it IEnumerable lets us use LINQ expressions
-        /// like Take().</remarks>
+        /// <remarks>The IEnumerable lets us use Linq expressions
+        /// like Take() on a stream of disassembled instructions.</remarks>
         /// <param name="imageReader"></param>
         /// <returns></returns>
         IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
@@ -47,13 +46,15 @@ namespace Reko.Core
         /// <summary>
         /// Creates an instance of a ProcessorState appropriate for this processor.
         /// </summary>
+        /// <param name="map">Segment map with descriptions of segments</param>
         /// <returns></returns>
 		ProcessorState CreateProcessorState();
 
         /// <summary>
-        /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
-        /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
-        /// returned as clusters of RtlInstructions.
+        /// Returns a stream of machine-independent instructions, which it
+        /// generates by successively disassembling machine-specific instructions
+        /// and rewriting them into one or more machine-independent RtlInstructions
+        /// codes. These are then returned as clusters of RtlInstructions.
         /// </summary>
         IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
 
@@ -106,7 +107,7 @@ namespace Reko.Core
         /// Creates an <see cref="ImageWriter" /> with the preferred 
         /// endianness of the processor.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An image writer of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter();
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
 
@@ -167,10 +168,27 @@ namespace Reko.Core
         /// <returns></returns>
         bool TryParseAddress(string txtAddr, out Address addr);
 
+        /// <summary>
+        /// Given a constant, returns an Address of the correct size for this architecture.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns>An address.</returns>
         Address MakeAddressFromConstant(Constant c);
 
         /// <summary>
-        /// The dictionary contains options that were loaded from the <code>config</code> file or the executable image. These can be used
+        /// Reads a value from memory, respecting the processor's endianness. Use this
+        /// instead of ImageWriter when random access of memory is requored.
+        /// </summary>
+        /// <param name="mem">Memory area to read from</param>
+        /// <param name="addr">Address to read from</param>
+        /// <param name="dt">Data type of the data to be read</param>
+        /// <param name="value">The value read from memory, if successful.</param>
+        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
+        bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
+
+        /// <summary>
+        /// The dictionary contains options that were loaded from the 
+        /// configuration file or the executable image. These can be used
         /// to customize the properties of the processor.
         /// </summary>
         /// <param name="options"></param>
@@ -190,6 +208,9 @@ namespace Reko.Core
         Registers,      // all registers treated as wildcards.
     }
 
+    /// <summary>
+    /// Abstract base class from which most IProcessorArchitecture derive.
+    /// </summary>
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
@@ -295,6 +316,7 @@ namespace Reko.Core
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
+        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
     }
 
 }

@@ -80,7 +80,7 @@ INativeRewriter * STDAPICALLTYPE ArmArchitecture::CreateRewriter(
 	INativeTypeFactory * typeFactory,
 	INativeRewriterHost * host)
 {
-	auto rw = new ArmRewriter(reinterpret_cast<uint8_t*>(rawBytes) + offset, length-offset, address, m, typeFactory, host);
+	auto rw = new ArmRewriter(cs_mode::CS_MODE_ARM, reinterpret_cast<uint8_t*>(rawBytes) + offset, length-offset, address, m, typeFactory, host);
 	rw->AddRef();
 	return rw;
 }

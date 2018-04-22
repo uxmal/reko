@@ -37,6 +37,14 @@ namespace Reko.Arch.PowerPC
             m.Assign(cr1, m.Cond(e));
         }
 
+        public void RewriteFabs()
+        {
+            //$TODO: require <math.h>
+            var opS = RewriteOperand(instr.op2);
+            var opD = RewriteOperand(instr.op1);
+            m.Assign(opD, host.PseudoProcedure("fabs", PrimitiveType.Real64, opS));
+        }
+
         public void RewriteFadd()
         {
             var opL = RewriteOperand(instr.op2);

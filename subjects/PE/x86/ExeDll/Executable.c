@@ -602,8 +602,8 @@ void fn00401920()
 	{
 		do
 		{
-			<anonymous> * edi_37 = *esi_34;
-			if (edi_37 != null)
+			word32 edi_37 = *esi_34;
+			if (edi_37 != 0x00)
 			{
 				fn00401976();
 				word32 esp_54;
@@ -614,7 +614,7 @@ void fn00401920()
 				byte SZO_60;
 				byte Z_61;
 				word32 ecx_62;
-				edi_37();
+				fn00000000();
 			}
 			esi_34 = esi_34 + 0x01;
 		} while (esi_34 < &globals->dw4024C8);

@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core.Serialization
         public void X86ps_SerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32,
-                new SequenceStorage(Registers.es, Registers.bx));
+                new SequenceStorage(Registers.es, Registers.bx, PrimitiveType.SegPtr32));
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 
@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Core.Serialization
         [Category(Categories.UnitTests)]
         public void X86ps_SerializeProcedure()
         {
-            Procedure proc = new Procedure("foo", arch.CreateFrame());
+            Procedure proc = new Procedure(arch, "foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Core.Serialization
         [Category(Categories.UnitTests)]
         public void X86ps_ProcedureWithSignature()
         {
-            Procedure proc = new Procedure("foo", arch.CreateFrame())
+            Procedure proc = new Procedure(arch, "foo", arch.CreateFrame())
             {
                 Signature = new FunctionType(
                     new Identifier("eax", PrimitiveType.Word32, Registers.eax),

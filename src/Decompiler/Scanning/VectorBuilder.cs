@@ -50,6 +50,7 @@ namespace Reko.Scanning
             this.jumpGraph = jumpGraph;
         }
 
+        public SegmentMap SegmentMap => program.SegmentMap;
         public int TableByteSize { get; private set; }
 
         public Tuple<Expression,Expression> AsAssignment(Instruction instr)
@@ -152,7 +153,10 @@ namespace Reko.Scanning
                         iMax = permutation[i];
                     var entryAddr = addrTable + (uint)(permutation[i] * cbEntry);
                     var addr = program.Architecture.ReadCodeAddress(0, program.CreateImageReader(entryAddr), state);
-                    vector.Add(addr);    
+                    if (addr != null)
+                    { 
+                        vector.Add(addr);
+                    }
                 }
             }
             else
@@ -164,7 +168,7 @@ namespace Reko.Scanning
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
-                    if (!segmentMap.IsValidAddress(entryAddr))
+                    if (entryAddr == null || !segmentMap.IsValidAddress(entryAddr))
                     {
                         if (services != null)
                         {
@@ -190,6 +194,11 @@ namespace Reko.Scanning
         public Block GetSinglePredecessor(Block block)
         {
             return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
+        }
+
+        public List<Block> GetPredecessors(Block block)
+        {
+            return block.Pred.ToList();
         }
 
         public AddressRange GetSinglePredecessorAddressRange(Address addr)
@@ -260,9 +269,9 @@ namespace Reko.Scanning
             return program.SegmentMap.IsValidAddress(addr);
         }
 
-        public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+        public IEnumerable<Instruction> GetBlockInstructions(Block block)
         {
-            return block.Statements.Select(s => s.Instruction).Reverse();
+            return block.Statements.Select(s => s.Instruction);
         }
     }
 }

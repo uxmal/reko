@@ -288,10 +288,12 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
         {
-            return Address.TryParse32(txtAddress, out addr);
+            //$TODO: PPC is bi-endian
+            return mem.TryReadLe(addr, dt, out value);
         }
+
 
         #endregion
     }
@@ -343,6 +345,11 @@ namespace Reko.Arch.PowerPC
         {
             return new BeImageWriter(mem, addr);
         }
+
+        public override bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
+        }
     }
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
@@ -386,6 +393,11 @@ namespace Reko.Arch.PowerPC
         {
             return Address.Ptr32(c.ToUInt32());
         }
+
+        public override bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse32(txtAddress, out addr);
+        }
     }
 
     public class PowerPcBe64Architecture : PowerPcArchitecture
@@ -411,6 +423,7 @@ namespace Reko.Arch.PowerPC
         {
             return Address.Ptr64(c.ToUInt64());
         }
+
 
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
@@ -441,5 +454,12 @@ namespace Reko.Arch.PowerPC
             //$TODO: PowerPC is bi-endian.
             return new BeImageWriter(mem, addr);
         }
+
+        public override bool TryParseAddress(string txtAddress, out Address addr)
+        {
+            return Address.TryParse64(txtAddress, out addr);
+        }
+
+
     }
 }

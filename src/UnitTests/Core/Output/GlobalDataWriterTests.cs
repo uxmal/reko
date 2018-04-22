@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Output
         {
             program.Procedures.Add(
                 Address.Ptr32(address),
-                new Procedure(name, program.Architecture.CreateFrame())
+                new Procedure(program.Architecture, name, program.Architecture.CreateFrame())
             );
         }
 

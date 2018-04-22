@@ -91,14 +91,23 @@ namespace Reko.Core
 
         public Identifier EnsureFpuStackVariable(int v, DataType dataType)
         {
-            Identifier id;
-            if (this.fpus.TryGetValue(v, out id))
+            if (this.fpus.TryGetValue(v, out var id))
                 return id;
             var fpu = new FpuStackStorage(v, dataType);
             id = new Identifier(fpu.Name, fpu.DataType, fpu);
             this.fpus.Add(v, id);
             ids.Add(id);
             return id;
+        }
+
+        public Identifier EnsureIdentifier(Storage stg)
+        {
+            switch (stg)
+            {
+            case RegisterStorage reg: return EnsureRegister(reg);
+            case SequenceStorage seq: return EnsureSequence(seq.Name, seq.Head, seq.Tail, seq.DataType);
+            default: throw new NotImplementedException();
+            }
         }
 
         public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
@@ -130,8 +139,25 @@ namespace Reko.Core
             }
             if (seqs.TryGetValue(tail, out id))
                 return id;
-            var seq = new SequenceStorage(head, tail);
+            var seq = new SequenceStorage(head, tail, dataType);
             id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dataType, seq);
+            seqs.Add(tail, id);
+            ids.Add(id);
+            return id;
+        }
+
+
+        public Identifier EnsureSequence(string name, Storage head, Storage tail, DataType dataType)
+        {
+            if (!this.seqs.TryGetValue(head, out var seqs))
+            {
+                seqs = new Dictionary<Storage, Identifier>();
+                this.seqs.Add(head, seqs);
+            }
+            if (seqs.TryGetValue(tail, out var id))
+                return id;
+            var seq = new SequenceStorage(name, head, tail, dataType);
+            id = new Identifier(name, dataType, seq);
             seqs.Add(tail, id);
             ids.Add(id);
             return id;

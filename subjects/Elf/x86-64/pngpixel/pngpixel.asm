@@ -342,16 +342,61 @@ l0000000000400E2D:
 	mov	eax,[rbp-24]
 	mov	rax,[00401828+rax*8]
 	jmp	rax
-0000000000400E3A                               48 8B 45 E8 0F B6           H.E...
-0000000000400E40 00 0F B6 D0 B8 07 00 00 00 2B 45 FC 89 C1 D3 FA .........+E.....
-0000000000400E50 89 D0 83 E0 01 E9 8D 00 00 00 48 8B 45 E8 0F B6 ..........H.E...
-0000000000400E60 00 0F B6 D0 B8 06 00 00 00 2B 45 FC 89 C1 D3 FA .........+E.....
-0000000000400E70 89 D0 83 E0 03 EB 70 48 8B 45 E8 0F B6 00 0F B6 ......pH.E......
-0000000000400E80 D0 B8 04 00 00 00 2B 45 FC 89 C1 D3 FA 89 D0 83 ......+E........
-0000000000400E90 E0 0F EB 53 48 8B 45 E8 0F B6 00 0F B6 C0 EB 47 ...SH.E........G
-0000000000400EA0 48 8B 45 E8 0F B6 00 0F B6 C0 C1 E0 08 89 C2 48 H.E............H
-0000000000400EB0 8B 45 E8 48 83 C0 01 0F B6 00 0F B6 C0 01 D0 EB .E.H............
-0000000000400EC0 26                                              &              
+
+l0000000000400E3A:
+	mov	rax,[rbp-18]
+	movzx	eax,byte ptr [rax]
+	movzx	edx,al
+	mov	eax,00000007
+	sub	eax,[rbp-04]
+	mov	ecx,eax
+	sar	edx,cl
+	mov	eax,edx
+	and	eax,01
+	jmp	0000000000400EE7
+
+l0000000000400E5A:
+	mov	rax,[rbp-18]
+	movzx	eax,byte ptr [rax]
+	movzx	edx,al
+	mov	eax,00000006
+	sub	eax,[rbp-04]
+	mov	ecx,eax
+	sar	edx,cl
+	mov	eax,edx
+	and	eax,03
+	jmp	0000000000400EE7
+
+l0000000000400E77:
+	mov	rax,[rbp-18]
+	movzx	eax,byte ptr [rax]
+	movzx	edx,al
+	mov	eax,00000004
+	sub	eax,[rbp-04]
+	mov	ecx,eax
+	sar	edx,cl
+	mov	eax,edx
+	and	eax,0F
+	jmp	0000000000400EE7
+
+l0000000000400E94:
+	mov	rax,[rbp-18]
+	movzx	eax,byte ptr [rax]
+	movzx	eax,al
+	jmp	0000000000400EE7
+
+l0000000000400EA0:
+	mov	rax,[rbp-18]
+	movzx	eax,byte ptr [rax]
+	movzx	eax,al
+	shl	eax,08
+	mov	edx,eax
+	mov	rax,[rbp-18]
+	add	rax,01
+	movzx	eax,byte ptr [rax]
+	movzx	eax,al
+	add	eax,edx
+	jmp	0000000000400EE7
 
 l0000000000400EC1:
 	mov	rax,[rip+00201238]                                     ; 0000000000602100
@@ -362,7 +407,10 @@ l0000000000400EC1:
 	call	0000000000400BF0
 	mov	edi,00000001
 	call	0000000000400C70
-0000000000400EE7                      C9 C3                             ..      
+
+l0000000000400EE7:
+	leave
+	ret
 
 ;; print_pixel: 0000000000400EE9
 print_pixel proc
@@ -399,68 +447,284 @@ l0000000000400F4C:
 	mov	eax,eax
 	mov	rax,[00401958+rax*8]
 	jmp	rax
-0000000000400F58                         8B 55 C0 8B 75 94 48 8B         .U..u.H.
-0000000000400F60 45 98 41 B8 01 00 00 00 89 D1 BA 00 00 00 00 48 E.A............H
-0000000000400F70 89 C7 E8 4F FE FF FF 89 C6 BF B0 18 40 00 B8 00 ...O........@...
-0000000000400F80 00 00 00 E8 E8 FB FF FF E9 4D 03 00 00 8B 55 C0 .........M....U.
-0000000000400F90 8B 75 94 48 8B 45 98 41 B8 01 00 00 00 89 D1 BA .u.H.E.A........
-0000000000400FA0 00 00 00 00 48 89 C7 E8 1A FE FF FF 89 45 C4 48 ....H........E.H
-0000000000400FB0 C7 45 C8 00 00 00 00 C7 45 B8 00 00 00 00 48 8D .E......E.....H.
-0000000000400FC0 4D B8 48 8D 55 C8 48 8B 75 A0 48 8B 45 A8 48 89 M.H.U.H.u.H.E.H.
-0000000000400FD0 C7 E8 DA FC FF FF 83 E0 08 85 C0 0F 84 56 01 00 .............V..
-0000000000400FE0 00 8B 45 B8 85 C0 0F 8E 4B 01 00 00 48 8B 45 C8 ..E.....K...H.E.
-0000000000400FF0 48 85 C0 0F 84 3E 01 00 00 48 C7 45 D0 00 00 00 H....>...H.E....
-0000000000401000 00 C7 45 BC 00 00 00 00 48 8D 4D BC 48 8D 55 D0 ..E.....H.M.H.U.
-0000000000401010 48 8B 75 A0 48 8B 45 A8 41 B8 00 00 00 00 48 89 H.u.H.E.A.....H.
-0000000000401020 C7 E8 5A FB FF FF 83 E0 10 85 C0 0F 84 A0 00 00 ..Z.............
-0000000000401030 00 8B 45 BC 85 C0 0F 8E 95 00 00 00 48 8B 45 D0 ..E.........H.E.
-0000000000401040 48 85 C0 0F 84 88 00 00 00 8B 45 BC 39 45 C4 73 H.........E.9E.s
-0000000000401050 12 48 8B 55 D0 8B 45 C4 48 01 D0 0F B6 00 0F B6 .H.U..E.H.......
-0000000000401060 F0 EB 05 BE FF 00 00 00 48 8B 4D C8 8B 55 C4 48 ........H.M..U.H
-0000000000401070 89 D0 48 01 C0 48 01 D0 48 01 C8 0F B6 40 02 0F ..H..H..H....@..
-0000000000401080 B6 F8 48 8B 4D C8 8B 55 C4 48 89 D0 48 01 C0 48 ..H.M..U.H..H..H
-0000000000401090 01 D0 48 01 C8 0F B6 40 01 0F B6 C8 4C 8B 45 C8 ..H....@....L.E.
-00000000004010A0 8B 55 C4 48 89 D0 48 01 C0 48 01 D0 4C 01 C0 0F .U.H..H..H..L...
-00000000004010B0 B6 00 0F B6 D0 8B 45 C4 41 89 F1 41 89 F8 89 C6 ......E.A..A....
-00000000004010C0 BF B9 18 40 00 B8 00 00 00 00 E8 A1 FA FF FF EB ...@............
-00000000004010D0 7F 48 8B 4D C8 8B 55 C4 48 89 D0 48 01 C0 48 01 .H.M..U.H..H..H.
-00000000004010E0 D0 48 01 C8 0F B6 40 02 0F B6 F0 48 8B 4D C8 8B .H....@....H.M..
-00000000004010F0 55 C4 48 89 D0 48 01 C0 48 01 D0 48 01 C8 0F B6 U.H..H..H..H....
-0000000000401100 40 01 0F B6 C8 48 8B 7D C8 8B 55 C4 48 89 D0 48 @....H.}..U.H..H
-0000000000401110 01 C0 48 01 D0 48 01 F8 0F B6 00 0F B6 D0 8B 45 ..H..H.........E
-0000000000401120 C4 41 89 F0 89 C6 BF D3 18 40 00 B8 00 00 00 00 .A.......@......
-0000000000401130 E8 3B FA FF FF EB 19 8B 45 C4 89 C6 BF EA 18 40 .;......E......@
-0000000000401140 00 B8 00 00 00 00 E8 25 FA FF FF E9 8A 01 00 00 .......%........
-0000000000401150 E9 85 01 00 00 8B 55 C0 8B 75 94 48 8B 45 98 41 ......U..u.H.E.A
-0000000000401160 B8 03 00 00 00 89 D1 BA 02 00 00 00 48 89 C7 E8 ............H...
-0000000000401170 52 FC FF FF 41 89 C4 8B 55 C0 8B 75 94 48 8B 45 R...A...U..u.H.E
-0000000000401180 98 41 B8 03 00 00 00 89 D1 BA 01 00 00 00 48 89 .A............H.
-0000000000401190 C7 E8 30 FC FF FF 89 C3 8B 55 C0 8B 75 94 48 8B ..0......U..u.H.
-00000000004011A0 45 98 41 B8 03 00 00 00 89 D1 BA 00 00 00 00 48 E.A............H
-00000000004011B0 89 C7 E8 0F FC FF FF 44 89 E1 89 DA 89 C6 BF 06 .......D........
-00000000004011C0 19 40 00 B8 00 00 00 00 E8 A3 F9 FF FF E9 08 01 .@..............
-00000000004011D0 00 00 8B 55 C0 8B 75 94 48 8B 45 98 41 B8 02 00 ...U..u.H.E.A...
-00000000004011E0 00 00 89 D1 BA 01 00 00 00 48 89 C7 E8 D5 FB FF .........H......
-00000000004011F0 FF 89 C3 8B 55 C0 8B 75 94 48 8B 45 98 41 B8 02 ....U..u.H.E.A..
-0000000000401200 00 00 00 89 D1 BA 00 00 00 00 48 89 C7 E8 B4 FB ..........H.....
-0000000000401210 FF FF 89 DA 89 C6 BF 14 19 40 00 B8 00 00 00 00 .........@......
-0000000000401220 E8 4B F9 FF FF E9 B0 00 00 00 8B 55 C0 8B 75 94 .K.........U..u.
-0000000000401230 48 8B 45 98 41 B8 04 00 00 00 89 D1 BA 03 00 00 H.E.A...........
-0000000000401240 00 48 89 C7 E8 7D FB FF FF 41 89 C5 8B 55 C0 8B .H...}...A...U..
-0000000000401250 75 94 48 8B 45 98 41 B8 04 00 00 00 89 D1 BA 02 u.H.E.A.........
-0000000000401260 00 00 00 48 89 C7 E8 5B FB FF FF 41 89 C4 8B 55 ...H...[...A...U
-0000000000401270 C0 8B 75 94 48 8B 45 98 41 B8 04 00 00 00 89 D1 ..u.H.E.A.......
-0000000000401280 BA 01 00 00 00 48 89 C7 E8 39 FB FF FF 89 C3 8B .....H...9......
-0000000000401290 55 C0 8B 75 94 48 8B 45 98 41 B8 04 00 00 00 89 U..u.H.E.A......
-00000000004012A0 D1 BA 00 00 00 00 48 89 C7 E8 18 FB FF FF 45 89 ......H.......E.
-00000000004012B0 E8 44 89 E1 89 DA 89 C6 BF 26 19 40 00 B8 00 00 .D.......&.@....
-00000000004012C0 00 00 E8 A9 F8 FF FF EB 11                      .........      
+
+l0000000000400F58:
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000001
+	mov	ecx,edx
+	mov	edx,00000000
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	esi,eax
+	mov	edi,004018B0
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	00000000004012DA
+
+l0000000000400F8D:
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000001
+	mov	ecx,edx
+	mov	edx,00000000
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	[rbp-3C],eax
+	mov	qword ptr [rbp-38],+00000000
+	mov	dword ptr [rbp-48],00000000
+	lea	rcx,[rbp-48]
+	lea	rdx,[rbp-38]
+	mov	rsi,[rbp-60]
+	mov	rax,[rbp-58]
+	mov	rdi,rax
+	call	0000000000400CB0
+	and	eax,08
+	test	eax,eax
+	jz	0000000000401137
+
+l0000000000400FE1:
+	mov	eax,[rbp-48]
+	test	eax,eax
+	jle	0000000000401137
+
+l0000000000400FEC:
+	mov	rax,[rbp-38]
+	test	rax,rax
+	jz	0000000000401137
+
+l0000000000400FF9:
+	mov	qword ptr [rbp-30],+00000000
+	mov	dword ptr [rbp-44],00000000
+	lea	rcx,[rbp-44]
+	lea	rdx,[rbp-30]
+	mov	rsi,[rbp-60]
+	mov	rax,[rbp-58]
+	mov	r8d,00000000
+	mov	rdi,rax
+	call	0000000000400B80
+	and	eax,10
+	test	eax,eax
+	jz	00000000004010D1
+
+l0000000000401031:
+	mov	eax,[rbp-44]
+	test	eax,eax
+	jle	00000000004010D1
+
+l000000000040103C:
+	mov	rax,[rbp-30]
+	test	rax,rax
+	jz	00000000004010D1
+
+l0000000000401049:
+	mov	eax,[rbp-44]
+	cmp	[rbp-3C],eax
+	jnc	0000000000401063
+
+l0000000000401051:
+	mov	rdx,[rbp-30]
+	mov	eax,[rbp-3C]
+	add	rax,rdx
+	movzx	eax,byte ptr [rax]
+	movzx	esi,al
+	jmp	0000000000401068
+
+l0000000000401063:
+	mov	esi,000000FF
+
+l0000000000401068:
+	mov	rcx,[rbp-38]
+	mov	edx,[rbp-3C]
+	mov	rax,rdx
+	add	rax,rax
+	add	rax,rdx
+	add	rax,rcx
+	movzx	eax,byte ptr [rax+02]
+	movzx	edi,al
+	mov	rcx,[rbp-38]
+	mov	edx,[rbp-3C]
+	mov	rax,rdx
+	add	rax,rax
+	add	rax,rdx
+	add	rax,rcx
+	movzx	eax,byte ptr [rax+01]
+	movzx	ecx,al
+	mov	r8,[r13-38]
+	mov	edx,[rbp-3C]
+	mov	rax,rdx
+	add	rax,rax
+	add	rax,rdx
+	add	rax,r8
+	movzx	eax,byte ptr [rax]
+	movzx	edx,al
+	mov	eax,[rbp-3C]
+	mov	r9d,esi
+	mov	r8d,edi
+	mov	esi,eax
+	mov	edi,004018B9
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	0000000000401150
+
+l00000000004010D1:
+	mov	rcx,[rbp-38]
+	mov	edx,[rbp-3C]
+	mov	rax,rdx
+	add	rax,rax
+	add	rax,rdx
+	add	rax,rcx
+	movzx	eax,byte ptr [rax+02]
+	movzx	esi,al
+	mov	rcx,[rbp-38]
+	mov	edx,[rbp-3C]
+	mov	rax,rdx
+	add	rax,rax
+	add	rax,rdx
+	add	rax,rcx
+	movzx	eax,byte ptr [rax+01]
+	movzx	ecx,al
+	mov	rdi,[rbp-38]
+	mov	edx,[rbp-3C]
+	mov	rax,rdx
+	add	rax,rax
+	add	rax,rdx
+	add	rax,rdi
+	movzx	eax,byte ptr [rax]
+	movzx	edx,al
+	mov	eax,[rbp-3C]
+	mov	r8d,esi
+	mov	esi,eax
+	mov	edi,004018D3
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	0000000000401150
+
+l0000000000401137:
+	mov	eax,[rbp-3C]
+	mov	esi,eax
+	mov	edi,004018EA
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	00000000004012DA
+
+l0000000000401150:
+	jmp	00000000004012DA
+
+l0000000000401155:
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000003
+	mov	ecx,edx
+	mov	edx,00000002
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	r12d,eax
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000003
+	mov	ecx,edx
+	mov	edx,00000001
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	ebx,eax
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000003
+	mov	ecx,edx
+	mov	edx,00000000
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	ecx,r12d
+	mov	edx,ebx
+	mov	esi,eax
+	mov	edi,00401906
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	00000000004012DA
+
+l00000000004011D2:
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000002
+	mov	ecx,edx
+	mov	edx,00000001
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	ebx,eax
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000002
+	mov	ecx,edx
+	mov	edx,00000000
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	edx,ebx
+	mov	esi,eax
+	mov	edi,00401914
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	00000000004012DA
+
+l000000000040122A:
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000004
+	mov	ecx,edx
+	mov	edx,00000003
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	r13d,eax
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000004
+	mov	ecx,edx
+	mov	edx,00000002
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	r12d,eax
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000004
+	mov	ecx,edx
+	mov	edx,00000001
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	ebx,eax
+	mov	edx,[rbp-40]
+	mov	esi,[rbp-6C]
+	mov	rax,[rbp-68]
+	mov	r8d,00000004
+	mov	ecx,edx
+	mov	edx,00000000
+	mov	rdi,rax
+	call	0000000000400DC6
+	mov	r8d,r13d
+	mov	ecx,r12d
+	mov	edx,ebx
+	mov	esi,eax
+	mov	edi,00401926
+	mov	eax,00000000
+	call	0000000000400B70
+	jmp	00000000004012DA
 
 l00000000004012C9:
 	mov	rax,[rbp-58]
 	mov	esi,00401938
 	mov	rdi,rax
 	call	0000000000400B50
+
+l00000000004012DA:
 	mov	rax,[rbp-28]
 	xor	rax,fs:[00000028]
 	jz	00000000004012EE
@@ -943,15 +1207,24 @@ _fini proc
 0000000000401800 01 00 02 00                                     ....           
 0000000000401804             00 00 00 00 70 6E 67 70 69 78 65 6C     ....pngpixel
 0000000000401810 3A 20 69 6E 76 61 6C 69 64 20 62 69 74 20 64 65 : invalid bit de
-0000000000401820 70 74 68 20 25 75 0A 00 C1 0E 40 00 00 00 00 00 pth %u....@.....
-0000000000401830 3A 0E 40 00 00 00 00 00 5A 0E 40 00 00 00 00 00 :.@.....Z.@.....
-0000000000401840 C1 0E 40 00 00 00 00 00 77 0E 40 00 00 00 00 00 ..@.....w.@.....
-0000000000401850 C1 0E 40 00 00 00 00 00 C1 0E 40 00 00 00 00 00 ..@.......@.....
-0000000000401860 C1 0E 40 00 00 00 00 00 94 0E 40 00 00 00 00 00 ..@.......@.....
-0000000000401870 C1 0E 40 00 00 00 00 00 C1 0E 40 00 00 00 00 00 ..@.......@.....
-0000000000401880 C1 0E 40 00 00 00 00 00 C1 0E 40 00 00 00 00 00 ..@.......@.....
-0000000000401890 C1 0E 40 00 00 00 00 00 C1 0E 40 00 00 00 00 00 ..@.......@.....
-00000000004018A0 C1 0E 40 00 00 00 00 00 A0 0E 40 00 00 00 00 00 ..@.......@.....
+0000000000401820 70 74 68 20 25 75 0A 00                         pth %u..       
+l0000000000401828	dq	0x0000000000400EC1
+l0000000000401830	dq	0x0000000000400E3A
+l0000000000401838	dq	0x0000000000400E5A
+l0000000000401840	dq	0x0000000000400EC1
+l0000000000401848	dq	0x0000000000400E77
+l0000000000401850	dq	0x0000000000400EC1
+l0000000000401858	dq	0x0000000000400EC1
+l0000000000401860	dq	0x0000000000400EC1
+l0000000000401868	dq	0x0000000000400E94
+l0000000000401870	dq	0x0000000000400EC1
+l0000000000401878	dq	0x0000000000400EC1
+l0000000000401880	dq	0x0000000000400EC1
+l0000000000401888	dq	0x0000000000400EC1
+l0000000000401890	dq	0x0000000000400EC1
+l0000000000401898	dq	0x0000000000400EC1
+l00000000004018A0	dq	0x0000000000400EC1
+l00000000004018A8	dq	0x0000000000400EA0
 00000000004018B0 47 52 41 59 20 25 75 0A 00 49 4E 44 45 58 45 44 GRAY %u..INDEXED
 00000000004018C0 20 25 75 20 3D 20 25 64 20 25 64 20 25 64 20 25  %u = %d %d %d %
 00000000004018D0 64 0A 00 49 4E 44 45 58 45 44 20 25 75 20 3D 20 d..INDEXED %u = 
@@ -962,10 +1235,14 @@ _fini proc
 0000000000401920 75 20 25 75 0A 00 52 47 42 41 20 25 75 20 25 75 u %u..RGBA %u %u
 0000000000401930 20 25 75 20 25 75 0A 00 70 6E 67 70 69 78 65 6C  %u %u..pngpixel
 0000000000401940 3A 20 69 6E 76 61 6C 69 64 20 63 6F 6C 6F 72 20 : invalid color 
-0000000000401950 74 79 70 65 00 00 00 00 58 0F 40 00 00 00 00 00 type....X.@.....
-0000000000401960 C9 12 40 00 00 00 00 00 55 11 40 00 00 00 00 00 ..@.....U.@.....
-0000000000401970 8D 0F 40 00 00 00 00 00 D2 11 40 00 00 00 00 00 ..@.......@.....
-0000000000401980 C9 12 40 00 00 00 00 00 2A 12 40 00 00 00 00 00 ..@.....*.@.....
+0000000000401950 74 79 70 65 00 00 00 00                         type....       
+l0000000000401958	dq	0x0000000000400F58
+l0000000000401960	dq	0x00000000004012C9
+l0000000000401968	dq	0x0000000000401155
+l0000000000401970	dq	0x0000000000400F8D
+l0000000000401978	dq	0x00000000004011D2
+l0000000000401980	dq	0x00000000004012C9
+l0000000000401988	dq	0x000000000040122A
 0000000000401990 72 62 00 31 2E 36 2E 31 35 00 70 6E 67 70 69 78 rb.1.6.15.pngpix
 00000000004019A0 65 6C 3A 20 75 6E 6B 6E 6F 77 6E 20 69 6E 74 65 el: unknown inte
 00000000004019B0 72 6C 61 63 65 00 70 6E 67 5F 72 65 61 64 5F 72 rlace.png_read_r

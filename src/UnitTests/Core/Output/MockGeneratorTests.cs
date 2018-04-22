@@ -25,6 +25,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -110,7 +111,7 @@ namespace Reko.UnitTests.Core.Output
         {
             CompileTest(m =>
             {
-                m.Store(m.Word32(0x123456), m.Mem(PrimitiveType.Byte, m.Word32(0x12348)));
+                m.MStore(m.Word32(0x123456), m.Mem(PrimitiveType.Byte, m.Word32(0x12348)));
                 m.Return();
             });
             string sExp =
@@ -203,7 +204,7 @@ namespace Reko.UnitTests.Core.Output
 
                 m.BranchIf(m.Eq(i, 0), "skip");
                 m.Label("fade");
-                m.Store(m.Word32(0x123456), i);
+                m.MStore(m.Word32(0x123456), i);
                 m.Label("skip");
                 m.Return(i);
             });
@@ -356,7 +357,7 @@ namespace Reko.UnitTests.Core.Output
             }
             catch
             {
-                Console.WriteLine(s);
+                Debug.Print("{0}", s);
                 throw;
             }
         }

@@ -88,7 +88,7 @@ namespace Reko.Arch.Alpha
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new AlphaRewriter(this, rdr, state, binder, host);
+            return new AlphaRewriter(this, rdr, binder, host);
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
@@ -159,6 +159,11 @@ namespace Reko.Arch.Alpha
         {
             //$TODO: this should be in the platform not the architecture.
             return Address.TryParse32(txtAddr, out addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

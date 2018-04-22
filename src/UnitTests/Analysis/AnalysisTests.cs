@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Program prog = RewriteFile("Fragments/alias_regs.asm");
 			Procedure proc = prog.Procedures.Values[0];
-			Aliases alias = new Aliases(proc, prog.Architecture);
+			Aliases alias = new Aliases(proc);
 			alias.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/AnAliasExpanderTest.txt"))
 			{
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Program prog = RewriteFile("Fragments/alias_regs2.asm");
 			Procedure proc = prog.Procedures.Values[0];
-			Aliases alias = new Aliases(proc, prog.Architecture);
+			Aliases alias = new Aliases(proc);
 			alias.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/AnAliasExpandDeadVars.txt"))

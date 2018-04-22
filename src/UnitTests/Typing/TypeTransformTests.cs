@@ -394,7 +394,7 @@ namespace Reko.UnitTests.Typing
                 Identifier a = m.Local32("a");
                 Identifier i = m.Local32("i");
                 m.Assign(a, 0x00123456);		// array pointer
-                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+                m.MStore(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
             });
             RunTest(pp.BuildProgram(), "Typing/TtranArrayConstantPointers.txt");
         }
@@ -431,7 +431,7 @@ namespace Reko.UnitTests.Typing
             {
                 var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
-                m.SegStore(
+                m.SStore(
                     ds, m.Word16( 0x1234),
                     m.SegMem16(
                         ds,
@@ -481,8 +481,8 @@ namespace Reko.UnitTests.Typing
                 var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
-                m.Store(r1, m.Word16(0x1234));
-                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.MStore(r1, m.Word16(0x1234));
+                m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
             RunTest(pb.BuildProgram());
@@ -504,8 +504,8 @@ namespace Reko.UnitTests.Typing
                 var foo = new Identifier("foo", str, new MemoryStorage());
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
-                m.Store(r1, m.Word16(0x1234));
-                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.MStore(r1, m.Word16(0x1234));
+                m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
             RunTest(pb.BuildProgram());
@@ -520,7 +520,7 @@ namespace Reko.UnitTests.Typing
                 var d0 = m.Reg32("d0", 0);
                 var a4 = m.Reg32("a4", 12);
 
-                m.Store(m.IAdd(a4, m.Shl(d0, 2)), a4);
+                m.MStore(m.IAdd(a4, m.Shl(d0, 2)), a4);
                 m.Return();
             });
             RunTest(pb.BuildProgram());
@@ -534,7 +534,7 @@ namespace Reko.UnitTests.Typing
             {
                 var a4 = m.Reg32("a4", 12);
 
-                m.Store(a4, a4);
+                m.MStore(a4, a4);
                 m.Return();
             });
             RunTest(pb.BuildProgram());

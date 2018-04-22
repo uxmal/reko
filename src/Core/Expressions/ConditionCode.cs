@@ -45,8 +45,42 @@ namespace Reko.Core.Expressions
         PO,     // parity odd
 
         ALWAYS, // Some architectures have this.
-        NEVER, 
+        NEVER,
 
-        IS_NAN, // comparison yielded an floating point NaN
+        IS_NAN,     // comparison discovered an floating point NaN
+        NOT_NAN,    // comparison didn't discover a NaN
+    }
+
+    public static class ConditionCodeEx
+    {
+        private static ConditionCode[] invertMap = new[]
+        {
+            ConditionCode.None,
+            ConditionCode.ULE,
+            ConditionCode.UGT,
+            ConditionCode.UGE,
+            ConditionCode.LE,
+            ConditionCode.LT,
+            ConditionCode.GE,
+            ConditionCode.GT,
+            ConditionCode.ULT,
+            ConditionCode.OV,
+            ConditionCode.SG,
+            ConditionCode.EQ,
+            ConditionCode.NO,
+            ConditionCode.NS,
+            ConditionCode.NE,
+            ConditionCode.PO,
+            ConditionCode.PE,
+            ConditionCode.NEVER,
+            ConditionCode.ALWAYS,
+            ConditionCode.NOT_NAN,
+            ConditionCode.IS_NAN
+        };
+
+        public static ConditionCode Invert(this ConditionCode cc)
+        {
+            return invertMap[(int)cc];
+        }
     }
 }

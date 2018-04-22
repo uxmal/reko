@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Mocks
@@ -32,7 +33,8 @@ namespace Reko.UnitTests.Mocks
     /// </summary>
     /// <remarks>
     /// Some unit tests require procedure to be in Static Single Assignment
-    /// form. This class gives possibility to build it without ssa transforming
+    /// form. This class gives possibility to build it without the overhead of
+    /// using the SSATransform class.
     /// </remarks>
     public class SsaProcedureBuilder : ProcedureBuilder
     {
@@ -43,13 +45,22 @@ namespace Reko.UnitTests.Mocks
             this.Ssa = new SsaState(Procedure, null);
         }
 
-        private Identifier Reg(string name, PrimitiveType pt)
+        public RegisterStorage RegisterStorage(string name, PrimitiveType pt)
         {
-            var r = new RegisterStorage(name, Ssa.Identifiers.Count, 0, pt);
-            var id = new Identifier(r.Name, r.DataType, r);
+            return new RegisterStorage(name, Ssa.Identifiers.Count, 0, pt);
+        }
+
+        public Identifier Reg(string name, RegisterStorage r)
+        {
+            var id = new Identifier(name, r.DataType, r);
             var sid = new SsaIdentifier(id, id, null, null, false);
             Ssa.Identifiers.Add(id, sid);
             return sid.Identifier;
+        }
+
+        private Identifier Reg(string name, PrimitiveType pt)
+        {
+            return Reg(name, RegisterStorage(name, pt));
         }
 
         public override Identifier Local32(string name, int offset)
@@ -79,17 +90,23 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
-            var ass = instr as Assignment;
-            if (ass != null)
+            switch (instr)
             {
+            case Assignment ass:
                 Ssa.Identifiers[ass.Dst].DefStatement = stm;
                 Ssa.Identifiers[ass.Dst].DefExpression = ass.Src;
-            }
-            var phiAss = instr as PhiAssignment;
-            if (phiAss != null)
-            {
+                break;
+            case PhiAssignment phiAss:
                 Ssa.Identifiers[phiAss.Dst].DefStatement = stm;
                 Ssa.Identifiers[phiAss.Dst].DefExpression = phiAss.Src;
+                break;
+            case Store store:
+                if (store.Dst is MemoryAccess access)
+                {
+                    Ssa.Identifiers[access.MemoryId].DefStatement = stm;
+                    Ssa.Identifiers[access.MemoryId].DefExpression = null;
+                }
+                break;
             }
             Ssa.AddUses(stm);
             return stm;
@@ -104,14 +121,14 @@ namespace Reko.UnitTests.Mocks
             Ssa.Identifiers.Add(idNew, sid);
         }
 
-        public new MemoryAccess LoadDw(Expression ea)
+        public override MemoryAccess Mem32(Expression ea)
         {
             var access = base.Mem32(ea);
             AddMemIdToSsa(access);
             return access;
         }
 
-        public new SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
+        public override SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
             AddMemIdToSsa(access);

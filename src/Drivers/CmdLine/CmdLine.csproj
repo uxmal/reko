@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
   <Import Project="$(SolutionDir)Drivers\Common.items" />
@@ -121,6 +121,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
+      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Name>Arm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\i8051\i8051.csproj">
+      <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
+      <Name>i8051</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>

@@ -29,16 +29,19 @@ namespace Reko.Core
 	/// </summary>
 	public interface IBackWalkHost<TBlock, TInstr>
 	{
+        SegmentMap SegmentMap { get; }
+
 		AddressRange GetSinglePredecessorAddressRange(Address block);
 		Address GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 
         TBlock GetSinglePredecessor(TBlock block);
+        List<TBlock> GetPredecessors(TBlock block);
 
         bool IsValidAddress(Address addr);
         RegisterStorage GetSubregister(RegisterStorage rIdx, int v1, int v2);
-        IEnumerable<TInstr> GetReversedBlockInstructions(TBlock block);
+        IEnumerable<TInstr> GetBlockInstructions(TBlock block);
 
         // Return [dst,src] tuple if TInstr is an assignment, null otherwise.
         Tuple<Expression,Expression> AsAssignment(TInstr instr);

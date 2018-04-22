@@ -233,6 +233,11 @@ namespace Reko.Arch.SuperH
             {
                 return dasm.Decode(uInstr, opcode, format);
             }
+
+            public override string ToString()
+            {
+                return string.Format("[ {0} {1} ]", opcode, format);
+            }
         }
 
         private class Oprec4Bits : OprecBase
@@ -531,6 +536,13 @@ namespace Reko.Arch.SuperH
                         { 1, new Oprec(Opcode.fcmp_gt, "f2,f1") }
                     })
                 },
+                { 0x9, new OprecField(8, 1, new Dictionary<int, OprecBase>
+                    {
+                        { 0, new Oprec(Opcode.fcmp_gt, "d2,d1") },
+                        { 1, new Oprec(Opcode.fcmp_gt, "f2,f1") }
+                    })
+                },
+
                 { 0xD, new OprecField(4, 5, new Dictionary<int, OprecBase>
                     {
                         { 0x08, new Oprec(Opcode.fldi0, "f1") },
@@ -540,6 +552,7 @@ namespace Reko.Arch.SuperH
                         { 0x1E, new Oprec(Opcode.fipr, "v2,v1") },
                     })
                 },
+                { 0x14, new Oprec(Opcode.fcmp_eq, "f2,f1") },
                 { 0x1D, new OprecField(4, 5, new Dictionary<int, OprecBase>
                     {
                         { 0x01, new Oprec(Opcode.flds, "f1,FU") },

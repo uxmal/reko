@@ -179,7 +179,10 @@ namespace Reko.Core
 
         public void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
         {
-            this.Parameters.Add(new SequenceStorage(stgHi, stgLo));
+            this.Parameters.Add(new SequenceStorage(
+                stgHi,
+                stgLo,
+                PrimitiveType.CreateWord(stgHi.DataType.Size + stgLo.DataType.Size)));
         }
 
         public void SequenceParam(SequenceStorage seq)
@@ -189,7 +192,10 @@ namespace Reko.Core
 
         public void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
         {
-            this.Return = new SequenceStorage(stgHi, stgLo);
+            this.Return = new SequenceStorage(
+                stgHi, 
+                stgLo,
+                PrimitiveType.CreateWord(stgHi.DataType.Size + stgLo.DataType.Size));
         }
 
         public void SequenceReturn(SequenceStorage seq)

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -180,6 +181,11 @@ namespace Reko.Core
             return true;
         }
 
+        public bool TryReadLe(Address addr, PrimitiveType type, out Constant c)
+        {
+            return TryReadLe(addr - BaseAddress, type, out c);
+        }
+
         public bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
         {
             c = Relocations[(uint)imageOffset];
@@ -191,6 +197,11 @@ namespace Reko.Core
             return true;
         }
 
+        public bool TryReadBe(Address addr, PrimitiveType type, out Constant c)
+        {
+            return TryReadBe(addr - BaseAddress, type, out c);
+        }
+
         public static Constant ReadLe(byte[] abImage, long imageOffset, PrimitiveType type)
         {
             if (type.Domain == Domain.Real)
@@ -199,6 +210,7 @@ namespace Reko.Core
                 {
                 case 4: return Constant.FloatFromBitpattern(ReadLeInt32(abImage, imageOffset));
                 case 8: return Constant.DoubleFromBitpattern(ReadLeInt64(abImage, imageOffset));
+                case 10: return Constant.Real80(ReadLeReal80(abImage, imageOffset));
                 default: throw new InvalidOperationException(string.Format("Real type {0} not supported.", type));
                 }
             }
@@ -343,6 +355,13 @@ namespace Reko.Core
                 ((long)image[off+5] << 40) |
                 ((long)image[off+6] << 48) |
                 ((long)image[off+7] << 56);
+        }
+
+        public static Float80 ReadLeReal80(byte[] image, long off)
+        {
+            ulong significand = ReadLeUInt64(image, off);
+            ushort expsign = ReadLeUInt16(image, off + 8);
+            return new Float80(expsign, significand);
         }
 
         public static int ReadBeInt32(byte[] abImage, long off)

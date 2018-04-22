@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Core
 
         private Procedure Given_ProcedureAt(Address address)
         {
-            var proc = Procedure.Create(address, arch.CreateFrame());
+            var proc = Procedure.Create(arch, address, arch.CreateFrame());
             var block = new Block(proc, Block.GenerateName(address));
             program.Procedures.Add(address, proc);
 

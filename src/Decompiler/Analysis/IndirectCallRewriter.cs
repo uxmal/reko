@@ -42,7 +42,7 @@ namespace Reko.Analysis
         private IndirectCallExpander expander;
         private SsaIdentifierTransformer ssaIdTransformer;
         private DecompilerEventListener eventListener;
-        private ExpressionEmitter m;
+        private SsaMutator ssam;
         private bool changed;
 
 
@@ -58,7 +58,7 @@ namespace Reko.Analysis
             this.expander = new IndirectCallExpander(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.eventListener = eventListener;
-            this.m = new ExpressionEmitter();
+            this.ssam = new SsaMutator(ssa);
         }
 
         /// <summary>
@@ -100,66 +100,42 @@ namespace Reko.Analysis
             var ft = pt.Pointee as FunctionType;
             if (ft == null)
                 return;
-            AdjustStackPointerAfterCall(stm, call, ft.StackDelta);
+            ssam.AdjustRegisterAfterCall(
+                stm,
+                call,
+                ssa.Procedure.Architecture.StackRegister,
+                ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
             var ab = new ApplicationBuilder(
-                program.Architecture, proc.Frame, call.CallSite,
+                ssa.Procedure.Architecture, proc.Frame, call.CallSite,
                 call.Callee, ft, false);
             stm.Instruction = ab.CreateInstruction();
             ssaIdTransformer.Transform(stm, call);
+            DefineUninitializedIdentifiers(stm, call);
             changed = true;
         }
 
-        private void AdjustStackPointerAfterCall(
+        private void DefineUninitializedIdentifiers(
             Statement stm,
-            CallInstruction call,
-            int stackDelta)
+            CallInstruction call)
         {
-            // Locate the post-call definition of the stack pointer, if any
-            var defSpBinding = call.Definitions.Where(
-                d => d.Identifier is Identifier).Where(
-                d => ((Identifier)d.Identifier).Storage ==
-                    program.Architecture.StackRegister)
-                .FirstOrDefault();
-            if (defSpBinding == null)
-                return;
-            var defSpId = defSpBinding.Identifier as Identifier;
-            if (defSpId == null)
-                return;
-            var usedSpExp = call.Uses.Select(u => u.Expression).
-                OfType<Identifier>().Where(
-                u => u.Storage == program.Architecture.StackRegister)
-                .FirstOrDefault();
-            if (usedSpExp == null)
-                return;
-            var retSize = call.CallSite.SizeOfReturnAddressOnStack;
-            var offset = stackDelta - retSize;
-            Expression src;
-            if (offset == 0)
-                src = usedSpExp;
-            else
-                src = m.IAdd(usedSpExp, Constant.Word32(offset));
-            // Generate a statement that adjusts the stack pointer according to
-            // the calling convention.
-            var ass = new Assignment(defSpId, src);
-            var defSid = ssa.Identifiers[defSpId];
-            var stackStm = InsertStatement(stm, ass);
-            defSid.DefExpression = src;
-            defSid.DefStatement = stackStm;
-            call.Definitions.Remove(defSpBinding);
-            Use(stackStm, src);
+            var trashedSids = call.Definitions.Select(d => d.Identifier)
+                .Select(id => ssa.Identifiers[id])
+                .Where(sid => sid.DefStatement == null);
+            foreach (var sid in trashedSids)
+            {
+                DefineUninitializedIdentifier(stm, sid);
+            }
         }
 
-        private void Use(Statement stm, Expression e)
+        private void DefineUninitializedIdentifier(
+            Statement stm,
+            SsaIdentifier sid)
         {
-            e.Accept(new InstructionUseAdder(stm, ssa.Identifiers));
-        }
-
-        private Statement InsertStatement(Statement stm, Instruction instr)
-        {
-            var block = stm.Block;
-            var iPos = block.Statements.IndexOf(stm);
-            var linAddr = stm.LinearAddress;
-            return block.Statements.Insert(iPos + 1, linAddr, instr);
+            var value = Constant.Invalid;
+            var ass = new Assignment(sid.Identifier, value);
+            var newStm = ssam.InsertStatementAfter(ass, stm);
+            sid.DefExpression = value;
+            sid.DefStatement = newStm;
         }
     }
 
@@ -260,12 +236,25 @@ namespace Reko.Analysis
             return a;
         }
 
+        public override Instruction TransformStore(Store store)
+        {
+            store.Src = store.Src.Accept(this);
+            store.Dst = TransformDst(store.Dst);
+            return store;
+        }
+
         public override Expression VisitApplication(Application appl)
         {
             appl.Procedure = appl.Procedure.Accept(this);
             for (int i = 0; i < appl.Arguments.Length; ++i)
                 appl.Arguments[i] = TransformArgument(appl.Arguments[i]);
             return appl;
+        }
+
+        private Expression TransformDst(Expression dst)
+        {
+            var dstTransformer = new DestinationTransformer(this);
+            return dst.Accept(dstTransformer);
         }
 
         private Expression TransformArgument(Expression arg)
@@ -286,8 +275,7 @@ namespace Reko.Analysis
 
         private void DefId(Identifier id, Expression defExp)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
                 sid.DefExpression = defExp;
                 sid.DefStatement = stm;
@@ -296,8 +284,7 @@ namespace Reko.Analysis
 
         private void UseId(Identifier id)
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
+            if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
                 sid.Uses.Add(stm);
             }
@@ -319,29 +306,63 @@ namespace Reko.Analysis
                 FirstOrDefault();
         }
 
-        class ArgumentTransformer : InstructionTransformer
+        abstract class UsedIdsTransformer : InstructionTransformer
         {
             SsaIdentifierTransformer outer;
 
-            public ArgumentTransformer(SsaIdentifierTransformer outer)
+            public UsedIdsTransformer(SsaIdentifierTransformer outer)
             {
                 this.outer = outer;
             }
 
+            public abstract Expression VisitMemoryIdentifier(MemoryIdentifier id);
+
             public override Expression VisitIdentifier(Identifier id)
             {
-                if (id is MemoryIdentifier)
-                {
-                    var sid = outer.ssa.Identifiers.Add(
-                        id, outer.stm, null, false);
-                    sid.DefStatement = null;
-                    sid.Uses.Add(outer.stm);
-                    return sid.Identifier;
-                }
+                if (id is MemoryIdentifier memoryId)
+                    return VisitMemoryIdentifier(memoryId);
                 var usedId = outer.FindUsedId(outer.call, id.Storage);
                 if (usedId != null)
                     usedId.Accept(outer);
                 return usedId ?? outer.InvalidArgument();
+            }
+        }
+
+        class ArgumentTransformer : UsedIdsTransformer
+        {
+            SsaIdentifierTransformer outer;
+
+            public ArgumentTransformer(SsaIdentifierTransformer outer) :
+                base(outer)
+            {
+                this.outer = outer;
+            }
+
+            public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
+            {
+                var sid = outer.ssa.Identifiers.Add(
+                    id, outer.stm, null, false);
+                sid.DefStatement = null;
+                sid.Uses.Add(outer.stm);
+                return sid.Identifier;
+            }
+        }
+
+        class DestinationTransformer : UsedIdsTransformer
+        {
+            SsaIdentifierTransformer outer;
+
+            public DestinationTransformer(SsaIdentifierTransformer outer) :
+                base(outer)
+            {
+                this.outer = outer;
+            }
+
+            public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
+            {
+                var sid = outer.ssa.Identifiers.Add(
+                    id, outer.stm, null, false);
+                return sid.Identifier;
             }
         }
     }

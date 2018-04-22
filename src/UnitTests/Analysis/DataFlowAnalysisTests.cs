@@ -286,7 +286,7 @@ ProcedureBuilder_exit:
                 m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, ds, m.Word16(0x100)));
 
                 m.Label("mHead");
-                m.SegStore(es, bx, m.Byte(0));
+                m.SStore(es, bx, m.Byte(0));
                 m.Assign(bx, m.IAdd(bx, 1));
                 m.Assign(cx, m.ISub(cx, 1));
                 m.Assign(SZ, m.Cond(cx));
@@ -310,7 +310,7 @@ ProcedureBuilder_exit:
             m.Assign(r2_r1, m.Seq(m.Word32(0), r1));
             m.Assign(tmp, r2_r1);
             m.Assign(r1, m.UDiv(tmp, m.Word32(42)));
-            m.Store(m.Word32(0x123404), r1);
+            m.MStore(m.Word32(0x123404), r1);
             m.Return();
 
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");

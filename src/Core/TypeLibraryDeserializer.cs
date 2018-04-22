@@ -156,7 +156,7 @@ namespace Reko.Core
         public void LoadService(string entryName, SystemService svc)
         {
             var mod = EnsureModule(svc.ModuleName, this.library);
-            mod.ServicesByName.Add(entryName, svc);
+            mod.ServicesByName[entryName] = svc;
         }
 
         public void LoadService(int ordinal, SystemService svc)

@@ -35,9 +35,9 @@ using System.Text.RegularExpressions;
 namespace Reko.Core
 {
     /// <summary>
-    /// Contains information about one input file, gathered during loading, 
-    /// scanning and data analysis, as well as storing any user-specified 
-    /// information.
+    /// The central clearing house of information about one input file, 
+    /// gathered during loading, scanning and data analysis, as well as 
+    /// storing any user-specified information.
     /// </summary>
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.
@@ -83,7 +83,7 @@ namespace Reko.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// The processor architecture to use for decompilation
+        /// The processor architecture to use for decompilation.
         /// </summary>
 		public IProcessorArchitecture Architecture { get; set; }
 
@@ -95,7 +95,9 @@ namespace Reko.Core
         public ImageMap ImageMap { get; set; }
 
         /// <summary>
-        /// Contains the segments that the binary consists of.
+        /// Contains the segments that the binary consists of. This data
+        /// is discovered by the loader, with optiona additional input
+        /// from the user.
         /// </summary>
         public SegmentMap SegmentMap { get; set; }
 
@@ -347,6 +349,11 @@ namespace Reko.Core
                 Architecture.CreateImageReader(segment.MemoryArea, addr));
         }
 
+        public ProcessorState CreateProcessorState()
+        {
+            return Architecture.CreateProcessorState();
+        }
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -554,16 +561,4 @@ namespace Reko.Core
             BuildImageMap();
         }
     } 
-
-	public class VectorUse
-	{
-		public Address TableAddress;
-		public RegisterStorage IndexRegister;
-
-		public VectorUse(Address tblAddr, RegisterStorage idxReg)
-		{
-			TableAddress = tblAddr;
-			IndexRegister = idxReg;
-		}
-	}
 }

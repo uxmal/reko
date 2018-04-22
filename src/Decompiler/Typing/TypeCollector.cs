@@ -148,6 +148,10 @@ namespace Reko.Typing
             call.Callee.Accept(desc, call.Callee.TypeVariable);
         }
 
+        public void VisitComment(CodeComment comment)
+        {
+        }
+
         public void VisitDeclaration(Declaration decl)
         {
             // Pattern after VisitAssignment
