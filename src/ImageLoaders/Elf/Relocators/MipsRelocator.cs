@@ -40,6 +40,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (dynsect == null)
                 return;
 
+            // $TODO: Fix the relocation code (it's crashing right now)
+            /*
             var dynentries = loader.GetDynEntries(dynsect.FileOffset).ToDictionary(k => k.d_tag);
             var symtab = dynentries[DynamicSectionRenderer.DT_SYMTAB];
             var pltgot = dynentries[DynamicSectionRenderer.DT_PLTGOT].d_val;
@@ -50,6 +52,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             for (int i = mips_gotsym; i < loader.Symbols.Count; ++i)
             {
             }
+            */
         }
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
