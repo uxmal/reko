@@ -749,5 +749,15 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "3|L--|SHXV = cond(e)",
                 "4|L--|e = e | 0x08");
         }
+
+
+        [Test]
+        public void Tlcs90_rw_ConditionalJump()
+        {
+            RewriteCode("EB350ACC");    // jp NV,0A35
+            AssertCode(
+                "0|T--|0100(4): 1 instructions",
+                "1|T--|if (Test(NO,V)) branch 0A35");
+        }
     }
 }
