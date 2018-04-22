@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="cdecl_class">
+      <struct name="cdecl_class" />
+    </typedef>
+    <typedef name="cdecl_class_ptr">
+      <ptr size="4">
+        <type>cdecl_class</type>
+      </ptr>
+    </typedef>
+    <typedef name="cdecl_class_vtbl">
+      <struct name="cdecl_class_vtbl" />
+    </typedef>
+    <struct name="cdecl_class_vtbl">
+      <field offset="0" name="method00">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <ptr size="4">
+                <type>cdecl_class</type>
+              </ptr>
+            </arg>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="4" name="method04">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <ptr size="4">
+                <type>cdecl_class</type>
+              </ptr>
+            </arg>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+          </fn>
+        </ptr>
+      </field>
+<!--
+     Incorrect user-defined signature
+     "void sum(int, int)" is set instead of "int sum(int, int)"
+     Reko should emit code which gives chance for user to find this mistake
+-->
+      <field offset="8" name="sum">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <ptr size="4">
+                <type>cdecl_class</type>
+              </ptr>
+            </arg>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+          </fn>
+        </ptr>
+      </field>
+    </struct>
+    <struct name="cdecl_class">
+      <field offset="0" name="vtbl">
+        <ptr size="4">
+          <type>cdecl_class_vtbl</type>
+        </ptr>
+      </field>
+    </struct>    
+  </Types>
+</library>
