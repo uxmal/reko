@@ -449,12 +449,10 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs90_rw_jp_conditional()
         {
-            RewriteCode("EB 50 03 CE"); //  jp NZ,(0350)
+            RewriteCode("EB 50 03 CE"); //  jp NZ,0350
             AssertCode(
-                "0|T--|0100(4): 3 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 0104",
-                "2|L--|v3 = Mem0[0x0350:ptr16]",
-                "3|T--|goto v3");
+                "0|T--|0100(4): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 0350");
         }
 
         [Test]
