@@ -36,6 +36,7 @@ using System.Text;
 using System.IO;
 using Reko.Core.Configuration;
 using Reko.Core.CLanguage;
+using System.Linq;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -502,6 +503,52 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual("10000010", globalVariable.Address);
             Assert.AreEqual("testVar", globalVariable.Name);
             Assert.AreEqual("arr(Blob,10)", globalVariable.DataType.ToString());
+        }
+
+        [Test]
+        public void Prld_LoadAnnotation()
+        {
+            var sproject = new Project_v4
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v4
+                    {
+                        User = new UserData_v4
+                        {
+                            Annotations =
+                            {
+                                new Annotation_v3
+                                {
+                                    Address = "commentAddress",
+                                    Text = "User comment",
+                                }
+                            }
+                        }
+                    },
+                }
+            };
+            var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("commentAddress"),
+                out Arg<Address>.Out(Address.Ptr32(0x0000CADD)).Dummy))
+                .Return(true);
+            mr.ReplayAll();
+
+            var prld = new ProjectLoader(sc, ldr, listener);
+            var project = prld.LoadProject(
+                @"c:\foo\annot.proj",
+                sproject);
+
+            Assert.AreEqual(1, project.Programs.Count);
+            Assert.AreEqual(1, project.Programs[0].User.Annotations.Count());
+            var annotation = project.Programs[0].User.Annotations.First();
+            Assert.AreEqual("0000CADD", annotation.Address.ToString());
+            Assert.AreEqual("User comment", annotation.Text);
         }
 
         [Test(Description = "Issue #9: if user proc has no Decompile set but no signature provided")]

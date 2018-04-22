@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Typing
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 var si = m.Temp(PrimitiveType.Int16, "si");
                 m.Assign(bx, m.SegMem16(ds, m.Word16(0xC00)));
-                m.SegStore(ds, m.IAdd(
+                m.SStore(ds, m.IAdd(
                                 m.IAdd(bx, 10),
                                 si),
                            m.Byte(0xF8));
@@ -157,8 +157,8 @@ namespace Reko.UnitTests.Typing
                 var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.AddrOf(foo));
-                m.Store(r1, m.Word16(0x1234));
-                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.MStore(r1, m.Word16(0x1234));
+                m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             }, "Typing/TycoAddressOf.txt");
         }
@@ -178,8 +178,8 @@ namespace Reko.UnitTests.Typing
                 var foo = new Identifier("foo", str, new MemoryStorage());
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.AddrOf(foo));
-                m.Store(r1, m.Word16(0x1234));
-                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.MStore(r1, m.Word16(0x1234));
+                m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             }, "Typing/TycoTypedAddressOf.txt");
         }
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Typing
                 Identifier a = m.Local32("a");
                 Identifier i = m.Local32("i");
                 m.Assign(a, 0x00123456);		// array pointer
-                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Word32(42));
+                m.MStore(m.IAdd(a, m.IMul(i, 8)), m.Word32(42));
             });
             RunTest(pp.BuildProgram(), "Typing/TycoArrayConstantPointers.txt");
         }
@@ -220,8 +220,8 @@ namespace Reko.UnitTests.Typing
             buildEquivalenceClasses = true;
             RunTest(m =>
             {
-                m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
-                m.Store(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
+                m.MStore(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
+                m.MStore(m.Word32(0x123400), m.IAdd(m.Mem32(m.Word32(0x123400)), 1));
             }, "Typing/TycoReg00300.txt");
         }
 
@@ -251,8 +251,8 @@ namespace Reko.UnitTests.Typing
                 Identifier ptr = m.Local32("ptr");
                 Identifier b16 = m.Local16("b16");
                 Identifier c16 = m.Local16("c16");
-                m.Store(m.IAdd(ptr, 200), m.Word32(0x1234));
-                m.Store(m.IAdd(ptr, 12), m.Word32(0x5678));
+                m.MStore(m.IAdd(ptr, 200), m.Word32(0x1234));
+                m.MStore(m.IAdd(ptr, 12), m.Word32(0x5678));
                 m.Assign(b16, m.Or(m.Mem16(m.IAdd(ptr, 14)), m.Word16(0x00FF)));
             });
             RunTest(pp.BuildProgram(), "Typing/TycoStructMembers.txt");

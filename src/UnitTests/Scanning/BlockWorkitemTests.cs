@@ -34,6 +34,7 @@ using System.Diagnostics;
 using System.IO;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
+using System;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Scanning
         {
             mr = new MockRepository();
             program = new Program();
-            proc = new Procedure("testProc", new Frame(PrimitiveType.Word32));
+            proc = new Procedure(program.Architecture, "testProc", new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             trace = new RtlTrace(0x00100000);
             r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
@@ -86,6 +87,11 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<DecompilerEventListener>(listener);
         }
 
+        private BlockWorkitem CreateWorkItem(Address addr)
+        {
+            return CreateWorkItem(addr, new FakeProcessorState(arch));
+        }
+
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
         {
             return new BlockWorkitem(
@@ -104,6 +110,11 @@ namespace Reko.UnitTests.Scanning
                 argIds.Add(proc.Frame.EnsureRegister(arg));
             }
             return new FunctionType(retReg, argIds.ToArray());
+        }
+
+        private void Given_Segment(string segName, uint addr, int size, AccessMode mode)
+        {
+            program.SegmentMap.AddSegment(new ImageSegment(segName, new MemoryArea(Address.Ptr32(addr), new byte[size]), mode));
         }
 
         private bool StashArg(ref ProcessorState state, ProcessorState value)
@@ -130,7 +141,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
 
-            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, proc.ExitBlock), "Expected return to add an edge to the Exit block");
@@ -167,7 +178,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
             }
 
-            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = 0x00000003", block.Statements[0].ToString());
@@ -211,7 +222,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
-            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count, "Expected a branch statement in the block");
             Assert.AreNotSame(s1, s2);
@@ -243,7 +254,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Address>.Matches(arg => arg.Offset == 0x102000),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
-                        .Return(new Procedure("fn102000", new Frame(PrimitiveType.Word32)));
+                        .Return(new Procedure(program.Architecture, "fn102000", new Frame(PrimitiveType.Word32)));
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(
                     Arg<Procedure>.Is.NotNull,
@@ -251,7 +262,7 @@ namespace Reko.UnitTests.Scanning
                     Arg<Address>.Is.NotNull));
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
-            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             var callees = new List<Procedure>(program.CallGraph.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
@@ -264,10 +275,12 @@ namespace Reko.UnitTests.Scanning
             program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
-            var alloca = new ExternalProcedure("alloca", sig);
-            alloca.Characteristics = new ProcedureCharacteristics
+            var alloca = new ExternalProcedure("alloca", sig)
             {
-                IsAlloca = true
+                Characteristics = new ProcedureCharacteristics
+                {
+                    IsAlloca = true
+                }
             };
 
             using (mr.Record())
@@ -315,7 +328,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
 
             }
-            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             mr.VerifyAll();
             Assert.AreEqual(1, block.Statements.Count);
@@ -325,8 +338,8 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallTerminatingProcedure_StopScanning()
         {
-            proc = Procedure.Create("proc", Address.Ptr32(0x102000), new Frame(PrimitiveType.Ptr32));
-            var terminator = Procedure.Create("terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Ptr32));
+            proc = Procedure.Create(program.Architecture, "proc", Address.Ptr32(0x102000), new Frame(PrimitiveType.Ptr32));
+            var terminator = Procedure.Create(program.Architecture, "terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Ptr32));
             terminator.Characteristics = new ProcedureCharacteristics {
                 Terminates = true,
             };
@@ -347,7 +360,7 @@ namespace Reko.UnitTests.Scanning
             trace.Add(m => m.Call(Address.Ptr32(0x00102000), 4));
             trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new PseudoProcedure("shouldnt_decompile_this", VoidType.Instance, 0))));
 
-            var wi = CreateWorkItem(Address.Ptr32(0x2000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x2000));
             wi.Process();
 
             Assert.AreEqual(1, block.Statements.Count, "Should only have rewritten the Call to 'terminator'");
@@ -357,7 +370,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallProcedureWithSignature()
         {
-            var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Ptr32));
+            var proc2 = new Procedure(program.Architecture, "fn2000", new Frame(PrimitiveType.Ptr32));
             var sig = new FunctionType(
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 new[] {
@@ -386,7 +399,7 @@ namespace Reko.UnitTests.Scanning
 
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 0));
             trace.Add(m => m.Return(0, 0));
-            var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
 
             mr.VerifyAll();
@@ -416,7 +429,7 @@ testProc_exit:
                 Signature = FunctionType.Action(new[] { reg1 }),
                 Characteristics = new ProcedureCharacteristics()
             };
-            platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
+            platform.Expect(p => p.FindService(null, null)).IgnoreArguments().Return(sysSvc);
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
             platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
             program.Platform = platform;
@@ -426,7 +439,7 @@ testProc_exit:
             mr.ReplayAll();
 
             trace.Add(m => m.Call(m.Mem32(m.IAdd(reg0, -32)), 4));
-            var wi = CreateWorkItem(Address.Ptr32(0x100000), arch.CreateProcessorState());
+            var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual("SysSvc(r1)", block.Statements[0].ToString());
@@ -438,17 +451,17 @@ testProc_exit:
         {
             var platform = mr.StrictMock<IPlatform>();
             var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, 0, PrimitiveType.Ptr32));
-            platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(null);
+            platform.Expect(p => p.FindService(null, null)).IgnoreArguments().Return(null);
             scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
             mr.ReplayAll();
 
             trace.Add(m => m.Goto(m.Mem32(sp)));
-            var wi = CreateWorkItem(Address.Ptr32(0x0100000), arch.CreateProcessorState());
+            var wi = CreateWorkItem(Address.Ptr32(0x0100000));
             wi.Process();
 
-            Assert.AreEqual("call Mem0[sp:word32] ()", block.Statements[0].ToString());
+            Assert.AreEqual("call Mem0[sp:word32] (retsize: 4;)", block.Statements[0].ToString());
             Assert.AreEqual("return", block.Statements[1].ToString());
         }
 
@@ -471,7 +484,7 @@ testProc_exit:
 
             trace.Add(m => m.GotoD(Address.Ptr32(0x0100100)));
             trace.Add(m => m.Assign(r0, r1));
-            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual(2, block.Statements.Count);
@@ -508,7 +521,7 @@ testProc_exit:
             trace.Add(m => m.Assign(r0, r1));   // 100004
             trace.Add(m => m.Assign(r2, r1));   // 100008
 
-            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
@@ -549,7 +562,7 @@ testProc_exit:
             trace.Add(m => m.CallD(Address.Ptr32(0x0100100), 0));
             trace.Add(m => m.Assign(r0, r1));
             trace.Add(m => m.Assign(r1, r2));
-            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual(3, block.Statements.Count);
@@ -577,7 +590,7 @@ testProc_exit:
 
             trace.Add(m => m.ReturnD(0, 0));
             trace.Add(m => m.Assign(r0, r1));
-            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual(2, block.Statements.Count);
@@ -612,7 +625,7 @@ testProc_exit:
             trace.Add(m => m.Assign(r0, r1));   // 100004
             trace.Add(m => m.Assign(r2, r1));   // 100008
 
-            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
@@ -654,7 +667,7 @@ testProc_exit:
             trace.Add(m => m.GotoD(Address.Ptr32(0x00100004)));   // 100004
             trace.Add(m => m.Nop());            // 100008 (delay slot)
 
-            var wi = CreateWorkItem(Address.Ptr32(0x00100000), new FakeProcessorState(arch));
+            var wi = CreateWorkItem(Address.Ptr32(0x00100000));
             wi.Process();
 
             mr.VerifyAll();
@@ -666,7 +679,7 @@ testProc_exit:
             var addrCall = Address.Ptr32(0x00100000);
             var addrCallee = Address.Ptr32(0x00102000);
             var l00100000 = new Block(proc, "l00100000");
-            var procCallee = new Procedure(null, new Frame(PrimitiveType.Ptr32))
+            var procCallee = new Procedure(program.Architecture, null, new Frame(PrimitiveType.Ptr32))
             {
                 Name = "testFn",
                 Signature = new FunctionType(
@@ -697,7 +710,7 @@ testProc_exit:
                     CSignature = "int testFn(char * str, float f)"
                 });
 
-            var wi = CreateWorkItem(addrCall, new FakeProcessorState(arch));
+            var wi = CreateWorkItem(addrCall);
             wi.Process();
             Assert.AreEqual("r0 = testFn(r0, r1)", l00100000.Statements[0].ToString());
 
@@ -723,7 +736,7 @@ testProc_exit:
 
             trace.Add(m => m.Branch(m.Mem8(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
 
-            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual(2, block.Succ.Count);
@@ -747,9 +760,13 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
             arch.Stub(s => s.GetRegister("r2")).Return((RegisterStorage)r2.Storage);
+            arch.Stub(s => s.MakeAddressFromConstant(null)).IgnoreArguments()
+                .Do(new Func<Constant, Address>(c => Address.Ptr32(c.ToUInt32())));
+            Constant co;
+            arch.Stub(s => s.TryRead(null, null, null, out co)).IgnoreArguments().Return(false);
             mr.ReplayAll();
 
-            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[0].Instruction.ToString());
@@ -767,10 +784,10 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
             scanner.Expect(s => s.CreateCallRetThunk(null, null, null)).IgnoreArguments().Return(blockCallRet);
-            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Ptr32)));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
             mr.ReplayAll();
 
-            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual("Mem0[0x00123400:word32] = 0x00000001", block.Statements[0].Instruction.ToString());
@@ -788,10 +805,10 @@ testProc_exit:
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
             scanner.Expect(s => s.Warn(null, null, null)).IgnoreArguments();
-            program.Procedures.Add(addrStart + 4, Procedure.Create(addrStart + 4, new Frame(PrimitiveType.Ptr32)));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
             mr.ReplayAll();
 
-            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual("call fn00123400 (retsize: 4;)", block.Statements[0].Instruction.ToString());
@@ -799,5 +816,52 @@ testProc_exit:
             mr.VerifyAll();
         }
 
+        [Test(Description = "Read constants from read-only memory")]
+        public void BwiReadConstants()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            var blockCallRet = new Block(proc, "jmpOut");
+            trace.Add(m => {
+                m.Assign(r1, 4); 
+                m.Assign(r1, m.Or(r1, 0x00100000)); 
+                m.Assign(r2, m.Mem32(r1));
+                m.Call(r2, 0); 
+                m.Return(0, 0);
+            });
+
+            Given_Segment(".text2", 0x00123000, 0x500, AccessMode.ReadExecute);
+            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            arch.Stub(a => a.MakeAddressFromConstant(
+                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00100004))).Return(Address.Ptr32(0x00100004));
+            arch.Stub(a => a.TryRead(
+                Arg<MemoryArea>.Is.NotNull,
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
+                Arg<PrimitiveType>.Is.Equal(PrimitiveType.Word32),
+                out Arg<Constant>.Out(Constant.Word32(0x00123400)).Dummy)).Return(true);
+            arch.Stub(a => a.MakeAddressFromConstant(
+                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00123400))).Return(Address.Ptr32(0x00123400));
+            scanner.Stub(s => s.SetProcedureReturnAddressBytes(
+                Arg<Procedure>.Is.Same(proc),
+                Arg<int>.Is.Equal(0),
+                Arg<Address>.Is.Equal(addrStart)));
+            scanner.Stub(s => s.TerminateBlock(
+                Arg<Block>.Is.Same(block),
+                Arg<Address>.Is.Equal(addrStart + 4)));
+            scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+            scanner.Expect(s => s.ScanProcedure(
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00123400)),
+                Arg<string>.Is.Null,
+                Arg<ProcessorState>.Is.NotNull)).
+                Return(new ExternalProcedure("fn00123400", new FunctionType()));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(arch, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart);
+            wi.Process();
+
+            Assert.AreEqual("call fn00123400 (retsize: 0;)", block.Statements[3].Instruction.ToString());
+            mr.VerifyAll();
+        }
     }
 }

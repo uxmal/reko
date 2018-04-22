@@ -246,7 +246,12 @@ namespace Reko.UnitTests.Analysis
                 m.Ssa,
                 eventListener);
             icrw.Rewrite();
-            m.Ssa.CheckUses(s => Assert.Fail(s));
+            m.Ssa.Validate(s => Assert.Fail(s));
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
         [Test]
@@ -317,6 +322,27 @@ namespace Reko.UnitTests.Analysis
             RunFileTest(
                 "Fragments/icrw/indirect_call_two_arguments.asm",
                 "Analysis/IcrwTwoArgumentsNoFuncs.txt");
+        }
+
+        [Test]
+        public void Icrw_TrashedIdentifier()
+        {
+            var fn = m.Reg32("fn");
+            var ret = m.Reg32("ret");
+            var trash = m.Reg32("trash");
+            fn.DataType = FnPtr32(ret);
+            var uses = new Identifier[] { };
+            var defines = new Identifier[] { ret, trash };
+            m.Call(fn, 4, uses, defines);
+
+            RunIndirectCallRewriter();
+
+            var expected =
+@"
+ret = fn()
+trash = <invalid>
+";
+            AssertProcedureCode(expected);
         }
 
         [Test]

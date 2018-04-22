@@ -21,31 +21,26 @@
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Core.Expressions
 {
 	/// <summary>
-	/// Creates a sequence out of two components. Contrast with <see cref="Slice"/>.
+	/// Creates a sequence out of multiple expressions.
 	/// </summary>
-    /// <remarks>Yeah, this is (cons) for you Lisp fans out there.</remarks>
+    /// <remarks>The elements of the sequence form a whole. The DataType indicates what kind of whole it is.
 	public class MkSequence : Expression
 	{
-		public MkSequence(DataType dt, Expression head, Expression tail) : base(dt)
-		{
-            if (head == null || tail == null)
-                throw new ArgumentNullException();
-            if (head == Constant.Invalid || tail == Constant.Invalid)
-                throw new ArgumentException();
-			Head = head;
-			Tail = tail;
-		}
+        public MkSequence(DataType dt, params Expression [] exprs) : base(dt)
+        {
+            this.Expressions = exprs;
+        }
 
-        public Expression Head { get; private set; }
-        public Expression Tail { get; private set; }
+        public Expression[] Expressions { get; }
 
         public override IEnumerable<Expression> Children
         {
-            get { yield return Head; yield return Tail; }
+            get { return Expressions; }
         }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -65,7 +60,8 @@ namespace Reko.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new MkSequence(DataType, Head.CloneExpression(), Tail.CloneExpression());
+            var clones = Expressions.Select(e => e.CloneExpression()).ToArray();
+            return new MkSequence(DataType, clones);
 		}
 	}
 }

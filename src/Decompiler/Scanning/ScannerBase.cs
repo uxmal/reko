@@ -53,13 +53,11 @@ namespace Reko.Scanning
         /// <returns></returns>
         protected Procedure EnsureProcedure(Address addr, string procedureName)
         {
-            Procedure proc;
-            if (Program.Procedures.TryGetValue(addr, out proc))
+            if (Program.Procedures.TryGetValue(addr, out Procedure proc))
                 return proc;
 
-            ImageSymbol sym = null;
-            proc = Procedure.Create(procedureName, addr, Program.Architecture.CreateFrame());
-            if (procedureName == null && Program.ImageSymbols.TryGetValue(addr, out sym))
+            proc = Procedure.Create(Program.Architecture, procedureName, addr, Program.Architecture.CreateFrame());
+            if (procedureName == null && Program.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
                 procedureName = sym.Name;
                 if (sym.Signature != null)
@@ -102,8 +100,7 @@ namespace Reko.Scanning
 
         protected bool IsNoDecompiledProcedure(Address addr)
         {
-            Procedure_v1 sProc;
-            return TryGetNoDecompiledProcedure(addr, out sProc);
+            return TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc);
         }
 
         private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
@@ -139,8 +136,7 @@ namespace Reko.Scanning
 
         protected bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
         {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledParsedProcedure(addr, out sProc))
+            if (!TryGetNoDecompiledParsedProcedure(addr, out Procedure_v1 sProc))
             {
                 ep = null;
                 return false;

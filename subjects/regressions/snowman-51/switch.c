@@ -17,10 +17,12 @@ char * get(uint32 n)
 		return "one";
 	case 0x02:
 		return "two";
+	case 0x03:
+		return "three";
 	}
 }
 
-// 10071080: Register Eq_13 DllMain(Stack Eq_14 hModule, Stack Eq_15 dwReason, Stack Eq_16 lpReserved)
+// 10071080: Register Eq_14 DllMain(Stack Eq_15 hModule, Stack Eq_16 dwReason, Stack Eq_17 lpReserved)
 BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	return 0x01;

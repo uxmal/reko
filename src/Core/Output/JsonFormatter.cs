@@ -110,6 +110,11 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        public void VisitComment(CodeComment comment)
+        {
+            throw new NotImplementedException();
+        }
+
         public void VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();

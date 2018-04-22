@@ -365,14 +365,13 @@ namespace Reko.Gui.Forms
                 }
                 archName = archName ?? (string) ((ListOption)dlg.Architectures.SelectedValue).Value;
                 var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
-                envName =  envName ?? (envOption != null? envOption.Name : null);
+                envName =  envName ?? (envOption?.Name);
                 sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
 
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
-                Address addrBase;
-                if (!arch.TryParseAddress(sAddr, out addrBase))
+                if (!arch.TryParseAddress(sAddr, out var addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
 
                 var details = new LoadDetails
@@ -561,17 +560,20 @@ namespace Reko.Gui.Forms
                         .SelectMany(program => 
                             program.SegmentMap.Segments.Values.SelectMany(seg =>
                             {
+                                var linBaseAddr = seg.MemoryArea.BaseAddress.ToLinear();
                                 return re.GetMatches(
                                         seg.MemoryArea.Bytes,
                                         0,
                                         (int)seg.MemoryArea.Length)
                                     .Where(o => filter(o, program))
-                                    .Select(offset => new ProgramAddress(
-                                        program,
-                                        program.SegmentMap.MapLinearAddressToAddress(
-                                            seg.MemoryArea.BaseAddress.ToLinear() + (ulong)offset)));
+                                    .Select(offset => new AddressSearchHit
+                                    {
+                                        Program = program,
+                                        Address = program.SegmentMap.MapLinearAddressToAddress(
+                                            linBaseAddr + (ulong)offset)
+                                    });
                             }));
-                    srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
+                    srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
             }
         }
@@ -588,8 +590,7 @@ namespace Reko.Gui.Forms
                         var addr = program.SegmentMap.MapLinearAddressToAddress(
                             (ulong)
                              ((long)program.SegmentMap.BaseAddress.ToLinear() + o));
-                        ImageMapItem item;
-                        return program.ImageMap.TryFindItem(addr, out item)
+                        return program.ImageMap.TryFindItem(addr, out var item)
                             && item.DataType != null &&
                             !(item.DataType is UnknownType);
                     };
@@ -600,8 +601,7 @@ namespace Reko.Gui.Forms
                     {
                         var addr = program.SegmentMap.MapLinearAddressToAddress(
                               (uint)((long) program.SegmentMap.BaseAddress.ToLinear() + o));
-                        ImageMapItem item;
-                        return program.ImageMap.TryFindItem(addr, out item)
+                        return program.ImageMap.TryFindItem(addr, out var item)
                             && item.DataType == null ||
                             item.DataType is UnknownType;
                     };
@@ -625,13 +625,12 @@ namespace Reko.Gui.Forms
             {
                 if (uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
                 {
+                    var criteria = dlgStrings.GetCriteria();
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
-                        .SelectMany(p => new StringFinder(p).FindStrings(
-                            dlgStrings.GetStringType(),
-                            dlgStrings.MinLength));
+                        .SelectMany(p => new StringFinder(p).FindStrings(criteria));
                     srSvc.ShowAddressSearchResults(
                        hits,
-                       AddressSearchDetails.Strings);
+                       new StringSearchDetails(criteria.Encoding));
                 }
             }
         }
@@ -672,6 +671,18 @@ namespace Reko.Gui.Forms
                     uiPrefsSvc.WindowSize = form.Size;
                     uiPrefsSvc.WindowState = form.WindowState;
                     uiPrefsSvc.Save();
+                }
+            }
+        }
+
+        public void ToolsKeyBindings()
+        {
+            using (var dlg = dlgFactory.CreateKeyBindingsDialog(dm.KeyBindings))
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    dm.KeyBindings = dlg.KeyBindings; 
+                    //$TODO: save in user settings.
                 }
             }
         }
@@ -810,6 +821,10 @@ namespace Reko.Gui.Forms
                 case CmdIds.HelpAbout: 
                     cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
+                    //$TODO: finish implementing this :)
+                case CmdIds.ToolsKeyBindings:
+                    cmdStatus.Status = MenuStatus.Visible;
+                    return true;
                 case CmdIds.FileMru:
                     cmdStatus.Status = MenuStatus.Visible;
                     return true;
@@ -901,6 +916,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 
                 case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
+                case CmdIds.ToolsKeyBindings: ToolsKeyBindings(); retval = true; break;
 
                 case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); retval = true; break;
                 case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); retval = true; break;

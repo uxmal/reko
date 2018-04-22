@@ -113,7 +113,7 @@ l0387:
 	word16 hl_6 = Mem0[0x1648:word16]
 	word16 sp_7
 	word16 hl_8
-	call hl_6 (retsize: 4; depth: 6)
+	call hl_6 (retsize: 2; depth: 4)
 		uses: hl_6,sp_3,wLoc02_4
 		defs: hl_8,sp_7
 	return hl_8
@@ -3910,7 +3910,7 @@ fn1279_exit:
 
 l12A1:
 	word16 sp_36 = sp_1 - 0x0002
-	Mem37[sp_36:word16] = DPB(af_21, Mem23[0x16AA:byte] * 0x02 * 0x02 * 0x02, 0)
+	Mem37[sp_36:word16] = DPB(af_21, Mem23[0x16AA:byte] * 0x08, 0)
 	Mem47[sp_36:word16] = DPB(af_21, Mem37[0x16AA:byte] * 0x02 + Mem37[sp_36 + 0x0001:byte], 0)
 	b = Mem47[sp_36 + 0x0001:byte] (alias)
 	*bOut = b

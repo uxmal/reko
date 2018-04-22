@@ -208,13 +208,24 @@ namespace Reko.Core.Expressions
                 {
                     var a = (MkSequence)ea;
                     var b = (MkSequence)eb;
-                    return EqualsImpl(a.Head, b.Tail) && EqualsImpl(a.Head, b.Tail);
+                    if (a.Expressions.Length != b.Expressions.Length)
+                        return false;
+                    for (int i = 0; i < a.Expressions.Length; ++i)
+                    {
+                        if (!EqualsImpl(a.Expressions[i], b.Expressions[i]))
+                            return false;
+                    }
+                    return true;
                 },
                 obj =>
                 {
                     var s = (MkSequence)obj;
-                    return obj.GetType().GetHashCode() ^ 37 * GetHashCodeImpl(s.Head) ^
-                        GetHashCodeImpl(s.Tail);
+                    int h = obj.GetType().GetHashCode();
+                    foreach (var e in s.Expressions)
+                    {
+                        h = 32 * h ^ GetHashCodeImpl(e);
+                    }
+                    return h;
                 });
 
             Add(typeof(PhiFunction),

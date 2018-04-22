@@ -25,7 +25,7 @@ l10000000:
 	eax = eax + 0x7FF8FFFA
 	SCZO = cond(eax)
 	Mem0[ebp - 0x00000004:word32] = eax
-	SCZO = cond(Mem0[ebp - 0x00000004:byte] - 0x03)
+	SCZO = cond(Mem0[ebp - 0x00000004:word32] - 0x00000003)
 	branch Test(UGT,CZ) l10000054
 	// succ:  l10000014 l10000054
 l10000014:
@@ -34,7 +34,7 @@ l10000014:
 	SZO = cond(ecx)
 	C = false
 	cl = Mem0[edx + 0x10000026:byte]
-	switch (eax) { l10000040 l10000036 l10000040 l1000004A }
+	switch (Mem0[ebp - 0x00000004:word32]) { l10000040 l10000036 l10000040 l1000004A }
 	// succ:  l10000040 l10000036 l10000040 l1000004A
 l10000036:
 	eax = 0x00000000

@@ -51,6 +51,10 @@ namespace Reko.Core
         public Address Address { get; set; }
         public string Name { get; private set; }
         public Procedure Procedure { get; set; }
+
+        /// <summary>
+        /// If true, this block is synthesized and not present in the original binary.
+        /// </summary>
         public bool IsSynthesized { get; set; }
        
         public Block ElseBlock
@@ -156,9 +160,11 @@ namespace Reko.Core
 
 		public void WriteStatements(TextWriter writer)
 		{
-            TextFormatter f = new TextFormatter(writer);
-            f.UseTabs = true;
-            f.TabSize = 4;
+            var f = new TextFormatter(writer)
+            {
+                UseTabs = true,
+                TabSize = 4
+            };
             CodeFormatter cf = new CodeFormatter(f);
 			int i = 0;
 			foreach (Statement s in Statements)

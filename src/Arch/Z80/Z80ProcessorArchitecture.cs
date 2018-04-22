@@ -212,7 +212,14 @@ namespace Reko.Arch.Z80
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            if (rdr.TryReadUInt16(out var uaddr))
+            {
+                return Address.Ptr16(uaddr);
+            }
+            else
+            {
+                return null;
+            }
         }
 
 		public override string GrfToString(uint grf)
@@ -229,6 +236,11 @@ namespace Reko.Arch.Z80
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
     }
 

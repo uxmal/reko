@@ -83,7 +83,8 @@ namespace Reko.UnitTests.Analysis
                 importResolver, 
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
-            var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
+            var segmentMap = new SegmentMap(Address.Ptr32(0));
+            var vp = new ValuePropagator(segmentMap, sst.SsaState, NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;
@@ -154,10 +155,10 @@ Trashed: Global memory,Local -0004
                 var r1 = m.Register("r1");
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r1);        // push r1
+                m.MStore(sp, r1);        // push r1
 
                 m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.Store(m.Word32(0x123400), r1);
+                m.MStore(m.Word32(0x123400), r1);
 
                 m.Assign(r1, m.Mem32(sp)); // pop r1
                 m.Assign(sp, m.IAdd(sp, 4));
@@ -180,7 +181,7 @@ Constants: ds:0x0C00,Local -0002:0x0C00
                 var ds = m.Reg16("ds", 10);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 2));
-                m.Store(sp, m.Word16(0x0C00));
+                m.MStore(sp, m.Word16(0x0C00));
                 m.Assign(ds, m.Mem16(sp));
                 m.Assign(sp, m.IAdd(sp, 2));
                 m.Return();
@@ -262,7 +263,7 @@ Constants: cl:0x00
                 m.Assign(r2 ,m.Mem32(m.IAdd(r1, 4)));
                 m.Assign(r1, m.Mem32(m.IAdd(r1, 8)));
                 m.Call("Addition", 4);
-                m.Store(m.Word32(0x123000), r1);
+                m.MStore(m.Word32(0x123000), r1);
                 m.Return();
             });
         }

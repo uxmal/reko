@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Arch
     {
         protected abstract ImageWriter CreateImageWriter(byte[] bytes);
 
-        public TInstruction DisassembleBytes(byte[] a)
+        public TInstruction DisassembleBytes(params byte[] a)
         {
             MemoryArea img = new MemoryArea(LoadAddress, a);
             return Disassemble(img);

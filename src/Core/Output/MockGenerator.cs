@@ -172,6 +172,12 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        void InstructionVisitor.VisitComment(CodeComment comment)
+        {
+            writer.Write("Comment(");
+            QuoteString(comment.Text);
+        }
+
         void InstructionVisitor.VisitDeclaration(Declaration decl)
         {
             writer.Write("Declare(");
@@ -541,5 +547,26 @@ namespace Reko.Core.Output
             return 0;
         }
         #endregion
+
+        private void QuoteString(string str)
+        {
+            var sb = new StringBuilder();
+            sb.Append("\"");
+            foreach (var ch in str)
+            {
+                switch (ch)
+                {
+                case '\r': sb.Append(@"\r"); break;
+                case '\n': sb.Append(@"\n"); break;
+                case '\t': sb.Append(@"\t"); break;
+                case '\\': sb.Append(@"\\"); break;
+                default:
+                    sb.Append(ch);
+                    break;
+                }
+            }
+            sb.Append("\"");
+            writer.Write(sb.ToString());
+        }
     }
 }

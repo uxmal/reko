@@ -47,7 +47,7 @@ namespace Reko.Arch.Sparc
             this.valid = new bool[32];
         }
 
-        public SparcProcessorState(SparcProcessorState old)
+        public SparcProcessorState(SparcProcessorState old) : base(old)
         {
             this.arch = old.arch;
             this.regs = old .regs.ToArray();
@@ -73,7 +73,7 @@ namespace Reko.Arch.Sparc
 
         public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            if (v.IsValid)
+            if (!v.IsValid)
             {
                 valid[reg.Number] = false;
             }

@@ -36,7 +36,52 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class DeadCodeTests : AnalysisTestBase
 	{
-		[Test]
+        private SsaProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
+
+        public void EliminateDeadCode()
+        {
+            DeadCode.Eliminate(m.Ssa.Procedure, m.Ssa);
+            m.Ssa.Validate(s => Assert.Fail(s));
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
+        }
+
+        protected override void RunTest(Program program, TextWriter writer)
+		{
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
+			dfa.UntangleProcedures();
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+				Aliases alias = new Aliases(proc);
+				alias.Transform();
+				SsaTransform sst = new SsaTransform(
+                    dfa.ProgramDataFlow,
+                    proc,
+                    null,
+                    proc.CreateBlockDominatorGraph(),
+                    program.Platform.CreateImplicitArgumentRegisters());
+				SsaState ssa = sst.SsaState;
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				cce.Transform();
+
+				DeadCode.Eliminate(proc, ssa);
+				ssa.Write(writer);
+				proc.Write(false, writer);
+
+                ssa.Validate(s => Assert.Fail(s));
+            }
+		}
+
+        [Test]
 		public void DeadPushPop()
 		{
 			RunFileTest("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");
@@ -76,28 +121,20 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest(m, "Analysis/DeadFnReturn.txt");
 		}
 
-		protected override void RunTest(Program program, TextWriter writer)
-		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-				Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(
-                    dfa.ProgramDataFlow,
-                    proc,
-                    null,
-                    proc.CreateBlockDominatorGraph(),
-                    program.Platform.CreateImplicitArgumentRegisters());
-				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
+        [Test(Description = "Comment should not be removed as dead code")]
+        public void DeadComment()
+        {
+            var dead = m.Reg16("dead");
+            m.Comment("This is a comment");
+            m.Assign(dead, m.Word16(0xDEAD));
 
-				DeadCode.Eliminate(proc, ssa);
-				ssa.Write(writer);
-				proc.Write(false, writer);
-			}
-		}
+            EliminateDeadCode();
+
+            var sExp =
+@"
+// This is a comment
+";
+            AssertProcedureCode(sExp);
+        }
  	}
 }

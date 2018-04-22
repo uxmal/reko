@@ -98,7 +98,7 @@ void frame_dummy(word64 r8)
 		word64 rdx_55;
 		word32 edx_56;
 		word64 rsi_57;
-		null();
+		fn0000000000000000();
 		register_tm_clones(r8_54);
 	}
 }

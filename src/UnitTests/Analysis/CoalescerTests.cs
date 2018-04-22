@@ -27,12 +27,65 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class CoalescerTests : AnalysisTestBase
 	{
+        private SsaProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new SsaProcedureBuilder();
+        }
+
+        public void RunCoalescer()
+        {
+            var co = new Coalescer(m.Ssa.Procedure, m.Ssa);
+            co.Transform();
+            m.Ssa.Validate(s => Assert.Fail(s));
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
+        }
+
+		protected override void RunTest(Program program, TextWriter fut)
+		{
+            IImportResolver importResolver = null;
+            var listener = new FakeDecompilerEventListener();
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+			dfa.UntangleProcedures();
+			
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+                Aliases alias = new Aliases(proc);
+                alias.Transform();
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
+				SsaState ssa = sst.SsaState;
+				
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				cce.Transform();
+				DeadCode.Eliminate(proc, ssa);
+
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
+				vp.Transform();
+				DeadCode.Eliminate(proc, ssa);
+				Coalescer co = new Coalescer(proc, ssa);
+				co.Transform();
+
+				ssa.Write(fut);
+				proc.Write(false, fut);
+				fut.WriteLine();
+
+                ssa.Validate(s => Assert.Fail(s));
+            }
+        }
+
 		[Test]
 		public void Coa3Converge()
 		{
@@ -138,36 +191,41 @@ namespace Reko.UnitTests.Analysis
             RunFileTest(m, "Analysis/CoaCallCallee.txt");
         }
 
-        protected override void RunTest(Program program, TextWriter fut)
-		{
-            IImportResolver importResolver = null;
-            var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
-			dfa.UntangleProcedures();
-			
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-				Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
-				SsaState ssa = sst.SsaState;
-				
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
+        [Test(Description="Avoid coalescing of invalid constant")]
+        public void CoaDoNotCoalesceInvalidConstant()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            m.Assign(a, Constant.Invalid);
+            m.Assign(b, m.IAdd(a, 4));
 
-				ValuePropagator vp = new ValuePropagator(program.Architecture, ssa, listener);
-				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
-				Coalescer co = new Coalescer(proc, ssa);
-				co.Transform();
+            RunCoalescer();
 
-				ssa.Write(fut);
-				proc.Write(false, fut);
-				fut.WriteLine();
+            var expected =
+@"
+a = <invalid>
+b = a + 0x00000004
+";
+            AssertProcedureCode(expected);
+        }
 
-                ssa.CheckUses(s => Assert.Fail(s));
-            }
-		}
-	}
+        [Test(Description = "Coalescense should work across a comment.")]
+        public void CoaAcrossComment()
+        {
+            var a = m.Reg32("a");
+            var b = m.Reg32("b");
+            m.Assign(a, m.Mem32(m.Word32(0x00123400)));
+            m.Comment("This is a comment");
+            m.Assign(b, m.Mem32(a));
+
+            RunCoalescer();
+
+            var sExp =
+@"
+// This is a comment
+b = Mem3[Mem2[0x00123400:word32]:word32]
+";
+            AssertProcedureCode(sExp);
+        }
+    }
 }

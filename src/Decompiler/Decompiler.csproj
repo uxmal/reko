@@ -151,6 +151,8 @@
     <Compile Include="Analysis\ProcedureFlow2.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
+    <Compile Include="Analysis\SsaDefinitionsCollector.cs" />
+    <Compile Include="Analysis\SsaMutator.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder2.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UsedIdentifierFinder.cs" />
@@ -223,6 +225,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\DistributedCastRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -275,7 +278,10 @@
     </Compile>
     <Compile Include="Scanning\AhoCorasickSearch.cs" />
     <Compile Include="Scanning\Backwalker.cs" />
+    <Compile Include="Scanning\BackwardSlicer.cs" />
+    <Compile Include="Scanning\BackwardSlicerHost.cs" />
     <Compile Include="Scanning\BlockCloner.cs" />
+    <Compile Include="Scanning\CommentInjector.cs" />
     <Compile Include="Scanning\CommonPatternFinder.cs" />
     <Compile Include="Scanning\DataScanner.cs" />
     <Compile Include="Scanning\GlobalDataWorkItem.cs" />
@@ -301,8 +307,9 @@
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Scanning\ProcedureWorkItem.cs" />
+    <Compile Include="Scanning\ValueSet.cs" />
+    <Compile Include="Scanning\ValueSetEvaluator.cs" />
     <Compile Include="Scanning\VarargsFormatScanner.cs" />
-    <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Loading\Loader.cs" />
     <Compile Include="Scanning\EscapedAccessRewriter.cs">
       <SubType>Code</SubType>

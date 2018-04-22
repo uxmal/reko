@@ -51,8 +51,8 @@ namespace Reko.Core
         /// <param name="id"></param>
         /// <returns></returns>
         Expression GetValue(Identifier id);
-        Expression GetValue(MemoryAccess access);
-        Expression GetValue(SegmentedAccess access);
+        Expression GetValue(MemoryAccess access, SegmentMap segmentMap);
+        Expression GetValue(SegmentedAccess access, SegmentMap segmentMap);
         Expression GetValue(Application appl);
         Expression GetDefiningExpression(Identifier id);
         void RemoveIdentifierUse(Identifier id);

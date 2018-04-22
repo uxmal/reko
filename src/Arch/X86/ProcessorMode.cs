@@ -37,11 +37,20 @@ namespace Reko.Arch.X86
         public static readonly ProcessorMode Protected32 = new FlatMode32();
         public static readonly ProcessorMode Protected64 = new FlatMode64();
 
+        protected RegisterStorage[] controlRegs;
+        protected RegisterStorage[] debugRegs;
+
         protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
         {
             this.WordWidth = wordSize;
             this.FramePointerType = framePointerType;
             this.PointerType = pointerType;
+            this.controlRegs = Enumerable.Range(0, 9)
+                .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word32))
+                .ToArray();
+            this.debugRegs = Enumerable.Range(0, 8)
+               .Select(n => new RegisterStorage($"dr{n}", Registers.DebugRegisterMin, 0, PrimitiveType.Word32))
+               .ToArray();
         }
 
         public virtual Address MakeAddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
@@ -75,22 +84,46 @@ namespace Reko.Arch.X86
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
 
+        public RegisterStorage GetControlRegister(int n)
+        {
+            if (0 <= n && n < controlRegs.Length)
+                return controlRegs[n];
+            else
+                return null;
+        }
+
+        public RegisterStorage GetDebugRegister(int n)
+        {
+            if (0 <= n && n < debugRegs.Length)
+                return debugRegs[n];
+            else
+                return null;
+        }
+
         public abstract Address MakeAddressFromConstant(Constant c);
 
-        public abstract Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state);
+        public abstract bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr);
 
-        protected Address ReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        protected bool TryReadSegmentedCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
             if (byteSize == PrimitiveType.Word16.Size)
             {
-                return CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), rdr.ReadLeUInt16());
+                if (rdr.TryReadLeUInt16(out ushort uOffset))
+                {
+                    addr = CreateSegmentedAddress(state.GetRegister(Registers.cs).ToUInt16(), uOffset);
+                    return true;
+                }
             }
             else
             {
-                ushort off = rdr.ReadLeUInt16();
-                ushort seg = rdr.ReadLeUInt16();
-                return CreateSegmentedAddress(seg, off);
+                if (rdr.TryReadLeUInt16(out var off) && rdr.TryReadLeUInt16(out var seg))
+                {
+                    addr = CreateSegmentedAddress(seg, off);
+                    return true;
+                }
             }
+            addr = null;
+            return false;
         }
 
         public abstract bool TryParseAddress(string txtAddress, out Address addr);
@@ -155,9 +188,9 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return ReadSegmentedCodeAddress(byteSize, rdr, state);
+            return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -199,9 +232,9 @@ namespace Reko.Arch.X86
             throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return ReadSegmentedCodeAddress(byteSize, rdr, state);
+            return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -263,9 +296,18 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return Address.Ptr32(rdr.ReadLeUInt32());
+            if (rdr.TryReadLeUInt32(out uint uAddr))
+            {
+                addr = Address.Ptr32(uAddr);
+                return true;
+            }
+            else
+            {
+                addr = null;
+                return false;
+            }
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -279,6 +321,13 @@ namespace Reko.Arch.X86
         internal FlatMode64()
             : base(PrimitiveType.Word64, PrimitiveType.Ptr64, PrimitiveType.Ptr64)
         {
+            this.controlRegs = Enumerable.Range(0, 9)
+                .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word64))
+                .ToArray();
+            this.debugRegs = Enumerable.Range(0, 8)
+               .Select(n => new RegisterStorage($"dr{n}", Registers.DebugRegisterMin, 0, PrimitiveType.Word64))
+               .ToArray();
+
         }
 
         public override RegisterStorage StackRegister
@@ -323,9 +372,18 @@ namespace Reko.Arch.X86
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state, out Address addr)
         {
-            return Address.Ptr64(rdr.ReadLeUInt64());
+            if (rdr.TryReadLeUInt64(out ulong uAddr))
+            {
+                addr = Address.Ptr64(uAddr);
+                return true;
+            }
+            else
+            {
+                addr = null;
+                return false;
+            }
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

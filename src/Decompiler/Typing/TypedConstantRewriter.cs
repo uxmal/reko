@@ -88,11 +88,10 @@ namespace Reko.Typing
         {
             if (addr.Selector.HasValue)
             {
-                Identifier segId;
-                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out segId))
+                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out Identifier segId))
                 {
                     eventListener.Warn(
-                        new NullCodeLocation(""), 
+                        new NullCodeLocation(""),
                         "Selector {0:X4} has no known segment.",
                         addr.Selector.Value);
                     return addr;
@@ -255,9 +254,10 @@ namespace Reko.Typing
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should use a reinterpret_cast here.
-                    var ce = new Cast(c.DataType, c);
-                    ce.TypeVariable = c.TypeVariable;
-                    ce.DataType = ptr;
+                    var ce = new Cast(ptr, c)
+                    {
+                        TypeVariable = c.TypeVariable
+                    };
                     return ce;
                 }
                 

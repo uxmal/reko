@@ -1670,7 +1670,7 @@ l00401937:
 	byte SZO_60
 	byte Z_61
 	word32 ecx_62
-	call edi_37 (retsize: 4; depth: 4)
+	call fn00000000 (retsize: 4; depth: 4)
 		uses: C_40,dwLoc04_4,dwLoc08_7,dwLoc0C_31,ebx_35,ecx_53,edi_37,esi_34,esp_36,SCZO_33,SZO_38,Z_39
 		defs: C_58,ebx_55,ecx_62,edi_59,esi_56,esp_54,SCZO_57,SZO_60,Z_61
 // DataOut: esi esp

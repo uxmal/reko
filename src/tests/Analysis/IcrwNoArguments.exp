@@ -23,7 +23,9 @@ ecx_6: orig: ecx
 esp_7: orig: esp
     def:  esp_7 = esp_3
 eax_8: orig: eax
+    def:  eax_8 = <invalid>
 ecx_9: orig: ecx
+    def:  ecx_9 = <invalid>
 // test
 // Return size: 4
 void test(str * a)
@@ -38,6 +40,8 @@ l0C00_0000:
 	eax_4 = a_1
 	ecx_6 = Mem0[a:word32]
 	Mem0[ecx_6:word32]()
+	ecx_9 = <invalid>
+	eax_8 = <invalid>
 	esp_7 = esp_3
 	return
 	// succ:  fn0C00_0000_exit

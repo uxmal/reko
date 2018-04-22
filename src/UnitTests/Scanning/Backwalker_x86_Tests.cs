@@ -61,6 +61,8 @@ namespace Reko.UnitTests.Scanning
                 this.arch = arch;
             }
 
+            public SegmentMap SegmentMap => throw new NotImplementedException();
+
             public Tuple<Expression, Expression> AsAssignment(Instruction instr)
             {
                 var ass = instr as Assignment;
@@ -100,6 +102,11 @@ namespace Reko.UnitTests.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
             }
 
+            public List<Block> GetPredecessors(Block block)
+            {
+                return block.Procedure.ControlGraph.Predecessors(block).ToList();
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
             {
                 return arch.GetSubregister(reg, off, width);
@@ -125,9 +132,9 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            public IEnumerable<Instruction> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction).Reverse();
+                return block.Statements.Select(s => s.Instruction);
             }
 
             #endregion
@@ -138,8 +145,9 @@ namespace Reko.UnitTests.Scanning
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             m = new ProcedureBuilder();
+            var map = new SegmentMap(Address.Ptr32(0x10000000));
             state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(), new FakeDecompilerEventListener());
+            expSimp = new ExpressionSimplifier(map, state, new FakeDecompilerEventListener());
             SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost(arch);
         }
@@ -363,7 +371,7 @@ namespace Reko.UnitTests.Scanning
             var si = m.Frame.EnsureRegister(Registers.si);
 
             m.Assign(sp, m.ISub(sp, 2));
-            m.Store(sp, cs);
+            m.MStore(sp, cs);
             m.Assign(ds, m.Mem16(sp));
             m.Assign(sp, m.IAdd(sp, 2));
             m.Assign(bl, m.Mem8(si));
@@ -383,10 +391,11 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwInc()
         {
+            var map = new SegmentMap(Address.Ptr32(0x10000000));
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), RtlClass.Transfer),
-                new ExpressionSimplifier(state, new FakeDecompilerEventListener()));
+                new ExpressionSimplifier(map, state, new FakeDecompilerEventListener()));
             var instrs = new StatementList(new Block(null, "foo"));
             bw.BackwalkInstructions(Registers.di, new Instruction[] {
                 new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))

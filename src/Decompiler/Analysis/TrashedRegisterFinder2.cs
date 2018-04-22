@@ -78,8 +78,7 @@ namespace Reko.Analysis
                 flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                 return;
             }
-            Assignment ass;
-            if (sid.DefStatement.Instruction.As<Assignment>(out ass))
+            if (sid.DefStatement.Instruction is Assignment ass)
             {
                 if ((ass.Src == sid.OriginalIdentifier) 
                     ||
@@ -89,8 +88,7 @@ namespace Reko.Analysis
                     flow.Preserved.Add(sid.OriginalIdentifier.Storage);
                     return;
                 }
-                Constant c;
-                if (ass.Src.As<Constant>(out c))
+                if (ass.Src is Constant c)
                 {
                     flow.Constants.Add(sid.OriginalIdentifier.Storage, c);
                     // Fall through to Trashed below --v

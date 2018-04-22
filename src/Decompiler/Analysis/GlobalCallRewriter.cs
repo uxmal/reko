@@ -114,7 +114,7 @@ namespace Reko.Analysis
                 if (eventListener.IsCanceled())
                     return;
 				ProcedureFlow flow = crw.mpprocflow[proc];
-                flow.Dump(program.Architecture);
+                flow.Dump(proc.Architecture);
 				crw.AdjustLiveOut(flow);
 				crw.EnsureSignature(proc, flow);
 				crw.AddUseInstructionsForOutArguments(proc);
@@ -139,7 +139,7 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			var sb = new SignatureBuilder(proc.Frame, Program.Architecture);
+			var sb = new SignatureBuilder(proc.Frame, proc.Architecture);
 			var frame = proc.Frame;
 			if (flow.grfLiveOut != 0)
 			{

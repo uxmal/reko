@@ -1951,9 +1951,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "3|L--|V = false");
         }
 
-     
-     
-
         [Test]
         public void VaxRw_movab()
         {

@@ -26,6 +26,7 @@ using Reko.Loading;
 using Reko.Scanning;
 using NUnit.Framework;
 using System;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Core
 {
@@ -36,10 +37,12 @@ namespace Reko.UnitTests.Core
 		public void Creation()
 		{
 			CallGraph g = new CallGraph();
-			Procedure p1 = new Procedure("p1000", null);
-			Procedure p2 = new Procedure("p2000", null);
-			Procedure p3 = new Procedure("p3000", null);
-			Procedure p4 = new Procedure("p4000", null);
+            var arch = MockRepository.GenerateStub<IProcessorArchitecture>();
+            arch.Replay();
+			Procedure p1 = new Procedure(arch, "p1000", null);
+			Procedure p2 = new Procedure(arch, "p2000", null);
+			Procedure p3 = new Procedure(arch, "p3000", null);
+			Procedure p4 = new Procedure(arch, "p4000", null);
 
             var pc2 = new ProcedureConstant(PrimitiveType.Ptr32, p2);
             var pc3 = new ProcedureConstant(PrimitiveType.Ptr32, p3);

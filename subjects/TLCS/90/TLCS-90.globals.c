@@ -21,15 +21,15 @@ union Eq_5637 g_u0738 =
 byte g_a0823[] = 
 	{
 	};
-union Eq_6876 g_u0A35 = 
+union Eq_6860 g_u0A35 = 
 	{
 		0x60F9
 	};
-union Eq_6923 g_u0B1B = 
+union Eq_6907 g_u0B1B = 
 	{
 		0xF4F4
 	};
-union Eq_6512 g_u0CEE = 
+union Eq_6504 g_u0CEE = 
 	{
 		0x26E1
 	};

@@ -108,6 +108,7 @@ namespace Reko.Core
             return this;
         }
 
+
         public ImageWriter WriteBytes(byte[] bytes, uint offset, uint count)
         {
             while (count > 0)
@@ -179,6 +180,7 @@ namespace Reko.Core
             return this;
         }
 
+        public abstract ImageWriter WriteUInt16(ushort us);
         public abstract ImageWriter WriteUInt32(uint w);
         public abstract ImageWriter WriteUInt32(uint offset, uint w);
         public abstract ImageWriter WriteUInt64(ulong w);
@@ -267,6 +269,7 @@ namespace Reko.Core
             return w;
         }
 
+        public override ImageWriter WriteUInt16(ushort us) { return WriteBeUInt16(us); }
         public override ImageWriter WriteUInt32(uint w) { return WriteBeUInt32(w); }
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteBeUInt32(offset, w); }
         public override ImageWriter WriteUInt64(ulong w) { return WriteBeUInt64(w); }
@@ -305,6 +308,7 @@ namespace Reko.Core
             return w;
         }
 
+        public override ImageWriter WriteUInt16(ushort us) { return WriteLeUInt16(us); }
         public override ImageWriter WriteUInt32(uint w) { return WriteLeUInt32(w); }
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteLeUInt32(offset, w); }
         public override ImageWriter WriteUInt64(ulong w) { return WriteLeUInt64(w); }

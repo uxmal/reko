@@ -41,6 +41,7 @@ namespace Reko.Analysis
 	public class ValueNumbering
 	{
         private SsaIdentifierCollection ssaIds;
+        private SegmentMap segmentMap;
         private Dictionary<Expression, Expression> optimistic;	// maps <valnum> -> <node>
         private Dictionary<Expression, Expression> valid;
 		private Stack<Node> stack;
@@ -60,9 +61,10 @@ namespace Reko.Analysis
 			}
 		}
 
-		public ValueNumbering(SsaIdentifierCollection ssaIds, DecompilerEventListener listener)
+		public ValueNumbering(SsaIdentifierCollection ssaIds, SegmentMap segmentMap, DecompilerEventListener listener)
 		{
 			this.ssaIds = ssaIds;
+            this.segmentMap = segmentMap;
             optimistic = new Dictionary<Expression, Expression>();
 			valid = new Dictionary<Expression,Expression>();
 			stack = new Stack<Node>();
@@ -128,12 +130,12 @@ namespace Reko.Analysis
                 throw new NotImplementedException();
             }
 
-            public Expression GetValue(MemoryAccess access)
+            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
             {
                 throw new NotImplementedException();
             }
 
-            public Expression GetValue(SegmentedAccess access)
+            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
                 throw new NotImplementedException();
             }
@@ -198,7 +200,7 @@ namespace Reko.Analysis
 		/// <returns></returns>
 		private bool AssignValueNumber(Node n, Dictionary<Expression,Expression> table)
 		{
-            var  simp = new ExpressionSimplifier(new ValueNumberingContext(table), listener);
+            var  simp = new ExpressionSimplifier(segmentMap, new ValueNumberingContext(table), listener);
 			Expression expr;
 			if (n.definingExpr == null)
 			{

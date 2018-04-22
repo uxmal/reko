@@ -7,6 +7,7 @@
 
 from optparse import OptionParser
 from threading import Thread
+from datetime import datetime
 import multiprocessing as mp
 import os
 import os.path
@@ -156,7 +157,7 @@ def processor(dir, rel_pname, exe_and_args):
         exe_and_args.insert(1, "--debug") # enables line numbers in stack traces
     output_lines = "=== " + banner + "\n"
     start = time.time()
-    sys.stderr.write("Starting %s at %s\n" % (banner, start))
+    sys.stderr.write("%s: Starting %s\n" % (datetime.now().strftime("%H:%M:%S.%f"), banner))
 
     proc = subprocess.Popen(exe_and_args,
         stdout=subprocess.PIPE,

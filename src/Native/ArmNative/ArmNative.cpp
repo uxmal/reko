@@ -42,7 +42,7 @@ extern "C" {
 			INativeTypeFactory * typeFactory,
 			INativeRewriterHost * host)
 	{
-		auto rw = new ArmRewriter(rawBytes + offset, length - offset, address, m, typeFactory, host);
+		auto rw = new ArmRewriter(cs_mode::CS_MODE_ARM, rawBytes + offset, length - offset, address, m, typeFactory, host);
 		rw->AddRef();
 		return rw;
 	}

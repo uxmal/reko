@@ -94,6 +94,7 @@ namespace Reko.Core
         {
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
+            this.Domain = freg.Domain;
             this.Name = name;
             this.DataType = dataType;
         }
@@ -460,16 +461,27 @@ namespace Reko.Core
 
 	public class SequenceStorage : Storage
 	{
-		public SequenceStorage(Storage head, Storage tail) 
+		public SequenceStorage(Storage head, Storage tail, DataType dt) 
 			: base("Sequence")		
 		{
 			this.Head = head;
 			this.Tail = tail;
             this.Name = $"{head.Name}:{tail.Name}";
-		}
+            this.DataType = dt;
+        }
+
+        public SequenceStorage(string name, Storage head, Storage tail, DataType dt)
+            : base("Sequence")
+        {
+            this.Head = head;
+            this.Tail = tail;
+            this.Name = name;
+            this.DataType = dt;
+        }
 
         public Storage Head { get; private set; }
         public Storage Tail { get; private set; }
+        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

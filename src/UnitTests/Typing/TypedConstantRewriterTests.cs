@@ -162,20 +162,20 @@ namespace Reko.UnitTests.Typing
             w.WriteString(str, Encoding.ASCII);
         }
 
-        private void Given_Readonly_Segment(string segName, uint address, uint size)
+        private void Given_Readonly_Segment()
         {
-            var seg = program.SegmentMap.AddSegment(
-                Address.Ptr32(address),
-                segName, AccessMode.Read, size);
-            seg.Access = AccessMode.Read;
+            foreach (var seg in program.SegmentMap.Segments.Values)
+            {
+                seg.Access = AccessMode.Read;
+            }
         }
 
         private void Given_Writeable_Segment(string segName, uint address, uint size)
         {
-            var seg = program.SegmentMap.AddSegment(
-                Address.Ptr32(address),
-                segName, AccessMode.ReadWrite, size);
-            seg.Access = AccessMode.ReadWrite;
+            foreach (var seg in program.SegmentMap.Segments.Values)
+            {
+                seg.Access = AccessMode.ReadWrite;
+            }
         }
 
         [Test(Description ="If we have a char * to read-only memory, treat it as a C string")]
@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Typing
             // MacOS classic).
             Given_TypedConstantRewriter();
             Given_String("Hello", 0x00100000);
-            Given_Readonly_Segment(".rdata", 0x00100000, 0x20);
+            Given_Readonly_Segment();
             var c = Constant.Word32(0x00100000);
             store.EnsureExpressionTypeVariable(factory, c);
             var charPtr = new Pointer(PrimitiveType.Char, 4);

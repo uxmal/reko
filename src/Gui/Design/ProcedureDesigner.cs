@@ -141,7 +141,7 @@ namespace Reko.Gui.Design
             var resultSvc = Services.GetService<ISearchResultService>();
             if (resultSvc == null)
                 return;
-            var arch = program.Architecture;
+            var arch = procedure.Architecture;
             var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
             var addrControl = arch.CreatePointerScanner(
                 program.SegmentMap,
@@ -151,8 +151,13 @@ namespace Reko.Gui.Design
                 },
                 PointerScannerFlags.All);
             resultSvc.ShowAddressSearchResults(
-                addrControl.Select(a => new ProgramAddress(program, a)),
-                AddressSearchDetails.Code);
+                addrControl.Select(a => new AddressSearchHit
+                {
+                    Program = program,
+                    Address = a,
+                    Length = 1
+                }),
+                new CodeSearchDetails());
         }
 
         private void Rename()

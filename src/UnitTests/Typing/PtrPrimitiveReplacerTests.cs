@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder mock = new ProgramBuilder();
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            m.SegStore(ds, m.Word32(7000), m.SegMem16(ds, m.SegMem16(ds, m.Word32(0x5321))));
+            m.SStore(ds, m.Word32(7000), m.SegMem16(ds, m.SegMem16(ds, m.Word32(0x5321))));
             mock.Add(m);
             RunTest(mock.BuildProgram(), "Typing/PprMemberPointers.txt");
         }

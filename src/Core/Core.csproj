@@ -226,6 +226,8 @@
     <Compile Include="AddressRange.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AddressSearchHit.cs" />
+    <Compile Include="AnnotationList.cs" />
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="CLanguage\SerializedTypeComparer.cs" />
     <Compile Include="CLanguage\SymbolTable.cs" />
     <Compile Include="CLanguage\TypeSizer.cs" />
+    <Compile Include="Code\CodeComment.cs" />
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
@@ -294,6 +297,7 @@
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\ExpressionEmitter.cs" />
     <Compile Include="Expressions\ExpressionMatcher.cs" />
+    <Compile Include="Expressions\ExpressionReplacer.cs" />
     <Compile Include="Expressions\ExpressionValueComparer.cs" />
     <Compile Include="Expressions\ExpressionVisitor.cs" />
     <Compile Include="Expressions\FieldAccess.cs" />
@@ -328,6 +332,7 @@
     <Compile Include="Lib\LTDominatorGraph.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
+    <Compile Include="Lib\Float80.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
     <Compile Include="Lib\UbjsonReader.cs" />
     <Compile Include="Lib\UbjsonMarker.cs" />
@@ -413,7 +418,6 @@
     <Compile Include="Operators\FMulOperator.cs" />
     <Compile Include="Operators\FSubOperator.cs" />
     <Compile Include="Output\ProcedureFormatter.cs" />
-    <Compile Include="PrintfApplicationBuilder.cs" />
     <Compile Include="ProgramAddress.cs" />
     <Compile Include="ProgramResource.cs" />
     <Compile Include="ProjectFile.cs" />
@@ -651,9 +655,6 @@
     <Compile Include="ProcedureBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProcessorInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ProcessorState.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -726,18 +727,15 @@
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
+    <Compile Include="Statement.cs" />
     <Compile Include="StatementCorrelatedException.cs" />
+    <Compile Include="StatementList.cs" />
     <Compile Include="StorageBinder.cs" />
+    <Compile Include="StridedInterval.cs" />
     <Compile Include="StructureReader.cs" />
     <Compile Include="TypedDataDumper.cs" />
     <Compile Include="TypeInferenceException.cs" />
     <Compile Include="TypeLibrary.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Statement.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StatementList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Storage.cs" />

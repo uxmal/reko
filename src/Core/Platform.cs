@@ -21,7 +21,6 @@
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -29,7 +28,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -338,8 +336,7 @@ namespace Reko.Core
             {
                 foreach (var m in metadata.Modules.Values)
                 {
-                    SystemService svc;
-                    if (m.ServicesByName.TryGetValue(ch.Key, out svc))
+                    if (m.ServicesByName.TryGetValue(ch.Key, out SystemService svc))
                     {
                         svc.Characteristics = ch.Value;
                     }

@@ -100,7 +100,6 @@ namespace Reko.Gui
             string w = GetNextWord();
             if (w == "void")
                 return null;
-            Console.WriteLine(w);
             RegisterStorage reg;
             if (arch.TryGetRegister(w, out reg))
             {

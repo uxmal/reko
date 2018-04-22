@@ -95,8 +95,6 @@ namespace Reko.Core
                 {
                     formatter.Write(block.Block.Name);
                     formatter.Write(":");
-                    if (block.Block.Name == "l00000065")    //$DEBUG
-                        block.ToString();
                     formatter.WriteLine();
                 }
                 DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);

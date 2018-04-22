@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Scanning
             var proc = BuildTest("fn01010", m =>
             {
                 var r1 = m.Register("r1");
-                m.Store(r1, r1);
+                m.MStore(r1, r1);
                 m.Return();
             });
 

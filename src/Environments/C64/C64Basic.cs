@@ -183,6 +183,11 @@ namespace Reko.Environments.C64
             return Address.TryParse16(txtAddress, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
+
         public class C64BasicState : ProcessorState
         {
             private C64Basic arch;
@@ -192,11 +197,16 @@ namespace Reko.Environments.C64
                 this.arch = arch;
             }
 
+            public C64BasicState(C64BasicState that) : base(that)
+            {
+                this.arch = that.arch;
+            }
+
             public override IProcessorArchitecture Architecture { get { return arch; } }
 
             public override ProcessorState Clone()
             {
-                return new C64BasicState(arch);
+                return new C64BasicState(this);
             }
 
             public override Core.Expressions.Constant GetRegister(RegisterStorage r)

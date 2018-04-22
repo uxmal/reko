@@ -342,7 +342,156 @@ namespace Reko.Environments.MacOS
                 platform.A5World = a5world;
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
+
+
+                // Find first (and only!) segment containing the name %A5Init.
+                var a5dataSegment = segmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
+                if (a5dataSegment == null)
+                    return;
+
+                // Get an image reader to the start of the data.
+                var a5dr = GetA5InitImageReader(a5dataSegment);
+                if (a5dr == null)
+                    return;
+
+                var a5dbelow = a5dr.ReadBeUInt32();
+                var a5dbankSize = a5dr.ReadBeUInt32();
+                var a5doffset = a5dr.ReadBeUInt32();
+                var a5dreloc = a5dr.ReadBeUInt32();
+                var a5dhdrend = a5dr.ReadBeUInt32();
+                if (a5dbankSize != 0x00010000)
+                {
+                    // bank size not supported for compressed global data
+                    return;
+                }
+                A5Expand(a5dr, a5dbelow);
             }
+        }
+
+        private static BeImageReader GetA5InitImageReader(ImageSegment a5dataSegment)
+        {
+            var a5data = a5dataSegment.MemoryArea;
+            var a5dr = a5data.CreateBeReader(0);
+            if (!a5dr.TryReadBeUInt32(out uint a5d0))
+                return null;
+            if (!a5dr.TryReadBeUInt16(out ushort a5d1))
+                return null;
+            var a5dheaderOffset = a5dr.ReadBeUInt16();
+            const uint A5Init_Sig_Movem_l = 0x48E77FF8;     // movem.l\td1-d7/a0-a4,-(a7)
+            const ushort A5Init_Sig_Lea = 0x49FA;           // First word of lea\t$????(pc),a4 instruction
+            if (a5d0 != A5Init_Sig_Movem_l || a5d1 != A5Init_Sig_Lea || a5dheaderOffset >= a5dataSegment.MemoryArea.Length)
+            {
+                // Starting code bytes incorrect or 
+                // Invalid offset to compressed global data - outside of A5World memory segment.
+                // No global compressed data 
+                return null;
+            }
+            a5dr.Seek(a5dheaderOffset - 2);
+            return a5dr;
+        }
+
+        private static bool SegmentNamedA5Init(ImageSegment segment)
+        {
+            return segment.Name.Length >= 12 && segment.Name.Substring(5, 7) == "%A5Init";
+        }
+
+        private void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
+        {
+            var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, platform.A5Offset - a5dbelow);
+            int a5RunLengthToken = 0;
+            int a5RunLengthCopySize = 0;
+            int a5globalSkip = 0;
+            int a5repeat = 0;
+            var a5copylength = 0;
+            bool a5dataEnd = false;
+
+            // Compressed data
+            // set Repeat count = 1, reset after each completed copy cycle
+            // byte token lower 4 bits number of words to copy from compressed data
+            // byte token upper 4 bits number of words to skip in global application data space
+            // if either value is 0 then get run length value which is in bytes.
+            // if the new run length value for copy is 0 then it's the end of compression data.
+
+            do
+            {
+                a5repeat = 1;
+                // Token value - upper nibble is words to skip, lower nibble is words to copy  
+                a5RunLengthToken = a5dr.ReadByte();
+                a5globalSkip = a5RunLengthToken;
+                a5RunLengthCopySize = a5RunLengthToken & 0x0F;
+                if (a5RunLengthCopySize == 0)
+                {
+                    a5RunLengthCopySize = GetRunLengthValue(a5dr, ref a5repeat);
+                    if (a5RunLengthCopySize == 0)
+                    {
+                        a5dataEnd = true;
+                    }
+                }
+                else
+                {
+                    a5RunLengthCopySize = a5RunLengthCopySize * 2;
+                }
+                if (!a5dataEnd)
+                {
+                    a5globalSkip = a5globalSkip & 0xF0;
+                    if (a5globalSkip == 0)
+                    {
+                        a5globalSkip = GetRunLengthValue(a5dr, ref a5repeat);
+                    }
+                    else
+                    {
+                        // convert value 0x01 - 0x0F number of words to skip in upper nibble to number of bytes to skip
+                        a5globalSkip = a5globalSkip >> 3;
+                    }
+                    do
+                    {
+                        a5belowWriter.Position = a5belowWriter.Position + a5globalSkip;
+                        a5copylength = a5RunLengthCopySize;
+                        do
+                        {
+                            a5belowWriter.WriteByte(a5dr.ReadByte());
+                            a5copylength -= 1;
+                        } while (a5copylength > 0);
+                        a5repeat -= 1;
+                    } while (a5repeat > 0);
+                }
+            } while (!a5dataEnd);
+        }
+
+        private int GetRunLengthValue(BeImageReader a5dr, ref int a5repeat)
+        {
+            // Run length returned is in byte(s).
+            // next byte read - see bit pattern from the following table for the return value
+            // 0xxxxxxx - 0 - $7F
+            // 10xxxxxx - 0 - $3FFF(run length and $3F + next byte, 14 bits)
+            // 110xxxxx - 0 - $1FFFFF(run length and $1F + next two bytes, 21 bits)
+            // 1110xxxx - next 4 bytes, 32 bits
+            // 1111xxxx - get both new runtime length copy in bytes and new runtime length repeat count
+
+            int runLength = a5dr.ReadByte();
+            if ((runLength & 0x80) == 0)
+            {
+                return runLength;
+            }
+            if ((runLength & 0x40) == 0)
+            {
+                runLength = runLength & 0x3F;
+                runLength = (runLength << 8) + a5dr.ReadByte();
+                return runLength;
+            }
+            if ((runLength & 0x20) == 0)
+            {
+                runLength = runLength & 0x1F;
+                runLength = (runLength << 16) + a5dr.ReadBeInt16();
+                return runLength;
+            }
+            if ((runLength & 0x10) == 0)
+            {
+                return a5dr.ReadBeInt32();
+            }
+            runLength = GetRunLengthValue(a5dr, ref a5repeat);
+            a5repeat = GetRunLengthValue(a5dr, ref a5repeat);
+            return runLength;
         }
 
         /// <summary>

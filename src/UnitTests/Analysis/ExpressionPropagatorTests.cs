@@ -38,12 +38,15 @@ namespace Reko.UnitTests.Analysis
     public class ExpressionPropagatorTests
     {
         private FakeDecompilerEventListener listener;
+        private SegmentMap segmentMap;
 
         [SetUp]
         public void Setup()
         {
             this.listener = new FakeDecompilerEventListener();
+            this.segmentMap = new SegmentMap(Address.Ptr32(0x0040000));
         }
+
         [Test]
         public void EP_TestCondition()
         {
@@ -58,7 +61,7 @@ namespace Reko.UnitTests.Analysis
             var proc = p.BuildProgram().Procedures.Values.First();
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[0].Instruction.Accept(ep);
@@ -76,7 +79,7 @@ namespace Reko.UnitTests.Analysis
                 var v4 = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
                 m.Assign(v4, m.IAdd(m.Mem16(ebx), 1));
-                m.Store(ebx, v4);
+                m.MStore(ebx, v4);
                 m.Assign(szo, m.Cond(v4));
                 m.Return();
             });
@@ -84,7 +87,7 @@ namespace Reko.UnitTests.Analysis
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new FakePlatform(null, arch);
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[2].Instruction.Accept(ep);
@@ -106,7 +109,7 @@ namespace Reko.UnitTests.Analysis
 
             var arch = new FakeArchitecture();
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
             var stms = proc.EntryBlock.Succ[0].Statements;
@@ -134,7 +137,7 @@ namespace Reko.UnitTests.Analysis
                 Test_CreateTrashedRegisters = () => new HashSet<RegisterStorage>()
             };
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
@@ -160,7 +163,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
@@ -189,7 +192,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
@@ -218,12 +221,12 @@ namespace Reko.UnitTests.Analysis
             {
                 r2 = m.Register("r2");
                 sp = m.Frame.EnsureRegister(arch.StackRegister);
-                m.Store(m.ISub(sp, 12), m.ISub(sp, 16));
-                m.Store(m.ISub(sp, 12), m.Word32(2));
+                m.MStore(m.ISub(sp, 12), m.ISub(sp, 16));
+                m.MStore(m.ISub(sp, 12), m.Word32(2));
             });
 
             var ctx = new SymbolicEvaluationContext (arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx, listener);
+            var simplifier = new ExpressionSimplifier(segmentMap, ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier,ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister]= proc.Frame.FramePointer;

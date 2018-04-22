@@ -92,7 +92,9 @@ namespace Reko.Gui.Windows.Controls
                     while (count != 0 && dasm.MoveNext())
                     {
                         var instr = dasm.Current;
-                        lines.Add(RenderAsmLine(program, instr, options));
+                        lines.Add(
+                            RenderAsmLine(
+                                instr.Address, program, instr, options));
                         --count;
                         position += instr.Length;
                     }
@@ -102,6 +104,7 @@ namespace Reko.Gui.Windows.Controls
         }
 
         public static LineSpan RenderAsmLine(
+            object position,
             Program program,
             MachineInstruction instr,
             MachineInstructionWriterOptions options)
@@ -114,7 +117,7 @@ namespace Reko.Gui.Windows.Controls
             dfmt.Address = instr.Address;
             instr.Render(dfmt, options);
             dfmt.NewLine();
-            return new LineSpan(addr, line.ToArray());
+            return new LineSpan(position, line.ToArray());
         }
 
         private Address Align(Address addr)
@@ -169,7 +172,8 @@ namespace Reko.Gui.Windows.Controls
         }
 
         /// <summary>
-        /// Guesses at a scrollbar position by dividing the byte offset by the instruction size.
+        /// Guesses at a scrollbar position by dividing the byte offset by the 
+        /// instruction size. This will possibly overestimate the position.
         /// </summary>
         /// <param name="byteOffset"></param>
         /// <returns></returns>

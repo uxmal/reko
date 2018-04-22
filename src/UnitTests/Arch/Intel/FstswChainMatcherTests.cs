@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
             asm = new X86Assembler(null, new DefaultPlatform(null, new X86ArchitectureFlat32("x86-protected-32")), Address.Ptr32(0x10000), new List<ImageSymbol>());
-            Procedure proc = new Procedure("test", arch.CreateFrame());
+            Procedure proc = new Procedure(arch, "test", arch.CreateFrame());
             orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, null);
             emitter = new ProcedureBuilder();
         }

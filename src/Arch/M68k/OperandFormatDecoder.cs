@@ -89,10 +89,18 @@ namespace Reko.Arch.M68k
                     return TryPcRelative(rdr, opcode, out op);
                 case 'M':   // Register bitset
                     var size = GetSizeType(0, args[i++], dataWidth);
-                    op = new RegisterSetOperand(rdr.ReadBeUInt16(), size);
+                    ushort memSet;
+                    if (!rdr.TryReadBeUInt16(out memSet))
+                    {
+                        op = null; return false;
+                    }
+                    op = new RegisterSetOperand(memSet, size);
                     return true;
                 case 'n':   // cache bitset
-                    bitSet = rdr.ReadBeUInt16();
+                    if (!rdr.TryReadBeUInt16(out bitSet))
+                    {
+                        op = null; return false;
+                    }
                     break;
                 case 'm':   // Register bitset reversed
                     size = GetSizeType(0, args[i++], dataWidth);
@@ -306,7 +314,11 @@ namespace Reko.Arch.M68k
                 case 3:
                     // Program counter with index
                     var addrExt = rdr.Address;
-                    ushort extension = rdr.ReadBeUInt16();
+                    ushort extension;
+                    if (!rdr.TryReadBeUInt16(out extension))
+                    {
+                        op = null; return false;
+                    }
 
                     if (EXT_FULL(extension))
                     {

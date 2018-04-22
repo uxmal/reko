@@ -115,7 +115,7 @@ l0000000000400491:
 	byte Z_51
 	word32 edi_52
 	word64 rdi_53
-	call 0x0000000000000000 (retsize: 4; depth: 4)
+	call 0x0000000000000000 (retsize: 8; depth: 8)
 		uses: C_38,CZ_9,eax,edi,qwLoc08_5,r8_7,rax_35,rbp_39,rdi_41,rsp_40,SCZO_8,SZO_36,Z_37
 		defs: C_50,CZ_48,eax_43,edi_52,r8_46,rax_44,rbp_45,rdi_53,rsp_42,SCZO_47,SZO_49,Z_51
 	return
@@ -173,7 +173,7 @@ l00000000004004CE:
 	byte C_53
 	word64 rsi_54
 	word64 rdi_55
-	call 0x0000000000000000 (retsize: 4; depth: 4)
+	call 0x0000000000000000 (retsize: 8; depth: 8)
 		uses: C_40,qwLoc08_5,r8_7,rax_13,rbp_41,rdi_44,rdx_37,rsi_43,rsp_42,SCZO_14,SZO_38,Z_39
 		defs: C_53,r8_48,rax_46,rbp_47,rdi_55,rdx_50,rsi_54,rsp_45,SCZO_49,SZO_52,Z_51
 	return
@@ -288,7 +288,7 @@ l0000000000400514:
 	word64 rdx_55
 	word32 edx_56
 	word64 rsi_57
-	call 0x0000000000000000 (retsize: 8; depth: 16)
+	call fn0000000000000000 (retsize: 8; depth: 16)
 		uses: C_39,eax,edi,edx,qwLoc08_41,r8,rax_36,rbp_43,rdi_42,rdx,rsi,rsp_40,SCZO_3,SZO_37,Z_38
 		defs: C_50,eax_47,edi_52,edx_56,r8_54,rax_48,rbp_51,rdi_53,rdx_55,rsi_57,rsp_44,SCZO_45,SZO_49,Z_46
 // DataOut: r8

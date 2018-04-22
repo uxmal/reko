@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Reko.Core.Serialization;
+using System.Linq;
 
 namespace Reko.UnitTests.Core
 {
@@ -38,9 +39,9 @@ namespace Reko.UnitTests.Core
     {
         private RegisterStorage sp;
         private FakeArchitecture arch;
-        private FakeProcessorState sce;
         private Identifier idSp;
         private ExpressionEmitter m;
+        private SegmentMap map;
 
         [SetUp]
         public void Setup()
@@ -49,27 +50,52 @@ namespace Reko.UnitTests.Core
             arch = new FakeArchitecture();
             arch.StackRegister = sp;
 
-            sce = new FakeProcessorState(arch);
 
             idSp = new Identifier(sp.Name, sp.DataType, sp);
             m = new ExpressionEmitter();
         }
 
-        [Test]
-        public void SetValue()
+        private void Given_32bit_SegmentMap()
         {
+            this.map = new SegmentMap(
+                Address.Ptr32(0x00100000),
+                new ImageSegment(".text", new MemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
+                new ImageSegment(".data", new MemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
+        }
+
+        [Test]
+        public void ProcState_SetValue()
+        {
+            var sce = new TestProcessorState(arch);
+
             sce.SetValue(idSp, m.ISub(idSp, 4));
 
             Assert.AreEqual("sp - 0x00000004", sce.GetValue(idSp).ToString());
         }
 
         [Test]
-        public void PushValueOnstack()
+        public void ProcState_PushValueOnstack()
         {
+            var sce = new TestProcessorState(arch);
+
             sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp)).ToString());
+            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp), map).ToString());
+        }
+
+        [Test]
+        public void ProcState_ReadConstantFromReadOnlyMemory()
+        {
+            Given_32bit_SegmentMap();
+            var text = map.Segments.Values.Single(s => s.Name == ".text").MemoryArea;
+            text.WriteLeUInt32(0, 0x01234567);
+
+            var sce = new TestProcessorState(arch);
+            var access = new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32);
+            var c = sce.GetValue(access, map);
+
+            Assert.AreEqual("0x01234567", c.ToString());
         }
 
         public class FakeArchitecture : IProcessorArchitecture
@@ -194,7 +220,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public int InstructionBitSize { get { return 32; } }
+             public int InstructionBitSize { get { return 32; } }
 
             public string GrfToString(uint grf)
             {
@@ -226,6 +252,12 @@ namespace Reko.UnitTests.Core
             public bool TryParseAddress(string txtAddress, out Address addr)
             {
                 return Address.TryParse32(txtAddress, out addr);
+            }
+
+            public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant c)
+            {
+                // Arbitrarily choose little-endian.
+                return mem.TryReadLe(addr, dt, out c);
             }
 
             public Address MakeSegmentedAddress(Constant seg, Constant offset)
@@ -276,13 +308,13 @@ namespace Reko.UnitTests.Core
             #endregion
         }
 
-        public class FakeProcessorState : ProcessorState
+        public class TestProcessorState : ProcessorState
         {
             private IProcessorArchitecture arch;
             private Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
             private SortedList<int, Constant> stack = new SortedList<int, Constant>();
 
-            public FakeProcessorState(IProcessorArchitecture arch)
+            public TestProcessorState(IProcessorArchitecture arch)
             {
                 this.arch = arch;
             }

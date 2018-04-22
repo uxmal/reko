@@ -46,6 +46,7 @@ void ArmRewriter::RewriteVcvt()
 	switch (instr->detail->arm.vector_data)
 	{
 	case ARM_VECTORDATA_F64S32: dstType = BaseType::Real64; break;
+	case ARM_VECTORDATA_F32S32: dstType = BaseType::Real32; break;
 	default: NotImplementedYet(); return;
 	}
 	m.Assign(dst, m.Cast(dstType, src));
@@ -100,9 +101,27 @@ void ArmRewriter::RewriteVmov()
 	auto src = this->Operand(Src1());
 	if (instr->detail->arm.vector_data != ARM_VECTORDATA_INVALID)
 	{
-		auto dt = VectorElementDataType();
+		auto dt = VectorElementDataType(instr->detail->arm.vector_data);
+		auto dstType = register_types[Dst().reg];
+		auto srcType = register_types[Src1().reg];
+		auto srcElemSize = type_sizes[(int)VectorElementDataType(instr->detail->arm.vector_data)];
+		auto celemSrc = type_sizes[(int)dstType] / srcElemSize;
+		auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
+
+		if (Src1().type == ARM_OP_IMM)
+		{
+			auto arrSrc = ntf.ArrayOf((HExpr)dt, celemSrc);
+			for (int i = 0; i < celemSrc; ++i)
+			{
+				auto arg = Operand(Src1());
+				m.AddArg(arg);
+			}
+			m.Assign(dst, m.Seq(arrSrc));
+			return;
+		}
+
 		char fname[200];
-		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType());
+		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType(instr->detail->arm.vector_data));
 		auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
 		m.AddArg(src);
 		m.Assign(dst, m.Fn(ppp));
@@ -230,12 +249,12 @@ void ArmRewriter::RewriteVmul()
 	ntf.AddRef();
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
-	auto srcElemSize = type_sizes[(int)VectorElementDataType()];
+	auto srcElemSize = type_sizes[(int)VectorElementDataType(instr->detail->arm.vector_data)];
 	auto celemSrc = type_sizes[(int)srcType] / srcElemSize;
 	auto arrSrc = ntf.ArrayOf((HExpr)srcType, celemSrc);
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
-	snprintf(fnName, sizeof(fnName), "__vmul_%s", VectorElementType());
+	snprintf(fnName, sizeof(fnName), "__vmul_%s", VectorElementType(instr->detail->arm.vector_data));
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.AddArg(src2);
@@ -244,35 +263,44 @@ void ArmRewriter::RewriteVmul()
 
 void ArmRewriter::RewriteVectorUnaryOp(const char * fnNameFormat)
 {
+	RewriteVectorUnaryOp(fnNameFormat, instr->detail->arm.vector_data);
+}
+
+void ArmRewriter::RewriteVectorUnaryOp(const char * fnNameFormat, arm_vectordata_type elemType)
+{
 	auto src1 = this->Operand(Src1());
 	auto dst = this->Operand(Dst());
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
-	auto srcElemSize = type_sizes[(int)VectorElementDataType()];
+	auto srcElemSize = type_sizes[(int)VectorElementDataType(elemType)];
 	auto celemSrc = type_sizes[(int)srcType] / srcElemSize;
 	auto arrSrc = ntf.ArrayOf((HExpr)srcType, celemSrc);
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
-	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType());
+	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType(elemType));
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.Assign(dst, m.Fn(intrinsic));
 }
 
-
 void ArmRewriter::RewriteVectorBinOp(const char * fnNameFormat)
+{
+	RewriteVectorBinOp(fnNameFormat, instr->detail->arm.vector_data);
+}
+
+void ArmRewriter::RewriteVectorBinOp(const char * fnNameFormat, arm_vectordata_type elemType)
 {
 	auto src1 = this->Operand(Src1());
 	auto src2 = this->Operand(Src2());
 	auto dst = this->Operand(Dst());
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
-	auto srcElemSize = type_sizes[(int)VectorElementDataType()];
+	auto srcElemSize = type_sizes[(int)VectorElementDataType(elemType)];
 	auto celemSrc = type_sizes[(int)srcType] / srcElemSize;
 	auto arrSrc = ntf.ArrayOf((HExpr)srcType, celemSrc);
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
-	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType());
+	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType(elemType));
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.AddArg(src2);
@@ -286,28 +314,42 @@ void ArmRewriter::RewriteVstr()
 	m.Assign(dst, src);
 }
 
-const char * ArmRewriter::VectorElementType()
+const char * ArmRewriter::VectorElementType(arm_vectordata_type elemType)
 {
-	switch (instr->detail->arm.vector_data)
+	switch (elemType)
 	{
+	case ARM_VECTORDATA_I8: return "i8";
+	case ARM_VECTORDATA_S8: return "s8";
+	case ARM_VECTORDATA_U8: return "u8";
+	case ARM_VECTORDATA_I16: return "i16";
+	case ARM_VECTORDATA_S16: return "s16";
+	case ARM_VECTORDATA_U16: return "u16";
+	case ARM_VECTORDATA_F32: return "f32";
 	case ARM_VECTORDATA_I32: return "i32";
 	case ARM_VECTORDATA_S32: return "s32";
-	case ARM_VECTORDATA_F32: return "f32";
-	case ARM_VECTORDATA_F64: return "f64";
 	case ARM_VECTORDATA_U32: return "u32";
+	case ARM_VECTORDATA_F64: return "f64";
+	case ARM_VECTORDATA_S64: return "s64";
 	default: NotImplementedYet(); return "(NYI)";
 	}
 }
 
-BaseType ArmRewriter::VectorElementDataType()
+BaseType ArmRewriter::VectorElementDataType(arm_vectordata_type elemType)
 {
-	switch (instr->detail->arm.vector_data)
+	switch (elemType)
 	{
+	case ARM_VECTORDATA_I8: return BaseType::SByte;
+	case ARM_VECTORDATA_S8: return BaseType::SByte;
+	case ARM_VECTORDATA_U8: return BaseType::Byte;
+	case ARM_VECTORDATA_I16: return BaseType::Int16;
+	case ARM_VECTORDATA_S16: return BaseType::Int16;
+	case ARM_VECTORDATA_U16: return BaseType::UInt16;
+	case ARM_VECTORDATA_F32: return BaseType::Real32;
 	case ARM_VECTORDATA_I32: return BaseType::Int32;
 	case ARM_VECTORDATA_S32: return BaseType::Int32;
-	case ARM_VECTORDATA_F32: return BaseType::Real32;
-	case ARM_VECTORDATA_F64: return BaseType::Real64;
 	case ARM_VECTORDATA_U32: return BaseType::UInt32;
+	case ARM_VECTORDATA_F64: return BaseType::Real64;
+	case ARM_VECTORDATA_S64: return BaseType::Int64;
 	default: NotImplementedYet(); return BaseType::Void;
 	}
 }

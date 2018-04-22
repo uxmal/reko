@@ -80,6 +80,14 @@ namespace Reko.Evaluation
             return true;
         }
 
+        public bool VisitComment(CodeComment comment)
+        {
+            var commentPat = pattern as CodeComment;
+            if (commentPat == null)
+                return false;
+            return true;
+        }
+
         public bool VisitDeclaration(Declaration decl)
         {
             return false;

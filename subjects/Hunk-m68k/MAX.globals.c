@@ -5,7 +5,7 @@
 #include "MAX.h"
 
 struct Eq_125 * g_ptr0000;
-Eq_5555 g_t0001;
+Eq_5550 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
 Eq_917 g_a2BED[] = 
@@ -22,13 +22,13 @@ ui32 g_dw3DAC = 0x05050505;
 word32 g_dw3DB8 = 0x05050505;
 ptr32 g_ptr3DBC = 0x06060606;
 word32 g_dw3DC0 = 0x06060606;
-struct Eq_4737 * g_ptr3DC4 = &g_t6060606;
+struct Eq_4733 * g_ptr3DC4 = &g_t6060606;
 word32 g_dw3DC8 = 0x06060606;
-Eq_7642 g_a3DCC[] = 
+Eq_7628 g_a3DCC[] = 
 	{
 	};
 Eq_4 g_t4000;
 Eq_67 g_t10202;
 Eq_67 g_t3030303;
-Eq_4737 g_t6060606;
+Eq_4733 g_t6060606;
 

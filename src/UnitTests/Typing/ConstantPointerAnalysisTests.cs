@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier r1 = m.Register(1);
 			m.Assign(r1, 0x123130);
-			m.Store(r1, m.Word32(0x42));
+			m.MStore(r1, m.Word32(0x42));
 			program.Add(m);
 
 			RunTest(program.BuildProgram(), "Typing/CpaConstantPointer.txt");

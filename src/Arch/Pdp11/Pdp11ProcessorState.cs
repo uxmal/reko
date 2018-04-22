@@ -42,7 +42,7 @@ namespace Reko.Arch.Pdp11
             this.valid = new bool[22];
         }
 
-        public Pdp11ProcessorState(Pdp11ProcessorState that)
+        public Pdp11ProcessorState(Pdp11ProcessorState that) : base(that)
         {
             this.arch = that.arch;
             this.regs = (ushort[])that.regs.Clone();

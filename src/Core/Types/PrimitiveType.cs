@@ -123,15 +123,12 @@ namespace Reko.Core.Types
 
         private static PrimitiveType Create(Domain dom, int byteSize, string name)
 		{
-            Domain domainMask;
-            if (!mpBitWidthToAllowableDomain.TryGetValue(byteSize, out domainMask))
+            if (mpBitWidthToAllowableDomain.TryGetValue(byteSize, out var domainMask))
             {
-                throw new ArgumentException($"Unable to find byte size {dom} {byteSize} = {name}.");
+                dom &= domainMask;
             }
-            dom &= domainMask;
 			PrimitiveType p = new PrimitiveType(dom, byteSize*8, null);
-			PrimitiveType shared;
-            if (!cache.TryGetValue(p, out shared))
+            if (!cache.TryGetValue(p, out var shared))
             {
                 shared = p;
                 shared.Name = name != null ? name : GenerateName(dom, p.BitSize);
@@ -142,36 +139,20 @@ namespace Reko.Core.Types
 		}
 
         public static PrimitiveType CreateWord(int byteSize)
-		{
-			Domain w;
-			string name;
-			switch (byteSize)
-			{
-			case 1:
-				name = "byte";
-				break;
-			case 2:
-				name = "word16";
-				break;
-			case 4:
-				name = "word32";
-				break;
-			case 8:
-				name = "word64";
-				break;
-            case 10:
-                name = "word80";
-                break;
-            case 16:
-                name = "word128";
-                break;
-            case 32:
-                name = "word256";
-                break;
-            default:
-				throw new ArgumentException("Only word sizes 1, 2, 4, 8, 10, 16, and 32 bytes are supported.");
-			}
-            var dom = mpBitWidthToAllowableDomain[byteSize];
+        {
+            string name;
+            if (byteSize == 1)
+            {
+                name = "byte";
+            }
+            else
+            { 
+                name = $"word{byteSize * 8}";
+            }
+            if (!mpBitWidthToAllowableDomain.TryGetValue(byteSize, out var dom))
+            {
+                dom = Domain.UnsignedInt | Domain.Integer | Domain.Pointer;
+            }
 			return Create(dom, (short) byteSize, name);
 		}
 

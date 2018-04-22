@@ -51,6 +51,11 @@ namespace Reko.Core.Code
             d.VisitCallInstruction(ci);
         }
 
+        public void VisitComment(CodeComment comment)
+        {
+            d.VisitComment(comment);
+        }
+
         public void VisitDeclaration(Declaration decl)
         {
             d.VisitDeclaration(decl);

@@ -31,6 +31,7 @@ using System.Text;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
 using NUnit.Framework;
+using Reko.Core.Operators;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-        public FakeArchitecture()
+        public FakeArchitecture() 
 		{
             this.rewriters = new RtlTraceBuilder();
             this.StackRegister = GetRegister(FakeArchitecture.iStackRegister);
@@ -119,7 +120,10 @@ namespace Reko.UnitTests.Mocks
 
         public Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            throw new NotImplementedException();
+            return MemoryAccess.Create(
+                    binder.EnsureRegister(this.StackRegister),
+                    offset,
+                    dataType);
         }
 
         public EndianImageReader CreateImageReader(MemoryArea image, Address addr)
@@ -225,11 +229,6 @@ namespace Reko.UnitTests.Mocks
 
         public int InstructionBitSize { get { return 32; } }
 
-		public string RegisterToString(int reg)
-		{
-			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
-		}
-
 		public IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, Test_DisassemblyStream.GetEnumerator());
@@ -306,7 +305,14 @@ namespace Reko.UnitTests.Mocks
         {
             if (size == 4)
             {
-                return Address.Ptr32(rdr.ReadLeUInt32());
+                if (rdr.TryReadLeUInt32(out var uaddr))
+                {
+                    return Address.Ptr32(uaddr);
+                }
+                else
+                {
+                    return null;
+                }
             }
             throw new NotImplementedException();
         }
@@ -318,7 +324,7 @@ namespace Reko.UnitTests.Mocks
 
         public Address MakeSegmentedAddress(Constant seg, Constant offset)
         {
-            throw new NotImplementedException();
+            return Address.SegPtr(seg.ToUInt16(), offset.ToUInt16());
         }
 
         public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
@@ -357,6 +363,10 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
         #endregion
     }
 

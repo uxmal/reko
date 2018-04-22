@@ -28,9 +28,9 @@ using System.Diagnostics;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Provides an interface for simple generation of intermediate code.
-	/// </summary>
+    /// <summary>
+    /// Provides an interface for simple generation of intermediate code.
+    /// </summary>
     public abstract class CodeEmitter : ExpressionEmitter
     {
         private int localStackOffset;
@@ -61,6 +61,11 @@ namespace Reko.Core
         public virtual Assignment Assign(Identifier dst, bool f)
         {
             return Assign(dst, f ? Constant.True() : Constant.False());
+        }
+
+        public void Comment(string comment)
+        {
+            Emit(new CodeComment(comment));
         }
 
         public GotoInstruction Goto(Expression dest)
@@ -102,21 +107,45 @@ namespace Reko.Core
             return Emit(new SideEffect(side));
         }
 
-        public Statement Store(Expression ea, Expression src)
+        /// <summary>
+        /// Generates a`Store` instruction. Callers are expected to provide an
+        /// assignable L-Value; constants are not allowed.
+        /// </summary>
+        /// <param name="dst">L-value destination of the store</param>
+        /// <param name="src">Source r-value.</param>
+        /// <returns></returns>
+        public Statement Store(Expression dst, Expression src)
+        {
+            if (dst is Constant || dst is ProcedureConstant)
+                throw new ArgumentException("Constants are not L-values.", nameof(dst));
+            return Emit(new Store(dst, src));
+        }
+
+        /// <summary>
+        /// Takes the effective address <paramref name="ea"/>
+        /// and wraps it in a memory access expression. The resulting expression
+        /// is used to generate the l-value of a `Store` instruction.
+        /// </summary>
+        /// <param name="ea">Effective address to be wrapped.</param>
+        /// <param name="src">R-Value.</param>
+        public Statement MStore(Expression ea, Expression src)
         {
             Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, src.DataType), src);
             return Emit(s);
         }
 
-        public Statement SegStore(Expression basePtr, Expression ea, Expression src)
+        /// <summary>
+        /// Convenience method that takes the base pointer <paramref name="basePtr"/>>
+        /// and the effective address <paramref name="ea"/>
+        /// and wraps them in a segmented memory access expression. The resulting expression
+        /// is used to generate the l-value of a `Store` instruction.
+        /// </summary>
+        /// <param name="ea">Effective address to be wrapped.</param>
+        /// <param name="src">R-Value.</param>
+        public Statement SStore(Expression basePtr, Expression ea, Expression src)
         {
             Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
             return Emit(s);
-        }
-
-        public Statement Store(SegmentedAccess s, Expression exp)
-        {
-            return Emit(new Store(s, exp));
         }
 
         public Identifier Local(PrimitiveType primitiveType, string name)
