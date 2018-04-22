@@ -19383,6 +19383,8 @@ l0800_93EC:
 fn0800_93EF proc
 	sub	dx,dx
 	mov	cx,0004
+
+l0800_93F4:
 	dec	word ptr [bp-0A]
 	jl	9442
 
@@ -19399,22 +19401,40 @@ l0800_93F9:
 	pop	dx
 	or	ax,ax
 	jle	9444
+
+l0800_940F:
 	dec	cl
 	jl	9444
+
+l0800_9413:
 	mov	ch,al
 	sub	ch,30
 	jc	9444
+
+l0800_941A:
 	cmp	ch,0A
 	jc	9436
+
+l0800_941F:
 	sub	ch,11
 	jc	9444
+
+l0800_9424:
 	cmp	ch,06
 	jc	9433
+
+l0800_9429:
 	sub	ch,20
 	jc	9444
+
+l0800_942E:
 	cmp	ch,06
 	jnc	9444
+
+l0800_9433:
 	add	ch,0A
+
+l0800_9436:
 	shl	dx,01
 	shl	dx,01
 	shl	dx,01
@@ -19424,6 +19444,8 @@ l0800_93F9:
 
 l0800_9442:
 	sub	ax,ax
+
+l0800_9444:
 	cmp	cl,04
 	jz	944F
 

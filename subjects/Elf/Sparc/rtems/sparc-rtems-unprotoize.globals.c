@@ -17,6 +17,18 @@ Eq_214 g_t16F14 =
 	{
 		&g_t16F30
 	};
+Eq_9709 g_t16F30 = 
+	{
+		's',
+		116,
+		114,
+	};
+Eq_9709 g_t17040 = 
+	{
+		'/',
+		111,
+		112,
+	};
 char g_str17218[] = "";
 char g_str17268[] = "%s: ";
 int8 g_b17468 = 46;
@@ -27,10 +39,17 @@ Eq_214 g_t1753C =
 Eq_214 g_a17540[] = 
 	{
 	};
+Eq_9709 g_t17598 = 
+	{
+		'i',
+		102,
+		0,
+	};
 char g_str17800[] = "e";
 int8 g_b17838 = 99;
 char g_str17880[] = "%s: %s\n";
 char g_str17888[] = "PWD";
+char g_str178B0[] = "2.95.2 19991024 (release)";
 char g_str178D0[] = "memory exhausted\n";
 char g_str178E8[] = "TMPDIR";
 char g_str178F0[] = "TMP";
@@ -184,23 +203,4 @@ Eq_3391 g_t2B640 =
 	};
 char * g_ptr2B760 = null;
 struct Eq_708 * g_ptr2B764 = null;
-Eq_9709 g_t16F30 = 
-	{
-		's',
-		116,
-		114,
-	};
-Eq_9709 g_t17598 = 
-	{
-		'i',
-		102,
-		0,
-	};
-Eq_9709 g_t17040 = 
-	{
-		'/',
-		111,
-		112,
-	};
-char g_str178B0[] = "2.95.2 19991024 (release)";
 
