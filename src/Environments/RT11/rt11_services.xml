@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <library xmlns="http://schemata.jklnet.org/Decompiler">
+  
+   <!-- http://www.ibiblio.org/pub/academic/computer-science/history/pdp-11/rsx/decus/rsx88b/373226/rt11.mac -->
   <service name="TTYIN">    <!-- Read one character from TTY, Cy=1 if no char pending -->
     <syscallinfo><vector>88E0</vector></syscallinfo>
     <signature>

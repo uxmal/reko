@@ -455,6 +455,11 @@ namespace Reko.Scanning
                 cc = cc.Invert();
             switch (cc)
             {
+            // NOTE: GE and GT should really be modeled with the semi-open range
+            // [right,inf) and the open range (right,inf), respectively. See comment
+            // for LE/LT.
+            case ConditionCode.GE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
+            case ConditionCode.GT: return StridedInterval.Create(1, right.ToInt64() + 1, long.MaxValue);
             // NOTE: LE and LT should really be modeled with the semi-open range
             // (inf,right] and the open range (inf,right). However, typically compilers
             // make the mistake and use LE/LT for boundary checking in indirect transfers.
