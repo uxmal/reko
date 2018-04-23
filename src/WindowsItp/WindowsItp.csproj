@@ -92,6 +92,12 @@
     <Compile Include="DisassemblyControlForm.Designer.cs">
       <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventBusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EventBusForm.Designer.cs">
+      <DependentUpon>EventBusForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FakeConfigurationService.cs" />
     <Compile Include="FakeDecompilerShellUiService.cs" />
     <Compile Include="FakeSettingsService.cs" />
@@ -127,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DisassemblyControlForm.resx">
       <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventBusForm.resx">
+      <DependentUpon>EventBusForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ItpForm.resx">
       <DependentUpon>ItpForm.cs</DependentUpon>

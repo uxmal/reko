@@ -45,10 +45,12 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assumeRegistesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.procedureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.symbolSourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.symbolSourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.componentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eventBusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,10 +59,11 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.controlsToolStripMenuItem,
             this.dialogsToolStripMenuItem,
-            this.loadingToolStripMenuItem});
+            this.loadingToolStripMenuItem,
+            this.componentsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(402, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -192,6 +195,13 @@
             this.procedureToolStripMenuItem.Text = "P&rocedure...";
             this.procedureToolStripMenuItem.Click += new System.EventHandler(this.procedureToolStripMenuItem_Click);
             // 
+            // symbolSourcesToolStripMenuItem
+            // 
+            this.symbolSourcesToolStripMenuItem.Name = "symbolSourcesToolStripMenuItem";
+            this.symbolSourcesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.symbolSourcesToolStripMenuItem.Text = "S&ymbol sources...";
+            this.symbolSourcesToolStripMenuItem.Click += new System.EventHandler(this.symbolSourcesToolStripMenuItem_Click);
+            // 
             // loadingToolStripMenuItem
             // 
             this.loadingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -215,18 +225,26 @@
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
-            // symbolSourcesToolStripMenuItem
+            // componentsToolStripMenuItem
             // 
-            this.symbolSourcesToolStripMenuItem.Name = "symbolSourcesToolStripMenuItem";
-            this.symbolSourcesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.symbolSourcesToolStripMenuItem.Text = "S&ymbol sources...";
-            this.symbolSourcesToolStripMenuItem.Click += new System.EventHandler(this.symbolSourcesToolStripMenuItem_Click);
+            this.componentsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eventBusToolStripMenuItem});
+            this.componentsToolStripMenuItem.Name = "componentsToolStripMenuItem";
+            this.componentsToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
+            this.componentsToolStripMenuItem.Text = "Co&mponents";
+            // 
+            // eventBusToolStripMenuItem
+            // 
+            this.eventBusToolStripMenuItem.Name = "eventBusToolStripMenuItem";
+            this.eventBusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.eventBusToolStripMenuItem.Text = "&Event bus";
+            this.eventBusToolStripMenuItem.Click += new System.EventHandler(this.eventBusToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(402, 262);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ItpForm";
@@ -261,6 +279,8 @@
         private System.Windows.Forms.ToolStripMenuItem byteMapViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem procedureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem symbolSourcesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem componentsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem eventBusToolStripMenuItem;
     }
 }
 

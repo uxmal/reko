@@ -276,5 +276,11 @@ namespace Reko.WindowsItp
             dlg.Services = sc;
             dlg.ShowDialog(this);
         }
+
+        private void eventBusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new EventBusForm();
+            form.Show();
+        }
     }
 }
