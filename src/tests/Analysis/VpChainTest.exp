@@ -263,7 +263,6 @@ fp:fp
     def:  def fp
     uses: sp_2 = fp
           sp_4 = fp - 0x0002
-          si_23 = wLoc02_26
           sp_24 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
@@ -276,10 +275,7 @@ si:si
     uses: wLoc02_26 = si
 ss:ss
     def:  def ss
-    uses: wLoc02_26 = si
-          si_23 = wLoc02_26
 Mem7: orig: Mem0
-    uses: si_23 = wLoc02_26
 si_8: orig: si
     def:  si_8 = 0x0000
     uses: si_14 = PHI(si_8, si_15)

@@ -12,11 +12,8 @@ r3_4: orig: r3
           call r3_4 + 0x00000004 (retsize: 4;)	uses: r2:r2,r3:r3_4 + 0x00000004,r63:fp
 r3_5: orig: r3
 r2_6: orig: r2
-    def:  call r3_4 + 0x00000004 (retsize: 4;)	uses: r2:r2,r3:r3_4 + 0x00000004,r63:fp
 r3_7: orig: r3
-    def:  call r3_4 + 0x00000004 (retsize: 4;)	uses: r2:r2,r3:r3_4 + 0x00000004,r63:fp
 r63_8: orig: r63
-    def:  call r3_4 + 0x00000004 (retsize: 4;)	uses: r2:r2,r3:r3_4 + 0x00000004,r63:fp
 // foo
 // Return size: 0
 void foo(word32 r2)

@@ -4,7 +4,6 @@ fp:fp
 sp_2: orig: sp
 Top_3: orig: Top
 sp_4: orig: sp
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
 al:al
     def:  def al
     uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
@@ -12,7 +11,6 @@ al_6: orig: al
     def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
     uses: Mem10[ds:0x0300:byte] = al_6
 Top_7: orig: Top
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
 C_8: orig: C
     def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp,Top:0	defs: al:al_6,C:C_8
     uses: branch C_8 l0C00_0009

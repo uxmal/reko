@@ -92,20 +92,15 @@ ax_7: orig: ax
     def:  ax_7 = fn0C00_0008(0x0014, di, ds)
     uses: Mem13[ds:si:word16] = ax_7
 S_8: orig: S
-    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 C_9: orig: C
-    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 Z_10: orig: Z
-    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 O_11: orig: O
-    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 si:si
     def:  def si
     uses: Mem13[ds:si:word16] = ax_7
 Mem13: orig: Mem0
     def:  Mem13[ds:si:word16] = ax_7
 ax_14: orig: ax
-    def:  fn0C00_0008(0x0014, di, ds)
 S_15: orig: S
     def:  fn0C00_0008(0x0014, di, ds)
 C_16: orig: C

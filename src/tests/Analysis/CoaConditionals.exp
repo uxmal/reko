@@ -78,12 +78,9 @@ ss:ss
 Mem43: orig: Mem0
     uses: Mem51 = PHI(Mem43, Mem49)
 S_44: orig: S
-    def:  branch fn0C00_0069(0x0003) l0C00_0049
 C_45: orig: C
 Z_46: orig: Z
-    def:  branch fn0C00_0069(0x0003) l0C00_0049
 O_47: orig: O
-    def:  branch fn0C00_0069(0x0003) l0C00_0049
 Mem49: orig: Mem0
     def:  Mem49[ds:0x0F04:byte] = 0x01
     uses: Mem51 = PHI(Mem43, Mem49)

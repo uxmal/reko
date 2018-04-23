@@ -2,7 +2,6 @@ fp:fp
 sp_2: orig: sp
 Top_3: orig: Top
 ax_4: orig: ax
-    def:  fn0C00_000E(out bx_5)
 bx_5: orig: bx
     def:  fn0C00_000E(out bx_5)
     uses: Mem7[ds:0x0300:word16] = bx_5

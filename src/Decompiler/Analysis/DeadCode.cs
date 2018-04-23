@@ -75,13 +75,27 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// Remove dead "def variables in a call instruction".
+        /// </summary>
+        /// <param name="call"></param>
         public void AdjustCallWithDeadDefinitions(CallInstruction call)
         {
             call.Definitions.RemoveWhere(def =>
+            {
+                var id =(Identifier)def.Expression;
+                var sid = ssa.Identifiers[id];
+                if (sid.Uses.Count == 0)
                 {
-                    var id =(Identifier)def.Expression;
-                    return ssa.Identifiers[id].Uses.Count == 0;
-                });
+                    sid.DefExpression = null;
+                    sid.DefStatement = null;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
         }
 
         public static void Eliminate(SsaState ssa)
