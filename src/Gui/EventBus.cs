@@ -34,8 +34,6 @@ namespace Reko.Gui
     /// </summary>
     public class EventBus
     {
-        public event EventHandler Foo;
-
         /// <summary>
         /// Registers to an event using the <paramref name="register"/> delegate.
         /// The EventHandler <paramref name="e"/> will be called on the current synchronization
@@ -54,15 +52,16 @@ namespace Reko.Gui
         /// Event handler that gets called on the current thread. It will be repeatedly
         /// called as long as pending events have arrived from other threads.
         /// </param>
+        /// <returns>A </returns>
         public void RegisterSingleEventMailbox(Action<EventHandler> register, EventHandler e)
         {
             var sem = new SingleEventMailbox(SynchronizationContext.Current, e);
             register(sem.HandleEvent);
         }
 
+
         public class SingleEventMailbox
         {
-            int isBusy;
             int moreWork;
             private EventHandler guiHandler;
             private SynchronizationContext ctx;
@@ -86,13 +85,7 @@ namespace Reko.Gui
                 if (newWork == 1)
                 {
                     // The UI thread wasn't busy, now it is. Start notification on the receiving thread. 
-                    Debug.Print("Posting event so we can handle it on the UI thread.");
-                //    ctx.Post(new SendOrPostCallback(Worker), sender);
-                }
-                else
-                {
-                    // We are busy, so we just remember we were called.
-                    Interlocked.Increment(ref this.moreWork);
+                    Debug.Print("Waiting for the Application.Idle event");
                 }
             }
 
