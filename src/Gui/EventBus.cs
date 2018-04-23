@@ -65,11 +65,13 @@ namespace Reko.Gui
             int moreWork;
             private EventHandler guiHandler;
             private SynchronizationContext ctx;
+            private const bool useCtx = true;
 
             public SingleEventMailbox(SynchronizationContext ctx, EventHandler guiHandler)
             {
                 this.ctx = ctx;
                 this.guiHandler = guiHandler;
+                if (!useCtx)
                 System.Windows.Forms.Application.Idle += Application_Idle;
             }
 
@@ -85,7 +87,14 @@ namespace Reko.Gui
                 if (newWork == 1)
                 {
                     // The UI thread wasn't busy, now it is. Start notification on the receiving thread. 
-                    Debug.Print("Waiting for the Application.Idle event");
+                    if (useCtx)
+                    {
+                        ctx.Post(new SendOrPostCallback(Worker), sender);
+                    }
+                    else
+                    {
+                        Debug.Print("Waiting for the Application.Idle event");
+                    }
                 }
             }
 
