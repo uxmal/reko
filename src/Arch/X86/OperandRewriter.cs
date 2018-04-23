@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
             this.host = host;
         }
 
-        public Expression Transform(X86Instruction instr, MachineOperand op, PrimitiveType opWidth, X86State state)
+        public Expression Transform(X86Instruction instr, MachineOperand op, DataType opWidth, X86State state)
         {
             var reg = op as RegisterOperand;
             if (reg != null)
@@ -57,7 +57,7 @@ namespace Reko.Arch.X86
                 return CreateMemoryAccess(instr, mem, opWidth, state);
             var imm = op as ImmediateOperand;
             if (imm != null)
-                return CreateConstant(imm, opWidth);
+                return CreateConstant(imm, (PrimitiveType) opWidth);
             var fpu = op as FpuOperand;
             if (fpu != null)
                 return FpuRegister(fpu.StNumber, state);
@@ -108,11 +108,19 @@ namespace Reko.Arch.X86
             }
             Expression expr = EffectiveAddressExpression(instr, mem, state);
             if (IsSegmentedAccessRequired ||
-                (mem.DefaultSegment != Registers.ds && mem.DefaultSegment != Registers.ss))
+                (mem.DefaultSegment != Registers.cs &&
+                 mem.DefaultSegment != Registers.ds && 
+                 mem.DefaultSegment != Registers.ss))
             {
-                Expression seg = ReplaceCodeSegment(mem.DefaultSegment, state);
-                if (seg == null)
+                Expression seg;
+                if (mem.DefaultSegment == Registers.cs)
+                {
+                    seg = Constant.Create(PrimitiveType.SegmentSelector, instr.Address.Selector.Value);
+                }
+                else
+                {
                     seg = AluRegister(mem.DefaultSegment);
+                }
                 return new SegmentedAccess(MemoryIdentifier.GlobalMemory, seg, expr, dt);
             }
             else
@@ -241,14 +249,6 @@ namespace Reko.Arch.X86
                 return host.GetImportedProcedure(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
             }
             return null;
-        }
-
-        public Constant ReplaceCodeSegment(RegisterStorage reg, X86State state)
-        {
-            if (reg == Registers.cs && arch.WordWidth == PrimitiveType.Word16)
-                return state.GetRegister(reg);
-            else
-                return null;
         }
 
         public UnaryExpression AddrOf(Expression expr)

@@ -147,7 +147,17 @@ namespace Reko.Core
             {
                 if (!(item.DataType is UnknownType) &&
                     !(item.DataType is CodeType))
-                    throw new NotSupportedException("Haven't handled this case yet.");
+                {
+                    var u = new Unifier();
+                    if (u.AreCompatible(item.DataType, itemNew.DataType))
+                    {
+                        item.DataType = u.Unify(item.DataType, itemNew.DataType);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("Haven't handled this case yet.");
+                    }
+                }
                 Items.Remove(item.Address);
                 item.Address += itemNew.Size;
                 item.Size -= itemNew.Size;
@@ -181,8 +191,7 @@ namespace Reko.Core
 
         public void TerminateItem(Address addr)
         {
-            ImageMapItem item;
-            if (!TryFindItem(addr, out item))
+            if (!TryFindItem(addr, out ImageMapItem item))
                 return;
             long delta = addr - item.Address;
             if (delta == 0)

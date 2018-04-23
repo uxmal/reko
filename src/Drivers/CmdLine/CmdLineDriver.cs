@@ -83,8 +83,7 @@ namespace Reko.CmdLine
             if (pArgs == null)
                 return;
 
-            object defaultTo;
-            if (pArgs.TryGetValue("--default-to", out defaultTo))
+            if (pArgs.TryGetValue("--default-to", out var defaultTo))
             {
                 ldr.DefaultToFormat = (string)defaultTo;
             }
@@ -154,10 +153,16 @@ namespace Reko.CmdLine
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
-                object oHeur;
-                if (pArgs.TryGetValue("heuristics", out oHeur))
+                if (pArgs.TryGetValue("heuristics", out var oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                }
+                if (pArgs.TryGetValue("metadata", out var oMetadata))
+                {
+                    decompiler.Project.MetadataFiles.Add(new MetadataFile
+                    {
+                        Filename = (string)oMetadata
+                    });
                 }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
@@ -190,7 +195,6 @@ namespace Reko.CmdLine
 
                 object sLoader;
                 pArgs.TryGetValue("--loader", out sLoader);
-                var state = CreateInitialState(arch, pArgs);
                 var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
                 {
                     LoaderName = (string)sLoader,
@@ -199,6 +203,7 @@ namespace Reko.CmdLine
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
                 });
+                var state = CreateInitialState(arch, program.SegmentMap, pArgs);
                 object oHeur;
                 if (pArgs.TryGetValue("heuristics", out oHeur))
                 {
@@ -216,7 +221,7 @@ namespace Reko.CmdLine
             }
         }
 
-        private ProcessorState CreateInitialState(IProcessorArchitecture arch, Dictionary<string, object> args)
+        private ProcessorState CreateInitialState(IProcessorArchitecture arch, SegmentMap map, Dictionary<string, object> args)
         {
             var state = arch.CreateProcessorState();
             if (!args.ContainsKey("--reg"))
@@ -306,16 +311,25 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--heuristic")
                 {
-                    if (i < args.Length-1 && !string.IsNullOrEmpty(args[i+1]))
+                    if (i < args.Length - 1 && !string.IsNullOrEmpty(args[i + 1]))
                     {
-                        parsedArgs["heuristics"] = args[i+1].Split(',');
+                        parsedArgs["heuristics"] = args[i + 1].Split(',');
                         ++i;
                     }
+                }
+                else if (args[i] == "--metadata")
+                {
+                    if (i >= args.Length - 1)
+                    {
+                        w.WriteLine("error: expected metadata file name.");
+                    }
+                    ++i;
+                    parsedArgs["metadata"] = args[i];
                 }
                 else if (args[i] == "--time-limit")
                 {
                     int timeLimit;
-                    if (i >= args.Length - 1 || !int.TryParse(args[i+1], out timeLimit))
+                    if (i >= args.Length - 1 || !int.TryParse(args[i + 1], out timeLimit))
                     {
                         w.WriteLine("error: time-limit option expects a numerical argument.");
                         return null;
@@ -370,6 +384,7 @@ namespace Reko.CmdLine
             w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }

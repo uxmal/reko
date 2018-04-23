@@ -64,8 +64,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// by <paramref name="offset"/> lines
         /// </summary>
         /// <remarks>
-        /// If the position would have overshot either the beginning or the end of the lines, clamp the
-        /// position to Beginning or End.
+        /// If the position would have overshot either the beginning or the
+        /// end of the lines, clamp the position to Beginning or End.
         /// </remarks>
         /// <param name="position"></param>
         /// <param name="offset"></param>
@@ -73,8 +73,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         int MoveToLine(object position, int offset);
 
         /// <summary>
-        /// Read <paramref name="count"/> lines, starting at the current position. As a side
-        /// effect, updates the current position.
+        /// Read <paramref name="count"/> lines, starting at the current 
+        /// position. As a side effect, updates the current position.
         /// </summary>
         /// <param name="count"></param>
         /// <returns>Array of LineSpans.</returns>
@@ -162,6 +162,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
     }
 
+    /// <summary>
+    /// A line span corresponds to a line of text. A line 
+    /// of text consists of multiple text spans.
+    /// </summary>
     public struct LineSpan
     {
         public readonly object Position;

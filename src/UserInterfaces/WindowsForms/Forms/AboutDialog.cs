@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Gui;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    partial class AboutDialog : Form, IDialog
+    partial class AboutDialog : Form, IAboutDialog
     {
         public AboutDialog()
         {

@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void NavigateToProcedure()
         {
-            var proc = new Procedure("foo", null);
+            var proc = new Procedure(program.Architecture, "foo", null);
 
             var codeSvc = mr.DynamicMock<ICodeViewerService>();
             codeSvc.Expect(x => x.DisplayProcedure(
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void NavigateToBlock()
         {
-            var proc = new Procedure("foo", null);
+            var proc = new Procedure(null, "foo", null);
             var block = new Block(proc, "foo_block");
 
             var codeSvc = mr.DynamicMock<ICodeViewerService>();

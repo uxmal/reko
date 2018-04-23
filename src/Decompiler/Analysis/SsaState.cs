@@ -111,16 +111,22 @@ namespace Reko.Analysis
 			}
 		}
 
-        [Conditional("DEBUG")]
-        public void CheckUses()
+        public void Validate(Action<string> error)
         {
-            CheckUses(s => Debug.WriteLine(s));
+            ValidateUses(error);
+            ValidateDefinitions(error);
+        }
+
+        [Conditional("DEBUG")]
+        public void ValidateUses()
+        {
+            ValidateUses(s => Debug.WriteLine(s));
         }
 
         /// <summary>
         /// Compare uses stored in SsaState with actual ones
         /// </summary>
-        public void CheckUses(Action<string> error)
+        public void ValidateUses(Action<string> error)
         {
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
@@ -166,6 +172,58 @@ namespace Reko.Analysis
                 select new { Key = g.Key, Value = g.Count() })
                 .ToDictionary(de => de.Key, de => de.Value);
             return idMap;
+        }
+
+        /// <summary>
+        /// Compare definitions stored in SsaState with actual ones
+        /// </summary>
+        public void ValidateDefinitions(Action<string> error)
+        {
+            var dc = new SsaDefinitionsCollector();
+            var actualDefs = new Dictionary<Identifier, Statement>();
+            foreach (var stm in Procedure.Statements)
+            {
+                var definitions = dc.CollectDefinitions(stm);
+                foreach (var defId in definitions)
+                {
+                    if (actualDefs.ContainsKey(defId))
+                        error(string.Format(
+                            "{0}: multiple definitions for {1} ({2} and {3})",
+                            Procedure.Name,
+                            defId,
+                            stm,
+                            actualDefs[defId]));
+                    actualDefs.Add(defId, stm);
+                }
+            }
+            foreach (var sid in Identifiers)
+            {
+                if (!actualDefs.TryGetValue(sid.Identifier, out var actualDef))
+                {
+                    actualDef = null;
+                }
+                if (sid.DefStatement != actualDef)
+                {
+                    error(string.Format(
+                        "{0}: incorrect definition for {1}({2}). Should be {3}",
+                        Procedure.Name,
+                        sid.Identifier,
+                        sid.DefStatement?.ToString() ?? "<null>",
+                        actualDef?.ToString() ?? "<null>"));
+                }
+            }
+            foreach (var defId in actualDefs.Keys)
+            {
+                if (!Identifiers.Contains(defId) &&
+                    actualDefs.ContainsKey(defId))
+                {
+                    error(string.Format(
+                        "{0}: there is no {1}({2}) in the ssa identifiers",
+                        Procedure.Name,
+                        defId,
+                        actualDefs[defId]?.ToString() ?? "<null>"));
+                }
+            }
         }
 
         /// <summary>

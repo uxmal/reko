@@ -237,6 +237,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             CommandMenuItem slEditDeclaration = new CommandMenuItem("Edit declaration", new Guid(CmdSets.Reko), CmdIds.EditDeclaration);
             slEditDeclaration.IsDynamic = false;
             slGrpCodeView.Add(1, slEditDeclaration);
+            CommandMenuItem slEditComment = new CommandMenuItem("Edit comment", new Guid(CmdSets.Reko), CmdIds.EditComment);
+            slEditComment.IsDynamic = false;
+            slGrpCodeView.Add(2, slEditComment);
             CommandMenuItem slActionRestartDecompilation = new CommandMenuItem("_Restart", new Guid(CmdSets.Reko), CmdIds.ActionRestartDecompilation);
             slActionRestartDecompilation.IsDynamic = false;
             slActionRestartDecompilation.ImageIndex = 2;
@@ -267,9 +270,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             CommandMenuItem slActionAssumeRegisterValues = new CommandMenuItem("_Register values...", new Guid(CmdSets.Reko), CmdIds.ActionAssumeRegisterValues);
             slActionAssumeRegisterValues.IsDynamic = false;
             
-            CommandMenuItem slToolsOptions = new CommandMenuItem("_Options", new Guid(CmdSets.Reko), CmdIds.ToolsOptions);
+            CommandMenuItem slToolsOptions = new CommandMenuItem("_Options...", new Guid(CmdSets.Reko), CmdIds.ToolsOptions);
             slToolsOptions.IsDynamic = false;
             slGrpTools.Add(0, slToolsOptions);
+            CommandMenuItem slToolsKeyBindings = new CommandMenuItem("_Key bindings...", new Guid(CmdSets.Reko), CmdIds.ToolsKeyBindings);
+            slToolsKeyBindings.IsDynamic = false;
+            slGrpTools.Add(0, slToolsKeyBindings);
             CommandMenuItem slWindowsCascade = new CommandMenuItem("_Cacade", new Guid(CmdSets.Reko), CmdIds.WindowsCascade);
             slWindowsCascade.IsDynamic = false;
             slGrpWindows.Add(0, slWindowsCascade);
@@ -334,6 +340,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 			slGrpToolbarActions.Add(0, slActionFinishDecompilation);
 			slGrpActionsScanned.Add(0, slActionMarkProcedure);
 			slGrpActionsScanned.Add(0, slActionScanHeuristically);
+			slGrpActionsScanned.Add(0, slActionMarkType);
 			slGrpMemoryControl.Add(0, slEditCopy);
 			slGrpCodeView.Add(2, slEditCopy);
 			slGrpMemoryControl.Add(0, slViewGoToAddress);
@@ -363,52 +370,72 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
       // Build accelerators.
       
         AddBinding(
-           "Reko.Gui.Windows.LowLevelViewInteractor", 
+           "", 
           new Guid(CmdSets.Reko), 
           CmdIds.ActionMarkType, 
-          Keys.T
-          , Keys.Control);
+          (int)(Keys.T)
+        
+          , (int)(Keys.Control)
+        );
       
         AddBinding(
            "Reko.Gui.Windows.CombinedCodeViewInteractor", 
           new Guid(CmdSets.Reko), 
           CmdIds.EditDeclaration, 
-          Keys.D
-          , Keys.Control);
+          (int)(Keys.D)
+        
+          , (int)(Keys.Control)
+        );
+      
+        AddBinding(
+           "Reko.Gui.Windows.CombinedCodeViewInteractor", 
+          new Guid(CmdSets.Reko), 
+          CmdIds.EditComment, 
+          (int)(Keys.OemSemicolon)
+        );
       
         AddBinding(
            "", 
           new Guid(CmdSets.Reko), 
           CmdIds.ActionNextSearchHit, 
-          Keys.F8);
+          (int)(Keys.F8)
+        );
       
         AddBinding(
            "", 
           new Guid(CmdSets.Reko), 
           CmdIds.ActionPrevSearchHit, 
-          Keys.F8
-          , Keys.Shift);
+          (int)(Keys.F8)
+        
+          , (int)(Keys.Shift)
+        );
       
         AddBinding(
            "", 
           new Guid(CmdSets.Reko), 
           CmdIds.EditCopy, 
-          Keys.C
-          , Keys.Control);
+          (int)(Keys.C)
+        
+          , (int)(Keys.Control)
+        );
       
         AddBinding(
            "Reko.Gui.Windows.CodeViewerPane", 
           new Guid(CmdSets.Reko), 
           CmdIds.EditCopyAll, 
-          Keys.C
-          , Keys.Control);
+          (int)(Keys.C)
+        
+          , (int)(Keys.Control)
+        );
       
         AddBinding(
            "", 
           new Guid(CmdSets.Reko), 
           CmdIds.EditSelectAll, 
-          Keys.A
-          , Keys.Control);
+          (int)(Keys.A)
+        
+          , (int)(Keys.Control)
+        );
       
 			this.MainMenu = new System.Windows.Forms.MainMenu();
 			BuildMenu(slMainMenu, MainMenu.MenuItems);

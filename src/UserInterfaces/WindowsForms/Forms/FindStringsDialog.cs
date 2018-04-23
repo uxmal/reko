@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using Reko.Gui;
+using Reko.Scanning;
 using System;
 using System.Windows.Forms;
 
@@ -27,10 +28,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     public partial class FindStringsDialog : Form, IFindStringsDialog
     {
+        private FindStringsDialogInteractor interactor;
+
         public FindStringsDialog()
         {
             InitializeComponent();
-            new FindStringsDialogInteractor().Attach(this);
+            this.interactor = new FindStringsDialogInteractor();
+            this.interactor.Attach(this);
         }
 
         public int MinLength { get {  return Convert.ToInt32(this.numericUpDown1.Value); } set { } }
@@ -39,18 +43,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public ComboBox StringKindList { get { return ddlStringKind; } }
 
-        public StringType GetStringType ()
+        public StringFinderCriteria GetCriteria()
         {
-            var charType = ddlCharSize.SelectedIndex > 0
-                ? PrimitiveType.WChar
-                : PrimitiveType.Char;
-            switch (ddlStringKind.SelectedIndex)
-            {
-            default: return StringType.NullTerminated(charType);
-            case 1: return StringType.LengthPrefixedStringType(charType, PrimitiveType.Byte);
-            case 2: return StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16);
-            case 3: return StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt32);
-            }
+            return interactor.GetCriteria();
         }
     }
 }

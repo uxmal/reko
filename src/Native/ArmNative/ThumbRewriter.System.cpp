@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2018 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@
 
 #include "functions.h"
 #include "ComBase.h"
+#include "ArmRewriter.h"
 #include "ThumbRewriter.h"
 
-
+/*
 void ThumbRewriter::RewriteDmb()
 {
 	auto memBarrier = MemBarrierName(instr->detail->arm.mem_barrier);
@@ -57,3 +58,109 @@ const char * ThumbRewriter::MemBarrierName(arm_mem_barrier barrier)
 	}
 	return "NOT_IMPLEMENTED";
 }
+
+void ThumbRewriter::RewriteCdp()
+{
+	auto cdp = host->EnsurePseudoProcedure("__cdp", BaseType::Void, instr->detail->arm.op_count);
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count;
+	for (auto op = begin; op != end; ++op)
+	{
+		m.AddArg(RewriteOp(*op));
+	}
+	m.SideEffect(m.Fn(cdp));
+	
+}
+
+void ThumbRewriter::RewriteCps()
+{
+	if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
+	{
+		m.SideEffect(m.Fn(host->EnsurePseudoProcedure("__cps_id", BaseType::Void, 1)));
+		return;
+	}
+	NotImplementedYet();
+}
+
+void ThumbRewriter::RewriteLdc(const char * fnName)
+{
+	auto src2 = RewriteOp(Src2());
+	auto tmp = host->CreateTemporary(BaseType::Word32);
+	m.Assign(tmp, src2);
+	auto intrinsic = host->EnsurePseudoProcedure(fnName, BaseType::Word32, 2);
+	m.AddArg(RewriteOp(Src1()));
+	m.AddArg(tmp);
+	auto fn = m.Fn(intrinsic);
+	auto dst = RewriteOp(Dst());
+	m.Assign(dst, fn);
+}
+
+void ThumbRewriter::RewriteMcr()
+{
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count;
+	int cArgs = 0;
+	for (auto op = begin; op != end; ++op)
+	{
+		m.AddArg(RewriteOp(*op));
+		++cArgs;
+	}
+	auto ppp = host->EnsurePseudoProcedure("__mcr", BaseType::Void, cArgs);
+	m.SideEffect(m.Fn(ppp));
+}
+
+void ThumbRewriter::RewriteMrc()
+{
+	auto begin = &instr->detail->arm.operands[0];
+	auto end = begin + instr->detail->arm.op_count;
+	int cArgs = 0;
+	HExpr regDst = HExpr(-1);
+	for (auto op = begin; op != end; ++op)
+	{
+		auto a = RewriteOp(*op);
+		if (cArgs == 2)
+		{
+			regDst = a;
+		}
+		else
+		{
+			m.AddArg(a);
+		}
+		++cArgs;
+	}
+	auto ppp = host->EnsurePseudoProcedure("__mrc", BaseType::Void, cArgs-1);
+	m.Assign(regDst, m.Fn(ppp));
+}
+
+void ThumbRewriter::RewriteMrs()
+{
+	auto ppp = host->EnsurePseudoProcedure("__mrs", BaseType::Word32, 1);
+	m.AddArg(RewriteOp(Src1()));
+	m.Assign(RewriteOp(Dst()), m.Fn(ppp));
+}
+
+void ThumbRewriter::RewriteMsr()
+{
+	auto ppp = host->EnsurePseudoProcedure("__msr", BaseType::Word32, 2);
+	m.AddArg(RewriteOp(Dst()));
+	m.AddArg(RewriteOp(Src1()));
+	m.SideEffect(m.Fn(ppp));
+}
+
+void ThumbRewriter::RewriteStc(const char * name)
+{
+	auto intrinsic = host->EnsurePseudoProcedure("__stc", BaseType::Word32, 3);
+	m.AddArg(RewriteOp(Dst()));
+	m.AddArg(RewriteOp(Src1()));
+	m.AddArg(RewriteOp(Src2()));
+	m.SideEffect(m.Fn(intrinsic));
+}
+
+void ThumbRewriter::RewriteSvc()
+{
+	this->rtlClass = RtlClass::Transfer | RtlClass::Call;
+	auto intrinsic = host->EnsurePseudoProcedure("__syscall", BaseType::Void, 1);
+	m.AddArg(RewriteOp(Dst()));
+	m.SideEffect(m.Fn(intrinsic));
+}
+*/

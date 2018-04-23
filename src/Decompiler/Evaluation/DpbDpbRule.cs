@@ -43,17 +43,19 @@ namespace Reko.Evaluation
         public bool Match(DepositBits dpb)
         {
             this.dpbUse = dpb;
-            if (!dpb.Source.As(out idDef))
+            if (!(dpb.Source is Identifier idDef))
                 return false;
             var expDef = ctx.GetDefiningExpression(idDef);
             if (expDef == null)
                 return false;
-            if (!expDef.As(out dpbDef))
+            if (!(expDef is DepositBits dpbDef))
                 return false;
-            if (!dpbDef.Source.As(out idSrc))
+            if (!(dpbDef.Source is Identifier idSrc))
                 return false;
-            return
-                dpbDef.BitPosition == dpbUse.BitPosition;
+            this.idDef = idDef;
+            this.dpbDef = dpbDef;
+            this.idSrc = idSrc;
+            return dpbDef.BitPosition == dpbUse.BitPosition;
         }
 
         public DepositBits Transform()

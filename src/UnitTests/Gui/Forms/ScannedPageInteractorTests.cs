@@ -63,8 +63,8 @@ namespace Reko.UnitTests.Gui.Forms
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
 
-            program.SegmentMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
-            program.SegmentMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
+            program.SegmentMap.AddOverlappingSegment("0C10", mem, Address.SegPtr(0x0C10, 0), AccessMode.ReadWrite);
+            program.SegmentMap.AddOverlappingSegment("0C20", mem, Address.SegPtr(0x0C20, 0), AccessMode.ReadWrite);
             mapSegment1 = program.SegmentMap.Segments.Values[0];
             mapSegment2 = program.SegmentMap.Segments.Values[1];
 
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Gui.Forms
         private void AddProcedure(Address addr, string procName)
         {
             program.Procedures.Add(addr,
-                new Procedure(procName, program.Architecture.CreateFrame()));
+                new Procedure(null, procName, program.Architecture.CreateFrame()));
         }
 
         [Test]

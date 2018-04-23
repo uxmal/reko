@@ -32,12 +32,40 @@ namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
+        public void RewriteAndnps()
+        {
+            var dst = this.SrcOp(instrCur.op1);
+            var src = this.SrcOp(instrCur.op2);
+            m.Assign(dst, host.PseudoProcedure("__andnps", dst.DataType, dst, src));
+        }
+
+        public void RewriteAndps()
+        {
+            var dst = this.SrcOp(instrCur.op1);
+            var src = this.SrcOp(instrCur.op2);
+            m.Assign(dst, host.PseudoProcedure("__andps", dst.DataType, dst, src));
+        }
+
+        private void RewriteCmpp(string name, PrimitiveType element)
+        {
+            var dst = this.SrcOp(instrCur.op1);
+            var src = this.SrcOp(instrCur.op2);
+            RewritePackedTernaryop(
+                name,
+                element,
+                CreatePackedArrayType(
+                    PrimitiveType.CreateWord(element.Size),
+                    dst.DataType));
+        }
+
         private void RewriteComis(PrimitiveType size)
         {
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
             m.Assign(grf, m.Cond(m.FSub(
                 m.Cast(size, SrcOp(instrCur.op1)),
                 SrcOp(instrCur.op2))));
+            m.Assign(orw.FlagGroup(FlagM.OF), Constant.False());
+            m.Assign(orw.FlagGroup(FlagM.SF), Constant.False());
         }
 
         private void RewriteCvtPackedToReal(PrimitiveType type)
@@ -56,27 +84,63 @@ namespace Reko.Arch.X86
         }
 
 
+        private void RewriteCvts2si(PrimitiveType floatType)
+        {
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
+            m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
+        }
+
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
-            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, src));
         }
 
         private void RewriteCvtToReal(PrimitiveType size)
         {
-            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
             var dst = SrcOp(instrCur.op1);
             var tmp = binder.CreateTemporary(size);
             m.Assign(tmp, m.Cast(size, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
         }
 
+        private void RewriteCvtps2pi(string fnName, DataType dtSrcElem, DataType dtDstElem)
+        {
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
+            var dtSrc = CreatePackedArrayType(dtSrcElem, src.DataType);
+            var dtDst = new ArrayType(dtDstElem, dtSrc.Length);
+
+            var tmp1 = binder.CreateTemporary(dtSrc);
+            m.Assign(tmp1, src);
+
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(fnName, dtDst, tmp1));
+        }
+
+        private void RewriteCvttps2pi(string fnName, DataType dtSrcElem, DataType dtDstElem)
+        {
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
+            var dtSrc = CreatePackedArrayType(dtSrcElem, src.DataType);
+            var dtDst = new ArrayType(dtDstElem, dtSrc.Length);
+
+            var tmp1 = binder.CreateTemporary(dtSrc);
+            m.Assign(tmp1, src);
+
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(fnName, dtDst, 
+                    host.PseudoProcedure("trunc", tmp1.DataType, tmp1)));
+        }
+
         private void RewriteCvttps2pi()
         {
             var dtSrc = PrimitiveType.Real32;
             var dtDst = PrimitiveType.Int32;
-            var src = SrcOp(instrCur.op3 != null ? instrCur.op3 : instrCur.op2);
+            var src = SrcOp(instrCur.op3 ?? instrCur.op2);
 
             var tmp1 = binder.CreateTemporary(dtDst);
             m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
@@ -85,6 +149,34 @@ namespace Reko.Arch.X86
             m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
 
             m.Assign(SrcOp(instrCur.op1), m.Seq(tmp2, tmp1));
+        }
+
+        private void RewriteLdmxcsr()
+        {
+            var src = SrcOp(instrCur.op1);
+            var dst = binder.EnsureRegister(Registers.mxcsr);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteMaskmovq()
+        {
+            var src = SrcOp(instrCur.op2);
+            var dst = SrcOp(instrCur.op1);
+            m.Assign(dst,
+                host.PseudoProcedure("__maskmovq", dst.DataType,
+                    dst, src));
+        }
+
+        private void RewriteMovlps()
+        {
+            var src = SrcOp(instrCur.op2);
+            var dst = SrcOp(instrCur.op1);
+            m.Assign(
+                m.Array(PrimitiveType.Real32, dst, Constant.Int32(2)),
+                m.Array(PrimitiveType.Real32, src, Constant.Int32(0)));
+            m.Assign(
+                m.Array(PrimitiveType.Real32, dst, Constant.Int32(3)),
+                m.Array(PrimitiveType.Real32, src, Constant.Int32(1)));
         }
 
         private void RewriteMovlhps()
@@ -99,27 +191,130 @@ namespace Reko.Arch.X86
                 m.Array(PrimitiveType.Real32, src, Constant.Int32(1)));
         }
 
-        private void RewritePcmpeqb()
+        private void RewriteMovmsk(string fnName, PrimitiveType elemType)
+        {
+            var srcType = CreatePackedArrayType(elemType, instrCur.op2.Width);
+            var src = SrcOp(instrCur.op2, srcType);
+            var dst = SrcOp(instrCur.op1);
+            var ret = binder.CreateTemporary(PrimitiveType.Byte);
+            m.Assign(ret, host.PseudoProcedure(fnName, ret.DataType, src));
+            m.Assign(dst, m.Dpb(dst, ret, 0));
+        }
+
+        private void RewriteOrps()
+        {
+            var dst = this.SrcOp(instrCur.op1);
+            var src = this.SrcOp(instrCur.op2);
+            m.Assign(dst, host.PseudoProcedure("__orps", dst.DataType, dst, src));
+        }
+
+        private void RewritePavg(string fnName, PrimitiveType elementType)
+        {
+            var dst = SrcOp(instrCur.op1);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            var src = SrcOp(instrCur.op2, arrayType);
+            var tmp1 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, src);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1));
+        }
+
+        private void RewritePcmp(string fnName, PrimitiveType elementType)
+        {
+            var dst = SrcOp(instrCur.op1);
+            ArrayType srcType = CreatePackedArrayType(elementType, dst.DataType);
+            ArrayType dstType = new ArrayType(PrimitiveType.CreateWord(srcType.ElementType.Size), srcType.Length);
+            var src1 = SrcOp(instrCur.op1, srcType);
+            var src2 = SrcOp(instrCur.op2, srcType);
+            var tmp1 = binder.CreateTemporary(srcType);
+            var tmp2 = binder.CreateTemporary(srcType);
+            m.Assign(tmp1, src1);
+            m.Assign(tmp2, src2);
+            m.Assign(dst, host.PseudoProcedure(fnName, dstType, tmp1, tmp2));
+        }
+
+        private void RewritePextrw()
+        {
+            var dst = SrcOp(instrCur.op1);
+            var src1 = SrcOp(instrCur.op2);
+            var src2 = SrcOp(instrCur.op3);
+            m.Assign(
+                dst,
+                host.PseudoProcedure("__pextrw", dst.DataType, dst, src1, src2));
+        }
+
+        private void RewritePinsrw()
+        {
+            Expression dst;
+            Expression src1;
+            Expression src2;
+            if (instrCur.op3 != null)
+            {
+                dst = SrcOp(instrCur.op1);
+                src1 = SrcOp(instrCur.op2);
+                src2 = SrcOp(instrCur.op3);
+            }
+            else
+            {
+                dst = SrcOp(instrCur.op1);
+                src1 = SrcOp(instrCur.op1);
+                src2 = SrcOp(instrCur.op2);
+            }
+            m.Assign(
+                dst,
+                host.PseudoProcedure("__pinsrw", dst.DataType, dst, src1, src2));
+        }
+
+        private void RewritePackedLogical(string intrinsicName)
+        {
+            var dst = this.SrcOp(instrCur.op1);
+            var src = this.SrcOp(instrCur.op2);
+            m.Assign(dst, host.PseudoProcedure(intrinsicName, dst.DataType, dst, src));
+        }
+
+        private void RewritePshuf(string intrinsicName, PrimitiveType dt)
         {
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
-                    "__pcmpeqb",
+                    intrinsicName,
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2),
+                    SrcOp(instrCur.op3)));
+        }
+
+        private void RewritePunpckhbw()
+        {
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__punpckhbw",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
                     SrcOp(instrCur.op2)));
         }
 
-        private void RewritePshufd()
+        private void RewritePunpckhdq()
         {
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
-                    "__pshufd",
+                    "__punpckhdq",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
-                    SrcOp(instrCur.op2),
-                    SrcOp(instrCur.op3)));
+                    SrcOp(instrCur.op2)));
+        }
+
+
+        private void RewritePunpckhwd()
+        {
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__punpckhwd",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2)));
         }
 
         private void RewritePunpcklbw()
@@ -128,6 +323,17 @@ namespace Reko.Arch.X86
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__punpcklbw",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op1),
+                    SrcOp(instrCur.op2)));
+        }
+
+        private void RewritePunpckldq()
+        {
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__punpckldq",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
                     SrcOp(instrCur.op2)));
@@ -176,11 +382,28 @@ namespace Reko.Arch.X86
             }
         }
 
-        private void RewritePackedBinop(string fnName, PrimitiveType elementType)
+        private void RewriteSqrtsd()
+        {
+            var src = SrcOp(instrCur.op2);
+            var dst = SrcOp(instrCur.op1);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
+            m.Assign(tmp, host.PseudoProcedure("__sqrt", PrimitiveType.Real64, src));
+            m.Assign(dst, m.Dpb(dst, tmp, 0));
+        }
+
+        private void RewriteStmxcsr()
+        {
+            var src = binder.EnsureRegister(Registers.mxcsr);
+            var dst = SrcOp(instrCur.op1);
+            m.Assign(dst, src);
+        }
+
+        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType dstType = null)
         {
             var dst = SrcOp(instrCur.op1);
-            int celem = dst.DataType.Size / elementType.Size;
-            var arrayType = new ArrayType(elementType, celem);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            if (dstType == null)
+                dstType = arrayType;
             Expression src1;
             Expression src2;
             if (instrCur.op3 != null)
@@ -198,6 +421,91 @@ namespace Reko.Arch.X86
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
             m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
+        }
+
+        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType dstType = null)
+        {
+            var dst = SrcOp(instrCur.op1);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            if (dstType == null)
+                dstType = arrayType;
+            Expression src1;
+            Expression src2;
+            if (instrCur.op3 != null)
+            {
+                src1 = SrcOp(instrCur.op2);
+                src2 = SrcOp(instrCur.op3);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.op1);
+                src2 = SrcOp(instrCur.op2);
+            }
+            var tmp1 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, src1);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, src2));
+        }
+
+        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        {
+            var dst = SrcOp(instrCur.op1);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            if (dstType == null)
+                dstType = arrayType;
+            Expression src1;
+            Expression src2;
+            Expression src3;
+            {
+                src1 = SrcOp(instrCur.op1);
+                src2 = SrcOp(instrCur.op2);
+                src3 = SrcOp(instrCur.op3);
+            }
+            var tmp1 = binder.CreateTemporary(arrayType);
+            var tmp2 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, src1);
+            m.Assign(tmp2, src2);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2, src3));
+        }
+
+        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        {
+            var dst = SrcOp(instrCur.op1);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            if (dstType == null)
+                dstType = arrayType;
+            Expression src1;
+            if (instrCur.op2 != null)
+            {
+                src1 = SrcOp(instrCur.op2);
+            }
+            else
+            {
+                src1 = SrcOp(instrCur.op1);
+            }
+            var tmp1 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, src1);
+            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1));
+        }
+
+        private ArrayType CreatePackedArrayType(DataType elementType, DataType dtArrayType)
+        {
+            int celem = dtArrayType.Size / elementType.Size;
+            var arrayType = new ArrayType(elementType, celem);
+            return arrayType;
+        }
+
+        public void RewritePxor()
+        {
+            var rdst = instrCur.op1 as RegisterOperand;
+            var rsrc = instrCur.op2 as RegisterOperand;
+            if (rdst != null && rsrc != null && rdst.Register.Number == rsrc.Register.Number)
+            { // selfie!
+                m.Assign(orw.AluRegister(rdst), m.Cast(rdst.Width, Constant.Int32(0)));
+                return;
+            }
+            var dst = this.SrcOp(instrCur.op1);
+            var src = this.SrcOp(instrCur.op2);
+            m.Assign(dst, host.PseudoProcedure("__pxor", dst.DataType, dst, src));
         }
     }
 }

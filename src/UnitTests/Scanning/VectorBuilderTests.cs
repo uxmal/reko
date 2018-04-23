@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Services;
 using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -53,9 +54,12 @@ namespace Reko.UnitTests.Scanning
         private void Given_Program(byte [] bytes)
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.ReadCodeAddress(0, null, null)).IgnoreArguments()
-                .Do(new Func<int, EndianImageReader, ProcessorState, Address>(
-                    (s, r, st) => Address.Ptr32(r.ReadLeUInt32())));
+            arch.Stub(a => a.ReadCodeAddress(
+                Arg<int>.Is.Anything,
+                Arg<EndianImageReader>.Is.NotNull,
+                Arg<ProcessorState>.Is.Anything))
+                .Do(new Func<int, EndianImageReader, ProcessorState, Address>((s, r, st) =>
+                     Address.Ptr32(r.ReadLeUInt32())));
             mem = new MemoryArea(Address.Ptr32(0x00010000), bytes);
             this.program = new Program(
                 new SegmentMap(mem.BaseAddress,
@@ -79,7 +83,7 @@ namespace Reko.UnitTests.Scanning
             scanner.Stub(s => s.Services).Return(sc);
             arch.Stub(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
                 .Return(this.mem.CreateLeReader(0));
-            var state = mr.Stub<ProcessorState>();
+            var state = new FakeProcessorState(arch);
         
             mr.ReplayAll();
 

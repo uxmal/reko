@@ -255,7 +255,7 @@ l01C8:
 
 					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
-					segmentMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute,0);
+					segmentMap.AddOverlappingSegment(seg.ToString("X4"), imgU, Address.SegPtr(seg, 0), AccessMode.ReadWriteExecute);
 				} while (--relocs != 0);
 			}
 

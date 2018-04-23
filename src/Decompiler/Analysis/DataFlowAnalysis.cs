@@ -80,12 +80,10 @@ namespace Reko.Analysis
                     var sst = BuildSsaTransform(proc);
                     var ssa = sst.SsaState;
 
-                    if (proc.Name == "_sin")    //$DEBUG
-                        proc.ToString();
                     var fuser = new UnalignedMemoryAccessFuser(ssa);
                     fuser.Transform();
 
-                    var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
 
                     sst.RenameFrameAccesses = true;
                     var icrw = new IndirectCallRewriter(program, ssa, eventListener);
@@ -155,10 +153,10 @@ namespace Reko.Analysis
         {
             if (program.NeedsSsaTransform)
             {
-                var larw = new LongAddRewriter(proc, program.Architecture);
+                var larw = new LongAddRewriter(proc);
                 larw.Transform();
 
-                var alias = new Aliases(proc, program.Architecture, flow);
+                var alias = new Aliases(proc, flow);
                 alias.Transform();
 
                 var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
@@ -262,7 +260,7 @@ namespace Reko.Analysis
             {
                 var proc = procs[0];
 
-                Aliases alias = new Aliases(proc, program.Architecture, flow);
+                Aliases alias = new Aliases(proc, flow);
                 alias.Transform();
                 
                 // Transform the procedure to SSA state. When encountering 'call' instructions,
@@ -285,7 +283,7 @@ namespace Reko.Analysis
                 // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:

@@ -126,9 +126,6 @@ namespace Reko.Arch.M68k
             if (mem != null)
             {
                 src = mem.EffectiveAddress;
-                var cSrc = src as Constant;
-                if (cSrc != null)
-                    src = Address.Ptr32(cSrc.ToUInt32());
             }
             m.Call(src, 4);
         }

@@ -134,12 +134,16 @@
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\FormWindowState.cs" />
+    <Compile Include="Forms\IAboutDialog.cs" />
+    <Compile Include="Forms\IArchiveBrowserDialog.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
+    <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
+    <Compile Include="Forms\KeyBindingsInteractor.cs" />
     <Compile Include="Forms\ScannedPageInteractor.cs" />
     <Compile Include="Forms\SymbolSourceInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />

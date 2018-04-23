@@ -27,6 +27,9 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
+    /// <summary>
+    /// Paints the client area of a TextView.
+    /// </summary>
     public class TextViewPainter
     {
         private TextViewLayout outer;

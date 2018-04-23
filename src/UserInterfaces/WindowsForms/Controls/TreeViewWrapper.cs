@@ -31,7 +31,8 @@ using System.Windows.Forms;
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     /// <summary>
-    /// Wraps a Windows forms TreeView in the platform independent ITreeView interface.
+    /// Wraps a Windows forms TreeView in the platform independent ITreeView 
+    /// interface.
     /// </summary>
     public class TreeViewWrapper : ControlWrapper, ITreeView
     {

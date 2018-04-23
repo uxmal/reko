@@ -115,7 +115,16 @@ namespace Reko.Arch.X86
             {
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
-                    target = m.Seq(orw.AluRegister(Registers.cs), target);
+                {
+                    if (arch.WordWidth.Size > 2)
+                    {
+                        rtlc = RtlClass.Invalid;
+                        m.Invalid();
+                        return;
+                    }
+                    var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector.Value);
+                    target = m.Seq(seg, target);
+                }
                 m.Call(target, (byte) opsize.Size);
             }
             rtlc = RtlClass.Transfer | RtlClass.Call;
@@ -178,7 +187,14 @@ namespace Reko.Arch.X86
                 m.Goto(addr);
 				return;
 			}
-            m.Goto(SrcOp(instrCur.op1));
+            var target = SrcOp(instrCur.op1);
+            if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Goto(target);
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
@@ -231,6 +247,31 @@ namespace Reko.Arch.X86
             rtlc = RtlClass.Transfer;
         }
 
+        private void RewriteSyscall()
+        {
+            m.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance));
+        }
+
+        private void RewriteSysenter()
+        {
+            m.SideEffect(host.PseudoProcedure("__sysenter", VoidType.Instance));
+        }
+
+        private void RewriteSysexit()
+        {
+            rtlc = RtlClass.Transfer;
+            m.SideEffect(host.PseudoProcedure("__sysexit", VoidType.Instance));
+            m.Return(0,0);
+        }
+
+        private void RewriteSysret()
+        {
+            rtlc = RtlClass.Transfer;
+            m.SideEffect(host.PseudoProcedure("__sysret", VoidType.Instance));
+            m.Return(0,0);
+        }
+
+
         /// <summary>
         /// A jump to 0xFFFF:0x0000 in real mode is a reboot.
         /// </summary>
@@ -245,11 +286,9 @@ namespace Reko.Arch.X86
 
         public Address OperandAsCodeAddress(MachineOperand op)
         {
-            AddressOperand ado = op as AddressOperand;
-            if (ado != null)
+            if (op is AddressOperand ado)
                 return ado.Address;
-            ImmediateOperand imm = op as ImmediateOperand;
-            if (imm != null)
+            if (op is ImmediateOperand imm)
             {
                 return orw.ImmediateAsAddress(instrCur.Address, imm);
             }

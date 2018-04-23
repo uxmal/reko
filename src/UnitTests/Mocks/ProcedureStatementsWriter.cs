@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,40 +18,24 @@
  */
 #endregion
 
-using System;
-using System.Xml;
-using System.Xml.Serialization;
+using Reko.Core;
+using Reko.Core.Output;
+using System.IO;
 
-namespace Reko.Core
+namespace Reko.UnitTests.Mocks
 {
-	/// <summary>
-	/// Summarizes information about a particular processor.
-	/// </summary>
-	[XmlRoot("processorinfo")]
-	public class ProcessorInfo
-	{
-		public ProcessorInfo()
-		{
-		}
-
-		[XmlElement("name")]
-		public string Name;
-
-		[XmlElement("heuristics")]
-		public Heuristics heuristics;
-	}
-
-	public class Heuristics
-	{
-		[XmlElement("pattern-rules")]
-		public PatternRule [] PatternRules;
-	}
-
-	public class PatternRule
-	{
-		[XmlElement("pattern")]
-		public string Pattern;
-		[XmlElement("action")]
-		public string Action;
-	}
+    public class ProcedureStatementsWriter
+    {
+        public void WriteProcedure(Procedure proc, TextWriter writer)
+        {
+            var textFormatter = new TextFormatter(writer)
+            {
+                Indentation = 0,
+            };
+            textFormatter.WriteLine();
+            var codeFormatter = new CodeFormatter(textFormatter);
+            foreach (var stm in proc.Statements)
+                stm.Instruction.Accept(codeFormatter);
+        }
+    }
 }

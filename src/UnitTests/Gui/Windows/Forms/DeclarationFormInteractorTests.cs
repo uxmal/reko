@@ -19,6 +19,10 @@
 #endregion
 
 using NUnit.Framework;
+ 
+using System;
+using System.Drawing;
+using Rhino.Mocks;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Serialization;
@@ -33,6 +37,7 @@ using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Drawing;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -91,7 +96,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_ProcedureName(uint addr, string name)
         {
             var address = Address32.Ptr32(addr);
-            var proc = new Procedure(name, null);
+            var proc = new Procedure(program.Architecture, name, null);
             program.Procedures[address] = proc;
         }
 
@@ -110,21 +115,21 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_CommandFactory()
         {
             var markProcedureCmd = mr.Stub<ICommand>();
-            markProcedureCmd.Stub(c => c.Do()).Do(new Action(() => 
+            markProcedureCmd.Stub(c => c.Do()).Do(new Action(() =>
             {
-                program.Procedures.Values[0].Name = 
+                program.Procedures.Values[0].Name =
                     program.User.Procedures.Values[0].Name;
             }));
 
             var cmdFactory = mr.Stub<ICommandFactory>();
             cmdFactory.Stub(f => f.MarkProcedure(null)).IgnoreArguments().Do(
-                new Func<ProgramAddress, ICommand>((pa) => 
+                new Func<ProgramAddress, ICommand>((pa) =>
             {
                 var program = pa.Program;
                 var addr = pa.Address;
-                program.Procedures[addr] = new Procedure("<unnamed>", null);
+                program.Procedures[addr] = new Procedure(program.Architecture, "<unnamed>", null);
                 return markProcedureCmd;
-            })); 
+            }));
 
             services.AddService<ICommandFactory>(cmdFactory);
             mr.ReplayAll();
@@ -343,16 +348,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(1, program.Procedures.Count);
         }
 
-        private class FakeTextBox : ITextBox
-        {
-            private string text;
-
-            public bool Enabled { get; set; }
-            public string Text
-            {
-                get { return text == null ? "" : text; }
-                set { text = value; TextChanged.Fire(this); }
-            }
             public Color BackColor { get; set; }
             public Color ForeColor { get; set; }
 
@@ -366,7 +361,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 throw new NotImplementedException();
             }
 
-            public event EventHandler<KeyEventArgs> KeyDown;
+        public event EventHandler<KeyEventArgs> KeyDown;
             public event EventHandler TextChanged;
             public event EventHandler LostFocus;
 
@@ -380,5 +375,4 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 KeyDown(this, e);
             }
         }
-    }
 }

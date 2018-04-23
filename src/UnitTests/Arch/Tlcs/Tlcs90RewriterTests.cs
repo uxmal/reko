@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         private Tlcs90Architecture arch = new Tlcs90Architecture("tlcs90");
         private Address baseAddr = Address.Ptr16(0x0100);
-        private Tlcs90State state;
         private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
@@ -46,6 +45,7 @@ namespace Reko.UnitTests.Arch.Tlcs
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
+            Tlcs90State state = (Tlcs90State)arch.CreateProcessorState();
             return new Tlcs90Rewriter(arch, new LeImageReader(image, 0), state, binder, host);
         }
 
@@ -66,7 +66,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         [SetUp]
         public void Setup()
         {
-            state = (Tlcs90State)arch.CreateProcessorState();
         }
 
         [Test]
@@ -210,7 +209,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("A1");  // rrc
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __ror(a)",
+                "1|L--|a = __ror(a, 0x01)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -450,12 +449,10 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs90_rw_jp_conditional()
         {
-            RewriteCode("EB 50 03 CE"); //  jp NZ,(0350)
+            RewriteCode("EB 50 03 CE"); //  jp NZ,0350
             AssertCode(
-                "0|T--|0100(4): 3 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 0104",
-                "2|L--|v3 = Mem0[0x0350:ptr16]",
-                "3|T--|goto v3");
+                "0|T--|0100(4): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 0350");
         }
 
         [Test]
@@ -525,7 +522,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("F8A2");	// rl	b
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|b = __rcl(b, C)",
+                "1|L--|b = __rcl(b, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(b)");
@@ -537,7 +534,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("A2");	// rl
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcl(a, C)",
+                "1|L--|a = __rcl(a, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -573,7 +570,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("FDA3");	// rr	l
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|l = __rcr(l, C)",
+                "1|L--|l = __rcr(l, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(l)");
@@ -585,7 +582,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("A3");	// rr
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcr(a, C)",
+                "1|L--|a = __rcr(a, 0x01, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -749,6 +746,16 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "2|L--|N = false",
                 "3|L--|SHXV = cond(e)",
                 "4|L--|e = e | 0x08");
+        }
+
+
+        [Test]
+        public void Tlcs90_rw_ConditionalJump()
+        {
+            RewriteCode("EB350ACC");    // jp NV,0A35
+            AssertCode(
+                "0|T--|0100(4): 1 instructions",
+                "1|T--|if (Test(NO,V)) branch 0A35");
         }
     }
 }

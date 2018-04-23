@@ -189,7 +189,7 @@ l00001572:
 // LocalsOut: fp(32)
 
 l00001576:
-	d0_126 = DPB(d0_123, (word16) d0_123 + (word16) d0_123, 0)
+	d0_126 = DPB(d0_123, (word16) (d0_123 * 0x00000002), 0)
 // DataOut: a2 a3 d0 d1 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 18 a3:<invalid> a2:<invalid> d0:<invalid> a0:<invalid> a1:<invalid> d1:<invalid> d2:SLICE(a3, word32, 16) -16(fp):0x44415441 -8(fp):a2 -4(fp):a3

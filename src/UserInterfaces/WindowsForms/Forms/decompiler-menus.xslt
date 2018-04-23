@@ -83,9 +83,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
            "<value-of select="@editor"/>", 
           new Guid(CmdSets.<value-of select="@cmdSet"/>), 
           CmdIds.<value-of select="@id"/>, 
-          Keys.<value-of select="@key1" />
+          (int)(Keys.<value-of select="@key1" />)
         <if test="@alt1">
-          , Keys.<value-of select="@alt1" />
+          , (int)(Keys.<value-of select="@alt1" />)
         </if>);
       </for-each>
     <for-each select="c:menu">

@@ -74,6 +74,7 @@ namespace Reko.Scanning
             this.arch = program.Architecture;   // cached since it's used heavily.
             this.state = state;
             this.eval = new ExpressionSimplifier(
+                program.SegmentMap,
                 state,
                 scanner.Services.RequireService<DecompilerEventListener>());
             this.addrStart = addr;
@@ -126,8 +127,6 @@ namespace Reko.Scanning
 
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
-            if (ric.Address.ToLinear() == 0x30C)        //$DEBUG
-                ric.Address.ToString();
             state.SetInstructionPointer(ric.Address);
             SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)
@@ -215,17 +214,17 @@ namespace Reko.Scanning
 
         public void SetValue(Expression dst, Expression value)
         {
-            if (dst is Identifier id)
+            switch (dst)
             {
+            case Identifier id:
                 state.SetValue(id, value);
-            }
-            else if (dst is SegmentedAccess smem)
-            {
+                return;
+            case SegmentedAccess smem:
                 state.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
-            }
-            else if (dst is MemoryAccess mem)
-            {
+                return;
+            case MemoryAccess mem:
                 state.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                return;
             }
         }
 
@@ -238,7 +237,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitAssignment(RtlAssignment a)
         {
-            SetValue(a.Dst, GetValue(a.Src));
+            var val = GetValue(a.Src);
+            SetValue(a.Dst, val);
             var idDst = a.Dst as Identifier;
             var inst = (idDst != null)
                 ? new Assignment(idDst, a.Src)
@@ -305,6 +305,7 @@ namespace Reko.Scanning
                     Block blockDsF = null;
                     blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
                     blockDsF.IsSynthesized = true;
+                    blockDsF.Address = ricDelayed.Address;
                     blockCur = blockDsF;
                     ProcessRtlCluster(ricDelayed);
                     EnsureEdge(proc, blockDsF, blockElse);
@@ -313,6 +314,7 @@ namespace Reko.Scanning
 
                 Block blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
                 blockDsT.IsSynthesized = true;
+                blockDsT.Address = ricDelayed.Address;
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsT, blockThen);
@@ -399,20 +401,21 @@ namespace Reko.Scanning
         /// a variable destination computed at run-time.
         /// </summary>
         /// <param name="g"></param>
-        /// <returns></returns>
+        /// <returns>Always returns false, indicating linear control
+        /// flow stops here.</returns>
         public bool VisitGoto(RtlGoto g)
         {
             var blockFrom = blockCur;
             if ((g.Class & RtlClass.Delay) != 0)
             {
-                // Get next instruction cluster.
+                // Get next instruction cluster, which should be the delay slot.
+                //$TODO: some architectures, curse it, have more than one delay slot...
                 rtlStream.MoveNext();
                 ProcessRtlCluster(rtlStream.Current);
             }
             CallSite site;
             scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
-            var addrTarget = g.Target as Address;
-            if (addrTarget != null)
+            if (g.Target is Address addrTarget)
             {
                 var impProc = scanner.GetImportedProcedure(addrTarget, this.ric.Address);
                 if (impProc != null)
@@ -447,7 +450,7 @@ namespace Reko.Scanning
                     // generated code to predecrement the stack pointer
                     // when encountering CALL instructions this would 
                     // not be necessary.
-                    if (sig.ReturnAddressOnStack != 0)
+                    if (sig != null && sig.ReturnAddressOnStack != 0)
                     {
                         Emit(new Assignment(stackReg, new BinaryExpression(
                             Operator.IAdd,
@@ -456,7 +459,7 @@ namespace Reko.Scanning
                             Constant.Word(stackReg.DataType.Size, sig.ReturnAddressOnStack))));
                     }
                     EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
-                    if (sig.ReturnAddressOnStack != 0)
+                    if (sig != null && sig.ReturnAddressOnStack != 0)
                     {
                         //$TODO: make x86 calls' implicit storage explicit
                         // to avoid this hacky dance,
@@ -480,6 +483,7 @@ namespace Reko.Scanning
                     var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                     EnsureEdge(blockSource.Procedure, blockFrom, bt);
                 }
+
                 // Always emit goto statements to avoid error during block splitting
                 //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
                 // predicate. This should be done in a better way; perhaps by keeping track
@@ -487,24 +491,28 @@ namespace Reko.Scanning
                 // The recursive scanning of basic blocks does need improvement;
                 // consider using a similar technique to Shingle scanner, where reachable
                 // statements are collected first, and basic blocks reconstructed afterwards.
+
                 Emit(new GotoInstruction(addrTarget));
                 return false;
             }
-            if (g.Target is MemoryAccess mem)
+            if (g.Target is MemoryAccess mem && mem.EffectiveAddress is Constant)
             {
-                if (mem.EffectiveAddress is Constant)
-                {
-                    // jmp [address]
-                    site = state.OnBeforeCall(this.stackReg, 4);            //$BUGBUG: hard coded.
-                    Emit(new CallInstruction(g.Target, site));
-                    Emit(new ReturnInstruction());
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                    return false;
-                }
+                // jmp [address]
+                site = state.OnBeforeCall(this.stackReg, mem.DataType.Size);
+                Emit(new CallInstruction(g.Target, site));
+                Emit(new ReturnInstruction());
+                blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                return false;
             }
             if (ProcessIndirectControlTransfer(ric.Address, g))
+            {
                 return false;
-            site = state.OnBeforeCall(this.stackReg, 4);    //$BUGBUG: hard coded
+            }
+
+            // We've encountered JMP <exp> and we can't determine the limits of <exp>.
+            // We emit a call-return pair and call it a day.
+
+            site = state.OnBeforeCall(this.stackReg, g.Target.DataType.Size);
             Emit(new CallInstruction(g.Target, site));
             Emit(new ReturnInstruction());
             blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -530,20 +538,24 @@ namespace Reko.Scanning
             Address addr = CallTargetAsAddress(call);
             if (addr != null)
             {
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    return GenerateCallToOutsideProcedure(site, addr);
+                }
+
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)
                 {
                     sig = impProc.Signature;
                     chr = impProc.Characteristics;
                     if (chr != null && chr.IsAlloca)
+                    {
                         return ProcessAlloca(site, impProc);
+                    }
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
-                if (!program.SegmentMap.IsValidAddress(addr))
-                {
-                    return GenerateCallToOutsideProcedure(site, addr);
-                }
+
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
@@ -598,9 +610,7 @@ namespace Reko.Scanning
                 return !EmitSystemServiceCall(syscall);
             }
 
-
             ProcessIndirectControlTransfer(ric.Address, call);
-
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
             sig = GuessProcedureSignature(ic);
@@ -609,10 +619,23 @@ namespace Reko.Scanning
 
         private Address CallTargetAsAddress(RtlCall call)
         {
+            var callTarget = call.Target.Accept(eval);
+            if (callTarget is Constant c)
+            {
+                if (c.IsValid)
+                {
+                    return arch.MakeAddressFromConstant(c);
+                }
+                else
+                {
+                    return null;
+                }
+            }
             var addr = call.Target as Address;
-            if (addr != null)
-                return addr;
-            addr = program.Platform.ResolveIndirectCall(call);
+            if (addr == null)
+            {
+               addr = program.Platform.ResolveIndirectCall(call);
+            }
             return addr;
         }
 
@@ -767,13 +790,11 @@ namespace Reko.Scanning
             {
                 Emit(new SideEffect(side.Expression));
                 if (side.Expression is Application appl &&
-                    appl.Procedure is ProcedureConstant fn)
+                    appl.Procedure is ProcedureConstant fn &&
+                    fn.Procedure.Characteristics.Terminates)
                 {
-                    if (fn.Procedure.Characteristics.Terminates)
-                    {
-                        scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                        return false;
-                    }
+                    scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+                    return false;
                 }
             }
             return true;
@@ -841,73 +862,38 @@ namespace Reko.Scanning
 
 #endregion
 
+        /// <summary>
+        /// Attempts to trace an indirect control transfer. If successful, emits a 
+        /// switch RTL instruction (for jumps) or an indirect call instruction (for 
+        /// calls).
+        /// </summary>
+        /// <param name="addrSwitch"></param>
+        /// <param name="xfer"></param>
+        /// <returns>True if an instruction was emitted, false if not.</returns>
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
             List<Address> vector;
             ImageMapVectorTable imgVector;
             Expression switchExp;
 
-            var listener = scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
+                // Trust the user knows what they're doing.
                 vector = indJump.Table.Addresses;
                 switchExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
                 imgVector = indJump.Table;
             }
             else
             {
-                var bw = new Backwalker<Block,Instruction>(new BackwalkerHost(this), xfer, eval);
-                if (!bw.CanBackwalk())
+                if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
                     return false;
-                var bwops = bw.BackWalk(blockCur);
-                if (bwops == null || bwops.Count == 0)
-                    return false;     //$REVIEW: warn?
-                Identifier idIndex = bw.Index != null
-                    ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
-                    : null;
-
-                var builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
-                if (bw.VectorAddress == null)
-                    return false;
-
-                vector = builder.BuildAux(bw, addrSwitch, state);
-                if (vector.Count == 0)
-                {
-                    var rdr = program.CreateImageReader(bw.VectorAddress);
-                    if (!rdr.IsValid)
-                        return false;
-                    // Can't determine the size of the table, but surely it has one entry?
-                    var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                    string msg;
-                    if (this.program.SegmentMap.IsValidAddress(addrEntry))
-                    {
-                        vector.Add(addrEntry);
-                        msg = "Can't determine size of jump vector; probing only one entry.";
-                    }
-                    else
-                    {
-                        // Nope, not even that.
-                        msg = "No valid entries could be found in jump vector.";
-                    }
-                    var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
-                    listener.Warn(nav, msg);
-                    if (vector.Count == 0)
-                        return false;
-                }
-                imgVector = new ImageMapVectorTable(
-                    bw.VectorAddress,
-                    vector.ToArray(),
-                    builder.TableByteSize);
-                switchExp = idIndex;
-                if (idIndex == null || idIndex.Name == "None")
-                    switchExp = bw.IndexExpression;
             }
 
             if (xfer is RtlCall)
             {
                 ScanCallVectorTargets(vector);
             }
-            else 
+            else
             {
                 var jumpDests = ScanJumpVectorTargets(vector);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
@@ -920,25 +906,148 @@ namespace Reko.Scanning
                 if (switchExp == null)
                 {
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
-                    Emit(new ReturnInstruction());
-                    blockSource.Procedure.ControlGraph.AddEdge(
-                        blockSource, 
-                        blockSource.Procedure.ExitBlock);
+                    return false;
+                }
+                var sw = new SwitchInstruction(switchExp, jumpDests.ToArray());
+                Emit(sw);
+            }
+            if (imgVector.Address != null)
+            {
+                if (imgVector.Size > 0)
+                {
+                    program.ImageMap.AddItemWithSize(imgVector.Address, imgVector);
                 }
                 else
                 {
-                    Emit(new SwitchInstruction(switchExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
+                    program.ImageMap.AddItem(imgVector.Address, imgVector);
                 }
             }
-            if (imgVector.Size > 0)
+            return true;
+        }
+
+        /// <summary>
+        /// Discovers the extent of a jump/call table by walking backwards from the 
+        /// jump/call until some gating condition (index < value, index & bitmask etc)
+        /// can be found.
+        /// </summary>
+        /// <param name="addrSwitch">Address of the indirect transfer instruction</param>
+        /// <param name="xfer">Expression that computes the transfer destination.
+        /// It is never a constant value</param>
+        /// <param name="vector">If successful, returns the list of addresses
+        /// jumped/called to</param>
+        /// <param name="imgVector"></param>
+        /// <param name="switchExp">The expression to use in the resulting switch / call.</param>
+        /// <returns></returns>
+        private bool DiscoverTableExtent(
+            Address addrSwitch,
+            RtlTransfer xfer,
+            out List<Address> vector,
+            out ImageMapVectorTable imgVector,
+            out Expression switchExp)
+        {
+            Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
+            var listener = scanner.Services.RequireService<DecompilerEventListener>();
+            vector = null;
+            imgVector = null;
+            switchExp = null;
+
+            var bwsHost = new BackwardSlicerHost(program.SegmentMap);
+            var bws = new BackwardSlicer(bwsHost);
+            var rtlBlock = bwsHost.GetRtlBlock(blockCur);
+            if (!bws.Start(rtlBlock, blockCur.Statements.Count - 1, xfer.Target))
             {
-                program.ImageMap.AddItemWithSize(imgVector.Address, imgVector);
+                // No registers were found, so we can't trace back. 
+                return false;
+            }
+            while (bws.Step())
+                ;
+
+            var jumpExpr = bws.JumpTableFormat;
+            var interval = bws.JumpTableIndexInterval;
+            var index = bws.JumpTableIndexToUse;
+            var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
+            if (index == null)
+            {
+                // Weren't able to find the index register,
+                // try finding it by blind pattern matching.
+                index = bws.FindIndexWithPatternMatch(bws.JumpTableFormat);
+                if (index == null)
+                {
+                    // This is likely an indirect call like a C++
+                    // vtable dispatch. Since these are common, we don't 
+                    // spam the user with warnings.
+                    return false;
+                }
+
+                // We have a jump table, and we've guessed the index expression.
+                // At this point we've given up on knowing the exact size 
+                // of the table, but we do know that it must be at least
+                // more than one entry. The safest assumption is that it
+                // has two entries.
+                listener.Warn(
+                    listener.CreateAddressNavigator(program, addrSwitch),
+                    "Unable to determine size of call or jump table; there may be more than 2 entries.");
+                ctx.Add(index, new IntervalValueSet(index.DataType, StridedInterval.Create(1, 0, 1)));
+            }
+            else if (interval.IsEmpty)
+            {
+                return false;
             }
             else
             {
-                program.ImageMap.AddItem(imgVector.Address, imgVector);
+                ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
             }
+            var vse = new ValueSetEvaluator(arch, program.SegmentMap, ctx, state);
+            var (values, accesses) = vse.Evaluate(jumpExpr);
+            vector = values.Values
+                .TakeWhile(c => c != Constant.Invalid)
+                .Take(2000)             // Arbitrary limit
+                .Select(ForceToAddress)
+                .TakeWhile(a => a != null)
+                .ToList();
+            if (vector.Count == 0)
+                return false;
+
+            foreach (var de in accesses)
+            {
+                var item = new ImageMapItem((uint)de.Value.Size)
+                {
+                    Address = de.Key,
+                    DataType = de.Value
+                };
+                program.ImageMap.AddItemWithSize(de.Key, item);
+            }
+            imgVector = new ImageMapVectorTable(
+                null, // bw.VectorAddress,
+                vector.ToArray(),
+                4); // builder.TableByteSize);
+            switchExp = index;
             return true;
+        }
+
+        private Address ForceToAddress(Expression arg)
+        {
+            if (arg is Address addr)
+                return addr;
+            if (arg is Constant c)
+            {
+                if (c.DataType.Size < arch.PointerType.Size &&
+                    arch.PointerType == PrimitiveType.SegPtr32) 
+                {
+                    var sel = blockCur.Address.Selector.Value;
+                    return program.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
+                }
+                return program.Architecture.MakeAddressFromConstant(c);
+            }
+            if (arg is MkSequence seq)
+            {
+                if (seq.Expressions.Length == 2 && 
+                    seq.Expressions[0] is Constant hd && seq.Expressions[1] is Constant tl)
+                {
+                    return program.Architecture.MakeSegmentedAddress(hd, tl);
+                }
+            }
+            return null;
         }
 
         private void ScanCallVectorTargets(List<Address> vector)
@@ -1114,14 +1223,15 @@ namespace Reko.Scanning
         {
             if (stg == null)
                 return;
-            if (stg is RegisterStorage reg)
+            switch (stg)
             {
+            case RegisterStorage reg:
                 state.SetValue(reg, Constant.Invalid);
-            }
-            else if (stg is SequenceStorage seq)
-            {
+                break;
+            case SequenceStorage seq:
                 TrashVariable(seq.Head);
                 TrashVariable(seq.Tail);
+                break;
             }
         }
 
@@ -1143,6 +1253,7 @@ namespace Reko.Scanning
             if (vector == null)
                 return null;
             var svc = program.Platform.FindService(vector.ToInt32(), state);
+            //$TODO if SVC uis null (and not-speculating) report the error.
             if (svc != null && svc.Signature == null)
             {
                 scanner.Error(ric.Address, string.Format("System service '{0}' didn't specify a signature.", svc.Name));
@@ -1164,6 +1275,8 @@ namespace Reko.Scanning
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
             }
+
+            public SegmentMap SegmentMap => segmentMap;
 
             public Tuple<Expression,Expression> AsAssignment(Instruction instr)
             {
@@ -1204,6 +1317,11 @@ namespace Reko.Scanning
                 return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
             }
 
+            public List<Block> GetPredecessors(Block block)
+            {
+                return block.Pred.ToList();
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
             {
                 return arch.GetSubregister(reg, offset, width);
@@ -1229,9 +1347,9 @@ namespace Reko.Scanning
                 return arch.MakeSegmentedAddress(seg, off);
             }
 
-            public IEnumerable<Instruction> GetReversedBlockInstructions(Block block)
+            public IEnumerable<Instruction> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction).Reverse();
+                return block.Statements.Select(s => s.Instruction);
             }
         }
     }

@@ -110,6 +110,10 @@ namespace Reko.Scanning
 
         private void ProcessIndirectJumps()
         {
+            foreach (var address in sr.IndirectJumps)
+            {
+
+            }
             //$TODO: need some form of backwalking here.
         }
 

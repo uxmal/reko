@@ -23,6 +23,7 @@
 #include "functions.h"
 #include "ComBase.h" 
 #include "ThumbDisassembler.h"
+#include "ArmRewriter.h"
 #include "ThumbRewriter.h"
 #include "ThumbArchitecture.h"
 #include "ArmArchitecture.h"

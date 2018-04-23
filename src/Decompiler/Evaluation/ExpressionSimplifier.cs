@@ -37,6 +37,7 @@ namespace Reko.Evaluation
     /// </summary>
     public class ExpressionSimplifier : ExpressionVisitor<Expression>
     {
+        private SegmentMap segmentMap;
         private EvaluationContext ctx;
 
         private AddTwoIdsRule add2ids;
@@ -62,9 +63,11 @@ namespace Reko.Evaluation
         private SelfDpbRule selfdpbRule;
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
-
-        public ExpressionSimplifier(EvaluationContext ctx, DecompilerEventListener listener)
+        private DistributedCastRule distributedCast;
+        
+        public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
+            this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
             this.ctx = ctx;
 
             this.add2ids = new AddTwoIdsRule(ctx);
@@ -90,6 +93,7 @@ namespace Reko.Evaluation
             this.selfdpbRule = new SelfDpbRule(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.castCastRule = new CastCastRule(ctx);
+            this.distributedCast = new DistributedCastRule();
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -166,6 +170,11 @@ namespace Reko.Evaluation
                 Changed = true;
                 return binopWithSelf.Transform(ctx).Accept(this);
             }
+            if (distributedCast.Match(binExp))
+            {
+                Changed = true;
+                return distributedCast.Transform(ctx).Accept(this);
+            }
 
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
@@ -223,35 +232,46 @@ namespace Reko.Evaluation
             // (- (+ e c1) c2) ==> (- e (- c2 c1))
             // (- (- e c1) c2) ==> (- e (+ c1 c2))
 
-            if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
-                !cLeftRight.IsReal && !cRight.IsReal)
+            if (binLeft != null && cLeftRight != null && cRight != null)
             {
-                Changed = true;
-                var binOperator = binExp.Operator;
-                Constant c;
-                if (binLeft.Operator == binOperator)
+                if (IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
+                    !cLeftRight.IsReal && !cRight.IsReal)
                 {
-                    c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
-                }
-                else
-                {
-                    if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                    Changed = true;
+                    var binOperator = binExp.Operator;
+                    Constant c;
+                    if (binLeft.Operator == binOperator)
                     {
-                        c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                        c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
                     }
                     else
                     {
-                        binOperator = 
-                            binOperator == Operator.IAdd 
-                                ? Operator.ISub 
-                                : Operator.IAdd;
-                        c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                        if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                        {
+                            c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                        }
+                        else
+                        {
+                            binOperator =
+                                binOperator == Operator.IAdd
+                                    ? Operator.ISub
+                                    : Operator.IAdd;
+                            c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                        }
                     }
+                    if (c.IsIntegerZero)
+                        return binLeft.Left;
+                    return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
                 }
-                if (c.IsIntegerZero)
-                    return binLeft.Left;
-                return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
+                if (binExp.Operator == Operator.IMul && binLeft.Operator == Operator.IMul)
+                {
+                    Changed = true;
+                    var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
+                    if (c.IsIntegerZero)
+                        return c;
+                    else
+                        return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
+                }
             }
 
             // (rel (- e c1) c2) => (rel e c1+c2)
@@ -512,17 +532,22 @@ namespace Reko.Evaluation
                 access.MemoryId,
                 access.EffectiveAddress.Accept(this),
                 access.DataType);
-            return ctx.GetValue(value);
+            return ctx.GetValue(value, segmentMap);
         }
 
         public virtual Expression VisitMkSequence(MkSequence seq)
         {
-            var head = seq.Head.Accept(this);
-            var tail = seq.Tail.Accept(this);
-            Constant c1 = seq.Head as Constant;
-            Constant c2 = seq.Tail as Constant;
-            if (c1 != null && c2 != null)
+            var newSeq = seq.Expressions.Select(e =>
             {
+                var eNew = e.Accept(this);
+                if (eNew == Constant.Invalid)
+                    eNew = e;
+                return eNew;
+            }).ToArray();
+            if (newSeq.Length == 2)
+            {
+                if (newSeq[0] is Constant c1 && newSeq[1] is Constant c2)
+                {
                 PrimitiveType tHead = (PrimitiveType)c1.DataType;
                 PrimitiveType tTail = (PrimitiveType)c2.DataType;
                 PrimitiveType t;
@@ -538,21 +563,18 @@ namespace Reko.Evaluation
                     return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
                 }
             }
-            if (head == Constant.Invalid)
-                head = seq.Head;
-            if (tail == Constant.Invalid)
-                tail = seq.Tail;
-            if (c1 != null && c1.IsZero)
+            }
+            if (newSeq.Take(newSeq.Length-1).All(e => e.IsZero))
             {
+                var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
                 return new Cast(
                     PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.Size),
                     new Cast(
                         PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.Size),
                         tail));
-
             }
-            return new MkSequence(seq.DataType, head, tail);
+            return new MkSequence(seq.DataType, newSeq);
         }
 
         public virtual Expression VisitOutArgument(OutArgument outArg)
@@ -651,7 +673,7 @@ namespace Reko.Evaluation
                 Changed = true;
                 return sliceSegPtr.Transform();
             }
-            return ctx.GetValue(segMem);
+            return ctx.GetValue(segMem, segmentMap);
         }
 
         public virtual Expression VisitSlice(Slice slice)

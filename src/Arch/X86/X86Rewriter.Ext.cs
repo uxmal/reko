@@ -45,18 +45,58 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.PseudoProcedure("__aesimc", dst.DataType, src));
         }
 
-        public void RewritePxor()
+        public void RewriteClts()
         {
-            var rdst = instrCur.op1 as RegisterOperand;
-            var rsrc = instrCur.op2 as RegisterOperand;
-            if (rdst != null && rsrc != null && rdst.Register.Number == rsrc.Register.Number)
-            { // selfie!
-                m.Assign(orw.AluRegister(rdst), m.Cast(rdst.Width, Constant.Int32(0)));
-                return;
-            }
-            var dst = this.SrcOp(instrCur.op1);
-            var src = this.SrcOp(instrCur.op2);
-            m.Assign(dst, host.PseudoProcedure("__pxor", dst.DataType, dst, src));
+            rtlc = RtlClass.System;
+            var cr0 = binder.EnsureRegister(arch.GetControlRegister(0));
+            m.Assign(cr0, host.PseudoProcedure("__clts", cr0.DataType, cr0));
+        }
+
+        public void RewriteEmms()
+        {
+            rtlc = RtlClass.System;
+            m.SideEffect(host.PseudoProcedure("__emms", VoidType.Instance));
+        }
+
+        private void RewriteGetsec()
+        {
+            rtlc = RtlClass.System;
+            //$TODO: this is not correct; actual function
+            // depends on EAX.
+            var arg = binder.EnsureRegister(Registers.eax);
+            var result = binder.EnsureSequence(Registers.edx, Registers.ebx, PrimitiveType.Word64);
+            m.Assign(result, host.PseudoProcedure("__getsec", result.DataType, arg));
+        }
+
+        private void RewriteInvd()
+        {
+            rtlc = RtlClass.System;
+            m.SideEffect(host.PseudoProcedure("__invd", VoidType.Instance));
+        }
+
+        private void RewriteLar()
+        {
+            rtlc = RtlClass.System;
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__lar",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op2)));
+            m.Assign(
+                orw.FlagGroup(FlagM.ZF),
+                Constant.True());
+        }
+
+        private void RewriteLsl()
+        {
+            rtlc = RtlClass.System;
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__lsl",
+                    instrCur.op1.Width,
+                    SrcOp(instrCur.op2)));
         }
 
         public void RewriteLfence()
@@ -77,6 +117,26 @@ namespace Reko.Arch.X86
         public void RewritePrefetch(string name)
         {
             m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(instrCur.op1)));
+        }
+
+
+        public void RewriteSfence()
+        {
+            m.SideEffect(host.PseudoProcedure("__sfence", VoidType.Instance));
+        }
+
+        private void RewriteWbinvd()
+        {
+            rtlc = RtlClass.System;
+            m.SideEffect(host.PseudoProcedure("__wbinvd", VoidType.Instance));
+        }
+
+        public void RewriteWrsmr()
+        {
+            rtlc = RtlClass.System;
+            var edx_eax = binder.EnsureSequence(Registers.edx, Registers.eax, PrimitiveType.Word64);
+            var ecx = binder.EnsureRegister(Registers.ecx);
+            m.SideEffect(host.PseudoProcedure("__wrmsr", VoidType.Instance, ecx, edx_eax));
         }
     }
 }

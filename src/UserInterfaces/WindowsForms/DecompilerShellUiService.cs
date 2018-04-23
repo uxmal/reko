@@ -72,6 +72,12 @@ namespace Reko.UserInterfaces.WindowsForms
             get { throw new NotImplementedException();  }
         }
 
+        public Dictionary<string,Dictionary<int,CommandID>> KeyBindings
+        {
+            get { return dm.KeyBindings; }
+            set { dm.KeyBindings = value; }
+        }
+
         void CloseTab(TabPage page)
         {
             form.DocumentTabs.TabPages.Remove(page);

@@ -40,6 +40,7 @@ namespace Reko.UnitTests.Evaluation
         private SymbolicEvaluator se;
         private SymbolicEvaluationContext ctx;
         private IProcessorArchitecture arch;
+        private SegmentMap segmentMap;
         private Frame frame;
         private FakeDecompilerEventListener listener;
 
@@ -47,6 +48,7 @@ namespace Reko.UnitTests.Evaluation
         public void Setup()
         {
             arch = new X86ArchitectureFlat32("x86-protected-32");
+            segmentMap = new SegmentMap(Address.Ptr32(0));
             frame = new Frame(arch.FramePointerType);
             listener = new FakeDecompilerEventListener();
         }
@@ -70,7 +72,7 @@ namespace Reko.UnitTests.Evaluation
         {
             ctx = new SymbolicEvaluationContext(arch, frame);
             se = new SymbolicEvaluator(
-                new ExpressionSimplifier(ctx, listener),
+                new ExpressionSimplifier(segmentMap, ctx, listener),
                 ctx);
             if (esp == null)
                 esp = Tmp32("esp");
@@ -139,7 +141,7 @@ namespace Reko.UnitTests.Evaluation
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 ebp = m.Frame.EnsureRegister(Registers.ebp );
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
             });
             Assert.AreEqual("fp - 0x00000004", GetRegisterState(se, esp).ToString());
@@ -155,7 +157,7 @@ namespace Reko.UnitTests.Evaluation
                 esp = m.Frame.EnsureRegister(Registers.esp);
                 eax = m.Frame.EnsureRegister(Registers.eax);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, eax);
+                m.MStore(esp, eax);
                 m.Assign(eax, m.Word32(1));
                 m.Assign(eax, m.Mem32(esp));
                 m.Assign(esp, m.IAdd(esp, 4));
@@ -173,11 +175,11 @@ namespace Reko.UnitTests.Evaluation
                 ebp = m.Frame.EnsureRegister(Registers.ebp);
                 eax = m.Frame.EnsureRegister(Registers.eax);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(esp, m.ISub(esp, 20));
 
-                m.Store(m.IAdd(ebp, 8), m.Word32(1));
+                m.MStore(m.IAdd(ebp, 8), m.Word32(1));
                 m.Assign(eax, m.Mem32(m.IAdd(esp, 28)));
 
                 m.Assign(esp, m.IAdd(esp, 20));
@@ -225,8 +227,8 @@ namespace Reko.UnitTests.Evaluation
                 ax = m.Frame.EnsureRegister(Registers.ax);
                 eax = m.Frame.EnsureRegister(Registers.eax);
                 esp = m.Frame.EnsureRegister(Registers.esp);
-                m.Store(m.ISub(esp, 4), ax);
-                m.Store(m.ISub(esp, 2), ds);
+                m.MStore(m.ISub(esp, 4), ax);
+                m.MStore(m.ISub(esp, 2), ds);
                 m.Assign(eax, m.Mem32(m.ISub(esp, 4)));
             });
             Assert.AreEqual("SEQ(ds, ax)", GetRegisterState(se, eax).ToString());
@@ -245,7 +247,7 @@ namespace Reko.UnitTests.Evaluation
                 ebx = m.Frame.EnsureRegister(Registers.ebx);
                 esp = m.Frame.EnsureRegister(Registers.esp);
 
-                m.Store(m.ISub(esp, 4), ebx);
+                m.MStore(m.ISub(esp, 4), ebx);
                 m.Assign(ax, m.Mem16(m.ISub(esp, 4)));
                 m.Assign(cx, m.Mem16(m.ISub(esp, 2)));
             });

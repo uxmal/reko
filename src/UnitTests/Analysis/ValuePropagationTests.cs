@@ -46,6 +46,7 @@ namespace Reko.UnitTests.Analysis
         private IImportResolver importResolver;
         private FakeDecompilerEventListener listener;
         private SsaProcedureBuilder m;
+        private SegmentMap segmentMap;
 
         [SetUp]
 		public void Setup()
@@ -55,6 +56,7 @@ namespace Reko.UnitTests.Analysis
             importResolver = mr.Stub<IImportResolver>();
             listener = new FakeDecompilerEventListener();
             m = new SsaProcedureBuilder();
+            segmentMap = new SegmentMap(Address.Ptr32(0));
         }
 
         private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
@@ -80,26 +82,26 @@ namespace Reko.UnitTests.Analysis
                 new StackArgumentStorage(offset, PrimitiveType.Word32));
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc);
 				alias.Transform();
                 SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa, listener);
+				ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, listener);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -122,9 +124,9 @@ namespace Reko.UnitTests.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(arch, m.Ssa, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, listener);
             vp.Transform();
-            m.Ssa.CheckUses(s => Assert.Fail(s));
+            m.Ssa.Validate(s => Assert.Fail(s));
         }
 
 		[Test]
@@ -195,7 +197,7 @@ namespace Reko.UnitTests.Analysis
                 var r = m.Reg32("r0", 0);
                 var zf = m.Flags("Z");
                 m.Label("l0000");
-                m.Store(r, m.Word32(0));
+                m.MStore(r, m.Word32(0));
                 m.Assign(r, m.ISub(r, 4));
                 m.Assign(zf, m.Cond(r));
                 m.BranchCc(ConditionCode.NE, "l0000");
@@ -204,7 +206,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r, 42);
 
                 m.Label("l0002");
-                m.Store(r, m.Word32(12));
+                m.MStore(r, m.Word32(12));
                 m.Assign(r, m.ISub(r, 4));
                 m.BranchIf(m.Eq0(r), "l0002");
 
@@ -222,7 +224,7 @@ namespace Reko.UnitTests.Analysis
                 new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 
-			ValuePropagator vp = new ValuePropagator(arch, ssa, listener);
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -254,7 +256,7 @@ namespace Reko.UnitTests.Analysis
         {
             var ctx = new SsaEvaluationContext(arch, m.Ssa.Identifiers);
             ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
-            return new ExpressionSimplifier(ctx, listener);
+            return new ExpressionSimplifier(segmentMap, ctx, listener);
         }
 
 		[Test]
@@ -263,7 +265,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier r = m.Reg32("r");
 
             var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			var exp = sub.Accept(vp);
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
 		}
@@ -287,7 +289,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			var vp = new ValuePropagator(arch, m.Ssa, listener);
+			var vp = new ValuePropagator(segmentMap, m.Ssa, listener);
 			vp.Transform(stm);
 			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
@@ -312,7 +314,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = y", stmW.Instruction.ToString());
 
-			var vp = new ValuePropagator(arch, m.Ssa, listener);
+			var vp = new ValuePropagator(segmentMap, m.Ssa, listener);
 			vp.Transform(stmX);
 			vp.Transform(stmY);
 			vp.Transform(stmZ);
@@ -329,7 +331,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpSliceConstant()
 		{
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null), listener);
             Expression c = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
 			Assert.AreEqual("0xFF", c.ToString());
 		}
@@ -339,7 +341,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier x = m.Reg32("x");
 			Identifier y = m.Reg32("y");
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			Expression e = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
 				Operator.ISub, PrimitiveType.Word32, x, y)));
@@ -353,7 +355,7 @@ namespace Reko.UnitTests.Analysis
 		public void VpMulAddShift()
 		{
 			Identifier id = m.Reg32("id");
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
 				new BinaryExpression(Operator.IAdd, t, 
@@ -369,7 +371,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier id = m.Reg32("id");
 			Expression e = m.Shl(m.Shl(id, 1), 4);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("id << 0x05", e.ToString());
 		}
@@ -379,7 +381,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());
 		}
@@ -390,7 +392,7 @@ namespace Reko.UnitTests.Analysis
 			Constant pre = Constant.Word16(0x0001);
 			Constant fix = Constant.Word16(0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x00010002", e.ToString());
 		}
@@ -401,7 +403,7 @@ namespace Reko.UnitTests.Analysis
             Constant eight = Constant.Word16(8);
             Identifier C = m.Reg8("C");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers), listener);
             e = e.Accept(vp);
             Assert.AreEqual("C", e.ToString());
         }
@@ -415,7 +417,7 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
-            var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, null), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null), listener);
             e = e.Accept(vp);
             Assert.IsInstanceOf(typeof(Address), e);
             Assert.AreEqual("4711:4111", e.ToString());
@@ -525,7 +527,7 @@ namespace Reko.UnitTests.Analysis
 
 				Assign(edx, Word32(0x0AAA00AA));
 				Assign(edx, Dpb(edx, Byte(0x55), 8));
-				Store(Word32(0x1000000), edx);
+				MStore(Word32(0x1000000), edx);
 
 				Assign(edx, Word32(0));
                 Assign(edx, Dpb(edx, dl, 0));
@@ -550,7 +552,7 @@ namespace Reko.UnitTests.Analysis
 			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(arch, ssa, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -568,7 +570,8 @@ namespace Reko.UnitTests.Analysis
             var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
-            var vp = new ValuePropagator(arch, ssa, listener);
+            var segmentMap = new SegmentMap(Address.Ptr32(0));
+            var vp = new ValuePropagator(segmentMap, ssa, listener);
             vp.Transform();
             return ssa;
         }
@@ -583,7 +586,7 @@ namespace Reko.UnitTests.Analysis
 
             m.Assign(tmp, m.Mem8(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
 
             SsaState ssa = RunTest(m);
 
@@ -636,7 +639,7 @@ ProcedureBuilder_exit:
 
             m.Assign(tmp, m.Mem16(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.Store(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
+            m.MStore(m.IAdd(a2, 4), m.Cast(PrimitiveType.Byte, d3));
 
             SsaState ssa = RunTest(m);
 
@@ -717,7 +720,7 @@ ProcedureBuilder_exit:
             m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));
             m.Assign(bx, m.Cast(PrimitiveType.Word16, es_bx));
-            m.SegStore(es, m.IAdd(bx, 4), m.Byte(3));
+            m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
 
             var ssa = RunTest(m);
 
@@ -821,9 +824,9 @@ ProcedureBuilder_exit:
             var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
             m.Assign(r1, pc);
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Word32(3));
+            m.MStore(sp, m.Word32(3));
             m.Assign(sp, m.ISub(sp, 4));
-            m.Store(sp, m.Mem16(m.Word32(0x1231230)));
+            m.MStore(sp, m.Mem16(m.Word32(0x1231230)));
             m.Call(r1, 4);
             m.Return();
 
@@ -886,7 +889,7 @@ ProcedureBuilder_exit:
         public void VpCastCast()
         {
             var m = new ProcedureBuilder();
-            m.Store(
+            m.MStore(
                 m.Word32(0x1234000),
                 m.Cast(
                     PrimitiveType.Real32,

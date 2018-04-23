@@ -40,6 +40,8 @@ namespace Reko.WindowsItp
             }
         }
 
+        public Dictionary<string,Dictionary<int,CommandID>> KeyBindings { get; set; }
+
         public IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane)
         {
             throw new NotImplementedException();

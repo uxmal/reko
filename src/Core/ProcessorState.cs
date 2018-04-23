@@ -135,34 +135,63 @@ namespace Reko.Core
             return Constant.Invalid;
         }
 
-        public Expression GetValue(MemoryAccess access)
+        public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
         {
-            int stackOffset;
-            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
+            if (access.EffectiveAddress is Constant constAddr)
             {
-                Expression value;
-                if (stackState.TryGetValue(stackOffset, out value))
+                if (constAddr == Constant.Invalid)
+                    return constAddr;
+                var ea = Architecture.MakeAddressFromConstant(constAddr);
+                return GetMemoryValue(ea, access.DataType, segmentMap);
+            }
+            var addr = access.EffectiveAddress as Address;
+            if (addr != null)
+            {
+                return GetMemoryValue(addr, access.DataType, segmentMap);
+            }
+            if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
+            {
+                if (stackState.TryGetValue(stackOffset, out var value))
                     return value;
             }
             return Constant.Invalid;
         }
 
-        public Expression GetValue(SegmentedAccess access)
+        public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
         {
-            int stackOffset;
-            if (GetStackOffset(access.EffectiveAddress, out stackOffset))
+            if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
             {
-                Expression value;
-                if (stackState.TryGetValue(stackOffset, out value))
+                if (stackState.TryGetValue(stackOffset, out var value))
                     return value;
             }
             return Constant.Invalid;
+        }
+
+        private Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
+        {
+            var pt = dt as PrimitiveType;
+            if (pt == null)
+                return Constant.Invalid;
+            else if (pt.Domain == Domain.Real && pt.BitSize > 80)
+            {
+                //$TODO: we can't represent 96- or 128-bit floats quite yet.
+                return Constant.Invalid;
+            }
+            else if (pt.BitSize > 64)
+            {
+                //$TODO: we can't represent integer constants larger than 64 bits yet.
+                return Constant.Invalid;
+            }
+            if (!segmentMap.TryFindSegment(addr, out ImageSegment seg) || seg.IsWriteable)
+                return Constant.Invalid;
+            if (!Architecture.TryRead(seg.MemoryArea, addr, pt, out Constant c))
+                return Constant.Invalid;
+            return c;
         }
 
         public Expression GetStackValue(int offset)
         {
-            Expression value;
-            if (stackState.TryGetValue(offset, out value))
+            if (stackState.TryGetValue(offset, out var value))
                 return value;
             return Constant.Invalid;
         }
@@ -206,8 +235,7 @@ namespace Reko.Core
 
         public Constant SetValue(RegisterStorage reg, Expression value)
         {
-            var constVal = value as Constant;
-            if (constVal != null)
+            if (value is Constant constVal)
             {
                 SetRegister(reg, constVal);
                 linearDerived.Remove(reg);
@@ -236,8 +264,7 @@ namespace Reko.Core
 
         public void SetValueEa(Expression basePtr, Expression ea, Expression value)
         {
-            int stackOffset;
-            if (GetStackOffset(ea, out stackOffset))
+            if (GetStackOffset(ea, out int stackOffset))
                 stackState[stackOffset] = value;
         }
 

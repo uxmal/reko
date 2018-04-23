@@ -42,3 +42,13 @@ l1000006E:
 	return
 	// succ:  fn1000006E_exit
 fn1000006E_exit:
+// fn1000006F
+// Return size: 4
+void fn1000006F()
+fn1000006F_entry:
+	// succ:  l1000006F
+l1000006F:
+	esp = fp
+	return
+	// succ:  fn1000006F_exit
+fn1000006F_exit:

@@ -183,7 +183,7 @@ namespace Reko.ImageLoaders.MzExe
             }
 
             this.cs += segCode;
-            segmentMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+            segmentMap.AddOverlappingSegment(cs.ToString("X4"), imgU, Address.SegPtr(cs, 0), AccessMode.ReadWriteExecute);
             this.ss += segCode;
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector.Value));

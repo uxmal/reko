@@ -563,7 +563,7 @@ namespace Reko.UnitTests.Typing
 			Assign(ax, 0x4A);
 			Assign(si, SMul(ax, SegMem(PrimitiveType.Word16, ds, Word16(0x1C0A))));
             Assign(bx, SegMem(PrimitiveType.Word16, ds, Word16(0x0CA4)));
-			SegStore(ds, IAdd(IAdd(bx, 10), si), Byte(0xF8));
+			SStore(ds, IAdd(IAdd(bx, 10), si), Byte(0xF8));
 			Return();
 		}
 	}

@@ -271,11 +271,11 @@ namespace Reko.UnitTests.Analysis
                 Identifier i = m.Local32("i");
                 m.Label("test");
                 m.BranchIf(m.Uge(i, 10), "done");
-                m.Store(m.Word32(0x4204), i);
+                m.MStore(m.Word32(0x4204), i);
                 m.Assign(i, m.IAdd(i, 1));
                 m.Goto("test");
                 m.Label("done");
-                m.Store(m.Word32(0x4200), i);
+                m.MStore(m.Word32(0x4200), i);
                 m.Return();
             });
             var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Analysis
                 m.Label("loop");
                 m.Assign(id, m.ISub(id, 1));
                 m.BranchIf(m.Ge(id, 0), "loop");
-                m.Store(m.Word32(0x4232), id);
+                m.MStore(m.Word32(0x4232), id);
                 m.Return(id);
             });
             var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
@@ -353,7 +353,8 @@ namespace Reko.UnitTests.Analysis
 
 			DeadCode.Eliminate(proc, ssa);
 
-			var vp = new ValuePropagator(arch, ssa, listener);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
+			var vp = new ValuePropagator(segmentMap, ssa, listener);
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

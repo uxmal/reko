@@ -22,9 +22,9 @@
 #include "ComBase.h"
 #include "ArmRewriter.h"
 
-void ArmRewriter::RewriteCdp()
+void ArmRewriter::RewriteCdp(const char *name)
 {
-	auto cdp = host->EnsurePseudoProcedure("__cdp", BaseType::Void, instr->detail->arm.op_count);
+	auto cdp = host->EnsurePseudoProcedure(name, BaseType::Void, instr->detail->arm.op_count);
 	auto begin = &instr->detail->arm.operands[0];
 	auto end = begin + instr->detail->arm.op_count;
 	for (auto op = begin; op != end; ++op)
@@ -32,7 +32,6 @@ void ArmRewriter::RewriteCdp()
 		m.AddArg(Operand(*op));
 	}
 	m.SideEffect(m.Fn(cdp));
-	
 }
 
 void ArmRewriter::RewriteCps()
@@ -51,6 +50,19 @@ void ArmRewriter::RewriteDmb()
 	char name[100];
 	snprintf(name, sizeof(name), "__dmb_%s", memBarrier);
 	m.SideEffect(m.Fn(host->EnsurePseudoProcedure(name, BaseType::Void, 1)));
+}
+
+void ArmRewriter::RewriteLdc(const char * fnName)
+{
+	auto src2 = Operand(Src2());
+	auto tmp = host->CreateTemporary(BaseType::Word32);
+	m.Assign(tmp, src2);
+	auto intrinsic = host->EnsurePseudoProcedure(fnName, BaseType::Word32, 2);
+	m.AddArg(Operand(Src1()));
+	m.AddArg(tmp);
+	auto fn = m.Fn(intrinsic);
+	auto dst = Operand(Dst(), BaseType::Word32, true);
+	m.Assign(dst, fn);
 }
 
 void ArmRewriter::RewriteMcr()
@@ -105,9 +117,9 @@ void ArmRewriter::RewriteMsr()
 	m.SideEffect(m.Fn(ppp));
 }
 
-void ArmRewriter::RewriteStcl()
+void ArmRewriter::RewriteStc(const char * name)
 {
-	auto intrinsic = host->EnsurePseudoProcedure("__stcl", BaseType::Word32, 2);
+	auto intrinsic = host->EnsurePseudoProcedure("__stc", BaseType::Word32, 3);
 	m.AddArg(Operand(Dst()));
 	m.AddArg(Operand(Src1()));
 	m.AddArg(Operand(Src2()));
@@ -120,6 +132,22 @@ void ArmRewriter::RewriteSvc()
 	auto intrinsic = host->EnsurePseudoProcedure("__syscall", BaseType::Void, 1);
 	m.AddArg(Operand(Dst()));
 	m.SideEffect(m.Fn(intrinsic));
+}
+
+void ArmRewriter::RewriteTrap()
+{
+	auto trapNo = m.UInt32(instr->bytes[0]);
+	auto ppp = host->EnsurePseudoProcedure("__syscall", BaseType::Word32, 1);
+	m.AddArg(trapNo);
+	m.SideEffect(m.Fn(ppp));
+}
+
+void ArmRewriter::RewriteUdf()
+{
+	auto trapNo = m.UInt32(instr->bytes[0]);
+	auto ppp = host->EnsurePseudoProcedure("__syscall", BaseType::Word32, 1);
+	m.AddArg(trapNo);
+	m.SideEffect(m.Fn(ppp));
 }
 
 const char * ArmRewriter::MemBarrierName(arm_mem_barrier barrier)

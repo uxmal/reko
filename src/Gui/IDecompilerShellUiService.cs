@@ -21,6 +21,7 @@
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.Gui
@@ -30,6 +31,8 @@ namespace Reko.Gui
         IWindowFrame ActiveFrame { get; }
         IEnumerable<IWindowFrame> DocumentWindows { get; }
         IEnumerable<IWindowFrame> ToolWindows { get; }
+
+        Dictionary<string,Dictionary<int,CommandID>> KeyBindings { get; set; }
 
         IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane);
         IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane);

@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Arch.RiscV
     {
         private RiscVArchitecture arch = new RiscVArchitecture("riscV");
         private Address baseAddr = Address.Ptr64(0x0010000);
-        private RiscVState state;
         private MemoryArea image;
 
         public override IProcessorArchitecture Architecture
@@ -44,6 +43,8 @@ namespace Reko.UnitTests.Arch.RiscV
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
+            var segMap = new SegmentMap(baseAddr, new ImageSegment("code", image, AccessMode.ReadExecute));
+            var state = (RiscVState)arch.CreateProcessorState();
             return new RiscVRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 
@@ -70,7 +71,6 @@ namespace Reko.UnitTests.Arch.RiscV
         [SetUp]
         public void Setup()
         {
-            state = (RiscVState)arch.CreateProcessorState();
         }
 
         [Test]

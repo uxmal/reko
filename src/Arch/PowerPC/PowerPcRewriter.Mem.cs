@@ -33,12 +33,7 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter
     {
-        private void RewriteDcbt()
-        {
-            // This is just a hint to the cache; makes no sense to have it in
-            // high-level language. Consider adding option to have cache
-            // hint instructions decompiled into intrinsics
-        }
+
 
         private void RewriteLfd()
         {
@@ -98,6 +93,17 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, ea);
         }
 
+        private void RewriteLhbrx()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var ea = EffectiveAddress_r0(instr.op2, instr.op3);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            m.Assign(tmp, m.Mem16(ea));
+            m.Assign(opD, m.Cast(opD.DataType, host.PseudoProcedure(
+                "__swap16", tmp.DataType, tmp)));
+        }
+
+
         private void RewriteLmw()
         {
             var r = ((RegisterOperand)instr.op1).Register.Number;
@@ -123,6 +129,20 @@ namespace Reko.Arch.PowerPC
             }
         }
 
+        private void RewriteLq()
+        {
+            var rDst = ((RegisterOperand)instr.op1).Register;
+            if ((rDst.Number & 1) == 1)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var rDstNext = arch.GetRegister(rDst.Number + 1);
+            var regPair = binder.EnsureSequence(rDst, rDstNext, PrimitiveType.Word128);
+            var ea = EffectiveAddress_r0(instr.op2, m);
+            m.Assign(regPair, m.Mem(regPair.DataType, ea));
+        }
 
         private void RewriteLvewx()
         {

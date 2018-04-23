@@ -153,5 +153,10 @@ namespace Reko.Core.NativeInterface
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

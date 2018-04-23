@@ -36,6 +36,12 @@ namespace Reko.Arch.RiscV
             this.arch = arch;
         }
 
+        public RiscVState(RiscVState that) : base(that)
+        {
+            this.arch = that.arch;
+            this.pc = that.pc;
+        }
+
         public override IProcessorArchitecture Architecture
         {
             get { return arch; }
@@ -43,7 +49,7 @@ namespace Reko.Arch.RiscV
 
         public override ProcessorState Clone()
         {
-            return new RiscVState(arch);
+            return new RiscVState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

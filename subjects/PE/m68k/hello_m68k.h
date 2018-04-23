@@ -47,7 +47,7 @@ Eq_117: (struct "Eq_117" 0001 (0 byte b0000) (1 byte b0001) (3 byte b0003))
 	T_151 (in a3_122 + 1 : word32)
 	T_165 (in a3_122 + 4 : word32)
 	T_206 (in a3_122 + 1 : word32)
-Eq_166: (fn word32 (word32))
+Eq_166: (fn word32 (ui32))
 	T_166 (in __swap : ptr32)
 	T_167 (in signature of __swap : void)
 Eq_195: (struct "Eq_195" (2 ptr32 ptr0002))
@@ -1339,19 +1339,19 @@ T_141: (in d0_123 : int32)
   Class: Eq_141
   DataType: int32
   OrigDataType: int32
-T_142: (in (word16) d0_123 : word16)
+T_142: (in 0x00000002 : word32)
   Class: Eq_142
-  DataType: word16
-  OrigDataType: word16
-T_143: (in (word16) d0_123 : word16)
+  DataType: ui32
+  OrigDataType: ui32
+T_143: (in d0_123 * 0x00000002 : word32)
   Class: Eq_143
-  DataType: word16
-  OrigDataType: word16
-T_144: (in (word16) d0_123 + (word16) d0_123 : word16)
+  DataType: ui32
+  OrigDataType: ui32
+T_144: (in (word16) (d0_123 * 0x00000002) : word16)
   Class: Eq_144
   DataType: word16
   OrigDataType: word16
-T_145: (in DPB(d0_123, (word16) d0_123 + (word16) d0_123, 0) : word32)
+T_145: (in DPB(d0_123, (word16) (d0_123 * 0x00000002), 0) : word32)
   Class: Eq_145
   DataType: ui32
   OrigDataType: word32
@@ -1394,7 +1394,7 @@ T_154: (in Mem13[a3_122 + 0x00000000:byte] : byte)
 T_155: (in DPB(d0_123, Mem13[a3_122 + 0x00000000:byte], 0) : word32)
   Class: Eq_141
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: ui32
 T_156: (in 0x00000000 : word32)
   Class: Eq_156
   DataType: word32
@@ -1445,7 +1445,7 @@ T_167: (in signature of __swap : void)
   OrigDataType: 
 T_168: (in  : word32)
   Class: Eq_168
-  DataType: word32
+  DataType: ui32
   OrigDataType: 
 T_169: (in 1 : int32)
   Class: Eq_169
@@ -1461,8 +1461,8 @@ T_171: (in Mem13[a3_122 + 1:byte] : byte)
   OrigDataType: byte
 T_172: (in DPB(d0_123, Mem13[a3_122 + 1:byte], 0) : word32)
   Class: Eq_168
-  DataType: word32
-  OrigDataType: word32
+  DataType: ui32
+  OrigDataType: ui32
 T_173: (in __swap(DPB(d0_123, a3_122[1], 0)) : word32)
   Class: Eq_173
   DataType: word32
@@ -13467,7 +13467,7 @@ typedef struct Eq_117 {	// size: 1 1
 	byte b0003;	// 3
 } Eq_117;
 
-typedef word32 (Eq_166)(word32);
+typedef word32 (Eq_166)(ui32);
 
 typedef struct Eq_195 {
 	ptr32 ptr0002;	// 2

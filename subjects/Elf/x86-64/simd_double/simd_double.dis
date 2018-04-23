@@ -118,7 +118,7 @@ l0000000000000673:
 	byte Z_38
 	byte SZO_39
 	byte C_40
-	call rax_27 (retsize: 4; depth: 4)
+	call rax_27 (retsize: 8; depth: 8)
 		uses: C_30,qwLoc08_5,rax_27,rbp_31,rdi_2,rsp_32,SCZO_7,SZO_28,Z_29
 		defs: C_40,rax_36,rbp_35,rdi_34,rsp_33,SCZO_37,SZO_39,Z_38
 	return
@@ -176,7 +176,7 @@ l00000000000006C4:
 	byte Z_46
 	byte SZO_47
 	byte C_48
-	call rax_34 (retsize: 4; depth: 4)
+	call rax_34 (retsize: 8; depth: 8)
 		uses: C_37,qwLoc08_6,rax_34,rbp_38,rdi_2,rsi_13,rsp_39,SCZO_14,SZO_35,Z_36
 		defs: C_48,rax_45,rbp_43,rdi_41,rsi_42,rsp_40,SCZO_44,SZO_47,Z_46
 	return

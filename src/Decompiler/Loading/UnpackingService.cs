@@ -92,7 +92,10 @@ namespace Reko.Loading
         /// <returns></returns>
         public ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset)
         {
-            EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
+            // $TODO: the code below triggers the creation of the suffix array
+            // The suffix array is currently unused but the algorithm that generates it scales poorly
+            // making Reko unable to load certain EXE files (due to the endless wait times)
+            // EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
             var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
             if (signature == null)
                 return null;

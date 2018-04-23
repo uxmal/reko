@@ -96,7 +96,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Ptr32));
             arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
             arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            var state = mr.Stub<ProcessorState>();
+            var map = new SegmentMap(addrLoad);
+            var state = new Mocks.FakeProcessorState(this.arch_386);
             arch_386.Stub(a => a.CreateProcessorState()).Return(state);
             arch_386.Replay();
         }

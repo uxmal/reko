@@ -26,13 +26,13 @@ void ArmRewriter::RewriteVecBinOp(BinOpEmitter fn)
 {
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	m.Assign(dst, (m.*fn)(src1, src2));
 }
 
 void ArmRewriter::RewriteVcmp()
 {
-	auto src1 = Operand(Dst());
+	auto src1 = Operand(Dst(), BaseType::Word32, true);
 	auto src2 = Operand(Src1());
 	auto fpscr = host->EnsureFlagGroup((int)ARM_REG_FPSCR, 0xF0000000, "NZCV", BaseType::Word32);
 	m.Assign(fpscr, m.Cond(m.FSub(src1, src2)));
@@ -41,11 +41,12 @@ void ArmRewriter::RewriteVcmp()
 void ArmRewriter::RewriteVcvt()
 {
 	auto src = Operand(Src1());
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	BaseType dstType;
 	switch (instr->detail->arm.vector_data)
 	{
 	case ARM_VECTORDATA_F64S32: dstType = BaseType::Real64; break;
+	case ARM_VECTORDATA_F32S32: dstType = BaseType::Real32; break;
 	default: NotImplementedYet(); return;
 	}
 	m.Assign(dst, m.Cast(dstType, src));
@@ -56,7 +57,7 @@ void ArmRewriter::RewriteVext()
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	auto src3 = Operand(Src3());
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto intrinsic = host->EnsurePseudoProcedure("__vext", register_types[Dst().reg], 3);
 	m.AddArg(src1);
 	m.AddArg(src2);
@@ -66,7 +67,7 @@ void ArmRewriter::RewriteVext()
 
 void ArmRewriter::RewriteVldmia()
 {
-	auto rSrc = this->Operand(Dst());
+	auto rSrc = this->Operand(Dst(), BaseType::Word32, true);
 	auto offset = 0;
 	auto begin = &instr->detail->arm.operands[1];
 	auto end = begin + instr->detail->arm.op_count - 1;
@@ -89,20 +90,38 @@ void ArmRewriter::RewriteVldmia()
 
 void ArmRewriter::RewriteVldr()
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto src = this->Operand(Src1());
 	m.Assign(dst, src);
 }
 
 void ArmRewriter::RewriteVmov()
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto src = this->Operand(Src1());
 	if (instr->detail->arm.vector_data != ARM_VECTORDATA_INVALID)
 	{
-		auto dt = VectorElementDataType();
+		auto dt = VectorElementDataType(instr->detail->arm.vector_data);
+		auto dstType = register_types[Dst().reg];
+		auto srcType = register_types[Src1().reg];
+		auto srcElemSize = type_sizes[(int)VectorElementDataType(instr->detail->arm.vector_data)];
+		auto celemSrc = type_sizes[(int)dstType] / srcElemSize;
+		auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
+
+		if (Src1().type == ARM_OP_IMM)
+		{
+			auto arrSrc = ntf.ArrayOf((HExpr)dt, celemSrc);
+			for (int i = 0; i < celemSrc; ++i)
+			{
+				auto arg = Operand(Src1());
+				m.AddArg(arg);
+			}
+			m.Assign(dst, m.Seq(arrSrc));
+			return;
+		}
+
 		char fname[200];
-		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType());
+		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType(instr->detail->arm.vector_data));
 		auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
 		m.AddArg(src);
 		m.Assign(dst, m.Fn(ppp));
@@ -174,7 +193,7 @@ void ArmRewriter::RewriteVpush()
 
 void ArmRewriter::RewriteVstmia()
 {
-	auto rSrc = this->Operand(Dst());
+	auto rSrc = this->Operand(Dst(), BaseType::Word32, true);
 	int offset = 0;
 	auto begin = &instr->detail->arm.operands[1];
 	auto end = begin + instr->detail->arm.op_count - 1;
@@ -200,7 +219,7 @@ void ArmRewriter::RewriteVsqrt()
 	auto fnname = instr->detail->arm.vector_data == ARM_VECTORDATA_F32 ? "sqrtf" : "sqrt";
 	auto dt = instr->detail->arm.vector_data == ARM_VECTORDATA_F32 ? BaseType::Real32 : BaseType::Real64;
 	auto src = this->Operand(Src1());
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto ppp = host->EnsurePseudoProcedure(fnname, dt, 1);
 	m.AddArg(src);
 	m.Assign(dst, m.Fn(ppp));
@@ -209,7 +228,7 @@ void ArmRewriter::RewriteVsqrt()
 void ArmRewriter::RewriteVdup()
 {
 	auto src = this->Operand(Src1());
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	ntf.AddRef();
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
@@ -226,16 +245,16 @@ void ArmRewriter::RewriteVmul()
 {
 	auto src1 = this->Operand(Src1());
 	auto src2 = this->Operand(Src2());
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	ntf.AddRef();
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
-	auto srcElemSize = type_sizes[(int)VectorElementDataType()];
+	auto srcElemSize = type_sizes[(int)VectorElementDataType(instr->detail->arm.vector_data)];
 	auto celemSrc = type_sizes[(int)srcType] / srcElemSize;
 	auto arrSrc = ntf.ArrayOf((HExpr)srcType, celemSrc);
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
-	snprintf(fnName, sizeof(fnName), "__vmul_%s", VectorElementType());
+	snprintf(fnName, sizeof(fnName), "__vmul_%s", VectorElementType(instr->detail->arm.vector_data));
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.AddArg(src2);
@@ -244,35 +263,44 @@ void ArmRewriter::RewriteVmul()
 
 void ArmRewriter::RewriteVectorUnaryOp(const char * fnNameFormat)
 {
+	RewriteVectorUnaryOp(fnNameFormat, instr->detail->arm.vector_data);
+}
+
+void ArmRewriter::RewriteVectorUnaryOp(const char * fnNameFormat, arm_vectordata_type elemType)
+{
 	auto src1 = this->Operand(Src1());
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
-	auto srcElemSize = type_sizes[(int)VectorElementDataType()];
+	auto srcElemSize = type_sizes[(int)VectorElementDataType(elemType)];
 	auto celemSrc = type_sizes[(int)srcType] / srcElemSize;
 	auto arrSrc = ntf.ArrayOf((HExpr)srcType, celemSrc);
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
-	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType());
+	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType(elemType));
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.Assign(dst, m.Fn(intrinsic));
 }
 
-
 void ArmRewriter::RewriteVectorBinOp(const char * fnNameFormat)
+{
+	RewriteVectorBinOp(fnNameFormat, instr->detail->arm.vector_data);
+}
+
+void ArmRewriter::RewriteVectorBinOp(const char * fnNameFormat, arm_vectordata_type elemType)
 {
 	auto src1 = this->Operand(Src1());
 	auto src2 = this->Operand(Src2());
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto dstType = register_types[Dst().reg];
 	auto srcType = register_types[Src1().reg];
-	auto srcElemSize = type_sizes[(int)VectorElementDataType()];
+	auto srcElemSize = type_sizes[(int)VectorElementDataType(elemType)];
 	auto celemSrc = type_sizes[(int)srcType] / srcElemSize;
 	auto arrSrc = ntf.ArrayOf((HExpr)srcType, celemSrc);
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
-	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType());
+	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType(elemType));
 	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.AddArg(src2);
@@ -281,33 +309,47 @@ void ArmRewriter::RewriteVectorBinOp(const char * fnNameFormat)
 
 void ArmRewriter::RewriteVstr()
 {
-	auto src = this->Operand(Dst());
+	auto src = this->Operand(Dst(), BaseType::Word32, true);
 	auto dst = this->Operand(Src1());
 	m.Assign(dst, src);
 }
 
-const char * ArmRewriter::VectorElementType()
+const char * ArmRewriter::VectorElementType(arm_vectordata_type elemType)
 {
-	switch (instr->detail->arm.vector_data)
+	switch (elemType)
 	{
+	case ARM_VECTORDATA_I8: return "i8";
+	case ARM_VECTORDATA_S8: return "s8";
+	case ARM_VECTORDATA_U8: return "u8";
+	case ARM_VECTORDATA_I16: return "i16";
+	case ARM_VECTORDATA_S16: return "s16";
+	case ARM_VECTORDATA_U16: return "u16";
+	case ARM_VECTORDATA_F32: return "f32";
 	case ARM_VECTORDATA_I32: return "i32";
 	case ARM_VECTORDATA_S32: return "s32";
-	case ARM_VECTORDATA_F32: return "f32";
-	case ARM_VECTORDATA_F64: return "f64";
 	case ARM_VECTORDATA_U32: return "u32";
+	case ARM_VECTORDATA_F64: return "f64";
+	case ARM_VECTORDATA_S64: return "s64";
 	default: NotImplementedYet(); return "(NYI)";
 	}
 }
 
-BaseType ArmRewriter::VectorElementDataType()
+BaseType ArmRewriter::VectorElementDataType(arm_vectordata_type elemType)
 {
-	switch (instr->detail->arm.vector_data)
+	switch (elemType)
 	{
+	case ARM_VECTORDATA_I8: return BaseType::SByte;
+	case ARM_VECTORDATA_S8: return BaseType::SByte;
+	case ARM_VECTORDATA_U8: return BaseType::Byte;
+	case ARM_VECTORDATA_I16: return BaseType::Int16;
+	case ARM_VECTORDATA_S16: return BaseType::Int16;
+	case ARM_VECTORDATA_U16: return BaseType::UInt16;
+	case ARM_VECTORDATA_F32: return BaseType::Real32;
 	case ARM_VECTORDATA_I32: return BaseType::Int32;
 	case ARM_VECTORDATA_S32: return BaseType::Int32;
-	case ARM_VECTORDATA_F32: return BaseType::Real32;
-	case ARM_VECTORDATA_F64: return BaseType::Real64;
 	case ARM_VECTORDATA_U32: return BaseType::UInt32;
+	case ARM_VECTORDATA_F64: return BaseType::Real64;
+	case ARM_VECTORDATA_S64: return BaseType::Int64;
 	default: NotImplementedYet(); return BaseType::Void;
 	}
 }

@@ -35,6 +35,11 @@ namespace Reko.Arch.SuperH
             this.arch = arch;
         }
 
+        public SuperHState(SuperHState that) : base(that)
+        {
+            this.arch = that.arch;
+        }
+
         public override IProcessorArchitecture Architecture
         {
             get { return arch; }
@@ -42,7 +47,7 @@ namespace Reko.Arch.SuperH
 
         public override ProcessorState Clone()
         {
-            return new SuperHState(arch);
+            return new SuperHState(this);
         }
 
         public override Constant GetRegister(RegisterStorage r)

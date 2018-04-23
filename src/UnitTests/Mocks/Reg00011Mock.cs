@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Mocks
 		protected override void BuildBody()
 		{
 			Identifier ds = Local16("ds");
-			Store(Word16(0x8416), IAdd(LoadW(0x8416), 1));
+			MStore(Word16(0x8416), IAdd(LoadW(0x8416), 1));
 			Identifier loc02_26 = Local16("loc02_26");
 			Assign(loc02_26, LoadW(0x53BA));
 			// succ:  2
@@ -70,9 +70,9 @@ namespace Reko.UnitTests.Mocks
 			SideEffect(Fn(Mem16(IAdd(UMul(ax_36, 0x0002), 0x841A))));
 			Identifier loc04_63 = Local16("loc04_63");
 			Assign(loc04_63, LoadW(0x0048));
-			Store(Word16(0x004A), LoadW(0x004A));
-			Store(Word16(0x0048), loc04_63);
-			Store(Word16(0x8410), Word16(0x0000));
+			MStore(Word16(0x004A), LoadW(0x004A));
+			MStore(Word16(0x0048), loc04_63);
+			MStore(Word16(0x8410), Word16(0x0000));
             BranchIf(Eq(LoadW(0x8410), Word16(0)), "block2");
 			// succ:  7 2
 
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Mocks
 			Label("block7");
 			Identifier ax_80 = Local16("ax_80");
 			Assign(ax_80, LoadW(0x840E));
-			Store(Word16(0x8414), Or(LoadW(0x8414), ax_80));
+			MStore(Word16(0x8414), Or(LoadW(0x8414), ax_80));
 			BranchIf(Ne(ax_80, 0x0000), "block2");
 			// succ:  8 2
 
@@ -93,12 +93,12 @@ namespace Reko.UnitTests.Mocks
 			Assign(ax_88, Fn("fn1B96_0540", loc02_26, ds));
 			Identifier v19_89 = Local16("v19_89");
 			Assign(v19_89, ISub(LoadW(0x8416), 0x0001));
-			Store(Word16(0x8416), v19_89);
+			MStore(Word16(0x8416), v19_89);
 			BranchIf(Ne(v19_89, 0x0000), "block11");
 			// succ:  9 11
 
 			// DataOut: eax ecx edx esi ax dx bx sp bp di al dl dh es cs ss ds fsl1B96_2E0A:		// block 9, pred: 8
-            Store(Word16(0x8414), Word16(0x0000));
+            MStore(Word16(0x8414), Word16(0x0000));
             BranchIf(Eq(LoadW(0x8414), Word16(0x0000)), "block11");
 			// succ:  11 10
 			// DataOut: eax ecx edx esi ax dx bx sp bp di al dl dh es cs ss ds fsl1B96_2E15_branch:		// block 10, pred: 9

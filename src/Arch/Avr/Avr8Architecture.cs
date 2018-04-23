@@ -224,6 +224,12 @@ namespace Reko.Arch.Avr
             return Address.TryParse16(txtAddr, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
+
+
         /* I/O registers
          * 0x08 ACSR
          * 0x07 ADMUX
@@ -311,34 +317,4 @@ Brown-out Reset, Watchdog Reset
         IF = 128
     }
 }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  

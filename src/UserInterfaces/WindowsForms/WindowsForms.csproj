@@ -180,6 +180,13 @@
     <Compile Include="Forms\CallSiteDialog.Designer.cs">
       <DependentUpon>CallSiteDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CommentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CommentForm.Designer.cs">
+      <DependentUpon>CommentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CommentFormInteractor.cs" />
     <Compile Include="Forms\DeclarationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,13 +209,6 @@
     <Compile Include="Forms\EnvironmentSelectorDialog.Designer.cs">
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FindDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FindDialog.Designer.cs">
-      <DependentUpon>FindDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FindDialogInteractor.cs" />
     <Compile Include="Forms\FindStringsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +223,12 @@
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\JumpTableInteractor.cs" />
+    <Compile Include="Forms\KeyBindingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KeyBindingsDialog.Designer.cs">
+      <DependentUpon>KeyBindingsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -388,14 +394,14 @@
     <EmbeddedResource Include="Forms\EnvironmentSelectorDialog.resx">
       <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FindDialog.resx">
-      <DependentUpon>FindDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\JumpTableDialog.resx">
       <DependentUpon>JumpTableDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KeyBindingsDialog.resx">
+      <DependentUpon>KeyBindingsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

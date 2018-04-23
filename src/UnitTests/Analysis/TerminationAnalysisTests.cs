@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Analysis
         public void BlockDoesntTerminate()
         {
             var m = new ProcedureBuilder();
-            m.Store(m.Word32(0x1231), m.Byte(0));
+            m.MStore(m.Word32(0x1231), m.Byte(0));
             var b = m.Block;
             m.Return();
             var a = new TerminationAnalysis(flow, eventListener);

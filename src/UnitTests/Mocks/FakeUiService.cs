@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Mocks
         }
     }
 
-    public class FakeShellUiService : 
+    public class FakeShellUiService :
         FakeUiService,
         IDecompilerShellUiService,
         ICommandTarget
@@ -119,6 +119,8 @@ namespace Reko.UnitTests.Mocks
 
         public IEnumerable<IWindowFrame> ToolWindows { get; set; }
 
+        public Dictionary<string, Dictionary<int, CommandID>> KeyBindings { get; set; }
+ 
         public void SetContextMenu(object control, int menuId)
         {
         }

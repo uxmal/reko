@@ -36,7 +36,7 @@ namespace Reko.Core.Code
 		{
 		}
 
-		public Instruction Transform(Instruction instr)
+        public Instruction Transform(Instruction instr)
 		{
 			return instr.Accept(this);
 		}
@@ -62,7 +62,12 @@ namespace Reko.Core.Code
             return ci;
 		}
 
-		public virtual Instruction TransformDeclaration(Declaration decl)
+        public virtual Instruction TransformComment(CodeComment codeComment)
+        {
+            return codeComment;
+        }
+
+        public virtual Instruction TransformDeclaration(Declaration decl)
 		{
 			if (decl.Expression != null)
 				decl.Expression = decl.Expression.Accept(this);
@@ -220,9 +225,11 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitMkSequence(MkSequence seq)
 		{
-			var head = seq.Head.Accept(this);
-            var tail = seq.Tail.Accept(this);
-			return new MkSequence(seq.DataType, head, tail);
+            for (int i = 0; i < seq.Expressions.Length; ++i)
+            {
+                seq.Expressions[i] = seq.Expressions[i].Accept(this);
+            }
+            return new MkSequence(seq.DataType, seq.Expressions);
 		}
 
         public virtual Expression VisitOutArgument(OutArgument outArg)

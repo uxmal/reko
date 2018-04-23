@@ -20,6 +20,7 @@
 
 using Reko.Core.Archives;
 using Reko.Gui;
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +31,7 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    public partial class ArchiveBrowserDialog : Form, IDialog
+    public partial class ArchiveBrowserDialog : Form, IArchiveBrowserDialog
     {
         public ArchiveBrowserDialog()
         {

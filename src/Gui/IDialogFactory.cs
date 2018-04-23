@@ -19,20 +19,24 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using System;
-using Reko.Core.Machine;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.Gui
 {
     public interface IDialogFactory
     {
-        IDialog CreateAboutDialog();
+        IAboutDialog CreateAboutDialog();
+        IArchiveBrowserDialog CreateArchiveBrowserDialog();
         IAssembleFileDialog CreateAssembleFileDialog();
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();
         ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
         IFindStringsDialog CreateFindStringDialog();
+        IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
         IOpenAsDialog CreateOpenAsDialog();
         IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc);
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
@@ -42,6 +46,7 @@ namespace Reko.Gui
         IWorkerDialog CreateWorkerDialog();
         ITextEncodingDialog CreateTextEncodingDialog();
         IDeclarationForm CreateDeclarationForm();
+        IDeclarationForm CreateCommentForm();
         IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride);
         ISymbolSourceDialog CreateSymbolSourceDialog();
     }

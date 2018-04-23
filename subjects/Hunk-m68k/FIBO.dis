@@ -1067,7 +1067,7 @@ l000014D0:
 l00001DD4:
 	word32 a7_1852 = a7_148 - 4
 	Mem1854[a7_1852:word32] = a5_146
-	Mem1862[a7_1852 - 4:word32] = (int32) (int16) (int16) Mem1854[a4_145:byte]
+	Mem1862[a7_1852 - 4:word32] = (int32) (int16) Mem1854[a4_145:byte]
 	word32 d4_1865
 	word32 d5_1866
 	word32 d6_1867
@@ -1170,10 +1170,10 @@ l00001588:
 l0000158C:
 	Mem1790[a7_148 - 4:word32] = d3_138
 	word32 d1_1795 = __swap(10) *u (word16) d2_1210
-	word32 d0_1802 = (word16) d2_1210 *u 10 + DPB(__swap(DPB(d1_1795, (word16) d1_1795 + (word16) (__swap(d2_1210) *u 0x000A), 0)), 0x0000, 0)
+	word32 d0_1802 = (word16) d2_1210 *u 10 + DPB(__swap(DPB(d1_1795, (word16) (d1_1795 + __swap(d2_1210) *u 0x000A), 0)), 0x0000, 0)
 	a2_1636 = a2_1636 + 1
 	a0_1443 = 0x000028B1 + (DPB(d0_1802, Mem1790[a2_1636:byte], 0) & 0x000000FF)
-	word32 d1_1810 = (int32) (int16) (int16) Mem1790[a2_1636:byte]
+	word32 d1_1810 = (int32) (int16) Mem1790[a2_1636:byte]
 	word32 d0_1822 = (int32) Mem1790[a0_1443:byte]
 	d3_138 = Mem1790[a7_148 - 4:word32]
 	d1_1727 = d1_1810 - 0x00000030
@@ -1243,10 +1243,10 @@ l00001624:
 	word32 a7_1704 = a7_148 - 4
 	Mem1706[a7_1704:word32] = d2_1210
 	word32 d1_1711 = __swap(10) *u (word16) d5_1683
-	word32 d0_1718 = (word16) d5_1683 *u 10 + DPB(__swap(DPB(d1_1711, (word16) d1_1711 + (word16) (__swap(d5_1683) *u 0x000A), 0)), 0x0000, 0)
+	word32 d0_1718 = (word16) d5_1683 *u 10 + DPB(__swap(DPB(d1_1711, (word16) (d1_1711 + __swap(d5_1683) *u 0x000A), 0)), 0x0000, 0)
 	a2_1636 = a2_1636 + 0
 	a0_1443 = 0x000028B1 + (DPB(d0_1718, Mem1706[a2_1636:byte], 0) & 0x000000FF)
-	word32 d1_1726 = (int32) (int16) (int16) Mem1706[a2_1636:byte]
+	word32 d1_1726 = (int32) (int16) Mem1706[a2_1636:byte]
 	word32 d0_1738 = (int32) Mem1706[a0_1443:byte]
 	d2_1210 = Mem1706[a7_1704:word32]
 	d1_1727 = d1_1726 - 0x00000030
@@ -1314,7 +1314,7 @@ l0000168A:
 
 l00001690:
 	a2_1636 = a2_1636 + 1
-	d4_1378 = (int32) (int16) (int16) Mem229[a2_1636:byte]
+	d4_1378 = (int32) (int16) Mem229[a2_1636:byte]
 // DataOut: a0 a2 a3 a4 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:<invalid> d3:<invalid> a5:<invalid> a4:<invalid> d6:<invalid> d5:<invalid> d4:105 a3:<invalid> d7:0 a2:<invalid> d2:<invalid> d1:<invalid> a0:<invalid> d0:<invalid> a1:<invalid> a6:<invalid> -124(fp):<invalid> -120(fp):<invalid> -116(fp):<invalid> -112(fp):d2 -108(fp):d3 -104(fp):d4 -100(fp):d5 -96(fp):d6 -92(fp):d7 -88(fp):a2 -84(fp):a3 -80(fp):a4 -76(fp):a5 -72(fp):a6 -68(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -10(fp):<invalid> -6(fp):<invalid> -5(fp):<invalid>
@@ -1889,7 +1889,7 @@ l000017F2:
 	byte v218_1115 = Mem1101[a7_148 + 55:byte]
 	word32 a7_1117 = a7_148 - 4
 	Mem1119[a7_1117:word32] = d1_1082
-	word32 d1_1123 = (int32) (int16) (int16) v218_1115
+	word32 d1_1123 = (int32) (int16) v218_1115
 	Mem1125[a7_1117 + 56:word32] = d1_1123
 	Mem1128[a7_1117 - 4:word32] = DPB(d0_1049, v218_1115, 0)
 	Mem1133[a7_1117 + 52:word32] = d1_1123 >> 31
@@ -2175,7 +2175,7 @@ l00001C74:
 l00001C7A:
 	word32 a7_704 = a7_260 - 4
 	Mem706[a7_704:word32] = a5_146
-	Mem715[a7_704 - 4:word32] = (int32) (int16) (int16) Mem706[a7_704 + 110 + d2_692:byte]
+	Mem715[a7_704 - 4:word32] = (int32) (int16) Mem706[a7_704 + 110 + d2_692:byte]
 	word32 d4_718
 	word32 d6_720
 	word32 a4_722
@@ -2272,7 +2272,7 @@ l00001D02:
 l00001D08:
 	word32 a7_595 = a7_260 - 4
 	Mem597[a7_595:word32] = a5_146
-	Mem606[a7_595 - 4:word32] = (int32) (int16) (int16) Mem597[a7_595 + 110 + d2_583:byte]
+	Mem606[a7_595 - 4:word32] = (int32) (int16) Mem597[a7_595 + 110 + d2_583:byte]
 	word32 d4_609
 	word32 d6_611
 	word32 a0_612
@@ -2334,7 +2334,7 @@ l00001D6C:
 l00001D70:
 	word32 a7_517 = a7_260 - 4
 	Mem519[a7_517:word32] = a5_146
-	Mem527[a7_517 - 4:word32] = (int32) (int16) (int16) Mem519[a3_1423 + d2_426:byte]
+	Mem527[a7_517 - 4:word32] = (int32) (int16) Mem519[a3_1423 + d2_426:byte]
 	word32 d4_530
 	word32 d5_531
 	word32 d6_532
@@ -3652,9 +3652,9 @@ l000024F2:
 	word32 d6_200 = __swap(d3_176)
 	word32 d3_199 = d3_176 *u (word16) d5_198
 	word32 d2_204 = __swap(d0_189 *u (word16) d3_176)
-	word16 v31_205 = (word16) d2_204 + (word16) d3_199
+	word16 v31_205 = (word16) (d2_204 + d3_199)
 	word32 d4_201 = d0_189 *u (word16) d6_200
-	word16 v34_211 = v31_205 + (word16) d4_201
+	word16 v34_211 = (word16) (DPB(d2_204, v31_205, 0) + d4_201)
 	word32 d6_184 = dwArg08 << d5_160
 	word32 d2_217 = __swap(DPB(d2_204, v34_211, 0))
 	word32 d5_202 = d5_198 *u (word16) d6_200
@@ -3853,7 +3853,7 @@ l000025C6:
 	word32 d1_178
 	word32 d2_172 = __swap(d5_148)
 	word32 d3_173 = __swap(d7_12)
-	branch (word16) d2_172 - (word16) d3_173 != 0x0000 l000025D8
+	branch (word16) (d2_172 - d3_173) != 0x0000 l000025D8
 // DataOut: a2 a3 a5 a6 d0 d3 d5 d6 d7
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 40 d7:<invalid> d6:<invalid> d5:<invalid> d2:<invalid> d1:0 d0:<invalid> d3:<invalid> a1:<invalid> d4:0 a0:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):d3 -24(fp):d4 -20(fp):a0 -16(fp):a1 -12(fp):d5 -8(fp):d6 -4(fp):d7
@@ -3903,9 +3903,9 @@ l00002608:
 	word32 d4_218 = __swap(d7_12)
 	word32 d5_217 = d7_12 *u (word16) d3_216
 	word32 d6_222 = __swap(d6_210 *u (word16) d7_12)
-	word16 v45_223 = (word16) d6_222 + (word16) d5_217
+	word16 v45_223 = (word16) (d6_222 + d5_217)
 	word32 d2_219 = d6_210 *u (word16) d4_218
-	word16 v47_229 = v45_223 + (word16) d2_219
+	word16 v47_229 = (word16) (DPB(d6_222, v45_223, 0) + d2_219)
 	word32 d3_220 = d3_216 *u (word16) d4_218
 	word32 d6_246 = d6_149 - __swap(DPB(d6_222, v47_229, 0))
 	word32 d5_249 = d5_148 - ((__swap(DPB(d5_217, 0x0000, 0)) + __swap(DPB(d2_219, 0x0000, 0))) + DPB(d3_220, ((word16) d3_220 + (v45_223 <u 0x0000)) + (v47_229 <u 0x0000), 0)) - (d6_246 <u 0x00000000)
@@ -4346,9 +4346,9 @@ l00002834:
 	word32 d6_173 = __swap(d3_149)
 	word32 d3_172 = d3_149 *u (word16) d7_171
 	word32 d2_177 = __swap(d0_162 *u (word16) d3_149)
-	word16 v33_178 = (word16) d2_177 + (word16) d3_172
+	word16 v33_178 = (word16) (d2_177 + d3_172)
 	word32 d4_174 = d0_162 *u (word16) d6_173
-	word16 v35_184 = v33_178 + (word16) d4_174
+	word16 v35_184 = (word16) (DPB(d2_177, v33_178, 0) + d4_174)
 	word32 d2_190 = __swap(DPB(d2_177, v35_184, 0))
 	word32 d7_175 = d7_171 *u (word16) d6_173
 	word32 d6_157 = dwArg08 << d5_129
@@ -4704,7 +4704,7 @@ l00003BC6:
 // SymbolicIn: a7:<invalid> d2:<invalid> a4:<invalid> a2:<invalid> d4:<invalid> d5:<invalid> d3:0 d0:<invalid> a0:<invalid> a1:<invalid> d1:<invalid> d6:<invalid> a3:<invalid> d7:<invalid> a6:<invalid> a5:<invalid> -148(fp):0x00000000 -144(fp):0x00000010 -140(fp):0x00000000 -136(fp):0x00000000 -132(fp):a1 -128(fp):<invalid> -124(fp):<invalid> -120(fp):d2 -116(fp):d3 -112(fp):d4 -108(fp):d5 -104(fp):d6 -100(fp):d7 -96(fp):a2 -92(fp):a3 -88(fp):a4 -84(fp):a5 -80(fp):a6 -76(fp):<invalid> -72(fp):<invalid> -68(fp):<invalid> -64(fp):0x00000000 -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -47(fp):<invalid> -46(fp):<invalid> -10(fp):0x00000000 -6(fp):0x00000010 12(fp):<invalid>
 
 l00003BF4:
-	d0 = (int32) (int16) (int16) Mem3046[a4_146:byte]
+	d0 = (int32) (int16) Mem3046[a4_146:byte]
 	d5_1223 = Mem3046[a7_149 + 44:word32]
 	d3_165 = 0x00000001
 	d4_140 = d4_140 + 0x00000001
@@ -4833,7 +4833,7 @@ l00002C96:
 	word32 a7_2878 = a7_149 - 4
 	Mem2880[a7_2878:word32] = d2_139
 	word32 d1_2885 = __swap(10) *u (word16) d6_184
-	word32 d0_2892 = (word16) d6_184 *u 10 + DPB(__swap(DPB(d1_2885, (word16) d1_2885 + (word16) (__swap(d6_184) *u 0x000A), 0)), 0x0000, 0)
+	word32 d0_2892 = (word16) d6_184 *u 10 + DPB(__swap(DPB(d1_2885, (word16) (d1_2885 + __swap(d6_184) *u 0x000A), 0)), 0x0000, 0)
 	a3_188 = a3_188 + 1
 	word32 d1_2899 = (int32) Mem2880[a3_188:byte]
 	word32 d0_2911 = (int32) Mem2880[0x000028B1 + (int32) Mem2880[a3_188:byte]:byte]
@@ -7146,9 +7146,9 @@ l00003C7A:
 l00003C80:
 	word32 d2_42 = __swap(d2_38)
 	word32 d3_56 = __swap(dwArg0C) *u (word16) dwArg08
-	word32 d3_61 = __swap(DPB(d3_56, (word16) d3_56 + (word16) (__swap(dwArg08) *u (word16) dwArg0C), 0))
+	word32 d3_61 = __swap(DPB(d3_56, (word16) (d3_56 + __swap(dwArg08) *u (word16) dwArg0C), 0))
 	word32 d3_72 = __swap(dwArg04) *u (word16) dwArg10
-	word32 d3_77 = __swap(DPB(d3_72, (word16) d3_72 + (word16) (__swap(dwArg10) *u (word16) dwArg04), 0))
+	word32 d3_77 = __swap(DPB(d3_72, (word16) (d3_72 + __swap(dwArg10) *u (word16) dwArg04), 0))
 	word32 d1_49
 	*d1Out = DPB(d2_42, (word16) d4_29, 0)
 	return (int32) (word16) d2_42 + d1_32 + (dwArg0C *u (word16) dwArg08 + DPB(d3_61, (word16) d3_61 ^ (word16) d3_61, 0)) + (dwArg04 *u (word16) dwArg10 + DPB(d3_77, (word16) d3_77 ^ (word16) d3_77, 0))
@@ -7499,7 +7499,7 @@ l00003E2E:
 
 l00003E5A:
 	Mem117[fp - 16:word32] = Mem84[0x00003FF4:word32]
-	Mem124[fp - 20:word32] = (int32) (int16) (int16) Mem117[a2_102:byte]
+	Mem124[fp - 20:word32] = (int32) (int16) Mem117[a2_102:byte]
 	word32 a0_127
 	word32 a1_128
 	word32 a5_129

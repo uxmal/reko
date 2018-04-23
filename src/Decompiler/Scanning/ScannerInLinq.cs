@@ -208,8 +208,7 @@ namespace Reko.Scanning
 
         private Tuple<MemoryArea, Address, Address> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
-            ImageSegment seg;
-            if (!this.program.SegmentMap.TryFindSegment(de.Key, out seg))
+            if (!this.program.SegmentMap.TryFindSegment(de.Key, out ImageSegment seg))
                 return null;
             if (!seg.IsExecutable)
                 return null;
@@ -226,12 +225,12 @@ namespace Reko.Scanning
                 // Find all links that connect instructions that have
                 // different components
                 var components_to_merge_raw =
-                (from link in sr.FlatEdges
-                 join t1 in the_blocks.Values on link.first equals t1.id
-                 join t2 in the_blocks.Values on link.second equals t2.id
-                 where t1.component_id != t2.component_id
-                 select new link { first = t1.component_id, second = t2.component_id })
-                .Distinct();
+                    (from link in sr.FlatEdges
+                     join t1 in the_blocks.Values on link.first equals t1.id
+                     join t2 in the_blocks.Values on link.second equals t2.id
+                     where t1.component_id != t2.component_id
+                     select new link { first = t1.component_id, second = t2.component_id })
+                    .Distinct();
                 // Ensure symmetry (only for WCC, SCC should remove this)
                 var components_to_merge =
                     components_to_merge_raw

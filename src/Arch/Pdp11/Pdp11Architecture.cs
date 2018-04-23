@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -171,8 +172,7 @@ namespace Reko.Arch.Pdp11
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -253,7 +253,16 @@ namespace Reko.Arch.Pdp11
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            Expression ea = binder.EnsureRegister(this.StackRegister);
+            if (cbOffset > 0)
+            {
+                ea = new BinaryExpression(Operator.IAdd, PrimitiveType.Ptr16, ea, Constant.Int16((short)cbOffset));
+            }
+            else if (cbOffset < 0)
+            {
+                ea = new BinaryExpression(Operator.ISub, PrimitiveType.Ptr16, ea, Constant.Int16((short)cbOffset));
+            }
+            return new MemoryAccess(ea, dataType);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -268,8 +277,14 @@ namespace Reko.Arch.Pdp11
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
-            ushort uAddr = rdr.ReadLeUInt16();
-            return Address.Ptr16(uAddr);
+            if (rdr.TryReadUInt16(out var uaddr))
+            {
+                return Address.Ptr16(uaddr);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
@@ -277,6 +292,10 @@ namespace Reko.Arch.Pdp11
             return Address.TryParse16(txtAddress, out addr);
         }
 
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
+        }
         #endregion
     }
 }

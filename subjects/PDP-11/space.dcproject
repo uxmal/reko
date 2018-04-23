@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>pdp11</arch>
+  <input>
+    <filename>space.sav</filename>
+    <disassembly>space.asm</disassembly>
+    <intermediate-code>space.dis</intermediate-code>
+    <output>space.c</output>
+    <types-file>space.h</types-file>
+    <global-vars>space.globals.c</global-vars>
+    <user>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <annotation addr="46BE">This indirect jump appears to use the range [-1,1], which Reko can't deduce. This is a typical place where a user annotation (indicating the range of valid values) would help.</annotation>
+      <registerValues />
+    </user>
+  </input>
+</project>

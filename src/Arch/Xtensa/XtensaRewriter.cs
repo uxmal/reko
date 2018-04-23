@@ -80,6 +80,7 @@ namespace Reko.Arch.Xtensa
                 case Opcodes.addx4: RewriteAddx(4); break;
                 case Opcodes.addx8: RewriteAddx(8); break;
                 case Opcodes.and: RewriteBinOp(m.And); break;
+                case Opcodes.andb: RewriteBinOp(m.And); break;
                 case Opcodes.andbc: RewriteBinOp((a, b) => m.And(a, m.Not(b))); break;
                 case Opcodes.ball: RewriteBall(); break;
                 case Opcodes.bany: RewriteBany(); break;

@@ -173,7 +173,7 @@ namespace Reko.UnitTests.Analysis
 			this.proc = proc;
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            Aliases alias = new Aliases(proc, arch);
+            Aliases alias = new Aliases(proc);
 			alias.Transform();
 			var gr = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(
@@ -189,7 +189,8 @@ namespace Reko.UnitTests.Analysis
 			cce.Transform();
 			DeadCode.Eliminate(proc, ssa);
 
-			ValuePropagator vp = new ValuePropagator(arch, ssa, new FakeDecompilerEventListener());
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00400000));
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new FakeDecompilerEventListener());
 			vp.Transform();
 
 			Coalescer coa = new Coalescer(proc, ssa);

@@ -186,6 +186,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
+      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Name>Arm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\i8051\i8051.csproj">
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
@@ -201,6 +205,14 @@
     <ProjectReference Include="..\..\Gui\Gui.csproj">
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
+      <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
+      <Name>Dol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
+      <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
+      <Name>MzExe</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>

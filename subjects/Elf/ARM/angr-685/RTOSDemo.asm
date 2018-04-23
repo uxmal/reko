@@ -2026,7 +2026,11 @@ l00001559:
 l0000155D:
 	stc2l	p12,c4,[r8]!
 	strbmi	r0,[r8,-#&BB1]!
+
+l00001565:
 	movwne	r1,#&20F0
+
+l00001569:
 	Invalid
 	Invalid
 	Invalid

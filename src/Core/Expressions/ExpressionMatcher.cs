@@ -24,6 +24,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Expressions
@@ -251,9 +252,14 @@ namespace Reko.Core.Expressions
             var m = p as MkSequence;
             if (m == null)
                 return false;
-            return 
-                Match(m.Head, seq.Head) &&
-                Match(m.Tail, seq.Tail);
+            if (seq.Expressions.Length != m.Expressions.Length)
+                return false;
+            for (int i =0; i < seq.Expressions.Length; ++i)
+            {
+                if (!Match(m.Expressions[i], seq.Expressions[i]))
+                    return false;
+            }
+            return true;
         }
 
         bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)
@@ -347,12 +353,7 @@ namespace Reko.Core.Expressions
             return new WildExpression(label);
         }
 
-        public static Expression AnyId()
-        {
-            return new WildId(null);
-        }
-
-        public static Identifier AnyId(string label)
+        public static Identifier AnyId(string label = null)
         {
             return new WildId(label);
         }

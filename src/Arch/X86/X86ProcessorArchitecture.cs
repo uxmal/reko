@@ -129,8 +129,7 @@ namespace Reko.Arch.X86
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -138,11 +137,10 @@ namespace Reko.Arch.X86
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
             ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            Dictionary<uint, RegisterStorage> subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
                 RegisterStorage rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg, out subregs))
+            if (Registers.SubRegisters.TryGetValue(reg, out var subregs))
             {
                 foreach (var subreg in subregs.Values)
                 {
@@ -193,10 +191,17 @@ namespace Reko.Arch.X86
 
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
         {
-            return mode.ReadCodeAddress(byteSize, rdr, state);
+            if (!mode.TryReadCodeAddress(byteSize, rdr, state, out var addr))
+                addr = null;
+            return addr;
         }
 
-		public override FlagGroupStorage GetFlagGroup(uint grf)
+        public RegisterStorage GetControlRegister(int v)
+        {
+            return mode.GetControlRegister(v);
+        }
+
+        public override FlagGroupStorage GetFlagGroup(uint grf)
 		{
 			foreach (FlagGroupStorage f in flagGroups)
 			{
@@ -251,11 +256,9 @@ namespace Reko.Arch.X86
         {
             if (offset == 0 && reg.BitSize == (ulong) width)
                 return reg;
-            Dictionary<uint, RegisterStorage> dict;
-            if (!Registers.SubRegisters.TryGetValue(reg, out dict))
+            if (!Registers.SubRegisters.TryGetValue(reg, out var dict))
                 return null;
-            RegisterStorage subReg;
-            if (!dict.TryGetValue((uint)(offset * 256 + width), out subReg))
+            if (!dict.TryGetValue((uint)(offset * 256 + width), out var subReg))
                 return null;
             return subReg;
         }
@@ -306,7 +309,6 @@ namespace Reko.Arch.X86
             return (reg != RegisterStorage.None);
         }
 
-
 		public override string GrfToString(uint grf)
 		{
 			StringBuilder s = new StringBuilder();
@@ -328,6 +330,11 @@ namespace Reko.Arch.X86
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return mode.TryParseAddress(txtAddress, out addr);
+        }
+
+        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+        {
+            return mem.TryReadLe(addr, dt, out value);
         }
     }
 

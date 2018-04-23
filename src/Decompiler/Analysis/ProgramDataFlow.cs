@@ -46,7 +46,7 @@ namespace Reko.Analysis
 		{
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				procFlow[proc] = new ProcedureFlow(proc, program.Architecture);
+				procFlow[proc] = new ProcedureFlow(proc, proc.Architecture);
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					blockFlow[block] = new BlockFlow(

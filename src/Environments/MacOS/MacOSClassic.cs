@@ -74,11 +74,10 @@ namespace Reko.Environments.MacOS
         public override SystemService FindService(int vector, ProcessorState state)
         {
             EnsureTypeLibraries(PlatformIdentifier);
+            vector &= 0xFFFF;
             foreach (var module in this.Metadata.Modules.Values)
             {
-                List<SystemService> svcs;
-                vector &= 0xFFFF;
-                if (module.ServicesByVector.TryGetValue(vector, out svcs))
+                if (module.ServicesByVector.TryGetValue(vector, out List<SystemService> svcs))
                     return svcs.FirstOrDefault(s => s.SyscallInfo.Matches(vector, state));
             }
             return null;
@@ -149,8 +148,7 @@ namespace Reko.Environments.MacOS
         /// <returns>Null if the call wasn't to a valid A5 jumptable location.</returns>
         public override Address ResolveIndirectCall(RtlCall instr)
         {
-            var bin = instr.Target as BinaryExpression;
-            if (bin == null)
+            if (!(instr.Target is BinaryExpression bin))
                 return null;
             if (bin.Operator != Operator.IAdd)
                 return null;
@@ -162,8 +160,7 @@ namespace Reko.Environments.MacOS
                 return null;
             const uint SizeOfJmpOpcode = 2;
             uint offset = cRight.ToUInt32() + this.A5Offset + SizeOfJmpOpcode;
-            uint uAddr;
-            if (!A5World.MemoryArea.TryReadBeUInt32(offset, out uAddr))
+            if (!A5World.MemoryArea.TryReadBeUInt32(offset, out uint uAddr))
                 return null;
             return Address.Ptr32(uAddr);
         }

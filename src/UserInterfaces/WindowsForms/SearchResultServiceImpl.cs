@@ -73,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms
             }
         }
 
-        public void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails details)
+        public void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails details)
         {
             ShowSearchResults(new AddressSearchResult(services, hits, details));
         }

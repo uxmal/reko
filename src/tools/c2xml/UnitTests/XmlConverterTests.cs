@@ -159,6 +159,12 @@ namespace Reko.Tools.C2Xml.UnitTests
             {
                 throw new NotImplementedException();
             }
+
+            public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+            {
+                return mem.TryReadLe(addr, dt, out value);
+            }
+
         }
 
         void RunTest(string c_code, string expectedXml)

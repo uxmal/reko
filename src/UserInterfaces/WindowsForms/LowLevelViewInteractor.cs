@@ -430,10 +430,13 @@ namespace Reko.UserInterfaces.WindowsForms
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values
                         .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
-                        .Select(offset => new ProgramAddress(
-                            program,
-                            program.ImageMap.BaseAddress + offset));
-                    srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
+                        .Select(offset => new AddressSearchHit
+                        {
+                            Program = program,
+                            Address = program.ImageMap.BaseAddress + offset,
+                            Length = 1
+                        });
+                    srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
             }
             return true;

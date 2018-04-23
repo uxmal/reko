@@ -90,7 +90,9 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.illegal),
 
                 // 30
-                new SingleByteOpRec(Opcode.illegal),
+                new PrefixedOpRec(
+                    Opcode.illegal, "",
+                    Opcode.vpmovsxbw, "Vx,Mq"),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),
                 new SingleByteOpRec(Opcode.illegal),

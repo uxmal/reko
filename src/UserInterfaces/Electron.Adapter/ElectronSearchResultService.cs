@@ -13,7 +13,7 @@ namespace Reko.Gui.Electron.Adapter
             this.searchResultChannel = searchResultChannel;
         }
 
-        public void ShowAddressSearchResults(IEnumerable<ProgramAddress> hits, AddressSearchDetails code)
+        public void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails code)
         {
             throw new NotImplementedException();
         }

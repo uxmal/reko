@@ -28,6 +28,7 @@ namespace Reko.UserInterfaces.WindowsForms
     public class ToolStripTextBoxWrapper : ITextBox
     {
         public event EventHandler<Gui.Controls.KeyEventArgs> KeyDown;
+        public event EventHandler<Gui.Controls.KeyEventArgs> KeyUp;
 
         private ToolStripTextBox textbox;
 
@@ -68,6 +69,18 @@ namespace Reko.UserInterfaces.WindowsForms
         private void Textbox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             var eh = this.KeyDown;
+            if (eh != null)
+            {
+                var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);
+                eh(sender, ee);
+                e.SuppressKeyPress = ee.SuppressKeyPress;
+                e.Handled = ee.Handled;
+            }
+        }
+
+        private void Textbox_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            var eh = this.KeyUp;
             if (eh != null)
             {
                 var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);

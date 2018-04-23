@@ -29,7 +29,6 @@ word32 g_dw40003044;
 word64 g_qw40003050;
 word32 g_dw40003058;
 word64 g_qw40003060;
-struct Eq_701 g_t400030E0;
 ui64 g_qw40003160;
 ptr64 g_ptr40003178;
 word64 g_qw400031D8;

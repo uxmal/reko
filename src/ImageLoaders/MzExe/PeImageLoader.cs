@@ -268,9 +268,9 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
+            SegmentMap = new SegmentMap(addrLoad);
             if (sections > 0)
             {
-                SegmentMap = new SegmentMap(addrLoad);
                 sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToImageMap(addrLoad, SegmentMap);
@@ -545,12 +545,12 @@ namespace Reko.ImageLoaders.MzExe
 
             string name = null;
             SerializedSignature ssig = null;
-            Func<string, string, Argument_v1> Arg =
-                (n, t) => new Argument_v1
-                {
-                    Name = n,
-                    Type = new TypeReference_v1 { TypeName = t }
-                };
+
+            Argument_v1 Arg(string n, string t) => new Argument_v1
+            {
+                Name = n,
+                Type = new TypeReference_v1 { TypeName = t }
+            };
             if (isDll)
             {
                 name = "DllMain";   //$TODO: ensure users can override this name
@@ -918,7 +918,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
         {
             var symbols = new List<ImageSymbol>();
             var attributes = rdr.ReadLeUInt32();
-            var offset = ((attributes & DID_RvaBased) != 0) ? 0 : addrLoad.ToUInt32();
+            var offset = ((attributes & DID_RvaBased) != 0) ? 0 : (uint) addrLoad.ToLinear();
             var rvaDllName = rdr.ReadLeUInt32();
             if (rvaDllName == 0)
                 return false;
@@ -975,7 +975,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
 
-			if(sec.Name == null) {
+			if (sec.Name == null) {
 				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
 			}
 
@@ -1088,13 +1088,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
         {
-            ImageSymbol symOld;
             ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
             {
                 Type = SymbolType.Procedure,
                 ProcessorState = arch.CreateProcessorState()
             };
-            if (!symbols.TryGetValue(addr, out symOld))
+            if (!symbols.TryGetValue(addr, out var symOld))
             {
                 symbols.Add(addr, symNew);
             }

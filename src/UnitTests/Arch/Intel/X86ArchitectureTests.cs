@@ -204,7 +204,8 @@ namespace Reko.UnitTests.Arch.Intel
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
-            Address addr = arch.ReadCodeAddress(2, rdr, state);
+
+            var addr = arch.ReadCodeAddress(2, rdr, state);
 
             Assert.AreEqual("1234:5678", addr.ToString());
         }
@@ -217,7 +218,8 @@ namespace Reko.UnitTests.Arch.Intel
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
-            Address addr = arch.ReadCodeAddress(4, rdr, state);
+
+            var addr = arch.ReadCodeAddress(4, rdr, state);
 
             Assert.AreEqual("1234:5678", addr.ToString());
         }
@@ -229,7 +231,8 @@ namespace Reko.UnitTests.Arch.Intel
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
-            Address addr = arch.ReadCodeAddress(2, rdr, state);
+
+            var addr = arch.ReadCodeAddress(2, rdr, state);
 
             Assert.AreEqual("1234:5678", addr.ToString());
         }
@@ -241,7 +244,8 @@ namespace Reko.UnitTests.Arch.Intel
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
-            Address addr = arch.ReadCodeAddress(4, rdr, state);
+
+            var addr = arch.ReadCodeAddress(4, rdr, state);
 
             Assert.AreEqual("1234:5678", addr.ToString());
         }
@@ -253,7 +257,8 @@ namespace Reko.UnitTests.Arch.Intel
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
-            Address addr = arch.ReadCodeAddress(4, rdr, state);
+
+            var addr = arch.ReadCodeAddress(4, rdr, state);
 
             Assert.AreEqual("12345678", addr.ToString());
         }

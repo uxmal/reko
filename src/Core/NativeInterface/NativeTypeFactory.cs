@@ -54,8 +54,7 @@ namespace Reko.Core.NativeInterface
 
         private HExpr MapToHandle(DataType dt)
         {
-            HExpr h;
-            if (handles.TryGetValue(dt, out h))
+            if (handles.TryGetValue(dt, out HExpr h))
                 return h;
             ++counter;
             h = (HExpr)(handles.Count + counter);

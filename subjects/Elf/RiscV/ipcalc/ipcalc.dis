@@ -6045,7 +6045,7 @@ l0000000000017C7C:
 // SymbolicIn: sp:fp + -80 s0:<invalid> s3:a1 s2:<invalid> s1:a3 s4:a4 a0:<invalid> a5:<invalid> s7:<invalid> a1:<invalid> a4:1 a3:<invalid> s6:1 t3:<invalid> t1:<invalid> a2:<invalid> a6:<invalid> -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017C84:
-	branch (word64) ((real32) Mem163[a0_175 + 52:real32] == (real32) ((real32) 0x0000000000000000)) == 0x0000000000000000 l0000000000017CC8
+	branch (word64) ((real32) Mem163[a0_175 + 52:real32] == (real32) 0x0000000000000000) == 0x0000000000000000 l0000000000017CC8
 // DataOut: a4 a5 gp s10 s2 s8
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 s0:<invalid> s3:a1 s2:<invalid> s1:a3 s4:a4 a0:<invalid> a5:<invalid> s7:<invalid> a1:<invalid> a4:1 t3:<invalid> t1:<invalid> a3:<invalid> s6:1 a2:<invalid> a6:<invalid> -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -6439,7 +6439,7 @@ l0000000000017E70:
 // SymbolicIn: sp:fp + -80 s0:<invalid> s4:a1 s3:a2 s2:a3 s5:a4 a5:<invalid> a1:<invalid> a0:<invalid> s1:<invalid> a4:<invalid> a2:<invalid> a3:<invalid> a6:1 s7:12 t3:<invalid> t1:<invalid> -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017E78:
-	branch (word64) ((real32) Mem171[a0_184 + 52:real32] == (real32) ((real32) 0x0000000000000000)) == 0x0000000000000000 l0000000000017EBC
+	branch (word64) ((real32) Mem171[a0_184 + 52:real32] == (real32) 0x0000000000000000) == 0x0000000000000000 l0000000000017EBC
 // DataOut: a4 a5 gp s0 s10
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 s0:<invalid> s4:a1 s3:a2 s2:a3 s5:a4 a5:<invalid> a1:<invalid> a0:<invalid> s1:<invalid> a4:<invalid> a2:<invalid> a3:<invalid> a6:1 t3:<invalid> t1:<invalid> s7:12 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra

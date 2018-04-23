@@ -66,7 +66,7 @@ namespace Reko.Core.Services
                 MetadataLoader loader = CreateLoader(tlElement, libFileName, bytes);
                 if (loader == null)
                     return libDst;
-                var lib = loader.Load(platform, libDst);
+                var lib = loader.Load(platform, tlElement.Module, libDst);
                 return lib;
             }
             catch (Exception ex)

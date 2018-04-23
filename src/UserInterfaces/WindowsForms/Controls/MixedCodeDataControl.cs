@@ -50,11 +50,21 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return program; }
             set
             {
-                if (program != null && program.ImageMap != null)
-                    program.ImageMap.MapChanged -= ImageMap_MapChanged;
+                if (program != null)
+                {
+                    if (program.ImageMap != null)
+                        program.ImageMap.MapChanged -= ImageMap_MapChanged;
+                    program.User.Annotations
+                        .AnnotationChanged -= AnnotationChanged;
+                }
                 program = value;
-                if (program != null && program.ImageMap != null) 
-                    program.ImageMap.MapChanged += ImageMap_MapChanged;
+                if (program != null)
+                {
+                    if (program.ImageMap != null)
+                        program.ImageMap.MapChanged += ImageMap_MapChanged;
+                    program.User.Annotations
+                        .AnnotationChanged += AnnotationChanged;
+                }
                 ProgramChanged.Fire(this);
             }
         }
@@ -72,7 +82,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 if (program != null)
                 {
                     Model = new MixedCodeDataModel(program);
-                    addrTop = Model.CurrentPosition as Address;
+                    var currentPos = Model.CurrentPosition;
+                    addrTop = MixedCodeDataModel.PositionAddress(currentPos);
                     return;
                 }
             }
@@ -88,31 +99,47 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (program != null)
             {
-                Model.MoveToLine(addrTop, 0);
+                var addrTopPos = MixedCodeDataModel.Position(addrTop, 0);
+                Model.MoveToLine(addrTopPos, 0);
                 RecomputeLayout();
                 UpdateScrollbar();
                 Invalidate();
             }
         }
 
- 
-
         protected override void OnScroll()
         {
-            addrTop = Model.CurrentPosition as Address;
+            if (Model is MixedCodeDataModel)
+            {
+                var currentPos = Model.CurrentPosition;
+                addrTop = MixedCodeDataModel.PositionAddress(currentPos);
+            }
+            else
+            {
+                addrTop = null;
+            }
             base.OnScroll();
         }
 
         private void RefreshModel()
         {
-            var currentAddress = Model.CurrentPosition;
+            var currentPos = Model.CurrentPosition;
             var model = new MixedCodeDataModel(program);
-            model.MoveToLine(currentAddress, 0);
-            this.addrTop = model.CurrentPosition as Address;
+            model.MoveToLine(currentPos, 0);
+            currentPos = Model.CurrentPosition;
+            this.addrTop = MixedCodeDataModel.PositionAddress(currentPos);
             this.Model = model;
         }
 
         private void ImageMap_MapChanged(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+                BeginInvoke(new Action(RefreshModel));
+            else
+                RefreshModel();
+        }
+
+        private void AnnotationChanged(object sender, EventArgs e)
         {
             if (InvokeRequired)
                 BeginInvoke(new Action(RefreshModel));
@@ -131,7 +158,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var pt = GetAnchorMiddlePoint();
             var memoryTextSpan = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpan;
             if (memoryTextSpan == null || memoryTextSpan.Address == null)
-                return anchorPos.Line as Address;
+                return MixedCodeDataModel.PositionAddress(anchorPos.Line);
             return memoryTextSpan.Address;
         }
     }

@@ -33,12 +33,14 @@ namespace Reko.UserInterfaces.WindowsForms
         private TextBox text;
 
         public event EventHandler<Gui.Controls.KeyEventArgs> KeyDown;
+        public event EventHandler<Gui.Controls.KeyEventArgs> KeyUp;
 
         public TextBoxWrapper(TextBox text)
             : base(text)
         {
             this.text = text;
             this.text.KeyDown += Text_KeyDown;
+            this.text.KeyUp += Text_KeyUp;
         }
 
 
@@ -53,6 +55,8 @@ namespace Reko.UserInterfaces.WindowsForms
             text.Focus();
         }
 
+
+
         public event EventHandler TextChanged
         {
             add { text.TextChanged += value; }
@@ -66,6 +70,18 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
         private void Text_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            var eh = KeyDown;
+            if (eh != null)
+            {
+                var ee = new Gui.Controls.KeyEventArgs((Gui.Controls.Keys)e.KeyData);
+                eh(sender, ee);
+                e.SuppressKeyPress = ee.SuppressKeyPress;
+                e.Handled = ee.Handled;
+            }
+        }
+
+        private void Text_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             var eh = KeyDown;
             if (eh != null)

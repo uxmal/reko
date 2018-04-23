@@ -24,6 +24,8 @@ using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -46,7 +48,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.syncForm.CreateControl();
         }
 
-        public IDialog CreateAboutDialog()
+        public IAboutDialog CreateAboutDialog()
         {
             return new AboutDialog();
         }
@@ -55,6 +57,11 @@ namespace Reko.UserInterfaces.WindowsForms
 		{
 			return new AddressPromptDialog();
 		}
+
+        public IArchiveBrowserDialog CreateArchiveBrowserDialog()
+        {
+            return new ArchiveBrowserDialog();
+        }
 
         public IAssembleFileDialog CreateAssembleFileDialog()
         {
@@ -86,6 +93,14 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new FindStringsDialog();
         }
+
+        public IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings)
+        {
+            var dlg = new KeyBindingsDialog();
+            dlg.KeyBindings = keyBindings;
+            return dlg;
+        }
+
 
         public IOpenAsDialog CreateOpenAsDialog()
         {
@@ -155,6 +170,11 @@ namespace Reko.UserInterfaces.WindowsForms
         public IDeclarationForm CreateDeclarationForm()
         {
             return new DeclarationForm();
+        }
+
+        public IDeclarationForm CreateCommentForm()
+        {
+            return new CommentForm();
         }
 
         public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride)

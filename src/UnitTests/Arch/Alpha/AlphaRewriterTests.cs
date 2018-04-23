@@ -83,7 +83,11 @@ namespace Reko.UnitTests.Arch.Mips
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new AlphaRewriter(arch, new LeImageReader(this.image, 0), new AlphaProcessorState(arch), binder, host);
+            return new AlphaRewriter(
+                arch, 
+                new LeImageReader(this.image, 0),
+                binder,
+                host);
         }
 
         [Test]

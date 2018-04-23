@@ -38,9 +38,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         const int BytesPerLine = 16;
 
         private Program program;
-        private Address addrCur;
-        private Address addrEnd;
+        private ModelPosition curPos;
+        private ModelPosition endPos;
         private Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
+        private IDictionary<Address, string[]> comments;
 
         public MixedCodeDataModel(Program program)
         {
@@ -48,34 +49,37 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var firstSeg = program.SegmentMap.Segments.Values.FirstOrDefault();
             if (firstSeg == null)
             {
-                this.addrCur = program.ImageMap.BaseAddress;
-                this.StartPosition = program.ImageMap.BaseAddress;
-                this.addrEnd = program.ImageMap.BaseAddress;
+                this.curPos = Pos(program.ImageMap.BaseAddress);
+                this.StartPosition = Pos(program.ImageMap.BaseAddress);
+                this.endPos = Pos(program.ImageMap.BaseAddress);
                 this.LineCount = 0;
             }
             else
             {
                 var lastSeg = program.SegmentMap.Segments.Values.Last();
-                this.addrCur = firstSeg.Address;
-                this.StartPosition = firstSeg.Address;
-                this.addrEnd = lastSeg.EndAddress;
+                this.curPos = Pos(firstSeg.Address);
+                this.StartPosition = Pos(firstSeg.Address);
+                this.endPos = Pos(lastSeg.EndAddress);
                 this.CollectInstructions();
                 this.LineCount = CountLines();
             }
+            this.comments = program.User.Annotations.ToSortedList(
+                a => a.Address,
+                a => Lines(a.Text));
         }
 
         public MixedCodeDataModel(MixedCodeDataModel that)
         {
             this.program = that.program;
-            this.addrCur = that.addrCur;
-            this.addrEnd = that.addrEnd;
+            this.curPos = that.curPos;
+            this.endPos = that.endPos;
             this.instructions = that.instructions;
             this.LineCount = that.LineCount;
         }
 
-        public object CurrentPosition { get { return addrCur; } }
+        public object CurrentPosition { get { return curPos; } }
         public object StartPosition { get; private set; }
-        public object EndPosition { get { return addrEnd; } }
+        public object EndPosition { get { return endPos; } }
 
         public int LineCount { get; private set; }
 
@@ -96,8 +100,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private int CountBlockLines(ImageMapItem item)
         {
-            var bi = item as ImageMapBlock;
-            if (bi != null)
+            if (item is ImageMapBlock bi)
             {
                 return CountDisassembledLines(bi);
             }
@@ -111,7 +114,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// Count the number of lines a memory area subtends.
         /// </summary>
         /// <remarks>
-        /// We align mempry spans on 16-byte boundaries (//$REVIEW for now,
+        /// We align memory spans on 16-byte boundaries (//$REVIEW for now,
         /// this should be user-adjustable) so if we have a memory span 
         /// straddling such a boundary, we have to account for it. E.g. the
         /// span [01FC-0201] should be rendered:
@@ -175,8 +178,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public int ComparePositions(object a, object b)
         {
-            var diff = (Address)a - (Address)b;
-            return diff.CompareTo(0);
+            return ((ModelPosition)a).CompareTo((ModelPosition)b);
         }
 
         /// <summary>
@@ -189,11 +191,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             long numer = 0;
             foreach (var item in program.ImageMap.Items.Values)
             {
-                if (item.Address <= addrCur)
+                if (item.Address <= curPos.Address)
                 {
-                    if (item.IsInRange(addrCur))
+                    if (item.IsInRange(curPos.Address))
                     {
-                        numer += GetLineOffset(item, addrCur);
+                        numer += GetLineOffset(item, curPos.Address);
                         break;
                     }
                     numer += CountBlockLines(item);
@@ -210,8 +212,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private int GetLineOffset(ImageMapItem item, Address addr)
         {
-            var bi = item as ImageMapBlock;
-            if (bi != null)
+            if (item is ImageMapBlock bi)
             {
                 int i = 0;
                 while (i < instructions[bi].Length)
@@ -236,31 +237,30 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (position == null)
                 throw new ArgumentNullException("position");
-            addrCur = SanitizeAddress((Address) position);
+            curPos = SanitizePosition((ModelPosition)position);
             if (offset == 0)
                 return 0;
             int moved = 0;
             if (offset > 0)
             {
-                ImageMapItem item;
 
-                if (!program.ImageMap.TryFindItem(addrCur, out item))
+                if (!program.ImageMap.TryFindItem(curPos.Address, out var item))
                     return moved;
                 int iItem = program.ImageMap.Items.IndexOfKey(item.Address);
                 for (;;)
                 {
                     Debug.Assert(item != null);
-                    var bi = item as ImageMapBlock;
-                    if (bi != null)
+                    if (item is ImageMapBlock bi)
                     {
                         var instrs = instructions[bi];
-                        int i = FindIndexOfInstructionAddress(instrs, addrCur);
+                        int i = FindIndexOfInstructionAddress(
+                            instrs, curPos.Address);
                         Debug.Assert(i >= 0, "TryFindItem said this item contains the address.");
                         int iNew = i + offset;
                         if (0 <= iNew && iNew < instrs.Length)
                         {
                             moved += offset;
-                            addrCur = instrs[iNew].Address;
+                            curPos = Pos(instrs[iNew].Address);
                             return moved;
                         }
                         // Fell off the end.
@@ -280,14 +280,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     {
                         // Determine current line # within memory block
 
-                        int i = FindIndexOfMemoryAddress(item, addrCur);
+                        int i = FindIndexOfMemoryAddress(item, curPos.Address);
                         int iEnd = CountBlockLines(item);
                         Debug.Assert(i >= 0, "Should have been inside item");
                         int iNew = i + offset;
                         if (0 <= iNew && iNew < iEnd)
                         {
                             moved += offset;
-                            addrCur = GetAddressOfLine(item, iNew);
+                            curPos = Pos(GetAddressOfLine(item, iNew));
                             return moved;
                         }
                         // Fall of the end
@@ -309,14 +309,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     if (iItem >= program.ImageMap.Items.Count)
                     {
                         // At the end of image, no need for SanitizeAddress
-                        addrCur = (Address)this.EndPosition;
+                        curPos = (ModelPosition)this.EndPosition;
                         return moved;
                     }
                     else
                     {
                         // At the start of an item, no need for SanitizeAddress
                         item = program.ImageMap.Items.Values[iItem];
-                        addrCur = item.Address;
+                        curPos = Pos(item.Address);
                     }
                 }
             }
@@ -329,12 +329,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        private Address SanitizeAddress(Address position)
+        private ModelPosition SanitizePosition(ModelPosition position)
         {
-            ImageMapItem item;
-            if (program.ImageMap.TryFindItem(position, out item))
+            if (program.ImageMap.TryFindItem(position.Address, out var item))
             {
-                if (item.IsInRange(position))
+                if (item.IsInRange(position.Address))
                 {
                     // Safely inside an item.
                     return position;
@@ -344,17 +343,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 int iItem = program.ImageMap.Items.Keys.IndexOf(item.Address) + 1;
                 if (iItem >= program.ImageMap.Items.Count)
                 {
-                    return this.addrEnd;
+                    return this.endPos;
                 }
-                return program.ImageMap.Items.Keys[iItem];
+                return Pos(program.ImageMap.Items.Keys[iItem]);
             }
             // We're outside the range of all items, so peg the position
             // at either the beginning or the end.
-            if (position < program.ImageMap.BaseAddress)
+            if (position.Address < program.ImageMap.BaseAddress)
             {
-                return program.ImageMap.BaseAddress;
+                return Pos(program.ImageMap.BaseAddress);
             }
-            return addrEnd;
+            return endPos;
         }
 
         private Address GetAddressOfLine(ImageMapItem item, int i)
@@ -397,12 +396,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 #else
             if (numer <= 0)
             {
-                addrCur = (Address)StartPosition;
+                curPos = (ModelPosition)StartPosition;
                 return;
             }
             else if (numer >= denom)
             {
-                addrCur = (Address)EndPosition;
+                curPos = (ModelPosition)EndPosition;
                 return;
             }
 
@@ -411,13 +410,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             foreach (var item in program.ImageMap.Items.Values)
             {
                 int size;
-                var bi = item as ImageMapBlock;
-                if (bi != null)
+                if (item is ImageMapBlock bi)
                 {
                     size = CountDisassembledLines(bi);
                     if (curLine + size > targetLine)
                     {
-                        this.addrCur = instructions[bi][targetLine - curLine].Address;
+                        this.curPos = Pos(instructions[bi][targetLine - curLine].Address);
                         return;
                     }
                 }
@@ -426,13 +424,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     size = CountMemoryLines(item);
                     if (curLine + size > targetLine)
                     {
-                        this.addrCur = GetAddressOfLine(item, targetLine - curLine);
+                        this.curPos = Pos(GetAddressOfLine(item, targetLine - curLine));
                         return;
                     }
                 }
                 curLine += size;
             }
-            addrCur = (Address)EndPosition;
+            curPos = (ModelPosition)EndPosition;
 #endif
         }
 
@@ -449,6 +447,53 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             MoveToLine(oldPos, 0);
 
             return numLines;
+        }
+
+        private static ModelPosition Pos(Address addr, int offset = 0)
+        {
+            return new ModelPosition(addr, offset);
+        }
+
+        public static object Position(Address addr, int offset)
+        {
+            return Pos(addr, offset);
+        }
+
+        public static Address PositionAddress(object position)
+        {
+            return ((ModelPosition)position).Address;
+        }
+
+        private static string[] Lines(string s)
+        {
+            return s.Split(
+                new string[] { Environment.NewLine },
+                StringSplitOptions.None);
+        }
+
+        private class ModelPosition : IComparable<ModelPosition>
+        {
+            public readonly Address Address;
+            public readonly int Offset;
+
+            public ModelPosition(Address addr, int offset)
+            {
+                this.Address = addr;
+                this.Offset = offset;
+            }
+
+            public int CompareTo(ModelPosition that)
+            {
+                var cmp = this.Address.CompareTo(that.Address);
+                if (cmp != 0)
+                    return cmp;
+                return this.Offset.CompareTo(that.Offset);
+            }
+
+            public override string ToString()
+            {
+                return $"{Address}({Offset})";
+            }
         }
 
         public class DataItemNode
@@ -472,8 +517,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 int numLines;
                 var startAddr = item.Address;
                 var endAddr = item.Address + item.Size;
-                var bi = item as ImageMapBlock;
-                if (bi != null)
+                if (item is ImageMapBlock bi)
                 {
                     numLines = CountDisassembledLines(bi);
                     curProc = bi.Block.Procedure;
