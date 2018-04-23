@@ -71,6 +71,7 @@ namespace Reko.Gui
             {
                 this.ctx = ctx;
                 this.guiHandler = guiHandler;
+                System.Windows.Forms.Application.Idle += Application_Idle;
             }
 
             // An event has happened in the worker thread. We now have to dispatch 
@@ -81,11 +82,12 @@ namespace Reko.Gui
                     Thread.CurrentThread.Name,
                     Thread.CurrentThread.ManagedThreadId);
 
-                if (Interlocked.CompareExchange(ref isBusy, 1, 0) == 0)
+                int newWork = Interlocked.Increment(ref this.moreWork);
+                if (newWork == 1)
                 {
-                    // Now we are busy. Start notification on the receiving thread. Somehow.
+                    // The UI thread wasn't busy, now it is. Start notification on the receiving thread. 
                     Debug.Print("Posting event so we can handle it on the UI thread.");
-                    ctx.Post(new SendOrPostCallback(Worker), sender);
+                //    ctx.Post(new SendOrPostCallback(Worker), sender);
                 }
                 else
                 {
@@ -94,13 +96,29 @@ namespace Reko.Gui
                 }
             }
 
+            private void Application_Idle(object sender, EventArgs e)
+            {
+                int wasMoreWork = Interlocked.Exchange(ref this.moreWork, 0);
+                if (wasMoreWork > 0)
+                {
+                    Debug.Print("Worker: on thread {0}{1}", Thread.CurrentThread.Name, Thread.CurrentThread.ManagedThreadId);
+                    this.guiHandler(sender, EventArgs.Empty);
+                }
+            }
+
+
             private void Worker(object sender)
             {
                 Debug.Print("Worker: on thread {0}{1}", Thread.CurrentThread.Name, Thread.CurrentThread.ManagedThreadId);
 
                 this.guiHandler(sender, EventArgs.Empty);
                 int wasMoreWork = Interlocked.Exchange(ref this.moreWork, 0);
-                 Interlocked.Exchange(ref this.moreWork, 0);
+                if (wasMoreWork > 0)
+                {
+                    // more work arrived. We need to start again, but we want the UI thread 
+                    // to have a chance to pump some messages. So we post again.
+                    ctx.Post(new SendOrPostCallback(Worker), sender);
+                }
             }
         }
     }

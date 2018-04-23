@@ -46,8 +46,8 @@ namespace Reko.WindowsItp
 
             this.Invoke(new Action(() =>
             {
-                listBox1.Items.Add($"Event {DateTime.Now}");
                 ++EventsReceived;
+                listBox1.Items.Add($"Event {EventsReceived}");
                 Thread.Sleep(1000);
             }));
 
@@ -88,9 +88,10 @@ namespace Reko.WindowsItp
                 while (!cancel && evt.WaitOne())
                 {
                     // spam with events.
-                    Debug.Print("Firing event");
                     SomethingChanged?.Invoke(this, EventArgs.Empty);
                     ++EventsSent;
+                    Debug.Print($"Fired event {EventsSent}");
+
                     Thread.Sleep(200);
                 }
                 Debug.Print("Ending grind");
