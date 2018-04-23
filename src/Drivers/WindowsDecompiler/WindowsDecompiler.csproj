@@ -210,6 +210,10 @@
       <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
       <Name>Dol</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
+      <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
+      <Name>MzExe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
       <Name>NativeProxy</Name>

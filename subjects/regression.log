@@ -649,15 +649,6 @@ Parameter name: Linear address 00000000 is not in known segment.
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in C:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 90
    at Reko.DecompilerDriver.ReconstructTypes() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
 fn000000000040E450: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
-error: An error occurred during decompilation. System.IO.IOException: The requested operation cannot be performed on a file with a user-mapped section open.
-
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
-   at Reko.CmdLine.CmdLineHost.CreateTextWriter(String filename) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 42
-   at Reko.CmdLine.CmdLineHost.WriteDecompiledCode(Program program, Action`1 writer) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 71
-   at Reko.DecompilerDriver.WriteDecompilerProducts() in C:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 503
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in C:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 171
 === Elf\x86-64\pngpixel\pngpixel
 *** Elf\x86-64\pngpixel\pngpixel
 00000000004013B1: warning: Unable to resolve imported reference png_create_read_struct.
@@ -2261,4 +2252,4 @@ fn1483_1BB9: error: An error occurred while rewriting procedure to high-level la
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 51 binaries in 40.11 seconds ---
+Decompiled 51 binaries in 35.27 seconds ---

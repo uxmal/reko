@@ -382,6 +382,15 @@ namespace Reko.Arch.X86
             }
         }
 
+        private void RewriteSqrtsd()
+        {
+            var src = SrcOp(instrCur.op2);
+            var dst = SrcOp(instrCur.op1);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
+            m.Assign(tmp, host.PseudoProcedure("__sqrt", PrimitiveType.Real64, src));
+            m.Assign(dst, m.Dpb(dst, tmp, 0));
+        }
+
         private void RewriteStmxcsr()
         {
             var src = binder.EnsureRegister(Registers.mxcsr);

@@ -40,6 +40,8 @@ namespace Reko.Scanning
     /// </remarks>
     public class ValueSetEvaluator : ExpressionVisitor<ValueSet>
     {
+        private const int MaxTransferTableEntries = 2000;
+
         private IProcessorArchitecture arch;
         private SegmentMap segmentMap;
         private Dictionary<Expression, ValueSet> context;
@@ -220,6 +222,7 @@ namespace Reko.Scanning
             return new ConcreteValueSet(
                 access.DataType,
                 vs.Values
+                    .Take(MaxTransferTableEntries)
                     .Select(v => ReadValue(access.DataType, v))
                     .ToArray());
         }
