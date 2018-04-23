@@ -84,6 +84,7 @@ namespace Reko.Gui
                 if (Interlocked.CompareExchange(ref isBusy, 1, 0) == 0)
                 {
                     // Now we are busy. Start notification on the receiving thread. Somehow.
+                    Debug.Print("Posting event so we can handle it on the UI thread.");
                     ctx.Post(new SendOrPostCallback(Worker), sender);
                 }
                 else
@@ -102,24 +103,5 @@ namespace Reko.Gui
                  Interlocked.Exchange(ref this.moreWork, 0);
             }
         }
-    }
-
-    public class EventClient
-    {
-        public void ListenToEventomatic(EventBus bus, EventoMatic em)
-        {
-            bus.RegisterSingleEventMailbox(e => em.FooHappened += e, em_foohappened);
-        }
-
-        private void em_foohappened(object sender, EventArgs e)
-        {
-            // Do something very slow.
-        }
-    }
-
-    public class EventoMatic
-    {
-        public event EventHandler FooHappened;
-
     }
 }
