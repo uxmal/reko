@@ -1,4 +1,4 @@
-Mem0: Mem0:Global, def: {def Mem0}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}
+Mem0: Mem0:Mem, def: {def Mem0}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}
 fp: fp:Temporary
 bx: bx:Register bx
 rArg0: rArg0:FPU stack, def: {def rArg0}, uses: {FPUF_15 = cond(rArg0 - Mem0[ds:si:real32])}

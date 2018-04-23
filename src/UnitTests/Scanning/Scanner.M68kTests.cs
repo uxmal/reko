@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Scanning
             string sExp =
 @"// fn00100000
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // a7:a7
 // d0:d0
@@ -168,7 +168,7 @@ fn00100000_exit:
             program.Procedures.Values[0].Write(true, sw);
             string sExp = @"// fn00001020
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // a7:a7
 // a0:a0

@@ -130,21 +130,14 @@ namespace Reko.Analysis
             oldCount = pf.Preserved.Count;
             pf.Preserved.UnionWith(preserved);
             changed |= (pf.Preserved.Count != oldCount);
-            
+
             foreach (var de in ctx.TrashedFlags)
             {
-                if (pf.grfTrashed.TryGetValue(de.Key, out uint grf))
+                var grf = pf.grfTrashed.Get(de.Key);
+                var grfNew = grf | de.Value;
+                if (grfNew != grf)
                 {
-                    var grfNew = grf | de.Value;
-                    if (grfNew != grf)
-                    {
-                        pf.grfTrashed[de.Key] = grfNew;
-                changed = true;
-            }
-                }
-                else
-                {
-                    pf.grfTrashed[de.Key] = grf;
+                    pf.grfTrashed[de.Key] = grfNew;
                     changed = true;
                 }
             }

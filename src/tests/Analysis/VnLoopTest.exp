@@ -1,4 +1,4 @@
-Mem0: Mem0:Global, def: {def Mem0}
+Mem0: Mem0:Mem, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
 ax: ax:Register, def: {def ax}
 bx: bx:Register, def: {def bx}
@@ -56,7 +56,7 @@ l0C00_000B:		// block 5, pred: 2
 	SCZO_19 = SZO_18 (alias)
 	Z_20 = SZO_18 (alias)
 	// succ:  2
-Mem0: Mem0:Global
+Mem0: Mem0:Mem
 fp: fp:Temporary
 ax: ax:Register
 bx: bx:Register

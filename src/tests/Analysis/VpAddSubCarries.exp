@@ -1,5 +1,5 @@
 = fn0C00_0000 ========================
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_14 = Mem0[ds:0x0200:word16]
           dx_15 = Mem0[ds:0x0202:word16]
@@ -225,7 +225,7 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_14 = Mem0[ds:0x0200:word16]
           dx_15 = Mem0[ds:0x0202:word16]

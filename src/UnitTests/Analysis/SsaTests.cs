@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(writer);
                 proc.Write(false, true, writer);
                 writer.WriteLine();
-                ssa.CheckUses(s => Assert.Fail(s));
+                ssa.Validate(s => Assert.Fail(s));
             }
 		}
 

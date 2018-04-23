@@ -604,7 +604,7 @@ namespace Reko.UnitTests.Analysis
             var bx_4 = m.Reg16("bx_4");
             var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.MStore(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));
@@ -688,7 +688,7 @@ namespace Reko.UnitTests.Analysis
     def:  def a2
     uses: tmp_3 = Mem0[a2:byte]
           Mem6[a2 + 0x00000004:byte] = tmp_3
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: tmp_3 = Mem0[a2:byte]
 tmp_3: orig: tmp
@@ -742,7 +742,7 @@ ProcedureBuilder_exit:
     def:  def a2
     uses: tmp_3 = Mem0[a2:word16]
           Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: tmp_3 = Mem0[a2:word16]
 tmp_3: orig: tmp
@@ -827,7 +827,7 @@ ProcedureBuilder_exit:
 bx:bx
     def:  def bx
     uses: es_bx_4 = Mem0[es:bx:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: es_bx_4 = Mem0[es:bx:word32]
 es_bx_4: orig: es_bx
@@ -1049,7 +1049,7 @@ ProcedureBuilder_exit:
             var bx_4 = m.Reg16("bx_4");
             var es_bx_1 = m.Reg32("es_bx_1");
 
-            m.MStore(m.SegMem(PrimitiveType.Byte, es, m.IAdd(bx, 4)), m.Byte(3));
+            m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
             m.Assign(bx_3, m.Cast(PrimitiveType.Word16, es_bx_1));

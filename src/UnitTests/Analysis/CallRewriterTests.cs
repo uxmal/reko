@@ -387,7 +387,7 @@ namespace Reko.UnitTests.Analysis
 @"eax:eax
     def:  def eax
     uses: eax_3 = Mem0[eax:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: eax_3 = Mem0[eax:word32]
 eax_3: orig: eax
@@ -547,7 +547,7 @@ CrwManyPredecessorsToExitBlock_exit:
 // Preserved: r63
 // main
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // Top:Top
 // r63:r63
@@ -571,7 +571,7 @@ FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, Fpu
 // Preserved: r63
 // FpuMultiplyAdd
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // Top:Top
 // r63:r63
@@ -639,7 +639,7 @@ FpuMultiplyAdd_exit:
 // Preserved: r63
 // main
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // r1:r1
 // r2:r2
@@ -664,7 +664,7 @@ Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out 
 // Preserved: r63
 // fnOutParam
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // r1:r1
 // r2:r2

@@ -1,4 +1,4 @@
-Mem0: Mem0:Global, def: {def Mem0}
+Mem0: Mem0:Mem, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
 cx: cx:Register, def: {def cx}
 loc02: loc02:Local -0002 (temp), def: {def loc02}
@@ -43,7 +43,7 @@ Identifiers:
 	loc02_6: <loc02_6>
 	Mem7: <store(Mem7[0x0064:word16])>
 
-Mem0: Mem0:Global, def: {def Mem0}
+Mem0: Mem0:Mem, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
 bp: bp:Register, def: {def bp}, uses: {loc02_12 = bp}{call fn0C00_000F (depth: 4;)}
 loc02: loc02:Local -0002 (temp), def: {def loc02}

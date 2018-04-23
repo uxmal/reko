@@ -61,7 +61,7 @@ ds:ds
           Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
           Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
           Mem31[ds:0x0300:word16] = ax_29
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: Mem8 = PHI(Mem0, Mem14, Mem22)
 di:di

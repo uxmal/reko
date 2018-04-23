@@ -1,5 +1,5 @@
 = ProcedureBuilder ========================
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: Mem2[0x01234000:real32] = (real32) (real64) Mem0[0x00123400:real32]
 Mem2: orig: Mem0
@@ -16,7 +16,7 @@ l1:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: Mem2[0x01234000:real32] = Mem0[0x00123400:real32]
 Mem2: orig: Mem0

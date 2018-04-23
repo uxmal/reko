@@ -19,7 +19,7 @@ si:si
     uses: ax_7 = Mem0[ds:si + 0x0200:word16]
           Mem11[ds:0x0202:word16] = Mem9[ds:si + 0x0202:word16]
           Mem14[ds:0x0204:word16] = Mem11[ds:0x0204:word16] + Mem11[ds:si + 0x0204:word16]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_7 = Mem0[ds:si + 0x0200:word16]
 ax_7: orig: ax

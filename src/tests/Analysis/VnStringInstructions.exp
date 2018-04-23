@@ -1,4 +1,4 @@
-Mem0: Mem0:Global, def: {def Mem0}
+Mem0: Mem0:Mem, def: {def Mem0}
 fp: fp:Temporary, def: {def fp}
 eax: eax:Register, def: {def eax}, uses: {eax_6 = eax + eax * 0x00000004}{eax_6 = eax + eax * 0x00000004}
 si: si:Register, def: {def si}, uses: {eax_8 = Mem7[si:word32]}{si_9 = si + 0x0004}
@@ -91,7 +91,7 @@ Identifiers:
 	si_19: <si_19>
 	Mem20: <store(Mem7[0x02FC:word32])>
 
-Mem0: Mem0:Global, def: {def Mem0}, uses: {cx_9 = Mem0[0x0400:word16]}{di_11 = Mem0[0x0402:word16]}{SCZO_17 = cond(al_10 - Mem0[di_14:byte])}
+Mem0: Mem0:Mem, def: {def Mem0}, uses: {cx_9 = Mem0[0x0400:word16]}{di_11 = Mem0[0x0402:word16]}{SCZO_17 = cond(al_10 - Mem0[di_14:byte])}
 fp: fp:Temporary, def: {def fp}
 cx: cx:Register, def: {def cx}
 al: al:Register, def: {def al}

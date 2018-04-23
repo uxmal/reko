@@ -360,7 +360,7 @@ namespace Reko.Core
 
         static MemoryStorage()
         {
-            Instance = new MemoryStorage("Global", StorageDomain.Memory);
+            Instance = new MemoryStorage("Mem", StorageDomain.Memory);
         }
     }
 

@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Return size: 2
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // ss:ss
@@ -25,7 +25,7 @@ fn0C00_0000_exit:
 
 // fn0C00_0010
 // Return size: 2
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bp:bp
@@ -72,7 +72,7 @@ fn0C00_0010_exit:
 
 // fn0C00_0037
 // Return size: 2
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // Top:Top

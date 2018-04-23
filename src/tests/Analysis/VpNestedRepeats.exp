@@ -75,7 +75,7 @@ ds:ds
 si:si
     def:  def si
     uses: si_10 = PHI(si, si_13, si_13)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_12 = Mem0[ds:si_10:word16]
 // fn0C00_0000
@@ -196,7 +196,7 @@ ds:ds
 si:si
     def:  def si
     uses: si_10 = PHI(si, si_13, si_13)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_12 = Mem0[ds:si_10:word16]
 // fn0C00_0000

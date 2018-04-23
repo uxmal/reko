@@ -6,7 +6,7 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // Stack args: Stack +0004(32)
 // fn10000000
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:fp
 // esp:esp
 // esi:esi

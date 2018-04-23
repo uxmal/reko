@@ -3,7 +3,7 @@ fp:fp
     uses: call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 esp_2: orig: esp
 Top_3: orig: Top
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: eax_5 = Mem0[0x10003420:word32]
 eax_5: orig: eax

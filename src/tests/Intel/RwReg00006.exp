@@ -1,6 +1,6 @@
 // fn10000000
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // ebx:ebx
@@ -355,7 +355,7 @@ fn10000000_exit:
 
 // fn10000233
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -375,7 +375,7 @@ fn10000233_exit:
 
 // fn10000242
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -395,7 +395,7 @@ fn10000242_exit:
 
 // fn10000251
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -415,7 +415,7 @@ fn10000251_exit:
 
 // fn10000260
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -435,7 +435,7 @@ fn10000260_exit:
 
 // fn1000026F
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -455,7 +455,7 @@ fn1000026F_exit:
 
 // fn1000027E
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -475,7 +475,7 @@ fn1000027E_exit:
 
 // fn1000028D
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -495,7 +495,7 @@ fn1000028D_exit:
 
 // fn1000029C
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -515,7 +515,7 @@ fn1000029C_exit:
 
 // fn100002AB
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -535,7 +535,7 @@ fn100002AB_exit:
 
 // fn100002BA
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -558,7 +558,7 @@ fn100002BA_exit:
 
 // fn100002CD
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -578,7 +578,7 @@ fn100002CD_exit:
 
 // fn100002DC
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -601,7 +601,7 @@ fn100002DC_exit:
 
 // fn100002EF
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // edx:edx
@@ -634,7 +634,7 @@ fn100002EF_exit:
 
 // fn1000032A
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // Top:Top
@@ -651,7 +651,7 @@ fn1000032A_exit:
 
 // fn1000032B
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // edx:edx

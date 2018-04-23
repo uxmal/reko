@@ -1,6 +1,6 @@
 = Before ==========
 // fn04000000
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // eax:Register eax
 // ecx:Register ecx
@@ -49,7 +49,7 @@ fn04000000_exit:		// block 6, pred: 5
 The frame of procedure fn04000000 escapes
 = After ==========
 // fn04000000
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // eax:Register eax
 // ecx:Register ecx

@@ -5,7 +5,7 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // Preserved: di sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // di:di
@@ -41,7 +41,7 @@ void fn0C00_000F(Register word16 di, Register selector ds)
 // Preserved: sp
 // fn0C00_000F
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // di:di
@@ -65,7 +65,7 @@ Register word16 fn0C00_0014(Register word16 ax)
 // Preserved: sp
 // fn0C00_0014
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // di:di

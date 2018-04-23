@@ -103,6 +103,7 @@ namespace Reko.UnitTests.Mocks
             case Store store:
                 if (store.Dst is MemoryAccess access)
                 {
+                    AddMemIdToSsa(access);
                     Ssa.Identifiers[access.MemoryId].DefStatement = stm;
                     Ssa.Identifiers[access.MemoryId].DefExpression = null;
                 }

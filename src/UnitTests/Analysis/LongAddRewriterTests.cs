@@ -46,7 +46,6 @@ namespace Reko.UnitTests.Analysis
         private Identifier SCZ;
         private Identifier CF;
         private ProcedureBuilder m;
-        private RegisterStorage flags;
         private SsaState ssa;
         private Block block;
 
@@ -70,9 +69,8 @@ namespace Reko.UnitTests.Analysis
             bx = binder.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
             cx = binder.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
             dx = binder.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
-            flags = new RegisterStorage("flags", 70, 0, PrimitiveType.Word16);
-            SCZ = binder.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
-            CF = binder.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
+            SCZ = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZ"));
+            CF = binder.EnsureFlagGroup(arch.GetFlagGroup("C"));
         }
 
         private Identifier GetId(string idName)
@@ -337,6 +335,8 @@ namespace Reko.UnitTests.Analysis
 	ax_9 = ax_4 + ax_4 + C_8
 	SCZ_10 = cond(ax_9)
 	C_11 = SLICE(SCZ_10, bool, 2) (alias)
+	S_12 = SLICE(SCZ_10, bool, 0) (alias)
+	Z_13 = SLICE(SCZ_10, bool, 1) (alias)
 	return
 ";
             var sb = new StringWriter();

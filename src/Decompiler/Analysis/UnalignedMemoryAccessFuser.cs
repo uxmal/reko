@@ -207,8 +207,7 @@ namespace Reko.Analysis
                 var sorted = de.Value.ToSortedList(k => k.offset);
                 foreach (var se in sorted)
                 {
-                    UnalignedAccess other;
-                    if (!sorted.TryGetValue(se.Key + 3, out other))
+                    if (!sorted.TryGetValue(se.Key + 3, out UnalignedAccess other))
                         continue;
                     if (se.Value.isLeft == other.isLeft)
                         continue;
@@ -282,8 +281,7 @@ namespace Reko.Analysis
 
         private Expression GetModifiedMemory(Instruction instruction)
         {
-            Assignment ass = instruction as Assignment;
-            if (ass != null)
+            if (instruction is Assignment ass)
                 return ass.Dst;
             else
                 return ((Store)instruction).Dst;
@@ -306,8 +304,7 @@ namespace Reko.Analysis
 
         private int GetOffsetOf(Expression e)
         {
-            var id = e as Identifier;
-            if (id != null)
+            if (e is Identifier id)
             {
                 if (id.Storage is RegisterStorage)
                 {
@@ -322,8 +319,7 @@ namespace Reko.Analysis
             else
             {
                 var mem = (MemoryAccess)e;
-                var binL = mem.EffectiveAddress as BinaryExpression;
-                if (binL != null)
+                if (mem.EffectiveAddress is BinaryExpression binL)
                 {
                     return ((Constant)binL.Right).ToInt32();
                 }

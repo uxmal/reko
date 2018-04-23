@@ -10,7 +10,7 @@ ds:ds
 si:si
     def:  def si
     uses: rLoc1_17 = Mem0[ds:si:real64]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: rLoc1_17 = Mem0[ds:si:real64]
 ST8: orig: ST

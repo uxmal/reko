@@ -19,7 +19,7 @@ ds:ds
 bx:bx
     def:  def bx
     uses: bx_7 = Mem0[ds:bx + 0x0004:word16]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: bx_7 = Mem0[ds:bx + 0x0004:word16]
           cx_8 = Mem0[ds:bx_7 + 0x0002:word16]

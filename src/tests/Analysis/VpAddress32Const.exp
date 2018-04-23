@@ -2,7 +2,7 @@
 r1_1: orig: r1
     def:  r1_1 = 0x00123400
     uses: r1_3 = Mem0[r1_1 + 0x00000056:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r1_3 = Mem0[r1_1 + 0x00000056:word32]
 r1_3: orig: r1
@@ -22,7 +22,7 @@ VpAddress32Const_exit:
 
 r1_1: orig: r1
     def:  r1_1 = 0x00123400
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r1_3 = Mem0[0x00123456:word32]
 r1_3: orig: r1

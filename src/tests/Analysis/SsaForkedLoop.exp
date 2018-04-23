@@ -82,7 +82,7 @@ ds:ds
           si_18 = Mem0[ds:0x0302:word16]
           ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: si_13 = Mem0[ds:0x0300:word16]
           si_18 = Mem0[ds:0x0302:word16]

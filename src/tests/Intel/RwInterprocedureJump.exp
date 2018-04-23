@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Return size: 2
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bx:bx
@@ -24,7 +24,7 @@ l0C00_0009_thunk_fn0C00_000C:
 fn0C00_0000_exit:
 // fn0C00_000C
 // Return size: 2
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bx:bx
@@ -59,7 +59,7 @@ l0C00_0014:
 fn0C00_000C_exit:
 // fn0C00_0018
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bx:bx

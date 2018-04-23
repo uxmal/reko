@@ -1,4 +1,4 @@
-Mem0: Mem0:Global, def: {def Mem0}, uses: {si_17 = Mem0[bp + 0x0008:word16]}{ax_19 = Mem0[si_18 + 0x000C:word16]}{ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]}
+Mem0: Mem0:Mem, def: {def Mem0}, uses: {si_17 = Mem0[bp + 0x0008:word16]}{ax_19 = Mem0[si_18 + 0x000C:word16]}{ax_20 = ax_19 - Mem0[bp + 0xFF7E:word16]}
 fp: fp:Temporary, def: {def fp}
 bx: bx:Register, def: {def bx}, uses: {dx_14 = bx * 0x0024}
 dx: dx:Register, def: {def dx}

@@ -1,4 +1,4 @@
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)
           dx_ax_22 = SEQ(Mem0[ds:0x0202:word16], Mem0[ds:0x0200:word16]) + SEQ(Mem0[ds:0x0206:word16], cx_19)

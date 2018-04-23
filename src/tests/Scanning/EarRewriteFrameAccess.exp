@@ -1,6 +1,6 @@
 = Before ==========
 // fn0B00_0000
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // bp:Register
 // loc02:Local -0002
@@ -30,7 +30,7 @@ fn0B00_0000_exit:		// block 3, pred: 2
 The frame of procedure fn0B00_0000 escapes
 = After ==========
 // fn0B00_0000
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // bp:Register
 // loc02:Local -0002
@@ -60,7 +60,7 @@ fn0B00_0000_exit:		// block 3, pred: 2
 
 = Before ==========
 // fn0B00_0018
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // bp:Register
 // loc02:Local -0002

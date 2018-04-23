@@ -5,7 +5,7 @@ void fn0C00_0000(Register I2 ax)
 // Trashed: SCZO bx bl bh
 // Preserved:
 // fn0C00_0000
-// Mem0:Global (aliases: 0)
+// Mem0:Mem (aliases: 0)
 // SCZO:Flags (aliases: 1 3)
 // ax:Register (aliases: 2)
 // CZ:Flags (aliases: 3 1)
@@ -43,7 +43,7 @@ void fn0C00_0015(Register I2 si)
 // Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_0015
-// Mem0:Global (aliases: 0)
+// Mem0:Mem (aliases: 0)
 // si:Register (aliases: 1)
 // ax:Register (aliases: 2)
 // SCZO:Flags (aliases: 3)
@@ -70,7 +70,7 @@ void fn0C00_001F(Register I2 si)
 // Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_001F
-// Mem0:Global (aliases: 0)
+// Mem0:Mem (aliases: 0)
 // si:Register (aliases: 1)
 // ax:Register (aliases: 2)
 // SCZO:Flags (aliases: 3)
@@ -97,7 +97,7 @@ void fn0C00_0029(Register I2 bx, Register I2 si)
 // Trashed: SCZO ax al ah
 // Preserved:
 // fn0C00_0029
-// Mem0:Global (aliases: 0)
+// Mem0:Mem (aliases: 0)
 // si:Register (aliases: 1)
 // ax:Register (aliases: 2)
 // bx:Register (aliases: 3)

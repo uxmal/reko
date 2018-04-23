@@ -20,7 +20,7 @@ ds:ds
           branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F
           branch Mem27[ds:0x010A:word16] >=u Mem27[ds:0x010C:word16] l0C00_003D
           branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F
           branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F

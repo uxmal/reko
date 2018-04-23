@@ -1,4 +1,4 @@
-Mem0: Mem0:Global (aliases: 0), def: {def Mem0}
+Mem0: Mem0:Mem (aliases: 0), def: {def Mem0}
 edx: edx:Register (aliases: 1), def: {def edx}, uses: {Mem7[7960:I4] = edx}{eax_9 = edx}
 cl: cl:Register (aliases: 2), def: {def cl}, uses: {Mem8[7964:I1] = cl}
 eax: eax:Register (aliases: 3), def: {def eax}

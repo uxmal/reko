@@ -5,7 +5,7 @@ void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // Preserved: bp sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bp:bp
@@ -48,7 +48,7 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // Preserved: bp sp
 // fn0C00_0020
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bp:bp
@@ -77,7 +77,7 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // Preserved: bp sp
 // fn0C00_002E
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // bp:bp

@@ -8,7 +8,7 @@ ds:ds
 bx:bx
     def:  def bx
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 FPUF_8: orig: FPUF

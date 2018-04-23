@@ -393,10 +393,10 @@ namespace Reko.UnitTests.Typing
                 Identifier ds2 = m.Local16("ds2");
                 ds2.DataType = PrimitiveType.SegmentSelector;
                 m.Assign(ds2, ds);
-                m.MStore(
+                m.Store(
                     m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
                     m.Lt(m.SegMem16(ds, m.Word16(0x5404)), m.Word16(20)));
-                m.MStore(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
+                m.Store(m.SegMem16(ds2, m.Word16(0x5404)), m.Word16(0));
             });
             RunTest(pb.BuildProgram(), "Typing/TerSignedCompare.txt");
         }
@@ -412,12 +412,12 @@ namespace Reko.UnitTests.Typing
                 Identifier ds2 = m.Local16("ds2");
                 ds2.DataType = PrimitiveType.SegmentSelector;
                 m.Assign(ds2, ds);
-                m.MStore(
+                m.Store(
                     m.SegMem(PrimitiveType.Bool, ds, m.Word16(0x5400)),
                     m.Lt(
                         m.SegMem16(ds, m.IAdd(m.SegMem16(ds, m.Word16(0x5404)), 4)),
                         m.Word16(20)));
-                m.MStore(m.SegMem16(ds2, m.IAdd(m.SegMem16(ds2, m.Word16(0x5404)), 4)), m.Word16(0));
+                m.SStore(ds2, m.IAdd(m.SegMem16(ds2, m.Word16(0x5404)), 4), m.Word16(0));
                 m.Return();
             });
             RunTest(pb.BuildProgram(), "Typing/TerDereferenceSignedCompare.txt");

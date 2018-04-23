@@ -23,7 +23,7 @@ ds:ds
           cl_33 = Mem29[ds:0x0220:byte]
           cl_38 = Mem29[ds:0x0221:byte]
           Mem44[ds:0x0222:word16] = ax_42
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_6 = Mem0[ds:0x0200:word16]
           dx_7 = Mem0[ds:0x0202:word16]

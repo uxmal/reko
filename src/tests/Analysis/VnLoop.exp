@@ -1,4 +1,4 @@
-Mem0: Mem0:Global, def: {def Mem0}, uses: {Mem12 = PHI(Mem0, Mem18)}
+Mem0: Mem0:Mem, def: {def Mem0}, uses: {Mem12 = PHI(Mem0, Mem18)}
 fp: fp:Temporary, def: {def fp}
 ax: ax:Register, def: {def ax}, uses: {loc02_9 = ax}{ax_11 = PHI(ax, ax_16)}
 loc02: loc02:Local -0002 (temp), def: {def loc02}

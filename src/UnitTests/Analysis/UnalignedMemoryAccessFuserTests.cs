@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Analysis
 r4:r4
     def:  def r4
     uses: r8_5 = Mem0[r4 + 0x00000028:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r8_5 = Mem0[r4 + 0x00000028:word32]
 r8_4: orig: r8
@@ -195,7 +195,7 @@ ProcedureBuilder_exit:
 r4:r4
     def:  def r4
     uses: r8_5 = Mem0[r4:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r8_5 = Mem0[r4:word32]
 r8_4: orig: r8
@@ -235,7 +235,7 @@ ProcedureBuilder_exit:
 r4:r4
     def:  def r4
     uses: r8_5 = Mem0[r4 + 0x0000A5E4:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r8_5 = Mem0[r4 + 0x0000A5E4:word32]
 r8_4: orig: r8
@@ -281,7 +281,7 @@ ProcedureBuilder_exit:
 r4:r4
     def:  def r4
     uses: r8_4 = Mem0[r4 + 0x00000028:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r8_4 = Mem0[r4 + 0x00000028:word32]
 r8_4: orig: r8
@@ -318,13 +318,13 @@ ProcedureBuilder_exit:
 @"r4:r4
     def:  def r4
     uses: Mem5[r4 + 0x00000028:word32] = r8
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
 r8:r8
     def:  def r8
     uses: Mem5[r4 + 0x00000028:word32] = r8
 Mem4: orig: Mem0
-Mem5: orig: Mem3
+Mem5: orig: Mem4
     def:  Mem5[r4 + 0x00000028:word32] = r8
 // ProcedureBuilder
 // Return size: 0
@@ -381,7 +381,7 @@ ProcedureBuilder_exit:
           Mem18[r8 + 0x00000028:word32] = 0x00000000
           Mem19[r8 + 0x0000002C:word32] = r9
           Mem20[r8 + 0x00000030:word32] = 0x00000000
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
 r14:r14
     def:  def r14
@@ -390,30 +390,30 @@ Mem4: orig: Mem0
 r13:r13
     def:  def r13
     uses: Mem15[r8 + 0x00000014:word32] = r13
-Mem6: orig: Mem6
-Mem7: orig: Mem0
+Mem6: orig: Mem4
+Mem7: orig: Mem6
 Mem8: orig: Mem7
-Mem9: orig: Mem0
+Mem9: orig: Mem8
 r9:r9
     def:  def r9
     uses: Mem19[r8 + 0x0000002C:word32] = r9
-Mem11: orig: Mem0
-Mem12: orig: Mem0
+Mem11: orig: Mem9
+Mem12: orig: Mem11
 r4_13: orig: r4
     def:  r4_13 = r8 + 0x00000010
-Mem14: orig: Mem0
+Mem14: orig: Mem12
     def:  Mem14[r8 + 0x00000010:word32] = r14
-Mem15: orig: Mem10
+Mem15: orig: Mem14
     def:  Mem15[r8 + 0x00000014:word32] = r13
-Mem16: orig: Mem0
+Mem16: orig: Mem15
     def:  Mem16[r8 + 0x00000018:word32] = 0x00000000
-Mem17: orig: Mem11
+Mem17: orig: Mem16
     def:  Mem17[r8 + 0x0000001C:word32] = 0x00000000
-Mem18: orig: Mem0
+Mem18: orig: Mem17
     def:  Mem18[r8 + 0x00000028:word32] = 0x00000000
-Mem19: orig: Mem0
+Mem19: orig: Mem18
     def:  Mem19[r8 + 0x0000002C:word32] = r9
-Mem20: orig: Mem12
+Mem20: orig: Mem19
     def:  Mem20[r8 + 0x00000030:word32] = 0x00000000
 // ProcedureBuilder
 // Return size: 0
@@ -459,13 +459,13 @@ ProcedureBuilder_exit:
     def:  def r8
     uses: Mem5[r8 + 0x00000010:word32] = 0x12345678
           Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
 Mem3: orig: Mem0
-Mem4: orig: Mem2
-Mem5: orig: Mem0
+Mem4: orig: Mem3
+Mem5: orig: Mem4
     def:  Mem5[r8 + 0x00000010:word32] = 0x12345678
-Mem6: orig: Mem3
+Mem6: orig: Mem5
     def:  Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
 // ProcedureBuilder
 // Return size: 0
@@ -499,13 +499,13 @@ ProcedureBuilder_exit:
 @"r4:r4
     def:  def r4
     uses: Mem5[r4:word32] = r8
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
 r8:r8
     def:  def r8
     uses: Mem5[r4:word32] = r8
 Mem4: orig: Mem0
-Mem5: orig: Mem3
+Mem5: orig: Mem4
     def:  Mem5[r4:word32] = r8
 // ProcedureBuilder
 // Return size: 0
@@ -540,7 +540,7 @@ ProcedureBuilder_exit:
 r4:r4
     def:  def r4
     uses: r8_5 = Mem0[r4:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r8_5 = Mem0[r4:word32]
 r8_4: orig: r8

@@ -38,7 +38,7 @@ ds:ds
 si:si
     def:  def si
     uses: return Mem0[ds:si:word16]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: return Mem0[ds:si:word16]
 ax_7: orig: ax

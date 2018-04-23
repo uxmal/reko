@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Register("r1");
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
-                m.Store(sp, r1);        // push r1
+                m.MStore(sp, r1);        // push r1
 
                 m.Assign(r1, m.Mem32(m.Word32(0x123400)));
                 m.MStore(m.Word32(0x123400), r1);
@@ -639,7 +639,7 @@ Constants: cl:0x00
                 m.MStore(esp, eax);
                 m.Call("recursive", 4);
                 m.Assign(esp, m.IAdd(esp, 4));
-                m.Store(m.ISub(ebp, 4), eax);
+                m.MStore(m.ISub(ebp, 4), eax);
 
                 m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.Assign(eax, m.ISub(eax, 2));
@@ -709,7 +709,7 @@ Constants: cl:0x00
                 var ebp = m.Reg32("ebp", 5);
                 m.Assign(esp, m.Frame.FramePointer);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.Assign(ebp, m.Mem32(esp));
@@ -732,7 +732,7 @@ Constants: cl:0x00
                 var ebp = m.Frame.EnsureRegister(arch.GetRegister("ebp"));
                 m.Assign(esp, m.Frame.FramePointer);
                 m.Assign(esp, m.ISub(esp, 4));
-                m.Store(esp, ebp);
+                m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.Assign(eax, m.Mem32(m.IAdd(ebp, 8)));
                 m.BranchIf(m.Eq0(eax), "zero");

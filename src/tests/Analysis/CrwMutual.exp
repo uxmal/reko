@@ -5,7 +5,7 @@ void fn0C00_0000(Register word16 dx)
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // dx:dx
@@ -27,7 +27,7 @@ void fn0C00_0004(Register word16 dx)
 // Preserved: sp
 // fn0C00_0004
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // dx:dx
@@ -74,7 +74,7 @@ void fn0C00_0013(Register word16 ax, Register word16 dx)
 // Preserved: sp
 // fn0C00_0013
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // dx:dx

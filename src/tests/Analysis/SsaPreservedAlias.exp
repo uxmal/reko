@@ -11,7 +11,7 @@ ds:ds
     def:  def ds
     uses: ax_6 = Mem0[ds:0x0100:word16]
           Mem10[ds:0x0102:word16] = ax_8
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_6 = Mem0[ds:0x0100:word16]
 ax_6: orig: ax

@@ -5,7 +5,7 @@ void fn0C00_0000(Register byte al, Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // C:C
@@ -39,7 +39,7 @@ FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // al:al

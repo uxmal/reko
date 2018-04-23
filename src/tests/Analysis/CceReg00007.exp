@@ -1,4 +1,4 @@
-Mem0:Global
+Mem0:Mem
 fp:fp
 sp:sp
 al:al
@@ -30,7 +30,7 @@ l0C00_000B:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: v7_14 = Mem0[ds:0x0201:word16] + 0x0001
 fp:fp

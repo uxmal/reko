@@ -11,7 +11,7 @@ ds:ds
 si:si
     def:  def si
     uses: branch rLoc1_15 >= Mem0[ds:si:real64] l0C00_0010
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: branch rLoc1_15 >= Mem0[ds:si:real64] l0C00_0010
 FPUF_9: orig: FPUF

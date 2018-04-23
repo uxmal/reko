@@ -15,7 +15,7 @@ bp_4: orig: bp
 ss:ss
     def:  def ss
     uses: ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
 ax_7: orig: ax

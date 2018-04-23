@@ -955,7 +955,7 @@ proc1_exit:
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: r63_19 = PHI(r63_14, r63_2)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r4_6 = Mem0[r4_4 + 0x00000004:word32]
 r4_4: orig: r4
@@ -1209,7 +1209,7 @@ proc1_exit:
 @"eax:eax
     def:  def eax
     uses: eax_3 = Mem0[eax:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: eax_3 = Mem0[eax:word32]
 eax_3: orig: eax
@@ -1257,7 +1257,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: ecx_2 = Mem0[0x00542300:word32]
           branch Mem0[0x00010042:bool] mBranch2
@@ -1331,7 +1331,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: eax_2 = Mem0[0x00543200:word32]
           edx_3 = Mem0[0x00543208:word32]
@@ -1382,7 +1382,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: edx_2 = Mem0[0x00543200:word32]
 edx_2: orig: edx
@@ -1489,7 +1489,7 @@ proc1_exit:
 bx:bx
     def:  def bx
     uses: es_bx_4 = Mem0[es:bx:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: es_bx_4 = Mem0[es:bx:word32]
           bx_7 = Mem0[es_bx_4 + 0x0010:word32]
@@ -1548,7 +1548,7 @@ proc1_exit:
 @"eax:eax
     def:  def eax
     uses: eax_3 = Mem0[eax:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: eax_3 = Mem0[eax:word32]
 eax_3: orig: eax
@@ -1684,7 +1684,7 @@ ebx_8: orig: ebx
 ebx:ebx
     def:  def ebx
     uses: ebx_2 = PHI(ebx, ebx_8)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
           ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
@@ -1745,7 +1745,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: cx_2 = Mem0[0x1234:word16]
 cx_2: orig: cx
@@ -1828,7 +1828,7 @@ r1:r1
 r2:r2
     def:  def r2
     uses: r1_4 = r1_1 + Mem0[r2:word32]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r1_4 = r1_1 + Mem0[r2:word32]
 // proc1
@@ -1878,7 +1878,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: bl_2 = Mem0[0x1234:word16]
 bl_2: orig: bl
@@ -1941,7 +1941,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: bl_2 = Mem0[0x1234:word16]
 bl_2: orig: bl
@@ -2019,7 +2019,7 @@ proc1_exit:
 @"si:si
     def:  def si
     uses: bl_3 = Mem0[si:byte]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: bl_3 = Mem0[si:byte]
 bl_3: orig: bl
@@ -2218,7 +2218,7 @@ r1_2: orig: r1
 Mem3: orig: Mem0
     def:  Mem3[0x00004020:bool] = true
     uses: Mem1 = PHI(Mem0, Mem3)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: Mem1 = PHI(Mem0, Mem3)
 // proc1
@@ -2273,7 +2273,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global
+@"Mem0:Mem
     def:  def Mem0
     uses: ax_2 = Mem0[0x00002000:word16]
           bx_3 = Mem0[0x00002002:word16]
@@ -2531,7 +2531,7 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-                @"Mem0:Global
+                @"Mem0:Mem
     def:  def Mem0
     uses: al_2 = Mem0[0x1234:byte]
 al_2: orig: al
@@ -2791,7 +2791,7 @@ proc1_exit:
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: use r63_2
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_4 = Mem0[0x00123400:word16]
 ax_4: orig: ax

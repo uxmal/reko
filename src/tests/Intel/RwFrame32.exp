@@ -1,6 +1,6 @@
 // fn10000000
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // eax:eax
@@ -27,7 +27,7 @@ fn10000000_exit:
 
 // fn10000017
 // Return size: 4
-// Mem0:Global
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // ebp:ebp

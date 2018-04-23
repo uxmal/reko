@@ -1,13 +1,10 @@
 fp:fp
-    uses: ax_12 = wArg04
 sp_2: orig: sp
 Top_3: orig: Top
 sp_4: orig: sp
 bp:bp
 ss:ss
-    uses: ax_12 = wArg04
 Mem7: orig: Mem0
-    uses: ax_12 = wArg04
 bp_8: orig: bp
 bx_9: orig: bx
     def:  bx_9 = 0x0000

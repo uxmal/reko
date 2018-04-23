@@ -615,7 +615,12 @@ namespace Reko.Analysis
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
                 {
+                    if (acc is SegmentedAccess segacc)
+                    {
+                        ssa.Identifiers[(Identifier)segacc.BasePointer].Uses.Remove(stmCur);
+                    }
                     ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
+                    ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur);
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
                     var idDst = NewDef(idFrame, src, false);
@@ -814,6 +819,9 @@ namespace Reko.Analysis
         {
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
+                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
+                ssa.Identifiers[(Identifier)access.BasePointer].Uses.Remove(stmCur);
+                ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
                 var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;

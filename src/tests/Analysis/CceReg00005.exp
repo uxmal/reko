@@ -161,7 +161,7 @@ SCZO_38: orig: SCZO
           C_50 = PHI(SCZO_38, C_23)
           Z_51 = PHI(SCZO_38, SZO_22)
           O_52 = PHI(SCZO_38, SZO_22)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: SCZO_15 = cond(0x00 - Mem0[ds:di_13:byte])
           ah_28 = Mem0[ds_24:di_26 + 0x0001:byte]

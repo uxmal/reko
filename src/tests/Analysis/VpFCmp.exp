@@ -10,7 +10,7 @@ a6:a6
     uses: fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
           NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_3 == Mem0[a6 + 0x00000008:real96] l1
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
           NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 0x00000008:real96])
@@ -43,7 +43,7 @@ a6:a6
     uses: fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
           NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 0x00000008:real96])
           branch (real96) fp0_3 == Mem0[a6 + 0x00000008:real96] l1
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
           NZCV_4 = cond((real96) fp0_3 - Mem0[a6 + 0x00000008:real96])

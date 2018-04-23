@@ -42,7 +42,7 @@ Mem15: orig: Mem0
 r0:r0
     def:  def r0
     uses: r0_3 = PHI(r0, r0_14, r0_8)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: Mem4 = PHI(Mem0, Mem15, Mem9)
 // ManyIncrements

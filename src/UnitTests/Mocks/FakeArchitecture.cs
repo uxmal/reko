@@ -18,31 +18,29 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections.Generic;
-using Reko.Core.Serialization;
-using Reko.Core.Operators;
-using NUnit.Framework;
-using Reko.Core.Operators;
 
 namespace Reko.UnitTests.Mocks
 {
-	/// <summary>
-	/// A fake architecture.
-	/// </summary>
-	/// <remarks>
-	/// Our fake architecture has 64 registers. r63 is the stack register, r62 is the return address register.
-	/// </remarks>
-	public class FakeArchitecture : IProcessorArchitecture
+    /// <summary>
+    /// A fake architecture.
+    /// </summary>
+    /// <remarks>
+    /// Our fake architecture has 64 registers. r63 is the stack register, r62 is the return address register.
+    /// </remarks>
+    public class FakeArchitecture : IProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
         private static RegisterStorage flags = new RegisterStorage("flags", 70, 0, PrimitiveType.Word32);
@@ -197,8 +195,7 @@ namespace Reko.UnitTests.Mocks
 		{
             if (s[0] == 'r')
             {
-                int reg;
-                if (int.TryParse(s.Substring(1), out reg))
+                if (int.TryParse(s.Substring(1), out int reg))
                     return GetRegister(reg);
             }
             return null;
@@ -436,8 +433,7 @@ namespace Reko.UnitTests.Mocks
 
 		public override Constant GetRegister(RegisterStorage r)
 		{
-            Constant c;
-            if (!regValues.TryGetValue(r, out c))
+            if (!regValues.TryGetValue(r, out Constant c))
             {
                 c = Constant.Invalid;
             }

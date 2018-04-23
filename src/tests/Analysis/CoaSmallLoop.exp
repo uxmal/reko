@@ -13,7 +13,7 @@ ds:ds
 bx:bx
     def:  def bx
     uses: cx_10 = Mem0[ds:bx:word16]
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: cx_10 = Mem0[ds:bx:word16]
 cx_10: orig: cx

@@ -9,7 +9,7 @@ r63_2: orig: r63
           r63_9 = PHI(r63_2, r63_2, r63_2, r63_8)
           r63_9 = PHI(r63_2, r63_2, r63_2, r63_8)
           r63_13 = PHI(r63_2, r63_12)
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r1_4 = Mem0[r63_2 + 0x00000004:word32]
 r1_4: orig: r1

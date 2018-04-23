@@ -2,7 +2,7 @@ r2:r2
     def:  def r2
     uses: r1_3 = Mem0[r2:word32]
           call r1_3 (retsize: 4;)	uses: r1:r1_3,r2:r2	defs: r1:r1_4,r2:r2_5
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: r1_3 = Mem0[r2:word32]
 r1_3: orig: r1

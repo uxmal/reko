@@ -10,7 +10,7 @@ bx:bx
     def:  def bx
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
           Mem9[ds:bx + 0x0006:word16] = ax_7 *s ax_7
-Mem0:Global
+Mem0:Mem
     def:  def Mem0
     uses: ax_7 = Mem0[ds:bx + 0x0004:word16]
 ax_7: orig: ax

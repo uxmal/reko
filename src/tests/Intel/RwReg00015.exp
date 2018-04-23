@@ -1,5 +1,5 @@
 // fn0C00_0000
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // wLoc04:Local -0004
 // return address size: 2
@@ -14,7 +14,7 @@ l0C00_0000:		// pred: fn0C00_0000_entry
 fn0C00_0000_exit:		// pred: l0C00_0000
 	// succ: 
 // fn0C00_0009
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // bx:Register bx
 // wLoc04:Local -0004
@@ -45,7 +45,7 @@ l0C00_0009:		// pred: fn0C00_0009_entry
 fn0C00_0009_exit:		// pred: l0C00_0009
 	// succ: 
 // fn0C00_0029
-// Mem0:Global memory
+// Mem0:Mem memory
 // fp:Temporary
 // ax:Register ax
 // ds:Register ds
