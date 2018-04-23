@@ -49,7 +49,7 @@ namespace Reko.Arch.X86.Design
         /// Creates the user interface control and connects all event handlers.
         /// </summary>
         /// <returns></returns>
-        public Control CreateControl()
+        public object CreateControl()
         {
             Control = new X86ArchitecturePanel();
             Control.Emulate8087Checkbox.Checked = arch.Options.Emulate8087;

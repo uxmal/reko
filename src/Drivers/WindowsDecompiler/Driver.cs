@@ -18,16 +18,11 @@
  */
 #endregion
 
-using Reko.Loading;
-using Reko.Core;
-using Reko.Core.Services;
-using Reko.Core.Configuration;
 using Reko.Gui;
-using Reko.Gui.Forms;
-using Reko.Gui.Windows;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.WindowsDecompiler
 {
@@ -37,12 +32,13 @@ namespace Reko.WindowsDecompiler
         public static void Main(string[] args)
         {
             var services = new ServiceContainer();
-            services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
+            var mainForm = new MainForm();
+            services.AddService(typeof(IServiceFactory), new WindowsServiceFactory(services, mainForm));
             services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
             services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
             services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
-            var interactor = new MainFormInteractor(services);
-            interactor.Run();
+            mainForm.Attach(services);
+            System.Windows.Forms.Application.Run(mainForm);
         }
 	}
 }

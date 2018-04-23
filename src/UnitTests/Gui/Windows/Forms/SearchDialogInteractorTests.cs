@@ -18,18 +18,16 @@
  */
 #endregion
 
-using Reko.Gui;
-using Reko.Gui.Windows.Forms;
-using Reko.Scanning;
 using NUnit.Framework;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Reko.Gui.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {

@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
@@ -34,13 +34,11 @@ namespace Reko.Gui
     public class ConsoleService : IConsoleService
     {
         private IServiceProvider services;
-        private TabPage tabPage;
-        private TextBox txtConsole;
+        private ITextBox txtConsole;
 
-        public ConsoleService(IServiceProvider services, TabPage tabPage, TextBox txtConsole)
+        public ConsoleService(IServiceProvider services,  ITextBox txtConsole)
         {
             this.services = services;
-            this.tabPage = tabPage;
             this.txtConsole = txtConsole;
         }
 
