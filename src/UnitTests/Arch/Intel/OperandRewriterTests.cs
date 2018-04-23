@@ -244,12 +244,6 @@ namespace Reko.UnitTests.Arch.Intel
 			return null;
 		}
 
-		public VectorUse VectorUseAt(Address addr)
-		{
-			// TODO:  Add FakeRewriterHost.VectorUseAt implementation
-			return null;
-		}
-
         public void AddDiagnostic(Address addr, Diagnostic d)
         {
             Console.Write(d.GetType().Name);

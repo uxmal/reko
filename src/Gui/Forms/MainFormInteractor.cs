@@ -534,7 +534,7 @@ namespace Reko.Gui.Forms
 
         public void ShowAboutBox()
         {
-            using (AboutDialog dlg = new AboutDialog())
+            using (IAboutDialog dlg = dlgFactory.CreateAboutDialog())
             {
                 uiSvc.ShowModalDialog(dlg);
             }
@@ -675,6 +675,18 @@ namespace Reko.Gui.Forms
             }
         }
 
+        public void ToolsKeyBindings()
+        {
+            using (var dlg = dlgFactory.CreateKeyBindingsDialog(dm.KeyBindings))
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    dm.KeyBindings = dlg.KeyBindings; 
+                    //$TODO: save in user settings.
+                }
+            }
+        }
+
         /// <summary>
         /// Saves the project. 
         /// </summary>
@@ -809,6 +821,10 @@ namespace Reko.Gui.Forms
                 case CmdIds.HelpAbout: 
                     cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
+                    //$TODO: finish implementing this :)
+                case CmdIds.ToolsKeyBindings:
+                    cmdStatus.Status = MenuStatus.Visible;
+                    return true;
                 case CmdIds.FileMru:
                     cmdStatus.Status = MenuStatus.Visible;
                     return true;
@@ -900,6 +916,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 
                 case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
+                case CmdIds.ToolsKeyBindings: ToolsKeyBindings(); retval = true; break;
 
                 case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); retval = true; break;
                 case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); retval = true; break;

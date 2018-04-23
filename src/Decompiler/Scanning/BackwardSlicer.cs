@@ -455,6 +455,16 @@ namespace Reko.Scanning
                 cc = cc.Invert();
             switch (cc)
             {
+            // NOTE: GE and GT should really be modeled with the semi-open range
+            // [right,inf) and the open range (right,inf), respectively. See comment
+            // for LE/LT.
+            case ConditionCode.GE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
+            case ConditionCode.GT: return StridedInterval.Create(1, right.ToInt64() + 1, long.MaxValue);
+            // NOTE: LE and LT should really be modeled with the semi-open range
+            // (inf,right] and the open range (inf,right). However, typically compilers
+            // make the mistake and use LE/LT for boundary checking in indirect transfers.
+            case ConditionCode.LE: return StridedInterval.Create(1, 0, right.ToInt64());
+            case ConditionCode.LT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
             case ConditionCode.ULE: return StridedInterval.Create(1, 0, right.ToInt64());
             case ConditionCode.ULT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
             case ConditionCode.UGE: return StridedInterval.Create(1, right.ToInt64(), long.MaxValue);
@@ -643,7 +653,11 @@ namespace Reko.Scanning
 
         public SlicerResult VisitCall(RtlCall call)
         {
-            return null;
+            return new SlicerResult
+            {
+                LiveExprs = new Dictionary<Expression, BackwardSlicerContext>(),
+                Stop = true,
+            };
         }
 
         public SlicerResult VisitCast(Cast cast, BackwardSlicerContext ctx)
@@ -802,7 +816,11 @@ namespace Reko.Scanning
 
         public SlicerResult VisitProcedureConstant(ProcedureConstant pc, BackwardSlicerContext ctx)
         {
-            throw new NotImplementedException();
+            return new SlicerResult
+            {
+                LiveExprs = new Dictionary<Expression, BackwardSlicerContext>(),
+                SrcExpr = pc,
+            };
         }
 
         public SlicerResult VisitReturn(RtlReturn ret)

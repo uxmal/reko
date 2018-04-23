@@ -88,7 +88,7 @@ namespace Reko.Arch.X86
         cvtpd2ps,
         cvtpi2pd,
         cvtpi2ps,
-        cvtps2dqs,
+        cvtps2dq,
         cvtps2pd,
         cvtps2pi,
         cvtpd2si,

@@ -163,15 +163,20 @@ namespace Reko.Core
 
 		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
         {
-			writer.WriteLine("// {0}", QualifiedName());
+            writer.WriteLine("// {0}", QualifiedName());
             writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
-			if (emitFrame)
-				Frame.Write(writer);
+            if (emitFrame)
+                Frame.Write(writer);
             Signature.Emit(QualifiedName(), FunctionType.EmitFlags.None, new TextFormatter(writer));
-			writer.WriteLine();
+            writer.WriteLine();
+            WriteBody(showEdges, writer);
+        }
+
+        public void WriteBody(bool showEdges, TextWriter writer)
+        {
             var formatter = new CodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
-		}
+        }
 
         public void Write(bool emitFrame, BlockDecorator decorator, TextWriter writer)
         {

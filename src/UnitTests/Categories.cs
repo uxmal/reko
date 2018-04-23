@@ -47,9 +47,8 @@ namespace Reko.UnitTests
         // the Travis CI environment doesn't provide one.
         public const string UserInterface = "UserInterface";
 
-        // The Capstone category identifies unit tests that depend on Capstone. 
-        // The Reko build provides special mono-compatible linux Capstone 
-        // disassembler libraries for ARM, so they can run on Travis.
+        // The Capstone disassembler has bugs. We can't hope to get 
+        // them fixed soon, so we turn off some tests until the fixes are done.
         public const string Capstone = "Capstone";
 
         // Tests that are currently failing in the "analysis-development"

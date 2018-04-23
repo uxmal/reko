@@ -18,19 +18,15 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using Reko.UnitTests.Core.Serialization;
-using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using System.Xml;
-using System.Xml.Serialization;
 using Reko.Environments.Windows;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Intel

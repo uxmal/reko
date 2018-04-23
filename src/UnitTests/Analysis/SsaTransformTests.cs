@@ -190,7 +190,12 @@ namespace Reko.UnitTests.Analysis
             }
             var sActual = writer.ToString();
             if (sActual != sExp)
+            {
+                Debug.Print("<< Expected ========");
+                Debug.Print(sExp);
+                Debug.Print(">> Actual ==========");
                 Debug.Print(sActual);
+            }
             Assert.AreEqual(sExp, sActual);
         }
 
@@ -430,7 +435,7 @@ proc1_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
-                var sz = m.Architecture.GetFlagGroup("SZ");
+                var sz = m.Architecture.GetFlagGroup("SZC");
                 var cr = m.Frame.EnsureFlagGroup(sz);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
@@ -572,7 +577,7 @@ proc1_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
-                var flags = m.Architecture.GetFlagGroup("CZS");
+                var flags = m.Architecture.GetFlagGroup("SZC");
                 var cr = m.Frame.EnsureFlagGroup(flags);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
@@ -852,12 +857,12 @@ proc1_exit:
 
             RunTest(sExp, m =>
             {
-                var scz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
+                var sz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var cz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
                 var c = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("C"));
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
-                m.Assign(cz, m.Cond(m.And(esi, esi)));
+                m.Assign(sz, m.Cond(m.And(esi, esi)));
                 m.Assign(c, Constant.False());
                 m.Assign(al, m.Test(ConditionCode.ULE, cz));
                 m.Return();
@@ -2869,7 +2874,7 @@ proc1_exit:
             #region Expected
 @"eax_1: orig: eax
     def:  eax_1 = 0x00000004
-    uses: eax_12 = DPB(eax_1, al_3, 8) (alias)
+    uses: eax_13 = DPB(eax_1, al_3, 8) (alias)
 Mem2: orig: Mem0
     def:  Mem2[0x00123400:word32] = 0x00000004
     uses: al_3 = Mem2[0x00123408:byte]
@@ -2877,87 +2882,132 @@ al_3: orig: al
     def:  al_3 = Mem2[0x00123408:byte]
     uses: SZC_4 = cond(al_3 - 0x30)
           SZC_5 = cond(al_3 - 0x39)
-          eax_12 = DPB(eax_1, al_3, 8) (alias)
-          eax_13 = DPB(eax_12, al_3, 8) (alias)
+          eax_13 = DPB(eax_1, al_3, 8) (alias)
+          eax_14 = DPB(eax_13, al_3, 8) (alias)
 SZC_4: orig: SZC
     def:  SZC_4 = cond(al_3 - 0x30)
     uses: branch Test(LT,SZC_4) m4_not_number
+          C_11 = SLICE(SZC_4, bool, 2) (alias)
+          S_21 = SLICE(SZC_4, bool, 0) (alias)
+          Z_25 = SLICE(SZC_4, bool, 1) (alias)
 SZC_5: orig: SZC
     def:  SZC_5 = cond(al_3 - 0x39)
     uses: branch Test(GT,SZC_5) m4_not_number
+          C_9 = SLICE(SZC_5, bool, 2) (alias)
+          S_19 = SLICE(SZC_5, bool, 0) (alias)
+          Z_23 = SLICE(SZC_5, bool, 1) (alias)
 al_6: orig: al
     def:  al_6 = 0x00
-    uses: eax_16 = DPB(eax_15, al_6, 8) (alias)
+    uses: eax_17 = DPB(eax_16, al_6, 8) (alias)
 al_7: orig: al
     def:  al_7 = 0x01
-    uses: eax_14 = DPB(eax_13, al_7, 8) (alias)
-C:C
-    def:  def C
-    uses: use C
-eax_11: orig: eax
-    def:  eax_11 = PHI(eax_14, eax_16)
-    uses: use eax_11
+    uses: eax_15 = DPB(eax_14, al_7, 8) (alias)
+C_8: orig: C
+    def:  C_8 = PHI(C_9, C_10)
+    uses: use C_8
+C_9: orig: C
+    def:  C_9 = SLICE(SZC_5, bool, 2) (alias)
+    uses: C_10 = PHI(C_11, C_9)
+          C_8 = PHI(C_9, C_10)
+C_10: orig: C
+    def:  C_10 = PHI(C_11, C_9)
+    uses: C_8 = PHI(C_9, C_10)
+C_11: orig: C
+    def:  C_11 = SLICE(SZC_4, bool, 2) (alias)
+    uses: C_10 = PHI(C_11, C_9)
 eax_12: orig: eax
-    def:  eax_12 = DPB(eax_1, al_3, 8) (alias)
-    uses: eax_13 = DPB(eax_12, al_3, 8) (alias)
-          eax_15 = PHI(eax_12, eax_13)
+    def:  eax_12 = PHI(eax_15, eax_17)
+    uses: use eax_12
 eax_13: orig: eax
-    def:  eax_13 = DPB(eax_12, al_3, 8) (alias)
-    uses: eax_14 = DPB(eax_13, al_7, 8) (alias)
-          eax_15 = PHI(eax_12, eax_13)
+    def:  eax_13 = DPB(eax_1, al_3, 8) (alias)
+    uses: eax_14 = DPB(eax_13, al_3, 8) (alias)
+          eax_16 = PHI(eax_13, eax_14)
 eax_14: orig: eax
-    def:  eax_14 = DPB(eax_13, al_7, 8) (alias)
-    uses: eax_11 = PHI(eax_14, eax_16)
+    def:  eax_14 = DPB(eax_13, al_3, 8) (alias)
+    uses: eax_15 = DPB(eax_14, al_7, 8) (alias)
+          eax_16 = PHI(eax_13, eax_14)
 eax_15: orig: eax
-    def:  eax_15 = PHI(eax_12, eax_13)
-    uses: eax_16 = DPB(eax_15, al_6, 8) (alias)
+    def:  eax_15 = DPB(eax_14, al_7, 8) (alias)
+    uses: eax_12 = PHI(eax_15, eax_17)
 eax_16: orig: eax
-    def:  eax_16 = DPB(eax_15, al_6, 8) (alias)
-    uses: eax_11 = PHI(eax_14, eax_16)
-S:S
-    def:  def S
-    uses: use S
-Z:Z
-    def:  def Z
-    uses: use Z
+    def:  eax_16 = PHI(eax_13, eax_14)
+    uses: eax_17 = DPB(eax_16, al_6, 8) (alias)
+eax_17: orig: eax
+    def:  eax_17 = DPB(eax_16, al_6, 8) (alias)
+    uses: eax_12 = PHI(eax_15, eax_17)
+S_18: orig: S
+    def:  S_18 = PHI(S_19, S_20)
+    uses: use S_18
+S_19: orig: S
+    def:  S_19 = SLICE(SZC_5, bool, 0) (alias)
+    uses: S_20 = PHI(S_21, S_19)
+          S_18 = PHI(S_19, S_20)
+S_20: orig: S
+    def:  S_20 = PHI(S_21, S_19)
+    uses: S_18 = PHI(S_19, S_20)
+S_21: orig: S
+    def:  S_21 = SLICE(SZC_4, bool, 0) (alias)
+    uses: S_20 = PHI(S_21, S_19)
+Z_22: orig: Z
+    def:  Z_22 = PHI(Z_23, Z_24)
+    uses: use Z_22
+Z_23: orig: Z
+    def:  Z_23 = SLICE(SZC_5, bool, 1) (alias)
+    uses: Z_24 = PHI(Z_25, Z_23)
+          Z_22 = PHI(Z_23, Z_24)
+Z_24: orig: Z
+    def:  Z_24 = PHI(Z_25, Z_23)
+    uses: Z_22 = PHI(Z_23, Z_24)
+Z_25: orig: Z
+    def:  Z_25 = SLICE(SZC_4, bool, 1) (alias)
+    uses: Z_24 = PHI(Z_25, Z_23)
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
-	def C
-	def S
-	def Z
 	// succ:  l1
 l1:
 	eax_1 = 0x00000004
 	Mem2[0x00123400:word32] = 0x00000004
 	al_3 = Mem2[0x00123408:byte]
-	eax_12 = DPB(eax_1, al_3, 8) (alias)
-	eax_13 = DPB(eax_12, al_3, 8) (alias)
+	eax_13 = DPB(eax_1, al_3, 8) (alias)
+	eax_14 = DPB(eax_13, al_3, 8) (alias)
 	SZC_4 = cond(al_3 - 0x30)
+	C_11 = SLICE(SZC_4, bool, 2) (alias)
+	S_21 = SLICE(SZC_4, bool, 0) (alias)
+	Z_25 = SLICE(SZC_4, bool, 1) (alias)
 	branch Test(LT,SZC_4) m4_not_number
 	// succ:  m1_maybe_number m4_not_number
 m1_maybe_number:
 	SZC_5 = cond(al_3 - 0x39)
+	C_9 = SLICE(SZC_5, bool, 2) (alias)
+	S_19 = SLICE(SZC_5, bool, 0) (alias)
+	Z_23 = SLICE(SZC_5, bool, 1) (alias)
 	branch Test(GT,SZC_5) m4_not_number
 	// succ:  m2_number m4_not_number
 m2_number:
 	al_7 = 0x01
-	eax_14 = DPB(eax_13, al_7, 8) (alias)
+	eax_15 = DPB(eax_14, al_7, 8) (alias)
 	return
 	// succ:  proc1_exit
 m4_not_number:
-	eax_15 = PHI(eax_12, eax_13)
+	Z_24 = PHI(Z_25, Z_23)
+	S_20 = PHI(S_21, S_19)
+	eax_16 = PHI(eax_13, eax_14)
+	C_10 = PHI(C_11, C_9)
 	al_6 = 0x00
-	eax_16 = DPB(eax_15, al_6, 8) (alias)
+	eax_17 = DPB(eax_16, al_6, 8) (alias)
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	eax_11 = PHI(eax_14, eax_16)
-	use C
-	use eax_11
-	use S
-	use Z
+	Z_22 = PHI(Z_23, Z_24)
+	S_18 = PHI(S_19, S_20)
+	eax_12 = PHI(eax_15, eax_17)
+	C_8 = PHI(C_9, C_10)
+	use C_8
+	use eax_12
+	use S_18
+	use Z_22
 ======
 ";
 #endregion
@@ -2973,12 +3023,15 @@ proc1_exit:
                 m.Assign(al, m.Mem8(m.Word32(0x00123408)));
                 m.Assign(flags, m.Cond(m.ISub(al, 0x30)));
                 m.BranchIf(m.Test(ConditionCode.LT, flags), "m4_not_number");
+
                 m.Label("m1_maybe_number");
                 m.Assign(flags, m.Cond(m.ISub(al, 0x39)));
                 m.BranchIf(m.Test(ConditionCode.GT, flags), "m4_not_number");
+
                 m.Label("m2_number");
                 m.Assign(al, 1);
                 m.Return();
+
                 m.Label("m4_not_number");
                 m.Assign(al, 0);
                 m.Return();

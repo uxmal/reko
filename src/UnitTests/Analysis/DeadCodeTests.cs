@@ -39,12 +39,25 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
 	public class DeadCodeTests : AnalysisTestBase
 	{
+        private SsaProcedureBuilder m;
         private ProgramDataFlow programDataFlow;
 
         [SetUp]
         public void Setup()
         {
+            m = new SsaProcedureBuilder();
             this.programDataFlow = new ProgramDataFlow();
+        }
+
+        public void EliminateDeadCode()
+        {
+            DeadCode.Eliminate(m.Ssa);
+            m.Ssa.Validate(s => Assert.Fail(s));
+        }
+
+        private void AssertProcedureCode(string expected)
+        {
+            ProcedureCodeVerifier.AssertCode(m.Ssa.Procedure, expected);
         }
 
         protected void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -184,5 +197,21 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
-    }
+
+        [Test(Description = "Comment should not be removed as dead code")]
+        public void DeadComment()
+        {
+            var dead = m.Reg16("dead");
+            m.Comment("This is a comment");
+            m.Assign(dead, m.Word16(0xDEAD));
+
+            EliminateDeadCode();
+
+            var sExp =
+@"
+// This is a comment
+";
+            AssertProcedureCode(sExp);
+        }
+ 	}
 }

@@ -53,6 +53,7 @@ namespace Reko.Gui.Windows
         private GViewer gViewer;
 
         private DeclarationFormInteractor declarationFormInteractor;
+        private CommentFormInteractor commentFormInteractor;
 
         private ImageSegment segment;
         private bool showProcedures;
@@ -259,6 +260,7 @@ namespace Reko.Gui.Windows
             this.navInteractor.Attach(this.combinedCodeView);
 
             declarationFormInteractor = new DeclarationFormInteractor(services);
+            commentFormInteractor = new CommentFormInteractor(services);
             previewInteractor = new PreviewInteractor(
                 services, 
                 this.program,
@@ -275,6 +277,8 @@ namespace Reko.Gui.Windows
 
         public void Close()
         {
+            program = null;
+            ProgramChanged();
             if (combinedCodeView != null)
                 combinedCodeView.Dispose();
             combinedCodeView = null;
@@ -302,6 +306,7 @@ namespace Reko.Gui.Windows
                     switch (cmdId.ID)
                     {
                     case CmdIds.EditDeclaration:
+                    case CmdIds.EditComment:
                     case CmdIds.ViewCfgGraph:
                         status.Status = MenuStatus.Visible;
                         return true;
@@ -328,6 +333,7 @@ namespace Reko.Gui.Windows
                         : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
                     return true;
                 case CmdIds.EditDeclaration:
+                case CmdIds.EditComment:
                     status.Status = GetAnchorAddress() == null 
                         ? MenuStatus.Visible
                         : MenuStatus.Enabled | MenuStatus.Visible;
@@ -356,6 +362,9 @@ namespace Reko.Gui.Windows
                     return ChooseTextEncoding();
                 case CmdIds.EditDeclaration:
                     EditDeclaration();
+                    return true;
+                case CmdIds.EditComment:
+                    EditComment();
                     return true;
                 }
             }
@@ -444,6 +453,23 @@ namespace Reko.Gui.Windows
             declarationFormInteractor.Show(screenPoint, program, addr);
         }
 
+        private Address GetCommentAnchorAddress()
+        {
+            if (combinedCodeView.MixedCodeDataView.Focused)
+                return combinedCodeView.MixedCodeDataView.GetAnchorAddress();
+            return null;
+        }
+
+        private void EditComment()
+        {
+            var addr = GetCommentAnchorAddress();
+            if (addr == null)
+                return;
+            var anchorPt = FocusedTextView.GetAnchorTopPoint();
+            var screenPoint = FocusedTextView.PointToScreen(anchorPt);
+            commentFormInteractor.Show(screenPoint, program, addr);
+        }
+
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
             combinedCodeView.CodeView.ClearSelection();
@@ -495,7 +521,11 @@ namespace Reko.Gui.Windows
             if (topAddress < dataItemNode.EndAddress)
             {
                 var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
-                numer = mixedCodeDataModel.CountLines(dataItemNode.StartAddress, topAddress);
+                var startAddr = dataItemNode.StartAddress;
+                var endAddr = topAddress;
+                var startPos = MixedCodeDataModel.Position(startAddr, 0);
+                var endPos = MixedCodeDataModel.Position(endAddr, 0);
+                numer = mixedCodeDataModel.CountLines(startPos, endPos);
                 denom = dataItemNode.NumLines;
             }
             else
@@ -520,7 +550,9 @@ namespace Reko.Gui.Windows
 
             long numLines = dataItemNode.NumLines;
             var offset = (int)((numLines * numer) / denom);
-            combinedCodeView.MixedCodeDataView.Model.MoveToLine(dataItemNode.StartAddress, offset);
+            var startAddr = dataItemNode.StartAddress;
+            var startPos = MixedCodeDataModel.Position(startAddr, 0);
+            combinedCodeView.MixedCodeDataView.Model.MoveToLine(startPos, offset);
             combinedCodeView.MixedCodeDataView.InvalidateModel();
         }
 

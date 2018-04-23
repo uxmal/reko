@@ -10759,18 +10759,8 @@ l0800_4E92:
 
 l0800_4E94:
 	jmp	word ptr cs:[bx+10]
-
-l0800_4E98:
-	call	4F2C
-	mov	dx,ax
-	or	dx,dx
-	jz	4EDE
-
-l0800_4EA1:
-	mov	sp,bp
-	pop	bp
-	ret
-0800:4EA5                FF 36 E5 29 FF 36 E3 29 E8 AD EF      .6.).6.)...
+0800:4E98                         E8 91 00 8B D0 0B D2 74         .......t
+0800:4EA0 3D 8B E5 5D C3 FF 36 E5 29 FF 36 E3 29 E8 AD EF =..]..6.).6.)...
 0800:4EB0 83 C4 04 89 56 FE 89 46 FC FF 36 E1 29 FF 36 DF ....V..F..6.).6.
 0800:4EC0 29 FF 76 FE 50 E8 D4 F1 83 C4 08 83 06 8C 4E 04 ).v.P.........N.
 0800:4ED0 83 16 8E 4E 00 EB 07                            ...N...        
@@ -10816,9 +10806,7 @@ l0800_4F0E:
 	pop	bp
 	ret
 0800:4F14             E9 03 EA 03 EB 03 F2 03 00 00 00 00     ............
-0800:4F20 00 00 00 00                                     ....           
-l0800_4F24	dw	0x4E98
-0800:4F26                   98 4E A5 4E DE 4E                   .N.N.N   
+0800:4F20 00 00 00 00 98 4E 98 4E A5 4E DE 4E             .....N.N.N.N   
 
 ;; fn0800_4F2C: 0800:4F2C
 fn0800_4F2C proc
@@ -19395,6 +19383,8 @@ l0800_93EC:
 fn0800_93EF proc
 	sub	dx,dx
 	mov	cx,0004
+
+l0800_93F4:
 	dec	word ptr [bp-0A]
 	jl	9442
 
@@ -19411,22 +19401,40 @@ l0800_93F9:
 	pop	dx
 	or	ax,ax
 	jle	9444
+
+l0800_940F:
 	dec	cl
 	jl	9444
+
+l0800_9413:
 	mov	ch,al
 	sub	ch,30
 	jc	9444
+
+l0800_941A:
 	cmp	ch,0A
 	jc	9436
+
+l0800_941F:
 	sub	ch,11
 	jc	9444
+
+l0800_9424:
 	cmp	ch,06
 	jc	9433
+
+l0800_9429:
 	sub	ch,20
 	jc	9444
+
+l0800_942E:
 	cmp	ch,06
 	jnc	9444
+
+l0800_9433:
 	add	ch,0A
+
+l0800_9436:
 	shl	dx,01
 	shl	dx,01
 	shl	dx,01
@@ -19436,6 +19444,8 @@ l0800_93F9:
 
 l0800_9442:
 	sub	ax,ax
+
+l0800_9444:
 	cmp	cl,04
 	jz	944F
 

@@ -17,22 +17,17 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Intel
 {

@@ -226,14 +226,15 @@ namespace Reko.Arch.Z80
                 reg = binder.EnsureRegister(Registers.a);
             }
             var C = FlagGroup(FlagM.CF);
+            var one = m.Byte(1);
             Expression src;
             if (useCarry)
             {
-                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, C);
+                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, one, C);
             }
             else 
             {
-                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg);
+                src = host.PseudoProcedure(pseudoOp, reg.DataType, reg, one);
             }
             m.Assign(reg, src);
             m.Assign(C, m.Cond(reg));

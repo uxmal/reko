@@ -38,11 +38,6 @@ namespace Reko.Core.Code
 		{
 		}
 
-        internal Instruction VisitComment(CodeComment codeComment)
-        {
-            throw new NotImplementedException();
-        }
-
         public Instruction Transform(Instruction instr)
 		{
 			return instr.Accept(this);
@@ -69,7 +64,12 @@ namespace Reko.Core.Code
             return ci;
 		}
 
-		public virtual Instruction TransformDeclaration(Declaration decl)
+        public virtual Instruction TransformComment(CodeComment codeComment)
+        {
+            return codeComment;
+        }
+
+        public virtual Instruction TransformDeclaration(Declaration decl)
 		{
 			if (decl.Expression != null)
 				decl.Expression = decl.Expression.Accept(this);

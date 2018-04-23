@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,39 +19,18 @@
 #endregion
 
 using System;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Reko.Core.Archives;
 
-namespace Reko.Core
+namespace Reko.Gui.Forms
 {
-	/// <summary>
-	/// Summarizes information about a particular processor.
-	/// </summary>
-	[XmlRoot("processorinfo")]
-	public class ProcessorInfo
-	{
-		public ProcessorInfo()
-		{
-		}
+    public interface IArchiveBrowserDialog : IDialog
+    {
+        ICollection<ArchiveDirectoryEntry> ArchiveEntries { get; set; }
 
-		[XmlElement("name")]
-		public string Name;
-
-		[XmlElement("heuristics")]
-		public Heuristics heuristics;
-	}
-
-	public class Heuristics
-	{
-		[XmlElement("pattern-rules")]
-		public PatternRule [] PatternRules;
-	}
-
-	public class PatternRule
-	{
-		[XmlElement("pattern")]
-		public string Pattern;
-		[XmlElement("action")]
-		public string Action;
-	}
+        ArchivedFile GetSelectedFile();
+    }
 }

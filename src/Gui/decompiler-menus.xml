@@ -115,6 +115,7 @@
   <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
   <cmd id="ViewPcRelative" cmdSet="Reko" container="GrpLowLevel">Show _PC relative addresses</cmd>
   <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
+  <cmd id="EditComment" cmdSet="Reko" container="GrpCodeView" priority="2">Edit comment</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />
@@ -130,7 +131,8 @@
   <cmd id="ActionMarkType" cmdSet="Reko" container="ActionMarkType">Mark _Type</cmd>
   <cmd id="ActionAssumeRegisterValues" cmdSet="Reko" container="ActionAssumeRegisterValues">_Register values...</cmd>
 
-  <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options</cmd>
+  <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options...</cmd>
+  <cmd id="ToolsKeyBindings" cmdSet="Reko" container="GrpTools">_Key bindings...</cmd>
   
   <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cacade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Reko" container="GrpWindows">Tile _Vertically</cmd>
@@ -203,6 +205,7 @@
 
   <keybinding id="ActionMarkType" cmdSet="Reko" key1="T" alt1="Control" />
   <keybinding id="EditDeclaration" cmdSet="Reko" editor="Reko.Gui.Windows.CombinedCodeViewInteractor"  key1="D" alt1="Control" />
+  <keybinding id="EditComment" cmdSet="Reko" editor="Reko.Gui.Windows.CombinedCodeViewInteractor"  key1="OemSemicolon" />
   <keybinding id="ActionNextSearchHit" cmdSet="Reko" editor="" key1="F8" />
   <keybinding id="ActionPrevSearchHit" cmdSet="Reko" editor="" key1="F8" alt1="Shift" />
   <keybinding id="EditCopy" cmdSet="Reko" editor="" key1="C" alt1="Control" />

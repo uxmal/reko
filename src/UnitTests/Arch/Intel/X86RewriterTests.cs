@@ -3387,5 +3387,56 @@ namespace Reko.UnitTests.Arch.Intel
                 "0|S--|10000000(2): 1 instructions",
                 "1|L--|edx_ebx = __getsec(eax)");
         }
+
+        [Test(Description = "We cannot make 16-bit calls in 32- or 64-bit mode")]
+        public void X86Rw_invalid_call()
+        {
+            Run32bitTest(0x66, 0xFF, 0x51, 0xCC); // call word ptr[ecx - 34]
+            AssertCode(
+                "0|---|10000000(4): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+
+        [Test]
+        public void X86Rw_cvtss2sd()
+        {
+            Run64bitTest(0xF3, 0x48, 0x0F, 0x5A, 0x0D, 0xB5, 0x47, 0x32, 0x00);	// cvtss2sd	xmm1,dword ptr [rip+003247B5]
+            AssertCode(
+                "0|L--|0000000140000000(9): 2 instructions",
+                "1|L--|v3 = (real64) Mem0[0x00000001403247BE:real32]",
+                "2|L--|xmm1 = DPB(xmm1, v3, 0)");
+        }
+
+
+        [Test]
+        public void X86Rw_cvtsd2ss()
+        {
+            Run64bitTest(0xF2, 0x48, 0x0F, 0x5A, 0xC0);	// cvtsd2ss	xmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(5): 2 instructions",
+                "1|L--|v3 = (real32) xmm0",
+                "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
+
+
+        [Test]
+        public void X86Rw_cvtss2si()
+        {
+            Run64bitTest(0xF3, 0x48, 0x0F, 0x2D, 0x50, 0x10);	// cvtss2si	rdx,dword ptr [rax+10]
+            AssertCode(
+                "0|L--|0000000140000000(6): 1 instructions",
+                "1|L--|rdx = (int64) Mem0[rax + 0x0000000000000010:real32]");
+        }
+
+        [Test]
+        public void X86Rw_sqrtsd()
+        {
+            Run64bitTest(0xF2, 0x0F, 0x51, 0xC0);	// sqrtsd	xmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|v3 = __sqrt(xmm0)",
+                "2|L--|xmm0 = DPB(xmm0, v3, 0)");
+        }
     }
 }

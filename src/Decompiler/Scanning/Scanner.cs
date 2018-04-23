@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +69,7 @@ namespace Reko.Scanning
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
+        private CommentInjector cinj;
         private ScanResults sr;
         
         public Scanner(
@@ -94,6 +95,7 @@ namespace Reko.Scanning
             this.blockStarts = new Dictionary<Block, Address>();
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
+            this.cinj = new CommentInjector(program.User.Annotations);
             this.sr = new ScanResults
             {
                 KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
@@ -553,6 +555,7 @@ namespace Reko.Scanning
             InjectProcedureEntryInstructions(addr, proc);
             var usb = new UserSignatureBuilder(Program);
             usb.BuildSignature(addr, proc);
+            cinj.InjectComments(proc);
             return proc;
         }
 

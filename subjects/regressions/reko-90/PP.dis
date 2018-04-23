@@ -15955,318 +15955,317 @@ l0800_4C6D:
 // LocalsOut: Local -0002(16)
 
 l0800_4C79:
-	Mem59[ss:fp - 0x001C:word16] = Mem0[ds_17:0x29E1:word16]
-	Mem62[ss:fp - 0x001E:word16] = Mem59[ds_17:0x29DF:word16]
-	Mem68[ss:fp - 0x0020:word16] = 0x0000
-	Mem70[ss:fp - 0x0022:word16] = 0x03F3
-	selector ds_111
-	fn0800_409C(fp - 0x0002, ds_17, wArg02, wArg04, wArg06, out ds_111)
-	word16 ax_131 = 0x0000
+	Mem60[ss:fp - 0x001C:word16] = Mem0[ds_17:0x29E1:word16]
+	Mem63[ss:fp - 0x001E:word16] = Mem60[ds_17:0x29DF:word16]
+	Mem69[ss:fp - 0x0020:word16] = 0x0000
+	Mem71[ss:fp - 0x0022:word16] = 0x03F3
+	selector ds_112
+	fn0800_409C(fp - 0x0002, ds_17, wArg02, wArg04, wArg06, out ds_112)
+	word16 ax_132 = 0x0000
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:0x08 es:<invalid> bx:<invalid> al:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -30(fp):<invalid> -28(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4C8E:
-	Mem86[ss:fp - 0x001C:word16] = Mem70[ds_111:0x29E5:word16]
-	Mem89[ss:fp - 0x001E:word16] = Mem86[ds_111:0x29E3:word16]
-	word16 si_91
-	selector ds_92
-	word16 dx_93 = fn0800_3E5D(fp - 0x0002, ds_111, wArg00, wArg02, out si_91, out ds_92)
-	Mem96[ss:fp - 0x0008:word16] = dx_93
-	Mem97[ss:fp - 0x000A:word16] = ax_131
-	Mem98[ss:fp - 0x0004:word16] = dx_93
-	Mem99[ss:fp - 0x0006:word16] = ax_131
-	Mem102[ss:fp - 0x001C:word16] = Mem99[ds_92:0x29E1:word16]
-	Mem105[ss:fp - 0x001E:word16] = Mem102[ds_92:0x29DF:word16]
-	Mem108[ss:fp - 0x0020:word16] = Mem105[ss:fp - 0x0004:word16]
-	Mem110[ss:fp - 0x0022:word16] = ax_131
-	fn0800_409C(fp - 0x0002, ds_92, wArg02, wArg04, wArg06, out ds_111)
+	Mem87[ss:fp - 0x001C:word16] = Mem71[ds_112:0x29E5:word16]
+	Mem90[ss:fp - 0x001E:word16] = Mem87[ds_112:0x29E3:word16]
+	word16 si_92
+	selector ds_93
+	word16 dx_94 = fn0800_3E5D(fp - 0x0002, ds_112, wArg00, wArg02, out si_92, out ds_93)
+	Mem97[ss:fp - 0x0008:word16] = dx_94
+	Mem98[ss:fp - 0x000A:word16] = ax_132
+	Mem99[ss:fp - 0x0004:word16] = dx_94
+	Mem100[ss:fp - 0x0006:word16] = ax_132
+	Mem103[ss:fp - 0x001C:word16] = Mem100[ds_93:0x29E1:word16]
+	Mem106[ss:fp - 0x001E:word16] = Mem103[ds_93:0x29DF:word16]
+	Mem109[ss:fp - 0x0020:word16] = Mem106[ss:fp - 0x0004:word16]
+	Mem111[ss:fp - 0x0022:word16] = ax_132
+	fn0800_409C(fp - 0x0002, ds_93, wArg02, wArg04, wArg06, out ds_112)
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> cl:<invalid> al:<invalid> ah:<invalid> es:<invalid> bx:<invalid> dl:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4CDA:
-	word16 ax_118 = Mem110[ss:fp - 0x000A:word16]
-	word16 dx_119 = Mem110[ss:fp - 0x0008:word16]
-	word16 v21_120 = Mem110[ss:fp - 0x000A:word16] - 0x0001
-	Mem121[ss:fp - 0x000A:word16] = v21_120
-	Mem125[ss:fp - 0x0008:word16] = Mem121[ss:fp - 0x0008:word16] - (v21_120 <u 0x0000)
-	word16 ax_126 = ax_118 | dx_119
-	branch ax_126 != 0x0000 l0800_4CBC
+	word16 ax_119 = Mem111[ss:fp - 0x000A:word16]
+	word16 dx_120 = Mem111[ss:fp - 0x0008:word16]
+	word16 v21_121 = Mem111[ss:fp - 0x000A:word16] - 0x0001
+	Mem122[ss:fp - 0x000A:word16] = v21_121
+	Mem126[ss:fp - 0x0008:word16] = Mem122[ss:fp - 0x0008:word16] - (v21_121 <u 0x0000)
+	word16 ax_127 = ax_119 | dx_120
+	branch ax_127 != 0x0000 l0800_4CBC
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> dl:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4CBC:
-	Mem499[ss:fp - 0x001C:word16] = Mem125[ds_111:0x29E1:word16]
-	Mem502[ss:fp - 0x001E:word16] = Mem499[ds_111:0x29DF:word16]
-	Mem505[ss:fp - 0x0020:word16] = Mem502[ds_111:0x29E5:word16]
-	Mem508[ss:fp - 0x0022:word16] = Mem505[ds_111:0x29E3:word16]
-	word16 si_509
-	selector ds_510
-	Mem515[ss:fp - 0x0020:word16] = fn0800_3E5D(fp - 0x0002, ds_111, wArg00, wArg02, out si_509, out ds_510)
-	Mem517[ss:fp - 0x0022:word16] = ax_126
-	fn0800_409C(fp - 0x0002, ds_510, wArg02, wArg04, wArg06, out ds_111)
+	Mem502[ss:fp - 0x001C:word16] = Mem126[ds_112:0x29E1:word16]
+	Mem505[ss:fp - 0x001E:word16] = Mem502[ds_112:0x29DF:word16]
+	Mem508[ss:fp - 0x0020:word16] = Mem505[ds_112:0x29E5:word16]
+	Mem511[ss:fp - 0x0022:word16] = Mem508[ds_112:0x29E3:word16]
+	word16 si_512
+	selector ds_513
+	Mem518[ss:fp - 0x0020:word16] = fn0800_3E5D(fp - 0x0002, ds_112, wArg00, wArg02, out si_512, out ds_513)
+	Mem520[ss:fp - 0x0022:word16] = ax_127
+	fn0800_409C(fp - 0x0002, ds_513, wArg02, wArg04, wArg06, out ds_112)
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> dl:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4CEC:
-	ax_131 = Mem125[ss:fp - 0x0006:word16] | Mem125[ss:fp - 0x0004:word16]
-	branch ax_131 != 0x0000 l0800_4C8E
+	ax_132 = Mem126[ss:fp - 0x0006:word16] | Mem126[ss:fp - 0x0004:word16]
+	branch ax_132 != 0x0000 l0800_4C8E
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> dl:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4CF4:
-	Mem137[ss:fp - 0x001C:word16] = Mem125[ds_111:0x29E1:word16]
-	Mem140[ss:fp - 0x001E:word16] = Mem137[ds_111:0x29DF:word16]
-	Mem143[ss:fp - 0x0020:word16] = Mem140[ds_111:0x29E5:word16]
-	Mem146[ss:fp - 0x0022:word16] = Mem143[ds_111:0x29E3:word16]
-	word16 si_147
-	selector ds_148
-	ui32 dx_ax_152 = SEQ(fn0800_3E5D(fp - 0x0002, ds_111, wArg00, wArg02, out si_147, out ds_148), ax_131 - 0x0001)
-	Mem159[ss:fp - 0x0020:word16] = SLICE(dx_ax_152 - 0x00000001, word16, 16)
-	word16 ax_156 = (word16) (dx_ax_152 - 0x00000001)
-	Mem161[ss:fp - 0x0022:word16] = ax_156
-	selector ds_162
-	fn0800_409C(fp - 0x0002, ds_148, wArg02, wArg04, wArg06, out ds_162)
-	Mem168[ss:fp - 0x001C:word16] = Mem161[ds_162:0x29E5:word16]
-	Mem171[ss:fp - 0x001E:word16] = Mem168[ds_162:0x29E3:word16]
-	word16 si_172
-	selector ds_173
-	Mem177[ss:fp - 0x000C:word16] = fn0800_3E5D(fp - 0x0002, ds_162, wArg00, wArg02, out si_172, out ds_173)
-	Mem178[ss:fp - 0x000E:word16] = ax_156
-	Mem181[ss:fp - 0x001C:word16] = Mem178[ds_173:0x29E5:word16]
-	Mem184[ss:fp - 0x001E:word16] = Mem181[ds_173:0x29E3:word16]
-	word16 si_185
-	selector ds_186
-	Mem189[ss:fp - 0x0010:word16] = fn0800_3E5D(fp - 0x0002, ds_173, wArg00, wArg02, out si_185, out ds_186)
-	Mem190[ss:fp - 0x0012:word16] = ax_156
-	word16 dx_193 = Mem190[ss:fp - 0x0012:word16] - Mem190[ss:fp - 0x000E:word16]
-	Mem198[ss:fp - 0x0014:word16] = Mem190[ss:fp - 0x0010:word16] - Mem190[ss:fp - 0x000C:word16] - (dx_193 <u 0x0000)
-	Mem199[ss:fp - 0x0016:word16] = dx_193
-	Mem202[ss:fp - 0x001C:word16] = Mem199[ds_186:0x29E1:word16]
-	Mem205[ss:fp - 0x001E:word16] = Mem202[ds_186:0x29DF:word16]
-	Mem208[ss:fp - 0x0020:word16] = Mem205[ss:fp - 0x000C:word16]
-	Mem211[ss:fp - 0x0022:word16] = Mem208[ss:fp - 0x000E:word16]
-	selector ds_212
-	fn0800_409C(fp - 0x0002, ds_186, wArg02, wArg04, wArg06, out ds_212)
-	Mem217[ss:fp - 0x001C:word16] = Mem211[ds_212:0x29E1:word16]
-	Mem220[ss:fp - 0x001E:word16] = Mem217[ds_212:0x29DF:word16]
-	ui32 ax_dx_224 = SEQ(Mem220[ss:fp - 0x0010:word16], Mem220[ss:fp - 0x0012:word16] - 0x0001)
-	Mem231[ss:fp - 0x0020:word16] = SLICE(ax_dx_224 - 0x00000001, word16, 16)
-	word16 dx_228 = (word16) (ax_dx_224 - 0x00000001)
-	Mem233[ss:fp - 0x0022:word16] = dx_228
-	selector ds_234
-	fn0800_409C(fp - 0x0002, ds_212, wArg02, wArg04, wArg06, out ds_234)
-	Mem240[ss:fp - 0x001C:word16] = Mem233[ds_234:0x29E1:word16]
-	Mem243[ss:fp - 0x001E:word16] = Mem240[ds_234:0x29DF:word16]
-	word16 ax_245 = fn0800_AD2F(ds_234, ptrArg00, wArg02)
-	Mem247[ds_234:0x4E8E:word16] = dx_228
-	Mem248[ds_234:0x4E8C:word16] = ax_245
-	Mem251[ss:fp - 0x001C:word16] = 0x0001
-	Mem257[ss:fp - 0x001E:word16] = 0x0000
-	Mem259[ss:fp - 0x0020:word16] = 0x0004
-	Mem262[ss:fp - 0x0022:word16] = Mem259[ds_234:0x29E5:word16]
-	Mem265[ss:fp - 0x0024:word16] = Mem262[ds_234:0x29E3:word16]
-	selector ds_267
-	fn0800_ACB3(ds_234, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_267)
-	word16 dx_272 = Mem265[ss:fp - 0x0016:word16]
-	Mem273[ss:fp - 0x0004:word16] = Mem265[ss:fp - 0x0014:word16]
-	Mem274[ss:fp - 0x0006:word16] = dx_272
+	Mem138[ss:fp - 0x001C:word16] = Mem126[ds_112:0x29E1:word16]
+	Mem141[ss:fp - 0x001E:word16] = Mem138[ds_112:0x29DF:word16]
+	Mem144[ss:fp - 0x0020:word16] = Mem141[ds_112:0x29E5:word16]
+	Mem147[ss:fp - 0x0022:word16] = Mem144[ds_112:0x29E3:word16]
+	word16 si_148
+	selector ds_149
+	ui32 dx_ax_153 = SEQ(fn0800_3E5D(fp - 0x0002, ds_112, wArg00, wArg02, out si_148, out ds_149), ax_132 - 0x0001)
+	Mem160[ss:fp - 0x0020:word16] = SLICE(dx_ax_153 - 0x00000001, word16, 16)
+	word16 ax_157 = (word16) (dx_ax_153 - 0x00000001)
+	Mem162[ss:fp - 0x0022:word16] = ax_157
+	selector ds_163
+	fn0800_409C(fp - 0x0002, ds_149, wArg02, wArg04, wArg06, out ds_163)
+	Mem169[ss:fp - 0x001C:word16] = Mem162[ds_163:0x29E5:word16]
+	Mem172[ss:fp - 0x001E:word16] = Mem169[ds_163:0x29E3:word16]
+	word16 si_173
+	selector ds_174
+	Mem178[ss:fp - 0x000C:word16] = fn0800_3E5D(fp - 0x0002, ds_163, wArg00, wArg02, out si_173, out ds_174)
+	Mem179[ss:fp - 0x000E:word16] = ax_157
+	Mem182[ss:fp - 0x001C:word16] = Mem179[ds_174:0x29E5:word16]
+	Mem185[ss:fp - 0x001E:word16] = Mem182[ds_174:0x29E3:word16]
+	word16 si_186
+	selector ds_187
+	Mem190[ss:fp - 0x0010:word16] = fn0800_3E5D(fp - 0x0002, ds_174, wArg00, wArg02, out si_186, out ds_187)
+	Mem191[ss:fp - 0x0012:word16] = ax_157
+	word16 dx_194 = Mem191[ss:fp - 0x0012:word16] - Mem191[ss:fp - 0x000E:word16]
+	Mem199[ss:fp - 0x0014:word16] = Mem191[ss:fp - 0x0010:word16] - Mem191[ss:fp - 0x000C:word16] - (dx_194 <u 0x0000)
+	Mem200[ss:fp - 0x0016:word16] = dx_194
+	Mem203[ss:fp - 0x001C:word16] = Mem200[ds_187:0x29E1:word16]
+	Mem206[ss:fp - 0x001E:word16] = Mem203[ds_187:0x29DF:word16]
+	Mem209[ss:fp - 0x0020:word16] = Mem206[ss:fp - 0x000C:word16]
+	Mem212[ss:fp - 0x0022:word16] = Mem209[ss:fp - 0x000E:word16]
+	selector ds_213
+	fn0800_409C(fp - 0x0002, ds_187, wArg02, wArg04, wArg06, out ds_213)
+	Mem218[ss:fp - 0x001C:word16] = Mem212[ds_213:0x29E1:word16]
+	Mem221[ss:fp - 0x001E:word16] = Mem218[ds_213:0x29DF:word16]
+	ui32 ax_dx_225 = SEQ(Mem221[ss:fp - 0x0010:word16], Mem221[ss:fp - 0x0012:word16] - 0x0001)
+	Mem232[ss:fp - 0x0020:word16] = SLICE(ax_dx_225 - 0x00000001, word16, 16)
+	word16 dx_229 = (word16) (ax_dx_225 - 0x00000001)
+	Mem234[ss:fp - 0x0022:word16] = dx_229
+	selector ds_235
+	fn0800_409C(fp - 0x0002, ds_213, wArg02, wArg04, wArg06, out ds_235)
+	Mem241[ss:fp - 0x001C:word16] = Mem234[ds_235:0x29E1:word16]
+	Mem244[ss:fp - 0x001E:word16] = Mem241[ds_235:0x29DF:word16]
+	word16 ax_246 = fn0800_AD2F(ds_235, ptrArg00, wArg02)
+	Mem248[ds_235:0x4E8E:word16] = dx_229
+	Mem249[ds_235:0x4E8C:word16] = ax_246
+	Mem252[ss:fp - 0x001C:word16] = 0x0001
+	Mem258[ss:fp - 0x001E:word16] = 0x0000
+	Mem260[ss:fp - 0x0020:word16] = 0x0004
+	Mem263[ss:fp - 0x0022:word16] = Mem260[ds_235:0x29E5:word16]
+	Mem266[ss:fp - 0x0024:word16] = Mem263[ds_235:0x29E3:word16]
+	selector ds_268
+	fn0800_ACB3(ds_235, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_268)
+	word16 dx_273 = Mem266[ss:fp - 0x0016:word16]
+	Mem274[ss:fp - 0x0004:word16] = Mem266[ss:fp - 0x0014:word16]
+	Mem275[ss:fp - 0x0006:word16] = dx_273
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> dl:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4DE4:
-	word16 ax_281 = Mem274[ss:fp - 0x0006:word16] | Mem274[ss:fp - 0x0004:word16]
-	branch ax_281 != 0x0000 l0800_4DBE
+	word16 ax_282 = Mem275[ss:fp - 0x0006:word16] | Mem275[ss:fp - 0x0004:word16]
+	branch ax_282 != 0x0000 l0800_4DBE
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4DBE:
-	Mem468[ss:fp - 0x001C:word16] = Mem274[ds_267:0x29E1:word16]
-	Mem471[ss:fp - 0x001E:word16] = Mem468[ds_267:0x29DF:word16]
-	Mem474[ss:fp - 0x0020:word16] = Mem471[ds_267:0x29E5:word16]
-	Mem477[ss:fp - 0x0022:word16] = Mem474[ds_267:0x29E3:word16]
-	word16 si_478
-	selector ds_479
-	Mem484[ss:fp - 0x0020:word16] = fn0800_3E5D(fp - 0x0002, ds_267, wArg00, wArg02, out si_478, out ds_479)
-	Mem486[ss:fp - 0x0022:word16] = ax_281
-	fn0800_409C(fp - 0x0002, ds_479, wArg02, wArg04, wArg06, out ds_267)
-	word16 v56_490 = Mem486[ss:fp - 0x0006:word16] - 0x0001
-	Mem491[ss:fp - 0x0006:word16] = v56_490
-	Mem495[ss:fp - 0x0004:word16] = Mem491[ss:fp - 0x0004:word16] - (v56_490 <u 0x0000)
+	Mem471[ss:fp - 0x001C:word16] = Mem275[ds_268:0x29E1:word16]
+	Mem474[ss:fp - 0x001E:word16] = Mem471[ds_268:0x29DF:word16]
+	Mem477[ss:fp - 0x0020:word16] = Mem474[ds_268:0x29E5:word16]
+	Mem480[ss:fp - 0x0022:word16] = Mem477[ds_268:0x29E3:word16]
+	word16 si_481
+	selector ds_482
+	Mem487[ss:fp - 0x0020:word16] = fn0800_3E5D(fp - 0x0002, ds_268, wArg00, wArg02, out si_481, out ds_482)
+	Mem489[ss:fp - 0x0022:word16] = ax_282
+	fn0800_409C(fp - 0x0002, ds_482, wArg02, wArg04, wArg06, out ds_268)
+	word16 v56_493 = Mem489[ss:fp - 0x0006:word16] - 0x0001
+	Mem494[ss:fp - 0x0006:word16] = v56_493
+	Mem498[ss:fp - 0x0004:word16] = Mem494[ss:fp - 0x0004:word16] - (v56_493 <u 0x0000)
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4DEC:
-	Mem287[ss:fp - 0x001C:word16] = 0x0001
-	Mem293[ss:fp - 0x001E:word16] = 0x0000
-	Mem295[ss:fp - 0x0020:word16] = 0x0004
-	Mem298[ss:fp - 0x0022:word16] = Mem295[ds_267:0x29E5:word16]
-	Mem301[ss:fp - 0x0024:word16] = Mem298[ds_267:0x29E3:word16]
-	selector ds_302
-	word16 ax_303 = fn0800_ACB3(ds_267, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_302)
-	Mem308[ss:fp - 0x001C:word16] = Mem301[ds_302:0x29E5:word16]
-	Mem311[ss:fp - 0x001E:word16] = Mem308[ds_302:0x29E3:word16]
-	word16 si_312
-	selector ds_313
-	ui32 dx_ax_317 = SEQ(fn0800_3E5D(fp - 0x0002, ds_302, wArg00, wArg02, out si_312, out ds_313), ax_303 + 0x0001)
-	Mem323[ss:fp - 0x0004:word16] = SLICE(dx_ax_317 + 0x00000001, word16, 16)
-	Mem324[ss:fp - 0x0006:word16] = (word16) (dx_ax_317 + 0x00000001)
-	Mem327[ss:fp - 0x001C:word16] = 0x0001
-	word16 dx_331
-	word16 ax_332 = fn0800_8C69(Mem327[ss:fp - 0x0006:word16], 0x02, Mem327[ss:fp - 0x0004:word16], bp, out dx_331)
-	Mem334[ss:fp - 0x001E:word16] = dx_331
-	Mem336[ss:fp - 0x0020:word16] = ax_332
-	Mem339[ss:fp - 0x0022:word16] = Mem336[ds_313:0x29E5:word16]
-	Mem342[ss:fp - 0x0024:word16] = Mem339[ds_313:0x29E3:word16]
-	selector ds_343
-	fn0800_ACB3(ds_313, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_343)
+	Mem288[ss:fp - 0x001C:word16] = 0x0001
+	Mem294[ss:fp - 0x001E:word16] = 0x0000
+	Mem296[ss:fp - 0x0020:word16] = 0x0004
+	Mem299[ss:fp - 0x0022:word16] = Mem296[ds_268:0x29E5:word16]
+	Mem302[ss:fp - 0x0024:word16] = Mem299[ds_268:0x29E3:word16]
+	selector ds_303
+	word16 ax_304 = fn0800_ACB3(ds_268, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_303)
+	Mem309[ss:fp - 0x001C:word16] = Mem302[ds_303:0x29E5:word16]
+	Mem312[ss:fp - 0x001E:word16] = Mem309[ds_303:0x29E3:word16]
+	word16 si_313
+	selector ds_314
+	ui32 dx_ax_318 = SEQ(fn0800_3E5D(fp - 0x0002, ds_303, wArg00, wArg02, out si_313, out ds_314), ax_304 + 0x0001)
+	Mem324[ss:fp - 0x0004:word16] = SLICE(dx_ax_318 + 0x00000001, word16, 16)
+	Mem325[ss:fp - 0x0006:word16] = (word16) (dx_ax_318 + 0x00000001)
+	Mem328[ss:fp - 0x001C:word16] = 0x0001
+	word16 dx_332
+	word16 ax_333 = fn0800_8C69(Mem328[ss:fp - 0x0006:word16], 0x02, Mem328[ss:fp - 0x0004:word16], bp, out dx_332)
+	Mem335[ss:fp - 0x001E:word16] = dx_332
+	Mem337[ss:fp - 0x0020:word16] = ax_333
+	Mem340[ss:fp - 0x0022:word16] = Mem337[ds_314:0x29E5:word16]
+	Mem343[ss:fp - 0x0024:word16] = Mem340[ds_314:0x29E3:word16]
+	selector ds_344
+	fn0800_ACB3(ds_314, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_344)
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4EDE:
-	Mem355[ss:fp - 0x001C:word16] = Mem342[ds_343:0x29E5:word16]
-	Mem358[ss:fp - 0x001E:word16] = Mem355[ds_343:0x29E3:word16]
-	Mem363[ss:fp - 0x001C:word16] = fn0800_AD2F(ds_343, ptrArg00, wArg02)
-	Mem365[ss:fp - 0x001E:word16] = dx_331
-	Mem368[ss:fp - 0x0020:word16] = Mem365[ds_343:0x29E5:word16]
-	Mem371[ss:fp - 0x0022:word16] = Mem368[ds_343:0x29E3:word16]
-	selector ds_372
-	word16 ax_373 = fn0800_4194(ds_343, wArg00, wArg02, out ds_372)
-	word16 bx_375 = Mem371[ss:fp - 0x001E:word16]
-	word16 dx_381 = Mem371[ss:fp - 0x001C:word16]
-	branch bx_375 >=u dx_331 l0800_4F05
+	Mem350[ss:fp - 0x001C:word16] = Mem343[ds_344:0x29E5:word16]
+	Mem353[ss:fp - 0x001E:word16] = Mem350[ds_344:0x29E3:word16]
+	Mem358[ss:fp - 0x001C:word16] = fn0800_AD2F(ds_344, ptrArg00, wArg02)
+	Mem360[ss:fp - 0x001E:word16] = dx_332
+	Mem363[ss:fp - 0x0020:word16] = Mem360[ds_344:0x29E5:word16]
+	Mem366[ss:fp - 0x0022:word16] = Mem363[ds_344:0x29E3:word16]
+	selector ds_367
+	word16 ax_368 = fn0800_4194(ds_344, wArg00, wArg02, out ds_367)
+	word16 bx_370 = Mem366[ss:fp - 0x001E:word16]
+	word16 dx_376 = Mem366[ss:fp - 0x001C:word16]
+	branch bx_370 >=u dx_332 l0800_4F05
 // DataOut: ax bp ds dx sp ss
 // DataOut (flags): Z
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4F05:
-	branch bx_375 != dx_331 l0800_4F0E
+	branch bx_370 != dx_332 l0800_4F0E
 // DataOut: ax bp ds dx sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4F07:
-	branch dx_381 >=u ax_373 l0800_4F0E
+	branch dx_376 >=u ax_368 l0800_4F0E
 // DataOut: bp ds sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4F0E:
 	return 0x0000
 // DataOut: ax ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4F0B:
 // DataOut: bp ds sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4F02:
 // DataOut: bp ds sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_4E41:
-	Mem387[ss:fp - 0x001C:word16] = Mem371[ds_372:0x29E5:word16]
-	Mem390[ss:fp - 0x001E:word16] = Mem387[ds_372:0x29E3:word16]
-	word16 si_391
-	selector ds_392
-	Mem396[ss:fp - 0x0008:word16] = fn0800_3E5D(fp - 0x0002, ds_372, wArg00, wArg02, out si_391, out ds_392)
-	Mem397[ss:fp - 0x000A:word16] = ax_373
-	Mem400[ss:fp - 0x001C:word16] = Mem397[ds_392:0x29E1:word16]
-	Mem403[ss:fp - 0x001E:word16] = Mem400[ds_392:0x29DF:word16]
-	Mem406[ss:fp - 0x0020:word16] = Mem403[ss:fp - 0x0008:word16]
-	Mem408[ss:fp - 0x0022:word16] = ax_373
-	selector ds_409
-	fn0800_409C(fp - 0x0002, ds_392, wArg02, wArg04, wArg06, out ds_409)
-	word16 ax_412 = Mem408[ss:fp - 0x0008:word16]
-	Mem417[ss:fp - 0x001A:word16] = Mem408[ss:fp - 0x000A:word16]
-	Mem418[ss:fp - 0x0018:word16] = ax_412 & 0x3FFF
-	word16 cx_419 = 0x0004
-	word16 bx_421 = 0x4F1C
+	Mem382[ss:fp - 0x001C:word16] = Mem366[ds_367:0x29E5:word16]
+	Mem385[ss:fp - 0x001E:word16] = Mem382[ds_367:0x29E3:word16]
+	word16 si_386
+	selector ds_387
+	Mem391[ss:fp - 0x0008:word16] = fn0800_3E5D(fp - 0x0002, ds_367, wArg00, wArg02, out si_386, out ds_387)
+	Mem392[ss:fp - 0x000A:word16] = ax_368
+	Mem395[ss:fp - 0x001C:word16] = Mem392[ds_387:0x29E1:word16]
+	Mem398[ss:fp - 0x001E:word16] = Mem395[ds_387:0x29DF:word16]
+	Mem401[ss:fp - 0x0020:word16] = Mem398[ss:fp - 0x0008:word16]
+	Mem403[ss:fp - 0x0022:word16] = ax_368
+	selector ds_404
+	word16 si_405 = fn0800_409C(fp - 0x0002, ds_387, wArg02, wArg04, wArg06, out ds_404)
+	word16 ax_407 = Mem403[ss:fp - 0x0008:word16]
+	word16 dx_408 = Mem403[ss:fp - 0x000A:word16]
+	Mem412[ss:fp - 0x001A:word16] = dx_408
+	Mem413[ss:fp - 0x0018:word16] = ax_407 & 0x3FFF
+	word16 cx_414 = 0x0004
+	word16 bx_416 = 0x4F14
 // DataOut: bp bx cx ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
-// LocalsOut: Local -0002(16)
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4E7C:
-	branch Mem418[0x0800:bx_421:word16] != Mem418[ss:fp - 0x000A:word16] l0800_4E8D
+	branch Mem413[0x0800:bx_416:word16] != Mem413[ss:fp - 0x000A:word16] l0800_4E8D
 // DataOut: bp bx cx ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
-// LocalsOut: Local -0002(16)
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4E84:
-	branch Mem418[0x0800:bx_421 + 0x0000:word16] == Mem418[ss:fp - 0x0018:word16] l0800_4E94
-// DataOut: bp bx cx ds ss
+	word16 ax_439 = Mem413[0x0800:bx_416 + 0x0008:word16]
+	branch ax_439 == Mem413[ss:fp - 0x0018:word16] l0800_4E94
+// DataOut: ax bp bx cx ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
-// LocalsOut: Local -0002(16)
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4E94:
-	switch (fp - 0x0002) { l0800_4E98 }
-// DataOut: bp ds ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
-// LocalsOut: Local -0002(16)
-
-l0800_4E98:
-	word16 ax_444 = fn0800_4F2C(fp - 0x0002, ds_409, out ds_343)
-	dx_331 = ax_444
-	branch ax_444 == 0x0000 l0800_4EDE
-// DataOut: ax bp ds sp ss
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
-// LocalsOut: Local -0002(16)
-
-l0800_4EA1:
-	return ax_444
+	word16 sp_444
+	word16 bp_445
+	selector ss_446
+	byte SCZO_447
+	selector ds_448
+	word16 dx_449
+	byte SZO_450
+	byte C_451
+	byte Z_452
+	word16 ax_453
+	byte cl_454
+	word16 bx_455
+	word16 cx_456
+	word16 si_457
+	call Mem413[0x0800:bx_416 + 0x0010:word16] (retsize: 2; depth: 2)
+		uses: ax_439,bp_5,bx_417,C_411,cl_419,cx_418,ds_404,dx_408,SCZO_442,si_405,sp_406,ss,SZO_410,wLoc02_4,wLoc1C_12,wLoc1E_15,Z_443
+		defs: ax_453,bp_445,bx_455,C_451,cl_454,cx_456,ds_448,dx_449,SCZO_447,si_457,sp_444,ss_446,SZO_450,Z_452
+	return ax_453
 // DataOut: ax ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4E8D:
-	bx_421 = bx_421 + 0x0002
-	cx_419 = cx_419 - 0x0001
-	branch cx_419 != 0x0000 l0800_4E7C
+	bx_416 = bx_416 + 0x0002
+	cx_414 = cx_414 - 0x0001
+	branch cx_414 != 0x0000 l0800_4E7C
 // DataOut: bp bx cx ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
-// LocalsOut: Local -0002(16)
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4E92:
 // DataOut: bp ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4ED7:
 	return 0x0009
 // DataOut: ax ds ss
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> al:<invalid> es:<invalid> bx:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 l0800_4C72:
 	return 0x0007
@@ -16277,15 +16276,15 @@ l0800_4C72:
 fn0800_4C55_exit:
 // DataOut: ax ds
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> es:<invalid> bx:<invalid> al:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
+// SymbolicIn: sp:<invalid> bp:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cl:<invalid> es:<invalid> bx:<invalid> al:<invalid> cx:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
 
 
-word16 fn0800_4F2C(word16 bp, selector ds, ptr16 & dsOut)
+void fn0800_4F2C(word16 bp, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bp ds ss
-// LiveOut: ax ds
+// LiveOut:
 // Trashed: SCZDOP ah al ax bh bl bp bpl bx ch cl cx dh di dil dl ds dx eax ebp ebx ecx edi edx es esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
 // Preserved: bp sp
 fn0800_4F2C_entry:
@@ -16327,17 +16326,17 @@ l0800_4F67:
 // LocalsOut: Local -0002(16)
 
 l0800_4F6D:
-	Mem464[ss:fp - 0x001E:word16] = Mem39[ds_17:0x29E5:word16]
-	Mem467[ss:fp - 0x0020:word16] = Mem464[ds_17:0x29E3:word16]
-	word16 si_468
-	selector ds_469
-	Mem473[ss:fp - 0x0016:word16] = fn0800_3E5D(fp - 0x0002, ds_17, wArg00, wArg02, out si_468, out ds_469)
-	Mem474[ss:fp - 0x0018:word16] = ax_36
-	Mem477[ss:fp - 0x001E:word16] = Mem474[ds_469:0x29E5:word16]
-	Mem480[ss:fp - 0x0020:word16] = Mem477[ds_469:0x29E3:word16]
-	word16 si_481
-	Mem486[ss:fp - 0x000E:word16] = fn0800_3E5D(fp - 0x0002, ds_469, wArg00, wArg02, out si_481, out ds_17)
-	Mem487[ss:fp - 0x0010:word16] = ax_36
+	Mem459[ss:fp - 0x001E:word16] = Mem39[ds_17:0x29E5:word16]
+	Mem462[ss:fp - 0x0020:word16] = Mem459[ds_17:0x29E3:word16]
+	word16 si_463
+	selector ds_464
+	Mem468[ss:fp - 0x0016:word16] = fn0800_3E5D(fp - 0x0002, ds_17, wArg00, wArg02, out si_463, out ds_464)
+	Mem469[ss:fp - 0x0018:word16] = ax_36
+	Mem472[ss:fp - 0x001E:word16] = Mem469[ds_464:0x29E5:word16]
+	Mem475[ss:fp - 0x0020:word16] = Mem472[ds_464:0x29E3:word16]
+	word16 si_476
+	Mem481[ss:fp - 0x000E:word16] = fn0800_3E5D(fp - 0x0002, ds_464, wArg00, wArg02, out si_476, out ds_17)
+	Mem482[ss:fp - 0x0010:word16] = ax_36
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> es:<invalid> al:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -2(fp):bp
@@ -16365,59 +16364,59 @@ l0800_4FAD:
 // LocalsOut: Local -0002(16)
 
 l0800_4FB5:
-	Mem86[ss:fp - 0x001E:word16] = Mem53[ds_57:0x29E1:word16]
-	Mem89[ss:fp - 0x0020:word16] = Mem86[ds_57:0x29DF:word16]
-	word16 dx_93
-	word16 ax_94 = fn0800_8CAA(Mem89[ss:fp - 0x0014:word16], 0x02, Mem89[ss:fp - 0x0012:word16], bp, out dx_93)
-	Mem96[ss:fp - 0x0022:word16] = dx_93
-	Mem98[ss:fp - 0x0024:word16] = ax_94
-	selector ds_101
-	fn0800_409C(fp - 0x0002, ds_57, wArg02, wArg04, wArg06, out ds_101)
-	Mem108[ss:fp - 0x001E:word16] = 0x0000
-	Mem111[ss:fp - 0x0020:word16] = Mem108[ss:fp - 0x001A:word16]
-	Mem114[ss:fp - 0x0022:word16] = Mem111[ss:fp - 0x001C:word16]
-	Mem117[ss:fp - 0x0024:word16] = Mem114[ds_101:0x29E5:word16]
-	Mem120[ss:fp - 0x0026:word16] = Mem117[ds_101:0x29E3:word16]
-	selector ds_122
-	word16 ax_123 = fn0800_ACB3(ds_101, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_122)
-	Mem128[ss:fp - 0x001E:word16] = Mem120[ss:fp - 0x0012:word16]
-	Mem131[ss:fp - 0x0020:word16] = Mem128[ss:fp - 0x0014:word16]
-	Mem134[ss:fp - 0x0022:word16] = Mem131[ds_122:0x29E1:word16]
-	Mem137[ss:fp - 0x0024:word16] = Mem134[ds_122:0x29DF:word16]
-	Mem140[ss:fp - 0x0026:word16] = Mem137[ds_122:0x29E5:word16]
-	Mem143[ss:fp - 0x0028:word16] = Mem140[ds_122:0x29E3:word16]
-	selector ds_145
-	fn0800_3B0A(fp - 0x0002, ds_122, wArg08, wArg0A, out ds_145)
+	Mem85[ss:fp - 0x001E:word16] = Mem53[ds_57:0x29E1:word16]
+	Mem88[ss:fp - 0x0020:word16] = Mem85[ds_57:0x29DF:word16]
+	word16 dx_92
+	word16 ax_93 = fn0800_8CAA(Mem88[ss:fp - 0x0014:word16], 0x02, Mem88[ss:fp - 0x0012:word16], bp, out dx_92)
+	Mem95[ss:fp - 0x0022:word16] = dx_92
+	Mem97[ss:fp - 0x0024:word16] = ax_93
+	selector ds_100
+	fn0800_409C(fp - 0x0002, ds_57, wArg02, wArg04, wArg06, out ds_100)
+	Mem107[ss:fp - 0x001E:word16] = 0x0000
+	Mem110[ss:fp - 0x0020:word16] = Mem107[ss:fp - 0x001A:word16]
+	Mem113[ss:fp - 0x0022:word16] = Mem110[ss:fp - 0x001C:word16]
+	Mem116[ss:fp - 0x0024:word16] = Mem113[ds_100:0x29E5:word16]
+	Mem119[ss:fp - 0x0026:word16] = Mem116[ds_100:0x29E3:word16]
+	selector ds_121
+	word16 ax_122 = fn0800_ACB3(ds_100, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_121)
+	Mem127[ss:fp - 0x001E:word16] = Mem119[ss:fp - 0x0012:word16]
+	Mem130[ss:fp - 0x0020:word16] = Mem127[ss:fp - 0x0014:word16]
+	Mem133[ss:fp - 0x0022:word16] = Mem130[ds_121:0x29E1:word16]
+	Mem136[ss:fp - 0x0024:word16] = Mem133[ds_121:0x29DF:word16]
+	Mem139[ss:fp - 0x0026:word16] = Mem136[ds_121:0x29E5:word16]
+	Mem142[ss:fp - 0x0028:word16] = Mem139[ds_121:0x29E3:word16]
+	selector ds_144
+	fn0800_3B0A(fp - 0x0002, ds_121, wArg08, wArg0A, out ds_144)
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> es:<invalid> al:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_50BC:
-	Mem156[ss:fp - 0x001E:word16] = Mem143[ds_145:0x29E5:word16]
-	Mem159[ss:fp - 0x0020:word16] = Mem156[ds_145:0x29E3:word16]
-	word16 si_160
-	word16 di_161
-	selector ds_162
-	branch fn0800_3F58(fp - 0x0002, ds_145, wArg00, wArg02, out si_160, out di_161, out ds_162) != 0x0000 l0800_50D6
+	Mem155[ss:fp - 0x001E:word16] = Mem142[ds_144:0x29E5:word16]
+	Mem158[ss:fp - 0x0020:word16] = Mem155[ds_144:0x29E3:word16]
+	word16 si_159
+	word16 di_160
+	selector ds_161
+	branch fn0800_3F58(fp - 0x0002, ds_144, wArg00, wArg02, out si_159, out di_160, out ds_161) != 0x0000 l0800_50D6
 // DataOut: ax bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> al:<invalid> cx:<invalid> es:<invalid> ds:<invalid> dl:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_50CE:
-	branch ax_123 != 0x03EC l0800_50D6
+	branch ax_122 != 0x03EC l0800_50D6
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:0x08 dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> al:<invalid> cx:<invalid> es:<invalid> ds:<invalid> dl:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_50D6:
-	word16 v58_172 = Mem159[ds_162:0x4E8C:word16] + 0x0004
-	Mem173[ds_162:0x4E8C:word16] = v58_172
-	Mem177[ds_162:0x4E8E:word16] = Mem173[ds_162:0x4E8E:word16] + (v58_172 <u 0x0000)
-	return 0x0000
-// DataOut: ax ds ss
+	word16 v58_171 = Mem158[ds_161:0x4E8C:word16] + 0x0004
+	Mem172[ds_161:0x4E8C:word16] = v58_171
+	Mem176[ds_161:0x4E8E:word16] = Mem172[ds_161:0x4E8E:word16] + (v58_171 <u 0x0000)
+	return
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:0x08 dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> al:<invalid> cx:<invalid> es:<invalid> ds:<invalid> dl:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
 
@@ -16428,75 +16427,75 @@ l0800_50D3:
 // LocalsOut: Local -0002(16)
 
 l0800_5006:
-	Mem190[ss:fp - 0x001E:word16] = 0x0001
-	Mem196[ss:fp - 0x0020:word16] = 0x0000
-	Mem198[ss:fp - 0x0022:word16] = 0x0004
-	Mem201[ss:fp - 0x0024:word16] = Mem198[ds_162:0x29E5:word16]
-	Mem204[ss:fp - 0x0026:word16] = Mem201[ds_162:0x29E3:word16]
-	selector ds_205
-	fn0800_ACB3(ds_162, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_205)
-	Mem210[ss:fp - 0x001E:word16] = Mem204[ds_205:0x29E1:word16]
-	Mem213[ss:fp - 0x0020:word16] = Mem210[ds_205:0x29DF:word16]
-	Mem219[ss:fp - 0x0022:word16] = 0x0000
-	Mem221[ss:fp - 0x0024:word16] = 0x03EC
-	fn0800_409C(fp - 0x0002, ds_205, wArg02, wArg04, wArg06, out ds_145)
-	ax_123 = 0x0000
+	Mem187[ss:fp - 0x001E:word16] = 0x0001
+	Mem193[ss:fp - 0x0020:word16] = 0x0000
+	Mem195[ss:fp - 0x0022:word16] = 0x0004
+	Mem198[ss:fp - 0x0024:word16] = Mem195[ds_161:0x29E5:word16]
+	Mem201[ss:fp - 0x0026:word16] = Mem198[ds_161:0x29E3:word16]
+	selector ds_202
+	fn0800_ACB3(ds_161, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_202)
+	Mem207[ss:fp - 0x001E:word16] = Mem201[ds_202:0x29E1:word16]
+	Mem210[ss:fp - 0x0020:word16] = Mem207[ds_202:0x29DF:word16]
+	Mem216[ss:fp - 0x0022:word16] = 0x0000
+	Mem218[ss:fp - 0x0024:word16] = 0x03EC
+	fn0800_409C(fp - 0x0002, ds_202, wArg02, wArg04, wArg06, out ds_144)
+	ax_122 = 0x0000
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:0x08 dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> al:<invalid> cx:<invalid> es:<invalid> ds:<invalid> dl:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_5034:
-	Mem233[ss:fp - 0x001E:word16] = Mem221[ds_145:0x29E5:word16]
-	Mem236[ss:fp - 0x0020:word16] = Mem233[ds_145:0x29E3:word16]
-	word16 si_237
-	selector ds_238
-	Mem242[ss:fp - 0x0006:word16] = fn0800_3E5D(fp - 0x0002, ds_145, wArg00, wArg02, out si_237, out ds_238)
-	Mem243[ss:fp - 0x0008:word16] = ax_123
-	Mem246[ss:fp - 0x001E:word16] = Mem243[ds_238:0x29E1:word16]
-	Mem249[ss:fp - 0x0020:word16] = Mem246[ds_238:0x29DF:word16]
-	Mem252[ss:fp - 0x0022:word16] = Mem249[ss:fp - 0x0006:word16]
-	Mem254[ss:fp - 0x0024:word16] = ax_123
-	fn0800_409C(fp - 0x0002, ds_238, wArg02, wArg04, wArg06, out ds_145)
-	word16 ax_259 = Mem254[ss:fp - 0x0008:word16] | Mem254[ss:fp - 0x0006:word16]
-	branch ax_259 == 0x0000 l0800_50B1
+	Mem230[ss:fp - 0x001E:word16] = Mem218[ds_144:0x29E5:word16]
+	Mem233[ss:fp - 0x0020:word16] = Mem230[ds_144:0x29E3:word16]
+	word16 si_234
+	selector ds_235
+	Mem239[ss:fp - 0x0006:word16] = fn0800_3E5D(fp - 0x0002, ds_144, wArg00, wArg02, out si_234, out ds_235)
+	Mem240[ss:fp - 0x0008:word16] = ax_122
+	Mem243[ss:fp - 0x001E:word16] = Mem240[ds_235:0x29E1:word16]
+	Mem246[ss:fp - 0x0020:word16] = Mem243[ds_235:0x29DF:word16]
+	Mem249[ss:fp - 0x0022:word16] = Mem246[ss:fp - 0x0006:word16]
+	Mem251[ss:fp - 0x0024:word16] = ax_122
+	fn0800_409C(fp - 0x0002, ds_235, wArg02, wArg04, wArg06, out ds_144)
+	word16 ax_256 = Mem251[ss:fp - 0x0008:word16] | Mem251[ss:fp - 0x0006:word16]
+	branch ax_256 == 0x0000 l0800_50B1
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cx:<invalid> es:<invalid> bx:<invalid> al:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_5062:
-	Mem277[ss:fp - 0x001E:word16] = Mem254[ds_145:0x29E5:word16]
-	Mem280[ss:fp - 0x0020:word16] = Mem277[ds_145:0x29E3:word16]
-	word16 si_281
-	selector ds_282
-	ui32 dx_ax_286 = SEQ(fn0800_3E5D(fp - 0x0002, ds_145, wArg00, wArg02, out si_281, out ds_282), ax_259 - 0x0001)
-	Mem292[ss:fp - 0x000A:word16] = SLICE(dx_ax_286 - 0x00000001, word16, 16)
-	word16 ax_290 = (word16) (dx_ax_286 - 0x00000001)
-	Mem293[ss:fp - 0x000C:word16] = ax_290
-	Mem296[ss:fp - 0x001E:word16] = Mem293[ds_282:0x29E1:word16]
-	Mem299[ss:fp - 0x0020:word16] = Mem296[ds_282:0x29DF:word16]
-	Mem302[ss:fp - 0x0022:word16] = Mem299[ss:fp - 0x000A:word16]
-	Mem304[ss:fp - 0x0024:word16] = ax_290
-	selector ds_305
-	fn0800_409C(fp - 0x0002, ds_282, wArg02, wArg04, wArg06, out ds_305)
-	word16 dx_312
-	word16 ax_313 = fn0800_8C69(Mem304[ss:fp - 0x0008:word16], 0x02, Mem304[ss:fp - 0x0006:word16], bp, out dx_312)
-	Mem315[ss:fp - 0x001E:word16] = dx_312
-	Mem317[ss:fp - 0x0020:word16] = ax_313
-	Mem320[ss:fp - 0x0022:word16] = Mem317[ds_305:0x29E1:word16]
-	Mem323[ss:fp - 0x0024:word16] = Mem320[ds_305:0x29DF:word16]
-	Mem326[ss:fp - 0x0026:word16] = Mem323[ds_305:0x29E5:word16]
-	Mem329[ss:fp - 0x0028:word16] = Mem326[ds_305:0x29E3:word16]
-	fn0800_3B0A(fp - 0x0002, ds_305, wArg08, wArg0A, out ds_145)
+	Mem274[ss:fp - 0x001E:word16] = Mem251[ds_144:0x29E5:word16]
+	Mem277[ss:fp - 0x0020:word16] = Mem274[ds_144:0x29E3:word16]
+	word16 si_278
+	selector ds_279
+	ui32 dx_ax_283 = SEQ(fn0800_3E5D(fp - 0x0002, ds_144, wArg00, wArg02, out si_278, out ds_279), ax_256 - 0x0001)
+	Mem289[ss:fp - 0x000A:word16] = SLICE(dx_ax_283 - 0x00000001, word16, 16)
+	word16 ax_287 = (word16) (dx_ax_283 - 0x00000001)
+	Mem290[ss:fp - 0x000C:word16] = ax_287
+	Mem293[ss:fp - 0x001E:word16] = Mem290[ds_279:0x29E1:word16]
+	Mem296[ss:fp - 0x0020:word16] = Mem293[ds_279:0x29DF:word16]
+	Mem299[ss:fp - 0x0022:word16] = Mem296[ss:fp - 0x000A:word16]
+	Mem301[ss:fp - 0x0024:word16] = ax_287
+	selector ds_302
+	fn0800_409C(fp - 0x0002, ds_279, wArg02, wArg04, wArg06, out ds_302)
+	word16 dx_309
+	word16 ax_310 = fn0800_8C69(Mem301[ss:fp - 0x0008:word16], 0x02, Mem301[ss:fp - 0x0006:word16], bp, out dx_309)
+	Mem312[ss:fp - 0x001E:word16] = dx_309
+	Mem314[ss:fp - 0x0020:word16] = ax_310
+	Mem317[ss:fp - 0x0022:word16] = Mem314[ds_302:0x29E1:word16]
+	Mem320[ss:fp - 0x0024:word16] = Mem317[ds_302:0x29DF:word16]
+	Mem323[ss:fp - 0x0026:word16] = Mem320[ds_302:0x29E5:word16]
+	Mem326[ss:fp - 0x0028:word16] = Mem323[ds_302:0x29E3:word16]
+	fn0800_3B0A(fp - 0x0002, ds_302, wArg08, wArg0A, out ds_144)
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cx:<invalid> es:<invalid> bx:<invalid> al:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
 // LocalsOut: Local -0002(16)
 
 l0800_50B1:
-	ax_123 = Mem254[ss:fp - 0x0008:word16] | Mem254[ss:fp - 0x0006:word16]
-	branch ax_123 == 0x0000 l0800_50BC
+	ax_122 = Mem251[ss:fp - 0x0008:word16] | Mem251[ss:fp - 0x0006:word16]
+	branch ax_122 == 0x0000 l0800_50BC
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> cx:<invalid> es:<invalid> bx:<invalid> al:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> dh:<invalid> bh:<invalid> bl:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -2(fp):bp
@@ -16515,59 +16514,59 @@ l0800_4FB2:
 // LocalsOut: Local -0002(16)
 
 l0800_50E6:
-	Mem338[ss:fp - 0x001E:word16] = Mem53[ds_57:0x29E1:word16]
-	Mem341[ss:fp - 0x0020:word16] = Mem338[ds_57:0x29DF:word16]
-	word16 dx_345
-	word16 ax_346 = fn0800_8CAA(Mem341[ss:fp - 0x0018:word16], 0x02, Mem341[ss:fp - 0x0016:word16], bp, out dx_345)
-	Mem348[ss:fp - 0x0022:word16] = dx_345
-	Mem350[ss:fp - 0x0024:word16] = ax_346
-	selector ds_351
-	fn0800_409C(fp - 0x0002, ds_57, wArg02, wArg04, wArg06, out ds_351)
-	Mem357[ss:fp - 0x001E:word16] = Mem350[ds_351:0x29E1:word16]
-	Mem360[ss:fp - 0x0020:word16] = Mem357[ds_351:0x29DF:word16]
-	word16 ax_361 = fn0800_AD2F(ds_351, ptrArg00, wArg02)
-	Mem363[ss:fp - 0x0006:word16] = dx_345
-	Mem364[ss:fp - 0x0008:word16] = ax_361
-	Mem369[ss:fp - 0x001E:word16] = 0x0000
-	Mem372[ss:fp - 0x0020:word16] = Mem369[ds_351:0x4E8E:word16]
-	Mem375[ss:fp - 0x0022:word16] = Mem372[ds_351:0x4E8C:word16]
-	Mem378[ss:fp - 0x0024:word16] = Mem375[ds_351:0x29E1:word16]
-	Mem381[ss:fp - 0x0026:word16] = Mem378[ds_351:0x29DF:word16]
-	selector ds_382
-	fn0800_ACB3(ds_351, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_382)
-	Mem388[ss:fp - 0x001E:word16] = Mem381[ds_382:0x29E1:word16]
-	Mem391[ss:fp - 0x0020:word16] = Mem388[ds_382:0x29DF:word16]
-	Mem394[ss:fp - 0x0022:word16] = Mem391[ss:fp - 0x000E:word16]
-	Mem397[ss:fp - 0x0024:word16] = Mem394[ss:fp - 0x0010:word16]
-	selector ds_398
-	fn0800_409C(fp - 0x0002, ds_382, wArg02, wArg04, wArg06, out ds_398)
-	word16 v48_401 = Mem397[ds_398:0x4E8C:word16] + 0x0004
-	Mem402[ds_398:0x4E8C:word16] = v48_401
-	Mem406[ds_398:0x4E8E:word16] = Mem402[ds_398:0x4E8E:word16] + (v48_401 <u 0x0000)
-	Mem411[ss:fp - 0x001E:word16] = 0x0000
-	Mem414[ss:fp - 0x0020:word16] = Mem411[ss:fp - 0x0006:word16]
-	Mem417[ss:fp - 0x0022:word16] = Mem414[ss:fp - 0x0008:word16]
-	Mem420[ss:fp - 0x0024:word16] = Mem417[ds_398:0x29E1:word16]
-	Mem423[ss:fp - 0x0026:word16] = Mem420[ds_398:0x29DF:word16]
-	selector ds_424
-	fn0800_ACB3(ds_398, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_424)
-	selector ds_428
-	Mem430[ss:fp - 0x0004:word16] = fn0800_5374(fp - 0x0002, ds_424, out ds_428)
-	Mem433[ss:fp - 0x001E:word16] = 0x0000
-	word16 dx_436 = Mem433[ss:fp - 0x001C:word16] + Mem433[ss:fp - 0x0014:word16]
-	Mem442[ss:fp - 0x0020:word16] = Mem433[ss:fp - 0x001A:word16] + Mem433[ss:fp - 0x0012:word16] + (dx_436 <u 0x0000)
-	Mem444[ss:fp - 0x0022:word16] = dx_436
-	Mem447[ss:fp - 0x0024:word16] = Mem444[ds_428:0x29E5:word16]
-	Mem450[ss:fp - 0x0026:word16] = Mem447[ds_428:0x29E3:word16]
-	selector ds_451
-	fn0800_ACB3(ds_428, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_451)
-	return Mem450[ss:fp - 0x0004:word16]
-// DataOut: ax ds ss
+	Mem335[ss:fp - 0x001E:word16] = Mem53[ds_57:0x29E1:word16]
+	Mem338[ss:fp - 0x0020:word16] = Mem335[ds_57:0x29DF:word16]
+	word16 dx_342
+	word16 ax_343 = fn0800_8CAA(Mem338[ss:fp - 0x0018:word16], 0x02, Mem338[ss:fp - 0x0016:word16], bp, out dx_342)
+	Mem345[ss:fp - 0x0022:word16] = dx_342
+	Mem347[ss:fp - 0x0024:word16] = ax_343
+	selector ds_348
+	fn0800_409C(fp - 0x0002, ds_57, wArg02, wArg04, wArg06, out ds_348)
+	Mem354[ss:fp - 0x001E:word16] = Mem347[ds_348:0x29E1:word16]
+	Mem357[ss:fp - 0x0020:word16] = Mem354[ds_348:0x29DF:word16]
+	word16 ax_358 = fn0800_AD2F(ds_348, ptrArg00, wArg02)
+	Mem360[ss:fp - 0x0006:word16] = dx_342
+	Mem361[ss:fp - 0x0008:word16] = ax_358
+	Mem366[ss:fp - 0x001E:word16] = 0x0000
+	Mem369[ss:fp - 0x0020:word16] = Mem366[ds_348:0x4E8E:word16]
+	Mem372[ss:fp - 0x0022:word16] = Mem369[ds_348:0x4E8C:word16]
+	Mem375[ss:fp - 0x0024:word16] = Mem372[ds_348:0x29E1:word16]
+	Mem378[ss:fp - 0x0026:word16] = Mem375[ds_348:0x29DF:word16]
+	selector ds_379
+	fn0800_ACB3(ds_348, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_379)
+	Mem385[ss:fp - 0x001E:word16] = Mem378[ds_379:0x29E1:word16]
+	Mem388[ss:fp - 0x0020:word16] = Mem385[ds_379:0x29DF:word16]
+	Mem391[ss:fp - 0x0022:word16] = Mem388[ss:fp - 0x000E:word16]
+	Mem394[ss:fp - 0x0024:word16] = Mem391[ss:fp - 0x0010:word16]
+	selector ds_395
+	fn0800_409C(fp - 0x0002, ds_379, wArg02, wArg04, wArg06, out ds_395)
+	word16 v48_398 = Mem394[ds_395:0x4E8C:word16] + 0x0004
+	Mem399[ds_395:0x4E8C:word16] = v48_398
+	Mem403[ds_395:0x4E8E:word16] = Mem399[ds_395:0x4E8E:word16] + (v48_398 <u 0x0000)
+	Mem408[ss:fp - 0x001E:word16] = 0x0000
+	Mem411[ss:fp - 0x0020:word16] = Mem408[ss:fp - 0x0006:word16]
+	Mem414[ss:fp - 0x0022:word16] = Mem411[ss:fp - 0x0008:word16]
+	Mem417[ss:fp - 0x0024:word16] = Mem414[ds_395:0x29E1:word16]
+	Mem420[ss:fp - 0x0026:word16] = Mem417[ds_395:0x29DF:word16]
+	selector ds_421
+	fn0800_ACB3(ds_395, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_421)
+	selector ds_425
+	Mem427[ss:fp - 0x0004:word16] = fn0800_5374(fp - 0x0002, ds_421, out ds_425)
+	Mem430[ss:fp - 0x001E:word16] = 0x0000
+	word16 dx_433 = Mem430[ss:fp - 0x001C:word16] + Mem430[ss:fp - 0x0014:word16]
+	Mem439[ss:fp - 0x0020:word16] = Mem430[ss:fp - 0x001A:word16] + Mem430[ss:fp - 0x0012:word16] + (dx_433 <u 0x0000)
+	Mem441[ss:fp - 0x0022:word16] = dx_433
+	Mem444[ss:fp - 0x0024:word16] = Mem441[ds_425:0x29E5:word16]
+	Mem447[ss:fp - 0x0026:word16] = Mem444[ds_425:0x29E3:word16]
+	selector ds_448
+	fn0800_ACB3(ds_425, ptrArg00, wArg02, wArg04, wArg06, wArg08, out ds_448)
+	return
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> ah:<invalid> bx:<invalid> es:<invalid> al:<invalid> cx:<invalid> ds:<invalid> si:<invalid> di:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -2(fp):bp
 
 fn0800_4F2C_exit:
-// DataOut: ax ds
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> cl:<invalid> dx:<invalid> ax:<invalid> bx:<invalid> al:<invalid> es:<invalid> cx:<invalid> ah:<invalid> dl:<invalid> ds:<invalid> si:<invalid> di:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> dh:<invalid> -40(fp):<invalid> -38(fp):<invalid> -36(fp):<invalid> -34(fp):<invalid> -32(fp):<invalid> -30(fp):<invalid> -28(fp):<invalid> -26(fp):<invalid> -24(fp):<invalid> -22(fp):<invalid> -20(fp):<invalid> -18(fp):<invalid> -16(fp):<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 
@@ -28784,25 +28783,25 @@ fn0800_912A_exit:
 
 
 
-void fn0800_9145(word16 bp)
+void fn0800_9145(word16 ax, word16 bp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bp ss
+// MayUse:  ax bp ss
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl ch cl cx dh di dil dl dx eax ebp ecx edi edx es esi esp rax rbp rcx rdi rdx rsi rsp si sil sp spl
 // Preserved: sp
 fn0800_9145_entry:
-// DataOut: bp ss
+// DataOut: ax bp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0800_9145:
-// DataOut: bp ss
+// DataOut: ax bp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0800_9145_thunk_fn0800_93EF:
-	fn0800_93EF(bp, wArg00)
+	fn0800_93EF(ax, bp)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -28811,29 +28810,29 @@ l0800_9145_thunk_fn0800_93EF:
 fn0800_9145_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> es:<invalid> di:<invalid> si:<invalid> bp:<invalid>
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> es:<invalid> di:<invalid> si:<invalid> bp:<invalid> ch:<invalid> dl:<invalid>
 
 
 
-void fn0800_9169(word16 bp)
+void fn0800_9169(word16 ax, word16 bp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bp ss
+// MayUse:  ax bp ss
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl ch cl cx dh di dil dl dx eax ebp ecx edi edx es esi esp rax rbp rcx rdi rdx rsi rsp si sil sp spl
 // Preserved: sp
 fn0800_9169_entry:
-// DataOut: bp ss
+// DataOut: ax bp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0800_9169:
-// DataOut: bp ss
+// DataOut: ax bp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0800_9169_thunk_fn0800_93EF:
-	fn0800_93EF(bp, wArg00)
+	fn0800_93EF(ax, bp)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -28842,7 +28841,7 @@ l0800_9169_thunk_fn0800_93EF:
 fn0800_9169_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> es:<invalid> di:<invalid> si:<invalid> bp:<invalid>
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> es:<invalid> di:<invalid> si:<invalid> bp:<invalid> ch:<invalid> dl:<invalid>
 
 
 
@@ -29066,81 +29065,187 @@ fn0800_93C5_exit:
 
 
 
-void fn0800_93EF(word16 bp, word16 wArg00)
+void fn0800_93EF(word16 ax, word16 bp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  bp ss
+// MayUse:  ax bp ss
 // LiveOut:
 // Trashed: SCZO ah al ax bp bpl ch cl cx dh di dil dl dx eax ebp ecx edi edx es esi esp rax rbp rcx rdi rdx rsi rsp si sil sp spl
 // Preserved:
-// Stack args: Stack +0000(16)
 fn0800_93EF_entry:
-// DataOut: bp ss
+// DataOut: ax bp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16)
+// LocalsOut: fp(16)
 
 l0800_93EF:
-	word16 v8_9 = Mem0[ss:bp - 0x000A:word16] - 0x0001
-	Mem10[ss:bp - 0x000A:word16] = v8_9
-	branch v8_9 < 0x0000 l0800_9442
-// DataOut: bp cl ss
+	word16 sp_1 = fp
+	word16 dx_154 = 0x0000
+	word16 cx_140 = 0x0004
+	byte cl_125 = 0x04
+// DataOut: ax bp cl cx dx sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16)
+
+l0800_93F4:
+	word16 v8_30 = Mem0[ss:bp - 0x000A:word16] - 0x0001
+	Mem31[ss:bp - 0x000A:word16] = v8_30
+	branch v8_30 < 0x0000 l0800_9442
+// DataOut: ax bp cl cx dx sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
 l0800_9442:
-	branch 0x04 == 0x04 l0800_944F
-// DataOut: bp ss
+// DataOut: bp cl sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:fp dx:0x0000 cx:0x0004
-// LocalsOut: fp(16) Stack +0000(16)
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_93F9:
+	word16 sp_91 = sp_1 - 0x0002
+	Mem92[ss:sp_91:word16] = dx_154
+	Mem94[ss:sp_91 - 0x0002:word16] = cx_140
+	Mem96[ss:bp - 0x0006:word16] = Mem94[ss:bp - 0x0006:word16] + 0x0001
+	Mem100[ss:sp_91 - 0x0004:word16] = Mem96[ss:bp + 0x000A:word16]
+	Mem103[ss:sp_91 - 0x0006:word16] = Mem100[ss:bp + 0x0008:word16]
+	word16 sp_104
+	word16 dx_105
+	byte SCZO_106
+	word16 cx_107
+	byte SZO_110
+	byte SO_111
+	word16 ax_112
+	byte C_113
+	byte cl_114
+	byte ch_115
+	byte al_116
+	byte dl_117
+	byte Z_118
+	word16 di_119
+	call SEQ(0x0800, Mem103[ss:bp + 0x0004:word16]) (retsize: 2; depth: 2)
+		uses: al_17,ax_20,bp_22,C_19,ch_24,cl_18,cx_25,di_15,dl_26,dx_27,SCZO_28,SO_33,sp_102,ss_21,SZO_97,Z_16
+		defs: al_116,ax_112,bp_108,C_113,ch_115,cl_114,cx_107,di_119,dl_117,dx_105,SCZO_106,SO_111,sp_104,ss_109,SZO_110,Z_118
+	word16 cx_124 = Mem103[ss:sp_104 + 0x0004:word16]
+	cl_125 = (byte) cx_124 (alias)
+	word16 dx_127 = Mem103[ss:sp_104 + 0x0006:word16]
+	sp_1 = sp_104 + 0x0008
+	byte al_131 = (byte) ax_112
+	branch ax_112 <= 0x0000 l0800_9444
+// DataOut: al ax bp cl dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_940F:
+	cl_125 = cl_125 - 0x01
+	word16 cx_135 = DPB(cx_124, cl_125 - 0x01, 0)
+	branch cl_125 < 0x01 l0800_9444
+// DataOut: al ax bp cl dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_9413:
+	byte ch_139 = al_131 - 0x30
+	cx_140 = DPB(cx_135, al_131 - 0x30, 8) (alias)
+	branch al_131 <u 0x30 l0800_9444
+// DataOut: ax bp ch cl cx dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_941A:
+	branch al_131 <u 0x3A l0800_9436
+// DataOut: ax bp ch cl cx dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:al - 0x30 dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_941F:
+	byte ch_156 = al_131 - 0x41
+	word16 cx_157 = DPB(cx_135, al_131 - 0x41, 8)
+	branch al_131 <u 0x41 l0800_9444
+// DataOut: ax bp ch cl dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:al - 0x30 dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_9424:
+	branch al_131 <u 0x47 l0800_9433
+// DataOut: ax bp ch cl dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:al - 0x41 dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_9429:
+	ch_156 = al_131 - 0x61
+	cx_157 = DPB(cx_135, al_131 - 0x61, 8) (alias)
+	branch al_131 <u 0x61 l0800_9444
+// DataOut: ax bp ch cl dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:al - 0x41 dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_942E:
+	branch al_131 >=u 0x67 l0800_9444
+// DataOut: ax bp ch cl dl sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:al - 0x61 dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_9444:
+	branch cl_125 == 0x04 l0800_944F
+// DataOut: bp sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
 l0800_944F:
 // DataOut: bp ss
 // DataOut (flags): 
-// SymbolicIn: sp:fp dx:0x0000 cx:0x0004 ax:0x0000
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
 l0800_9450_thunk_fn0800_93A6:
-	word16 bp_65
-	word16 di_66
-	fn0800_93A6(bp, out bp_65, out di_66)
+	word16 bp_88
+	word16 di_89
+	fn0800_93A6(bp, out bp_88, out di_89)
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 dx:0x0000 cx:<invalid> ax:0x0000
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
 l0800_9449:
-	word16 sp_51
-	word16 dx_52
-	byte SCZO_53
-	word16 cx_54
-	word16 bp_55
-	selector ss_56
-	byte SZO_57
-	byte SO_58
-	word16 ax_59
-	byte cl_60
-	byte Z_61
-	word16 di_62
-	call wArg00 + 0x0003 (retsize: 2;)
-		uses: ax_26,bp,cl_5,cx_44,di,dx_2,SCZO_45,SO_12,sp_43,ss,SZO_11,wLoc02,wLoc04,wLoc06,wLoc08,Z_28
-		defs: ax_59,bp_55,cl_60,cx_54,di_62,dx_52,SCZO_53,SO_58,sp_51,ss_56,SZO_57,Z_61
+	word16 sp_70
+	word16 dx_71
+	byte SCZO_72
+	word16 cx_73
+	word16 bp_74
+	selector ss_75
+	byte SZO_76
+	byte SO_77
+	word16 ax_78
+	byte C_79
+	byte cl_80
+	byte ch_81
+	byte al_82
+	byte dl_83
+	byte Z_84
+	word16 di_85
+	call Mem31[ss:sp_1:word16] + 0x0003 (retsize: 2; depth: 2)
+		uses: al_35,ax_38,bp_42,C_37,ch_44,cl_36,cx_68,di_34,dl_46,dx_47,SCZO_69,SO_39,sp_67,ss_41,SZO_40,Z_49
+		defs: al_82,ax_78,bp_74,C_79,ch_81,cl_80,cx_73,di_85,dl_83,dx_71,SCZO_72,SO_77,sp_70,ss_75,SZO_76,Z_84
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp dx:0x0000 cx:0x0004 ax:0x0000
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
 fn0800_93EF_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> es:<invalid> di:<invalid> si:<invalid> bp:<invalid>
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> es:<invalid> di:<invalid> si:<invalid> bp:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
-l0800_93F9:
-	Mem18[ss:bp - 0x0006:word16] = Mem10[ss:bp - 0x0006:word16] + 0x0001
-// DataOut:
+l0800_9433:
+	ch_139 = ch_156 + 0x0A
+	cx_140 = DPB(cx_157, ch_139, 8) (alias)
+// DataOut: ax bp ch cl cx dl sp ss
 // DataOut (flags): 
-// SymbolicIn: sp:fp dx:0x0000 cx:0x0004
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
+
+l0800_9436:
+	dx_154 = DPB(dx_127 << 0x0004, (byte) (dx_127 << 0x0004) + ch_139, 0) (alias)
+// DataOut: ax bp cl cx dx sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> dx:<invalid> cx:<invalid> ax:<invalid> cl:<invalid> ch:<invalid> dl:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0004 -2(fp):0x0000
 
 
 

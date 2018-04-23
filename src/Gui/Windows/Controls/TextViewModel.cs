@@ -74,7 +74,7 @@ namespace Reko.Gui.Windows.Controls
 
         /// <summary>
         /// Read <paramref name="count"/> lines, starting at the current 
-        /// position. As a side :,ffect, updates the current position.
+        /// position. As a side effect, updates the current position.
         /// </summary>
         /// <param name="count"></param>
         /// <returns>Array of LineSpans.</returns>

@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2018 John KÃ¤llÃ©n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,27 @@
 */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.ComponentModel.Design;
+using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Windows.Forms
+namespace Reko.Gui.Forms
 {
-    public partial class FindDialog : Form, IDialog
+    public interface IKeyBindingsDialog : IDialog
     {
-        public FindDialog()
-        {
-            InitializeComponent();
-        }
+        event EventHandler Load;
 
-        public Button FindButton
-        {
-            get { return btnFind; }
-        }
+        Dictionary<string, Dictionary<int, CommandID>> KeyBindings { get; set; }
+        ITextBox CommandName { get; }
+        IListBox Commands { get; }
+        IComboBox CommandKeys { get; }
+        IComboBox Windows { get; }
+        ITextBox Shortcut { get; }
 
-        public TextBox FindText
-        {
-            get { return txtFindText; }
-        }
+        string RenderKey(int key);
     }
 }

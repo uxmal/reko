@@ -6618,12 +6618,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore(Categories.Capstone)]
         public void ThumbRw_umaal()
         {
-            RewriteCode("E0FB6FF0");	// umaal pc, r0, r0, pc
+            RewriteCode("E0FB63F0");	// umaal pc, r0, r0, r3
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = r0 *u pc",
+                "1|L--|v2 = r0 *u r3",
                 "2|L--|v2 = v2 + (uint64) r0",
                 "3|L--|r0_pc = v2 + (uint64) pc");
         }
@@ -6631,10 +6632,10 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_umlal()
         {
-            RewriteCode("E3FB0FE7");	// umlal lr, r7, r3, pc
+            RewriteCode("E3FB03E7");	// umlal lr, r7, r3, r3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7_lr = r3 *u pc + r7_lr");
+                "1|L--|r7_lr = r3 *u r3 + r7_lr");
         }
 
         [Test]
@@ -6701,7 +6702,7 @@ namespace Reko.UnitTests.Arch.Arm
             RewriteCode("8FFB0028");	// smull r2, r8, pc, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8_r2 = r0 *s pc");
+                "1|L--|r8_r2 = r0 *s 0x00100008");
         }
 
         [Test]
@@ -7287,10 +7288,10 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_sdiv()
         {
-            RewriteCode("95FBFFF7");	// sdiv r7, r5, pc
+            RewriteCode("95FBF3F7");	// sdiv r7, r5, r3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = r5 / pc");
+                "1|L--|r7 = r5 / r3");
         }
 
 
@@ -7304,6 +7305,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore(Categories.Capstone)]
         public void ThumbRw_smlaltt()
         {
             RewriteCode("CFFBB168");	// smlaltt r6, r8, pc, r1
@@ -7786,9 +7788,10 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
+        [Ignore(Categories.Capstone)]
         public void ThumbRw_smlsld()
         {
-            RewriteCode("DFFBC9E7");	// smlsld lr, r7, pc, sb
+            RewriteCode("DFFBC9F7");	// smlsld lr, r7, pc, sb
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r7_lr = r7_lr + ((int16) pc *s (int16) r9 - (pc >> 16) *s (r9 >> 16))");
@@ -7834,6 +7837,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore(Categories.Capstone)]
         public void ThumbRw_smlald()
         {
             RewriteCode("CFFBC0B5");	// smlald fp, r5, pc, r0

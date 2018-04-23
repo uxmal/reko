@@ -545,12 +545,12 @@ namespace Reko.ImageLoaders.MzExe
 
             string name = null;
             SerializedSignature ssig = null;
-            Func<string, string, Argument_v1> Arg =
-                (n, t) => new Argument_v1
-                {
-                    Name = n,
-                    Type = new TypeReference_v1 { TypeName = t }
-                };
+
+            Argument_v1 Arg(string n, string t) => new Argument_v1
+            {
+                Name = n,
+                Type = new TypeReference_v1 { TypeName = t }
+            };
             if (isDll)
             {
                 name = "DllMain";   //$TODO: ensure users can override this name
@@ -918,7 +918,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
         {
             var symbols = new List<ImageSymbol>();
             var attributes = rdr.ReadLeUInt32();
-            var offset = ((attributes & DID_RvaBased) != 0) ? 0 : addrLoad.ToUInt32();
+            var offset = ((attributes & DID_RvaBased) != 0) ? 0 : (uint) addrLoad.ToLinear();
             var rvaDllName = rdr.ReadLeUInt32();
             if (rvaDllName == 0)
                 return false;
@@ -975,7 +975,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
 
-			if(sec.Name == null) {
+			if (sec.Name == null) {
 				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
 			}
 

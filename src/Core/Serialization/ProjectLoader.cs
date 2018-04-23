@@ -238,13 +238,10 @@ namespace Reko.Core.Serialization
             Program program;
             if (address != null && 
                 sUser.Processor != null &&
-                (sUser.PlatformOptions == null ||
-                sUser.PlatformOptions.Name != null))
+                (sUser.PlatformOptions == null || sUser.PlatformOptions.Name != null))
             {
                 var arch = sUser.Processor.Name;
-                var platform = sUser.PlatformOptions != null
-                    ? sUser.PlatformOptions.Name
-                    : null;
+                var platform = sUser.PlatformOptions?.Name;
                 program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
                 {
                     LoaderName = sUser.Loader,
@@ -283,9 +280,7 @@ namespace Reko.Core.Serialization
                 sUser.PlatformOptions.Name != null))
             {
                 var arch = sUser.Processor.Name;
-                var platform = sUser.PlatformOptions != null
-                    ? sUser.PlatformOptions.Name
-                    : null;
+                var platform = sUser.PlatformOptions?.Name;
                 program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
                 {
                     ArchitectureName = arch,
@@ -314,8 +309,7 @@ namespace Reko.Core.Serialization
         {
             if (user == null || user.LoadAddress == null)
                 return null;
-            Address addr;
-            if (!arch.TryParseAddress(user.LoadAddress, out addr))
+            if (!arch.TryParseAddress(user.LoadAddress, out Address addr))
                 return null;
             return addr;
         }
@@ -324,10 +318,9 @@ namespace Reko.Core.Serialization
         {
             if (user == null || user.LoadAddress == null || user.Processor == null)
                 return null;
-            Address addr;
             if (!Services.RequireService<IConfigurationService>()
                 .GetArchitecture(user.Processor.Name)
-                .TryParseAddress(user.LoadAddress, out addr))
+                .TryParseAddress(user.LoadAddress, out Address addr))
                 return null;
             return addr;
         }
@@ -364,8 +357,7 @@ namespace Reko.Core.Serialization
                 user.Globals = sUser.GlobalData
                     .Select(sud =>
                     {
-                        Address addr;
-                        program.Architecture.TryParseAddress(sud.Address, out addr);
+                        program.Architecture.TryParseAddress(sud.Address, out Address addr);
                         return new KeyValuePair<Address, GlobalDataItem_v2>(
                             addr,
                             sud);
@@ -374,6 +366,13 @@ namespace Reko.Core.Serialization
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
           
+            if (sUser.Annotations != null)
+            {
+                user.Annotations = new AnnotationList(sUser.Annotations
+                    .Select(LoadAnnotation)
+                    .Where(a => a.Address != null)
+                    .ToList());
+            }
             if (sUser.Heuristics != null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
@@ -421,17 +420,21 @@ namespace Reko.Core.Serialization
             }
         }
 
+        private Annotation LoadAnnotation(Annotation_v3 annotation)
+        {
+            arch.TryParseAddress(annotation.Address, out var address);
+            return new Annotation(address, annotation.Text);
+        }
+
         private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(
             RegisterValue_v2[] sRegValues)
         {
             var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
-                Address addr;
-                if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out addr))
+                if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out Address addr))
                 {
-                    List<UserRegisterValue> list;
-                    if (!allLists.TryGetValue(addr, out list))
+                    if (!allLists.TryGetValue(addr, out List<UserRegisterValue> list))
                     {
                         list = new List<UserRegisterValue>();
                         allLists.Add(addr, list);
@@ -453,14 +456,12 @@ namespace Reko.Core.Serialization
 
         private ImageMapVectorTable LoadJumpTable_v4(JumpTable_v4 sTable)
         {
-            Address addr;
-            if (!platform.TryParseAddress(sTable.TableAddress, out addr))
+            if (!platform.TryParseAddress(sTable.TableAddress, out Address addr))
                 return null;
             var listAddrDst = new List<Address>();
             foreach (var item in sTable.Destinations)
             {
-                Address addrDst;
-                if (!platform.TryParseAddress(item, out addrDst))
+                if (!platform.TryParseAddress(item, out Address addrDst))
                     break;
                 listAddrDst.Add(addrDst);
             }
@@ -469,8 +470,7 @@ namespace Reko.Core.Serialization
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
         {
-            Address addr;
-            if (!program.Platform.TryParseAddress(call.InstructionAddress, out addr))
+            if (!program.Platform.TryParseAddress(call.InstructionAddress, out Address addr))
                 return null;
 
             var procSer = program.CreateProcedureSerializer();
@@ -492,14 +492,11 @@ namespace Reko.Core.Serialization
 
         private Tuple<Address, UserIndirectJump> LoadIndirectJump_v4(IndirectJump_v4 indirJump, Program program)
         {
-            Address addrInstr;
-            if (!platform.TryParseAddress(indirJump.InstructionAddress, out addrInstr))
+            if (!platform.TryParseAddress(indirJump.InstructionAddress, out Address addrInstr))
                 return null;
-            Address addrTable;
-            if (!platform.TryParseAddress(indirJump.TableAddress, out addrTable))
+            if (!platform.TryParseAddress(indirJump.TableAddress, out Address addrTable))
                 return null;
-            ImageMapVectorTable table;
-            if (!program.User.JumpTables.TryGetValue(addrTable, out table))
+            if (!program.User.JumpTables.TryGetValue(addrTable, out ImageMapVectorTable table))
                 return null;
             var reg = program.Architecture.GetRegister(indirJump.IndexRegister);
             if (reg == null)
@@ -544,8 +541,7 @@ namespace Reko.Core.Serialization
                 user.Globals = sUser.GlobalData
                     .Select(sud =>
                     {
-                        Address addr;
-                        program.Architecture.TryParseAddress(sud.Address, out addr);
+                        program.Architecture.TryParseAddress(sud.Address, out Address addr);
                         return new KeyValuePair<Address, GlobalDataItem_v2>(
                             addr,
                             sud);
@@ -599,8 +595,7 @@ namespace Reko.Core.Serialization
                 user.Globals = sInput.UserGlobalData
                     .Select(sud =>
                     {
-                        Address addr;
-                        program.Architecture.TryParseAddress(sud.Address, out addr);
+                        program.Architecture.TryParseAddress(sud.Address, out Address addr);
                         return new KeyValuePair<Address, GlobalDataItem_v2>(
                             addr,
                             sud);
@@ -619,8 +614,7 @@ namespace Reko.Core.Serialization
             Program program,
             Procedure_v1 sup)
         {
-            Address addr;
-            program.Architecture.TryParseAddress(sup.Address, out addr);
+            program.Architecture.TryParseAddress(sup.Address, out Address addr);
             if (!sup.Decompile && sup.Signature == null && string.IsNullOrEmpty(sup.CSignature))
             {
                 listener.Warn(

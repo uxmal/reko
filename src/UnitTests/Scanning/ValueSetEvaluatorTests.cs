@@ -76,7 +76,8 @@ namespace Reko.UnitTests.Scanning
         private void Given_Evaluator()
         {
             this.vse = new ValueSetEvaluator(
-                program,
+                program.Architecture,
+                program.SegmentMap,
                 valueSets);
         }
 

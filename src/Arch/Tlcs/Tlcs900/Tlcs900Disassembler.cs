@@ -52,8 +52,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         public override Tlcs900Instruction DisassembleInstruction()
         {
             this.addr = rdr.Address;
-            byte b;
-            if (!rdr.TryReadByte(out b))
+            if (!rdr.TryReadByte(out byte b))
                 return null;
             this.opSrc = null;
             this.opDst = null;

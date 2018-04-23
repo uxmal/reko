@@ -619,5 +619,68 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("r2", bwslc.Live.First().Key.ToString());
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
         }
+
+        // Test cases
+        // A one-level jump table from MySQL. JTT represents the jump table.
+        // mov ebp,[rsp + 0xf8]         : 0 ≤ rdx==[rsp+0xf8]==ebp≤ 5
+        // cmp ebp, 5                   : 0 ≤%ebp≤ 5 
+        // ja 43a4ab 
+        // lea rax,[0x525e8f + rip]             : rax = 0x9602a0, rcx = 0x43a116
+        // lea rcx,[rip -0x302]                 : JTT = 0x43a116 + [0x9602a0 + rdx×8]       : rax, [rsp 
+        // movsx rdx,dword ptr [rsp + 0xF8]     : rdx==[rsp+0xf8]                           : raxl, [rsp + f8], rcx 
+        // add rcx, [rax + rdx*8]               : JTT = rcx + [rax + rdx×8]                 : rax, rdx, rcx
+        // jmp rcx                              : JTT = rcx                                 : ecx
+
+        // cmp eax,0xa9                         :  0 ≤ eax  ≤ 0xa9                          : eax [0, 0xAA)
+        // ja 0x41677e                          :                                           : ecx, eax, CZ
+        // movzx ecx,byte ptr [0x416bd4 + eax]  : ecx = [0x416bd4 + eax]                    : eax
+        //                                        JTT = [0x416bc0 + [0x416bd4 + eax] × 4]
+        // jmp [0x416bc0 + ecx *4]              : JTT = [0x416bc0+ecx×4]                    : ecx
+
+
+        // A one-level jump table.
+        // The input upper bound to this jump table must be inferred.
+        // In addition, the input is right shifted to get the index into the table
+
+        // movzx eax,byte ptr [edi]     : 0 ≤ eax ≤ 255                                     : rax [0, 255]
+        // shr al,4                     : rax = rax >> 4                                    : al ~ rax
+        //                              : JTT = [0x495e30 + (rax >> 4)×8]                   :
+        // jmpq [0x495e30 + rax * 8]    : JTT = [0x495e30 + rax×8]                          : rax
+
+
+
+        // Unoptimized x86 code
+        // cmp dword ptr [ebp + 8], 0xA : 0 <= [ebp + 8] <= 0xA                     : [ebp + 8] [0, 0x0A]
+        // ja default                   :                                           : [ebp + 8], CZ
+        // movzx edx, byte ptr[ebp + 8] : edx = ZEX([(ebp + 8)], 8)                 : [ebp + 8]
+        //                              : JTT = [0x023450 + ZEX([ebp + 8)], 8) * 4] :
+        // jmp [0x00234500 + edx * 4]   : JTT = [0x0023450 + edx * 4]               : edx
+
+        // M68k relative jump code.
+        //  corresponds to
+        // cmpi.l #$00000028,d1         : 0 <= d1 <= 0x28
+        // bgt $00106C66
+        // add.l d1,d1                  : d1 = d1 * 2
+        //                                JTT = 0x0010000 + SEXT:([0x10006 + d1*2],16)
+        // move.w (06,pc,d1),d1         : JTT = 0x0010000 + SEXT:([0x10006 + d1],16)
+        // jmp.l (pc,d1.w)              : JTT = 0x0010000 + SEXT(d1, 16)
+
+        //  m.Assign(d1, m.IAdd(d1, d1));
+        //  m.Assign(CVZNX, m.Cond(d1));
+        //  m.Assign(v82,m.LoadW(m.IAdd(m.Word32(0x001066A4), d1)));
+        //  m.Assign(d1, m.Dpb(d1, v82, 0));
+        //  m.Assign(CVZN, m.Cond(v82));
+        //  var block = m.CurrentBlock;
+        //  var xfer = new RtlGoto(
+        //      m.IAdd(
+        //          m.Word32(0x001066A2), 
+        //          m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
+        //      RtlClass.Transfer);
+
+        // cmp [ebp-66],1D
+        // mov edx,[ebp-66]
+        // movzx eax,byte ptr [edx + 0x10000]
+        // jmp [eax + 0x12000]
+
     }
 }

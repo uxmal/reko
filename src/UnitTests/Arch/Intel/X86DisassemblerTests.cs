@@ -25,7 +25,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;

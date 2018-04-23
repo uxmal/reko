@@ -82,7 +82,10 @@ namespace Reko.Evaluation
 
         public bool VisitComment(CodeComment comment)
         {
-            throw new NotImplementedException();
+            var commentPat = pattern as CodeComment;
+            if (commentPat == null)
+                return false;
+            return true;
         }
 
         public bool VisitDeclaration(Declaration decl)

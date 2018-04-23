@@ -227,6 +227,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AddressSearchHit.cs" />
+    <Compile Include="AnnotationList.cs" />
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />
@@ -653,9 +654,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcedureBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ProcessorInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcessorState.cs">

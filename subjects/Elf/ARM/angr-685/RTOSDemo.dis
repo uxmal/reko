@@ -1058,61 +1058,61 @@ l0000059D:
 
 
 
-void xQueueIsQueueFullFromISR(word32 pc, word32 r0, word32 r4, word32 r5, word32 r7, word32 r9, word32 r10, word32 fp)
+void xQueueIsQueueFullFromISR(word32 r0, word32 r4, word32 r5, word32 r7, word32 r9, word32 r10, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV fp pc r0 r10 r4 r5 r7 r9
+// MayUse:  ZCV fp r0 r10 r4 r5 r7 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 xQueueIsQueueFullFromISR_entry:
-// DataOut: fp pc r0 r10 r4 r5 r7 r9
+// DataOut: fp r0 r10 r4 r5 r7 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000005A1:
 	branch NZV l000005A5
-// DataOut: fp pc r0 r10 r4 r5 r7 r9
+// DataOut: fp r0 r10 r4 r5 r7 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000005A1_1:
-	word32 ip_43 = __ror(fp, 0) - fp
-// DataOut: fp pc r0 r10 r4 r5 r7 r9
+	word32 ip_42 = __ror(fp, 0) - fp
+// DataOut: fp r0 r10 r4 r5 r7 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000005A5:
 	branch ZC l000005A9
-// DataOut: fp pc r0 r10 r4 r5 r7 r9
+// DataOut: fp r0 r10 r4 r5 r7 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp ip:<invalid>
 
 l000005A5_1:
 	fp = (r10 << r0) - r10 - C
-	byte NZCV_38 = cond(fp)
-	ZC = NZCV_38 (alias)
-	V = NZCV_38 (alias)
-// DataOut: fp pc r0 r4 r5 r7 r9
+	byte NZCV_37 = cond(fp)
+	ZC = NZCV_37 (alias)
+	V = NZCV_37 (alias)
+// DataOut: fp r0 r4 r5 r7 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp ip:<invalid>
 
 l000005A9:
 	branch V l000005AD
-// DataOut: fp pc r0 r4 r5 r7 r9
+// DataOut: fp r0 r4 r5 r7 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp ip:<invalid> fp:<invalid>
 
 l000005A9_1:
-	Mem34[r9:word64] = r5_r4
-// DataOut: fp pc r7
+	Mem33[r9:word64] = r5_r4
+// DataOut: fp r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp ip:<invalid> fp:<invalid>
 
 l000005AD:
 	branch ZC l000005AD_thunk_uxQueueMessagesWaitingFromISR
-// DataOut: fp pc r7
+// DataOut: fp r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp ip:<invalid> fp:<invalid> r9:r9 - r0
 
@@ -3142,10 +3142,10 @@ xTaskNotifyWait_exit:
 
 
 
-void vTaskNotifyGiveFromISR(word32 lr, word32 pc, word32 r2, word32 r3, word32 r8, word32 p3)
+void vTaskNotifyGiveFromISR(word32 lr, word32 r2, word32 r3, word32 r8, word32 p3)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV lr p3 pc r2 r3 r8
+// MayUse:  NZCV lr p3 r2 r3 r8
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -3156,61 +3156,61 @@ vTaskNotifyGiveFromISR_exit:
 // SymbolicIn:
 
 vTaskNotifyGiveFromISR_entry:
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00000C61:
 	__syscall(0x0043F8E9)
 	branch N l00000C69
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00000C65_1:
 	__syscall(0x008611F3)
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00000C69:
 	branch ZC l00000C6D
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp
 
 l00000C69_1:
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp
 
 l00000C6D:
 	branch NZV l00000C71
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp fp:0x00003FF0
 
 l00000C6D_1:
 	__syscall(0x008811F3)
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp fp:0x00003FF0
 
 l00000C71:
 	branch NZV l00000C75
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): ZV
 // SymbolicIn: sp:fp fp:0x00003FF0
 
 l00000C71_1:
 	__syscall(0x008F6FF3)
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): ZV
 // SymbolicIn: sp:fp fp:0x00003FF0
 
 l00000C75:
 	branch Z l00000C79
-// DataOut: lr p3 pc r2 r3 r8
+// DataOut: lr p3 r2 r3 r8
 // DataOut (flags): ZV
 // SymbolicIn: sp:fp fp:0x00003FF0
 
@@ -3223,40 +3223,40 @@ l00000C79:
 	branch V l00000C7D
 // DataOut: lr p3 r2 r3 r8
 // DataOut (flags): ZV
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049
 
 l00000C79_1:
 // DataOut: lr p3 r2 r3 r8
 // DataOut (flags): ZV
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049
 
 l00000C7D:
 	branch V l00000C81
 // DataOut: lr p3 r2 r3 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC r8:r8 + 0x00000023 r9:<invalid>
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049 r8:r8 + 0x00000023 r9:<invalid>
 
 l00000C7D_1:
 // DataOut: lr p3 r2 r3
 // DataOut (flags): Z
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC r8:r8 + 0x00000023 r9:<invalid>
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049 r8:r8 + 0x00000023 r9:<invalid>
 
 l00000C81:
 	__stc(p3, 0x00, Mem0[lr + -192:word32])
 	branch Z l00000C89
 // DataOut: r2 r3
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC r8:<invalid> r9:<invalid>
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049 r8:<invalid> r9:<invalid>
 
 l00000C85_1:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC r8:<invalid> r9:<invalid> lr:lr + -192
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049 r8:<invalid> r9:<invalid> lr:lr + -192
 
 l00000C89:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:0x00003FF0 r4:pc + 0x000003CC r8:<invalid> r9:<invalid> lr:lr + -192 r3:r3 + r2 r0:<invalid>
+// SymbolicIn: sp:fp fp:0x00003FF0 r4:00001049 r8:<invalid> r9:<invalid> lr:lr + -192 r3:r3 + r2 r0:<invalid>
 
 
 
@@ -5052,22 +5052,22 @@ xPortStartScheduler_exit:
 
 
 
-void vPortEndScheduler(word32 pc, word32 r0, word32 r7, word32 r8, word32 r9, word32 fp, word32 p12)
+void vPortEndScheduler(word32 r0, word32 r7, word32 r8, word32 r9, word32 fp, word32 p12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  C fp p12 pc r0 r7 r8 r9
+// MayUse:  C fp p12 r0 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 vPortEndScheduler_entry:
-// DataOut: fp p12 pc r0 r7 r8 r9
+// DataOut: fp p12 r0 r7 r8 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l00001551:
 	branch C l00001551_thunk_vPortStoreTaskMPUSettings
-// DataOut: fp p12 pc r0 r7 r8 r9
+// DataOut: fp p12 r0 r7 r8 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
@@ -5080,13 +5080,13 @@ l00001551_thunk_vPortStoreTaskMPUSettings:
 // Terminates process
 
 l00001551_1:
-	word32 r0_8 = pc + (r7 >> 32) + C
+	word32 r0_7 = 0x00001559 + (r7 >> 32) + C
 // DataOut: fp p12 r0 r8 r9
 // DataOut (flags): NZ
 // SymbolicIn: sp:fp
 
 l00001551_thunk_vPortStoreTaskMPUSettings:
-	vPortStoreTaskMPUSettings(r0_8, r8, r9, fp, p12)
+	vPortStoreTaskMPUSettings(r0_7, r8, r9, fp, p12)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -5172,10 +5172,10 @@ l00001569:
 
 
 
-void xPortPendSVHandler(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 fp)
+void xPortPendSVHandler(word32 r0, word32 r1, word32 r2, word32 r3, word32 r5, word32 r6, word32 r8, word32 r9, word32 r10, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV fp pc r0 r1 r10 r2 r3 r5 r6 r8 r9
+// MayUse:  NZCV fp r0 r1 r10 r2 r3 r5 r6 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -5186,21 +5186,21 @@ xPortPendSVHandler_exit:
 // SymbolicIn:
 
 xPortPendSVHandler_entry:
-// DataOut: fp pc r0 r1 r10 r2 r3 r5 r6 r8 r9
+// DataOut: fp r0 r1 r10 r2 r3 r5 r6 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00001689:
 	branch Z l0000168D
-// DataOut: fp pc r0 r1 r10 r2 r3 r5 r6 r8 r9
+// DataOut: fp r0 r1 r10 r2 r3 r5 r6 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00001689_1:
 	Mem30[r0:word32] = r0
-// DataOut: fp pc r1 r10 r2 r3 r5 r6 r8 r9
+// DataOut: fp r1 r10 r2 r3 r5 r6 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
@@ -5208,27 +5208,27 @@ l00001689_1:
 l0000168D:
 	__syscall(0x00681A4B)
 	branch C l00001695
-// DataOut: fp pc r1 r10 r2 r3 r5 r6 r8 r9
+// DataOut: fp r1 r10 r2 r3 r5 r6 r8 r9
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r0:r0 + 0x000009F3
 // LocalsOut: fp(32)
 
 l00001691_1:
 	Mem27[r1:word64] = r2_r1
-// DataOut: fp pc r10 r5 r6 r8 r9
+// DataOut: fp r10 r5 r6 r8 r9
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r0:r0 + 0x000009F3
 // LocalsOut: fp(32)
 
 l00001695:
 	branch Z l00001699
-// DataOut: fp pc r10 r5 r6 r8 r9
+// DataOut: fp r10 r5 r6 r8 r9
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r0:r0 + 0x000009F3 r1:r1 + r3
 // LocalsOut: fp(32)
 
 l00001695_1:
-	word32 pc_25 = pc & __ror(r9, 5)
+	word32 pc_25 = 0x0000169D & __ror(r9, 5)
 // DataOut: fp r10 r5 r6 r8 r9
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r0:r0 + 0x000009F3 r1:r1 + r3
@@ -5344,10 +5344,10 @@ l00001715:
 
 
 
-void pvPortMalloc(word32 pc, word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10)
+void pvPortMalloc(word32 r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZC pc r0 r10 r4 r5 r6 r7 r8 r9
+// MayUse:  NZC r0 r10 r4 r5 r6 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -5358,29 +5358,29 @@ pvPortMalloc_exit:
 // SymbolicIn:
 
 pvPortMalloc_entry:
-// DataOut: pc r0 r10 r4 r5 r6 r7 r8 r9
+// DataOut: r0 r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l0000172D:
 	branch N l00001731
-// DataOut: pc r0 r10 r4 r5 r6 r7 r8 r9
+// DataOut: r0 r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
 l0000172D_1:
-// DataOut: pc r10 r4 r5 r6 r7 r8 r9
+// DataOut: r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
 l00001731:
 	branch C l00001735
-// DataOut: pc r10 r4 r5 r6 r7 r8 r9
+// DataOut: r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:DPB(r0, 0x64B5, 16)
 
 l00001731_1:
-	Z = cond(pc + (r7 << 24) + C) (alias)
+	Z = cond(0x00001739 + (r7 << 24) + C) (alias)
 // DataOut: r10 r4 r5 r6 r7 r8 r9
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r0:DPB(r0, 0x64B5, 16)
@@ -5410,22 +5410,22 @@ l00001739:
 
 
 
-void vPortFree(word32 pc, word32 r0, word32 r7)
+void vPortFree(word32 r0, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZC pc r0 r7
+// MayUse:  ZC r0 r7
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 vPortFree_entry:
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00001781:
 	branch Z l00001781_thunk_vPortInitialiseBlocks
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
@@ -5438,13 +5438,13 @@ l00001781_thunk_vPortInitialiseBlocks:
 // Terminates process
 
 l00001781_1:
-	word32 r0_10 = pc + (r7 >> 32) + C
+	word32 r0_9 = 0x00001789 + (r7 >> 32) + C
 // DataOut: r0
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00001781_thunk_vPortInitialiseBlocks:
-	vPortInitialiseBlocks(r0_10)
+	vPortInitialiseBlocks(r0_9)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -5494,68 +5494,68 @@ l00001789:
 
 
 
-void xPortGetFreeHeapSize(word32 pc, word32 r0, word32 r2, word32 r5, word32 r7, word32 r8, word32 fp)
+void xPortGetFreeHeapSize(word32 r0, word32 r2, word32 r5, word32 r7, word32 r8, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV fp pc r0 r2 r5 r7 r8
+// MayUse:  NZCV fp r0 r2 r5 r7 r8
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 xPortGetFreeHeapSize_entry:
-// DataOut: fp pc r0 r2 r5 r7 r8
+// DataOut: fp r0 r2 r5 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00001795:
 	branch NZV l00001799
-// DataOut: fp pc r0 r2 r5 r7 r8
+// DataOut: fp r0 r2 r5 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00001795_1:
-	byte NZCV_64 = cond((fp >> 6) - r8 - C)
-	C = NZCV_64 (alias)
-	NZV = NZCV_64 (alias)
-	V = NZCV_64 (alias)
-	Z = NZCV_64 (alias)
-// DataOut: pc r0 r2 r5 r7
+	byte NZCV_63 = cond((fp >> 6) - r8 - C)
+	C = NZCV_63 (alias)
+	NZV = NZCV_63 (alias)
+	V = NZCV_63 (alias)
+	Z = NZCV_63 (alias)
+// DataOut: r0 r2 r5 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00001799:
 	branch NZV l0000179D
-// DataOut: pc r0 r2 r5 r7
+// DataOut: r0 r2 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid>
 
 l00001799_1:
-// DataOut: pc r0 r2 r7
+// DataOut: r0 r2 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid>
 
 l0000179D:
 	branch V l000017A1
-// DataOut: pc r0 r2 r7
+// DataOut: r0 r2 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:<invalid> r5:r5 * 0x00000002 ip:<invalid>
 
 l0000179D_1:
-	byte NZC_51 = cond(r0 ^ __ror(r0, 8))
-	C = NZC_51 (alias)
-	Z = NZC_51 (alias)
-// DataOut: pc r0 r2 r7
+	byte NZC_50 = cond(r0 ^ __ror(r0, 8))
+	C = NZC_50 (alias)
+	Z = NZC_50 (alias)
+// DataOut: r0 r2 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:<invalid> r5:r5 * 0x00000002 ip:<invalid>
 
 l000017A1:
 	branch C l000017A5
-// DataOut: pc r0 r2 r7
+// DataOut: r0 r2 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:<invalid> r5:r5 * 0x00000002 ip:<invalid> r0:<invalid>
 
 l000017A1_1:
-	Z = cond(pc + (r7 >> 32) + C) (alias)
+	Z = cond(0x000017A9 + (r7 >> 32) + C) (alias)
 // DataOut: r0 r2
 // DataOut (flags): Z
 // SymbolicIn: sp:<invalid> r5:r5 * 0x00000002 ip:<invalid> r0:<invalid>
@@ -5977,69 +5977,69 @@ l00001901:
 
 
 
-void xEventGroupGetBitsFromISR(word32 pc, word32 r1, word32 r2, word32 r3, word32 r7, word32 r8)
+void xEventGroupGetBitsFromISR(word32 r1, word32 r2, word32 r3, word32 r7, word32 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV pc r1 r2 r3 r7 r8
+// MayUse:  NZCV r1 r2 r3 r7 r8
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 xEventGroupGetBitsFromISR_entry:
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00001989:
 	branch N l0000198D
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00001989_1:
 	__syscall(0x008311F3)
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000198D:
 	branch ZC l00001991
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000198D_1:
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l00001991:
 	branch NZV l00001995
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp fp:r2 & 0x000003C0
 
 l00001991_1:
 	__syscall(0x008811F3)
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp fp:r2 & 0x000003C0
 
 l00001995:
 	branch NZV l00001999
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp fp:r2 & 0x000003C0
 
 l00001995_1:
 	__syscall(0x008F6FF3)
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp fp:r2 & 0x000003C0
 
 l00001999:
 	branch ZC l0000199D
-// DataOut: pc r1 r2 r3 r7 r8
+// DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): Z
 // SymbolicIn: sp:fp fp:r2 & 0x000003C0
 
@@ -6052,41 +6052,41 @@ l0000199D:
 	branch Z l000019A1
 // DataOut: r1 r2 r3 r7 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:pc | 0x000003CC
+// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:0x000019A1 | 0x000003CC
 
 l0000199D_1:
 	Mem16[r8:word64] = r2_r1
 	r8 = r8 + r3
 // DataOut: r7 r8
 // DataOut (flags): Z
-// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:pc | 0x000003CC
+// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:0x000019A1 | 0x000003CC
 
 l000019A1:
 	branch Z l000019A1_thunk_vEventGroupDelete
 // DataOut: r7 r8
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:pc | 0x000003CC r8:r8 + r3
+// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:0x000019A1 | 0x000003CC r8:r8 + r3
 
 l000019A1_thunk_vEventGroupDelete:
 	vEventGroupDelete()
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:pc | 0x000003CC r8:r8 + r3
+// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:0x000019A1 | 0x000003CC r8:r8 + r3
 // Terminates process
 
 l000019A1_1:
 	word32 r7_14 = r7 - __ror(r8, 0)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:pc | 0x000003CC r8:r8 + r3
+// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:0x000019A1 | 0x000003CC r8:r8 + r3
 
 l000019A1_thunk_vEventGroupDelete:
 	vEventGroupDelete()
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:pc | 0x000003CC r8:r8 + r3 r7:<invalid>
+// SymbolicIn: sp:fp fp:r2 & 0x000003C0 r4:0x000019A1 | 0x000003CC r8:r8 + r3 r7:<invalid>
 // Terminates process
 
 xEventGroupGetBitsFromISR_exit:
@@ -6426,18 +6426,18 @@ l00008021:
 	byte NZV_43
 	byte Z_44
 	byte NZCV_47
+	word32 r8_49
 	byte C_50
+	word32 pc_52
 	word32 r9_56
 	word32 r7_55
 	word32 r5_54
 	word32 p0_53
 	byte V_51
-	word32 r8_49
 	word32 r4_48
 	word32 r2_46
 	word32 r1_45
 	byte ZC_41
-	word32 pc_52
 	word32 r0_42
 	call fn010ACC97 (retsize: 0;)
 		uses: C_33,NZCV_30,NZV_26,p0_36,pc_35,r0_25,r1_28,r2_29,r4_31,r5_37,r7_38,r8_32,r9_39,sp_23,V_34,Z_27,ZC_24
@@ -6452,7 +6452,9 @@ l00008025_1:
 	byte NZV_85
 	byte Z_86
 	byte NZCV_89
+	word32 r8_91
 	byte C_92
+	word32 pc_94
 	call fnFFC08371 (retsize: 0;)
 		uses: C_50,NZCV_47,NZV_43,p0_53,pc_52,r0_42,r1_45,r2_46,r4_48,r5_54,r7_55,r8_49,r9_56,sp_40,V_51,Z_44,ZC_41
 		defs: C_92,NZCV_89,NZV_85,p0_95,pc_94,r0_84,r1_87,r2_88,r4_90,r5_96,r7_97,r8_91,r9_98,sp_82,V_93,Z_86,ZC_83
@@ -6467,32 +6469,31 @@ l00008029:
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid>
 
 l00008029_1:
-	pc_52 = pc_52 + r8_49
 	r0_42 = (word32) Mem0[0x00008031:uint16]
-// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r9
+// DataOut: p0 r0 r1 r2 r4 r5 r7 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid>
 
 l0000802D:
 	branch ZC_41 l00008031
-// DataOut: p0 pc r0 r1 r2 r4 r5 r7 r9
+// DataOut: p0 r0 r1 r2 r4 r5 r7 r9
 // DataOut (flags): C
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
 
 l0000802D_1:
 	r0_42 = r0_42 ^ r1_45
-// DataOut: p0 pc r0 r2 r4 r5 r7 r9
+// DataOut: p0 r0 r2 r4 r5 r7 r9
 // DataOut (flags): C
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
 
 l00008031:
 	__cdp2(p0_53, 0x00000002, 0x00, 0x00, 0x08, 0x00000000)
-// DataOut: pc r0 r2 r4 r5 r7 r9
+// DataOut: r0 r2 r4 r5 r7 r9
 // DataOut (flags): C
 // SymbolicIn: sp:fp r0:<invalid> r2:~0x40000004 r8:r8 + 0x00000344 r4:<invalid> pc:pc + (r8 + 0x00000688)
 
 l00008031_thunk_raise:
-	raise(pc_52, r0_42, r2_46, r4_48, r5_54, r7_55, r9_56)
+	raise(r0_42, r2_46, r4_48, r5_54, r7_55, r9_56)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -6506,22 +6507,22 @@ ResetISR_exit:
 
 
 
-void raise(word32 pc, word32 r0, word32 r2, word32 r4, word32 r5, word32 r7, word32 r9)
+void raise(word32 r0, word32 r2, word32 r4, word32 r5, word32 r7, word32 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  C pc r0 r2 r4 r5 r7 r9
+// MayUse:  C r0 r2 r4 r5 r7 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 raise_entry:
-// DataOut: pc r0 r2 r4 r5 r7 r9
+// DataOut: r0 r2 r4 r5 r7 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
 l00008035:
 	branch C l00008035_thunk_vPrintTask
-// DataOut: pc r0 r2 r4 r5 r7 r9
+// DataOut: r0 r2 r4 r5 r7 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
@@ -6534,13 +6535,13 @@ l00008035_thunk_vPrintTask:
 // Terminates process
 
 l00008035_1:
-	word32 r0_8 = pc + __ror(r7, 1) + C
+	word32 r0_7 = 0x0000803D + __ror(r7, 1) + C
 // DataOut: r0 r2 r4 r5 r7 r9
 // DataOut (flags): Z
 // SymbolicIn: sp:fp
 
 l00008035_thunk_vPrintTask:
-	vPrintTask(r0_8, r2, r4, r5, r7, r9)
+	vPrintTask(r0_7, r2, r4, r5, r7, r9)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -7417,80 +7418,80 @@ PDCWrite_exit:
 
 
 
-void vListInitialise(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7, word32 r8, word32 r9, word32 p12)
+void vListInitialise(word32 r0, word32 r1, word32 r3, word32 r7, word32 r8, word32 r9, word32 p12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV p12 pc r0 r1 r3 r7 r8 r9
+// MayUse:  ZCV p12 r0 r1 r3 r7 r8 r9
 // LiveOut:
 // Trashed: r1
 // Preserved: sp
 vListInitialise_entry:
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000082D1:
 	branch Z l000082D5
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000082D5:
 	branch Z l000082D9
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000082D5_1:
 	r1 = Mem0[r1:word32] + 8
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000082D9:
 	branch ZC l000082DD
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid>
 
 l000082D9_1:
 	r8 = (r3 << 2) - r0
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid>
 
 l000082DD:
 	branch NZV l000082E1
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid> r8:(r3 << 2) - r0
 
 l000082DD_1:
 	r0 = 0x00000CE8
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid> r8:(r3 << 2) - r0
 
 l000082E1:
 	branch V l000082E5
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid> r8:(r3 << 2) - r0 r0:0x00000CE8
 
 l000082E1_1:
 	r0 = __ror(0x00000CE8, 6) - r1
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid> r8:(r3 << 2) - r0 r0:0x00000CE8
 
 l000082E5:
 	branch Z l000082E5_thunk_vListInitialiseItem
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid> r8:(r3 << 2) - r0 r0:<invalid>
 
 l000082E5_thunk_vListInitialiseItem:
-	vListInitialiseItem(pc, r0, r1, r3, r7, r8, r9, p12)
+	vListInitialiseItem(r0, r1, r3, r7, r8, r9, p12)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -7498,13 +7499,13 @@ l000082E5_thunk_vListInitialiseItem:
 // Terminates process
 
 l000082E5_1:
-	word32 r0_57 = pc + (r7 >> 32) + C
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+	word32 r0_57 = 0x000082ED + (r7 >> 32) + C
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:<invalid> r5:<invalid> r8:(r3 << 2) - r0 r0:<invalid>
 
 l000082E5_thunk_vListInitialiseItem:
-	vListInitialiseItem(pc, r0_57, r1, r3, r7, r8, r9, p12)
+	vListInitialiseItem(r0_57, r1, r3, r7, r8, r9, p12)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -7543,34 +7544,34 @@ vListInitialise_exit:
 
 
 
-void vListInitialiseItem(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7, word32 r8, word32 r9, word32 p12)
+void vListInitialiseItem(word32 r0, word32 r1, word32 r3, word32 r7, word32 r8, word32 r9, word32 p12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV p12 pc r0 r1 r3 r7 r8 r9
+// MayUse:  ZCV p12 r0 r1 r3 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 vListInitialiseItem_entry:
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l000082E9:
 	branch V l000082ED
-// DataOut: p12 pc r0 r1 r3 r7 r8 r9
+// DataOut: p12 r0 r1 r3 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
 l000082E9_1:
 	r0 = (r3 >>u 6) - r1
-// DataOut: p12 pc r0 r7 r8 r9
+// DataOut: p12 r0 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
 l000082ED:
 	branch ZC l000082ED_thunk_vListInsertEnd
-// DataOut: p12 pc r0 r7 r8 r9
+// DataOut: p12 r0 r7 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:(r3 >>u 6) - r1
 
@@ -7583,13 +7584,13 @@ l000082ED_thunk_vListInsertEnd:
 // Terminates process
 
 l000082ED_1:
-	word32 r0_14 = pc + (r7 >> 32) + C
+	word32 r0_13 = 0x000082F5 + (r7 >> 32) + C
 // DataOut: p12 r0 r8 r9
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:(r3 >>u 6) - r1
 
 l000082ED_thunk_vListInsertEnd:
-	vListInsertEnd(r0_14, r8, r9, p12)
+	vListInsertEnd(r0_13, r8, r9, p12)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -8915,38 +8916,38 @@ vStartFlashCoRoutines_exit:
 
 
 
-void xAreFlashCoRoutinesStillRunning(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 r8, word32 fp, word32 p5)
+void xAreFlashCoRoutinesStillRunning(word32 r0, word32 r3, word32 r6, word32 r7, word32 r8, word32 fp, word32 p5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV fp p5 pc r0 r3 r6 r7 r8
+// MayUse:  ZCV fp p5 r0 r3 r6 r7 r8
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 xAreFlashCoRoutinesStillRunning_entry:
-// DataOut: fp p5 pc r0 r3 r6 r7 r8
+// DataOut: fp p5 r0 r3 r6 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l000087D1:
 	branch V l000087D5
-// DataOut: fp p5 pc r0 r3 r6 r7 r8
+// DataOut: fp p5 r0 r3 r6 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l000087D1_1:
-// DataOut: p5 pc r0 r3 r6 r7
+// DataOut: p5 r0 r3 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l000087D5:
 	branch NZV l000087D9
-// DataOut: p5 pc r0 r3 r6 r7
+// DataOut: p5 r0 r3 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8
 
 l000087D5_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x000087DD + (r7 >> 32) + C
 	V = cond(r0) (alias)
 // DataOut: p5 r0 r3 r6
 // DataOut (flags): NZV
@@ -10680,10 +10681,10 @@ l00008E49:
 
 
 
-void vCoRoutineAddToDelayedList(word32 lr, word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 ip, word32 p13)
+void vCoRoutineAddToDelayedList(word32 lr, word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 ip, word32 p13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV ip lr p13 pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// MayUse:  NZCV ip lr p13 r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -10694,182 +10695,182 @@ vCoRoutineAddToDelayedList_exit:
 // SymbolicIn:
 
 vCoRoutineAddToDelayedList_entry:
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00008EF1:
 	branch Z l00008EF5
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00008EF5:
 	branch V l00008EF9
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00008EF5_1:
-	Mem76[r8 + -844:byte] = (byte) r2
+	Mem75[r8 + -844:byte] = (byte) r2
 	r8 = r8 + -844
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l00008EF9:
 	branch Z l00008EFD
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008EF9_1:
-	Mem62[r4:word32] = r0
-	Mem65[r4 - 4:word32] = r1
-	Mem66[r4 - 8:word32] = r2
-	Mem68[r4 - 12:word32] = r3
-	Mem70[r4 - 16:word32] = r5
-	Mem72[r4 - 20:word32] = r6
-	Mem73[r4 - 24:word32] = r8
-	Mem74[r4 - 28:word32] = r10
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r5 r6 r7 r9
+	Mem61[r4:word32] = r0
+	Mem64[r4 - 4:word32] = r1
+	Mem65[r4 - 8:word32] = r2
+	Mem67[r4 - 12:word32] = r3
+	Mem69[r4 - 16:word32] = r5
+	Mem71[r4 - 20:word32] = r6
+	Mem72[r4 - 24:word32] = r8
+	Mem73[r4 - 28:word32] = r10
+// DataOut: ip lr p13 r0 r1 r10 r2 r5 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008EFD:
 	branch Z l00008F01
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r5 r6 r7 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r5 r6 r7 r9
 // DataOut (flags): NC
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008EFD_1:
 	__syscall(0x00F7FF1D)
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r5 r6 r7 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r5 r6 r7 r9
 // DataOut (flags): NC
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008F01:
 	branch C l00008F05
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r5 r6 r7 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r5 r6 r7 r9
 // DataOut (flags): NC
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008F01_1:
-	Mem61[0x00008ECF:word32] = r7_r6
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r5 r6 r7 r9
+	Mem60[0x00008ECF:word32] = r7_r6
+// DataOut: ip lr p13 r0 r1 r10 r2 r5 r6 r7 r9
 // DataOut (flags): NC
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008F05:
 	branch N l00008F09
-// DataOut: ip lr p13 pc r0 r1 r10 r2 r5 r6 r7 r9
+// DataOut: ip lr p13 r0 r1 r10 r2 r5 r6 r7 r9
 // DataOut (flags): C
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008F05_1:
 	__stc(p13, 0x09, Mem0[r2 + -416:word32])
-// DataOut: ip lr p0 pc r0 r1 r10 r5 r6 r7 r9
+// DataOut: ip lr p0 r0 r1 r10 r5 r6 r7 r9
 // DataOut (flags): C
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008F09:
-	word32 r3_10 = pc + __ror(r0, 8) + C
-	branch r3_10 != 0x00000000 l00008F11
+	word32 r3_9 = 0x00008F11 + __ror(r0, 8) + C
+	branch r3_9 != 0x00000000 l00008F11
 // DataOut: ip lr p0 r0 r1 r10 r3 r5 r6 r7 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:r8 + -844
 // LocalsOut: fp(32)
 
 l00008F0D_1:
-	Mem55[lr:byte] = (byte) r10
+	Mem54[lr:byte] = (byte) r10
 // DataOut: ip lr p0 r0 r1 r3 r5 r6 r7 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid>
 // LocalsOut: fp(32)
 
 l00008F11:
-	word32 sp_17
-	byte Z_18
-	byte V_19
-	word32 r2_20
-	word32 r8_21
-	word32 r4_22
-	word32 r0_23
-	word32 r1_24
-	word32 r5_26
-	word32 r6_27
-	word32 r10_28
-	byte C_29
-	word32 pc_30
-	byte N_31
-	word32 p13_32
-	byte NZCV_33
-	word32 lr_34
-	word32 r9_35
-	byte NZV_36
-	word32 p0_37
-	word32 r7_38
-	word32 ip_39
-	word64 d17_40
-	word64 d31_41
-	word32 r3_25
+	word32 sp_16
+	byte Z_17
+	byte V_18
+	word32 r2_19
+	word32 r8_20
+	word32 r4_21
+	word32 r0_22
+	word32 r1_23
+	word32 r5_25
+	word32 r6_26
+	word32 r10_27
+	byte C_28
+	word32 pc_29
+	byte N_30
+	word32 p13_31
+	byte NZCV_32
+	word32 lr_33
+	word32 r9_34
+	byte NZV_35
+	word32 p0_36
+	word32 r7_37
+	word32 ip_38
+	word64 d17_39
+	word64 d31_40
+	word32 r3_24
 	call fnFFE08BDF (retsize: 0;)
-		uses: C_12,N_13,NZCV_11,NZV_16,pc,r0,r3_10,r8_5,sp_1,V_15,Z_14
-		defs: C_29,d17_40,d31_41,ip_39,lr_34,N_31,NZCV_33,NZV_36,p0_37,p13_32,pc_30,r0_23,r1_24,r10_28,r2_20,r3_25,r4_22,r5_26,r6_27,r7_38,r8_21,r9_35,sp_17,V_19,Z_18
-	branch C_29 l00008F19
+		uses: C_11,N_12,NZCV_10,NZV_15,r0,r3_9,r8_5,sp_1,V_14,Z_13
+		defs: C_28,d17_39,d31_40,ip_38,lr_33,N_30,NZCV_32,NZV_35,p0_36,p13_31,pc_29,r0_22,r1_23,r10_27,r2_19,r3_24,r4_21,r5_25,r6_26,r7_37,r8_20,r9_34,sp_16,V_18,Z_17
+	branch C_28 l00008F19
 // DataOut: ip lr p0 r0 r1 r3 r5 r6 r7 r9
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid> lr:lr - 0x0000006E
 // LocalsOut: fp(32)
 
 l00008F15_1:
-	r3_25 = (word32) Mem0[r1_24 + r9_35:int16]
+	r3_24 = (word32) Mem0[r1_23 + r9_34:int16]
 // DataOut: ip lr p0 r0 r3 r5 r6 r7
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid> lr:lr - 0x0000006E
 // LocalsOut: fp(32)
 
 l00008F19:
-	branch NZV_36 l00008F1D
+	branch NZV_35 l00008F1D
 // DataOut: ip lr p0 r0 r3 r5 r6 r7
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid> lr:lr - 0x0000006E r1:r1 + r9
 // LocalsOut: fp(32)
 
 l00008F19_1:
-	__stc(p0_37, 0x03, Mem0[r6_27 + -416:word32])
+	__stc(p0_36, 0x03, Mem0[r6_26 + -416:word32])
 // DataOut: ip lr r0 r3 r5 r6 r7
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid> lr:lr - 0x0000006E r1:r1 + r9
 // LocalsOut: fp(32)
 
 l00008F1D:
-	branch Z_18 l00008F21
+	branch Z_17 l00008F21
 // DataOut: ip lr r0 r3 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid> lr:lr - 0x0000006E r1:r1 + r9
 // LocalsOut: fp(32)
 
 l00008F1D_1:
-	Mem44[r0_23:word32] = r3_25
-	Mem45[r0_23 - 4:word32] = r5_26
-	Mem46[r0_23 - 8:word32] = r6_27
-	Mem47[r0_23 - 12:word32] = r7_38
-	Mem48[r0_23 - 16:word32] = ip_39
-	Mem49[r0_23 - 20:word32] = fp
-	Mem50[r0_23 - 24:word32] = lr_34
+	Mem43[r0_22:word32] = r3_24
+	Mem44[r0_22 - 4:word32] = r5_25
+	Mem45[r0_22 - 8:word32] = r6_26
+	Mem46[r0_22 - 12:word32] = r7_37
+	Mem47[r0_22 - 16:word32] = ip_38
+	Mem48[r0_22 - 20:word32] = fp
+	Mem49[r0_22 - 24:word32] = lr_33
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r8:r8 + -844 r3:<invalid> lr:lr - 0x0000006E r1:r1 + r9
@@ -12049,13 +12050,13 @@ l00009309_thunk_GPIOPinIntClear:
 // SymbolicIn: sp:<invalid> r8:r8 + 0x000000B9 r7:r7 - r4 r4:r4 - (r8 + 0x00000172)
 
 l00009309_1:
-	word32 r0_22 = pc + (r7 >> 32) + C
+	word32 r0_21 = 0x00009311 + (r7 >> 32) + C
 // DataOut: fp ip pc r0 r1 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): CV
 // SymbolicIn: sp:<invalid> r8:r8 + 0x000000B9 r7:r7 - r4 r4:r4 - (r8 + 0x00000172)
 
 l00009309_thunk_GPIOPinIntClear:
-	GPIOPinIntClear(pc, r0_22, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip)
+	GPIOPinIntClear(pc, r0_21, r1, r2, r3, r4, r5, r6, r7, r8, r9, fp, ip)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -12628,34 +12629,34 @@ GPIOPortIntUnregister_exit:
 
 
 
-void GPIOPinRead(word32 pc, word32 r0, word32 r2, word32 r3, word32 r7, word32 r8)
+void GPIOPinRead(word32 r0, word32 r2, word32 r3, word32 r7, word32 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NCV pc r0 r2 r3 r7 r8
+// MayUse:  NCV r0 r2 r3 r7 r8
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 GPIOPinRead_entry:
-// DataOut: pc r0 r2 r3 r7 r8
+// DataOut: r0 r2 r3 r7 r8
 // DataOut (flags): NCV
 // SymbolicIn: sp:fp
 
 l0000944D:
 	branch V l00009451
-// DataOut: pc r0 r2 r3 r7 r8
+// DataOut: r0 r2 r3 r7 r8
 // DataOut (flags): NC
 // SymbolicIn: sp:fp
 
 l0000944D_1:
-	Mem15[r0:word64] = r3_r2
-// DataOut: pc r7
+	Mem14[r0:word64] = r3_r2
+// DataOut: r7
 // DataOut (flags): NC
 // SymbolicIn: sp:fp
 
 l00009451:
 	branch N l00009451_thunk_GPIOPinWrite
-// DataOut: pc r7
+// DataOut: r7
 // DataOut (flags): C
 // SymbolicIn: sp:fp r0:r0 - r8
 
@@ -12990,21 +12991,21 @@ l000094F5:
 
 
 
-void IntDefaultHandler(word32 pc, word32 r0, word32 r1, word32 r7, word32 r8, word32 fp)
+void IntDefaultHandler(word32 r0, word32 r1, word32 r7, word32 r8, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZC fp pc r0 r1 r7 r8
+// MayUse:  ZC fp r0 r1 r7 r8
 // LiveOut:
 // Trashed: NZCV lr r0 sp
 // Preserved: sp
 IntDefaultHandler_entry:
-// DataOut: fp pc r0 r1 r7 r8
+// DataOut: fp r0 r1 r7 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
 l000094F9:
 	branch Z l000094F9_thunk_IntMasterEnable
-// DataOut: fp pc r0 r1 r7 r8
+// DataOut: fp r0 r1 r7 r8
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
 
@@ -13016,13 +13017,13 @@ l000094F9_thunk_IntMasterEnable:
 // SymbolicIn: sp:fp
 
 l000094F9_1:
-	word32 r0_10 = pc + __ror(r7, 1) + C
+	word32 r0_9 = 0x00009501 + __ror(r7, 1) + C
 // DataOut: fp r0 r1 r8
 // DataOut (flags): Z
 // SymbolicIn: sp:fp
 
 l000094F9_thunk_IntMasterEnable:
-	IntMasterEnable(r0_10, r1, r8, fp, wArg00)
+	IntMasterEnable(r0_9, r1, r8, fp, wArg00)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -16193,7 +16194,7 @@ l00009C39:
 // SymbolicIn: sp:fp r8:r8 - 24 r0:r0 + 0x00000039 r2:<invalid> r1:<invalid> r4:<invalid>
 
 l00009C39_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x00009C41 + (r7 >> 32) + C
 	Z = cond(r0) (alias)
 // DataOut: fp ip pc r0 r10 r2 r3 r4 r5 r6 r7 r8 r9
 // DataOut (flags): NZC
@@ -16586,7 +16587,7 @@ l00009CA1:
 // SymbolicIn: sp:fp r7:r7 - 0x00000068 r1:(fp >> 16) - r8
 
 l00009CA1_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x00009CA9 + (r7 >> 32) + C
 	byte NZCV_42 = cond(r0)
 	r0_r0 = SEQ(r0, r0) (alias)
 	N = NZCV_42 (alias)
@@ -16627,13 +16628,13 @@ l00009CA9_thunk_SysCtlLDOSet:
 // SymbolicIn: sp:fp r7:r7 - 0x00000068 r1:(fp >> 16) - r8 r0:<invalid>
 
 l00009CA9_1:
-	word32 r0_24 = (word32) ((int16) (r0 >> 16) *s (int16) (pc >> 16) + r0_r0)
+	word32 r0_23 = (word32) ((int16) (r0 >> 16) *s (int16) (0x00009CB1 >> 16) + r0_r0)
 // DataOut: fp p14 pc r0 r1 r10 r3 r5 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r7:r7 - 0x00000068 r1:(fp >> 16) - r8 r0:<invalid>
 
 l00009CA9_thunk_SysCtlLDOSet:
-	SysCtlLDOSet(pc, r0_24, r1, r3, r5, r7, r8, r10, fp, p14)
+	SysCtlLDOSet(pc, r0_23, r1, r3, r5, r7, r8, r10, fp, p14)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -16699,7 +16700,7 @@ l00009CB5_thunk_SysCtlLDOGet:
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0 pc:pc + 0x00000047 r0:<invalid>
 
 l00009CB5_1:
-	word32 r0_16 = (word32) ((int16) (r0 >> 16) *s (int16) (pc >> 16) + r0_r0)
+	word32 r0_16 = (word32) ((int16) (r0 >> 16) *s (int16) (0x00009CBD >> 16) + r0_r0)
 // DataOut: fp p14 pc r0 r1 r10 r3 r5 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0 pc:pc + 0x00000047 r0:<invalid>
@@ -16750,34 +16751,33 @@ l00009CBD:
 
 l00009CBD_1:
 	word32 v10_24 = Mem0[0x00009CC5:word32]
-	pc = pc + 0x00000047
 	r0 = v10_24
 	r0_r0 = SEQ(v10_24, v10_24) (alias)
-// DataOut: fp p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: fp p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8
 
 l00009CC1:
 	branch Z l00009CC1_thunk_SysCtlLDOConfigSet
-// DataOut: fp p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: fp p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8 pc:pc + 0x00000047 r0:<invalid>
 
 l00009CC1_thunk_SysCtlLDOConfigSet:
-	SysCtlLDOConfigSet(pc, r0, r1, r3, r5, r7, r10, fp, p14)
+	SysCtlLDOConfigSet(r0, r1, r3, r5, r7, r10, fp, p14)
 	return
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8 pc:pc + 0x00000047 r0:<invalid>
 
 l00009CC1_1:
-	word32 r0_16 = (word32) ((int16) (r0 >> 16) *s (int16) (pc >> 16) + r0_r0)
-// DataOut: fp p14 pc r0 r1 r10 r3 r5 r7
+	word32 r0_16 = (word32) ((int16) (r0 >> 16) *s (int16) (0x00009CC9 >> 16) + r0_r0)
+// DataOut: fp p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8 pc:pc + 0x00000047 r0:<invalid>
 
 l00009CC1_thunk_SysCtlLDOConfigSet:
-	SysCtlLDOConfigSet(pc, r0_16, r1, r3, r5, r7, r10, fp, p14)
+	SysCtlLDOConfigSet(r0_16, r1, r3, r5, r7, r10, fp, p14)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -16790,47 +16790,47 @@ SysCtlLDOGet_exit:
 
 
 
-void SysCtlLDOConfigSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r5, word32 r7, word32 r10, word32 fp, word32 p14)
+void SysCtlLDOConfigSet(word32 r0, word32 r1, word32 r3, word32 r5, word32 r7, word32 r10, word32 fp, word32 p14)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV fp p14 pc r0 r1 r10 r3 r5 r7
+// MayUse:  ZCV fp p14 r0 r1 r10 r3 r5 r7
 // LiveOut:
 // Trashed: NZCV r0 r1
 // Preserved: sp
 SysCtlLDOConfigSet_entry:
-// DataOut: fp p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: fp p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009CC5:
 	branch V l00009CC9
-// DataOut: fp p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: fp p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009CC5_1:
 	r1 = (fp >> 16) - r0
-// DataOut: p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009CC9:
 	branch V l00009CCD
-// DataOut: p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0
 
 l00009CC9_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x00009CD1 + (r7 >> 32) + C
 	r0_r0 = SEQ(r0, r0) (alias)
 	Z = cond(r0) (alias)
-// DataOut: p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0
 
 l00009CCD:
 	branch Z l00009CCD_thunk_SysCtlReset
-// DataOut: p14 pc r0 r1 r10 r3 r5 r7
+// DataOut: p14 r0 r1 r10 r3 r5 r7
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0 r0:<invalid>
 
@@ -16842,13 +16842,13 @@ l00009CCD_thunk_SysCtlReset:
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0 r0:<invalid>
 
 l00009CCD_1:
-	word32 r0_20 = (word32) ((int16) (r1 >> 16) *s (int16) (pc >> 16) + r0_r0)
+	word32 r0_19 = (word32) ((int16) (r1 >> 16) *s (int16) (0x00009CD5 >> 16) + r0_r0)
 // DataOut: p14 r0 r10 r3 r5 r7
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r1:(fp >> 16) - r0 r0:<invalid>
 
 l00009CCD_thunk_SysCtlReset:
-	SysCtlReset(r0_20, r3, r5, r7, r10, p14)
+	SysCtlReset(r0_19, r3, r5, r7, r10, p14)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -17257,43 +17257,43 @@ l00009E69:
 
 
 
-void SysCtlPWMClockGet(word32 pc, word32 r0, word32 r4, word32 r7, word32 r8, word32 r10, word32 fp)
+void SysCtlPWMClockGet(word32 r0, word32 r4, word32 r7, word32 r8, word32 r10, word32 fp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV fp pc r0 r10 r4 r7 r8
+// MayUse:  ZCV fp r0 r10 r4 r7 r8
 // LiveOut:
 // Trashed: NZCV r0 r1 r2 r4
 // Preserved: sp
 SysCtlPWMClockGet_entry:
-// DataOut: fp pc r0 r10 r4 r7 r8
+// DataOut: fp r0 r10 r4 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009E7D:
 	branch Z l00009E81
-// DataOut: fp pc r0 r10 r4 r7 r8
+// DataOut: fp r0 r10 r4 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009E7D_1:
-// DataOut: pc r0 r10 r4 r7 r8
+// DataOut: r0 r10 r4 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009E81:
 	branch V l00009E85
-// DataOut: pc r0 r10 r4 r7 r8
+// DataOut: r0 r10 r4 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8
 
 l00009E85:
 	branch V l00009E89
-// DataOut: pc r0 r10 r4 r7 r8
+// DataOut: r0 r10 r4 r7 r8
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r1:(fp >> 16) - r8
 
 l00009E85_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x00009E8D + (r7 >> 32) + C
 	Z = cond(r0) (alias)
 // DataOut: r0 r10 r4 r8
 // DataOut (flags): ZCV
@@ -17538,117 +17538,117 @@ l00009EC9:
 
 
 
-void SysCtlIOSCVerificationSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
+void SysCtlIOSCVerificationSet(word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// MayUse:  ZCV ip r0 r1 r3 r4 r6 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 SysCtlIOSCVerificationSet_entry:
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009ED5:
 	branch Z l00009ED9
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009ED5_1:
-	Mem68[r8:word32] = r1
-	Mem69[r8 - 4:word32] = r3
-	Mem70[r8 - 8:word32] = r6
-	Mem71[r8 - 12:word32] = r8
-	Mem72[r8 - 16:word32] = r9
-	Mem73[r8 - 20:word32] = ip
+	Mem67[r8:word32] = r1
+	Mem68[r8 - 4:word32] = r3
+	Mem69[r8 - 8:word32] = r6
+	Mem70[r8 - 12:word32] = r8
+	Mem71[r8 - 16:word32] = r9
+	Mem72[r8 - 20:word32] = ip
 	r8 = r8 - 24
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009ED9:
 	branch Z l00009EDD
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24
 
 l00009ED9_1:
-	word32 r0_59 = Mem0[r0:word32]
-	r3 = Mem0[r0_59 + 4:word32]
-	r4 = Mem0[r0_59 + 8:word32]
-	r7 = Mem0[r0_59 + 16:word32]
-	r8 = Mem0[r0_59 + 20:word32]
-	r9 = Mem0[r0_59 + 24:word32]
-	r0 = r0_59 + 32
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+	word32 r0_58 = Mem0[r0:word32]
+	r3 = Mem0[r0_58 + 4:word32]
+	r4 = Mem0[r0_58 + 8:word32]
+	r7 = Mem0[r0_58 + 16:word32]
+	r8 = Mem0[r0_58 + 20:word32]
+	r9 = Mem0[r0_58 + 24:word32]
+	r0 = r0_58 + 32
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24
 
 l00009EDD:
 	branch V l00009EE1
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid>
 
 l00009EDD_1:
 	r1 = (r3 << 6) - r0
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid>
 
 l00009EE1:
 	branch Z l00009EE5
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid>
 
 l00009EE1_1:
-	word32 r0_50 = Mem0[r0:word32]
-	r1 = Mem0[r0_50 + 4:word32]
-	r6 = Mem0[r0_50 + 12:word32]
-	r8 = Mem0[r0_50 + 16:word32]
-	r9 = Mem0[r0_50 + 20:word32]
-	r0 = r0_50 + 28
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+	word32 r0_49 = Mem0[r0:word32]
+	r1 = Mem0[r0_49 + 4:word32]
+	r6 = Mem0[r0_49 + 12:word32]
+	r8 = Mem0[r0_49 + 16:word32]
+	r9 = Mem0[r0_49 + 20:word32]
+	r0 = r0_49 + 28
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid>
 
 l00009EE5:
 	branch V l00009EE9
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> lr:<invalid>
 
 l00009EE5_1:
 	r1 = (r3 << 6) - r0
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> lr:<invalid>
 
 l00009EE9:
 	branch V l00009EED
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> lr:<invalid>
 
 l00009EE9_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x00009EF1 + (r7 >> 32) + C
 	Z = cond(r0) (alias)
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> lr:<invalid>
 
 l00009EED:
 	branch Z l00009EED_thunk_SysCtlMOSCVerificationSet
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> lr:<invalid>
 
 l00009EED_thunk_SysCtlMOSCVerificationSet:
-	SysCtlMOSCVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip)
+	SysCtlMOSCVerificationSet(r0, r1, r3, r4, r6, r7, r8, r9, ip)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -17657,12 +17657,12 @@ l00009EED_thunk_SysCtlMOSCVerificationSet:
 
 l00009EED_1:
 	Mem40[r0 + -4064:byte] = (byte) r0
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:<invalid> r8:<invalid> r0:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r7:<invalid> r9:<invalid> r1:<invalid> r2:<invalid> r6:<invalid> lr:<invalid>
 
 l00009EED_thunk_SysCtlMOSCVerificationSet:
-	SysCtlMOSCVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip)
+	SysCtlMOSCVerificationSet(r0, r1, r3, r4, r6, r7, r8, r9, ip)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -17676,107 +17676,107 @@ SysCtlIOSCVerificationSet_exit:
 
 
 
-void SysCtlMOSCVerificationSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
+void SysCtlMOSCVerificationSet(word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// MayUse:  ZCV ip r0 r1 r3 r4 r6 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 SysCtlMOSCVerificationSet_entry:
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009EF1:
 	branch Z l00009EF5
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009EF1_1:
-	Mem44[r8:word32] = r1
-	Mem45[r8 - 4:word32] = r3
-	Mem46[r8 - 8:word32] = r6
-	Mem47[r8 - 12:word32] = r8
-	Mem48[r8 - 16:word32] = r9
-	Mem49[r8 - 20:word32] = ip
+	Mem43[r8:word32] = r1
+	Mem44[r8 - 4:word32] = r3
+	Mem45[r8 - 8:word32] = r6
+	Mem46[r8 - 12:word32] = r8
+	Mem47[r8 - 16:word32] = r9
+	Mem48[r8 - 20:word32] = ip
 	r8 = r8 - 24
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009EF5:
 	branch Z l00009EF9
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24
 
 l00009EF5_1:
 	r0 = r0 + 0x000003B9
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24
 
 l00009EF9:
 	branch V l00009EFD
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:r0 + 0x000003B9 r2:<invalid>
 
 l00009EF9_1:
 	r1 = (r3 << 6) - r0
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:r0 + 0x000003B9 r2:<invalid>
 
 l00009EFD:
 	branch Z l00009F01
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:r0 + 0x000003B9 r2:<invalid> r1:(r3 << 6) - (r0 + 0x00000772)
 
 l00009EFD_1:
 	r0 = r0 + 0x00000347
 	r4 = (word32) Mem0[r0:byte]
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:r0 + 0x000003B9 r2:<invalid> r1:(r3 << 6) - (r0 + 0x00000772)
 
 l00009F01:
 	branch V l00009F05
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:<invalid> r2:<invalid> r1:(r3 << 6) - (r0 + 0x00000772) r4:<invalid>
 
 l00009F01_1:
 	r1 = (r3 << 6) - r0
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:<invalid> r2:<invalid> r1:(r3 << 6) - (r0 + 0x00000772) r4:<invalid>
 
 l00009F05:
 	branch V l00009F09
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid>
 
 l00009F05_1:
-	r0 = pc + (r7 >> 32) + C
+	r0 = 0x00009F0D + (r7 >> 32) + C
 	Z = cond(r0) (alias)
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid>
 
 l00009F09:
 	branch Z l00009F09_thunk_SysCtlPLLVerificationSet
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid>
 
 l00009F09_thunk_SysCtlPLLVerificationSet:
-	SysCtlPLLVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip)
+	SysCtlPLLVerificationSet(r0, r1, r3, r4, r6, r7, r8, r9, ip)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -17785,12 +17785,12 @@ l00009F09_thunk_SysCtlPLLVerificationSet:
 
 l00009F09_1:
 	Mem23[r0 + -4064:byte] = (byte) r0
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r0:<invalid> r2:<invalid> r1:<invalid> r4:<invalid>
 
 l00009F09_thunk_SysCtlPLLVerificationSet:
-	SysCtlPLLVerificationSet(pc, r0, r1, r3, r4, r6, r7, r8, r9, ip)
+	SysCtlPLLVerificationSet(r0, r1, r3, r4, r6, r7, r8, r9, ip)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -17804,102 +17804,102 @@ SysCtlMOSCVerificationSet_exit:
 
 
 
-void SysCtlPLLVerificationSet(word32 pc, word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
+void SysCtlPLLVerificationSet(word32 r0, word32 r1, word32 r3, word32 r4, word32 r6, word32 r7, word32 r8, word32 r9, word32 ip)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// MayUse:  ZCV ip r0 r1 r3 r4 r6 r7 r8 r9
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 SysCtlPLLVerificationSet_entry:
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009F0D:
 	branch Z l00009F11
-// DataOut: ip pc r0 r1 r3 r4 r6 r7 r8 r9
+// DataOut: ip r0 r1 r3 r4 r6 r7 r8 r9
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009F0D_1:
-	Mem55[r8:word32] = r1
-	Mem56[r8 - 4:word32] = r3
-	Mem58[r8 - 8:word32] = r6
-	Mem59[r8 - 12:word32] = r8
-	Mem61[r8 - 16:word32] = r9
-	Mem63[r8 - 20:word32] = ip
-// DataOut: pc r0 r3 r4 r7
+	Mem54[r8:word32] = r1
+	Mem55[r8 - 4:word32] = r3
+	Mem57[r8 - 8:word32] = r6
+	Mem58[r8 - 12:word32] = r8
+	Mem60[r8 - 16:word32] = r9
+	Mem62[r8 - 20:word32] = ip
+// DataOut: r0 r3 r4 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l00009F11:
 	branch ZC l00009F15
-// DataOut: pc r0 r3 r4 r7
+// DataOut: r0 r3 r4 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24
 
 l00009F11_1:
 	r4 = r4 + 0x00000039
-// DataOut: pc r0 r3 r4 r7
+// DataOut: r0 r3 r4 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24
 
 l00009F15:
 	branch V l00009F19
-// DataOut: pc r0 r3 r4 r7
+// DataOut: r0 r3 r4 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r4:r4 + 0x00000039 r2:<invalid>
 
 l00009F15_1:
-	word32 r1_50 = __ror(r3, 6) - r0
-// DataOut: pc r0 r3 r4 r7
+	word32 r1_49 = __ror(r3, 6) - r0
+// DataOut: r0 r3 r4 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r4:r4 + 0x00000039 r2:<invalid>
 
 l00009F19:
 	branch ZC l00009F1D
-// DataOut: pc r0 r3 r4 r7
+// DataOut: r0 r3 r4 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r4:r4 + 0x00000039 r2:<invalid> r1:<invalid>
 
 l00009F19_1:
-	byte NZCV_45 = cond((r7 >> 6) - r4 - C)
-	C = NZCV_45 (alias)
-	Z = NZCV_45 (alias)
-	V = NZCV_45 (alias)
-// DataOut: pc r0 r3 r7
+	byte NZCV_44 = cond((r7 >> 6) - r4 - C)
+	C = NZCV_44 (alias)
+	Z = NZCV_44 (alias)
+	V = NZCV_44 (alias)
+// DataOut: r0 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r4:r4 + 0x00000039 r2:<invalid> r1:<invalid>
 
 l00009F1D:
 	branch V l00009F21
-// DataOut: pc r0 r3 r7
+// DataOut: r0 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r4:<invalid> r2:<invalid> r1:<invalid>
 
 l00009F1D_1:
-	word32 r1_43 = __ror(r3, 6) - r0
-// DataOut: pc r0 r7
+	word32 r1_42 = __ror(r3, 6) - r0
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r8:r8 - 24 r4:<invalid> r2:<invalid> r1:<invalid>
 
 l00009F21:
 	branch V l00009F25
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r8:r8 - 24 r4:<invalid> r2:<invalid> r1:<invalid>
 
 l00009F21_1:
-	Z = cond(pc + (r7 >> 32) + C) (alias)
-// DataOut: pc r0
+	Z = cond(0x00009F29 + (r7 >> 32) + C) (alias)
+// DataOut: r0
 // DataOut (flags): Z
 // SymbolicIn: sp:fp r8:r8 - 24 r4:<invalid> r2:<invalid> r1:<invalid>
 
 l00009F25:
 	branch Z l00009F25_thunk_SysCtlClkVerificationClear
-// DataOut: pc r0
+// DataOut: r0
 // DataOut (flags): 
 // SymbolicIn: sp:fp r8:r8 - 24 r4:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
 
@@ -18227,53 +18227,53 @@ l00009FF1:
 
 
 
-void UARTCharsAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
+void UARTCharsAvail(word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZC pc r0 r3 r6 r7 r9
+// MayUse:  ZC r0 r3 r6 r7 r9
 // LiveOut:
 // Trashed: NZCV ip r0 r6 r7 r8
 // Preserved: sp
 UARTCharsAvail_entry:
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l0000A00D:
 	branch Z l0000A011
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l0000A00D_1:
-	byte NZCV_40 = cond(__ror(r9, 0) - r0 - C)
-	C = NZCV_40 (alias)
-	Z = NZCV_40 (alias)
-	ZC = NZCV_40 (alias)
-// DataOut: pc r0 r3 r6 r7 r9
+	byte NZCV_39 = cond(__ror(r9, 0) - r0 - C)
+	C = NZCV_39 (alias)
+	Z = NZCV_39 (alias)
+	ZC = NZCV_39 (alias)
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l0000A011:
 	branch Z l0000A015
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:<invalid>
 
 l0000A011_1:
 	ZC = cond(r0 - r3 - C) (alias)
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:<invalid>
 
 l0000A015:
 	branch ZC l0000A019
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:<invalid> ip:<invalid>
 
 l0000A015_thunk_UARTSpaceAvail:
-	UARTSpaceAvail(pc, r0, r3, r6, r7, r9)
+	UARTSpaceAvail(r0, r3, r6, r7, r9)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18281,12 +18281,12 @@ l0000A015_thunk_UARTSpaceAvail:
 
 l0000A015_1:
 	word32 r7_27 = r7 - (r0 << r0)
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:<invalid> ip:<invalid>
 
 l0000A015_thunk_UARTSpaceAvail:
-	UARTSpaceAvail(pc, r0, r3, r6, r7_27, r9)
+	UARTSpaceAvail(r0, r3, r6, r7_27, r9)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18299,53 +18299,53 @@ UARTCharsAvail_exit:
 
 
 
-void UARTSpaceAvail(word32 pc, word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
+void UARTSpaceAvail(word32 r0, word32 r3, word32 r6, word32 r7, word32 r9)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZC pc r0 r3 r6 r7 r9
+// MayUse:  NZC r0 r3 r6 r7 r9
 // LiveOut:
 // Trashed: NZCV ip r0 r6 r7 r8
 // Preserved: sp
 UARTSpaceAvail_entry:
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A019:
 	branch C l0000A01D
-// DataOut: pc r0 r3 r6 r7 r9
+// DataOut: r0 r3 r6 r7 r9
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A019_1:
-	byte NZCV_32 = cond(__ror(r9, 0) - r0 - C)
-	C = NZCV_32 (alias)
-	ZC = NZCV_32 (alias)
-	N = NZCV_32 (alias)
-// DataOut: pc r0 r3 r6 r7
+	byte NZCV_31 = cond(__ror(r9, 0) - r0 - C)
+	C = NZCV_31 (alias)
+	ZC = NZCV_31 (alias)
+	N = NZCV_31 (alias)
+// DataOut: r0 r3 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A01D:
 	branch N l0000A021
-// DataOut: pc r0 r3 r6 r7
+// DataOut: r0 r3 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid>
 
 l0000A01D_1:
 	ZC = cond(r0 - r3 - C) (alias)
-// DataOut: pc r0 r6 r7
+// DataOut: r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid>
 
 l0000A021:
 	branch ZC l0000A025
-// DataOut: pc r0 r6 r7
+// DataOut: r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid> ip:<invalid>
 
 l0000A021_thunk_UARTCharNonBlockingGet:
-	UARTCharNonBlockingGet(pc, r0, r6, r7)
+	UARTCharNonBlockingGet(r0, r6, r7)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18353,12 +18353,12 @@ l0000A021_thunk_UARTCharNonBlockingGet:
 
 l0000A021_1:
 	word32 r7_20 = DPB(r7, 0x7010, 16)
-// DataOut: pc r0 r6 r7
+// DataOut: r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp r8:<invalid> ip:<invalid>
 
 l0000A021_thunk_UARTCharNonBlockingGet:
-	UARTCharNonBlockingGet(pc, r0, r6, r7_20)
+	UARTCharNonBlockingGet(r0, r6, r7_20)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18371,53 +18371,53 @@ UARTSpaceAvail_exit:
 
 
 
-void UARTCharNonBlockingGet(word32 pc, word32 r0, word32 r6, word32 r7)
+void UARTCharNonBlockingGet(word32 r0, word32 r6, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV pc r0 r6 r7
+// MayUse:  NZCV r0 r6 r7
 // LiveOut:
 // Trashed: r0 r6
 // Preserved: sp
 UARTCharNonBlockingGet_entry:
-// DataOut: pc r0 r6 r7
+// DataOut: r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l0000A025:
 	branch N l0000A029
-// DataOut: pc r0 r6 r7
+// DataOut: r0 r6 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 // LocalsOut: fp(32)
 
 l0000A025_1:
-	Mem41[r6:word32] = fp
-// DataOut: pc r0 r7
+	Mem38[r6:word32] = fp
+// DataOut: r0 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A029:
 	branch N l0000A02D
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
 
 l0000A029_1:
 	__syscall(0x006800BF)
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
 
 l0000A02D:
 	branch V l0000A031
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
 
 l0000A031:
 	branch Z l0000A035
-// DataOut: pc r7
+// DataOut: r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69
 
@@ -18441,19 +18441,18 @@ l0000A031_thunk_UARTCharGet:
 // SymbolicIn: sp:fp r6:r6 - 0x00000B69 r0:<invalid>
 
 l0000A02D_1:
-	word32 sp_25
-	byte N_26
-	word32 r6_27
-	byte V_28
-	word32 r0_29
-	byte Z_30
-	word32 pc_31
-	word32 r7_32
-	bool C_33
-	byte NZCV_34
+	word32 sp_23
+	byte N_24
+	word32 r6_25
+	byte V_26
+	word32 r0_27
+	byte Z_28
+	word32 r7_29
+	bool C_30
+	byte NZCV_31
 	call (word32) Mem0[r0:int16] (retsize: 0;)
-		uses: C,N,NZCV,pc,r0_19,r6_4,r7,sp_1,V,Z
-		defs: C_33,N_26,NZCV_34,pc_31,r0_29,r6_27,r7_32,sp_25,V_28,Z_30
+		uses: C,N,NZCV,r0_18,r6_4,r7,sp_1,V,Z
+		defs: C_30,N_24,NZCV_31,r0_27,r6_25,r7_29,sp_23,V_26,Z_28
 	return
 // DataOut:
 // DataOut (flags): 
@@ -18502,15 +18501,15 @@ l0000A039:
 
 
 
-void UARTCharNonBlockingPut(word32 pc, word32 r0, word32 r7)
+void UARTCharNonBlockingPut(word32 r0, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NZCV pc r0 r7
+// MayUse:  NZCV r0 r7
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
 UARTCharNonBlockingPut_entry:
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
@@ -18521,15 +18520,14 @@ l0000A045:
 	byte Z_5
 	word32 r0_6
 	byte V_7
-	word32 pc_8
-	word32 r7_9
-	bool C_10
-	byte NZCV_11
+	word32 r7_8
+	bool C_9
+	byte NZCV_10
 	call fn001B0DF1 (retsize: 0;)
 		uses: N,sp_1
-		defs: C_10,N_4,NZCV_11,pc_8,r0_6,r7_9,sp_3,V_7,Z_5
+		defs: C_9,N_4,NZCV_10,r0_6,r7_8,sp_3,V_7,Z_5
 	return
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
@@ -18540,30 +18538,30 @@ l0000A045_then:
 
 l0000A049:
 	branch Z_5 l0000A04D
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A049_1:
-	Mem28[r0_6 + -31:word16] = (uint16) (r0_6 + -31)
-// DataOut: pc r0 r7
+	Mem27[r0_6 + -31:word16] = (uint16) (r0_6 + -31)
+// DataOut: r0 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A04D:
 	branch V_7 l0000A051
-// DataOut: pc r0 r7
+// DataOut: r0 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:r0 + -31
 
 l0000A04D_1:
-// DataOut: pc r7
+// DataOut: r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:r0 + -31
 
 l0000A051:
 	branch Z_5 l0000A051_thunk_UARTCharPut
-// DataOut: pc r7
+// DataOut: r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r0:<invalid>
 
@@ -19335,47 +19333,47 @@ l0000A14D:
 
 
 
-void I2CMasterDisable(word32 pc, word32 r0, word32 r2, word32 r3, word32 r5, word32 r7, word32 r10)
+void I2CMasterDisable(word32 r0, word32 r2, word32 r3, word32 r5, word32 r7, word32 r10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV pc r0 r10 r2 r3 r5 r7
+// MayUse:  ZCV r0 r10 r2 r3 r5 r7
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 I2CMasterDisable_entry:
-// DataOut: pc r0 r10 r2 r3 r5 r7
+// DataOut: r0 r10 r2 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A161:
 	branch Z l0000A165
-// DataOut: pc r0 r10 r2 r3 r5 r7
+// DataOut: r0 r10 r2 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A161_1:
-	byte NZCV_25 = cond(__ror(r10, 6) - r0 - C)
-	Z = NZCV_25 (alias)
-	V = NZCV_25 (alias)
-// DataOut: pc r2 r3 r5 r7
+	byte NZCV_24 = cond(__ror(r10, 6) - r0 - C)
+	Z = NZCV_24 (alias)
+	V = NZCV_24 (alias)
+// DataOut: r2 r3 r5 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A165:
 	branch V l0000A169
-// DataOut: pc r2 r3 r5 r7
+// DataOut: r2 r3 r5 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r2:<invalid>
 
 l0000A165_1:
-// DataOut: pc r5 r7
+// DataOut: r5 r7
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp r2:<invalid>
 
 l0000A169:
 	branch Z l0000A169_thunk_I2CSlaveDisable
-// DataOut: pc r5 r7
+// DataOut: r5 r7
 // DataOut (flags): C
 // SymbolicIn: sp:fp r2:<invalid> r0:<invalid>
 
@@ -19519,38 +19517,38 @@ l0000A1AD:
 
 
 
-void I2CSlaveIntEnable(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7)
+void I2CSlaveIntEnable(word32 r0, word32 r1, word32 r3, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV pc r0 r1 r3 r7
+// MayUse:  ZCV r0 r1 r3 r7
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 I2CSlaveIntEnable_entry:
-// DataOut: pc r0 r1 r3 r7
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A1B1:
 	branch V l0000A1B5
-// DataOut: pc r0 r1 r3 r7
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A1B1_1:
-// DataOut: pc r0 r1 r3 r7
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A1B5:
 	branch Z l0000A1B5_thunk_I2CMasterIntDisable
-// DataOut: pc r0 r1 r3 r7
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp ip:(r3 >>u 6) - r0
 
 l0000A1B5_thunk_I2CMasterIntDisable:
-	I2CMasterIntDisable(pc, r0, r1, r3, r7)
+	I2CMasterIntDisable(r0, r1, r3, r7)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -19558,13 +19556,13 @@ l0000A1B5_thunk_I2CMasterIntDisable:
 // Terminates process
 
 l0000A1B5_1:
-	word32 r0_14 = pc + (r7 >> 32) + C
-// DataOut: pc r0 r1 r3 r7
+	word32 r0_13 = 0x0000A1BD + (r7 >> 32) + C
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp ip:(r3 >>u 6) - r0
 
 l0000A1B5_thunk_I2CMasterIntDisable:
-	I2CMasterIntDisable(pc, r0_14, r1, r3, r7)
+	I2CMasterIntDisable(r0_13, r1, r3, r7)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -19578,34 +19576,34 @@ I2CSlaveIntEnable_exit:
 
 
 
-void I2CMasterIntDisable(word32 pc, word32 r0, word32 r1, word32 r3, word32 r7)
+void I2CMasterIntDisable(word32 r0, word32 r1, word32 r3, word32 r7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ZCV pc r0 r1 r3 r7
+// MayUse:  ZCV r0 r1 r3 r7
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 I2CMasterIntDisable_entry:
-// DataOut: pc r0 r1 r3 r7
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A1B9:
 	branch V l0000A1BD
-// DataOut: pc r0 r1 r3 r7
+// DataOut: r0 r1 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A1B9_1:
 	r0 = (r3 >>u 6) - r1
-// DataOut: pc r0 r3 r7
+// DataOut: r0 r3 r7
 // DataOut (flags): ZCV
 // SymbolicIn: sp:fp
 
 l0000A1BD:
 	branch Z l0000A1BD_thunk_I2CSlaveIntDisable
-// DataOut: pc r0 r3 r7
+// DataOut: r0 r3 r7
 // DataOut (flags): CV
 // SymbolicIn: sp:fp r0:(r3 >>u 6) - r1
 
@@ -19618,13 +19616,13 @@ l0000A1BD_thunk_I2CSlaveIntDisable:
 // Terminates process
 
 l0000A1BD_1:
-	word32 r0_14 = pc + (r7 >> 32) + C
+	word32 r0_13 = 0x0000A1C5 + (r7 >> 32) + C
 // DataOut: r0 r3
 // DataOut (flags): V
 // SymbolicIn: sp:fp r0:(r3 >>u 6) - r1
 
 l0000A1BD_thunk_I2CSlaveIntDisable:
-	I2CSlaveIntDisable(r0_14, r3)
+	I2CSlaveIntDisable(r0_13, r3)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -19773,34 +19771,34 @@ l0000A1F9:
 
 
 
-void I2CSlaveIntClear(word32 pc, word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 r8)
+void I2CSlaveIntClear(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  NCV pc r0 r1 r2 r3 r7 r8
+// MayUse:  NCV r0 r1 r2 r3 r7 r8
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 I2CSlaveIntClear_entry:
-// DataOut: pc r0 r1 r2 r3 r7 r8
+// DataOut: r0 r1 r2 r3 r7 r8
 // DataOut (flags): NZCV
 // SymbolicIn: sp:fp
 
 l0000A201:
 	branch V l0000A205
-// DataOut: pc r0 r1 r2 r3 r7 r8
+// DataOut: r0 r1 r2 r3 r7 r8
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l0000A201_1:
 	r8 = (r3 >>u 6) - r1
-// DataOut: pc r0 r2 r3 r7 r8
+// DataOut: r0 r2 r3 r7 r8
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp
 
 l0000A205:
 	branch N l0000A205_thunk_I2CMasterSlaveAddrSet
-// DataOut: pc r0 r2 r3 r7 r8
+// DataOut: r0 r2 r3 r7 r8
 // DataOut (flags): NZC
 // SymbolicIn: sp:fp r8:(r3 >>u 6) - r1
 
@@ -19813,13 +19811,13 @@ l0000A205_thunk_I2CMasterSlaveAddrSet:
 // Terminates process
 
 l0000A205_1:
-	word32 r0_13 = pc + 0x00000047 + C
+	word32 r0_12 = 0x0000A254 + C
 // DataOut: r0 r2 r3 r7 r8
 // DataOut (flags): NZ
 // SymbolicIn: sp:fp r8:(r3 >>u 6) - r1
 
 l0000A205_thunk_I2CMasterSlaveAddrSet:
-	I2CMasterSlaveAddrSet(r0_13, r2, r3, r7, r8)
+	I2CMasterSlaveAddrSet(r0_12, r2, r3, r7, r8)
 	return
 // DataOut:
 // DataOut (flags): 

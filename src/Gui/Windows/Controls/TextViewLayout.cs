@@ -367,5 +367,4 @@ namespace Reko.Gui.Windows.Controls
         public object Tag;
         public int ContextMenuID;
     }
-
 }
