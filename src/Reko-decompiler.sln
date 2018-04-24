@@ -379,6 +379,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "UserInterfaces\WindowsForms\WindowsForms.csproj", "{60CC0C65-E629-4923-9112-2A46371C90AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronUI", "UserInterfaces\Electron\ElectronUI.csproj", "{4336A778-800B-43D4-BC9D-9F74E3081480}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1730,6 +1732,24 @@ Global
 		{60CC0C65-E629-4923-9112-2A46371C90AF}.TravisRelease|x64.Build.0 = Release|Any CPU
 		{60CC0C65-E629-4923-9112-2A46371C90AF}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{60CC0C65-E629-4923-9112-2A46371C90AF}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Debug|x64.Build.0 = Debug|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Debug|x86.Build.0 = Debug|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Release|x64.ActiveCfg = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Release|x64.Build.0 = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Release|x86.ActiveCfg = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.Release|x86.Build.0 = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.TravisRelease|x64.ActiveCfg = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.TravisRelease|x64.Build.0 = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{4336A778-800B-43D4-BC9D-9F74E3081480}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1806,6 +1826,7 @@ Global
 		{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 		{5D27A705-D97B-44CF-8369-42B2E26E28A7} = {589E436C-6150-4033-9305-3B455A94B9C2}
 		{60CC0C65-E629-4923-9112-2A46371C90AF} = {589E436C-6150-4033-9305-3B455A94B9C2}
+		{4336A778-800B-43D4-BC9D-9F74E3081480} = {589E436C-6150-4033-9305-3B455A94B9C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF3A1A75-8AF4-44FE-A051-04705E571D61}
