@@ -52,7 +52,6 @@
     <Compile Include="Common\PICInstructionComparer.cs" />
     <Compile Include="Common\PICOpcodes.cs" />
     <Compile Include="Common\PICOperand.cs" />
-    <Compile Include="Common\PICOperandRewriter.cs" />
     <Compile Include="Common\PICProcessorMode.cs" />
     <Compile Include="Common\PICProcessorState.cs" />
     <Compile Include="Common\PICDevConfigRegister.cs" />
@@ -74,11 +73,10 @@
     <Compile Include="PIC16\Basic\PIC16BasicRewriter.cs" />
     <Compile Include="PIC16\Enhanced\PIC16EnhdRewriter.cs" />
     <Compile Include="PIC16\Enhanced\PIC16EnhdDisasm.cs" />
-    <Compile Include="PIC16\Enhanced\PIC16EnhRegisters.cs" />
+    <Compile Include="PIC16\Enhanced\PIC16EnhdRegisters.cs" />
     <Compile Include="PIC16\FullFeatured\PIC16FullRewriter.cs" />
     <Compile Include="PIC16\FullFeatured\PIC16FullRegisters.cs" />
     <Compile Include="PIC16\FullFeatured\PIC16FullDisasm.cs" />
-    <Compile Include="PIC16\PIC16BankedAddress.cs" />
     <Compile Include="PIC16\PIC16CondCodes.cs" />
     <Compile Include="PIC16\PIC16Architecture.cs" />
     <Compile Include="PIC16\PIC16DisassemblerBase.cs" />
@@ -100,7 +98,6 @@
     <Compile Include="PIC18\Enhanced\PIC18EnhancedDisasm.cs" />
     <Compile Include="PIC18\Enhanced\PIC18EnhancedRegisters.cs" />
     <Compile Include="PIC18\Enhanced\PIC18EnhancedRewriter.cs" />
-    <Compile Include="PIC18\PIC18BankedAddress.cs" />
     <Compile Include="PIC18\Legacy\PIC18LegacyDisasm.cs" />
     <Compile Include="PIC18\Legacy\PIC18LegacyRegisters.cs" />
     <Compile Include="PIC18\Legacy\PIC18LegacyRewriter.cs" />

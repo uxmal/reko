@@ -28,32 +28,63 @@ using System;
 namespace Reko.Arch.Microchip.Common
 {
 
-    /// <summary>
-    /// A PIC 21-bit program address.
-    /// </summary>
-    public class PICProgAddress : Address
+    public class PICAddress : Address
     {
+        public readonly Constant Value;
+        public static readonly PICAddress Invalid = new PICAddress(Constant.Invalid);
 
-        private Constant Value;
-
-        public const uint MAXPROGBYTADDR = 0x1FFFFFU;
-        public static readonly PICProgAddress Invalid = new PICProgAddress(Constant.Invalid);
-
-
-        public PICProgAddress(uint addr) : base(PrimitiveType.Ptr32)
+        public PICAddress(uint addr, PrimitiveType dt) : base(dt)
         {
-            Value = Constant.Create(DataType, addr & MAXPROGBYTADDR);
+            Value = Constant.Create(DataType, addr);
         }
 
-        public PICProgAddress(Constant addr) : base(addr.DataType)
+        public PICAddress(Constant addr) : base(addr.DataType)
         {
             Value = addr;
         }
 
+        public bool IsValid => Value.IsValid;
 
         public override bool IsNull => false;
-        public override ulong Offset => Value.ToUInt32(); 
+        public override ulong Offset => Value.ToUInt32();
         public override ushort? Selector => null;
+
+        public override Constant ToConstant()
+            => Value;
+
+        public override ushort ToUInt16()
+            => Value.ToUInt16();
+
+        public override uint ToUInt32()
+            => Value.ToUInt32();
+
+        public override ulong ToLinear()
+            => Value.ToUInt32();
+
+        public override Address Add(long offset) => throw new NotImplementedException();
+        public override Address Align(int alignment) => throw new NotImplementedException();
+        public override Expression CloneExpression() => throw new NotImplementedException();
+        public override string GenerateName(string prefix, string suffix) => throw new NotImplementedException();
+        public override Address NewOffset(ulong offset) => throw new NotImplementedException();
+
+
+    }
+
+    /// <summary>
+    /// A PIC 21-bit program address.
+    /// </summary>
+    public class PICProgAddress : PICAddress
+    {
+
+        public const uint MAXPROGBYTADDR = 0x1FFFFFU;
+
+        public PICProgAddress(uint addr) : base(addr & MAXPROGBYTADDR, PrimitiveType.Ptr32)
+        {
+        }
+
+        public PICProgAddress(Constant addr) : base(addr)
+        {
+        }
 
 
         public override Address Add(long offset)
@@ -71,17 +102,8 @@ namespace Reko.Arch.Microchip.Common
         public override Address NewOffset(ulong offset)
             => new PICProgAddress((uint)offset);
 
-        public override Constant ToConstant()
-            => Value;
-
         public override ushort ToUInt16()
             => throw new InvalidOperationException("Returning UInt16 would lose precision.");
-
-        public override uint ToUInt32()
-            => Value.ToUInt32();
-
-        public override ulong ToLinear()
-            => Value.ToUInt32();
 
         /// <summary>
         /// Create a <see cref="PICProgAddress"/> instance with specified byte address.
@@ -111,32 +133,18 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A PIC 12/14-bit data address.
     /// </summary>
-    public class PICDataAddress : Address
+    public class PICDataAddress : PICAddress
     {
 
         public const uint MAXDATABYTADDR = 0x3FFF;
 
-        private Constant Value;
-
-        public static readonly PICDataAddress Invalid = new PICDataAddress(Constant.Invalid);
-
-        public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)
+        public PICDataAddress(uint addr) : base(addr & MAXDATABYTADDR, PrimitiveType.Ptr16)
         {
-            var uValue = (ushort)(addr & MAXDATABYTADDR);
-            Value = Constant.Create(DataType, uValue);
         }
 
-        public PICDataAddress(Constant addr) : base(addr.DataType)
+        public PICDataAddress(Constant addr) : base(addr)
         {
-            Value = addr;
         }
-
-
-        public override bool IsNull => false;
-        public override ulong Offset => ToLinear(); 
-        public override ushort? Selector => null;
-
-        public bool IsValid => Value.IsValid;
 
 
         public override Address Add(long offset)
@@ -154,18 +162,6 @@ namespace Reko.Arch.Microchip.Common
         public override Address NewOffset(ulong offset)
             => new PICDataAddress((uint)offset);
 
-        public override Constant ToConstant()
-            => Value;
-
-        public override ushort ToUInt16()
-            => Value.ToUInt16();
-
-        public override uint ToUInt32()
-            => Value.ToUInt32();
-
-        public override ulong ToLinear()
-            => Value.ToUInt32();
-
         public static PICDataAddress Ptr(uint addr)
             => new PICDataAddress(addr);
 
@@ -173,7 +169,7 @@ namespace Reko.Arch.Microchip.Common
             => new PICDataAddress(aaddr.ToUInt32());
 
         public override string ToString()
-            => $"{Value.ToUInt16():X4}";
+            => $"{ToLinear():X4}";
 
 
     }
@@ -181,44 +177,142 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// A PIC banked data memory address. Bank size depends on PIC family. Class must be inherited.
     /// </summary>
-    public abstract class PICBankedAddress : Address
+    public abstract class PICBankedAddress : PICAddress
     {
 
-        public PICBankedAddress() : base(PrimitiveType.Ptr16)
+        public PICBankedAddress(byte bankSel, ushort bankOff, bool access = false)
+            : base(bankOff, PrimitiveType.Ptr16)
         {
+            BankSelect = bankSel;
+            IsAccessRAM = access;
         }
 
         /// <summary>
         /// Gets the data memory bank selector value.
         /// </summary>
-        public byte BankSelect { get; protected set; }
+        public byte BankSelect { get; }
 
         /// <summary>
-        /// Gets the offset in the data memory bank..
+        /// Gets a value indicating whether this address is an Access RAM address.
         /// </summary>
-        public ushort BankOffset { get; protected set; }
+        public bool IsAccessRAM { get; }
 
+        public abstract int BankWidth { get; }
 
         // Overridden 'Address' properties/methods
-
-        public override bool IsNull => false;
-
-        public override ulong Offset => BankOffset;
 
         public override ushort? Selector => BankSelect;
 
         public override bool IsZero => false;
 
-        public override Constant ToConstant() => throw new NotImplementedException();
-        public override ushort ToUInt16() => throw new NotImplementedException();
-        public override uint ToUInt32() => throw new NotImplementedException();
-        public override ulong ToLinear() => throw new NotImplementedException();
-        public override Address Add(long offset) => throw new NotImplementedException();
-        public override Address Align(int alignment) => throw new NotImplementedException();
-        public override string GenerateName(string prefix, string suffix) => throw new NotImplementedException();
+        public override Constant ToConstant()
+            => Constant.UInt32(ToUInt32());
+
+        public override ushort ToUInt16()
+            => (ushort)(IsAccessRAM ? (ushort)Offset : (BankSelect << BankWidth) + (int)Offset);
+
+        public override uint ToUInt32()
+            => (uint)(IsAccessRAM ? (uint)Offset : (uint)((BankSelect << BankWidth) + (int)Offset));
+
+        public override ulong ToLinear()
+            => (IsAccessRAM ? Offset : (ulong)((BankSelect << BankWidth) + (int)Offset));
+
+        /// <summary>
+        /// Generates a symbolic name with given prefix and suffix.
+        /// </summary>
+        /// <param name="prefix">The prefix to use.</param>
+        /// <param name="suffix">The suffix to use.</param>
+        /// <returns>
+        /// The symbolic name as a string.
+        /// </returns>
+        public override string GenerateName(string prefix, string suffix)
+            => (IsAccessRAM ?
+                    $"{prefix}AccessRAM{Offset:X2}{suffix}" : 
+                    $"{prefix}Bank{BankSelect:X2}_{Offset:X2}{suffix}");
+
+        /// <summary>
+        /// Applies logical (not-bitwise) negation to the expression.
+        /// </summary>
+        public override Expression Invert()
+            => base.Invert();
+
         public override Expression CloneExpression() => throw new NotImplementedException();
         public override Address NewOffset(ulong offset) => throw new NotImplementedException();
-        public override Expression Invert() => base.Invert();
+        public override Address Add(long offset) => throw new NotImplementedException();
+        public override Address Align(int alignment) => throw new NotImplementedException();
+
+    }
+
+    /// <summary>
+    /// The PIC16 Banked Data memory address.
+    /// </summary>
+    public class PIC16BankedAddress : PICBankedAddress
+    {
+
+        public PIC16BankedAddress(byte bankSelect, ushort bankOffset)
+            : base(bankSelect, bankOffset)
+        {
+        }
+
+        public override int BankWidth => 7;
+
+        // Overridden 'Address' methods
+
+        public override Address NewOffset(ulong offset)
+            => new PIC16BankedAddress(BankSelect, (ushort)offset);
+
+        public override Address Add(long offset)
+            => new PIC16BankedAddress(BankSelect, (ushort)((long)Offset + offset));
+
+        public override Expression CloneExpression()
+            => new PIC16BankedAddress(BankSelect, (ushort)Offset);
+
+        public override Address Align(int alignment)
+            => new PIC16BankedAddress(BankSelect, ((ushort)(alignment * (((int)Offset + alignment - 1) / alignment))));
+
+    }
+
+    /// <summary>
+    /// The PIC18 Banked Data memory address with Access RAM.
+    /// </summary>
+    public class PIC18BankedAddress : PICBankedAddress
+    {
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="bankSelect">The bank select.</param>
+        /// <param name="bankOffset">The bank offset.</param>
+        /// <param name="access">(Optional) True if address is to Access RAM.</param>
+        public PIC18BankedAddress(byte bankSelect, ushort bankOffset, bool access = false)
+            : base(bankSelect, bankOffset, access)
+        {
+        }
+
+        /// <summary>
+        /// Constructor for an Access RAM address.
+        /// </summary>
+        /// <param name="bankOffset">The bank offset in the Access RAM bank.</param>
+        public PIC18BankedAddress(ushort bankOffset)
+            : this(0, bankOffset, true)
+        {
+        }
+
+        public override int BankWidth => 8;
+
+        // Overridden 'Address' methods
+
+        public override Address NewOffset(ulong offset)
+            => new PIC18BankedAddress(BankSelect, (ushort)offset, IsAccessRAM);
+
+        public override Address Add(long offset)
+            => new PIC18BankedAddress(BankSelect, (ushort)((long)Offset + offset), IsAccessRAM);
+
+        public override Expression CloneExpression()
+            => new PIC18BankedAddress(BankSelect, (ushort)Offset, IsAccessRAM);
+
+        public override Address Align(int alignment)
+            => new PIC18BankedAddress(BankSelect, ((ushort)(alignment * (((int)Offset + alignment - 1) / alignment))), IsAccessRAM);
 
     }
 

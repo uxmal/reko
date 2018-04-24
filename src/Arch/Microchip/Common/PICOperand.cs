@@ -127,6 +127,7 @@ namespace Reko.Arch.Microchip.Common
 
     }
 
+
     /// <summary>
     /// A PIC program memory full address.
     /// </summary>
@@ -218,16 +219,28 @@ namespace Reko.Arch.Microchip.Common
     /// <summary>
     /// Operand for "Instr f".
     /// </summary>
-    public class PICOperandMemF : MachineOperand, IOperand
+    public class PICOperandBankedMemory : MachineOperand, IOperand
     {
 
         /// <summary>
         /// Instantiates a banked data memory address operand.
         /// </summary>
         /// <param name="off">The offset in the memory bank.</param>
-        public PICOperandMemF(ushort off) : base(PrimitiveType.Byte)
+        public PICOperandBankedMemory(ushort off) : base(PrimitiveType.Byte)
         {
-            Offset =(byte)off;
+            Offset = (byte)off;
+            IsAccess = false;
+        }
+
+        /// <summary>
+        /// Instantiates a banked data memory address operand with access RAM capability.
+        /// </summary>
+        /// <param name="off">The offset in the memory bank.</param>
+        /// <param name="access">The Access RAM indicator.</param>
+        public PICOperandBankedMemory(ushort off, ushort access) : base(PrimitiveType.Byte)
+        {
+            Offset = (byte)off;
+            IsAccess = (access == 0);
         }
 
         /// <summary>
@@ -235,41 +248,18 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         public byte Offset { get; }
 
-        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitMemF(this);
-        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemF(this);
-        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemF(this, context);
-
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            writer.WriteString($"0x{Offset:X2}");
-        }
-
-    }
-
-    /// <summary>
-    /// Operand for "Instr f,a".
-    /// </summary>
-    public class PICOperandMemFA : PICOperandMemF
-    {
-
-        public PICOperandMemFA(ushort off, ushort access) : base(off)
-        {
-            IsAccess = (access == 0);
-        }
-
         /// <summary>
-        /// Gets the Access-RAM indicator.
+        /// Gets a value indicating whether this operand is in the Access RAM.
         /// </summary>
         public bool IsAccess { get; }
 
-        public override void Accept(IOperandVisitor visitor) => visitor.VisitMemFA(this);
-        public override T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitMemFA(this);
-        public override T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitMemFA(this, context);
+        public virtual void Accept(IOperandVisitor visitor) => visitor.VisitBankedMemory(this);
+        public virtual T Accept<T>(IOperandVisitor<T> visitor) => visitor.VisitBankedMemory(this);
+        public virtual T Accept<T, C>(IOperandVisitor<T, C> visitor, C context) => visitor.VisitBankedMemory(this, context);
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            base.Write(writer, options);
-            writer.WriteString((IsAccess ? ",ACCESS" : ""));
+            writer.WriteString($"0x{Offset:X2}{(IsAccess ? ",ACCESS" : "")}");
         }
 
     }

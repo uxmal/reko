@@ -48,6 +48,7 @@ namespace Reko.Arch.Microchip.Common
         protected List<RtlInstruction> rtlInstructions;
         protected RtlEmitter m;
         protected Identifier Wreg;    // cached WREG register identifier
+        protected Identifier Bsr;     // cached BSR register identifier
 
         protected PICRewriter(PICArchitecture arch, PICDisassemblerBase disasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -58,12 +59,18 @@ namespace Reko.Arch.Microchip.Common
             this.disasm = disasm;
             dasm = disasm.GetEnumerator();
             Wreg = GetWReg;
+            Bsr = GetBsr;
         }
 
         /// <summary>
         /// Gets the working register (WREG) which is often used implicitly by PIC instructions.
         /// </summary>
         protected Identifier GetWReg => binder.EnsureRegister(PICRegisters.WREG);
+
+        /// <summary>
+        /// Gets the bank select register (BSR) which is often used for PIC data addresses.
+        /// </summary>
+        protected Identifier GetBsr => binder.EnsureRegister(PICRegisters.BSR);
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -98,6 +105,9 @@ namespace Reko.Arch.Microchip.Common
 
         protected static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PICRegisters.GlobalData, ea, PrimitiveType.Byte);
+
+        protected static SegmentedAccess DataBankMem8(Expression bsr, Expression ea)
+            => new SegmentedAccess(PICRegisters.GlobalData, bsr, ea, PrimitiveType.Byte);
 
         protected ArrayAccess PushToHWStackAccess()
         {
@@ -241,6 +251,58 @@ namespace Reko.Arch.Microchip.Common
                     m.Assign(memPtr, m.IAdd(memPtr, 1));
                     m.Branch(cond, SkipToAddr(), rtlc);
                     break;
+            }
+        }
+
+        protected virtual (FSRIndexedMode indMode, Expression memPtr) GetMemFileAccess(MachineOperand opernd)
+        {
+            switch (opernd)
+            {
+                case PICOperandBankedMemory bnkmem:
+                    var offset = bnkmem.Offset;
+                    if (PICRegisters.TryGetAlwaysAccessibleRegister(offset, out var regsrc))
+                    {
+//                        var srciopr = PICRegisters.IndirectOpMode(regsrc, out PICRegisterStorage indsrcreg);
+//                        if (srciopr != FSRIndexedMode.None)
+//                            return (srciopr, binder.EnsureRegister(indsrcreg));
+                        return (FSRIndexedMode.None, binder.EnsureRegister(regsrc));
+                    }
+                    return (FSRIndexedMode.None, DataBankMem8(Bsr, Constant.Byte(offset)));
+
+                case PICOperandRegister reg:
+                    var iopr = PICRegisters.IndirectOpMode(reg.Register, out PICRegisterStorage indreg);
+                    if (iopr != FSRIndexedMode.None)
+                        return (iopr, binder.EnsureRegister(indreg));
+                    return (iopr, binder.EnsureRegister(reg.Register));
+
+                default:
+                    throw new InvalidOperationException($"Invalid PIC instruction's memory operand: {opernd}");
+
+            }
+        }
+
+        protected (FSRIndexedMode indMode, Expression memPtr) GetDataAbsAddress(MachineOperand opernd)
+        {
+            switch (opernd)
+            {
+                case PICOperandDataMemoryAddress absmem:
+                    if (absmem.DataTarget == PICAddress.Invalid)
+                        throw new InvalidOperationException($"Invalid data absolute address operand.");
+
+                    if (PICRegisters.TryGetRegister(absmem.DataTarget, out var sfrReg))
+                    {
+                        if (sfrReg != PICRegisterStorage.None)
+                        {
+                            var imode = PICRegisters.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
+                            if (imode != FSRIndexedMode.None)
+                                return (imode, binder.EnsureRegister(fsr));
+                            return (imode, binder.EnsureRegister(sfrReg));
+                        }
+                    }
+                    return (FSRIndexedMode.None, DataMem8(PICDataAddress.Ptr(absmem.DataTarget)));
+
+                default:
+                    throw new InvalidOperationException($"Invalid data absolute address operand.");
             }
         }
 

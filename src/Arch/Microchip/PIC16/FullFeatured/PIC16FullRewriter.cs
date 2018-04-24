@@ -137,7 +137,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ADDWFC()
         {
-            GetSrcAndDest(out var srcmem, out var dstmem);
+            GetSrcAndDst(out var srcmem, out var dstmem);
             var carry = FlagGroup(FlagM.C);
             m.Assign(dstmem, m.IAdd(m.IAdd(Wreg, srcmem), carry));
             SetStatusFlags(dstmem);
@@ -145,7 +145,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ASRF()
         {
-            GetSrcAndDest(out var srcmem, out var dstmem);
+            GetSrcAndDst(out var srcmem, out var dstmem);
             m.Assign(dstmem, m.Fn(host.PseudoProcedure("__asrf", PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
@@ -177,14 +177,14 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_LSLF()
         {
-            GetSrcAndDest(out var srcmem, out var dstmem);
+            GetSrcAndDst(out var srcmem, out var dstmem);
             m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lslf", PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 
         private void Rewrite_LSRF()
         {
-            GetSrcAndDest(out var srcmem, out var dstmem);
+            GetSrcAndDst(out var srcmem, out var dstmem);
             m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lsrf", PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
@@ -236,8 +236,7 @@ namespace Reko.Arch.Microchip.PIC16
         private void Rewrite_MOVLB()
         {
             var imm = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
-            var bsr = binder.EnsureRegister(PICRegisters.BSR);
-            m.Assign(bsr, imm.ImmediateValue);
+            m.Assign(Bsr, imm.ImmediateValue);
         }
 
         private void Rewrite_MOVLP()
@@ -296,7 +295,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_SUBWFB()
         {
-            GetSrcAndDest(out var srcmem, out var dstmem);
+            GetSrcAndDst(out var srcmem, out var dstmem);
             var borrow = m.Not(FlagGroup(FlagM.C));
             m.Assign(dstmem, m.ISub(m.ISub(srcmem, Wreg), borrow));
             SetStatusFlags(dstmem);

@@ -43,7 +43,7 @@ namespace Reko.Arch.Microchip.Common
 
         public PICRegisterTraits()
         {
-            RegAddress = new PICRegisterSizedUniqueAddress(PICDataAddress.Invalid, 8);
+            RegAddress = new PICRegisterSizedUniqueAddress(PICAddress.Invalid, 8);
             Name = "None";
             Desc = "";
             Impl = 0xFF;
@@ -115,7 +115,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the register memory address or null if not memory-mapped.
         /// </summary>
-        public PICDataAddress Address => RegAddress.Addr;
+        public PICAddress Address => RegAddress.Addr;
 
         /// <summary>
         /// Gets the Non-Memory-Mapped ID of the register or null if memory mapped.

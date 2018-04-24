@@ -96,8 +96,8 @@ namespace Reko.Arch.Microchip.Common
             = new SortedList<string, PICRegisterBitFieldStorage>();
         private static SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage> registersByAddressAndWidth
             = new SortedList<PICRegisterSizedUniqueAddress, PICRegisterStorage>();
-        private static SortedList<PICDataAddress, PICRegisterStorage> accessibleRegisters
-            = new SortedList<PICDataAddress, PICRegisterStorage>();
+        private static SortedList<PICAddress, PICRegisterStorage> accessibleRegisters
+            = new SortedList<PICAddress, PICRegisterStorage>();
 
         private static HashSet<PICRegisterStorage> invalidDestRegisters
             = new HashSet<PICRegisterStorage>();

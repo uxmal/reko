@@ -187,18 +187,16 @@ namespace Reko.Arch.Microchip.PIC16
                 m.Assign(FlagGroup(flags), m.Cond(dst));
         }
 
-        protected void GetSrcAndDest(out Expression srcMem, out Expression dstMem)
+        protected void GetSrc(out Expression srcMem)
         {
-            var src = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
+            var src = instrCurr.op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
+            srcMem = GetMemFileAccess(instrCurr.op1).memPtr;
+        }
+
+        protected void GetSrcAndDst(out Expression srcMem, out Expression dstMem)
+        {
+            GetSrc(out srcMem);
             var dst = instrCurr.op2 as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {instrCurr.op2}");
-            if (PICRegisters.TryGetAlwaysAccessibleRegister(src.Offset, out var regsrc))
-            {
-                srcMem = binder.EnsureRegister(regsrc);
-            }
-            else
-            {
-                srcMem = DataMem8(PICDataAddress.Ptr(src.Offset));
-            }
             dstMem = dst.WRegIsDest ? Wreg : srcMem;
         }
 
@@ -211,7 +209,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ADDWF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.IAdd(Wreg, srcMem));
             SetStatusFlags(dstMem);
         }
@@ -225,44 +223,40 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_ANDWF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.And(Wreg, srcMem));
             SetStatusFlags(dstMem);
         }
 
         private void Rewrite_BCF()
         {
-            var dst = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
-            var dstMem = DataMem8(PICDataAddress.Ptr(dst.Offset));
+            GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.op2, true);
-            m.Assign(dstMem, m.And(dstMem, mask));
+            m.Assign(srcMem, m.And(srcMem, mask));
         }
 
         private void Rewrite_BSF()
         {
-            var dst = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
-            var dstMem = DataMem8(PICDataAddress.Ptr(dst.Offset));
+            GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.op2, false);
-            m.Assign(dstMem, m.Or(dstMem, mask));
+            m.Assign(srcMem, m.Or(srcMem, mask));
         }
 
         private void Rewrite_BTFSC()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var dst = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
-            var dstMem = DataMem8(PICDataAddress.Ptr(dst.Offset));
+            GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.op2, false);
-            var res = m.And(dstMem, mask);
+            var res = m.And(srcMem, mask);
             m.Branch(m.Eq0(res), SkipToAddr(), rtlc);
         }
 
         private void Rewrite_BTFSS()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var dst = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
-            var dstMem = DataMem8(PICDataAddress.Ptr(dst.Offset));
+            GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.op2, false);
-            var res = m.And(dstMem, mask);
+            var res = m.And(srcMem, mask);
             m.Branch(m.Ne0(res), SkipToAddr(), rtlc);
         }
 
@@ -278,9 +272,8 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_CLRF()
         {
-            var dst = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand");
-            var dstMem = DataMem8(PICDataAddress.Ptr(dst.Offset));
-            m.Assign(dstMem, Constant.Byte(0));
+            GetSrc(out var srcMem);
+            m.Assign(srcMem, Constant.Byte(0));
             m.Assign(binder.EnsureFlagGroup(PICRegisters.Z), Constant.Bool(true));
         }
 
@@ -303,14 +296,14 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_COMF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.Comp(srcMem));
             SetStatusFlags(dstMem);
         }
 
         private void Rewrite_DECF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.ISub(srcMem, Constant.Byte(1)));
             SetStatusFlags(dstMem);
         }
@@ -318,7 +311,7 @@ namespace Reko.Arch.Microchip.PIC16
         private void Rewrite_DECFSZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.ISub(srcMem, Constant.Byte(1)));
             m.Branch(m.Eq0(dstMem), SkipToAddr(), rtlc);
         }
@@ -332,7 +325,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_INCF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.IAdd(srcMem, Constant.Byte(1)));
             SetStatusFlags(dstMem);
         }
@@ -340,7 +333,7 @@ namespace Reko.Arch.Microchip.PIC16
         private void Rewrite_INCFSZ()
         {
             rtlc = RtlClass.ConditionalTransfer;
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.IAdd(srcMem, Constant.Byte(1)));
             m.Branch(m.Eq0(dstMem), SkipToAddr(), rtlc);
         }
@@ -354,14 +347,14 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_IORWF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.Or(Wreg, srcMem));
             SetStatusFlags(dstMem);
         }
 
         private void Rewrite_MOVF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, srcMem);
             SetStatusFlags(dstMem);
         }
@@ -375,10 +368,9 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_MOVWF()
         {
-            var dst = instrCurr.op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand");
-            var dstMem = DataMem8(PICDataAddress.Ptr(dst.Offset));
-            m.Assign(dstMem, Wreg);
-            SetStatusFlags(dstMem);
+            GetSrc(out var srcMem);
+            m.Assign(srcMem, Wreg);
+            SetStatusFlags(srcMem);
         }
 
         private void Rewrite_RETFIE()
@@ -410,13 +402,13 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_RLF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.Fn(host.PseudoProcedure("__rlf", PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_RRF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.Fn(host.PseudoProcedure("__rrf", PrimitiveType.Byte, srcMem)));
         }
 
@@ -434,14 +426,14 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_SUBWF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.ISub(srcMem, Wreg));
             SetStatusFlags(dstMem);
         }
 
         private void Rewrite_SWAPF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, srcMem)));
         }
 
@@ -454,7 +446,7 @@ namespace Reko.Arch.Microchip.PIC16
 
         private void Rewrite_XORWF()
         {
-            GetSrcAndDest(out var srcMem, out var dstMem);
+            GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.Xor(Wreg, srcMem));
             SetStatusFlags(dstMem);
         }

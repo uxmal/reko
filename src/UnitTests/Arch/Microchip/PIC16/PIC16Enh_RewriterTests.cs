@@ -52,14 +52,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
             // ADDWF 0x55,BANKED
             ExecTest(Words(0x0755),
                 "0|L--|00000200(2): 2 instructions",
-                    "1|L--|WREG = WREG + Data[0x0055:byte]",
+                    "1|L--|WREG = WREG + Data[BSR:0x55:byte]",
                     "2|L--|CDCZ = cond(WREG)"
                 );
 
             // BCF 0x7F,7,BANKED
             ExecTest(Words(0x13FF),
             "0|L--|00000200(2): 1 instructions",
-                "1|L--|Data[0x007F:byte] = Data[0x007F:byte] & 0x7F"
+                "1|L--|Data[BSR:0x7F:byte] = Data[BSR:0x7F:byte] & 0x7F"
             );
         }
 

@@ -43,8 +43,7 @@ namespace Reko.Arch.Microchip.Common
         void VisitFast(PICOperandFast fast);
         void VisitProgMemory(PICOperandProgMemoryAddress prgAddr);
         void VisitDataMemory(PICOperandDataMemoryAddress dataAddr);
-        void VisitMemF(PICOperandMemF mem);
-        void VisitMemFA(PICOperandMemFA mem);
+        void VisitBankedMemory(PICOperandBankedMemory mem);
         void VisitMemBitNo(PICOperandMemBitNo memBitNo);
         void VisitMemWRegDest(PICOperandMemWRegDest memWRegDest);
         void VisitRegister(PICOperandRegister reg);
@@ -70,8 +69,7 @@ namespace Reko.Arch.Microchip.Common
         T VisitFast(PICOperandFast fast);
         T VisitProgMemory(PICOperandProgMemoryAddress prgAddr);
         T VisitDataMemory(PICOperandDataMemoryAddress dataAddr);
-        T VisitMemF(PICOperandMemF mem);
-        T VisitMemFA(PICOperandMemFA mem);
+        T VisitBankedMemory(PICOperandBankedMemory mem);
         T VisitMemBitNo(PICOperandMemBitNo memBitNo);
         T VisitMemWRegDest(PICOperandMemWRegDest memWRegDest);
         T VisitRegister(PICOperandRegister reg);
@@ -98,8 +96,7 @@ namespace Reko.Arch.Microchip.Common
         T VisitFast(PICOperandFast fast, C ctx);
         T VisitProgMemory(PICOperandProgMemoryAddress prgAddr, C ctx);
         T VisitDataMemory(PICOperandDataMemoryAddress dataAddr, C ctx);
-        T VisitMemF(PICOperandMemF mem, C ctx);
-        T VisitMemFA(PICOperandMemFA mem, C ctx);
+        T VisitBankedMemory(PICOperandBankedMemory mem, C ctx);
         T VisitMemBitNo(PICOperandMemBitNo memBitNo, C ctx);
         T VisitMemWRegDest(PICOperandMemWRegDest memWRegDest, C ctx);
         T VisitRegister(PICOperandRegister reg, C ctx);

@@ -38,7 +38,7 @@ namespace Reko.Arch.Microchip.Common
         /// </summary>
         public readonly int BitWidth;
 
-        public PICRegisterSizedUniqueAddress(PICDataAddress addr, int bitWidth = 0) : base(addr)
+        public PICRegisterSizedUniqueAddress(PICAddress addr, int bitWidth = 0) : base(addr)
         {
             BitWidth = bitWidth;
         }

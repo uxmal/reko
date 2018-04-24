@@ -405,66 +405,26 @@ namespace Reko.Arch.Microchip.PIC18
             }
         }
 
-        private (FSRIndexedMode indMode, Expression memPtr) GetMemFileAccess(MachineOperand opernd)
+        protected override (FSRIndexedMode indMode, Expression memPtr) GetMemFileAccess(MachineOperand opernd)
         {
-            switch (opernd)
+            if (opernd is PICOperandBankedMemory bnkmem && bnkmem.IsAccess)
             {
-                case PICOperandMemFA memFA:
-                    var offset = memFA.Offset;
-                    var isaccess = memFA.IsAccess;
-                    if (isaccess)
-                    {
-                        if (PICMemoryDescriptor.ExecMode != PICExecMode.Traditional
-                            &&
-                            PICMemoryDescriptor.CanBeFSR2IndexAddress(offset))
-                            return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
-                        var remapAddr = PICMemoryDescriptor.RemapDataAddress(offset);
-                        if (PICRegisters.TryGetRegister(remapAddr, out var sfr))
-                        {
-                            var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
-                            if (iop != FSRIndexedMode.None)
-                                return (iop, binder.EnsureRegister(fsrreg));
-                            return (iop, binder.EnsureRegister(sfr));
-                        }
-                        return (FSRIndexedMode.None, DataMem8(remapAddr));
-                    }
-                    return (FSRIndexedMode.None, DataMem8(m.IAdd(m.Shl(binder.EnsureRegister(PICRegisters.BSR), 8), offset)));
-
-                case PICOperandRegister reg:
-                    var iopr = PICRegisters.IndirectOpMode(reg.Register, out PICRegisterStorage regreg);
-                    if (iopr != FSRIndexedMode.None)
-                        return (iopr, binder.EnsureRegister(regreg));
-                    return (iopr, binder.EnsureRegister(reg.Register));
-
-                default:
-                    throw new InvalidOperationException($"Invalid PIC18 instruction's operand: {opernd}");
-
+                var offset = bnkmem.Offset;
+                if (PICMemoryDescriptor.ExecMode != PICExecMode.Traditional
+                    &&
+                    PICMemoryDescriptor.CanBeFSR2IndexAddress(offset))
+                    return (FSRIndexedMode.None, DataMem8(m.IAdd(Fsr2, offset))); // Address is in the form [FSR2]+offset ("à la" Extended Execution mode).
+                var remapAddr = PICMemoryDescriptor.RemapDataAddress(offset);
+                if (PICRegisters.TryGetRegister(remapAddr, out var sfr))
+                {
+                    var iop = PICRegisters.IndirectOpMode(sfr, out PICRegisterStorage fsrreg);
+                    if (iop != FSRIndexedMode.None)
+                        return (iop, binder.EnsureRegister(fsrreg));
+                    return (iop, binder.EnsureRegister(sfr));
+                }
+                return (FSRIndexedMode.None, DataMem8(remapAddr));
             }
-        }
-
-        private (FSRIndexedMode indMode, Expression memPtr) GetDataAbsAddress(MachineOperand opernd)
-        {
-            switch (opernd)
-            {
-                case PICOperandDataMemoryAddress absmem:
-                    if (absmem.DataTarget == PICDataAddress.Invalid)
-                        throw new InvalidOperationException($"Invalid data absolute address operand.");
-
-                    if (PICRegisters.TryGetRegister(absmem.DataTarget, out var sfrReg))
-                    {
-                        if (sfrReg != PICRegisterStorage.None)
-                        {
-                            var imode = PICRegisters.IndirectOpMode(sfrReg, out PICRegisterStorage fsr);
-                            if (imode != FSRIndexedMode.None)
-                                return (imode, binder.EnsureRegister(fsr));
-                            return (imode, binder.EnsureRegister(sfrReg));
-                        }
-                    }
-                    return (FSRIndexedMode.None, DataMem8(PICDataAddress.Ptr(absmem.DataTarget)));
-
-                default:
-                    throw new InvalidOperationException($"Invalid data absolute address operand.");
-            }
+            return base.GetMemFileAccess(opernd);
         }
 
         protected void RewriteADDFSR()
@@ -682,7 +642,7 @@ namespace Reko.Arch.Microchip.PIC18
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
                 m.Assign(statuss, binder.EnsureRegister(PICRegisters.STATUS));
                 m.Assign(wregs, Wreg);
-                m.Assign(bsrs, binder.EnsureRegister(PICRegisters.BSR));
+                m.Assign(bsrs, Bsr);
             }
             m.Call(target.CodeTarget, 0);
         }
@@ -992,9 +952,8 @@ namespace Reko.Arch.Microchip.PIC18
 
         private void RewriteMOVLB()
         {
-            var bsr = binder.EnsureRegister(PICRegisters.BSR);
             var k = instrCurr.op1 as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.op1}");
-            m.Assign(bsr, k.ImmediateValue);
+            m.Assign(Bsr, k.ImmediateValue);
         }
 
         private void RewriteMOVLW()
@@ -1129,7 +1088,7 @@ namespace Reko.Arch.Microchip.PIC18
             {
                 Identifier wregs = binder.EnsureRegister(PIC18Registers.WREG_CSHAD);
                 Identifier bsrs = binder.EnsureRegister(PIC18Registers.BSR_CSHAD);
-                m.Assign(binder.EnsureRegister(PICRegisters.BSR), bsrs);
+                m.Assign(Bsr, bsrs);
                 m.Assign(Wreg, wregs);
                 m.Assign(binder.EnsureRegister(PICRegisters.STATUS), statuss);
             }

@@ -366,13 +366,13 @@ namespace Reko.Arch.Microchip.Common
     public class PICInstructionMemF : PICInstruction
     {
         public PICInstructionMemF(Opcode opcode, ushort memaddr)
-            : base(opcode, new PICOperandMemF(memaddr))
+            : base(opcode, new PICOperandBankedMemory(memaddr))
         {
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmem = op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var bankmem = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
 
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
@@ -395,13 +395,13 @@ namespace Reko.Arch.Microchip.Common
     public class PICInstructionMemFB : PICInstruction
     {
         public PICInstructionMemFB(Opcode opcode, ushort memaddr, byte bitno)
-            : base(opcode, new PICOperandMemF(memaddr), new PICOperandMemBitNo(bitno))
+            : base(opcode, new PICOperandBankedMemory(memaddr), new PICOperandMemBitNo(bitno))
         {
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmem = op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var bankmem = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
             var bitno = op2 as PICOperandMemBitNo ?? throw new InvalidOperationException($"Invalid bit number operand: {op2}");
 
             writer.WriteOpcode(Opcode.ToString());
@@ -434,13 +434,13 @@ namespace Reko.Arch.Microchip.Common
     public class PICInstructionMemFD : PICInstruction
     {
         public PICInstructionMemFD(Opcode opcode, ushort memaddr, ushort dest)
-            : base(opcode, new PICOperandMemF(memaddr), new PICOperandMemWRegDest(dest))
+            : base(opcode, new PICOperandBankedMemory(memaddr), new PICOperandMemWRegDest(dest))
         {
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmem = op1 as PICOperandMemF ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var bankmem = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
             var wregdest = op2 as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {op2}");
 
             writer.WriteOpcode(Opcode.ToString());
@@ -465,13 +465,13 @@ namespace Reko.Arch.Microchip.Common
     public class PICInstructionMemFA : PICInstruction
     {
         public PICInstructionMemFA(Opcode opcode, ushort memaddr, ushort acc)
-            : base(opcode, new PICOperandMemFA(memaddr, acc))
+            : base(opcode, new PICOperandBankedMemory(memaddr, acc))
         {
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmemacc = op1 as PICOperandMemFA ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var bankmemacc = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
 
             writer.WriteOpcode(Opcode.ToString());
             writer.Tab();
@@ -503,13 +503,13 @@ namespace Reko.Arch.Microchip.Common
     public class PICInstructionMemFBA : PICInstruction
     {
         public PICInstructionMemFBA(Opcode opcode, ushort memaddr, ushort bitno, ushort acc)
-            : base(opcode, new PICOperandMemFA(memaddr, acc), new PICOperandMemBitNo(bitno))
+            : base(opcode, new PICOperandBankedMemory(memaddr, acc), new PICOperandMemBitNo(bitno))
         {
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmemacc = op1 as PICOperandMemFA ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var bankmemacc = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
             var bitno = op2 as PICOperandMemBitNo ?? throw new InvalidOperationException($"Invalid bit number operand: {op2}");
 
             writer.WriteOpcode(Opcode.ToString());
@@ -548,13 +548,13 @@ namespace Reko.Arch.Microchip.Common
     public class PICInstructionMemFDA : PICInstruction
     {
         public PICInstructionMemFDA(Opcode opcode, ushort memaddr, ushort dest, ushort acc)
-            : base(opcode, new PICOperandMemFA(memaddr, acc), new PICOperandMemWRegDest(dest))
+            : base(opcode, new PICOperandBankedMemory(memaddr, acc), new PICOperandMemWRegDest(dest))
         {
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var bankmemacc = op1 as PICOperandMemFA ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
+            var bankmemacc = op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {op1}");
             var wregdest = op2 as PICOperandMemWRegDest ?? throw new InvalidOperationException($"Invalid destination operand: {op2}");
 
             writer.WriteOpcode(Opcode.ToString());

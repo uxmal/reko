@@ -105,7 +105,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// Gets the data memory address of this register (or null if Non-Memory-Mapped).
         /// </summary>
-        public PICDataAddress Address => Traits.Address;
+        public PICAddress Address => Traits.Address;
 
         /// <summary>
         /// Gets the Non-Memory-Mapped ID or null if register is memory-mapped.

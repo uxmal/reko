@@ -141,38 +141,4 @@ namespace Reko.Core.Expressions
         }
     }
 
-#if false
-
-    /// <summary>
-    /// Models an access to data memory bank for 8-bit PIC.
-    /// </summary>
-    public class BankMemoryAccess : MemoryAccess
-    {
-        public BankMemoryAccess(MemoryIdentifier id, Expression bankPtr, Expression ea, DataType dt) : base(id, ea, dt)
-        {
-            BankSelector = bankPtr;
-        }
-
-        public Expression BankSelector { get; set; }         // Data Memory Bank selector
-
-        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
-            => v.VisitBankMemoryAccess(this, context);
-
-        public override T Accept<T>(ExpressionVisitor<T> visit)
-            => visit.VisitBankMemoryAccess(this);
-
-        public override void Accept(IExpressionVisitor visit)
-            => visit.VisitBankMemoryAccess(this);
-
-        public override Expression CloneExpression()
-            => new BankMemoryAccess(MemoryId, BankSelector.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
-
-        public new static BankMemoryAccess Create(Expression bsrRegister, int offset, DataType dt)
-            => new BankMemoryAccess(MemoryIdentifier.GlobalMemory, bsrRegister, Constant.Create(dt, offset), dt);
-
-    }
-
-#endif
-
-
 }
