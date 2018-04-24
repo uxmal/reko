@@ -19,10 +19,6 @@
 #endregion
 
 using NUnit.Framework;
- 
-using System;
-using System.Drawing;
-using Rhino.Mocks;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Serialization;
@@ -30,14 +26,13 @@ using Reko.Core.Types;
 using Reko.Environments.Windows;
 using Reko.Gui;
 using Reko.Gui.Commands;
-using Reko.Gui.Controls;
 using Reko.Gui.Forms;
+using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Drawing;
-using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -66,9 +61,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService<IDialogFactory>(dlgFactory);
             mr.ReplayAll();
             interactor = new DeclarationFormInteractor(services);
-            var mem = new MemoryArea(Address32.Ptr32(0x10), new byte[40]);
+            var mem = new MemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
-            var segmentMap = new SegmentMap(Address32.Ptr32(0x05), seg);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x05), seg);
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new Win32Platform(null, arch);
             program = new Program(segmentMap, arch, platform);
@@ -347,32 +342,5 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
         }
-
-            public int? BackColor { get; set; }
-            public int? ForeColor { get; set; }
-
-            public void SelectAll()
-            {
-                throw new NotImplementedException();
             }
-
-            public void Focus()
-            {
-                throw new NotImplementedException();
-            }
-
-            public event EventHandler<KeyEventArgs> KeyDown;
-            public event EventHandler TextChanged;
-            public event EventHandler LostFocus;
-
-            public void FireLostFocus()
-            {
-                LostFocus.Fire(this);
-            }
-
-            public void FireKeyDown(KeyEventArgs e)
-            {
-                KeyDown(this, e);
-            }
-        }
 }
