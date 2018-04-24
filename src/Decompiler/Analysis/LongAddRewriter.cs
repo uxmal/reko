@@ -201,11 +201,11 @@ namespace Reko.Analysis
 
                 if (sidDstLo != null)
                 {
-                    sidDstLo.Uses.Add(stmLong);
+                    sidDst.Uses.Add(stmCastLo);
                 }
                 if (sidDstHi != null)
                 {
-                    sidDstHi.Uses.Add(stmLong);
+                    sidDst.Uses.Add(stmSliceHi);
                 }
                 ssa.DeleteStatement(stmDeadLo);
                 ssa.DeleteStatement(stmDeadHi);

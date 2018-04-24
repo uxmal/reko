@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {
@@ -91,8 +90,6 @@ namespace Reko.Analysis
             }
         }
 
-     
-
         private void CollectLiveOutStorages()
         {
             var wl = new WorkList<SsaState>(ssts.Select(s => s.SsaState));
@@ -128,7 +125,7 @@ namespace Reko.Analysis
             {
                 if (item.Key is RegisterStorage reg)
                 {
-                    if (!registerDomains.TryGetValue(reg.Domain, out var  widestRange))
+                    if (!registerDomains.TryGetValue(reg.Domain, out var widestRange))
                     {
                         widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
                         registerDomains.Add(reg.Domain, widestRange);
@@ -170,21 +167,22 @@ namespace Reko.Analysis
         /// Remove any UseInstructions in the exit block of the procedure that 
         /// can be proved to be dead out.
         /// </summary>
-        /// <param name="ssa"></param>
-        /// <param name="wl"></param>
+        /// <param name="ssa">SSA of the procedure whose exit block is to be examined.</param>
+        /// <param name="wl">Worklist of SSA states.</param>
+        /// <returns>True if any change was made to SSA.</returns>
         public bool RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
             bool change = false;
-            Debug.Print("UVR: {0}", ssa.Procedure);
+            DebugEx.PrintIf(trace.TraceVerbose, "UVR: {0}", ssa.Procedure.Name);
             var liveOutStorages = this.dataFlow[ssa.Procedure].LiveOut;
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
             FindDeadStatementsInExitBlock(ssa, liveOutStorages, deadStms, deadStgs);
 
-            // Now remove statements that are known to be dead.
+            // Remove 'use' statements that are known to be dead from the exit block.
             foreach (var stm in deadStms)
             {
-                Debug.Print("UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
+                DebugEx.PrintIf(trace.TraceVerbose, "UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
                 ssa.DeleteStatement(stm);
                 change = true;
             }
@@ -199,7 +197,7 @@ namespace Reko.Analysis
                     if (ci == null)
                         continue;
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
-                    if (RemoveDeadUses(ssaCaller, ci, deadStgs))
+                    if (RemoveDeadCallDefinitions(ssaCaller, ci, deadStgs))
                     {
                         wl.Add(ssaCaller);
                     }
@@ -298,8 +296,7 @@ namespace Reko.Analysis
             bool change = false;
             foreach (var de in newLiveOut)
             {
-                BitRange oldRange;
-                if (flow.LiveOut.TryGetValue(de.Key, out oldRange))
+                if (flow.LiveOut.TryGetValue(de.Key, out BitRange oldRange))
                 {
                     var range = oldRange | de.Value;
                     if (range != oldRange)
@@ -318,28 +315,33 @@ namespace Reko.Analysis
             return change;
         }
 
-        private bool RemoveDeadUses(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
+        /// <summary>
+        /// From the call instruction <paramref name="ci"/>, removes those 'def's 
+        /// that have been marked as dead in <paramref name="deadStgs"/>.
+        /// </summary>
+        /// <param name="ssa">The SSA state of the procedure containing <paramref name="ci"/>.</param>
+        /// <param name="ci">The call instruction to mutate.</param>
+        /// <param name="deadStgs">Set of dead storages to remove.</param>
+        /// <returns>True if any 'def's were removed.</returns>
+        private bool RemoveDeadCallDefinitions(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
         {
-            var deadUses = new List<CallBinding>();
-            foreach (var use in ci.Definitions)
+            //$REVIEW: this code is similar to DeadCode.AdjustCallWithDeadDefinitions
+            // Move it to SsaState? Somewhere else?
+            int cRemoved = ci.Definitions.RemoveWhere(def =>
             {
-                var id = use.Expression as Identifier;
-                if (id == null)
-                    continue;
-                if (deadStgs.Contains(id.Storage))
+                if (def.Expression is Identifier id)
                 {
-                    deadUses.Add(use);
+                    if (deadStgs.Contains(id.Storage))
+                    {
+                        var sidDef = ssa.Identifiers[id];
+                        sidDef.DefStatement = null;
+                        sidDef.DefExpression = null;
+                        return true;
+                    }
                 }
-            }
-            if (deadUses.Count > 0)
-            {
-                ci.Definitions.ExceptWith(deadUses);
-                return true;
-            }
-            else
-            {
                 return false;
-            }
+            });
+            return cRemoved > 0;
         }
     }
 }

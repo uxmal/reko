@@ -1263,6 +1263,7 @@ namespace Reko.Analysis
             {
                 Identifier same = null;
                 var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
+                DebugEx.PrintIf(trace.TraceVerbose, "  Checking {0} for triviality", phiFunc);
                 foreach (Identifier op in phiFunc.Arguments)
                 {
                     if (op == same || op == phi.Identifier)
@@ -1278,6 +1279,7 @@ namespace Reko.Analysis
                 SsaIdentifier sid;
                 if (same == null)
                 {
+                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} is a def", phi.Identifier);
                     // Undef'ined or unreachable parameter; assume it's a def.
                     sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
                 }
@@ -1314,6 +1316,8 @@ namespace Reko.Analysis
                     alias.SsaId = outer.ssa.Identifiers[same];
                 }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
+                phi.DefExpression = null;
+                phi.DefStatement = null;
                 this.outer.sidsToRemove.Add(phi);
                 return sid;
             }

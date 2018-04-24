@@ -111,12 +111,16 @@ namespace Reko.UnitTests.Analysis
 
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
+                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
                 var vp = new ValuePropagator(program.SegmentMap, ssa, listener);
                 vp.Transform();
+                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
+
+                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
                 // We don't add uses to exit block on purpose. We
                 // are not testing interprocedural effects here.

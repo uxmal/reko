@@ -38,13 +38,11 @@ bx_9: orig: bx
 ax_10: orig: ax
     def:  ax_10 = (word16) dx_ax_47
     uses: Mem15[ds:0x0208:word16] = ax_10
-          dx_ax_47 = dx_ax_45 + bx_cx_46
 SCZO_11: orig: SCZO
 C_12: orig: C
 dx_13: orig: dx
     def:  dx_13 = SLICE(dx_ax_47, word16, 16)
     uses: Mem16[ds:0x020A:word16] = dx_13
-          dx_ax_47 = dx_ax_45 + bx_cx_46
 SCZO_14: orig: SCZO
 Mem15: orig: Mem0
     def:  Mem15[ds:0x0208:word16] = ax_10
@@ -68,7 +66,6 @@ cx_22: orig: cx
 ax_23: orig: ax
     def:  ax_23 = (word16) dx_ax_50
     uses: Mem25[ds:0x0218:word16] = ax_23
-          dx_ax_50 = dx_ax_48 - es_cx_19
 SCZO_24: orig: SCZO
 Mem25: orig: Mem0
     def:  Mem25[ds:0x0218:word16] = ax_23
@@ -76,7 +73,6 @@ C_26: orig: C
 dx_27: orig: dx
     def:  dx_27 = SLICE(dx_ax_50, word16, 16)
     uses: Mem29[ds:0x021A:word16] = dx_27
-          dx_ax_50 = dx_ax_48 - es_cx_19
 SCZO_28: orig: SCZO
 Mem29: orig: Mem0
     def:  Mem29[ds:0x021A:word16] = dx_27
@@ -112,12 +108,16 @@ bx_cx_46: orig: bx_cx
     uses: dx_ax_47 = dx_ax_45 + bx_cx_46
 dx_ax_47: orig: dx_ax
     def:  dx_ax_47 = dx_ax_45 + bx_cx_46
+    uses: ax_10 = (word16) dx_ax_47
+          dx_13 = SLICE(dx_ax_47, word16, 16)
 dx_ax_48: orig: dx_ax
     def:  dx_ax_48 = SEQ(dx_18, ax_17)
     uses: dx_ax_50 = dx_ax_48 - es_cx_19
 bx_cx_49: orig: bx_cx
 dx_ax_50: orig: dx_ax
     def:  dx_ax_50 = dx_ax_48 - es_cx_19
+    uses: ax_23 = (word16) dx_ax_50
+          dx_27 = SLICE(dx_ax_50, word16, 16)
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000

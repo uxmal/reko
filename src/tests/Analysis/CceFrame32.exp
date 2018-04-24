@@ -18,9 +18,7 @@ eax_9: orig: eax
     def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
     uses: ax_14 = (word16) eax_9 (alias)
 Top_10: orig: Top
-    def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 SCZO_11: orig: SCZO
-    def:  call fn10000017 (retsize: 4;)	uses: eax:eax_5,esp:fp - 0x00000004,Local -0004:dwLoc04_16,Top:0	defs: eax:eax_9,esp:esp_8
 esp_12: orig: esp
 SCZO_13: orig: SCZO
 ax_14: orig: ax
@@ -107,14 +105,12 @@ Mem37: orig: Mem0
 ebp_38: orig: ebp
 esp_39: orig: esp
 wLoc08_44: orig: wLoc08
-    def:  wLoc08_44 = PHI(wLoc08_42, wLoc08_44)
     uses: eax_22 = (int32) wLoc08_44
 wLoc08_46: orig: wLoc08
 wLoc08_47: orig: wLoc08
 dwLoc04_48: orig: dwLoc04
 dwLoc04_49: orig: dwLoc04
 dwLoc04_50: orig: dwLoc04
-    def:  dwLoc04_50 = PHI(dwLoc04_40, dwLoc04_50)
 // fn10000017
 // Return size: 4
 define fn10000017

@@ -51,7 +51,6 @@ namespace Reko.Analysis
         private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 		private SsaIdentifier sidGrf;
-        private HashSet<SsaIdentifier> aliases;     // aliases of sidGrf
         private Statement useStm;
         private IPlatform platform;
         private ExpressionEmitter m;
@@ -75,8 +74,7 @@ namespace Reko.Analysis
                     continue;
 
                 var uses = new HashSet<Statement>();
-                aliases = new HashSet<SsaIdentifier>();
-                ClosureOfUsingStatements(sidGrf, sidGrf.DefExpression, uses, aliases);
+                ClosureOfUsingStatements(sidGrf, uses);
 
                 if (trace.TraceInfo) Debug.WriteLine(string.Format("Tracing {0}", sidGrf.DefStatement.Instruction));
 
@@ -92,17 +90,14 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Computes the close of a web of using statements. The <paramref name="uses"/> hash set 
+        /// Computes the closure of a web of using statements. The <paramref name="uses"/> hash set 
         /// will contain all non-trivial uses of the expression.
         /// </summary>
-        /// <param name="sid"></param>
-        /// <param name="expr"></param>
-        /// <param name="uses"></param>
+        /// <param name="sid">The SSA identifier whose use-closure we're calculating</param>
+        /// <param name="uses">Uses we've seen so far.</param>
         public HashSet<Statement> ClosureOfUsingStatements(
             SsaIdentifier sid,
-            Expression expr,
-            HashSet<Statement> uses,
-            HashSet<SsaIdentifier> aliases)
+            HashSet<Statement> uses)
         {
             foreach (var use in sid.Uses)
             {
@@ -111,17 +106,17 @@ namespace Reko.Analysis
                 uses.Add(use);
                 if (IsCopyWithOptionalCast(sid.Identifier, use))
                 {
+                    // Bypass copies (C_4 = C_3) and casts
+                    // (C_4 = SLICE(SZC_3, bool, 0)
                     var ass = (Assignment)use.Instruction;
                     var sidAlias = ssaIds[ass.Dst];
-                    aliases.Add(sidAlias);
-                    ClosureOfUsingStatements(sidAlias, expr, uses, aliases);
+                    ClosureOfUsingStatements(sidAlias, uses);
                 }
-                var phiAss = use.Instruction as PhiAssignment;
-                if (phiAss != null)
+                if (use.Instruction is PhiAssignment phiAss)
                 {
+                    // Bypass PHI nodes.
                     var sidPhi = ssaIds[phiAss.Dst];
-                    aliases.Add(sidPhi);
-                    ClosureOfUsingStatements(sidPhi, expr, uses, aliases);
+                    ClosureOfUsingStatements(sidPhi, uses);
                 }
             }
             return uses;
@@ -235,11 +230,6 @@ namespace Reko.Analysis
             if (u != sidGrf.Identifier)
                 return a;
 
-            //var law = new LongAddRewriter(arch, useStm.Block.Procedure.Frame);
-            //if (law.Match(u, a))
-            //{
-            //    InsertLongAdd(sidGrf, u, a);
-            //}
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
             if (c != null)
                 c.Expression = u;

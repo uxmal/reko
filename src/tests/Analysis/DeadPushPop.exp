@@ -102,13 +102,9 @@ Mem13: orig: Mem0
     def:  Mem13[ds:si:word16] = ax_7
 ax_14: orig: ax
 S_15: orig: S
-    def:  fn0C00_0008(0x0014, di, ds)
 C_16: orig: C
-    def:  fn0C00_0008(0x0014, di, ds)
 Z_17: orig: Z
-    def:  fn0C00_0008(0x0014, di, ds)
 O_18: orig: O
-    def:  fn0C00_0008(0x0014, di, ds)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)

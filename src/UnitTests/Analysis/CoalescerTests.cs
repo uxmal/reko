@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Analysis
                 proc.Write(false, fut);
                 fut.WriteLine();
 
-                ssa.Validate(s => Assert.Fail(s));
+                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
             }
         }
 
