@@ -1,16 +1,19 @@
 ﻿using Bridge;
-using Electron.edge_js;
+using ElectronUI.edge_js;
 using Newtonsoft.Json;
 //using Reko.Gui.Electron.Adapter;
 using Retyped;
 using Retyped.Primitive;
 using System;
 using System.Threading.Tasks;
-using static Electron.edge_js.SharpFunction;
+using static ElectronUI.edge_js.SharpFunction;
 
 using path = Retyped.node.path;
+using lit = Retyped.electron.Literals;
+using static Retyped.electron.NodeJS;
+using static Retyped.electron.Electron;
 
-namespace Electron
+namespace ElectronUI
 {
     public class App
     {
@@ -52,25 +55,26 @@ namespace Electron
         [Init(InitPosition.Top)]
         public static void InitGlobals()
         {
+            node.require.Self("./bridge.js");
+
             // The call below is required to initialize a global var 'Electron'.
-            var Electron = (electron.Electron.AllElectron)node.require.Self("electron");
-            
+            var _Electron = (AllElectron)node.require.Self("electron");
+
             // Keep a global reference of the window object, if you don't, the window will
             // be closed automatically when the      object is garbage collected.
-            electron.Electron.BrowserWindow win = null;
+            BrowserWindow _MainWindow = null;
         }
 
-        [Template("Electron")]
-        public static electron.Electron.AllElectron Electron;
+        [Template("_Electron")]
+        public static AllElectron Electron;
 
-        [Template("win")]
-        public static electron.Electron.BrowserWindow Win;
+        [Template("_MainWindow")]
+        public static BrowserWindow MainWindow;
 
-        public static void Main()
+        private static void AfterInit()
         {
-            var app = Electron.app;
-
             Console.WriteLine("Hello World");
+            MainWindow.focus();
 
             SharpAssembly x = new SharpAssembly(AdapterAssembly);
             SharpFunction CreateReko = x.GetFunction(AdapterType, "CreateReko");
@@ -80,12 +84,52 @@ namespace Electron
                 fileName = "E:/dec/Aberaham_0.dir/Aberaham.exe",
                 notify = new Action<object, EdgeCallback>(OnNotify)
             }).then<object>((result) => {
-                Console.WriteLine(Retyped.Primitive.Object.keys(result));
+                Console.WriteLine("-- Obtained Methods from C# Assembly --");
+                foreach (string prop in Retyped.Primitive.Object.keys(result)) {
+                    object value = Script.Get(result, prop);
+                    Console.WriteLine($"{prop} => {value}");
+                }
                 return null;
             }, (error) => {
                 es5.Error obj = (es5.Error)error;
                 throw new Exception(obj.message);
             });
+        }
+
+        private static void Ready()
+        {
+            Console.WriteLine("Ready!");
+
+            MainWindow = new BrowserWindow(new BrowserWindowConstructorOptions() {
+                width = 800,
+                height = 600,
+                title = "Reko Decompiler"
+            });
+
+            if (!MainWindow.webContents.isDevToolsOpened()) {
+                MainWindow.webContents.openDevTools();
+            }
+
+            MainWindow.loadURL($"file://{node.__dirname}/../../app/index.html");
+
+            MainWindow.webContents.on(lit.crashed, (ev, input) => {
+                throw new Exception(ev.ToString());
+            });
+
+            MainWindow.webContents.on(lit.did_finish_load, () => AfterInit());
+        }
+
+        public static void Main()
+        {
+            var app = Electron.app;
+
+            app.on(lit.window_all_closed, () => {
+                if(node.process2.platform != "darwin") {
+                    app.quit();
+                }
+            });
+
+            app.on(lit.ready, () => Ready());
         }
     }
 }

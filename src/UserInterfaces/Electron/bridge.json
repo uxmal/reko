@@ -5,6 +5,8 @@
   // The folder to output JavaScript (.js) files.
   "output": "web/generated/bridge/",
 
+  //"outputBy": "Class",
+
   // Set to "Minified" to generate .min.js files.
   // Set to "Both" to generate both minified and non-minified .js files.
   // "Formatted" generates non-minified .js files.
@@ -23,6 +25,10 @@
   // Default is false.
   "console": {
     "enabled": true
+  },
+
+  "html": {
+    "disabled": true
   },
 
   // Enable browser debugging of C# files.

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Retyped.es6_promise;
 
-namespace Electron.edge_js
+namespace ElectronUI.edge_js
 {
     public class SharpFunction
     {

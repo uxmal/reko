@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Electron.edge_js.SharpFunction;
+using static ElectronUI.edge_js.SharpFunction;
 
-namespace Electron.edge_js
+namespace ElectronUI.edge_js
 {
     public class SharpAssembly
     {
