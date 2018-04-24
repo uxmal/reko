@@ -895,7 +895,7 @@ namespace Reko.Analysis
         {
             public readonly Block Block;
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
-            public readonly IntervalTree<int, SsaIdentifier> currentStackDef;
+            public readonly IntervalTree<int, AliasState> currentStackDef;
             public readonly Dictionary<int, SsaIdentifier> currentFpuDef;
             public bool Visited;
             internal bool terminates;
@@ -905,7 +905,7 @@ namespace Reko.Analysis
                 this.Block = block;
                 this.Visited = false;
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
-                this.currentStackDef = new IntervalTree<int, SsaIdentifier>();
+                this.currentStackDef = new IntervalTree<int, AliasState>();
                 this.currentFpuDef = new Dictionary<int, SsaIdentifier>();
             }
 
@@ -1317,8 +1317,6 @@ namespace Reko.Analysis
                     alias.SsaId = outer.ssa.Identifiers[same];
                 }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
-                phi.DefExpression = null;
-                phi.DefStatement = null;
                 this.outer.sidsToRemove.Add(phi);
                 return sid;
             }
@@ -1352,6 +1350,13 @@ namespace Reko.Analysis
                         if (alias.SsaId == sidOld)
                         {
                             alias.SsaId = idNew;
+                        }
+                    }
+                    foreach (var de in bs.currentStackDef.ToList())
+                    {
+                        if (de.Value.SsaId == sidOld)
+                        {
+                            de.Value.SsaId = idNew;
                         }
                     }
                 }
@@ -1633,11 +1638,11 @@ namespace Reko.Analysis
                 return null;
             }
 
-            private Tuple<SsaIdentifier, Expression, Interval<int>> SliceAndShift(KeyValuePair<Interval<int>, SsaIdentifier> arg)
+            private Tuple<SsaIdentifier, Expression, Interval<int>> SliceAndShift(KeyValuePair<Interval<int>, AliasState> arg)
             {
                 return new Tuple<SsaIdentifier, Expression, Interval<int>>(
-                    arg.Value,
-                    arg.Value.Identifier,
+                    arg.Value.SsaId,
+                    arg.Value.SsaId.Identifier,
                     arg.Key.Intersect(this.offsetInterval));
             }
 
@@ -1652,7 +1657,7 @@ namespace Reko.Analysis
                         bs.currentStackDef.Delete(i.Key);
                     }
                 }
-                bs.currentStackDef.Add(this.offsetInterval, sid);
+                bs.currentStackDef.Add(this.offsetInterval, new AliasState(sid, null));
                 return sid.Identifier;
             }
         }

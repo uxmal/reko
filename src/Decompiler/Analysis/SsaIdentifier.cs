@@ -48,7 +48,7 @@ namespace Reko.Analysis
 		}
 
         /// <summary>
-        /// Expression that defines identifier.
+        /// Expression that defines the identifier.
         /// </summary>
         public Expression DefExpression { get; set; }
 

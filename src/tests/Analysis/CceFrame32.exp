@@ -79,7 +79,7 @@ SZO_19: orig: SZO
 C_20: orig: C
 Z_21: orig: Z
 eax_22: orig: eax
-    def:  eax_22 = (int32) wLoc08_44
+    def:  eax_22 = (int32) wLoc08_42
     uses: branch eax_22 >= 0x00007FFF l1000005A
 SCZO_23: orig: SCZO
 SO_24: orig: SO
@@ -90,6 +90,7 @@ dwArg04:Stack +0004
 wLoc08_42: orig: wLoc08
     def:  wLoc08_42 = 0x0000
     uses: eax_16 = (int32) wLoc08_42
+          eax_22 = (int32) wLoc08_42
 ax_27: orig: ax
 cx_28: orig: cx
 cx_29: orig: cx
@@ -104,13 +105,7 @@ esp_36: orig: esp
 Mem37: orig: Mem0
 ebp_38: orig: ebp
 esp_39: orig: esp
-wLoc08_44: orig: wLoc08
-    uses: eax_22 = (int32) wLoc08_44
-wLoc08_46: orig: wLoc08
 wLoc08_47: orig: wLoc08
-dwLoc04_48: orig: dwLoc04
-dwLoc04_49: orig: dwLoc04
-dwLoc04_50: orig: dwLoc04
 // fn10000017
 // Return size: 4
 define fn10000017
@@ -132,7 +127,7 @@ l1000002F:
 	branch edx_18 == 0x00000000 l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:
-	eax_22 = (int32) wLoc08_44
+	eax_22 = (int32) wLoc08_42
 	branch eax_22 >= 0x00007FFF l1000005A
 	// succ:  l10000049 l1000005A
 l10000049:
