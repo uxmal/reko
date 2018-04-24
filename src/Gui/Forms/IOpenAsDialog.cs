@@ -45,5 +45,6 @@ namespace Reko.Gui.Forms
 
         Architecture GetSelectedArchitecture();
         OperatingEnvironment GetSelectedEnvironment();
+        void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
     }
 }

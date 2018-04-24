@@ -158,9 +158,7 @@ namespace Reko.Gui.Forms
             var arch = dlg.GetSelectedArchitecture();
             if (arch != null && arch.Options?.Count > 0)
             {
-                dlg.PropertyGrid.SelectedObject = new PropertyOptionsGridAdapter(
-                    dlg.ArchitectureOptions,
-                    arch.Options);
+                dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
             }
             else
             {

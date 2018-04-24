@@ -74,5 +74,17 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             return (OperatingEnvironment)((ListOption)Platforms.SelectedValue).Value;
         }
+
+        public void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options)
+        {
+            if (architectureOptions != null && options != null)
+            {
+                PropertyGrid.SelectedObject = new PropertyOptionsGridAdapter(architectureOptions, options);
+            }
+            else
+            {
+                PropertyGrid.SelectedObject = null;
+            }
+        }
     }
 }
