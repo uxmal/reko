@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -25,7 +26,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Reko.Gui.Windows.Forms;
 
 namespace Reko.Gui.Forms
 {
@@ -35,7 +35,7 @@ namespace Reko.Gui.Forms
         private Dictionary<CommandID, string> cmdNames;
         private List<ListOption> windowNames;
 
-        internal void Attach(IKeyBindingsDialog keyBindingsDialog)
+        public void Attach(IKeyBindingsDialog keyBindingsDialog)
         {
             this.dlg = keyBindingsDialog;
             keyBindingsDialog.Load += dlg_Load;
@@ -65,12 +65,12 @@ namespace Reko.Gui.Forms
             dlg.Shortcut.KeyUp += Shortcut_KeyUp;
         }
 
-        private void Shortcut_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void Shortcut_KeyUp(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            if (e.KeyData == System.Windows.Forms.Keys.ControlKey ||
-                e.KeyData == System.Windows.Forms.Keys.ShiftKey ||
-                e.KeyData == System.Windows.Forms.Keys.Menu)
+            if (e.KeyData == Keys.ControlKey ||
+                e.KeyData == Keys.ShiftKey ||
+                e.KeyData == Keys.Menu)
             {
                 return;
             }

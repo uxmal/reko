@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.disassemblyControl1 = new Reko.Gui.Windows.Controls.DisassemblyControl();
+            this.disassemblyControl1 = new Reko.UserInterfaces.WindowsForms.Controls.DisassemblyControl();
             this.SuspendLayout();
             // 
             // disassemblyControl1
@@ -63,6 +63,6 @@
 
         #endregion
 
-        private Gui.Windows.Controls.DisassemblyControl disassemblyControl1;
+        private Reko.UserInterfaces.WindowsForms.Controls.DisassemblyControl disassemblyControl1;
     }
 }

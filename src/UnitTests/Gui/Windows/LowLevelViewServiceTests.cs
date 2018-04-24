@@ -22,9 +22,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Controls;
-using Reko.Gui.Windows.Forms;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -35,6 +32,8 @@ using System.ComponentModel.Design;
 using System.Text;
 using System.Windows.Forms;
 using Is = Rhino.Mocks.Constraints.Is;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 
 namespace Reko.UnitTests.Gui.Windows
 {
@@ -129,8 +128,9 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc.Stub(x => x.CreateDocumentWindow("", null, "", null))
                 .IgnoreArguments()
                 .Return(mr.Stub<IWindowFrame>());
-            uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
-            uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
+            uiSvc.Stub(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl)).IgnoreArguments();
+            //uiSvc.Stub(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl));
+            //uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
 
             var service = mr.Stub<LowLevelViewServiceImpl>(sc);
             service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
@@ -142,21 +142,6 @@ namespace Reko.UnitTests.Gui.Windows
             service.ShowMemoryAtAddress(program, Address.Ptr32(0x4711));
 
             mr.VerifyAll();
-        }
-
-        private class TestMainFormInteractor : MainFormInteractor
-        {
-            public static TestMainFormInteractor Create()
-            {
-                var services = new ServiceContainer();
-                services.AddService(typeof(IServiceFactory), new ServiceFactory(services));
-                return new TestMainFormInteractor(services);
-            }
-
-            private TestMainFormInteractor(IServiceProvider services)
-                : base(services)
-            {
-            }
         }
     }
 }

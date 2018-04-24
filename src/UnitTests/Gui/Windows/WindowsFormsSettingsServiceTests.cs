@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Gui;
-using Reko.Gui.Windows;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -27,6 +26,7 @@ using System.ComponentModel.Design;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.UserInterfaces.WindowsForms;
 
 namespace Reko.UnitTests.Gui.Windows
 {
