@@ -75,7 +75,7 @@ namespace Reko.Analysis
             this.programFlow = programFlow;
             this.importResolver = importResolver;
             this.sccProcs = sccProcs;
-            this.ssa = new SsaState(proc, null);
+            this.ssa = new SsaState(proc);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.factory = new TransformerFactory(this);
             this.incompletePhis = new HashSet<SsaIdentifier>();
@@ -1049,13 +1049,14 @@ namespace Reko.Analysis
 
             /// <summary>
             /// Registers the fact that identifier <paramref name="id"/> is
-            /// modified in the block <paramref name="b" />. 
+            /// modified in the block <paramref name="b" /> and generates a 
+            /// fresh SSA identifier. 
             /// </summary>
             /// <param name="bs">The block in which the identifier was changed</param>
             /// <param name="sid">The identifier after being SSA transformed.</param>
             /// <param name="performProbe">if true, looks "backwards" to see
             ///   if <paramref name="id"/> overlaps with another identifier</param>
-            /// <returns></returns>
+            /// <returns>The new SSA identifier</returns>
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
                 if (bs.currentDef.TryGetValue(id.Storage.Domain, out var prevState))
@@ -1074,10 +1075,10 @@ namespace Reko.Analysis
             /// the identifier <paramref name="id"/>, starting in block <paramref name="b"/>.
             /// </summary>
             /// If no definition of <paramref name="id"/> is found, a new 
-            /// DefStatement is created in the entry block of the procedure,
+            /// DefStatement is created in the entry block of the procedure.
             /// </summary>
             /// <param name="bs"></param>
-            /// <returns></returns>
+            /// <returns>The SSA name of the identifier that was read.</returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
                 var sid = ReadBlockLocalVariable(bs);

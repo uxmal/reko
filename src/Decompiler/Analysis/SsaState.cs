@@ -31,44 +31,23 @@ using System.Text;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// This class maintains the SSA transformation of a given procedure. Specifically
+    /// it keeps tracks of all SSA Identifiers, which implicitly form a graph of 
+    /// identifiers connected by use->def and def->use edges.
+    /// </summary>
 	public class SsaState
 	{
 		private SsaIdentifierCollection ids;
 
-		public SsaState(Procedure proc, DominatorGraph<Block> domGraph)
+		public SsaState(Procedure proc)
 		{
 			this.Procedure = proc;
-            this.DomGraph = domGraph;
 			this.ids = new SsaIdentifierCollection();
 		}
 
-        public Procedure Procedure { get; private set; }
-        public DominatorGraph<Block> DomGraph { get; private set; }
+        public Procedure Procedure { get; }
 
-        /// <summary>
-        /// Inserts the instr d of the identifier v at statement S.
-        /// </summary>
-        /// <param name="d"></param>
-        /// <param name="v"></param>
-        /// <param name="S"></param>
-        public void Insert(Instruction d, Identifier v, Statement S)
-        {
-            // Insert new phi-functions.
-            foreach (var dfFode in DomGraph.DominatorFrontier(S.Block))
-            {
-                // If there is no phi-function for v
-                //    create new phi-function for v. (which is an insert, so call self recursively)
-                // All input operands of the new phi-finctions are initually assumed to be
-                // uses of r.
-
-                // Update uses sets for all uses dominated by S, or the new phi statements.
-                // This is done by walking down the dominator tree from each def and find uses
-                // that along wit the def match property 1.
-
-                // Update each use that is a parameter of a newly created phi-function, according
-                // to property 2.
-            }
-        }
 		/// <summary>
 		/// Given a procedure in SSA form, converts it back to "normal" form.
 		/// </summary>
@@ -171,7 +150,7 @@ namespace Reko.Analysis
                 from use in sid.Uses
                 where use == stm
                 group new { sid.Identifier, use } by sid.Identifier into g
-                select new { Key = g.Key, Value = g.Count() })
+                select new { g.Key, Value = g.Count() })
                 .ToDictionary(de => de.Key, de => de.Value);
             return idMap;
         }
@@ -244,11 +223,6 @@ namespace Reko.Analysis
 			// Remove the statement itself.
 			stm.Block.Statements.Remove(stm);
 		}
-
-        public int RpoNumber(Block b)
-        {
-            return DomGraph.ReversePostOrder[b];
-        }
 
 		/// <summary>
 		/// Writes all SSA identifiers, showing the original variable,

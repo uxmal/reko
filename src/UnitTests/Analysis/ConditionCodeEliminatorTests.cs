@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Analysis
 		public void Setup()
 		{
             m = new ProcedureBuilder();
-            ssaState = new SsaState(m.Procedure, null);
+            ssaState = new SsaState(m.Procedure);
             ssaIds = ssaState.Identifiers;
             freg = new RegisterStorage("flags", 32, 0, PrimitiveType.Word32);
             segmentMap = new SegmentMap(Address.Ptr32(0));

@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Mocks
 
         public SsaProcedureBuilder() : base()
         {
-            this.Ssa = new SsaState(Procedure, null);
+            this.Ssa = new SsaState(Procedure);
         }
 
         public RegisterStorage RegisterStorage(string name, PrimitiveType pt)

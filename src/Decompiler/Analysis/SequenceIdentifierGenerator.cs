@@ -211,8 +211,7 @@ namespace Reko.Analysis
 
         private SsaIdentifier EnsureSequenceArgument(Identifier idSeq)
         {
-            SsaIdentifier sidSeq;
-            if (!ssa.Identifiers.TryGetValue(idSeq, out sidSeq))
+            if (!ssa.Identifiers.TryGetValue(idSeq, out SsaIdentifier sidSeq))
             {
                 var def = ssa.Procedure.EntryBlock.Statements.Add(0, null);
                 sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
