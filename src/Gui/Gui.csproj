@@ -216,6 +216,7 @@
     <Compile Include="ProcedureNavigator.cs" />
     <Compile Include="ProcedureSearchResult.cs" />
     <Compile Include="ProjectBrowserService.cs" />
+    <Compile Include="PropertyOptionsGridAdapter.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

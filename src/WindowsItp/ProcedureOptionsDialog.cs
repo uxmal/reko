@@ -1,7 +1,6 @@
 ﻿using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Gui;
-using Reko.Gui.Windows;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,7 +78,7 @@ namespace Reko.WindowsItp
                 this.buttonOK = new Button
                 {
                     Text = "OK",
-                    DialogResult = DialogResult.OK,
+                    DialogResult = System.Windows.Forms.DialogResult.OK,
                     Location = new Point(3, 28),
                 };
                 this.Controls.Add(buttonOK);

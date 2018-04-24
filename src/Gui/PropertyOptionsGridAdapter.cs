@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace Reko.Gui.Windows
+namespace Reko.Gui
 {
     /// <summary>
     /// Generates property descriptors that obey the restrictions specified in the 
@@ -242,7 +242,7 @@ namespace Reko.Gui.Windows
                     return value;
 
                 valueProperty.SetValue(form, value);
-                if (svc.ShowDialog(form) == DialogResult.OK)
+                if (svc.ShowDialog(form) == System.Windows.Forms.DialogResult.OK)
                 {
                     value = valueProperty.GetValue(form);
                 }

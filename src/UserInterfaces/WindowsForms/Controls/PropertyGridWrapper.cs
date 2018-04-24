@@ -26,7 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     public class PropertyGridWrapper : ControlWrapper, IPropertyGrid
     {

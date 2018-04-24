@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Configuration;
+using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using System;
