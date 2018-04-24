@@ -83,7 +83,7 @@ namespace Reko.Analysis
         /// recursive calls, we are done and leave early. 
         /// If there are recursive calls, we make one unwarranted but
         /// highly likely assumption: for each involved procedure, 
-        /// the stack pointer will have the  same value in the exit block 
+        /// the stack pointer will have the same value in the exit block 
         /// after traversing both non-recursive and recursive paths
         /// of the program.
         /// </remarks>
@@ -108,7 +108,11 @@ namespace Reko.Analysis
             // will have the same value at the point where the branches join.
             // It certainly possible for an assembly language programmer to construct
             // a program where procedures deliberately put the stack in imbalance
-            // after calling a procedure, so it seems a safe assumption to make.
+            // after calling a procedure, but using such a procedure is very difficult
+            // to do as you must somehow understand how the procedure changes the
+            // stack pointers depending on ... anything! 
+            // It seems safe to assume that all branches leading to the exit block
+            // have the same stack pointer value.
             
             var savedSps = CollectStackPointers(flow, arch.StackRegister);
             //$REVIEW: Ew. This hardwires a dependency on x87 in common code.
@@ -268,6 +272,7 @@ namespace Reko.Analysis
             if (!propagateToCallers || !ctx.IsDirty)
                 return;
 
+           // Propagate defined registers to calling procedures.
             var callingBlocks = callGraph
                 .CallerStatements(block.Procedure)
                 .Cast<Statement>()
@@ -277,13 +282,13 @@ namespace Reko.Analysis
             {
                 if (!blockCtx.TryGetValue(caller, out var succCtx))
                 {
-                    var ssa = ssas[caller.Procedure];
-                    var fp = ssa.Identifiers[caller.Procedure.Frame.FramePointer].Identifier;
-                    var idState = blockCtx[caller.Procedure.EntryBlock].IdState;
+                    var ssaCaller = ssas[caller.Procedure];
+                    var fpCaller = ssaCaller.Identifiers[caller.Procedure.Frame.FramePointer].Identifier;
+                    var idsCaller = blockCtx[caller.Procedure.EntryBlock].IdState;
                     var clone = new Context(
-                        ssa,
-                        fp,
-                        idState,
+                        ssaCaller,
+                        fpCaller,
+                        idsCaller,
                         procCtx[caller.Procedure]);
                     blockCtx.Add(caller, clone);
                 }
