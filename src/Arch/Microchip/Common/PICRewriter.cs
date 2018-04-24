@@ -262,9 +262,9 @@ namespace Reko.Arch.Microchip.Common
                     var offset = bnkmem.Offset;
                     if (PICRegisters.TryGetAlwaysAccessibleRegister(offset, out var regsrc))
                     {
-//                        var srciopr = PICRegisters.IndirectOpMode(regsrc, out PICRegisterStorage indsrcreg);
-//                        if (srciopr != FSRIndexedMode.None)
-//                            return (srciopr, binder.EnsureRegister(indsrcreg));
+                        var srciopr = PICRegisters.IndirectOpMode(regsrc, out PICRegisterStorage indsrcreg);
+                        if (srciopr != FSRIndexedMode.None)
+                            return (srciopr, binder.EnsureRegister(indsrcreg));
                         return (FSRIndexedMode.None, binder.EnsureRegister(regsrc));
                     }
                     return (FSRIndexedMode.None, DataBankMem8(Bsr, Constant.Byte(offset)));
@@ -304,6 +304,107 @@ namespace Reko.Arch.Microchip.Common
                 default:
                     throw new InvalidOperationException($"Invalid data absolute address operand.");
             }
+        }
+
+        /// <summary>
+        /// Gets the source/destination direct address (SFR register or memory), addressing mode and actual source memory access
+        /// of a single operand instruction. (e.g. "SETF f,a" or "CLRF f").
+        /// </summary>
+        /// <param name="opernd">The instruction memory operand.</param>
+        /// <param name="memExpr">[out] The source/destination pointer expression to access memory.</param>
+        /// <returns>
+        /// Addressing mode and source memory/register.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        protected (FSRIndexedMode indMode, Expression memPtr) GetUnaryPtrs(MachineOperand opernd, out Expression memExpr)
+        {
+            var (indMode, memPtr) = GetMemFileAccess(opernd);
+            switch (indMode)
+            {
+                case FSRIndexedMode.None:    // Direct mode
+                    memExpr = memPtr;
+                    break;
+
+                case FSRIndexedMode.INDF:    // Indirect modes
+                case FSRIndexedMode.POSTDEC:
+                case FSRIndexedMode.POSTINC:
+                case FSRIndexedMode.PREINC:
+                    memExpr = DataMem8(memPtr);
+                    break;
+
+                case FSRIndexedMode.PLUSW:   // Indirect-indexed mode
+                    memExpr = DataMem8(m.IAdd(memPtr, Wreg));
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Unable to create indirect pointer expression.");
+            }
+
+            return (indMode, memPtr);
+        }
+
+        /// <summary>
+        /// Gets the source address (SFR register or memory), addressing mode, actual source memory access
+        /// and actual destination access of a dual operand instruction (e.g. "ADDWF f,d,a").
+        /// </summary>
+        /// <param name="opernd">The instruction operand.</param>
+        /// <param name="memExpr">[out] The source pointer expression to access memory.</param>
+        /// <param name="dst">[out] Destination access expression (WREG or memory access).</param>
+        /// <returns>
+        /// Addressing mode and source memory/register.
+        /// </returns>
+        protected (FSRIndexedMode indMode, Expression memPtr) GetBinaryPtrs(out Expression memExpr, out Expression dst)
+        {
+            bool DestIsWreg(MachineOperand opernd)
+            {
+                switch (opernd)
+                {
+                    case PICOperandMemWRegDest wreg:
+                        return wreg.WRegIsDest;
+                }
+                return false;
+            }
+
+            var (indMode, memPtr) = GetUnaryPtrs(instrCurr.op1, out memExpr);
+            dst = (DestIsWreg(instrCurr.op2) ? Wreg : memExpr);
+            return (indMode, memPtr);
+        }
+
+        /// <summary>
+        /// Gets the source/destination absolute address (SFR register or memory), addressing mode and actual memory access
+        /// of an absolute address instruction. (e.g. the <code>"fd"</code> of <code>"MOVSF zs,fd"</code>).
+        /// </summary>
+        /// <param name="opernd">The instruction operand.</param>
+        /// <param name="memExpr">[out] The source/destination pointer expression to access memory.</param>
+        /// <returns>
+        /// Addressing mode and source memory/register.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">Thrown when the instruction operand is invalid.</exception>
+        protected (FSRIndexedMode indMode, Expression adr) GetUnaryAbsPtrs(MachineOperand opernd, out Expression memExpr)
+        {
+            var (indMode, memPtr) = GetDataAbsAddress(opernd);
+            switch (indMode)
+            {
+                case FSRIndexedMode.None:    // Direct mode
+                    memExpr = memPtr;
+                    break;
+
+                case FSRIndexedMode.INDF:    // Indirect modes
+                case FSRIndexedMode.POSTDEC:
+                case FSRIndexedMode.POSTINC:
+                case FSRIndexedMode.PREINC:
+                    memExpr = DataMem8(memPtr);
+                    break;
+
+                case FSRIndexedMode.PLUSW:   // Indirect-indexed mode
+                    memExpr = DataMem8(m.IAdd(memPtr, Wreg));
+                    break;
+
+                default:
+                    throw new InvalidOperationException($"Unable to adjust indirect pointer. Indexation mode: {indMode}");
+            }
+
+            return (indMode, memPtr);
         }
 
     }

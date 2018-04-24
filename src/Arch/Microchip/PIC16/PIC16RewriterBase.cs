@@ -190,7 +190,7 @@ namespace Reko.Arch.Microchip.PIC16
         protected void GetSrc(out Expression srcMem)
         {
             var src = instrCurr.op1 as PICOperandBankedMemory ?? throw new InvalidOperationException($"Invalid memory operand: {instrCurr.op1}");
-            srcMem = GetMemFileAccess(instrCurr.op1).memPtr;
+            GetUnaryPtrs(src, out srcMem);
         }
 
         protected void GetSrcAndDst(out Expression srcMem, out Expression dstMem)
