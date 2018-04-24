@@ -25,8 +25,7 @@ function run_shell(cmd, dir, ...args){
 }
 
 var global_deps = [
-    "typescript",
-    "node-gyp"
+    "electron"
 ];
 
 pr_status("[+] Installing required global dependencies");
