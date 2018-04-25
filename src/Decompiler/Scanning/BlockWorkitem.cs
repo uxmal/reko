@@ -129,8 +129,6 @@ namespace Reko.Scanning
         {
             state.SetInstructionPointer(ric.Address);
             SetAssumedRegisterValues(ric.Address);
-            if (ric.Address.ToLinear() == 0x00000000005a3c40)   //$DEBUG
-                ric.Address.ToLinear();
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
@@ -529,8 +527,6 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
-            if (ric.Address.ToLinear() == 0x005A3C4E) //$DEBUG
-                ric.ToString();
             if ((call.Class & RtlClass.Delay) != 0)
             {
                 // Get delay slot instruction cluster.
@@ -615,8 +611,6 @@ namespace Reko.Scanning
                 return !EmitSystemServiceCall(syscall);
             }
 
-            if (ric.Address.ToLinear() == 0x00594b28)
-                ric.Address.ToLinear(); //$DEBUG
             ProcessIndirectControlTransfer(ric.Address, call);
             var ic = new CallInstruction(call.Target, site);
             Emit(ic);
