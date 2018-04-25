@@ -327,6 +327,11 @@ namespace Reko.Scanning
         {
             return this.BitRange.CompareTo(that.BitRange);
         }
+
+        public override string ToString()
+        {
+            return $"({this.Type},{this.BitRange})";
+        }
     }
 
     /// <summary>
@@ -583,19 +588,21 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if (binExp.Operator == Operator.ISub && Live != null)
+            if (binExp.Operator == Operator.ISub && Live != null && ctx.Type == ContextType.Condition)
             {
                 var domLeft = DomainOf(seLeft.SrcExpr);
-                foreach (var live in Live.Keys)
+                foreach (var live in Live)
                 {
-                    if (DomainOf(live) == domLeft)
+                    if (live.Value.Type != ContextType.Jumptable)
+                        continue;
+                    if (DomainOf(live.Key) == domLeft)
                     {
-                        if (slicer.AreEqual(this.assignLhs, this.JumpTableIndex))
+                        if (slicer.AreEqual(this.assignLhs, this.JumpTableIndex)) 
                         {
                             //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-                            this.JumpTableIndex = live;
+                            this.JumpTableIndex = live.Key;
                             this.JumpTableIndexToUse = binExp.Left;
-                            this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
+                            this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
                             DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
                             return new SlicerResult
                             {
@@ -604,11 +611,11 @@ namespace Reko.Scanning
                             };
                         }
                     }
-                    if (this.slicer.AreEqual(live, binExp.Left))
+                    if (this.slicer.AreEqual(live.Key, binExp.Left))
                     {
-                        this.JumpTableIndex = live;
+                        this.JumpTableIndex = live.Key;
                         this.JumpTableIndexToUse = binExp.Left;
-                        this.JumpTableIndexInterval = MakeInterval_ISub(live, binExp.Right as Constant);
+                        this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
                         return new SlicerResult
                         {
                             SrcExpr = binExp,
@@ -640,7 +647,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitBranch(RtlBranch branch)
         {
-            var se = branch.Condition.Accept(this, BackwardSlicerContext.Jump(new BitRange(0, 0)));
+            var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
             var addrTarget = branch.Target as Address;
             if (addrTarget == null)
                 throw new NotImplementedException();    //#REVIEW: do we ever see this?
@@ -853,7 +860,6 @@ namespace Reko.Scanning
         {
             var se = tc.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(tc.Expression)));
             this.ccNext = tc.ConditionCode;
-            this.JumpTableIndex = tc.Expression;
             return se;
         }
 
