@@ -595,7 +595,9 @@ namespace Reko.Scanning
                 {
                     if (live.Value.Type != ContextType.Jumptable)
                         continue;
-                    if (domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
+                    if ((domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
+                        ||
+                        (this.slicer.AreEqual(live.Key, binExp.Left)))
                     {
                         //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
                         this.JumpTableIndex = live.Key;
@@ -606,17 +608,6 @@ namespace Reko.Scanning
                         {
                             SrcExpr = binExp,
                             Stop = true
-                        };
-                    }
-                    if (this.slicer.AreEqual(live.Key, binExp.Left))
-                    {
-                        this.JumpTableIndex = live.Key;
-                        this.JumpTableIndexToUse = binExp.Left;
-                        this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
-                        return new SlicerResult
-                        {
-                            SrcExpr = binExp,
-                            Stop = true,
                         };
                     }
                 }
