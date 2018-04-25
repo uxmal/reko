@@ -595,7 +595,7 @@ namespace Reko.Scanning
                 {
                     if (live.Value.Type != ContextType.Jumptable)
                         continue;
-                    if (DomainOf(live.Key) == domLeft)
+                    if (domLeft != StorageDomain.Memory && DomainOf(live.Key) == domLeft)
                     {
                         //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
                         this.JumpTableIndex = live.Key;
