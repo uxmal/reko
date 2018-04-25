@@ -51,7 +51,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Error };
+        internal static TraceSwitch trace = new TraceSwitch("BackwardSlicer", "Traces the backward slicer") { Level = TraceLevel.Verbose };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private SliceState state;
@@ -597,19 +597,16 @@ namespace Reko.Scanning
                         continue;
                     if (DomainOf(live.Key) == domLeft)
                     {
-                        if (slicer.AreEqual(this.assignLhs, this.JumpTableIndex)) 
+                        //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
+                        this.JumpTableIndex = live.Key;
+                        this.JumpTableIndexToUse = binExp.Left;
+                        this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
+                        DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
+                        return new SlicerResult
                         {
-                            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
-                            this.JumpTableIndex = live.Key;
-                            this.JumpTableIndexToUse = binExp.Left;
-                            this.JumpTableIndexInterval = MakeInterval_ISub(live.Key, binExp.Right as Constant);
-                            DebugEx.PrintIf(BackwardSlicer.trace.TraceVerbose, "  Found range of {0}: {1}", live, JumpTableIndexInterval);
-                            return new SlicerResult
-                            {
-                                SrcExpr = binExp,
-                                Stop = true
-                            };
-                        }
+                            SrcExpr = binExp,
+                            Stop = true
+                        };
                     }
                     if (this.slicer.AreEqual(live.Key, binExp.Left))
                     {
