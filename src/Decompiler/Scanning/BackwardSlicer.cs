@@ -623,9 +623,12 @@ namespace Reko.Scanning
                     Stop = true,
                 };
             }
+            IEnumerable<KeyValuePair<Expression,BackwardSlicerContext>> liveExpr = seLeft.LiveExprs;
+            if (seRight != null)
+                liveExpr = liveExpr.Concat(seRight.LiveExprs);
             var se = new SlicerResult
             {
-                LiveExprs = seLeft.LiveExprs.Concat(seRight.LiveExprs)
+                LiveExprs = liveExpr
                     .GroupBy(e => e.Key)
                     .ToDictionary(k => k.Key, v => v.Max(vv => vv.Value)),
                 SrcExpr = binExp,
