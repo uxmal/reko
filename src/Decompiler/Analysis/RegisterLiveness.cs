@@ -241,8 +241,8 @@ namespace Reko.Analysis
 				StringWriter sw = new StringWriter();
 				ProcedureFlow flow = mpprocData[proc];
 				sw.WriteLine(proc.Name);
-				DataFlow.EmitRegisters(program.Architecture, "\tByPass: ", flow.ByPass, sw); sw.WriteLine();
-				DataFlow.EmitRegisters(program.Architecture, "\tMayUse: ", flow.MayUse, sw); sw.WriteLine();
+				DataFlow.EmitRegisters(proc.Architecture, "\tByPass: ", flow.ByPass, sw); sw.WriteLine();
+				DataFlow.EmitRegisters(proc.Architecture, "\tMayUse: ", flow.MayUse, sw); sw.WriteLine();
 				Debug.WriteLine(sw.ToString());
 			}
 		}
