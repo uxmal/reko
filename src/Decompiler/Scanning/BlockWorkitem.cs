@@ -539,11 +539,8 @@ namespace Reko.Scanning
             Address addr = CallTargetAsAddress(call);
             if (addr != null)
             {
-                if (!program.SegmentMap.IsValidAddress(addr))
-                {
-                    return GenerateCallToOutsideProcedure(site, addr);
-                }
-
+                // Some image loaders generate import symbols at addresses
+                // outside of the program image. 
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)
                 {
@@ -556,6 +553,13 @@ namespace Reko.Scanning
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
+
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    return GenerateCallToOutsideProcedure(site, addr);
+                }
+
+
 
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);

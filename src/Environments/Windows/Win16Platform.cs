@@ -126,24 +126,6 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override void EnsureTypeLibraries(string envName)
-        {
-            if (Metadata != null)
-            {
-                return;
-            }
-            base.EnsureTypeLibraries(envName);
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var envCfg = cfgSvc.GetEnvironment(PlatformIdentifier);
-            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-            foreach (ITypeLibraryElement tl in envCfg.TypeLibraries)
-            {
-                var path = cfgSvc.GetInstallationRelativePath(tl.Name);
-                Metadata = new WineSpecFileLoader(Services, tl.Name, File.ReadAllBytes(path))
-                                .Load(this, tl.Module, Metadata);
-            }
-        }
-
         public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
             var sig = SignatureGuesser.SignatureFromName(fnName, this);
