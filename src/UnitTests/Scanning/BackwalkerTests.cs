@@ -317,7 +317,7 @@ namespace Reko.UnitTests.Scanning
                 m.IAdd(
                     m.Word32(0x001066A2),
                     m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
-                RtlClass.Transfer);
+                InstrClass.Transfer);
 
             m.Label("default_case");
             m.Return();

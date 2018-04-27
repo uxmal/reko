@@ -233,12 +233,12 @@ namespace Reko.Scanning
                 // Find all links that connect instructions that have
                 // different components
                 var components_to_merge_raw =
-                (from link in sr.FlatEdges
-                 join t1 in the_blocks.Values on link.first equals t1.id
-                 join t2 in the_blocks.Values on link.second equals t2.id
-                 where t1.component_id != t2.component_id
-                 select new link { first = t1.component_id, second = t2.component_id })
-                .Distinct();
+                    (from link in sr.FlatEdges
+                     join t1 in the_blocks.Values on link.first equals t1.id
+                     join t2 in the_blocks.Values on link.second equals t2.id
+                     where t1.component_id != t2.component_id
+                     select new link { first = t1.component_id, second = t2.component_id })
+                    .Distinct();
                 // Ensure symmetry (only for WCC, SCC should remove this)
                 var components_to_merge =
                     components_to_merge_raw
@@ -314,7 +314,7 @@ namespace Reko.Scanning
                     continue;
                 // If succ follows instr and it's not the entry of a known procedure
                 // or a called address, we don't need the edge between them since they're inside
-                // a basic block. We also succ as belonging to the same block as instr.
+                // a basic block. We also mark succ as belonging to the same block as instr.
                 // Since we're iterating through FlatInstructions in ascending address order,
                 // the block_id's will propagate from the first instruction in each block 
                 // to the next.

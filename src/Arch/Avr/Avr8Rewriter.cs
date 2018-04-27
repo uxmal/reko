@@ -442,7 +442,7 @@ namespace Reko.Arch.Avr
 
         private void SkipIf(Func<Expression, Expression,Expression> cond)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             //$BUG: may boom if there is no next instruction.
             var nextInstr = dasm.Peek(1);
             var left = RewriteOp(0);

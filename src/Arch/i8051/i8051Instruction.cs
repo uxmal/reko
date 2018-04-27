@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Reko.Arch.i8051
 {
     public class i8051Instruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {

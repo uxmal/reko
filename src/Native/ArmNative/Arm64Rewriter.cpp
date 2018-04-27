@@ -73,11 +73,11 @@ STDMETHODIMP_(int32_t) Arm64Rewriter::Next()
 	{
 		// Failed to disassemble the instruction because it was invalid.
 		m.Invalid();
-		m.FinishCluster(RtlClass::Invalid, addrInstr, 4);
+		m.FinishCluster(InstrClass::Invalid, addrInstr, 4);
 		return S_OK;
 	}
 	// Most instructions are linear.
-	rtlClass = RtlClass::Linear;
+	rtlClass = InstrClass::Linear;
 	
 	switch (instr->id)
 	{
