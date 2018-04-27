@@ -429,15 +429,3 @@ VariantInit @8
 VariantTimeToDosDateTime @13
 VariantTimeToSystemTime @185
 VectorFromBstr @413
-        501      00032F50 [NONAME]
-        502      00034660 [NONAME]
-
-  Summary
-
-        3000 .data
-        1000 .didat
-        A000 .pdata
-       27000 .rdata
-        3000 .reloc
-        1000 .rsrc
-       8B000 .text
