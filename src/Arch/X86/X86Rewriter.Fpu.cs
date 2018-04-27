@@ -134,7 +134,7 @@ namespace Reko.Arch.X86
             m.BranchInMiddleOfInstruction(
                 m.Test(cc, orw.FlagGroup(flag)),
                 instrCur.Address + instrCur.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
 
             var dst = SrcOp(instrCur.op1);
             var src = SrcOp(instrCur.op2);

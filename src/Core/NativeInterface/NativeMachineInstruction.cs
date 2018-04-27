@@ -9,7 +9,7 @@ namespace Reko.Core.NativeInterface
 {
     public class NativeMachineInstruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {

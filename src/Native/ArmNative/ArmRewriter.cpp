@@ -73,11 +73,11 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	{
 		// Failed to disassemble the instruction because it was invalid.
 		m.Invalid();
-		m.FinishCluster(RtlClass::Invalid, addrInstr, 4);
+		m.FinishCluster(InstrClass::Invalid, addrInstr, 4);
 		return S_OK;
 	}
 	// Most instructions are linear.
-	rtlClass = RtlClass::Linear;
+	rtlClass = InstrClass::Linear;
 	
 	// Most instructions have a conditional mode of operation.
 	//$TODO: make sure non-conditional instructions are handled correctly here.
@@ -578,14 +578,14 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	if (link)
 	{
-		rtlClass = RtlClass::Transfer;
+		rtlClass = InstrClass::Transfer;
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
 		}
 		else
 		{
-			rtlClass = RtlClass::ConditionalTransfer;
+			rtlClass = InstrClass::ConditionalTransfer;
 			ConditionalSkip(true);
 			m.Call(dst, 0);
 		}
@@ -594,15 +594,15 @@ void ArmRewriter::RewriteB(bool link)
 	{
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
-			rtlClass = RtlClass::Transfer;
+			rtlClass = InstrClass::Transfer;
 			m.Goto(dst);
 		}
 		else
 		{
-			rtlClass = RtlClass::ConditionalTransfer;
+			rtlClass = InstrClass::ConditionalTransfer;
 			if (dstIsAddress)
 			{
-				m.Branch(TestCond(instr->detail->arm.cc), dst, RtlClass::ConditionalTransfer);
+				m.Branch(TestCond(instr->detail->arm.cc), dst, InstrClass::ConditionalTransfer);
 			}
 			else
 			{
@@ -615,11 +615,11 @@ void ArmRewriter::RewriteB(bool link)
 
 void ArmRewriter::RewriteCbnz(HExpr(*ctor)(INativeRtlEmitter & m, HExpr e))
 {
-	rtlClass = RtlClass::ConditionalTransfer;
+	rtlClass = InstrClass::ConditionalTransfer;
 	auto cond = Operand(Dst(), BaseType::Word32, true);
 	m.Branch(ctor(m, Operand(Dst())),
 		m.Ptr32((uint32_t)Src1().imm),
-		RtlClass::ConditionalTransfer);
+		InstrClass::ConditionalTransfer);
 }
 
 // If a conditional ARM instruction is encountered, generate an IL
@@ -643,7 +643,7 @@ void ArmRewriter::ConditionalSkip(bool force)
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
 		m.Ptr32(static_cast<uint32_t>(instr->address) + 4),
-		RtlClass::ConditionalTransfer);
+		InstrClass::ConditionalTransfer);
 }
 
 HExpr ArmRewriter::EffectiveAddress(const arm_op_mem & mem)

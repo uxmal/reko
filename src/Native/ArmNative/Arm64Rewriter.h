@@ -157,7 +157,7 @@ private:
 	const uint8_t * rawBytes;
 	size_t available;			// Available bytes left past rawBytes
 	uint64_t address;
-	RtlClass rtlClass;
+	InstrClass rtlClass;
 
 	static const BaseType register_types[];
 	static const int type_sizes[];

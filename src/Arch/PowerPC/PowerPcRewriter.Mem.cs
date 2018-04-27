@@ -134,7 +134,7 @@ namespace Reko.Arch.PowerPC
             var rDst = ((RegisterOperand)instr.op1).Register;
             if ((rDst.Number & 1) == 1)
             {
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }

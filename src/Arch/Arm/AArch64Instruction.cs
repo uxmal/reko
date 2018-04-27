@@ -51,14 +51,14 @@ namespace Reko.Arch.Arm
             nInstr = null;
         }
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
-            get { return (InstructionClass)info.InstructionClass; }
+            get { return (InstrClass)info.InstructionClass; }
         }
 
         public override bool IsValid
         {
-            get { return this.InstructionClass != InstructionClass.Invalid; }
+            get { return this.InstructionClass != InstrClass.Invalid; }
         }
 
         public override int OpcodeAsInteger

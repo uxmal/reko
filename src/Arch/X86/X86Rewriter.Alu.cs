@@ -182,7 +182,7 @@ namespace Reko.Arch.X86
 
         private void RewriteRdmsr()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             Identifier edx_eax = binder.EnsureSequence(
                 Registers.edx,
                 Registers.eax,
@@ -198,7 +198,7 @@ namespace Reko.Arch.X86
 
         private void RewriteRdpmc()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             Identifier edx_eax = binder.EnsureSequence(
                 Registers.edx,
                 Registers.eax,

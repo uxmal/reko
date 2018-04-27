@@ -126,7 +126,7 @@ namespace Reko.Arch.X86
                 {
                     if (arch.WordWidth.Size > 2)
                     {
-                        rtlc = RtlClass.Invalid;
+                        rtlc = InstrClass.Invalid;
                         m.Invalid();
                         return;
                     }
@@ -198,7 +198,7 @@ namespace Reko.Arch.X86
             var target = SrcOp(instrCur.op1);
             if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
             {
-                rtlc = RtlClass.Invalid;
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -267,14 +267,14 @@ namespace Reko.Arch.X86
 
         private void RewriteSysexit()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.SideEffect(host.PseudoProcedure("__sysexit", VoidType.Instance));
             m.Return(0,0);
         }
 
         private void RewriteSysret()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.SideEffect(host.PseudoProcedure("__sysret", VoidType.Instance));
             m.Return(0,0);
         }
