@@ -794,7 +794,7 @@ namespace Reko.Scanning
 
         public SlicerResult VisitNop(RtlNop rtlNop)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public SlicerResult VisitOutArgument(OutArgument outArgument, BackwardSlicerContext ctx)
@@ -839,7 +839,10 @@ namespace Reko.Scanning
 
         public SlicerResult VisitSideEffect(RtlSideEffect side)
         {
-            return null;
+            return new SlicerResult
+            {
+                Stop = true
+            };
         }
 
         public SlicerResult VisitSlice(Slice slice, BackwardSlicerContext ctx)
