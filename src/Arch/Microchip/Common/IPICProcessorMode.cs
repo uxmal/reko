@@ -107,6 +107,12 @@ namespace Reko.Arch.Microchip.Common
         /// </returns>
         Address MakeAddressFromConstant(Constant c);
 
+        /// <summary>
+        /// Creates a memory banked address.
+        /// </summary>
+        /// <param name="bsrReg">The Bank Select register value.</param>
+        /// <param name="offset">The offset in the memory bank.</param>
+        Address CreateBankedAddress(byte bsrReg, byte offset);
     }
 
 }

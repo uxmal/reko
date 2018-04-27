@@ -53,6 +53,9 @@ namespace Reko.Arch.Microchip.PIC18
         public override PICProcessorState CreateProcessorState(PICArchitecture arch)
             => new PIC18State(arch);
 
+        public override Address CreateBankedAddress(byte bsrReg, byte offset)
+            => Address.Ptr16((ushort)((bsrReg << 8) + offset));
+
     }
 
     internal class PIC18EggMode : PICProcessorMode
@@ -79,6 +82,10 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override PICProcessorState CreateProcessorState(PICArchitecture arch)
             => new PIC18State(arch);
+
+        public override Address CreateBankedAddress(byte bsrReg, byte offset)
+            => Address.Ptr16((ushort)((bsrReg << 8) + offset));
+
     }
 
     internal class PIC18EnhancedMode : PICProcessorMode
@@ -105,6 +112,10 @@ namespace Reko.Arch.Microchip.PIC18
 
         public override PICProcessorState CreateProcessorState(PICArchitecture arch)
             => new PIC18State(arch);
+
+        public override Address CreateBankedAddress(byte bsrReg, byte offset)
+            => Address.Ptr16((ushort)((bsrReg << 8) + offset));
+
     }
 
 }

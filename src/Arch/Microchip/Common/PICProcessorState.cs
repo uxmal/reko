@@ -36,8 +36,8 @@ namespace Reko.Arch.Microchip.Common
     {
 
         protected PICArchitecture arch;
-        protected Dictionary<PICRegisterStorage, uint> regs;  // Registers values. Only for valid registers.
-        protected HashSet<RegisterStorage> isValid;           // Validity of registers. Note: if not valid, there is no corresponding entry in 'regs'.
+        protected Dictionary<PICRegisterStorage, uint> ValidRegsValues; // Registers values. Only for valid registers.
+        protected HashSet<RegisterStorage> ValidRegs;                   // Validity of registers. Note: if not valid, there is no corresponding entry in 'regs'.
 
         /// <summary>
         /// Constructor.
@@ -46,8 +46,8 @@ namespace Reko.Arch.Microchip.Common
         public PICProcessorState(PICArchitecture arch)
         {
             this.arch = arch;
-            regs = new Dictionary<PICRegisterStorage, uint>();
-            isValid = new HashSet<RegisterStorage>();
+            ValidRegsValues = new Dictionary<PICRegisterStorage, uint>();
+            ValidRegs = new HashSet<RegisterStorage>();
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace Reko.Arch.Microchip.Common
         {
             arch = st.arch;
             HWStackItems = st.HWStackItems;
-            regs = new Dictionary<PICRegisterStorage, uint>(st.regs);
-            isValid = new HashSet<RegisterStorage>(st.isValid);
+            ValidRegsValues = new Dictionary<PICRegisterStorage, uint>(st.ValidRegsValues);
+            ValidRegs = new HashSet<RegisterStorage>(st.ValidRegs);
         }
 
         #region ProcessorState interface
@@ -77,7 +77,7 @@ namespace Reko.Arch.Microchip.Common
         /// True if valid, false if not.
         /// </returns>
         public bool IsValid(RegisterStorage reg)
-            => isValid.Contains(reg);
+            => ValidRegs.Contains(reg);
 
         //TODO: use 'access' mask of PIC registers to amend GetRegister/SetRegister results.
 
@@ -92,7 +92,7 @@ namespace Reko.Arch.Microchip.Common
         {
             if ((reg is PICRegisterStorage preg) && IsValid(preg))
             {
-                return Constant.Create(reg.DataType, regs[preg] & preg.Impl);
+                return Constant.Create(reg.DataType, ValidRegsValues[preg] & preg.Impl);
             }
             return Constant.Invalid;
         }
@@ -108,12 +108,12 @@ namespace Reko.Arch.Microchip.Common
             {
                 if (c?.IsValid ?? false)
                 {
-                    isValid.Add(preg);
-                    regs[preg] = (byte)(c.ToByte() & preg.Impl);
+                    ValidRegs.Add(preg);
+                    ValidRegsValues[preg] = (byte)(c.ToByte() & preg.Impl);
                     return;
                 }
             }
-            isValid.Remove(reg);
+            ValidRegs.Remove(reg);
         }
 
         /// <summary>

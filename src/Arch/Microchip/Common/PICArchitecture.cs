@@ -188,6 +188,9 @@ namespace Reko.Arch.Microchip.Common
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());
 
+        public override Address MakeSegmentedAddress(Constant seg, Constant offset)
+            => ProcessorMode.CreateBankedAddress(seg.ToByte(), offset.ToByte());
+
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
             => PICProgAddress.Ptr(rdr.ReadLeUInt32());
 
