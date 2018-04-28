@@ -359,14 +359,23 @@ namespace Reko.Analysis
                 return true;
             }
 
+            if (pc.Procedure is ExternalProcedure ep)
+            {
+                // External procedures with signatures will have generated
+                // an Application earlier; without signatures they will have
+                // generated hell nodes. In either case we can't propagate 
+                // anything, so we leave early.
+                return true;
+            }
             var callee = pc.Procedure as Procedure;
             if (callee == null)
                 throw new NotImplementedException();
 
             if (sccGroup.Any(s => s.SsaState.Procedure == callee))
             {
-                // we're calling a function in the recursion group. If 
-                // we are not in propagate to callers, simply stop this block.
+                // We're calling a function in the recursion group. If 
+                // we are not in propagate to callers mode, simply stop 
+                // at this block.
                 if (!propagateToCallers)
                 {
                     selfRecursiveCalls = true;
