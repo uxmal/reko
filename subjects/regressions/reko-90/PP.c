@@ -14857,13 +14857,12 @@ word16 fn0800_A215(word16 bp, selector ds, word16 wArg02, word16 wArg04, ptr16 &
 // 0800:A2A3: Register word16 fn0800_A2A3(Register byte al, Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack segptr32 ptrArg06, Stack word16 wArg0A)
 word16 fn0800_A2A3(byte al, selector ds, word16 wArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg0A)
 {
-	msdos_unknown_2144();
-	word16 dx_11 = (word16) ptrArg06;
 	word16 ax_16 = DPB(ax, bArg04, 0);
-	if (!C)
+	word16 dx_21;
+	if (!msdos_ioctl_get_device_info(wArg02, out dx_21))
 	{
 		if (wArg04 == 0x00)
-			ax_16 = dx_11;
+			ax_16 = dx_21;
 	}
 	else
 		ax_16 = fn0800_8D2B(ds, ax_16);
@@ -15021,7 +15020,7 @@ selector fn0800_A4F6(word16 bp, selector ds, word16 wArg02, word16 wArg04, word1
 word16 fn0800_A53C(byte al, selector ds, segptr32 ptrArg02, byte bArg06, word16 wArg08)
 {
 	word16 ax_24;
-	msdos_unknown_2143();
+	__syscall(33);
 	word16 ax_15 = DPB(ax, bArg06, 0);
 	if (!C)
 		ax_24 = wArg08;
