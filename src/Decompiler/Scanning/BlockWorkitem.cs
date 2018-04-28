@@ -589,6 +589,9 @@ namespace Reko.Scanning
 
             if (call.Target is Identifier id)
             {
+                //$REVIEW: this is a hack. Were we in SSA form,
+                // we could quickly determine if `id` is assigned
+                // to constant.
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
                 {
@@ -716,6 +719,9 @@ namespace Reko.Scanning
 
             if (sigCallee != null && sigCallee.StackDelta != 0)
             {
+                // Generate explicit stack adjustment expression
+                // SP = SP + stackDelta
+                // after the call.
                 Expression newVal = new BinaryExpression(
                     Operator.IAdd,
                     stackReg.DataType,
