@@ -300,30 +300,6 @@ namespace Reko.UnitTests.Typing
 		}
 
         [Test]
-        [Category(Categories.IntegrationTests)]
-        [Ignore(Categories.AnalysisDevelopment)]
-        public void TrcoReg00011()
-        {
-            RunTest16("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
-        }
-
-        [Test]
-        [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
-        public void TrcoReg00012()
-        {
-            RunTest16("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
-        }
-
-        [Test]
-        [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
-        public void TrcoReg00014()
-        {
-            RunTest32("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
-        }
-
-        [Test]
 		public void TrcoIntelIndexedAddressingMode()
 		{
 			ProgramBuilder m = new ProgramBuilder();

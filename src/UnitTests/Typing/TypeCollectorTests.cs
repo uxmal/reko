@@ -304,5 +304,20 @@ namespace Reko.UnitTests.Typing
             RunTest16("Fragments/factorial_reg.asm", "Typing/TycoFactorialReg.txt");
         }
 
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        //[Ignore(Categories.AnalysisDevelopment)]
+        public void TrcoReg00011()
+        {
+            RunTest16("Fragments/regressions/r00011.asm", "Typing/TycoReg00011.txt");
+        }
+
+        [Test]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
+        public void TycoReg00012()
+        {
+            RunTest16("Fragments/regressions/r00012.asm", "Typing/TycoReg00012.txt");
+        }
     }
 }

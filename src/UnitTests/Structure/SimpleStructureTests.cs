@@ -181,7 +181,6 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void StrFactorialReg()
         {
@@ -258,7 +257,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        //[Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void StrReg00013()
         {
@@ -299,7 +298,7 @@ ret
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        //[Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void StrReg00001()
         {
@@ -307,30 +306,30 @@ ret
                 Fragments.Regressions.Reg00001.Text,
                 Address.Ptr32(0x00100000));
             var sExp =
-@"void fn00100000()
+@"void fn00100000(word32 dwArg00, word32 dwArg04)
 {
-	Mem6[0x02000000:word32] = fn0010000C(dwArg00, dwArg04);
+	Mem11[0x02000000:word32] = fn0010000C(dwArg00, dwArg04);
 }
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 {
-	word32 ecx_13 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04;
-	word32 esi_21 = (word32) Mem0[ecx_13 + 0x00000006:word16];
-	word32 edx_22 = 0x00000000;
-	word32 eax_25 = (word32) Mem0[ecx_13 + 0x00000014:word16] + 0x00000012 + ecx_13 + 0x0000000C;
-	if (true)
+	word32 ecx_11 = Mem7[dwArg04 + 0x0000003C:word32] + dwArg04;
+	word32 esi_19 = (word32) Mem18[ecx_11 + 0x00000006:word16];
+	word32 edx_20 = 0x00000000;
+	word32 eax_23 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11 + 0x0000000C;
+	if (esi_19 >u 0x00000000)
 	{
 		do
 		{
-			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
-			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
-				return eax_24;
-			edx_21 = edx_21 + 0x00000001;
-			eax_24 = eax_24 + 0x00000028;
-		} while (edx_21 <u esi_20);
+			word32 ecx_31 = Mem22[eax_23 + 0x00000000:word32];
+			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 0x00000008:word32] + ecx_31)
+				return eax_23;
+			edx_20 = edx_20 + 0x00000001;
+			eax_23 = eax_23 + 0x00000028;
+		} while (edx_20 <u esi_19);
 	}
-	eax_24 = 0x00000000;
-	return eax_24;
+	eax_23 = 0x00000000;
+	return eax_23;
 }
 ===
 ";

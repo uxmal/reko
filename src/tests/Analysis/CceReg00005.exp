@@ -209,33 +209,33 @@ fn0C00_000C_entry:
 	def Mem0
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp_2 = fp
-	es_5 = ds
-	di_6 = 0x7E0F
-	cx_7 = 0x000C
-	ax_32 = DPB(ax, 0x00, 0) (alias)
-	SZO_9 = cond(0x00)
+	di_7 = 0x7E0F
+	cx_8 = 0x000C
+	ax_38 = DPB(ax, 0x00, 0) (alias)
+	SZO_10 = cond(0x00)
+	Z_23 = SLICE(SZO_10, bool, 2) (alias)
 	// succ:  l0C00_0019
 l0C00_0019:
-	Z_19 = PHI(SZO_9, SCZO_15)
-	di_13 = PHI(di_6, di_16)
-	cx_11 = PHI(cx_7, cx_17)
-	branch cx_11 == 0x0000 l0C00_001B
+	ax_36 = PHI(ax_38, ax_39)
+	Z_22 = PHI(Z_23, Z_20)
+	di_15 = PHI(di_7, di_18)
+	ax_39 = DPB(ax_36, 0x00, 0) (alias)
+	ax_40 = DPB(ax_36, 0x00, 0) (alias)
+	cx_12 = PHI(cx_8, cx_19)
+	branch cx_12 == 0x0000 l0C00_001B
 	// succ:  l0C00_0019_1 l0C00_001B
 l0C00_0019_1:
-	SCZO_15 = cond(0x00 - Mem0[ds:di_13:byte])
-	di_16 = di_13 + 0x0001
-	cx_17 = cx_11 - 0x0001
-	branch 0x00 != Mem0[ds:di_13:byte] l0C00_0019
+	SCZO_17 = cond(0x00 - Mem0[ds:di_15:byte])
+	Z_20 = SLICE(SCZO_17, bool, 2) (alias)
+	di_18 = di_15 + 0x0001
+	cx_19 = cx_12 - 0x0001
+	branch 0x00 != Mem0[ds:di_15:byte] l0C00_0019
 	// succ:  l0C00_001B l0C00_0019
 l0C00_001B:
-	sp_54 = PHI(sp_2, sp_55)
-	cx_43 = PHI(cx_11, cx_17)
-	ax_29 = PHI(ax_32, ax_30)
-	di_26 = PHI(di_13, di_16)
-	ds_24 = PHI(ds, ds_25)
-	Z_18 = PHI(Z_19, SCZO_15)
-	branch Z_18 l0C00_002D
+	ax_35 = PHI(ax_40, ax_39)
+	di_32 = PHI(di_15, di_18)
+	Z_21 = PHI(Z_22, Z_20)
+	branch Z_21 l0C00_002D
 	// succ:  l0C00_001D l0C00_002D
 l0C00_001D:
 	ah_28 = Mem0[ds_24:di_26 + 0x0001:byte]

@@ -21,23 +21,18 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class ConditionCodeEliminatorTests : AnalysisTestBase
 	{
 		private SsaIdentifierCollection ssaIds;
@@ -106,6 +101,7 @@ namespace Reko.UnitTests.Analysis
                     importResolver, 
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
+
                 var larw = new LongAddRewriter(ssa);
                 larw.Transform();
 
@@ -172,7 +168,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("suffers from infinite recursion")]
+   //     [Ignore("suffers from infinite recursion")]
         public void CceReg00005()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
@@ -479,7 +475,7 @@ done:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+    //    [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CceIsqrt()
         {
