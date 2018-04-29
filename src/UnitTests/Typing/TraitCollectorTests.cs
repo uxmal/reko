@@ -50,21 +50,6 @@ namespace Reko.UnitTests.Typing
 			nl = Environment.NewLine;
 		}
 
-		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
-        public void TrcoFactorial()
-		{
-			RunTest16("Fragments/factorial.asm", "Typing/TrcoFactorial.txt");
-		}
-
-		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
-        public void TrcoFactorialReg()
-		{
-			RunTest16("Fragments/factorial_reg.asm", "Typing/TrcoFactorialReg.txt");
-		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]

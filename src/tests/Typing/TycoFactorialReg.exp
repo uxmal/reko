@@ -31,30 +31,22 @@ l0C00_001F:
 fn0C00_000B_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (segment (64 int16 w0064))
-	T_2 (in ds : selector)
-Eq_3: (fn int16 (int16))
-	T_3 (in fn0C00_000B : segptr32)
-	T_4 (in signature of fn0C00_000B : void)
-	T_15 (in fn0C00_000B : segptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
+  DataType: (ptr (struct))
   OrigDataType: (ptr (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr Eq_2)
+  DataType: (ptr (segment (64 T_9 t0064)))
   OrigDataType: (ptr (segment (64 T_9 t0064)))
 T_3: (in fn0C00_000B : segptr32)
   Class: Eq_3
-  DataType: (ptr Eq_3)
+  DataType: (ptr (fn T_7 (T_6)))
   OrigDataType: (ptr (fn T_7 (T_6)))
 T_4: (in signature of fn0C00_000B : void)
   Class: Eq_3
-  DataType: (ptr Eq_3)
+  DataType: 
   OrigDataType: 
 T_5: (in cx : word16)
   Class: Eq_5
@@ -62,19 +54,19 @@ T_5: (in cx : word16)
   OrigDataType: int16
 T_6: (in 0x0005 : word16)
   Class: Eq_5
-  DataType: int16
+  DataType: word16
   OrigDataType: word16
 T_7: (in fn0C00_000B(0x0005) : word16)
   Class: Eq_7
-  DataType: int16
+  DataType: word16
   OrigDataType: word16
 T_8: (in 0x0064 : word16)
   Class: Eq_8
-  DataType: (memptr (ptr Eq_2) int16)
+  DataType: (memptr T_2 (struct (0 T_9 t0000)))
   OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
 T_9: (in Mem14[ds:0x0064:word16] : word16)
   Class: Eq_7
-  DataType: int16
+  DataType: word16
   OrigDataType: word16
 T_10: (in ax : word16)
   Class: Eq_10
@@ -86,7 +78,7 @@ T_11: (in ax_11 : word16)
   OrigDataType: word16
 T_12: (in 0x0001 : word16)
   Class: Eq_5
-  DataType: int16
+  DataType: ci16
   OrigDataType: ci16
 T_13: (in cx <= 0x0001 : bool)
   Class: Eq_13
@@ -98,7 +90,7 @@ T_14: (in 0x0001 : word16)
   OrigDataType: word16
 T_15: (in fn0C00_000B : segptr32)
   Class: Eq_3
-  DataType: (ptr Eq_3)
+  DataType: (ptr (fn T_18 (T_17)))
   OrigDataType: (ptr (fn T_18 (T_17)))
 T_16: (in 0x0001 : word16)
   Class: Eq_16
@@ -106,10 +98,10 @@ T_16: (in 0x0001 : word16)
   OrigDataType: int16
 T_17: (in cx - 0x0001 : word16)
   Class: Eq_5
-  DataType: int16
+  DataType: ci16
   OrigDataType: ci16
 T_18: (in fn0C00_000B(cx - 0x0001) : word16)
-  Class: Eq_7
+  Class: Eq_18
   DataType: int16
   OrigDataType: int16
 T_19: (in cx *s fn0C00_000B(cx - 0x0001) : int32)

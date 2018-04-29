@@ -107,7 +107,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void TtranFactorialReg()
         {

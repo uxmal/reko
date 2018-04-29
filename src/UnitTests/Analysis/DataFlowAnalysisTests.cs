@@ -103,15 +103,14 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/DfaFactorial.txt");
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaFactorialReg()
 		{
@@ -119,8 +118,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaFibonacci()
 		{
 			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
@@ -232,8 +231,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaReg00007()
         {
             RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/DfaReg00007.txt");
@@ -255,7 +254,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void DfaReg00011()
         {

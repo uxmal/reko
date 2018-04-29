@@ -1,62 +1,44 @@
 Register word32 fn10000000(Stack word32 dwArg04)
-// MayUse: 
+// MayUse:  Stack +0004:[0..31]
 // LiveOut: eax
-// Trashed: SCZO ah al ax eax rax
+// Trashed: SCZO eax Top
 // Preserved: edi esi esp
-// Stack args: Stack +0004(32)
 // fn10000000
 // Return size: 0
-// Mem0:Mem memory
+// Mem0:Mem
 // fp:fp
 // esp:esp
 // esi:esi
-// SCZO:Flags
-// SZO:Flags
+// SCZO:SCZO
+// SZO:SZO
 // eax:eax
 // edi:edi
+// Top:Top
 // dwLoc04:Local -0004
 // dwArg04:Stack +0004
 // dwLoc08:Local -0008
 // dwLoc0C:Local -000C
+// S:S
+// C:C
+// Z:Z
+// O:O
 // dwLoc10:Local -0010
 // return address size: 4
 word32 fn10000000(word32 dwArg04)
 fn10000000_entry:
+	def dwArg04
 	// succ:  l10000000
 l10000000:
-	esp = fp
-	esp = fp - 0x00000004
-	dwLoc04 = esi
-	esi = dwArg04
-	SCZO = cond(esi - 0x00000001)
-	branch Test(GT,SZO) l10000011
+	branch dwArg04 > 0x00000001 l10000011
 	// succ:  l1000000A l10000011
 l1000000A:
-	eax = 0x00000001
-	esi = dwLoc04
-	esp = fp
-	return eax
+	eax_37 = 0x00000001
+	return eax_37
 	// succ:  fn10000000_exit
 l10000011:
-	eax = esi - 0x00000002
-	esp = fp - 0x00000008
-	dwLoc08 = edi
-	esp = fp - 0x0000000C
-	dwLoc0C = eax
-	eax = fn10000000(dwLoc0C)
-	esi = esi - 0x00000001
-	SZO = cond(esi)
-	esp = fp - 0x00000010
-	dwLoc10 = esi
-	edi = eax
-	eax = fn10000000(dwLoc10)
-	esp = fp - 0x00000008
-	eax = eax + edi
-	SCZO = cond(eax)
-	edi = dwLoc08
-	esp = fp - 0x00000004
-	esi = dwLoc04
-	esp = fp
-	return eax
+	eax_17 = fn10000000(dwArg04)
+	eax_26 = fn10000000(dwArg04)
+	eax_31 = eax_26 + eax_17
+	return eax_31
 	// succ:  fn10000000_exit
 fn10000000_exit:

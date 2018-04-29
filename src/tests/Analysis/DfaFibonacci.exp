@@ -1,10 +1,9 @@
 // Register word32 fn10000000(Stack word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse: 
+// MayUse:  Stack +0004:[0..31]
 // LiveOut: eax
-// Trashed: SCZO ah al ax eax rax
+// Trashed: SCZO eax Top
 // Preserved: edi esi esp
-// Stack args: Stack +0004(32)
 // fn10000000
 // Return size: 0
 word32 fn10000000(word32 dwArg04)

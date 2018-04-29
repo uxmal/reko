@@ -287,5 +287,22 @@ namespace Reko.UnitTests.Typing
             });
             RunTest(pp.BuildProgram(), "Typing/TycoStructMembers.txt");
         }
+
+        [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void TycoFactorial()
+        {
+            RunTest16("Fragments/factorial.asm", "Typing/TycoFactorial.txt");
+        }
+
+        [Test]
+//        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void TycoFactorialReg()
+        {
+            RunTest16("Fragments/factorial_reg.asm", "Typing/TycoFactorialReg.txt");
+        }
+
     }
 }

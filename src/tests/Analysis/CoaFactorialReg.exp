@@ -1,12 +1,20 @@
 fp:fp
 sp_2: orig: sp
-cx_3: orig: cx
-ax_4: orig: ax
+Top_3: orig: Top
+cx_4: orig: cx
+ax_5: orig: ax
+Top_6: orig: Top
+cx_7: orig: cx
+dx_8: orig: dx
+S_9: orig: S
+C_10: orig: C
+Z_11: orig: Z
+O_12: orig: O
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x0064:word16] = fn0C00_000B(0x0005)
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x0064:word16] = fn0C00_000B(0x0005)
+    uses: Mem14[ds:0x0064:word16] = fn0C00_000B(0x0005)
+Mem14: orig: Mem0
+    def:  Mem14[ds:0x0064:word16] = fn0C00_000B(0x0005)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -14,44 +22,68 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem6[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	Mem14[ds:0x0064:word16] = fn0C00_000B(0x0005)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 fp:fp
 sp_2: orig: sp
-sp_3: orig: sp
+Top_3: orig: Top
+sp_4: orig: sp
 si:si
-wLoc02_5: orig: wLoc02
+ss:ss
+Mem7: orig: Mem0
 cx:cx
     def:  def cx
-    uses: branch cx <= 0x0001 l0C00_001C
-          ax_15 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
-          ax_15 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
-SCZO_7: orig: SCZO
-ax_8: orig: ax
-    def:  ax_8 = 0x0001
-    uses: ax_21 = PHI(ax_15, ax_8)
-si_9: orig: si
-cx_10: orig: cx
-SZO_11: orig: SZO
-ax_12: orig: ax
-dx_ax_13: orig: dx_ax
-dx_14: orig: dx
-ax_15: orig: ax
-    def:  ax_15 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
-    uses: ax_21 = PHI(ax_15, ax_8)
-SCZO_16: orig: SCZO
-wLoc02_17: orig: wLoc02
-    def:  wLoc02_17 = PHI(wLoc02_5, wLoc02_5)
-si_18: orig: si
-fp_19: orig: fp
-    def:  fp_19 = PHI(fp, fp)
-sp_20: orig: sp
-ax_21: orig: ax
-    def:  ax_21 = PHI(ax_15, ax_8)
-    uses: return ax_21
+    uses: ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+          ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+          branch cx <= 0x0001 l0C00_001C
+SCZO_9: orig: SCZO
+SZO_10: orig: SZO
+ax_11: orig: ax
+    def:  ax_11 = 0x0001
+    uses: ax_32 = PHI(ax_23, ax_11)
+si_12: orig: si
+cx_13: orig: cx
+SZO_14: orig: SZO
+sp_15: orig: sp
+cx_16: orig: cx
+ax:ax
+ax_18: orig: ax
+Top_19: orig: Top
+SCZO_20: orig: SCZO
+dx_ax_21: orig: dx_ax
+dx_22: orig: dx
+ax_23: orig: ax
+    def:  ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+    uses: ax_32 = PHI(ax_23, ax_11)
+SCZO_24: orig: SCZO
+dx_31: orig: dx
+sp_26: orig: sp
+wLoc02_30: orig: wLoc02
+si_28: orig: si
+sp_29: orig: sp
+ax_32: orig: ax
+    def:  ax_32 = PHI(ax_23, ax_11)
+    uses: return ax_32
+C_33: orig: C
+C_34: orig: C
+C_35: orig: C
+cx_36: orig: cx
+dx_37: orig: dx
+dx:dx
+O_39: orig: O
+O_40: orig: O
+O_41: orig: O
+S_42: orig: S
+S_43: orig: S
+S_44: orig: S
+Top_45: orig: Top
+Z_46: orig: Z
+Z_47: orig: Z
+Z_48: orig: Z
+sp_49: orig: sp
 // fn0C00_000B
 // Return size: 0
 word16 fn0C00_000B(word16 cx)
@@ -62,15 +94,15 @@ l0C00_000B:
 	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_15 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
+	ax_23 = (word16) (cx *s fn0C00_000B(cx - 0x0001)) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax_8 = 0x0001
+	ax_11 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	ax_21 = PHI(ax_15, ax_8)
-	return ax_21
+	ax_32 = PHI(ax_23, ax_11)
+	return ax_32
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
 
