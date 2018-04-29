@@ -48,6 +48,7 @@ namespace Reko.Analysis
         private IProcessorArchitecture arch;
         private DecompilerEventListener eventListener;
         private ProgramDataFlow flow;
+        private HashSet<Procedure> ssts;
         private Identifier idCur;
         private ProcedureFlow procFlow;
         private SsaState ssa;
@@ -57,10 +58,12 @@ namespace Reko.Analysis
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
+            SsaTransform[] ssts,
             DecompilerEventListener eventListener)
         {
             this.arch = arch;
             this.flow = flow;
+            this.ssts = ssts.Select(s => s.SsaState.Procedure).ToHashSet();
             this.eventListener = eventListener;
             this.visited = new Dictionary<PhiAssignment, BitRange>();
         }
@@ -168,6 +171,14 @@ namespace Reko.Analysis
 
         public BitRange VisitCallInstruction(CallInstruction ci)
         {
+            if (ci.Callee is ProcedureConstant pc &&
+                pc.Procedure is Procedure procCallee &&
+                ssts.Contains(procCallee))
+            {
+                // calls to self will force "loop" of live
+                // variables.
+                return BitRange.Empty;
+            }
             var brFn = ci.Callee.Accept(this);
             var brArgs = ci.Uses.Aggregate(
                     BitRange.Empty,

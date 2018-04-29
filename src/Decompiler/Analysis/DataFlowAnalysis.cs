@@ -176,13 +176,13 @@ namespace Reko.Analysis
                 sst.Transform();
             }
 
-            var uid = new UsedRegisterFinder(program.Architecture, flow, this.eventListener);
+            var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
-                uid.ComputeLiveIn(ssa, false);
+                uid.ComputeLiveIn(ssa, true);
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, ssts);
             }
         }

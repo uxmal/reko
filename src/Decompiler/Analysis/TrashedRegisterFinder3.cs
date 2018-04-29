@@ -603,7 +603,7 @@ namespace Reko.Analysis
             public readonly Dictionary<Identifier, Tuple<Expression, BitRange>> IdState;
             public readonly Dictionary<int, Expression> StackState;
             public ProcedureFlow ProcFlow;
-            public bool IsDirty;
+            public bool IsDirty { get; set; }
             private SsaState ssa;
             private readonly ExpressionValueComparer cmp;
 
@@ -710,6 +710,8 @@ namespace Reko.Analysis
 
             public Expression GetValue(Identifier id)
             {
+                if (id.Storage is StackStorage stack)
+                    return StackState.Get(stack.StackOffset);
                 if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
                     return null;
                 else
@@ -762,15 +764,31 @@ namespace Reko.Analysis
 
             public void SetValue(Identifier id, Expression value, BitRange range)
             {
-                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
+                if (id.Storage is StackStorage stack)
                 {
-                    IsDirty = true;
-                    IdState.Add(id, Tuple.Create(value, range));
+                    if (!StackState.TryGetValue(stack.StackOffset, out Expression oldValue))
+                    {
+                        IsDirty = true;
+                        StackState.Add(stack.StackOffset, value);
+                    }
+                    else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
+                    {
+                        IsDirty = true;
+                        StackState[stack.StackOffset] = Constant.Invalid;
+                    }
                 }
-                else if (!cmp.Equals(oldValue.Item1, value))
+                else
                 {
-                    IsDirty = true;
-                    IdState[id] = Tuple.Create(value, range);
+                    if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
+                    {
+                        IsDirty = true;
+                        IdState.Add(id, Tuple.Create(value, range));
+                    }
+                    else if (!cmp.Equals(oldValue.Item1, value))
+                    {
+                        IsDirty = true;
+                        IdState[id] = Tuple.Create(value, range);
+                    }
                 }
             }
 

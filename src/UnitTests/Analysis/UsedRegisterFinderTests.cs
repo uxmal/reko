@@ -113,6 +113,7 @@ namespace Reko.UnitTests.Analysis
             var urf = new UsedRegisterFinder(
                 arch, 
                 pf,
+                new SsaTransform[] { sst },
                 NullDecompilerEventListener.Instance);
             var flow = urf.ComputeLiveIn(sst.SsaState, true);
             var sw = new StringWriter();

@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.AnalysisDevelopment)]
-        [Ignore(Categories.AnalysisDevelopment)]
+    //    [Ignore(Categories.AnalysisDevelopment)]
         public void CrwFactorialReg()
         {
             RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");

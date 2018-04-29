@@ -1,72 +1,76 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds
+// MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Trashed: SCZO ax cx dx Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Mem memory
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // cx:cx
 // ds:ds
 // ax:ax
+// Top:Top
+// dx:dx
+// S:S
+// C:C
+// Z:Z
+// O:O
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
-	cx = 0x0005
-	ax = fn0C00_000B(cx)
-	Mem0[ds:0x0064:word16] = ax
+	ax_5 = fn0C00_000B(0x0005)
+	Mem14[ds:0x0064:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_000B(Register word16 cx)
-// MayUse:  cx
+// MayUse:  cx:[0..15]
 // LiveOut: ax
-// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Trashed: SCZO ax cx dx Top
 // Preserved: si sp
 // fn0C00_000B
 // Return size: 0
-// Mem0:Mem memory
+// Mem0:Mem
 // fp:fp
 // sp:sp
 // si:si
 // ss:ss
 // cx:cx
-// SCZO:Flags
-// SZO:Flags
+// SCZO:SCZO
+// SZO:SZO
 // ax:ax
 // dx_ax:Sequence dx:ax
+// Top:Top
+// dx:dx
 // wLoc02:Local -0002
+// S:S
+// C:C
+// Z:Z
+// O:O
 // return address size: 2
 word16 fn0C00_000B(word16 cx)
 fn0C00_000B_entry:
+	def cx
 	// succ:  l0C00_000B
 l0C00_000B:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = si
-	SCZO = cond(cx - 0x0001)
-	branch Test(LE,SZO) l0C00_001C
+	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	si = cx
-	cx = cx - 0x0001
-	SZO = cond(cx)
-	ax = fn0C00_000B(cx)
-	dx_ax = si *s ax
-	SCZO = cond(dx_ax)
+	ax_18 = fn0C00_000B(cx - 0x0001)
+	dx_ax_21 = cx *s ax_18
+	ax_23 = (word16) dx_ax_21 (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax = 0x0001
+	ax_11 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	si = wLoc02
-	sp = fp
-	return ax
+	ax_32 = PHI(ax_23, ax_11)
+	return ax_32
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
