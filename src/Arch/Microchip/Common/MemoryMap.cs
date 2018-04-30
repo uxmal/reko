@@ -42,7 +42,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// This class defines the current PIC memory traits (characteristics).
         /// </summary>
-        protected class MemTraits : IMemTraitsSymbolVisitor
+        protected sealed class MemTraits : IMemTraitsSymbolVisitor
         {
             #region Class helpers
 
@@ -615,7 +615,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// This class defines the program memory map of current PIC.
         /// </summary>
-        protected class ProgMemoryMap : MemoryMapBase<ProgMemRegion>, IMemProgramRegionVisitor
+        protected sealed class ProgMemoryMap : MemoryMapBase<ProgMemRegion>, IMemProgramRegionVisitor
         {
             /// <summary>
             /// Constructor.
@@ -722,7 +722,7 @@ namespace Reko.Arch.Microchip.Common
         /// <summary>
         /// This class defines the data memory map of current PIC.
         /// </summary>
-        protected class DataMemoryMap : MemoryMapBase<DataMemRegion>, IMemDataRegionVisitor, IMemDataSymbolVisitor
+        protected sealed class DataMemoryMap : MemoryMapBase<DataMemRegion>, IMemDataRegionVisitor, IMemDataSymbolVisitor
         {
 
             #region Member fields
