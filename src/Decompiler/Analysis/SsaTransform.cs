@@ -103,6 +103,10 @@ namespace Reko.Analysis
         public SsaState Transform()
         {
             this.sidsToRemove = new HashSet<SsaIdentifier>();
+            foreach(var bs in blockstates.Values)
+            {
+                bs.Visited = false;
+            }
 
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
