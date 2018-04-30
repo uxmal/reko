@@ -754,7 +754,10 @@ namespace Reko.Scanning
         {
             foreach (var reg in program.Platform.CreateTrashedRegisters())
             {
-                state.SetValue(reg, Constant.Invalid);
+                // $REVIEW: do not trash stack register. It gives regression
+                // on some MSDOS binaries
+                if (reg != arch.StackRegister)
+                    state.SetValue(reg, Constant.Invalid);
             }
         }
 

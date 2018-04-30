@@ -33033,21 +33033,22 @@ fn0800_A215_exit:
 word16 fn0800_A2A3(byte al, selector ds, word16 wArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg0A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al ds
+// MayUse:  C al ds
 // LiveOut: al ax
 // Trashed: SCZO ah al ax bh bl bx ch cl cx dh dl ds dx eax ebx ecx edx rax rbx rcx rdx
 // Preserved: bp ds sp
-// Stack args: Stack +0002(16) Stack +0004(16)
+// Stack args: Stack +0004(16) Stack +0006(32)
 fn0800_A2A3_entry:
 // DataOut: al di ds si ss
-// DataOut (flags): 
+// DataOut (flags): C
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0002(16) Stack +0004(16)
+// LocalsOut: fp(16) Stack +0004(16) Stack +0006(32)
 
 l0800_A2A3:
+	msdos_unknown_2144()
+	word16 dx_11 = (word16) ptrArg06
 	word16 ax_16 = DPB(ax, bArg04, 0)
-	word16 dx_21
-	branch msdos_ioctl_get_device_info(wArg02, out dx_21) l0800_A2C6
+	branch C l0800_A2C6
 // DataOut: al ax di ds dx si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -33071,7 +33072,7 @@ l0800_A2C4:
 // SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 Sequence ds:dx:<invalid> ah:0x44 al:<invalid> bx:<invalid> cx:<invalid> ds:ds -4(fp):ds -2(fp):bp
 
 l0800_A2C0:
-	ax_16 = dx_21
+	ax_16 = dx_11
 // DataOut: al ax di si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 Sequence ds:dx:<invalid> ah:0x44 al:<invalid> bx:<invalid> cx:<invalid> ds:ds -4(fp):ds -2(fp):bp
@@ -33584,7 +33585,7 @@ fn0800_A53C_entry:
 
 l0800_A53C:
 	word16 ax_24
-	__syscall(0x21)
+	msdos_unknown_2143()
 	word16 ax_15 = DPB(ax, bArg06, 0)
 	branch C l0800_A553
 // DataOut: ax cx di ds si ss
