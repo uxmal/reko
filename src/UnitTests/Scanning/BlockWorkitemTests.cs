@@ -35,6 +35,7 @@ using System.IO;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
 using System;
+using System.Linq;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -121,6 +122,44 @@ namespace Reko.UnitTests.Scanning
         {
             state = value;
             return true;
+        }
+
+        private void Given_TrashedRegisters(params Identifier[] regs)
+        {
+            program.Platform = new FakePlatform(null, arch)
+            {
+                Test_CreateTrashedRegisters =
+                    () => regs
+                        .Select(id => (RegisterStorage)id.Storage)
+                        .ToHashSet()
+            };
+        }
+
+        private Address Given_Trace(Action<RtlEmitter> generator)
+        {
+            var addr = Address.Ptr32(0x00100000);
+            trace.Add(generator);
+            scanner.Stub(s => s.GetTrace(null, null, null))
+                .IgnoreArguments()
+                .Return(trace);
+            scanner.Stub(s => s.FindContainingBlock(addr))
+                .IgnoreArguments()
+                .Return(block);
+            return addr;
+        }
+
+        private void AssertBlockCode(string expected, Block block)
+        {
+            var actual = Environment.NewLine;
+            foreach (var stm in block.Statements)
+            {
+                actual += stm.Instruction.ToString() + Environment.NewLine;
+            }
+            if (expected != actual)
+            {
+                Debug.Print(actual);
+                Assert.AreEqual(expected, actual);
+            }
         }
 
         [Test]
@@ -861,6 +900,31 @@ testProc_exit:
             wi.Process();
 
             Assert.AreEqual("call fn00123400 (retsize: 0;)", block.Statements[3].Instruction.ToString());
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void BwiTrashRegisterAfterCall()
+        {
+            Given_TrashedRegisters(r1);
+            var addrStart = Given_Trace(m =>
+            {
+                m.Assign(r1, 0xBAD);
+                m.Call(r2, 4);
+                m.Call(r1, 4);
+            });
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart);
+            wi.Process();
+
+            var expected =
+@"
+r1 = 0x00000BAD
+call r2 (retsize: 4;)
+call r1 (retsize: 4;)
+";
+            AssertBlockCode(expected, block);
             mr.VerifyAll();
         }
     }
