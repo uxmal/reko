@@ -158,12 +158,27 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private void When_RewriteCalls(SsaState ssa)
+        private CallRewriter When_CallRewriterCreated()
         {
             var program = pb.BuildProgram();
             var flow = new ProgramDataFlow(program);
-            var crw = new CallRewriter(program.Platform, flow, new FakeDecompilerEventListener());
+            var crw = new CallRewriter(
+                program.Platform,
+                flow,
+                new FakeDecompilerEventListener());
+            return crw;
+        }
+
+        private void When_RewriteCalls(SsaState ssa)
+        {
+            var crw = When_CallRewriterCreated();
             crw.RewriteCalls(ssa);
+        }
+
+        private void When_RewriteReturns(SsaState ssa)
+        {
+            var crw = When_CallRewriterCreated();
+            crw.RewriteReturns(ssa);
         }
 
         private void AssertExpected(string sExp, SsaState ssa)
@@ -821,6 +836,43 @@ main_exit:
 body:
 	fn(arg)
 	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwReturnRegisterNotFound()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var rOut = new RegisterStorage("out", 1, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                m.Label("body");
+                m.Return();
+            });
+            Given_Signature(
+                "main",
+                FunctionType.Func(
+                    new Identifier(
+                        "ret",
+                        PrimitiveType.Word32,
+                        ret),
+                    new Identifier(
+                        "out",
+                        PrimitiveType.Word32,
+                        new OutArgumentStorage(
+                            ssa.Procedure.Frame.EnsureRegister(rOut)))));
+
+            When_RewriteReturns(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	out = <invalid>
+	return <invalid>
 main_exit:
 ";
             #endregion
