@@ -28,8 +28,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microchip PIC")]
-[assembly: AssemblyDescription("Provides disassembly support for Microchip PIC16/PIC18 architecture")]
+[assembly: AssemblyTitle("Microchip PIC user interface component")]
+[assembly: AssemblyDescription("Reko decompiler GUI components for the Microchip PIC processor architecture")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("C. Hostelet")]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]
@@ -43,7 +43,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a959c1a2-a622-4600-81ad-29e08545b2f7")]
+[assembly: Guid("e75c3be2-0f98-48cd-943d-198159b57dc7")]
 
 // Version information for an assembly consists of the following four values:
 //

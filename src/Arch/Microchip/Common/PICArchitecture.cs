@@ -60,6 +60,8 @@ namespace Reko.Arch.Microchip.Common
 
         protected IPICProcessorMode ProcessorMode { get; }
 
+        public PICOptions Options { get; set; }
+
         /// <summary>
         /// Loads the PIC configuration. Creates memory mapper and registers for the targetted PIC.
         /// </summary>
@@ -170,6 +172,35 @@ namespace Reko.Arch.Microchip.Common
             return res;
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options != null)
+            {
+                Options = new PICOptions
+                {
+                    ExecMode = (options.ContainsKey("ExtendedMode") && (string)options["ExtendedMode"] == "true" ?
+                                PICExecMode.Extended : PICExecMode.Traditional)
+                };
+                if (options.TryGetValue("Model", out var smodel))
+                    Options.Mode = PICProcessorMode.GetMode(smodel as string);
+                else
+                    throw new InvalidOperationException("Missing PIC model in options.");
+            }
+        }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            if (Options == null)
+                return null;
+            var dict = new Dictionary<string, object>();
+            if (Options.ExecMode == PICExecMode.Extended)
+            {
+                dict["ExtendedMode"] = "true";
+            }
+            dict["Model"] = Options.Mode.PICName;
+            return dict;
+        }
+
         public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
             => new LeImageReader(image, addr);
 
@@ -196,7 +227,6 @@ namespace Reko.Arch.Microchip.Common
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
             => Address.TryParse32(txtAddress, out addr);
-
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             => mem.TryReadLe(addr, dt, out value);

@@ -47,6 +47,7 @@
     <Compile Include="Common\IOperandVisitor.cs" />
     <Compile Include="Common\IPICProcessorMode.cs" />
     <Compile Include="Common\PICMemoryDescriptor.cs" />
+    <Compile Include="Common\PICOptions.cs" />
     <Compile Include="Common\PICRegisterBitFieldStorage.cs" />
     <Compile Include="Common\PICDisassemblerBase.cs" />
     <Compile Include="Common\PICInstructionComparer.cs" />
