@@ -20,29 +20,12 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace Reko.Arch.MicrochipPIC.Design
 {
-    public partial class PICArchitecturePanel : UserControl
+    public class PickerResult
     {
-        public PICArchitecturePanel()
-        {
-            InitializeComponent();
-        }
-
-        public CheckBox ExtendedModeCheckBox => chkExtendedMode;
-        public RadioButton PIC16RadioButton => rdbPIC16;
-        public RadioButton PIC18RadioButton => rdbPIC18;
-        public ComboBox ModelComboBox => cbbModel;
+        public string PICName;
+        public bool AllowExtended;
     }
 
 }
