@@ -295,22 +295,5 @@ foo_exit:
 ";
             AssertProc(sExp, proc);
         }
-
-        [Ignore("Only works on @uxmal's machine right now")]
-        [Test]
-        public void LLPB_File()
-        {
-            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
-            {
-
-                var parser = new LLVMParser(new LLVMLexer(rdr));
-                var module = parser.ParseModule();
-                var program = new Program();
-                mr.ReplayAll();
-
-                var pb = new ProgramBuilder(sc, program);
-                program = pb.BuildProgram(module);
-            }
-        }
     }
 }
