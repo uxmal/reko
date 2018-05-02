@@ -98,7 +98,7 @@ l00011374:
 		do
 		{
 			globals->t1303C = (word32) globals->t1303C - 0x04;
-			Eq_183 r9_31 = globals->t1303C;
+			Eq_184 r9_31 = globals->t1303C;
 			if ((word32) (r9_31 < globals->t13040) != 0x00)
 			{
 				free(globals->t13040);
@@ -173,10 +173,10 @@ void fn000114E4()
 // 0001152C: Register (ptr code) fn0001152C(Register (ptr code) r2, Stack word32 dwArg00)
 code * fn0001152C(code * r2, word32 dwArg00)
 {
-	Eq_183 r8_10 = globals->t13040;
-	struct Eq_308 * sp_111 = fp + -0x0038;
+	Eq_184 r8_10 = globals->t13040;
+	struct Eq_309 * sp_111 = fp + -0x0038;
 	Eq_10 dwLoc20_138 = 0x00;
-	Eq_314 r8_19 = globals->t1303C - r8_10;
+	Eq_315 r8_19 = globals->t1303C - r8_10;
 	if (r8_19 < 0x00)
 		return sp_111->ptr002C;
 	if (r8_10 != 0x00)
@@ -209,7 +209,7 @@ code * fn0001152C(code * r2, word32 dwArg00)
 			}
 			if (sp_111->t0014 == 0x00 && (word32) (sp_111->t0018 < sp_111->t0024) != 0x00)
 			{
-				sp_111 = (struct Eq_308 *) ((char *) sp_111 - 0x04);
+				sp_111 = (struct Eq_309 *) ((char *) sp_111 - 0x04);
 				sp_111->t0014 = realloc(sp_111->t001C, sp_111->t0024);
 			}
 		}

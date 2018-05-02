@@ -101,7 +101,7 @@ namespace Reko.Core
                 return ep;
             }
             ctx.Warn("Unable to resolve imported reference {0}.", this);
-            return new ExternalProcedure(this.ToString(), null);
+            return new ExternalProcedure(this.ToString(), new FunctionType());
         }
 
         public override string ToString()
@@ -155,7 +155,7 @@ namespace Reko.Core
             if (ep != null)
                 return ep;
             ctx.Warn("Unable to resolve imported reference {0}.", this);
-            return new ExternalProcedure(this.ToString(), null);
+            return new ExternalProcedure(this.ToString(), new FunctionType());
         }
 
         public override string ToString()
