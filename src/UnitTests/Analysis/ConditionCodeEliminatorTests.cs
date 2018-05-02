@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-   //     [Ignore("suffers from infinite recursion")]
+        [Ignore("suffers from infinite recursion")]
         public void CceReg00005()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
@@ -475,7 +475,7 @@ done:
         }
 
         [Test]
-    //    [Ignore(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CceIsqrt()
         {
