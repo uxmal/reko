@@ -109,8 +109,8 @@ void frame_dummy(word64 r8)
 	}
 }
 
-// 0000000000400520: Register word32 verify(Register (arr Eq_135) rdi)
-word32 verify(Eq_135 rdi[])
+// 0000000000400520: Register word32 verify(Register (arr Eq_136) rdi)
+word32 verify(Eq_136 rdi[])
 {
 	word32 dwLoc0C_126 = 0x00;
 	while (true)
@@ -131,8 +131,8 @@ word32 verify(Eq_135 rdi[])
 	return eax_122;
 }
 
-// 00000000004005C5: void main(Register (ptr Eq_220) rsi, Register word32 edi)
-void main(Eq_220 * rsi, word32 edi)
+// 00000000004005C5: void main(Register (ptr Eq_221) rsi, Register word32 edi)
+void main(Eq_221 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
