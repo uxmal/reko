@@ -1,108 +1,58 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO bh bl bx ebx rbx
+	Trashed:   SCZO bx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = 0x0320
-	sp = fp - 0x0004
-	wLoc04 = 0x0300
-	call fn0C00_0010 (retsize: 2; depth: 6)
-	call fn0C00_0037 (retsize: 2; depth: 6)
-	sp = fp
-	SCZO = cond(fp)
+	call fn0C00_0010 (retsize: 2;)
+		uses: ds:ds,Stack +0002:0x0300,Stack +0004:0x0320
+	call fn0C00_0037 (retsize: 2;)
+		uses: ds:ds
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bx:<invalid> -4(fp):0x0300 -2(fp):0x0320
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0010 /////////////////////
-	LiveOut:   ds
-	BitsUsed: 
+	LiveOut:  
+	BitsUsed:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 	BypassIn: 
-	Trashed:   bh bl bx ebx rbx
+	Trashed:   bx FPU -1 FPU -2 Top
 	Preserved: bp sp
 // fn0C00_0010
 define fn0C00_0010
-// SymbolicIn: sp:fp
 fn0C00_0010_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16) Stack +0002(16) Stack +0004(16)
-
-// SymbolicIn: sp:fp
+	def ds
+	def wArg02
+	def wArg04
 l0C00_0010:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	bx = wArg02
-	rLoc1 = Mem0[ds:bx:real64]
-	rLoc1 = rLoc1 * rLoc1
-	rLoc2 = Mem0[ds:bx + 0x0008:real64]
-	rLoc2 = rLoc2 * rLoc2
-	rLoc1 = rLoc1 + rLoc2
-	rLoc2 = Mem0[ds:bx + 0x0010:real64]
-	rLoc2 = rLoc2 * rLoc2
-	rLoc1 = rLoc1 + rLoc2
-	bx = wArg04
-	Mem0[ds:bx:real64] = rLoc1
-	rLoc1 = (real64) Mem0[ds:bx + 0x0020:int16]
-	Mem0[ds:bx + 0x0028:real64] = rLoc1
-	sp = fp - 0x0002
-	bp = wLoc02
-	sp = fp
+	rLoc1_36 = Mem7[ds:wArg02:real64]
+	rLoc1_37 = rLoc1_36 * rLoc1_36
+	rLoc2_38 = Mem7[ds:wArg02 + 0x0008:real64]
+	rLoc2_39 = rLoc2_38 * rLoc2_38
+	rLoc1_40 = rLoc1_37 + rLoc2_39
+	rLoc2_41 = Mem7[ds:wArg02 + 0x0010:real64]
+	rLoc2_42 = rLoc2_41 * rLoc2_41
+	rLoc1_43 = rLoc1_40 + rLoc2_42
+	Mem25[ds:wArg04:real64] = rLoc1_43
+	rLoc1_45 = (real64) Mem25[ds:wArg04 + 0x0020:int16]
+	Mem29[ds:wArg04 + 0x0028:real64] = rLoc1_45
 	return
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp bx:<invalid> -2(fp):bp
 fn0C00_0010_exit:
-// DataOut: ds
-// DataOut (flags): 
-
 // fn0C00_0037 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:  
+	Trashed:   FPU -1 Top
 	Preserved: sp
 // fn0C00_0037
 define fn0C00_0037
-// SymbolicIn: sp:fp
 fn0C00_0037_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0037:
-	sp = fp
-	rLoc1 = 0.0
-	Mem0[ds:0x0400:real64] = rLoc1
-	rLoc1 = 1.0
-	Mem0[ds:0x0408:int32] = (int32) rLoc1
+	Mem7[ds:0x0400:real64] = 0.0
+	Mem11[ds:0x0408:int32] = (int32) 1.0
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
 fn0C00_0037_exit:
-// DataOut:
-// DataOut (flags): 
-

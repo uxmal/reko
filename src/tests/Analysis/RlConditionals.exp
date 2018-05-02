@@ -1,184 +1,80 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  bp:[0..15] ds:[0..15] ss:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax bp bpl eax ebp esp rax rbp rsp sp spl
+	Trashed:   SCZO ax bp sp Top
 	Preserved:
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def ds
+	def Mem0
+	def ss
+	def bp
 l0C00_0000:
-	sp = fp
-	ax = Mem0[ds:0x0100:word16]
-	SCZO = cond(Mem0[ds:0x0102:word16] - ax)
-	branch Test(EQ,Z) l0C00_000F
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	ax_6 = Mem0[ds:0x0100:word16]
+	branch Mem0[ds:0x0102:word16] == ax_6 l0C00_000F
 l0C00_000A:
-	Mem0[ds:0x0F00:byte] = 0x01
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem9[ds:0x0F00:byte] = 0x01
 l0C00_000F:
-	ax = Mem0[ds:0x0104:word16]
-	v7 = Mem0[ds:0x0106:word16] - ax
-	Mem0[ds:0x0106:word16] = v7
-	SCZO = cond(v7)
-	branch Test(LE,SZO) l0C00_001E
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem11 = PHI(Mem0, Mem9)
+	ax_12 = Mem11[ds:0x0104:word16]
+	v7_13 = Mem11[ds:0x0106:word16] - ax_12
+	Mem14[ds:0x0106:word16] = v7_13
+	branch v7_13 <= 0x0000 l0C00_001E
 l0C00_0019:
-	Mem0[ds:0x0F01:byte] = 0x01
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem17[ds:0x0F01:byte] = 0x01
 l0C00_001E:
-	ax = Mem0[ds:0x0106:word16]
-	ax = ax & Mem0[ds:0x0108:word16]
-	SZO = cond(ax)
-	C = false
-	branch Test(EQ,Z) l0C00_002D
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem19 = PHI(Mem14, Mem17)
+	ax_20 = Mem19[ds:0x0106:word16]
+	ax_21 = ax_20 & Mem19[ds:0x0108:word16]
+	branch ax_21 == 0x0000 l0C00_002D
 l0C00_0028:
-	Mem0[ds:0x0F02:byte] = 0x01
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem25[ds:0x0F02:byte] = 0x01
 l0C00_002D:
-	ax = Mem0[ds:0x010A:word16]
-	SCZO = cond(ax - Mem0[ds:0x010C:word16])
-	C = !C
-	branch Test(ULT,C) l0C00_003D
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem27 = PHI(Mem19, Mem25)
+	ax_28 = Mem27[ds:0x010A:word16]
+	branch ax_28 >=u Mem27[ds:0x010C:word16] l0C00_003D
 l0C00_0038:
-	Mem0[ds:0x0F03:byte] = 0x01
-// DataOut: bp ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp ax:<invalid>
+	Mem32[ds:0x0F03:byte] = 0x01
 l0C00_003D:
-	sp = fp - 0x0002
-	wLoc02 = 0x0003
-	call fn0C00_0069 (retsize: 2; depth: 4)
-	branch Test(UGE,C) l0C00_0049
-// DataOut: bp ds ss
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+	call fn0C00_0069 (retsize: 2;)
+		uses: Stack +0002:0x0003
+		defs: C:C_45
+	branch C_45 l0C00_0049
 l0C00_0044:
-	Mem0[ds:0x0F04:byte] = 0x01
-// DataOut: bp ds ss
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+	Mem49[ds:0x0F04:byte] = 0x01
 l0C00_0049:
-	SZO = cond(Mem0[ds:0x010E:word16] & 0x01FF)
-	C = false
-	branch Test(EQ,Z) l0C00_0056
-// DataOut: bp ds ss
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+	Mem51 = PHI(Mem43, Mem49)
+	branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
 l0C00_0051:
-	Mem0[ds:0x0F05:byte] = 0x01
-// DataOut: bp ds ss
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+	Mem55[ds:0x0F05:byte] = 0x01
 l0C00_0056:
-	bp = bp - 0x0010
-	SCZO = cond(bp)
-	branch Test(LT,SO) l0C00_005F
-// DataOut: bp ds ss
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
+	branch bp < 0x0010 l0C00_005F
 l0C00_005B:
-	Mem0[ss:bp + 0x0006:byte] = 0x01
-// DataOut: bp ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
+	Mem68[ss:bp - 0x000A:byte] = 0x01
 l0C00_005F:
-	bp = bp + bp
-	SCZO = cond(bp)
-	branch Test(NO,O) l0C00_0068
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
+	bp_70 = (bp - 0x0010) * 0x0002
+	branch !OVERFLOW(bp_70) l0C00_0068
 l0C00_0063:
-	Mem0[ds:0x0F07:byte] = 0x01
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
+	Mem75[ds:0x0F07:byte] = 0x01
 l0C00_0068:
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
 
 // fn0C00_0069 /////////////////////
-	LiveOut:   C ds ss
-	BitsUsed: 
+	LiveOut:   C
+	BitsUsed:  Stack +0002:[0..15]
 	BypassIn: 
-	Trashed:   SCZO
+	Trashed:   SCZO Top
 	Preserved: bp sp
 // fn0C00_0069
 define fn0C00_0069
-// SymbolicIn: sp:fp
 fn0C00_0069_entry:
-// DataOut: ds ss
-// DataOut (flags): 
-// LocalsOut: fp(16) Stack +0002(16)
-
-// SymbolicIn: sp:fp
+	def wArg02
 l0C00_0069:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	SCZO = cond(wArg02 - 0x0000)
-	bp = wLoc02
-	sp = fp
+	SCZO_9 = cond(wArg02 - 0x0000)
+	C_14 = SLICE(SCZO_9, bool, 1) (alias)
 	return
-// DataOut: ds ss
-// DataOut (flags): C
-
-// SymbolicIn: sp:fp bp:bp -2(fp):bp
 fn0C00_0069_exit:
-// DataOut: ds ss
-// DataOut (flags): C
-
+	use C_14

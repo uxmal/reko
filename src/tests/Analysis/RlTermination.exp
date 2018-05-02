@@ -1,84 +1,44 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  ds
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   ax cx bx al cl bl ah ch bh
+	Trashed:   SCZO ax bx cx Top
 	Preserved: sp
 // fn0C00_0000
-void fn0C00_0000()
-// SymbolicIn: sp:fp
+define fn0C00_0000
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	cx = 0x007B
-	ax = 0x0020
-	bx = 0x3212
-	ax = maybeterminate(0x0020, 0x3212)
-	Mem0[ds:0x0230:word16] = ax
-	Mem0[ds:0x0234:word16] = 0x007B
+	call fn0C00_0015 (retsize: 2;)
+		uses: ax:0x0020,bx:0x3212,ds:ds
+		defs: ax:ax_8
+	Mem14[ds:0x0230:word16] = ax_8
+	Mem15[ds:0x0234:word16] = 0x007B
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:0x007B ax:<invalid> bx:0x3212
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
-// maybeterminate /////////////////////
-	LiveOut:  
-	MayUseIn:  ax bx ds
+// fn0C00_0015 /////////////////////
+	LiveOut:   ax
+	BitsUsed:  ax:[0..15] bx:[0..15] ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ax bx al bl ah bh
+	Trashed:   SCZO ax bx Top
 	Preserved: sp
-// maybeterminate
-word16 maybeterminate(word16 ax, word16 bx)
-// SymbolicIn: sp:fp
-maybeterminate_entry:
-// DataOut: ax bx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+// fn0C00_0015
+define fn0C00_0015
+fn0C00_0015_entry:
+	def ax
+	def ds
+	def bx
+	def Mem0
 l0C00_0015:
-	sp = fp
-	SCZO = cond(ax - Mem0[ds:bx:word16])
-	branch Test(ULT,C) l0C00_0023
-// DataOut: ax bx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	branch ax <u Mem0[ds:bx:word16] l0C00_0023
 l0C00_0019:
-	SCZO = cond(ax - Mem0[ds:bx + 0x0002:word16])
-	branch Test(UGE,C) l0C00_0023
-// DataOut: ax bx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	branch ax >=u Mem0[ds:bx + 0x0002:word16] l0C00_0023
 l0C00_001E:
-	bx = bx + ax
-	SCZO = cond(bx)
-	ax = Mem0[ds:bx:word16]
+	bx_19 = bx + ax
+	ax_21 = Mem0[ds:bx_19:word16]
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
 l0C00_0023:
-	cx = 0x0000
-	SZO = cond(0x0000)
-	C = false
-	Mem0[ds:0x0232:word16] = 0x0000
-	ax = 0x4C00
-	msdos_terminate(al)
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bx:bx + ax ax:<invalid>
-maybeterminate_exit:
-// DataOut:
-// DataOut (flags): 
-
+	Mem16[ds:0x0232:word16] = 0x0000
+	msdos_terminate(0x00)
+fn0C00_0015_exit:
+	use ax_21

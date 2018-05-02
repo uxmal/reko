@@ -1,96 +1,53 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  di:[0..15] ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: di sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: di ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def ds
+	def di
 l0C00_0000:
-	sp = fp
-	call fn0C00_000F (retsize: 2; depth: 2)
-	sp = fp - 0x0002
-	wLoc02 = di
-	ax = 0x0100
-	call fn0C00_0014 (retsize: 2; depth: 4)
-	Mem0[ds:0x0300:word16] = ax
-	di = wLoc02
-	sp = fp
-// DataOut: di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
+	call fn0C00_000F (retsize: 2;)
+		uses: di:di,ds:ds
+	call fn0C00_0014 (retsize: 2;)
+		uses: ax:0x0100
+		defs: ax:ax_10
+	Mem16[ds:0x0300:word16] = ax_10
 l0C00_000E_thunk_fn0C00_000F:
-	call fn0C00_000F (retsize: 2; depth: 2)
+	call fn0C00_000F (retsize: 0;)
+		uses: di:di,ds:ds
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp ax:<invalid> di:di -2(fp):di
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_000F /////////////////////
-	LiveOut:   di ds
-	BitsUsed: 
+	LiveOut:  
+	BitsUsed:  di:[0..15] ds:[0..15]
 	BypassIn: 
-	Trashed:  
+	Trashed:   Top
 	Preserved: sp
 // fn0C00_000F
 define fn0C00_000F
-// SymbolicIn: sp:fp
 fn0C00_000F_entry:
-// DataOut: di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def di
 l0C00_000F:
-	sp = fp
-	Mem0[ds:di:word16] = 0x0000
+	Mem6[ds:di:word16] = 0x0000
 	return
-// DataOut: di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
 fn0C00_000F_exit:
-// DataOut: di ds
-// DataOut (flags): 
-
 // fn0C00_0014 /////////////////////
-	LiveOut:   ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  ax:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax di dil eax edi rax rdi
+	Trashed:   SCZO ax di Top
 	Preserved: sp
 // fn0C00_0014
 define fn0C00_0014
-// SymbolicIn: sp:fp
 fn0C00_0014_entry:
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ax
 l0C00_0014:
-	sp = fp
-	di = 0x0000
-	SZO = cond(0x0000)
-	C = false
-	ax = ax - 0x0001
-	SZO = cond(ax)
+	ax_7 = ax - 0x0001
 	return
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp di:0x0000 ax:ax - 0x0001
 fn0C00_0014_exit:
-// DataOut: ax ds
-// DataOut (flags): 
-
+	use ax_7

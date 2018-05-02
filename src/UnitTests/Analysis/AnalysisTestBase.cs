@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Analysis
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
-        protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, RegisterLiveness live, TextWriter w)
+        protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, TextWriter w)
 		{
 			foreach (Procedure proc in program.Procedures.Values)
 			{
@@ -77,21 +77,10 @@ namespace Reko.UnitTests.Analysis
 				w.WriteLine("// {0}", proc.Name);
 				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, new TextFormatter(w));
 				w.WriteLine();
-				foreach (Block block in proc.SortBlocksByName())
-				{
-                    if (live != null)
-                    {
-                        var bFlow = dfa.ProgramDataFlow[block];
-                        bFlow.WriteBefore(program.Architecture, w);
-                        block.Write(w);
-                        bFlow.WriteAfter(program.Architecture, w);
-                        w.WriteLine();
-                    }
-                    else
-                    {
-                        block.Write(w);
-                    }
-				}
+                foreach (Block block in proc.SortBlocksByName())
+                {
+                    block.Write(w);
+                }
 			}
 		}
 

@@ -1,79 +1,43 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO al ax eax rax
+	Trashed:   SCZO al Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	al = 0x20
-	call fn0C00_000C (retsize: 2; depth: 2)
-	branch Test(ULT,C) l0C00_000B
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp al:0x20
+	call fn0C00_000C (retsize: 2;)
+		uses: al:0x20,ds:ds
+		defs: C:C_7
+	branch C_7 l0C00_000B
 l0C00_0007:
-	Mem0[ds:0x0300:byte] = 0x20
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp al:0x20
+	Mem10[ds:0x0300:byte] = 0x20
 l0C00_000B:
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp al:0x20
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_000C /////////////////////
-	LiveOut:   C ds
-	BitsUsed: 
+	LiveOut:   C
+	BitsUsed:  al:[0..7] ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO
+	Trashed:   SCZO Top
 	Preserved: sp
 // fn0C00_000C
 define fn0C00_000C
-// SymbolicIn: sp:fp
 fn0C00_000C_entry:
-// DataOut: al ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def al
+	def ds
+	def Mem0
 l0C00_000C:
-	sp = fp
-	SCZO = cond(al - 0x20)
-	branch Test(ULT,C) l0C00_0014
-// DataOut: ds
-// DataOut (flags): C
-
-// SymbolicIn: sp:fp
+	SCZO_5 = cond(al - 0x20)
+	C_6 = SLICE(SCZO_5, bool, 1) (alias)
+	branch al <u 0x20 l0C00_0014
 l0C00_0010:
-	v7 = Mem0[ds:0x0201:word16] + 0x0001
-	Mem0[ds:0x0201:word16] = v7
-	SZO = cond(v7)
-// DataOut: ds
-// DataOut (flags): C
-
-// SymbolicIn: sp:fp
+	v7_9 = Mem0[ds:0x0201:word16] + 0x0001
+	Mem10[ds:0x0201:word16] = v7_9
 l0C00_0014:
 	return
-// DataOut: ds
-// DataOut (flags): C
-
-// SymbolicIn: sp:fp
 fn0C00_000C_exit:
-// DataOut: ds
-// DataOut (flags): C
-
+	use C_6

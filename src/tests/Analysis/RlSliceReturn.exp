@@ -1,57 +1,39 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   ah al ax eax esi rax rsi si sil
+	Trashed:   ax si Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	si = 0x0200
-	call fn0C00_0015 (retsize: 2; depth: 2)
-	Mem0[ds:0x0202:word16] = ax
-	si = 0x0300
-	call fn0C00_0015 (retsize: 2; depth: 2)
-	Mem0[ds:0x0302:byte] = al
+	call fn0C00_0015 (retsize: 2;)
+		uses: ds:ds,si:0x0200
+		defs: ax:ax_6
+	Mem7[ds:0x0202:word16] = ax_6
+	call fn0C00_0015 (retsize: 2;)
+		uses: ds:ds,si:0x0300
+		defs: ax:ax_9
+	al_10 = (byte) ax_9 (alias)
+	Mem11[ds:0x0302:byte] = al_10
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:0x0300 ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0015 /////////////////////
-	LiveOut:   al ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  ds:[0..15] si:[0..15]
 	BypassIn: 
-	Trashed:   ah al ax eax rax
+	Trashed:   ax Top
 	Preserved: sp
 // fn0C00_0015
 define fn0C00_0015
-// SymbolicIn: sp:fp
 fn0C00_0015_entry:
-// DataOut: ds si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def si
+	def Mem0
 l0C00_0015:
-	sp = fp
-	ax = Mem0[ds:si:word16]
+	ax_7 = Mem0[ds:si:word16]
 	return
-// DataOut: al ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp ax:<invalid>
 fn0C00_0015_exit:
-// DataOut: al ax ds
-// DataOut (flags): 
-
+	use ax_7

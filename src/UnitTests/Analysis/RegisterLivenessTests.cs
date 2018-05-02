@@ -28,26 +28,54 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Analysis
 {
 	/// <summary>
 	/// Used to test register liveness across the whole program.
+    /// This shows the result of analysis just before the call rewriting
+    /// takes place.
 	/// </summary>
 	[TestFixture]
-    [Ignore("Register liveness is now handled by the new SsaTransform class")]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
+        private SortedList<Address, Procedure_v1> userSigs;
+
+        [SetUp]
+        public void Setup()
+        {
+            userSigs = new SortedList<Address, Procedure_v1>();
+        }
+
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			var eventListener = new FakeDecompilerEventListener();
 			var dfa = new DataFlowAnalysis(program, null, eventListener);
-			var trf = new TrashedRegisterFinder(program, program.Procedures.Values, dfa.ProgramDataFlow, eventListener);
-			trf.Compute();
-			trf.RewriteBasicBlocks();
-			var rl = RegisterLiveness.Compute(program, dfa.ProgramDataFlow, eventListener);
-			DumpProcedureFlows(program, dfa, rl, writer);
+            program.User.Procedures = userSigs;
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures(eventListener);
+
+            IntraBlockDeadRegisters.Apply(program, eventListener);
+
+            var ssts = dfa.RewriteProceduresToSsa();
+
+            // Discover ssaId's that are live out at each call site.
+            // Delete all others.
+            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
+            uvr.Transform();
+            DumpProcedureFlows(program, dfa, writer);
 		}
+
+        private void Given_Signature(Address addr, string procName, SerializedSignature ssig)
+        {
+            userSigs[addr] = new Procedure_v1
+            {
+                 Address = addr.ToString(),
+                 Name = procName,
+                 Signature = ssig,
+            };
+        }
 
 		[Test]
 		public void RlDataConstraint()
@@ -73,6 +101,7 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Category(Categories.UnitTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void RlFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/RlFactorial.txt");
@@ -110,6 +139,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Ignore(Categories.AnalysisDevelopment)]
 		public void RlConditionals()
 		{
 			RunFileTest_x86_real("Fragments/multiple/conditionals.asm", "Analysis/RlConditionals.txt");
@@ -128,6 +158,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Ignore("The source file mutual.asm looks incorrect.")]
 		public void RlMutual()
 		{
 			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/RlMutual.txt");
@@ -157,16 +188,28 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/RlStringInstructions.txt");
 		}
 
-		[Test]
-        [Ignore("scanning-development")]
+        [Test]
         public void RlTermination()
-		{
-			RunFileTest_x86_real("Fragments/multiple/termination.asm", "Fragments/multiple/termination.xml", "Analysis/RlTermination.txt");
+        {
+            Given_Signature(
+                Address.SegPtr(0xC00, 0x15),
+                "maybeterminate",
+                new SerializedSignature
+                {
+                    ReturnValue = new Argument_v1 { Kind = new Register_v1("ax") },
+                    Arguments = new[]
+                    {
+                        new Argument_v1 { Kind = new Register_v1("ax") },
+                        new Argument_v1 { Kind = new Register_v1("bx") }
+                    }
+                });
+			RunFileTest_x86_real("Fragments/multiple/termination.asm", "Analysis/RlTermination.txt");
 		}
 
 		[Test]
-		public void RlLivenessAfterCall()
-		{
+        [Ignore(Categories.AnalysisDevelopment)]
+        public void RlLivenessAfterCall()
+ 		{
 			RunFileTest_x86_real("Fragments/multiple/livenessaftercall.asm", "Analysis/RlLivenessAfterCall.txt");
 		}
 
@@ -177,6 +220,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void RlReg00005()
         {
             RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/RlReg00005.txt");
@@ -196,8 +240,8 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("scanning-development")]
         [Category(Categories.UnitTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void RlReg00015()
         {
             RunFileTest_x86_real("Fragments/regressions/r00015.asm", "Analysis/RlReg00015.txt");
@@ -226,6 +270,7 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.UnitTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void RlRecurseWithPushes()
         {
             RunFileTest_x86_real("Fragments/multiple/recurse_with_pushes.asm", "Analysis/RlRecurseWithPushes.txt");

@@ -1,82 +1,42 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+	Trashed:   SCZO ax cx dx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	cx = 0x0005
-	call fn0C00_000B (retsize: 2; depth: 2)
-	Mem0[ds:0x0064:word16] = ax
+	call fn0C00_000B (retsize: 2;)
+		uses: cx:0x0005
+		defs: ax:ax_5
+	Mem14[ds:0x0064:word16] = ax_5
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> dx:<invalid> ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_000B /////////////////////
-	LiveOut:   ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  cx:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+	Trashed:   SCZO ax cx dx Top
 	Preserved: si sp
 // fn0C00_000B
 define fn0C00_000B
-// SymbolicIn: sp:fp
 fn0C00_000B_entry:
-// DataOut: cx ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def cx
 l0C00_000B:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = si
-	SCZO = cond(cx - 0x0001)
-	branch Test(LE,SZO) l0C00_001C
-// DataOut: cx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 -2(fp):si
+	branch cx <= 0x0001 l0C00_001C
 l0C00_0011:
-	si = cx
-	cx = cx - 0x0001
-	SZO = cond(cx)
-	call fn0C00_000B (retsize: 2; depth: 4)
-	dx_ax = si *s ax
-	SCZO = cond(dx_ax)
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 -2(fp):si
+	call fn0C00_000B (retsize: 2;)
+		uses: cx:cx - 0x0001
+		defs: ax:ax_18
+	dx_ax_21 = cx *s ax_18
+	ax_23 = (word16) dx_ax_21 (alias)
 l0C00_001C:
-	ax = 0x0001
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 si:cx cx:<invalid> Sequence dx:ax:<invalid> ax:<invalid> dx:<invalid> -2(fp):si
+	ax_11 = 0x0001
 l0C00_001F:
-	si = wLoc02
-	sp = fp
+	ax_32 = PHI(ax_23, ax_11)
 	return
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:si cx:<invalid> Sequence dx:ax:<invalid> ax:<invalid> dx:<invalid> -2(fp):si
 fn0C00_000B_exit:
-// DataOut: ax ds
-// DataOut (flags): 
-
+	use ax_32

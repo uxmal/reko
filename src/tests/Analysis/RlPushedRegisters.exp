@@ -1,231 +1,84 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax ch cl cx eax ecx rax rcx
+	Trashed:   SCZO ax cx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16) Local -0006(16)
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	cx = 0x002A
-	sp = fp - 0x0002
-	wLoc02 = 0x0001
-	sp = fp - 0x0004
-	wLoc04 = 0x0002
-	call fn0C00_0023 (retsize: 2; depth: 6)
-	sp = fp
-	ax = 0x0000
-	SZO = cond(0x0000)
-	C = false
-	sp = fp - 0x0002
-	wLoc02 = 0x0000
-	sp = fp - 0x0004
-	wLoc04 = 0x0000
-	sp = fp - 0x0006
-	wLoc06 = 0x0000
-	sp = fp - 0x0008
-	wLoc08 = 0x0000
-	sp = fp - 0x000A
-	wLoc0A = 0x0000
-	sp = fp - 0x000C
-	wLoc0C = 0x0000
-	call fn0C00_0034 (retsize: 2; depth: 14)
-	sp = fp
-	SCZO = cond(fp)
-	sp = fp - 0x0002
-	wLoc02 = 0x0001
-	sp = fp - 0x0004
-	wLoc04 = 0x0002
-	call fn0C00_005D (retsize: 2; depth: 6)
-	sp = fp
-	SCZO = cond(fp)
+	call fn0C00_0023 (retsize: 2;)
+		uses: Stack +0002:0x0002,Stack +0004:0x0001
+	call fn0C00_0034 (retsize: 2;)
+		uses: ds:ds
+	call fn0C00_005D (retsize: 2;)
+		uses: cx:0x002A,Stack +0004:0x0001
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:0x002A ax:<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):0x0002 -2(fp):0x0001
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0023 /////////////////////
-	LiveOut:   ds
-	BitsUsed: 
+	LiveOut:  
+	BitsUsed:  Stack +0002:[0..15] Stack +0004:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: bp cx sp
 // fn0C00_0023
 define fn0C00_0023
-// SymbolicIn: sp:fp
 fn0C00_0023_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16) Stack +0002(16) Stack +0004(16)
-
-// SymbolicIn: sp:fp
 l0C00_0023:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = cx
-	sp = fp - 0x0004
-	wLoc04 = bp
-	bp = fp - 0x0004
-	cx = wArg02
-	ax = wArg04
-	ax = ax + cx
-	SCZO = cond(ax)
-	bp = wLoc04
-	sp = fp - 0x0002
-	cx = wLoc02
-	sp = fp
 	return
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp cx:cx ax:<invalid> -4(fp):bp -2(fp):cx
 fn0C00_0023_exit:
-// DataOut: ds
-// DataOut (flags): 
-
 // fn0C00_0034 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: bp bx cx dx sp
 // fn0C00_0034
 define fn0C00_0034
-// SymbolicIn: sp:fp
 fn0C00_0034_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def fp
+	def ds
 l0C00_0034:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bx
-	sp = fp - 0x0004
-	wLoc04 = cx
-	sp = fp - 0x0006
-	wLoc06 = dx
-	sp = fp - 0x0008
-	wLoc08 = bp
-	bp = fp - 0x0008
-	bx = fp + 0x0006
-// DataOut: bx ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
+	bx_18 = fp + 0x0006
 l0C00_003D:
-	ax = Mem0[ds:bx:word16]
-	bx = bx + 0x0002
-	SCZO = cond(bx)
-	SZO = cond(ax & ax)
-	C = false
-	branch Test(NE,Z) l0C00_003D
-// DataOut: bx ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp - 0x0008 bp:fp - 0x0008 bx:<invalid> ax:<invalid> -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
+	bx_20 = PHI(bx_18, bx_23)
+	ax_22 = Mem16[ds:bx_20:word16]
+	bx_23 = bx_20 + 0x0002
+	branch ax_22 != 0x0000 l0C00_003D
 l0C00_0046:
-	dx = wArg04
-	bx = bx + 0x0002
-	SCZO = cond(bx)
-	ax = wArg02
-	cx = Mem0[ds:bx - 0x0002:word16]
-	bx = fp + 0x0006
-	call fn0C00_0069 (retsize: 2; depth: 10)
-	bp = wLoc08
-	sp = fp - 0x0006
-	dx = wLoc06
-	sp = fp - 0x0004
-	cx = wLoc04
-	sp = fp - 0x0002
-	bx = wLoc02
-	sp = fp
+	cx_33 = Mem16[ds:bx_23:word16]
+	call fn0C00_0069 (retsize: 2;)
+		uses: bx:fp + 0x0006,cx:cx_33,ds:ds
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp bx:bx ax:<invalid> dx:dx cx:cx -8(fp):bp -6(fp):dx -4(fp):cx -2(fp):bx
 fn0C00_0034_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_005D /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  cx:[0..15] Stack +0004:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: bp cx sp
 // fn0C00_005D
 define fn0C00_005D
-// SymbolicIn: sp:fp
 fn0C00_005D_entry:
-// DataOut: cx
-// DataOut (flags): 
-// LocalsOut: fp(16) Stack +0004(16)
-
-// SymbolicIn: sp:fp
 l0C00_005D:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = cx
-	sp = fp - 0x0004
-	wLoc04 = bp
-	bp = fp - 0x0004
-	ax = wArg04
-	ax = ax + cx
-	SCZO = cond(ax)
-	bp = wLoc04
-	sp = fp - 0x0002
-	cx = wLoc02
-	sp = fp
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp ax:<invalid> cx:cx -4(fp):bp -2(fp):cx
 fn0C00_005D_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0069 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  bx:[0..15] cx:[0..15] ds:[0..15]
 	BypassIn: 
-	Trashed:  
+	Trashed:   Top
 	Preserved: sp
 // fn0C00_0069
 define fn0C00_0069
-// SymbolicIn: sp:fp
 fn0C00_0069_entry:
-// DataOut: bx cx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def bx
+	def ds
+	def cx
 l0C00_0069:
-	sp = fp
-	Mem0[ds:0x0200:word16] = bx
-	Mem0[ds:0x0300:word16] = cx
+	Mem6[ds:0x0200:word16] = bx
+	Mem8[ds:0x0300:word16] = cx
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
 fn0C00_0069_exit:
-// DataOut:
-// DataOut (flags): 
-

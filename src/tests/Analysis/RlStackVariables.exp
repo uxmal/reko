@@ -1,120 +1,52 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15] Stack +0004:[0..31]
 	BypassIn: 
-	Trashed:   SCZO ah al ax bh bl bx eax ebx es rax rbx
+	Trashed:   SCZO ax bx es Top
 	Preserved: bp sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16) Local -0008(16) Stack +0004(32)
-
-// SymbolicIn: sp:fp
+	def ds
+	def ptrArg04
 l0C00_0000:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	es_bx = ptrArg04
-	sp = fp - 0x0004
-	wLoc04 = es
-	sp = fp - 0x0006
-	wLoc06 = bx
-	call fn0C00_0020 (retsize: 2; depth: 8)
-	sp = fp - 0x0002
-	SCZO = cond(fp - 0x0002)
-	sp = fp - 0x0004
-	wLoc04 = ax
-	es_bx = ptrArg04
-	sp = fp - 0x0006
-	wLoc06 = es
-	sp = fp - 0x0008
-	wLoc08 = bx
-	call fn0C00_002E (retsize: 2; depth: 10)
-	sp = fp - 0x0002
-	SCZO = cond(fp - 0x0002)
-	Mem0[ds:0x0200:word16] = ax
-	bp = wLoc02
-	sp = fp
+	call fn0C00_0020 (retsize: 2;)
+		uses: Stack +0002:ptrArg04
+		defs: ax:ax_16
+	call fn0C00_002E (retsize: 2;)
+		uses: Stack +0002:ptrArg04,Stack +0006:ax_16
+		defs: ax:ax_30
+	Mem40[ds:0x0200:word16] = ax_30
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> es:<invalid> bx:<invalid> ax:<invalid> -8(fp):<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0020 /////////////////////
-	LiveOut:   ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  Stack +0002:[0..31]
 	BypassIn: 
-	Trashed:   ah al ax bh bl bx eax ebx es rax rbx
+	Trashed:   ax bx es Top
 	Preserved: bp sp
 // fn0C00_0020
 define fn0C00_0020
-// SymbolicIn: sp:fp
 fn0C00_0020_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16) Stack +0002(32)
-
-// SymbolicIn: sp:fp
+	def ptrArg02
 l0C00_0020:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	es_bx = ptrArg02
-	ax = Mem0[es:bx + 0x0004:word16]
-	sp = fp - 0x0002
-	bp = wLoc02
-	sp = fp
+	ax_12 = Mem7[ptrArg02 + 0x0004:word16]
 	return
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> ax:<invalid> -2(fp):bp
 fn0C00_0020_exit:
-// DataOut: ax ds
-// DataOut (flags): 
-
+	use ax_12
 // fn0C00_002E /////////////////////
-	LiveOut:   ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  Stack +0002:[0..31] Stack +0006:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax bh bl bx eax ebx es rax rbx
+	Trashed:   SCZO ax bx es Top
 	Preserved: bp sp
 // fn0C00_002E
 define fn0C00_002E
-// SymbolicIn: sp:fp
 fn0C00_002E_entry:
-// DataOut: ds
-// DataOut (flags): 
-// LocalsOut: fp(16) Stack +0002(32) Stack +0006(16)
-
-// SymbolicIn: sp:fp
+	def ptrArg02
+	def wArg06
 l0C00_002E:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	es_bx = ptrArg02
-	ax = wArg06
-	ax = ax + Mem0[es:bx + 0x0006:word16]
-	SCZO = cond(ax)
-	sp = fp - 0x0002
-	bp = wLoc02
-	sp = fp
+	ax_13 = wArg06 + Mem7[ptrArg02 + 0x0006:word16]
 	return
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp bp:bp Sequence es:bx:<invalid> ax:<invalid> -2(fp):bp
 fn0C00_002E_exit:
-// DataOut: ax ds
-// DataOut (flags): 
-
+	use ax_13

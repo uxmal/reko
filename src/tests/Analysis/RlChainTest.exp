@@ -1,109 +1,58 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	Trashed:   SCZO ax dx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
 l0C00_0000:
-	sp = fp
-	dx = 0x001E
-	call fn0C00_000B (retsize: 2; depth: 2)
-	Mem0[ds:0x012C:word16] = ax
+	call fn0C00_000B (retsize: 2;)
+		uses: dx:0x001E
+		defs: ax:ax_5
+	Mem12[ds:0x012C:word16] = ax_5
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp dx:<invalid> ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_000B /////////////////////
-	LiveOut:   ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  dx:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	Trashed:   SCZO ax dx Top
 	Preserved: sp
 // fn0C00_000B
 define fn0C00_000B
-// SymbolicIn: sp:fp
 fn0C00_000B_entry:
-// DataOut: ds dx
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def dx
 l0C00_000B:
-	sp = fp
-	call fn0C00_000F (retsize: 2; depth: 2)
+	call fn0C00_000F (retsize: 2;)
+		uses: dx:dx
+		defs: ax:ax_5
 	return
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp ax:<invalid> dx:<invalid>
 fn0C00_000B_exit:
-// DataOut: ax ds
-// DataOut (flags): 
-
+	use ax_5
 // fn0C00_000F /////////////////////
-	LiveOut:   ax ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  dx:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax dh dl dx eax edx rax rdx
+	Trashed:   SCZO ax dx Top
 	Preserved: si sp
 // fn0C00_000F
 define fn0C00_000F
-// SymbolicIn: sp:fp
 fn0C00_000F_entry:
-// DataOut: ds dx
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def dx
 l0C00_000F:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = si
-	si = 0x0000
-	SZO = cond(0x0000)
-	C = false
-// DataOut: ds dx si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 si:<invalid> dx:<invalid> -2(fp):si
+	si_8 = 0x0000
 l0C00_0015:
-	si = si + dx
-	SCZO = cond(si)
-	dx = dx - 0x0001
-	SZO = cond(dx)
-// DataOut: ds dx si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 si:<invalid> dx:<invalid> -2(fp):si
+	si_15 = si_14 + dx_11
+	dx_17 = dx_11 - 0x0001
 l0C00_0018:
-	SCZO = cond(dx - 0x0000)
-	branch Test(GE,SO) l0C00_0015
-// DataOut: ds dx si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp - 0x0002 si:<invalid> dx:<invalid> -2(fp):si
+	si_14 = PHI(si_8, si_15)
+	dx_11 = PHI(dx, dx_17)
+	branch dx_11 >= 0x0000 l0C00_0015
 l0C00_001D:
-	ax = si
-	si = wLoc02
-	sp = fp
+	ax_19 = si_14
 	return
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:si ax:<invalid> dx:<invalid> -2(fp):si
 fn0C00_000F_exit:
-// DataOut: ax ds
-// DataOut (flags): 
-
+	use ax_19

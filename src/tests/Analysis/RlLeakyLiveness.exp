@@ -1,87 +1,50 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax esi rax rsi si sil
+	Trashed:   SCZO ax si Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def Mem0
 l0C00_0000:
-	sp = fp
-	call fn0C00_000A (retsize: 2; depth: 2)
-	branch Test(ULT,C) l0C00_0009
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
+	call fn0C00_000A (retsize: 2;)
+		uses: ds:ds
+		defs: ax:ax_6,C:C_8
+	branch C_8 l0C00_0009
 l0C00_0005:
-	v6 = Mem0[ds:0x0300:word16] + ax
-	Mem0[ds:0x0300:word16] = v6
-	SCZO = cond(v6)
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
+	v6_12 = Mem0[ds:0x0300:word16] + ax_6
+	Mem13[ds:0x0300:word16] = v6_12
 l0C00_0009:
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_000A /////////////////////
-	LiveOut:   C ax ds
-	BitsUsed: 
+	LiveOut:   C ax
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax esi rax rsi si sil
+	Trashed:   SCZO ax si Top
 	Preserved: sp
 // fn0C00_000A
 define fn0C00_000A
-// SymbolicIn: sp:fp
 fn0C00_000A_entry:
-// DataOut: ax ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def Mem0
+	def ax
 l0C00_000A:
-	sp = fp
-	si = Mem0[ds:0x0100:word16]
-	SCZO = cond(si - Mem0[ds:0x0102:word16])
-	branch Test(EQ,Z) l0C00_001E
-// DataOut: ax ds si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:<invalid>
+	si_6 = Mem0[ds:0x0100:word16]
+	branch si_6 == Mem0[ds:0x0102:word16] l0C00_001E
 l0C00_0014:
-	ax = Mem0[ds:si:word16]
-	si = si + 0x0001
-	SZO = cond(si)
-	si = si + 0x0001
-	SZO = cond(si)
-	Mem0[ds:0x0100:word16] = si
-	C = false
+	ax_10 = Mem0[ds:si_6:word16]
+	Mem14[ds:0x0100:word16] = si_6 + 0x0002
+	C_15 = false
 	return
-// DataOut: ax ds
-// DataOut (flags): C
-
-// SymbolicIn: sp:fp si:<invalid>
 l0C00_001E:
-	C = true
+	C_9 = true
 	return
-// DataOut: ax ds
-// DataOut (flags): C
-
-// SymbolicIn: sp:fp si:<invalid> ax:<invalid>
 fn0C00_000A_exit:
-// DataOut: ax ds
-// DataOut (flags): C
-
+	C_18 = PHI(C_15, C_9)
+	ax_16 = PHI(ax_10, ax)
+	use ax_16
+	use C_18

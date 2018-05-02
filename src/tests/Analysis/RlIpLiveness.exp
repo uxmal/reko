@@ -1,100 +1,71 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax bh bl bx di dil eax ebx edi esi rax rbx rdi rsi si sil
+	Trashed:   SCZO ax bx di si Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def Mem0
 l0C00_0000:
-	sp = fp
-	di = Mem0[ds:0x0100:word16]
-	si = Mem0[ds:di:word16]
-	call fn0C00_0026 (retsize: 2; depth: 2)
-	Mem0[ds:di + 0x0002:word16] = ax
-	bx = Mem0[ds:0x0102:word16]
-	si = Mem0[ds:bx + 0x0004:word16]
-	call fn0C00_0026 (retsize: 2; depth: 2)
-	Mem0[ds:bx + 0x0008:word16] = ax
-	di = Mem0[ds:0x0104:word16]
-	si = Mem0[ds:di:word16]
-	call fn0C00_0033 (retsize: 2; depth: 2)
-	Mem0[ds:di + 0x0002:word16] = ax
+	di_6 = Mem0[ds:0x0100:word16]
+	si_7 = Mem0[ds:di_6:word16]
+	call fn0C00_0026 (retsize: 2;)
+		uses: ds:ds,si:si_7
+		defs: ax:ax_8
+	Mem13[ds:di_6 + 0x0002:word16] = ax_8
+	bx_14 = Mem13[ds:0x0102:word16]
+	si_15 = Mem13[ds:bx_14 + 0x0004:word16]
+	call fn0C00_0026 (retsize: 2;)
+		uses: ds:ds,si:si_15
+		defs: ax:ax_16
+	Mem21[ds:bx_14 + 0x0008:word16] = ax_16
+	di_22 = Mem21[ds:0x0104:word16]
+	si_23 = Mem21[ds:di_22:word16]
+	call fn0C00_0033 (retsize: 2;)
+		uses: ds:ds,si:si_23
+		defs: ax:ax_24
+	Mem29[ds:di_22 + 0x0002:word16] = ax_24
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp di:<invalid> si:<invalid> bx:<invalid> ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0026 /////////////////////
-	LiveOut:   ax bx ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  ds:[0..15] si:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: di sp
 // fn0C00_0026
 define fn0C00_0026
-// SymbolicIn: sp:fp
 fn0C00_0026_entry:
-// DataOut: bx ds si
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def ds
+	def si
 l0C00_0026:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = di
-	di = Mem0[ds:0x0104:word16]
-	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
-	Mem0[ds:di + 0x0030:word16] = v6
-	SZO = cond(v6)
-	call fn0C00_0033 (retsize: 2; depth: 4)
-	di = wLoc02
-	sp = fp
+	di_9 = Mem7[ds:0x0104:word16]
+	v6_10 = Mem7[ds:di_9 + 0x0030:word16] + 0x0001
+	Mem11[ds:di_9 + 0x0030:word16] = v6_10
+	call fn0C00_0033 (retsize: 2;)
+		uses: ds:ds,si:si
+		defs: ax:ax_14
 	return
-// DataOut: ax bx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp di:di ax:<invalid> -2(fp):di
 fn0C00_0026_exit:
-// DataOut: ax bx ds
-// DataOut (flags): 
-
+	use ax_14
 // fn0C00_0033 /////////////////////
-	LiveOut:   ax bx di ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  ds:[0..15] si:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: sp
 // fn0C00_0033
 define fn0C00_0033
-// SymbolicIn: sp:fp
 fn0C00_0033_entry:
-// DataOut: bx di ds si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def si
+	def Mem0
 l0C00_0033:
-	sp = fp
-	ax = Mem0[ds:si:word16]
-	ax = ax + ax
-	SCZO = cond(ax)
+	ax_7 = Mem0[ds:si:word16]
+	ax_8 = ax_7 * 0x0002
 	return
-// DataOut: ax bx di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp ax:<invalid>
 fn0C00_0033_exit:
-// DataOut: ax bx di ds
-// DataOut (flags): 
-
+	use ax_8

@@ -1,94 +1,48 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  di:[0..15] ds:[0..15] si:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax ch cl cx eax ecx rax rcx
+	Trashed:   SCZO ax cx Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: di ds si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def di
+	def ds
+	def si
 l0C00_0000:
-	sp = fp
-	cx = 0x0014
-	call fn0C00_0008 (retsize: 2; depth: 2)
-	Mem0[ds:si:word16] = ax
-// DataOut: cx di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:0x0014 ax:<invalid>
+	call fn0C00_0008 (retsize: 2;)
+		uses: cx:0x0014,di:di,ds:ds
+		defs: ax:ax_7
+	Mem13[ds:si:word16] = ax_7
 l0C00_0006_thunk_fn0C00_0008:
-	call fn0C00_0008 (retsize: 2; depth: 2)
+	call fn0C00_0008 (retsize: 0;)
+		uses: cx:0x0014,di:di,ds:ds
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:0x0014 ax:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0008 /////////////////////
-	LiveOut:   ax cx ds
-	BitsUsed: 
+	LiveOut:   ax
+	BitsUsed:  cx:[0..15] di:[0..15] ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax eax rax
+	Trashed:   SCZO ax Top
 	Preserved: di si sp
 // fn0C00_0008
 define fn0C00_0008
-// SymbolicIn: sp:fp
 fn0C00_0008_entry:
-// DataOut: cx di ds
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp
+	def di
+	def cx
+	def ds
 l0C00_0008:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = si
-	sp = fp - 0x0004
-	wLoc04 = di
-	si = 0x0000
-// DataOut: cx di ds si
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+	si_11 = 0x0000
 l0C00_000D:
-	SCZO = cond(cx - 0x0000)
-	branch Test(EQ,Z) l0C00_001A
-// DataOut: cx di ds si
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+	di_25 = PHI(di, di_27)
+	si_15 = PHI(si_11, si_26)
+	branch cx == 0x0000 l0C00_001A
 l0C00_0012:
-	si = si + Mem0[ds:di:word16]
-	SCZO = cond(si)
-	di = di + 0x0002
-	SCZO = cond(di)
-// DataOut: cx di ds si
-// DataOut (flags): 
-// LocalsOut: fp(16)
-
-// SymbolicIn: sp:fp - 0x0004 si:<invalid> di:<invalid> -4(fp):di -2(fp):si
+	si_26 = si_15 + Mem10[ds:di_25:word16]
+	di_27 = di_25 + 0x0002
 l0C00_001A:
-	ax = si
-	di = wLoc04
-	sp = fp - 0x0002
-	si = wLoc02
-	sp = fp
+	ax_16 = si_15
 	return
-// DataOut: ax cx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp si:si ax:<invalid> di:di -4(fp):di -2(fp):si
 fn0C00_0008_exit:
-// DataOut: ax cx ds
-// DataOut (flags): 
-
+	use ax_16

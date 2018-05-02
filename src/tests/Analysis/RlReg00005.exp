@@ -1,106 +1,74 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ax:[0..15] ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax bh bl bx ch cl cx di dil eax ebx ecx edi es rax rbx rcx rdi
+	Trashed:   SCZO ax bx cx di es Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def ax
 l0C00_0000:
-	sp = fp
-	call fn0C00_000C (retsize: 2; depth: 2)
-	Mem0[ds:0x0300:word16] = bx
-	Mem0[ds:0x0302:byte] = 0x00
+	call fn0C00_000C (retsize: 2;)
+		uses: ax:ax,ds:ds
+		defs: bx:bx_7,cl:cl_16
+	Mem15[ds:0x0300:word16] = bx_7
+	Mem17[ds:0x0302:byte] = cl_16
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> es:<invalid> di:<invalid> al:0x00 ah:<invalid> bx:<invalid> cl:0x00
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_000C /////////////////////
-	LiveOut:   bx ds
-	BitsUsed: 
+	LiveOut:   bx cx
+	BitsUsed:  ax:[0..7] ds:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax bh bl bx ch cl cx di dil eax ebx ecx edi es rax rbx rcx rdi
+	Trashed:   SCZO ax bx cx di es Top
 	Preserved: sp
 // fn0C00_000C
 define fn0C00_000C
-// SymbolicIn: sp:fp
 fn0C00_000C_entry:
-// DataOut: ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def ax
+	def Mem0
 l0C00_000C:
-	sp = fp
-	cx = ds
-	es = cx
-	di = 0x7E0F
-	cx = 0x000C
-	al = 0x00
-	SZO = cond(0x00)
-	C = false
-// DataOut: al cx di ds es
-// DataOut (flags): Z
-
-// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
+	di_7 = 0x7E0F
+	cx_8 = 0x000C
+	ax_36 = DPB(ax, 0x00, 0) (alias)
+	SZO_10 = cond(0x00)
+	Z_23 = SLICE(SZO_10, bool, 2) (alias)
 l0C00_0019:
-	branch cx == 0x0000 l0C00_001B
-// DataOut: al cx di ds es
-// DataOut (flags): Z
-
-// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
+	ax_34 = PHI(ax_36, ax_37)
+	Z_22 = PHI(Z_23, Z_20)
+	di_15 = PHI(di_7, di_18)
+	ax_37 = DPB(ax_34, 0x00, 0) (alias)
+	ax_38 = DPB(ax_34, 0x00, 0) (alias)
+	cx_12 = PHI(cx_8, cx_19)
+	branch cx_12 == 0x0000 l0C00_001B
 l0C00_0019_1:
-	SCZO = cond(0x00 - Mem0[es:di:byte])
-	di = di + 0x0001
-	cx = cx - 0x0001
-	branch Test(NE,Z) l0C00_0019
-// DataOut: al cx di ds es
-// DataOut (flags): Z
-
-// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
+	SCZO_17 = cond(0x00 - Mem0[ds:di_15:byte])
+	Z_20 = SLICE(SCZO_17, bool, 2) (alias)
+	di_18 = di_15 + 0x0001
+	cx_19 = cx_12 - 0x0001
+	branch 0x00 != Mem0[ds:di_15:byte] l0C00_0019
 l0C00_001B:
-	branch Test(EQ,Z) l0C00_002D
-// DataOut: al di ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
+	cx_51 = PHI(cx_12, cx_19)
+	ax_33 = PHI(ax_38, ax_37)
+	di_30 = PHI(di_15, di_18)
+	Z_21 = PHI(Z_22, Z_20)
+	branch Z_21 l0C00_002D
 l0C00_001D:
-	ah = Mem0[ds:di + 0x0001:byte]
-	Z = ax == 0x0000
-	cx = __bsr(ax)
-	cx = cx - 0x0008
-	SCZO = cond(cx)
-	bx = di
-	bx = bx - 0x7E03
-	SCZO = cond(bx)
+	ah_32 = Mem0[ds:di_30 + 0x0001:byte]
+	ax_39 = DPB(ax_33, ah_32, 8) (alias)
+	cx_40 = __bsr(ax_39)
+	cx_41 = cx_40 - 0x0008
+	bx_43 = di_30 - 0x7E03
 	return
-// DataOut: bx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00
 l0C00_002D:
-	bx = 0x0000
-	SZO = cond(0x0000)
-	C = false
-	cl = 0x00
-	SZO = cond(0x00)
-	C = false
+	bx_24 = 0x0000
+	cx_52 = DPB(cx_51, 0x00, 0) (alias)
 	return
-// DataOut: bx ds
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> es:ds di:<invalid> al:0x00 ah:<invalid> bx:<invalid> cl:0x00
 fn0C00_000C_exit:
-// DataOut: bx ds
-// DataOut (flags): 
-
+	cx_50 = PHI(cx_41, cx_52)
+	bx_47 = PHI(bx_43, bx_24)
+	cl_51 = (byte) cx_50
+	use bx_47
+	use cl_51

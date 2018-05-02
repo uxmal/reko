@@ -1,89 +1,55 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15] eax:[0..31] es:[0..15] si:[0..15]
 	BypassIn: 
-	Trashed:   SCZO ah al ax ch cl cx di dil eax ecx edi esi rax rcx rdi rsi si sil
+	Trashed:   SCZO cx di eax si Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
-// SymbolicIn: sp:fp
 fn0C00_0000_entry:
-// DataOut: ds eax es si
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def eax
+	def ds
+	def si
+	def es
 l0C00_0000:
-	sp = fp
-	eax = eax + eax * 0x00000004
-	Mem0[ds:0x02FC:word32] = eax
-	eax = Mem0[ds:si:word32]
-	si = si + 0x0004
-	Mem0[ds:0x0300:word32] = eax
-	eax = Mem0[ds:si:word32]
-	si = si + 0x0004
-	Mem0[ds:0x0304:word32] = eax
-	ax = Mem0[ds:si:word16]
-	si = si + 0x0002
-	Mem0[ds:0x0308:word16] = ax
-	ax = Mem0[ds:si:word16]
-	si = si + 0x0002
-	Mem0[ds:0x030A:word16] = ax
-	call fn0C00_0026 (retsize: 2; depth: 2)
+	Mem7[ds:0x02FC:word32] = eax * 0x00000005
+	eax_9 = Mem7[ds:si:word32]
+	Mem11[ds:0x0300:word32] = eax_9
+	eax_12 = Mem11[ds:si + 0x0004:word32]
+	Mem14[ds:0x0304:word32] = eax_12
+	ax_15 = Mem14[ds:si + 0x0008:word16]
+	Mem17[ds:0x0308:word16] = ax_15
+	ax_18 = Mem17[ds:si + 0x000A:word16]
+	Mem20[ds:0x030A:word16] = ax_18
+	call fn0C00_0026 (retsize: 2;)
+		uses: ds:ds,es:es
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp eax:<invalid> si:si + 0x0036 ax:<invalid> cx:<invalid> al:0x00 di:<invalid>
 fn0C00_0000_exit:
-// DataOut:
-// DataOut (flags): 
-
 // fn0C00_0026 /////////////////////
 	LiveOut:  
-	BitsUsed: 
+	BitsUsed:  ds:[0..15] es:[0..15]
 	BypassIn: 
-	Trashed:   SCZO al ax ch cl cx di dil eax ecx edi rax rcx rdi
+	Trashed:   SCZO al cx di Top
 	Preserved: sp
 // fn0C00_0026
 define fn0C00_0026
-// SymbolicIn: sp:fp
 fn0C00_0026_entry:
-// DataOut: ds es
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp
+	def ds
+	def Mem0
+	def es
 l0C00_0026:
-	sp = fp
-	cx = Mem0[ds:0x0400:word16]
-	al = 0x00
-	di = Mem0[ds:0x0402:word16]
-// DataOut: cx di ds es
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+	cx_6 = Mem0[ds:0x0400:word16]
+	di_8 = Mem0[ds:0x0402:word16]
 l0C00_0030:
-	branch cx == 0x0000 l0C00_0032
-// DataOut: cx di ds es
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+	di_12 = PHI(di_8, di_15)
+	cx_9 = PHI(cx_6, cx_16)
+	branch cx_9 == 0x0000 l0C00_0032
 l0C00_0030_1:
-	SCZO = cond(0x00 - Mem0[es:di:byte])
-	di = di + 0x0001
-	cx = cx - 0x0001
-	branch Test(NE,Z) l0C00_0030
-// DataOut: cx di ds es
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
+	di_15 = di_12 + 0x0001
+	cx_16 = cx_9 - 0x0001
+	branch 0x00 != Mem0[es:di_12:byte] l0C00_0030
 l0C00_0032:
-	Mem0[ds:0x0404:word16] = di
+	di_18 = PHI(di_12, di_15)
+	Mem21[ds:0x0404:word16] = di_18
 	return
-// DataOut:
-// DataOut (flags): 
-
-// SymbolicIn: sp:fp cx:<invalid> al:0x00 di:<invalid>
 fn0C00_0026_exit:
-// DataOut:
-// DataOut (flags): 
-
