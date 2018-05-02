@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using Procedure_v1 = Reko.Core.Serialization.Procedure_v1;
 
 namespace Reko.Gui.Design
@@ -212,11 +211,6 @@ namespace Reko.Gui.Design
                     Value = de.Value
                 })
                 .ToArray();
-        }
-
-        void tv_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         public override int GetHashCode()

@@ -35,7 +35,7 @@ fn0C00_0004_exit:
 Eq_1: (ptr (struct "Globals"))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (ptr (fn T_4 ()))
-	T_2 (in fn0C00_0004 : ptr32)
+	T_2 (in fn0C00_0004 : segptr32)
 	T_3 (in signature of fn0C00_0004 : void)
 Eq_4: void
 	T_4 (in fn0C00_0004() : void)
@@ -96,7 +96,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr (struct "Globals"))
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in fn0C00_0004 : ptr32)
+T_2: (in fn0C00_0004 : segptr32)
   Class: Eq_2
   DataType: (ptr (fn T_4 ()))
   OrigDataType: (ptr (fn T_4 ()))

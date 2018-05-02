@@ -116,6 +116,12 @@ namespace Reko.Arch.X86
                 var target = SrcOp(callTarget);
                 if (target.DataType.Size == 2)
                 {
+                    if (arch.WordWidth.Size > 2)
+                    {
+                        rtlc = RtlClass.Invalid;
+                        m.Invalid();
+                        return;
+                    }
                     var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector.Value);
                     target = m.Seq(seg, target);
                 }
@@ -149,7 +155,7 @@ namespace Reko.Arch.X86
         private void RewriteJcxz()
         {
             m.Branch(
-                m.Eq0(orw.AluRegister(Registers.ecx, instrCur.dataWidth)),
+                m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
                 OperandAsCodeAddress(instrCur.op1),
                 RtlClass.ConditionalTransfer);
             rtlc = RtlClass.ConditionalTransfer;
@@ -181,7 +187,14 @@ namespace Reko.Arch.X86
                 m.Goto(addr);
 				return;
 			}
-            m.Goto(SrcOp(instrCur.op1));
+            var target = SrcOp(instrCur.op1);
+            if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
+            {
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Goto(target);
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)

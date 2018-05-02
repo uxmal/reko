@@ -44,11 +44,11 @@ Eq_2: (segment (100 word16 w0100) (200 word16 w0200) (202 word16 w0202) (300 wor
 	T_5 (in ds : selector)
 	T_9 (in ds : selector)
 Eq_3: (fn void ((ptr Eq_2)))
-	T_3 (in fn0C00_000C : ptr32)
+	T_3 (in fn0C00_000C : segptr32)
 	T_4 (in signature of fn0C00_000C : void)
-	T_14 (in fn0C00_000C : ptr32)
+	T_14 (in fn0C00_000C : segptr32)
 Eq_7: (fn void ((ptr Eq_2)))
-	T_7 (in fn0C00_0015 : ptr32)
+	T_7 (in fn0C00_0015 : segptr32)
 	T_8 (in signature of fn0C00_0015 : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
@@ -59,7 +59,7 @@ T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr (segment (100 T_13 t0100)))
-T_3: (in fn0C00_000C : ptr32)
+T_3: (in fn0C00_000C : segptr32)
   Class: Eq_3
   DataType: (ptr Eq_3)
   OrigDataType: (ptr (fn T_6 (T_2)))
@@ -75,7 +75,7 @@ T_6: (in fn0C00_000C(ds) : void)
   Class: Eq_6
   DataType: void
   OrigDataType: void
-T_7: (in fn0C00_0015 : ptr32)
+T_7: (in fn0C00_0015 : segptr32)
   Class: Eq_7
   DataType: (ptr Eq_7)
   OrigDataType: (ptr (fn T_10 (T_2)))
@@ -103,7 +103,7 @@ T_13: (in Mem3[ds:0x0100:word16] : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_14: (in fn0C00_000C : ptr32)
+T_14: (in fn0C00_000C : segptr32)
   Class: Eq_3
   DataType: (ptr Eq_3)
   OrigDataType: (ptr (fn T_15 (T_2)))

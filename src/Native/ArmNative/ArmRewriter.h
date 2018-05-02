@@ -66,7 +66,7 @@ protected:
 	const char * MemBarrierName(arm_mem_barrier barrier);
 	HExpr NZC();
 	HExpr NZCV();
-	HExpr Operand(const cs_arm_op & op, BaseType dt = BaseType::Word32);
+	HExpr Operand(const cs_arm_op & op, BaseType dt = BaseType::Word32, bool write = false);
 	HExpr Q();
 	HExpr Reg(int reg) { return host->EnsureRegister(0, reg); }
 	HExpr Reg(arm_reg reg) {  return host->EnsureRegister(0, (int)reg); }

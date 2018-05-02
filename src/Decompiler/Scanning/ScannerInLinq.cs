@@ -141,6 +141,8 @@ namespace Reko.Scanning
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);
             sr.Dump("After block conflict resolution");
+            // Collect weakly connected components and create 
+            // procedures from them.
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;

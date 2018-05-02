@@ -170,7 +170,10 @@ namespace Reko.Core.Expressions
 
         public Expression VisitProcedureConstant(ProcedureConstant pc)
         {
-            throw new NotImplementedException();
+            if (cmp.Equals(pc, original))
+                return replacement;
+            else
+                return pc;
         }
 
         public Expression VisitScopeResolution(ScopeResolution scopeResolution)

@@ -22,13 +22,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui
 {
     public interface ITabControlHostService : ICommandTarget
     {
         IWindowFrame ActiveFrame { get; set; }
+        bool ContainsFocus { get; }
 
         /// <summary>
         /// Attaches a pane to an existing tab page.
@@ -36,7 +36,7 @@ namespace Reko.Gui
         /// <param name="pane"></param>
         /// <param name="tabPage"></param>
         /// <returns></returns>
-        IWindowFrame Attach(IWindowPane pane, TabPage tabPage);
+        IWindowFrame Attach(IWindowPane pane, object tabPage);
 
         IWindowFrame Add(IWindowPane pane, string tabCaption);
     }

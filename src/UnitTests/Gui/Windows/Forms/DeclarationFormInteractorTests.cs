@@ -17,22 +17,22 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
-using System;
-using System.Drawing;
-using Rhino.Mocks;
+
+using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Environments.Windows;
 using Reko.Core;
-using Reko.Core.Types;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
+using Reko.Environments.Windows;
 using Reko.Gui;
 using Reko.Gui.Commands;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows.Forms;
-using System.ComponentModel.Design;
-using NUnit.Framework;
 using Reko.UnitTests.Mocks;
+using Reko.UserInterfaces.WindowsForms.Forms;
+using Rhino.Mocks;
+using System;
+using System.ComponentModel.Design;
+using System.Drawing;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -61,9 +61,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService<IDialogFactory>(dlgFactory);
             mr.ReplayAll();
             interactor = new DeclarationFormInteractor(services);
-            var mem = new MemoryArea(Address32.Ptr32(0x10), new byte[40]);
+            var mem = new MemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
-            var segmentMap = new SegmentMap(Address32.Ptr32(0x05), seg);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x05), seg);
             var arch = new X86ArchitectureFlat32("x86-protected-32");
             var platform = new Win32Platform(null, arch);
             program = new Program(segmentMap, arch, platform);
@@ -110,21 +110,21 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_CommandFactory()
         {
             var markProcedureCmd = mr.Stub<ICommand>();
-            markProcedureCmd.Stub(c => c.Do()).Do(new Action(() => 
+            markProcedureCmd.Stub(c => c.Do()).Do(new Action(() =>
             {
-                program.Procedures.Values[0].Name = 
+                program.Procedures.Values[0].Name =
                     program.User.Procedures.Values[0].Name;
             }));
 
             var cmdFactory = mr.Stub<ICommandFactory>();
             cmdFactory.Stub(f => f.MarkProcedure(null)).IgnoreArguments().Do(
-                new Func<ProgramAddress, ICommand>((pa) => 
+                new Func<ProgramAddress, ICommand>((pa) =>
             {
                 var program = pa.Program;
                 var addr = pa.Address;
                 program.Procedures[addr] = new Procedure(program.Architecture, "<unnamed>", null);
                 return markProcedureCmd;
-            })); 
+            }));
 
             services.AddService<ICommandFactory>(cmdFactory);
             mr.ReplayAll();

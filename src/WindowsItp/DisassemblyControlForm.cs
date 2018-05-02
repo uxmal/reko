@@ -1,5 +1,5 @@
 ﻿using Reko.Core;
-using Reko.Gui.Windows.Controls;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

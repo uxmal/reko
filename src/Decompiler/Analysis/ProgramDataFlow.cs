@@ -53,7 +53,7 @@ namespace Reko.Analysis
                         block, 
                         new HashSet<RegisterStorage>(),
                         new SymbolicEvaluationContext(
-                            program.Architecture,
+                            proc.Architecture,
                             proc.Frame));
 				}
 			}

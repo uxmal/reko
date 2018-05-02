@@ -257,7 +257,7 @@ l03E6:
 	byte a_8
 	byte c_9
 	byte C_10 = fn03BB((byte) Mem4[0x1659:word16], out a_8, out c_9)
-	branch __ror(a_8, C_10) >=u 0x00 l03FB
+	branch __ror(a_8, 0x01, C_10) >=u 0x00 l03FB
 // DataOut: af b c d e l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1019,7 +1019,7 @@ l0665:
 // LocalsOut: fp(16)
 
 l0697:
-	branch __ror(Mem71[0x167B:byte], C_91) >=u 0x00 l06AF
+	branch __ror(Mem71[0x167B:byte], 0x01, C_91) >=u 0x00 l06AF
 // DataOut: af bc d e l
 // DataOut (flags): 
 // SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x0227 de:<invalid> c:<invalid> b:<invalid> l:<invalid>
@@ -1337,7 +1337,7 @@ fn07B3_entry:
 // SymbolicIn: sp:fp
 
 l07B3:
-	branch __ror(Mem0[0x14F9:byte], C) >=u 0x00 l080E
+	branch __ror(Mem0[0x14F9:byte], 0x01, C) >=u 0x00 l080E
 // DataOut: af b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -1512,8 +1512,8 @@ l082F:
 	Mem37[0x168F:byte] = 0x00
 	Mem39[0x1690:byte] = 0x00
 	Mem44[0x1691:byte] = 0x00
-	byte a_46 = __rcl(Mem44[0x168D:byte])
-	byte a_48 = __ror(a_46, cond(a_46))
+	byte a_46 = __rcl(Mem44[0x168D:byte], 0x01)
+	byte a_48 = __ror(a_46, 0x01, cond(a_46))
 	word16 af_220 = DPB(af, a_48, 0)
 	branch a_48 >=u 0x00 l085E
 // DataOut: af bc d e h l
@@ -1521,8 +1521,8 @@ l082F:
 // SymbolicIn: sp:fp
 
 l085E:
-	byte a_217 = __rcl(__rcl(Mem44[0x168D:byte]))
-	byte a_219 = __ror(a_217, cond(a_217))
+	byte a_217 = __rcl(__rcl(Mem44[0x168D:byte], 0x01), 0x01)
+	byte a_219 = __ror(a_217, 0x01, cond(a_217))
 	af_220 = DPB(af, a_219, 0) (alias)
 	branch a_219 >=u 0x00 l086F
 // DataOut: af bc d e h l
@@ -1530,8 +1530,8 @@ l085E:
 // SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
 
 l086F:
-	byte a_229 = __rcl(__rcl(__rcl(Mem44[0x168D:byte])))
-	byte a_231 = __ror(a_229, cond(a_229))
+	byte a_229 = __rcl(__rcl(__rcl(Mem44[0x168D:byte], 0x01), 0x01), 0x01)
+	byte a_231 = __ror(a_229, 0x01, cond(a_229))
 	af_220 = DPB(af, a_231, 0) (alias)
 	branch a_231 >=u 0x00 l087E
 // DataOut: af bc d e h l
@@ -1557,8 +1557,8 @@ l0856:
 // SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
 
 l087E:
-	byte a_60 = __rcl(__rcl(__rcl(__rcl(Mem44[0x168D:byte]))))
-	branch __ror(a_60, cond(a_60)) >=u 0x00 l088E
+	byte a_60 = __rcl(__rcl(__rcl(__rcl(Mem44[0x168D:byte], 0x01), 0x01), 0x01), 0x01)
+	branch __ror(a_60, 0x01, cond(a_60)) >=u 0x00 l088E
 // DataOut: af bc d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0004 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
@@ -1581,7 +1581,7 @@ l088E:
 	word16 sp_91
 	byte e_100
 	byte b_104
-	byte a_94 = __ror(~a_86, fn0990(DPB(af_220, a_65 + 0x0F, 0), DPB(wArg04, (byte) Mem71[0x1687:word16], 0), (byte) hl_78, SLICE(hl_78, byte, 8), h_108, l_107, out a_86, out c_87, out b_104, out e_100, out hl_90, out sp_91))
+	byte a_94 = __ror(~a_86, 0x01, fn0990(DPB(af_220, a_65 + 0x0F, 0), DPB(wArg04, (byte) Mem71[0x1687:word16], 0), (byte) hl_78, SLICE(hl_78, byte, 8), h_108, l_107, out a_86, out c_87, out b_104, out e_100, out hl_90, out sp_91))
 	byte C_105 = cond(a_94)
 	branch a_94 >=u 0x00 l08B1
 // DataOut: af b c d e h hl l sp
@@ -1601,7 +1601,7 @@ l08A7:
 // SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
 
 l08B1:
-	byte a_110 = __ror(Mem71[0x1690:byte], C_105)
+	byte a_110 = __ror(Mem71[0x1690:byte], 0x01, C_105)
 	byte C_112 = cond(a_110)
 	branch a_110 >=u 0x00 l08DD
 // DataOut: af b d e h hl l sp
@@ -1609,7 +1609,7 @@ l08B1:
 // SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
 
 l08DD:
-	byte a_155 = __ror(Mem71[0x1691:byte], C_112)
+	byte a_155 = __ror(Mem71[0x1691:byte], 0x01, C_112)
 	byte C_157 = cond(a_155)
 	branch a_155 >=u 0x00 l0900
 // DataOut: af b d e h hl l sp
@@ -1617,7 +1617,7 @@ l08DD:
 // SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
 
 l0900:
-	branch __ror(Mem71[0x168F:byte], C_157) >=u 0x00 l0920
+	branch __ror(Mem71[0x168F:byte], 0x01, C_157) >=u 0x00 l0920
 // DataOut: af b d e h hl l sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
@@ -1954,7 +1954,7 @@ fn0930_entry:
 
 l0930:
 	fn0221()
-	byte a_22 = __ror(~(0x00 - (a <u 0x30)) & Mem0[0x168E:byte], false)
+	byte a_22 = __ror(~(0x00 - (a <u 0x30)) & Mem0[0x168E:byte], 0x01, false)
 	branch a_22 >=u 0x00 l0953
 // DataOut: a af b d de e h l sp
 // DataOut (flags): 
@@ -2110,7 +2110,7 @@ l09BD:
 	Mem532[sp_31 - 0x0002:word16] = DPB(af, 0x00 - (Mem518[hl_516:byte] <u 0x41) | Mem518[sp_31 + 0x0003:byte], 0)
 	b_131 = Mem532[sp_31 + 0x0003:byte] (alias)
 	*bOut = b_131
-	byte a_552 = __ror(0x00 - (0x02 - Mem532[0x1696:byte] <u 0x00) & b_131, false)
+	byte a_552 = __ror(0x00 - (0x02 - Mem532[0x1696:byte] <u 0x00) & b_131, 0x01, false)
 	word16 hl_534
 	*hlOut = 0x1696
 	word16 sp_544
@@ -2173,7 +2173,7 @@ l0A16:
 	word16 bc_107 = Mem104[sp_31 - 0x0002:word16]
 	byte b_108 = SLICE(bc_107, byte, 8)
 	word16 bc_111 = DPB(bc_107, b_108, 0)
-	branch __ror(a_106 & b_108, false) >=u 0x00 l0A53
+	branch __ror(a_106 & b_108, 0x01, false) >=u 0x00 l0A53
 // DataOut: af b bc c d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> bc:<invalid> de:<invalid> h:<invalid> -4(fp):<invalid> -2(fp):bc
@@ -2189,7 +2189,7 @@ l0A53:
 	*spOut = sp_31
 	byte c_181
 	*cOut = b_179
-	branch __ror(0x00 - (Mem170[hl_166:byte] <u 0x2F) & b_179, false) >=u 0x00 l0AA3
+	branch __ror(0x00 - (Mem170[hl_166:byte] <u 0x2F) & b_179, 0x01, false) >=u 0x00 l0AA3
 // DataOut: af b c d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
@@ -2202,7 +2202,7 @@ l0AA3:
 	Mem445[sp_31 - 0x0002:word16] = DPB(af_145, 0x00 - (Mem170[0x1696:byte] <u 0x01), 0)
 	byte b_454 = Mem445[sp_31 + 0x0003:byte]
 	*bOut = b_454
-	byte a_463 = __ror(0x00 - (Mem445[hl_441:byte] <u 0x2F) | b_454, false)
+	byte a_463 = __ror(0x00 - (Mem445[hl_441:byte] <u 0x2F) | b_454, 0x01, false)
 	byte e_439
 	*eOut = (byte) hl_435
 	word16 sp_455
@@ -2508,7 +2508,7 @@ fn0BE4_entry:
 
 l0BE4:
 	word16 af_10 = DPB(af, 0x00 - (Mem0[0x138A:byte] <u 0xFE), 0)
-	byte a_28 = __ror(0x00 - (Mem0[0x14F3:byte] <u 0x03) & SLICE(af_10, byte, 8), false)
+	byte a_28 = __ror(0x00 - (Mem0[0x14F3:byte] <u 0x03) & SLICE(af_10, byte, 8), 0x01, false)
 	word16 af_190 = DPB(af, a_28, 0)
 	branch a_28 >=u 0x00 l0C1A
 // DataOut: af b c d e h l
@@ -2566,7 +2566,7 @@ l0C1A:
 	word16 sp_80 = fn040D((byte) hl_75, SLICE(hl_75, byte, 8), l_64, af_10, wArg00)
 	word16 af_87 = DPB(af_190, 0x00 - (Mem60[0x138A:byte] <u 0x01), 0)
 	Mem89[sp_80 - 0x0002:word16] = af_87
-	branch __ror(0x00 - (0x03 - Mem89[0x138A:byte] <u 0x00) | Mem89[sp_80 + 0x0003:byte], false) >=u 0x00 l0C71
+	branch __ror(0x00 - (0x03 - Mem89[0x138A:byte] <u 0x00) | Mem89[sp_80 + 0x0003:byte], 0x01, false) >=u 0x00 l0C71
 // DataOut: b c d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> de:<invalid> h:<invalid> l:<invalid> -2(fp):af
@@ -2707,7 +2707,7 @@ fn0D64_entry:
 // SymbolicIn: sp:fp
 
 l0D64:
-	byte a_11 = __ror(Mem0[Mem0[0x1521:word16] + 0x0009:byte], false)
+	byte a_11 = __ror(Mem0[Mem0[0x1521:word16] + 0x0009:byte], 0x01, false)
 	*aOut = a_11
 	return cond(a_11)
 // DataOut: a b c d e h l
@@ -2763,7 +2763,7 @@ fn0D84_entry:
 l0D84:
 	byte a_2
 	byte C_3 = fn0D64(out a_2)
-	branch __ror(a_2, C_3) >=u 0x00 l0D94
+	branch __ror(a_2, 0x01, C_3) >=u 0x00 l0D94
 // DataOut: b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -2807,9 +2807,9 @@ fn0DB9_entry:
 
 l0DB9:
 	byte a_6 = Mem0[Mem0[0x1521:word16] + 0x0009:byte]
-	byte a_10 = __ror(a_6 + 0xFC, cond(a_6 + 0xFC))
-	byte a_12 = __ror(a_10, cond(a_10))
-	__ror(a_12, cond(a_12))
+	byte a_10 = __ror(a_6 + 0xFC, 0x01, cond(a_6 + 0xFC))
+	byte a_12 = __ror(a_10, 0x01, cond(a_10))
+	__ror(a_12, 0x01, cond(a_12))
 	return
 // DataOut:
 // DataOut (flags): 
@@ -2895,7 +2895,7 @@ l0E85:
 l0E91:
 	byte a_64
 	byte C_66 = fn0EAB(out a_64, out de_31)
-	branch __ror(a_64, C_66) >=u 0x00 l0E9B
+	branch __ror(a_64, 0x01, C_66) >=u 0x00 l0E9B
 // DataOut: de
 // DataOut (flags): 
 // SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
@@ -3034,7 +3034,7 @@ fn100A_entry:
 l100A:
 	byte b_49 = SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)
 	word16 bc_52 = DPB(af, b_49, 0)
-	branch __ror(0x00 - (Mem0[0x14FF:byte] <u 0x0E) & b_49, false) >=u 0x00 l104D
+	branch __ror(0x00 - (Mem0[0x14FF:byte] <u 0x0E) & b_49, 0x01, false) >=u 0x00 l104D
 // DataOut: af b bc c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:0x00 hl:<invalid> -2(fp):af
@@ -3146,7 +3146,7 @@ fn106E_entry:
 
 l106E:
 	byte b_10 = SLICE(wArg00, byte, 8)
-	byte a_17 = __ror(0x00 - (a <u 0xFF) & b_10, false)
+	byte a_17 = __ror(0x00 - (a <u 0xFF) & b_10, 0x01, false)
 	word16 af_19 = DPB(af, a_17, 0)
 	branch a_17 >=u 0x00 l1075_thunk_fn1081
 // DataOut: af b d e h l
@@ -3200,7 +3200,7 @@ l1078:
 l105E:
 	Mem28[v3 - 0x0002:word16] = DPB(af, 0x00 - (Mem18[0x16A8:byte] <u 0x03), 0)
 	byte b_37 = Mem28[v3 + 0x0003:byte]
-	byte a_44 = __ror(0x00 - (Mem28[0x16A8:byte] <u 0xFF) & b_37, false)
+	byte a_44 = __ror(0x00 - (Mem28[0x16A8:byte] <u 0xFF) & b_37, 0x01, false)
 	af = DPB(af, a_44, 0) (alias)
 	branch a_44 >=u 0x00 l1081
 // DataOut: af b d e h l
@@ -3251,7 +3251,7 @@ l1087:
 	Mem25[sp_24:word16] = DPB(af_15, 0x00 - (Mem5[0x16A8:byte] <u 0x01), 0)
 	byte b_34 = Mem25[sp_24 + 0x0001:byte]
 	sp_1 = sp_24 + 0x0002
-	branch __ror(0x00 - (Mem25[0x16A8:byte] <u 0xFF) & b_34, false) >=u 0x00 l11FD
+	branch __ror(0x00 - (Mem25[0x16A8:byte] <u 0xFF) & b_34, 0x01, false) >=u 0x00 l11FD
 // DataOut: af b c d e h l sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
@@ -3967,7 +3967,7 @@ l12F7:
 	word16 sp_18 = sp_1 - 0x0002
 	Mem19[sp_18:word16] = DPB(af_10, 0x00 - (fn045B() <u 0x2A), 0)
 	byte b_30 = Mem19[sp_18 + 0x0001:byte]
-	branch __ror(0x00 - (0x10 - Mem19[0x16AB:byte] <u 0x00) | b_30, false) >=u 0x00 l1311
+	branch __ror(0x00 - (0x10 - Mem19[0x16AB:byte] <u 0x00) | b_30, 0x01, false) >=u 0x00 l1311
 // DataOut: af b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
@@ -4114,10 +4114,10 @@ fn1326_entry:
 // SymbolicIn: sp:fp
 
 l1326:
-	byte a_11 = __ror(h, false)
+	byte a_11 = __ror(h, 0x01, false)
 	h = a_11
 	*hOut = h
-	l = __ror(l, cond(a_11))
+	l = __ror(l, 0x01, cond(a_11))
 	*lOut = l
 	c = c - 0x01
 	branch c != 0x00 l1326

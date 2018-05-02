@@ -157,10 +157,13 @@ namespace Reko.Arch.X86
                 case Opcode.cvtps2pd: RewriteCvtps2pi("__cvtps2pd", PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Opcode.cvtdq2ps: RewriteCvtps2pi("__cvtdq2ps", PrimitiveType.Int64, PrimitiveType.Real32); break;
                 case Opcode.cvtsd2si: RewriteCvts2si(PrimitiveType.Real64); break;
+                case Opcode.cvtsd2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvtsi2ss:
                 case Opcode.vcvtsi2ss: RewriteCvtToReal(PrimitiveType.Real32); break;
                 case Opcode.cvtsi2sd:
                 case Opcode.vcvtsi2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Opcode.cvtss2sd: RewriteCvtToReal(PrimitiveType.Real64); break;
+                case Opcode.cvtss2si: RewriteCvts2si(PrimitiveType.Real32); break;
                 case Opcode.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
                 case Opcode.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
                 case Opcode.cvttps2pi: RewriteCvttps2pi(); break;
@@ -466,6 +469,7 @@ namespace Reko.Arch.X86
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
                 case Opcode.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
                 case Opcode.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
+                case Opcode.sqrtsd: RewriteSqrtsd(); break;
                 case Opcode.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;
                 case Opcode.std: RewriteSetFlag(FlagM.DF, Constant.True()); break;
                 case Opcode.sti: RewriteSti(); break;

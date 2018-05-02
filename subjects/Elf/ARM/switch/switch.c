@@ -4,68 +4,67 @@
 
 #include "switch.h"
 
-// 000082F0: Register word32 _init(Register word32 pc, Register out ptr32 r10Out)
-word32 _init(word32 pc, ptr32 & r10Out)
+// 000082F0: Register word32 _init(Register out ptr32 r10Out)
+word32 _init(ptr32 & r10Out)
 {
-	word32 r10_6;
-	*r10Out = call_gmon_start(pc);
+	word32 r10_5;
+	*r10Out = call_gmon_start();
 	frame_dummy();
-	word32 r4_7;
-	__do_global_ctors_aux(out r4_7);
-	return r4_7;
+	word32 r4_6;
+	__do_global_ctors_aux(out r4_6);
+	return r4_6;
 }
 
-// 00008314: Register word32 abort(Register word32 pc)
-word32 abort(word32 pc)
+// 00008314: Register word32 abort()
+word32 abort()
 {
-	<anonymous> ** ip_5 = pc + globals->dw8320;
-	word32 sp_6;
-	word32 ip_7;
-	word32 pc_8;
-	(*ip_5)();
-	return ip_7;
+	<anonymous> ** ip_4 = 0x8320 + globals->dw8320;
+	word32 sp_5;
+	word32 ip_6;
+	word32 pc_7;
+	(*ip_4)();
+	return ip_6;
 }
 
-// 00008324: void __libc_start_main(Register word32 pc)
-void __libc_start_main(word32 pc)
+// 00008324: void __libc_start_main()
+void __libc_start_main()
 {
-	<anonymous> ** ip_5 = pc + globals->dw8330;
-	word32 sp_6;
-	word32 ip_7;
-	word32 pc_8;
-	(*ip_5)();
+	<anonymous> ** ip_4 = 0x8330 + globals->dw8330;
+	word32 sp_5;
+	word32 ip_6;
+	word32 pc_7;
+	(*ip_4)();
 }
 
-// 00008334: void _start(Register word32 pc, Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r8, Stack word32 dwArg00)
-void _start(word32 pc, word32 r4, word32 r5, word32 r6, word32 r8, word32 dwArg00)
+// 00008334: void _start(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r8, Stack word32 dwArg00)
+void _start(word32 r4, word32 r5, word32 r6, word32 r8, word32 dwArg00)
 {
 	uint16 * r0_14 = globals->ptr8364;
-	__libc_start_main(pc);
-	abort(pc);
+	__libc_start_main();
+	abort();
 	if (!Z)
 		*r0_14 = (uint16) r8;
 	if (Z)
-		call_gmon_start(pc);
+		call_gmon_start();
 	else
-		call_gmon_start(pc);
+		call_gmon_start();
 }
 
-// 0000836C: Register word32 call_gmon_start(Register word32 pc)
-word32 call_gmon_start(word32 pc)
+// 0000836C: Register word32 call_gmon_start()
+word32 call_gmon_start()
 {
-	<anonymous> ** r10_11 = pc + globals->dw8394;
-	<anonymous> * r3_12 = *r10_11;
-	if (r3_12 == null)
+	<anonymous> ** r10_10 = 0x8380 + globals->dw8394;
+	<anonymous> * r3_11 = *r10_10;
+	if (r3_11 == null)
 		return r10;
-	word32 sp_25;
-	word32 r10_26;
-	word32 lr_27;
-	word32 r3_28;
-	word32 pc_29;
-	byte NZCV_30;
-	byte Z_31;
-	r3_12();
-	return r10_26;
+	word32 sp_23;
+	word32 r10_24;
+	word32 lr_25;
+	word32 r3_26;
+	byte NZCV_27;
+	byte Z_28;
+	r3_11();
+	return r10_24;
 }
 
 // 0000839C: void __do_global_dtors_aux()
@@ -122,26 +121,26 @@ void call_frame_dummy()
 {
 }
 
-// 00008434: Register Eq_164 frobulate(Register Eq_164 r0, Stack Eq_164 dwArg00, Register out ptr32 fpOut)
-Eq_164 frobulate(Eq_164 r0, Eq_164 dwArg00, ptr32 & fpOut)
+// 00008434: Register Eq_161 frobulate(Register Eq_161 r0, Stack Eq_161 dwArg00, Register out ptr32 fpOut)
+Eq_161 frobulate(Eq_161 r0, Eq_161 dwArg00, ptr32 & fpOut)
 {
 	word32 fp_25;
 	*fpOut = dwArg00;
 	return __divsi3(r0 * r0, 1337);
 }
 
-// 00008470: Register word32 bazulate(Register Eq_164 r0, Register Eq_164 r1)
-word32 bazulate(Eq_164 r0, Eq_164 r1)
+// 00008470: Register word32 bazulate(Register Eq_161 r0, Register Eq_161 r1)
+word32 bazulate(Eq_161 r0, Eq_161 r1)
 {
-	struct Eq_179 * fp_23;
+	struct Eq_176 * fp_23;
 	word32 r0_28 = __divsi3(r0 + r1, frobulate(r0, r1, out fp_23));
 	word32 * fp_33;
 	__divsi3(r0_28, frobulate(fp_23->tFFFFFFE8, dwArg00, out fp_33));
 	return *fp_33;
 }
 
-// 000084D4: Register word32 switcheroo(Register Eq_164 r0)
-word32 switcheroo(Eq_164 r0)
+// 000084D4: Register word32 switcheroo(Register Eq_161 r0)
+word32 switcheroo(Eq_161 r0)
 {
 	ptr32 fp_19;
 	switch (r0)
@@ -169,19 +168,19 @@ l00008540:
 	return *(fp_19 - -0x04);
 }
 
-// 0000855C: void main(Register Eq_164 r0)
-void main(Eq_164 r0)
+// 0000855C: void main(Register Eq_161 r0)
+void main(Eq_161 r0)
 {
 	switcheroo(r0);
 }
 
-// 00008588: Register Eq_164 __divsi3(Register Eq_164 r0, Register Eq_164 r1)
-Eq_164 __divsi3(Eq_164 r0, Eq_164 r1)
+// 00008588: Register Eq_161 __divsi3(Register Eq_161 r0, Register Eq_161 r1)
+Eq_161 __divsi3(Eq_161 r0, Eq_161 r1)
 {
-	Eq_164 r1_107;
+	Eq_161 r1_107;
 	int32 ip_4 = r0 ^ r1;
 	uint32 r3_106 = 0x01;
-	Eq_164 r2_100 = 0x00;
+	Eq_161 r2_100 = 0x00;
 	r1_107 = r1;
 	if (r1 < 0x00)
 		r1_107 = 0x00 - r1;
@@ -218,19 +217,19 @@ Eq_164 __divsi3(Eq_164 r0, Eq_164 r1)
 			} while (C_111);
 			do
 			{
-				Eq_164 r0_105;
+				Eq_161 r0_105;
 				r0_105 = r0;
 				if (r0 >= r1_107)
 					r0_105 = r0 - r1_107;
 				if (r0 >= r1_107)
 					r2_100 = r2_100 | r3_106;
-				Eq_164 r0_103;
+				Eq_161 r0_103;
 				r0_103 = r0_105;
 				if (r0_105 >= r1_107 >> 0x01)
 					r0_103 = r0_105 - (r1_107 >> 0x01);
 				if (r0_105 >= r1_107 >> 0x01)
 					r2_100 = r2_100 | r3_106 >> 0x01;
-				Eq_164 r0_101;
+				Eq_161 r0_101;
 				r0_101 = r0_103;
 				if (r0_103 >= r1_107 >> 0x02)
 					r0_101 = r0_103 - (r1_107 >> 0x02);
@@ -247,15 +246,15 @@ Eq_164 __divsi3(Eq_164 r0, Eq_164 r1)
 					r1_107 = r1_107 >> 0x04;
 			} while (r0 != 0x00);
 		}
-		Eq_164 r0_32 = r2_100;
+		Eq_161 r0_32 = r2_100;
 		if (ip_4 < 0x00)
 			r0_32 = 0x00 - r2_100;
 		return r0_32;
 	}
 }
 
-// 00008638: void __div0(Register Eq_164 r0)
-void __div0(Eq_164 r0)
+// 00008638: void __div0(Register Eq_161 r0)
+void __div0(Eq_161 r0)
 {
 	__syscall(0x00900014);
 	if (r0 >= 1000)
@@ -263,14 +262,14 @@ void __div0(Eq_164 r0)
 	__syscall(0x00900025);
 }
 
-// 00008654: void __libc_csu_init(Register word32 pc)
-void __libc_csu_init(word32 pc)
+// 00008654: void __libc_csu_init()
+void __libc_csu_init()
 {
-	<anonymous> *** r10_18;
-	Eq_339 r4_19 = _init(pc, out r10_18);
-	<anonymous> ** r1_22 = *r10_18;
-	int32 r3_24 = *r10_18 - r1_22;
-	if (r4_19 >= r3_24 >> 0x02)
+	<anonymous> *** r10_17;
+	Eq_335 r4_18 = _init(out r10_17);
+	<anonymous> ** r1_21 = *r10_17;
+	int32 r3_23 = *r10_17 - r1_21;
+	if (r4_18 >= r3_23 >> 0x02)
 		return;
 	word32 sp_47;
 	word32 r4_48;
@@ -284,16 +283,16 @@ void __libc_csu_init(word32 pc)
 	word32 r1_56;
 	byte NZCV_57;
 	byte C_58;
-	(*r1_22)();
+	(*r1_21)();
 }
 
-// 000086B0: void __libc_csu_fini(Register word32 pc)
-void __libc_csu_fini(word32 pc)
+// 000086B0: void __libc_csu_fini()
+void __libc_csu_fini()
 {
-	<anonymous> *** r10_16 = pc + globals->dw8700;
-	<anonymous> ** r1_17 = *r10_16;
-	int32 r3_19 = *r10_16 - r1_17;
-	if (r3_19 >> 0x02 == 0x00)
+	<anonymous> *** r10_15 = 0x86C8 + globals->dw8700;
+	<anonymous> ** r1_16 = *r10_15;
+	int32 r3_18 = *r10_15 - r1_16;
+	if (r3_18 >> 0x02 == 0x00)
 		_fini();
 	else
 	{
@@ -308,7 +307,7 @@ void __libc_csu_fini(word32 pc)
 		word32 r1_45;
 		byte NZCV_46;
 		byte Z_47;
-		(*r1_17)();
+		(*r1_16)();
 	}
 }
 

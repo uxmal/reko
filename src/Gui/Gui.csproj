@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="AddressNavigator.cs" />
     <Compile Include="AddressSearchResult.cs" />
+    <Compile Include="CmdIds.cs" />
     <Compile Include="Commands\Cmd_EditSignature.cs" />
     <Compile Include="Commands\Cmd_MarkProcedures.cs" />
     <Compile Include="Commands\Cmd_ViewWhatPointsHere.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Controls\INumericUpDownWrapper.cs" />
     <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
+    <Compile Include="Controls\KeyEventArgs.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\ImportDesigner.cs" />
     <Compile Include="Design\GlobalVariablesNodeDesigner.cs" />
@@ -131,6 +133,9 @@
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
+    <Compile Include="Forms\FormWindowState.cs" />
+    <Compile Include="Forms\IAboutDialog.cs" />
+    <Compile Include="Forms\IArchiveBrowserDialog.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
@@ -139,7 +144,8 @@
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
-    <Compile Include="Forms\ResourceEditorInteractor.cs" />
+    <Compile Include="Forms\ScannedPageInteractor.cs" />
+    <Compile Include="Forms\SymbolSourceInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
@@ -186,7 +192,6 @@
     <Compile Include="IDialogFactory.cs" />
     <Compile Include="IDisassemblyViewService.cs" />
     <Compile Include="IListViewItem.cs" />
-    <Compile Include="ILoadedPage.cs" />
     <Compile Include="ILowLevelViewService.cs" />
     <Compile Include="ImageSegmentService.cs" />
     <Compile Include="IMenuAdapter.cs" />
@@ -197,7 +202,6 @@
     <Compile Include="ISearchResultService.cs" />
     <Compile Include="IServiceFactory.cs" />
     <Compile Include="ISettingsService.cs" />
-    <Compile Include="IStartPage.cs" />
     <Compile Include="IStatusBarService.cs" />
     <Compile Include="ITabControlHostService.cs" />
     <Compile Include="IUiPreferencesService.cs" />
@@ -220,301 +224,12 @@
     <Compile Include="SignatureParser.cs" />
     <Compile Include="StatementNavigator.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
-    <Compile Include="Windows\ButtonWrapper.cs" />
-    <Compile Include="Windows\CallGraphGenerator.cs" />
-    <Compile Include="Windows\CallGraphPane.cs" />
-    <Compile Include="Windows\CallGraphViewService.cs" />
-    <Compile Include="Windows\CfgBlockNode.cs" />
-    <Compile Include="Windows\CheckBoxWrapper.cs" />
-    <Compile Include="Windows\CfgGraphGenerator.cs" />
-    <Compile Include="Windows\CodeViewerServiceImpl.cs" />
-    <Compile Include="Windows\CodeViewInteractor.cs" />
-    <Compile Include="Windows\CombinedCodeViewInteractor.cs" />
-    <Compile Include="Windows\ComboBoxWrapper.cs" />
-    <Compile Include="Windows\Controls\ByteMapView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\MixedCodeDataControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\MixedCodeDataModel.cs" />
-    <Compile Include="Windows\Controls\CommandMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\DirtyManager.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\DisassemblyControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\DisassemblyTextModel.cs" />
-    <Compile Include="Windows\Controls\ImageMapControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\ImageMapView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\ImageMapView.Designer.cs">
-      <DependentUpon>ImageMapView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\ImageMapView.Painter.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\ImageSegmentView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\ImageSegmentView.Designer.cs">
-      <DependentUpon>ImageSegmentView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\LowLevelView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\LowLevelView.Designer.cs">
-      <DependentUpon>LowLevelView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\MemoryControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\MenuStatusSetter.cs" />
-    <Compile Include="Windows\Controls\MenuSystem.cs" />
-    <Compile Include="Windows\Controls\MixedCodeDataModel.SpanGenerator.cs" />
-    <Compile Include="Windows\Controls\NestedTextModel.cs" />
-    <Compile Include="Windows\Controls\ProcedureCodeModel.cs" />
-    <Compile Include="Windows\Controls\RegexValidator.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\ControlWrapper.cs" />
-    <Compile Include="Windows\Forms\CallSiteDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\CallSiteDialog.Designer.cs">
-      <DependentUpon>CallSiteDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ICallSiteDialog.cs" />
-    <Compile Include="Windows\Controls\CombinedCodeView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\CombinedCodeView.Designer.cs">
-      <DependentUpon>CombinedCodeView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\TextViewLayout.cs" />
-    <Compile Include="Windows\Controls\TextViewPainter.cs" />
-    <Compile Include="Windows\Forms\CommentForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\CommentForm.Designer.cs">
-      <DependentUpon>CommentForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\CommentFormInteractor.cs" />
-    <Compile Include="Windows\Forms\DeclarationFormInteractor.cs" />
-    <Compile Include="Windows\Forms\DeclarationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\DeclarationForm.Designer.cs">
-      <DependentUpon>DeclarationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\JumpTableDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\JumpTableDialog.Designer.cs">
-      <DependentUpon>JumpTableDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\JumpTableInteractor.cs" />
-    <Compile Include="Windows\Forms\KeyBindingsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\KeyBindingsDialog.Designer.cs">
-      <DependentUpon>KeyBindingsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\SymbolSourceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\SymbolSourceDialog.Designer.cs">
-      <DependentUpon>SymbolSourceDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\SymbolSourceInteractor.cs" />
-    <Compile Include="Windows\Forms\TextEncodingDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\TextEncodingDialog.Designer.cs">
-      <DependentUpon>TextEncodingDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\TextEncodingInteractor.cs" />
-    <Compile Include="Windows\LabelWrapper.cs" />
-    <Compile Include="Windows\ListboxWrapper.cs" />
-    <Compile Include="Windows\ListViewWrapper.cs" />
-    <Compile Include="Windows\NumericUpDownWrapper.cs" />
-    <Compile Include="Windows\PreviewInteractor.cs" />
-    <Compile Include="Windows\ProgressbarWrapper.cs" />
-    <Compile Include="Windows\RadioButtonWrapper.cs" />
-    <Compile Include="Windows\StyleStack.cs" />
-    <Compile Include="Windows\Controls\TextBuffer.cs" />
-    <Compile Include="Windows\Controls\TextPointer.cs" />
-    <Compile Include="Windows\Controls\TextSelection.cs" />
-    <Compile Include="Windows\Controls\TextView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\TextView.Designer.cs">
-      <DependentUpon>TextView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Controls\TextViewModel.cs" />
-    <Compile Include="Windows\DecompilerShellUiService.cs" />
-    <Compile Include="Windows\DecompilerUiService.cs" />
-    <Compile Include="Windows\DisassemblyFormatter.cs" />
-    <Compile Include="Windows\DisassemblyViewInteractor.cs" />
-    <Compile Include="Windows\DisassemblyViewServiceImpl.cs" />
-    <Compile Include="Windows\Forms\AboutDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\AboutDialog.Designer.cs">
-      <DependentUpon>AboutDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\AddressPromptDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\AddressPromptDialog.Designer.cs">
-      <DependentUpon>AddressPromptDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\AddressPromptInteractor.cs" />
-    <Compile Include="Windows\Forms\AnalyzedPageInteractor.cs" />
-    <Compile Include="Windows\Forms\ArchiveBrowserDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ArchiveBrowserDialog.Designer.cs">
-      <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\ArchiveBrowserService.cs" />
-    <Compile Include="Windows\Forms\AssembleFileDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\AssembleFileDialog.Designer.cs">
-      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\AssembleFileInteractor.cs" />
-    <Compile Include="Windows\Forms\AssumedRegisterValuesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\AssumedRegisterValuesDialog.Designer.cs">
-      <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\AssumedRegisterValuesInteractor.cs" />
-    <Compile Include="Windows\Forms\CmdIds.cs" />
-    <Compile Include="Windows\Forms\DecompilerMenus.cs" />
-    <Compile Include="Windows\Forms\DiagnosticsInteractor.cs" />
-    <Compile Include="Windows\Forms\EditProjectDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\EditProjectDialog.Designer.cs">
-      <DependentUpon>EditProjectDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\EditProjectInteractor.cs" />
-    <Compile Include="Windows\Forms\EnvironmentSelectorDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\EnvironmentSelectorDialog.Designer.cs">
-      <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\FinalPageInteractor.cs" />
-    <Compile Include="Windows\Forms\FindDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\FindDialog.Designer.cs">
-      <DependentUpon>FindDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\FindDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\FindStringsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\FindStringsDialog.Designer.cs">
-      <DependentUpon>FindStringsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\FindStringsDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\InitialPageInteractor.cs" />
-    <Compile Include="Windows\Forms\ScannedPageInteractor.cs" />
-    <Compile Include="Windows\Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\OpenAsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\OpenAsDialog.Designer.cs">
-      <DependentUpon>OpenAsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\PhasePageInteractor.cs" />
-    <Compile Include="Windows\Forms\ProcedureDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ProcedureDialog.Designer.cs">
-      <DependentUpon>ProcedureDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\ProcedureDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\ProgramPropertiesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ProgramPropertiesDialog.Designer.cs">
-      <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\ProgramPropertiesInteractor.cs" />
-    <Compile Include="Windows\Forms\ResourceEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\ResourceEditor.Designer.cs">
-      <DependentUpon>ResourceEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\SearchDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\SearchDialog.Designer.cs">
-      <DependentUpon>SearchDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\SearchDialogInteractor.cs" />
-    <Compile Include="Windows\Forms\UserPreferencesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\UserPreferencesDialog.Designer.cs">
-      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Forms\UserPreferencesInteractor.cs" />
-    <Compile Include="Windows\Forms\WorkerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\Forms\WorkerDialog.Designer.cs">
-      <DependentUpon>WorkerDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ImageSegmentPane.cs" />
-    <Compile Include="Windows\ImageSegmentServiceImpl.cs" />
-    <Compile Include="Windows\IRegistryService.cs" />
-    <Compile Include="Windows\ListViewItemWrapper.cs" />
-    <Compile Include="Windows\LowLevelViewInteractor.cs" />
-    <Compile Include="Windows\LowLevelViewServiceImpl.cs" />
-    <Compile Include="Windows\MenuItemAdapter.cs" />
-    <Compile Include="Windows\NavigationInteractor.cs" />
-    <Compile Include="Windows\SearchResultServiceImpl.cs" />
-    <Compile Include="Windows\TabControlHost.cs" />
-    <Compile Include="Windows\TabControlWindowFrame.cs" />
-    <Compile Include="Windows\TextBoxWrapper.cs" />
-    <Compile Include="Windows\TextSpanFormatter.cs" />
-    <Compile Include="Windows\ToolStripButtonWrapper.cs" />
-    <Compile Include="Windows\ToolStripItemAdapter.cs" />
-    <Compile Include="Windows\ToolStripTextBoxWrapper.cs" />
-    <Compile Include="Windows\Controls\TreeViewWrapper.cs" />
-    <Compile Include="Windows\Controls\TypeMarker.cs" />
-    <Compile Include="Windows\ViewImportsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\ViewImportsControl.Designer.cs">
-      <DependentUpon>ViewImportsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ViewImportsPane.cs" />
-    <Compile Include="Windows\ViewImportsService.cs" />
-    <Compile Include="Windows\ViewService.cs" />
-    <Compile Include="Windows\WindowsDecompilerEventListener.cs" />
-    <Compile Include="Windows\WindowsFormsDialogFactory.cs" />
-    <Compile Include="Windows\WindowsFormsRegistryService.cs" />
-    <Compile Include="Windows\WindowsFormsSettingsService.cs" />
+    <Compile Include="Forms\AnalyzedPageInteractor.cs" />
+    <Compile Include="Forms\FinalPageInteractor.cs" />
+    <Compile Include="Forms\InitialPageInteractor.cs" />
+    <Compile Include="Forms\PhasePageInteractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -552,6 +267,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="cmdids.xslt" />
     <Content Include="decompiler-menus.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -588,122 +304,19 @@
     <None Include="Images\Forward.bmp" />
     <None Include="Images\Back.bmp" />
     <Content Include="Images\revenge-44x44.png" />
-    <Content Include="Windows\Forms\cmdids.xslt" />
-    <Content Include="Windows\Forms\decompiler-menus.xslt" />
-    <Content Include="Windows\Images.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources.sv-SE.resx" />
-    <EmbeddedResource Include="Windows\Controls\CombinedCodeView.resx">
-      <DependentUpon>CombinedCodeView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\DirtyManager.resx">
-      <DependentUpon>DirtyManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\ImageMapControl.resx">
-      <DependentUpon>ImageMapControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\ImageMapView.resx">
-      <DependentUpon>ImageMapView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\ImageSegmentView.resx">
-      <DependentUpon>ImageSegmentView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\LowLevelView.resx">
-      <DependentUpon>LowLevelView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\MemoryControl.resx">
-      <DependentUpon>MemoryControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Controls\TextView.resx">
-      <DependentUpon>TextView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\AboutDialog.resx">
-      <DependentUpon>AboutDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\AddressPromptDialog.resx">
-      <DependentUpon>AddressPromptDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\ArchiveBrowserDialog.resx">
-      <DependentUpon>ArchiveBrowserDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\AssembleFileDialog.resx">
-      <DependentUpon>AssembleFileDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\AssumedRegisterValuesDialog.resx">
-      <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\CallSiteDialog.resx">
-      <DependentUpon>CallSiteDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\CommentForm.resx">
-      <DependentUpon>CommentForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\DeclarationForm.resx">
-      <DependentUpon>DeclarationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\EditProjectDialog.resx">
-      <DependentUpon>EditProjectDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\EnvironmentSelectorDialog.resx">
-      <DependentUpon>EnvironmentSelectorDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\FindDialog.resx">
-      <DependentUpon>FindDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\FindStringsDialog.resx">
-      <DependentUpon>FindStringsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\JumpTableDialog.resx">
-      <DependentUpon>JumpTableDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\KeyBindingsDialog.resx">
-      <DependentUpon>KeyBindingsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\OpenAsDialog.resx">
-      <DependentUpon>OpenAsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\ProcedureDialog.resx">
-      <DependentUpon>ProcedureDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\ProgramPropertiesDialog.resx">
-      <DependentUpon>ProgramPropertiesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\ResourceEditor.resx">
-      <DependentUpon>ResourceEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\SearchDialog.resx">
-      <DependentUpon>SearchDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\SymbolSourceDialog.resx">
-      <DependentUpon>SymbolSourceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\TextEncodingDialog.resx">
-      <DependentUpon>TextEncodingDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\UserPreferencesDialog.resx">
-      <DependentUpon>UserPreferencesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Forms\WorkerDialog.resx">
-      <DependentUpon>WorkerDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\ViewImportsControl.resx">
-      <DependentUpon>ViewImportsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)Windows/Forms/cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/CmdIds.cs" />
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe')" Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)Windows/Forms/decompiler-menus.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)Windows/Forms/DecompilerMenus.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\CmdIds.cs&quot;" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Windows\Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)Windows\Forms\DecompilerMenus.cs&quot;" />
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
   </Target>
   <PropertyGroup>
     <PreBuildEvent>

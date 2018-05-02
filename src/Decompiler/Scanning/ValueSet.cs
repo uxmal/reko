@@ -163,7 +163,7 @@ namespace Reko.Scanning
 
         public override ValueSet SignExtend(DataType dataType)
         {
-            throw new NotImplementedException();
+            return new IntervalValueSet(dataType, this.SI);
         }
 
         /// <summary>

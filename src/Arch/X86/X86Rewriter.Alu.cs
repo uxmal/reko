@@ -929,7 +929,7 @@ namespace Reko.Arch.X86
 
         public MemoryAccess MemDi()
 		{
-			if (arch.ProcessorMode == ProcessorMode.Real)
+			if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
 			{
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, instrCur.dataWidth);
 			}
@@ -939,7 +939,7 @@ namespace Reko.Arch.X86
 
 		public MemoryAccess MemSi()
 		{
-			if (arch.ProcessorMode == ProcessorMode.Real)
+			if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
 			{
 				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, instrCur.dataWidth);
 			}

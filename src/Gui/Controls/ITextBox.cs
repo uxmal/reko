@@ -22,15 +22,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Gui.Controls
 {
     public interface ITextBox : IControl
     {
         event EventHandler TextChanged;
-        event KeyEventHandler KeyDown;
-        event KeyEventHandler KeyUp;
+        event EventHandler<KeyEventArgs> KeyDown;
+        event EventHandler<KeyEventArgs> KeyUp;
         event EventHandler LostFocus;
 
         string Text { get; set; }
