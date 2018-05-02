@@ -1,7 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15]
-	BypassIn: 
 	Trashed:   SCZO al Top
 	Preserved: sp
 // fn0C00_0000
@@ -21,7 +20,6 @@ fn0C00_0000_exit:
 // fn0C00_000C /////////////////////
 	LiveOut:   C
 	BitsUsed:  al:[0..7] ds:[0..15]
-	BypassIn: 
 	Trashed:   SCZO Top
 	Preserved: sp
 // fn0C00_000C

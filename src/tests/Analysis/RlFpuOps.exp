@@ -1,7 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15]
-	BypassIn: 
 	Trashed:   SCZO bx Top
 	Preserved: sp
 // fn0C00_0000
@@ -18,7 +17,6 @@ fn0C00_0000_exit:
 // fn0C00_0010 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
-	BypassIn: 
 	Trashed:   bx FPU -1 FPU -2 Top
 	Preserved: bp sp
 // fn0C00_0010
@@ -44,7 +42,6 @@ fn0C00_0010_exit:
 // fn0C00_0037 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15]
-	BypassIn: 
 	Trashed:   FPU -1 Top
 	Preserved: sp
 // fn0C00_0037

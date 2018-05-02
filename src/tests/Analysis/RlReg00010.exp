@@ -1,7 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
 	BitsUsed:  ax:[0..15] bp:[0..15] ds:[0..15] si:[0..15]
-	BypassIn: 
 	Trashed:   SCZO ax bp bx cx dx si Top
 	Preserved: sp
 // fn0C00_0000
@@ -19,7 +18,6 @@ fn0C00_0000_exit:
 // fn0C00_0004 /////////////////////
 	LiveOut:  
 	BitsUsed:  ax:[0..7] bp:[0..15] ds:[0..15] si:[0..15]
-	BypassIn: 
 	Trashed:   SCZO ax bp bx cx dx si Top
 	Preserved: sp
 // fn0C00_0004

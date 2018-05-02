@@ -1,7 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15] eax:[0..31] es:[0..15] si:[0..15]
-	BypassIn: 
 	Trashed:   SCZO cx di eax si Top
 	Preserved: sp
 // fn0C00_0000
@@ -28,7 +27,6 @@ fn0C00_0000_exit:
 // fn0C00_0026 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15] es:[0..15]
-	BypassIn: 
 	Trashed:   SCZO al cx di Top
 	Preserved: sp
 // fn0C00_0026

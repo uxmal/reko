@@ -58,7 +58,24 @@ namespace Reko.Analysis
 			EmitRegistersCore(arch, regs, sb);
 		}
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs, TextWriter sb)
+        public static void EmitRegisters(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags, IDictionary<Storage, BitRange> regRanges, TextWriter sb)
+        {
+            sb.Write(caption);
+            var sGrf = string.Join(" ", grfFlags
+                .Where(f => f.Value != 0)
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .OrderBy(f => f.Name));
+            if (sGrf.Length > 0)
+            {
+                sb.Write(" {0}", sGrf);
+            }
+            foreach (var de in regRanges.OrderBy(de => de.Key.Name))
+            {
+                sb.Write(" {0}:{1}", de.Key, de.Value);
+            }
+        }
+
+        public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			EmitRegistersCore(arch, regs, sb);

@@ -1,7 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
 	BitsUsed:  ds:[0..15] Stack +0004:[0..31]
-	BypassIn: 
 	Trashed:   SCZO ax bx es Top
 	Preserved: bp sp
 // fn0C00_0000
@@ -20,9 +19,8 @@ l0C00_0000:
 	return
 fn0C00_0000_exit:
 // fn0C00_0020 /////////////////////
-	LiveOut:   ax
+	LiveOut:   ax:[0..15]
 	BitsUsed:  Stack +0002:[0..31]
-	BypassIn: 
 	Trashed:   ax bx es Top
 	Preserved: bp sp
 // fn0C00_0020
@@ -35,9 +33,8 @@ l0C00_0020:
 fn0C00_0020_exit:
 	use ax_12
 // fn0C00_002E /////////////////////
-	LiveOut:   ax
+	LiveOut:   ax:[0..15]
 	BitsUsed:  Stack +0002:[0..31] Stack +0006:[0..15]
-	BypassIn: 
 	Trashed:   SCZO ax bx es Top
 	Preserved: bp sp
 // fn0C00_002E
