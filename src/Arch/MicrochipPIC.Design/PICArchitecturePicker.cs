@@ -24,6 +24,9 @@ using System.Windows.Forms;
 
 namespace Reko.Arch.Microchip.Design
 {
+    /// <summary>
+    /// Form to ask the user for PIC model and PIC Execution mode.
+    /// </summary>
     public partial class PICArchitecturePicker : Form
     {
         public PICArchitecturePicker()

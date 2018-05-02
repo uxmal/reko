@@ -35,17 +35,17 @@
             this.cbbModel = new System.Windows.Forms.ComboBox();
             this.lblModel = new System.Windows.Forms.Label();
             this.grpFamily = new System.Windows.Forms.GroupBox();
-            this.rdbPIC16 = new System.Windows.Forms.RadioButton();
-            this.rdbPIC18 = new System.Windows.Forms.RadioButton();
-            this.lblExplain = new System.Windows.Forms.Label();
             this.chkExtendedMode = new System.Windows.Forms.CheckBox();
+            this.lblExplain = new System.Windows.Forms.Label();
+            this.rdbPIC18 = new System.Windows.Forms.RadioButton();
+            this.rdbPIC16 = new System.Windows.Forms.RadioButton();
             this.grpFamily.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(289, 126);
+            this.btnCancel.Location = new System.Drawing.Point(370, 126);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -55,7 +55,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(370, 126);
+            this.btnOK.Location = new System.Drawing.Point(289, 126);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -101,17 +101,25 @@
             this.grpFamily.TabStop = false;
             this.grpFamily.Text = "PIC Family";
             // 
-            // rdbPIC16
+            // chkExtendedMode
             // 
-            this.rdbPIC16.AutoSize = true;
-            this.rdbPIC16.Checked = true;
-            this.rdbPIC16.Location = new System.Drawing.Point(6, 19);
-            this.rdbPIC16.Name = "rdbPIC16";
-            this.rdbPIC16.Size = new System.Drawing.Size(54, 17);
-            this.rdbPIC16.TabIndex = 0;
-            this.rdbPIC16.TabStop = true;
-            this.rdbPIC16.Text = "PIC16";
-            this.rdbPIC16.UseVisualStyleBackColor = true;
+            this.chkExtendedMode.AutoSize = true;
+            this.chkExtendedMode.Enabled = false;
+            this.chkExtendedMode.Location = new System.Drawing.Point(66, 43);
+            this.chkExtendedMode.Name = "chkExtendedMode";
+            this.chkExtendedMode.Size = new System.Drawing.Size(178, 17);
+            this.chkExtendedMode.TabIndex = 3;
+            this.chkExtendedMode.Text = "Allow Extended Execution mode";
+            this.chkExtendedMode.UseVisualStyleBackColor = true;
+            // 
+            // lblExplain
+            // 
+            this.lblExplain.Location = new System.Drawing.Point(19, 63);
+            this.lblExplain.Name = "lblExplain";
+            this.lblExplain.Size = new System.Drawing.Size(265, 31);
+            this.lblExplain.TabIndex = 2;
+            this.lblExplain.Text = "(Only for PIC18 supporting Extended Execution mode\r\n and with appropriate setting" +
+    "s of configuration fuses)\r\n";
             // 
             // rdbPIC18
             // 
@@ -123,25 +131,17 @@
             this.rdbPIC18.Text = "PIC18";
             this.rdbPIC18.UseVisualStyleBackColor = true;
             // 
-            // lblExplain
+            // rdbPIC16
             // 
-            this.lblExplain.Location = new System.Drawing.Point(19, 63);
-            this.lblExplain.Name = "lblExplain";
-            this.lblExplain.Size = new System.Drawing.Size(265, 31);
-            this.lblExplain.TabIndex = 2;
-            this.lblExplain.Text = "(Only for PIC18 supporting Extended Execution mode\r\n and with appropriate setting" +
-    "s of configuration fuses)\r\n";
-            // 
-            // chkExtendedMode
-            // 
-            this.chkExtendedMode.AutoSize = true;
-            this.chkExtendedMode.Enabled = false;
-            this.chkExtendedMode.Location = new System.Drawing.Point(66, 43);
-            this.chkExtendedMode.Name = "chkExtendedMode";
-            this.chkExtendedMode.Size = new System.Drawing.Size(178, 17);
-            this.chkExtendedMode.TabIndex = 3;
-            this.chkExtendedMode.Text = "Allow Extended Execution mode";
-            this.chkExtendedMode.UseVisualStyleBackColor = true;
+            this.rdbPIC16.AutoSize = true;
+            this.rdbPIC16.Checked = true;
+            this.rdbPIC16.Location = new System.Drawing.Point(6, 19);
+            this.rdbPIC16.Name = "rdbPIC16";
+            this.rdbPIC16.Size = new System.Drawing.Size(54, 17);
+            this.rdbPIC16.TabIndex = 0;
+            this.rdbPIC16.TabStop = true;
+            this.rdbPIC16.Text = "PIC16";
+            this.rdbPIC16.UseVisualStyleBackColor = true;
             // 
             // PICArchitecturePicker
             // 

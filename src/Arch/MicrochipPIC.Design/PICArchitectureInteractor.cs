@@ -20,18 +20,16 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Libraries.Microchip;
+using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Reko.Arch.Microchip.Design
 {
-    using Common;
-
+    /// <summary>
+    /// Interactor used by <see cref="PICArchitecturePicker"/> form.
+    /// </summary>
     public class PICArchitectureInteractor
     {
         private PICArchitecturePicker form;

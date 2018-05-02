@@ -22,11 +22,17 @@
 
 namespace Reko.Arch.Microchip.Design
 {
-    using Common;
-
     public class PickerResult
     {
+        /// <summary>
+        /// Name of the PIC.
+        /// </summary>
         public string PICName;
+
+        /// <summary>
+        /// True to permit decoding of Extended Execution mode of PIC18, false otherwise.
+        /// This is a hint in case the configuration fuses are not part of the binary image.
+        /// </summary>
         public bool AllowExtended;
     }
 
