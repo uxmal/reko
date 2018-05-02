@@ -228,17 +228,18 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
             var c = binder.EnsureFlagGroup(Registers.C);
             Expression src;
+            var one = m.Byte(1);
             if (useCarry)
             {
                 src = m.Fn(
-                    new PseudoProcedure(pseudoOp, reg.DataType, 2),
-                    reg, c);
+                    new PseudoProcedure(pseudoOp, reg.DataType, 3),
+                    reg, one, c);
             }
             else
             {
                 src = m.Fn(
-                    new PseudoProcedure(pseudoOp, reg.DataType, 1),
-                    reg);
+                    new PseudoProcedure(pseudoOp, reg.DataType, 2),
+                    reg, one);
             }
             m.Assign(reg, src);
             EmitCc(reg, "**-0XP0*");

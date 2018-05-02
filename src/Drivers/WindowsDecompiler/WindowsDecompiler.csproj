@@ -196,6 +196,10 @@
       <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
       <Name>i8051</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
+      <Project>{e75c3be2-0f98-48cd-943d-198159b57dc7}</Project>
+      <Name>MicrochipPIC.Design</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj">
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
@@ -216,13 +220,21 @@
       <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
       <Name>Dol</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
+      <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
+      <Name>MzExe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj">
+      <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
+      <Name>Omf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
       <Name>NativeProxy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
-      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
-      <Name>Microchip.Utils</Name>
+    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

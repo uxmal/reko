@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
   <Import Project="$(SolutionDir)Drivers\Common.items" />
@@ -152,6 +152,7 @@
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Project>{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF}</Project>
+      <Name>Dol</Name>
       <Name>Dol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">

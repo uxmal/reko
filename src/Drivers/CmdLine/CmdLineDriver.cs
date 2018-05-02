@@ -196,7 +196,7 @@ namespace Reko.CmdLine
                 {
                     LoaderName = (string)sLoader,
                     ArchitectureName = (string)pArgs["--arch"],
-                    CPUModelName = cpuModel,
+                    ArchitectureOptions = null, //$TODO: How do we handle options for command line?
                     PlatformName = (string)sEnv,
                     LoadAddress = (string)pArgs["--base"],
                     EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }

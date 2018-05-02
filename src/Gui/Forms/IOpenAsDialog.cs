@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -35,9 +36,15 @@ namespace Reko.Gui.Forms
         IServiceProvider Services { get; set; }
         IComboBox RawFileTypes { get; }
         IComboBox Architectures { get; }
-        IComboBox CPUModels { get; }
         IComboBox Platforms { get; }
+        IPropertyGrid PropertyGrid { get; }
         IButton BrowseButton { get; }
         IButton OkButton { get; }
+
+        Dictionary<string, object> ArchitectureOptions { get; set; }
+
+        Architecture GetSelectedArchitecture();
+        OperatingEnvironment GetSelectedEnvironment();
+        void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
     }
 }

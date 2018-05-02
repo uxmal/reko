@@ -29,6 +29,8 @@ namespace Reko.Gui.Forms
 {
     public interface ISymbolSourceDialog : IDialog
     {
+        event EventHandler Load;
+
         IServiceProvider Services { get; }
 
         ITextBox AssemblyFile { get; }
@@ -39,5 +41,8 @@ namespace Reko.Gui.Forms
         IListBox SymbolSourceClasses { get; }
         IListView SymbolSourceList { get; }
         ICheckBox CustomSourceCheckbox { get; }
+
+        void Update();
+
     }
 }

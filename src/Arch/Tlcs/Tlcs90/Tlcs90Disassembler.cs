@@ -322,8 +322,21 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 }
                 else if (dasm.backPatchOp == 1)
                 {
-                    instr.op2 = operand;
-                    instr.op2.Width = instr.op1.Width;
+                    if ((instr.Opcode == Opcode.jp || instr.Opcode == Opcode.call)
+                        &&
+                        operand.Base == null &&
+                        operand.Index == null &&
+                        operand.Offset != null)
+                    {
+                        // JP cc,(XXXX) should be JP cc,XXXX
+                        instr.op2 = AddressOperand.Ptr16(operand.Offset.ToUInt16());
+                        instr.op2.Width = PrimitiveType.Ptr16;
+                    }
+                    else
+                    {
+                        instr.op2 = operand;
+                        instr.op2.Width = instr.op1.Width;
+                    }
                 }
                 else
                     return null;

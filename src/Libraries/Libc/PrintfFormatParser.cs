@@ -80,6 +80,7 @@ namespace Reko.Libraries.Libc
                 SkipNumber();
                 if (i < format.Length && format[i] == '.')
                 {
+                    ++i;
                     SkipNumber();
                 }
 

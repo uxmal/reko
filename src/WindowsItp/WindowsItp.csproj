@@ -108,6 +108,12 @@
     <Compile Include="MemoryControlDialog.Designer.cs">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcedureOptionsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProcedureOptionsDialog.Designer.cs">
+      <DependentUpon>ProcedureOptionsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProcedurePropertiesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     <EmbeddedResource Include="MemoryControlDialog.resx">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcedureOptionsDialog.resx">
+      <DependentUpon>ProcedureOptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProcedurePropertiesDialog.resx">
       <DependentUpon>ProcedurePropertiesDialog.cs</DependentUpon>
@@ -223,7 +232,7 @@
       <Name>Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gui\Gui.csproj">
-      <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
@@ -233,6 +242,10 @@
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj">
       <Project>{2882376F-663A-4FC8-842C-B0300A6829E8}</Project>
       <Name>OdbgScript</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
+      <Name>WindowsForms</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 
 #include "lunar.h"
 
+word16 g_w0003 = 0x0000;
 word16 g_w0004 = 0x0200;
 word16 g_w0006 = 0x00E0;
 union Eq_2 g_u0044 = 
@@ -70,21 +71,18 @@ word16 g_w00A8 = 0x0000;
 word16 g_w00AA = 0x0000;
 word16 g_w00AC = 0x0000;
 word16 g_w00AE = 0x0000;
-struct Eq_1906 * g_ptr00B0 = &g_ptr00B0;
+struct Eq_1990 * g_ptr00B0 = &g_ptr00B0;
 word16 * g_a013E[] = 
 	{
 	};
-ci16 g_w0258 = 0x09DF;
+word16 g_w0258 = 0x09DF;
 word16 g_w07BA = 0x0000;
 word16 g_w0C72 = 0x0000;
 word16 g_w0F70 = 0x0A9F;
-<anonymous> * g_a0FEC[] = 
+struct Eq_4211 * g_a168C[] = 
 	{
 	};
-struct Eq_4127 * g_a168C[] = 
-	{
-	};
-struct Eq_4132 * g_a1696[] = 
+struct Eq_4216 * g_a1696[] = 
 	{
 	};
 word16 g_a182A[] = 
@@ -99,7 +97,7 @@ Eq_1167 g_t1830 =
 word16 g_w1832 = 0x0000;
 cui16 g_w1834 = 0x0000;
 word16 g_w25AA = 0x0000;
-Eq_4152 g_t25B8 = 
+Eq_4236 g_t25B8 = 
 	{
 		
 		{
@@ -118,7 +116,7 @@ word16 g_w27A8 = 0x0000;
 byte g_a27B0[] = 
 	{
 	};
-Eq_4202 g_t2814 = 
+Eq_4286 g_t2814 = 
 	{
 		0x30
 	};
@@ -128,7 +126,7 @@ Eq_2 g_a28F0[] =
 Eq_2 g_a28F2[] = 
 	{
 	};
-Eq_4424 g_a28F8[] = 
+Eq_4507 g_a28F8[] = 
 	{
 	};
 word16 g_w34B4 = 0x0000;

@@ -21,9 +21,9 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Gui.Windows.Forms;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;

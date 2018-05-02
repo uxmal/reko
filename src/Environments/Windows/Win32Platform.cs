@@ -307,7 +307,7 @@ namespace Reko.Environments.Windows
 		{
             SystemService svc;
             if (!services.TryGetValue(vector, out svc))
-                throw new NotImplementedException($"INT service {vector:X4} is not supported by Windows.");
+                return null;
             return svc;
 		}
 

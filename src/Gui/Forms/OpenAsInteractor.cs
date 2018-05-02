@@ -22,11 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Reko.Libraries.Microchip;
 
 
 namespace Reko.Gui.Forms
@@ -34,7 +30,6 @@ namespace Reko.Gui.Forms
     public class OpenAsInteractor
     {
         private IOpenAsDialog dlg;
-        private PICCrownking picDB;
 
         public void Attach(IOpenAsDialog dlg)
         {
@@ -44,14 +39,20 @@ namespace Reko.Gui.Forms
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
             dlg.Architectures.TextChanged += Architectures_TextChanged;
+
+            dlg.AddressTextBox.GotFocus += AddressTextBox_GotFocus;
+            dlg.RawFileTypes.GotFocus += RawFileTypes_GotFocus;
+            dlg.Platforms.GotFocus += Platforms_GotFocus;
+            dlg.Architectures.GotFocus += Architectures_GotFocus;
         }
+
+  
 
         private void dlg_Load(object sender, EventArgs e)
         {
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateRawFiles(dcCfg);
             PopulateArchitectures(dcCfg);
-            PopulateCPUModels();
             PopulatePlatforms(dcCfg);
             dlg.AddressTextBox.Text = "0";
             EnableControls();
@@ -74,8 +75,8 @@ namespace Reko.Gui.Forms
             }
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
-            dlg.CPUModels.Enabled = cpuRequired;
             dlg.AddressTextBox.Enabled = addrRequired;
+            dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
 
@@ -118,28 +119,8 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<Architecture>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a.Name });
+                .Select(a => new ListOption { Text = a.Description, Value = a });
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
-        }
-
-        private void PopulateCPUModels()
-        {
-            ArrayList cpulist = null;
-
-            if (((ListOption)dlg.Architectures.SelectedValue).Value is string sArch)
-            {
-                picDB = PICCrownking.GetDB();
-                if (sArch.StartsWith("pic16"))
-                {
-                    cpulist = new ArrayList(picDB.EnumPICList(p => p.StartsWith("PIC16")).ToArray());
-                }
-                if (sArch.StartsWith("pic18"))
-                {
-                    cpulist = new ArrayList(picDB.EnumPICList(p => p.StartsWith("PIC18")).ToArray());
-                }
-            }
-            dlg.CPUModels.DataSource = cpulist;
-
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
@@ -165,10 +146,45 @@ namespace Reko.Gui.Forms
 
         private void Architectures_TextChanged(object sender, EventArgs e)
         {
-            PopulateCPUModels();
+            OnArchitectureChanged();
             EnableControls();
         }
 
+        private void Architectures_GotFocus(object sender, EventArgs e)
+        {
+            OnArchitectureChanged();
+            EnableControls();
+        }
+
+        private void OnArchitectureChanged()
+        {
+            var arch = dlg.GetSelectedArchitecture();
+            if (arch != null && arch.Options?.Count > 0)
+            {
+                dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
+            }
+            else
+            {
+                dlg.PropertyGrid.SelectedObject = null;
+            }
+        }
+
+        private void Platforms_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
+            EnableControls();
+        }
+
+        private void RawFileTypes_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
+            EnableControls();
+        }
+
+        private void AddressTextBox_GotFocus(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
     }
 }
 

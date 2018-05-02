@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Gui;
-using Reko.Gui.Windows.Controls;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;

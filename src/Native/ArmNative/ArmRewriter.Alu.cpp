@@ -24,7 +24,7 @@
 
 void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr, bool reverse)
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
 	if (reverse)
@@ -46,7 +46,7 @@ void ArmRewriter::RewriteAdcSbc(BinOpEmitter opr, bool reverse)
 
 void ArmRewriter::RewriteAddw()
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	m.Assign(dst, m.IAdd(src1, src2));
@@ -63,14 +63,14 @@ public:
 
 void ArmRewriter::RewriteAdr()
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src = m.Ptr32(static_cast<uint32_t>(instr->address) + 4 + Src1().imm);
 	m.Assign(dst, src);
 }
 
 void ArmRewriter::RewriteBfc()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto lsb = instr->detail->arm.operands[1].imm;
 	auto bitsize = instr->detail->arm.operands[2].imm;
 	m.Assign(opDst, m.And(opDst, m.UInt32(~Bits::Mask32(lsb, bitsize))));
@@ -78,7 +78,7 @@ void ArmRewriter::RewriteBfc()
 
 void ArmRewriter::RewriteBfi()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = this->Operand(Src1());
 	auto tmp = host->CreateTemporary(BaseType::Word32);
 	auto lsb = instr->detail->arm.operands[2].imm;
@@ -89,7 +89,7 @@ void ArmRewriter::RewriteBfi()
 
 void ArmRewriter::RewriteBinOp(BinOpEmitter op)
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	if (instr->detail->arm.op_count == 3)
 	{
 		auto src1 = this->Operand(Src1());
@@ -98,7 +98,7 @@ void ArmRewriter::RewriteBinOp(BinOpEmitter op)
 	}
 	else
 	{
-		auto dst = Operand(Dst());
+		auto dst = Operand(Dst(), BaseType::Word32, true);
 		auto src = Operand(Src1());
 		m.Assign(dst, (m.*op)(dst, src));
 	}
@@ -110,7 +110,7 @@ void ArmRewriter::RewriteBinOp(BinOpEmitter op)
 
 void ArmRewriter::RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HExpr b))
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	if (instr->detail->arm.op_count == 3)
 	{
 		auto opSrc1 = this->Operand(Src1());
@@ -119,7 +119,7 @@ void ArmRewriter::RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HE
 	}
 	else
 	{
-		auto dst = Operand(Dst());
+		auto dst = Operand(Dst(), BaseType::Word32, true);
 		auto src = Operand(Src1());
 		m.Assign(dst, cons(m, dst, src));
 	}
@@ -131,7 +131,7 @@ void ArmRewriter::RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HE
 
 void ArmRewriter::RewriteRev()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto ppp = host->EnsurePseudoProcedure("__rev", BaseType::Word32, 1);
 	m.AddArg(this->Operand(Src1()));
 	m.Assign(opDst, m.Fn(ppp));
@@ -139,7 +139,7 @@ void ArmRewriter::RewriteRev()
 
 void ArmRewriter::RewriteRevBinOp(BinOpEmitter op, bool setflags)
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
 	m.Assign(opDst, (m.*op)(opSrc2, opSrc1));
@@ -151,7 +151,7 @@ void ArmRewriter::RewriteRevBinOp(BinOpEmitter op, bool setflags)
 
 void ArmRewriter::RewriteUnaryOp(UnaryOpEmitter op)
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = this->Operand(Src1());
 	m.Assign(opDst, (m.*op)(opSrc));
 	if (instr->detail->arm.update_flags)
@@ -162,7 +162,7 @@ void ArmRewriter::RewriteUnaryOp(UnaryOpEmitter op)
 
 void ArmRewriter::RewriteBic()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
 	m.Assign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
@@ -170,7 +170,7 @@ void ArmRewriter::RewriteBic()
 
 void ArmRewriter::RewriteClz()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = this->Operand(Src1());
 	auto ppp = host->EnsurePseudoProcedure("__clz", BaseType::Int32, 1);
 	m.AddArg(opSrc);
@@ -179,7 +179,7 @@ void ArmRewriter::RewriteClz()
 
 void ArmRewriter::RewriteCmp(BinOpEmitter op)
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src = Operand(Src1());
 	auto flags = FlagGroup(static_cast<FlagM>(0x0F), "NZCV", BaseType::Byte);
 	m.Assign(flags, m.Cond(
@@ -188,7 +188,7 @@ void ArmRewriter::RewriteCmp(BinOpEmitter op)
 
 void ArmRewriter::RewriteDiv(BinOpEmitter op)
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	m.Assign(dst, (m.*op)(src1, src2));
@@ -196,7 +196,7 @@ void ArmRewriter::RewriteDiv(BinOpEmitter op)
 
 void ArmRewriter::RewriteTeq()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = this->Operand(Src1());
 	m.Assign(
 		NZCV(),
@@ -205,7 +205,7 @@ void ArmRewriter::RewriteTeq()
 
 void ArmRewriter::RewriteTst()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = this->Operand(Src1());
 	m.Assign(
 		NZC(),
@@ -217,7 +217,7 @@ void ArmRewriter::RewriteLdr(BaseType dtDst, BaseType dtSrc)
 	const auto & mem = Src1().mem;
 	bool isJump = (Dst().reg == ARM_REG_PC);
 
-	HExpr dst = Operand(Dst());
+	HExpr dst = Operand(Dst(), BaseType::Word32, true);
 	HExpr src;
 	if (instr->detail->arm.op_count == 2 && instr->detail->arm.writeback)
 	{
@@ -270,7 +270,7 @@ void ArmRewriter::RewriteLdrd()
 
 void ArmRewriter::RewriteStr(BaseType size)
 {
-	auto opSrc = this->Operand(Dst());
+	auto opSrc = this->Operand(Dst(), BaseType::Word32, true);
 	auto opDst = this->Operand(Src1());
 	if (size != BaseType::Word32)
 	{
@@ -299,7 +299,7 @@ void ArmRewriter::RewriteStrex()
 
 void ArmRewriter::RewriteSubw()
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	m.Assign(dst, m.ISub(src1, src2));
@@ -307,7 +307,7 @@ void ArmRewriter::RewriteSubw()
 
 void ArmRewriter::RewriteMultiplyAccumulate(BinOpEmitter op)
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc1 = this->Operand(Src1());
 	auto opSrc2 = this->Operand(Src2());
 	auto opSrc3 = this->Operand(Src3());
@@ -327,7 +327,7 @@ void ArmRewriter::RewriteHint()
 
 void ArmRewriter::RewriteLdm(int initialOffset, BinOpEmitter op)
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto ops = &instr->detail->arm.operands[0];
 	auto begin = ops + 1;
 	auto end = ops + instr->detail->arm.op_count;
@@ -376,7 +376,7 @@ void ArmRewriter::RewriteLdrex()
 
 void ArmRewriter::RewriteShift(HExpr(*ctor)(INativeRtlEmitter & m, HExpr, HExpr))
 {
-	auto dst =  Operand(Dst());
+	auto dst =  Operand(Dst(), BaseType::Word32, true);
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	m.Assign(dst, ctor(m, src1, src2));
@@ -388,7 +388,7 @@ void ArmRewriter::RewriteShift(HExpr(*ctor)(INativeRtlEmitter & m, HExpr, HExpr)
 
 void ArmRewriter::RewriteMla(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitter op)
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 
 	auto left = Operand(Src1());
 	left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
@@ -418,14 +418,14 @@ void ArmRewriter::RewriteMov()
 		m.FinishCluster(RtlClass::Transfer, address, instr->size);
 		return;
 	}
-	auto opDst = Operand(Dst());
+	auto opDst = Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = Operand(Src1());
 	m.Assign(opDst, opSrc);
 }
 
 void ArmRewriter::RewriteMovt()
 {
-	auto opDst = Operand(Dst());
+	auto opDst = Operand(Dst(), BaseType::Word32, true);
 	auto iSrc = Src1().imm;
 	auto opSrc = m.Dpb(opDst, m.Word16((uint16_t)iSrc), 16);
 	m.Assign(opDst, opSrc);
@@ -433,14 +433,14 @@ void ArmRewriter::RewriteMovt()
 
 void ArmRewriter::RewriteMovw()
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src = m.Word32((uint16_t)Src1().imm);
 	m.Assign(dst, src);
 }
 
 void ArmRewriter::RewriteMulbb(bool hiLeft, bool hiRight, BaseType dt, BinOpEmitter mul)
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 
 	auto left = Operand(Src1());
 	left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
@@ -496,7 +496,7 @@ void ArmRewriter::RewritePush()
 
 void ArmRewriter::RewriteQAddSub(BinOpEmitter op)
 {
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	auto sum = (m.*op)(src1, src2);
@@ -511,7 +511,7 @@ void ArmRewriter::RewriteQAddSub(BinOpEmitter op)
 void ArmRewriter::RewriteQDAddSub(BinOpEmitter op)
 {
 	auto sat = host->EnsurePseudoProcedure("__signed_sat_32", BaseType::Int32, 1);
-	auto dst = Operand(Dst());
+	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src1 = m.SMul(Operand(Src1()), m.Int32(2));
 	m.AddArg(src1);
 	src1 = m.Fn(sat);
@@ -527,7 +527,7 @@ void ArmRewriter::RewriteQDAddSub(BinOpEmitter op)
 
 void ArmRewriter::RewriteSbfx()
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto src = m.Cast(
 		BaseType::Int32,
 		m.Slice(
@@ -581,7 +581,7 @@ void ArmRewriter::RewriteMlxd(bool swap, BaseType dt, BinOpEmitter mul, BinOpEmi
 
 void ArmRewriter::RewriteSmlaw(bool highPart)
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto fac1 = this->Operand(Src1());
 	auto fac2 = this->Operand(Src2());
 	fac2 = m.Cast(BaseType::Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
@@ -596,7 +596,7 @@ void ArmRewriter::RewriteSmlaw(bool highPart)
 
 void ArmRewriter::RewriteMulw(bool highPart)
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto fac1 = this->Operand(Src1());
 	auto fac2 = this->Operand(Src2());
 	fac2 = m.Cast(BaseType::Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
@@ -608,7 +608,7 @@ void ArmRewriter::RewriteMulw(bool highPart)
 
 void ArmRewriter::RewriteStm(int offset, bool inc)
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto begin = &instr->detail->arm.operands[1];	// Skip the dst register
 	auto end = begin + instr->detail->arm.op_count - 1;
 	auto increment = inc ? 4 : -4;
@@ -638,7 +638,7 @@ void ArmRewriter::RewriteStm(int offset, bool inc)
 
 void ArmRewriter::RewriteStmib()
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto begin = &instr->detail->arm.operands[1];	// Skip the dst register
 	auto end = begin + instr->detail->arm.op_count - 1;
 	int offset = 4;
@@ -657,7 +657,7 @@ void ArmRewriter::RewriteStmib()
 
 void ArmRewriter::RewriteUbfx()
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto src = m.Cast(
 		BaseType::UInt32,
 		m.Slice(
@@ -670,7 +670,7 @@ void ArmRewriter::RewriteUbfx()
 void ArmRewriter::RewriteUmaal()
 {
 	auto tmp = host->CreateTemporary(BaseType::UInt64);
-	auto lo = Operand(Dst());
+	auto lo = Operand(Dst(), BaseType::Word32, true);
 	auto hi = Operand(Src1());
 	auto rn = Operand(Src2());
 	auto rm = Operand(Src3());
@@ -697,7 +697,7 @@ void ArmRewriter::RewriteUmlal()
 
 void ArmRewriter::RewriteXtab(BaseType dt)
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto src = Reg((int)Src2().reg);
 	if (Src2().shift.type == ARM_SFT_ROR)
 	{
@@ -709,7 +709,7 @@ void ArmRewriter::RewriteXtab(BaseType dt)
 
 void ArmRewriter::RewriteXtb(BaseType dtSrc, BaseType dtDst)
 {
-	auto dst = this->Operand(Dst());
+	auto dst = this->Operand(Dst(), BaseType::Word32, true);
 	auto src = Reg((int)Src1().reg);
 	if (Src1().shift.type == ARM_SFT_ROR)
 	{
@@ -722,7 +722,7 @@ void ArmRewriter::RewriteXtb(BaseType dtSrc, BaseType dtDst)
 
 void ArmRewriter::RewriteYield()
 {
-	auto opDst = this->Operand(Dst());
+	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto ppp = host->EnsurePseudoProcedure("__yield", BaseType::Word32, 0);
 	m.Assign(opDst, m.Fn(ppp));
 

@@ -28,6 +28,6 @@ namespace Reko.Gui
 {
     public interface ICallGraphViewService
     {
-        void ShowCallgraph(Program program);
+        void ShowCallgraph(Program program, string windowTitle);
     }
 }

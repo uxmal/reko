@@ -433,7 +433,7 @@ namespace Reko.Core.Serialization
             {
                 if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out Address addr))
                 {
-                    if (!allLists.TryGetValue(addr, out List<UserRegisterValue> list))
+                    if (!allLists.TryGetValue(addr, out var list))
                     {
                         list = new List<UserRegisterValue>();
                         allLists.Add(addr, list);
@@ -495,7 +495,7 @@ namespace Reko.Core.Serialization
                 return null;
             if (!platform.TryParseAddress(indirJump.TableAddress, out Address addrTable))
                 return null;
-            if (!program.User.JumpTables.TryGetValue(addrTable, out ImageMapVectorTable table))
+            if (!program.User.JumpTables.TryGetValue(addrTable, out var table))
                 return null;
             var reg = program.Architecture.GetRegister(indirJump.IndexRegister);
             if (reg == null)

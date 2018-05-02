@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -252,7 +253,16 @@ namespace Reko.Arch.Pdp11
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            Expression ea = binder.EnsureRegister(this.StackRegister);
+            if (cbOffset > 0)
+            {
+                ea = new BinaryExpression(Operator.IAdd, PrimitiveType.Ptr16, ea, Constant.Int16((short)cbOffset));
+            }
+            else if (cbOffset < 0)
+            {
+                ea = new BinaryExpression(Operator.ISub, PrimitiveType.Ptr16, ea, Constant.Int16((short)cbOffset));
+            }
+            return new MemoryAccess(ea, dataType);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

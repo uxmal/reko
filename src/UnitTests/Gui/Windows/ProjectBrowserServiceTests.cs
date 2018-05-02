@@ -18,28 +18,28 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using NUnit.Framework;
+using Reko.UserInterfaces.WindowsForms;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
+using System.ComponentModel.Design;
+using System.Drawing;
 using System.IO;
-using ContextMenu = System.Windows.Forms.ContextMenu;
-using DataObject = System.Windows.Forms.DataObject;
-using DragEventArgs = System.Windows.Forms.DragEventArgs;
-using DragEventHandler = System.Windows.Forms.DragEventHandler;
-using DragDropEffects = System.Windows.Forms.DragDropEffects;
+using System.Linq;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
-using System.Windows.Forms;
-using System.Drawing;
+using ContextMenu = System.Windows.Forms.ContextMenu;
+using DataObject = System.Windows.Forms.DataObject;
+using DragDropEffects = System.Windows.Forms.DragDropEffects;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using DragEventHandler = System.Windows.Forms.DragEventHandler;
 
 namespace Reko.UnitTests.Gui.Windows
 {
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             uiPrefSvc = mr.Stub<IUiPreferencesService>();
             mockTree.Stub(t => t.Nodes).Return(mockNodes);
-            uiSvc.Stub(u => u.GetContextMenu(0)).IgnoreArguments().Return(new ContextMenu());
+            uiSvc.Stub(u => u.SetContextMenu(null, 0)).IgnoreArguments();
             sc.AddService<IDecompilerShellUiService>(uiSvc);
             sc.AddService<IUiPreferencesService>(uiPrefSvc);
             fakeTree = new FakeTreeView();
@@ -122,12 +122,15 @@ namespace Reko.UnitTests.Gui.Windows
             public event DragEventHandler DragDrop;
             public event EventHandler DragLeave;
             public event MouseEventHandler MouseWheel;
+            public event EventHandler GotFocus;
+            public event EventHandler LostFocus;
 
             public FakeTreeView()
             {
                 this.Nodes = new FakeTreeNodeCollection();
             }
 
+            public object ContextMenu { get; set; }
             public ITreeNodeCollection Nodes { get; private set; }
 
             public ITreeNode SelectedNode { get { return selectedItem; } set { selectedItem = value; AfterSelect.Fire(this); } }
@@ -135,7 +138,6 @@ namespace Reko.UnitTests.Gui.Windows
 
             public bool Focused { get; set; }
             public bool Enabled { get; set; }
-            public ContextMenu ContextMenu { get; set; }
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
 
@@ -637,7 +639,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void PBS_AcceptFiles()
         {
             var mockTree = new FakeTreeView();
-            var pbs = new ProjectBrowserService(sc, mockTree);
+            var pbs = new WindowsProjectBrowserService(sc, mockTree);
             var e = Given_DraggedFile();
             mr.ReplayAll();
 
@@ -651,7 +653,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void PBS_RejectTextDrop()
         {
             var mockTree = new FakeTreeView();
-            var pbs = new ProjectBrowserService(sc, mockTree);
+            var pbs = new WindowsProjectBrowserService(sc, mockTree);
             var e = Given_DraggedText();
             mr.ReplayAll();
 
@@ -666,7 +668,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             string filename = null;
             var mockTree = new FakeTreeView();
-            var pbs = new ProjectBrowserService(sc, mockTree);
+            var pbs = new WindowsProjectBrowserService(sc, mockTree);
             pbs.FileDropped += (sender, ee) => { filename = ee.Filename; };
             var e = Given_DraggedFile();
             mr.ReplayAll();

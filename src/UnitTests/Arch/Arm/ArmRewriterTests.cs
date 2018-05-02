@@ -781,7 +781,7 @@ means
             BuildTest(0xE10fb85c);	// qadd fp, ip, pc
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|fp = __signed_sat_32(ip + pc)",
+                "1|L--|fp = __signed_sat_32(ip + 0x00100008)",
                 "2|L--|Q = cond(fp)");
         }
 
@@ -1386,6 +1386,15 @@ means
                 "1|L--|r4 = r4",
                 "2|L--|v3 = Mem0[r4:word32]",
                 "3|L--|p4 = __ldc(0x04, v3)");
+        }
+
+        [Test]
+        public void ArmRw_ReadPC()
+        {
+            BuildTest(0xE08FE00E);  // add lr, pc, lr
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|lr = 0x00100008 + lr");
         }
     }
 }

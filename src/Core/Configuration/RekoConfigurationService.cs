@@ -118,7 +118,21 @@ namespace Reko.Core.Configuration
             {
                 Description = sArch.Description,
                 Name = sArch.Name,
-                TypeName = sArch.Type
+                TypeName = sArch.Type,
+                Options = LoadCollection(sArch.Options, LoadPropertyOption),
+            };
+        }
+
+        private PropertyOption LoadPropertyOption(PropertyOption_v1 sOption)
+        {
+            return new PropertyOption
+            {
+                Name = sOption.Name,
+                Text = sOption.Text,
+                Description = sOption.Description,
+                Required = sOption.Required,
+                TypeName = sOption.TypeName,
+                Choices = sOption.Choices
             };
         }
 
@@ -258,11 +272,16 @@ namespace Reko.Core.Configuration
         /// <returns></returns>
         public static RekoConfigurationService Load()
         {
-            var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            var appDir = Path.GetDirectoryName(appConfig);
             var configFileName = ConfigurationManager.AppSettings["RekoConfiguration"];
             if (configFileName == null)
                 throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
+            return Load(configFileName);
+        }
+
+        public static RekoConfigurationService Load(string configFileName)
+        {
+            var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            var appDir = Path.GetDirectoryName(appConfig);
             configFileName = Path.Combine(appDir, configFileName);
 
             using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read))

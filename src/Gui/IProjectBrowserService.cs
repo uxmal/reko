@@ -31,6 +31,7 @@ namespace Reko.Gui
         event EventHandler<FileDropEventArgs> FileDropped;
 
         Program CurrentProgram { get; }
+        bool ContainsFocus { get; }
 
         /// <summary>
         /// The currently selected object in the project browser tree.

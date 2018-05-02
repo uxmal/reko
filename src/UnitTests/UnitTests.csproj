@@ -566,7 +566,7 @@
     <Compile Include="Gui\Windows\DisassemblyViewInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\AnalyzedPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\AnalyzedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\DiagnosticsInteractorTests.cs">
@@ -575,19 +575,16 @@
     <Compile Include="Gui\Windows\Forms\EditProjectInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\FakePhasePageInteractors.cs">
+    <Compile Include="Gui\Forms\FakePhasePageInteractors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\FinalPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\FinalPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\FindDialogInteractorTests.cs">
+    <Compile Include="Gui\Forms\InitialPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\Forms\InitialPageInteractorTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gui\Windows\Forms\ScannedPageInteractorTests.cs">
+    <Compile Include="Gui\Forms\ScannedPageInteractorTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gui\Windows\Forms\MainFormInteractorTests.cs" />
@@ -919,7 +916,7 @@
       <Name>ZX81</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gui\Gui.csproj">
-      <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
+      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
@@ -981,6 +978,10 @@
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
+      <Project>{60CC0C65-E629-4923-9112-2A46371C90AF}</Project>
+      <Name>WindowsForms</Name>
     </ProjectReference>
     <ProjectReference Include="..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>

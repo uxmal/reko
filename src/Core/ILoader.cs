@@ -52,11 +52,32 @@ namespace Reko.Core
     /// </summary>
     public class LoadDetails
     {
+        /// <summary>
+        /// Name of the loader to use. Loader names are found in the reko.config file.
+        /// </summary>
         public string LoaderName;
+        /// <summary>
+        /// Name of the processor architecture to use. Architecture names are found 
+        /// in the reko.config file.
+        /// </summary>
         public string ArchitectureName;
-        public string CPUModelName;
+        /// <summary>
+        /// Architecture specific options.
+        /// </summary>
+        public Dictionary<string,object> ArchitectureOptions;    
+        /// <summary>
+        /// Name of the platform to use. Platform names are found in the 
+        /// reko.config file.
+        /// </summary>
         public string PlatformName;
+        /// <summary>
+        /// String representation of the address at which the binary file should
+        /// be loaded. The address string is parsed by the architecture when loading.
+        /// </summary>
         public string LoadAddress;
+        /// <summary>
+        /// Entry point of the program.
+        /// </summary>
         public EntryPointElement EntryPoint;
     }
 }

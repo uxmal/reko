@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Evaluation
@@ -36,6 +37,10 @@ namespace Reko.Evaluation
 		public bool Match(DepositBits dpb)
 		{
 			this.dpb = dpb;
+            if (!(dpb.Source.DataType is PrimitiveType pt) || pt.Domain == Domain.Real)
+                return false;
+            if (!(dpb.InsertedBits.DataType is PrimitiveType ptIns)|| ptIns.Domain == Domain.Real)
+                return false;
 			cSrc = dpb.Source as Constant;
 			if (cSrc == null)
 				return false;
@@ -49,9 +54,9 @@ namespace Reko.Evaluation
 		{
 			if (cBits != null)
 			{
-				int bitMask = Mask(dpb.InsertedBits.DataType.BitSize) << dpb.BitPosition;
-				int maskedVal = cSrc.ToInt32() & ~bitMask;
-				int newBits = cBits.ToInt32() << dpb.BitPosition;
+				var bitMask = Mask(dpb.InsertedBits.DataType.BitSize) << dpb.BitPosition;
+				var maskedVal = cSrc.ToInt64() & ~bitMask;
+				var newBits = cBits.ToInt64() << dpb.BitPosition;
 				return Constant.Create(cSrc.DataType, maskedVal | (newBits & bitMask));
 			}
 			else if (dpb.BitPosition == 0 && cSrc.ToInt32() == 0)
@@ -62,9 +67,9 @@ namespace Reko.Evaluation
 				return dpb;
 		}
 
-		public static int Mask(int bitCount)
+		public static long Mask(int bitCount)
 		{
-			return ((1 << bitCount) - 1);
+			return ((1L << bitCount) - 1);
 		}
 	}
 }

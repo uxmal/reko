@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.chkShowData = new System.Windows.Forms.CheckBox();
-            this.memoryControl1 = new Reko.Gui.Windows.Controls.MemoryControl();
-            this.imageMapView1 = new Reko.Gui.Windows.Controls.ImageMapView();
+            this.memoryControl1 = new Reko.UserInterfaces.WindowsForms.Controls.MemoryControl();
+            this.imageMapView1 = new Reko.UserInterfaces.WindowsForms.Controls.ImageMapView();
             this.SuspendLayout();
             // 
             // chkShowData
@@ -93,8 +93,8 @@
 
         #endregion
 
-        private Reko.Gui.Windows.Controls.MemoryControl memoryControl1;
+        private Reko.UserInterfaces.WindowsForms.Controls.MemoryControl memoryControl1;
         private System.Windows.Forms.CheckBox chkShowData;
-        private Gui.Windows.Controls.ImageMapView imageMapView1;
+        private Reko.UserInterfaces.WindowsForms.Controls.ImageMapView imageMapView1;
     }
 }

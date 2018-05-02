@@ -132,6 +132,7 @@ namespace Reko.Scanning
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
+
                 if (!ri.Accept(this))
                 {
                     return false;
@@ -538,11 +539,8 @@ namespace Reko.Scanning
             Address addr = CallTargetAsAddress(call);
             if (addr != null)
             {
-                if (!program.SegmentMap.IsValidAddress(addr))
-                {
-                    return GenerateCallToOutsideProcedure(site, addr);
-                }
-
+                // Some image loaders generate import symbols at addresses
+                // outside of the program image. 
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null)
                 {
@@ -555,6 +553,13 @@ namespace Reko.Scanning
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
+
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    return GenerateCallToOutsideProcedure(site, addr);
+                }
+
+
 
                 var callee = scanner.ScanProcedure(addr, null, state);
                 var pcCallee = CreateProcedureConstant(callee);
@@ -584,6 +589,9 @@ namespace Reko.Scanning
 
             if (call.Target is Identifier id)
             {
+                //$REVIEW: this is a hack. Were we in SSA form,
+                // we could quickly determine if `id` is assigned
+                // to constant.
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
                 {
@@ -711,6 +719,9 @@ namespace Reko.Scanning
 
             if (sigCallee != null && sigCallee.StackDelta != 0)
             {
+                // Generate explicit stack adjustment expression
+                // SP = SP + stackDelta
+                // after the call.
                 Expression newVal = new BinaryExpression(
                     Operator.IAdd,
                     stackReg.DataType,
@@ -997,7 +1008,7 @@ namespace Reko.Scanning
             {
                 ctx.Add(bws.JumpTableIndex, new IntervalValueSet(bws.JumpTableIndex.DataType, interval));
             }
-            var vse = new ValueSetEvaluator(program, ctx, state);
+            var vse = new ValueSetEvaluator(arch, program.SegmentMap, ctx, state);
             var (values, accesses) = vse.Evaluate(jumpExpr);
             vector = values.Values
                 .TakeWhile(c => c != Constant.Invalid)
@@ -1005,6 +1016,9 @@ namespace Reko.Scanning
                 .Select(ForceToAddress)
                 .TakeWhile(a => a != null)
                 .ToList();
+            if (vector.Count == 0)
+                return false;
+
             foreach (var de in accesses)
             {
                 var item = new ImageMapItem((uint)de.Value.Size)
@@ -1028,7 +1042,8 @@ namespace Reko.Scanning
                 return addr;
             if (arg is Constant c)
             {
-                if (c.DataType.Size < program.Platform.PointerType.Size)
+                if (c.DataType.Size < arch.PointerType.Size &&
+                    arch.PointerType == PrimitiveType.SegPtr32) 
                 {
                     var sel = blockCur.Address.Selector.Value;
                     return program.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
@@ -1249,6 +1264,7 @@ namespace Reko.Scanning
             if (vector == null)
                 return null;
             var svc = program.Platform.FindService(vector.ToInt32(), state);
+            //$TODO if SVC uis null (and not-speculating) report the error.
             if (svc != null && svc.Signature == null)
             {
                 scanner.Error(ric.Address, string.Format("System service '{0}' didn't specify a signature.", svc.Name));

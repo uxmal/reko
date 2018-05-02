@@ -20,12 +20,11 @@
 
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Gui;
-using Reko.Gui.Windows;
-using Reko.Gui.Windows.Controls;
+using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -61,8 +60,7 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             uiPrefsSvc = mr.StrictMock<IUiPreferencesService>();
             dlgFactory = mr.StrictMock<IDialogFactory>();
-            uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxMemoryControl)).Return(new ContextMenu());
-            uiSvc.Stub(u => u.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
+            uiSvc.Stub(u => u.SetContextMenu(null, 0)).IgnoreArguments();
             uiSvc.Replay();
             uiPrefsSvc.Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
             uiPrefsSvc.Replay();

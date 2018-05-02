@@ -18,11 +18,10 @@
  */
 #endregion
 
- using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ContextMenu = System.Windows.Forms.ContextMenu;
 using DragEventHandler = System.Windows.Forms.DragEventHandler;
 using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
 
@@ -43,7 +42,7 @@ namespace Reko.Gui.Controls
         bool ShowRootLines { get; set; }
 
         ITreeNodeCollection Nodes { get; }
-        ContextMenu ContextMenu { get; set; }
+        object ContextMenu { get; set; }
 
         void CollapseAll();
         ITreeNode CreateNode();

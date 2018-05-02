@@ -18,14 +18,11 @@
  */
 #endregion
 
-using Reko.Gui;
-using Reko.Gui.Windows;
 using NUnit.Framework;
+using Reko.Gui;
+using Reko.UserInterfaces.WindowsForms;
 using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows
@@ -141,19 +138,20 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void SRS_ShowResults_ChangesContextMenu()
         {
-            var ctxMenu = new ContextMenu();
             var result = mr.DynamicMock<ISearchResult>();
             var uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
             result.Expect(r => r.ContextMenuID).Return(42);
-            uiSvc.Expect(u => u.GetContextMenu(42)).Return(ctxMenu);
+            uiSvc.Expect(u => u.SetContextMenu(
+                Arg<object>.Is.NotNull,
+                Arg<int>.Is.Equal(42)));
             sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
             mr.ReplayAll();
 
             CreateUI();
-            form.Show(); svc.ShowSearchResults(result);
+            form.Show();
+            svc.ShowSearchResults(result);
 
             mr.VerifyAll();
-            Assert.AreEqual(ctxMenu, listSearchResults.ContextMenu);
         }
     }
 }
