@@ -187,7 +187,7 @@ namespace Reko.Analysis
                     var proc = (call.Callee as ProcedureConstant)?.Procedure as Procedure;
                     if (proc == null)
                         continue;
-                    if (savedSps.TryGetValue(proc, out var delta) ||
+                    if (savedSps.TryGetValue(proc, out var delta) &&
                         delta.HasValue)
                     {
                         ssam.AdjustRegisterAfterCall(stm, call, register, delta.Value);
