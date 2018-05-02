@@ -1311,14 +1311,14 @@ void fn0000000140001DD0()
 {
 }
 
-// 0000000140001E7C: void fn0000000140001E7C(Register (ptr Eq_2009) rax, Register int64 rdx, Register (ptr Eq_2011) r9)
-void fn0000000140001E7C(Eq_2009 * rax, int64 rdx, Eq_2011 * r9)
+// 0000000140001E7C: void fn0000000140001E7C(Register (ptr Eq_2010) rax, Register int64 rdx, Register (ptr Eq_2012) r9)
+void fn0000000140001E7C(Eq_2010 * rax, int64 rdx, Eq_2012 * r9)
 {
 	fn0000000140001E9C(rax, rdx, r9, r9->ptr0038);
 }
 
-// 0000000140001E9C: void fn0000000140001E9C(Register (ptr Eq_2009) rax, Register int64 rcx, Register (ptr Eq_2011) rdx, Register (ptr Eq_2017) r8)
-void fn0000000140001E9C(Eq_2009 * rax, int64 rcx, Eq_2011 * rdx, Eq_2017 * r8)
+// 0000000140001E9C: void fn0000000140001E9C(Register (ptr Eq_2010) rax, Register int64 rcx, Register (ptr Eq_2012) rdx, Register (ptr Eq_2018) r8)
+void fn0000000140001E9C(Eq_2010 * rax, int64 rcx, Eq_2012 * rdx, Eq_2018 * r8)
 {
 	word32 r11d_12 = (word32) (uint64) ((word32) (uint64) r8->dw0000 & ~0x07);
 	int64 r9_14 = rcx;
@@ -1326,7 +1326,7 @@ void fn0000000140001E9C(Eq_2009 * rax, int64 rcx, Eq_2011 * rdx, Eq_2017 * r8)
 	if ((rax->b0000 & 0x04) != 0x00)
 		r10_19 = (int64) r8->dw0004 + rcx & (int64) ((word32) ((uint64) (-((word32) ((uint64) rax->dw0008)))));
 	word64 rdx_24 = *((word64) (int64) r11d_12 + r10_19);
-	struct Eq_2045 * rcx_27 = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
+	struct Eq_2046 * rcx_27 = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
 	if ((rcx_27->b0003 & 0x0F) != 0x00)
 		r9_14 = rcx + (uint64) ((word32) rcx_27->b0003 & ~0x0F);
 	ui64 r9_37 = r9_14 ^ rdx_24;
