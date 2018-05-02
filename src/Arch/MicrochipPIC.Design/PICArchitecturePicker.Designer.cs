@@ -1,4 +1,4 @@
-﻿namespace Reko.Arch.MicrochipPIC.Design
+﻿namespace Reko.Arch.Microchip.Design
 {
     partial class PICArchitecturePicker
     {
@@ -65,7 +65,7 @@
             // picImage
             // 
             this.picImage.Enabled = false;
-            this.picImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PIC;
+            this.picImage.Image = global::Reko.Arch.Microchip.Design.Properties.Resources.PIC;
             this.picImage.Location = new System.Drawing.Point(12, 9);
             this.picImage.Name = "picImage";
             this.picImage.Size = new System.Drawing.Size(137, 74);

@@ -20,8 +20,10 @@
  */
 #endregion
 
-namespace Reko.Arch.MicrochipPIC.Design
+namespace Reko.Arch.Microchip.Design
 {
+    using Common;
+
     public class PickerResult
     {
         public string PICName;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Reko.Arch.MicrochipPIC.Design.Properties {
+namespace Reko.Arch.Microchip.Design.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Reko.Arch.MicrochipPIC.Design.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Reko.Arch.MicrochipPIC.Design.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Reko.Arch.Microchip.Design.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
