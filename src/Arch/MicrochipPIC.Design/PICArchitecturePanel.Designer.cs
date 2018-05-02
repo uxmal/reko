@@ -64,7 +64,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             // lblPICImage
             // 
             this.lblPICImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PIC;
-            this.lblPICImage.Location = new System.Drawing.Point(12, 20);
+            this.lblPICImage.Location = new System.Drawing.Point(12, 7);
             this.lblPICImage.Name = "lblPICImage";
             this.lblPICImage.Size = new System.Drawing.Size(144, 82);
             this.lblPICImage.TabIndex = 0;
@@ -94,7 +94,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             // chkExtendedMode
             // 
             this.chkExtendedMode.AutoSize = true;
-            this.chkExtendedMode.Location = new System.Drawing.Point(33, 65);
+            this.chkExtendedMode.Location = new System.Drawing.Point(75, 43);
             this.chkExtendedMode.Name = "chkExtendedMode";
             this.chkExtendedMode.Size = new System.Drawing.Size(129, 17);
             this.chkExtendedMode.TabIndex = 3;
@@ -104,7 +104,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             // cbbModel
             // 
             this.cbbModel.FormattingEnabled = true;
-            this.cbbModel.Location = new System.Drawing.Point(25, 119);
+            this.cbbModel.Location = new System.Drawing.Point(25, 99);
             this.cbbModel.Name = "cbbModel";
             this.cbbModel.Size = new System.Drawing.Size(121, 21);
             this.cbbModel.TabIndex = 4;
@@ -112,7 +112,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             // lblModel
             // 
             this.lblModel.AutoSize = true;
-            this.lblModel.Location = new System.Drawing.Point(22, 103);
+            this.lblModel.Location = new System.Drawing.Point(22, 83);
             this.lblModel.Name = "lblModel";
             this.lblModel.Size = new System.Drawing.Size(39, 13);
             this.lblModel.TabIndex = 5;
@@ -123,7 +123,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             this.lblExplain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblExplain.AutoSize = true;
-            this.lblExplain.Location = new System.Drawing.Point(12, 85);
+            this.lblExplain.Location = new System.Drawing.Point(12, 63);
             this.lblExplain.Name = "lblExplain";
             this.lblExplain.Size = new System.Drawing.Size(257, 26);
             this.lblExplain.TabIndex = 6;
@@ -136,9 +136,9 @@ namespace Reko.Arch.MicrochipPIC.Design
             this.grpFamily.Controls.Add(this.lblExplain);
             this.grpFamily.Controls.Add(this.rdbPIC18);
             this.grpFamily.Controls.Add(this.chkExtendedMode);
-            this.grpFamily.Location = new System.Drawing.Point(162, 29);
+            this.grpFamily.Location = new System.Drawing.Point(162, 7);
             this.grpFamily.Name = "grpFamily";
-            this.grpFamily.Size = new System.Drawing.Size(295, 127);
+            this.grpFamily.Size = new System.Drawing.Size(295, 111);
             this.grpFamily.TabIndex = 7;
             this.grpFamily.TabStop = false;
             this.grpFamily.Text = "PIC Family";
@@ -152,7 +152,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             this.Controls.Add(this.cbbModel);
             this.Controls.Add(this.lblPICImage);
             this.Name = "PICArchitecturePanel";
-            this.Size = new System.Drawing.Size(479, 171);
+            this.Size = new System.Drawing.Size(479, 135);
             this.grpFamily.ResumeLayout(false);
             this.grpFamily.PerformLayout();
             this.ResumeLayout(false);
