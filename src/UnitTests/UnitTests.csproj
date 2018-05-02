@@ -299,7 +299,6 @@
     <Compile Include="Analysis\SsaTransformTests.cs" />
     <Compile Include="Analysis\StrengthReductionTests.cs" />
     <Compile Include="Analysis\TerminationAnalysisTests.cs" />
-    <Compile Include="Analysis\TrashedRegisterFinder2Tests.cs" />
     <Compile Include="Analysis\TrashedRegisterFinderTests.cs" />
     <Compile Include="Analysis\TrashedRegisterSummarizerTests.cs" />
     <Compile Include="Analysis\TrashRegisterFinderUpdateCodeTests.cs" />
