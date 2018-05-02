@@ -151,6 +151,7 @@ namespace Reko.Loading
         public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
         { 
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
+            arch.LoadUserOptions(details.ArchitectureOptions);
             var platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
             if (addrLoad == null)
             {
@@ -173,8 +174,7 @@ namespace Reko.Loading
                     segmentMap,
                     arch,
                     platform);
-                Address addrEp;
-                if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out addrEp))
+                if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
                 {
                     program.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
                 }
@@ -216,8 +216,7 @@ namespace Reko.Loading
             }
 
             Address entryAddr = null;
-            Address baseAddr;
-            if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
+            if (arch.TryParseAddress(rawFile.BaseAddress, out Address baseAddr))
             {
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
             }
@@ -254,8 +253,7 @@ namespace Reko.Loading
         {
             if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
             {
-                Address entryAddr;
-                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
+                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out Address entryAddr))
                 {
                     if (rawFile.EntryPoint.Follow)
                     {
@@ -354,8 +352,10 @@ namespace Reko.Loading
         {
             if (string.IsNullOrEmpty(sOffset))
                 return 0;
-            int offset;
-            if (Int32.TryParse(sOffset, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out offset))
+            if (Int32.TryParse(
+                sOffset, NumberStyles.HexNumber,
+                CultureInfo.InvariantCulture,
+                out int offset))
                 return offset;
             return 0;
         }

@@ -355,6 +355,7 @@ namespace Reko.Gui.Forms
                 {
                     LoaderName = loader,
                     ArchitectureName = archName,
+                    ArchitectureOptions = dlg.ArchitectureOptions,
                     PlatformName = envName,
                     LoadAddress = sAddr,
                     EntryPoint = entry,

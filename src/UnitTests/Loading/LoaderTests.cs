@@ -240,6 +240,7 @@ namespace Reko.UnitTests.Loading
             cfgSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
             cfgSvc.Stub(s => s.GetEnvironment(null)).Return(openv);
             openv.Stub(o => o.Load(null, null)).IgnoreArguments().Return(new DefaultPlatform(sc, arch));
+            arch.Stub(a => a.LoadUserOptions(null)).IgnoreArguments();
             arch.Stub(a => a.Name).Return("mmix");
             arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("00123500"),
