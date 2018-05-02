@@ -232,7 +232,7 @@ namespace Reko.Analysis
 
         public BitRange VisitSwitchInstruction(SwitchInstruction si)
         {
-            return si.Expression.Accept(this); ;
+            return si.Expression.Accept(this);
         }
 
         public BitRange VisitUseInstruction(UseInstruction use)

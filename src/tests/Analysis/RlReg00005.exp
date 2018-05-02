@@ -19,7 +19,6 @@ fn0C00_0000_exit:
 // fn0C00_000C /////////////////////
 	LiveOut:   bx:[0..15] cx:[0..7]
 	BitsUsed:  ax:[0..7] ds:[0..15]
-	BypassIn: 
 	Trashed:   SCZO ax bx cx di es Top
 	Preserved: sp
 // fn0C00_000C
