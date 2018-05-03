@@ -511,7 +511,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The widest sub-register.
         /// </returns>
         public static RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
-            => throw new NotImplementedException("PIC has no wider-register.");
+        {
+            ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            if ((mask & reg.BitMask) == reg.BitMask)
+                return reg;
+            return null;
+        }
 
         /// <summary>
         /// Gets the parent register of a PIC register

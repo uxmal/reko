@@ -67,6 +67,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Microchip.licenseheader" />
     <None Include="Resources\PICPickerIcon.ico" />
     <Content Include="Images\PIC.png" />
   </ItemGroup>
