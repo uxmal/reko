@@ -48,9 +48,6 @@ namespace Reko.Core.Serialization
         [XmlElement("arch")]
         public string ArchitectureName;
 
-        [XmlElement("cpumodel")]
-        public string CPUModelName;
-
         [XmlElement("platform")]
         public string PlatformName;
 

@@ -76,7 +76,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             }
 
             PrimitiveType dt = Bits.IsSingleBitSet(grpFlags) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(PIC18Registers.STATUS, grpFlags, GrfToString(grpFlags), dt);
+            var fl = new FlagGroupStorage(PICRegisters.STATUS, grpFlags, GrfToString(grpFlags), dt);
             flagGroups.Add(fl);
             return fl;
         }
@@ -111,7 +111,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             => ProcessorMode.CreateProcessorState(this);
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
-            => ProcessorMode.CreateRewriter(this, ProcessorMode.CreateDisassembler(this, rdr), (PIC18State)state, frame, host);
+            => ProcessorMode.CreateRewriter(this, ProcessorMode.CreateDisassembler(this, rdr), (PICProcessorState)state, frame, host);
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
@@ -121,7 +121,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
         {
-            throw new NotImplementedException("PIC18 has no explicit argument stack");
+            throw new NotImplementedException("Microchip PIC18 has no explicit argument stack");
         }
 
         public override string GrfToString(uint grpFlags)

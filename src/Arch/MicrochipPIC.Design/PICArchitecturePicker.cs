@@ -24,6 +24,8 @@ using System.Windows.Forms;
 
 namespace Reko.Arch.MicrochipPIC.Design
 {
+    using Common;
+
     /// <summary>
     /// Form to ask the user for PIC model and PIC Execution mode.
     /// </summary>
@@ -35,12 +37,13 @@ namespace Reko.Arch.MicrochipPIC.Design
             new PICArchitectureInteractor().Attach(this);
         }
 
-        public PickerResult Value { get; set; }
+        public PICArchitectureOptionsPicker Value { get; set; }
 
         public CheckBox ExtendedModeCheckBox => chkExtendedMode;
         public RadioButton PIC16RadioButton => rdbPIC16;
         public RadioButton PIC18RadioButton => rdbPIC18;
         public ComboBox ModelComboBox => cbbModel;
+        public Button OKButton => btnOK;
 
     }
 }
