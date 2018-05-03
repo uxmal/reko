@@ -25,7 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
 
     /// <summary>

@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// A class to provide support for PIC Device Configuration definitions (per ConfigFuseSector content).

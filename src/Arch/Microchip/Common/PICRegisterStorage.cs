@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
 
     /// <summary>
@@ -121,7 +121,7 @@ namespace Reko.Arch.Microchip.Common
         /// Gets this register access bits descriptor.
         /// </summary>
         /// <value>
-        /// The access descriptor as a string (see <seealso cref="Microchip.Crownking.PIC"/>.
+        /// The access descriptor as a string (see <seealso cref="MicrochipPIC.Crownking.PIC"/>.
         /// </value>
         public string Access => Traits.Access;
 

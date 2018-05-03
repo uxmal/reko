@@ -27,7 +27,7 @@ using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     public abstract class PICInstruction : MachineInstruction
     {

@@ -21,7 +21,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
+using Reko.Arch.MicrochipPIC.Common;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Libraries.Microchip;

@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     [DebuggerDisplay("RegAddr={_debugDisplay()}")]
     public class PICRegisterUniqueAddress :

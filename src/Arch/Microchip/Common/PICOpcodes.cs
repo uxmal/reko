@@ -20,7 +20,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// Values that represent symbolic opcodes of the 8-bit MCU PIC16/18 family.

@@ -22,7 +22,7 @@
 
 using Reko.Libraries.Microchip;
 using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
+using Reko.Arch.MicrochipPIC.Common;
 using Reko.Core;
 using Reko.Core.Rtl;
 using System.Collections.Generic;

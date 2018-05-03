@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Microchip.PIC16
+namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
 
@@ -43,8 +43,8 @@ namespace Reko.Arch.Microchip.PIC16
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
         /// <param name="mode">The PIC mode. Contains details and creators for target PIC16.</param>
-        public PIC16Architecture(string archID, IPICProcessorMode mode)
-            : base(archID, mode)
+        public PIC16Architecture(string archID)
+            : base(archID)
         {
         }
 

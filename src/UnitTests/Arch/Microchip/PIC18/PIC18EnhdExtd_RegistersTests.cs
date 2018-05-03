@@ -22,8 +22,8 @@
 
 using Reko.Libraries.Microchip;
 using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC18;
+using Reko.Arch.MicrochipPIC.Common;
+using Reko.Arch.MicrochipPIC.PIC18;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {

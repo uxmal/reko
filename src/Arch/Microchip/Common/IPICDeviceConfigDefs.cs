@@ -22,7 +22,7 @@
 
 using Reko.Core;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// Interface for PIC Device Configuration Fuses definitions.

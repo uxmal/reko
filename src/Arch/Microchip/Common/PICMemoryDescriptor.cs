@@ -25,7 +25,7 @@ using System;
 using Reko.Core;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// This class provides information on the PIC memory.

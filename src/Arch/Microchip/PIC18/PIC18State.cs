@@ -23,7 +23,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
 

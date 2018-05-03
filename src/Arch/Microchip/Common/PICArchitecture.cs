@@ -29,7 +29,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     public abstract class PICArchitecture : ProcessorArchitecture
     {
@@ -40,8 +40,9 @@ namespace Reko.Arch.Microchip.Common
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
         /// <param name="archID">Identifier for the architecture. Can't be interpreted as the name of the PIC.</param>
-        protected PICArchitecture(string archID, IPICProcessorMode mode) : base(archID)
+        public PICArchitecture(string archID) : base(archID)
         {
+            var mode = Options?.Mode;
             ProcessorMode = mode ?? throw new ArgumentNullException(nameof(mode));
             PICDescriptor = mode.PICDescriptor;
             flagGroups = new List<FlagGroupStorage>();

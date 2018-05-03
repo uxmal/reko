@@ -21,8 +21,8 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC16;
+using Reko.Arch.MicrochipPIC.Common;
+using Reko.Arch.MicrochipPIC.PIC16;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC16
 {

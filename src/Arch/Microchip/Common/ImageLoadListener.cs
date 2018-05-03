@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
+ * inspired by work from:
  * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,28 +20,23 @@
  */
 #endregion
 
-using Reko.Arch.MicrochipPIC.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Reko.Core;
-using Reko.Libraries.Microchip;
 
-namespace Reko.UnitTests.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
-    public class PICRegistersTestsBase
+    public class ImageLoadValidator
     {
-
-        protected IPICProcessorMode picMode;
-        protected PICArchitecture arch;
-        protected Address baseAddr = PICProgAddress.Ptr(0x200);
-        protected PICProcessorState state;
-
-        protected void SetPICMode(string picName, PICExecMode mode)
+        public static void OnProgramLoaded(Program program)
         {
-            picMode = PICProcessorMode.GetMode(picName);
-            arch = picMode.CreateArchitecture();
-            PICMemoryDescriptor.ExecMode = mode;
-            state = picMode.CreateProcessorState(arch);
+            if (program.Architecture is PICArchitecture picarch)
+            {
+                //$TODO: Modifiy segment map, validate loading, using picarch.Options;
+            }
         }
-
     }
-
 }

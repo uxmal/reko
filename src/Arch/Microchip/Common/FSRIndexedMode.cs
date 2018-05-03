@@ -20,7 +20,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     public enum FSRIndexedMode : byte
     {

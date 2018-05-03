@@ -23,7 +23,7 @@
 using Reko.Core;
 using Reko.Libraries.Microchip;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// The <see cref="ILinearRegion"/> interface permits to retrieve information for the PIC Linear Access data memory region.

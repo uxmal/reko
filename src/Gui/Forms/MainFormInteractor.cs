@@ -325,7 +325,6 @@ namespace Reko.Gui.Forms
 
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
                 string archName = null;
-                string cpuModel = null;
                 string envName = null;
                 string sAddr = null;
                 string loader = null;

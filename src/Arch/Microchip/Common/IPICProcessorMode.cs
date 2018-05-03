@@ -24,7 +24,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// Interface for PIC processor mode builders.

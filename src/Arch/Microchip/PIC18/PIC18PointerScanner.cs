@@ -24,7 +24,7 @@ using Reko.Libraries.Microchip;
 using Reko.Core;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.MicrochipPIC.PIC18
 {
 
     /// <summary>

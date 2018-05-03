@@ -22,7 +22,7 @@
 
 using System.Windows.Forms;
 
-namespace Reko.Arch.Microchip.Design
+namespace Reko.Arch.MicrochipPIC.Design
 {
     /// <summary>
     /// Form to ask the user for PIC model and PIC Execution mode.

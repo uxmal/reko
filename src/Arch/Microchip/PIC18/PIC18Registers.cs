@@ -24,7 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.MicrochipPIC.PIC18
 {
 
     using Common;

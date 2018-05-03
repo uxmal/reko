@@ -21,8 +21,8 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC16;
+using Reko.Arch.MicrochipPIC.Common;
+using Reko.Arch.MicrochipPIC.PIC16;
 using Reko.Libraries.Microchip;
 using System;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         public void PIC16arch_NullPICMode()
         {
             PIC16Architecture arch;
-            Assert.Throws<ArgumentNullException>(() => arch = new PIC16Architecture("pic", null));
+            Assert.Throws<ArgumentNullException>(() => arch = new PIC16Architecture("pic"));
         }
 
         [Test]

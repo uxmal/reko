@@ -25,7 +25,7 @@ using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
 
     public class PICAddress : Address

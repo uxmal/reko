@@ -1,4 +1,4 @@
-﻿namespace Reko.Arch.Microchip.Design
+﻿namespace Reko.Arch.MicrochipPIC.Design
 {
     partial class PICArchitecturePicker
     {
@@ -44,8 +44,9 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(370, 126);
+            this.btnCancel.Location = new System.Drawing.Point(370, 155);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -54,8 +55,9 @@
             // 
             // btnOK
             // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(289, 126);
+            this.btnOK.Location = new System.Drawing.Point(289, 155);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -64,8 +66,7 @@
             // 
             // picImage
             // 
-            this.picImage.Enabled = false;
-            this.picImage.Image = global::Reko.Arch.Microchip.Design.Properties.Resources.PIC;
+            this.picImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PIC;
             this.picImage.Location = new System.Drawing.Point(12, 9);
             this.picImage.Name = "picImage";
             this.picImage.Size = new System.Drawing.Size(137, 74);
@@ -74,7 +75,7 @@
             // cbbModel
             // 
             this.cbbModel.FormattingEnabled = true;
-            this.cbbModel.Location = new System.Drawing.Point(25, 99);
+            this.cbbModel.Location = new System.Drawing.Point(25, 116);
             this.cbbModel.Name = "cbbModel";
             this.cbbModel.Size = new System.Drawing.Size(121, 21);
             this.cbbModel.TabIndex = 4;
@@ -82,7 +83,7 @@
             // lblModel
             // 
             this.lblModel.AutoSize = true;
-            this.lblModel.Location = new System.Drawing.Point(22, 83);
+            this.lblModel.Location = new System.Drawing.Point(22, 93);
             this.lblModel.Name = "lblModel";
             this.lblModel.Size = new System.Drawing.Size(39, 13);
             this.lblModel.TabIndex = 5;
@@ -90,13 +91,15 @@
             // 
             // grpFamily
             // 
+            this.grpFamily.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpFamily.Controls.Add(this.chkExtendedMode);
             this.grpFamily.Controls.Add(this.lblExplain);
             this.grpFamily.Controls.Add(this.rdbPIC18);
             this.grpFamily.Controls.Add(this.rdbPIC16);
             this.grpFamily.Location = new System.Drawing.Point(155, 12);
             this.grpFamily.Name = "grpFamily";
-            this.grpFamily.Size = new System.Drawing.Size(290, 108);
+            this.grpFamily.Size = new System.Drawing.Size(301, 125);
             this.grpFamily.TabIndex = 6;
             this.grpFamily.TabStop = false;
             this.grpFamily.Text = "PIC Family";
@@ -114,9 +117,11 @@
             // 
             // lblExplain
             // 
+            this.lblExplain.AutoSize = true;
+            this.lblExplain.Enabled = false;
             this.lblExplain.Location = new System.Drawing.Point(19, 63);
             this.lblExplain.Name = "lblExplain";
-            this.lblExplain.Size = new System.Drawing.Size(265, 31);
+            this.lblExplain.Size = new System.Drawing.Size(257, 26);
             this.lblExplain.TabIndex = 2;
             this.lblExplain.Text = "(Only for PIC18 supporting Extended Execution mode\r\n and with appropriate setting" +
     "s of configuration fuses)\r\n";
@@ -147,7 +152,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(468, 164);
+            this.ClientSize = new System.Drawing.Size(468, 198);
             this.Controls.Add(this.grpFamily);
             this.Controls.Add(this.lblModel);
             this.Controls.Add(this.cbbModel);

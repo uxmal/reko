@@ -23,7 +23,7 @@
 using Reko.Libraries.Microchip;
 using System;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.MicrochipPIC.PIC18
 {
     public class PIC18LegacyRegisters : PIC18Registers
     {

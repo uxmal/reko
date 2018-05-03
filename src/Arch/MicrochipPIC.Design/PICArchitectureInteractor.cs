@@ -25,7 +25,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Reko.Arch.Microchip.Design
+namespace Reko.Arch.MicrochipPIC.Design
 {
     /// <summary>
     /// Interactor used by <see cref="PICArchitecturePicker"/> form.
@@ -88,6 +88,7 @@ namespace Reko.Arch.Microchip.Design
             }
             form.ExtendedModeCheckBox.Checked = result.AllowExtended;
             form.ModelComboBox.BeginUpdate();
+            form.ModelComboBox.Items.Clear();
             form.ModelComboBox.Items.AddRange(PICCrownking.GetDB().EnumPICList(s => s.StartsWith(family)).ToArray());
             form.ModelComboBox.Text = null;
             form.ModelComboBox.EndUpdate();
@@ -96,13 +97,18 @@ namespace Reko.Arch.Microchip.Design
 
         private void InitValues()
         {
-            var family = result.PICName.Substring(0, 5);
-            if (String.IsNullOrWhiteSpace(result.PICName))
+            string family;
+            if (result.PICName.Length < 5)
             {
                 result.PICName = String.Empty;
                 result.AllowExtended = false;
                 family = "PIC18";
             }
+            else
+            {
+                family = result.PICName.Substring(0, 5);
+            }
+
             switch (family)
             {
                 case "PIC16":

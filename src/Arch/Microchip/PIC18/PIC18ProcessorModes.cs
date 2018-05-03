@@ -24,7 +24,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 
-namespace Reko.Arch.Microchip.PIC18
+namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
 
@@ -33,7 +33,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override string ArchitectureID => "pic18";
 
         public override PICArchitecture CreateArchitecture()
-            => new PIC18Architecture(ArchitectureID, this);
+            => new PIC18Architecture(ArchitectureID);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18LegacyDisasm.Create(arch, rdr);
@@ -63,7 +63,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override string ArchitectureID => "pic18";
 
         public override PICArchitecture CreateArchitecture()
-            => new PIC18Architecture(ArchitectureID, this);
+            => new PIC18Architecture(ArchitectureID);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18EggDisasm.Create(arch, rdr);
@@ -93,7 +93,7 @@ namespace Reko.Arch.Microchip.PIC18
         public override string ArchitectureID => "pic18";
 
         public override PICArchitecture CreateArchitecture()
-            => new PIC18Architecture(ArchitectureID, this);
+            => new PIC18Architecture(ArchitectureID);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC18EnhancedDisasm.Create(arch, rdr);

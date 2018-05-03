@@ -22,7 +22,7 @@
 
 using System;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// Values that represent PIC condition code flags in STATUS register.

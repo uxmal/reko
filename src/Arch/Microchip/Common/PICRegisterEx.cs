@@ -23,7 +23,7 @@
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     public static class PICRegisterEx
     {

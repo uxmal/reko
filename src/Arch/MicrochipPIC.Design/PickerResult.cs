@@ -20,7 +20,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Microchip.Design
+namespace Reko.Arch.MicrochipPIC.Design
 {
     public class PickerResult
     {
@@ -34,6 +34,9 @@ namespace Reko.Arch.Microchip.Design
         /// This is a hint in case the configuration fuses are not part of the binary image.
         /// </summary>
         public bool AllowExtended;
+
+        public override string ToString() => $"{PICName}{(AllowExtended ? " - extended" : "")}";
+
     }
 
 }

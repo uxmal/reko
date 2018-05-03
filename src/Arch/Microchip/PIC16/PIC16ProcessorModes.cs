@@ -23,7 +23,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 
-namespace Reko.Arch.Microchip.PIC16
+namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
 
@@ -32,7 +32,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override string ArchitectureID => "pic16";
 
         public override PICArchitecture CreateArchitecture()
-            => new PIC16Architecture(ArchitectureID, this);
+            => new PIC16Architecture(ArchitectureID);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16BasicDisasm.Create(arch, rdr);
@@ -62,7 +62,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override string ArchitectureID => "pic16";
 
         public override PICArchitecture CreateArchitecture()
-            => new PIC16Architecture(ArchitectureID, this);
+            => new PIC16Architecture(ArchitectureID);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16EnhancedDisasm.Create(arch, rdr);
@@ -92,7 +92,7 @@ namespace Reko.Arch.Microchip.PIC16
         public override string ArchitectureID => "pic16";
 
         public override PICArchitecture CreateArchitecture()
-            => new PIC16Architecture(ArchitectureID, this);
+            => new PIC16Architecture(ArchitectureID);
 
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16FullDisasm.Create(arch, rdr);

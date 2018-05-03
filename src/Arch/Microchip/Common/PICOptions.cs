@@ -22,7 +22,7 @@
 
 using Reko.Libraries.Microchip;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     public class PICOptions
     {

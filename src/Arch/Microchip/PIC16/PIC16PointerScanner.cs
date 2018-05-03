@@ -24,7 +24,7 @@ using Reko.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.PIC16
+namespace Reko.Arch.MicrochipPIC.PIC16
 {
     public class PIC16PointerScanner : PointerScanner<uint>
     {

@@ -20,7 +20,7 @@
  */
 #endregion
 
-namespace Reko.Arch.Microchip.PIC16
+namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
 

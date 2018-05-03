@@ -22,8 +22,8 @@
  
 using Reko.Libraries.Microchip;
 using NUnit.Framework;
-using Reko.Arch.Microchip.Common;
-using Reko.Arch.Microchip.PIC18;
+using Reko.Arch.MicrochipPIC.Common;
+using Reko.Arch.MicrochipPIC.PIC18;
 using Reko.Core;
 using Reko.Core.Types;
 using System;
@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         public void PIC18arch_NullPICMode()
         {
             PIC18Architecture arch;
-            Assert.Throws<ArgumentNullException>(() => arch = new PIC18Architecture("pic", null));
+            Assert.Throws<ArgumentNullException>(() => arch = new PIC18Architecture("pic"));
         }
 
         [Test]

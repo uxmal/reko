@@ -24,7 +24,7 @@ using Reko.Libraries.Microchip;
 using Reko.Core;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// Interface for implementing PIC memory map.

@@ -22,7 +22,7 @@
 
 using NUnit.Framework;
 using Reko.Libraries.Microchip;
-using Reko.Arch.Microchip.Common;
+using Reko.Arch.MicrochipPIC.Common;
 
 // As of today there are 3 flavors of PIC18 with potentially 2 execution modes:
 //  - legacy (a.k.a. "pic18"), traditional execution mode

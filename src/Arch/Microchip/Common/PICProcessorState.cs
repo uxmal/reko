@@ -27,7 +27,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System;
 
-namespace Reko.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Common
 {
     /// <summary>
     /// The state of a PIC processor. Used in the Scanning phase of the decompiler.
