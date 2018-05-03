@@ -115,6 +115,15 @@ namespace Reko.Core
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
 
+        public virtual T ReadAt<T>(long offset, Func<ImageReader, T> action)
+        {
+            long prevOffset = Offset;
+            Offset = offset;
+                T result = action.Invoke(this);
+            Offset = prevOffset;
+            return result;
+        }
+
         public byte ReadByte()
         {
             byte b = bytes[off];

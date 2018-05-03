@@ -218,6 +218,10 @@
       <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
       <Name>Omf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
+      <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
+      <Name>Xex</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
       <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
       <Name>NativeProxy</Name>
