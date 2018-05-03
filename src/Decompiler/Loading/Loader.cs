@@ -134,6 +134,10 @@ namespace Reko.Loading
                 {
                     program.EntryPoints[ep.Address] = ep;
                 }
+                if (program.Architecture != null)
+                {
+                    program.Architecture.PostprocessProgram(program);
+                }
                 program.ImageMap = program.SegmentMap.CreateImageMap();
             }
             return program;
@@ -183,7 +187,10 @@ namespace Reko.Loading
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;
             program.User.LoadAddress = addrLoad;
+
+            program.Architecture.PostprocessProgram(program);
             program.ImageMap = program.SegmentMap.CreateImageMap();
+
             return program;
         }
 

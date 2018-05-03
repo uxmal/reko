@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Loading
         {
             Given_MsDosRawFileFormat();
             cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>());
-
+            x86arch.Stub(x => x.PostprocessProgram(null)).IgnoreArguments();
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
             Loader ldr = mr.PartialMock<Loader>(sc);
@@ -242,6 +242,7 @@ namespace Reko.UnitTests.Loading
             openv.Stub(o => o.Load(null, null)).IgnoreArguments().Return(new DefaultPlatform(sc, arch));
             arch.Stub(a => a.LoadUserOptions(null)).IgnoreArguments();
             arch.Stub(a => a.Name).Return("mmix");
+            arch.Stub(a => a.PostprocessProgram(null)).IgnoreArguments();
             arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("00123500"),
                 out Arg<Address>.Out(Address.Ptr32(0x00123500)).Dummy)).Return(true);
