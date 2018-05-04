@@ -34,14 +34,6 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
     public class PIC18EnhdExtd_RegistersTests : PICRegistersTestsBase
     {
 
-        private PICArchitecture GetArch(string picName, PICExecMode mode = PICExecMode.Traditional)
-        {
-            var arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
-            Assert.NotNull(arch);
-            arch.CreatePICProcessorModel();
-            return arch;
-        }
-
         [TestFixtureSetUp]
         public void OneSetup()
         {
@@ -53,7 +45,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
         /// </summary>
         public PIC18EnhdExtd_RegistersTests()
         {
-            arch = GetArch(PIC18EnhancedName, PICExecMode.Extended);
+            arch = PICProcessorMode.GetMode(PIC18EnhancedName).CreateArchitecture();
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
         }
 

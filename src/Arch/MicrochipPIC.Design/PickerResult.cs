@@ -1,7 +1,7 @@
 ﻿#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work of:
+ * inspired by work from:
  * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,27 +20,22 @@
  */
 #endregion
 
-using Reko.Arch.MicrochipPIC.Common;
-using Reko.Core;
-using Reko.Libraries.Microchip;
-
-namespace Reko.UnitTests.Arch.Microchip.Common
+namespace Reko.Arch.MicrochipPIC.Design
 {
-    public class PICRegistersTestsBase
+    public class PickerResult
     {
+        /// <summary>
+        /// Name of the PIC.
+        /// </summary>
+        public string PICName;
 
-        protected IPICProcessorMode picMode;
-        protected PICArchitecture arch;
-        protected Address baseAddr = PICProgAddress.Ptr(0x200);
-        protected PICProcessorState state;
+        /// <summary>
+        /// True to permit decoding of Extended Execution mode of PIC18, false otherwise.
+        /// This is a hint in case the configuration fuses are not part of the binary image.
+        /// </summary>
+        public bool AllowExtended;
 
-        protected void SetPICMode(string picName, PICExecMode mode)
-        {
-            picMode = PICProcessorMode.GetMode(picName);
-            arch = picMode.CreateArchitecture();
-            PICMemoryDescriptor.ExecMode = mode;
-            state = picMode.CreateProcessorState(arch);
-        }
+        public override string ToString() => $"{PICName}{(AllowExtended ? " - extended" : "")}";
 
     }
 

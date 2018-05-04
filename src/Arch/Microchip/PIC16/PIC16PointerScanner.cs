@@ -26,9 +26,7 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
-    using Common;
-
-    public class PIC16PointerScanner : PICPointerScanner
+    public class PIC16PointerScanner : PointerScanner<uint>
     {
         public PIC16PointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)

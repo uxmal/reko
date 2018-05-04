@@ -182,6 +182,8 @@ namespace Reko.CmdLine
                 var arch = config.GetArchitecture((string)pArgs["--arch"]);
                 if (arch == null)
                     throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
+                string cpuModel = string.Empty;
+                if (pArgs.ContainsKey("--cpumodel")) cpuModel = pArgs["--cpumodel"] as string;
 
                 pArgs.TryGetValue("--env", out object sEnv);
 
@@ -257,10 +259,20 @@ namespace Reko.CmdLine
                     ShowVersion(w);
                     return null;
                 }
+                else if (arg.StartsWith("--pics"))
+                {
+                    ShowPICs(w);
+                    return null;
+                }
                 else if (args[i] == "--arch")
                 {
                     if (i < args.Length - 1)
                         parsedArgs["--arch"] = args[++i];
+                }
+                else if (args[i] == "--cpumodel")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--cpumodel"] = args[++i];
                 }
                 else if (args[i] == "--env")
                 {
@@ -368,6 +380,10 @@ namespace Reko.CmdLine
             w.WriteLine("                          of the loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
+            w.WriteLine(" --cpumodel <cpuname>     Use a specific CPU model.");
+            w.WriteLine("                          Applicable to 'pic16' and 'pic18' architectures only.");
+            w.WriteLine("                          See option '--pics' for a list of PIC models.");
+            w.WriteLine(" --pics                   Show a list of supported PIC models and exit.");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
@@ -383,6 +399,41 @@ namespace Reko.CmdLine
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
+        }
+
+        private void ShowPICs(TextWriter w)
+        {
+            picDB = PICCrownking.GetDB();
+            if (picDB == null || PICCrownking.LastError != DBErrorCode.NoError)
+            {
+                Console.WriteLine($"No or wrong PIC database (Error={PICCrownking.LastError}).");
+                return;
+            }
+
+            int i = 0;
+            foreach (var pic in picDB.EnumPICList(p => p.StartsWith("PIC16")))
+            {
+                if ((i % 5) == 0)
+                {
+                    i = 0;
+                    w.WriteLine();
+                }
+                w.Write($"{pic,-20}");
+                i++;
+            }
+            w.WriteLine();
+            i = 0;
+            foreach (var pic in picDB.EnumPICList(p => p.StartsWith("PIC18")))
+            {
+                if ((i % 5) == 0)
+                {
+                    i = 0;
+                    w.WriteLine();
+                }
+                w.Write($"{pic,-20}");
+                i++;
+            }
+            w.WriteLine();
         }
 
         private static void DumpArchitectures(IConfigurationService config, TextWriter w, string fmtString)

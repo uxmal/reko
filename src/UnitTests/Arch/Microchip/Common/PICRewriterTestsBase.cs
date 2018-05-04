@@ -35,6 +35,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected IPICProcessorMode picMode;
         protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
+        protected PICProcessorState state;
         protected MemoryArea image;
 
         public override IProcessorArchitecture Architecture => arch;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             var disasm = picMode.CreateDisassembler(arch, new LeImageReader(image, 0));
-            var rwtr = picMode.CreateRewriter(arch, disasm, arch.State, frame, host);
+            var rwtr = picMode.CreateRewriter(arch, disasm, state, frame, host);
             return rwtr;
         }
 
@@ -71,10 +72,10 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected void SetPICMode(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
-            picMode = arch.ProcessorMode;
-            arch.CreatePICProcessorModel();
+            picMode = PICProcessorMode.GetMode(picName);
+            arch = picMode.CreateArchitecture();
             PICMemoryDescriptor.ExecMode = mode;
+            state = picMode.CreateProcessorState(arch);
         }
 
         protected void AssertCode(string mesg, params string[] expected)

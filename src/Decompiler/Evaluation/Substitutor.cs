@@ -60,11 +60,7 @@ namespace Reko.Evaluation
 
         public Expression VisitArrayAccess(ArrayAccess acc)
         {
-            var arr = acc.Array.Accept(this);
-            var idx = acc.Index.Accept(this);
-            if (arr == Constant.Invalid || idx == Constant.Invalid)
-                return Constant.Invalid;
-            return new ArrayAccess(acc.DataType, arr, idx);
+            throw new NotImplementedException();
         }
 
         public Expression VisitBinaryExpression(BinaryExpression binExp)

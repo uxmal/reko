@@ -22,16 +22,29 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
 
-    internal abstract class PIC16ProcessorMode : PICProcessorMode
+    internal class PIC16BasicMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic16";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC16Architecture(ArchitectureID);
+
+        public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
+            => PIC16BasicDisasm.Create(arch, rdr);
+
+        public override void CreateRegisters()
+            => PIC16BasicRegisters.Create(PICDescriptor);
+
         public override void CreateMemoryDescriptor()
             => PIC16MemoryDescriptor.Create(PICDescriptor);
+
+        public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
+            => PIC16BasicRewriter.Create(arch, dasm, state, binder, host);
 
         public override Address MakeAddressFromConstant(Constant c)
             => Address.Ptr32(c.ToUInt32());
@@ -42,46 +55,65 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         public override Address CreateBankedAddress(byte bsrReg, byte offset)
             => Address.Ptr16((ushort)((bsrReg << 7) + offset));
 
-        public override PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
-            => new PIC16PointerScanner(rdr, knownLinAddresses, flags);
     }
 
-    internal class PIC16BasicMode : PIC16ProcessorMode
+    internal class PIC16EnhancedMode : PICProcessorMode
     {
-        public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
-            => PIC16BasicDisasm.Create(arch, rdr);
+        public override string ArchitectureID => "pic16";
 
-        public override void CreateRegisters()
-            => PIC16BasicRegisters.Create(PICDescriptor);
+        public override PICArchitecture CreateArchitecture()
+            => new PIC16Architecture(ArchitectureID);
 
-        public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
-            => PIC16BasicRewriter.Create(arch, dasm, state, binder, host);
-
-    }
-
-    internal class PIC16EnhancedMode : PIC16ProcessorMode
-    {
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16EnhancedDisasm.Create(arch, rdr);
 
         public override void CreateRegisters()
             => PIC16EnhancedRegisters.Create(PICDescriptor);
 
+        public override void CreateMemoryDescriptor()
+            => PIC16MemoryDescriptor.Create(PICDescriptor);
+
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC16EnhancedRewriter.Create(arch, dasm, state, binder, host);
 
+        public override Address MakeAddressFromConstant(Constant c)
+            => Address.Ptr32(c.ToUInt32());
+
+        public override PICProcessorState CreateProcessorState(PICArchitecture arch)
+            => new PIC16State(arch);
+
+        public override Address CreateBankedAddress(byte bsrReg, byte offset)
+            => Address.Ptr16((ushort)((bsrReg << 7) + offset));
+
     }
 
-    internal class PIC16FullMode : PIC16ProcessorMode
+    internal class PIC16FullMode : PICProcessorMode
     {
+        public override string ArchitectureID => "pic16";
+
+        public override PICArchitecture CreateArchitecture()
+            => new PIC16Architecture(ArchitectureID);
+
         public override PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr)
             => PIC16FullDisasm.Create(arch, rdr);
 
         public override void CreateRegisters()
             => PIC16FullRegisters.Create(PICDescriptor);
 
+        public override void CreateMemoryDescriptor()
+            => PIC16MemoryDescriptor.Create(PICDescriptor);
+
         public override PICRewriter CreateRewriter(PICArchitecture arch, PICDisassemblerBase dasm, PICProcessorState state, IStorageBinder binder, IRewriterHost host)
             => PIC16FullRewriter.Create(arch, dasm, state, binder, host);
+
+        public override Address MakeAddressFromConstant(Constant c)
+            => Address.Ptr32(c.ToUInt32());
+
+        public override PICProcessorState CreateProcessorState(PICArchitecture arch)
+            => new PIC16State(arch);
+
+        public override Address CreateBankedAddress(byte bsrReg, byte offset)
+            => Address.Ptr16((ushort)((bsrReg << 7) + offset));
 
     }
 

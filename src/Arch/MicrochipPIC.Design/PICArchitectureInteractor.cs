@@ -27,15 +27,13 @@ using System.Windows.Forms;
 
 namespace Reko.Arch.MicrochipPIC.Design
 {
-    using Common;
-
     /// <summary>
     /// Interactor used by <see cref="PICArchitecturePicker"/> form.
     /// </summary>
     public class PICArchitectureInteractor
     {
         private PICArchitecturePicker form;
-        private PICArchitectureOptionsPicker result;
+        private PickerResult result;
 
         internal void Attach(PICArchitecturePicker pickerForm)
         {
@@ -46,7 +44,7 @@ namespace Reko.Arch.MicrochipPIC.Design
 
         private void Form_Load(object sender, EventArgs e)
         {
-            result = form.Value ?? new PICArchitectureOptionsPicker() { PICName = String.Empty, AllowExtended = false };
+            result = form.Value ?? new PickerResult() { PICName = String.Empty, AllowExtended = false };
             InitValues();
             form.ModelComboBox.SelectedIndexChanged += ModelComboBox_SelectedIndexChanged;
             form.ExtendedModeCheckBox.CheckedChanged += ExtendedModeCheckbox_CheckedChanged;
@@ -71,7 +69,6 @@ namespace Reko.Arch.MicrochipPIC.Design
         {
             var cmb = sender as ComboBox;
             result.PICName = cmb.Text;
-            form.OKButton.Enabled = form.ModelComboBox.SelectedIndex >= 0;
         }
 
         private void PICRadioButtons_CheckedChanged(object sender, EventArgs e)
