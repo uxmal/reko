@@ -71,6 +71,7 @@ namespace Reko.Arch.MicrochipPIC.Design
         {
             var cmb = sender as ComboBox;
             result.PICName = cmb.Text;
+            form.OKButton.Enabled = form.ModelComboBox.SelectedIndex >= 0;
         }
 
         private void PICRadioButtons_CheckedChanged(object sender, EventArgs e)

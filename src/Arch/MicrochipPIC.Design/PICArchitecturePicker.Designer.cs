@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PICArchitecturePicker));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.picImage = new System.Windows.Forms.Label();
             this.cbbModel = new System.Windows.Forms.ComboBox();
             this.lblModel = new System.Windows.Forms.Label();
             this.grpFamily = new System.Windows.Forms.GroupBox();
@@ -39,6 +38,7 @@
             this.lblExplain = new System.Windows.Forms.Label();
             this.rdbPIC18 = new System.Windows.Forms.RadioButton();
             this.rdbPIC16 = new System.Windows.Forms.RadioButton();
+            this.picImage = new System.Windows.Forms.Label();
             this.grpFamily.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +46,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(370, 155);
+            this.btnCancel.Location = new System.Drawing.Point(371, 146);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -58,20 +58,12 @@
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Enabled = false;
-            this.btnOK.Location = new System.Drawing.Point(289, 155);
+            this.btnOK.Location = new System.Drawing.Point(290, 146);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            // 
-            // picImage
-            // 
-            this.picImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PIC;
-            this.picImage.Location = new System.Drawing.Point(12, 9);
-            this.picImage.Name = "picImage";
-            this.picImage.Size = new System.Drawing.Size(137, 74);
-            this.picImage.TabIndex = 3;
             // 
             // cbbModel
             // 
@@ -102,7 +94,7 @@
             this.grpFamily.Controls.Add(this.rdbPIC16);
             this.grpFamily.Location = new System.Drawing.Point(155, 12);
             this.grpFamily.Name = "grpFamily";
-            this.grpFamily.Size = new System.Drawing.Size(301, 125);
+            this.grpFamily.Size = new System.Drawing.Size(302, 125);
             this.grpFamily.TabIndex = 6;
             this.grpFamily.TabStop = false;
             this.grpFamily.Text = "PIC Family";
@@ -151,11 +143,19 @@
             this.rdbPIC16.Text = "PIC16";
             this.rdbPIC16.UseVisualStyleBackColor = true;
             // 
+            // picImage
+            // 
+            this.picImage.Image = global::Reko.Arch.MicrochipPIC.Design.Properties.Resources.PIC;
+            this.picImage.Location = new System.Drawing.Point(12, 9);
+            this.picImage.Name = "picImage";
+            this.picImage.Size = new System.Drawing.Size(137, 74);
+            this.picImage.TabIndex = 3;
+            // 
             // PICArchitecturePicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(468, 198);
+            this.ClientSize = new System.Drawing.Size(469, 181);
             this.Controls.Add(this.grpFamily);
             this.Controls.Add(this.lblModel);
             this.Controls.Add(this.cbbModel);
@@ -167,7 +167,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PICArchitecturePicker";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PIC Architecture";
             this.TopMost = true;
