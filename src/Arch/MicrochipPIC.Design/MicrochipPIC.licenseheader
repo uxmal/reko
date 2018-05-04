@@ -1,8 +1,11 @@
-﻿#region License
+﻿extensions: designer.cs generated.cs
+extensions: .cpp .h
+extensions: .cs
+#region License
 /* 
- * Copyright (C) 2017-2018 Christian Hostelet.
- * inspired by work from:
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 2017-%CurrentYear% Christian Hostelet.
+ * inspired by work of:
+ * Copyright (C) 1999-%CurrentYear% John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +22,13 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
-
-namespace Reko.Arch.MicrochipPIC.Design
-{
-    public class PickerResult
-    {
-        /// <summary>
-        /// Name of the PIC.
-        /// </summary>
-        public string PICName;
-
-        /// <summary>
-        /// True to permit decoding of Extended Execution mode of PIC18, false otherwise.
-        /// This is a hint in case the configuration fuses are not part of the binary image.
-        /// </summary>
-        public bool AllowExtended;
-
-        public override string ToString() => $"{PICName}{(AllowExtended ? " - extended" : "")}";
-
-    }
-
-}
+extensions: .aspx .ascx
+<%-- 
+Copyright (c) 2011 rubicon IT GmbH
+--%>
+extensions: .vb
+'Sample license text.
+extensions:  .xml .config .xsd
+<!--
+Sample license text.
+-->

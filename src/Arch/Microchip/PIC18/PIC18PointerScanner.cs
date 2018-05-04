@@ -26,11 +26,12 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
+    using Common;
 
     /// <summary>
     /// Scans an image looking for uses of pointer values.
     /// </summary>
-    public class PIC18PointerScanner : PointerScanner<uint>
+    public class PIC18PointerScanner : PICPointerScanner
     {
         public PIC18PointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             : base(rdr, knownLinAddresses, flags)

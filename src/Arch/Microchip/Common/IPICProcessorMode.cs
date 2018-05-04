@@ -23,6 +23,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
+using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -40,20 +41,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Gets the PIC name.
         /// </summary>
         string PICName { get; }
-
-        /// <summary>
-        /// Gets the identifier name of the processor architecture.
-        /// </summary>
-        string ArchitectureID { get; }
-
-        /// <summary>
-        /// Creates the PIC architecture.
-        /// </summary>
-        /// <param name="mode">The processor mode.</param>
-        /// <returns>
-        /// The new architecture.
-        /// </returns>
-        PICArchitecture CreateArchitecture();
 
         /// <summary>
         /// Creates a disassembler for the target processor.
@@ -113,6 +100,19 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="bsrReg">The Bank Select register value.</param>
         /// <param name="offset">The offset in the memory bank.</param>
         Address CreateBankedAddress(byte bsrReg, byte offset);
+
+
+        /// <summary>
+        /// Creates the memory pointer scanner.
+        /// </summary>
+        /// <param name="rdr">The memory image reader.</param>
+        /// <param name="knownLinAddresses">The known linear addresses.</param>
+        /// <param name="flags">The flags.</param>
+        /// <returns>
+        /// The new pointer scanner.
+        /// </returns>
+        PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
+
     }
 
 }

@@ -20,16 +20,18 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
+using Reko.Core;
+using System.Collections.Generic;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
-    public class PICOptions
+    public abstract class PICPointerScanner : PointerScanner<uint>
     {
 
-        public IPICProcessorMode Mode;
-
-        public PICExecMode ExecMode;
+        public PICPointerScanner(EndianImageReader rd, HashSet<uint> knownLinAddrs, PointerScannerFlags flags)
+            : base(rd, knownLinAddrs, flags)
+        {
+        }
 
     }
 }

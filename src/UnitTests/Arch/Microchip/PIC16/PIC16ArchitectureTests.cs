@@ -36,19 +36,20 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
     public class PIC16ArchitectureTests
     {
 
+        private PICArchitecture GetArch(string picName)
+        {
+            var arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, PICExecMode.Traditional) };
+            Assert.NotNull(arch);
+            arch.CreatePICProcessorModel();
+            return arch;
+        }
+
         [Test]
         public void PIC16arch_WrongPICMode()
         {
             var picMode = PICProcessorMode.GetMode("PICUnknown");
             Assert.IsNull(picMode);
             Assert.Throws<ArgumentNullException>(() => picMode = PICProcessorMode.GetMode(""));
-        }
-
-        [Test]
-        public void PIC16arch_NullPICMode()
-        {
-            PIC16Architecture arch;
-            Assert.Throws<ArgumentNullException>(() => arch = new PIC16Architecture("pic"));
         }
 
         [Test]
@@ -60,9 +61,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             var pic = picMode.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16, pic.GetInstructionSetID);
             Assert.AreEqual(PIC16BasicName, pic.Name);
-            var arch = picMode.CreateArchitecture();
+
+            var arch = GetArch(PIC16BasicName);
             Assert.NotNull(arch);
-            Assert.AreEqual(arch.Name, picMode.ArchitectureID);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
@@ -77,9 +78,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             var pic = picMode.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16_ENHANCED, pic.GetInstructionSetID);
             Assert.AreEqual(PIC16EnhancedName, pic.Name);
-            var arch = picMode.CreateArchitecture();
-            Assert.NotNull(arch);
-            Assert.AreEqual(arch.Name, picMode.ArchitectureID);
+
+            var arch = GetArch(PIC16EnhancedName);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
@@ -94,9 +94,8 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
             var pic = picMode.PICDescriptor;
             Assert.AreEqual(InstructionSetID.PIC16_FULLFEATURED, pic.GetInstructionSetID);
             Assert.AreEqual(PIC16FullFeaturedName, pic.Name);
-            var arch = picMode.CreateArchitecture();
-            Assert.NotNull(arch);
-            Assert.AreEqual(arch.Name, picMode.ArchitectureID);
+
+            var arch = GetArch(PIC16FullFeaturedName);
             Assert.NotNull(arch.PICDescriptor);
             Assert.AreEqual(picMode.PICDescriptor, arch.PICDescriptor);
             Assert.IsTrue(PICMemoryDescriptor.IsValid);
@@ -105,20 +104,17 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetOpcodeNamesTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            var arch = picMode.CreateArchitecture();
+            var arch = GetArch(PIC16BasicName);
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
 
-            picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            arch = picMode.CreateArchitecture();
+            arch = GetArch(PIC16EnhancedName);
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
 
-            picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            arch = picMode.CreateArchitecture();
+            arch = GetArch(PIC16FullFeaturedName);
             Assert.AreEqual(
                 "__CONFIG,__IDLOCS,ADDFSR,ADDLW,ADDULNK,ADDWF",
                 string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
@@ -127,19 +123,16 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         [Test]
         public void PIC16arch_GetOpcodeNumberTests()
         {
-            var picMode = PICProcessorMode.GetMode(PIC16BasicName);
-            var arch = picMode.CreateArchitecture();
+            var arch = GetArch(PIC16BasicName);
             Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
             Assert.AreEqual(Opcode.ADDWF, (Opcode)arch.GetOpcodeNumber("ADDWF"));
 
-            picMode = PICProcessorMode.GetMode(PIC16EnhancedName);
-            arch = picMode.CreateArchitecture();
+            arch = GetArch(PIC16EnhancedName);
             Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
             Assert.AreEqual(Opcode.ADDWF, (Opcode)arch.GetOpcodeNumber("ADDWF"));
             Assert.AreEqual(Opcode.BRW, (Opcode)arch.GetOpcodeNumber("BRW"));
 
-            picMode = PICProcessorMode.GetMode(PIC16FullFeaturedName);
-            arch = picMode.CreateArchitecture();
+            arch = GetArch(PIC16FullFeaturedName);
             Assert.AreEqual(Opcode.MOVWF, (Opcode)arch.GetOpcodeNumber("MOVWF"));
             Assert.AreEqual(Opcode.ADDWF, (Opcode)arch.GetOpcodeNumber("ADDWF"));
             Assert.AreEqual(Opcode.BRW, (Opcode)arch.GetOpcodeNumber("BRW"));
