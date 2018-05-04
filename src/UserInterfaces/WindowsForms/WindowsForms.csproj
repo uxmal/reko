@@ -195,7 +195,6 @@
       <DependentUpon>DeclarationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\DeclarationFormInteractor.cs" />
-    <Compile Include="Forms\DecompilerMenus.cs" />
     <Compile Include="Forms\DiagnosticsInteractor.cs" />
     <Compile Include="Forms\EditProjectDialog.cs">
       <SubType>Form</SubType>
