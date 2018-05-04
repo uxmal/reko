@@ -263,7 +263,10 @@ namespace Reko.Analysis
 
         public Result VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            var a = acc.Array.Accept(this).PropagatedExpression;
+            var i = acc.Index.Accept(this).PropagatedExpression;
+            var newAcc = new ArrayAccess(acc.DataType, a, i);
+            return SimplifyExpression(newAcc);
         }
 
         public Result VisitBinaryExpression(BinaryExpression binExp)
