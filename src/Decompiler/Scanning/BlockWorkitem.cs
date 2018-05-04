@@ -746,7 +746,19 @@ namespace Reko.Scanning
                         new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
                 }
             }
+            TrashRegistersAfterCall();
             return true;
+        }
+
+        private void TrashRegistersAfterCall()
+        {
+            foreach (var reg in program.Platform.CreateTrashedRegisters())
+            {
+                // $REVIEW: do not trash stack register. It gives regression
+                // on some MSDOS binaries
+                if (reg != arch.StackRegister)
+                    state.SetValue(reg, Constant.Invalid);
+            }
         }
 
         private FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
