@@ -17,6 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
@@ -59,9 +60,19 @@ namespace Reko.Environments.Xbox360
             return new HashSet<RegisterStorage>();
         }
 
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            // Right now we are not aware of any way to locate WinMain
+            // on Xbox360 binaries.
+            return null;
+        }
+
         public override CallingConvention GetCallingConvention(string ccName)
         {
-            throw new NotImplementedException();
+            //$TODO: investigate whether the calling
+            // convention on Xbox deviates from the convention
+            // specified by the PowerPC specs.
+            return new PowerPcCallingConvention((PowerPcArchitecture)Architecture);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -90,7 +101,8 @@ namespace Reko.Environments.Xbox360
 
         public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> rdr, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            //$TODO: for now we don't attempt to locate trampolines.
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

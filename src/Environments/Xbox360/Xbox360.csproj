@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
+      <Project>{b7dc39dd-6693-4f71-ae7f-007c5c62cbaa}</Project>
+      <Name>PowerPC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>

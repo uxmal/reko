@@ -202,6 +202,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
+      <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
+      <Name>Xbox360</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Gui\Gui.csproj">
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
