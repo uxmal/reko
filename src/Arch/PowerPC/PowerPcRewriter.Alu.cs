@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -553,7 +554,15 @@ namespace Reko.Arch.PowerPC
                 m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, Constant.Byte((byte)sh)));
             }
             else
-                throw new NotImplementedException();
+            {
+                host.Error(
+                    instr.Address,
+                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                EmitUnitTest();
+                rtlc = RtlClass.Invalid;
+                m.Invalid();
+                return;
+            }
             MaybeEmitCr0(rd);
         }
 
