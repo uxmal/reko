@@ -26,38 +26,38 @@ void fn0221()
 // 0387: Register word16 fn0387(Register out ptr16 spOut)
 word16 fn0387(ptr16 & spOut)
 {
-	<anonymous> * hl_6 = globals->ptr1648;
+	word16 hl_6 = Mem0[0x1648:word16];
 	word16 sp_7;
 	word16 hl_8;
 	hl_6();
 	return hl_8;
 }
 
-// 0390: Register ptr16 fn0390(Register Eq_16 c, Register byte b, Register byte e, Stack word16 wArg00, Stack word16 wArg02)
-ptr16 fn0390(Eq_16 c, byte b, byte e, word16 wArg00, word16 wArg02)
+// 0390: Register word16 fn0390(Register byte c, Register byte b, Register byte e, Stack word16 wArg00, Stack word16 wArg02)
+word16 fn0390(byte c, byte b, byte e, word16 wArg00, word16 wArg02)
 {
-	globals->b1656 = e;
-	globals->b1655 = b;
-	globals->t1654 = c;
-	globals->b1653 = (byte) wArg02;
+	Mem4[0x1656:byte] = e;
+	Mem7[0x1655:byte] = b;
+	Mem10[0x1654:byte] = c;
+	Mem22[5715:byte] = (byte) wArg02;
 	while (true)
 	{
-		byte a_27 = globals->b1653;
-		globals->b1653 = a_27 - 0x01;
+		byte a_27 = Mem22[5715:byte];
+		Mem29[5715:byte] = a_27 - 0x01;
 		if (a_27 == 0x00)
 			break;
-		globals->t1654->u0 = globals->b1656;
-		globals->t1654 = (word16) globals->t1654 + 0x01;
+		Mem34[Mem29[0x1654:word16] + 0x00:byte] = Mem29[0x1656:byte];
+		Mem38[0x1654:word16] = Mem34[0x1654:word16] + 0x01;
 	}
 	return fp + 0x02;
 }
 
-// 03BB: FlagGroup byte fn03BB(Register cu8 c, Register out Eq_57 aOut, Register out Eq_58 cOut)
-byte fn03BB(cu8 c, Eq_57 & aOut, Eq_58 & cOut)
+// 03BB: FlagGroup byte fn03BB(Register byte c, Register out ptr16 aOut, Register out ptr16 cOut)
+byte fn03BB(byte c, ptr16 & aOut, ptr16 & cOut)
 {
-	globals->b1657 = c;
-	cu8 a_5 = globals->b1657;
-	byte a_12 = 0x00 - (0x1A - (a_5 - 0x61) < 0x00);
+	Mem4[0x1657:byte] = c;
+	byte a_5 = Mem4[0x1657:byte];
+	byte a_12 = 0x00 - (0x1A - (a_5 - 0x61) <u 0x00);
 	byte c_7;
 	*cOut = a_5 - 0x61;
 	byte a_16;
@@ -65,55 +65,55 @@ byte fn03BB(cu8 c, Eq_57 & aOut, Eq_58 & cOut)
 	return cond(a_12);
 }
 
-// 03CB: void fn03CB(Register Eq_80 c, Register byte b, Register byte l)
-void fn03CB(Eq_80 c, byte b, byte l)
+// 03CB: void fn03CB(Register byte c, Register byte b, Register byte l)
+void fn03CB(byte c, byte b, byte l)
 {
-	globals->t1658 = c;
+	Mem4[0x1658:byte] = c;
 	byte a_22;
 	byte c_23;
-	fn03BB((byte) globals->t1658, out a_22, out c_23);
+	fn03BB((byte) Mem4[0x1658:word16], out a_22, out c_23);
 }
 
-// 03E6: Register Eq_95 fn03E6(Register Eq_95 c, Register byte l, Register out Eq_98 cOut)
-Eq_95 fn03E6(Eq_95 c, byte l, Eq_98 & cOut)
+// 03E6: Register byte fn03E6(Register byte c, Register byte l, Register out ptr16 cOut)
+byte fn03E6(byte c, byte l, ptr16 & cOut)
 {
-	globals->t1659 = c;
+	Mem4[0x1659:byte] = c;
 	byte a_8;
 	byte c_9;
-	byte C_10 = fn03BB((byte) globals->t1659, out a_8, out c_9);
-	if (__ror(a_8, 0x01, C_10) >= 0x00)
-		return globals->t1659;
-	return (word16) globals->t1659 + 0x005F;
+	byte C_10 = fn03BB((byte) Mem4[0x1659:word16], out a_8, out c_9);
+	if (__ror(a_8, 0x01, C_10) >=u 0x00)
+		return Mem0[0x1659:byte];
+	return Mem4[0x1659:byte] + 0x5F;
 }
 
 // 0400: void fn0400()
 void fn0400()
 {
-	globals->w1640 = globals->w0006;
-	globals->ptr164E = &globals->b0080;
+	Mem4[5696:word16] = Mem0[0x06:word16];
+	Mem6[0x164E:word16] = 0x80;
 }
 
-// 040D: Register ptr16 fn040D(Register Eq_130 c, Register byte b, Register cu8 e, Stack word16 wArg00, Stack word16 wArg02)
-ptr16 fn040D(Eq_130 c, byte b, cu8 e, word16 wArg00, word16 wArg02)
+// 040D: Register word16 fn040D(Register byte c, Register byte b, Register byte e, Stack word16 wArg00, Stack word16 wArg02)
+word16 fn040D(byte c, byte b, byte e, word16 wArg00, word16 wArg02)
 {
-	globals->b165E = e;
-	globals->b165D = b;
-	globals->t165C = c;
-	globals->b165B = SLICE(wArg02, byte, 8);
-	globals->b165A = (byte) wArg02;
-	while (0x00 < globals->b165E)
+	Mem4[0x165E:byte] = e;
+	Mem7[5725:byte] = b;
+	Mem10[0x165C:byte] = c;
+	Mem21[0x165B:byte] = SLICE(wArg02, byte, 8);
+	Mem24[5722:byte] = (byte) wArg02;
+	while (0x00 <u Mem24[0x165E:byte])
 	{
 		fn0221();
 		fn0221();
 		if (true)
 		{
-			globals->b165E = globals->b165E - 0x01;
-			globals->t165C = (word16) globals->t165C + 0x0080;
+			Mem58[0x165E:byte] = Mem24[0x165E:byte] - 0x01;
+			Mem65[0x165C:word16] = Mem58[0x165C:word16] + 0x80;
 		}
 		else
 		{
-			globals->t165C->u0 = 0x1A;
-			globals->b165E = 0x00;
+			Mem67[Mem24[0x165C:word16] + 0x00:byte] = 0x1A;
+			Mem69[0x165E:byte] = 0x00;
 		}
 	}
 	return fp + 0x02;
@@ -122,69 +122,69 @@ ptr16 fn040D(Eq_130 c, byte b, cu8 e, word16 wArg00, word16 wArg02)
 // 045B: Register byte fn045B()
 byte fn045B()
 {
-	if (globals->b0080 == 0x00)
+	if (Mem0[0x80:byte] == 0x00)
 		return 0x00;
-	globals->b0080 = globals->b0080 - 0x01;
-	struct Eq_126 * hl_15 = globals->ptr164E;
-	globals->ptr164E = &hl_15->b0001;
-	return hl_15->b0001;
+	Mem13[0x80:byte] = Mem0[0x80:byte] - 0x01;
+	word16 hl_15 = Mem13[0x164E:word16];
+	Mem18[0x164E:word16] = hl_15 + 0x01;
+	return Mem18[hl_15 + 0x01:byte];
 }
 
 // 0473: void fn0473(Register byte c)
 void fn0473(byte c)
 {
-	globals->b165F = c;
+	Mem4[5727:byte] = c;
 	fn0221();
 }
 
-// 0483: Register word16 fn0483(Register Eq_208 c, Register byte b, Register Eq_210 e, Register byte d, Register Eq_208 l, Register byte h, Stack word16 wArg00, Stack word16 wArg02, Register out Eq_216 lOut, Register out Eq_217 hOut)
-word16 fn0483(Eq_208 c, byte b, Eq_210 e, byte d, Eq_208 l, byte h, word16 wArg00, word16 wArg02, Eq_216 & lOut, Eq_217 & hOut)
+// 0483: Register word16 fn0483(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h, Stack word16 wArg00, Stack word16 wArg02, Register out ptr16 lOut, Register out ptr16 hOut)
+word16 fn0483(byte c, byte b, byte e, byte d, byte l, byte h, word16 wArg00, word16 wArg02, ptr16 & lOut, ptr16 & hOut)
 {
-	globals->b1665 = d;
-	globals->t1664 = e;
-	globals->b1663 = b;
-	globals->t1662 = c;
-	globals->b1661 = SLICE(wArg02, byte, 8);
-	globals->t1660 = (byte) wArg02;
-	Eq_210 hl_29 = globals->t1664;
+	Mem4[0x1665:byte] = d;
+	Mem7[0x1664:byte] = e;
+	Mem10[0x1663:byte] = b;
+	Mem13[0x1662:byte] = c;
+	Mem23[0x1661:byte] = SLICE(wArg02, byte, 8);
+	Mem25[0x1660:byte] = (byte) wArg02;
+	word16 hl_29 = Mem25[0x1664:word16];
 	byte l_37;
 	byte h_38;
-	word16 bc_111 = DPB(wArg02, fn1326(0x07, (byte) ((word16) hl_29.u1 + 0x007F), SLICE((word16) hl_29.u1 + 0x007F, byte, 8), out l_37, out h_38), 0);
-	globals->b1667 = (byte) ((word16) hl_29.u1 + 0x007F);
+	word16 bc_111 = DPB(wArg02, fn1326(0x07, (byte) (hl_29 + 0x7F), SLICE(hl_29 + 0x7F, byte, 8), out l_37, out h_38), 0);
+	Mem48[0x1667:byte] = (byte) (hl_29 + 0x7F);
 	while (true)
 	{
 		byte l_60;
 		*lOut = 0x67;
 		byte h_61;
 		*hOut = 22;
-		if (0x00 >= globals->b1667)
+		if (0x00 >=u Mem48[0x1667:byte])
 			break;
 		fn0221();
 		fn0221();
 		bc_111 = DPB(bc_111, 0x15, 0);
 		if (true)
 		{
-			globals->b1667 = globals->b1667 - 0x01;
-			globals->t1662.u1 = (word16) globals->t1662 + 0x0080;
+			Mem95[0x1667:byte] = Mem48[0x1667:byte] - 0x01;
+			Mem105[0x1662:word16] = Mem95[0x1662:word16] + 0x80;
 		}
 		else
 		{
-			globals->ptr1668 = &globals->b02A3;
-			while (*globals->ptr1668 != 0x24)
+			Mem109[0x1668:word16] = 0x02A3;
+			while (Mem109[Mem109[0x1668:word16] + 0x00:byte] != 0x24)
 			{
-				byte c_120 = *globals->ptr1668;
+				byte c_120 = Mem109[Mem109[0x1668:word16] + 0x00:byte];
 				fn0473(c_120);
-				globals->ptr1668 = globals->ptr1668 + 0x01;
+				Mem127[0x1668:word16] = Mem109[0x1668:word16] + 0x01;
 				bc_111 = DPB(bc_111, c_120, 0);
 			}
-			byte a_131 = *globals->t1660;
+			byte a_131 = Mem109[Mem109[0x1660:word16] + 0x00:byte];
 			if (a_131 == 0x00)
 			{
 				fn0221();
-				globals->t1660->u0 = a_131 + 0x01;
+				Mem161[Mem109[0x1660:word16] + 0x00:byte] = a_131 + 0x01;
 				bc_111 = DPB(bc_111, 0x19, 0);
 			}
-			fn0473((word16) *globals->t1660 + 0x0060);
+			fn0473(Mem109[Mem109[0x1660:word16] + 0x00:byte] + 0x60);
 			fn0473(0x3A);
 			word16 sp_147;
 			fn0387(out sp_147);
@@ -197,28 +197,28 @@ word16 fn0483(Eq_208 c, byte b, Eq_210 e, byte d, Eq_208 l, byte h, word16 wArg0
 // 0524: void fn0524(Register byte c)
 void fn0524(byte c)
 {
-	globals->b166A = c;
+	Mem4[0x166A:byte] = c;
 	fn0221();
 }
 
-// 0534: Register word16 fn0534(Register byte c, Register Eq_359 e, Register byte d, Register byte l, Register byte h, Register out Eq_363 lOut, Register out Eq_364 hOut)
-word16 fn0534(byte c, Eq_359 e, byte d, byte l, byte h, Eq_363 & lOut, Eq_364 & hOut)
+// 0534: Register word16 fn0534(Register byte c, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 lOut, Register out ptr16 hOut)
+word16 fn0534(byte c, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
 {
-	globals->b166B = c;
-	globals->ptr14BC + globals->w14BE = (byte *) globals->b166B;
-	int16 hl_14 = globals->w14BE;
-	globals->w14BE = hl_14 + 0x01;
+	Mem4[0x166B:byte] = c;
+	Mem13[Mem4[0x14BC:word16] + Mem4[0x14BE:word16]:byte] = Mem4[0x166B:byte];
+	word16 hl_14 = Mem13[0x14BE:word16];
+	Mem17[0x14BE:word16] = hl_14 + 0x01;
 	byte l_25;
 	byte h_26;
 	if (!fn1335(SLICE(hl_14 + 0x01, byte, 8), (byte) (hl_14 + 0x01), 0x02, 0x00, out l_25, out h_26))
 	{
-		ptr16 hl_47 = globals->ptr14BC;
-		Eq_208 l_48 = (byte) hl_47;
+		word16 hl_47 = Mem17[0x14BC:word16];
+		byte l_48 = (byte) hl_47;
 		byte h_49 = SLICE(hl_47, byte, 8);
 		byte l_56;
 		byte h_57;
 		bc = fn0483(l_48, h_49, 0x00, 0x02, l_48, h_49, wLoc04, 0x14C0, out l_56, out h_57);
-		globals->w14BE = 0x00;
+		Mem64[0x14BE:word16] = 0x00;
 		byte l_62;
 		*lOut = 0x00;
 		byte h_63;
@@ -227,18 +227,18 @@ word16 fn0534(byte c, Eq_359 e, byte d, byte l, byte h, Eq_363 & lOut, Eq_364 & 
 	return bc;
 }
 
-// 056B: FlagGroup bool fn056B(Register Eq_429 c, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_434 aOut, Register out ptr16 bcOut, Register out Eq_436 lOut, Register out Eq_437 hOut)
-bool fn056B(Eq_429 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_434 & aOut, ptr16 & bcOut, Eq_436 & lOut, Eq_437 & hOut)
+// 056B: FlagGroup bool fn056B(Register byte c, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 aOut, Register out ptr16 bcOut, Register out ptr16 lOut, Register out ptr16 hOut)
+bool fn056B(byte c, byte e, byte d, byte l, byte h, ptr16 & aOut, ptr16 & bcOut, ptr16 & lOut, ptr16 & hOut)
 {
 	*bcOut = bc;
-	globals->t166C = c;
+	Mem6[0x166C:byte] = c;
 	byte l_3;
 	*lOut = 0x6C;
 	byte h_4;
 	*hOut = 22;
-	if (globals->b14F3 == 0x01)
+	if (Mem6[5363:byte] == 0x01)
 	{
-		Eq_429 hl_66 = globals->t166C;
+		word16 hl_66 = Mem6[0x166C:word16];
 		byte l_67 = (byte) hl_66;
 		*lOut = l_67;
 		fn0524(l_67);
@@ -247,9 +247,9 @@ bool fn056B(Eq_429 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_434 & aOut, ptr16 &
 		word16 bc_71;
 		*bcOut = DPB(bc, l_67, 0);
 	}
-	else if (globals->b14F3 == 0x02)
+	else if (Mem6[5363:byte] == 0x02)
 	{
-		Eq_429 hl_75 = globals->t166C;
+		word16 hl_75 = Mem6[0x166C:word16];
 		byte l_76 = (byte) hl_75;
 		*lOut = l_76;
 		fn0473(l_76);
@@ -258,21 +258,21 @@ bool fn056B(Eq_429 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_434 & aOut, ptr16 &
 		word16 bc_79;
 		*bcOut = DPB(bc, l_76, 0);
 	}
-	else if (globals->b14F3 == 0x04)
+	else if (Mem6[5363:byte] == 0x04)
 	{
-		Eq_429 hl_83 = globals->t166C;
+		word16 hl_83 = Mem6[0x166C:word16];
 		byte l_84 = (byte) hl_83;
 		byte l_89;
 		byte h_90;
 		word16 bc_91;
 		*bcOut = fn0534(l_84, e, d, l_84, SLICE(hl_83, byte, 8), out l_89, out h_90);
 	}
-	Eq_429 a_15 = globals->t166C;
+	byte a_15 = Mem6[0x166C:byte];
 	*aOut = a_15;
 	bool C_19 = cond(a_15 - 0x0D);
 	if (a_15 == 0x0D)
 	{
-		globals->b14F6 = 0x01;
+		Mem35[5366:byte] = 0x01;
 		byte l_33;
 		*lOut = ~0x09;
 		byte h_34;
@@ -280,17 +280,17 @@ bool fn056B(Eq_429 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_434 & aOut, ptr16 &
 	}
 	else
 	{
-		Eq_429 a_36 = globals->t166C;
+		byte a_36 = Mem6[0x166C:byte];
 		*aOut = a_36;
 		C_19 = cond(a_36 - 0x0A);
 		if (a_36 == 0x0A)
 		{
-			cu8 a_41 = globals->b14F3;
+			byte a_41 = Mem6[5363:byte];
 			*aOut = a_41;
 			C_19 = cond(a_41);
 			if (a_41 != 0x00)
 			{
-				globals->b14FD = globals->b14FD + 0x01;
+				Mem55[5373:byte] = Mem6[5373:byte] + 0x01;
 				byte l_53;
 				*lOut = ~0x02;
 				byte h_54;
@@ -299,7 +299,7 @@ bool fn056B(Eq_429 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_434 & aOut, ptr16 &
 		}
 		else
 		{
-			globals->b14F6 = globals->b14F6 + 0x01;
+			Mem62[5366:byte] = Mem6[5366:byte] + 0x01;
 			byte l_60;
 			*lOut = ~0x09;
 			byte h_61;
@@ -309,56 +309,56 @@ bool fn056B(Eq_429 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_434 & aOut, ptr16 &
 	return C_19;
 }
 
-// 05CE: Register word16 fn05CE(Register Eq_429 c, Register byte b, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_568 lOut, Register out Eq_569 hOut)
-word16 fn05CE(Eq_429 c, byte b, Eq_359 e, byte d, Eq_429 l, byte h, Eq_568 & lOut, Eq_569 & hOut)
+// 05CE: Register word16 fn05CE(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 lOut, Register out ptr16 hOut)
+word16 fn05CE(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
 {
-	globals->b166E = b;
-	globals->t166D = c;
+	Mem4[0x166E:byte] = b;
+	Mem10[0x166D:byte] = c;
 	while (true)
 	{
-		Eq_429 hl_17 = globals->t166D;
+		word16 hl_17 = Mem10[0x166D:word16];
 		byte l_18;
 		*lOut = (byte) hl_17;
 		byte h_19;
 		*hOut = SLICE(hl_17, byte, 8);
-		if (*hl_17 == 0x24)
+		if (Mem10[hl_17 + 0x00:byte] == 0x24)
 			break;
-		Eq_429 hl_23 = globals->t166D;
+		word16 hl_23 = Mem10[0x166D:word16];
 		byte a_30;
 		byte l_32;
 		byte h_33;
-		fn056B(*hl_23, e, d, (byte) hl_23, SLICE(hl_23, byte, 8), out a_30, out bc, out l_32, out h_33);
-		globals->t166D = (word16) globals->t166D + 0x01;
+		fn056B(Mem10[hl_23 + 0x00:byte], e, d, (byte) hl_23, SLICE(hl_23, byte, 8), out a_30, out bc, out l_32, out h_33);
+		Mem40[0x166D:word16] = Mem10[0x166D:word16] + 0x01;
 	}
 	return bc;
 }
 
-// 05EF: FlagGroup bool fn05EF(Register Eq_613 c, Register byte b, Register Eq_359 e, Register byte d, Register Eq_613 l, Register out Eq_618 aOut, Register out Eq_619 cOut, Register out Eq_620 bOut, Register out Eq_621 lOut, Register out Eq_622 hOut)
-bool fn05EF(Eq_613 c, byte b, Eq_359 e, byte d, Eq_613 l, Eq_618 & aOut, Eq_619 & cOut, Eq_620 & bOut, Eq_621 & lOut, Eq_622 & hOut)
+// 05EF: FlagGroup byte fn05EF(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register out ptr16 aOut, Register out ptr16 cOut, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn05EF(byte c, byte b, byte e, byte d, byte l, ptr16 & aOut, ptr16 & cOut, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
 {
 	*bOut = b;
 	*cOut = c;
-	globals->b1670 = b;
-	globals->t166F = c;
-	globals->t1671.u0 = 0x01;
+	Mem4[5744:byte] = b;
+	Mem8[0x166F:byte] = c;
+	Mem12[0x1671:byte] = 0x01;
 	do
 	{
-		Eq_629 a_23 = *globals->t166F;
+		byte a_23 = Mem12[Mem12[0x166F:word16] + 0x00:byte];
 		*aOut = a_23;
-		bool C_30 = cond(a_23 - globals->t1671);
-		if (a_23 < globals->t1671)
+		byte C_30 = cond(a_23 - Mem12[0x1671:byte]);
+		if (a_23 <u Mem12[0x1671:byte])
 			break;
-		word16 hl_51 = DPB(globals->t1671, 0x00, 8);
-		union Eq_429 * hl_57 = (word16) globals->t166F + hl_51;
-		Eq_429 c_61 = *hl_57;
+		word16 hl_51 = DPB(Mem12[0x1671:word16], 0x00, 8);
+		word16 hl_57 = Mem12[0x166F:word16] + hl_51;
+		byte c_61 = Mem12[hl_57 + 0x00:byte];
 		*cOut = c_61;
 		byte a_63;
 		word16 bc_64;
 		byte l_65;
 		byte h_66;
 		C_30 = fn056B(c_61, (byte) hl_51, SLICE(hl_51, byte, 8), (byte) hl_57, SLICE(hl_57, byte, 8), out a_63, out bc_64, out l_65, out h_66);
-		globals->t1671.u1 = (word16) globals->t1671 + 0x01;
-	} while (globals->t1671 != 0x00);
+		Mem71[0x1671:byte] = Mem12[0x1671:byte] + 0x01;
+	} while (Mem71[0x1671:byte] != 0x00);
 	byte l_39;
 	*lOut = 113;
 	byte h_40;
@@ -366,22 +366,22 @@ bool fn05EF(Eq_613 c, byte b, Eq_359 e, byte d, Eq_613 l, Eq_618 & aOut, Eq_619 
 	return C_30;
 }
 
-// 061B: FlagGroup bool fn061B(Register Eq_691 c, Register byte b, Register Eq_359 e, Register byte d, Register byte l, Register byte h, Register out Eq_697 aOut, Register out Eq_698 bOut, Register out ptr16 hlOut)
-bool fn061B(Eq_691 c, byte b, Eq_359 e, byte d, byte l, byte h, Eq_697 & aOut, Eq_698 & bOut, ptr16 & hlOut)
+// 061B: FlagGroup bool fn061B(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 aOut, Register out ptr16 bOut, Register out ptr16 hlOut)
+bool fn061B(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & aOut, ptr16 & bOut, ptr16 & hlOut)
 {
-	globals->b1675 = d;
-	globals->t1674 = e;
-	globals->b1673 = b;
-	globals->t1672 = c;
-	globals->b14F3 = 0x02;
-	Eq_691 hl_17 = globals->t1672;
-	Eq_429 l_18 = (byte) hl_17;
+	Mem4[0x1675:byte] = d;
+	Mem7[0x1674:byte] = e;
+	Mem10[5747:byte] = b;
+	Mem14[0x1672:byte] = c;
+	Mem16[5363:byte] = 0x02;
+	word16 hl_17 = Mem16[0x1672:word16];
+	byte l_18 = (byte) hl_17;
 	byte h_19 = SLICE(hl_17, byte, 8);
 	byte l_22;
 	byte h_23;
 	fn05CE(l_18, h_19, e, d, l_18, h_19, out l_22, out h_23);
-	Eq_359 hl_25 = globals->t1674;
-	Eq_613 l_26 = (byte) hl_25;
+	word16 hl_25 = Mem16[0x1674:word16];
+	byte l_26 = (byte) hl_25;
 	byte a_31;
 	byte c_32;
 	byte b_33;
@@ -394,72 +394,72 @@ bool fn061B(Eq_691 c, byte b, Eq_359 e, byte d, byte l, byte h, Eq_697 & aOut, E
 	return C_36;
 }
 
-// 063E: Register Eq_751 fn063E(Register word16 bc, Register Eq_753 e, Register byte d, Register out Eq_755 bOut, Register out Eq_756 lOut)
-Eq_751 fn063E(word16 bc, Eq_753 e, byte d, Eq_755 & bOut, Eq_756 & lOut)
+// 063E: Register byte fn063E(Register word16 bc, Register byte e, Register byte d, Register out ptr16 bOut, Register out ptr16 lOut)
+byte fn063E(word16 bc, byte e, byte d, ptr16 & bOut, ptr16 & lOut)
 {
-	globals->b1679 = d;
-	globals->t1678 = e;
-	globals->b1677 = b;
-	globals->t1676 = c;
-	globals->b167B = 0x00;
-	globals->t1678->u0 = 0x00;
-	globals->t167A.u0 = 0x00;
-	while (0x03 >= globals->t167A)
+	Mem4[5753:byte] = d;
+	Mem7[5752:byte] = e;
+	Mem10[0x1677:byte] = b;
+	Mem14[0x1676:byte] = c;
+	Mem16[5755:byte] = 0x00;
+	Mem18[Mem16[5752:word16] + 0x00:byte] = 0x00;
+	Mem21[5754:byte] = 0x00;
+	while (0x03 >=u Mem21[5754:byte])
 	{
-		globals->b167C = 0x30;
+		Mem71[5756:byte] = 0x30;
 		while (true)
 		{
 			bc = 0x0227;
 			word16 de_88;
 			byte l_89;
 			byte h_90;
-			bool C_91 = fn1348(&globals->t1676, DPB(globals->t167A, 0x00, 8) * 0x02 + 0x0227, out de_88, out l_89, out h_90);
+			byte C_91 = fn1348(0x1676, DPB(Mem71[5754:word16], 0x00, 8) * 0x02 + 0x0227, out de_88, out l_89, out h_90);
 			if (C_91)
 				break;
-			struct Eq_823 * hl_98 = DPB(globals->t167A, 0x00, 8) * 0x02 + 0x0227;
-			byte * de_103;
+			word16 hl_98 = DPB(Mem71[5754:word16], 0x00, 8) * 0x02 + 0x0227;
+			word16 de_103;
 			byte l_104;
 			byte h_105;
-			fn1348(&globals->t1676, hl_98, out de_103, out l_104, out h_105);
-			*(de_103 - 0x01) = (byte) hl_98;
-			*de_103 = SLICE(hl_98, byte, 8);
-			globals->b167B = 0x01;
-			globals->b167C = globals->b167C + 0x01;
+			fn1348(0x1676, hl_98, out de_103, out l_104, out h_105);
+			Mem113[de_103 - 0x01 + 0x00:byte] = (byte) hl_98;
+			Mem115[de_103 + 0x00:byte] = SLICE(hl_98, byte, 8);
+			Mem117[5755:byte] = 0x01;
+			Mem119[5756:byte] = Mem117[5756:byte] + 0x01;
 		}
-		if (__ror(globals->b167B, 0x01, C_91) < 0x00)
+		if (__ror(Mem71[5755:byte], 0x01, C_91) <u 0x00)
 		{
-			Eq_753 hl_134 = globals->t1678;
-			*hl_134 = (word16) *hl_134 + 0x01;
-			((word16) globals->t1678 + 0x0027)->u0 = globals->b167C;
+			word16 hl_134 = Mem71[5752:word16];
+			Mem137[hl_134 + 0x00:byte] = Mem71[hl_134 + 0x00:byte] + 0x01;
+			Mem146[Mem137[5752:word16] + 0x27:byte] = Mem137[5756:byte];
 			bc = 0x27;
 		}
-		globals->t167A.u1 = (word16) globals->t167A + 0x01;
-		if (globals->t167A == 0x00)
+		Mem131[5754:byte] = Mem71[5754:byte] + 0x01;
+		if (Mem131[5754:byte] == 0x00)
 			break;
 	}
-	Eq_753 hl_52 = globals->t1678;
-	Eq_751 hl_48 = globals->t1676;
-	*hl_52 = (word16) *hl_52 + 0x01;
-	union Eq_751 * hl_60 = (word16) globals->t1678 + DPB(bc, 0x00, 8);
-	Eq_751 c_65 = (byte) ((word16) hl_48.u1 + 0x0030);
-	*hl_60 = (union Eq_751 *) c_65;
+	word16 hl_52 = Mem21[5752:word16];
+	word16 hl_48 = Mem21[0x1676:word16];
+	Mem55[hl_52 + 0x00:byte] = Mem21[hl_52 + 0x00:byte] + 0x01;
+	word16 hl_60 = Mem55[5752:word16] + DPB(bc, 0x00, 8);
+	byte c_65 = (byte) (hl_48 + 0x30);
+	Mem67[hl_60 + 0x00:byte] = c_65;
 	byte l_61;
 	*lOut = (byte) hl_60;
 	byte b_64;
-	*bOut = SLICE((word16) hl_48.u1 + 0x0030, byte, 8);
+	*bOut = SLICE(hl_48 + 0x30, byte, 8);
 	return c_65;
 }
 
-// 06CE: Register Eq_917 fn06CE(Register word16 bc, Register Eq_359 e, Register byte d, Register byte l, Register byte h, Register out Eq_923 bOut, Register out Eq_924 lOut, Register out Eq_925 hOut)
-Eq_917 fn06CE(word16 bc, Eq_359 e, byte d, byte l, byte h, Eq_923 & bOut, Eq_924 & lOut, Eq_925 & hOut)
+// 06CE: Register byte fn06CE(Register word16 bc, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn06CE(word16 bc, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
 {
-	globals->b167E = b;
-	globals->t167D = c;
+	Mem4[5758:byte] = b;
+	Mem8[5757:byte] = c;
 	byte b_19;
-	Eq_613 l_20;
-	fn063E(DPB(bc, (byte) globals->t167D, 0), 44, 22, out b_19, out l_20);
+	byte l_20;
+	fn063E(DPB(bc, (byte) Mem8[5757:word16], 0), 44, 22, out b_19, out l_20);
 	byte a_25;
-	Eq_917 c_26;
+	byte c_26;
 	byte b_27;
 	byte l_28;
 	byte h_29;
@@ -467,17 +467,17 @@ Eq_917 fn06CE(word16 bc, Eq_359 e, byte d, byte l, byte h, Eq_923 & bOut, Eq_924
 	return c_26;
 }
 
-// 0722: void fn0722(Register cu8 c, Register Eq_359 e, Register byte d, Register byte l, Register byte h)
-void fn0722(cu8 c, Eq_359 e, byte d, byte l, byte h)
+// 0722: void fn0722(Register byte c, Register byte e, Register byte d, Register byte l, Register byte h)
+void fn0722(byte c, byte e, byte d, byte l, byte h)
 {
-	globals->b1681 = c;
-	if (0x09 < globals->b1681)
+	Mem4[0x1681:byte] = c;
+	if (0x09 <u Mem4[0x1681:byte])
 	{
 		byte a_26;
 		word16 bc_27;
 		byte l_28;
 		byte h_29;
-		fn056B(globals->b1681 + 0x57, e, d, 0x81, 22, out a_26, out bc_27, out l_28, out h_29);
+		fn056B(Mem4[0x1681:byte] + 0x57, e, d, 0x81, 22, out a_26, out bc_27, out l_28, out h_29);
 	}
 	else
 	{
@@ -485,22 +485,22 @@ void fn0722(cu8 c, Eq_359 e, byte d, byte l, byte h)
 		word16 bc_37;
 		byte l_38;
 		byte h_39;
-		fn056B(globals->b1681 + 0x30, e, d, 0x81, 22, out a_36, out bc_37, out l_38, out h_39);
+		fn056B(Mem4[0x1681:byte] + 0x30, e, d, 0x81, 22, out a_36, out bc_37, out l_38, out h_39);
 	}
 }
 
-// 0745: Register cu8 fn0745(Register cu8 c, Register Eq_359 e, Register byte d, Register byte l, Register byte h, Register out Eq_1008 bOut, Register out Eq_1009 lOut, Register out Eq_1010 hOut)
-cu8 fn0745(cu8 c, Eq_359 e, byte d, byte l, byte h, Eq_1008 & bOut, Eq_1009 & lOut, Eq_1010 & hOut)
+// 0745: Register byte fn0745(Register byte c, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn0745(byte c, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
 {
 	*bOut = b;
-	globals->b1682 = c;
+	Mem6[0x1682:byte] = c;
 	while (true)
 	{
 		byte l_11;
 		*lOut = 0x82;
 		byte h_12;
 		*hOut = 22;
-		if (globals->b14F6 >= globals->b1682)
+		if (Mem6[5366:byte] >=u Mem6[0x1682:byte])
 			break;
 		byte a_20;
 		word16 bc_21;
@@ -512,21 +512,21 @@ cu8 fn0745(cu8 c, Eq_359 e, byte d, byte l, byte h, Eq_1008 & bOut, Eq_1009 & lO
 	return c;
 }
 
-// 075C: Register Eq_1040 fn075C(Register Eq_1040 c, Register byte b, Register Eq_359 e, Register byte d, Register byte l, Register byte h, Register out Eq_1046 bOut, Register out Eq_1047 lOut, Register out Eq_1048 hOut, Register out ptr16 spOut)
-Eq_1040 fn075C(Eq_1040 c, byte b, Eq_359 e, byte d, byte l, byte h, Eq_1046 & bOut, Eq_1047 & lOut, Eq_1048 & hOut, ptr16 & spOut)
+// 075C: Register byte fn075C(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut, Register out ptr16 spOut)
+byte fn075C(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
 {
-	globals->b1686 = d;
-	globals->t1685 = e;
-	globals->b1684 = b;
-	globals->t1683 = c;
-	globals->b14F3 = 0x02;
-	Eq_429 l_105 = ~0x0C;
+	Mem4[0x1686:byte] = d;
+	Mem7[5765:byte] = e;
+	Mem10[0x1684:byte] = b;
+	Mem13[0x1683:byte] = c;
+	Mem17[5363:byte] = 0x02;
+	byte l_105 = ~0x0C;
 	byte h_106 = 0x14;
-	if (globals->b14F6 != 0x01)
+	if (Mem17[5366:byte] != 0x01)
 	{
 		byte a_96;
 		word16 bc_97;
-		Eq_429 l_98;
+		byte l_98;
 		byte h_99;
 		fn056B(0x0D, e, d, ~0x0C, 0x14, out a_96, out bc_97, out l_98, out h_99);
 		byte a_103;
@@ -536,15 +536,15 @@ Eq_1040 fn075C(Eq_1040 c, byte b, Eq_359 e, byte d, byte l, byte h, Eq_1046 & bO
 	byte l_26;
 	byte h_27;
 	word16 bc_28 = fn05CE(0x60, 0x02, e, d, l_105, h_106, out l_26, out h_27);
-	Eq_1040 hl_29 = globals->t1683;
+	word16 hl_29 = Mem17[0x1683:word16];
 	byte l_30 = (byte) hl_29;
 	byte b_35;
-	Eq_429 l_36;
+	byte l_36;
 	byte h_37;
 	fn06CE(DPB(bc_28, l_30, 0), e, d, l_30, SLICE(hl_29, byte, 8), out b_35, out l_36, out h_37);
 	byte a_41;
 	word16 bc_42;
-	Eq_429 l_43;
+	byte l_43;
 	byte h_44;
 	fn056B(0x0D, e, d, l_36, h_37, out a_41, out bc_42, out l_43, out h_44);
 	byte a_48;
@@ -553,16 +553,16 @@ Eq_1040 fn075C(Eq_1040 c, byte b, Eq_359 e, byte d, byte l, byte h, Eq_1046 & bO
 	byte h_51;
 	fn056B(0x0A, e, d, l_43, h_44, out a_48, out bc_49, out l_50, out h_51);
 	word16 de_57;
-	Eq_429 l_58;
+	byte l_58;
 	byte h_59;
-	byte a_60 = fn1353(0x00, &globals->t1685, out de_57, out l_58, out h_59);
-	Eq_1040 c_46 = 0x0A;
+	byte a_60 = fn1353(0x00, 5765, out de_57, out l_58, out h_59);
+	byte c_46 = 0x0A;
 	if ((a_60 | l_58) != 0x00)
 	{
 		byte l_79;
 		byte h_80;
 		word16 bc_81 = fn05CE(0x4E, 0x03, 133, 22, l_58, h_59, out l_79, out h_80);
-		Eq_359 hl_82 = globals->t1685;
+		word16 hl_82 = Mem17[5765:word16];
 		byte l_83 = (byte) hl_82;
 		byte b_88;
 		byte l_89;
@@ -578,22 +578,22 @@ Eq_1040 fn075C(Eq_1040 c, byte b, Eq_359 e, byte d, byte l, byte h, Eq_1046 & bO
 	return c_46;
 }
 
-// 07B3: Register byte fn07B3(Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_1204 bOut, Register out Eq_1205 lOut, Register out Eq_1206 hOut)
-byte fn07B3(Eq_359 e, byte d, Eq_429 l, byte h, Eq_1204 & bOut, Eq_1205 & lOut, Eq_1206 & hOut)
+// 07B3: Register byte fn07B3(Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn07B3(byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
 {
 	*bOut = b;
-	if (__ror(globals->b14F9, 0x01, C) < 0x00)
+	if (__ror(Mem0[0x14F9:byte], 0x01, C) <u 0x00)
 	{
 		byte a_34;
 		word16 bc_35;
 		byte l_36;
 		byte h_37;
 		fn056B(0x0D, e, d, l, h, out a_34, out bc_35, out l_36, out h_37);
-		while (globals->b14FD < globals->b14F7)
+		while (Mem0[5373:byte] <u Mem0[0x14F7:byte])
 		{
 			byte a_49;
 			word16 bc_50;
-			Eq_429 l_51;
+			byte l_51;
 			byte h_52;
 			fn056B(0x0D, e, d, ~0x08, 0x14, out a_49, out bc_50, out l_51, out h_52);
 			byte a_56;
@@ -604,15 +604,15 @@ byte fn07B3(Eq_359 e, byte d, Eq_429 l, byte h, Eq_1204 & bOut, Eq_1205 & lOut, 
 		}
 		byte a_63;
 		word16 bc_64;
-		Eq_429 l_65;
+		byte l_65;
 		byte h_66;
 		fn056B(0x0D, e, d, ~0x08, 0x14, out a_63, out bc_64, out l_65, out h_66);
 		byte a_70;
 		word16 bc_71;
-		Eq_429 l_72;
+		byte l_72;
 		byte h_73;
 		fn056B(0x0A, e, d, l_65, h_66, out a_70, out bc_71, out l_72, out h_73);
-		Eq_613 l_78;
+		byte l_78;
 		byte h_79;
 		fn05CE(~0x48, 0x02, e, d, l_72, h_73, out l_78, out h_79);
 		byte a_84;
@@ -622,25 +622,25 @@ byte fn07B3(Eq_359 e, byte d, Eq_429 l, byte h, Eq_1204 & bOut, Eq_1205 & lOut, 
 		byte h_88;
 		fn05EF(~0x00, 0x14, e, d, l_78, out a_84, out c_85, out b_86, out l_87, out h_88);
 		byte b_94;
-		Eq_429 l_95;
+		byte l_95;
 		byte h_96;
-		fn0745(globals->b14F8 - 0x0A, e, d, l_87, h_88, out b_94, out l_95, out h_96);
+		fn0745(Mem0[0x14F8:byte] - 0x0A, e, d, l_87, h_88, out b_94, out l_95, out h_96);
 		byte l_101;
 		byte h_102;
 		word16 bc_103 = fn05CE(252, 0x02, e, d, l_95, h_96, out l_101, out h_102);
-		Eq_1305 hl_104 = globals->t14FE;
+		word16 hl_104 = Mem0[0x14FE:word16];
 		byte b_110;
 		byte l_111;
 		byte h_112;
 		fn06CE(DPB(bc_103, 0x00, 8), e, d, (byte) hl_104, SLICE(hl_104, byte, 8), out b_110, out l_111, out h_112);
-		globals->t14FE.u1 = (word16) globals->t14FE + 0x01;
+		Mem117[0x14FE:byte] = Mem0[0x14FE:byte] + 0x01;
 		byte a_122;
 		byte b_124;
 		byte l_125;
 		byte h_126;
 		fn05EF(0x82, 0x03, e, d, ~0x01, out a_122, out c, out b_124, out l_125, out h_126);
 	}
-	globals->b14FD = 0x03;
+	Mem24[5373:byte] = 0x03;
 	byte l_22;
 	*lOut = ~0x02;
 	byte h_23;
@@ -648,23 +648,23 @@ byte fn07B3(Eq_359 e, byte d, Eq_429 l, byte h, Eq_1204 & bOut, Eq_1205 & lOut, 
 	return c;
 }
 
-// 0814: Register byte fn0814(Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_1374 bOut, Register out Eq_1375 lOut, Register out Eq_1376 hOut)
-byte fn0814(Eq_359 e, byte d, Eq_429 l, byte h, Eq_1374 & bOut, Eq_1375 & lOut, Eq_1376 & hOut)
+// 0814: Register byte fn0814(Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn0814(byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
 {
 	*bOut = b;
 	byte a_9;
 	word16 bc_10;
-	Eq_429 l_11;
+	byte l_11;
 	byte h_12;
 	fn056B(0x0D, e, d, l, h, out a_9, out bc_10, out l_11, out h_12);
 	byte a_16;
 	word16 bc_17;
-	Eq_429 l_18;
+	byte l_18;
 	byte h_19;
 	fn056B(0x0A, e, d, l_11, h_12, out a_16, out bc_17, out l_18, out h_19);
-	cu8 a_22 = globals->b14F7;
+	byte a_22 = Mem0[0x14F7:byte];
 	byte c_24 = a_22 - 0x03;
-	if (globals->b14FD >= a_22 - 0x03)
+	if (Mem0[5373:byte] >=u a_22 - 0x03)
 	{
 		byte b_39;
 		byte l_40;
@@ -674,59 +674,59 @@ byte fn0814(Eq_359 e, byte d, Eq_429 l, byte h, Eq_1374 & bOut, Eq_1375 & lOut, 
 	return c_24;
 }
 
-// 082F: void fn082F(Register word16 af, Register Eq_1421 c, Register byte b, Register cu8 e, Register byte d, Register byte h, Register byte l, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
-void fn082F(word16 af, Eq_1421 c, byte b, cu8 e, byte d, byte h, byte l, word16 wArg00, word16 wArg02, word16 wArg04)
+// 082F: void fn082F(Register word16 af, Register byte c, Register byte b, Register byte e, Register byte d, Register byte h, Register byte l, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
+void fn082F(word16 af, byte c, byte b, byte e, byte d, byte h, byte l, word16 wArg00, word16 wArg02, word16 wArg04)
 {
-	globals->b168D = e;
-	globals->b168C = b;
-	globals->t168B = c;
-	globals->b168A = SLICE(wArg02, byte, 8);
-	globals->t1689 = (byte) wArg02;
-	globals->b1688 = SLICE(wArg04, byte, 8);
-	globals->t1687 = (byte) wArg04;
-	globals->b168F = 0x00;
-	globals->b1690 = 0x00;
-	globals->b1691 = 0x00;
-	byte a_46 = __rcl(globals->b168D, 0x01);
-	cu8 a_48 = __ror(a_46, 0x01, cond(a_46));
+	Mem4[5773:byte] = e;
+	Mem7[5772:byte] = b;
+	Mem10[5771:byte] = c;
+	Mem22[5770:byte] = SLICE(wArg02, byte, 8);
+	Mem24[0x1689:byte] = (byte) wArg02;
+	Mem31[0x1688:byte] = SLICE(wArg04, byte, 8);
+	Mem33[5767:byte] = (byte) wArg04;
+	Mem37[5775:byte] = 0x00;
+	Mem39[5776:byte] = 0x00;
+	Mem44[5777:byte] = 0x00;
+	byte a_46 = __rcl(Mem44[5773:byte], 0x01);
+	byte a_48 = __ror(a_46, 0x01, cond(a_46));
 	word16 af_220 = DPB(af, a_48, 0);
-	if (a_48 < 0x00)
-		globals->b1690 = 0x01;
+	if (a_48 <u 0x00)
+		Mem214[5776:byte] = 0x01;
 	else
 	{
-		byte a_217 = __rcl(__rcl(globals->b168D, 0x01), 0x01);
-		cu8 a_219 = __ror(a_217, 0x01, cond(a_217));
+		byte a_217 = __rcl(__rcl(Mem44[5773:byte], 0x01), 0x01);
+		byte a_219 = __ror(a_217, 0x01, cond(a_217));
 		af_220 = DPB(af, a_219, 0);
-		if (a_219 < 0x00)
-			globals->b1691 = 0x01;
+		if (a_219 <u 0x00)
+			Mem225[5777:byte] = 0x01;
 		else
 		{
-			byte a_229 = __rcl(__rcl(__rcl(globals->b168D, 0x01), 0x01), 0x01);
-			cu8 a_231 = __ror(a_229, 0x01, cond(a_229));
+			byte a_229 = __rcl(__rcl(__rcl(Mem44[5773:byte], 0x01), 0x01), 0x01);
+			byte a_231 = __ror(a_229, 0x01, cond(a_229));
 			af_220 = DPB(af, a_231, 0);
-			if (a_231 < 0x00)
-				globals->b168F = 0x01;
+			if (a_231 <u 0x00)
+				Mem237[5775:byte] = 0x01;
 		}
 	}
-	byte a_60 = __rcl(__rcl(__rcl(__rcl(globals->b168D, 0x01), 0x01), 0x01), 0x01);
-	if (__ror(a_60, 0x01, cond(a_60)) < 0x00)
-		globals->b168E = 0x01;
-	cu8 a_65 = globals->b168D;
-	globals->b168D = a_65 + 0x0F;
-	Eq_1439 hl_78 = globals->t1689;
+	byte a_60 = __rcl(__rcl(__rcl(__rcl(Mem44[5773:byte], 0x01), 0x01), 0x01), 0x01);
+	if (__ror(a_60, 0x01, cond(a_60)) <u 0x00)
+		Mem210[5774:byte] = 0x01;
+	byte a_65 = Mem44[5773:byte];
+	Mem71[5773:byte] = a_65 + 0x0F;
+	word16 hl_78 = Mem71[0x1689:word16];
 	byte l_107 = (byte) wArg00;
 	byte h_108 = SLICE(wArg00, byte, 8);
 	byte a_86;
 	byte c_87;
 	word16 hl_90;
 	word16 sp_91;
-	Eq_359 e_100;
+	byte e_100;
 	byte b_104;
-	cu8 a_94 = __ror(~a_86, 0x01, fn0990(DPB(af_220, a_65 + 0x0F, 0), DPB(wArg04, (byte) globals->t1687, 0), (byte) hl_78, SLICE(hl_78, byte, 8), h_108, l_107, out a_86, out c_87, out b_104, out e_100, out hl_90, out sp_91));
-	bool C_105 = cond(a_94);
-	if (a_94 < 0x00)
+	byte a_94 = __ror(~a_86, 0x01, fn0990(DPB(af_220, a_65 + 0x0F, 0), DPB(wArg04, (byte) Mem71[5767:word16], 0), (byte) hl_78, SLICE(hl_78, byte, 8), h_108, l_107, out a_86, out c_87, out b_104, out e_100, out hl_90, out sp_91));
+	byte C_105 = cond(a_94);
+	if (a_94 <u 0x00)
 	{
-		Eq_1445 hl_190 = globals->t1687;
+		word16 hl_190 = Mem71[5767:word16];
 		e_100 = (byte) hl_190;
 		l_107 = (byte) hl_78;
 		h_108 = SLICE(hl_78, byte, 8);
@@ -734,37 +734,37 @@ void fn082F(word16 af, Eq_1421 c, byte b, cu8 e, byte d, byte h, byte l, word16 
 		word16 hl_203;
 		C_105 = fn061B(0x4C, 0x02, e_100, SLICE(hl_190, byte, 8), l_107, h_108, out a_201, out b_104, out hl_203);
 	}
-	cu8 a_110 = __ror(globals->b1690, 0x01, C_105);
+	byte a_110 = __ror(Mem71[5776:byte], 0x01, C_105);
 	byte C_112 = cond(a_110);
-	if (a_110 >= 0x00)
+	if (a_110 >=u 0x00)
 	{
-		cu8 a_155 = __ror(globals->b1691, 0x01, C_112);
+		byte a_155 = __ror(Mem71[5777:byte], 0x01, C_112);
 		byte C_157 = cond(a_155);
-		if (a_155 >= 0x00)
+		if (a_155 >=u 0x00)
 		{
-			if (__ror(globals->b168F, 0x01, C_157) >= 0x00)
+			if (__ror(Mem71[5775:byte], 0x01, C_157) >=u 0x00)
 				fn08EC(b_104, e_100, l_107, h_108);
-			else if (globals->b1520 == 0x00)
+			else if (Mem71[0x1520:byte] == 0x00)
 			{
-				Eq_1421 hl_184 = globals->t168B;
-				*hl_184 = globals->b151F;
+				word16 hl_184 = Mem71[5771:word16];
+				Mem189[hl_184 + 0x00:byte] = Mem71[0x151F:byte];
 				byte l_185 = (byte) hl_184;
 				byte h_186 = SLICE(hl_184, byte, 8);
 				fn08EC(b_104, e_100, l_185, h_186);
 			}
 			else
 			{
-				Eq_1421 hl_178 = globals->t168B;
-				*hl_178 = globals->b1520;
+				word16 hl_178 = Mem71[5771:word16];
+				Mem183[hl_178 + 0x00:byte] = Mem71[0x1520:byte];
 				byte l_179 = (byte) hl_178;
 				byte h_180 = SLICE(hl_178, byte, 8);
 				fn08EC(b_104, e_100, l_179, h_180);
 			}
 		}
-		else if (globals->b151E == 0x00)
+		else if (Mem71[0x151E:byte] == 0x00)
 		{
-			Eq_1421 hl_164 = globals->t168B;
-			*hl_164 = globals->b151F;
+			word16 hl_164 = Mem71[5771:word16];
+			Mem169[hl_164 + 0x00:byte] = Mem71[0x151F:byte];
 			byte l_165 = (byte) hl_164;
 			byte h_166 = SLICE(hl_164, byte, 8);
 			fn08EC(b_104, e_100, l_165, h_166);
@@ -774,22 +774,22 @@ void fn082F(word16 af, Eq_1421 c, byte b, cu8 e, byte d, byte h, byte l, word16 
 	}
 	else
 	{
-		Eq_1421 hl_124 = globals->t168B;
+		word16 hl_124 = Mem71[5771:word16];
 		byte l_125 = (byte) hl_124;
 		byte h_126 = SLICE(hl_124, byte, 8);
-		if (*hl_124 == 0x00)
+		if (Mem71[hl_124 + 0x00:byte] == 0x00)
 		{
-			if (globals->b151D == 0x00)
+			if (Mem71[0x151D:byte] == 0x00)
 			{
-				Eq_1421 hl_142 = globals->t168B;
-				*hl_142 = globals->b151F;
+				word16 hl_142 = Mem71[5771:word16];
+				Mem147[hl_142 + 0x00:byte] = Mem71[0x151F:byte];
 				l_125 = (byte) hl_142;
 				h_126 = SLICE(hl_142, byte, 8);
 			}
 			else
 			{
-				Eq_1421 hl_148 = globals->t168B;
-				*hl_148 = globals->b151D;
+				word16 hl_148 = Mem71[5771:word16];
+				Mem153[hl_148 + 0x00:byte] = Mem71[0x151D:byte];
 				l_125 = (byte) hl_148;
 				h_126 = SLICE(hl_148, byte, 8);
 			}
@@ -798,38 +798,38 @@ void fn082F(word16 af, Eq_1421 c, byte b, cu8 e, byte d, byte h, byte l, word16 
 	}
 }
 
-// 08EC: void fn08EC(Register byte b, Register Eq_359 e, Register byte l, Register byte h)
-void fn08EC(byte b, Eq_359 e, byte l, byte h)
+// 08EC: void fn08EC(Register byte b, Register byte e, Register byte l, Register byte h)
+void fn08EC(byte b, byte e, byte l, byte h)
 {
-	Eq_1421 hl_3 = globals->t168B;
-	*hl_3 = globals->b151E;
+	word16 hl_3 = Mem0[5771:word16];
+	Mem7[hl_3 + 0x00:byte] = Mem0[0x151E:byte];
 	byte l_4 = (byte) hl_3;
 	byte h_5 = SLICE(hl_3, byte, 8);
 	fn08FD(b, e, l_4, h_5);
 }
 
-// 08FD: void fn08FD(Register byte b, Register Eq_359 e, Register byte l, Register byte h)
-void fn08FD(byte b, Eq_359 e, byte l, byte h)
+// 08FD: void fn08FD(Register byte b, Register byte e, Register byte l, Register byte h)
+void fn08FD(byte b, byte e, byte l, byte h)
 {
 	fn0920(b, e, l, h);
 }
 
-// 0920: void fn0920(Register byte b, Register Eq_359 e, Register byte l, Register byte h)
-void fn0920(byte b, Eq_359 e, byte l, byte h)
+// 0920: void fn0920(Register byte b, Register byte e, Register byte l, Register byte h)
+void fn0920(byte b, byte e, byte l, byte h)
 {
 	fn0221();
-	cu8 a_6 = globals->b168D;
+	byte a_6 = Mem0[5773:byte];
 	fn092A(a_6, b, 0x80, l, h);
 }
 
-// 092A: void fn092A(Register cu8 a, Register byte b, Register Eq_359 e, Register byte l, Register byte h)
-void fn092A(cu8 a, byte b, Eq_359 e, byte l, byte h)
+// 092A: void fn092A(Register byte a, Register byte b, Register byte e, Register byte l, Register byte h)
+void fn092A(byte a, byte b, byte e, byte l, byte h)
 {
 	ptr16 fp;
 	byte Z;
-	cu8 a;
+	byte a;
 	byte b;
-	Eq_359 e;
+	byte e;
 	byte l;
 	byte h;
 	sp_1 = fp;
@@ -840,26 +840,26 @@ void fn092A(cu8 a, byte b, Eq_359 e, byte l, byte h)
 		fn0930(a, b, e, d_2, l, h);
 }
 
-// 0930: void fn0930(Register cu8 a, Register byte b, Register Eq_359 e, Register byte d, Register byte l, Register byte h)
-void fn0930(cu8 a, byte b, Eq_359 e, byte d, byte l, byte h)
+// 0930: void fn0930(Register byte a, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h)
+void fn0930(byte a, byte b, byte e, byte d, byte l, byte h)
 {
 	fn0221();
-	cu8 a_22 = __ror(~(0x00 - (a < 0x30)) & globals->b168E, 0x01, false);
-	if (a_22 < 0x00)
+	byte a_22 = __ror(~(0x00 - (a <u 0x30)) & Mem0[5774:byte], 0x01, false);
+	if (a_22 <u 0x00)
 	{
-		a_22 = *((word16) globals->t168B + 0x07) | 0x80;
-		*((word16) globals->t168B + 0x07) = a_22;
+		a_22 = Mem0[Mem0[5771:word16] + 0x07:byte] | 0x80;
+		Mem83[Mem0[5771:word16] + 0x07:byte] = a_22;
 		b = 0x00;
 	}
-	Eq_1421 hl_28 = globals->t168B;
+	word16 hl_28 = Mem0[5771:word16];
 	fn0221();
-	Eq_359 e_31 = (byte) hl_28;
+	byte e_31 = (byte) hl_28;
 	byte d_32 = SLICE(hl_28, byte, 8);
 	byte l_34 = 0x00;
 	byte h_35 = 0x00;
 	if (a_22 == ~0x00)
 	{
-		Eq_1445 hl_55 = globals->t1687;
+		word16 hl_55 = Mem0[5767:word16];
 		e_31 = (byte) hl_55;
 		d_32 = SLICE(hl_55, byte, 8);
 		l_34 = (byte) hl_28;
@@ -870,15 +870,15 @@ void fn0930(cu8 a, byte b, Eq_359 e, byte d, byte l, byte h)
 	fn096E(a_22, b, e_31, d_32, l_34, h_35);
 }
 
-// 096E: void fn096E(Register cu8 a, Register byte b, Register Eq_359 e, Register byte d, Register byte l, Register byte h)
-void fn096E(cu8 a, byte b, Eq_359 e, byte d, byte l, byte h)
+// 096E: void fn096E(Register byte a, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h)
+void fn096E(byte a, byte b, byte e, byte d, byte l, byte h)
 {
 	fn0221();
-	Eq_1421 hl_9 = globals->t168B;
+	word16 hl_9 = Mem0[5771:word16];
 	fn0221();
 	if (a == ~0x00)
 	{
-		Eq_1445 hl_37 = globals->t1687;
+		word16 hl_37 = Mem0[5767:word16];
 		byte a_48;
 		byte b_49;
 		word16 hl_50;
@@ -886,35 +886,35 @@ void fn096E(cu8 a, byte b, Eq_359 e, byte d, byte l, byte h)
 	}
 }
 
-// 0990: FlagGroup byte fn0990(Register word16 af, Register word16 bc, Register Eq_1564 e, Register byte d, Register byte h, Register byte l, Register out Eq_1568 aOut, Register out Eq_1569 cOut, Register out Eq_1570 bOut, Register out Eq_1571 eOut, Register out ptr16 hlOut, Register out ptr16 spOut)
-byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & aOut, Eq_1569 & cOut, Eq_1570 & bOut, Eq_1571 & eOut, ptr16 & hlOut, ptr16 & spOut)
+// 0990: FlagGroup byte fn0990(Register word16 af, Register word16 bc, Register byte e, Register byte d, Register byte h, Register byte l, Register out ptr16 aOut, Register out ptr16 cOut, Register out ptr16 bOut, Register out ptr16 eOut, Register out ptr16 hlOut, Register out ptr16 spOut)
+byte fn0990(word16 af, word16 bc, byte e, byte d, byte h, byte l, ptr16 & aOut, ptr16 & cOut, ptr16 & bOut, ptr16 & eOut, ptr16 & hlOut, ptr16 & spOut)
 {
-	globals->b1695 = d;
-	globals->t1694 = e;
-	globals->b1693 = b;
-	globals->t1692 = c;
-	Eq_1421 hl_19 = globals->t168B;
-	byte h_22 = SLICE((word16) hl_19 + 0x01, byte, 8);
+	Mem4[0x1695:byte] = d;
+	Mem7[0x1694:byte] = e;
+	Mem10[5779:byte] = b;
+	Mem13[5778:byte] = c;
+	word16 hl_19 = Mem13[5771:word16];
+	byte h_22 = SLICE(hl_19 + 0x01, byte, 8);
 	word16 bc_16 = DPB(bc, 11, 0);
-	struct Eq_1923 * sp_31 = fn0390((byte) ((word16) hl_19 + 0x01), h_22, 0x20, wLoc04, bc_16);
-	globals->t1696 = *globals->t1692;
-	Eq_1910 hl_35 = globals->t1692;
-	globals->t1692 = (word16) hl_35 + 0x01;
-	byte a_41 = *((word16) hl_35 + 0x02);
+	word16 sp_31 = fn0390((byte) (hl_19 + 0x01), h_22, 0x20, wLoc04, bc_16);
+	Mem34[0x1696:byte] = Mem13[Mem13[5778:word16] + 0x00:byte];
+	word16 hl_35 = Mem34[5778:word16];
+	Mem37[5778:word16] = hl_35 + 0x01;
+	byte a_41 = Mem37[hl_35 + 0x02:byte];
 	byte b_131 = h_22;
 	byte e_27 = 0x20;
 	*eOut = e_27;
 	word16 af_145 = DPB(af, a_41, 0);
 	if (a_41 == 0x3A)
 	{
-		Eq_1910 hl_513 = globals->t1692;
-		fn03CB(*hl_513, h_22, (byte) hl_513);
-		Eq_1910 hl_516 = globals->t1692;
-		*(sp_31 - 0x02) = af_145;
-		*(sp_31 - 0x02) = DPB(af, 0x00 - (*hl_516 < 0x41) | sp_31->b0003, 0);
-		b_131 = sp_31->b0003;
+		word16 hl_513 = Mem37[5778:word16];
+		fn03CB(Mem37[hl_513 + 0x00:byte], h_22, (byte) hl_513);
+		word16 hl_516 = Mem37[5778:word16];
+		Mem518[sp_31 - 0x02 + 0x00:word16] = af_145;
+		Mem532[sp_31 - 0x02 + 0x00:word16] = DPB(af, 0x00 - (Mem518[hl_516 + 0x00:byte] <u 0x41) | Mem518[sp_31 + 0x03:byte], 0);
+		b_131 = Mem532[sp_31 + 0x03:byte];
 		*bOut = b_131;
-		cu8 a_552 = __ror(0x00 - (0x02 - globals->t1696 < 0x00) & b_131, 0x01, false);
+		byte a_552 = __ror(0x00 - (0x02 - Mem532[0x1696:byte] <u 0x00) & b_131, 0x01, false);
 		word16 hl_534;
 		*hlOut = 0x1696;
 		word16 sp_544;
@@ -922,46 +922,46 @@ byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & a
 		byte c_545;
 		*cOut = b_131;
 		byte C_554 = cond(a_552);
-		if (a_552 >= 0x00)
+		if (a_552 >=u 0x00)
 		{
 			byte a_584;
 			*aOut = 0x00;
 			return C_554;
 		}
-		*globals->t168B = *globals->t1692 & 0x1F;
-		Eq_1421 hl_562 = globals->t168B;
+		Mem561[Mem532[5771:word16] + 0x00:byte] = Mem532[Mem532[5778:word16] + 0x00:byte] & 0x1F;
+		word16 hl_562 = Mem561[5771:word16];
 		*hlOut = hl_562;
 		af_145 = DPB(af, 0x10, 0);
-		byte SZPC_567 = cond(0x10 - *hl_562);
-		if (0x10 < *hl_562)
+		byte SZPC_567 = cond(0x10 - Mem561[hl_562 + 0x00:byte]);
+		if (0x10 <u Mem561[hl_562 + 0x00:byte])
 		{
 			byte a_572;
 			*aOut = 0x00;
 			return SZPC_567;
 		}
-		globals->t1692 = (word16) globals->t1692 + 0x02;
-		globals->t1696 = globals->t1696 - 0x01;
-		globals->t1696 = globals->t1696 - 0x01;
+		Mem577[5778:word16] = Mem561[5778:word16] + 0x02;
+		Mem580[0x1696:byte] = Mem577[0x1696:byte] - 0x01;
+		Mem582[0x1696:byte] = Mem580[0x1696:byte] - 0x01;
 	}
 	else
-		*globals->t168B = 0x00;
-	globals->t1697.u0 = 0x00;
+		Mem588[Mem37[5771:word16] + 0x00:byte] = 0x00;
+	Mem83[0x1697:byte] = 0x00;
 	while (true)
 	{
-		*(sp_31 - 0x02) = DPB(af_145, ~(0x00 - (0x07 - globals->t1697 < 0x00)), 0);
+		Mem104[sp_31 - 0x02 + 0x00:word16] = DPB(af_145, ~(0x00 - (0x07 - Mem83[0x1697:byte] <u 0x00)), 0);
 		byte h_105;
 		byte a_106 = fn0B74(b_131, out h_105);
-		word16 bc_107 = *(sp_31 - 0x02);
+		word16 bc_107 = Mem104[sp_31 - 0x02 + 0x00:word16];
 		byte b_108 = SLICE(bc_107, byte, 8);
 		word16 bc_111 = DPB(bc_107, b_108, 0);
-		if (__ror(a_106 & b_108, 0x01, false) >= 0x00)
+		if (__ror(a_106 & b_108, 0x01, false) >=u 0x00)
 			break;
 		Mem126[sp_31 - 0x02 + 0x00:word16] = Mem104[5778:word16] + DPB(Mem104[0x1697:word16], 0x00, 8);
-		byte * de_140 = *(sp_31 - 0x02);
-		byte a_144 = *de_140;
-		byte * hl_137 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x01);
+		word16 de_140 = Mem126[sp_31 - 0x02 + 0x00:word16];
+		byte a_144 = Mem126[de_140 + 0x00:byte];
+		word16 hl_137 = Mem126[5771:word16] + (DPB(Mem126[0x1697:word16], 0x00, 8) + 0x01);
 		*hlOut = hl_137;
-		*hl_137 = a_144;
+		Mem146[hl_137 + 0x00:byte] = a_144;
 		b_131 = 0x00;
 		*bOut = b_131;
 		byte c_132;
@@ -980,35 +980,35 @@ byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & a
 		}
 		fn0B91();
 	}
-	byte * bc_189;
-	cu8 * hl_166 = (word16) globals->t1692 + DPB(bc_111, 0x00, 8);
-	*(sp_31 - 0x02) = DPB(af_145, 0x00 - (0x01 - globals->t1696 < 0x00), 0);
-	byte b_179 = sp_31->b0003;
+	word16 bc_189;
+	word16 hl_166 = Mem104[5778:word16] + DPB(bc_111, 0x00, 8);
+	Mem170[sp_31 - 0x02 + 0x00:word16] = DPB(af_145, 0x00 - (0x01 - Mem104[0x1696:byte] <u 0x00), 0);
+	byte b_179 = Mem170[sp_31 + 0x03:byte];
 	*bOut = b_179;
 	word16 sp_180;
 	*spOut = sp_31;
 	byte c_181;
 	*cOut = b_179;
-	if (__ror(0x00 - (*hl_166 < 0x2F) & b_179, 0x01, false) < 0x00)
+	if (__ror(0x00 - (Mem170[hl_166 + 0x00:byte] <u 0x2F) & b_179, 0x01, false) <u 0x00)
 	{
 		fn0B91();
 		word16 hl_370;
 		*hlOut = 0x1696;
-		byte SZPC_373 = cond(0x03 - globals->t1696);
-		if (0x03 < globals->t1696)
+		byte SZPC_373 = cond(0x03 - Mem170[0x1696:byte]);
+		if (0x03 <u Mem170[0x1696:byte])
 		{
 			byte a_378;
 			*aOut = 0x00;
 			return SZPC_373;
 		}
-		*(sp_31 - 0x02) = (union Eq_80 *) globals->t1696;
+		Mem382[sp_31 - 0x02 + 0x00:word16] = Mem170[0x1696:word16];
 		Mem392[sp_31 - 0x04 + 0x00:word16] = Mem382[5778:word16] + DPB(Mem382[0x1697:word16], 0x00, 8);
-		byte * de_397 = (word16) globals->t168B + 0x09;
-		bc_189 = (byte *) *(sp_31 - 0x04);
-		byte l_405 = (byte) *(sp_31 - 0x02);
+		word16 de_397 = Mem392[5771:word16] + 0x09;
+		bc_189 = Mem392[sp_31 - 0x04 + 0x00:word16];
+		byte l_405 = (byte) Mem392[sp_31 - 0x02 + 0x00:word16];
 		do
 		{
-			*de_397 = *bc_189;
+			Mem415[de_397 + 0x00:byte] = Mem392[bc_189 + 0x00:byte];
 			bc_189 = bc_189 + 0x01;
 			de_397 = de_397 + 0x01;
 			l_405 = l_405 - 0x01;
@@ -1016,13 +1016,13 @@ byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & a
 	}
 	else
 	{
-		word16 hl_435 = DPB(globals->t1697, 0x00, 8);
-		cu8 * hl_441 = (word16) globals->t1692 + hl_435;
+		word16 hl_435 = DPB(Mem170[0x1697:word16], 0x00, 8);
+		word16 hl_441 = Mem170[5778:word16] + hl_435;
 		*hlOut = hl_441;
-		*(sp_31 - 0x02) = DPB(af_145, 0x00 - (globals->t1696 < 0x01), 0);
-		byte b_454 = sp_31->b0003;
+		Mem445[sp_31 - 0x02 + 0x00:word16] = DPB(af_145, 0x00 - (Mem170[0x1696:byte] <u 0x01), 0);
+		byte b_454 = Mem445[sp_31 + 0x03:byte];
 		*bOut = b_454;
-		cu8 a_463 = __ror(0x00 - (*hl_441 < 0x2F) | b_454, 0x01, false);
+		byte a_463 = __ror(0x00 - (Mem445[hl_441 + 0x00:byte] <u 0x2F) | b_454, 0x01, false);
 		byte e_439;
 		*eOut = (byte) hl_435;
 		word16 sp_455;
@@ -1030,45 +1030,45 @@ byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & a
 		byte c_456;
 		*cOut = b_454;
 		byte C_465 = cond(a_463);
-		if (a_463 >= 0x00)
+		if (a_463 >=u 0x00)
 		{
 			byte a_511;
 			*aOut = 0x00;
 			return C_465;
 		}
-		Eq_1564 hl_468 = globals->t1694;
-		*(sp_31 - 0x02) = (word16) DPB(hl_468, *hl_468, 0);
-		*(sp_31 - 0x04) = (word16) globals->t1694 + 0x01;
-		byte * de_482 = (word16) globals->t168B + 0x09;
-		bc_189 = (byte *) *(sp_31 - 0x04);
-		byte l_490 = (byte) *(sp_31 - 0x02);
+		word16 hl_468 = Mem445[0x1694:word16];
+		Mem472[sp_31 - 0x02 + 0x00:word16] = DPB(hl_468, Mem445[hl_468 + 0x00:byte], 0);
+		Mem477[sp_31 - 0x04 + 0x00:word16] = Mem472[0x1694:word16] + 0x01;
+		word16 de_482 = Mem477[5771:word16] + 0x09;
+		bc_189 = Mem477[sp_31 - 0x04 + 0x00:word16];
+		byte l_490 = (byte) Mem477[sp_31 - 0x02 + 0x00:word16];
 		do
 		{
-			*de_482 = *bc_189;
+			Mem500[de_482 + 0x00:byte] = Mem477[bc_189 + 0x00:byte];
 			bc_189 = bc_189 + 0x01;
 			de_482 = de_482 + 0x01;
 			l_490 = l_490 - 0x01;
 		} while (l_490 != 0x00);
 	}
-	*(sp_31 - 0x02) = (byte **) DPB(bc_189, 0x03, 0);
-	Eq_1421 hl_204 = globals->t168B;
+	Mem202[sp_31 - 0x02 + 0x00:word16] = DPB(bc_189, 0x03, 0);
+	word16 hl_204 = Mem202[5771:word16];
 	word16 sp_214;
-	*spOut = fn0390((byte) ((word16) hl_204 + 0x0C), SLICE((word16) hl_204 + 0x0C, byte, 8), 0x00, bc_16, wArg00);
-	((word16) globals->t168B + 0x0020)->u0 = 0x00;
-	globals->t1697.u0 = 0x00;
+	*spOut = fn0390((byte) (hl_204 + 0x0C), SLICE(hl_204 + 0x0C, byte, 8), 0x00, bc_16, wArg00);
+	Mem221[Mem202[5771:word16] + 0x20:byte] = 0x00;
+	Mem225[0x1697:byte] = 0x00;
 	byte e_211;
 	*eOut = 0x00;
 	byte c_217;
 	*cOut = 0x20;
-	while (0x07 >= globals->t1697)
+	while (0x07 >=u Mem225[0x1697:byte])
 	{
-		union Eq_95 * hl_339 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x01);
+		word16 hl_339 = Mem225[5771:word16] + (DPB(Mem225[0x1697:word16], 0x00, 8) + 0x01);
 		byte c_343;
-		byte a_344 = fn03E6(*hl_339, (byte) hl_339, out c_343);
-		word16 hl_347 = DPB(globals->t1697, 0x00, 8);
-		((word16) globals->t168B + (hl_347 + 0x01))->u0 = a_344;
-		Eq_2128 a_362 = globals->t1697;
-		globals->t1697.u1 = (word16) a_362 + 0x01;
+		byte a_344 = fn03E6(Mem225[hl_339 + 0x00:byte], (byte) hl_339, out c_343);
+		word16 hl_347 = DPB(Mem225[0x1697:word16], 0x00, 8);
+		Mem361[Mem225[5771:word16] + (hl_347 + 0x01):byte] = a_344;
+		byte a_362 = Mem361[0x1697:byte];
+		Mem367[0x1697:byte] = a_362 + 0x01;
 		byte c_350;
 		*cOut = 0x01;
 		byte e_355;
@@ -1076,23 +1076,23 @@ byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & a
 		if (a_362 == 0x01)
 			break;
 	}
-	globals->t1697.u0 = 0x00;
+	Mem256[0x1697:byte] = 0x00;
 	do
 	{
 		word16 hl_266;
 		*hlOut = 0x1697;
-		byte C_273 = cond(0x02 - globals->t1697);
-		if (0x02 < globals->t1697)
+		byte C_273 = cond(0x02 - Mem256[0x1697:byte]);
+		if (0x02 <u Mem256[0x1697:byte])
 			break;
-		union Eq_95 * hl_299 = (word16) globals->t168B + ((word16) DPB(globals->t1697, 0x00, 8) + 0x09);
+		word16 hl_299 = Mem256[5771:word16] + (DPB(Mem256[0x1697:word16], 0x00, 8) + 0x09);
 		byte c_303;
-		byte a_304 = fn03E6(*hl_299, (byte) hl_299, out c_303);
-		word16 hl_307 = DPB(globals->t1697, 0x00, 8);
-		byte * hl_317 = (word16) globals->t168B + (hl_307 + 0x09);
+		byte a_304 = fn03E6(Mem256[hl_299 + 0x00:byte], (byte) hl_299, out c_303);
+		word16 hl_307 = DPB(Mem256[0x1697:word16], 0x00, 8);
+		word16 hl_317 = Mem256[5771:word16] + (hl_307 + 0x09);
 		*hlOut = hl_317;
-		*hl_317 = a_304;
-		Eq_2128 a_323 = globals->t1697;
-		globals->t1697.u1 = (word16) a_323 + 0x01;
+		Mem322[hl_317 + 0x00:byte] = a_304;
+		byte a_323 = Mem322[0x1697:byte];
+		Mem330[0x1697:byte] = a_323 + 0x01;
 		byte c_310;
 		*cOut = 0x09;
 		byte e_315;
@@ -1106,31 +1106,31 @@ byte fn0990(word16 af, word16 bc, Eq_1564 e, byte d, byte h, byte l, Eq_1568 & a
 	return C_273;
 }
 
-// 0B74: Register byte fn0B74(Register byte b, Register out Eq_2200 hOut)
-byte fn0B74(byte b, Eq_2200 & hOut)
+// 0B74: Register byte fn0B74(Register byte b, Register out ptr16 hOut)
+byte fn0B74(byte b, ptr16 & hOut)
 {
 	word16 hl_10 = Mem0[5778:word16] + DPB(Mem0[0x1697:word16], 0x00, 8);
 	byte h_11;
 	*hOut = SLICE(hl_10, byte, 8);
-	return 0x00 - (globals->t1696 < ~0x00) & SLICE(DPB(af, 0x00 - (*hl_10 < 0x2F), 0), byte, 8);
+	return 0x00 - (Mem0[0x1696:byte] <u ~0x00) & SLICE(DPB(af, 0x00 - (Mem0[hl_10 + 0x00:byte] <u 0x2F), 0), byte, 8);
 }
 
 // 0B91: void fn0B91()
 void fn0B91()
 {
-	globals->t1697.u1 = (word16) globals->t1697 + 0x01;
-	globals->t1696 = globals->t1696 - 0x01;
+	Mem4[0x1697:byte] = Mem0[0x1697:byte] + 0x01;
+	Mem7[0x1696:byte] = Mem4[0x1696:byte] - 0x01;
 }
 
-// 0BE4: void fn0BE4(Register word16 af, Register byte b, Register byte d, Register Eq_359 e, Register byte h, Register Eq_429 l)
-void fn0BE4(word16 af, byte b, byte d, Eq_359 e, byte h, Eq_429 l)
+// 0BE4: void fn0BE4(Register word16 af, Register byte b, Register byte d, Register byte e, Register byte h, Register byte l)
+void fn0BE4(word16 af, byte b, byte d, byte e, byte h, byte l)
 {
-	word16 af_10 = DPB(af, 0x00 - (globals->b138A < ~0x01), 0);
-	cu8 a_28 = __ror(0x00 - (globals->b14F3 < 0x03) & SLICE(af_10, byte, 8), 0x01, false);
+	word16 af_10 = DPB(af, 0x00 - (Mem0[5002:byte] <u ~0x01), 0);
+	byte a_28 = __ror(0x00 - (Mem0[5363:byte] <u 0x03) & SLICE(af_10, byte, 8), 0x01, false);
 	word16 af_190 = DPB(af, a_28, 0);
-	if (a_28 < 0x00)
+	if (a_28 <u 0x00)
 	{
-		if (globals->b14F6 != 0x01)
+		if (Mem0[5366:byte] != 0x01)
 		{
 			byte b_204;
 			fn0814(e, d, l, h, out b_204, out l, out h);
@@ -1138,9 +1138,9 @@ void fn0BE4(word16 af, byte b, byte d, Eq_359 e, byte h, Eq_429 l)
 		byte l_185;
 		byte h_186;
 		word16 bc_187 = fn05CE(0x96, 0x02, e, d, l, h, out l_185, out h_186);
-		af_190 = DPB(af, globals->b138A - 0x01, 0);
+		af_190 = DPB(af, Mem0[5002:byte] - 0x01, 0);
 		byte b_195;
-		Eq_429 l_196;
+		byte l_196;
 		byte h_197;
 		fn06CE(DPB(bc_187, 0x00, 8), e, d, l_185, h_186, out b_195, out l_196, out h_197);
 		byte b_199;
@@ -1148,23 +1148,23 @@ void fn0BE4(word16 af, byte b, byte d, Eq_359 e, byte h, Eq_429 l)
 		byte h_201;
 		fn0814(e, d, l_196, h_197, out b_199, out l_200, out h_201);
 	}
-	ptr16 hl_36 = globals->ptr1388;
-	cu8 a_40 = globals->b138A;
-	globals->b1645 = a_40 + 0x30;
-	*(hl_36 - 0x02) = 0x0231;
-	*(hl_36 - 0x04) = 0x1642;
+	word16 hl_36 = Mem0[5000:word16];
+	byte a_40 = Mem0[5002:byte];
+	Mem44[0x1645:byte] = a_40 + 0x30;
+	Mem47[hl_36 - 0x02 + 0x00:word16] = 0x0231;
+	Mem50[hl_36 - 0x04 + 0x00:word16] = 0x1642;
 	fn082F(DPB(af_190, a_40 + 0x30, 0), 0x5C, 0x00, 0x10, d, SLICE(hl_36, byte, 8), (byte) hl_36, af_10, wArg00, wArg02);
-	*(hl_36 - 0x06) = 0x5C;
+	Mem60[hl_36 - 0x06 + 0x00:word16] = 0x5C;
 	byte h_63;
-	cu8 l_64 = fn1346(&globals->t0103, hl_36, out h_63);
+	byte l_64 = fn1346(0x0103, hl_36, out h_63);
 	byte l_68;
 	byte h_69;
 	fn1326(0x07, l_64, h_63, out l_68, out h_69);
-	word16 hl_75 = globals->w0108;
-	struct Eq_2678 * sp_80 = fn040D((byte) hl_75, SLICE(hl_75, byte, 8), l_64, af_10, wArg00);
-	word16 af_87 = DPB(af_190, 0x00 - (globals->b138A < 0x01), 0);
-	*(sp_80 - 0x02) = af_87;
-	if (__ror(0x00 - (0x03 - globals->b138A < 0x00) | sp_80->b0003, 0x01, false) < 0x00)
+	word16 hl_75 = Mem60[0x0108:word16];
+	word16 sp_80 = fn040D((byte) hl_75, SLICE(hl_75, byte, 8), l_64, af_10, wArg00);
+	word16 af_87 = DPB(af_190, 0x00 - (Mem60[5002:byte] <u 0x01), 0);
+	Mem89[sp_80 - 0x02 + 0x00:word16] = af_87;
+	if (__ror(0x00 - (0x03 - Mem89[5002:byte] <u 0x00) | Mem89[sp_80 + 0x03:byte], 0x01, false) <u 0x00)
 	{
 		byte b_167;
 		byte l_168;
@@ -1172,12 +1172,12 @@ void fn0BE4(word16 af, byte b, byte d, Eq_359 e, byte h, Eq_429 l)
 		word16 sp_170;
 		fn075C(0x01, 0x00, 0x00, 0x00, 0x8A, 0x13, out b_167, out l_168, out h_169, out sp_170);
 	}
-	if (globals->b138A != 0x01)
+	if (Mem89[5002:byte] != 0x01)
 	{
-		cu8 a_138 = globals->b138A;
+		byte a_138 = Mem89[5002:byte];
 		if (a_138 != 0x02)
 		{
-			if (globals->b138A != 0x03)
+			if (Mem89[5002:byte] != 0x03)
 				return;
 			fn0105();
 		}
@@ -1212,10 +1212,10 @@ void fn0C93(word16 bc)
 {
 }
 
-// 0D64: FlagGroup byte fn0D64(Register out Eq_2815 aOut)
-byte fn0D64(Eq_2815 & aOut)
+// 0D64: FlagGroup byte fn0D64(Register out ptr16 aOut)
+byte fn0D64(ptr16 & aOut)
 {
-	byte a_11 = __ror(globals->ptr1521->b0009, 0x01, false);
+	byte a_11 = __ror(Mem0[Mem0[0x1521:word16] + 0x09:byte], 0x01, false);
 	*aOut = a_11;
 	return cond(a_11);
 }
@@ -1223,8 +1223,8 @@ byte fn0D64(Eq_2815 & aOut)
 // 0D6F: void fn0D6F()
 void fn0D6F()
 {
-	struct Eq_2819 * hl_4 = globals->ptr1521;
-	hl_4->b0009 = hl_4->b0009 | 0x02;
+	word16 hl_4 = Mem0[0x1521:word16];
+	Mem11[hl_4 + 0x09:byte] = Mem0[hl_4 + 0x09:byte] | 0x02;
 }
 
 // 0D84: void fn0D84(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h)
@@ -1232,7 +1232,7 @@ void fn0D84(byte c, byte b, byte e, byte d, byte l, byte h)
 {
 	byte a_2;
 	byte C_3 = fn0D64(out a_2);
-	if (__ror(a_2, 0x01, C_3) < 0x00)
+	if (__ror(a_2, 0x01, C_3) <u 0x00)
 	{
 		byte b_37;
 		byte l_38;
@@ -1240,14 +1240,14 @@ void fn0D84(byte c, byte b, byte e, byte d, byte l, byte h)
 		word16 sp_40;
 		fn075C(0x02, 0x00, 0x00, 0x00, l, h, out b_37, out l_38, out h_39, out sp_40);
 	}
-	struct Eq_2819 * hl_23 = globals->ptr1521;
-	hl_23->b0009 = hl_23->b0009 | 0x01;
+	word16 hl_23 = Mem0[0x1521:word16];
+	Mem30[hl_23 + 0x09:byte] = Mem0[hl_23 + 0x09:byte] | 0x01;
 }
 
 // 0DB9: void fn0DB9()
 void fn0DB9()
 {
-	byte a_6 = globals->ptr1521->b0009;
+	byte a_6 = Mem0[Mem0[0x1521:word16] + 0x09:byte];
 	byte a_10 = __ror(a_6 + 252, 0x01, cond(a_6 + 252));
 	byte a_12 = __ror(a_10, 0x01, cond(a_10));
 	__ror(a_12, 0x01, cond(a_12));
@@ -1256,60 +1256,60 @@ void fn0DB9()
 // 0DCB: void fn0DCB()
 void fn0DCB()
 {
-	struct Eq_2819 * hl_4 = globals->ptr1521;
-	hl_4->b0009 = hl_4->b0009 | 0x08;
+	word16 hl_4 = Mem0[0x1521:word16];
+	Mem11[hl_4 + 0x09:byte] = Mem0[hl_4 + 0x09:byte] | 0x08;
 }
 
 // 0E63: void fn0E63(Register word16 bc, Register word16 de)
 void fn0E63(word16 bc, word16 de)
 {
-	globals->b16A6 = c;
+	Mem4[0x16A6:byte] = c;
 	fn0C93(bc);
-	Eq_2920 bc_9 = DPB(bc, 0x00, 8);
-	globals->ptr1521 = DPB(de, (word16) bc_9 + ((word16) bc_9 + 0x0000152C) + 0x01, 8);
+	word16 bc_9 = DPB(bc, 0x00, 8);
+	Mem23[0x1521:word16] = DPB(de, Mem4[bc_9 + 0x152C + bc_9 + 0x01:byte], 8);
 	while (true)
 	{
 		byte l_32;
 		byte h_33;
 		word16 de_31;
-		byte a_34 = fn1353(0x00, &globals->ptr1521, out de_31, out l_32, out h_33);
+		byte a_34 = fn1353(0x00, 0x1521, out de_31, out l_32, out h_33);
 		if ((a_34 | l_32) == 0x00)
 			break;
-		if (globals->b16A6 == (globals->ptr1521)->b0002)
+		if (Mem23[0x16A6:byte] == Mem23[Mem23[0x1521:word16] + 0x02:byte])
 		{
 			byte a_64;
 			byte C_66 = fn0EAB(out a_64, out de_31);
-			if (__ror(a_64, 0x01, C_66) < 0x00)
+			if (__ror(a_64, 0x01, C_66) <u 0x00)
 				return;
 		}
-		globals->ptr1521 = DPB(de_31, globals->ptr1521->b0001, 8);
+		Mem63[0x1521:word16] = DPB(de_31, Mem23[Mem23[0x1521:word16] + 0x01:byte], 8);
 	}
 }
 
-// 0EAB: FlagGroup byte fn0EAB(Register out Eq_2953 aOut, Register out ptr16 deOut)
-byte fn0EAB(Eq_2953 & aOut, ptr16 & deOut)
+// 0EAB: FlagGroup byte fn0EAB(Register out ptr16 aOut, Register out ptr16 deOut)
+byte fn0EAB(ptr16 & aOut, ptr16 & deOut)
 {
 	*deOut = de;
-	globals->t16A7.u0 = 0x00;
+	Mem3[5799:byte] = 0x00;
 	while (true)
 	{
-		Eq_2979 a_13 = globals->t138C;
-		byte SZPC_15 = cond(a_13 - globals->t16A7);
-		if (a_13 < globals->t16A7)
+		byte a_13 = Mem3[5004:byte];
+		byte SZPC_15 = cond(a_13 - Mem3[5799:byte]);
+		if (a_13 <u Mem3[5799:byte])
 			break;
-		byte * hl_40 = globals->ptr1521 + ((word16) DPB(globals->t16A7, 0x00, 8) + 0x0A) / 0x0A;
-		struct Eq_2996 * hl_45 = DPB(globals->t16A7, 0x00, 8);
-		byte a_50 = *hl_40;
-		byte * de_48 = hl_40;
+		word16 hl_40 = Mem3[0x1521:word16] + (DPB(Mem3[5799:word16], 0x00, 8) + 0x0A);
+		word16 hl_45 = DPB(Mem3[5799:word16], 0x00, 8);
+		byte a_50 = Mem3[hl_40 + 0x00:byte];
+		word16 de_48 = hl_40;
 		*deOut = de_48;
-		byte SZPC_51 = cond(a_50 - hl_45->b138C);
-		if (a_50 != hl_45->b138C)
+		byte SZPC_51 = cond(a_50 - Mem3[hl_45 + 5004:byte]);
+		if (a_50 != Mem3[hl_45 + 5004:byte])
 		{
 			byte a_55;
 			*aOut = 0x00;
 			return SZPC_51;
 		}
-		globals->t16A7.u1 = (word16) globals->t16A7 + 0x01;
+		Mem57[5799:byte] = Mem3[5799:byte] + 0x01;
 	}
 	byte a_59;
 	*aOut = 0x01;
@@ -1321,24 +1321,24 @@ void fn0FB8()
 {
 }
 
-// 100A: void fn100A(Register word16 af, Register byte b, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h)
-void fn100A(word16 af, byte b, Eq_359 e, byte d, Eq_429 l, byte h)
+// 100A: void fn100A(Register word16 af, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h)
+void fn100A(word16 af, byte b, byte e, byte d, byte l, byte h)
 {
 	while (true)
 	{
-		byte b_49 = SLICE(DPB(af, 0x00 - (globals->t16A8 < ~0x00) & SLICE(DPB(af, 0x00 - (globals->t16A8 < 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8);
+		byte b_49 = SLICE(DPB(af, 0x00 - (Mem0[5800:byte] <u ~0x00) & SLICE(DPB(af, 0x00 - (Mem0[5800:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8);
 		word16 bc_52 = DPB(af, b_49, 0);
-		if (__ror(0x00 - (globals->b14FF < 0x0E) & b_49, 0x01, false) >= 0x00)
+		if (__ror(0x00 - (Mem0[0x14FF:byte] <u 0x0E) & b_49, 0x01, false) >=u 0x00)
 			break;
-		globals->b14FF = globals->b14FF + 0x01;
-		struct Eq_3088 * bc_64 = DPB(bc_52, 0x00, 8);
-		bc_64->t14FF = globals->t16A8;
-		globals->t16A8 = fn045B();
-		l = (byte) &bc_64->t14FF;
-		h = SLICE(&bc_64->t14FF, byte, 8);
-		af = DPB(af, 0x00 - (globals->t16A8 < 33), 0);
+		Mem61[0x14FF:byte] = Mem0[0x14FF:byte] + 0x01;
+		word16 bc_64 = DPB(bc_52, 0x00, 8);
+		Mem71[bc_64 + 0x14FF:byte] = Mem61[5800:byte];
+		Mem74[5800:byte] = fn045B();
+		l = (byte) (bc_64 + 0x14FF);
+		h = SLICE(bc_64 + 0x14FF, byte, 8);
+		af = DPB(af, 0x00 - (Mem74[5800:byte] <u 33), 0);
 	}
-	cu8 a_83 = globals->b14FF;
+	byte a_83 = Mem0[0x14FF:byte];
 	word16 af_84 = DPB(af, a_83, 0);
 	if (a_83 != 0x00)
 		fn1055(af_84, b_49, b_49, e, d, l, h);
@@ -1346,224 +1346,224 @@ void fn100A(word16 af, byte b, Eq_359 e, byte d, Eq_429 l, byte h)
 		fn1055(af_84, b_49, b_49, e, d, l, h);
 }
 
-// 1055: void fn1055(Register word16 af, Register byte c, Register byte b, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h)
-void fn1055(word16 af, byte c, byte b, Eq_359 e, byte d, Eq_429 l, byte h)
+// 1055: void fn1055(Register word16 af, Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h)
+void fn1055(word16 af, byte c, byte b, byte e, byte d, byte l, byte h)
 {
 	byte l_9;
 	byte h_10;
 	byte b_12 = SLICE(fn05CE(0x69, 0x03, e, d, l, h, out l_9, out h_10), byte, 8);
 	word16 sp_13;
 	word16 hl_14 = fn0387(out sp_13);
-	Eq_429 l_15 = (byte) hl_14;
+	byte l_15 = (byte) hl_14;
 	byte h_16 = SLICE(hl_14, byte, 8);
 	fn1078(af, b_12, d, e, l_15, h_16);
 }
 
-// 106E: void fn106E(Register word16 af, Register byte b, Register byte d, Register Eq_359 e, Register Eq_429 l, Register byte h, Stack word16 wArg00)
-void fn106E(word16 af, byte b, byte d, Eq_359 e, Eq_429 l, byte h, word16 wArg00)
+// 106E: void fn106E(Register word16 af, Register byte b, Register byte d, Register byte e, Register byte l, Register byte h, Stack word16 wArg00)
+void fn106E(word16 af, byte b, byte d, byte e, byte l, byte h, word16 wArg00)
 {
 	byte b_10 = SLICE(wArg00, byte, 8);
-	cu8 a_17 = __ror(0x00 - (a < ~0x00) & b_10, 0x01, false);
+	byte a_17 = __ror(0x00 - (a <u ~0x00) & b_10, 0x01, false);
 	word16 af_19 = DPB(af, a_17, 0);
-	if (a_17 >= 0x00)
+	if (a_17 >=u 0x00)
 		fn1081(af_19, b_10, d, e, l, h);
 	else
 		fn1078(af_19, b_10, d, e, l, h);
 }
 
-// 1078: void fn1078(Register word16 af, Register byte b, Register byte d, Register Eq_359 e, Register Eq_429 l, Register byte h)
-void fn1078(word16 af, byte b, byte d, Eq_359 e, Eq_429 l, byte h)
+// 1078: void fn1078(Register word16 af, Register byte b, Register byte d, Register byte e, Register byte l, Register byte h)
+void fn1078(word16 af, byte b, byte d, byte e, byte l, byte h)
 {
 	do
 	{
-		globals->t16A8 = fn045B();
-		*(v3 - 0x02) = DPB(af, 0x00 - (globals->t16A8 < 0x03), 0);
-		byte b_37 = v3->b0003;
-		cu8 a_44 = __ror(0x00 - (globals->t16A8 < ~0x00) & b_37, 0x01, false);
+		Mem18[5800:byte] = fn045B();
+		Mem28[v3 - 0x02 + 0x00:word16] = DPB(af, 0x00 - (Mem18[5800:byte] <u 0x03), 0);
+		byte b_37 = Mem28[v3 + 0x03:byte];
+		byte a_44 = __ror(0x00 - (Mem28[5800:byte] <u ~0x00) & b_37, 0x01, false);
 		af = DPB(af, a_44, 0);
-	} while (a_44 < 0x00);
+	} while (a_44 <u 0x00);
 	fn1081(af, b_37, d, e, l, h);
 }
 
-// 1081: void fn1081(Register word16 af, Register byte b, Register byte d, Register Eq_359 e, Register Eq_429 l, Register byte h)
-void fn1081(word16 af, byte b, byte d, Eq_359 e, Eq_429 l, byte h)
+// 1081: void fn1081(Register word16 af, Register byte b, Register byte d, Register byte e, Register byte l, Register byte h)
+void fn1081(word16 af, byte b, byte d, byte e, byte l, byte h)
 {
-	Eq_3043 a_2 = fn045B();
-	globals->t16A8 = a_2;
-	word16 * sp_1 = v3;
+	byte a_2 = fn045B();
+	Mem5[5800:byte] = a_2;
+	word16 sp_1 = v3;
 	word16 af_15 = DPB(af, a_2, 0);
 	while (true)
 	{
-		struct Eq_3234 * sp_24 = sp_1 - 0x02;
-		sp_24->w0000 = DPB(af_15, 0x00 - (globals->t16A8 < 0x01), 0);
-		Eq_3247 b_34 = sp_24->t0001;
-		sp_1 = (word16 *) ((char *) &sp_24->t0001 + 0x01);
-		if (__ror(0x00 - (globals->t16A8 < ~0x00) & b_34, 0x01, false) >= 0x00)
+		word16 sp_24 = sp_1 - 0x02;
+		Mem25[sp_24 + 0x00:word16] = DPB(af_15, 0x00 - (Mem5[5800:byte] <u 0x01), 0);
+		byte b_34 = Mem25[sp_24 + 0x01:byte];
+		sp_1 = sp_24 + 0x02;
+		if (__ror(0x00 - (Mem25[5800:byte] <u ~0x00) & b_34, 0x01, false) >=u 0x00)
 			break;
-		if (globals->t16A8 == 0x20)
+		if (Mem25[5800:byte] == 0x20)
 			fn1262();
-		Eq_3043 a_48 = globals->t16A8;
+		byte a_48 = Mem25[5800:byte];
 		word16 af_109 = DPB(af_15, a_48, 0);
 		if (a_48 == 66)
 		{
-			globals->b14F3 = 0x00;
-			l.u0 = ~0x0C;
+			Mem97[5363:byte] = 0x00;
+			l = ~0x0C;
 			h = 0x14;
 		}
 		else
 		{
-			Eq_3043 a_98 = globals->t16A8;
+			byte a_98 = Mem25[5800:byte];
 			word16 af_99 = DPB(af_15, a_98, 0);
 			if (a_98 == 0x43)
 			{
 				byte b_104;
-				cu8 a_108 = fn12D8(af_99, b_34, b_34, e, d, l, h, out b_104, out l, out h, out sp_1);
-				globals->b151D = a_108;
+				byte a_108 = fn12D8(af_99, b_34, b_34, e, d, l, h, out b_104, out l, out h, out sp_1);
+				Mem110[0x151D:byte] = a_108;
 				af_109 = DPB(af_15, a_108, 0);
 			}
 			else
 			{
-				Eq_3043 a_111 = globals->t16A8;
+				byte a_111 = Mem25[5800:byte];
 				word16 af_112 = DPB(af_15, a_111, 0);
 				if (a_111 == 0x44)
 				{
 					byte b_115;
-					cu8 a_119 = fn1279(af_112, b_34, b_34, e, d, l, h, out b_115, out l, out h, out sp_1);
-					globals->b138B = a_119;
+					byte a_119 = fn1279(af_112, b_34, b_34, e, d, l, h, out b_115, out l, out h, out sp_1);
+					Mem121[5003:byte] = a_119;
 					af_109 = DPB(af_15, a_119, 0);
 				}
 				else
 				{
-					Eq_3043 a_122 = globals->t16A8;
+					byte a_122 = Mem25[5800:byte];
 					af_109 = DPB(af_15, a_122, 0);
 					if (a_122 == 0x46)
 					{
-						globals->b14F3 = 0x04;
-						l.u0 = ~0x0C;
+						Mem129[5363:byte] = 0x04;
+						l = ~0x0C;
 						h = 0x14;
 					}
 					else
 					{
-						Eq_3043 a_130 = globals->t16A8;
+						byte a_130 = Mem25[5800:byte];
 						af_109 = DPB(af_15, a_130, 0);
 						if (a_130 == 0x49)
 						{
-							globals->b14FA = 0x01;
-							l.u0 = ~0x05;
+							Mem137[0x14FA:byte] = 0x01;
+							l = ~0x05;
 							h = 0x14;
 						}
 						else
 						{
-							Eq_3043 a_138 = globals->t16A8;
+							byte a_138 = Mem25[5800:byte];
 							word16 af_139 = DPB(af_15, a_138, 0);
 							if (a_138 == 0x4C)
 							{
 								byte b_142;
-								cu8 a_146 = fn1279(af_139, b_34, b_34, e, d, l, h, out b_142, out l, out h, out sp_1);
-								globals->b14F7 = a_146;
+								byte a_146 = fn1279(af_139, b_34, b_34, e, d, l, h, out b_142, out l, out h, out sp_1);
+								Mem148[0x14F7:byte] = a_146;
 								af_109 = DPB(af_15, a_146, 0);
 							}
 							else
 							{
-								Eq_3043 a_149 = globals->t16A8;
+								byte a_149 = Mem25[5800:byte];
 								af_109 = DPB(af_15, a_149, 0);
 								if (a_149 == 0x4E)
 								{
-									globals->b14FB = 0x01;
-									l.u0 = ~0x04;
+									Mem156[0x14FB:byte] = 0x01;
+									l = ~0x04;
 									h = 0x14;
 								}
 								else
 								{
-									Eq_3043 a_157 = globals->t16A8;
+									byte a_157 = Mem25[5800:byte];
 									af_109 = DPB(af_15, a_157, 0);
 									if (a_157 == 0x4F)
 									{
-										globals->b14EF = 0x00;
-										l.u0 = ~0x10;
+										Mem164[5359:byte] = 0x00;
+										l = ~0x10;
 										h = 0x14;
 									}
 									else
 									{
-										Eq_3043 a_165 = globals->t16A8;
+										byte a_165 = Mem25[5800:byte];
 										af_109 = DPB(af_15, a_165, 0);
 										if (a_165 == 0x50)
 										{
-											globals->b14F3 = 0x01;
-											l.u0 = ~0x0C;
+											Mem172[5363:byte] = 0x01;
+											l = ~0x0C;
 											h = 0x14;
 										}
 										else
 										{
-											Eq_3043 a_173 = globals->t16A8;
+											byte a_173 = Mem25[5800:byte];
 											word16 af_174 = DPB(af_15, a_173, 0);
 											if (a_173 == 0x52)
 											{
 												byte b_177;
-												cu8 a_181 = fn12D8(af_174, b_34, b_34, e, d, l, h, out b_177, out l, out h, out sp_1);
-												globals->b1520 = a_181;
+												byte a_181 = fn12D8(af_174, b_34, b_34, e, d, l, h, out b_177, out l, out h, out sp_1);
+												Mem183[0x1520:byte] = a_181;
 												af_109 = DPB(af_15, a_181, 0);
 											}
 											else
 											{
-												Eq_3043 a_184 = globals->t16A8;
+												byte a_184 = Mem25[5800:byte];
 												af_109 = DPB(af_15, a_184, 0);
 												if (a_184 == 0x53)
 												{
-													globals->b14F0 = 0x01;
-													l.u0 = 0xF0;
+													Mem191[0x14F0:byte] = 0x01;
+													l = 0xF0;
 													h = 0x14;
 												}
 												else
 												{
-													Eq_3043 a_192 = globals->t16A8;
+													byte a_192 = Mem25[5800:byte];
 													af_109 = DPB(af_15, a_192, 0);
 													if (a_192 == 0x54)
 													{
-														globals->b14F5 = 0x01;
-														l.u0 = ~0x0A;
+														Mem199[5365:byte] = 0x01;
+														l = ~0x0A;
 														h = 0x14;
 													}
 													else
 													{
-														Eq_3043 a_200 = globals->t16A8;
+														byte a_200 = Mem25[5800:byte];
 														af_109 = DPB(af_15, a_200, 0);
 														if (a_200 == 0x55)
 														{
-															globals->b1529 = 0x01;
-															l.u0 = 0x29;
+															Mem207[0x1529:byte] = 0x01;
+															l = 0x29;
 															h = 0x15;
 														}
 														else
 														{
-															Eq_3043 a_208 = globals->t16A8;
+															byte a_208 = Mem25[5800:byte];
 															af_109 = DPB(af_15, a_208, 0);
 															if (a_208 == 0x56)
 															{
-																globals->b14FC = 0x01;
-																l.u0 = 252;
+																Mem215[0x14FC:byte] = 0x01;
+																l = 252;
 																h = 0x14;
 															}
 															else
 															{
-																Eq_3043 a_216 = globals->t16A8;
+																byte a_216 = Mem25[5800:byte];
 																word16 af_217 = DPB(af_15, a_216, 0);
 																if (a_216 == 0x57)
 																{
 																	byte b_220;
-																	cu8 a_224 = fn1279(af_217, b_34, b_34, e, d, l, h, out b_220, out l, out h, out sp_1);
-																	globals->b14F8 = a_224;
+																	byte a_224 = fn1279(af_217, b_34, b_34, e, d, l, h, out b_220, out l, out h, out sp_1);
+																	Mem226[0x14F8:byte] = a_224;
 																	af_109 = DPB(af_15, a_224, 0);
 																}
 																else
 																{
-																	Eq_3043 a_227 = globals->t16A8;
+																	byte a_227 = Mem25[5800:byte];
 																	af_109 = DPB(af_15, a_227, 0);
 																	if (a_227 == 88)
 																	{
 																		byte b_231;
-																		cu8 a_235 = fn12D8(af_109, b_34, b_34, e, d, l, h, out b_231, out l, out h, out sp_1);
-																		globals->b151E = a_235;
+																		byte a_235 = fn12D8(af_109, b_34, b_34, e, d, l, h, out b_231, out l, out h, out sp_1);
+																		Mem237[0x151E:byte] = a_235;
 																		af_109 = DPB(af_15, a_235, 0);
 																	}
 																	else
@@ -1583,64 +1583,64 @@ void fn1081(word16 af, byte b, byte d, Eq_359 e, Eq_429 l, byte h)
 				}
 			}
 		}
-		globals->t16A8 = fn045B();
+		Mem60[5800:byte] = fn045B();
 		fn1262();
-		if (globals->t16A8 == 44)
+		if (Mem60[5800:byte] == 44)
 		{
-			Eq_3043 a_72 = fn045B();
-			globals->t16A8 = a_72;
+			byte a_72 = fn045B();
+			Mem74[5800:byte] = a_72;
 			af_15 = DPB(af_109, a_72, 0);
 		}
 		else
 		{
-			Eq_3043 a_75 = globals->t16A8;
-			af_15 = DPB(af_109, (word16) a_75 + 0x005F, 0);
+			byte a_75 = Mem60[5800:byte];
+			af_15 = DPB(af_109, a_75 + 0x5F, 0);
 			if (a_75 == 0x02)
 			{
-				globals->t16A8 = fn045B();
+				Mem81[5800:byte] = fn045B();
 				fn1262();
-				Eq_3043 a_82 = globals->t16A8;
-				af_15 = DPB(af_109, (word16) a_82 + 0x005F, 0);
+				byte a_82 = Mem81[5800:byte];
+				af_15 = DPB(af_109, a_82 + 0x5F, 0);
 				if (a_82 != 0x04)
 				{
-					globals->t16A8.u0 = 0x5D;
-					l.u0 = 0xA8;
+					Mem90[5800:byte] = 0x5D;
+					l = 0xA8;
 					h = 22;
 				}
 				else
 				{
-					Eq_3043 a_91 = fn045B();
-					globals->t16A8 = a_91;
+					byte a_91 = fn045B();
+					Mem93[5800:byte] = a_91;
 					af_15 = DPB(af_109, a_91, 0);
 				}
 			}
 		}
 	}
-	if (globals->b14F3 == 0x01)
+	if (Mem25[5363:byte] == 0x01)
 	{
 		byte a_295;
 		word16 bc_296;
 		byte l_297;
 		byte h_298;
 		fn056B(0x0C, e, d, l, h, out a_295, out bc_296, out l_297, out h_298);
-		globals->b14F9 = 0x01;
+		Mem305[0x14F9:byte] = 0x01;
 	}
-	globals->b14F4 = globals->b14F3;
-	cu8 a_254 = globals->b14F7;
-	globals->b14FD = a_254 + 0x01;
-	globals->b138A = 0x01;
+	Mem253[0x14F4:byte] = Mem25[5363:byte];
+	byte a_254 = Mem253[0x14F7:byte];
+	Mem258[5373:byte] = a_254 + 0x01;
+	Mem262[5002:byte] = 0x01;
 	byte b_263;
-	Eq_429 l_264;
+	byte l_264;
 	byte h_265;
 	fn07B3(e, d, 0x8A, 0x13, out b_263, out l_264, out h_265);
 	fn0BE4(DPB(af_15, a_254 + 0x01, 0), b_263, d, e, h_265, l_264);
 	__ei();
 	__hlt();
-	globals->b14F3 = 0x02;
-	Eq_429 l_275;
+	Mem271[5363:byte] = 0x02;
+	byte l_275;
 	byte h_276;
 	fn05CE(0xD1, 0x02, e, d, ~0x0C, 0x14, out l_275, out h_276);
-	if (globals->t16A8 == 0x00)
+	if (Mem271[5800:byte] == 0x00)
 	{
 		byte l_289;
 		byte h_290;
@@ -1656,14 +1656,14 @@ void fn1081(word16 af, byte b, byte d, Eq_359 e, Eq_429 l, byte h)
 	}
 }
 
-// 1229: Register Eq_3247 fn1229(Register Eq_3247 c, Register Eq_3247 b, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_3572 lOut, Register out Eq_3573 hOut, Register out (ptr word16) spOut)
-Eq_3247 fn1229(Eq_3247 c, Eq_3247 b, Eq_359 e, byte d, Eq_429 l, byte h, Eq_3572 & lOut, Eq_3573 & hOut, word16 * & spOut)
+// 1229: Register byte fn1229(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 lOut, Register out ptr16 hOut, Register out ptr16 spOut)
+byte fn1229(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
 {
-	globals->b14F3 = 0x02;
-	Eq_429 l_11;
+	Mem5[5363:byte] = 0x02;
+	byte l_11;
 	byte h_12;
-	Eq_3247 b_14 = SLICE(fn05CE(0xD1, 0x02, e, d, ~0x0C, 0x14, out l_11, out h_12), byte, 8);
-	if (globals->t16A8 == 0x00)
+	byte b_14 = SLICE(fn05CE(0xD1, 0x02, e, d, ~0x0C, 0x14, out l_11, out h_12), byte, 8);
+	if (Mem5[5800:byte] == 0x00)
 	{
 		word16 sp_32;
 		word16 hl_33 = fn0387(out sp_32);
@@ -1682,12 +1682,12 @@ Eq_3247 fn1229(Eq_3247 c, Eq_3247 b, Eq_359 e, byte d, Eq_429 l, byte h, Eq_3572
 	}
 }
 
-// 123C: Register byte fn123C(Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_3658 lOut, Register out Eq_3659 hOut, Register out ptr16 spOut)
-byte fn123C(Eq_359 e, byte d, Eq_429 l, byte h, Eq_3658 & lOut, Eq_3659 & hOut, ptr16 & spOut)
+// 123C: Register byte fn123C(Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 lOut, Register out ptr16 hOut, Register out ptr16 spOut)
+byte fn123C(byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
 {
 	byte a_9;
 	word16 bc_10;
-	Eq_429 l_11;
+	byte l_11;
 	byte h_12;
 	fn056B(0x3E, e, d, l, h, out a_9, out bc_10, out l_11, out h_12);
 	byte a_16;
@@ -1695,16 +1695,16 @@ byte fn123C(Eq_359 e, byte d, Eq_429 l, byte h, Eq_3658 & lOut, Eq_3659 & hOut, 
 	byte l_18;
 	byte h_19;
 	fn056B(0x20, e, d, l_11, h_12, out a_16, out bc_17, out l_18, out h_19);
-	while (globals->t16A8 != 0x00)
+	while (Mem0[5800:byte] != 0x00)
 	{
-		Eq_3043 hl_32 = globals->t16A8;
-		Eq_429 l_33 = (byte) hl_32;
+		word16 hl_32 = Mem0[5800:word16];
+		byte l_33 = (byte) hl_32;
 		byte a_37;
 		word16 bc_38;
 		byte l_39;
 		byte h_40;
 		fn056B(l_33, e, d, l_33, SLICE(hl_32, byte, 8), out a_37, out bc_38, out l_39, out h_40);
-		globals->t16A8 = fn045B();
+		Mem43[5800:byte] = fn045B();
 	}
 	word16 sp_44;
 	word16 hl_45 = fn0387(out sp_44);
@@ -1718,24 +1718,24 @@ byte fn123C(Eq_359 e, byte d, Eq_429 l, byte h, Eq_3658 & lOut, Eq_3659 & hOut, 
 // 1262: void fn1262()
 void fn1262()
 {
-	if (globals->t16A8 == 0x20)
+	if (Mem0[5800:byte] == 0x20)
 	{
 		do
 		{
-			Eq_3043 a_9 = fn045B();
-			globals->t16A8 = a_9;
+			byte a_9 = fn045B();
+			Mem10[5800:byte] = a_9;
 		} while (a_9 == 0x20);
 	}
 }
 
-// 1279: Register bui8 fn1279(Register word16 af, Register Eq_3247 b, Register Eq_3247 c, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_3382 bOut, Register out Eq_3383 lOut, Register out Eq_3384 hOut, Register out (ptr word16) spOut)
-bui8 fn1279(word16 af, Eq_3247 b, Eq_3247 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_3382 & bOut, Eq_3383 & lOut, Eq_3384 & hOut, word16 * & spOut)
+// 1279: Register byte fn1279(Register word16 af, Register byte b, Register byte c, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut, Register out ptr16 spOut)
+byte fn1279(word16 af, byte b, byte c, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
 {
 	*bOut = b;
-	globals->t16A8 = fn045B();
+	Mem3[5800:byte] = fn045B();
 	fn1262();
-	Eq_3043 a_4 = globals->t16A8;
-	ptr16 sp_1 = fp;
+	byte a_4 = Mem3[5800:byte];
+	word16 sp_1 = fp;
 	word16 af_21 = DPB(af, a_4, 0);
 	if (a_4 != 0x28)
 	{
@@ -1743,31 +1743,31 @@ bui8 fn1279(word16 af, Eq_3247 b, Eq_3247 c, Eq_359 e, byte d, Eq_429 l, byte h,
 		byte h_89;
 		*bOut = fn1229(c, b, e, d, l, h, out l_88, out h_89, out sp_1);
 	}
-	globals->b16AA = 0x00;
+	Mem17[0x16AA:byte] = 0x00;
 	byte l_15;
 	*lOut = 0xAA;
 	byte h_16;
 	*hOut = 22;
 	while (true)
 	{
-		Eq_3043 a_22 = fn045B();
-		globals->t16A9 = a_22;
+		byte a_22 = fn045B();
+		Mem23[0x16A9:byte] = a_22;
 		word16 sp_19;
 		*spOut = sp_1;
-		if (0x09 < a_22 - 0x30)
+		if (0x09 <u a_22 - 0x30)
 			break;
-		struct Eq_3818 * sp_36 = sp_1 - 0x02;
-		sp_36->w0000 = DPB(af_21, globals->b16AA * 0x08, 0);
-		sp_36->w0000 = DPB(af_21, (word16) sp_36->t0001 + globals->b16AA * 0x02, 0);
-		b = sp_36->t0001;
+		word16 sp_36 = sp_1 - 0x02;
+		Mem37[sp_36 + 0x00:word16] = DPB(af_21, Mem23[0x16AA:byte] * 0x08, 0);
+		Mem47[sp_36 + 0x00:word16] = DPB(af_21, Mem37[0x16AA:byte] * 0x02 + Mem37[sp_36 + 0x01:byte], 0);
+		b = Mem47[sp_36 + 0x01:byte];
 		*bOut = b;
-		bui8 a_55 = (word16) b + ((word16) globals->t16A9 + 0x0F);
-		globals->b16AA = a_55;
+		byte a_55 = Mem47[0x16A9:byte] + 0x0F + b;
+		Mem58[0x16AA:byte] = a_55;
 		af_21 = DPB(af_21, a_55, 0);
 	}
-	if (globals->t16A9 == 0x20)
+	if (Mem23[0x16A9:byte] == 0x20)
 		fn1262();
-	if (globals->t16A9 != 0x29)
+	if (Mem23[0x16A9:byte] != 0x29)
 	{
 		byte l_80;
 		byte h_81;
@@ -1775,22 +1775,22 @@ bui8 fn1279(word16 af, Eq_3247 b, Eq_3247 c, Eq_359 e, byte d, Eq_429 l, byte h,
 		byte b_83;
 		*bOut = fn1229(a_22 - 0x30, b, e, d, 0xAA, 22, out l_80, out h_81, out sp_82);
 	}
-	return globals->b16AA;
+	return Mem23[0x16AA:byte];
 }
 
-// 12D8: Register byte fn12D8(Register word16 af, Register Eq_3247 b, Register Eq_3247 c, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_3352 bOut, Register out Eq_3353 lOut, Register out Eq_3354 hOut, Register out (ptr word16) spOut)
-byte fn12D8(word16 af, Eq_3247 b, Eq_3247 c, Eq_359 e, byte d, Eq_429 l, byte h, Eq_3352 & bOut, Eq_3353 & lOut, Eq_3354 & hOut, word16 * & spOut)
+// 12D8: Register byte fn12D8(Register word16 af, Register byte b, Register byte c, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut, Register out ptr16 spOut)
+byte fn12D8(word16 af, byte b, byte c, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
 {
-	globals->t16A8 = fn045B();
+	Mem3[5800:byte] = fn045B();
 	fn1262();
-	Eq_3043 a_4 = globals->t16A8;
-	ptr16 sp_1 = fp;
+	byte a_4 = Mem3[5800:byte];
+	word16 sp_1 = fp;
 	word16 af_10 = DPB(af, a_4, 0);
 	if (a_4 == 0x28)
 	{
-		Eq_3043 a_64 = fn045B();
-		globals->b16AB = (cu8) ((word16) a_64 + 0x001F);
-		af_10 = DPB(af, (word16) a_64 + 0x001F, 0);
+		byte a_64 = fn045B();
+		Mem68[0x16AB:byte] = a_64 + 0x1F;
+		af_10 = DPB(af, a_64 + 0x1F, 0);
 	}
 	else
 	{
@@ -1798,10 +1798,10 @@ byte fn12D8(word16 af, Eq_3247 b, Eq_3247 c, Eq_359 e, byte d, Eq_429 l, byte h,
 		byte h_74;
 		fn1229(c, b, e, d, l, h, out l_73, out h_74, out sp_1);
 	}
-	struct Eq_3918 * sp_18 = sp_1 - 0x02;
-	sp_18->w0000 = DPB(af_10, 0x00 - (fn045B() < 0x2A), 0);
-	Eq_3247 b_30 = sp_18->t0001;
-	if (__ror(0x00 - (0x10 - globals->b16AB < 0x00) | b_30, 0x01, false) >= 0x00)
+	word16 sp_18 = sp_1 - 0x02;
+	Mem19[sp_18 + 0x00:word16] = DPB(af_10, 0x00 - (fn045B() <u 0x2A), 0);
+	byte b_30 = Mem19[sp_18 + 0x01:byte];
+	if (__ror(0x00 - (0x10 - Mem19[0x16AB:byte] <u 0x00) | b_30, 0x01, false) >=u 0x00)
 	{
 		byte b_58;
 		byte l_59;
@@ -1819,8 +1819,8 @@ byte fn12D8(word16 af, Eq_3247 b, Eq_3247 c, Eq_359 e, byte d, Eq_429 l, byte h,
 	}
 }
 
-// 130B: void fn130B(Register Eq_3247 c, Register Eq_3247 b, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h)
-void fn130B(Eq_3247 c, Eq_3247 b, Eq_359 e, byte d, Eq_429 l, byte h)
+// 130B: void fn130B(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h)
+void fn130B(byte c, byte b, byte e, byte d, byte l, byte h)
 {
 	if (C)
 		return;
@@ -1831,15 +1831,15 @@ void fn130B(Eq_3247 c, Eq_3247 b, Eq_359 e, byte d, Eq_429 l, byte h)
 	fn130E(c, b, e, d, l, h, out b_14, out l_15, out h_16, out sp_17);
 }
 
-// 130E: Register cu8 fn130E(Register Eq_3247 c, Register Eq_3247 b, Register Eq_359 e, Register byte d, Register Eq_429 l, Register byte h, Register out Eq_3962 bOut, Register out Eq_3963 lOut, Register out Eq_3964 hOut, Register out ptr16 spOut)
-cu8 fn130E(Eq_3247 c, Eq_3247 b, Eq_359 e, byte d, Eq_429 l, byte h, Eq_3962 & bOut, Eq_3963 & lOut, Eq_3964 & hOut, ptr16 & spOut)
+// 130E: Register byte fn130E(Register byte c, Register byte b, Register byte e, Register byte d, Register byte l, Register byte h, Register out ptr16 bOut, Register out ptr16 lOut, Register out ptr16 hOut, Register out ptr16 spOut)
+byte fn130E(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
 {
 	byte l_8;
 	byte h_9;
 	word16 sp_10;
 	byte b_11;
 	*bOut = fn1229(c, b, e, d, l, h, out l_8, out h_9, out sp_10);
-	return globals->b16AB;
+	return Mem0[0x16AB:byte];
 }
 
 // 1315: void fn1315(Register word16 de, Register byte h, Register byte l)
@@ -1847,8 +1847,8 @@ void fn1315(word16 de, byte h, byte l)
 {
 }
 
-// 1326: Register byte fn1326(Register byte c, Register cu8 l, Register byte h, Register out Eq_243 lOut, Register out Eq_244 hOut)
-byte fn1326(byte c, cu8 l, byte h, Eq_243 & lOut, Eq_244 & hOut)
+// 1326: Register byte fn1326(Register byte c, Register byte l, Register byte h, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn1326(byte c, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
 {
 	do
 	{
@@ -1862,10 +1862,10 @@ byte fn1326(byte c, cu8 l, byte h, Eq_243 & lOut, Eq_244 & hOut)
 	return c;
 }
 
-// 1335: FlagGroup byte fn1335(Register uint8 d, Register byte e, Register ui8 h, Register byte l, Register out Eq_390 lOut, Register out Eq_391 hOut)
-byte fn1335(uint8 d, byte e, ui8 h, byte l, Eq_390 & lOut, Eq_391 & hOut)
+// 1335: FlagGroup byte fn1335(Register byte d, Register byte e, Register byte h, Register byte l, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn1335(byte d, byte e, byte h, byte l, ptr16 & lOut, ptr16 & hOut)
 {
-	uint8 a_5 = e - l;
+	byte a_5 = e - l;
 	ui16 a_a_13 = SEQ(d, d) - SEQ(h, a_5);
 	byte l_7;
 	*lOut = a_5;
@@ -1879,10 +1879,10 @@ void fn133C(byte a, byte d, byte e)
 {
 }
 
-// 1346: Register byte fn1346(Register (ptr Eq_837) de, Register ptr16 hl, Register out Eq_2664 hOut)
-byte fn1346(Eq_837 * de, ptr16 hl, Eq_2664 & hOut)
+// 1346: Register byte fn1346(Register word16 de, Register word16 hl, Register out ptr16 hOut)
+byte fn1346(word16 de, word16 hl, ptr16 & hOut)
 {
-	struct Eq_823 * hl_7 = DPB(hl, b, 8);
+	word16 hl_7 = DPB(hl, b, 8);
 	word16 de_9;
 	byte l_10;
 	byte h_11;
@@ -1890,30 +1890,30 @@ byte fn1346(Eq_837 * de, ptr16 hl, Eq_2664 & hOut)
 	return l_10;
 }
 
-// 1348: FlagGroup byte fn1348(Register (ptr Eq_837) de, Register (ptr Eq_823) hl, Register out ptr16 deOut, Register out Eq_840 lOut, Register out Eq_841 hOut)
-byte fn1348(Eq_837 * de, Eq_823 * hl, ptr16 & deOut, Eq_840 & lOut, Eq_841 & hOut)
+// 1348: FlagGroup byte fn1348(Register word16 de, Register word16 hl, Register out ptr16 deOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & lOut, ptr16 & hOut)
 {
-	uint8 c_4 = hl->b0000;
-	uint8 a_14 = de->b0001;
-	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(hl->b0001, c_4);
+	byte c_4 = Mem0[hl + 0x00:byte];
+	byte a_14 = Mem0[de + 0x01:byte];
+	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x01:byte], c_4);
 	byte l_12;
-	*lOut = de->b0000 - c_4;
+	*lOut = Mem0[de + 0x00:byte] - c_4;
 	word16 de_13;
-	*deOut = (byte *) &de->b0001;
+	*deOut = de + 0x01;
 	byte h_22;
 	*hOut = (byte) a_a_16;
 	return cond(a_a_16);
 }
 
-// 1353: Register byte fn1353(Register byte a, Register (ptr Eq_1123) de, Register out ptr16 deOut, Register out Eq_1125 lOut, Register out Eq_1126 hOut)
-byte fn1353(byte a, Eq_1123 * de, ptr16 & deOut, Eq_1125 & lOut, Eq_1126 & hOut)
+// 1353: Register byte fn1353(Register byte a, Register word16 de, Register out ptr16 deOut, Register out ptr16 lOut, Register out ptr16 hOut)
+byte fn1353(byte a, word16 de, ptr16 & deOut, ptr16 & lOut, ptr16 & hOut)
 {
-	cu8 a_8 = de->b0000 - a;
-	byte a_14 = de->b0001 - (a_8 < 0x00);
+	byte a_8 = Mem0[de + 0x00:byte] - a;
+	byte a_14 = Mem0[de + 0x01:byte] - (a_8 <u 0x00);
 	byte l_11;
 	*lOut = a_8;
 	word16 de_12;
-	*deOut = (byte *) &de->b0001;
+	*deOut = de + 0x01;
 	byte h_17;
 	*hOut = a_14;
 	return a_14;
@@ -1952,7 +1952,7 @@ void fn15B0(byte a, word16 bc, word16 de, byte h)
 	else
 	{
 		fn140B();
-		Eq_359 e_82 = (byte) (word16 *) 0x1752;
+		byte e_82 = (byte) Mem0[0x1752:word16];
 		byte l_84 = (byte) de;
 		byte h_85 = SLICE(de, byte, 8);
 		fn092A(0x82, b_4 - 0x01, e_82, l_84, h_85);

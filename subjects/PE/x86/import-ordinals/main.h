@@ -297,8 +297,8 @@ T_10: (in _acrt_iob_func : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_11: (in signature of _acrt_iob_func : void)
-  Class: Eq_10
-  DataType: (ptr code)
+  Class: Eq_11
+  DataType: Eq_11
   OrigDataType: 
 T_12: (in fn00401000 : ptr32)
   Class: Eq_12
@@ -341,8 +341,8 @@ T_21: (in _stdio_common_vfprintf : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_22: (in signature of _stdio_common_vfprintf : void)
-  Class: Eq_21
-  DataType: (ptr code)
+  Class: Eq_22
+  DataType: Eq_22
   OrigDataType: 
 T_23: (in eax : word32)
   Class: Eq_23
@@ -381,8 +381,8 @@ T_31: (in driver.dll!Ordinal_1 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_32: (in signature of driver.dll!Ordinal_1 : void)
-  Class: Eq_31
-  DataType: (ptr code)
+  Class: Eq_32
+  DataType: Eq_32
   OrigDataType: 
 T_33: (in esp_20 : word32)
   Class: Eq_33
@@ -417,8 +417,8 @@ T_40: (in driver.dll!Ordinal_2 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_41: (in signature of driver.dll!Ordinal_2 : void)
-  Class: Eq_40
-  DataType: (ptr code)
+  Class: Eq_41
+  DataType: Eq_41
   OrigDataType: 
 T_42: (in esp_30 : word32)
   Class: Eq_42
@@ -453,8 +453,8 @@ T_49: (in driver.dll!Ordinal_4 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_50: (in signature of driver.dll!Ordinal_4 : void)
-  Class: Eq_49
-  DataType: (ptr code)
+  Class: Eq_50
+  DataType: Eq_50
   OrigDataType: 
 T_51: (in esp_40 : word32)
   Class: Eq_51
@@ -489,8 +489,8 @@ T_58: (in driver.dll!Ordinal_3 : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_59: (in signature of driver.dll!Ordinal_3 : void)
-  Class: Eq_58
-  DataType: (ptr code)
+  Class: Eq_59
+  DataType: Eq_59
   OrigDataType: 
 T_60: (in fn00401010 : ptr32)
   Class: Eq_60
@@ -509,7 +509,7 @@ T_63: (in fn00401010(0x00402118) : word32)
   DataType: word32
   OrigDataType: word32
 T_64: (in 0x00000000 : word32)
-  Class: Eq_64
+  Class: Eq_23
   DataType: word32
   OrigDataType: word32
 T_65: (in eax : Eq_65)
@@ -1657,8 +1657,8 @@ T_350: (in _p___argv : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_351: (in signature of _p___argv : void)
-  Class: Eq_350
-  DataType: (ptr code)
+  Class: Eq_351
+  DataType: Eq_351
   OrigDataType: 
 T_352: (in esp_111 : word32)
   Class: Eq_352
@@ -1725,8 +1725,8 @@ T_367: (in _p___argc : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_368: (in signature of _p___argc : void)
-  Class: Eq_367
-  DataType: (ptr code)
+  Class: Eq_368
+  DataType: Eq_368
   OrigDataType: 
 T_369: (in esp_127 : ptr32)
   Class: Eq_369
@@ -1789,8 +1789,8 @@ T_383: (in get_initial_narrow_environment : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_384: (in signature of get_initial_narrow_environment : void)
-  Class: Eq_383
-  DataType: (ptr code)
+  Class: Eq_384
+  DataType: Eq_384
   OrigDataType: 
 T_385: (in 0x00000004 : word32)
   Class: Eq_385
@@ -2097,8 +2097,8 @@ T_460: (in register_thread_local_exe_atexit_callback : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_461: (in signature of register_thread_local_exe_atexit_callback : void)
-  Class: Eq_460
-  DataType: (ptr code)
+  Class: Eq_461
+  DataType: Eq_461
   OrigDataType: 
 T_462: (in 0x00 : byte)
   Class: Eq_375
@@ -2313,8 +2313,8 @@ T_514: (in cexit : ptr32)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_515: (in signature of cexit : void)
-  Class: Eq_514
-  DataType: (ptr code)
+  Class: Eq_515
+  DataType: Eq_515
   OrigDataType: 
 T_516: (in eax : (ptr Eq_516))
   Class: Eq_516

@@ -244,8 +244,8 @@ T_44: (in __gmon_start__ : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_45: (in signature of __gmon_start__ : void)
-  Class: Eq_44
-  DataType: (ptr code)
+  Class: Eq_45
+  DataType: Eq_45
   OrigDataType: 
 T_46: (in r8 : word64)
   Class: Eq_46
@@ -548,8 +548,8 @@ T_120: (in fn0000000000000000 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_121: (in signature of fn0000000000000000 : void)
-  Class: Eq_120
-  DataType: (ptr code)
+  Class: Eq_121
+  DataType: Eq_121
   OrigDataType: 
 T_122: (in register_tm_clones : ptr64)
   Class: Eq_122

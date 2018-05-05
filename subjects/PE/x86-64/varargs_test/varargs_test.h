@@ -573,8 +573,8 @@ T_52: (in fn00000000000029F4 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_53: (in signature of fn00000000000029F4 : void)
-  Class: Eq_52
-  DataType: (ptr code)
+  Class: Eq_53
+  DataType: Eq_53
   OrigDataType: 
 T_54: (in rax_41 : (ptr ui64))
   Class: Eq_54
@@ -653,8 +653,8 @@ T_72: (in fn0000000000002A20 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_73: (in signature of fn0000000000002A20 : void)
-  Class: Eq_72
-  DataType: (ptr code)
+  Class: Eq_73
+  DataType: Eq_73
   OrigDataType: 
 T_74: (in rax : ptr64)
   Class: Eq_74
@@ -725,8 +725,8 @@ T_90: (in fn00000000000029F4 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_91: (in signature of fn00000000000029F4 : void)
-  Class: Eq_90
-  DataType: (ptr code)
+  Class: Eq_91
+  DataType: Eq_91
   OrigDataType: 
 T_92: (in rax_39 : (ptr ui64))
   Class: Eq_92
@@ -805,8 +805,8 @@ T_110: (in fn0000000000002A06 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_111: (in signature of fn0000000000002A06 : void)
-  Class: Eq_110
-  DataType: (ptr code)
+  Class: Eq_111
+  DataType: Eq_111
   OrigDataType: 
 T_112: (in rax : word64)
   Class: Eq_112
@@ -1017,8 +1017,8 @@ T_163: (in set_app_type : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_164: (in signature of set_app_type : void)
-  Class: Eq_163
-  DataType: (ptr code)
+  Class: Eq_164
+  DataType: Eq_164
   OrigDataType: 
 T_165: (in fn0000000140001920 : ptr64)
   Class: Eq_165
@@ -1329,8 +1329,8 @@ T_241: (in configure_narrow_argv : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_242: (in signature of configure_narrow_argv : void)
-  Class: Eq_241
-  DataType: (ptr code)
+  Class: Eq_242
+  DataType: Eq_242
   OrigDataType: 
 T_243: (in 0x00000000 : word32)
   Class: Eq_231
@@ -1505,8 +1505,8 @@ T_285: (in configthreadlocale : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_286: (in signature of configthreadlocale : void)
-  Class: Eq_285
-  DataType: (ptr code)
+  Class: Eq_286
+  DataType: Eq_286
   OrigDataType: 
 T_287: (in fn0000000140001938 : ptr64)
   Class: Eq_287
@@ -1625,8 +1625,8 @@ T_315: (in initialize_narrow_environment : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_316: (in signature of initialize_narrow_environment : void)
-  Class: Eq_315
-  DataType: (ptr code)
+  Class: Eq_316
+  DataType: Eq_316
   OrigDataType: 
 T_317: (in fn0000000140001290 : ptr64)
   Class: Eq_317
@@ -1701,8 +1701,8 @@ T_334: (in set_new_mode : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_335: (in signature of set_new_mode : void)
-  Class: Eq_334
-  DataType: (ptr code)
+  Class: Eq_335
+  DataType: Eq_335
   OrigDataType: 
 T_336: (in eax : word32)
   Class: Eq_336
@@ -2377,8 +2377,8 @@ T_503: (in register_thread_local_exe_atexit_callback : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_504: (in signature of register_thread_local_exe_atexit_callback : void)
-  Class: Eq_503
-  DataType: (ptr code)
+  Class: Eq_504
+  DataType: Eq_504
   OrigDataType: 
 T_505: (in rsp_112 : word64)
   Class: Eq_505
@@ -2481,8 +2481,8 @@ T_529: (in _p___argv : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_530: (in signature of _p___argv : void)
-  Class: Eq_529
-  DataType: (ptr code)
+  Class: Eq_530
+  DataType: Eq_530
   OrigDataType: 
 T_531: (in rsp_137 : word64)
   Class: Eq_531
@@ -2585,8 +2585,8 @@ T_555: (in _p___argc : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_556: (in signature of _p___argc : void)
-  Class: Eq_555
-  DataType: (ptr code)
+  Class: Eq_556
+  DataType: Eq_556
   OrigDataType: 
 T_557: (in rsp_162 : word64)
   Class: Eq_557
@@ -2689,8 +2689,8 @@ T_581: (in get_initial_narrow_environment : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_582: (in signature of get_initial_narrow_environment : void)
-  Class: Eq_581
-  DataType: (ptr code)
+  Class: Eq_582
+  DataType: Eq_582
   OrigDataType: 
 T_583: (in rax_189 : word64)
   Class: Eq_583
@@ -2865,8 +2865,8 @@ T_625: (in cexit : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_626: (in signature of cexit : void)
-  Class: Eq_625
-  DataType: (ptr code)
+  Class: Eq_626
+  DataType: Eq_626
   OrigDataType: 
 T_627: (in fn00000001400017D8 : ptr64)
   Class: Eq_627
@@ -3021,8 +3021,8 @@ T_664: (in fn0000000000002CEE : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_665: (in signature of fn0000000000002CEE : void)
-  Class: Eq_664
-  DataType: (ptr code)
+  Class: Eq_665
+  DataType: Eq_665
   OrigDataType: 
 T_666: (in rsp_23 : word64)
   Class: Eq_666
@@ -3069,8 +3069,8 @@ T_676: (in fn0000000000002CD2 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_677: (in signature of fn0000000000002CD2 : void)
-  Class: Eq_676
-  DataType: (ptr code)
+  Class: Eq_677
+  DataType: Eq_677
   OrigDataType: 
 T_678: (in rsp_33 : word64)
   Class: Eq_678
@@ -3117,8 +3117,8 @@ T_688: (in fn0000000000002D0C : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_689: (in signature of fn0000000000002D0C : void)
-  Class: Eq_688
-  DataType: (ptr code)
+  Class: Eq_689
+  DataType: Eq_689
   OrigDataType: 
 T_690: (in rsp_50 : word64)
   Class: Eq_690
@@ -3533,8 +3533,8 @@ T_792: (in fn0000000000002C90 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_793: (in signature of fn0000000000002C90 : void)
-  Class: Eq_792
-  DataType: (ptr code)
+  Class: Eq_793
+  DataType: Eq_793
   OrigDataType: 
 T_794: (in rsp_113 : word64)
   Class: Eq_794
@@ -3609,8 +3609,8 @@ T_811: (in fn0000000000002CBE : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_812: (in signature of fn0000000000002CBE : void)
-  Class: Eq_811
-  DataType: (ptr code)
+  Class: Eq_812
+  DataType: Eq_812
   OrigDataType: 
 T_813: (in 0x00000001 : word32)
   Class: Eq_813
@@ -3709,8 +3709,8 @@ T_836: (in fn0000000000002CA4 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_837: (in signature of fn0000000000002CA4 : void)
-  Class: Eq_836
-  DataType: (ptr code)
+  Class: Eq_837
+  DataType: Eq_837
   OrigDataType: 
 T_838: (in 0x0000000000000000 : word64)
   Class: Eq_831
@@ -4105,7 +4105,7 @@ T_935: (in int3() : void)
   DataType: void
   OrigDataType: void
 T_936: (in eax_141 : word32)
-  Class: Eq_936
+  Class: Eq_912
   DataType: word32
   OrigDataType: word32
 T_937: (in eax_37 : word32)
@@ -4417,7 +4417,7 @@ T_1013: (in 0x01 : byte)
   DataType: byte
   OrigDataType: byte
 T_1014: (in DPB(eax_78, 0x01, 0) : word32)
-  Class: Eq_936
+  Class: Eq_912
   DataType: word32
   OrigDataType: word32
 T_1015: (in 0x00000000 : word32)
@@ -4521,8 +4521,8 @@ T_1039: (in initialize_onexit_table : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1040: (in signature of initialize_onexit_table : void)
-  Class: Eq_1039
-  DataType: (ptr code)
+  Class: Eq_1040
+  DataType: Eq_1040
   OrigDataType: 
 T_1041: (in 0x00000000 : word32)
   Class: Eq_1024
@@ -4625,8 +4625,8 @@ T_1065: (in initialize_onexit_table : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1066: (in signature of initialize_onexit_table : void)
-  Class: Eq_1065
-  DataType: (ptr code)
+  Class: Eq_1066
+  DataType: Eq_1066
   OrigDataType: 
 T_1067: (in 0x00000000 : word32)
   Class: Eq_1050
@@ -4637,7 +4637,7 @@ T_1068: (in eax_153 == 0x00000000 : bool)
   DataType: bool
   OrigDataType: bool
 T_1069: (in DPB(eax_153, eax_153 == 0x00000000, 0) : word32)
-  Class: Eq_936
+  Class: Eq_912
   DataType: word32
   OrigDataType: word32
 T_1070: (in 0x00 : byte)
@@ -4645,7 +4645,7 @@ T_1070: (in 0x00 : byte)
   DataType: byte
   OrigDataType: byte
 T_1071: (in DPB(eax_122, 0x00, 0) : word32)
-  Class: Eq_936
+  Class: Eq_912
   DataType: word32
   OrigDataType: word32
 T_1072: (in fn0000000140001718 : ptr64)
@@ -4657,7 +4657,7 @@ T_1073: (in fn0000000140001718(rcx_180) : word64)
   DataType: word64
   OrigDataType: word64
 T_1074: (in (word32) fn0000000140001718(rcx_180) : word32)
-  Class: Eq_1074
+  Class: Eq_912
   DataType: word32
   OrigDataType: word32
 T_1075: (in rax : (ptr Eq_1075))
@@ -5116,16 +5116,16 @@ T_1188: (in (word32) rbx : word32)
   Class: Eq_1174
   DataType: word32
   OrigDataType: word32
-T_1189: (in rax : word64)
+T_1189: (in rax : uint64)
   Class: Eq_1189
-  DataType: word64
+  DataType: uint64
   OrigDataType: word64
 T_1190: (in eax : word32)
   Class: Eq_182
   DataType: word32
   OrigDataType: word32
 T_1191: (in rbx_25 : uint64)
-  Class: Eq_1191
+  Class: Eq_1189
   DataType: uint64
   OrigDataType: word64
 T_1192: (in eax_23 : word32)
@@ -5281,8 +5281,8 @@ T_1229: (in register_onexit_function : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1230: (in signature of register_onexit_function : void)
-  Class: Eq_1229
-  DataType: (ptr code)
+  Class: Eq_1230
+  DataType: Eq_1230
   OrigDataType: 
 T_1231: (in rsp_50 : word64)
   Class: Eq_1231
@@ -5333,15 +5333,15 @@ T_1242: (in crt_atexit : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1243: (in signature of crt_atexit : void)
-  Class: Eq_1242
-  DataType: (ptr code)
+  Class: Eq_1243
+  DataType: Eq_1243
   OrigDataType: 
 T_1244: (in rcx_27 : uint64)
-  Class: Eq_1191
+  Class: Eq_1189
   DataType: uint64
   OrigDataType: uint64
 T_1245: (in 0x0000000000000000 : uint64)
-  Class: Eq_1191
+  Class: Eq_1189
   DataType: uint64
   OrigDataType: uint64
 T_1246: (in 0x00000000 : word32)
@@ -5457,8 +5457,8 @@ T_1273: (in fn0000000000002D96 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1274: (in signature of fn0000000000002D96 : void)
-  Class: Eq_1273
-  DataType: (ptr code)
+  Class: Eq_1274
+  DataType: Eq_1274
   OrigDataType: 
 T_1275: (in rsp_50 : word64)
   Class: Eq_1275
@@ -5505,8 +5505,8 @@ T_1285: (in fn0000000000002D80 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1286: (in signature of fn0000000000002D80 : void)
-  Class: Eq_1285
-  DataType: (ptr code)
+  Class: Eq_1286
+  DataType: Eq_1286
   OrigDataType: 
 T_1287: (in rax_60 : uint64)
   Class: Eq_1287
@@ -5561,8 +5561,8 @@ T_1299: (in fn0000000000002D6A : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1300: (in signature of fn0000000000002D6A : void)
-  Class: Eq_1299
-  DataType: (ptr code)
+  Class: Eq_1300
+  DataType: Eq_1300
   OrigDataType: 
 T_1301: (in rax_76 : uint64)
   Class: Eq_1301
@@ -5617,8 +5617,8 @@ T_1313: (in fn0000000000002D50 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1314: (in signature of fn0000000000002D50 : void)
-  Class: Eq_1313
-  DataType: (ptr code)
+  Class: Eq_1314
+  DataType: Eq_1314
   OrigDataType: 
 T_1315: (in rax_99 : ui64)
   Class: Eq_1315
@@ -6093,8 +6093,8 @@ T_1432: (in fn0000000000002C90 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1433: (in signature of fn0000000000002C90 : void)
-  Class: Eq_1432
-  DataType: (ptr code)
+  Class: Eq_1433
+  DataType: Eq_1433
   OrigDataType: 
 T_1434: (in rsp_63 : word64)
   Class: Eq_1434
@@ -6173,8 +6173,8 @@ T_1452: (in fn0000000000002CA4 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1453: (in signature of fn0000000000002CA4 : void)
-  Class: Eq_1452
-  DataType: (ptr code)
+  Class: Eq_1453
+  DataType: Eq_1453
   OrigDataType: 
 T_1454: (in 0x0000000000000000 : word64)
   Class: Eq_1449
@@ -6285,8 +6285,8 @@ T_1480: (in fn0000000000002DC6 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1481: (in signature of fn0000000000002DC6 : void)
-  Class: Eq_1480
-  DataType: (ptr code)
+  Class: Eq_1481
+  DataType: Eq_1481
   OrigDataType: 
 T_1482: (in rsp_140 : word64)
   Class: Eq_1482
@@ -6365,8 +6365,8 @@ T_1500: (in fn0000000000002CEE : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1501: (in signature of fn0000000000002CEE : void)
-  Class: Eq_1500
-  DataType: (ptr code)
+  Class: Eq_1501
+  DataType: Eq_1501
   OrigDataType: 
 T_1502: (in rsp_160 : word64)
   Class: Eq_1502
@@ -6393,7 +6393,7 @@ T_1507: (in ecx_165 : word32)
   DataType: word32
   OrigDataType: word32
 T_1508: (in rcx_166 : word64)
-  Class: Eq_1508
+  Class: Eq_1384
   DataType: word64
   OrigDataType: word64
 T_1509: (in eax_167 : word32)
@@ -6445,8 +6445,8 @@ T_1520: (in fn0000000000002CD2 : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1521: (in signature of fn0000000000002CD2 : void)
-  Class: Eq_1520
-  DataType: (ptr code)
+  Class: Eq_1521
+  DataType: Eq_1521
   OrigDataType: 
 T_1522: (in 0x00000000 : word32)
   Class: Eq_1509
@@ -6533,8 +6533,8 @@ T_1542: (in fn0000000000002CBE : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1543: (in signature of fn0000000000002CBE : void)
-  Class: Eq_1542
-  DataType: (ptr code)
+  Class: Eq_1543
+  DataType: Eq_1543
   OrigDataType: 
 T_1544: (in bl_187 : byte)
   Class: Eq_1544
@@ -6624,12 +6624,12 @@ T_1565: (in 0x00000000 : word32)
   Class: Eq_1564
   DataType: word32
   OrigDataType: word32
-T_1566: (in al : byte)
+T_1566: (in al : bool)
   Class: Eq_1566
-  DataType: byte
+  DataType: bool
   OrigDataType: byte
 T_1567: (in al_30 : bool)
-  Class: Eq_1567
+  Class: Eq_1566
   DataType: bool
   OrigDataType: bool
 T_1568: (in rsp_7 : word64)
@@ -6689,8 +6689,8 @@ T_1581: (in fn0000000000002DDA : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1582: (in signature of fn0000000000002DDA : void)
-  Class: Eq_1581
-  DataType: (ptr code)
+  Class: Eq_1582
+  DataType: Eq_1582
   OrigDataType: 
 T_1583: (in 0x0000000000000000 : word64)
   Class: Eq_1574
@@ -6721,7 +6721,7 @@ T_1589: (in rax_13->w0000 != 0x5A4D : bool)
   DataType: bool
   OrigDataType: bool
 T_1590: (in 0x00 : byte)
-  Class: Eq_1567
+  Class: Eq_1566
   DataType: bool
   OrigDataType: byte
 T_1591: (in rax_58 : (ptr Eq_1591))
@@ -6825,7 +6825,7 @@ T_1615: (in 0x00000000 : word32)
   DataType: word32
   OrigDataType: word32
 T_1616: (in rax_58->dw00F8 != 0x00000000 : bool)
-  Class: Eq_1567
+  Class: Eq_1566
   DataType: bool
   OrigDataType: bool
 T_1617: (in rsp_4 : word64)
@@ -6993,8 +6993,8 @@ T_1657: (in api-ms-win-crt-runtime-l1-1-0.dll!terminate : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_1658: (in signature of api-ms-win-crt-runtime-l1-1-0.dll!terminate : void)
-  Class: Eq_1657
-  DataType: (ptr code)
+  Class: Eq_1658
+  DataType: Eq_1658
   OrigDataType: 
 T_1659: (in int3 : ptr64)
   Class: Eq_210
@@ -8777,8 +8777,8 @@ T_2103: (in seh_filter_exe : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_2104: (in signature of seh_filter_exe : void)
-  Class: Eq_2103
-  DataType: (ptr code)
+  Class: Eq_2104
+  DataType: Eq_2104
   OrigDataType: 
 T_2105: (in rcx : word64)
   Class: Eq_2105

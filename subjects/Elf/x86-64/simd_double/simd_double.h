@@ -182,8 +182,8 @@ T_15: (in __gmon_start__ : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_16: (in signature of __gmon_start__ : void)
-  Class: Eq_15
-  DataType: (ptr code)
+  Class: Eq_16
+  DataType: Eq_16
   OrigDataType: 
 T_17: (in rdx : (ptr Eq_17))
   Class: Eq_17
@@ -586,8 +586,8 @@ T_116: (in __cxa_finalize : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_117: (in signature of __cxa_finalize : void)
-  Class: Eq_116
-  DataType: (ptr code)
+  Class: Eq_117
+  DataType: Eq_117
   OrigDataType: 
 T_118: (in register_tm_clones : ptr64)
   Class: Eq_118
@@ -710,8 +710,8 @@ T_147: (in posix_memalign : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_148: (in signature of posix_memalign : void)
-  Class: Eq_147
-  DataType: (ptr code)
+  Class: Eq_148
+  DataType: Eq_148
   OrigDataType: 
 T_149: (in 0x00000000 : word32)
   Class: Eq_144

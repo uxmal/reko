@@ -795,8 +795,8 @@ word32 fn00000001400017D8(byte dl)
 	return (word32) rbx;
 }
 
-// 0000000140001804: Register word64 fn0000000140001804(Register word32 eax)
-word64 fn0000000140001804(word32 eax)
+// 0000000140001804: Register uint64 fn0000000140001804(Register word32 eax)
+uint64 fn0000000140001804(word32 eax)
 {
 	uint64 rbx_25;
 	word32 eax_23;
@@ -1103,8 +1103,8 @@ word32 fn0000000140001ABC()
 	return 0x00;
 }
 
-// 0000000140001AC0: Register byte fn0000000140001AC0(Register word64 rax)
-byte fn0000000140001AC0(word64 rax)
+// 0000000140001AC0: Register bool fn0000000140001AC0(Register word64 rax)
+bool fn0000000140001AC0(word64 rax)
 {
 	bool al_30;
 	word64 rsp_7;

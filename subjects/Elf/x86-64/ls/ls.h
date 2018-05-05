@@ -66,7 +66,7 @@ T_15: (in __gmon_start__ : ptr64)
   DataType: (ptr code)
   OrigDataType: (ptr code)
 T_16: (in signature of __gmon_start__ : void)
-  Class: Eq_15
+  Class: Eq_16
   DataType: 
   OrigDataType: 
 T_17: (in rsi : word64)
