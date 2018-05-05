@@ -267,7 +267,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cmdids.xslt" />
+    <Content Include="cmdids.xslt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="decompiler-menus.xml">
       <SubType>Designer</SubType>
     </Content>
