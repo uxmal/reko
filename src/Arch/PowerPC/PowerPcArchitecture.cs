@@ -248,7 +248,8 @@ namespace Reko.Arch.PowerPC
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            //$TODO: do this more accurately.
+            return new FlagGroupStorage(this.cr, grf, "C" + grf, PrimitiveType.Byte);
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

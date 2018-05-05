@@ -29,6 +29,8 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
+    //$TODO: for @uxmal: just implement this as a 
+    // dictionary [RegisterStorage -> Constant]
     public class PowerPcState : ProcessorState
     {
         private PowerPcArchitecture arch;
@@ -79,6 +81,11 @@ namespace Reko.Arch.PowerPC
         {
             if (c == null || !c.IsValid)
             {
+                valid[reg.Number] &= ~reg.BitMask;
+            }
+            else if (c.DataType is PrimitiveType pt && pt.Domain == Domain.Real)
+            {
+                regs[reg.Number] = 0xDEADBEEF;
                 valid[reg.Number] &= ~reg.BitMask;
             }
             else
