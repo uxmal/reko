@@ -348,6 +348,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             => mem.TryReadLe(addr, dt, out value);
 
+        public override void PostprocessProgram(Program program)
+            => ProcessorMode.PostprocessProgram(program, this);
+
         private PICDisassemblerBase CreateDisassemblerImpl(EndianImageReader imageReader)
             => ProcessorMode.CreateDisassembler(this, imageReader);
 

@@ -62,6 +62,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             : base(regName, regNumber, bitAddress, dt)
         {
             Traits = traits ?? throw new ArgumentNullException(nameof(traits));
+            BinTraits = new PICRegisterBinaryTraits(Traits);
             AttachedRegs = new List<PICRegisterStorage>();
             BitFields = new SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage>();
         }
@@ -101,6 +102,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Gets the traits of the PIC register.
         /// </summary>
         public PICRegisterTraits Traits { get; }
+
+        public PICRegisterBinaryTraits BinTraits { get; }
 
         /// <summary>
         /// Gets the data memory address of this register (or null if Non-Memory-Mapped).

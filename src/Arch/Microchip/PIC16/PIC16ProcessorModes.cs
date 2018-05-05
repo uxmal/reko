@@ -44,6 +44,12 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         public override PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             => new PIC16PointerScanner(rdr, knownLinAddresses, flags);
+
+        public override void PostprocessProgram(Program program, PICArchitecture arch)
+        {
+            base.PostprocessProgram(program, arch);
+        }
+
     }
 
     internal class PIC16BasicMode : PIC16ProcessorMode

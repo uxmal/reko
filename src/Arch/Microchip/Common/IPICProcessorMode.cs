@@ -101,7 +101,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="offset">The offset in the memory bank.</param>
         Address CreateBankedAddress(byte bsrReg, byte offset);
 
-
         /// <summary>
         /// Creates the memory pointer scanner.
         /// </summary>
@@ -112,6 +111,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The new pointer scanner.
         /// </returns>
         PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
+
+        /// <summary>
+        /// Postprocess the program which has been loaded.
+        /// </summary>
+        /// <param name="program">The program.</param>
+        /// <param name="arch">The architecture of the processor.</param>
+        void PostprocessProgram(Program program, PICArchitecture arch);
 
     }
 

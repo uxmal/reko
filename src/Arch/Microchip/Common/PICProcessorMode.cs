@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -158,6 +159,25 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The new pointer scanner.
         /// </returns>
         public abstract PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags);
+
+        /// <summary>
+        /// Postprocess the program which has been loaded.
+        /// </summary>
+        /// <param name="program">The program.</param>
+        /// <param name="arch">The architecture of the processor.</param>
+        public virtual void PostprocessProgram(Program program, PICArchitecture arch)
+        {
+            if (program == null)
+                throw new ArgumentNullException(nameof(program));
+            if (arch == null)
+                throw new ArgumentNullException(nameof(arch));
+            if (program.User != null)
+            {
+                var user = program.User;
+                user.Processor = arch.PICDescriptor.Name;
+                user.TextEncoding = Encoding.ASCII;
+            }
+        }
 
     }
 

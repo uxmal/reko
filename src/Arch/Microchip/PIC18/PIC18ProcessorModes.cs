@@ -23,7 +23,6 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
-using Reko.Libraries.Microchip;
 
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
@@ -48,6 +47,11 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         public override PICPointerScanner CreatePointerScanner(EndianImageReader rdr, HashSet<uint> knownLinAddresses, PointerScannerFlags flags)
             => new PIC18PointerScanner(rdr, knownLinAddresses, flags);
+
+        public override void PostprocessProgram(Program program, PICArchitecture arch)
+        {
+            base.PostprocessProgram(program, arch);
+        }
 
     }
 

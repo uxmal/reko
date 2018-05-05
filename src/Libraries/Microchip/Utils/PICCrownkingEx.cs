@@ -28,64 +28,6 @@ namespace Reko.Libraries.Microchip
     public static partial class PICCrownkingEx
     {
 
-        private static readonly Dictionary<string, SFRBitAccess> _xlat2Access = new Dictionary<string, SFRBitAccess>()
-        {
-            { "x", SFRBitAccess.RW },               // read-write
-            { "n", SFRBitAccess.RW },               // read-write
-            { "X", SFRBitAccess.RW_Persistant },    // read-write persistent
-            { "r", SFRBitAccess.ROnly },            // read-only
-            { "w", SFRBitAccess.WOnly },            // write-only
-            { "0", SFRBitAccess.Zero },             // 0-value
-            { "1", SFRBitAccess.One },              // 1-value
-            { "c", SFRBitAccess.Clr },              // clear-able only
-            { "s", SFRBitAccess.Set },              // settable only
-            { "-", SFRBitAccess.UnImpl },           // not implemented
-        };
-
-        /// <summary>
-        /// Translates the first char of a SFR access mode string to a value from the <see cref="SFRBitAccess"/> enumeration.
-        /// </summary>
-        /// <param name="sAccess">The access mode string. Only first char is used.</param>
-        /// <returns>
-        /// A value from <see cref="SFRBitAccess"/> enumeration.
-        /// </returns>
-        public static SFRBitAccess SFRBitAccessMode(this string sAccess)
-        {
-            if (sAccess.Length >= 1)
-            {
-                if (_xlat2Access.TryGetValue(sAccess.Substring(1, 1), out SFRBitAccess bmode))
-                    return bmode;
-            }
-            return SFRBitAccess.Unknown;
-        }
-
-        private static readonly Dictionary<string, SFRBitReset> _xlat2BitReset = new Dictionary<string, SFRBitReset>()
-        {
-            { "0", SFRBitReset.Zero },          // reset to 0.
-            { "1", SFRBitReset.One },           // reset to 1.
-            { "u", SFRBitReset.Unchanged },     // unchanged by reset.
-            { "x", SFRBitReset.Unknown },       // unknown after reset.
-            { "q", SFRBitReset.Cond },          // depends on condition.
-            { "-", SFRBitReset.UnImpl },        // no implemented.
-        };
-
-        /// <summary>
-        /// Translates the SFR bit reset mode string (MCLR, POR) to a value from the <see cref="SFRBitReset"/> enumeration.
-        /// </summary>
-        /// <param name="sReset">The reset mode string.</param>
-        /// <returns>
-        /// A value from <see cref="SFRBitReset"/> enumeration.
-        /// </returns>
-        public static SFRBitReset SFRBitResetMode(this string sReset)
-        {
-            if (sReset.Length >= 1)
-            {
-                if (_xlat2BitReset.TryGetValue(sReset.Substring(1, 1), out SFRBitReset bmode))
-                    return bmode;
-            }
-            return SFRBitReset.Unknown;
-        }
-
         /// <summary>
         /// A PICCrownking extension method that gets a PIC descriptor.
         /// </summary>
