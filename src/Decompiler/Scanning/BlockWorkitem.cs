@@ -589,6 +589,9 @@ namespace Reko.Scanning
 
             if (call.Target is Identifier id)
             {
+                //$REVIEW: this is a hack. Were we in SSA form,
+                // we could quickly determine if `id` is assigned
+                // to constant.
                 var ppp = SearchBackForProcedureConstant(id);
                 if (ppp != null)
                 {
@@ -716,6 +719,9 @@ namespace Reko.Scanning
 
             if (sigCallee != null && sigCallee.StackDelta != 0)
             {
+                // Generate explicit stack adjustment expression
+                // SP = SP + stackDelta
+                // after the call.
                 Expression newVal = new BinaryExpression(
                     Operator.IAdd,
                     stackReg.DataType,
@@ -740,7 +746,19 @@ namespace Reko.Scanning
                         new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
                 }
             }
+            TrashRegistersAfterCall();
             return true;
+        }
+
+        private void TrashRegistersAfterCall()
+        {
+            foreach (var reg in program.Platform.CreateTrashedRegisters())
+            {
+                // $REVIEW: do not trash stack register. It gives regression
+                // on some MSDOS binaries
+                if (reg != arch.StackRegister)
+                    state.SetValue(reg, Constant.Invalid);
+            }
         }
 
         private FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)

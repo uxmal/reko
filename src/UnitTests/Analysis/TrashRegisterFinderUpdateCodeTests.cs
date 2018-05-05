@@ -247,7 +247,9 @@ foo_exit:
                 m.MStore(esp, ebp);
                 m.Assign(ebp, esp);
                 m.SideEffect(m.Fn(
-                    new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("strcpy", null)),
+                    new ProcedureConstant(
+                        PrimitiveType.Word32,
+                        new ExternalProcedure("strcpy", new FunctionType())),
                     m.Mem32(m.IAdd(ebp, 8)),
                     m.Mem32(m.IAdd(ebp, 12))));
                 m.Assign(ebp, m.Mem32(esp));
@@ -293,7 +295,9 @@ main_exit:
                 m.Assign(
                     eax,
                     m.Fn(
-                        new ProcedureConstant(PrimitiveType.Word32, new ExternalProcedure("add", null)),
+                        new ProcedureConstant(
+                            PrimitiveType.Word32,
+                            new ExternalProcedure("add", new FunctionType())),
                         m.Mem32(esp),
                         m.Mem32(m.IAdd(esp, 4))));
                 m.Assign(esp, m.IAdd(esp, 8));
