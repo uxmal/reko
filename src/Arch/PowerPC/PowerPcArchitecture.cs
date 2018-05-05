@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -40,6 +41,8 @@ namespace Reko.Arch.PowerPC
         private ReadOnlyCollection<RegisterStorage> vregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
         private Dictionary<int, RegisterStorage> spregs;
+        private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
+        private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -85,6 +88,12 @@ namespace Reko.Arch.PowerPC
 
             cregs = new ReadOnlyCollection<RegisterStorage>(
                 regs.Skip(0x60).Take(0x8).ToList());
+
+            ccFlagGroups = Enumerable.Range(0, 8)
+                .Select(n => new FlagGroupStorage(cr, 0xFu << (n * 4), $"cr{n}", PrimitiveType.Byte))
+                .ToDictionary(f => f.FlagGroupBits);
+            ccFlagGroupsByName = ccFlagGroups.Values
+                .ToDictionary(f => f.Name);
 
             spregs = new Dictionary<int, RegisterStorage>
             {
@@ -246,10 +255,26 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
+        public FlagGroupStorage GetCcFieldAsFlagGroup(RegisterStorage reg)
+        {
+            if (0x60 <= reg.Number && reg.Number < 0x60 + 8)
+            {
+                var field = reg.Number - 0x60;
+                var grf = 0xFu << (4 *field);
+                if (this.ccFlagGroups.TryGetValue(grf, out var f))
+                    return f;
+            }
+            return null;
+        }
+
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            //$TODO: do this more accurately.
-            return new FlagGroupStorage(this.cr, grf, "C" + grf, PrimitiveType.Byte);
+            foreach (var f in ccFlagGroups)
+            {
+                if ((grf & f.Key) != 0)
+                    return f.Value;
+            }
+            throw new NotImplementedException("This shouldn't happen.");
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -270,6 +295,11 @@ namespace Reko.Arch.PowerPC
             //$BUG: this needs to be better conceved. There are 
             // 32 (!) condition codes in the PowerPC architecture
             return "crX";
+        }
+
+        public bool IsCcField(RegisterStorage reg)
+        {
+            return 0x60 <= reg.Number && reg.Number < 0x60 + 8;
         }
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)

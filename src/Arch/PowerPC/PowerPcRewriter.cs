@@ -309,22 +309,28 @@ namespace Reko.Arch.PowerPC
 
         private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
         {
-            if (op is RegisterOperand rOp)
+            switch (op)
             {
+            case RegisterOperand rOp:
                 if (maybe0 && rOp.Register.Number == 0)
                     return Constant.Zero(rOp.Register.DataType);
-                return binder.EnsureRegister(rOp.Register);
-            }
-            if (op is ImmediateOperand iOp)
-            {
+                if (arch.IsCcField(rOp.Register))
+                {
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                }
+                else
+                {
+                    return binder.EnsureRegister(rOp.Register);
+                }
+            case ImmediateOperand iOp:
                 // Sign-extend the bastard.
                 return SignExtend(iOp.Value);
-            }
-            if (op is AddressOperand aOp)
+            case AddressOperand aOp:
                 return aOp.Address;
-
-            throw new NotImplementedException(
-                string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
+            default:
+                throw new NotImplementedException(
+                    string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
