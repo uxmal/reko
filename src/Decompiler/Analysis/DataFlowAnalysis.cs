@@ -180,10 +180,8 @@ namespace Reko.Analysis
                 TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
 					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
-				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
-					output.Write("Warning: no signature found for {0}", proc.Name);
+					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
 				pf.Emit(proc.Architecture, output);
 

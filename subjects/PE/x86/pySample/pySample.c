@@ -315,10 +315,10 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 	return fn10001388(lpReserved, dwReason, ebx, esi, edi);
 }
 
-// 100015CF: Register word32 fn100015CF(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi)
-word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
+// 100015CF: Register Eq_762 fn100015CF(Register (ptr Eq_172) ebx, Register ptr32 esi, Register word32 edi)
+_onexit_t fn100015CF( * ebx, ptr32 esi, word32 edi)
 {
-	Eq_766 eax_119;
+	Eq_762 eax_119;
 	struct Eq_400 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002210, 0x14);
 	*(fp - 0x0C) = (void **) globals->ptr100033B4;
 	word32 * eax_16 = _decode_pointer(*(fp - 0x0C));
@@ -351,7 +351,7 @@ word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
 		*(esp_47 - 0x08) = ebp_51 - 0x20;
 		*(esp_47 - 0x0C) = ebp_51 - 0x1C;
 		*(esp_47 - 0x10) = ebp_51->dw0008;
-		Eq_766 eax_83 = __dllonexit(*(esp_47 - 0x10), *(esp_47 - 0x0C), *(esp_47 - 0x08));
+		Eq_762 eax_83 = __dllonexit(*(esp_47 - 0x10), *(esp_47 - 0x0C), *(esp_47 - 0x08));
 		*(ebp_51 - 0x24) = (_onexit_t *) eax_83;
 		*(esp_47 - 0x14) = *(ebp_51 - 0x1C);
 		ptr32 esp_89;
@@ -382,7 +382,7 @@ word32 fn100015CF( * ebx, ptr32 esi, word32 edi)
 		globals->ptr100033B0 = eax_106;
 		*(ebp_10 - 0x04) = ~0x01;
 		fn10001665();
-		eax_119 = (Eq_766) *(ebp_10 - 0x24);
+		eax_119 = (Eq_762) *(ebp_10 - 0x24);
 	}
 	fn1000182D(ebp_10, 0x14, dwArg00, dwArg04, dwArg08, dwArg0C);
 	return eax_119;

@@ -311,8 +311,8 @@ Eq_417 substr(Eq_417 o0, int8 * o1)
 	}
 }
 
-// 00011828: Register Eq_455 safe_read(Register Eq_455 o0, Register Eq_217 o1, Register int32 o2, Register out Eq_458 l0Out, Register out ptr32 l1Out, Register out ptr32 l2Out)
-Eq_455 safe_read(Eq_455 o0, Eq_217 o1, int32 o2, Eq_458 & l0Out, ptr32 & l1Out, ptr32 & l2Out)
+// 00011828: Register Eq_217 safe_read(Register Eq_217 o0, Register Eq_217 o1, Register int32 o2, Register out Eq_458 l0Out, Register out ptr32 l1Out, Register out ptr32 l2Out)
+Eq_217 safe_read(Eq_217 o0, Eq_217 o1, int32 o2, Eq_458 & l0Out, ptr32 & l1Out, ptr32 & l2Out)
 {
 safe_read_entry:
 	Eq_217 i1_27 = o1
@@ -330,7 +330,7 @@ l00011840:
 	bool NZV_32 = cond(l0_20)
 	goto l00011844
 l00011840_ds_f:
-	Eq_455 o0_56 = DPB(o0, read(o0, i1_27, l0_20), 0)
+	Eq_217 o0_56 = DPB(o0, read(o0, i1_27, l0_20), 0)
 	branch o0_56 >= 0x00 l0001184C_ds_t
 	goto l0001184C_ds_f
 l00011844:
@@ -1849,7 +1849,7 @@ int32 process_aux_info_file(Eq_217 o0, word32 o2, ptr32 & l1Out, ptr32 & l2Out)
 		if (i2_193 != 0x00)
 		{
 l00013218:
-			Eq_455 o0_260 = open(l4_204, 0x00);
+			Eq_217 o0_260 = open(l4_204, 0x00);
 			if (o0_260 != ~0x00)
 			{
 				word32 i0_298;
@@ -2002,7 +2002,7 @@ Eq_217 identify_lineno(Eq_217 o0)
 		}
 	}
 	else
-		&o0_11.u0->b0000 = (struct Eq_9740 *) 0x01;
+		&o0_11.u0->b0000 = (struct Eq_9739 *) 0x01;
 	return o0_11;
 }
 
@@ -3107,7 +3107,7 @@ Eq_217 getpwd()
 			}
 		}
 		else
-			&l1_119.u0->b0000 = (struct Eq_9740 *) 100;
+			&l1_119.u0->b0000 = (struct Eq_9739 *) 100;
 		while (true)
 		{
 			word32 i0_66;
@@ -3823,8 +3823,8 @@ Eq_217 try(Eq_217 o0, Eq_217 o1)
 	return i0_25;
 }
 
-// 00015918: Register word32 choose_temp_base(Register out ptr32 l0Out, Register out ptr32 l1Out, Register out ptr32 i0Out, Register out ptr32 i6Out)
-word32 choose_temp_base(ptr32 & l0Out, ptr32 & l1Out, ptr32 & i0Out, ptr32 & i6Out)
+// 00015918: Register Eq_217 choose_temp_base(Register out ptr32 l0Out, Register out ptr32 l1Out, Register out ptr32 i0Out, Register out ptr32 i6Out)
+Eq_217 choose_temp_base(ptr32 & l0Out, ptr32 & l1Out, ptr32 & i0Out, ptr32 & i6Out)
 {
 	Eq_217 o0_53 = try(0x00028038, try(0x00028040, try(0x00017900, try(getenv("TEMP"), try(getenv("TMP"), try(getenv("TMPDIR"), 0x00))))));
 	Eq_217 l0_157 = o0_53;
@@ -3932,7 +3932,7 @@ void make_temp_file(word32 o0)
 	if (0x00017800 == 0x00)
 	{
 		o3_86->b0008 = (byte) o1_106;
-		Eq_455 o0_115 = mkstemps(o0_74, l2_146);
+		Eq_217 o0_115 = mkstemps(o0_74, l2_146);
 		if (o0_115 != ~0x00)
 		{
 			if (close(o0_115) == 0x00)
@@ -4769,8 +4769,8 @@ void getopt_long_only(word32 o0, Eq_7419 * o1[], int8 * o2, word32 o3, word32 * 
 	_getopt_internal(o1, o2, o4, 0x01, dwLoc2C, dwLoc20, out l0_27, out l6_28, out l7_29, out i6_30);
 }
 
-// 000169F8: Register word32 pexecute(Register (ptr char) o2, Register (ptr word32) o4, Register (ptr word32) o5, Register int32 l1, Stack word32 dwArg44, Stack Eq_31 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack ui32 dwArg5C, Register out ptr32 l0Out, Register out ptr32 l1Out, Register out ptr32 i6Out)
-word32 pexecute(char * o2, word32 * o4, word32 * o5, int32 l1, word32 dwArg44, Eq_31 dwArg48, word32 dwArg4C, word32 dwArg54, word32 dwArg58, ui32 dwArg5C, ptr32 & l0Out, ptr32 & l1Out, ptr32 & i6Out)
+// 000169F8: Register int32 pexecute(Register (ptr char) o2, Register (ptr word32) o4, Register (ptr word32) o5, Register int32 l1, Stack word32 dwArg44, Stack Eq_31 dwArg48, Stack word32 dwArg4C, Stack word32 dwArg54, Stack word32 dwArg58, Stack ui32 dwArg5C, Register out ptr32 l0Out, Register out ptr32 l1Out, Register out ptr32 i6Out)
+int32 pexecute(char * o2, word32 * o4, word32 * o5, int32 l1, word32 dwArg44, Eq_31 dwArg48, word32 dwArg4C, word32 dwArg54, word32 dwArg58, ui32 dwArg5C, ptr32 & l0Out, ptr32 & l1Out, ptr32 & i6Out)
 {
 	*l1Out = l1;
 	<anonymous> * o0_29;
@@ -4781,13 +4781,13 @@ word32 pexecute(char * o2, word32 * o4, word32 * o5, int32 l1, word32 dwArg44, E
 	else
 		o0_29 = &globals->t27E48;
 	if ((dwArg5C & 0x01) != 0x00)
-		globals->t2B310.u0 = 0x00;
-	Eq_455 dwLoc24_100;
+		&globals->t2B310.u0->b0000 = 0x00;
+	Eq_217 dwLoc24_100;
 	word32 o0_287;
 	int32 i0_195;
 	word32 l0_34 = 0x0002B000;
 	*l0Out = l0_34;
-	Eq_455 o0_36 = globals->t2B310;
+	Eq_217 o0_36 = globals->t2B310;
 	if ((dwArg5C & 0x02) == 0x00)
 	{
 		word32 sp_366;
@@ -4823,8 +4823,8 @@ word32 pexecute(char * o2, word32 * o4, word32 * o5, int32 l1, word32 dwArg44, E
 	}
 	else
 	{
-		globals->t2B310.u0 = 0x00;
-		dwLoc24_100.u0 = 0x01;
+		&globals->t2B310.u0->b0000 = 0x00;
+		&dwLoc24_100.u0->b0000 = 0x01;
 	}
 	int32 dwLoc28_125 = 0x00;
 	while (true)
@@ -4906,7 +4906,7 @@ l00016AEC:
 				dup(dwLoc24_100);
 				close(dwLoc24_100);
 			}
-			Eq_455 o0_213 = globals->t2B310;
+			Eq_217 o0_213 = globals->t2B310;
 			if (o0_213 != 0x00)
 				close(o0_213);
 			word32 sp_220;
@@ -4983,14 +4983,14 @@ word32 pwait(word32 o1, ptr32 & i0Out, ptr32 & i2Out, ptr32 & i6Out)
 // 00016C40: Register Eq_217 mkstemps(Register Eq_217 o0, Register Eq_217 o1)
 Eq_217 mkstemps(Eq_217 o0, Eq_217 o1)
 {
-	Eq_455 i0_48;
+	Eq_217 i0_48;
 	Eq_217 o0_20 = strlen(o0);
 	if (o0_20 - (o1 + 0x06) >= 0x00)
 	{
 		word32 o0_87 = o0_20 - (o1 + 0x06);
 		word32 i1_88 = o0 + o0_87;
 		if (strncmp(i1_88, 0x00017B78, 0x06) != 0x00)
-			i0_48.u0 = ~0x00;
+			&i0_48.u0->b0000 = ~0x00;
 		else
 		{
 			int32 o0_112 = gettimeofday(fp + ~0x17, null);
@@ -5378,7 +5378,7 @@ Eq_217 mkstemps(Eq_217 o0, Eq_217 o1)
 				byte NV_559;
 				__urem64();
 				i1_533->b0005 = (byte) (word32) o1_534->b17B38;
-				Eq_455 o0_565 = open(i0_531, 0x0502);
+				Eq_217 o0_565 = open(i0_531, 0x0502);
 				if (o0_565 >= 0x00)
 					break;
 				Eq_9198 o2_570 = globals->t2B400;
@@ -5396,7 +5396,7 @@ Eq_217 mkstemps(Eq_217 o0, Eq_217 o1)
 	else
 	{
 l00016E58:
-		i0_48.u0 = ~0x00;
+		&i0_48.u0->b0000 = ~0x00;
 	}
 	return i0_48;
 }
