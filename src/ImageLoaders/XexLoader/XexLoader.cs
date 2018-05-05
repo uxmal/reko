@@ -632,7 +632,7 @@ namespace Reko.ImageLoaders.Xex
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("ppc-be-64");
-            var platform = new Xbox360Platform(Services, arch);
+            var platform = cfgSvc.GetEnvironment("xbox360").Load(Services, arch);
 
             LoadHeaders();
             LoadImageData();
