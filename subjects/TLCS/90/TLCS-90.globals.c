@@ -4,4 +4,8 @@
 
 #include "TLCS-90.h"
 
+byte g_b0001 = 0x00;
+byte g_a0823[] = 
+	{
+	};
 
